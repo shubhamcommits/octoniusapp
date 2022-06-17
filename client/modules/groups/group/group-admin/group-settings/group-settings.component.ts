@@ -67,10 +67,7 @@ export class GroupSettingsComponent implements OnInit {
   async openDetails(content) {
 
     // Open Modal
-    this.utilityService.openModal(content, {
-      size: 'md',
-      centered: true
-    });
+    this.utilityService.openModal(content, {});
   }
 
   /**

@@ -118,16 +118,7 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     // HTTP CLIENT MODULE
     HttpClientModule,
 
-    // ChartsModule,
-
-    // ANGULAR BOOTSTRAP MODAL MODULE
-    // NgbModalModule,
-
-    // ANGULAR TOOLTIP MODULE
-    // NgbTooltipModule,
     MatSidenavModule,
-    // SHARED MODULES
-    // SharedModule,
 
     // SSO Active Directory
 

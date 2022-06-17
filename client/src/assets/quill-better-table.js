@@ -8,865 +8,865 @@
 	else
 		root["quillBetterTable"] = factory(root["Quill2"]);
 })(window, function(__WEBPACK_EXTERNAL_MODULE__0__) {
-return /******/ (function(modules) { // webpackBootstrap
-/******/ 	function hotDisposeChunk(chunkId) {
-/******/ 		delete installedChunks[chunkId];
-/******/ 	}
-/******/ 	var parentHotUpdateCallback = window["webpackHotUpdatequillBetterTable"];
-/******/ 	window["webpackHotUpdatequillBetterTable"] = // eslint-disable-next-line no-unused-vars
-/******/ 	function webpackHotUpdateCallback(chunkId, moreModules) {
-/******/ 		hotAddUpdateChunk(chunkId, moreModules);
-/******/ 		if (parentHotUpdateCallback) parentHotUpdateCallback(chunkId, moreModules);
-/******/ 	} ;
-/******/
-/******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	function hotDownloadUpdateChunk(chunkId) {
-/******/ 		var script = document.createElement("script");
-/******/ 		script.charset = "utf-8";
-/******/ 		script.src = __webpack_require__.p + "" + chunkId + "." + hotCurrentHash + ".hot-update.js";
-/******/ 		if (null) script.crossOrigin = null;
-/******/ 		document.head.appendChild(script);
-/******/ 	}
-/******/
-/******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	function hotDownloadManifest(requestTimeout) {
-/******/ 		requestTimeout = requestTimeout || 10000;
-/******/ 		return new Promise(function(resolve, reject) {
-/******/ 			if (typeof XMLHttpRequest === "undefined") {
-/******/ 				return reject(new Error("No browser support"));
-/******/ 			}
-/******/ 			try {
-/******/ 				var request = new XMLHttpRequest();
-/******/ 				var requestPath = __webpack_require__.p + "" + hotCurrentHash + ".hot-update.json";
-/******/ 				request.open("GET", requestPath, true);
-/******/ 				request.timeout = requestTimeout;
-/******/ 				request.send(null);
-/******/ 			} catch (err) {
-/******/ 				return reject(err);
-/******/ 			}
-/******/ 			request.onreadystatechange = function() {
-/******/ 				if (request.readyState !== 4) return;
-/******/ 				if (request.status === 0) {
-/******/ 					// timeout
-/******/ 					reject(
-/******/ 						new Error("Manifest request to " + requestPath + " timed out.")
-/******/ 					);
-/******/ 				} else if (request.status === 404) {
-/******/ 					// no update available
-/******/ 					resolve();
-/******/ 				} else if (request.status !== 200 && request.status !== 304) {
-/******/ 					// other failure
-/******/ 					reject(new Error("Manifest request to " + requestPath + " failed."));
-/******/ 				} else {
-/******/ 					// success
-/******/ 					try {
-/******/ 						var update = JSON.parse(request.responseText);
-/******/ 					} catch (e) {
-/******/ 						reject(e);
-/******/ 						return;
-/******/ 					}
-/******/ 					resolve(update);
-/******/ 				}
-/******/ 			};
-/******/ 		});
-/******/ 	}
-/******/
-/******/ 	var hotApplyOnUpdate = true;
-/******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "0ab79ca97240aece4188";
-/******/ 	var hotRequestTimeout = 10000;
-/******/ 	var hotCurrentModuleData = {};
-/******/ 	var hotCurrentChildModule;
-/******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentParents = [];
-/******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentParentsTemp = [];
-/******/
-/******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	function hotCreateRequire(moduleId) {
-/******/ 		var me = installedModules[moduleId];
-/******/ 		if (!me) return __webpack_require__;
-/******/ 		var fn = function(request) {
-/******/ 			if (me.hot.active) {
-/******/ 				if (installedModules[request]) {
-/******/ 					if (installedModules[request].parents.indexOf(moduleId) === -1) {
-/******/ 						installedModules[request].parents.push(moduleId);
-/******/ 					}
-/******/ 				} else {
-/******/ 					hotCurrentParents = [moduleId];
-/******/ 					hotCurrentChildModule = request;
-/******/ 				}
-/******/ 				if (me.children.indexOf(request) === -1) {
-/******/ 					me.children.push(request);
-/******/ 				}
-/******/ 			} else {
-/******/ 				console.warn(
-/******/ 					"[HMR] unexpected require(" +
-/******/ 						request +
-/******/ 						") from disposed module " +
-/******/ 						moduleId
-/******/ 				);
-/******/ 				hotCurrentParents = [];
-/******/ 			}
-/******/ 			return __webpack_require__(request);
-/******/ 		};
-/******/ 		var ObjectFactory = function ObjectFactory(name) {
-/******/ 			return {
-/******/ 				configurable: true,
-/******/ 				enumerable: true,
-/******/ 				get: function() {
-/******/ 					return __webpack_require__[name];
-/******/ 				},
-/******/ 				set: function(value) {
-/******/ 					__webpack_require__[name] = value;
-/******/ 				}
-/******/ 			};
-/******/ 		};
-/******/ 		for (var name in __webpack_require__) {
-/******/ 			if (
-/******/ 				Object.prototype.hasOwnProperty.call(__webpack_require__, name) &&
-/******/ 				name !== "e" &&
-/******/ 				name !== "t"
-/******/ 			) {
-/******/ 				Object.defineProperty(fn, name, ObjectFactory(name));
-/******/ 			}
-/******/ 		}
-/******/ 		fn.e = function(chunkId) {
-/******/ 			if (hotStatus === "ready") hotSetStatus("prepare");
-/******/ 			hotChunksLoading++;
-/******/ 			return __webpack_require__.e(chunkId).then(finishChunkLoading, function(err) {
-/******/ 				finishChunkLoading();
-/******/ 				throw err;
-/******/ 			});
-/******/
-/******/ 			function finishChunkLoading() {
-/******/ 				hotChunksLoading--;
-/******/ 				if (hotStatus === "prepare") {
-/******/ 					if (!hotWaitingFilesMap[chunkId]) {
-/******/ 						hotEnsureUpdateChunk(chunkId);
-/******/ 					}
-/******/ 					if (hotChunksLoading === 0 && hotWaitingFiles === 0) {
-/******/ 						hotUpdateDownloaded();
-/******/ 					}
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 		fn.t = function(value, mode) {
-/******/ 			if (mode & 1) value = fn(value);
-/******/ 			return __webpack_require__.t(value, mode & ~1);
-/******/ 		};
-/******/ 		return fn;
-/******/ 	}
-/******/
-/******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	function hotCreateModule(moduleId) {
-/******/ 		var hot = {
-/******/ 			// private stuff
-/******/ 			_acceptedDependencies: {},
-/******/ 			_declinedDependencies: {},
-/******/ 			_selfAccepted: false,
-/******/ 			_selfDeclined: false,
-/******/ 			_disposeHandlers: [],
-/******/ 			_main: hotCurrentChildModule !== moduleId,
-/******/
-/******/ 			// Module API
-/******/ 			active: true,
-/******/ 			accept: function(dep, callback) {
-/******/ 				if (dep === undefined) hot._selfAccepted = true;
-/******/ 				else if (typeof dep === "function") hot._selfAccepted = dep;
-/******/ 				else if (typeof dep === "object")
-/******/ 					for (var i = 0; i < dep.length; i++)
-/******/ 						hot._acceptedDependencies[dep[i]] = callback || function() {};
-/******/ 				else hot._acceptedDependencies[dep] = callback || function() {};
-/******/ 			},
-/******/ 			decline: function(dep) {
-/******/ 				if (dep === undefined) hot._selfDeclined = true;
-/******/ 				else if (typeof dep === "object")
-/******/ 					for (var i = 0; i < dep.length; i++)
-/******/ 						hot._declinedDependencies[dep[i]] = true;
-/******/ 				else hot._declinedDependencies[dep] = true;
-/******/ 			},
-/******/ 			dispose: function(callback) {
-/******/ 				hot._disposeHandlers.push(callback);
-/******/ 			},
-/******/ 			addDisposeHandler: function(callback) {
-/******/ 				hot._disposeHandlers.push(callback);
-/******/ 			},
-/******/ 			removeDisposeHandler: function(callback) {
-/******/ 				var idx = hot._disposeHandlers.indexOf(callback);
-/******/ 				if (idx >= 0) hot._disposeHandlers.splice(idx, 1);
-/******/ 			},
-/******/
-/******/ 			// Management API
-/******/ 			check: hotCheck,
-/******/ 			apply: hotApply,
-/******/ 			status: function(l) {
-/******/ 				if (!l) return hotStatus;
-/******/ 				hotStatusHandlers.push(l);
-/******/ 			},
-/******/ 			addStatusHandler: function(l) {
-/******/ 				hotStatusHandlers.push(l);
-/******/ 			},
-/******/ 			removeStatusHandler: function(l) {
-/******/ 				var idx = hotStatusHandlers.indexOf(l);
-/******/ 				if (idx >= 0) hotStatusHandlers.splice(idx, 1);
-/******/ 			},
-/******/
-/******/ 			//inherit from previous dispose call
-/******/ 			data: hotCurrentModuleData[moduleId]
-/******/ 		};
-/******/ 		hotCurrentChildModule = undefined;
-/******/ 		return hot;
-/******/ 	}
-/******/
-/******/ 	var hotStatusHandlers = [];
-/******/ 	var hotStatus = "idle";
-/******/
-/******/ 	function hotSetStatus(newStatus) {
-/******/ 		hotStatus = newStatus;
-/******/ 		for (var i = 0; i < hotStatusHandlers.length; i++)
-/******/ 			hotStatusHandlers[i].call(null, newStatus);
-/******/ 	}
-/******/
-/******/ 	// while downloading
-/******/ 	var hotWaitingFiles = 0;
-/******/ 	var hotChunksLoading = 0;
-/******/ 	var hotWaitingFilesMap = {};
-/******/ 	var hotRequestedFilesMap = {};
-/******/ 	var hotAvailableFilesMap = {};
-/******/ 	var hotDeferred;
-/******/
-/******/ 	// The update info
-/******/ 	var hotUpdate, hotUpdateNewHash;
-/******/
-/******/ 	function toModuleId(id) {
-/******/ 		var isNumber = +id + "" === id;
-/******/ 		return isNumber ? +id : id;
-/******/ 	}
-/******/
-/******/ 	function hotCheck(apply) {
-/******/ 		if (hotStatus !== "idle") {
-/******/ 			throw new Error("check() is only allowed in idle status");
-/******/ 		}
-/******/ 		hotApplyOnUpdate = apply;
-/******/ 		hotSetStatus("check");
-/******/ 		return hotDownloadManifest(hotRequestTimeout).then(function(update) {
-/******/ 			if (!update) {
-/******/ 				hotSetStatus("idle");
-/******/ 				return null;
-/******/ 			}
-/******/ 			hotRequestedFilesMap = {};
-/******/ 			hotWaitingFilesMap = {};
-/******/ 			hotAvailableFilesMap = update.c;
-/******/ 			hotUpdateNewHash = update.h;
-/******/
-/******/ 			hotSetStatus("prepare");
-/******/ 			var promise = new Promise(function(resolve, reject) {
-/******/ 				hotDeferred = {
-/******/ 					resolve: resolve,
-/******/ 					reject: reject
-/******/ 				};
-/******/ 			});
-/******/ 			hotUpdate = {};
-/******/ 			var chunkId = 2;
-/******/ 			// eslint-disable-next-line no-lone-blocks
-/******/ 			{
-/******/ 				/*globals chunkId */
-/******/ 				hotEnsureUpdateChunk(chunkId);
-/******/ 			}
-/******/ 			if (
-/******/ 				hotStatus === "prepare" &&
-/******/ 				hotChunksLoading === 0 &&
-/******/ 				hotWaitingFiles === 0
-/******/ 			) {
-/******/ 				hotUpdateDownloaded();
-/******/ 			}
-/******/ 			return promise;
-/******/ 		});
-/******/ 	}
-/******/
-/******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	function hotAddUpdateChunk(chunkId, moreModules) {
-/******/ 		if (!hotAvailableFilesMap[chunkId] || !hotRequestedFilesMap[chunkId])
-/******/ 			return;
-/******/ 		hotRequestedFilesMap[chunkId] = false;
-/******/ 		for (var moduleId in moreModules) {
-/******/ 			if (Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
-/******/ 				hotUpdate[moduleId] = moreModules[moduleId];
-/******/ 			}
-/******/ 		}
-/******/ 		if (--hotWaitingFiles === 0 && hotChunksLoading === 0) {
-/******/ 			hotUpdateDownloaded();
-/******/ 		}
-/******/ 	}
-/******/
-/******/ 	function hotEnsureUpdateChunk(chunkId) {
-/******/ 		if (!hotAvailableFilesMap[chunkId]) {
-/******/ 			hotWaitingFilesMap[chunkId] = true;
-/******/ 		} else {
-/******/ 			hotRequestedFilesMap[chunkId] = true;
-/******/ 			hotWaitingFiles++;
-/******/ 			hotDownloadUpdateChunk(chunkId);
-/******/ 		}
-/******/ 	}
-/******/
-/******/ 	function hotUpdateDownloaded() {
-/******/ 		hotSetStatus("ready");
-/******/ 		var deferred = hotDeferred;
-/******/ 		hotDeferred = null;
-/******/ 		if (!deferred) return;
-/******/ 		if (hotApplyOnUpdate) {
-/******/ 			// Wrap deferred object in Promise to mark it as a well-handled Promise to
-/******/ 			// avoid triggering uncaught exception warning in Chrome.
-/******/ 			// See https://bugs.chromium.org/p/chromium/issues/detail?id=465666
-/******/ 			Promise.resolve()
-/******/ 				.then(function() {
-/******/ 					return hotApply(hotApplyOnUpdate);
-/******/ 				})
-/******/ 				.then(
-/******/ 					function(result) {
-/******/ 						deferred.resolve(result);
-/******/ 					},
-/******/ 					function(err) {
-/******/ 						deferred.reject(err);
-/******/ 					}
-/******/ 				);
-/******/ 		} else {
-/******/ 			var outdatedModules = [];
-/******/ 			for (var id in hotUpdate) {
-/******/ 				if (Object.prototype.hasOwnProperty.call(hotUpdate, id)) {
-/******/ 					outdatedModules.push(toModuleId(id));
-/******/ 				}
-/******/ 			}
-/******/ 			deferred.resolve(outdatedModules);
-/******/ 		}
-/******/ 	}
-/******/
-/******/ 	function hotApply(options) {
-/******/ 		if (hotStatus !== "ready")
-/******/ 			throw new Error("apply() is only allowed in ready status");
-/******/ 		options = options || {};
-/******/
-/******/ 		var cb;
-/******/ 		var i;
-/******/ 		var j;
-/******/ 		var module;
-/******/ 		var moduleId;
-/******/
-/******/ 		function getAffectedStuff(updateModuleId) {
-/******/ 			var outdatedModules = [updateModuleId];
-/******/ 			var outdatedDependencies = {};
-/******/
-/******/ 			var queue = outdatedModules.map(function(id) {
-/******/ 				return {
-/******/ 					chain: [id],
-/******/ 					id: id
-/******/ 				};
-/******/ 			});
-/******/ 			while (queue.length > 0) {
-/******/ 				var queueItem = queue.pop();
-/******/ 				var moduleId = queueItem.id;
-/******/ 				var chain = queueItem.chain;
-/******/ 				module = installedModules[moduleId];
-/******/ 				if (!module || module.hot._selfAccepted) continue;
-/******/ 				if (module.hot._selfDeclined) {
-/******/ 					return {
-/******/ 						type: "self-declined",
-/******/ 						chain: chain,
-/******/ 						moduleId: moduleId
-/******/ 					};
-/******/ 				}
-/******/ 				if (module.hot._main) {
-/******/ 					return {
-/******/ 						type: "unaccepted",
-/******/ 						chain: chain,
-/******/ 						moduleId: moduleId
-/******/ 					};
-/******/ 				}
-/******/ 				for (var i = 0; i < module.parents.length; i++) {
-/******/ 					var parentId = module.parents[i];
-/******/ 					var parent = installedModules[parentId];
-/******/ 					if (!parent) continue;
-/******/ 					if (parent.hot._declinedDependencies[moduleId]) {
-/******/ 						return {
-/******/ 							type: "declined",
-/******/ 							chain: chain.concat([parentId]),
-/******/ 							moduleId: moduleId,
-/******/ 							parentId: parentId
-/******/ 						};
-/******/ 					}
-/******/ 					if (outdatedModules.indexOf(parentId) !== -1) continue;
-/******/ 					if (parent.hot._acceptedDependencies[moduleId]) {
-/******/ 						if (!outdatedDependencies[parentId])
-/******/ 							outdatedDependencies[parentId] = [];
-/******/ 						addAllToSet(outdatedDependencies[parentId], [moduleId]);
-/******/ 						continue;
-/******/ 					}
-/******/ 					delete outdatedDependencies[parentId];
-/******/ 					outdatedModules.push(parentId);
-/******/ 					queue.push({
-/******/ 						chain: chain.concat([parentId]),
-/******/ 						id: parentId
-/******/ 					});
-/******/ 				}
-/******/ 			}
-/******/
-/******/ 			return {
-/******/ 				type: "accepted",
-/******/ 				moduleId: updateModuleId,
-/******/ 				outdatedModules: outdatedModules,
-/******/ 				outdatedDependencies: outdatedDependencies
-/******/ 			};
-/******/ 		}
-/******/
-/******/ 		function addAllToSet(a, b) {
-/******/ 			for (var i = 0; i < b.length; i++) {
-/******/ 				var item = b[i];
-/******/ 				if (a.indexOf(item) === -1) a.push(item);
-/******/ 			}
-/******/ 		}
-/******/
-/******/ 		// at begin all updates modules are outdated
-/******/ 		// the "outdated" status can propagate to parents if they don't accept the children
-/******/ 		var outdatedDependencies = {};
-/******/ 		var outdatedModules = [];
-/******/ 		var appliedUpdate = {};
-/******/
-/******/ 		var warnUnexpectedRequire = function warnUnexpectedRequire() {
-/******/ 			console.warn(
-/******/ 				"[HMR] unexpected require(" + result.moduleId + ") to disposed module"
-/******/ 			);
-/******/ 		};
-/******/
-/******/ 		for (var id in hotUpdate) {
-/******/ 			if (Object.prototype.hasOwnProperty.call(hotUpdate, id)) {
-/******/ 				moduleId = toModuleId(id);
-/******/ 				/** @type {TODO} */
-/******/ 				var result;
-/******/ 				if (hotUpdate[id]) {
-/******/ 					result = getAffectedStuff(moduleId);
-/******/ 				} else {
-/******/ 					result = {
-/******/ 						type: "disposed",
-/******/ 						moduleId: id
-/******/ 					};
-/******/ 				}
-/******/ 				/** @type {Error|false} */
-/******/ 				var abortError = false;
-/******/ 				var doApply = false;
-/******/ 				var doDispose = false;
-/******/ 				var chainInfo = "";
-/******/ 				if (result.chain) {
-/******/ 					chainInfo = "\nUpdate propagation: " + result.chain.join(" -> ");
-/******/ 				}
-/******/ 				switch (result.type) {
-/******/ 					case "self-declined":
-/******/ 						if (options.onDeclined) options.onDeclined(result);
-/******/ 						if (!options.ignoreDeclined)
-/******/ 							abortError = new Error(
-/******/ 								"Aborted because of self decline: " +
-/******/ 									result.moduleId +
-/******/ 									chainInfo
-/******/ 							);
-/******/ 						break;
-/******/ 					case "declined":
-/******/ 						if (options.onDeclined) options.onDeclined(result);
-/******/ 						if (!options.ignoreDeclined)
-/******/ 							abortError = new Error(
-/******/ 								"Aborted because of declined dependency: " +
-/******/ 									result.moduleId +
-/******/ 									" in " +
-/******/ 									result.parentId +
-/******/ 									chainInfo
-/******/ 							);
-/******/ 						break;
-/******/ 					case "unaccepted":
-/******/ 						if (options.onUnaccepted) options.onUnaccepted(result);
-/******/ 						if (!options.ignoreUnaccepted)
-/******/ 							abortError = new Error(
-/******/ 								"Aborted because " + moduleId + " is not accepted" + chainInfo
-/******/ 							);
-/******/ 						break;
-/******/ 					case "accepted":
-/******/ 						if (options.onAccepted) options.onAccepted(result);
-/******/ 						doApply = true;
-/******/ 						break;
-/******/ 					case "disposed":
-/******/ 						if (options.onDisposed) options.onDisposed(result);
-/******/ 						doDispose = true;
-/******/ 						break;
-/******/ 					default:
-/******/ 						throw new Error("Unexception type " + result.type);
-/******/ 				}
-/******/ 				if (abortError) {
-/******/ 					hotSetStatus("abort");
-/******/ 					return Promise.reject(abortError);
-/******/ 				}
-/******/ 				if (doApply) {
-/******/ 					appliedUpdate[moduleId] = hotUpdate[moduleId];
-/******/ 					addAllToSet(outdatedModules, result.outdatedModules);
-/******/ 					for (moduleId in result.outdatedDependencies) {
-/******/ 						if (
-/******/ 							Object.prototype.hasOwnProperty.call(
-/******/ 								result.outdatedDependencies,
-/******/ 								moduleId
-/******/ 							)
-/******/ 						) {
-/******/ 							if (!outdatedDependencies[moduleId])
-/******/ 								outdatedDependencies[moduleId] = [];
-/******/ 							addAllToSet(
-/******/ 								outdatedDependencies[moduleId],
-/******/ 								result.outdatedDependencies[moduleId]
-/******/ 							);
-/******/ 						}
-/******/ 					}
-/******/ 				}
-/******/ 				if (doDispose) {
-/******/ 					addAllToSet(outdatedModules, [result.moduleId]);
-/******/ 					appliedUpdate[moduleId] = warnUnexpectedRequire;
-/******/ 				}
-/******/ 			}
-/******/ 		}
-/******/
-/******/ 		// Store self accepted outdated modules to require them later by the module system
-/******/ 		var outdatedSelfAcceptedModules = [];
-/******/ 		for (i = 0; i < outdatedModules.length; i++) {
-/******/ 			moduleId = outdatedModules[i];
-/******/ 			if (
-/******/ 				installedModules[moduleId] &&
-/******/ 				installedModules[moduleId].hot._selfAccepted &&
-/******/ 				// removed self-accepted modules should not be required
-/******/ 				appliedUpdate[moduleId] !== warnUnexpectedRequire
-/******/ 			) {
-/******/ 				outdatedSelfAcceptedModules.push({
-/******/ 					module: moduleId,
-/******/ 					errorHandler: installedModules[moduleId].hot._selfAccepted
-/******/ 				});
-/******/ 			}
-/******/ 		}
-/******/
-/******/ 		// Now in "dispose" phase
-/******/ 		hotSetStatus("dispose");
-/******/ 		Object.keys(hotAvailableFilesMap).forEach(function(chunkId) {
-/******/ 			if (hotAvailableFilesMap[chunkId] === false) {
-/******/ 				hotDisposeChunk(chunkId);
-/******/ 			}
-/******/ 		});
-/******/
-/******/ 		var idx;
-/******/ 		var queue = outdatedModules.slice();
-/******/ 		while (queue.length > 0) {
-/******/ 			moduleId = queue.pop();
-/******/ 			module = installedModules[moduleId];
-/******/ 			if (!module) continue;
-/******/
-/******/ 			var data = {};
-/******/
-/******/ 			// Call dispose handlers
-/******/ 			var disposeHandlers = module.hot._disposeHandlers;
-/******/ 			for (j = 0; j < disposeHandlers.length; j++) {
-/******/ 				cb = disposeHandlers[j];
-/******/ 				cb(data);
-/******/ 			}
-/******/ 			hotCurrentModuleData[moduleId] = data;
-/******/
-/******/ 			// disable module (this disables requires from this module)
-/******/ 			module.hot.active = false;
-/******/
-/******/ 			// remove module from cache
-/******/ 			delete installedModules[moduleId];
-/******/
-/******/ 			// when disposing there is no need to call dispose handler
-/******/ 			delete outdatedDependencies[moduleId];
-/******/
-/******/ 			// remove "parents" references from all children
-/******/ 			for (j = 0; j < module.children.length; j++) {
-/******/ 				var child = installedModules[module.children[j]];
-/******/ 				if (!child) continue;
-/******/ 				idx = child.parents.indexOf(moduleId);
-/******/ 				if (idx >= 0) {
-/******/ 					child.parents.splice(idx, 1);
-/******/ 				}
-/******/ 			}
-/******/ 		}
-/******/
-/******/ 		// remove outdated dependency from module children
-/******/ 		var dependency;
-/******/ 		var moduleOutdatedDependencies;
-/******/ 		for (moduleId in outdatedDependencies) {
-/******/ 			if (
-/******/ 				Object.prototype.hasOwnProperty.call(outdatedDependencies, moduleId)
-/******/ 			) {
-/******/ 				module = installedModules[moduleId];
-/******/ 				if (module) {
-/******/ 					moduleOutdatedDependencies = outdatedDependencies[moduleId];
-/******/ 					for (j = 0; j < moduleOutdatedDependencies.length; j++) {
-/******/ 						dependency = moduleOutdatedDependencies[j];
-/******/ 						idx = module.children.indexOf(dependency);
-/******/ 						if (idx >= 0) module.children.splice(idx, 1);
-/******/ 					}
-/******/ 				}
-/******/ 			}
-/******/ 		}
-/******/
-/******/ 		// Now in "apply" phase
-/******/ 		hotSetStatus("apply");
-/******/
-/******/ 		hotCurrentHash = hotUpdateNewHash;
-/******/
-/******/ 		// insert new code
-/******/ 		for (moduleId in appliedUpdate) {
-/******/ 			if (Object.prototype.hasOwnProperty.call(appliedUpdate, moduleId)) {
-/******/ 				modules[moduleId] = appliedUpdate[moduleId];
-/******/ 			}
-/******/ 		}
-/******/
-/******/ 		// call accept handlers
-/******/ 		var error = null;
-/******/ 		for (moduleId in outdatedDependencies) {
-/******/ 			if (
-/******/ 				Object.prototype.hasOwnProperty.call(outdatedDependencies, moduleId)
-/******/ 			) {
-/******/ 				module = installedModules[moduleId];
-/******/ 				if (module) {
-/******/ 					moduleOutdatedDependencies = outdatedDependencies[moduleId];
-/******/ 					var callbacks = [];
-/******/ 					for (i = 0; i < moduleOutdatedDependencies.length; i++) {
-/******/ 						dependency = moduleOutdatedDependencies[i];
-/******/ 						cb = module.hot._acceptedDependencies[dependency];
-/******/ 						if (cb) {
-/******/ 							if (callbacks.indexOf(cb) !== -1) continue;
-/******/ 							callbacks.push(cb);
-/******/ 						}
-/******/ 					}
-/******/ 					for (i = 0; i < callbacks.length; i++) {
-/******/ 						cb = callbacks[i];
-/******/ 						try {
-/******/ 							cb(moduleOutdatedDependencies);
-/******/ 						} catch (err) {
-/******/ 							if (options.onErrored) {
-/******/ 								options.onErrored({
-/******/ 									type: "accept-errored",
-/******/ 									moduleId: moduleId,
-/******/ 									dependencyId: moduleOutdatedDependencies[i],
-/******/ 									error: err
-/******/ 								});
-/******/ 							}
-/******/ 							if (!options.ignoreErrored) {
-/******/ 								if (!error) error = err;
-/******/ 							}
-/******/ 						}
-/******/ 					}
-/******/ 				}
-/******/ 			}
-/******/ 		}
-/******/
-/******/ 		// Load self accepted modules
-/******/ 		for (i = 0; i < outdatedSelfAcceptedModules.length; i++) {
-/******/ 			var item = outdatedSelfAcceptedModules[i];
-/******/ 			moduleId = item.module;
-/******/ 			hotCurrentParents = [moduleId];
-/******/ 			try {
-/******/ 				__webpack_require__(moduleId);
-/******/ 			} catch (err) {
-/******/ 				if (typeof item.errorHandler === "function") {
-/******/ 					try {
-/******/ 						item.errorHandler(err);
-/******/ 					} catch (err2) {
-/******/ 						if (options.onErrored) {
-/******/ 							options.onErrored({
-/******/ 								type: "self-accept-error-handler-errored",
-/******/ 								moduleId: moduleId,
-/******/ 								error: err2,
-/******/ 								originalError: err
-/******/ 							});
-/******/ 						}
-/******/ 						if (!options.ignoreErrored) {
-/******/ 							if (!error) error = err2;
-/******/ 						}
-/******/ 						if (!error) error = err;
-/******/ 					}
-/******/ 				} else {
-/******/ 					if (options.onErrored) {
-/******/ 						options.onErrored({
-/******/ 							type: "self-accept-errored",
-/******/ 							moduleId: moduleId,
-/******/ 							error: err
-/******/ 						});
-/******/ 					}
-/******/ 					if (!options.ignoreErrored) {
-/******/ 						if (!error) error = err;
-/******/ 					}
-/******/ 				}
-/******/ 			}
-/******/ 		}
-/******/
-/******/ 		// handle errors in accept handlers and self accepted module load
-/******/ 		if (error) {
-/******/ 			hotSetStatus("fail");
-/******/ 			return Promise.reject(error);
-/******/ 		}
-/******/
-/******/ 		hotSetStatus("idle");
-/******/ 		return new Promise(function(resolve) {
-/******/ 			resolve(outdatedModules);
-/******/ 		});
-/******/ 	}
-/******/
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {},
-/******/ 			hot: hotCreateModule(moduleId),
-/******/ 			parents: (hotCurrentParentsTemp = hotCurrentParents, hotCurrentParents = [], hotCurrentParentsTemp),
-/******/ 			children: []
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, hotCreateRequire(moduleId));
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/ 	// __webpack_hash__
-/******/ 	__webpack_require__.h = function() { return hotCurrentHash; };
-/******/
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return hotCreateRequire(12)(__webpack_require__.s = 12);
-/******/ })
+return  (function(modules) { // webpackBootstrap
+ 	function hotDisposeChunk(chunkId) {
+ 		delete installedChunks[chunkId];
+ 	}
+ 	var parentHotUpdateCallback = window["webpackHotUpdatequillBetterTable"];
+ 	window["webpackHotUpdatequillBetterTable"] = // eslint-disable-next-line no-unused-vars
+ 	function webpackHotUpdateCallback(chunkId, moreModules) {
+ 		hotAddUpdateChunk(chunkId, moreModules);
+ 		if (parentHotUpdateCallback) parentHotUpdateCallback(chunkId, moreModules);
+ 	} ;
+
+ 	// eslint-disable-next-line no-unused-vars
+ 	function hotDownloadUpdateChunk(chunkId) {
+ 		var script = document.createElement("script");
+ 		script.charset = "utf-8";
+ 		script.src = __webpack_require__.p + "" + chunkId + "." + hotCurrentHash + ".hot-update.js";
+ 		if (null) script.crossOrigin = null;
+ 		document.head.appendChild(script);
+ 	}
+
+ 	// eslint-disable-next-line no-unused-vars
+ 	function hotDownloadManifest(requestTimeout) {
+ 		requestTimeout = requestTimeout || 10000;
+ 		return new Promise(function(resolve, reject) {
+ 			if (typeof XMLHttpRequest === "undefined") {
+ 				return reject(new Error("No browser support"));
+ 			}
+ 			try {
+ 				var request = new XMLHttpRequest();
+ 				var requestPath = __webpack_require__.p + "" + hotCurrentHash + ".hot-update.json";
+ 				request.open("GET", requestPath, true);
+ 				request.timeout = requestTimeout;
+ 				request.send(null);
+ 			} catch (err) {
+ 				return reject(err);
+ 			}
+ 			request.onreadystatechange = function() {
+ 				if (request.readyState !== 4) return;
+ 				if (request.status === 0) {
+ 					// timeout
+ 					reject(
+ 						new Error("Manifest request to " + requestPath + " timed out.")
+ 					);
+ 				} else if (request.status === 404) {
+ 					// no update available
+ 					resolve();
+ 				} else if (request.status !== 200 && request.status !== 304) {
+ 					// other failure
+ 					reject(new Error("Manifest request to " + requestPath + " failed."));
+ 				} else {
+ 					// success
+ 					try {
+ 						var update = JSON.parse(request.responseText);
+ 					} catch (e) {
+ 						reject(e);
+ 						return;
+ 					}
+ 					resolve(update);
+ 				}
+ 			};
+ 		});
+ 	}
+
+ 	var hotApplyOnUpdate = true;
+ 	// eslint-disable-next-line no-unused-vars
+ 	var hotCurrentHash = "0ab79ca97240aece4188";
+ 	var hotRequestTimeout = 10000;
+ 	var hotCurrentModuleData = {};
+ 	var hotCurrentChildModule;
+ 	// eslint-disable-next-line no-unused-vars
+ 	var hotCurrentParents = [];
+ 	// eslint-disable-next-line no-unused-vars
+ 	var hotCurrentParentsTemp = [];
+
+ 	// eslint-disable-next-line no-unused-vars
+ 	function hotCreateRequire(moduleId) {
+ 		var me = installedModules[moduleId];
+ 		if (!me) return __webpack_require__;
+ 		var fn = function(request) {
+ 			if (me.hot.active) {
+ 				if (installedModules[request]) {
+ 					if (installedModules[request].parents.indexOf(moduleId) === -1) {
+ 						installedModules[request].parents.push(moduleId);
+ 					}
+ 				} else {
+ 					hotCurrentParents = [moduleId];
+ 					hotCurrentChildModule = request;
+ 				}
+ 				if (me.children.indexOf(request) === -1) {
+ 					me.children.push(request);
+ 				}
+ 			} else {
+ 				console.warn(
+ 					"[HMR] unexpected require(" +
+ 						request +
+ 						") from disposed module " +
+ 						moduleId
+ 				);
+ 				hotCurrentParents = [];
+ 			}
+ 			return __webpack_require__(request);
+ 		};
+ 		var ObjectFactory = function ObjectFactory(name) {
+ 			return {
+ 				configurable: true,
+ 				enumerable: true,
+ 				get: function() {
+ 					return __webpack_require__[name];
+ 				},
+ 				set: function(value) {
+ 					__webpack_require__[name] = value;
+ 				}
+ 			};
+ 		};
+ 		for (var name in __webpack_require__) {
+ 			if (
+ 				Object.prototype.hasOwnProperty.call(__webpack_require__, name) &&
+ 				name !== "e" &&
+ 				name !== "t"
+ 			) {
+ 				Object.defineProperty(fn, name, ObjectFactory(name));
+ 			}
+ 		}
+ 		fn.e = function(chunkId) {
+ 			if (hotStatus === "ready") hotSetStatus("prepare");
+ 			hotChunksLoading++;
+ 			return __webpack_require__.e(chunkId).then(finishChunkLoading, function(err) {
+ 				finishChunkLoading();
+ 				throw err;
+ 			});
+
+ 			function finishChunkLoading() {
+ 				hotChunksLoading--;
+ 				if (hotStatus === "prepare") {
+ 					if (!hotWaitingFilesMap[chunkId]) {
+ 						hotEnsureUpdateChunk(chunkId);
+ 					}
+ 					if (hotChunksLoading === 0 && hotWaitingFiles === 0) {
+ 						hotUpdateDownloaded();
+ 					}
+ 				}
+ 			}
+ 		};
+ 		fn.t = function(value, mode) {
+ 			if (mode & 1) value = fn(value);
+ 			return __webpack_require__.t(value, mode & ~1);
+ 		};
+ 		return fn;
+ 	}
+
+ 	// eslint-disable-next-line no-unused-vars
+ 	function hotCreateModule(moduleId) {
+ 		var hot = {
+ 			// private stuff
+ 			_acceptedDependencies: {},
+ 			_declinedDependencies: {},
+ 			_selfAccepted: false,
+ 			_selfDeclined: false,
+ 			_disposeHandlers: [],
+ 			_main: hotCurrentChildModule !== moduleId,
+
+ 			// Module API
+ 			active: true,
+ 			accept: function(dep, callback) {
+ 				if (dep === undefined) hot._selfAccepted = true;
+ 				else if (typeof dep === "function") hot._selfAccepted = dep;
+ 				else if (typeof dep === "object")
+ 					for (var i = 0; i < dep.length; i++)
+ 						hot._acceptedDependencies[dep[i]] = callback || function() {};
+ 				else hot._acceptedDependencies[dep] = callback || function() {};
+ 			},
+ 			decline: function(dep) {
+ 				if (dep === undefined) hot._selfDeclined = true;
+ 				else if (typeof dep === "object")
+ 					for (var i = 0; i < dep.length; i++)
+ 						hot._declinedDependencies[dep[i]] = true;
+ 				else hot._declinedDependencies[dep] = true;
+ 			},
+ 			dispose: function(callback) {
+ 				hot._disposeHandlers.push(callback);
+ 			},
+ 			addDisposeHandler: function(callback) {
+ 				hot._disposeHandlers.push(callback);
+ 			},
+ 			removeDisposeHandler: function(callback) {
+ 				var idx = hot._disposeHandlers.indexOf(callback);
+ 				if (idx >= 0) hot._disposeHandlers.splice(idx, 1);
+ 			},
+
+ 			// Management API
+ 			check: hotCheck,
+ 			apply: hotApply,
+ 			status: function(l) {
+ 				if (!l) return hotStatus;
+ 				hotStatusHandlers.push(l);
+ 			},
+ 			addStatusHandler: function(l) {
+ 				hotStatusHandlers.push(l);
+ 			},
+ 			removeStatusHandler: function(l) {
+ 				var idx = hotStatusHandlers.indexOf(l);
+ 				if (idx >= 0) hotStatusHandlers.splice(idx, 1);
+ 			},
+
+ 			//inherit from previous dispose call
+ 			data: hotCurrentModuleData[moduleId]
+ 		};
+ 		hotCurrentChildModule = undefined;
+ 		return hot;
+ 	}
+
+ 	var hotStatusHandlers = [];
+ 	var hotStatus = "idle";
+
+ 	function hotSetStatus(newStatus) {
+ 		hotStatus = newStatus;
+ 		for (var i = 0; i < hotStatusHandlers.length; i++)
+ 			hotStatusHandlers[i].call(null, newStatus);
+ 	}
+
+ 	// while downloading
+ 	var hotWaitingFiles = 0;
+ 	var hotChunksLoading = 0;
+ 	var hotWaitingFilesMap = {};
+ 	var hotRequestedFilesMap = {};
+ 	var hotAvailableFilesMap = {};
+ 	var hotDeferred;
+
+ 	// The update info
+ 	var hotUpdate, hotUpdateNewHash;
+
+ 	function toModuleId(id) {
+ 		var isNumber = +id + "" === id;
+ 		return isNumber ? +id : id;
+ 	}
+
+ 	function hotCheck(apply) {
+ 		if (hotStatus !== "idle") {
+ 			throw new Error("check() is only allowed in idle status");
+ 		}
+ 		hotApplyOnUpdate = apply;
+ 		hotSetStatus("check");
+ 		return hotDownloadManifest(hotRequestTimeout).then(function(update) {
+ 			if (!update) {
+ 				hotSetStatus("idle");
+ 				return null;
+ 			}
+ 			hotRequestedFilesMap = {};
+ 			hotWaitingFilesMap = {};
+ 			hotAvailableFilesMap = update.c;
+ 			hotUpdateNewHash = update.h;
+
+ 			hotSetStatus("prepare");
+ 			var promise = new Promise(function(resolve, reject) {
+ 				hotDeferred = {
+ 					resolve: resolve,
+ 					reject: reject
+ 				};
+ 			});
+ 			hotUpdate = {};
+ 			var chunkId = 2;
+ 			// eslint-disable-next-line no-lone-blocks
+ 			{
+ 				/*globals chunkId */
+ 				hotEnsureUpdateChunk(chunkId);
+ 			}
+ 			if (
+ 				hotStatus === "prepare" &&
+ 				hotChunksLoading === 0 &&
+ 				hotWaitingFiles === 0
+ 			) {
+ 				hotUpdateDownloaded();
+ 			}
+ 			return promise;
+ 		});
+ 	}
+
+ 	// eslint-disable-next-line no-unused-vars
+ 	function hotAddUpdateChunk(chunkId, moreModules) {
+ 		if (!hotAvailableFilesMap[chunkId] || !hotRequestedFilesMap[chunkId])
+ 			return;
+ 		hotRequestedFilesMap[chunkId] = false;
+ 		for (var moduleId in moreModules) {
+ 			if (Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
+ 				hotUpdate[moduleId] = moreModules[moduleId];
+ 			}
+ 		}
+ 		if (--hotWaitingFiles === 0 && hotChunksLoading === 0) {
+ 			hotUpdateDownloaded();
+ 		}
+ 	}
+
+ 	function hotEnsureUpdateChunk(chunkId) {
+ 		if (!hotAvailableFilesMap[chunkId]) {
+ 			hotWaitingFilesMap[chunkId] = true;
+ 		} else {
+ 			hotRequestedFilesMap[chunkId] = true;
+ 			hotWaitingFiles++;
+ 			hotDownloadUpdateChunk(chunkId);
+ 		}
+ 	}
+
+ 	function hotUpdateDownloaded() {
+ 		hotSetStatus("ready");
+ 		var deferred = hotDeferred;
+ 		hotDeferred = null;
+ 		if (!deferred) return;
+ 		if (hotApplyOnUpdate) {
+ 			// Wrap deferred object in Promise to mark it as a well-handled Promise to
+ 			// avoid triggering uncaught exception warning in Chrome.
+ 			// See https://bugs.chromium.org/p/chromium/issues/detail?id=465666
+ 			Promise.resolve()
+ 				.then(function() {
+ 					return hotApply(hotApplyOnUpdate);
+ 				})
+ 				.then(
+ 					function(result) {
+ 						deferred.resolve(result);
+ 					},
+ 					function(err) {
+ 						deferred.reject(err);
+ 					}
+ 				);
+ 		} else {
+ 			var outdatedModules = [];
+ 			for (var id in hotUpdate) {
+ 				if (Object.prototype.hasOwnProperty.call(hotUpdate, id)) {
+ 					outdatedModules.push(toModuleId(id));
+ 				}
+ 			}
+ 			deferred.resolve(outdatedModules);
+ 		}
+ 	}
+
+ 	function hotApply(options) {
+ 		if (hotStatus !== "ready")
+ 			throw new Error("apply() is only allowed in ready status");
+ 		options = options || {};
+
+ 		var cb;
+ 		var i;
+ 		var j;
+ 		var module;
+ 		var moduleId;
+
+ 		function getAffectedStuff(updateModuleId) {
+ 			var outdatedModules = [updateModuleId];
+ 			var outdatedDependencies = {};
+
+ 			var queue = outdatedModules.map(function(id) {
+ 				return {
+ 					chain: [id],
+ 					id: id
+ 				};
+ 			});
+ 			while (queue.length > 0) {
+ 				var queueItem = queue.pop();
+ 				var moduleId = queueItem.id;
+ 				var chain = queueItem.chain;
+ 				module = installedModules[moduleId];
+ 				if (!module || module.hot._selfAccepted) continue;
+ 				if (module.hot._selfDeclined) {
+ 					return {
+ 						type: "self-declined",
+ 						chain: chain,
+ 						moduleId: moduleId
+ 					};
+ 				}
+ 				if (module.hot._main) {
+ 					return {
+ 						type: "unaccepted",
+ 						chain: chain,
+ 						moduleId: moduleId
+ 					};
+ 				}
+ 				for (var i = 0; i < module.parents.length; i++) {
+ 					var parentId = module.parents[i];
+ 					var parent = installedModules[parentId];
+ 					if (!parent) continue;
+ 					if (parent.hot._declinedDependencies[moduleId]) {
+ 						return {
+ 							type: "declined",
+ 							chain: chain.concat([parentId]),
+ 							moduleId: moduleId,
+ 							parentId: parentId
+ 						};
+ 					}
+ 					if (outdatedModules.indexOf(parentId) !== -1) continue;
+ 					if (parent.hot._acceptedDependencies[moduleId]) {
+ 						if (!outdatedDependencies[parentId])
+ 							outdatedDependencies[parentId] = [];
+ 						addAllToSet(outdatedDependencies[parentId], [moduleId]);
+ 						continue;
+ 					}
+ 					delete outdatedDependencies[parentId];
+ 					outdatedModules.push(parentId);
+ 					queue.push({
+ 						chain: chain.concat([parentId]),
+ 						id: parentId
+ 					});
+ 				}
+ 			}
+
+ 			return {
+ 				type: "accepted",
+ 				moduleId: updateModuleId,
+ 				outdatedModules: outdatedModules,
+ 				outdatedDependencies: outdatedDependencies
+ 			};
+ 		}
+
+ 		function addAllToSet(a, b) {
+ 			for (var i = 0; i < b.length; i++) {
+ 				var item = b[i];
+ 				if (a.indexOf(item) === -1) a.push(item);
+ 			}
+ 		}
+
+ 		// at begin all updates modules are outdated
+ 		// the "outdated" status can propagate to parents if they don't accept the children
+ 		var outdatedDependencies = {};
+ 		var outdatedModules = [];
+ 		var appliedUpdate = {};
+
+ 		var warnUnexpectedRequire = function warnUnexpectedRequire() {
+ 			console.warn(
+ 				"[HMR] unexpected require(" + result.moduleId + ") to disposed module"
+ 			);
+ 		};
+
+ 		for (var id in hotUpdate) {
+ 			if (Object.prototype.hasOwnProperty.call(hotUpdate, id)) {
+ 				moduleId = toModuleId(id);
+ 				/** @type {TODO} */
+ 				var result;
+ 				if (hotUpdate[id]) {
+ 					result = getAffectedStuff(moduleId);
+ 				} else {
+ 					result = {
+ 						type: "disposed",
+ 						moduleId: id
+ 					};
+ 				}
+ 				/** @type {Error|false} */
+ 				var abortError = false;
+ 				var doApply = false;
+ 				var doDispose = false;
+ 				var chainInfo = "";
+ 				if (result.chain) {
+ 					chainInfo = "\nUpdate propagation: " + result.chain.join(" -> ");
+ 				}
+ 				switch (result.type) {
+ 					case "self-declined":
+ 						if (options.onDeclined) options.onDeclined(result);
+ 						if (!options.ignoreDeclined)
+ 							abortError = new Error(
+ 								"Aborted because of self decline: " +
+ 									result.moduleId +
+ 									chainInfo
+ 							);
+ 						break;
+ 					case "declined":
+ 						if (options.onDeclined) options.onDeclined(result);
+ 						if (!options.ignoreDeclined)
+ 							abortError = new Error(
+ 								"Aborted because of declined dependency: " +
+ 									result.moduleId +
+ 									" in " +
+ 									result.parentId +
+ 									chainInfo
+ 							);
+ 						break;
+ 					case "unaccepted":
+ 						if (options.onUnaccepted) options.onUnaccepted(result);
+ 						if (!options.ignoreUnaccepted)
+ 							abortError = new Error(
+ 								"Aborted because " + moduleId + " is not accepted" + chainInfo
+ 							);
+ 						break;
+ 					case "accepted":
+ 						if (options.onAccepted) options.onAccepted(result);
+ 						doApply = true;
+ 						break;
+ 					case "disposed":
+ 						if (options.onDisposed) options.onDisposed(result);
+ 						doDispose = true;
+ 						break;
+ 					default:
+ 						throw new Error("Unexception type " + result.type);
+ 				}
+ 				if (abortError) {
+ 					hotSetStatus("abort");
+ 					return Promise.reject(abortError);
+ 				}
+ 				if (doApply) {
+ 					appliedUpdate[moduleId] = hotUpdate[moduleId];
+ 					addAllToSet(outdatedModules, result.outdatedModules);
+ 					for (moduleId in result.outdatedDependencies) {
+ 						if (
+ 							Object.prototype.hasOwnProperty.call(
+ 								result.outdatedDependencies,
+ 								moduleId
+ 							)
+ 						) {
+ 							if (!outdatedDependencies[moduleId])
+ 								outdatedDependencies[moduleId] = [];
+ 							addAllToSet(
+ 								outdatedDependencies[moduleId],
+ 								result.outdatedDependencies[moduleId]
+ 							);
+ 						}
+ 					}
+ 				}
+ 				if (doDispose) {
+ 					addAllToSet(outdatedModules, [result.moduleId]);
+ 					appliedUpdate[moduleId] = warnUnexpectedRequire;
+ 				}
+ 			}
+ 		}
+
+ 		// Store self accepted outdated modules to require them later by the module system
+ 		var outdatedSelfAcceptedModules = [];
+ 		for (i = 0; i < outdatedModules.length; i++) {
+ 			moduleId = outdatedModules[i];
+ 			if (
+ 				installedModules[moduleId] &&
+ 				installedModules[moduleId].hot._selfAccepted &&
+ 				// removed self-accepted modules should not be required
+ 				appliedUpdate[moduleId] !== warnUnexpectedRequire
+ 			) {
+ 				outdatedSelfAcceptedModules.push({
+ 					module: moduleId,
+ 					errorHandler: installedModules[moduleId].hot._selfAccepted
+ 				});
+ 			}
+ 		}
+
+ 		// Now in "dispose" phase
+ 		hotSetStatus("dispose");
+ 		Object.keys(hotAvailableFilesMap).forEach(function(chunkId) {
+ 			if (hotAvailableFilesMap[chunkId] === false) {
+ 				hotDisposeChunk(chunkId);
+ 			}
+ 		});
+
+ 		var idx;
+ 		var queue = outdatedModules.slice();
+ 		while (queue.length > 0) {
+ 			moduleId = queue.pop();
+ 			module = installedModules[moduleId];
+ 			if (!module) continue;
+
+ 			var data = {};
+
+ 			// Call dispose handlers
+ 			var disposeHandlers = module.hot._disposeHandlers;
+ 			for (j = 0; j < disposeHandlers.length; j++) {
+ 				cb = disposeHandlers[j];
+ 				cb(data);
+ 			}
+ 			hotCurrentModuleData[moduleId] = data;
+
+ 			// disable module (this disables requires from this module)
+ 			module.hot.active = false;
+
+ 			// remove module from cache
+ 			delete installedModules[moduleId];
+
+ 			// when disposing there is no need to call dispose handler
+ 			delete outdatedDependencies[moduleId];
+
+ 			// remove "parents" references from all children
+ 			for (j = 0; j < module.children.length; j++) {
+ 				var child = installedModules[module.children[j]];
+ 				if (!child) continue;
+ 				idx = child.parents.indexOf(moduleId);
+ 				if (idx >= 0) {
+ 					child.parents.splice(idx, 1);
+ 				}
+ 			}
+ 		}
+
+ 		// remove outdated dependency from module children
+ 		var dependency;
+ 		var moduleOutdatedDependencies;
+ 		for (moduleId in outdatedDependencies) {
+ 			if (
+ 				Object.prototype.hasOwnProperty.call(outdatedDependencies, moduleId)
+ 			) {
+ 				module = installedModules[moduleId];
+ 				if (module) {
+ 					moduleOutdatedDependencies = outdatedDependencies[moduleId];
+ 					for (j = 0; j < moduleOutdatedDependencies.length; j++) {
+ 						dependency = moduleOutdatedDependencies[j];
+ 						idx = module.children.indexOf(dependency);
+ 						if (idx >= 0) module.children.splice(idx, 1);
+ 					}
+ 				}
+ 			}
+ 		}
+
+ 		// Now in "apply" phase
+ 		hotSetStatus("apply");
+
+ 		hotCurrentHash = hotUpdateNewHash;
+
+ 		// insert new code
+ 		for (moduleId in appliedUpdate) {
+ 			if (Object.prototype.hasOwnProperty.call(appliedUpdate, moduleId)) {
+ 				modules[moduleId] = appliedUpdate[moduleId];
+ 			}
+ 		}
+
+ 		// call accept handlers
+ 		var error = null;
+ 		for (moduleId in outdatedDependencies) {
+ 			if (
+ 				Object.prototype.hasOwnProperty.call(outdatedDependencies, moduleId)
+ 			) {
+ 				module = installedModules[moduleId];
+ 				if (module) {
+ 					moduleOutdatedDependencies = outdatedDependencies[moduleId];
+ 					var callbacks = [];
+ 					for (i = 0; i < moduleOutdatedDependencies.length; i++) {
+ 						dependency = moduleOutdatedDependencies[i];
+ 						cb = module.hot._acceptedDependencies[dependency];
+ 						if (cb) {
+ 							if (callbacks.indexOf(cb) !== -1) continue;
+ 							callbacks.push(cb);
+ 						}
+ 					}
+ 					for (i = 0; i < callbacks.length; i++) {
+ 						cb = callbacks[i];
+ 						try {
+ 							cb(moduleOutdatedDependencies);
+ 						} catch (err) {
+ 							if (options.onErrored) {
+ 								options.onErrored({
+ 									type: "accept-errored",
+ 									moduleId: moduleId,
+ 									dependencyId: moduleOutdatedDependencies[i],
+ 									error: err
+ 								});
+ 							}
+ 							if (!options.ignoreErrored) {
+ 								if (!error) error = err;
+ 							}
+ 						}
+ 					}
+ 				}
+ 			}
+ 		}
+
+ 		// Load self accepted modules
+ 		for (i = 0; i < outdatedSelfAcceptedModules.length; i++) {
+ 			var item = outdatedSelfAcceptedModules[i];
+ 			moduleId = item.module;
+ 			hotCurrentParents = [moduleId];
+ 			try {
+ 				__webpack_require__(moduleId);
+ 			} catch (err) {
+ 				if (typeof item.errorHandler === "function") {
+ 					try {
+ 						item.errorHandler(err);
+ 					} catch (err2) {
+ 						if (options.onErrored) {
+ 							options.onErrored({
+ 								type: "self-accept-error-handler-errored",
+ 								moduleId: moduleId,
+ 								error: err2,
+ 								originalError: err
+ 							});
+ 						}
+ 						if (!options.ignoreErrored) {
+ 							if (!error) error = err2;
+ 						}
+ 						if (!error) error = err;
+ 					}
+ 				} else {
+ 					if (options.onErrored) {
+ 						options.onErrored({
+ 							type: "self-accept-errored",
+ 							moduleId: moduleId,
+ 							error: err
+ 						});
+ 					}
+ 					if (!options.ignoreErrored) {
+ 						if (!error) error = err;
+ 					}
+ 				}
+ 			}
+ 		}
+
+ 		// handle errors in accept handlers and self accepted module load
+ 		if (error) {
+ 			hotSetStatus("fail");
+ 			return Promise.reject(error);
+ 		}
+
+ 		hotSetStatus("idle");
+ 		return new Promise(function(resolve) {
+ 			resolve(outdatedModules);
+ 		});
+ 	}
+
+ 	// The module cache
+ 	var installedModules = {};
+
+ 	// The require function
+ 	function __webpack_require__(moduleId) {
+
+ 		// Check if module is in cache
+ 		if(installedModules[moduleId]) {
+ 			return installedModules[moduleId].exports;
+ 		}
+ 		// Create a new module (and put it into the cache)
+ 		var module = installedModules[moduleId] = {
+ 			i: moduleId,
+ 			l: false,
+ 			exports: {},
+ 			hot: hotCreateModule(moduleId),
+ 			parents: (hotCurrentParentsTemp = hotCurrentParents, hotCurrentParents = [], hotCurrentParentsTemp),
+ 			children: []
+ 		};
+
+ 		// Execute the module function
+ 		modules[moduleId].call(module.exports, module, module.exports, hotCreateRequire(moduleId));
+
+ 		// Flag the module as loaded
+ 		module.l = true;
+
+ 		// Return the exports of the module
+ 		return module.exports;
+ 	}
+
+
+ 	// expose the modules object (__webpack_modules__)
+ 	__webpack_require__.m = modules;
+
+ 	// expose the module cache
+ 	__webpack_require__.c = installedModules;
+
+ 	// define getter function for harmony exports
+ 	__webpack_require__.d = function(exports, name, getter) {
+ 		if(!__webpack_require__.o(exports, name)) {
+ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+ 		}
+ 	};
+
+ 	// define __esModule on exports
+ 	__webpack_require__.r = function(exports) {
+ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+ 		}
+ 		Object.defineProperty(exports, '__esModule', { value: true });
+ 	};
+
+ 	// create a fake namespace object
+ 	// mode & 1: value is a module id, require it
+ 	// mode & 2: merge all properties of value into the ns
+ 	// mode & 4: return value when already ns object
+ 	// mode & 8|1: behave like require
+ 	__webpack_require__.t = function(value, mode) {
+ 		if(mode & 1) value = __webpack_require__(value);
+ 		if(mode & 8) return value;
+ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+ 		var ns = Object.create(null);
+ 		__webpack_require__.r(ns);
+ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+ 		return ns;
+ 	};
+
+ 	// getDefaultExport function for compatibility with non-harmony modules
+ 	__webpack_require__.n = function(module) {
+ 		var getter = module && module.__esModule ?
+ 			function getDefault() { return module['default']; } :
+ 			function getModuleExports() { return module; };
+ 		__webpack_require__.d(getter, 'a', getter);
+ 		return getter;
+ 	};
+
+ 	// Object.prototype.hasOwnProperty.call
+ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+
+ 	// __webpack_public_path__
+ 	__webpack_require__.p = "";
+
+ 	// __webpack_hash__
+ 	__webpack_require__.h = function() { return hotCurrentHash; };
+
+
+ 	// Load entry module and return exports
+ 	return hotCreateRequire(12)(__webpack_require__.s = 12);
+ })
 /************************************************************************/
-/******/ ([
+ ([
 /* 0 */
-/***/ (function(module, exports) {
+ (function(module, exports) {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE__0__;
 
-/***/ }),
+ }),
 /* 1 */
-/***/ (function(module, exports) {
+ (function(module, exports) {
 
 module.exports = "<?xml version=\"1.0\" standalone=\"no\"?><!doctype html><svg class=icon width=20px height=20px viewBox=\"0 0 1024 1024\" version=1.1 xmlns=http://www.w3.org/2000/svg><path fill=#595959 d=\"M73.142857 336.64h526.628572v43.885714H73.142857zM73.142857 643.657143h526.628572v43.885714H73.142857zM336.457143 117.028571h43.885714v789.942858h-43.885714zM204.8 73.142857h614.4a131.657143 131.657143 0 0 1 131.657143 131.657143v614.4a131.657143 131.657143 0 0 1-131.657143 131.657143H204.8A131.657143 131.657143 0 0 1 73.142857 819.2V204.8A131.84 131.84 0 0 1 204.8 73.142857z m0 43.885714a87.771429 87.771429 0 0 0-87.771429 87.771429v614.4a87.771429 87.771429 0 0 0 87.771429 87.771429h614.4a87.771429 87.771429 0 0 0 87.771429-87.771429V204.8a87.771429 87.771429 0 0 0-87.771429-87.771429zM819.2 73.142857h-219.428571v877.714286h219.428571a131.657143 131.657143 0 0 0 131.657143-131.657143V204.8A131.84 131.84 0 0 0 819.2 73.142857z m44.068571 460.982857h-65.828571v65.828572H753.371429v-65.828572h-65.828572V490.057143h65.828572v-65.828572h44.068571v65.828572h65.828571z\"/></svg>";
 
-/***/ }),
+ }),
 /* 2 */
-/***/ (function(module, exports) {
+ (function(module, exports) {
 
 module.exports = "<?xml version=\"1.0\" standalone=\"no\"?><!doctype html><svg class=icon width=20px height=20.00px viewBox=\"0 0 1024 1024\" version=1.1 xmlns=http://www.w3.org/2000/svg><path fill=#595959 d=\"M380.342857 336.457143h526.811429v43.885714H380.342857z m0 307.2h526.811429v43.885714H380.342857zM643.657143 117.028571h43.885714v789.942858h-43.885714zM204.8 73.142857h614.582857A131.474286 131.474286 0 0 1 950.857143 204.8v614.4a131.657143 131.657143 0 0 1-131.657143 131.657143H204.8A131.657143 131.657143 0 0 1 73.142857 819.2V204.8A131.657143 131.657143 0 0 1 204.8 73.142857z m0 43.885714a87.588571 87.588571 0 0 0-87.588571 87.771429v614.4a87.588571 87.588571 0 0 0 87.588571 87.771429h614.582857a87.771429 87.771429 0 0 0 87.771429-87.771429V204.8a87.771429 87.771429 0 0 0-87.771429-87.771429zM204.8 73.142857A131.657143 131.657143 0 0 0 73.142857 204.8v614.4a131.657143 131.657143 0 0 0 131.657143 131.657143h219.428571V73.142857z m131.84 460.8h-65.828571v65.828572h-43.885715v-65.828572h-65.828571v-43.885714h65.828571v-65.828572h43.885715v65.828572h65.828571z\"/></svg>";
 
-/***/ }),
+ }),
 /* 3 */
-/***/ (function(module, exports) {
+ (function(module, exports) {
 
 module.exports = "<?xml version=\"1.0\" standalone=\"no\"?><!doctype html><svg class=icon width=20px height=20.00px viewBox=\"0 0 1024 1024\" version=1.1 xmlns=http://www.w3.org/2000/svg><path fill=#595959 d=\"M73.142857 599.771429h877.714286v43.885714H73.142857zM336.457143 380.342857h43.885714v526.628572h-43.885714z m307.2 0h43.885714v526.628572h-43.885714zM204.8 73.142857h614.4a131.657143 131.657143 0 0 1 131.657143 131.657143v614.4a131.657143 131.657143 0 0 1-131.657143 131.657143H204.8A131.657143 131.657143 0 0 1 73.142857 819.2V204.8A131.657143 131.657143 0 0 1 204.8 73.142857z m0 43.885714a87.771429 87.771429 0 0 0-87.771429 87.771429v614.4a87.588571 87.588571 0 0 0 87.771429 87.771429h614.4a87.588571 87.588571 0 0 0 87.771429-87.771429V204.8a87.771429 87.771429 0 0 0-87.771429-87.771429zM819.2 73.142857H204.8A131.657143 131.657143 0 0 0 73.142857 204.8v219.428571h877.714286v-219.428571A131.657143 131.657143 0 0 0 819.2 73.142857z m-219.428571 197.485714h-65.828572v65.828572h-43.885714v-65.828572h-65.828572v-43.885714h65.828572V160.914286h43.885714v65.828571h65.828572z\"/></svg>";
 
-/***/ }),
+ }),
 /* 4 */
-/***/ (function(module, exports) {
+ (function(module, exports) {
 
 module.exports = "<?xml version=\"1.0\" standalone=\"no\"?><!doctype html><svg class=icon width=20px height=20.00px viewBox=\"0 0 1024 1024\" version=1.1 xmlns=http://www.w3.org/2000/svg><path fill=#595959 d=\"M204.8 73.142857h614.4a131.657143 131.657143 0 0 1 131.657143 131.657143v614.4a131.657143 131.657143 0 0 1-131.657143 131.657143H204.8A131.657143 131.657143 0 0 1 73.142857 819.2V204.8A131.84 131.84 0 0 1 204.8 73.142857z m0 43.885714a87.771429 87.771429 0 0 0-87.771429 87.771429v614.4a87.771429 87.771429 0 0 0 87.771429 87.771429h614.4a87.771429 87.771429 0 0 0 87.771429-87.771429V204.8a87.771429 87.771429 0 0 0-87.771429-87.771429zM73.142857 336.457143h877.714286v44.068571H73.142857zM336.64 117.028571h43.885714v526.628572h-43.885714z m307.017143 0h44.068571v526.628572H643.657143zM73.142857 599.771429v219.428571a131.657143 131.657143 0 0 0 131.657143 131.657143h614.4a131.657143 131.657143 0 0 0 131.657143-131.657143v-219.428571z m526.628572 197.485714h-65.645715v65.828571H490.057143v-65.828571h-65.828572v-43.885714h65.828572v-65.828572h44.068571v65.828572h65.645715z\"/></svg>";
 
-/***/ }),
+ }),
 /* 5 */
-/***/ (function(module, exports) {
+ (function(module, exports) {
 
 module.exports = "<?xml version=\"1.0\" standalone=\"no\"?><!doctype html><svg class=icon width=20px height=20.00px viewBox=\"0 0 1024 1024\" version=1.1 xmlns=http://www.w3.org/2000/svg><path fill=#595959 d=\"M925.99596 99.038384c-25.470707-25.6-60.121212-39.822222-96.323233-39.822222H194.19798c-36.072727 0-70.723232 14.351515-96.323233 39.822222-25.6 25.6-39.822222 60.121212-39.822222 96.323232v635.474748c0 36.072727 14.351515 70.723232 39.822222 96.323232C123.474747 952.759596 158.125253 967.111111 194.19798 967.111111h635.474747c36.072727 0 70.723232-14.351515 96.323233-39.951515 25.6-25.6 39.951515-60.121212 39.951515-96.323232V195.361616c0-36.072727-14.351515-70.723232-39.951515-96.323232z m-277.850505 5.559596v226.909091H375.725253V104.59798h272.420202zM103.434343 195.361616c0-24.048485 9.567677-47.191919 26.634344-64.129293 17.066667-17.066667 40.080808-26.634343 64.129293-26.634343h136.145454v226.909091H103.434343V195.361616z m90.763637 726.367677c-24.048485 0-47.191919-9.567677-64.129293-26.634344-17.066667-17.066667-26.634343-40.080808-26.634344-64.129292V649.309091h226.909091v272.420202H194.19798z m181.527273 0V649.309091h272.290909v272.420202H375.725253z m544.711111-90.892929c0 24.048485-9.567677 47.191919-26.634344 64.129293-17.066667 17.066667-40.080808 26.634343-64.129293 26.634343H693.527273V649.309091h226.909091v181.527273zM693.527273 331.507071V104.59798h136.145454c24.048485 0 47.191919 9.567677 64.129293 26.634343 17.066667 17.066667 26.634343 40.080808 26.634344 64.129293v136.145455H693.527273z\"/></svg>";
 
-/***/ }),
+ }),
 /* 6 */
-/***/ (function(module, exports) {
+ (function(module, exports) {
 
 module.exports = "<?xml version=\"1.0\" standalone=\"no\"?><!doctype html><svg class=icon width=20px height=20.00px viewBox=\"0 0 1024 1024\" version=1.1 xmlns=http://www.w3.org/2000/svg><path fill=#595959 d=\"M336.457143 73.142857h43.885714v877.714286h-43.885714z m307.382857 0h43.702857v877.714286h-43.702857z m-438.857143 0h614.4A131.657143 131.657143 0 0 1 950.857143 204.8v614.4a131.474286 131.474286 0 0 1-131.474286 131.657143h-614.4A131.657143 131.657143 0 0 1 73.142857 819.2V204.8A131.84 131.84 0 0 1 204.982857 73.142857z m0 43.885714a87.588571 87.588571 0 0 0-87.771428 87.771429v614.4a87.588571 87.588571 0 0 0 87.771428 87.771429h614.4a87.771429 87.771429 0 0 0 87.771429-87.771429V204.8a87.771429 87.771429 0 0 0-87.771429-87.771429zM73.142857 336.457143h877.714286v307.2H73.142857z m292.571429 43.885714v219.428572h292.571428v-219.428572z\"/></svg>";
 
-/***/ }),
+ }),
 /* 7 */
-/***/ (function(module, exports) {
+ (function(module, exports) {
 
 module.exports = "<?xml version=\"1.0\" standalone=\"no\"?><!doctype html><svg class=icon width=20px height=20.00px viewBox=\"0 0 1024 1024\" version=1.1 xmlns=http://www.w3.org/2000/svg><path fill=#595959 d=\"M925.996 99.038c-25.47-25.6-60.121-39.822-96.323-39.822H194.198c-75.12 0.13-136.016 61.026-136.145 136.146v635.345c0 36.073 14.351 70.723 39.822 96.323 25.6 25.73 60.25 40.081 96.323 40.081h635.475c36.072 0 70.723-14.351 96.323-39.951 25.6-25.6 39.951-60.122 39.951-96.324V195.362c0-36.073-14.351-70.724-39.951-96.324z m-365.77 494.287L512 545.228l-48.226 48.097-32.194-31.935 48.355-48.226-48.226-48.097 32.194-32.194L512 480.97l48.097-48.097 32.194 32.194-48.097 48.097 48.226 48.226-32.194 31.935zM103.434 195.362c0-24.049 9.568-47.192 26.635-64.13 17.066-17.066 40.08-26.634 64.129-26.634h136.145v226.91H103.434V195.361z m0 181.656h226.91V649.31h-226.91V377.02z m90.764 544.84c-24.049 0-47.192-9.567-64.13-26.634-17.066-17.066-26.634-40.08-26.634-64.258V694.69h226.91v227.168H194.197z m726.238-90.763c0 24.048-9.438 47.192-26.505 64.259-17.066 17.066-40.21 26.634-64.258 26.505H693.527V694.69h226.91v136.404z m0-181.786H693.527V377.02h226.91v272.29zM693.527 331.507V104.598h136.146c24.048 0 47.192 9.438 64.258 26.505 17.067 17.067 26.635 40.21 26.505 64.259v136.145H693.527z\"/></svg>";
 
-/***/ }),
+ }),
 /* 8 */
-/***/ (function(module, exports) {
+ (function(module, exports) {
 
 module.exports = "<?xml version=\"1.0\" standalone=\"no\"?><!doctype html><svg class=icon width=20px height=20.00px viewBox=\"0 0 1024 1024\" version=1.1 xmlns=http://www.w3.org/2000/svg><path fill=#595959 d=\"M925.99596 99.038384c-25.470707-25.6-60.121212-39.822222-96.323233-39.822222H194.19798c-36.072727 0-70.723232 14.351515-96.323233 39.822222-25.6 25.6-39.822222 60.121212-39.822222 96.323232v635.474748c0 36.072727 14.351515 70.723232 39.822222 96.323232C123.474747 952.759596 158.125253 967.111111 194.19798 967.111111h635.474747c36.072727 0 70.723232-14.351515 96.323233-39.951515 25.6-25.6 39.951515-60.121212 39.951515-96.323232V195.361616c0-36.072727-14.351515-70.723232-39.951515-96.323232z m-550.270707 5.559596h272.290909v227.167677H375.725253V104.59798z m56.242424 360.468687l31.935353-32.19394 48.09697 48.226263 48.09697-48.226263 32.193939 32.19394-48.09697 48.096969 48.226263 48.226263-32.193939 31.935354-48.226263-48.09697-48.226263 48.09697-31.935353-31.935354 48.226262-48.226263-48.096969-48.096969zM103.434343 195.361616c0-24.048485 9.567677-47.191919 26.634344-64.129293 17.066667-17.066667 40.080808-26.634343 64.129293-26.634343h136.145454v227.167677H103.434343V195.361616z m817.002021 635.733333c0 24.048485-9.567677 47.191919-26.634344 64.258586-17.066667 17.066667-40.080808 26.634343-64.129293 26.634344H194.19798c-24.048485 0-47.191919-9.567677-64.258586-26.634344C112.872727 878.157576 103.434343 855.014141 103.434343 830.836364V694.690909h226.909091v226.909091h45.381819V694.690909h272.290909v226.909091h45.381818V694.690909h226.909091v136.40404z m0-499.329292H693.527273V104.59798h136.145454c24.048485 0 47.191919 9.567677 64.129293 26.634343 17.066667 17.066667 26.634343 40.080808 26.634344 64.129293v136.404041z\"/></svg>";
 
-/***/ }),
+ }),
 /* 9 */
-/***/ (function(module, exports) {
+ (function(module, exports) {
 
 module.exports = "<?xml version=\"1.0\" standalone=\"no\"?><!doctype html><svg class=icon width=20px height=20.00px viewBox=\"0 0 1024 1024\" version=1.1 xmlns=http://www.w3.org/2000/svg><path fill=#595959 d=\"M764.42168889 830.5152c0 30.23530667-24.61013333 54.84430222-54.84316444 54.84430222H314.42147555c-30.23416889 0-54.84316445-24.61013333-54.84316444-54.84430222V248.32796445h504.84337778v582.18723555zM369.26577778 149.89084445c0-6.32832 4.92202667-11.25034667 11.25034667-11.25034667H644.18702222c6.32832 0 11.25034667 4.92202667 11.25034667 11.25034667v33.04675555H369.26577778V149.89084445z m559.68768 33.04675555H720.82773333V149.89084445c0-42.1888-34.45191111-76.64071111-76.64071111-76.64071112H380.51612445c-42.1888 0-76.64071111 34.45191111-76.64071112 76.64071112v33.04675555h-208.82773333c-18.28181333 0-33.04789333 14.76608-33.04789333 33.04675555s14.76608 33.04675555 33.04675555 33.04675556h98.43825778v581.48408889c0 66.79779555 54.14001778 120.93781333 120.93667555 120.93781333h395.1570489c66.79665778 0 120.93667555-54.14001778 120.93667555-120.93781333V248.32796445h98.43825778c18.28067555 0 33.04675555-14.76494222 33.04675555-33.04675556s-14.76608-32.34360889-33.04675555-32.34360889zM512 786.21923555c18.28181333 0 33.04675555-14.76608 33.04675555-33.04789333v-351.56195555c0-18.28181333-14.76494222-33.04675555-33.04675555-33.04675556s-33.04675555 14.76494222-33.04675555 33.04675556v351.56195555c0 18.28181333 14.76494222 33.04789333 33.04675555 33.04789333m-153.98456889 0c18.28181333 0 33.04675555-14.76608 33.04675556-33.04789333v-351.56195555c0-18.28181333-14.76494222-33.04675555-33.04675556-33.04675556s-33.04675555 14.76494222-33.04675556 33.04675556v351.56195555c0.70314667 18.28181333 15.46922667 33.04789333 33.04675556 33.04789333m307.96913778 0c18.28067555 0 33.04675555-14.76608 33.04675556-33.04789333v-351.56195555c0-18.28181333-14.76608-33.04675555-33.04675556-33.04675556s-33.04675555 14.76494222-33.04675556 33.04675556v351.56195555c0 18.28181333 14.76494222 33.04789333 33.04675556 33.04789333\"/></svg>";
 
-/***/ }),
+ }),
 /* 10 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -3135,14 +3135,14 @@ function isInTableCell(current) {
 
 /* harmony default export */ var quill_better_table = __webpack_exports__["default"] = (quill_better_table_BetterTable);
 
-/***/ }),
+ }),
 /* 11 */,
 /* 12 */
-/***/ (function(module, exports, __webpack_require__) {
+ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(10);
 
 
-/***/ })
-/******/ ])["default"];
+ })
+ ])["default"];
 });

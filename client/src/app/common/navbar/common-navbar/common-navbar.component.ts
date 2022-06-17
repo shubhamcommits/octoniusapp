@@ -112,10 +112,7 @@ export class CommonNavbarComponent implements OnInit, OnDestroy {
     * @param content
     */
    async openDetails(content) {
-    this.utilityService.openModal(content, {
-      size: 'md',
-      centered: true
-    });
+    this.utilityService.openModal(content, {});
   }
 
   async checkCanActivateBilling() {

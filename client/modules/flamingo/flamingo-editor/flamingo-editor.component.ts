@@ -248,10 +248,7 @@ export class FlamingoEditorComponent implements OnInit {
     let utilityService = this._Injector.get(UtilityService)
 
     // Open Modal
-    utilityService.openModal(content, {
-      size: 'md',
-      centered: true
-    });
+    utilityService.openModal(content, {});
 
   }
 

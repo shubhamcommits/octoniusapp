@@ -342,7 +342,8 @@ export class GroupCalendarComponent implements OnInit {
 
   openCreateEventDialog(content) {
     this.utilityService.openModal(content, {
-      size: 'xl',
+      disableClose: false,
+      hasBackdrop: true
     });
   }
 

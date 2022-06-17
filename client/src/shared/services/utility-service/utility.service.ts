@@ -1,5 +1,4 @@
 import { Injectable, EventEmitter, Injector } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
@@ -20,7 +19,6 @@ import { FilesService } from '../files-service/files.service';
 export class UtilityService {
 
   constructor(
-    private modalService: NgbModal,
     public dialog: MatDialog,
     private injector: Injector
     ) { }
@@ -320,19 +318,28 @@ export class UtilityService {
   }
 
   /**
-   * This function opens up the bootstrap modal from the library
+   * This function opens up the dialog from the library
    * @param content - content to be displayed in the modal
    * @param config - config of the modal which you want to pass
    */
   openModal(content, config?) {
-    return this.modalService.open(content, config);
+    if (!this.objectExists(config)) {
+      config = {
+        disableClose: false,
+        hasBackdrop: true
+      }
+    }
+
+    return this.dialog.open(content, config);
+    //return this.modalService.open(content, config);
   }
 
   /**
    * This function removes/dismiss all the modals that are opened
    */
   async closeAllModals() {
-    return this.modalService.dismissAll();
+    return this.dialog.closeAll();
+    //return this.modalService.dismissAll();
   }
 
   /**

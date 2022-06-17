@@ -346,9 +346,7 @@ export class GroupCalendarViewComponent implements OnInit {
   }
 
   openCreatePostDialog(content) {
-    this.utilityService.openModal(content, {
-      size: 'xl',
-    });
+    this.utilityService.openModal(content, {});
   }
 
   /**

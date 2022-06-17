@@ -33,9 +33,7 @@ export class GroupPostSelectionComponent implements OnInit {
   }
 
   openModal(content: any){
-    this.utilityService.openModal(content, {
-      size: 'xl',
-    });
+    this.utilityService.openModal(content, {});
   }
 
   /**

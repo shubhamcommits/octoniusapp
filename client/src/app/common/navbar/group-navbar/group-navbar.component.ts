@@ -168,10 +168,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     let utilityService = this.injector.get(UtilityService)
 
     // Open Modal
-    utilityService.openModal(content, {
-      size: 'md',
-      centered: true
-    });
+    utilityService.openModal(content, {});
   }
 
   checkIsFavoriteGroup() {
