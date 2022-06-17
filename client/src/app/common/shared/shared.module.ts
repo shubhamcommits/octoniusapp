@@ -2,7 +2,6 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ImageCropperModule } from 'ngx-image-cropper';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { SafePipe } from 'src/shared/pipes/safe.pipe';
 
@@ -221,8 +220,6 @@ import { HighlightDirective } from 'src/shared/pipes/highlight.directive';
         FormsModule,
         ImageCropperModule,
         RouterModule,
-        // Infinite Scroll Module
-        InfiniteScrollModule,
         NgxDocViewerModule,
         MomentDateModule,
         ChartsModule,
@@ -251,7 +248,6 @@ import { HighlightDirective } from 'src/shared/pipes/highlight.directive';
         TimePickerComponent,
         TaskStatusComponent,
         ChangeColumnComponent,
-        InfiniteScrollModule,
         InfiniteScrollComponent,
         ProgressBarComponent,
         SelectLanguageComponent,
