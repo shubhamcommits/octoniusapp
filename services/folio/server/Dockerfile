@@ -1,7 +1,7 @@
 ### STAGE 1: Build ###
 
 # We label our stage as ‘builder’
-FROM mhart/alpine-node:12 as builder
+FROM mhart/alpine-node:16 as builder
 
 RUN apk update
 # Install Libreoffice
