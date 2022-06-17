@@ -1,7 +1,7 @@
 ### STAGE 1: Build ###
 
 # We label our stage as ‘builder’
-FROM mhart/alpine-node:16 as builder
+FROM mhart/alpine-node:14.17.3 as builder
 
 # Create app directory
 WORKDIR /usr/app
