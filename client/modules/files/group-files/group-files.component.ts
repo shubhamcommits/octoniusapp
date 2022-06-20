@@ -482,8 +482,12 @@ export class GroupFilesComponent implements OnInit {
       await this.initRootFolder();
     } else {
       await this.foldersService.getOne(folderId)
-        .then(res => {
+        .then(async res => {
           this.currentFolder = res['folder'];
+          if (this.currentFolder?._group?._id != this.groupData._id) {
+            this.groupData = await this.publicFunctions.changeCurrentGroupDetails(this.currentFolder?._group?._id)
+          }
+
           this.currentFolder.canEdit = this.utilityService.canUserDoFileAction(this.currentFolder, this.groupData, this.userData, 'edit');
           this.folderOriginalName = this.currentFolder.folder_name;
         });
