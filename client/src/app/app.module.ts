@@ -67,8 +67,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 /**
  * 6. !===== THIRD PARTY MODULES & SERVICES =====!
  */
-// import { NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-// import { ChartsModule, ThemeService } from 'ng2-charts';
 
 /**
  * 7. !===== ERROR HANDLERS =====!
@@ -120,16 +118,7 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     // HTTP CLIENT MODULE
     HttpClientModule,
 
-    // ChartsModule,
-
-    // ANGULAR BOOTSTRAP MODAL MODULE
-    // NgbModalModule,
-
-    // ANGULAR TOOLTIP MODULE
-    // NgbTooltipModule,
     MatSidenavModule,
-    // SHARED MODULES
-    // SharedModule,
 
     // SSO Active Directory
 

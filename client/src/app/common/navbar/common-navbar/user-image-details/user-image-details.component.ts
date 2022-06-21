@@ -90,4 +90,8 @@ export class UserImageDetailsComponent implements OnInit {
   getUserProfilePicURL(fileName: string) {
     return this.baseUrl + '/' + fileName;
   }
+
+  close() {
+    this.utilityService.closeAllModals();
+  }
 }

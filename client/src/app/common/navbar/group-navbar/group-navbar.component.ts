@@ -154,7 +154,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
   }
 
   isAdminUser() {
-    const index = this.groupData._admins.findIndex((admin: any) => admin._id === this.userData._id);
+    const index = this.groupData._admins.findIndex((admin: any) => admin._id === this.userData?._id);
     return index >= 0;
   }
 
@@ -168,10 +168,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     let utilityService = this.injector.get(UtilityService)
 
     // Open Modal
-    utilityService.openModal(content, {
-      size: 'md',
-      centered: true
-    });
+    utilityService.openModal(content, {});
   }
 
   checkIsFavoriteGroup() {
@@ -207,7 +204,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     // Current Group data
     this.subSink.add(this.utilityService.currentGroupData.subscribe((res) => {
       if (JSON.stringify(res) != JSON.stringify({})) {
-        res = this.groupData
+        this.groupData = res;
         if (this.groupData) {
           this.isAdmin = this.isAdminUser()
           this.isCampaign = this.groupData.enabled_campaign

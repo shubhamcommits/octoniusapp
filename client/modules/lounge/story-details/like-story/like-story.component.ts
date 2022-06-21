@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angular/core';
 import { LoungeService } from 'src/shared/services/lounge-service/lounge.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { LoungeService } from 'src/shared/services/lounge-service/lounge.service
   templateUrl: './like-story.component.html',
   styleUrls: ['./like-story.component.scss']
 })
-export class LikeStoryComponent implements OnInit {
+export class LikeStoryComponent implements OnInit, OnChanges {
 
   @Input() storyData: any;
   @Input() userData: any;
@@ -14,11 +14,18 @@ export class LikeStoryComponent implements OnInit {
   @Output() storyLiked = new EventEmitter();
   @Output() storyUnLiked = new EventEmitter();
 
+  likedByUser = false;
+
   constructor(
     private loungeService: LoungeService
   ) { }
 
   ngOnInit() {
+  }
+
+  ngOnChanges() {
+    const index = (this.storyData && this.storyData._liked_by) ? this.storyData._liked_by.findIndex(liked => (liked._id || liked) == this.userData?._id) : -1;
+    this.likedByUser = index >= 0;
   }
 
   /**
@@ -51,13 +58,5 @@ export class LikeStoryComponent implements OnInit {
       this.storyData = res['story'];
       this.storyUnLiked.emit(this.storyData);
     });
-  }
-
-  /**
-   * Check if the Story is liked by the currently loggedIn user
-   */
-  isLikedByUser() {
-    const index = (this.storyData && this.storyData._liked_by) ? this.storyData._liked_by.findIndex(liked => (liked._id || liked) == this.userData?._id) : -1;
-    return index >= 0;
   }
 }

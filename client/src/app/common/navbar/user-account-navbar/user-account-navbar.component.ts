@@ -81,9 +81,6 @@ export class UserAccountNavbarComponent implements OnInit, OnDestroy {
     * @param content
     */
    async openDetails(content) {
-    this.utilityService.openModal(content, {
-      size: 'md',
-      centered: true
-    });
+    this.utilityService.openModal(content, {});
   }
 }

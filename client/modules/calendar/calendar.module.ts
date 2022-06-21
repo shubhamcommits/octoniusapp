@@ -8,7 +8,6 @@ import { GroupCalendarComponent } from './group-calendar/group-calendar.componen
 import { FormsModule } from '@angular/forms';
 import { CalendarModule as Calendar, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from 'src/app/common/shared/shared.module';
 
 @NgModule({
@@ -21,8 +20,6 @@ import { SharedModule } from 'src/app/common/shared/shared.module';
     CalendarRoutingModule,
 
     FormsModule,
-
-    NgbModalModule,
 
     SharedModule,
 

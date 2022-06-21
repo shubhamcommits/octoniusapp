@@ -94,10 +94,7 @@ export class UserHeaderComponent implements OnInit, OnDestroy {
     * @param content
     */
    async openUserDetails(content) {
-    this.utilityService.openModal(content, {
-      size: 'xl',
-      centered: true
-    });
+    this.utilityService.openModal(content, {});
   }
 
 }

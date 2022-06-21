@@ -339,6 +339,18 @@ export class PublicFunctions {
         storageService.setLocalData('groupData', JSON.stringify(groupData));
     }
 
+    /**
+     * This function changes the group current details
+     * @param groupId
+     */
+    public async changeCurrentGroupDetails(groupId: string) {
+      return new Promise(async (resolve, reject) => {
+        const groupData = await this.getGroupDetails(groupId);
+        this.sendUpdatesToGroupData(groupData);
+        resolve(groupData);
+      });
+    }
+
     isPersonalNavigation(groupData: Object, userData: Object) {
       return (groupData)
         ?((groupData['group_name'] === 'personal') && (groupData['_id'] == (userData['_private_group']._id || userData['_private_group'])))

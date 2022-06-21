@@ -238,10 +238,7 @@ export class WelcomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     * @param content
     */
   async openForgotPassword(content) {
-    this.utilityService.openModal(content, {
-      size: 'lg',
-      centered: true
-    });
+    this.utilityService.openModal(content, {});
   }
 
   // AD methods

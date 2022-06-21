@@ -2,7 +2,6 @@ import { Component, OnInit, Injector, ViewChild, TemplateRef, Input, OnDestroy }
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import moment from 'moment/moment';
 
 @Component({
@@ -36,7 +35,6 @@ export class MyspaceTasksComponent implements OnInit, OnDestroy {
   constructor(
     private injector: Injector,
     private utilityService: UtilityService,
-    private modal: NgbModal,
   ) { }
 
   async ngOnInit() {

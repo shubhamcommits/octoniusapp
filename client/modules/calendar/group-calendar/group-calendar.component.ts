@@ -1,9 +1,7 @@
 import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, OnInit, Injector, Input } from '@angular/core';
 import { isSameDay, isSameMonth } from 'date-fns';
 import { Subject } from 'rxjs';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
-import { ActivatedRoute } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment/moment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -94,8 +92,6 @@ export class GroupCalendarComponent implements OnInit {
   activeDayIsOpen: boolean = true
 
   constructor(
-    private router: ActivatedRoute,
-    private modal: NgbModal,
     private injector: Injector,
     private utilityService: UtilityService,
     public dialog: MatDialog) { }
@@ -346,7 +342,8 @@ export class GroupCalendarComponent implements OnInit {
 
   openCreateEventDialog(content) {
     this.utilityService.openModal(content, {
-      size: 'xl',
+      disableClose: false,
+      hasBackdrop: true
     });
   }
 

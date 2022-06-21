@@ -14,11 +14,18 @@ export class FollowStoryComponent implements OnInit {
   @Output() storyFollowed = new EventEmitter();
   @Output() storyUnfollowed = new EventEmitter();
 
+  followedByUser = false;
+
   constructor(
     private loungeService: LoungeService
     ) { }
 
   ngOnInit() {
+  }
+
+  ngOnChanges() {
+    const index = (this.storyData && this.storyData._followers) ? this.storyData._followers.findIndex(follower => (follower._id || follower) == this.userData._id) : -1;
+    this.followedByUser = index >= 0;
   }
 
   /**
@@ -50,13 +57,5 @@ export class FollowStoryComponent implements OnInit {
       this.storyData = res['story'];
       this.storyUnfollowed.emit(this.storyData);
     });
-  }
-
-  /**
-   * Check if the Story is liked by the currently loggedIn user
-   */
-  isFollowedByUser() {
-    const index = (this.storyData && this.storyData._followers) ? this.storyData._followers.findIndex(follower => (follower._id || follower) == this.userData._id) : -1;
-    return index >= 0;
   }
 }

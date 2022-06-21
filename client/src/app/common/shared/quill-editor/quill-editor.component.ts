@@ -4,7 +4,7 @@ import { Component, OnInit, OnChanges, Output, EventEmitter, Input, Injector } f
 import hljs from 'highlight.js';
 
 // Highlight.js sublime css
-import 'highlight.js/styles/monokai-sublime.css';
+//import 'highlight.js/styles/monokai-sublime.css';
 
 // Configure hljs for languages
 hljs.configure({
