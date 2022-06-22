@@ -71,7 +71,7 @@
             <span *ngIf="notification?.type === 'shuttleTask'" class="assignment_notification" i18n="@@recentActivity.assignedYourGroup">assigned your group</span>
             &nbsp;
 
-            <span class="notification_post_title" *ngIf="notification?.type !== 'mention_folio' && notification?._origin_post">{{ notification?._origin_post?.title | truncatetext: 20 }}</span>
+            <span class="notification_post_title" *ngIf="(notification?.type !== 'mention_folio' && notification?.type !== 'shuttleTask') && notification?._origin_post">{{ notification?._origin_post?.title | truncatetext: 20 }}</span>
             <span class="notification_post_title" *ngIf="notification?.type === 'mention_folio' && notification?._origin_folio">{{ notification?._origin_folio?.original_name | truncatetext: 20 }}</span>
             <span class="notification_post_title" *ngIf="(notification?.type === 'join-group' || notification?.type === 'leave-group') && notification?._group">{{ notification?._group?.group_name | truncatetext: 20 }}</span>
             <span class="notification_post_title" *ngIf="notification?.type === 'shuttleTask' && notification?._shuttle_group">{{ notification?._shuttle_group?.group_name | truncatetext: 20 }}</span>
