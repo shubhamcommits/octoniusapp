@@ -13,6 +13,7 @@
       <span class="muted" *ngIf="!log?._actor || (!log?._actor?.first_name && !log?._actor?.last_name)" i18n="@@postLogs.deletedUser">Deleted User</span>
 
       <span *ngIf="log?.action === 'created'" class="approval-created ml-2" i18n="@@postLogs.created">Created this item</span>
+      <span *ngIf="log?.action === 'change_title'" class="approval-created ml-2" i18n="@@postLogs.editedTitle">Edited the title</span>
       <span *ngIf="log?.action === 'commented'" class="approval-created ml-2" i18n="@@postLogs.commented">Commented this item</span>
       <span *ngIf="log?.action === 'comment_removed'" class="approval-created ml-2" i18n="@@postLogs.removedComment">Removed a comment on this item</span>
       <span *ngIf="log?.action === 'change_content'" class="approval-deleted ml-2" i18n="@@postLogs.changedContent">Changed the content of item</span>
@@ -29,6 +30,7 @@
       <span *ngIf="log?.action === 'removed_assignee'" class="approval-deleted ml-2" i18n="@@postLogs.unassigned">Unassigned the item from </span> <span *ngIf="log?.action === 'removed_assignee' && log?._assignee">{{ log?._assignee?.first_name || 'Deleted' }} {{ log?._assignee?.last_name || 'User' }}</span>
       <span *ngIf="log?.action === 'new_due_date'" class="approval-deleted ml-2" i18n="@@postLogs.dueDate">Changed the Due date of the item to </span> <span *ngIf="log?.action === 'new_due_date' && log?.new_date">{{ log?.new_date | date: 'MMM dd, yyyy' }}</span>
       <span *ngIf="log?.action === 'new_start_date'" class="approval-deleted ml-2" i18n="@@postLogs.startDate">Changed the Start date of the item to </span> <span *ngIf="log?.action === 'new_start_date' && log?.new_date">{{ log?.new_date | date: 'MMM dd, yyyy' }}</span>
+      <span *ngIf="log?.action === 'change_time'" class="approval-created ml-2" i18n="@@postLogs.editedTitle">Edited the time</span>
       <span *ngIf="log?.action === 'new_tag'" class="approval-deleted ml-2" i18n="@@postLogs.addedTag">Added to the item the tag </span> <span *ngIf="log?.action === 'new_tag' && log?.tag">{{ log?.tag }}</span>
       <span *ngIf="log?.action === 'remove_tag'" class="approval-deleted ml-2" i18n="@@postLogs.removedTag">Removed to the item the tag </span> <span *ngIf="log?.action === 'remove_tag' && log?.tag">{{ log?.tag }}</span>
       <span *ngIf="log?.action === 'change_cf'" class="approval-deleted ml-2" i18n="@@postLogs.changedCF">Changed the item Custom Field </span> <span *ngIf="log?.action === 'change_cf' && log?.cf_title">{{ log?.cf_title }}</span>
@@ -41,6 +43,9 @@
       <span *ngIf="log?.action === 'remove_dependent'" class="approval-deleted ml-2" i18n="@@postLogs.removeDependentOf">Removed the item a dependent of </span> <span *ngIf="log?.action === 'remove_dependent' && log?._task">{{ log?._task?.title }}</span>
       <span *ngIf="log?.action === 'set_parent'" class="approval-deleted ml-2" i18n="@@postLogs.setParent">Made the item a child of </span> <span *ngIf="log?.action === 'set_parent' && log?._task">{{ log?._task?.title }}</span>
       <span *ngIf="log?.action === 'save_allocation'" class="approval-deleted ml-2" i18n="@@postLogs.saveAllocation">Changed the Allocation of the item to </span> <span *ngIf="log?.action === 'save_allocation' && log?.allocation">{{ log?.allocation }}</span>
+      <span *ngIf="log?.action === 'updated_tags'" class="approval-deleted ml-2" i18n="@@postLogs.saveAllocation">Updated the tags</span>
+      <span *ngIf="log?.action === 'attach_file'" class="approval-deleted ml-2" i18n="@@postLogs.saveAllocation">Attached a file</span>
+      <span *ngIf="log?.action === 'attach_file_cloud'" class="approval-deleted ml-2" i18n="@@postLogs.saveAllocation">Attached a file from a connected cloud</span>
       &nbsp;
       <span i18n="@@postLogs.on">on</span>
       &nbsp;

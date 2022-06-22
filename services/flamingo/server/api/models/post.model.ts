@@ -183,7 +183,7 @@ const PostSchema = new Schema({
             action: {
                 type: String,
                 required: true,
-                enum: ['created', 'change_content', 'change_status', 'change_section', 'assigned_to', 'removed_assignee', 'new_due_date', 'new_start_date', 'commented', 'new_tag', 'remove_tag', 'change_cf', 'copy_to', 'moved_to', 'make_dependency', 'make_dependent', 'remove_dependency', 'remove_dependent', 'make_ns', 'make_no_ns', 'update_ns', 'make_idea', 'make_no_idea', 'make_milestone', 'make_no_milestone', 'set_parent', 'save_allocation']
+                enum: ['created', 'change_content', 'change_status', 'change_section', 'assigned_to', 'removed_assignee', 'new_due_date', 'new_start_date', 'commented', 'new_tag', 'remove_tag', 'change_cf', 'copy_to', 'moved_to', 'make_dependency', 'make_dependent', 'remove_dependency', 'remove_dependent', 'make_ns', 'make_no_ns', 'update_ns', 'make_idea', 'make_no_idea', 'make_milestone', 'make_no_milestone', 'set_parent', 'save_allocation', 'change_title', 'change_time', 'updated_tags', 'attach_file', 'attach_file_cloud']
             },
             _actor: {
                 type: Schema.Types.ObjectId,
