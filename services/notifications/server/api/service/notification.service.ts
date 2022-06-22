@@ -30,6 +30,7 @@ export class NotificationsService {
                 .populate('_origin_comment')
                 .populate('_owner', 'first_name last_name profile_pic')
                 .populate('_group', 'group_name group_avatar')
+                .populate('_shuttle_group', 'group_name group_avatar')
                 .populate('_origin_folio')
                 .populate({ path: '_origin_folio', populate: { path: '_group' } })
                 .lean();
@@ -55,13 +56,13 @@ export class NotificationsService {
             })
                 .sort('-created_date')
                 .populate('_actor', 'first_name last_name profile_pic')
-                .populate('_origin_post', '_group')
+                .populate({ path: '_origin_post', populate: { path: '_group' } })
                 .populate('_origin_comment')
                 .populate('_owner', 'first_name last_name profile_pic')
                 .populate('_group', 'group_name group_avatar')
                 .populate('_shuttle_group', 'group_name group_avatar')
                 .populate('_origin_folio')
-                .populate('_origin_folio', '_group')
+                .populate({ path: '_origin_folio', populate: { path: '_group' } })
                 .lean();
 
             return notifications;
@@ -85,13 +86,13 @@ export class NotificationsService {
             })
                 .sort('-created_date')
                 .populate('_actor', 'first_name last_name profile_pic')
-                .populate('_origin_post', '_group')
+                .populate({ path: '_origin_post', populate: { path: '_group' } })
                 .populate('_origin_comment')
                 .populate('_owner', 'first_name last_name profile_pic')
                 .populate('_group', 'group_name group_avatar')
                 .populate('_shuttle_group', 'group_name group_avatar')
                 .populate('_origin_folio')
-                .populate('_origin_folio', '_group')
+                .populate({ path: '_origin_folio', populate: { path: '_group' } })
                 .lean();
 
             return notifications;
@@ -115,13 +116,13 @@ export class NotificationsService {
             })
                 .sort('-created_date')
                 .populate('_actor', 'first_name last_name profile_pic')
-                .populate('_origin_post', '_group')
+                .populate({ path: '_origin_post', populate: { path: '_group' } })
                 .populate('_origin_comment')
                 .populate('_owner', 'first_name last_name profile_pic')
                 .populate('_group', 'group_name group_avatar')
                 .populate('_shuttle_group', 'group_name group_avatar')
                 .populate('_origin_folio')
-                .populate('_origin_folio', '_group')
+                .populate({ path: '_origin_folio', populate: { path: '_group' } })
                 .lean();
 
             return notifications;
