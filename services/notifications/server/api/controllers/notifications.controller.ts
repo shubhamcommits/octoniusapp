@@ -197,7 +197,6 @@ export class NotificationsController {
                 await helperFunctions.sendNotificationsFeedFromService(assigned_to, io, true);
             }
 
-
             await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
                 userid: assigned_to,
                 postId,
