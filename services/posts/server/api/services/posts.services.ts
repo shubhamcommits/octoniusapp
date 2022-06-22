@@ -448,59 +448,41 @@ export class PostService {
    * @param post
    */
   async sendNotifications(post: any) {
-
     if (post._content_mentions.length !== 0) {
-
       // Create Real time Notification for all the mentions on post content
       return await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-mention`, {
         postId: post._id,
         content_mentions: post._content_mentions,
         groupId: post._group._id || post._group,
         posted_by: post._posted_by
-      })
-
-      // // Create User Stream
-      let userStream: any;
-
-      if (post._content_mentions.includes('all')) {
-
-        // Create Readble Stream from the Post Contents
-        userStream = Readable.from(await User.find({
-          _groups: post._group
-        }).distinct('_id'))
-
-      } else {
-
-        // User Stream from the post contents
-        userStream = Readable.from(post._content_mentions)
-      }
+      });
     }
 
     // Send notification after post creation
     switch (post.type) {
 
       case 'task':
-        if (post._assigned_to) {
-
+        if (post._assigned_to && post._assigned_to.length > 0) {
           // Real time notification for new task assignment
           return await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-task`, {
             postId: post._id,
             assigned_to: post._assigned_to,
             groupId: post._group._id || post._group,
             posted_by: post._posted_by
-          })
+          });
         }
         break;
 
       case 'event':
-
-        // Real time notification for new event assignment
-        return await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-event`, {
-          postId: post._id,
-          assigned_to: post._assigned_to,
-          grouId: (post._group._id || post._group),
-          posted_by: post._posted_by
-        })
+        if (post._assigned_to && post._assigned_to.length > 0) {
+          // Real time notification for new event assignment
+          return await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-event`, {
+            postId: post._id,
+            assigned_to: post._assigned_to,
+            grouId: (post._group._id || post._group),
+            posted_by: post._posted_by
+          });
+        }
         break;
 
       default:
@@ -532,32 +514,6 @@ export class PostService {
 
       // Create new post
       let post: any = await Post.create(postData);
-
-      /*
-      // save record of ussignment
-      if (post.type == 'event' && post._assigned_to && post._assigned_to.length > 0) {
-
-        // Create Readble Stream from the Event Assignee
-        const userStream = Readable.from(post._assigned_to);
-
-        await userStream.on('data', async (user: any) => {
-          post = await Post.findOneAndUpdate({
-            _id: post._id
-          }, {
-            $push: {
-              "records.assignments": {
-                date: moment().format(),
-                _assigned_to: user,
-                _assigned_from: userId
-              }
-            }
-          }, {
-            new: true
-          })
-        });
-      }
-      */
-
       post = await Post.findOneAndUpdate({
           _id: post._id
         }, {
@@ -584,7 +540,6 @@ export class PostService {
 
       // Return Post Object
       return post;
-
     } catch (err) {
 
       // Return with error
