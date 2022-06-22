@@ -667,19 +667,21 @@ export class PostService {
           });
       }
 
-      post = await Post.findOneAndUpdate({
-          _id: postId
-        }, {
-          $push: {
-            "logs": {
-              action: logAction,
-              action_date: moment().format(),
-              _actor: userId
+      if (logAction && logAction != '') {
+        post = await Post.findOneAndUpdate({
+            _id: postId
+          }, {
+            $push: {
+              "logs": {
+                action: logAction,
+                action_date: moment().format(),
+                _actor: userId
+              }
             }
-          }
-        }, {
-          new: true
-        });
+          }, {
+            new: true
+          });
+      }
 
       // populate the assigned_to property of this document
       post = await this.populatePostProperties(post);
