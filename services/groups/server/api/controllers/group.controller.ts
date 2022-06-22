@@ -1686,7 +1686,23 @@ export class GroupController {
                 _shuttle_section: columnId
             }, {
                 new: true
-            }).lean();
+            })
+                .populate({
+                    path: '_members',
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    match: {
+                        active: true
+                    }
+                })
+                .populate({
+                    path: '_admins',
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    match: {
+                        active: true
+                    }
+                })
+                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+                .lean();
 
             // Send status 200 response
             return res.status(200).json({
