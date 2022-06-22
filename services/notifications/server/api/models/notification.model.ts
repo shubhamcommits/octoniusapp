@@ -21,7 +21,11 @@ const NotificationSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Post'
     },
-    _origin_group: {
+    _group: {
+        type: Schema.Types.ObjectId,
+        ref: 'Group'
+    },
+    _shuttle_group: {
         type: Schema.Types.ObjectId,
         ref: 'Group'
     },
@@ -48,7 +52,7 @@ const NotificationSchema = new Schema({
     type: {
         type: String,
         required: true,
-        enum: ['assignment', 'mention', 'mention_folio', 'started', 'completed', 'comment', 'like_comment', 'follow', 'likes', 'new-post', 'join-group', 'leave-group', 'launch-approval-flow', 'approved-item', 'reject-item', 'launch-approval-flow-due-date']
+        enum: ['assignment', 'mention', 'mention_folio', 'started', 'completed', 'comment', 'like_comment', 'follow', 'likes', 'new-post', 'join-group', 'leave-group', 'launch-approval-flow', 'approved-item', 'reject-item', 'launch-approval-flow-due-date', 'shuttleTask']
     }
 });
 

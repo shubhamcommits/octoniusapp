@@ -3182,7 +3182,7 @@ export class PostService {
                 break;
             case 'Shuttle task':
                 if (shuttleIndex < 0) {
-                  post = await this.selectShuttleGroup(post._id, action?._shuttle_group?._id || action?._shuttle_group);
+                  post = await this.selectShuttleGroup(post._id, action?._shuttle_group?._id || action?._shuttle_group, userId);
                 }
                 break;
             default:
@@ -3269,8 +3269,8 @@ export class PostService {
     return await this.populatePostProperties(post);
   }
 
-  async selectShuttleGroup(postId: string, shuttleGroupId: string) {
-      let post =  await Post.findById({ _id: postId }).select('task.shuttles').lean();
+  async selectShuttleGroup(postId: string, shuttleGroupId: string, userId: string) {
+      let post =  await Post.findById({ _id: postId }).select('task.shuttles _group').lean();
 
       const shuttleIndex = await (post.task.shuttles) ? post.task.shuttles.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == shuttleGroupId) : -1;
 
@@ -3295,6 +3295,13 @@ export class PostService {
                 new: true
             });
       }
+
+      await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/shuttle-task`, {
+        postId: post._id,
+        userId: userId,
+        groupId: post._group._id || post._group,
+        shuttleGroupId: shuttleGroupId
+      });
 
       return this.populatePostProperties(post);
   }

@@ -47,6 +47,9 @@ routes.post('/join-group', notificationFunctions.joinGroup);
 // This route is responsible for notifying the user when is removed from a group
 routes.post('/leave-group', notificationFunctions.leaveGroup);
 
+// POST - shuttle-task
+routes.post('/shuttle-task', notificationFunctions.shuttleTask);
+
 // This route is responsible for notifying the user when a approval flow is launched
 routes.post('/launch-approval-flow', approvalFunctions.launchApprovalFlow);
 

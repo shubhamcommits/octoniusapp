@@ -1,4 +1,4 @@
-import { Notification, User, File, Workspace } from "../models";
+import { Notification, User, File, Workspace, Group, Post } from "../models";
 import { Readable } from 'stream';
 import { helperFunctions, axios } from '../../utils';
 import moment from "moment";
@@ -9,6 +9,146 @@ import moment from "moment";
  */
 
 export class NotificationsService {
+
+    /**
+     * This function is responsible for fetching the latest first 5 read notifications
+     * @param userId 
+     */
+    async getRead(userId: string) {
+        try {
+            const notifications = await Notification.find({
+                $and: [
+                    { _owner: userId },
+                    { read: true },
+                    { type: { $nin: ["new-post", "launch-approval-flow-due-date"] }}
+                ]
+            })
+                .limit(5)
+                .sort('-created_date')
+                .populate('_actor', 'first_name last_name profile_pic')
+                .populate({ path: '_origin_post', populate: { path: '_group' } })
+                .populate('_origin_comment')
+                .populate('_owner', 'first_name last_name profile_pic')
+                .populate('_group', 'group_name group_avatar')
+                .populate('_origin_folio')
+                .populate({ path: '_origin_folio', populate: { path: '_group' } })
+                .lean();
+
+            return notifications;
+        } catch (err) {
+            throw err;
+        }
+    };
+
+    /**
+     * This function is responsible for fetching the latest first 5 un-read notifications
+     * @param userId 
+     */
+    async getUnread(userId: string) {
+        try {
+            const notifications = await Notification.find({
+                $and: [
+                    { _owner: userId },
+                    { read: false },
+                    { type: { $nin: ["new-post", "launch-approval-flow-due-date"] }}
+                ]
+            })
+                .sort('-created_date')
+                .populate('_actor', 'first_name last_name profile_pic')
+                .populate('_origin_post', '_group')
+                .populate('_origin_comment')
+                .populate('_owner', 'first_name last_name profile_pic')
+                .populate('_group', 'group_name group_avatar')
+                .populate('_shuttle_group', 'group_name group_avatar')
+                .populate('_origin_folio')
+                .populate('_origin_folio', '_group')
+                .lean();
+
+            return notifications;
+        } catch (err) {
+            throw err;
+        }
+    };
+
+    /**
+     * This function is responsible for fetching the latest new post notifications
+     * @param userId 
+     */
+    async getNewPost(userId: string) {
+        try {
+            const notifications = await Notification.find({
+                $and: [
+                    { _owner: userId },
+                    { read: false },
+                    { type: 'new-post' }
+                ]
+            })
+                .sort('-created_date')
+                .populate('_actor', 'first_name last_name profile_pic')
+                .populate('_origin_post', '_group')
+                .populate('_origin_comment')
+                .populate('_owner', 'first_name last_name profile_pic')
+                .populate('_group', 'group_name group_avatar')
+                .populate('_shuttle_group', 'group_name group_avatar')
+                .populate('_origin_folio')
+                .populate('_origin_folio', '_group')
+                .lean();
+
+            return notifications;
+        } catch (err) {
+            throw err;
+        }
+    };
+
+    /**
+     * This function is responsible for fetching the latest new post notifications
+     * @param userId 
+     */
+    async getPendingApprovals(userId: string) {
+        try {
+            const notifications = await Notification.find({
+                $and: [
+                    { _owner: userId },
+                    { read: false },
+                    { type: 'launch-approval-flow-due-date' }
+                ]
+            })
+                .sort('-created_date')
+                .populate('_actor', 'first_name last_name profile_pic')
+                .populate('_origin_post', '_group')
+                .populate('_origin_comment')
+                .populate('_owner', 'first_name last_name profile_pic')
+                .populate('_group', 'group_name group_avatar')
+                .populate('_shuttle_group', 'group_name group_avatar')
+                .populate('_origin_folio')
+                .populate('_origin_folio', '_group')
+                .lean();
+
+            return notifications;
+        } catch (err) {
+            throw err;
+        }
+    };
+
+    /**
+     * This function is responsible for fetching the marking the notifications to read
+     * @param topListId 
+     */
+    async markRead(topListId: string) {
+        try {
+            const markRead = await Notification.findOneAndUpdate({
+                _id: topListId
+            }, {
+                $set: {
+                    read: true
+                }
+            });
+
+            return true;
+        } catch (err) {
+            throw err;
+        }
+    };
 
     /**
      * This function is responsible for notifying the user on mention on new comment
@@ -336,7 +476,7 @@ export class NotificationsService {
                     _actor: posted_by,
                     _owner: user,
                     _origin_post: postId,
-                    _origin_group: groupId,
+                    _group: groupId,
                     message: 'posted',
                     type: 'new-post',
                     created_date: moment().format()
@@ -351,121 +491,6 @@ export class NotificationsService {
     };
 
     /**
-     * This function is responsible for fetching the latest first 5 read notifications
-     * @param userId 
-     */
-    async getRead(userId: string) {
-        try {
-            const notifications = await Notification.find({
-                $and: [
-                    { _owner: userId },
-                    { read: true },
-                    { type: { $nin: ["new-post", "launch-approval-flow-due-date"] }}
-                ]
-            })
-                .limit(5)
-                .sort('-created_date')
-                .populate('_actor', 'first_name last_name profile_pic')
-                .populate({ path: '_origin_post', populate: { path: '_group' } })
-                .populate('_origin_comment')
-                .populate('_owner', 'first_name last_name profile_pic')
-                .populate('_origin_group', 'group_name group_avatar')
-                .populate('_origin_folio')
-                .populate({ path: '_origin_folio', populate: { path: '_group' } })
-                .lean();
-
-            return notifications;
-        } catch (err) {
-            throw err;
-        }
-    };
-
-    /**
-     * This function is responsible for fetching the latest first 5 un-read notifications
-     * @param userId 
-     */
-    async getUnread(userId: string) {
-        try {
-            const notifications = await Notification.find({
-                $and: [
-                    { _owner: userId },
-                    { read: false },
-                    { type: { $nin: ["new-post", "launch-approval-flow-due-date"] }}
-                ]
-            })
-                .sort('-created_date')
-                .populate('_actor', 'first_name last_name profile_pic')
-                .populate({ path: '_origin_post', populate: { path: '_group' } })
-                .populate('_origin_comment')
-                .populate('_owner', 'first_name last_name profile_pic')
-                .populate('_origin_group', 'group_name group_avatar')
-                .populate('_origin_folio')
-                .populate({ path: '_origin_folio', populate: { path: '_group' } })
-                .lean();
-
-            return notifications;
-        } catch (err) {
-            throw err;
-        }
-    };
-
-    /**
-     * This function is responsible for fetching the latest new post notifications
-     * @param userId 
-     */
-    async getNewPost(userId: string) {
-        try {
-            const notifications = await Notification.find({
-                $and: [
-                    { _owner: userId },
-                    { read: false },
-                    { type: 'new-post' }
-                ]
-            })
-                .sort('-created_date')
-                .populate('_actor', 'first_name last_name profile_pic')
-                .populate({ path: '_origin_post', populate: { path: '_group' } })
-                .populate('_origin_comment')
-                .populate('_owner', 'first_name last_name profile_pic')
-                .populate('_origin_folio')
-                .populate({ path: '_origin_folio', populate: { path: '_group' } })
-                .lean();
-
-            return notifications;
-        } catch (err) {
-            throw err;
-        }
-    };
-
-    /**
-     * This function is responsible for fetching the latest new post notifications
-     * @param userId 
-     */
-    async getPendingApprovals(userId: string) {
-        try {
-            const notifications = await Notification.find({
-                $and: [
-                    { _owner: userId },
-                    { read: false },
-                    { type: 'launch-approval-flow-due-date' }
-                ]
-            })
-                .sort('-created_date')
-                .populate('_actor', 'first_name last_name profile_pic')
-                .populate({ path: '_origin_post', populate: { path: '_group' } })
-                .populate('_origin_comment')
-                .populate('_owner', 'first_name last_name profile_pic')
-                .populate('_origin_folio')
-                .populate({ path: '_origin_folio', populate: { path: '_group' } })
-                .lean();
-
-            return notifications;
-        } catch (err) {
-            throw err;
-        }
-    };
-
-    /**
     * This function is responsible for notifying the user is added to a groups
     * @param { userId, groupId, posted_by } comment 
     */
@@ -474,7 +499,7 @@ export class NotificationsService {
             const notification = await Notification.create({
                 _actor: added_by,
                 _owner: userId,
-                _origin_group: groupId,
+                _group: groupId,
                 message: 'added you to',
                 type: 'join-group',
                 created_date: moment().format()
@@ -496,7 +521,7 @@ export class NotificationsService {
             const notification = await Notification.create({
                 _actor: removed_by,
                 _owner: userId,
-                _origin_group: groupId,
+                _group: groupId,
                 message: 'removed you from',
                 type: 'leave-group',
                 created_date: moment().format()
@@ -671,20 +696,66 @@ export class NotificationsService {
     };
 
     /**
-     * This function is responsible for fetching the marking the notifications to read
-     * @param topListId 
+     * This function is responsible to notifying all the user on assigning of a new event to them
+     * @param { _id, event._assigned_to, _posted_by } post 
      */
-    async markRead(topListId: string) {
+    async shuttleTask(postId, userId, groupId, shuttleGroupId, io) {
         try {
-            const markRead = await Notification.findOneAndUpdate({
-                _id: topListId
-            }, {
-                $set: {
-                    read: true
-                }
-            });
+            const group = await Group.findById({_id: groupId}).select('group_name');
+            const shuttleGroup = await Group.findById({_id: shuttleGroupId}).select('group_name _members _admins _workspace');
 
-            return true;
+            const post = await Post.findById({_id: postId}).select('title');
+
+            const workspace = await Workspace.findById({
+                    _id: shuttleGroup._workspace
+              }).select('management_private_api_key').lean();
+
+            let usersArray = [];
+            if (shuttleGroup) {
+                usersArray = [...(shuttleGroup._members || []), ...(shuttleGroup._admins || [])];
+            }
+
+            // Create Readble Stream from the notification
+            let userStream = Readable.from(await User.find({
+                _id: { $in : usersArray}
+            }).select('_id'));
+
+            await userStream.on('data', async (user: any) => {
+                const notification = await Notification.create({
+                    _actor: userId,
+                    _owner: user,
+                    _origin_post: postId,
+                    _group: groupId,
+                    _shuttle_group: shuttleGroupId,
+                    message: 'assigned to your group',
+                    type: 'shuttleTask',
+                    created_date: moment().format()
+                });
+
+                await helperFunctions.sendNotificationsFeedFromService(user._id || user, io, true);
+
+                // Add notification on integrations
+                await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
+                    groupId,
+                    userId,
+                    postId,
+                    shuttleGroupId,
+                    type: "SHUTTLETASK"
+                });
+
+                /*
+                // Send shuttle task notification email
+                axios.post(`${process.env.MANAGEMENT_URL}/api/mail/shuttle-task`, {
+                    API_KEY: workspace.management_private_api_key,
+                    actorId: userId,
+                    userId: user._id || user,
+                    groupName: group.group_name,
+                    postId,
+                    postTitle: post.title,
+                    shuttleGroupName: shuttleGroup.group_name,
+                });
+                */
+            });
         } catch (err) {
             throw err;
         }

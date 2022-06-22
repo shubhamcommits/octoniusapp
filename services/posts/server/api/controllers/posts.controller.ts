@@ -1646,7 +1646,7 @@ export class PostController {
         const shuttleGroupId = req.body['shuttleGroupId'];
 
         try {
-            const post = await postService.selectShuttleGroup(postId, shuttleGroupId);
+            const post = await postService.selectShuttleGroup(postId, shuttleGroupId, req['userId']);
 
             // Send status 200 response
             return res.status(200).json({

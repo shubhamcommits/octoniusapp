@@ -585,7 +585,15 @@ export class NotificationsController {
             if (comment._post._posted_by && index < 0) {
                 await notificationService.likeComment(comment, comment._post._posted_by, user);
                 await helperFunctions.sendNotificationsFeedFromService(comment._post._posted_by, io, true);
-                // TODO - Add notification on integrations
+
+                // Add notification on integrations
+                await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
+                    comment,
+                    user,
+                    postId,
+                    userid: comment._post._posted_by,
+                    type: "LIKECOMMENT"
+                });
             }
 
             if (comment._post?._followers) {
@@ -594,8 +602,15 @@ export class NotificationsController {
                     if (index < 0 && follower !== comment._commented_by) {
                         await notificationService.likeComment(comment, follower, user);
                         await helperFunctions.sendNotificationsFeedFromService(follower, io, true);
-                        // TODO - Add notification on integrations
 
+                        // Add notification on integrations
+                        await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
+                            comment,
+                            user,
+                            postId,
+                            userid: follower,
+                            type: "LIKECOMMENT"
+                        });
                     }
                 });
             }
@@ -641,7 +656,14 @@ export class NotificationsController {
         try {
             // Call Service Function for joining a group
             await notificationService.joinGroup(userId, groupId, added_by, io);
-            // TODO - Add notification on integrations
+
+            // Add notification on integrations
+            await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
+                groupId,
+                userId,
+                addedBy: added_by,
+                type: "JOINGROUP"
+            });
 
             // Send status 200 response
             return res.status(200).json({
@@ -663,7 +685,34 @@ export class NotificationsController {
         try {
             // Call Service Function for leaving the group
             await notificationService.leaveGroup(userId, groupId, removed_by, io);
-            // TODO - Add notification on integrations
+
+            // Add notification on integrations
+            await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
+                groupId,
+                userId,
+                removedBy: removed_by,
+                type: "LEAVEGROUP"
+            });
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Event Assignments Succeeded!`,
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for notifying the users when an item was approved by every member in the flow
+     * @param { userId, groupId, posted_by, io } post 
+     */
+    async shuttleTask(req: Request, res: Response, next: NextFunction) {
+
+        let { postId, userId, groupId, shuttleGroupId, io } = req.body;
+        try {
+            await notificationService.shuttleTask(postId, userId, groupId, shuttleGroupId, io);
 
             // Send status 200 response
             return res.status(200).json({

@@ -798,7 +798,7 @@ export class GroupController {
                     }); 
             });
 
-            Notification.deleteMany({ _origin_group: groupId });
+            Notification.deleteMany({ _group: groupId });
 
             // Delete the columns of the group
             Column.deleteMany({ groupId: groupId });
