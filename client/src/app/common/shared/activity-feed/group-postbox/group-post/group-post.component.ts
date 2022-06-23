@@ -7,11 +7,11 @@ import moment from 'moment/moment';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 
 @Component({
-  selector: 'app-group-create-post',
-  templateUrl: './group-create-post.component.html',
-  styleUrls: ['./group-create-post.component.scss']
+  selector: 'app-group-post',
+  templateUrl: './group-post.component.html',
+  styleUrls: ['./group-post.component.scss']
 })
-export class GroupCreatePostComponent implements OnInit {
+export class GroupPostComponent implements OnInit {
 
   constructor(
     private postService: PostService,

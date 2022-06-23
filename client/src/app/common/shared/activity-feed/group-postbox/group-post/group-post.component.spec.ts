@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { GroupCreatePostComponent } from './group-create-post.component';
+import { GroupPostComponent } from './group-post.component';
 
-describe('GroupCreatePostComponent', () => {
-  let component: GroupCreatePostComponent;
-  let fixture: ComponentFixture<GroupCreatePostComponent>;
+describe('GroupPostComponent', () => {
+  let component: GroupPostComponent;
+  let fixture: ComponentFixture<GroupPostComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ GroupCreatePostComponent ]
+      declarations: [ GroupPostComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GroupCreatePostComponent);
+    fixture = TestBed.createComponent(GroupPostComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -38,7 +38,7 @@ import { SendPulseComponent } from './activity-feed/send-pulse/send-pulse.compon
 import { GroupActivityFeedComponent } from './activity-feed/group-activity-feed/group-activity-feed.component';
 import { GroupPostboxComponent } from './activity-feed/group-postbox/group-postbox.component';
 import { GroupPostSelectionComponent } from './activity-feed/group-postbox/group-post-selection/group-post-selection.component';
-import { GroupCreatePostComponent } from './activity-feed/group-postbox/group-create-post/group-create-post.component';
+import { GroupPostComponent } from './activity-feed/group-postbox/group-post/group-post.component';
 import { TaskSmartCardComponent } from './activity-feed/task-smart-card/task-smart-card.component';
 import { AgendaSmartCardComponent } from './activity-feed/agenda-smart-card/agenda-smart-card.component';
 import { GroupUpdateInformationComponent } from './activity-feed/group-information/group-update-information/group-update-information.component';
@@ -160,7 +160,7 @@ import { HighlightDirective } from 'src/shared/pipes/highlight.directive';
         GroupActivityFeedComponent,
         GroupPostboxComponent,
         GroupPostSelectionComponent,
-        GroupCreatePostComponent,
+        GroupPostComponent,
         TaskSmartCardComponent,
         AgendaSmartCardComponent,
         GroupUpdateInformationComponent,
@@ -261,7 +261,7 @@ import { HighlightDirective } from 'src/shared/pipes/highlight.directive';
         GroupActivityFeedComponent,
         GroupPostboxComponent,
         GroupPostSelectionComponent,
-        GroupCreatePostComponent,
+        GroupPostComponent,
         ActivityFeedComponent,
         TaskSmartCardComponent,
         AgendaSmartCardComponent,
