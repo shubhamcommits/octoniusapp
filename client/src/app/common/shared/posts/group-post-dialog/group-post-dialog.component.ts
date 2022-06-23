@@ -11,11 +11,11 @@ import { BehaviorSubject } from 'rxjs';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 
 @Component({
-  selector: 'app-group-create-post-dialog',
-  templateUrl: './group-create-post-dialog.component.html',
-  styleUrls: ['./group-create-post-dialog.component.scss']
+  selector: 'app-group-post-dialog',
+  templateUrl: './group-post-dialog.component.html',
+  styleUrls: ['./group-post-dialog.component.scss']
 })
-export class GroupCreatePostDialogComponent implements OnInit {
+export class GroupPostDialogComponent implements OnInit {
 
   // Close Event Emitter - Emits when closing dialog
   @Output() closeEvent = new EventEmitter();
@@ -116,7 +116,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     private flowService: FlowService,
     private injector: Injector,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private mdDialogRef: MatDialogRef<GroupCreatePostDialogComponent>
+    private mdDialogRef: MatDialogRef<GroupPostDialogComponent>
     ) {}
 
   async ngOnInit() {
