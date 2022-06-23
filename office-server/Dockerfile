@@ -16,11 +16,11 @@ ARG APP_NAME
 
 ### Environment Variables
 ENV COLLABORA_ONLINE_BRANCH=${COLLABORA_ONLINE_BRANCH:-"master"} \
-    COLLABORA_ONLINE_VERSION=${COLLABORA_ONLINE_VERSION:-"cp-21.11.2-2"} \
+    COLLABORA_ONLINE_VERSION=${COLLABORA_ONLINE_VERSION:-"cp-21.11.5-2"} \
     COLLABORA_ONLINE_REPO_URL=${COLLABORA_ONLINE_REPO_URL:-"https://github.com/CollaboraOnline/online"} \
     #
     LIBREOFFICE_BRANCH=${LIBREOFFICE_BRANCH:-"master"} \
-    LIBREOFFICE_VERSION=${LIBREOFFICE_VERSION:-"cp-21.06.16-1"} \
+    LIBREOFFICE_VERSION=${LIBREOFFICE_VERSION:-"cp-21.06.31-1"} \
     LIBREOFFICE_REPO_URL=${LIBREOFFICE_REPO_URL:-"https://github.com/LibreOffice/core"} \
     #
     APP_NAME=${APP_NAME:-"Document Editor"} \
@@ -94,7 +94,7 @@ RUN set -x && \
     # && \
     # \
     ### Build Poco
-  RUN  mkdir -p /usr/src/poco && \
+    RUN  mkdir -p /usr/src/poco && \
     curl -sSL ${POCO_URL}${POCO_VERSION} | tar xvfz - --strip 1 -C /usr/src/poco && \
     cd /usr/src/poco && \
     ./configure \
@@ -110,7 +110,7 @@ RUN set -x && \
     make install && \
     \
     ### Build Fetch LibreOffice - This will take a while..
- RUN   git clone -b ${LIBREOFFICE_BRANCH} ${LIBREOFFICE_REPO_URL} /usr/src/libreoffice-core && \
+    RUN   git clone -b ${LIBREOFFICE_BRANCH} ${LIBREOFFICE_REPO_URL} /usr/src/libreoffice-core && \
     cd /usr/src/libreoffice-core && \
     git checkout ${LIBREOFFICE_VERSION} && \
     if [ -d "/build-assets/core/src" ] ; then cp -R /build-assets/core/src/* /usr/src/libreoffice-core ; fi; \
@@ -130,7 +130,7 @@ RUN set -x && \
     cp -R /usr/src/libreoffice-core/instdir/* /opt/libreoffice/ && \
     \
     ### Build LibreOffice Online (Not as long as above)
- RUN   git clone -b ${COLLABORA_ONLINE_BRANCH} ${COLLABORA_ONLINE_REPO_URL} /usr/src/collabora-online && \
+    RUN   git clone -b ${COLLABORA_ONLINE_BRANCH} ${COLLABORA_ONLINE_REPO_URL} /usr/src/collabora-online && \
     cd /usr/src/collabora-online && \
     git checkout ${COLLABORA_ONLINE_VERSION} && \
     if [ -d "/build-assets/online/src" ] ; then cp -R /build-assets/online/src/* /usr/src/collabora-online ; fi; \
@@ -144,17 +144,17 @@ RUN set -x && \
     sed -i "s|Collabora Online Development Edition|${APP_NAME}|g" /usr/src/collabora-online/browser/welcome/*.html && \
     ./autogen.sh && \
     ./configure --enable-silent-rules \
-                --prefix=/usr  \
-                --sysconfdir=/etc \
-                --localstatedir=/var \
-                --with-lokit-path="/usr/src/libreoffice-core/include" \
-                --with-lo-path=/opt/libreoffice \
-                --with-poco-includes=/opt/poco/include \
-                --with-poco-libs=/opt/poco/lib \                
-                --with-max-connections=${MAX_CONNECTIONS} \
-                --with-max-documents=${MAX_DOCUMENTS} \
-                --with-app-name="${APP_NAME}" \
-                --with-vendor="octonius" \
+    --prefix=/usr  \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --with-lokit-path="/usr/src/libreoffice-core/include" \
+    --with-lo-path=/opt/libreoffice \
+    --with-poco-includes=/opt/poco/include \
+    --with-poco-libs=/opt/poco/lib \                
+    --with-max-connections=${MAX_CONNECTIONS} \
+    --with-max-documents=${MAX_DOCUMENTS} \
+    --with-app-name="${APP_NAME}" \
+    --with-vendor="octonius" \
     && \
     #( scripts/locorestrings.py /usr/src/collabora-online /usr/src/libreoffice-core/translations ) && \
     make -j$(nproc) && \
@@ -182,9 +182,9 @@ FROM debian:bullseye
 # tdf#117557 - Add CJK Fonts to Collabora Online Docker Image
 RUN apt-get update && \
     apt-get -y install libpng16-16 fontconfig adduser cpio \
-               findutils nano libcap2-bin openssl inotify-tools \
-               procps libubsan0 libubsan1 openssh-client fonts-wqy-zenhei \
-               fonts-wqy-microhei fonts-droid-fallback fonts-noto-cjk
+    findutils nano libcap2-bin openssl inotify-tools \
+    procps libubsan0 libubsan1 openssh-client fonts-wqy-zenhei \
+    fonts-wqy-microhei fonts-droid-fallback fonts-noto-cjk
 
 
 # copy freshly built LOKit and Collabora Online
