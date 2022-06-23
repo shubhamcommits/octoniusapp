@@ -73,7 +73,7 @@
 
             <span class="notification_post_title" *ngIf="(notification?.type !== 'mention_folio' && notification?.type !== 'shuttleTask') && notification?._origin_post">{{ notification?._origin_post?.title | truncatetext: 20 }}</span>
             <span class="notification_post_title" *ngIf="notification?.type === 'mention_folio' && notification?._origin_folio">{{ notification?._origin_folio?.original_name | truncatetext: 20 }}</span>
-            <span class="notification_post_title" *ngIf="(notification?.type === 'join-group' || notification?.type === 'leave-group') && notification?._group">{{ notification?._group?.group_name | truncatetext: 20 }}</span>
+            <span class="notification_post_title" *ngIf="(notification?.type === 'join-group' || notification?.type === 'leave-group') && notification?._origin_group">{{ notification?._origin_group?.group_name | truncatetext: 20 }}</span>
             <span class="notification_post_title" *ngIf="notification?.type === 'shuttleTask' && notification?._shuttle_group">{{ notification?._shuttle_group?.group_name | truncatetext: 20 }}</span>
             &nbsp;
 
@@ -86,7 +86,7 @@
             <span *ngIf="notification?.type === 'shuttleTask'" class="assignment_notification" i18n="@@recentActivity.fromGroup">from group</span>
             &nbsp;
 
-            <span class="notification_post_title" *ngIf="notification?.type === 'shuttleTask' && notification?._group">{{ notification?._group?.group_name | truncatetext: 20 }}</span>
+            <span class="notification_post_title" *ngIf="notification?.type === 'shuttleTask' && notification?._origin_group">{{ notification?._origin_group?.group_name | truncatetext: 20 }}</span>
           </div>
 
           <div class="notification_date_time">
@@ -94,14 +94,14 @@
           </div>
 
           <div class="notification_tag d-none d-sm-block">
-            <div *ngIf="notification?.type != 'join-group' && notification?.type != 'leave-group' && notification?._origin_post?._group?.group_name">
+            <div *ngIf="notification?.type != 'join-group' && notification?.type != 'leave-group' && notification?._origin_post?._origin_group?.group_name">
               <span class="badge">
-                {{ notification?._origin_post?._group?.group_name | truncatetext: 20 }}
+                {{ notification?._origin_post?._origin_group?.group_name | truncatetext: 20 }}
               </span>
             </div>
-            <div *ngIf="(notification?.type == 'join-group' || notification?.type == 'leave-group') && notification?._group?.group_name">
+            <div *ngIf="(notification?.type == 'join-group' || notification?.type == 'leave-group') && notification?._origin_group?.group_name">
               <span class="badge">
-                {{ notification?._group?.group_name | truncatetext: 20 }}
+                {{ notification?._origin_group?.group_name | truncatetext: 20 }}
               </span>
             </div>
           </div>
@@ -110,12 +110,12 @@
             <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
             <mat-menu #menu="matMenu">
               <a mat-menu-item *ngIf="notification?.type !== 'mention_folio' && (notification?.type != 'approved-item' && notification?.type != 'reject-item' && notification?.type != 'launch-approval-flow')"
-                (click)="viewNotification(notification?._origin_post?._id, notification?._origin_post?.type, notification?._origin_post?._group?._id)">
+                (click)="viewNotification(notification?._origin_post?._id, notification?._origin_post?.type, notification?._origin_post?._origin_group?._id)">
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                 <span i18n="@@recentActivity.view">View</span>
               </a>
               <a mat-menu-item *ngIf="notification?.type === 'mention_folio'"
-                (click)="viewFolioNotification(notification?._origin_folio?._id, notification?._origin_folio?._group?._id)">
+                (click)="viewFolioNotification(notification?._origin_folio?._id, notification?._origin_folio?._origin_group?._id)">
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                 <span i18n="@@recentActivity.view">View</span>
               </a>
@@ -188,8 +188,8 @@
           </div>
 
           <div class="notification_tag d-none d-sm-block">
-            <span class="badge" *ngIf="notification?._origin_post?._group?.group_name">
-              {{ notification?._origin_post?._group?.group_name }}
+            <span class="badge" *ngIf="notification?._origin_post?._origin_group?.group_name">
+              {{ notification?._origin_post?._origin_group?.group_name }}
             </span>
           </div>
 
@@ -197,7 +197,7 @@
             <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
             <mat-menu #menu="matMenu">
               <a mat-menu-item *ngIf="notification?.type !== 'mention_folio'"
-                (click)="viewPost(notification?._origin_post?._id, notification?._origin_post?._group?._id)">
+                (click)="viewPost(notification?._origin_post?._id, notification?._origin_post?._origin_group?._id)">
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                 <span i18n="@@recentActivity.view">View</span>
               </a>

@@ -21,7 +21,7 @@ const NotificationSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Post'
     },
-    _group: {
+    _origin_group: {
         type: Schema.Types.ObjectId,
         ref: 'Group'
     },

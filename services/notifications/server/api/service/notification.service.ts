@@ -29,7 +29,7 @@ export class NotificationsService {
                 .populate({ path: '_origin_post', populate: { path: '_group' } })
                 .populate('_origin_comment')
                 .populate('_owner', 'first_name last_name profile_pic')
-                .populate('_group', 'group_name group_avatar')
+                .populate('_origin_group', 'group_name group_avatar')
                 .populate('_shuttle_group', 'group_name group_avatar')
                 .populate('_origin_folio')
                 .populate({ path: '_origin_folio', populate: { path: '_group' } })
@@ -59,7 +59,7 @@ export class NotificationsService {
                 .populate({ path: '_origin_post', populate: { path: '_group' } })
                 .populate('_origin_comment')
                 .populate('_owner', 'first_name last_name profile_pic')
-                .populate('_group', 'group_name group_avatar')
+                .populate('_origin_group', 'group_name group_avatar')
                 .populate('_shuttle_group', 'group_name group_avatar')
                 .populate('_origin_folio')
                 .populate({ path: '_origin_folio', populate: { path: '_group' } })
@@ -89,7 +89,7 @@ export class NotificationsService {
                 .populate({ path: '_origin_post', populate: { path: '_group' } })
                 .populate('_origin_comment')
                 .populate('_owner', 'first_name last_name profile_pic')
-                .populate('_group', 'group_name group_avatar')
+                .populate('_origin_group', 'group_name group_avatar')
                 .populate('_shuttle_group', 'group_name group_avatar')
                 .populate('_origin_folio')
                 .populate({ path: '_origin_folio', populate: { path: '_group' } })
@@ -119,7 +119,7 @@ export class NotificationsService {
                 .populate({ path: '_origin_post', populate: { path: '_group' } })
                 .populate('_origin_comment')
                 .populate('_owner', 'first_name last_name profile_pic')
-                .populate('_group', 'group_name group_avatar')
+                .populate('_origin_group', 'group_name group_avatar')
                 .populate('_shuttle_group', 'group_name group_avatar')
                 .populate('_origin_folio')
                 .populate({ path: '_origin_folio', populate: { path: '_group' } })
@@ -477,7 +477,7 @@ export class NotificationsService {
                     _actor: posted_by,
                     _owner: user,
                     _origin_post: postId,
-                    _group: groupId,
+                    _origin_group: groupId,
                     message: 'posted',
                     type: 'new-post',
                     created_date: moment().format()
@@ -500,7 +500,7 @@ export class NotificationsService {
             const notification = await Notification.create({
                 _actor: added_by,
                 _owner: userId,
-                _group: groupId,
+                _origin_group: groupId,
                 message: 'added you to',
                 type: 'join-group',
                 created_date: moment().format()
@@ -522,7 +522,7 @@ export class NotificationsService {
             const notification = await Notification.create({
                 _actor: removed_by,
                 _owner: userId,
-                _group: groupId,
+                _origin_group: groupId,
                 message: 'removed you from',
                 type: 'leave-group',
                 created_date: moment().format()
@@ -726,7 +726,7 @@ export class NotificationsService {
                     _actor: userId,
                     _owner: user,
                     _origin_post: postId,
-                    _group: groupId,
+                    _origin_group: groupId,
                     _shuttle_group: shuttleGroupId,
                     message: 'assigned to your group',
                     type: 'shuttleTask',
