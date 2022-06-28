@@ -193,20 +193,20 @@ export class PublicFunctions {
     }
 
     async getWorkspaceDetailsFromHTTP() {
-        return new Promise(async (resolve, reject) => {
-            let userData = await this.getCurrentUser();
-            const workspaceService = this.injector.get(WorkspaceService);
-            const utilityService = this.injector.get(UtilityService);
+      return new Promise(async (resolve, reject) => {
+          let userData = await this.getCurrentUser();
+          const workspaceService = this.injector.get(WorkspaceService);
+          const utilityService = this.injector.get(UtilityService);
 
-            this.subSink.add(workspaceService.getWorkspace(userData['_workspace'])
-                .pipe(retry(1))
-                .subscribe((res) => { resolve(res['workspace']) },
-                    (err) => {
-                        console.log('Error occurred while fetching the workspace details!', err);
-                        utilityService.errorNotification($localize`:@@publicFunctions.errorOccuredWhileFetchingWorkspaceDetails:Error occurred while fetching the workspace details, please try again!`);
-                        reject(err)
-                  }));
-        });
+          this.subSink.add(workspaceService.getWorkspace(userData['_workspace'])
+            .pipe(retry(1))
+            .subscribe((res) => { resolve(res['workspace']) },
+              (err) => {
+                console.log('Error occurred while fetching the workspace details!', err);
+                utilityService.errorNotification($localize`:@@publicFunctions.errorOccuredWhileFetchingWorkspaceDetails:Error occurred while fetching the workspace details, please try again!`);
+                reject(err)
+            }));
+      });
     }
 
     async sendUpdatesToWorkspaceData(workspaceData: Object) {

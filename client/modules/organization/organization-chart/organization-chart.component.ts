@@ -55,7 +55,8 @@ export class OrganizationChartComponent implements OnInit {
     });
 
     this.userData = await this.publicFunctions.getCurrentUser();
-    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    this.workspaceData = await this.publicFunctions.getWorkspaceDetailsFromHTTP();
+    this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
     this.selectedManagerField = this.workspaceData?.manager_custom_field;
 
     this.isManager = this.userData.role == 'manager' || this.userData.role == 'admin' || this.userData.role == 'owner';
