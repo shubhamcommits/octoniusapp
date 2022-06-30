@@ -2,7 +2,7 @@ import { Injectable, EventEmitter, Injector } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
-import { GroupCreatePostDialogComponent } from 'src/app/common/shared/posts/group-create-post-dialog/group-create-post-dialog.component';
+import { GroupPostDialogComponent } from 'src/app/common/shared/posts/group-post-dialog/group-post-dialog.component';
 import { MemberDialogComponent } from 'src/app/common/shared/member-dialog/member-dialog.component';
 import { PostService } from '../post-service/post.service';
 import { ColumnService } from '../column-service/column.service';
@@ -364,7 +364,7 @@ export class UtilityService {
           isIdeaModuleAvailable: isIdeaModuleAvailable
         }
 
-        dialogOpen = this.dialog.open(GroupCreatePostDialogComponent, {
+        dialogOpen = this.dialog.open(GroupPostDialogComponent, {
         width: '100%',
         height: '100%',
         disableClose: true,

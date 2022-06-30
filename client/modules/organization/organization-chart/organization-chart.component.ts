@@ -5,7 +5,6 @@ import { PublicFunctions } from 'modules/public.functions';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
-import { SubSink } from 'subsink';
 import { ChartSettingsDialogComponent } from './chart-settings-dialog/chart-settings-dialog.component';
 
 @Component({
@@ -36,9 +35,6 @@ export class OrganizationChartComponent implements OnInit {
   // Utility Service
   public utilityService = this.injector.get(UtilityService);
 
-  // Subsink to add subscriptions to this array
-  public subSink = new SubSink();
-
   constructor(
     private userService: UserService,
     private workspaceService: WorkspaceService,
@@ -55,7 +51,8 @@ export class OrganizationChartComponent implements OnInit {
     });
 
     this.userData = await this.publicFunctions.getCurrentUser();
-    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    this.workspaceData = await this.publicFunctions.getWorkspaceDetails(this.userData?._workspace?._id || this.userData?._workspace);
+    this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
     this.selectedManagerField = this.workspaceData?.manager_custom_field;
 
     this.isManager = this.userData.role == 'manager' || this.userData.role == 'admin' || this.userData.role == 'owner';

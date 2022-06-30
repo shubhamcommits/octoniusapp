@@ -11,11 +11,11 @@ import { BehaviorSubject } from 'rxjs';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 
 @Component({
-  selector: 'app-group-create-post-dialog',
-  templateUrl: './group-create-post-dialog.component.html',
-  styleUrls: ['./group-create-post-dialog.component.scss']
+  selector: 'app-group-post-dialog',
+  templateUrl: './group-post-dialog.component.html',
+  styleUrls: ['./group-post-dialog.component.scss']
 })
-export class GroupCreatePostDialogComponent implements OnInit {
+export class GroupPostDialogComponent implements OnInit {
 
   // Close Event Emitter - Emits when closing dialog
   @Output() closeEvent = new EventEmitter();
@@ -116,7 +116,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     private flowService: FlowService,
     private injector: Injector,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private mdDialogRef: MatDialogRef<GroupCreatePostDialogComponent>
+    private mdDialogRef: MatDialogRef<GroupPostDialogComponent>
     ) {}
 
   async ngOnInit() {
@@ -259,7 +259,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     const newTitle = event.target.value;
     if (newTitle !== this.title) {
       this.title = newTitle;
-      this.updateDetails();
+      this.updateDetails('change_title');
 
       if (this.subtasks && this.subtasks.length > 0) {
         this.subtasks.forEach(subtask => {
@@ -296,7 +296,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
    */
   getTime(timeObject: any) {
     this.dueTime = timeObject;
-    this.updateDetails();
+    this.updateDetails('change_time');
   }
 
   /**
@@ -308,7 +308,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     // Set the tags value
     this.tags = tags;
 
-    this.updateDetails();
+    this.updateDetails('updated_tags');
   }
 
   // Check if the data provided is not empty{}
@@ -339,7 +339,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     // Set the current files variable to the output of the module
     this.files = files;
 
-    this.updateDetails();
+    this.updateDetails('attach_file');
   }
 
   /**
@@ -350,7 +350,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     // Set the current files variable to the output of the module
     this.cloudFiles = cloudFiles;
 
-    this.updateDetails();
+    this.updateDetails('attach_file_cloud');
   }
 
   onCustomFieldChange(event: Event, customFieldName: string, customFieldTitle: string) {
@@ -381,7 +381,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     }));
   }
 
-  async updateDetails(logAction?: string) {
+  async updateDetails(logAction: string) {
     // Prepare the normal  object
 
     if(this.quillData && this.quillData?.mention){
@@ -524,7 +524,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
         .filter(log => (log.action == 'assigned_to' || log.action == 'removed_assignee') && log?._actor)
         .sort((l1, l2) => (moment(l1.action_date).isBefore(l2.action_date)) ? 1 : -1);
 
-        if (logs[0]) {
+      if (logs[0]) {
         this.lastAssignedBy = await this.publicFunctions.getOtherUser(logs[0]._actor?._id);
       }
     }

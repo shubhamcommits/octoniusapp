@@ -38,15 +38,15 @@ import { SendPulseComponent } from './activity-feed/send-pulse/send-pulse.compon
 import { GroupActivityFeedComponent } from './activity-feed/group-activity-feed/group-activity-feed.component';
 import { GroupPostboxComponent } from './activity-feed/group-postbox/group-postbox.component';
 import { GroupPostSelectionComponent } from './activity-feed/group-postbox/group-post-selection/group-post-selection.component';
-import { GroupCreatePostComponent } from './activity-feed/group-postbox/group-create-post/group-create-post.component';
+import { GroupPostComponent } from './activity-feed/group-postbox/group-post/group-post.component';
 import { TaskSmartCardComponent } from './activity-feed/task-smart-card/task-smart-card.component';
 import { AgendaSmartCardComponent } from './activity-feed/agenda-smart-card/agenda-smart-card.component';
 import { GroupUpdateInformationComponent } from './activity-feed/group-information/group-update-information/group-update-information.component';
 import { CommentSectionComponent } from './comments/comment-section/comment-section.component';
 import { PostCommentComponent } from './comments/post-comment/post-comment.component';
 import { LikeCommentComponent } from './comments/post-comment/like-comment/like-comment.component';
-import { NorthStarComponent } from './posts/group-create-post-dialog/north-star/north-star.component';
-import { NorthStarStatsComponent } from './posts/group-create-post-dialog/north-star/stats/north-star-stats.component';
+import { NorthStarComponent } from './posts/group-post-dialog/north-star/north-star.component';
+import { NorthStarStatsComponent } from './posts/group-post-dialog/north-star/stats/north-star-stats.component';
 
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -55,7 +55,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { PreviewFilesDialogComponent } from './preview-files-dialog/preview-files-dialog.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { InlineInputComponent } from './inline-input/inline-input.component';
-import { GroupCreatePostDialogComponent } from './posts/group-create-post-dialog/group-create-post-dialog.component';
+import { GroupPostDialogComponent } from './posts/group-post-dialog/group-post-dialog.component';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import { TruncateTextPipe } from 'src/shared/pipes/truncate-text.pipe';
 import { ChartsModule, ThemeService } from 'ng2-charts';
@@ -72,8 +72,8 @@ import { OrganizationalStructureCardComponent } from './dashboard/organizational
 import { EngagementCardComponent } from './dashboard/engagement-card/engagement-card.component';
 import { GlobalPerformanceCardComponent } from './dashboard/global-performance-card/global-performance-card.component';
 import { NewTaskComponent } from './posts/new-task/new-task.component';
-import { SubtasksComponent } from './posts/group-create-post-dialog/subtasks/subtasks.component';
-import { TaskActionsComponent } from './posts/group-create-post-dialog/task-actions/task-actions.component';
+import { SubtasksComponent } from './posts/group-post-dialog/subtasks/subtasks.component';
+import { TaskActionsComponent } from './posts/group-post-dialog/task-actions/task-actions.component';
 import { MultipleAssignmentsComponent } from './posts/multiple-assignments/multiple-assignments.component';
 import { FilterPipe } from '../../../shared/pipes/filter.pipe';
 import { AssigneeAvatarComponent } from './assignee-avatar/assignee-avatar.component';
@@ -107,15 +107,15 @@ import { ChartModule } from 'modules/chart/chart.module';
 import { CustomFieldStatisticsCardComponent } from './dashboard/custom-field-statistics-card/custom-field-statistics-card.component';
 import { CustomFieldTableCardComponent } from './dashboard/custom-field-table-card/custom-field-table-card.component';
 import { CustomFieldsTableSettingsDialogComponent } from './dashboard/custom-field-table-card/custom-fields-table-settings-dialog/custom-fields-table-settings-dialog.component';
-import { ShuttleTaskComponent } from './posts/group-create-post-dialog/shuttle-task/shuttle-task.component';
+import { ShuttleTaskComponent } from './posts/group-post-dialog/shuttle-task/shuttle-task.component';
 import { FileDetailsDialogComponent } from './file-details-dialog/file-details-dialog.component';
 import { ApprovalActionsComponent } from './approvals/approval-actions/approval-actions.component';
 import { ApprovalsHistoryComponent } from './approvals/approvals-history/approvals-history.component';
-import { PostDatesComponent } from './posts/group-create-post-dialog/post-dates/post-dates.component';
+import { PostDatesComponent } from './posts/group-post-dialog/post-dates/post-dates.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { FileVersionsComponent } from './file-versions/file-versions.component';
 import { SelectLanguageComponent } from './select-language/select-language.component';
-import { PostLogsComponent } from './posts/group-create-post-dialog/post-logs/post-logs.component';
+import { PostLogsComponent } from './posts/group-post-dialog/post-logs/post-logs.component';
 import { HighlightDirective } from 'src/shared/pipes/highlight.directive';
 
 @NgModule({
@@ -160,7 +160,7 @@ import { HighlightDirective } from 'src/shared/pipes/highlight.directive';
         GroupActivityFeedComponent,
         GroupPostboxComponent,
         GroupPostSelectionComponent,
-        GroupCreatePostComponent,
+        GroupPostComponent,
         TaskSmartCardComponent,
         AgendaSmartCardComponent,
         GroupUpdateInformationComponent,
@@ -171,7 +171,7 @@ import { HighlightDirective } from 'src/shared/pipes/highlight.directive';
         InlineInputComponent,
         NorthStarComponent,
         NorthStarStatsComponent,
-        GroupCreatePostDialogComponent,
+        GroupPostDialogComponent,
         WorkStatisticsCardComponent,
         WorkloadCardComponent,
         VelocityCardComponent,
@@ -261,14 +261,14 @@ import { HighlightDirective } from 'src/shared/pipes/highlight.directive';
         GroupActivityFeedComponent,
         GroupPostboxComponent,
         GroupPostSelectionComponent,
-        GroupCreatePostComponent,
+        GroupPostComponent,
         ActivityFeedComponent,
         TaskSmartCardComponent,
         AgendaSmartCardComponent,
         LikeCommentComponent,
         MatSidenavModule,
         InlineInputComponent,
-        GroupCreatePostDialogComponent,
+        GroupPostDialogComponent,
         TruncateTextPipe,
         SafePipe,
         ChartsModule,

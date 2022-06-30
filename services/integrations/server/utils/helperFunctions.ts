@@ -1,4 +1,4 @@
-import { Post, Comment, User } from "../api/models";
+import { Post, Comment, User, Group } from "../api/models";
 
 /**
  * This function is responsible for generating the notifications Object
@@ -31,6 +31,12 @@ async function parsedNotificationData(data: any) {
                 return await rejectedItem(data);
             case 'ITEMAPPROVED':
                 return await itemApproved(data);
+            case 'JOINGROUP':
+                return await joinGroup(data);
+            case 'LEAVEGROUP':
+                return await leaveGroup(data);
+            case 'SHUTTLETASK':
+                return await shuttleTask(data);
             default:
                 return "am here working";
         }
@@ -452,6 +458,127 @@ async function itemApproved(data:any) {
         btn_title:'view item',
         itemUrl: itemUrl
     }    
+
+    return notificationObject;
+}
+
+async function joinGroup(data:any) {
+
+    const groupData = await Group.findById(data.groupId, (err, data) => {
+        if(err){
+        } else {
+            return data;
+        }
+    });
+
+    const assigneeFromData = await User.findById(data.userId, (err, data) => {
+        if(err){
+        } else {
+            return data;
+        }
+    });
+
+    const assigneFromFullName = assigneeFromData['full_name'];
+    const assigneFromProfilePic = assigneeFromData['profile_pic'];
+    const groupName = groupData['group_name'];
+
+    const itemUrl = `${process.env.CLIENT_SERVER}/dashboard/work/groups/activity?group=${groupData._id}`;
+     
+    const notificationObject = {
+        name: assigneFromFullName,
+        text: `${assigneFromFullName} added you on the group ${groupName}`,
+        image: assigneFromProfilePic,
+        group_id: data.groupId,
+        content: '\n ',
+        btn_title:`view`,
+        itemUrl: itemUrl
+    }
+
+    return notificationObject;
+
+}
+
+async function leaveGroup(data:any) {
+    const groupData = await Group.findById(data.groupId, (err, data) => {
+        if(err){
+        } else {
+            return data;
+        }
+    });
+
+    const assigneeFromData = await User.findById(data.userId, (err, data) => {
+        if(err){
+        } else {
+            return data;
+        }
+    });
+
+    const assigneFromFullName = assigneeFromData['full_name'];
+    const assigneFromProfilePic = assigneeFromData['profile_pic'];
+    const groupName = groupData['group_name'];
+
+    const itemUrl = `${process.env.CLIENT_SERVER}/dashboard/work/groups/activity?group=${groupData._id}`;
+     
+    const notificationObject = {
+        name: assigneFromFullName,
+        text: `${assigneFromFullName} removed you from the group ${groupName}`,
+        image: assigneFromProfilePic,
+        group_id: data.groupId,
+        content: '\n ',
+        btn_title:`view`,
+        itemUrl: itemUrl
+    }
+
+    return notificationObject;
+}
+
+async function shuttleTask(data:any) {
+    const postData = await Post.findById(data.postId, (err, data) => {
+        if(err){
+        } else {
+            return data;
+        }
+    });
+
+    const shuttleGroupData = await Group.findById(data.shuttleGroupId, (err, data) => {
+        if(err){
+        } else {
+            return data;
+        }
+    });
+    
+    const groupData = await Group.findById(data.groupId, (err, data) => {
+        if(err){
+        } else {
+            return data;
+        }
+    });
+
+    const assigneeFromData = await User.findById(data._assigned_from, (err, data) => {
+        if(err){
+        } else {
+            return data;
+        }
+    });
+
+    const assigneFromFullName = assigneeFromData['full_name'];
+    const assigneFromProfilePic = assigneeFromData['profile_pic'];
+    const postTitle = postData['title'];
+    const groupName = groupData['group_name'];
+    const shuttleGroupName = shuttleGroupData['group_name'];
+
+    const itemUrl = `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?postId=${postData._id}`;
+     
+    const notificationObject = {
+        name: assigneFromFullName,
+        text: `${assigneFromFullName} assigned your group ${shuttleGroupName} the task ${postTitle} from group ${groupName}`,
+        image: assigneFromProfilePic,
+        group_id: data.shuttleGroupId,
+        post_id: data.postId,
+        content: '\n ',
+        btn_title:`view`,
+        itemUrl: itemUrl
+    }
 
     return notificationObject;
 }

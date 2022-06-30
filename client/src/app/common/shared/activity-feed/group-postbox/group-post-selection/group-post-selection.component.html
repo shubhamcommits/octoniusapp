@@ -30,9 +30,9 @@
 <!-- Modal Template for post creation starts -->
 <ng-template #content let-modal>
   <!-- Create post starts -->
-  <app-group-create-post *ngIf="userData && checkDataExist(userData)" [userData]="userData" [groupId]="groupId"
+  <app-group-post *ngIf="userData && checkDataExist(userData)" [userData]="userData" [groupId]="groupId"
     [type]="type" (post)="getPost($event)" (edited)="editedPost($event)" (close)="closeModal()">
-  </app-group-create-post>
+  </app-group-post>
   <!-- Create post ends -->
 </ng-template>
 <!-- Modal Template for post creation ends -->

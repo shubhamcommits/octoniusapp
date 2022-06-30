@@ -448,59 +448,47 @@ export class PostService {
    * @param post
    */
   async sendNotifications(post: any) {
-
     if (post._content_mentions.length !== 0) {
-
       // Create Real time Notification for all the mentions on post content
-      return await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-mention`, {
+      return http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-mention`, {
         postId: post._id,
         content_mentions: post._content_mentions,
         groupId: post._group._id || post._group,
         posted_by: post._posted_by
-      })
-
-      // // Create User Stream
-      let userStream: any;
-
-      if (post._content_mentions.includes('all')) {
-
-        // Create Readble Stream from the Post Contents
-        userStream = Readable.from(await User.find({
-          _groups: post._group
-        }).distinct('_id'))
-
-      } else {
-
-        // User Stream from the post contents
-        userStream = Readable.from(post._content_mentions)
-      }
+      }).catch(err => {
+        console.log(`\n⛔️ Error:\n ${err}`);
+      });
     }
 
     // Send notification after post creation
     switch (post.type) {
 
       case 'task':
-        if (post._assigned_to) {
-
+        if (post._assigned_to && post._assigned_to.length > 0) {
           // Real time notification for new task assignment
-          return await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-task`, {
+          return http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-task`, {
             postId: post._id,
             assigned_to: post._assigned_to,
             groupId: post._group._id || post._group,
             posted_by: post._posted_by
-          })
+          }).catch(err => {
+            console.log(`\n⛔️ Error:\n ${err}`);
+          });
         }
         break;
 
       case 'event':
-
-        // Real time notification for new event assignment
-        return await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-event`, {
-          postId: post._id,
-          assigned_to: post._assigned_to,
-          grouId: (post._group._id || post._group),
-          posted_by: post._posted_by
-        })
+        if (post._assigned_to && post._assigned_to.length > 0) {
+          // Real time notification for new event assignment
+          return http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-event`, {
+            postId: post._id,
+            assigned_to: post._assigned_to,
+            grouId: (post._group._id || post._group),
+            posted_by: post._posted_by
+          }).catch(err => {
+            console.log(`\n⛔️ Error:\n ${err}`);
+          });
+        }
         break;
 
       default:
@@ -514,10 +502,12 @@ export class PostService {
    * @param post
    */
   async sendNewPostNotification(post: any) {
-    return await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-post`, {
+    return http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-post`, {
         postId: post._id,
         groupId: post._group._id || post._group,
         posted_by: post._posted_by
+      }).catch(err => {
+        console.log(`\n⛔️ Error:\n ${err}`);
       });
   }
 
@@ -532,32 +522,6 @@ export class PostService {
 
       // Create new post
       let post: any = await Post.create(postData);
-
-      /*
-      // save record of ussignment
-      if (post.type == 'event' && post._assigned_to && post._assigned_to.length > 0) {
-
-        // Create Readble Stream from the Event Assignee
-        const userStream = Readable.from(post._assigned_to);
-
-        await userStream.on('data', async (user: any) => {
-          post = await Post.findOneAndUpdate({
-            _id: post._id
-          }, {
-            $push: {
-              "records.assignments": {
-                date: moment().format(),
-                _assigned_to: user,
-                _assigned_from: userId
-              }
-            }
-          }, {
-            new: true
-          })
-        });
-      }
-      */
-
       post = await Post.findOneAndUpdate({
           _id: post._id
         }, {
@@ -576,15 +540,14 @@ export class PostService {
       post = await this.populatePostProperties(post);
 
       // Send all the required notifications
-      await this.sendNotifications(post)
+      this.sendNotifications(post)
 
       if (post.type == 'normal') {
-        await this.sendNewPostNotification(post);
+        this.sendNewPostNotification(post);
       }
 
       // Return Post Object
       return post;
-
     } catch (err) {
 
       // Return with error
@@ -704,19 +667,21 @@ export class PostService {
           });
       }
 
-      post = await Post.findOneAndUpdate({
-          _id: postId
-        }, {
-          $push: {
-            "logs": {
-              action: logAction,
-              action_date: moment().format(),
-              _actor: userId
+      if (logAction && logAction != '') {
+        post = await Post.findOneAndUpdate({
+            _id: postId
+          }, {
+            $push: {
+              "logs": {
+                action: logAction,
+                action_date: moment().format(),
+                _actor: userId
+              }
             }
-          }
-        }, {
-          new: true
-        });
+          }, {
+            new: true
+          });
+      }
 
       // populate the assigned_to property of this document
       post = await this.populatePostProperties(post);
@@ -899,15 +864,17 @@ export class PostService {
       )
       .lean();
 
-    await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-like-post`, {
-      postId: post._id,
-      posted_by: post['_posted_by'],
-      followers: post['_followers'],
-      assigned_to:post['_assigned_to'],
-      mentions:post['_content_mentions'],
-      groupId:post['_group'],
-      user: userId
-    });
+    http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-like-post`, {
+        postId: post._id,
+        posted_by: post['_posted_by'],
+        followers: post['_followers'],
+        assigned_to:post['_assigned_to'],
+        mentions:post['_content_mentions'],
+        groupId:post['_group'],
+        user: userId
+      }).catch(err => {
+        console.log(`\n⛔️ Error:\n ${err}`);
+      });
 
     // Find the User
     const user = await User.findOne
@@ -968,14 +935,16 @@ export class PostService {
       )
       .lean();
 
-    await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-follow-post`, {
-      postId: post._id,
-      posted_by: post['_posted_by'],
-      assigned_to:post['_assigned_to'],
-      mentions:post['_content_mentions'],
-      groupId:post['_group'],
-      follower: userId
-    }).catch(err => sendErr(err, new Error(err), 'Internal Server Error!', 500));
+    http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-follow-post`, {
+        postId: post._id,
+        posted_by: post['_posted_by'],
+        assigned_to:post['_assigned_to'],
+        mentions:post['_content_mentions'],
+        groupId:post['_group'],
+        follower: userId
+      }).catch(err => {
+        console.log(`\n⛔️ Error:\n ${err}`);
+      });
 
     // Find the User
     const user = await User.findOne
@@ -1107,10 +1076,12 @@ export class PostService {
 
       // Create Real time Notification to notify user about the task reassignment
       http.post(`${process.env.NOTIFICATIONS_SERVER_API}/task-reassign`, {
-        postId: post._id,
-        assigneeId: assigneeId,
-        _assigned_from: userId
-      })
+          postId: post._id,
+          assigneeId: assigneeId,
+          _assigned_from: userId
+        }).catch(err => {
+          console.log(`\n⛔️ Error:\n ${err}`);
+        });
 
       // Return the post
       return post;
@@ -1159,10 +1130,12 @@ export class PostService {
 
       // Create Real time Notification to notify user about the task reassignment
       http.post(`${process.env.NOTIFICATIONS_SERVER_API}/task-reassign`, {
-        postId: post._id,
-        assigneeId: assigneeId,
-        _assigned_from: userId
-      })
+          postId: post._id,
+          assigneeId: assigneeId,
+          _assigned_from: userId
+        }).catch(err => {
+          console.log(`\n⛔️ Error:\n ${err}`);
+        });
 
       // Return the post
       return post;
@@ -1298,14 +1271,16 @@ export class PostService {
       post = await this.populatePostProperties(post);
 
       if (status !== 'to do') {
-        await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/status-change`, {
-          postId: post._id,
-          userId: userId,
-          assigned_to: post._assigned_to,
-          status: status ? status : 'to do',
-          followers: post._followers,
-          posted_by: post._posted_by
-        });
+        http.post(`${process.env.NOTIFICATIONS_SERVER_API}/status-change`, {
+            postId: post._id,
+            userId: userId,
+            assigned_to: post._assigned_to,
+            status: status ? status : 'to do',
+            followers: post._followers,
+            posted_by: post._posted_by
+          }).catch(err => {
+            console.log(`\n⛔️ Error:\n ${err}`);
+          });
       }
 
       if (status === 'done' || oldPost.task.status === 'done') {
@@ -3182,7 +3157,7 @@ export class PostService {
                 break;
             case 'Shuttle task':
                 if (shuttleIndex < 0) {
-                  post = await this.selectShuttleGroup(post._id, action?._shuttle_group?._id || action?._shuttle_group);
+                  post = await this.selectShuttleGroup(post._id, action?._shuttle_group?._id || action?._shuttle_group, userId);
                 }
                 break;
             default:
@@ -3257,20 +3232,22 @@ export class PostService {
       }).lean();
 
     if (shuttleStatus !== 'to do') {
-      await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/status-change`, {
-        postId: post._id,
-        userId: userId,
-        assigned_to: post._assigned_to,
-        status: shuttleStatus ? shuttleStatus : 'to do',
-        followers: post._followers,
-        posted_by: post._posted_by
-      });
+      http.post(`${process.env.NOTIFICATIONS_SERVER_API}/status-change`, {
+          postId: post._id,
+          userId: userId,
+          assigned_to: post._assigned_to,
+          status: shuttleStatus ? shuttleStatus : 'to do',
+          followers: post._followers,
+          posted_by: post._posted_by
+        }).catch(err => {
+          console.log(`\n⛔️ Error:\n ${err}`);
+        });
     }
     return await this.populatePostProperties(post);
   }
 
-  async selectShuttleGroup(postId: string, shuttleGroupId: string) {
-      let post =  await Post.findById({ _id: postId }).select('task.shuttles').lean();
+  async selectShuttleGroup(postId: string, shuttleGroupId: string, userId: string) {
+      let post =  await Post.findById({ _id: postId }).select('task.shuttles _group').lean();
 
       const shuttleIndex = await (post.task.shuttles) ? post.task.shuttles.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == shuttleGroupId) : -1;
 
@@ -3296,6 +3273,14 @@ export class PostService {
             });
       }
 
+      http.post(`${process.env.NOTIFICATIONS_SERVER_API}/shuttle-task`, {
+          postId: post._id,
+          userId: userId,
+          groupId: post._group._id || post._group,
+          shuttleGroupId: shuttleGroupId
+        }).catch(err => {
+          console.log(`\n⛔️ Error:\n ${err}`);
+        });
       return this.populatePostProperties(post);
   }
 }

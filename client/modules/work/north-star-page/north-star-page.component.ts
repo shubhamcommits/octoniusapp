@@ -62,7 +62,6 @@ export class NorthStarPageComponent implements OnInit {
           reject([])
         });
     });
-
   }
 
   getProgressPercent(northStar) {
