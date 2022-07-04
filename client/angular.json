@@ -190,7 +190,7 @@
             "translation": "src/locale/messages.de.xlf"
           },
           "fa": {
-            "translation": "src/locale/messages.fa.xlf"
+            "translation": "src/locale/messages.fa-IR.xlf"
           }
         }
       }
