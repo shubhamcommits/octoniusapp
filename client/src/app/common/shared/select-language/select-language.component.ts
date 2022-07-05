@@ -41,6 +41,7 @@ export class SelectLanguageComponent implements OnInit {
     this.languages.push({ name: $localize`:@@selectLanguage.german:German`, code: 'de'});
     this.languages.push({ name: $localize`:@@selectLanguage.english:English`, code: 'en'});
     this.languages.push({ name: $localize`:@@selectLanguage.spanish:Spanish`, code: 'es'});
+    this.languages.push({ name: $localize`:@@selectLanguage.persian:Persian (Iran)`, code: 'fa'});
   }
 
   selectLanguage(languageCode: any) {

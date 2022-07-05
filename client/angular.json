@@ -111,6 +111,10 @@
             "de": {
               "localize": ["de"],
               "i18nMissingTranslation": "warning"
+            },
+            "fa": {
+              "localize": ["fa"],
+              "i18nMissingTranslation": "warning"
             }
           },
           "defaultConfiguration": ""
@@ -132,6 +136,9 @@
             },
             "de": {
               "browserTarget": "client:build:de"
+            },
+            "fa": {
+              "browserTarget": "client:build:fa"
             }
           }
         },
@@ -181,6 +188,9 @@
           },
           "de": {
             "translation": "src/locale/messages.de.xlf"
+          },
+          "fa": {
+            "translation": "src/locale/messages.fa-IR.xlf"
           }
         }
       }

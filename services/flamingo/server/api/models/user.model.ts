@@ -146,7 +146,7 @@ const UserSchema = new Schema({
         locale: {
             type: String,
             default: 'en',
-            enum: ['es', 'en', 'de']
+            enum: ['es', 'en', 'de', 'fa']
         }
     },
     _private_group: {

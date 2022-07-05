@@ -17,6 +17,7 @@
     "start:en": "ng serve --configuration=en",
     "start:de": "ng serve --configuration=de",
     "build:es": "ng build --configuration=es",
+    "build:fa": "ng build --configuration=fa",
     "dev": "ng serve",
     "build": "ng build",
     "prod": "ng build --configuration production --localize",
