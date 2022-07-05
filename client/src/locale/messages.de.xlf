@@ -200,7 +200,7 @@
       </trans-unit>
       <trans-unit id="transferOwnership.transferOwnership" datatype="html">
         <source>Transfer Ownership </source>
-        <target state="needs-adaptation">Eigentum übertragen</target>
+        <target state="translated">Eigentum übertragen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/transfer-ownership/transfer-ownership.component.html</context>
           <context context-type="linenumber">6</context>
@@ -5028,7 +5028,7 @@
       </trans-unit>
       <trans-unit id="groupInviteUser.guestMembersHaveAccess" datatype="html">
         <source>Working with people outside your organization? Go on, add them to your group as a guest. Guest members have access only to the group they are invited. They can not see any private or public groups from your organization.</source>
-        <target state="needs-adaptation">Gastmitglieder haben nur Zugriff auf die Gruppe, zu der sie eingeladen wurden. Sie können keine privaten oder öffentlichen Gruppen Ihrer Organisation sehen.</target>
+        <target state="translated">Arbeiten Sie mit Menschen außerhalb Ihrer Organisation zusammen? Fahren Sie fort, fügen Sie sie als Gast zu Ihrer Gruppe hinzu. Gastmitglieder haben nur Zugriff auf die Gruppe, zu der sie eingeladen wurden. Sie können keine privaten oder öffentlichen Gruppen Ihrer Organisation sehen.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/invite-user/invite-user.component.html</context>
           <context context-type="linenumber">8</context>
