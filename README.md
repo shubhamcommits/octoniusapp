@@ -1,5 +1,5 @@
 # |  Octonius App v.8
-### ✌️ Welcome to Octonius dev team!  😀  
+### ✌️ Welcome to Octonius dev team!   😀  
 
 ##  
 
