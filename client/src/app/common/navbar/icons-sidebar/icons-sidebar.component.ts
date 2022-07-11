@@ -17,7 +17,7 @@ import Swal from 'sweetalert2';
   templateUrl: './icons-sidebar.component.html',
   styleUrls: ['./icons-sidebar.component.scss']
 })
-export class IconsSidebarComponent implements OnInit, OnDestroy {
+export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() sideNav: MatSidenav;
   @Input() iconsSidebar = false;
@@ -157,11 +157,11 @@ export class IconsSidebarComponent implements OnInit, OnDestroy {
 
   goToWorkspace(workspaceId: string) {
     try {
-      this.utilityService.asyncNotification($localize`:@@sidebar.pleaseWaitSignYouIn:Please wait while we sign you in...`,
+      this.utilityService.asyncNotification($localize`:@@iconsSidebar.pleaseWaitSignYouIn:Please wait while we sign you in...`,
         this.selectWorkspaceServiceFunction(this.accountData._id, workspaceId));
     } catch (err) {
       console.log('There\'s some unexpected error occurred, please try again later!', err);
-      this.utilityService.errorNotification($localize`:@@sidebar.unexpectedError:There\'s some unexpected error occurred, please try again later!`);
+      this.utilityService.errorNotification($localize`:@@iconsSidebar.unexpectedError:There\'s some unexpected error occurred, please try again later!`);
     }
   }
 
@@ -191,7 +191,7 @@ export class IconsSidebarComponent implements OnInit, OnDestroy {
           });
 
           if (workspaceBlocked) {
-            this.utilityService.workplaceBlockedNotification($localize`:@@sidebar.workspaceIsNotAvailable:Your workspace is not available, please contact your administrator!`).then(res => {
+            this.utilityService.workplaceBlockedNotification($localize`:@@iconsSidebar.workspaceIsNotAvailable:Your workspace is not available, please contact your administrator!`).then(res => {
               if (res.dismiss === Swal.DismissReason.close) {
                 this.authService.signout().subscribe((res) => {
                   this.clearUserData();
@@ -206,18 +206,12 @@ export class IconsSidebarComponent implements OnInit, OnDestroy {
             setTimeout(async () => {
               this.socketService.serverInit();
               await this.getUserWorkspaces();
-              this.router.navigate(['dashboard', 'myspace', 'inbox'])
-                .then(() => {
-                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@sidebar.hi:Hi ${res['user']['first_name']}, welcome back to your workplace!`));
-                })
-                .catch((err) => {
-                  this.storageService.clear();
-                  reject(this.utilityService.rejectAsyncPromise($localize`:@@sidebar.oopsErrorSigningIn:Oops some error occurred while signing you in, please try again!`))
-                });
+              //resolve(this.utilityService.resolveAsyncPromise($localize`:@@iconsSidebar.hi:Hi ${res['user']['first_name']}, welcome back to your workplace!`));
+              window.location.reload();
             }, 500);
           }
         }, (err) => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@sidebar.oopsErrorSigningIn:Oops some error occurred while signing you in, please try again!`))
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@iconsSidebar.oopsErrorSigningIn:Oops some error occurred while signing you in, please try again!`))
       }));
     });
   }

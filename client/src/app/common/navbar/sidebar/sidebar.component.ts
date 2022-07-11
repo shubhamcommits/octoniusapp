@@ -18,7 +18,7 @@ import Swal from 'sweetalert2';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent implements OnInit, OnDestroy {
+export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() sideNav: MatSidenav;
   @Input() iconsSidebar = false;
@@ -209,14 +209,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
             setTimeout(async () => {
               this.socketService.serverInit();
               await this.getUserWorkspaces();
-              this.router.navigate(['dashboard', 'myspace', 'inbox'])
-                .then(() => {
-                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@sidebar.hi:Hi ${res['user']['first_name']}, welcome back to your workplace!`));
-                })
-                .catch((err) => {
-                  this.storageService.clear();
-                  reject(this.utilityService.rejectAsyncPromise($localize`:@@sidebar.oopsErrorSigningIn:Oops some error occurred while signing you in, please try again!`))
-                });
+              //resolve(this.utilityService.resolveAsyncPromise($localize`:@@sidebar.hi:Hi ${res['user']['first_name']}, welcome back to your workplace!`));
+              window.location.reload();
             }, 500);
           }
         }, (err) => {
