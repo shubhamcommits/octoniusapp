@@ -217,8 +217,12 @@ export class WelcomePageComponent implements OnInit, AfterViewInit, OnDestroy {
    * This function clear the account Object
    */
   clearAccountData() {
-    this.publicFunctions.sendUpdatesToAccountData({});
+    this.storageService.clear();
+    this.publicFunctions.sendUpdatesToGroupData({});
+    this.publicFunctions.sendUpdatesToRouterState({});
     this.publicFunctions.sendUpdatesToUserData({});
+    this.publicFunctions.sendUpdatesToAccountData({});
+    this.publicFunctions.sendUpdatesToWorkspaceData({});
 
     this.account.email = null;
     this.account.password = null;

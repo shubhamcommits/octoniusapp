@@ -105,13 +105,8 @@ export class IconsSidebarComponent implements OnInit, OnDestroy {
       this.utilityService.asyncNotification($localize`:@@iconsSidebar.pleaseWaitWhileWeLogYouOut:Please wait, while we log you out securely...`,
         new Promise((resolve, reject) => {
           this.authService.signout().toPromise()
-            .then((res) => {
-              this.storageService.clear();
-              this.publicFunctions.sendUpdatesToGroupData({})
-              this.publicFunctions.sendUpdatesToRouterState({})
-              this.publicFunctions.sendUpdatesToUserData({})
-              this.publicFunctions.sendUpdatesToAccountData({})
-              this.publicFunctions.sendUpdatesToWorkspaceData({})
+            .then(async (res) => {
+              await this.clearUserData();
               this.socketService.disconnectSocket();
               this.router.navigate(['/']);
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@iconsSidebar.successfullyLoggedOut:Successfully Logged out!`));
@@ -225,13 +220,13 @@ export class IconsSidebarComponent implements OnInit, OnDestroy {
 
   /**
    * This function clear the user related data in the browser
-   * @param res
    */
   clearUserData() {
     this.storageService.clear();
     this.publicFunctions.sendUpdatesToGroupData({});
     this.publicFunctions.sendUpdatesToRouterState({});
     this.publicFunctions.sendUpdatesToUserData({});
+    this.publicFunctions.sendUpdatesToAccountData({});
     this.publicFunctions.sendUpdatesToWorkspaceData({});
   }
 

@@ -83,9 +83,6 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
    */
   selectWorkspaceServiceFunction(accountId: string, workspaceId: string) {
     return new Promise(async (resolve, reject) => {
-
-
-
         this.subSink.add(this.authService.selectWorkspace(accountId, workspaceId)
           .subscribe(async (res) => {
             this.clearUserData();
