@@ -7709,7 +7709,6 @@
       <trans-unit id="recentActivity.assignedYou" datatype="html">
         <source>assigned you</source>
         <target state="needs-adaptation">اختصاص داده شده به شما در</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
           <context context-type="linenumber">57</context>
@@ -7818,7 +7817,6 @@
       <trans-unit id="recentActivity.assignedYourGroup" datatype="html">
         <source>sent a shuttle 🚀 to</source>
         <target state="needs-adaptation">گروه شما را اختصاص داد</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
           <context context-type="linenumber">71</context>
@@ -7827,7 +7825,6 @@
       <trans-unit id="recentActivity.theTask" datatype="html">
         <source>The task: </source>
         <target state="needs-adaptation">وظیفه</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
           <context context-type="linenumber">80</context>
@@ -7836,7 +7833,6 @@
       <trans-unit id="recentActivity.fromGroup" datatype="html">
         <source>was sent from</source>
         <target state="needs-adaptation">از گروه</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
           <context context-type="linenumber">86</context>
@@ -9938,72 +9934,36 @@
           <context context-type="linenumber">120</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sidebar.pleaseWaitSignYouIn" datatype="html">
+      <trans-unit id="iconsSidebar.pleaseWaitSignYouIn" datatype="html">
         <source>Please wait while we sign you in...</source>
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
           <context context-type="linenumber">160</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">163</context>
-        </context-group>
       </trans-unit>
-      <trans-unit id="sidebar.unexpectedError" datatype="html">
+      <trans-unit id="iconsSidebar.unexpectedError" datatype="html">
         <source>There's some unexpected error occurred, please try again later!</source>
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
           <context context-type="linenumber">164</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">167</context>
-        </context-group>
       </trans-unit>
-      <trans-unit id="sidebar.workspaceIsNotAvailable" datatype="html">
+      <trans-unit id="iconsSidebar.workspaceIsNotAvailable" datatype="html">
         <source>Your workspace is not available, please contact your administrator!</source>
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
           <context context-type="linenumber">194</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">197</context>
-        </context-group>
       </trans-unit>
-      <trans-unit id="sidebar.hi" datatype="html">
-        <source>Hi <x id="PH" equiv-text="res['user']['first_name']"/>, welcome back to your workplace!</source>
-        <target state="needs-translation"/>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
-          <context context-type="linenumber">211</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">214</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="sidebar.oopsErrorSigningIn" datatype="html">
+      <trans-unit id="iconsSidebar.oopsErrorSigningIn" datatype="html">
         <source>Oops some error occurred while signing you in, please try again!</source>
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
-          <context context-type="linenumber">215</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
-          <context context-type="linenumber">220</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">218</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">223</context>
+          <context context-type="linenumber">214</context>
         </context-group>
       </trans-unit>
       <trans-unit id="mobileNavbar.errorFetchingProfile" datatype="html">
@@ -10124,6 +10084,38 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
           <context context-type="linenumber">122</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebar.pleaseWaitSignYouIn" datatype="html">
+        <source>Please wait while we sign you in...</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">163</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebar.unexpectedError" datatype="html">
+        <source>There's some unexpected error occurred, please try again later!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">167</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebar.workspaceIsNotAvailable" datatype="html">
+        <source>Your workspace is not available, please contact your administrator!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">197</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebar.oopsErrorSigningIn" datatype="html">
+        <source>Oops some error occurred while signing you in, please try again!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">217</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userAccountNavbar.profile" datatype="html">
