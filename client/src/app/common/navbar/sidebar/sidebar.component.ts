@@ -86,7 +86,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.userData = await this.publicFunctions.getCurrentUser();
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     this.accountData = await this.publicFunctions.getCurrentAccount();
-    this.userWorkspaces = await this.getUserWorkspaces();
+    await this.getUserWorkspaces();
   }
 
   async sort() {
@@ -150,8 +150,12 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.router.navigate(['/dashboard', 'myspace', 'inbox']);
   }
 
-  getUserWorkspaces() {
-    return this.accountData._workspaces.filter(workspace => (workspace._id || workspace) != this.workspaceData?._id);
+  async getUserWorkspaces() {
+    await this.userService.getUserWorkspaces(this.userData?._id).then(res => {
+      this.userWorkspaces = res['workspaces'].filter(workspace => (workspace._id || workspace) != this.workspaceData?._id);
+    }).catch(err => {
+      this.userWorkspaces = [];
+    });
   }
 
   goToWorkspace(workspaceId: string) {
@@ -204,7 +208,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
             // note:- Code is for teams auth popup not for octonius app and only work in that case.
             setTimeout(async () => {
               this.socketService.serverInit();
-              this.userWorkspaces = await this.getUserWorkspaces();
+              await this.getUserWorkspaces();
               this.router.navigate(['dashboard', 'myspace', 'inbox'])
                 .then(() => {
                   resolve(this.utilityService.resolveAsyncPromise($localize`:@@sidebar.hi:Hi ${res['user']['first_name']}, welcome back to your workplace!`));

@@ -408,4 +408,8 @@ export class UserService {
       localeCode: localeCode
     }).toPromise();
   }
+
+  getUserWorkspaces(userId: string) {
+    return this._http.get(this.BASE_API_URL + `/${userId}/userWorkspaces`).toPromise();
+  }
 }
