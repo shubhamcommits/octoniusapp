@@ -54,7 +54,7 @@
             </span>
             &nbsp;
 
-            <span *ngIf="notification?.type === 'assignment'" class="assignment_notification" i18n="@@recentActivity.assignedYou">assigned you on</span>
+            <span *ngIf="notification?.type === 'assignment'" class="assignment_notification" i18n="@@recentActivity.assignedYou">assigned you</span>
             <span *ngIf="notification?.type === 'mention'" class="mention_notification" i18n="@@recentActivity.mentionedYou">mentioned you on</span>
             <span *ngIf="notification?.type === 'mention_folio'" class="mention_notification" i18n="@@recentActivity.mentionedYou">mentioned you on</span>
             <span *ngIf="notification?.type === 'completed'" class="completed_notification" i18n="@@recentActivity.completed">completed</span>
@@ -68,7 +68,7 @@
             <span *ngIf="notification?.type === 'launch-approval-flow'" class="launch_approval_flow_notification" i18n="@@recentActivity.launchApprovalFlow">launched the approval flow for the item</span>
             <span *ngIf="notification?.type === 'approved-item'" class="approved_item_notification" i18n="@@recentActivity.itemApprovedByAll">all assignees has approved  the item</span>
             <span *ngIf="notification?.type === 'reject-item'" class="reject_item_notification" i18n="@@recentActivity.rejectedTheItem">rejected the item</span>
-            <span *ngIf="notification?.type === 'shuttleTask'" class="assignment_notification" i18n="@@recentActivity.assignedYourGroup">sent a shuttle to</span>
+            <span *ngIf="notification?.type === 'shuttleTask'" class="assignment_notification" i18n="@@recentActivity.assignedYourGroup">sent a shuttle 🚀 to</span>
             &nbsp;
 
             <span class="notification_post_title" *ngIf="(notification?.type !== 'mention_folio' && notification?.type !== 'shuttleTask') && notification?._origin_post">{{ notification?._origin_post?.title | truncatetext: 20 }}</span>
@@ -77,13 +77,13 @@
             <span class="notification_post_title" *ngIf="notification?.type === 'shuttleTask' && notification?._shuttle_group">{{ notification?._shuttle_group?.group_name | truncatetext: 20 }}.</span>
             &nbsp;
 
-            <span *ngIf="notification?.type === 'shuttleTask'" class="assignment_notification" i18n="@@recentActivity.theTask">The task</span>
+            <span *ngIf="notification?.type === 'shuttleTask'" class="assignment_notification" i18n="@@recentActivity.theTask">The task: </span>
             &nbsp;
 
             <span class="notification_post_title" *ngIf="notification?.type === 'shuttleTask' && notification?._origin_post">{{ notification?._origin_post?.title | truncatetext: 20 }}</span>
             &nbsp;
 
-            <span *ngIf="notification?.type === 'shuttleTask'" class="assignment_notification" i18n="@@recentActivity.fromGroup">Shuttle from group</span>
+            <span *ngIf="notification?.type === 'shuttleTask'" class="assignment_notification" i18n="@@recentActivity.fromGroup">was sent from</span>
             &nbsp;
 
             <span class="notification_post_title" *ngIf="notification?.type === 'shuttleTask' && notification?._origin_group">{{ notification?._origin_group?.group_name | truncatetext: 20 }}</span>
