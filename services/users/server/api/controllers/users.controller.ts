@@ -79,6 +79,10 @@ export class UsersControllers {
                 .populate({
                     path: '_account',
                     select: '_id email _workspaces first_name last_name created_date'
+                })
+                .populate({
+                    path: '_account._workspaces',
+                    select: '_id workspace_name workspace_avatar'
                 });
 
             // If user not found

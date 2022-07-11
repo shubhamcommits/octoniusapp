@@ -1,15 +1,39 @@
 
 <nav id="sidebar">
   <div class="sidebar-header">
-   <!-- MENU BUTTON STARTS -->
-   <button type="button" id="sidebarCollapse" class="btn dismiss" (click)="switchSideBar()" >
-    <i class="material-icons">menu_open</i>
-  </button>
-  <!-- MENU BUTTON ENDS -->
+    <!-- MENU BUTTON STARTS -->
+    <button type="button" id="sidebarCollapse" class="btn dismiss" (click)="switchSideBar()" >
+      <i class="material-icons">menu_open</i>
+    </button>
+    <!-- MENU BUTTON ENDS -->
 
-      <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active">
-        <img src="assets/images/white_logo.svg" alt="" class="octonius-logo">
+    <!--
+    <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active">
+      <img src="assets/images/white_logo.svg" alt="" class="octonius-logo">
+    </a>
+    -->
+    <div *ngIf="userWorkspaces.length > 0" class="components" style="margin-top: -25px; width: 78%;">
+      <a href="#pageWorkspacesSubmenu" data-toggle="collapse" aria-expanded="true">
+        <app-secured-image [imgURL]="workspaceData?.workspace_avatar" [service]="'workspace'" [styleClass]="'avatar'">
+        </app-secured-image>
+        <i class="material-icons-outlined carret">keyboard_arrow_down</i>
       </a>
+    
+      <ul class="collapse list-unstyled" id="pageWorkspacesSubmenu">
+        <li *ngFor="let workspace of userWorkspaces">
+          <a (click)="goToWorkspace(workspace?._id || workspace)">
+            <app-secured-image [imgURL]="workspace?.workspace_avatar" [service]="'workspace'" [styleClass]="'avatar'">
+            </app-secured-image>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="userWorkspaces.length <= 0" class="components" style="margin-top: -25px; width: 78%;">
+      <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active">
+        <app-secured-image [imgURL]="workspaceData?.workspace_avatar" [service]="'workspace'" [styleClass]="'avatar'">
+        </app-secured-image>
+      </a>
+    </div>
   </div>
 
   <div class="menu-options">

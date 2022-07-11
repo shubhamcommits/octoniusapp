@@ -104,27 +104,27 @@ export class PublicFunctions {
     }
 
     async sendUpdatesToUserData(userData: Object) {
-        const storageService = this.injector.get(StorageService);
-        const utilityService = this.injector.get(UtilityService);
-        utilityService.updateUserData(userData);
-        storageService.setLocalData('userData', JSON.stringify(userData))
+      const storageService = this.injector.get(StorageService);
+      const utilityService = this.injector.get(UtilityService);
+      utilityService.updateUserData(userData);
+      storageService.setLocalData('userData', JSON.stringify(userData))
     }
 
     public async getCurrentAccount() {
-        let accountData: any = await this.getAccountDetailsFromService();
-        const utilityService = this.injector.get(UtilityService);
+      let accountData: any = await this.getAccountDetailsFromService();
+      const utilityService = this.injector.get(UtilityService);
 
-        if (!utilityService.objectExists(accountData)) {
-          accountData = await this.getAccountDetailsFromStorage();
-        }
+      if (!utilityService.objectExists(accountData)) {
+        accountData = await this.getAccountDetailsFromStorage();
+      }
 
-        if (!utilityService.objectExists(accountData)) {
-          accountData = await this.getAccountDetailsFromHTTP();
-        }
+      if (!utilityService.objectExists(accountData)) {
+        accountData = await this.getAccountDetailsFromHTTP();
+      }
 
-        this.sendUpdatesToAccountData(accountData);
+      this.sendUpdatesToAccountData(accountData);
 
-        return accountData || {};
+      return accountData || {};
     }
 
     async getAccountDetailsFromService() {
