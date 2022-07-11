@@ -13,7 +13,7 @@
         <!-- MENU BUTTON ENDS -->
 
         <div *ngIf="userWorkspaces.length > 0" class="components" style="margin-top: -25px; width: 78%;">
-            <a href="#pageWorkspacesSubmenu" data-toggle="collapse" aria-expanded="true">
+            <a href="#pageWorkspacesSubmenu" data-toggle="collapse" aria-expanded="true" style="padding: 10px 0;">
                 <app-secured-image [imgURL]="workspaceData?.workspace_avatar" [service]="'workspace'" [styleClass]="'avatar'">
                 </app-secured-image>
                 <span>{{ workspaceData?.workspace_name | truncatetext: 16 }}</span>
@@ -22,7 +22,7 @@
 
             <ul class="collapse list-unstyled" id="pageWorkspacesSubmenu">
                 <li *ngFor="let workspace of userWorkspaces">
-                    <a (click)="goToWorkspace(workspace?._id || workspace)">
+                    <a (click)="goToWorkspace(workspace?._id || workspace)" style="padding: 10px 0;">
                         <app-secured-image [imgURL]="workspace?.workspace_avatar" [service]="'workspace'" [styleClass]="'avatar'">
                         </app-secured-image>
                         {{ workspace?.workspace_name | truncatetext: 16 }}
@@ -31,7 +31,7 @@
             </ul>
         </div>
         <div *ngIf="userWorkspaces.length <= 0" class="components" style="margin-top: -25px; width: 78%;">
-            <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active">
+            <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active" style="padding: 10px 0;">
                 <app-secured-image [imgURL]="workspaceData?.workspace_avatar" [service]="'workspace'" [styleClass]="'avatar'">
                 </app-secured-image>
                 <span>{{ workspaceData?.workspace_name | truncatetext: 16 }}</span>
