@@ -13,7 +13,7 @@
     </a>
     -->
     <div *ngIf="userWorkspaces?.length > 0" class="components" style="margin-top: -25px; width: 78%;">
-      <a href="#pageWorkspacesSubmenu" data-toggle="collapse" aria-expanded="true" style="padding: 10px 0;">
+      <a href="#pageWorkspacesSubmenu" data-toggle="collapse" aria-expanded="true" style="padding: 10px 0;" [matTooltip]="workspaceData?.workspace_name">
         <app-secured-image [imgURL]="workspaceData?.workspace_avatar" [service]="'workspace'" [styleClass]="'avatar'">
         </app-secured-image>
         <i class="material-icons-outlined carret">keyboard_arrow_down</i>
@@ -21,7 +21,7 @@
     
       <ul class="collapse list-unstyled" id="pageWorkspacesSubmenu">
         <li *ngFor="let workspace of userWorkspaces">
-          <a (click)="goToWorkspace(workspace?._id || workspace)" style="padding: 10px 0;">
+          <a (click)="goToWorkspace(workspace?._id || workspace)" style="padding: 10px 0;" [matTooltip]="workspace?.workspace_name">
             <app-secured-image [imgURL]="workspace?.workspace_avatar" [service]="'workspace'" [styleClass]="'avatar'">
             </app-secured-image>
           </a>
@@ -29,7 +29,7 @@
       </ul>
     </div>
     <div *ngIf="userWorkspaces?.length <= 0" class="components" style="margin-top: -25px; width: 78%;">
-      <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active" style="padding: 10px 0;">
+      <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active" style="padding: 10px 0;" [matTooltip]="workspaceData?.workspace_name">
         <app-secured-image [imgURL]="workspaceData?.workspace_avatar" [service]="'workspace'" [styleClass]="'avatar'">
         </app-secured-image>
       </a>

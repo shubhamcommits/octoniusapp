@@ -51,6 +51,15 @@
             margin-top: -5px;
             margin-right: 5px;
         }
+
+        .workspace_name {
+            width: 63px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            float: left;
+            line-height: 35px;
+        }
     }
 }
 
