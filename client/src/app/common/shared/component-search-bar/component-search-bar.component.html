@@ -115,7 +115,7 @@
         </div>
     </div>
 
-    <mat-accordion *ngIf="type == 'workspace'">
+    <mat-accordion *ngIf="type == 'workspace' && DisabledMembers && DisabledMembers?.length > 0">
         <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
                 <mat-panel-title>
