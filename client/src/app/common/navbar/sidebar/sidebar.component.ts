@@ -209,8 +209,7 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
             setTimeout(async () => {
               this.socketService.serverInit();
               await this.getUserWorkspaces();
-              //resolve(this.utilityService.resolveAsyncPromise($localize`:@@sidebar.hi:Hi ${res['user']['first_name']}, welcome back to your workplace!`));
-              window.location.reload();
+              this.router.navigate(['/home']);
             }, 500);
           }
         }, (err) => {
