@@ -204,11 +204,12 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
               }
             });
           } else {
-            //if query parms exist redirect to teams permission page else normal flow
-            // note:- Code is for teams auth popup not for octonius app and only work in that case.
             setTimeout(async () => {
               this.socketService.serverInit();
               await this.getUserWorkspaces();
+              const navbar = document.getElementById('pageWorkspacesSubmenu');
+              navbar?.classList.remove('show');
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@iconsSidebar.hi:Hi ${res['user']['first_name']}, welcome back to your workplace!`));
               this.router.navigate(['/home']);
             }, 500);
           }
