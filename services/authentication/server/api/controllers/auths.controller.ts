@@ -564,10 +564,25 @@ export class AuthsController {
 
             // Find the account with having the same email as in req.body
             let user = await User.findOne({
-                _account: accountId,
-                _workspace: workspaceId,
-                active: true
-            });
+                    _account: accountId,
+                    _workspace: workspaceId,
+                    active: true
+                })
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields')
+                .populate({
+                    path: 'stats.favorite_groups',
+                    select: '_id group_name group_avatar'
+                })
+                .populate({
+                    path: '_account',
+                    select: '_id email _workspaces first_name last_name created_date'
+                });
+
+            if (user['stats'] && user['stats']['favorite_groups']) {
+                user['stats']['favorite_groups'].sort(function(a, b) {
+                  return b.group_name - a.group_name;
+                });
+            }
 
             // If user wasn't found or user was previsously removed/disabled, return error
             if (!user) {

@@ -103,16 +103,16 @@
         </context-group>
       </trans-unit>
       <trans-unit id="adminGeneral.enablingDecentralizedUserRoles" datatype="html">
-        <source>Turn this <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-success&quot;>"/>ON<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> to allow everyone to create Groups(private). This will reduce the number of user roles to Workplace Admin, Group Manager, Member, and Guest.</source>
-        <target state="translated">این را <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-success&quot;>"/>روشن<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> کنید تا به همه اجازه دهید Groups (خصوصی) ایجاد کنند. این باعث کاهش تعداد نقش‌های کاربر به مدیر محل کار، مدیر گروه، عضو و مهمان می‌شود.</target>
+        <source>Turn this <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-success&quot;&gt;"/>ON<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> to allow everyone to create Groups(private). This will reduce the number of user roles to Workplace Admin, Group Manager, Member, and Guest.</source>
+        <target state="translated">این را <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-success&quot;&gt;"/>روشن<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> کنید تا به همه اجازه دهید Groups (خصوصی) ایجاد کنند. این باعث کاهش تعداد نقش‌های کاربر به مدیر محل کار، مدیر گروه، عضو و مهمان می‌شود.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.html</context>
           <context context-type="linenumber">34,35</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGeneral.CentralizedUserRoles" datatype="html">
-        <source>Leave this <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-warning&quot;>"/>OFF<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> if your organization uses centralized user roles. Your Workplace Admins must assign Work Managers(only WM can create private Groups). This will create the following roles: Workplace Admin, Work Manager, Group Manager, Member, Guest.</source>
-        <target state="translated">اگر سازمان شما از نقش‌های کاربر متمرکز استفاده می‌کند، آن را <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-warning&quot;>"/>خاموش<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> بگذارید. مدیران محل کار شما باید مدیران کاری را تعیین کنند (فقط WM می‌تواند گروه‌های خصوصی ایجاد کند). این نقش های زیر را ایجاد می کند: مدیر محل کار، مدیر کار، مدیر گروه، عضو، مهمان.</target>
+        <source>Leave this <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-warning&quot;&gt;"/>OFF<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> if your organization uses centralized user roles. Your Workplace Admins must assign Work Managers(only WM can create private Groups). This will create the following roles: Workplace Admin, Work Manager, Group Manager, Member, Guest.</source>
+        <target state="translated">اگر سازمان شما از نقش‌های کاربر متمرکز استفاده می‌کند، آن را <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-warning&quot;&gt;"/>خاموش<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> بگذارید. مدیران محل کار شما باید مدیران کاری را تعیین کنند (فقط WM می‌تواند گروه‌های خصوصی ایجاد کند). این نقش های زیر را ایجاد می کند: مدیر محل کار، مدیر کار، مدیر گروه، عضو، مهمان.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.html</context>
           <context context-type="linenumber">37,39</context>
@@ -239,16 +239,16 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceAddDomain.chooseToMakeYourWorkspace" datatype="html">
-        <source> Choose to make your workplace sign up process either via invitation only, or allow anyone else with a certain email address domain to sign up.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br />"/> (ex - if you specify example.com, then users having email address with domain as example.com, can sign up!) </source>
-        <target state="translated">انتخاب کنید تا فرآیند ثبت نام در محل کار خود را فقط از طریق دعوتنامه انجام دهید، یا به افراد دیگری با دامنه آدرس ایمیل خاص اجازه ثبت نام دهید.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br />"/> (به عنوان مثال - اگر example.com را مشخص کنید، کاربرانی که آدرس ایمیل با دامنه به عنوان example.com دارند، می توانند ثبت نام کنند!)</target>
+        <source> Choose to make your workplace sign up process either via invitation only, or allow anyone else with a certain email address domain to sign up.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> (ex - if you specify example.com, then users having email address with domain as example.com, can sign up!) </source>
+        <target state="translated">انتخاب کنید تا فرآیند ثبت نام در محل کار خود را فقط از طریق دعوتنامه انجام دهید، یا به افراد دیگری با دامنه آدرس ایمیل خاص اجازه ثبت نام دهید.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> (به عنوان مثال - اگر example.com را مشخص کنید، کاربرانی که آدرس ایمیل با دامنه به عنوان example.com دارند، می توانند ثبت نام کنند!)</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
           <context context-type="linenumber">7,11</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceAddDomain.usingWorkspaceName" datatype="html">
-        <source>Using workplace name"<x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b>"/><x id="INTERPOLATION" equiv-text="{{ workspaceData?.workspace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b>"/>", any email adress from these domain can signup:</source>
-        <target state="translated">با استفاده از نام محل کار " <x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b>"/><x id="INTERPOLATION" equiv-text="{{ workspaceData?.workspace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b>"/> "، هر آدرس ایمیلی از این دامنه می تواند ثبت نام کند:</target>
+        <source>Using workplace name"<x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b&gt;"/><x id="INTERPOLATION" equiv-text="{{ workspaceData?.workspace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b&gt;"/>", any email adress from these domain can signup:</source>
+        <target state="translated">با استفاده از نام محل کار " <x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b&gt;"/><x id="INTERPOLATION" equiv-text="{{ workspaceData?.workspace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b&gt;"/> "، هر آدرس ایمیلی از این دامنه می تواند ثبت نام کند:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
           <context context-type="linenumber">13</context>
@@ -583,8 +583,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceIntegrations.workspaceIntegrations" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;>"/>cable<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Workplace Integrations</source>
-        <target state="translated"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;>"/>کابل<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> ادغام محل کار</target>
+        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;&gt;"/>cable<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Workplace Integrations</source>
+        <target state="translated"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;&gt;"/>کابل<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> ادغام محل کار</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations.component.html</context>
           <context context-type="linenumber">5</context>
@@ -943,8 +943,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceRolesInformationDialog.WADef1" datatype="html">
-        <source><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>manage the workplace settings, manually invite people, handle payments etc <x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>restore or archive groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>create private groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>access the global dashboard<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>assign roles to other members<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/></source>
-        <target state="translated"><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>مدیریت تنظیمات محل کار ، دستی دعوت مردم ، رسیدگی به پرداخت و غیره <x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>بازگرداندن یا بایگانی گروه ها<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>ایجاد گروه های خصوصی<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>دسترسی به داشبورد جهانی<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>اختصاص نقش به اعضای دیگر<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/></target>
+        <source><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>manage the workplace settings, manually invite people, handle payments etc <x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>restore or archive groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>create private groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>access the global dashboard<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>assign roles to other members<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/></source>
+        <target state="translated"><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>مدیریت تنظیمات محل کار ، دستی دعوت مردم ، رسیدگی به پرداخت و غیره <x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>بازگرداندن یا بایگانی گروه ها<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>ایجاد گروه های خصوصی<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>دسترسی به داشبورد جهانی<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>اختصاص نقش به اعضای دیگر<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workspace-roles-information-dialog/workspace-roles-information-dialog.component.html</context>
           <context context-type="linenumber">12,16</context>
@@ -959,8 +959,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceRolesInformationDialog.WMDef1" datatype="html">
-        <source><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/> create private groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>manage users and roles inside the groups they create<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>access the global dashboard<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>delete their groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/></source>
-        <target state="translated"><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/> ایجاد گروه های خصوصی<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>مدیریت کاربران و نقش در داخل گروه های آنها ایجاد<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>دسترسی به داشبورد جهانی<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>حذف گروه های خود را<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/></target>
+        <source><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/> create private groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>manage users and roles inside the groups they create<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>access the global dashboard<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>delete their groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/></source>
+        <target state="translated"><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/> ایجاد گروه های خصوصی<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>مدیریت کاربران و نقش در داخل گروه های آنها ایجاد<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>دسترسی به داشبورد جهانی<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>حذف گروه های خود را<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workspace-roles-information-dialog/workspace-roles-information-dialog.component.html</context>
           <context context-type="linenumber">25,28</context>
@@ -975,8 +975,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceRolesInformationDialog.GMDef1" datatype="html">
-        <source><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>they are created by the WM, inside a group<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>manage users and roles inside the group they belong<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>can access the group dashboard<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>can't create other groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>can delete their groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/></source>
-        <target state="translated"><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>آنها توسط WM ایجاد می شوند، در داخل یک گروه<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>مدیریت کاربران و نقش در داخل گروه آنها تعلق دارند<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>می تواند داشبورد گروه دسترسی داشته باشد<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>نمی تواند گروه های دیگری را ایجاد کند<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>می توانند گروه های خود را حذف کنند<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/></target>
+        <source><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>they are created by the WM, inside a group<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>manage users and roles inside the group they belong<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>can access the group dashboard<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>can't create other groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>can delete their groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/></source>
+        <target state="translated"><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>آنها توسط WM ایجاد می شوند، در داخل یک گروه<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>مدیریت کاربران و نقش در داخل گروه آنها تعلق دارند<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>می تواند داشبورد گروه دسترسی داشته باشد<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>نمی تواند گروه های دیگری را ایجاد کند<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>می توانند گروه های خود را حذف کنند<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workspace-roles-information-dialog/workspace-roles-information-dialog.component.html</context>
           <context context-type="linenumber">38,42</context>
@@ -991,8 +991,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceRolesInformationDialog.MDef1" datatype="html">
-        <source><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>they can create AGORAs<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>can create content inside the groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/></source>
-        <target state="translated"><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>آنها می توانند AGORAs ایجاد<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>می تواند محتوا را در داخل گروه ها ایجاد کند<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/></target>
+        <source><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>they can create AGORAs<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>can create content inside the groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/></source>
+        <target state="translated"><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>آنها می توانند AGORAs ایجاد<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>می تواند محتوا را در داخل گروه ها ایجاد کند<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workspace-roles-information-dialog/workspace-roles-information-dialog.component.html</context>
           <context context-type="linenumber">52,53</context>
@@ -1007,8 +1007,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceRolesInformationDialog.GDef1" datatype="html">
-        <source><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>isolated to the Group they are invited<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>can't access any Agora(Public Groups)<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/></source>
-        <target state="translated"><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>منزوی به گروه آنها دعوت می شوند<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>نمی تواند به هیچ Agora دسترسی داشته باشد(گروه های عمومی)<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/></target>
+        <source><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>isolated to the Group they are invited<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>can't access any Agora(Public Groups)<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/></source>
+        <target state="translated"><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>منزوی به گروه آنها دعوت می شوند<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>نمی تواند به هیچ Agora دسترسی داشته باشد(گروه های عمومی)<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workspace-roles-information-dialog/workspace-roles-information-dialog.component.html</context>
           <context context-type="linenumber">64,65</context>
@@ -1855,7 +1855,7 @@
         <target state="translated">فضای کاری شما در دسترس نیست، لطفا با سرپرست خود تماس بگیرید!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.ts</context>
-          <context context-type="linenumber">104</context>
+          <context context-type="linenumber">101</context>
         </context-group>
       </trans-unit>
       <trans-unit id="selectWorkspace.hi" datatype="html">
@@ -1863,11 +1863,11 @@
         <target state="translated">سلام <x id="PH" equiv-text="res['user']['first_name']"/>، به محل کار خود خوش آمدید!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.ts</context>
-          <context context-type="linenumber">122</context>
+          <context context-type="linenumber">119</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.ts</context>
-          <context context-type="linenumber">128</context>
+          <context context-type="linenumber">125</context>
         </context-group>
       </trans-unit>
       <trans-unit id="selectWorkspace.oopsErrorSigningIn" datatype="html">
@@ -1875,11 +1875,11 @@
         <target state="translated">اوه هنگام ورود به سیستم شما خطایی رخ داد، لطفاً دوباره امتحان کنید!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.ts</context>
-          <context context-type="linenumber">132</context>
+          <context context-type="linenumber">129</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.ts</context>
-          <context context-type="linenumber">138</context>
+          <context context-type="linenumber">135</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCalendar.previous" datatype="html">
@@ -2255,8 +2255,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.dragDropOrAdd" datatype="html">
-        <source>Drag and drop files here for easy upload. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Or use the NEW button for folders uploading.</source>
-        <target state="translated">برای آپلود آسان فایل ها را اینجا بکشید و رها کنید.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> یا از دکمه NEW برای آپلود پوشه ها استفاده کنید.</target>
+        <source>Drag and drop files here for easy upload. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Or use the NEW button for folders uploading.</source>
+        <target state="translated">برای آپلود آسان فایل ها را اینجا بکشید و رها کنید.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> یا از دکمه NEW برای آپلود پوشه ها استفاده کنید.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
           <context context-type="linenumber">14</context>
@@ -3395,8 +3395,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoPublish.done" datatype="html">
-        <source> Done?<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> When you are ready, you can click this button to PUBLISH the FORM and <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> let people answer.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> When it’s done, come back here and click UNPUBLISH in order to stop data <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> collection. </source>
-        <target state="translated"> انجام?<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> هنگامی که شما آماده, شما می توانید این دکمه را کلیک کنید برای انتشار فرم و <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> اجازه دهید مردم پاسخ دهند.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> هنگامی که آن را انجام می شود، دوباره به اینجا و کلیک بر روی UNPUBLISH به منظور جلوگیری از داده ها <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> مجموعه. </target>
+        <source> Done?<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> When you are ready, you can click this button to PUBLISH the FORM and <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> let people answer.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> When it’s done, come back here and click UNPUBLISH in order to stop data <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> collection. </source>
+        <target state="translated"> انجام?<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> هنگامی که شما آماده, شما می توانید این دکمه را کلیک کنید برای انتشار فرم و <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> اجازه دهید مردم پاسخ دهند.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> هنگامی که آن را انجام می شود، دوباره به اینجا و کلیک بر روی UNPUBLISH به منظور جلوگیری از داده ها <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> مجموعه. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-publish/flamingo-publish.component.html</context>
           <context context-type="linenumber">7,13</context>
@@ -3955,8 +3955,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupAutomationFlowsDialog.saveTime" datatype="html">
-        <source>Save time on manual processes and let Octonius do the heavy lifting. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Turn your Octonius board into an automation machine.</source>
-        <target state="translated">صرفه جویی در زمان در فرایندهای دستی و اجازه دهید Octonius انجام بلند کردن سنگین. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>تخته اکتونیوس خود را به یک ماشین اتوماسیون تبدیل کنید.</target>
+        <source>Save time on manual processes and let Octonius do the heavy lifting. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Turn your Octonius board into an automation machine.</source>
+        <target state="translated">صرفه جویی در زمان در فرایندهای دستی و اجازه دهید Octonius انجام بلند کردن سنگین. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>تخته اکتونیوس خود را به یک ماشین اتوماسیون تبدیل کنید.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flows-dialog/automation-flows-dialog.component.html</context>
           <context context-type="linenumber">19</context>
@@ -4035,8 +4035,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupCFDialog.isAnInputCF" datatype="html">
-        <source> Is a <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span *ngIf=&quot;field.input_type_text&quot;>"/>text<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/><x id="START_TAG_SPAN_1" ctype="x-span_1" equiv-text="&lt;span *ngIf=&quot;field.input_type_number&quot;>"/>number<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> Input Custom Field </source>
-        <target state="translated">یک <x id="START_TAG_SPAN_1" ctype="x-span_1" equiv-text="&lt;span *ngIf=&quot;field.input_type_number&quot;>"/>عدد<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span *ngIf=&quot;field.input_type_text&quot;>"/>متن<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> ورودی فیلد سفارشی است</target>
+        <source> Is a <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span *ngIf=&quot;field.input_type_text&quot;&gt;"/>text<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="START_TAG_SPAN_1" ctype="x-span_1" equiv-text="&lt;span *ngIf=&quot;field.input_type_number&quot;&gt;"/>number<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> Input Custom Field </source>
+        <target state="translated">یک <x id="START_TAG_SPAN_1" ctype="x-span_1" equiv-text="&lt;span *ngIf=&quot;field.input_type_number&quot;&gt;"/>عدد<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span *ngIf=&quot;field.input_type_text&quot;&gt;"/>متن<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> ورودی فیلد سفارشی است</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.html</context>
           <context context-type="linenumber">50,52</context>
@@ -4195,8 +4195,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="filesCustomFieldDialog.isAnInputCF" datatype="html">
-        <source> Is a <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span *ngIf=&quot;field.input_type_text&quot;>"/>text<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/><x id="START_TAG_SPAN_1" ctype="x-span_1" equiv-text="&lt;span *ngIf=&quot;field.input_type_number&quot;>"/>number<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> Input Custom Field </source>
-        <target state="translated">یک <x id="START_TAG_SPAN_1" ctype="x-span_1" equiv-text="&lt;span *ngIf=&quot;field.input_type_number&quot;>"/>عدد<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span *ngIf=&quot;field.input_type_text&quot;>"/>متن<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> ورودی فیلد سفارشی است</target>
+        <source> Is a <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span *ngIf=&quot;field.input_type_text&quot;&gt;"/>text<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="START_TAG_SPAN_1" ctype="x-span_1" equiv-text="&lt;span *ngIf=&quot;field.input_type_number&quot;&gt;"/>number<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> Input Custom Field </source>
+        <target state="translated">یک <x id="START_TAG_SPAN_1" ctype="x-span_1" equiv-text="&lt;span *ngIf=&quot;field.input_type_number&quot;&gt;"/>عدد<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span *ngIf=&quot;field.input_type_text&quot;&gt;"/>متن<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> ورودی فیلد سفارشی است</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/files-custom-fields-dialog/files-custom-fields-dialog.component.html</context>
           <context context-type="linenumber">50,52</context>
@@ -4423,8 +4423,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupAdmin.searchForOtherEmployees" datatype="html">
-        <source>Search for other employees within the organization and add them to your Group. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> This is how you usually create your team.</source>
-        <target state="translated">کارکنان دیگری را در داخل سازمان جستجو کنید و به گروه خود اضافه کنید. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> این است که شما معمولا ایجاد تیم خود را.</target>
+        <source>Search for other employees within the organization and add them to your Group. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> This is how you usually create your team.</source>
+        <target state="translated">کارکنان دیگری را در داخل سازمان جستجو کنید و به گروه خود اضافه کنید. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> این است که شما معمولا ایجاد تیم خود را.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
           <context context-type="linenumber">18</context>
@@ -4463,8 +4463,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupRAGDialog.createRulesToManage" datatype="html">
-        <source> RAG is the option for creating special access entities of users inside a group, in order to give them fine-grained control over something. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> If you want only a certain group of users to see a task, or to edit a board section, or view/edit/delete a file etc. </source>
-        <target state="translated">RAG گزینه ای برای ایجاد موجودیت های دسترسی ویژه کاربران در داخل یک گروه است تا به آنها کنترل دقیقی بر چیزی بدهد.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> اگر می خواهید فقط گروه خاصی از کاربران یک کار را ببینند، یا یک بخش هیئت مدیره را ویرایش کنند، یا یک فایل را مشاهده/ویرایش/حذف کنند و غیره.</target>
+        <source> RAG is the option for creating special access entities of users inside a group, in order to give them fine-grained control over something. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> If you want only a certain group of users to see a task, or to edit a board section, or view/edit/delete a file etc. </source>
+        <target state="translated">RAG گزینه ای برای ایجاد موجودیت های دسترسی ویژه کاربران در داخل یک گروه است تا به آنها کنترل دقیقی بر چیزی بدهد.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> اگر می خواهید فقط گروه خاصی از کاربران یک کار را ببینند، یا یک بخش هیئت مدیره را ویرایش کنند، یا یک فایل را مشاهده/ویرایش/حذف کنند و غیره.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.html</context>
           <context context-type="linenumber">14,18</context>
@@ -4615,8 +4615,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupSettings.RAGAllowAdminsToChose" datatype="html">
-        <source>RAG is the option for creating special bulks of users inside a group, in order to give them fine-grained control over something.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> If you want only a certain group of users to see a task, or to edit a board section, or view/edit/delete a file etc.</source>
-        <target state="translated">RAG گزینه ای برای ایجاد تعداد زیادی از کاربران در داخل یک گروه است تا به آنها کنترل دقیقی بر چیزی بدهد.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> اگر می خواهید فقط گروه خاصی از کاربران یک کار را ببینند، یا یک بخش هیئت مدیره را ویرایش کنند، یا یک فایل را مشاهده/ویرایش/حذف کنند و غیره.</target>
+        <source>RAG is the option for creating special bulks of users inside a group, in order to give them fine-grained control over something.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> If you want only a certain group of users to see a task, or to edit a board section, or view/edit/delete a file etc.</source>
+        <target state="translated">RAG گزینه ای برای ایجاد تعداد زیادی از کاربران در داخل یک گروه است تا به آنها کنترل دقیقی بر چیزی بدهد.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> اگر می خواهید فقط گروه خاصی از کاربران یک کار را ببینند، یا یک بخش هیئت مدیره را ویرایش کنند، یا یک فایل را مشاهده/ویرایش/حذف کنند و غیره.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
           <context context-type="linenumber">22</context>
@@ -6951,11 +6951,11 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">246</context>
+          <context context-type="linenumber">250</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">309</context>
+          <context context-type="linenumber">313</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.unexpectedError" datatype="html">
@@ -7035,11 +7035,11 @@
         <target state="translated">سلام <x id="PH" equiv-text="res['account']['first_name']"/>!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">278</context>
+          <context context-type="linenumber">282</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">290</context>
+          <context context-type="linenumber">294</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.oopsErrorSigningUp" datatype="html">
@@ -7047,23 +7047,23 @@
         <target state="translated">اوه هنگام ثبت نام شما خطایی رخ داد، لطفا دوباره امتحان کنید!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">282</context>
+          <context context-type="linenumber">286</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">294</context>
+          <context context-type="linenumber">298</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">302</context>
+          <context context-type="linenumber">306</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">337</context>
+          <context context-type="linenumber">341</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">349</context>
+          <context context-type="linenumber">353</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.hiGoogle" datatype="html">
@@ -7071,11 +7071,11 @@
         <target state="translated">سلام <x id="PH" equiv-text="res['account']['first_name']"/>!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">333</context>
+          <context context-type="linenumber">337</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">345</context>
+          <context context-type="linenumber">349</context>
         </context-group>
       </trans-unit>
       <trans-unit id="loungeDetails.edit" datatype="html">
@@ -7295,8 +7295,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="loungeNewElement.story" datatype="html">
-        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;material-icons-outlined&quot;>"/> history_edu <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> Story</source>
-        <target state="translated"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;material-icons-outlined&quot;>"/>history_edu<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> داستان</target>
+        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;material-icons-outlined&quot;&gt;"/> history_edu <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> Story</source>
+        <target state="translated"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;material-icons-outlined&quot;&gt;"/>history_edu<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> داستان</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/lounge/lounge-new-element/lounge-new-element.component.html</context>
           <context context-type="linenumber">13,15</context>
@@ -7307,8 +7307,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="loungeNewElement.event" datatype="html">
-        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;material-icons-outlined&quot;>"/> local_activity <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> Event</source>
-        <target state="translated">رویداد <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;material-icons-outlined&quot;>"/>local_activity<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
+        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;material-icons-outlined&quot;&gt;"/> local_activity <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> Event</source>
+        <target state="translated">رویداد <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;material-icons-outlined&quot;&gt;"/>local_activity<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/lounge/lounge-new-element/lounge-new-element.component.html</context>
           <context context-type="linenumber">34,36</context>
@@ -7319,16 +7319,16 @@
         </context-group>
       </trans-unit>
       <trans-unit id="loungeNewElement.lounge" datatype="html">
-        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;material-icons-outlined&quot;>"/> weekend <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> Lounge</source>
-        <target state="translated">سالن <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;material-icons-outlined&quot;>"/>آخر هفته<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
+        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;material-icons-outlined&quot;&gt;"/> weekend <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> Lounge</source>
+        <target state="translated">سالن <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;material-icons-outlined&quot;&gt;"/>آخر هفته<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/lounge/lounge-new-element/lounge-new-element.component.html</context>
           <context context-type="linenumber">55,57</context>
         </context-group>
       </trans-unit>
       <trans-unit id="loungeNewElement.category" datatype="html">
-        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;material-icons-outlined&quot;>"/> sell <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> Category</source>
-        <target state="translated"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;material-icons-outlined&quot;>"/>فروش<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> دسته بندی</target>
+        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;material-icons-outlined&quot;&gt;"/> sell <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> Category</source>
+        <target state="translated"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;material-icons-outlined&quot;&gt;"/>فروش<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> دسته بندی</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/lounge/lounge-new-element/lounge-new-element.component.html</context>
           <context context-type="linenumber">65,67</context>
@@ -7595,8 +7595,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="storyDetails.save" datatype="html">
-        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;material-icons-outlined&quot;>"/> history_edu <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> Save </source>
-        <target state="translated"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;material-icons-outlined&quot;>"/>history_edu<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> ذخیره کنید</target>
+        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;material-icons-outlined&quot;&gt;"/> history_edu <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> Save </source>
+        <target state="translated"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;material-icons-outlined&quot;&gt;"/>history_edu<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> ذخیره کنید</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/story-details/story-details.component.html</context>
           <context context-type="linenumber">44,48</context>
@@ -7707,8 +7707,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.assignedYou" datatype="html">
-        <source>assigned you on</source>
-        <target state="translated">اختصاص داده شده به شما در</target>
+        <source>assigned you</source>
+        <target state="needs-adaptation">اختصاص داده شده به شما در</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
           <context context-type="linenumber">57</context>
@@ -7815,24 +7815,24 @@
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.assignedYourGroup" datatype="html">
-        <source>assigned your group</source>
-        <target state="translated">گروه شما را اختصاص داد</target>
+        <source>sent a shuttle 🚀 to</source>
+        <target state="needs-adaptation">گروه شما را اختصاص داد</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
           <context context-type="linenumber">71</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.theTask" datatype="html">
-        <source>the task</source>
-        <target state="translated">وظیفه</target>
+        <source>The task: </source>
+        <target state="needs-adaptation">وظیفه</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
           <context context-type="linenumber">80</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.fromGroup" datatype="html">
-        <source>from group</source>
-        <target state="translated">از گروه</target>
+        <source>was sent from</source>
+        <target state="needs-adaptation">از گروه</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
           <context context-type="linenumber">86</context>
@@ -8283,8 +8283,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="peopleDirectory.purposeOfPeopleDirectory" datatype="html">
-        <source> The purpose of <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span style=&quot;color: #2AA578;&quot;>"/>People Directory<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> is to help you find colleagues and make it easier to connect with them. </source>
-        <target state="translated">هدف <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span style=&quot;color: #2AA578;&quot;>"/>People Directory<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> این است که به شما کمک کند همکاران را پیدا کنید و ارتباط با آنها را آسان تر کنید.</target>
+        <source> The purpose of <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span style=&quot;color: #2AA578;&quot;&gt;"/>People Directory<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> is to help you find colleagues and make it easier to connect with them. </source>
+        <target state="translated">هدف <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span style=&quot;color: #2AA578;&quot;&gt;"/>People Directory<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> این است که به شما کمک کند همکاران را پیدا کنید و ارتباط با آنها را آسان تر کنید.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/people-directory/people-directory.component.html</context>
           <context context-type="linenumber">88,90</context>
@@ -9299,8 +9299,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="userProfile.fetchInfo" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;>"/>cable<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Fetch Information from LDAP </source>
-        <target state="translated"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;>"/>کابل<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> واکشی اطلاعات از LDAP</target>
+        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;&gt;"/>cable<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Fetch Information from LDAP </source>
+        <target state="translated"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;&gt;"/>کابل<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> واکشی اطلاعات از LDAP</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-profile/user-profile.component.html</context>
           <context context-type="linenumber">12</context>
@@ -9567,8 +9567,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="northStarPage.setAndAchieveStrategic" datatype="html">
-        <source> Set and achieve strategic goals. Align your organization. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Connect your company goals and the work to support them in one place. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>You can see progress to keep teams on track. And teams can work wisely to get the right things done. </source>
-        <target state="translated"> تعیین و رسیدن به اهداف استراتژیک. سازمان خود را همتراز کنید. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> اهداف شرکت خود و کار برای حمایت از آنها را در یک مکان متصل کنید. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>شما می توانید پیشرفت برای نگه داشتن تیم در مسیر را ببینید. و تیم ها می توانند عاقلانه کار کنند تا کارهای درست را انجام دهند. </target>
+        <source> Set and achieve strategic goals. Align your organization. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Connect your company goals and the work to support them in one place. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>You can see progress to keep teams on track. And teams can work wisely to get the right things done. </source>
+        <target state="translated"> تعیین و رسیدن به اهداف استراتژیک. سازمان خود را همتراز کنید. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> اهداف شرکت خود و کار برای حمایت از آنها را در یک مکان متصل کنید. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>شما می توانید پیشرفت برای نگه داشتن تیم در مسیر را ببینید. و تیم ها می توانند عاقلانه کار کنند تا کارهای درست را انجام دهند. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/north-star-page/north-star-page.component.html</context>
           <context context-type="linenumber">15,18</context>
@@ -9583,8 +9583,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="pulse.pulseIsMicroAnnouncement" datatype="html">
-        <source> A pulse is a micro announcement from a Group. It’s like twitter for Enterprise. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Even if you don’t have access to a group, you can still see what’s happening there. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Pulses create transparency and a sense of mission for your organization. </source>
-        <target state="translated"> یک پالس یک اطلاعیه میکرو از یک گروه است. مثل توییتر برای انترپرایز است. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>حتی اگر به گروهی دسترسی  نکنید، باز هم می توانید ببینید که در آنجا چه اتفاقی می افتد. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>پالس ها شفافیت و احساس ماموریت را برای سازمان شما ایجاد می کنند. </target>
+        <source> A pulse is a micro announcement from a Group. It’s like twitter for Enterprise. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Even if you don’t have access to a group, you can still see what’s happening there. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Pulses create transparency and a sense of mission for your organization. </source>
+        <target state="translated"> یک پالس یک اطلاعیه میکرو از یک گروه است. مثل توییتر برای انترپرایز است. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>حتی اگر به گروهی دسترسی  نکنید، باز هم می توانید ببینید که در آنجا چه اتفاقی می افتد. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>پالس ها شفافیت و احساس ماموریت را برای سازمان شما ایجاد می کنند. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/pulse/pulse.component.html</context>
           <context context-type="linenumber">14,18</context>
@@ -9911,7 +9911,7 @@
         <target state="translated">لطفا صبر کنید، در حالی که ما شما را به طور امن خارج...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
-          <context context-type="linenumber">75</context>
+          <context context-type="linenumber">105</context>
         </context-group>
       </trans-unit>
       <trans-unit id="iconsSidebar.successfullyLoggedOut" datatype="html">
@@ -9919,7 +9919,7 @@
         <target state="translated">با موفقیت وارد سیستم شوید!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
-          <context context-type="linenumber">87</context>
+          <context context-type="linenumber">112</context>
         </context-group>
       </trans-unit>
       <trans-unit id="iconsSidebar.errorLoggingOut" datatype="html">
@@ -9927,11 +9927,43 @@
         <target state="translated">خطا رخ داده است در حالی که ورود به سیستم شما!, لطفا دوباره سعی کنید!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
-          <context context-type="linenumber">90</context>
+          <context context-type="linenumber">115</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
-          <context context-type="linenumber">95</context>
+          <context context-type="linenumber">120</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="iconsSidebar.pleaseWaitSignYouIn" datatype="html">
+        <source>Please wait while we sign you in...</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
+          <context context-type="linenumber">160</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="iconsSidebar.unexpectedError" datatype="html">
+        <source>There's some unexpected error occurred, please try again later!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
+          <context context-type="linenumber">164</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="iconsSidebar.workspaceIsNotAvailable" datatype="html">
+        <source>Your workspace is not available, please contact your administrator!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
+          <context context-type="linenumber">194</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="iconsSidebar.oopsErrorSigningIn" datatype="html">
+        <source>Oops some error occurred while signing you in, please try again!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
+          <context context-type="linenumber">214</context>
         </context-group>
       </trans-unit>
       <trans-unit id="mobileNavbar.errorFetchingProfile" datatype="html">
@@ -9983,7 +10015,7 @@
         <target state="translated">فضای من</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">19</context>
+          <context context-type="linenumber">47</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.favorites" datatype="html">
@@ -9991,7 +10023,7 @@
         <target state="translated">علاقه مندی ها</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">27</context>
+          <context context-type="linenumber">55</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.exploreWork" datatype="html">
@@ -9999,7 +10031,7 @@
         <target state="translated">محل</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">50</context>
+          <context context-type="linenumber">77</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.administration" datatype="html">
@@ -10007,7 +10039,7 @@
         <target state="translated">مدیریت</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">61</context>
+          <context context-type="linenumber">88</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.myAccount" datatype="html">
@@ -10015,7 +10047,7 @@
         <target state="translated">حساب من</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">76</context>
+          <context context-type="linenumber">103</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.signOut" datatype="html">
@@ -10023,7 +10055,7 @@
         <target state="translated">خروج</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">88</context>
+          <context context-type="linenumber">115</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.pleaseWaitWhileLogOut" datatype="html">
@@ -10031,7 +10063,7 @@
         <target state="translated">لطفا صبر کنید، در حالی که ما شما را به طور امن خارج...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">98</context>
+          <context context-type="linenumber">107</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.successfullyLogOut" datatype="html">
@@ -10039,7 +10071,7 @@
         <target state="translated">با موفقیت وارد سیستم شوید!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">110</context>
+          <context context-type="linenumber">114</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.errorWhileLogOut" datatype="html">
@@ -10047,11 +10079,43 @@
         <target state="translated">خطا رخ داده است در حالی که ورود به سیستم شما!, لطفا دوباره سعی کنید!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">113</context>
+          <context context-type="linenumber">117</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">118</context>
+          <context context-type="linenumber">122</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebar.pleaseWaitSignYouIn" datatype="html">
+        <source>Please wait while we sign you in...</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">163</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebar.unexpectedError" datatype="html">
+        <source>There's some unexpected error occurred, please try again later!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">167</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebar.workspaceIsNotAvailable" datatype="html">
+        <source>Your workspace is not available, please contact your administrator!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">197</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebar.oopsErrorSigningIn" datatype="html">
+        <source>Oops some error occurred while signing you in, please try again!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">217</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userAccountNavbar.profile" datatype="html">
@@ -10495,8 +10559,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupPostbox.whatAreYouWorkingOn" datatype="html">
-        <source> What are you working on, <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/><x id="INTERPOLATION" equiv-text="{{ userData?.first_name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>? </source>
-        <target state="translated"> روی چه چیزی کار می کنید، <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>{{ userData؟. first_name }}<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>؟ </target>
+        <source> What are you working on, <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="{{ userData?.first_name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/>? </source>
+        <target state="translated"> روی چه چیزی کار می کنید، <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/>{{ userData؟. first_name }}<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/>؟ </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-postbox.component.html</context>
           <context context-type="linenumber">15,17</context>
@@ -12645,8 +12709,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="memberDialog.openChart" datatype="html">
-        <source> Open on <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br />"/> Organization Chart </source>
-        <target state="translated">باز کنید<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br />"/> چارت سازمانی</target>
+        <source> Open on <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> Organization Chart </source>
+        <target state="translated">باز کنید<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> چارت سازمانی</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/member-dialog/member-dialog.component.html</context>
           <context context-type="linenumber">66,68</context>

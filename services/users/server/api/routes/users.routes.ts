@@ -99,6 +99,9 @@ routes.put('/image', userFileHandler, user.updateImage);
 // PUT - Updates the user´s password on the basis of userId
 routes.put('/change-password', user.changePassword);
 
+// GET - Get user list of workspaces
+routes.get('/:userId/userWorkspaces', user.getAccountWorkspaces);
+
 // - Integrations -
 
 // Add a new token for a specific integration

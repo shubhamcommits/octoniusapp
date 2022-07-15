@@ -41,7 +41,7 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
     ) { }
 
   async ngOnInit() {
-    this.accountData = await this.publicFunctions.getAccountDetailsFromStorage();
+    this.accountData = await this.publicFunctions.getCurrentAccount();
     if (!this.accountData || JSON.stringify(this.accountData) == JSON.stringify({})) {
       this.router.navigate(['']);
     }
@@ -83,9 +83,6 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
    */
   selectWorkspaceServiceFunction(accountId: string, workspaceId: string) {
     return new Promise(async (resolve, reject) => {
-
-
-
         this.subSink.add(this.authService.selectWorkspace(accountId, workspaceId)
           .subscribe(async (res) => {
             this.clearUserData();
@@ -107,7 +104,7 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
                     this.storageService.clear();
                     this.publicFunctions.sendUpdatesToGroupData({});
                     this.publicFunctions.sendUpdatesToRouterState({});
-                    this.publicFunctions.sendUpdatesToUserData({});
+                    this.clearUserData();
                     this.publicFunctions.sendUpdatesToWorkspaceData({});
                     this.socketService.disconnectSocket();
                     this.router.navigate(['/home']);

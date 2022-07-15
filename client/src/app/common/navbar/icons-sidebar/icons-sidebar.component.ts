@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Injector, Input, EventEmitter, Output, OnChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy, Injector, Input, EventEmitter, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
@@ -9,22 +9,15 @@ import { SocketService } from 'src/shared/services/socket-service/socket.service
 import { SubSink } from 'subsink';
 import { MatSidenav } from '@angular/material/sidenav';
 import { UserService } from 'src/shared/services/user-service/user.service';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-icons-sidebar',
   templateUrl: './icons-sidebar.component.html',
   styleUrls: ['./icons-sidebar.component.scss']
 })
-export class IconsSidebarComponent implements OnInit, OnDestroy {
-
-  constructor(
-    private injector: Injector,
-    private storageService: StorageService,
-    private authService: AuthService,
-    private socketService: SocketService,
-    private userService: UserService,
-    private router: Router
-  ) { }
+export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() sideNav: MatSidenav;
   @Input() iconsSidebar = false;
@@ -33,6 +26,9 @@ export class IconsSidebarComponent implements OnInit, OnDestroy {
 
   // CURRENT USER DATA
   userData: any;
+
+  accountData: any = {};
+  userWorkspaces = [];
 
   // Workspace data for the current workspace
   public workspaceData: any = {};
@@ -52,12 +48,29 @@ export class IconsSidebarComponent implements OnInit, OnDestroy {
   // Utility Service
   public utilityService = this.injector.get(UtilityService);
 
-  async ngOnInit() {
-    // FETCH THE USER DETAILS
-    this.userData = await this.publicFunctions.getCurrentUser();
+  constructor(
+    private injector: Injector,
+    private storageService: StorageService,
+    private authService: AuthService,
+    private socketService: SocketService,
+    private userService: UserService,
+    private managementPortalService: ManagementPortalService,
+    private router: Router
+  ) { }
 
-    // Fetch the current workspace data
-    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+  async ngOnInit() {
+    await this.initProperties();
+  }
+
+  async ngOnChanges(changes: SimpleChanges) {
+    for (const propName in changes) {
+      const change = changes[propName];
+      const to = change.currentValue;
+      if (propName === 'userGroups') {
+        this.userGroups = to;
+        await this.sort();
+      }
+    }
   }
 
   /**
@@ -65,6 +78,23 @@ export class IconsSidebarComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy(): void {
     this.subSink.unsubscribe();
+  }
+
+  async initProperties() {
+    this.userData = await this.publicFunctions.getCurrentUser();
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    this.accountData = await this.publicFunctions.getCurrentAccount();
+    await this.getUserWorkspaces();
+  }
+
+  async sort() {
+    this.userGroups.sort((t1, t2) => {
+      const name1 = t1?.group_name.toLowerCase();
+      const name2 = t2?.group_name.toLowerCase();
+      if (name1 > name2) { return 1; }
+      if (name1 < name2) { return -1; }
+      return 0;
+    });
   }
 
   /**
@@ -75,13 +105,8 @@ export class IconsSidebarComponent implements OnInit, OnDestroy {
       this.utilityService.asyncNotification($localize`:@@iconsSidebar.pleaseWaitWhileWeLogYouOut:Please wait, while we log you out securely...`,
         new Promise((resolve, reject) => {
           this.authService.signout().toPromise()
-            .then((res) => {
-              this.storageService.clear();
-              this.publicFunctions.sendUpdatesToGroupData({})
-              this.publicFunctions.sendUpdatesToRouterState({})
-              this.publicFunctions.sendUpdatesToUserData({})
-              this.publicFunctions.sendUpdatesToAccountData({})
-              this.publicFunctions.sendUpdatesToWorkspaceData({})
+            .then(async (res) => {
+              await this.clearUserData();
               this.socketService.disconnectSocket();
               this.router.navigate(['/']);
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@iconsSidebar.successfullyLoggedOut:Successfully Logged out!`));
@@ -120,5 +145,95 @@ export class IconsSidebarComponent implements OnInit, OnDestroy {
   changeToPersonalGroup() {
     this.publicFunctions.sendUpdatesToGroupData({});
     this.router.navigate(['/dashboard', 'myspace', 'inbox']);
+  }
+
+  async getUserWorkspaces() {
+    await this.userService.getUserWorkspaces(this.userData?._id).then(res => {
+      this.userWorkspaces = res['workspaces'].filter(workspace => (workspace._id || workspace) != this.workspaceData?._id);
+    }).catch(err => {
+      this.userWorkspaces = [];
+    });
+  }
+
+  goToWorkspace(workspaceId: string) {
+    try {
+      this.utilityService.asyncNotification($localize`:@@iconsSidebar.pleaseWaitSignYouIn:Please wait while we sign you in...`,
+        this.selectWorkspaceServiceFunction(this.accountData._id, workspaceId));
+    } catch (err) {
+      console.log('There\'s some unexpected error occurred, please try again later!', err);
+      this.utilityService.errorNotification($localize`:@@iconsSidebar.unexpectedError:There\'s some unexpected error occurred, please try again later!`);
+    }
+  }
+
+  /**
+   * This implements the service function for @function selectWorkspace(userData)
+   * @param userData
+   */
+  selectWorkspaceServiceFunction(accountId: string, workspaceId: string) {
+    return new Promise(async (resolve, reject) => {
+      this.subSink.add(this.authService.selectWorkspace(accountId, workspaceId)
+        .subscribe(async (res) => {
+          await this.clearUserData();
+          this.publicFunctions.sendUpdatesToUserData({});
+          await this.storeUserData(res);
+
+          await this.initProperties();
+          await this.sort();
+
+          this.userGroups = this.userData['stats']['favorite_groups'];
+          const workspaceData = await this.publicFunctions.getCurrentWorkspace();
+
+          let workspaceBlocked = false;
+          await this.managementPortalService.getBillingStatus(workspaceId, workspaceData['management_private_api_key']).then(res => {
+            if (res['blocked'] ) {
+              workspaceBlocked = res['blocked'];
+            }
+          });
+
+          if (workspaceBlocked) {
+            this.utilityService.workplaceBlockedNotification($localize`:@@iconsSidebar.workspaceIsNotAvailable:Your workspace is not available, please contact your administrator!`).then(res => {
+              if (res.dismiss === Swal.DismissReason.close) {
+                this.authService.signout().subscribe((res) => {
+                  this.clearUserData();
+                  this.socketService.disconnectSocket();
+                  this.router.navigate(['/home']);
+                });
+              }
+            });
+          } else {
+            //if query parms exist redirect to teams permission page else normal flow
+            // note:- Code is for teams auth popup not for octonius app and only work in that case.
+            setTimeout(async () => {
+              this.socketService.serverInit();
+              await this.getUserWorkspaces();
+              //resolve(this.utilityService.resolveAsyncPromise($localize`:@@iconsSidebar.hi:Hi ${res['user']['first_name']}, welcome back to your workplace!`));
+              window.location.reload();
+            }, 500);
+          }
+        }, (err) => {
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@iconsSidebar.oopsErrorSigningIn:Oops some error occurred while signing you in, please try again!`))
+      }));
+    });
+  }
+
+  /**
+   * This function clear the user related data in the browser
+   */
+  clearUserData() {
+    this.storageService.clear();
+    this.publicFunctions.sendUpdatesToGroupData({});
+    this.publicFunctions.sendUpdatesToRouterState({});
+    this.publicFunctions.sendUpdatesToUserData({});
+    this.publicFunctions.sendUpdatesToAccountData({});
+    this.publicFunctions.sendUpdatesToWorkspaceData({});
+  }
+
+  /**
+   * This function stores the user related data and token for future reference in the browser
+   * @param res
+   */
+  storeUserData(res: Object) {
+    this.publicFunctions.sendUpdatesToUserData(res['user']);
+    this.storageService.setLocalData('authToken', JSON.stringify(res['token']));
   }
 }

@@ -79,6 +79,10 @@ export class UsersControllers {
                 .populate({
                     path: '_account',
                     select: '_id email _workspaces first_name last_name created_date'
+                })
+                .populate({
+                    path: '_account._workspaces',
+                    select: '_id workspace_name workspace_avatar'
                 });
 
             // If user not found
@@ -373,6 +377,44 @@ export class UsersControllers {
             // Send status 200 response
             return res.status(200).json({
                 message: 'Password updated!'
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for fetching the account details of the  user
+     * @param { userId } req.params
+     * @param res
+     * @param next
+     */
+    async getAccountWorkspaces(req: Request, res: Response, next: NextFunction) {
+
+        const { params: { userId } } = req;
+
+        try {
+
+            // Find the user based on the userId
+            const user = await User.findOne({ _id: userId }).lean();
+
+            // If user not found
+            if (!user) {
+                return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
+            }
+
+            const account = await Account.findOne({_id: user._account})
+                .populate('_workspaces', '_id workspace_name workspace_avatar').lean();
+
+            // If user not found
+            if (!account) {
+                return sendError(res, new Error('Unable to find the account, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
+            }
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Workspaces found!',
+                workspaces: account._workspaces
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
