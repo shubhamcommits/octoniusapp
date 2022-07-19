@@ -123,6 +123,7 @@ export class UserWorkloadCalendarComponent implements OnInit {
         const dialogRef = this.dialog.open(UserAvailabilityDayDialogComponent, {
           minWidth: '20%',
           disableClose: true,
+          hasBackdrop: true,
           data: data
         });
 
