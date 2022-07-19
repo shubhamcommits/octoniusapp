@@ -121,7 +121,7 @@ export class UserWorkloadCalendarComponent implements OnInit {
           userId: this.userId
         }
         const dialogRef = this.dialog.open(UserAvailabilityDayDialogComponent, {
-          width: '15%',
+          minWidth: '20%',
           disableClose: true,
           data: data
         });
