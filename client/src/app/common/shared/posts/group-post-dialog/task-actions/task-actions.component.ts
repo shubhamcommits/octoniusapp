@@ -95,7 +95,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
                 group.sections = sections;
               });
             }
-            if (group._id != this.groupData._id && group.sections) {
+            if (group._id != this.groupData._id && group.sections && group.sections.length > 0) {
               this.userGroups.push(group);
             }
           });
