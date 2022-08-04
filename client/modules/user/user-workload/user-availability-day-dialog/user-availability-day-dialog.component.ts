@@ -40,7 +40,7 @@ export class UserAvailabilityDayDialogComponent implements OnInit {
     await this.utilityService.asyncNotification($localize`:@@userAvailabilityDAyDialog.pleaseWaitSavingDays:Please wait we are saving your days...`, new Promise((resolve, reject) => {
       const days = this.selectedDays.map(day => {
         return {
-          date: day.date ? moment(day.date).format("YYYY-MM-DD"):null,
+          date: day.date ? moment(day.date).format("YYYY-MM-DD") : null,
           type: (this.selectedReason == 'personal day') ? 'personal' : this.selectedReason,
           approved: true // TODO - this needs to be dynamic and aproved by manager
         }
