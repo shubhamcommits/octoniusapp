@@ -2046,6 +2046,7 @@ export class GroupController {
                         }
                         */
 
+                        /*
                         // Send join group confirmation email
                         axios.post(`${process.env.MANAGEMENT_URL}/api/mail/group-joined`, {
                             API_KEY: workspace.management_private_api_key,
@@ -2056,6 +2057,7 @@ export class GroupController {
                             memberData: user,
                             adminData: adminData
                         });
+                        */
                     });
                 }
             }
