@@ -86,7 +86,9 @@ export class CommonNavbarComponent implements OnInit, OnDestroy {
       this.activeState = event;
     });
 
-    this.checkCanActivateBilling();
+    // Disabling the stripe integration for now, we are handling the payments and blocking the workspace manualy
+    //this.checkCanActivateBilling();
+    this.canActivateBilling = false;
   }
 
   /**

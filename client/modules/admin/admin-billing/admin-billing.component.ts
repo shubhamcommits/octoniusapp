@@ -31,20 +31,22 @@ export class AdminBillingComponent implements OnInit  {
     this.publicFunctions.sendUpdatesToRouterState({
       state: 'admin'
     })
-
-    let utilityService = this.injector.get(UtilityService)
-
+    
     // Fetches the user data
     this.userData = await this.publicFunctions.getCurrentUser();
 
     // Fetches the workspace data
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
+    // Disabling the stripe integration for now, we are handling the payments and blocking the workspace manualy
+    /*
+    let utilityService = this.injector.get(UtilityService)
     this.managementPortalService.isInTryOut(this.workspaceData?._id, this.workspaceData?.management_private_api_key).then(res => {
       if ((this.userData?.role == 'admin' || this.userData?.role == 'owner')
           && res['status']) {
         utilityService.openTryOutNotification(res['time_remaining']);
       }
     });
+    */
   }
 }
