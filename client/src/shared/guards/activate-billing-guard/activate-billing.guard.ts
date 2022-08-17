@@ -19,7 +19,9 @@ export class ActivateBillingGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      return this.checkBillingStatus() && this.isAdminUser();
+      return false;
+      // Disabling the stripe integration for now, we are handling the payments and blocking the workspace manualy
+      // return this.checkBillingStatus() && this.isAdminUser();
   }
 
   async checkBillingStatus() {

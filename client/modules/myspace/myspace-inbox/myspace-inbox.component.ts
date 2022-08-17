@@ -49,12 +49,15 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
 
     this.publicFunctions.sendUpdatesToGroupData({});
 
+    // Disabling the stripe integration for now, we are handling the payments and blocking the workspace manualy
+    /*
     this.managementPortalService.isInTryOut(workspaceData['_id'], workspaceData['management_private_api_key']).then(res => {
       if ((this.userData?.role == 'admin' || this.userData?.role == 'owner')
           && res['status']) {
         this.utilityService.openTryOutNotification(res['time_remaining']);
       }
     });
+    */
   }
 
   /**
