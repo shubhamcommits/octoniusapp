@@ -93,7 +93,7 @@ export class WelcomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.possibleIntegrations = await this.publicFunctions.getPossibleIntegrations();
 
     this.activeDirectoryAvailable = this.possibleIntegrations && this.possibleIntegrations?.is_azure_ad_connected && this.possibleIntegrations?.azure_ad_clientId && this.possibleIntegrations?.azure_ad_authority_cloud_url;
-    this.googleAvailable = this.possibleIntegrations && this.possibleIntegrations?.is_google_connected && this.possibleIntegrations?.google_client_id;
+    this.googleAvailable = (this.possibleIntegrations && this.possibleIntegrations?.is_google_connected && this.possibleIntegrations?.google_client_id) || !this.possibleIntegrations.is_on_premise_environment;
     this.ssoAvailable = this.activeDirectoryAvailable || this.googleAvailable;
 
     if (this.activeDirectoryAvailable) {
@@ -116,7 +116,7 @@ export class WelcomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     if( this.possibleIntegrations) {
       gapi.load('auth2', () => {
         this.auth2 = gapi.auth2.init({
-          'client_id': this.possibleIntegrations.google_client_id,
+          'client_id': environment.GOOGLE_OCTONIUS_CLIENT_ID,//this.possibleIntegrations.google_client_id,
           'scope': environment.GOOGLE_LOGIN_SCOPE,
           'immediate': false,
           'access_type': 'offline',
