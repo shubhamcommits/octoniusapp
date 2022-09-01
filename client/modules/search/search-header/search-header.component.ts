@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef, Injector } from '@angular/core';
 import { SearchService } from 'src/shared/services/search-service/search.service';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-search-header',
@@ -50,7 +51,8 @@ export class SearchHeaderComponent implements OnInit {
 
   constructor(
     private searchService: SearchService,
-    private injector: Injector
+    private injector: Injector,
+    private mdDialogRef: MatDialogRef<SearchHeaderComponent>
   ) { }
 
   async ngOnInit() {
@@ -310,5 +312,9 @@ export class SearchHeaderComponent implements OnInit {
 
   formateDate(date) {
     return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
+  }
+
+  closeSearch() {
+    this.mdDialogRef.close();
   }
 }

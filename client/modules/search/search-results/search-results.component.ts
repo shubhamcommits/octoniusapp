@@ -1,10 +1,11 @@
-import { Component, OnChanges, Input, SimpleChanges, Injector, LOCALE_ID, Inject } from '@angular/core';
+import { Component, OnChanges, Input, SimpleChanges, Injector, LOCALE_ID, Inject, Output, EventEmitter } from '@angular/core';
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { LibreofficeService } from 'src/shared/services/libreoffice-service/libreoffice.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { FilesService } from 'src/shared/services/files-service/files.service';
 
 @Component({
   selector: 'app-search-results',
@@ -16,6 +17,8 @@ export class SearchResultsComponent implements OnChanges {
   @Input() data: any;
   @Input() type: string;
 
+  @Output() closeSearchEvent = new EventEmitter();
+
   customFields: any = [];
 
   // Public Functions Object
@@ -26,6 +29,7 @@ export class SearchResultsComponent implements OnChanges {
       public storageService: StorageService,
       public utilityService: UtilityService,
       private libreofficeService: LibreofficeService,
+      private filesService: FilesService,
       private injector: Injector
     ) { }
 
@@ -34,16 +38,24 @@ export class SearchResultsComponent implements OnChanges {
 
     if (this.data) {
       // Get the CF names used
-      if (this.type == 'file' && this.data?.custom_fields) {
-        const customFieldsKeys = Object.keys(this.data?.custom_fields);
-        this.customFields = [];
-        if (this.data._group && this.data._group.custom_fields) {
-          this.data._group.custom_fields.forEach(cf => {
-            const index = (customFieldsKeys) ? customFieldsKeys.findIndex(key => key == cf.name) : -1;
-            if (index >= 0 && this.data?.custom_fields[cf.name] && this.data?.custom_fields[cf.name] != '') {
-              this.customFields.push(cf);
-            }
-          });
+      if (this.type == 'file') {
+
+        await this.filesService.getPathToFile(this.data._id).then(res => {
+          this.data.path_to_file = res['filePath']
+        });
+        //this._router.navigate(['/dashboard', 'work', 'groups', 'files'], { queryParams: { folder: data?._folder?._id || data?._folder } });
+
+        if (this.data?.custom_fields) {
+          const customFieldsKeys = Object.keys(this.data?.custom_fields);
+          this.customFields = [];
+          if (this.data._group && this.data._group.custom_fields) {
+            this.data._group.custom_fields.forEach(cf => {
+              const index = (customFieldsKeys) ? customFieldsKeys.findIndex(key => key == cf.name) : -1;
+              if (index >= 0 && this.data?.custom_fields[cf.name] && this.data?.custom_fields[cf.name] != '') {
+                this.customFields.push(cf);
+              }
+            });
+          }
         }
       } else if (this.type == 'post' && this.data?.task && this.data?.task?.custom_fields) {
         const customFieldsKeys = Object.keys(this.data?.task?.custom_fields);
@@ -164,5 +176,9 @@ export class SearchResultsComponent implements OnChanges {
 
   openFullscreenModal(userId: string) {
     this.utilityService.openMeberBusinessCard(userId);
+  }
+
+  closeSearch() {
+    this.closeSearchEvent.emit();
   }
 }

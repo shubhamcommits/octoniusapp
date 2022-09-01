@@ -1,6 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import { sendError } from "../../utils/senderror";
 import { FilesService, FoldersService } from "../services";
+import { File, Folder } from '../models';
 import axios from 'axios';
 // Create instance of files service
 let filesService = new FilesService();
@@ -132,6 +133,55 @@ export class FilesControllers {
                 message: 'File versions retrieved!',
                 fileVersions: fileVersions
             })
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async getPathToFile(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Fetch the fileId from the request
+            let { fileId } = req.params
+
+            // If fileId is not found, then throw the error
+            if (!fileId) {
+                return res.status(400).json({
+                    message: 'Please pass the fileId in the request params'
+                });
+
+            }
+
+            let filePath = '';
+
+            const file: any = await File.findById(fileId)
+                .populate([
+                    { path: '_group', select: '_id group_name' },
+                    { path: '_folder', select: '_id folder_name _parent' }
+                ]).lean();
+
+            if (file._folder) {
+                let folder
+                do {
+                    if (folder) {
+                        folder = await Folder.findById(folder._parent._id || folder._parent)
+                            .select('_id folder_name _parent').lean();
+                    } else {
+                        folder = await Folder.findById(file._folder._id || file._folder)
+                            .select('_id folder_name _parent').lean();
+                    }
+
+                    filePath = folder.folder_name + ((!filePath || filePath === '') ? '' : ' / ' + filePath);
+                } while (folder?._parent);
+            }
+
+            filePath = file?._group?.group_name + ((!filePath || filePath === '') ? '' : ' / ' + filePath);
+
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'File path retrieved!',
+                filePath: filePath
+            });
 
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);

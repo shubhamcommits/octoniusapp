@@ -209,7 +209,7 @@
     </div>
 
     <div class="col-md-8">
-      <app-search-results *ngIf="selected" [data]="selected" [type]='selectedType'></app-search-results>
+      <app-search-results (closeSearchEvent)="closeSearch()" *ngIf="selected" [data]="selected" [type]='selectedType'></app-search-results>
     </div>
   </div>
 
