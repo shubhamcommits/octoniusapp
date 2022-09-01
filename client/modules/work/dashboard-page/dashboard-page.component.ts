@@ -93,7 +93,7 @@ export class DashboardPageComponent implements OnInit {
     this.filteringGroups = event.value;
 
     this.projects = await this.getProjectColumns();
-    if (!this.filteringProjects || this.filteringProjects == []) {
+    if (!this.filteringProjects || this.filteringProjects) {
       this.filteringProjects = this.projects;
     }
   }
@@ -101,7 +101,7 @@ export class DashboardPageComponent implements OnInit {
   async projectsSelected(event) {
     this.filteringProjects = event.value;
 
-    if (!this.filteringProjects || this.filteringProjects == []) {
+    if (!this.filteringProjects || this.filteringProjects) {
       this.filteringProjects = this.projects;
     }
   }
