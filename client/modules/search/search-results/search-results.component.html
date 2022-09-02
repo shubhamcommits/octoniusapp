@@ -26,8 +26,16 @@
       <span class="material-icons">open_in_new</span>
     </a>
   </div>
+  
+  <div class="mb-2" *ngIf="type == 'file' && data.path_to_file">
+    <strong i18n="@@searchResult.location">Location: </strong>
+  
+    <span style="cursor: pointer;" (click)="closeSearch()" [routerLink]="['/dashboard', 'work', 'groups', 'files']" [queryParams]="{ folder: data?._folder?._id || data?._folder }" routerLinkActive="router-link-active">
+      {{ data?.path_to_file }}
+    </span>
+  </div>
 
-  <div class="mb-2">
+  <div class="mb-2" *ngIf="data?.tags && data?.tags.length > 0">
     <strong i18n="@@searchResult.tags">Tags: </strong>
 
     <span *ngFor="let tag of data?.tags" class="label">{{ tag }}</span>

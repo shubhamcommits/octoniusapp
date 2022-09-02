@@ -1908,6 +1908,7 @@ export class PublicFunctions {
 
       const allWorkspacesIntegratinos: any = await this.getAllWorkspaces();
       let possibleIntegrations = {
+        is_on_premise_environment: !(environment.clientUrl == 'app.octonius.com' || environment.clientUrl == 'workspace.octonius.com' || environment.clientUrl.includes('localhost')),
         is_google_connected: false,
         google_client_id: '',
         google_client_secret_key: '',
@@ -1919,17 +1920,17 @@ export class PublicFunctions {
 
       allWorkspacesIntegratinos.forEach(workspace => {
         if (workspace.integrations) {
-          if (workspace.integrations.is_google_connected) {
+          if (!possibleIntegrations.is_google_connected && workspace.integrations.is_google_connected) {
             possibleIntegrations.is_google_connected = workspace.integrations.is_google_connected;
             possibleIntegrations.google_client_id = workspace.integrations.google_client_id;
             possibleIntegrations.google_client_secret_key = workspace.integrations.google_client_secret_key;
           }
-          if (workspace.integrations.is_azure_ad_connected) {
+          if (!possibleIntegrations.is_azure_ad_connected && workspace.integrations.is_azure_ad_connected) {
             possibleIntegrations.is_azure_ad_connected = workspace.integrations.is_azure_ad_connected;
             possibleIntegrations.azure_ad_clientId = workspace.integrations.azure_ad_clientId;
             possibleIntegrations.azure_ad_authority_cloud_url = workspace.integrations.azure_ad_authority_cloud_url;
           }
-          if (workspace.integrations.is_ldap_connected) {
+          if (!possibleIntegrations.is_ldap_connected && workspace.integrations.is_ldap_connected) {
             possibleIntegrations.is_ldap_connected = workspace.integrations.is_ldap_connected;
           }
         }

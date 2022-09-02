@@ -226,4 +226,8 @@ export class FilesService {
   getFileVersions(fileId: string) {
     return this._http.get(this.baseURL + `/files/${fileId}/fileVersions`, {}).toPromise();
   }
+
+  getPathToFile(fileId: string) {
+    return this._http.get(this.baseURL + `/files/${fileId}/fullPathString`, {}).toPromise();
+  }
 }

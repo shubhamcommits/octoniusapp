@@ -39,6 +39,8 @@ export const environment = {
     'email'
   ].join(` `),
 
+  GOOGLE_OCTONIUS_CLIENT_ID: '833088201902-u8f2kkpve0tsm0qcrq4f40i65bthns9n.apps.googleusercontent.com',
+
   // Base Client Url
   clientUrl: `${url.protocol}://${url.domain}:4200`,
 

@@ -1,5 +1,5 @@
 import { CommonService } from '.';
-import { Account, Group, User, Workspace } from '../models';
+import { Account, Group, Lounge, Story, User, Workspace } from '../models';
 import http from "axios";
 import { axios } from '../../utils';
 
@@ -76,6 +76,12 @@ export class WorkspaceService {
         groups.forEach(async group => {
             await commonService.removeGroup(group._id);
         });
+
+        // Delete the lounges related
+        await Lounge.deleteMany({_workspace: workspaceId});
+
+        // Delete stories
+        await Story.deleteMany({_workspace: workspaceId});
 
         // Delete the workspace
         const workspace = await Workspace.findByIdAndDelete(workspaceId);
