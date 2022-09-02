@@ -1,3 +1,4 @@
+
 .octo-search-category{
     font-size: 16px;
     font-weight: 700;
@@ -13,12 +14,17 @@
     margin-bottom: 1rem !important;
 }
 .label{
-    font-size: 12px;
-    padding: 4px 10px;
-    color: #fff;
+    font-family: "Nunito", sans-serif;
+    font-style: normal;
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    align-items: center;
+    background-color: #e4edf8;
+    color: #005fd5;
     border-radius: 10px;
-    display: inline;
-    margin-right: 8px;
+    padding: 2px 10px;
+    width: fit-content;
+    margin: 0 5px !important;
   }
   .ql-image img{
       width: 100% !important;
