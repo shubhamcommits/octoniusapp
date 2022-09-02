@@ -157,4 +157,12 @@ export class AuthService {
   getAllWorkspacesIntegrations() {
     return this.httpClient.get(this.AUTH_BASE_API_URL + '/all-workspaces-integrations').toPromise();
   }
+
+  getAllowedWorkspacesByDomain(email: string) {
+    return this.httpClient.get(this.AUTH_BASE_API_URL + '/allowed-workspaces', {
+      params: {
+        email: email
+      }
+    }).toPromise();
+  }
 }
