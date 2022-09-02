@@ -16,10 +16,8 @@
           </h1>
 
           <!-- SELECT A WORKPLACE -->
-          <div class="form-group" *ngIf="allowedWorkspaces && allowedWorkspaces.length > 0"
-            style="width: 100%; margin:50px auto; padding-bottom: 50px; align-items: center; text-align: center; border-bottom: 1px solid #005fd521;">
-            <span class="muted" i18n="@@authJoinWorkplace.workplacesDomainAllowed">These are the workplace in which the
-              domain of your email is allowed:</span>
+          <div class="form-group">
+            <span class="muted" i18n="@@authJoinWorkplace.workplacesDomainAllowed">These are the workplace in which the domain of your email is allowed</span>
             <div *ngFor="let workspace of allowedWorkspaces" class="workplace-cells"
               (click)="selectWorkspace(workspace)"
               [ngClass]="workspace._id == selectedWorkplaceId ? 'selected-workplace' : ''">
@@ -55,10 +53,10 @@
             </button>
           </div>
 
-          <button type="submit" class="btn btn-outline-danger btn_login" style="margin-top: 10px;"
-            [routerLink]="['/authentication', 'select-workspace']" routerLinkActive="router-link-active"
-            i18n="@@authJoinWorkplace.cancel">
-            Cancel
+          <button type="submit" class="btn btn-outline-danger btn_login"
+              [routerLink]="['/authentication', 'select-workspace']" routerLinkActive="router-link-active"
+              i18n="@@authJoinWorkplace.cancel">
+                Cancel
           </button>
         </div>
       </div>
