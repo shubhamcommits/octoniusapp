@@ -1342,12 +1342,20 @@
           <context context-type="linenumber">14,16</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="authJoinWorkplace.workplacesDomainAllowed" datatype="html">
+        <source>These are the workplace in which the domain of your email is allowed:</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="authJoinWorkplace.enterWorkspaceName" datatype="html">
         <source>Enter workplace name</source>
         <target state="translated">Name des Arbeitsplatzes</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.html</context>
-          <context context-type="linenumber">19</context>
+          <context context-type="linenumber">38</context>
         </context-group>
       </trans-unit>
       <trans-unit id="authJoinWorkplace.enterYourInviteCode" datatype="html">
@@ -1355,7 +1363,7 @@
         <target state="translated">Einladungscode</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.html</context>
-          <context context-type="linenumber">27</context>
+          <context context-type="linenumber">44</context>
         </context-group>
       </trans-unit>
       <trans-unit id="authJoinWorkplace.join" datatype="html">
@@ -1363,7 +1371,7 @@
         <target state="translated"> Beitreten </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.html</context>
-          <context context-type="linenumber">34,36</context>
+          <context context-type="linenumber">51,53</context>
         </context-group>
       </trans-unit>
       <trans-unit id="authJoinWorkplace.cancel" datatype="html">
@@ -1371,47 +1379,7 @@
         <target state="translated"> Abbrechen </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.html</context>
-          <context context-type="linenumber">42,44</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="authJoinWorkplace.nameCannotBeEmpty" datatype="html">
-        <source>Workplace name can't be empty!</source>
-        <target state="translated">Der Name des Arbeitsplatzes darf nicht leer sein!</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
-          <context context-type="linenumber">43</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="authJoinWorkplace.namedoesntExist" datatype="html">
-        <source>This workplace name does not exist!</source>
-        <target state="translated">Dieser Arbeitsplatzname existiert nicht!</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
-          <context context-type="linenumber">51</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="authJoinWorkplace.nameIsCorrect" datatype="html">
-        <source>This workplace name is correct!</source>
-        <target state="translated">Diese Arbeitsplatzbezeichnung ist richtig!</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
-          <context context-type="linenumber">55</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="authJoinWorkplace.insufficientData" datatype="html">
-        <source>Insufficient or incorrect data, kindly fill up all the fields correctly!</source>
-        <target state="translated">Unzureichende oder falsche Daten, bitte füllen Sie alle Felder korrekt aus!</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
-          <context context-type="linenumber">69</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="authJoinWorkplace.pleaseWaitSettingUp" datatype="html">
-        <source>Please wait while we are setting up your new workplace and account...</source>
-        <target state="translated">Bitte warten Sie, während wir Ihren neuen Arbeitsplatz und Ihr Konto einrichten...</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
-          <context context-type="linenumber">76</context>
+          <context context-type="linenumber">58,60</context>
         </context-group>
       </trans-unit>
       <trans-unit id="authJoinWorkplace.unexpectedError" datatype="html">
@@ -1419,7 +1387,51 @@
         <target state="translated">Es ist ein unerwarteter Fehler aufgetreten, bitte versuchen Sie es später noch einmal!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
-          <context context-type="linenumber">81</context>
+          <context context-type="linenumber">64</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
+          <context context-type="linenumber">109</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="authJoinWorkplace.nameCannotBeEmpty" datatype="html">
+        <source>Workplace name can't be empty!</source>
+        <target state="translated">Der Name des Arbeitsplatzes darf nicht leer sein!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
+          <context context-type="linenumber">71</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="authJoinWorkplace.namedoesntExist" datatype="html">
+        <source>This workplace name does not exist!</source>
+        <target state="translated">Dieser Arbeitsplatzname existiert nicht!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
+          <context context-type="linenumber">79</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="authJoinWorkplace.nameIsCorrect" datatype="html">
+        <source>This workplace name is correct!</source>
+        <target state="translated">Diese Arbeitsplatzbezeichnung ist richtig!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
+          <context context-type="linenumber">83</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="authJoinWorkplace.insufficientData" datatype="html">
+        <source>Insufficient or incorrect data, kindly fill up all the fields correctly!</source>
+        <target state="translated">Unzureichende oder falsche Daten, bitte füllen Sie alle Felder korrekt aus!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
+          <context context-type="linenumber">97</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="authJoinWorkplace.pleaseWaitSettingUp" datatype="html">
+        <source>Please wait while we are setting up your new workplace and account...</source>
+        <target state="translated">Bitte warten Sie, während wir Ihren neuen Arbeitsplatz und Ihr Konto einrichten...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
+          <context context-type="linenumber">104</context>
         </context-group>
       </trans-unit>
       <trans-unit id="authJoinWorkplace.welcomeToWorkplace" datatype="html">
@@ -1427,7 +1439,7 @@
         <target state="translated">Hallo <x id="PH" equiv-text="res['user']['first_name']"/>, willkommen an Ihrem neuen Arbeitsplatz!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
-          <context context-type="linenumber">97</context>
+          <context context-type="linenumber">125</context>
         </context-group>
       </trans-unit>
       <trans-unit id="authJoinWorkplace.oopsErrorOccuredSettingUp" datatype="html">
@@ -1435,7 +1447,7 @@
         <target state="translated">Beim Einrichten ist ein Fehler aufgetreten, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
-          <context context-type="linenumber">101</context>
+          <context context-type="linenumber">129</context>
         </context-group>
       </trans-unit>
       <trans-unit id="authNewWorkplace.createNewWorkspace" datatype="html">
@@ -2671,7 +2683,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.ts</context>
-          <context context-type="linenumber">160</context>
+          <context context-type="linenumber">172</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.pleaseWaitUploadingNewVersion" datatype="html">
@@ -8610,12 +8622,20 @@
           <context context-type="linenumber">205</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="searchResult.location" datatype="html">
+        <source>Location: </source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="searchResult.tags" datatype="html">
         <source>Tags: </source>
         <target state="translated">Schlagwörter: </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">31</context>
+          <context context-type="linenumber">39</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchResult.createdOn" datatype="html">
@@ -8623,7 +8643,7 @@
         <target state="translated">Erstellt am: </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">37</context>
+          <context context-type="linenumber">45</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchResult.owner" datatype="html">
@@ -8631,7 +8651,7 @@
         <target state="translated">Eigentümer: </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">42</context>
+          <context context-type="linenumber">50</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchResult.customFields" datatype="html">
@@ -8639,11 +8659,11 @@
         <target state="translated">Benutzerdefinierte Felder: </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">60</context>
+          <context context-type="linenumber">68</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">103</context>
+          <context context-type="linenumber">111</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchResult.role" datatype="html">
@@ -8651,7 +8671,7 @@
         <target state="translated">Position: </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">87</context>
+          <context context-type="linenumber">95</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchResult.email" datatype="html">
@@ -8659,7 +8679,7 @@
         <target state="translated">E-Mail:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">88</context>
+          <context context-type="linenumber">96</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchResult.phone" datatype="html">
@@ -8667,7 +8687,7 @@
         <target state="translated">Telefonnummer: </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">89</context>
+          <context context-type="linenumber">97</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchResult.mobile" datatype="html">
@@ -8675,7 +8695,7 @@
         <target state="translated">Handynummer: </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">90</context>
+          <context context-type="linenumber">98</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchResult.currentPosition" datatype="html">
@@ -8683,7 +8703,7 @@
         <target state="translated">Aktuelle Position: </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">91</context>
+          <context context-type="linenumber">99</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchResult.company" datatype="html">
@@ -8691,7 +8711,7 @@
         <target state="translated">Unternehmen: </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">92</context>
+          <context context-type="linenumber">100</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchResult.joined" datatype="html">
@@ -8699,7 +8719,7 @@
         <target state="translated">Beigetreten am: </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">93</context>
+          <context context-type="linenumber">101</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchResult.bio" datatype="html">
@@ -8707,7 +8727,7 @@
         <target state="translated">Bio: </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">95</context>
+          <context context-type="linenumber">103</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchResult.skills" datatype="html">
@@ -8715,7 +8735,7 @@
         <target state="translated">Kenntnisse: </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">98</context>
+          <context context-type="linenumber">106</context>
         </context-group>
       </trans-unit>
       <trans-unit id="boxAccountDetails.box" datatype="html">
@@ -9455,7 +9475,7 @@
         <target state="translated">Sind Sie sicher?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-workload/user-workload-calendar/user-workload-calendar.component.ts</context>
-          <context context-type="linenumber">145</context>
+          <context context-type="linenumber">146</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.dayWillBeCAncelled" datatype="html">
@@ -9463,7 +9483,7 @@
         <target state="translated">Damit entfällt der Tag!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-workload/user-workload-calendar/user-workload-calendar.component.ts</context>
-          <context context-type="linenumber">145</context>
+          <context context-type="linenumber">146</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.pleaseWaitWeCancelDay" datatype="html">
@@ -9471,7 +9491,7 @@
         <target state="translated">Bitte warten Sie, wir sagen den Tag ab...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-workload/user-workload-calendar/user-workload-calendar.component.ts</context>
-          <context context-type="linenumber">148</context>
+          <context context-type="linenumber">149</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.dayCancelled" datatype="html">
@@ -9479,7 +9499,7 @@
         <target state="translated">👍 Tag/e abgesagt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-workload/user-workload-calendar/user-workload-calendar.component.ts</context>
-          <context context-type="linenumber">164</context>
+          <context context-type="linenumber">165</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.errorWhileCancellingDay" datatype="html">
@@ -9487,7 +9507,7 @@
         <target state="translated">Fehler beim Stornieren der Tage!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-workload/user-workload-calendar/user-workload-calendar.component.ts</context>
-          <context context-type="linenumber">167</context>
+          <context context-type="linenumber">168</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardPage.everythingHappening" datatype="html">
@@ -9956,6 +9976,18 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
           <context context-type="linenumber">194</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="iconsSidebar.hi" datatype="html">
+        <source>Hi <x id="PH" equiv-text="res['user']['first_name']"/>, welcome back to your workplace!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
+          <context context-type="linenumber">209</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
+          <context context-type="linenumber">212</context>
         </context-group>
       </trans-unit>
       <trans-unit id="iconsSidebar.oopsErrorSigningIn" datatype="html">
