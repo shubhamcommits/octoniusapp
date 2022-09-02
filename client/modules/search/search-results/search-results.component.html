@@ -35,7 +35,7 @@
     </span>
   </div>
 
-  <div class="mb-2" *ngIf="data?.tags">
+  <div class="mb-2" *ngIf="data?.tags && data?.tags.length > 0">
     <strong i18n="@@searchResult.tags">Tags: </strong>
 
     <span *ngFor="let tag of data?.tags" class="label">{{ tag }}</span>
