@@ -56,16 +56,16 @@ export const environment = {
   GROUPS_BASE_API_URL: `${url.protocol}://${url.domain}:4000/api`,
 
   // Workspace URLs
-  WORKSPACE_BASE_URL: `${url.protocol}://${url.domain}:5001`,
-  WORKSPACE_BASE_API_URL: `${url.protocol}://${url.domain}:5001/api`,
+  WORKSPACE_BASE_URL: `${url.protocol}://${url.domain}:5000`,
+  WORKSPACE_BASE_API_URL: `${url.protocol}://${url.domain}:5000/api`,
 
   // Search Service URLs
   SEARCH_BASE_URL: `${url.protocol}://${url.domain}:12000`,
   SEARCH_BASE_API_URL: `${url.protocol}://${url.domain}:12000/api`,
 
   // User URLs
-  USER_BASE_URL: `${url.protocol}://${url.domain}:7001`,
-  USER_BASE_API_URL: `${url.protocol}://${url.domain}:7001/api`,
+  USER_BASE_URL: `${url.protocol}://${url.domain}:7000`,
+  USER_BASE_API_URL: `${url.protocol}://${url.domain}:7000/api`,
 
   // Slack Auth URLs
   INTEGRATIONS_BASE_API_URL: `${url.protocol}://${url.domain}:13000/api`,
@@ -83,8 +83,8 @@ export const environment = {
   FLAMINGO_BASE_API_URL: `${url.protocol}://${url.domain}:14000/api`,
 
   // Approval URLs
-  APPROVAL_BASE_URL: `${url.protocol}://${url.domain}:15001`,
-  APPROVAL_BASE_API_URL: `${url.protocol}://${url.domain}:15001/api`,
+  APPROVAL_BASE_URL: `${url.protocol}://${url.domain}:15000`,
+  APPROVAL_BASE_API_URL: `${url.protocol}://${url.domain}:15000/api`,
 
   // Utilities URLs
   UTILITIES_BASE_URL: `${url.protocol}://${url.domain}:10000`,
