@@ -44,6 +44,9 @@ routes.get('/blockNewWorkplaces', auth.isNewWorkplacesAvailable);
 // GET - Get a list of all the workspaces with their integrations
 routes.get('/all-workspaces-integrations', auth.getAllWorkspacesIntegrations);
 
+// GET - Get a list of all the workspaces based on the domain of the account
+routes.get('/allowed-workspaces', auth.getAllowedWorkspacesByDomain);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

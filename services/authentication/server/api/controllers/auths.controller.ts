@@ -858,4 +858,49 @@ export class AuthsController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     };
+
+    async getAllowedWorkspacesByDomain(req: Request, res: Response, next: NextFunction) {
+
+        try {
+            const { email } = req.query;
+            
+            // Split the user email domain to check and verify the accession to workplace on the basis of the domain
+            const userEmailDomain = (email+'').split('@')[1];
+
+            // Find the workspace and update their respective workspace settings
+            let workspaces = await Workspace.find({
+                $and: [{
+                        $or: [{
+                            allowed_domains: userEmailDomain
+                        }, {
+                            "invited_users.email": email
+                        }]
+                    }]
+                })
+                .select('_id workspace_avatar workspace_name')
+                .populate('members', 'email')
+                .populate('_owner', 'email')
+                .lean();
+
+                let membersEmails = [];
+                await workspaces.forEach(async workspace => {
+                    await workspace.members.map(member => {
+                        membersEmails.push(member.email);
+                    }); 
+                });
+
+                membersEmails = [...new Set(membersEmails)];
+                workspaces = await workspaces.filter(workspace => {
+                    return workspace._owner.email != email && membersEmails.indexOf(email) < 0;
+                });
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Workspaces found!',
+                workspaces: workspaces
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
 }

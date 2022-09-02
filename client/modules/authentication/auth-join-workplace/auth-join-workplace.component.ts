@@ -1,6 +1,9 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { SlowBuffer } from 'buffer';
 import { PublicFunctions } from 'modules/public.functions';
+import { ThemeService } from 'ng2-charts';
+import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -12,14 +15,19 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 })
 export class AuthJoinWorkplaceComponent implements OnInit {
 
+  allowedWorkspaces = [];
+  selectedWorkplaceId = '';
+
   // Defining User Object, which accepts the following properties
-  workplace: { name: string, access_code: string } = {
+  workplaceData: { name: string, access_code: string } = {
     name: null,
     access_code: null
   };
 
   accountData;
   validWorkspace = false;
+
+  baseUrl = environment.UTILITIES_WORKSPACES_UPLOADS;
 
   publicFunctions = new PublicFunctions(this._Injector);
 
@@ -36,15 +44,35 @@ export class AuthJoinWorkplaceComponent implements OnInit {
     if (!this.accountData || JSON.stringify(this.accountData) == JSON.stringify({})) {
       this.router.navigate(['']);
     }
+
+    await this.authenticationService.getAllowedWorkspacesByDomain(this.accountData.email).then(res => {
+      this.allowedWorkspaces = res['workspaces'];
+    });
+  }
+
+  selectWorkspace(workspaceData: any) {
+    try {
+      if (workspaceData._id == this.selectedWorkplaceId) {
+        this.workplaceData.name = null;
+        this.selectedWorkplaceId = '';
+      } else {
+        this.workplaceData.name = workspaceData.workspace_name;
+        this.selectedWorkplaceId = workspaceData._id;
+      }
+    } catch (err) {
+      console.log('There\'s some unexpected error occurred, please try again later!', err);
+      this.utilityService.errorNotification($localize`:@@authJoinWorkplace.unexpectedError:There\'s some unexpected error occurred, please try again later!`);
+      this.selectedWorkplaceId = '';
+    }
   }
 
   checkWorkspaceAvailability() {
-    if (this.workplace.name == null || this.workplace.name == '') {
+    if (this.workplaceData.name == null || this.workplaceData.name == '') {
       this.utilityService.warningNotification($localize`:@@authJoinWorkplace.nameCannotBeEmpty:Workplace name can\'t be empty!`);
       this.validWorkspace = false;
     } else {
       this.authenticationService.checkWorkspaceName({
-          workspace_name: this.workplace.name
+          workspace_name: this.workplaceData.name
         })
         .then(() => {
           this.validWorkspace = false;
@@ -65,13 +93,13 @@ export class AuthJoinWorkplaceComponent implements OnInit {
    */
   joinWorkplace() {
     try {
-      if (!this.validWorkspace || this.workplace.access_code == null || this.workplace.access_code == '') {
+      if (!this.validWorkspace || this.workplaceData.access_code == null || this.workplaceData.access_code == '') {
         this.utilityService.warningNotification($localize`:@@authJoinWorkplace.insufficientData:Insufficient or incorrect data, kindly fill up all the fields correctly!`);
       } else {
         // PREPARING THE WORKPLACE DATA
         let workplaceData: Object = {
-          workspace_name: this.workplace.name.trim(),
-          access_code: this.workplace.access_code.trim()
+          workspace_name: this.workplaceData.name.trim(),
+          access_code: this.workplaceData.access_code.trim()
         }
         this.utilityService.asyncNotification($localize`:@@authJoinWorkplace.pleaseWaitSettingUp:Please wait while we are setting up your new workplace and account...`,
           this.joinWorkplaceServiceFunction(workplaceData))
