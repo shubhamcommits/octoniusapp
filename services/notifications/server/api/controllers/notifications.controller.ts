@@ -400,7 +400,7 @@ export class NotificationsController {
 
             assigned_to.forEach(async assignee => {
                 if (posted_by !== assignee && assignee !== follower) {
-                    await notificationService.likePost(postId, assignee, follower);
+                    await notificationService.followPost(postId, assignee, follower);
                     await helperFunctions.sendNotificationsFeedFromService(assignee, io, true);
                     await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
                         userid: assignee,
@@ -421,10 +421,9 @@ export class NotificationsController {
                 for (let index = 0; index < userlist.length; index++) {
                     const mentiond = userlist[index];
                     if (mentiond._id !== follower && mentiond._id !== posted_by) {
-                        await notificationService.likePost(postId, mentiond, follower);
+                        await notificationService.followPost(postId, mentiond, follower);
                         await helperFunctions.sendNotificationsFeedFromService(mentiond, io, true);
                         await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
-                            // data: JSON.stringify(comment_object),
                             userid: mentiond,
                             postId,
                             posted_by,
@@ -436,12 +435,12 @@ export class NotificationsController {
 
             } else {
                 for (let index = 0; index < mentions.length; index++) {
-                    const mentiond = mentions[index];
-                    if (mentiond !== follower && mentiond !== posted_by) {
-                        await notificationService.likePost(postId, mentiond._id, follower);
-                        await helperFunctions.sendNotificationsFeedFromService(mentiond._id, io, true);
+                    const mention = mentions[index];
+                    if (mention !== follower && mention !== posted_by) {
+                        await notificationService.followPost(postId, mention._id, follower);
+                        await helperFunctions.sendNotificationsFeedFromService(mention._id, io, true);
                         await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
-                            userid: mentiond._id,
+                            userid: mention._id,
                             postId,
                             posted_by,
                             follower,
