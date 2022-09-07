@@ -882,22 +882,24 @@ export class AuthsController {
                 .populate('_owner', 'email')
                 .lean();
 
-                let membersEmails = [];
-                await workspaces.forEach(async workspace => {
-                    await workspace.members.map(member => {
-                        membersEmails.push(member.email);
-                    }); 
-                });
+            let retWorkspaces = [];
+            for (let i = 0; i < workspaces.length; i++) {
+                let workspace = workspaces[i];
 
-                membersEmails = [...new Set(membersEmails)];
-                workspaces = await workspaces.filter(workspace => {
-                    return workspace._owner.email != email && membersEmails.indexOf(email) < 0;
-                });
+                let membersEmails = [];
+                for (let i = 0; i < workspace.members.length; i++) {
+                    membersEmails.push(workspace.members[i].email);
+                }
+
+                if (workspace._owner.email !== email && membersEmails.indexOf(email) < 0) {
+                    retWorkspaces.push(workspace);
+                }
+            }
 
             // Send status 200 response
             return res.status(200).json({
                 message: 'Workspaces found!',
-                workspaces: workspaces
+                workspaces: retWorkspaces
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);

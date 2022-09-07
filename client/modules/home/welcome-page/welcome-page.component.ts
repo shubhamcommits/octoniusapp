@@ -172,12 +172,13 @@ export class WelcomePageComponent implements OnInit, AfterViewInit, OnDestroy {
   signInServiceFunction(userData: Object) {
     return new Promise((resolve, reject) => {
       this.subSink.add(this.authenticationService.signIn(userData)
-        .subscribe((res) => {
+        .subscribe(async (res) => {
+          await this.clearAccountData();
+          await this.storeAccountData(res);
+          
           // If query params exsit then add the teams permission page url to parms of next redirect url.
           // note:- Code is for teams auth popup not for octonius app and only work in that case.
           if ( this.queryParms ) {
-            this.clearAccountData();
-            this.storeAccountData(res);
             this.router.navigate(['authentication', 'select-workspace'],{ queryParams: { teams_permission_url : this.queryParms.teams_permission_url }})
             .then(() => {
               this.utilityService.successNotification($localize`:@@welcomePage.hi:Hi ` + res['account']['first_name'] + ', ' + $localize`:@@welcomePage.welcomeBack:welcome back!`);
@@ -191,9 +192,6 @@ export class WelcomePageComponent implements OnInit, AfterViewInit, OnDestroy {
             })
             // else normal flow
           } else {
-
-            this.clearAccountData();
-            this.storeAccountData(res);
             this.router.navigate(['authentication', 'select-workspace'])
               .then(() => {
                 this.utilityService.successNotification($localize`:@@welcomePage.hi:Hi ` + res['account']['first_name'] + ', ' + $localize`:@@welcomePage.welcomeBack:welcome back!`);
@@ -252,8 +250,6 @@ export class WelcomePageComponent implements OnInit, AfterViewInit, OnDestroy {
         this.msalService.loginPopup()
           .subscribe({
             next: async (result) => {
-              //console.log(result);
-              //console.log(this.msalService.instance.getAllAccounts());
               const accountAD = result.account;
 
               // build the user first_name and last_name
@@ -270,13 +266,14 @@ export class WelcomePageComponent implements OnInit, AfterViewInit, OnDestroy {
                 ssoType: 'AD'
               }
 
-              await this.authenticationService.authenticateSSOUser(userData).then(res => {
+              await this.authenticationService.authenticateSSOUser(userData).then(async res => {
                 const newAccount = res['newAccount'];
                 const accountData = res['account'];
 
+                await this.clearAccountData();
+                await this.storeAccountData(res);
+
                 if (newAccount || (!accountData || !accountData._workspaces || accountData._workspaces.length == 0)) {
-                  this.clearAccountData();
-                  this.storeAccountData(res);
                   this.router.navigate(['authentication', 'join-workplace'])
                     .then(() => {
                       resolve(this.utilityService.successNotification($localize`:@@welcomePage.hiAD:Hi ${res['account']['first_name']}!`));
@@ -287,8 +284,6 @@ export class WelcomePageComponent implements OnInit, AfterViewInit, OnDestroy {
                       this.storageService.clear();
                     });
                 } else {
-                  this.clearAccountData();
-                  this.storeAccountData(res);
                   this.router.navigate(['authentication', 'select-workspace'])
                     .then(() => {
                       resolve(this.utilityService.successNotification($localize`:@@welcomePage.hiAD:Hi ${res['account']['first_name']}!`));
@@ -325,13 +320,14 @@ export class WelcomePageComponent implements OnInit, AfterViewInit, OnDestroy {
             ssoType: 'GOOGLE'
           }
 
-          this.authenticationService.authenticateSSOUser(userData).then(res => {
+          this.authenticationService.authenticateSSOUser(userData).then(async res => {
             const newAccount = res['newAccount'];
             const accountData = res['account'];
 
+            await this.clearAccountData();
+            await this.storeAccountData(res);
+
             if (newAccount || (!accountData || !accountData._workspaces || accountData._workspaces.length == 0)) {
-              this.clearAccountData();
-              this.storeAccountData(res);
               this.router.navigate(['authentication', 'join-workplace'])
                 .then(() => {
                   resolve(this.utilityService.successNotification($localize`:@@welcomePage.hiGoogle:Hi ${res['account']['first_name']}!`));
@@ -342,8 +338,6 @@ export class WelcomePageComponent implements OnInit, AfterViewInit, OnDestroy {
                   this.storageService.clear();
                 });
             } else {
-              this.clearAccountData();
-              this.storeAccountData(res);
               this.router.navigate(['authentication', 'select-workspace'])
                 .then(() => {
                   resolve(this.utilityService.successNotification($localize`:@@welcomePage.hiGoogle:Hi ${res['account']['first_name']}!`));
