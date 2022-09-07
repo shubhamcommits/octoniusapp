@@ -1,31 +1,31 @@
 <div class="container-fluid h-100 welcome">
   <div class="row h-100">
 
-    <!-- OCTONIUS LEFT BRANDING PANEL STARTS -->
-    <app-branding-panel [routerState]="'signup'" class="col-md-8 overlay"></app-branding-panel>
-    <!-- OCTONIUS LEFT BRANDING PANEL ENDS -->
+     <!-- OCTONIUS LEFT BRANDING PANEL STARTS -->
+     <app-branding-panel [routerState]="'signup'" class="col-md-8 overlay"></app-branding-panel>
+     <!-- OCTONIUS LEFT BRANDING PANEL ENDS -->
 
-    <!-- HOME PANEL STARTS -->
-    <div class="col-md-4 shaddow">
-      <div style="padding:50px 30px;">
+     <!-- HOME PANEL STARTS -->
+     <div class="col-md-4 shaddow">
+       <div style="padding:50px 30px;">
 
-        <div style="width: 100%; margin:0 auto; align-items: center; height: 30vh;">
+         <div style="width: 100%; margin:0 auto; align-items: center; height: 30vh;">
 
           <h1 style="margin-bottom: 30px;" i18n="@@authJoinWorkplace.joinAnotherWorkspace">
             Join another workplace
           </h1>
-
+          
           <!-- SELECT A WORKPLACE -->
-          <div class="form-group">
-            <span class="muted" i18n="@@authJoinWorkplace.workplacesDomainAllowed">These are the workplace in which the domain of your email is allowed</span>
+          <div class="form-group" *ngIf="allowedWorkspaces && allowedWorkspaces.length > 0"
+              style="width: 100%; margin:50px auto; padding-bottom: 50px; align-items: center; text-align: center; border-bottom: 1px solid #005fd521;">
+            <span class="muted" i18n="@@authJoinWorkplace.workplacesDomainAllowed">These are the workplace in which the domain of your email is allowed:</span>
             <div *ngFor="let workspace of allowedWorkspaces" class="workplace-cells"
-              (click)="selectWorkspace(workspace)"
-              [ngClass]="workspace._id == selectedWorkplaceId ? 'selected-workplace' : ''">
+              (click)="selectWorkspace(workspace)" [ngClass]="workspace._id == selectedWorkplaceId ? 'selected-workplace' : ''">
               <div class="btn-select-workplace" [ngClass]="'selected-workplace'" style="background-color: #ffffff;">
-                <img src="{{ this.baseUrl }}/{{workspace.workspace_avatar}}?noAuth=true"
-                  style="height: 100%; width:100%;" onerror="this.src='assets/images/icon-new-group.svg'" />
+                <img src="{{ this.baseUrl }}/{{workspace.workspace_avatar}}?noAuth=true" style="height: 100%; width:100%;"
+                  onerror="this.src='assets/images/icon-new-group.svg'" />
               </div>
-
+          
               <h3 class="card-title ml-3">
                 {{workspace?.workspace_name}}
               </h3>
@@ -36,31 +36,31 @@
           <div>
             <div class="form-group">
               <label for="name" class="muted" i18n="@@authJoinWorkplace.enterWorkspaceName">Enter workplace name</label>
-              <input type="text" class="form-control" name="name" (focusout)="checkWorkspaceAvailability()"
-                [(ngModel)]="workplaceData.name">
+              <input type="text" class="form-control" name="name"
+                (focusout)="checkWorkspaceAvailability()" [(ngModel)]="workplaceData.name">
             </div>
 
             <div class="form-group">
-              <label for="access_code" class="muted" i18n="@@authJoinWorkplace.enterYourInviteCode">Enter your invite
-                code</label>
-              <input type="text" class="form-control" name="access_code" (keyup.enter)="joinWorkplace()"
-                [(ngModel)]="workplaceData.access_code">
+                <label for="access_code" class="muted" i18n="@@authJoinWorkplace.enterYourInviteCode">Enter your invite code</label>
+                <input type="text" class="form-control" name="access_code"
+                  (keyup.enter)="joinWorkplace()" [(ngModel)]="workplaceData.access_code">
             </div>
 
-            <button type="submit" class="btn btn-primary btn-block btn_login" [disabled]="!validWorkspace"
-              (click)="joinWorkplace()" i18n="@@authJoinWorkplace.join">
-              Join
+            <button type="submit" class="btn btn-primary btn-block btn_login"
+                [disabled]="!validWorkspace" (click)="joinWorkplace()"
+                i18n="@@authJoinWorkplace.join">
+                  Join
             </button>
           </div>
 
-          <button type="submit" class="btn btn-outline-danger btn_login"
+          <button type="submit" class="btn btn-outline-danger btn_login" style="margin-top: 10px;"
               [routerLink]="['/authentication', 'select-workspace']" routerLinkActive="router-link-active"
               i18n="@@authJoinWorkplace.cancel">
                 Cancel
           </button>
         </div>
       </div>
-    </div>
-    <!-- HOME PANEL ENDS -->
+   </div>
+   <!-- HOME PANEL ENDS -->
   </div>
 </div>
