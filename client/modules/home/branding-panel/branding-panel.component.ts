@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, Injector } from '@angular/core';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
   selector: 'app-branding-panel',
@@ -8,7 +9,11 @@ import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core
 })
 export class BrandingPanelComponent implements OnInit {
 
-  constructor() {
+  publicFunctions = new PublicFunctions(this._Injector);
+
+  constructor(
+    private _Injector: Injector
+    ) {
   }
 
   // ROUTER NAME STATE OF THE COMPONENT - 'new-workplace', 'signup', 'signin', or 'home'
@@ -17,4 +22,11 @@ export class BrandingPanelComponent implements OnInit {
   ngOnInit() {
   }
 
+  clearData() {
+    this.publicFunctions.sendUpdatesToGroupData({});
+    this.publicFunctions.sendUpdatesToRouterState({});
+    this.publicFunctions.sendUpdatesToUserData({});
+    this.publicFunctions.sendUpdatesToAccountData({});
+    this.publicFunctions.sendUpdatesToWorkspaceData({});
+  }
 }
