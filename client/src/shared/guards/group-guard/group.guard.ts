@@ -75,7 +75,7 @@ export class GroupGuard implements CanActivate  {
 
     if (currentGroup?._admins?.findIndex((admin: any) => admin._id == userId) < 0 && this.isGroupManagerURL(state)) {
       const newGroup = await this.publicFunctions.getGroupDetails(currentGroup?._id);
-      this.publicFunctions.sendUpdatesToGroupData(newGroup);
+      await this.publicFunctions.sendUpdatesToGroupData(newGroup);
       this.utilityService.warningNotification($localize`:@@groupGuard.oopsNoPermissionForSection:Oops seems like you don\'t have the permission to access the section, kindly contact your superior to provide you the proper admin rights!`);
       this.router.navigate(['dashboard', 'work', 'groups', 'activity']);
       return false;

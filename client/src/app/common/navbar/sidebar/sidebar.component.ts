@@ -137,7 +137,7 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
   async goToGroup(groupId: string, state: string) {
     this.changeState(state);
     const newGroup = await this.publicFunctions.getGroupDetails(groupId);
-    this.publicFunctions.sendUpdatesToGroupData(newGroup);
+    await this.publicFunctions.sendUpdatesToGroupData(newGroup);
     this.router.navigate(['/dashboard', 'work', 'groups', 'activity']);
   }
 
@@ -145,8 +145,8 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
     this.utilityService.handleActiveStateTopNavBar().emit(state);
   }
 
-  changeToPersonalGroup() {
-    this.publicFunctions.sendUpdatesToGroupData({});
+  async changeToPersonalGroup() {
+    await this.publicFunctions.sendUpdatesToGroupData({});
     this.router.navigate(['/dashboard', 'myspace', 'inbox']);
   }
 

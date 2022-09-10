@@ -50,8 +50,8 @@ export class DeleteGroupComponent implements OnInit {
             new Promise((resolve, reject) => {
               // Call Remove Group Service Function
               groupService.removeGroup(groupId)
-                .then(() => {
-                  this.publicFunctions.sendUpdatesToGroupData({});
+                .then(async () => {
+                  await this.publicFunctions.sendUpdatesToGroupData({});
                   // Redirect the user to groups page
                   this.router.navigate(['/dashboard', 'work', 'groups', 'all'])
                     .then(() => {
@@ -90,7 +90,7 @@ export class DeleteGroupComponent implements OnInit {
               // Call Archive Group Service Function
               groupService.archiveGroup(groupId, true)
                 .then(async () => {
-                  this.publicFunctions.sendUpdatesToGroupData({});
+                  await this.publicFunctions.sendUpdatesToGroupData({});
                   // Redirect the user to groups page
                   this.router.navigate(['/dashboard', 'work', 'groups', 'all'])
                     .then(() => {
