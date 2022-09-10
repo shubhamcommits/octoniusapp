@@ -39,7 +39,7 @@ export class RecentGroupsComponent implements OnInit {
 
   async goToGroup(groupId: string) {
     const newGroup = await this.publicFunctions.getGroupDetails(groupId);
-    this.publicFunctions.sendUpdatesToGroupData(newGroup);
+    await this.publicFunctions.sendUpdatesToGroupData(newGroup);
     this._router.navigate(['/dashboard', 'work', 'groups', 'activity']);
   }
 }

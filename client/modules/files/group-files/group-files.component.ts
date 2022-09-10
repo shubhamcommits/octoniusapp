@@ -451,7 +451,7 @@ export class GroupFilesComponent implements OnInit {
             this.filesService.transferToGroup(itemId, groupId, false)
               .then(async (res) => {
                 const newGroup = await this.publicFunctions.getGroupDetails(groupId);
-                this.publicFunctions.sendUpdatesToGroupData(newGroup);
+                await this.publicFunctions.sendUpdatesToGroupData(newGroup);
                 // Redirect to the new group files page
                 this._router.navigate(['/dashboard', 'work', 'groups', 'files']);
                 resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.folioMoved:👍 Folio Moved!`));

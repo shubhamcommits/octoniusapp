@@ -178,7 +178,6 @@ export class GroupsListComponent implements OnInit {
 
     // Stop the loading spinner
     this.isLoadingAgora$.next(false);
-
   }
 
   receiveGroupUpdates($event: Event) {
@@ -187,9 +186,7 @@ export class GroupsListComponent implements OnInit {
 
   async joinGroup(groupId: any) {
     await this.publicFunctions.joinAgora(groupId, this.userData._id).then(async (res) => {
-      const newGroup = await this.publicFunctions.getGroupDetails(groupId);
-      this.publicFunctions.sendUpdatesToGroupData(newGroup);
-      this.router.navigateByUrl('/dashboard/work/groups/activity');
+      this.goToGroup(groupId);
     });
 
   }
@@ -218,7 +215,7 @@ export class GroupsListComponent implements OnInit {
 
   async goToGroup(groupId: string) {
     const newGroup = await this.publicFunctions.getGroupDetails(groupId);
-    this.publicFunctions.sendUpdatesToGroupData(newGroup);
+    await this.publicFunctions.sendUpdatesToGroupData(newGroup);
     this.router.navigate(['/dashboard', 'work', 'groups', 'activity']);
   }
 }

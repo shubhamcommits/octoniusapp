@@ -84,14 +84,8 @@ export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDe
           if (res['blocked'] ) {
             this.utilityService.workplaceBlockedNotification($localize`:@@denyNavigationGuard.workspaceNotAvailable:Your workspace is not available, please contact your administrator!`).then(res => {
               if (res.dismiss === Swal.DismissReason.close) {
-                this.authService.signout().subscribe((res) => {
-                  this.storageService.clear();
-                  this.publicFunctions.sendUpdatesToGroupData({});
-                  this.publicFunctions.sendUpdatesToRouterState({});
-                  this.publicFunctions.sendUpdatesToUserData({});
-                  this.publicFunctions.sendUpdatesToWorkspaceData({});
-                  this.socketService.disconnectSocket();
-                  this.router.navigate(['/home']);
+                this.authService.signout().subscribe(async (res) => {
+                  this.goHome();
                 });
               }
             });
@@ -100,28 +94,16 @@ export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDe
 
           if ( !res['status']) {
             if (!adminUser || res['onPremise'] || res['message'] == 'Workspace does not exist') {
-              this.authService.signout().subscribe((res) => {
-                this.storageService.clear();
-                this.publicFunctions.sendUpdatesToGroupData({});
-                this.publicFunctions.sendUpdatesToRouterState({});
-                this.publicFunctions.sendUpdatesToUserData({});
-                this.publicFunctions.sendUpdatesToWorkspaceData({});
-                this.socketService.disconnectSocket();
-                this.router.navigate(['/home']);
+              this.authService.signout().subscribe(async (res) => {
+                this.goHome();
               });
             } else {
               if (adminUser && !res['onPremise']) {
                 this.router.navigate(['dashboard', 'admin', 'billing']);
               } else {
                 this.utilityService.warningNotification($localize`:@@denyNavigationGuard.workspaceNotAvailable:Your workspace is not available, please contact your administrator!`);
-                this.authService.signout().subscribe((res) => {
-                  this.storageService.clear();
-                  this.publicFunctions.sendUpdatesToGroupData({});
-                  this.publicFunctions.sendUpdatesToRouterState({});
-                  this.publicFunctions.sendUpdatesToUserData({});
-                  this.publicFunctions.sendUpdatesToWorkspaceData({});
-                  this.socketService.disconnectSocket();
-                  this.router.navigate(['/home']);
+                this.authService.signout().subscribe(async (res) => {
+                    this.goHome();
                 });
               }
             }
@@ -136,5 +118,15 @@ export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDe
     } else {
       return false;
     }
+  }
+
+  async goHome() {
+    this.storageService.clear();
+    await this.publicFunctions.sendUpdatesToGroupData({});
+    await this.publicFunctions.sendUpdatesToRouterState({});
+    await this.publicFunctions.sendUpdatesToUserData({});
+    await this.publicFunctions.sendUpdatesToWorkspaceData({});
+    this.socketService.disconnectSocket();
+    this.router.navigate(['/home']);
   }
 }

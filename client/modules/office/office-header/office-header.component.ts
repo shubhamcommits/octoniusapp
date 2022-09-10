@@ -83,7 +83,7 @@ export class OfficeHeaderComponent implements OnInit {
    */
   async goBackToFiles() {
     const newGroup = await this.publicFunctions.getGroupDetails(this.file._group._id || this.file._group);
-    this.publicFunctions.sendUpdatesToGroupData(newGroup);
+    await this.publicFunctions.sendUpdatesToGroupData(newGroup);
     this.router.navigate(
       ['/dashboard', 'work', 'groups', 'files'],
       { queryParams: {

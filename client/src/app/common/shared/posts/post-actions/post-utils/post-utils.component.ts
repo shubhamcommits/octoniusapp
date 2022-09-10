@@ -214,7 +214,7 @@ export class PostUtilsComponent implements OnInit {
       // redirect the user to the post
       const groupId = data.groupId;
       const newGroup = await this.publicFunctions.getGroupDetails(groupId);
-      this.publicFunctions.sendUpdatesToGroupData(newGroup);
+      await this.publicFunctions.sendUpdatesToGroupData(newGroup);
       // Set the Value of element selection box to be the url of the post
       if (post.type === 'task') {
         this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { postId: post._id } });
