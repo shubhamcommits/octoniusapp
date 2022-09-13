@@ -5,3 +5,8 @@
 .ql-container{
     border:none !important;
 }
+
+.ql-editor{
+    max-height: 45vh !important;
+    overflow-y: auto;
+}
