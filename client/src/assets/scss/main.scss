@@ -986,3 +986,8 @@ input {
 mat-expansion-panel{
   margin-bottom: 2% !important;
 }
+
+.ql-editor{
+  max-height: 45vh !important;
+  overflow-y: auto;
+}
