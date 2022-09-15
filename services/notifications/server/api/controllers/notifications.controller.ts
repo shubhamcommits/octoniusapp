@@ -721,4 +721,154 @@ export class NotificationsController {
             return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
     }
+
+    /**
+     * This function is responsible for returning the users unread notifications
+     */
+    async topUnread(req: Request, res: Response, next: NextFunction) {
+
+        const userId = req['userId'];
+
+        try {
+            if (!userId) {
+                return sendErr(res, new Error('Please provide a userId!'), 'Please provide a userId!', 500);
+            }
+
+            const notifications = await notificationService.getUnread(userId, 5);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Notifications Obtained!`,
+                notifications: notifications
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for returning the users unread notifications
+     */
+    async unread(req: Request, res: Response, next: NextFunction) {
+
+        const userId = req['userId'];
+
+        try {
+            if (!userId) {
+                return sendErr(res, new Error('Please provide a userId!'), 'Please provide a userId!', 500);
+            }
+
+            const notifications = await notificationService.getUnread(userId);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Notifications Obtained!`,
+                notifications: notifications
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for returning the users unread notifications
+     */
+    async unreadTopPosts(req: Request, res: Response, next: NextFunction) {
+
+        const userId = req['userId'];
+
+        try {
+            if (!userId) {
+                return sendErr(res, new Error('Please provide a userId!'), 'Please provide a userId!', 500);
+            }
+
+            const unreadPosts = await notificationService.getNewPost(userId, 5);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `New Posts Obtained!`,
+                unreadPosts: unreadPosts
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for returning the users unread notifications
+     */
+    async unreadPosts(req: Request, res: Response, next: NextFunction) {
+
+        const userId = req['userId'];
+
+        try {
+            if (!userId) {
+                return sendErr(res, new Error('Please provide a userId!'), 'Please provide a userId!', 500);
+            }
+
+            const unreadPosts = await notificationService.getNewPost(userId);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `New Posts Obtained!`,
+                unreadPosts: unreadPosts
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for returning the users unread notifications
+     */
+    async pendingTopApprovals(req: Request, res: Response, next: NextFunction) {
+
+        const userId = req['userId'];
+
+        try {
+            if (!userId) {
+                return sendErr(res, new Error('Please provide a userId!'), 'Please provide a userId!', 500);
+            }
+
+            const pendingApprovals = await notificationService.getPendingApprovals(userId, 5);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Pending Approvals Obtained!`,
+                pendingApprovals: pendingApprovals
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for returning the users unread notifications
+     */
+    async pendingApprovals(req: Request, res: Response, next: NextFunction) {
+
+        const userId = req['userId'];
+
+        try {
+            if (!userId) {
+                return sendErr(res, new Error('Please provide a userId!'), 'Please provide a userId!', 500);
+            }
+
+            const pendingApprovals = await notificationService.getPendingApprovals(userId);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Pending Approvals Obtained!`,
+                pendingApprovals: pendingApprovals
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
 }

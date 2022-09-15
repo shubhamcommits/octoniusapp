@@ -8,6 +8,7 @@ import { Column } from './column.model';
 import { Account } from "./account.model";
 import { Story } from "./story.model";
 import { Workspace } from "./workspace.model";
+import { Auth } from './auth.model';
 
 /*  =====================
  *  -- MODELS EXPORTS --
@@ -17,6 +18,9 @@ export {
 
     // Account
     Account as Account,
+
+    // Auth
+    Auth as Auth,
 
     // COMMENT
     Comment as Comment,

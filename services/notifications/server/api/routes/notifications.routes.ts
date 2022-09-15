@@ -1,9 +1,13 @@
 import express from 'express';
+import { Auths } from '../../utils';
 import { NotificationsController, ApprovalNotificationsController } from '../controllers'
 
 const routes = express.Router();
 const notificationFunctions = new NotificationsController();
 const approvalFunctions = new ApprovalNotificationsController();
+
+// Define auths helper controllers
+const auth = new Auths();
 
 //This route is responsible for notifying the user on mention on new comment
 routes.post('/new-comment-mention', notificationFunctions.newCommentMentions);
@@ -58,5 +62,23 @@ routes.post('/reject-item', approvalFunctions.rejectItem);
 
 // POST - item-approved
 routes.post('/item-approved', approvalFunctions.itemApproved);
+
+// GET - get unread notifications
+routes.get('/top-unread', auth.verifyToken, auth.isLoggedIn, notificationFunctions.topUnread);
+
+// GET - get unread notifications
+routes.get('/unread', auth.verifyToken, auth.isLoggedIn, notificationFunctions.unread);
+
+// GET - get unread posts
+routes.get('/top-unread-posts', auth.verifyToken, auth.isLoggedIn, notificationFunctions.unreadTopPosts);
+
+// GET - get unread posts
+routes.get('/unread-posts', auth.verifyToken, auth.isLoggedIn, notificationFunctions.unreadPosts);
+
+// GET - get pending approvals
+routes.get('/top-pending-approvals', auth.verifyToken, auth.isLoggedIn, notificationFunctions.pendingTopApprovals);
+
+// GET - get pending approvals
+routes.get('/pending-approvals', auth.verifyToken, auth.isLoggedIn, notificationFunctions.pendingApprovals);
 
 export { routes as notificationRoutes };
