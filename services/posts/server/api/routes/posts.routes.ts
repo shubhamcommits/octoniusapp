@@ -60,6 +60,9 @@ routes.get('/northstar', postController.getNorthStarTasks);
 // This route is used to edit a post
 routes.put('/:postId', postFileHandler, postController.edit);
 
+// This route is used to edit a post tags
+routes.put('/:postId/editTags', postFileHandler, postController.editTags);
+
 // This route is used to retrieve a post
 routes.get('/:postId', postController.get);
 
