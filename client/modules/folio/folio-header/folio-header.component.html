@@ -34,12 +34,12 @@
         </ul>
     </div>
 
-  
-
+    <!--
     <div *ngIf="!this.readOnly" class="d-flex justify-content-around">
         <div *ngIf="selectedFile">
             <p >{{selectedFile.name}}</p>
         </div>
+
         <input
             (change)="onFileChanged($event)"
             type="file"
@@ -54,6 +54,7 @@
             (click)="fileInput.click()"  matTooltip="Import a docx" matTooltipPosition="left"><i class="material-icons muted">cloud_upload</i>
         </button>
     </div>
+    -->
 </nav>
 
 <router-outlet></router-outlet>

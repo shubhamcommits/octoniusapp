@@ -24,9 +24,11 @@ export class FolioService {
     this.follioSubject.next(data)
   }
 
+  /*
   uploadFollioDocx(formData: any) {
     return this._http.post(`${environment.FOLIO_HTTP_URL}/upload`, formData).toPromise();
   }
+  */
 
   displayHeadings(fileId: string, showHeadings: boolean) {
     return this._http.put(`${environment.FOLIO_HTTP_URL}/${fileId}/displayHeadings`, { showHeadings }).toPromise();

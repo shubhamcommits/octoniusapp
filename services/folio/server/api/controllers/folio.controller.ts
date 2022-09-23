@@ -1,12 +1,13 @@
 import { Response, Request, NextFunction } from 'express';
 import { File } from '../../models/file.model';
 import { sendError } from '../../utils/senderror';
-import createHtml from '../../utils/folio/convert-to-html';
+//import createHtml from '../../utils/folio/convert-to-html';
 
 const path = require('path');
 const multipart = require('connect-multiparty');
 const fs = require('fs');
 
+/*
 const multipartMiddleware = multipart({
     uploadDir: process.env.FILE_UPLOAD_FOLDER
 });
@@ -31,6 +32,7 @@ function createUploadFolder(req, res, next) {
     }
     next()
 }
+*/
 
 async function displayHeadings(req: Request, res: Response, next: NextFunction) {
   try {
@@ -78,4 +80,4 @@ async function displayComments(req: Request, res: Response, next: NextFunction) 
   }
 }
 
-export default { createUploadFolder, uploadcontroller, displayHeadings, displayComments, multipartMiddleware };
+export default { /*createUploadFolder, uploadcontroller, multipartMiddleware, */displayHeadings, displayComments };
