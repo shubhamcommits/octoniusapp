@@ -293,13 +293,15 @@ export class GroupActivityFeedComponent implements OnInit {
    */
   async newPosts() {
 
+    this._router.navigate(['dashboard', 'work', 'groups', 'activity']);
+    /*
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
     // Clear the Posts Map
     this.posts = [];
 
-    this.moreToLoad = true
-
-    // Start the loading spinner
-    this.isLoading$.next(true);
+    this.moreToLoad = true;
 
     // Fetch the posts on scroll load
     await this.fetchPosts(this.groupData?._id);
@@ -312,6 +314,7 @@ export class GroupActivityFeedComponent implements OnInit {
 
     // Stop the loading spinner
     return this.isLoading$.next(false);
+    */
   }
 
   /**

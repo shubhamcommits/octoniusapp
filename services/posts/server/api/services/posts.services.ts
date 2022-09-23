@@ -702,6 +702,57 @@ export class PostService {
 
 
   /**
+   * This function is responsible for editing a post
+   * @param post
+   * @param postId
+   */
+  async editPostTags(tags: any, postId: string, userId: string) {
+    try {
+
+      // Parse the String to JSON Object
+      tags = JSON.parse(tags);
+
+      // Update the post
+      let post = await Post.findOneAndUpdate({
+          _id: postId
+        }, {
+          $set: { tags: tags }
+        }, {
+          new: true
+        });
+
+      post = await Post.findOneAndUpdate({
+          _id: postId
+        }, {
+          $push: {
+            "logs": {
+              action: 'updated_tags',
+              action_date: moment().format(),
+              _actor: userId
+            }
+          }
+        }, {
+          new: true
+        });
+
+      // populate the assigned_to property of this document
+      post = await this.populatePostProperties(post);
+
+      // Send all the required notifications
+      this.sendNotifications(post);
+
+      // Return the post
+      return post;
+
+    } catch (err) {
+
+      // Return with error
+      throw (err);
+    }
+  };
+
+
+  /**
    * This function is responsible for retrieving a post
    * @param postId
    */

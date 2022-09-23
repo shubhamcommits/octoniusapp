@@ -179,6 +179,7 @@ export class FolioHeaderComponent implements OnInit {
     this.uploadedFiles = element.target.files;
   }
 
+  /*
   onFileChanged(event) {
     // Utility Service Instance
     let utilityService = this._Injector.get(UtilityService);
@@ -205,6 +206,7 @@ export class FolioHeaderComponent implements OnInit {
           });
       }));
   }
+  */
 
   isAdminUser(groupData: any) {
     const index = (groupData && groupData._admins) ? groupData._admins.findIndex((admin: any) => admin._id === this.userData._id) : -1;

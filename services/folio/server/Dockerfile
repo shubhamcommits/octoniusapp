@@ -3,13 +3,6 @@
 # We label our stage as ‘builder’
 FROM mhart/alpine-node:14.17.3 as builder
 
-RUN apk update
-# Install Libreoffice
-RUN apk --no-cache --update upgrade && apk --no-cache add libreoffice
-
-#Install JRE for Libreoffice
-RUN apk --update add openjdk7-jre
-
 # Create app directory
 WORKDIR /usr/app
 

@@ -45,25 +45,48 @@ export class NotificationsService {
      * This function is responsible for fetching the latest first 5 un-read notifications
      * @param userId 
      */
-    async getUnread(userId: string) {
+    async getUnread(userId: string, limit?: number) {
         try {
-            const notifications = await Notification.find({
-                $and: [
-                    { _owner: userId },
-                    { read: false },
-                    { type: { $nin: ["new-post", "launch-approval-flow-due-date"] }}
-                ]
-            })
-                .sort('-created_date')
-                .populate('_actor', 'first_name last_name profile_pic')
-                .populate({ path: '_origin_post', populate: { path: '_group' } })
-                .populate('_origin_comment')
-                .populate('_owner', 'first_name last_name profile_pic')
-                .populate('_origin_group', 'group_name group_avatar')
-                .populate('_shuttle_group', 'group_name group_avatar')
-                .populate('_origin_folio')
-                .populate({ path: '_origin_folio', populate: { path: '_group' } })
-                .lean();
+            let notifications = [];
+
+            if (limit) {
+                notifications = await Notification.find({
+                        $and: [
+                            { _owner: userId },
+                            { read: false },
+                            { type: { $nin: ["new-post", "launch-approval-flow-due-date"] }}
+                        ]
+                    })
+                    .sort('-created_date')
+                    .limit(limit)
+                    .populate('_actor', 'first_name last_name profile_pic')
+                    .populate({ path: '_origin_post', populate: { path: '_group' } })
+                    .populate('_origin_comment')
+                    .populate('_owner', 'first_name last_name profile_pic')
+                    .populate('_origin_group', 'group_name group_avatar')
+                    .populate('_shuttle_group', 'group_name group_avatar')
+                    .populate('_origin_folio')
+                    .populate({ path: '_origin_folio', populate: { path: '_group' } })
+                    .lean();
+            } else {
+                notifications = await Notification.find({
+                        $and: [
+                            { _owner: userId },
+                            { read: false },
+                            { type: { $nin: ["new-post", "launch-approval-flow-due-date"] }}
+                        ]
+                    })
+                    .sort('-created_date')
+                    .populate('_actor', 'first_name last_name profile_pic')
+                    .populate({ path: '_origin_post', populate: { path: '_group' } })
+                    .populate('_origin_comment')
+                    .populate('_owner', 'first_name last_name profile_pic')
+                    .populate('_origin_group', 'group_name group_avatar')
+                    .populate('_shuttle_group', 'group_name group_avatar')
+                    .populate('_origin_folio')
+                    .populate({ path: '_origin_folio', populate: { path: '_group' } })
+                    .lean();
+            }
 
             return notifications;
         } catch (err) {
@@ -75,25 +98,48 @@ export class NotificationsService {
      * This function is responsible for fetching the latest new post notifications
      * @param userId 
      */
-    async getNewPost(userId: string) {
+    async getNewPost(userId: string, limit?: number) {
         try {
-            const notifications = await Notification.find({
-                $and: [
-                    { _owner: userId },
-                    { read: false },
-                    { type: 'new-post' }
-                ]
-            })
-                .sort('-created_date')
-                .populate('_actor', 'first_name last_name profile_pic')
-                .populate({ path: '_origin_post', populate: { path: '_group' } })
-                .populate('_origin_comment')
-                .populate('_owner', 'first_name last_name profile_pic')
-                .populate('_origin_group', 'group_name group_avatar')
-                .populate('_shuttle_group', 'group_name group_avatar')
-                .populate('_origin_folio')
-                .populate({ path: '_origin_folio', populate: { path: '_group' } })
-                .lean();
+            let notifications = [];
+
+            if (limit) {
+                notifications = await Notification.find({
+                        $and: [
+                            { _owner: userId },
+                            { read: false },
+                            { type: 'new-post' }
+                        ]
+                    })
+                    .sort('-created_date')
+                    .limit(limit)
+                    .populate('_actor', 'first_name last_name profile_pic')
+                    .populate({ path: '_origin_post', populate: { path: '_group' } })
+                    .populate('_origin_comment')
+                    .populate('_owner', 'first_name last_name profile_pic')
+                    .populate('_origin_group', 'group_name group_avatar')
+                    .populate('_shuttle_group', 'group_name group_avatar')
+                    .populate('_origin_folio')
+                    .populate({ path: '_origin_folio', populate: { path: '_group' } })
+                    .lean();
+            } else {
+                notifications = await Notification.find({
+                        $and: [
+                            { _owner: userId },
+                            { read: false },
+                            { type: 'new-post' }
+                        ]
+                    })
+                    .sort('-created_date')
+                    .populate('_actor', 'first_name last_name profile_pic')
+                    .populate({ path: '_origin_post', populate: { path: '_group' } })
+                    .populate('_origin_comment')
+                    .populate('_owner', 'first_name last_name profile_pic')
+                    .populate('_origin_group', 'group_name group_avatar')
+                    .populate('_shuttle_group', 'group_name group_avatar')
+                    .populate('_origin_folio')
+                    .populate({ path: '_origin_folio', populate: { path: '_group' } })
+                    .lean();
+            }
 
             return notifications;
         } catch (err) {
@@ -105,25 +151,48 @@ export class NotificationsService {
      * This function is responsible for fetching the latest new post notifications
      * @param userId 
      */
-    async getPendingApprovals(userId: string) {
+    async getPendingApprovals(userId: string, limit?: number) {
         try {
-            const notifications = await Notification.find({
-                $and: [
-                    { _owner: userId },
-                    { read: false },
-                    { type: 'launch-approval-flow-due-date' }
-                ]
-            })
-                .sort('-created_date')
-                .populate('_actor', 'first_name last_name profile_pic')
-                .populate({ path: '_origin_post', populate: { path: '_group' } })
-                .populate('_origin_comment')
-                .populate('_owner', 'first_name last_name profile_pic')
-                .populate('_origin_group', 'group_name group_avatar')
-                .populate('_shuttle_group', 'group_name group_avatar')
-                .populate('_origin_folio')
-                .populate({ path: '_origin_folio', populate: { path: '_group' } })
-                .lean();
+            let notifications = [];
+
+            if (limit) {
+                notifications = await Notification.find({
+                        $and: [
+                            { _owner: userId },
+                            { read: false },
+                            { type: 'launch-approval-flow-due-date' }
+                        ]
+                    })
+                    .sort('-created_date')
+                    .limit(limit)
+                    .populate('_actor', 'first_name last_name profile_pic')
+                    .populate({ path: '_origin_post', populate: { path: '_group' } })
+                    .populate('_origin_comment')
+                    .populate('_owner', 'first_name last_name profile_pic')
+                    .populate('_origin_group', 'group_name group_avatar')
+                    .populate('_shuttle_group', 'group_name group_avatar')
+                    .populate('_origin_folio')
+                    .populate({ path: '_origin_folio', populate: { path: '_group' } })
+                    .lean();
+            } else {
+                notifications = await Notification.find({
+                        $and: [
+                            { _owner: userId },
+                            { read: false },
+                            { type: 'launch-approval-flow-due-date' }
+                        ]
+                    })
+                    .sort('-created_date')
+                    .populate('_actor', 'first_name last_name profile_pic')
+                    .populate({ path: '_origin_post', populate: { path: '_group' } })
+                    .populate('_origin_comment')
+                    .populate('_owner', 'first_name last_name profile_pic')
+                    .populate('_origin_group', 'group_name group_avatar')
+                    .populate('_shuttle_group', 'group_name group_avatar')
+                    .populate('_origin_folio')
+                    .populate({ path: '_origin_folio', populate: { path: '_group' } })
+                    .lean();
+            }
 
             return notifications;
         } catch (err) {

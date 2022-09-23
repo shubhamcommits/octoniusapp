@@ -8,7 +8,7 @@ const routes = express.Router();
 // Auths Helper Function
 const authsHelper = new Auths();
 
-routes.post('/upload', authsHelper.verifyToken, authsHelper.isLoggedIn, folio.createUploadFolder, folio.multipartMiddleware, folio.uploadcontroller);
+//routes.post('/upload', authsHelper.verifyToken, authsHelper.isLoggedIn, folio.createUploadFolder, folio.multipartMiddleware, folio.uploadcontroller);
 
 routes.put('/:fileId/displayHeadings', authsHelper.verifyToken, authsHelper.isLoggedIn, folio.displayHeadings);
 
