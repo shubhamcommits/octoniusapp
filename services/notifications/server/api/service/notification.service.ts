@@ -1010,50 +1010,52 @@ export class NotificationsService {
 
      async sendFirebaseNotification(registrationToken: string, messageTitle: string, messageBody: string) {
 
-        var serviceAccount = require("../../configs/octonius-mobile-firebase-adminsdk-h61te-e2c4a22348.json");
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount)
-        });
-
-        var payload = {
-            notification: {
-                title: messageTitle,
-                body: messageBody
-            }
-        };
-
-        var options = {
-            priority: "high",
-            timeToLive: 60 * 60 *24
-        };
-
-        admin.getMessaging().sendToDevice(registrationToken, payload, options)
-            .then((response) => {
-                console.log("Successfully sent message:", response);
-            })
-            .catch((error) => {
-                console.log("Error sending message:", error);
+        if (registrationToken && messageTitle && messageBody) {
+            var serviceAccount = require("../../configs/octonius-mobile-firebase-adminsdk-h61te-e2c4a22348.json");
+            admin.initializeApp({
+                credential: admin.credential.cert(serviceAccount)
             });
 
-        /*
-        const message = {
-            data: {
-                score: '850',
-                time: '2:45'
-            },
-            token: registrationToken
-        };
+            var payload = {
+                notification: {
+                    title: messageTitle,
+                    body: messageBody
+                }
+            };
 
-        // Send a message to the device corresponding to the provided
-        // registration token.
-        admin.send(message)
-            .then((response) => {
-                // Response is a message ID string.
-                console.log('Successfully sent message:', response);
-            })
-            .catch((error) => {
-                console.log('Error sending message:', error);
-            });
-        */
+            var options = {
+                priority: "high",
+                timeToLive: 60 * 60 *24
+            };
+
+            admin.getMessaging().sendToDevice(registrationToken, payload, options)
+                .then((response) => {
+                    console.log("Successfully sent message:", response);
+                })
+                .catch((error) => {
+                    console.log("Error sending message:", error);
+                });
+
+            /*
+            const message = {
+                data: {
+                    score: '850',
+                    time: '2:45'
+                },
+                token: registrationToken
+            };
+
+            // Send a message to the device corresponding to the provided
+            // registration token.
+            admin.send(message)
+                .then((response) => {
+                    // Response is a message ID string.
+                    console.log('Successfully sent message:', response);
+                })
+                .catch((error) => {
+                    console.log('Error sending message:', error);
+                });
+            */
+        }
     };
 }
