@@ -869,4 +869,32 @@ export class NotificationsController {
             return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
     }
+
+    async saveFirebaseToken(req: Request, res: Response, next: NextFunction) {
+
+        const userId = req['userId'];
+        const token = req.body.token;
+
+        try {
+            if (!userId || !token) {
+                return sendErr(res, new Error('Please provide userId & token!'), 'Please provide userId & token!', 500);
+            }
+
+            const user = await User.findByIdAndUpdate({ _id: userId }, {
+                    $set: {
+                        firebase_token: token
+                    }
+                },
+                { new: true }).lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Firebase Token Saved!`,
+                user: user
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
 }

@@ -84,4 +84,7 @@ routes.get('/top-pending-approvals', auth.verifyToken, auth.isLoggedIn, notifica
 // GET - get pending approvals
 routes.get('/pending-approvals', auth.verifyToken, auth.isLoggedIn, notificationFunctions.pendingApprovals);
 
+// POST - mark item as read
+routes.post('/save-firebase-token', auth.verifyToken, auth.isLoggedIn, notificationFunctions.saveFirebaseToken);
+
 export { routes as notificationRoutes };
