@@ -239,7 +239,12 @@ export class NotificationsService {
                 });
 
                 // Send the notification to firebase for mobile notify
-                this.sendFirebaseNotification(user.firebase_token, 'Octonius - New Mention in Comment', comment?._commented_by?.first_name + ' ' + comment?._commented_by?.last_name + 'mentioned you on a comment.');
+                if (process.env.DOMAIN == 'app.octonius.com') {
+                    const owner = await User.findById({ _id: user }).select('firebase_token').lean();
+                    const actor = await User.findById({ _id: comment?._commented_by }).select('first_name last_name').lean();
+
+                    this.sendFirebaseNotification(owner.firebase_token, 'Octonius - New Mention in Comment', actor?.first_name + ' ' + actor?.last_name + 'mentioned you on a comment.');
+                }
             });
         } catch (err) {
             throw err;
@@ -280,7 +285,12 @@ export class NotificationsService {
                 });
 
                 // Send the notification to firebase for mobile notify
-                this.sendFirebaseNotification(user.firebase_token, 'Octonius - New Assignment', posted_by?.first_name + ' ' + posted_by?.last_name + 'assigned you a event.');
+                if (process.env.DOMAIN == 'app.octonius.com') {
+                    const owner = await User.findById({ _id: user }).select('firebase_token').lean();
+                    const actor = await User.findById({ _id: posted_by }).select('first_name last_name').lean();
+
+                    this.sendFirebaseNotification(owner.firebase_token, 'Octonius - New Assignment', actor?.first_name + ' ' + actor?.last_name + 'assigned you a event.');
+                }
             });
         } catch (err) {
             throw err;
@@ -320,7 +330,12 @@ export class NotificationsService {
                 });
 
                 // Send the notification to firebase for mobile notify
-                this.sendFirebaseNotification(user.firebase_token, 'Octonius - New Mention', posted_by?.first_name + ' ' + posted_by?.last_name + 'mentioned you on a post.');
+                if (process.env.DOMAIN == 'app.octonius.com') {
+                    const owner = await User.findById({ _id: user }).select('firebase_token').lean();
+                    const actor = await User.findById({ _id: posted_by }).select('first_name last_name').lean();
+
+                    this.sendFirebaseNotification(owner.firebase_token, 'Octonius - New Mention', actor?.first_name + ' ' + actor?.last_name + 'mentioned you on a post.');
+                }
             })
         } catch (err) {
             throw err;
@@ -364,10 +379,12 @@ export class NotificationsService {
                     created_date: moment().format()
                 });
 
-                const actor = await User.findById({ _id: actorId }).select('first_name last_name').lean();
+                if (process.env.DOMAIN == 'app.octonius.com') {
+                    const actor = await User.findById({ _id: actorId }).select('first_name last_name').lean();
 
-                // Send the notification to firebase for mobile notify
-                this.sendFirebaseNotification(user.firebase_token, 'Octonius - New Mention', actor?.first_name + ' ' + actor?.last_name + 'mentioned you on a folio.');
+                    // Send the notification to firebase for mobile notify
+                    this.sendFirebaseNotification(user.firebase_token, 'Octonius - New Mention', actor?.first_name + ' ' + actor?.last_name + 'mentioned you on a folio.');
+                }
             });
         } catch (err) {
             throw err;
@@ -406,13 +423,13 @@ export class NotificationsService {
                     created_date: moment().format()
                 });
 
-                if (!user.firebase_token) {
-                    user = await User.findById({ _id: assigned_to }).select('firebase_token').lean();
-                }
-                const actor = await User.findById({ _id: posted_by }).select('first_name last_name').lean();
+                if (process.env.DOMAIN == 'app.octonius.com') {
+                    const owner = await User.findById({ _id: assigned_to }).select('firebase_token').lean();
+                    const actor = await User.findById({ _id: posted_by }).select('first_name last_name').lean();
 
-                // Send the notification to firebase for mobile notify
-                this.sendFirebaseNotification(user.firebase_token, 'Octonius - New Assignment', actor?.first_name + ' ' + actor?.last_name + 'assigned you a task.');
+                    // Send the notification to firebase for mobile notify
+                    this.sendFirebaseNotification(owner.firebase_token, 'Octonius - New Assignment', actor?.first_name + ' ' + actor?.last_name + 'assigned you a task.');
+                }
             });
         } catch (err) {
             throw err;
@@ -435,11 +452,13 @@ export class NotificationsService {
                 created_date: moment().format()
             });
 
-            const owner = await User.findById({ _id: assigneeId }).select('firebase_token').lean();
-            const actor = await User.findById({ _id: posted_by }).select('first_name last_name').lean();
+            if (process.env.DOMAIN == 'app.octonius.com') {
+                const owner = await User.findById({ _id: assigneeId }).select('firebase_token').lean();
+                const actor = await User.findById({ _id: posted_by }).select('first_name last_name').lean();
 
-            // Send the notification to firebase for mobile notify
-            this.sendFirebaseNotification(owner.firebase_token, 'Octonius - New Assignment', actor?.first_name + ' ' + actor?.last_name + 'assigned you a task.');
+                // Send the notification to firebase for mobile notify
+                    this.sendFirebaseNotification(owner.firebase_token, 'Octonius - New Assignment', actor?.first_name + ' ' + actor?.last_name + 'assigned you a task.');
+            }
         } catch (err) {
             throw err;
         }
@@ -462,14 +481,16 @@ export class NotificationsService {
                     created_date: moment().format()
                 });
 
-                const owner = await User.findById({ _id: ownerId }).select('firebase_token').lean();
-                const actor = await User.findById({ _id: actorId }).select('first_name last_name').lean();
-                const task = await Post.findById({ _id: postId }).select('title').lean();
+                if (process.env.DOMAIN == 'app.octonius.com') {
+                    const owner = await User.findById({ _id: ownerId }).select('firebase_token').lean();
+                    const actor = await User.findById({ _id: actorId }).select('first_name last_name').lean();
+                    const task = await Post.findById({ _id: postId }).select('title').lean();
 
-                // Send the notification to firebase for mobile notify
-                this.sendFirebaseNotification(owner.firebase_token, 'Octonius - Task Status Changed', actor?.first_name + ' ' + actor?.last_name + ' changed the task ' + task?.title + ' to ' + status);
+                    // Send the notification to firebase for mobile notify
+                    this.sendFirebaseNotification(owner.firebase_token, 'Octonius - Task Status Changed', actor?.first_name + ' ' + actor?.last_name + ' changed the task ' + task?.title + ' to ' + status);
+                }
 
-                await helperFunctions.sendNotificationsFeedFromService(owner, io);
+                await helperFunctions.sendNotificationsFeedFromService(ownerId, io);
             } else {
 
                 // Create Readble Stream from the Event Assignee
@@ -485,12 +506,14 @@ export class NotificationsService {
                         created_date: moment().format()
                     });
 
-                    const owner = await User.findById({ _id: user }).select('firebase_token').lean();
-                    const actor = await User.findById({ _id: actorId }).select('first_name last_name').lean();
-                    const task = await Post.findById({ _id: postId }).select('title').lean();
+                    if (process.env.DOMAIN == 'app.octonius.com') {
+                        const owner = await User.findById({ _id: user?._id }).select('firebase_token').lean();
+                        const actor = await User.findById({ _id: actorId }).select('first_name last_name').lean();
+                        const task = await Post.findById({ _id: postId }).select('title').lean();
 
-                    // Send the notification to firebase for mobile notify
-                    this.sendFirebaseNotification(owner.firebase_token, 'Octonius - Task Status Changed', actor?.first_name + ' ' + actor?.last_name + ' changed the task ' + task?.title + ' to ' + status);
+                        // Send the notification to firebase for mobile notify
+                        this.sendFirebaseNotification(owner.firebase_token, 'Octonius - Task Status Changed', actor?.first_name + ' ' + actor?.last_name + ' changed the task ' + task?.title + ' to ' + status);
+                    }
                     
                     await helperFunctions.sendNotificationsFeedFromService(user?._id, io);
                 });
@@ -516,11 +539,13 @@ export class NotificationsService {
                 created_date: moment().format()
             });
 
-            const owner = await User.findById({ _id: ownerId }).select('firebase_token').lean();
-            const actor = await User.findById({ _id: comment._commented_by._id || comment._commented_by }).select('first_name last_name').lean();
+            if (process.env.DOMAIN == 'app.octonius.com') {
+                const owner = await User.findById({ _id: ownerId }).select('firebase_token').lean();
+                const actor = await User.findById({ _id: comment._commented_by._id || comment._commented_by }).select('first_name last_name').lean();
 
-            // Send the notification to firebase for mobile notify
-            this.sendFirebaseNotification(owner.firebase_token, 'Octonius - New Comment', actor?.first_name + ' ' + actor?.last_name + 'commented on ');
+                // Send the notification to firebase for mobile notify
+                this.sendFirebaseNotification(owner.firebase_token, 'Octonius - New Comment', actor?.first_name + ' ' + actor?.last_name + 'commented on ');
+            }
         } catch (err) {
             throw err;
         }
@@ -542,11 +567,13 @@ export class NotificationsService {
                 created_date: moment().format()
             });
 
-            const owner = await User.findById({ _id: ownerId }).select('firebase_token').lean();
-            const actor = await User.findById({ _id: actorId }).select('first_name last_name').lean();
+            if (process.env.DOMAIN == 'app.octonius.com') {
+                const owner = await User.findById({ _id: ownerId }).select('firebase_token').lean();
+                const actor = await User.findById({ _id: actorId }).select('first_name last_name').lean();
 
-            // Send the notification to firebase for mobile notify
-            this.sendFirebaseNotification(owner.firebase_token, 'Octonius - New Like on a Post', actor?.first_name + ' ' + actor?.last_name + ' liked your comment on ' + comment._post.title);
+                // Send the notification to firebase for mobile notify
+                this.sendFirebaseNotification(owner.firebase_token, 'Octonius - New Like on a Post', actor?.first_name + ' ' + actor?.last_name + ' liked your comment on ' + comment._post.title);
+            }
         } catch (err) {
             throw err;
         }
@@ -566,12 +593,14 @@ export class NotificationsService {
                 created_date: moment().format()
             });
 
-            const owner = await User.findById({ _id: posted_by }).select('firebase_token').lean();
-            const actor = await User.findById({ _id: follower }).select('first_name last_name').lean();
-            const post = await Post.findById({ _id: postId }).select('title').lean();
+            if (process.env.DOMAIN == 'app.octonius.com') {
+                const owner = await User.findById({ _id: posted_by }).select('firebase_token').lean();
+                const actor = await User.findById({ _id: follower }).select('first_name last_name').lean();
+                const post = await Post.findById({ _id: postId }).select('title').lean();
 
-            // Send the notification to firebase for mobile notify
-            this.sendFirebaseNotification(owner.firebase_token, 'Octonius - New Follow on a Post', actor?.first_name + ' ' + actor?.last_name + ' follows ' + post.title);
+                // Send the notification to firebase for mobile notify
+                this.sendFirebaseNotification(owner.firebase_token, 'Octonius - New Follow on a Post', actor?.first_name + ' ' + actor?.last_name + ' follows ' + post.title);
+            }
         } catch (err) {
             throw err;
         }
@@ -588,12 +617,14 @@ export class NotificationsService {
                 created_date: moment().format()
             });
 
-            const owner = await User.findById({ _id: ownerId }).select('firebase_token').lean();
-            const actor = await User.findById({ _id: actorId }).select('first_name last_name').lean();
-            const post = await Post.findById({ _id: postId }).select('title').lean();
+            if (process.env.DOMAIN == 'app.octonius.com') {
+                const owner = await User.findById({ _id: ownerId }).select('firebase_token').lean();
+                const actor = await User.findById({ _id: actorId }).select('first_name last_name').lean();
+                const post = await Post.findById({ _id: postId }).select('title').lean();
 
-            // Send the notification to firebase for mobile notify
-            this.sendFirebaseNotification(owner.firebase_token, 'Octonius - New Like on a Post', actor?.first_name + ' ' + actor?.last_name + ' likes ' + post.title);
+                // Send the notification to firebase for mobile notify
+                this.sendFirebaseNotification(owner.firebase_token, 'Octonius - New Like on a Post', actor?.first_name + ' ' + actor?.last_name + ' likes ' + post.title);
+            }
         } catch (err) {
             throw err;
         }
@@ -623,12 +654,14 @@ export class NotificationsService {
                     created_date: moment().format()
                 });
 
-                const owner = await User.findById({ _id: user }).select('firebase_token').lean();
-                const actor = await User.findById({ _id: posted_by }).select('first_name last_name').lean();
-                const post = await Post.findById({ _id: postId }).select('title').lean();
+                if (process.env.DOMAIN == 'app.octonius.com') {
+                    const owner = await User.findById({ _id: user }).select('firebase_token').lean();
+                    const actor = await User.findById({ _id: posted_by }).select('first_name last_name').lean();
+                    const post = await Post.findById({ _id: postId }).select('title').lean();
 
-                // Send the notification to firebase for mobile notify
-                this.sendFirebaseNotification(owner.firebase_token, 'Octonius - New Post', actor?.first_name + ' ' + actor?.last_name + ' posted ' + post.title);
+                    // Send the notification to firebase for mobile notify
+                    this.sendFirebaseNotification(owner.firebase_token, 'Octonius - New Post', actor?.first_name + ' ' + actor?.last_name + ' posted ' + post.title);
+                }
 
                 await helperFunctions.sendNotificationsFeedFromService(user, io, true);
             });
@@ -653,12 +686,14 @@ export class NotificationsService {
                 created_date: moment().format()
             });
 
-            const owner = await User.findById({ _id: userId }).select('firebase_token').lean();
-            const actor = await User.findById({ _id: added_by }).select('first_name last_name').lean();
-            const group = await Group.findById({ _id: groupId }).select('group_name').lean();
+            if (process.env.DOMAIN == 'app.octonius.com') {
+                const owner = await User.findById({ _id: userId }).select('firebase_token').lean();
+                const actor = await User.findById({ _id: added_by }).select('first_name last_name').lean();
+                const group = await Group.findById({ _id: groupId }).select('group_name').lean();
 
-            // Send the notification to firebase for mobile notify
-            this.sendFirebaseNotification(owner.firebase_token, 'Octonius - Joined Group', actor?.first_name + ' ' + actor?.last_name + ' added you to group ' + group.group_name);
+                // Send the notification to firebase for mobile notify
+                this.sendFirebaseNotification(owner.firebase_token, 'Octonius - Joined Group', actor?.first_name + ' ' + actor?.last_name + ' added you to group ' + group.group_name);
+            }
 
             await helperFunctions.sendNotificationsFeedFromService(userId, io, true);
 
@@ -682,12 +717,14 @@ export class NotificationsService {
                 created_date: moment().format()
             });
 
-            const owner = await User.findById({ _id: userId }).select('firebase_token').lean();
-            const actor = await User.findById({ _id: removed_by }).select('first_name last_name').lean();
-            const group = await Group.findById({ _id: groupId }).select('group_name').lean();
+            if (process.env.DOMAIN == 'app.octonius.com') {
+                const owner = await User.findById({ _id: userId }).select('firebase_token').lean();
+                const actor = await User.findById({ _id: removed_by }).select('first_name last_name').lean();
+                const group = await Group.findById({ _id: groupId }).select('group_name').lean();
 
-            // Send the notification to firebase for mobile notify
-            this.sendFirebaseNotification(owner.firebase_token, 'Octonius - Leave Group', actor?.first_name + ' ' + actor?.last_name + ' removed you from group ' + group.group_name);
+                // Send the notification to firebase for mobile notify
+                this.sendFirebaseNotification(owner.firebase_token, 'Octonius - Leave Group', actor?.first_name + ' ' + actor?.last_name + ' removed you from group ' + group.group_name);
+            }
 
             await helperFunctions.sendNotificationsFeedFromService(userId, io, true);
 
@@ -744,17 +781,19 @@ export class NotificationsService {
                 }
             }
 
-            const owner = await User.findById({ _id: assigned._id }).select('firebase_token').lean();
-            const actor = await User.findById({ _id: posted_by }).select('first_name last_name').lean();
-            let itemDB;
-            if (item.type == 'task') {
-                itemDB = await Post.findById({ _id: item._id }).select('title').lean();
-            } else {
-                itemDB = await File.findById({ _id: item._id }).select('original_name').lean();
-            }
+            if (process.env.DOMAIN == 'app.octonius.com') {
+                const owner = await User.findById({ _id: assigned._id }).select('firebase_token').lean();
+                const actor = await User.findById({ _id: posted_by }).select('first_name last_name').lean();
+                let itemDB;
+                if (item.type == 'task') {
+                    itemDB = await Post.findById({ _id: item._id }).select('title').lean();
+                } else {
+                    itemDB = await File.findById({ _id: item._id }).select('original_name').lean();
+                }
 
-            // Send the notification to firebase for mobile notify
-            this.sendFirebaseNotification(owner.firebase_token, 'Octonius - New Approval Flow Launched', actor?.first_name + ' ' + actor?.last_name + ' launched the approval flow on ' + (itemDB.title || itemDB.original_name));
+                // Send the notification to firebase for mobile notify
+                this.sendFirebaseNotification(owner.firebase_token, 'Octonius - New Approval Flow Launched', actor?.first_name + ' ' + actor?.last_name + ' launched the approval flow on ' + (itemDB.title || itemDB.original_name));
+            }
 
             await helperFunctions.sendNotificationsFeedFromService(assigned._id, io, true);
 
@@ -804,17 +843,19 @@ export class NotificationsService {
                 });
             }
 
-            const owner = await User.findById({ _id: assigned._id }).select('firebase_token').lean();
-            const actor = await User.findById({ _id: rejected_by }).select('first_name last_name').lean();
-            let itemDB;
-            if (item.type == 'task') {
-                itemDB = await Post.findById({ _id: item._id }).select('title').lean();
-            } else {
-                itemDB = await File.findById({ _id: item._id }).select('original_name').lean();
-            }
+            if (process.env.DOMAIN == 'app.octonius.com') {
+                const owner = await User.findById({ _id: assigned._id }).select('firebase_token').lean();
+                const actor = await User.findById({ _id: rejected_by }).select('first_name last_name').lean();
+                let itemDB;
+                if (item.type == 'task') {
+                    itemDB = await Post.findById({ _id: item._id }).select('title').lean();
+                } else {
+                    itemDB = await File.findById({ _id: item._id }).select('original_name').lean();
+                }
 
-            // Send the notification to firebase for mobile notify
-            this.sendFirebaseNotification(owner.firebase_token, 'Octonius - Approval Flow Rejected', actor?.first_name + ' ' + actor?.last_name + ' rejected the approval flow on ' + (itemDB.title || itemDB.original_name));
+                // Send the notification to firebase for mobile notify
+                this.sendFirebaseNotification(owner.firebase_token, 'Octonius - Approval Flow Rejected', actor?.first_name + ' ' + actor?.last_name + ' rejected the approval flow on ' + (itemDB.title || itemDB.original_name));
+            }
 
             await helperFunctions.sendNotificationsFeedFromService(assigned._id, io, true);
 
@@ -859,16 +900,18 @@ export class NotificationsService {
                 });
             }
 
-            const owner = await User.findById({ _id: assigned._id }).select('firebase_token').lean();
-            let itemDB;
-            if (item.type == 'task') {
-                itemDB = await Post.findById({ _id: item._id }).select('title').lean();
-            } else {
-                itemDB = await File.findById({ _id: item._id }).select('original_name').lean();
-            }
+            if (process.env.DOMAIN == 'app.octonius.com') {
+                const owner = await User.findById({ _id: assigned._id }).select('firebase_token').lean();
+                let itemDB;
+                if (item.type == 'task') {
+                    itemDB = await Post.findById({ _id: item._id }).select('title').lean();
+                } else {
+                    itemDB = await File.findById({ _id: item._id }).select('original_name').lean();
+                }
 
-            // Send the notification to firebase for mobile notify
-            this.sendFirebaseNotification(owner.firebase_token, 'Octonius - Approval Flow Rejected', 'Approval flow on ' + (itemDB.title || itemDB.original_name) + ' has been approved');
+                // Send the notification to firebase for mobile notify
+                this.sendFirebaseNotification(owner.firebase_token, 'Octonius - Approval Flow Rejected', 'Approval flow on ' + (itemDB.title || itemDB.original_name) + ' has been approved');
+            }
 
             await helperFunctions.sendNotificationsFeedFromService(assigned._id, io, true);
 
@@ -929,10 +972,12 @@ export class NotificationsService {
                     created_date: moment().format()
                 });
 
-                const actor = await User.findById({ _id: userId }).select('first_name last_name').lean();
+                if (process.env.DOMAIN == 'app.octonius.com') {
+                    const actor = await User.findById({ _id: userId }).select('first_name last_name').lean();
 
-                // Send the notification to firebase for mobile notify
-                this.sendFirebaseNotification(user.firebase_token, 'Octonius - Shuttle Task', actor?.first_name + ' ' + actor?.last_name + ' assigned a Shuttle Task to your group ' + shuttleGroup.group_name);
+                    // Send the notification to firebase for mobile notify
+                   this.sendFirebaseNotification(user.firebase_token, 'Octonius - Shuttle Task', actor?.first_name + ' ' + actor?.last_name + ' assigned a Shuttle Task to your group ' + shuttleGroup.group_name);
+                }
 
                 await helperFunctions.sendNotificationsFeedFromService(user._id || user, io, true);
 
