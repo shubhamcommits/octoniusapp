@@ -882,7 +882,7 @@ export class NotificationsController {
 
             const user = await User.findByIdAndUpdate({ _id: userId }, {
                     $set: {
-                        firebase_token: token
+                        'integrations.firebase_token': token
                     }
                 },
                 { new: true }).lean();

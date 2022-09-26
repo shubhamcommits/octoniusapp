@@ -153,11 +153,11 @@ const UserSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Group'
     },
-    firebase_token: {
+    integrations: {
+        firebase_token: {
         type: String,
         default: null
-    },
-    integrations: {
+        },
         gdrive: {
             token: {
                 type: String,
