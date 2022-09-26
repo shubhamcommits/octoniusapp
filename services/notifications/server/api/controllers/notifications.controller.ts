@@ -1,14 +1,13 @@
-import { Notification, Post, User } from "../models";
+import { User } from "../models";
 import { Response, Request, NextFunction } from "express";
 import { sendError } from "../../utils";
 import { NotificationsService } from "../service";
 import { sendErr } from "../../utils/sendError";
-import { validateId } from "../../utils/helperFunctions";
 import { helperFunctions } from '../../utils';
 import axios from 'axios';
 
 // Creating Service class in order to build wrapper class
-const notificationService = new NotificationsService()
+const notificationService = new NotificationsService();
 
 /*  ===============================
  *  -- NOTIFICATIONS CONTROLLERS --
@@ -28,7 +27,6 @@ export class NotificationsController {
         try {
 
             // Call Service Function for newCommentMentions
-
             await notificationService.newCommentMentions(comment).then(() => {
                 return res.status(200).json({
                     message: `Comment Mentions Succeeded!`,

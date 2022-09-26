@@ -1,4 +1,4 @@
-import jwt, { JsonWebTokenError } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from 'express';
 import { sendError } from ".";
 import { Auth } from "../api/models";
