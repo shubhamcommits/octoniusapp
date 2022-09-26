@@ -75,6 +75,9 @@ routes.get('/top-unread-posts', auth.verifyToken, auth.isLoggedIn, notificationF
 // GET - get unread posts
 routes.get('/unread-posts', auth.verifyToken, auth.isLoggedIn, notificationFunctions.unreadPosts);
 
+// POST - mark item as read
+routes.post('/:notificationId/mark-read', auth.verifyToken, auth.isLoggedIn, approvalFunctions.markRead);
+
 // GET - get pending approvals
 routes.get('/top-pending-approvals', auth.verifyToken, auth.isLoggedIn, notificationFunctions.pendingTopApprovals);
 
