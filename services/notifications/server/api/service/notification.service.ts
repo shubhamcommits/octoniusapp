@@ -1020,7 +1020,8 @@ export class NotificationsService {
                 notification: {
                     title: messageTitle,
                     body: messageBody
-                }
+                },
+                topic: 'octonius'
             };
 
             var options = {
@@ -1042,7 +1043,8 @@ export class NotificationsService {
                     score: '850',
                     time: '2:45'
                 },
-                token: registrationToken
+                token: registrationToken,
+                topic: 'octonius'
             };
 
             // Send a message to the device corresponding to the provided
