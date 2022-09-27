@@ -145,7 +145,8 @@ export class GroupKanbanArchivedBoardsComponent implements OnInit, OnChanges, Af
           });
 
         // Find the hightes due date on the tasks of the column
-        column.real_due_date = this.publicFunctions.getHighestDate(column.tasks);
+        const highestDate = this.publicFunctions.getHighestDate(column.tasks);
+        column.real_due_date = (highestDate) ? highestDate : column?.due_date;
 
         // Calculate number of done tasks
         column.numDoneTasks = column.tasks.filter((post) => post?.task?.status?.toLowerCase() == 'done').length;

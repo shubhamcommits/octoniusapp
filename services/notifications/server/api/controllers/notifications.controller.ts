@@ -1,14 +1,13 @@
-import { Notification, Post, User } from "../models";
+import { User } from "../models";
 import { Response, Request, NextFunction } from "express";
 import { sendError } from "../../utils";
 import { NotificationsService } from "../service";
 import { sendErr } from "../../utils/sendError";
-import { validateId } from "../../utils/helperFunctions";
 import { helperFunctions } from '../../utils';
 import axios from 'axios';
 
 // Creating Service class in order to build wrapper class
-const notificationService = new NotificationsService()
+const notificationService = new NotificationsService();
 
 /*  ===============================
  *  -- NOTIFICATIONS CONTROLLERS --
@@ -28,7 +27,6 @@ export class NotificationsController {
         try {
 
             // Call Service Function for newCommentMentions
-
             await notificationService.newCommentMentions(comment).then(() => {
                 return res.status(200).json({
                     message: `Comment Mentions Succeeded!`,
@@ -865,6 +863,34 @@ export class NotificationsController {
             return res.status(200).json({
                 message: `Pending Approvals Obtained!`,
                 pendingApprovals: pendingApprovals
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    async saveFirebaseToken(req: Request, res: Response, next: NextFunction) {
+
+        const userId = req['userId'];
+        const token = req.body.token;
+
+        try {
+            if (!userId || !token) {
+                return sendErr(res, new Error('Please provide userId & token!'), 'Please provide userId & token!', 500);
+            }
+
+            const user = await User.findByIdAndUpdate({ _id: userId }, {
+                    $set: {
+                        'integrations.firebase_token': token
+                    }
+                },
+                { new: true }).lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Firebase Token Saved!`,
+                user: user
             });
         } catch (err) {
             // Error Handling

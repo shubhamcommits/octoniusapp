@@ -149,6 +149,10 @@ const UserSchema = new Schema({
         ref: 'Group'
     },
     integrations: {
+        firebase_token: {
+        type: String,
+        default: null
+        },
         gdrive: {
             token: {
                 type: String,

@@ -1535,7 +1535,8 @@ export class PublicFunctions {
      * @returns
      */
     getHighestDate(posts: any) {
-      return moment(Math.max(...posts.map(post => moment(post.task.due_to))));
+      const highestDate = moment(Math.max(...posts.map(post => moment(post.task.due_to))));
+      return (!highestDate || !highestDate.isValid()) ? null : highestDate;
     }
 
     async isShuttleTasksModuleAvailable() {

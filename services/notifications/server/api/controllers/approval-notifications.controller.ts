@@ -142,4 +142,25 @@ export class ApprovalNotificationsController {
             return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
     }
+
+    /**
+     * This function is responsible for notifying the users when an item was approved by every member in the flow
+     * @param { userId, groupId, posted_by, io } post 
+     */
+    async markRead(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the notificationId from the request
+        const { params: { notificationId } } = req;
+        try {
+            notificationService.markRead(notificationId);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Notification marked as read!`,
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
 }
