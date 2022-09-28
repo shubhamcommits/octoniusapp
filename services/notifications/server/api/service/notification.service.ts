@@ -1048,10 +1048,13 @@ export class NotificationsService {
      async sendFirebaseNotification(registrationToken: string, messageTitle: string, messageBody: string) {
 
         if (registrationToken && messageTitle && messageBody) {
-            var serviceAccount = require("../../configs/octonius-mobile-firebase-adminsdk-h61te-e2c4a22348.json");
-            admin.initializeApp({
-                credential: admin.credential.cert(serviceAccount)
-            });
+
+            const serviceAccount = require("../../configs/octonius-mobile-firebase-adminsdk-h61te-e2c4a22348.json");
+            if (!admin.apps) {
+                admin.initializeApp({
+                    credential: admin.credential.cert(serviceAccount)
+                });
+            }            
 
             var payload = {
                 notification: {
