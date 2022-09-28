@@ -1065,8 +1065,8 @@ export class NotificationsService {
                 priority: "high",
                 timeToLive: 60 * 60 *24
             };
-console.log({options});
-            admin.getMessaging().sendToDevice(registrationToken, payload, options)
+
+            admin.messaging().sendToDevice(registrationToken, payload, options)
                 .then((response) => {
                     console.log("Successfully sent message:", response);
                 })
