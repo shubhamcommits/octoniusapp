@@ -408,7 +408,8 @@ export class NotificationsService {
         try {
             // Let usersStream
             let userStream: any;
-
+console.log({assigned_to});
+console.log({posted_by});
             // If all members are selected
             if (assigned_to.includes('all')) {
 
@@ -423,8 +424,8 @@ export class NotificationsService {
 
             await userStream.on('data', async (user: any) => {
                 const notification = await Notification.create({
-                    _actor: posted_by,
-                    _owner: user,
+                    _actor: (posted_by._id || posted_by),
+                    _owner: (user._id || user),
                     _origin_post: postId,
                     message: 'assigned you on',
                     type: 'assignment',
