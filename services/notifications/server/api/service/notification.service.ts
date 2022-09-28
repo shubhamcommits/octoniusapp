@@ -4,6 +4,10 @@ import { helperFunctions, axios } from '../../utils';
 import moment from "moment";
 
 var admin = require("firebase-admin");
+const serviceAccount = require("../../configs/octonius-mobile-firebase-adminsdk-h61te-e2c4a22348.json");
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+});
 
 /*  ===============================
  *  -- NOTIFICATIONS Service --
@@ -1047,14 +1051,7 @@ export class NotificationsService {
 
      async sendFirebaseNotification(registrationToken: string, messageTitle: string, messageBody: string) {
 
-        if (registrationToken && messageTitle && messageBody) {
-
-            const serviceAccount = require("../../configs/octonius-mobile-firebase-adminsdk-h61te-e2c4a22348.json");
-            if (!admin.apps) {
-                admin.initializeApp({
-                    credential: admin.credential.cert(serviceAccount)
-                });
-            }            
+        if (registrationToken && messageTitle && messageBody) {         
 
             var payload = {
                 notification: {
