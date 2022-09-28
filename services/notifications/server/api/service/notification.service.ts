@@ -1057,8 +1057,8 @@ export class NotificationsService {
                 notification: {
                     title: messageTitle,
                     body: messageBody
-                },
-                topic: 'octonius'
+                }
+                //, topic: 'octonius'
             };
 
             var options = {
