@@ -271,7 +271,6 @@ export class NotificationsService {
                     _groups: groupId
                 }).select('first_name email'))
             } else {
-
                 // Create Readble Stream from the Event Assignee
                 userStream = Readable.from(assigned_to);
             }
@@ -279,7 +278,7 @@ export class NotificationsService {
             await userStream.on('data', async (user: any) => {
                 const notification = await Notification.create({
                     _actor: posted_by,
-                    _owner: user,
+                    _owner: user._id,
                     _origin_post: postId,
                     message: 'assigned you on',
                     type: 'assignment',
@@ -288,7 +287,7 @@ export class NotificationsService {
 
                 // Send the notification to firebase for mobile notify
                 if (process.env.DOMAIN == 'app.octonius.com') {
-                    const owner = await User.findById({ _id: user }).select('integrations.firebase_token').lean();
+                    const owner = await User.findById({ _id: user._id }).select('integrations.firebase_token').lean();
                     const actor = await User.findById({ _id: (posted_by._id || posted_by) }).select('first_name last_name').lean();
 
                     if (owner.integrations.firebase_token) {
@@ -335,7 +334,7 @@ export class NotificationsService {
 
                 // Send the notification to firebase for mobile notify
                 if (process.env.DOMAIN == 'app.octonius.com') {
-                    const owner = await User.findById({ _id: user }).select('integrations.firebase_token').lean();
+                    const owner = await User.findById({ _id: user._id }).select('integrations.firebase_token').lean();
                     const actor = await User.findById({ _id: (posted_by._id || posted_by) }).select('first_name last_name').lean();
 
                     if (owner.integrations.firebase_token) {
@@ -408,8 +407,7 @@ export class NotificationsService {
         try {
             // Let usersStream
             let userStream: any;
-console.log({assigned_to});
-console.log({posted_by});
+
             // If all members are selected
             if (assigned_to.includes('all')) {
 
@@ -423,22 +421,24 @@ console.log({posted_by});
             }
 
             await userStream.on('data', async (user: any) => {
-                const notification = await Notification.create({
-                    _actor: (posted_by._id || posted_by),
-                    _owner: (user._id || user),
-                    _origin_post: postId,
-                    message: 'assigned you on',
-                    type: 'assignment',
-                    created_date: moment().format()
-                });
+                if ((user._id || user) !== (posted_by._id || posted_by)) {
+                    const notification = await Notification.create({
+                        _actor: (posted_by._id || posted_by),
+                        _owner: (user._id || user),
+                        _origin_post: postId,
+                        message: 'assigned you on',
+                        type: 'assignment',
+                        created_date: moment().format()
+                    });
 
-                if (process.env.DOMAIN == 'app.octonius.com') {
-                    const owner = await User.findById({ _id: (assigned_to._id || assigned_to) }).select('integrations.firebase_token').lean();
-                    const actor = await User.findById({ _id: (posted_by._id || posted_by) }).select('first_name last_name').lean();
+                    if (process.env.DOMAIN == 'app.octonius.com') {
+                        const owner = await User.findById({ _id: user._id }).select('integrations.firebase_token').lean();
+                        const actor = await User.findById({ _id: (posted_by._id || posted_by) }).select('first_name last_name').lean();
 
-                    if (owner.integrations.firebase_token) {
-                        // Send the notification to firebase for mobile notify
-                        this.sendFirebaseNotification(owner.integrations.firebase_token, 'Octonius - New Assignment', actor?.first_name + ' ' + actor?.last_name + 'assigned you a task.');
+                        if (owner.integrations.firebase_token) {
+                            // Send the notification to firebase for mobile notify
+                            this.sendFirebaseNotification(owner.integrations.firebase_token, 'Octonius - New Assignment', actor?.first_name + ' ' + actor?.last_name + 'assigned you a task.');
+                        }
                     }
                 }
             });
@@ -514,7 +514,7 @@ console.log({posted_by});
                 await userStream.on('data', async (user: any) => {
                     const notification = await Notification.create({
                         _actor: actorId,
-                        _owner: user,
+                        _owner: user._id || user,
                         _origin_post: postId,
                         message: status,
                         type: status,
@@ -522,7 +522,7 @@ console.log({posted_by});
                     });
 
                     if (process.env.DOMAIN == 'app.octonius.com') {
-                        const owner = await User.findById({ _id: user?._id }).select('integrations.firebase_token').lean();
+                        const owner = await User.findById({ _id: (user._id || user) }).select('integrations.firebase_token').lean();
                         const actor = await User.findById({ _id: actorId }).select('first_name last_name').lean();
                         const task = await Post.findById({ _id: postId }).select('title').lean();
 
@@ -662,16 +662,15 @@ console.log({posted_by});
     */
     async newPost(postId: any, groupId: any, posted_by: any, io: any) {
         try {
-            console.log(postId);
             // Let usersStream
             let userStream = Readable.from(await User.find({
                 _groups: groupId
-            }).select('first_name email'))
+            }).select('first_name email integrations.firebase_token'))
 
             await userStream.on('data', async (user: any) => {
                 const notification = await Notification.create({
                     _actor: posted_by,
-                    _owner: user,
+                    _owner: user._id,
                     _origin_post: postId,
                     _origin_group: groupId,
                     message: 'posted',
@@ -680,13 +679,12 @@ console.log({posted_by});
                 });
 
                 if (process.env.DOMAIN == 'app.octonius.com') {
-                    const owner = await User.findById({ _id: user }).select('integrations.firebase_token').lean();
                     const actor = await User.findById({ _id: (posted_by._id || posted_by) }).select('first_name last_name').lean();
                     const post = await Post.findById({ _id: postId }).select('title').lean();
 
-                    if (owner.integrations.firebase_token) {
+                    if (user.integrations.firebase_token) {
                         // Send the notification to firebase for mobile notify
-                        this.sendFirebaseNotification(owner.integrations.firebase_token, 'Octonius - New Post', actor?.first_name + ' ' + actor?.last_name + ' posted ' + post.title);
+                        this.sendFirebaseNotification(user.integrations.firebase_token, 'Octonius - New Post', actor?.first_name + ' ' + actor?.last_name + ' posted ' + post.title);
                     }
                 }
 
@@ -1000,7 +998,7 @@ console.log({posted_by});
             await userStream.on('data', async (user: any) => {
                 const notification = await Notification.create({
                     _actor: userId,
-                    _owner: user,
+                    _owner: user._id,
                     _origin_post: postId,
                     _origin_group: groupId,
                     _shuttle_group: shuttleGroupId,
@@ -1067,7 +1065,7 @@ console.log({posted_by});
                 priority: "high",
                 timeToLive: 60 * 60 *24
             };
-
+console.log({options});
             admin.getMessaging().sendToDevice(registrationToken, payload, options)
                 .then((response) => {
                     console.log("Successfully sent message:", response);
