@@ -403,12 +403,13 @@ export class NotificationsService {
      * This function is responsible to notifying all the user on assigning of a new task to them
      * @param { postId, assigned_to, groupId, posted_by } post 
      */
-    async newTaskAssignment(postId: string, assigned_to: string, groupId: string, posted_by: any) {
+    async newTaskAssignment(postId: string, assigned_to: any, groupId: string, posted_by: any) {
 
         try {
             // Let usersStream
             let userStream: any;
-
+console.log({assigned_to});
+console.log({posted_by});
             // If all members are selected
             if (assigned_to.includes('all')) {
 
@@ -423,8 +424,8 @@ export class NotificationsService {
 
             await userStream.on('data', async (user: any) => {
                 const notification = await Notification.create({
-                    _actor: posted_by,
-                    _owner: user,
+                    _actor: (posted_by._id || posted_by),
+                    _owner: (user._id || user),
                     _origin_post: postId,
                     message: 'assigned you on',
                     type: 'assignment',
@@ -432,7 +433,7 @@ export class NotificationsService {
                 });
 
                 if (process.env.DOMAIN == 'app.octonius.com') {
-                    const owner = await User.findById({ _id: assigned_to }).select('integrations.firebase_token').lean();
+                    const owner = await User.findById({ _id: (assigned_to._id || assigned_to) }).select('integrations.firebase_token').lean();
                     const actor = await User.findById({ _id: (posted_by._id || posted_by) }).select('first_name last_name').lean();
 
                     if (owner.integrations.firebase_token) {
