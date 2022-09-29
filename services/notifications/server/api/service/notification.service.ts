@@ -4,10 +4,10 @@ import { helperFunctions, axios } from '../../utils';
 import moment from "moment";
 
 var admin = require("firebase-admin");
-//const serviceAccount = require("./octonius-mobile-firebase-adminsdk.json");
+const serviceAccount = require("./octonius-mobile-firebase-adminsdk.json");
 admin.initializeApp({
-    credential: admin.credential.applicationDefault()
-    //credential: admin.credential.cert(serviceAccount)
+    //credential: admin.credential.applicationDefault()
+    credential: admin.credential.cert(serviceAccount)
     //credential: admin.credential.cert("./octonius-mobile-firebase-adminsdk.json")
 });
 
