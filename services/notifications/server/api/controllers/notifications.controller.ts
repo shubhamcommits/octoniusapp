@@ -874,7 +874,7 @@ export class NotificationsController {
 
         const userId = req['userId'];
         const token = req.body.token;
-console.log(req.body);
+
         try {
             if (!userId || !token) {
                 return sendErr(res, new Error('Please provide userId & token!'), 'Please provide userId & token!', 500);
