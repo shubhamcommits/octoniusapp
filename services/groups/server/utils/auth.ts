@@ -149,6 +149,7 @@ export class Auths {
      * @param res 
      * @param next 
      */
+    /*
     async signOut(req: Request, res: Response, next: NextFunction) {
         try {
 
@@ -163,5 +164,5 @@ export class Auths {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
-
+    */
 }

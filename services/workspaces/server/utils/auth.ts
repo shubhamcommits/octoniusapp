@@ -146,6 +146,7 @@ export class Auths {
      * @param res 
      * @param next 
      */
+    /*
     async signOut(req: Request, res: Response, next: NextFunction) {
         try {
 
@@ -160,6 +161,7 @@ export class Auths {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
+    */
 
     /**
      * This method is used to generate a random Access Code for each workspace

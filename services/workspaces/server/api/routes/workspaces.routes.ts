@@ -30,7 +30,7 @@ routes.use(authsHelper.verifyToken);
 routes.use(authsHelper.isLoggedIn);
 
 // POST - Logout from the server
-routes.post('/auths/sign-out', authsHelper.signOut);
+// routes.post('/auths/sign-out', authsHelper.signOut);
 
 // -| Workspace General |-
 

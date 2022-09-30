@@ -688,55 +688,18 @@ export class AuthsController {
      */
     async signOut(req: Request, res: Response, next: NextFunction) {
         try {
-            const headers = {
-                'Content-Type': 'application/json',
-                'Authorization': req.headers.authorization
-            }
-
-            await http.post(`${process.env.USERS_SERVER_API}/auths/sign-out`, '', {
-                    headers: headers 
-                })
-                .then(res => { console.log("Sign out from users service."); })
-                .catch(err => {
-                    sendError(res, err, "Error on sign out from users service");
-                });
-
-            await http.post(`${process.env.GROUPS_SERVER_API}/auths/sign-out`, '', {
-                    headers: headers
-                })
-                .then(res => { console.log("Sign out from groups service."); })
-                .catch(err => {
-                    sendError(res, err, "Error on sign out from groups service");
-                });
-
-            await http.post(`${process.env.POSTS_SERVER_API}/auths/sign-out`, '' , { 
-                    headers: headers 
-                })
-                .then(res => { console.log("Sign out from posts service."); })
-                .catch(err => {
-                    sendError(res, err, "Error on sign out from posts service");
-                });
-
-            await http.post(`${process.env.WORKSPACES_SERVER_API}/auths/sign-out`, '' , { 
-                    headers: headers 
-                })
-                .then(res => { console.log("Sign out from workspaces service."); })
-                .catch(err => { 
-                    sendError(res, err, "Error on sign out from workspaces service");
-                });
-
             // Updating the Auth model and set the signout state
             await Auth.findOneAndUpdate({
-                _user: req['userId'],
-                token: req.headers.authorization.split(' ')[1]
-            }, {
-                $set: {
-                    token: null,
-                    isLoggedIn: false
-                }
-            }, {
-                new: true
-            });
+                    _user: req['userId'],
+                    token: req.headers.authorization.split(' ')[1]
+                }, {
+                    $set: {
+                        token: null,
+                        isLoggedIn: false
+                    }
+                }, {
+                    new: true
+                });
 
             req['userId'] = '';
             req.headers.authorization = undefined

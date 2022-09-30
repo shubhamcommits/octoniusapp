@@ -31,7 +31,7 @@ routes.use(auths.verifyToken);
 routes.use(auths.isLoggedIn);
 
 // POST - Logout from the server
-routes.post('/auths/sign-out', auths.signOut);
+//routes.post('/auths/sign-out', auths.signOut);
 
 // -| MAIN |-
 
