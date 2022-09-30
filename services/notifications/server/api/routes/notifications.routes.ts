@@ -63,10 +63,8 @@ routes.post('/reject-item', approvalFunctions.rejectItem);
 // POST - item-approved
 routes.post('/item-approved', approvalFunctions.itemApproved);
 
-
-
 // GET - get notifications for the mobile inbox
-routes.get('/inbox-notifications', auth.verifyToken, auth.isLoggedIn, notificationFunctions.inboxNotifications);
+routes.get('/:workspaceId/inbox-notifications', auth.verifyToken, auth.isLoggedIn, notificationFunctions.inboxNotifications);
 
 // GET - get unread notifications
 routes.get('/unread', auth.verifyToken, auth.isLoggedIn, notificationFunctions.unread);
