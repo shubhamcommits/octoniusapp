@@ -18,7 +18,7 @@ routes.use(authsHelper.verifyToken);
 routes.use(authsHelper.isLoggedIn);
 
 // POST - Logout from the server
-routes.post('/auths/sign-out', authsHelper.signOut);
+// routes.post('/auths/sign-out', authsHelper.signOut);
 
 // POST - Add new automation flow
 routes.post('/addAutomationFlow', flow.addAutomationFlow);
