@@ -1,4 +1,4 @@
-import { Notification, User, File, Workspace, Group, Post } from "../models";
+import { Notification, User, File, Workspace, Group, Post, Story } from "../models";
 import { Readable } from 'stream';
 import { helperFunctions, axios } from '../../utils';
 import moment from "moment";
@@ -1058,6 +1058,58 @@ export class NotificationsService {
             throw err;
         }
     };
+
+    async getAttendingEvents(workspaceId: string, userId: string, limit?: number) {
+        try {
+            const today = moment().local().add(1, 'days').format('YYYY-MM-DD');
+
+            // Find the story
+            let stories: any
+            
+            if (limit) {
+                stories= await Story.find({
+                        $and: [
+                            { _workspace: workspaceId },
+                            { $or: [
+                                { _assistants: userId },
+                                { _maybe_assistants: userId }
+                            ]},
+                            { event_date: { $gte: today }},
+                        ]
+                    })
+                    .sort('event_date')
+                    .limit(limit)
+                    .populate({ path: '_lounge', select: 'name type icon_pic _parent _workspace _posted_by created_date _lounges _stories' })
+                    .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role' })
+                    .populate({ path: '_assistants', select: 'first_name last_name profile_pic role' })
+                    .populate({ path: '_rejected_assistants', select: 'first_name last_name profile_pic role' })
+                    .populate({ path: '_maybe_assistants', select: 'first_name last_name profile_pic role' })
+                    .lean();
+            } else {
+                stories= await Story.find({
+                        $and: [
+                            { _workspace: workspaceId },
+                            { $or: [
+                                { _assistants: userId },
+                                { _maybe_assistants: userId }
+                            ]},
+                            { event_date: { $gte: today }},
+                        ]
+                    })
+                    .sort('event_date')
+                    .populate({ path: '_lounge', select: 'name type icon_pic _parent _workspace _posted_by created_date _lounges _stories' })
+                    .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role' })
+                    .populate({ path: '_assistants', select: 'first_name last_name profile_pic role' })
+                    .populate({ path: '_rejected_assistants', select: 'first_name last_name profile_pic role' })
+                    .populate({ path: '_maybe_assistants', select: 'first_name last_name profile_pic role' })
+                    .lean();
+            }
+
+            return stories;
+        } catch (err) {
+            throw err;
+        }
+    }
 
      async sendFirebaseNotification(registrationToken: string, messageTitle: string, messageBody: string) {
 
