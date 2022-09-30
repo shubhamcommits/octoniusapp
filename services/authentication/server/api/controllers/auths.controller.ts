@@ -692,23 +692,39 @@ export class AuthsController {
                 'Content-Type': 'application/json',
                 'Authorization': req.headers.authorization
             }
-console.log("1111111");
+
             await http.post(`${process.env.USERS_SERVER_API}/auths/sign-out`, '', {
-                 headers: headers 
-            }).catch(err => { console.log(err)});
-console.log("2222222");
+                    headers: headers 
+                })
+                .then(res => { console.log("Sign out from users service."); })
+                .catch(err => {
+                    sendError(res, err, "Error on sign out from users service");
+                });
+
             await http.post(`${process.env.GROUPS_SERVER_API}/auths/sign-out`, '', {
-                headers: headers
-            }).catch(err => { console.log(err)});
-console.log("3333333");
+                    headers: headers
+                })
+                .then(res => { console.log("Sign out from groups service."); })
+                .catch(err => {
+                    sendError(res, err, "Error on sign out from groups service");
+                });
+
             await http.post(`${process.env.POSTS_SERVER_API}/auths/sign-out`, '' , { 
-                headers: headers 
-            }).catch(err => { console.log(err)});
-console.log("4444444");
+                    headers: headers 
+                })
+                .then(res => { console.log("Sign out from posts service."); })
+                .catch(err => {
+                    sendError(res, err, "Error on sign out from posts service");
+                });
+
             await http.post(`${process.env.WORKSPACES_SERVER_API}/auths/sign-out`, '' , { 
-                headers: headers 
-            }).catch(err => { console.log(err)});
-console.log("5555555");
+                    headers: headers 
+                })
+                .then(res => { console.log("Sign out from workspaces service."); })
+                .catch(err => { 
+                    sendError(res, err, "Error on sign out from workspaces service");
+                });
+
             // Updating the Auth model and set the signout state
             await Auth.findOneAndUpdate({
                 _user: req['userId'],
@@ -721,7 +737,7 @@ console.log("5555555");
             }, {
                 new: true
             });
-console.log("6666666");
+
             req['userId'] = '';
             req.headers.authorization = undefined
 
