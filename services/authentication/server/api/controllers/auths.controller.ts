@@ -692,23 +692,23 @@ export class AuthsController {
                 'Content-Type': 'application/json',
                 'Authorization': req.headers.authorization
             }
-
+console.log("1111111");
             await http.post(`${process.env.USERS_SERVER_API}/auths/sign-out`, '', {
                  headers: headers 
-            })
-
+            }).catch(err => { console.log(err)});
+console.log("2222222");
             await http.post(`${process.env.GROUPS_SERVER_API}/auths/sign-out`, '', {
                 headers: headers
-            })
-
+            }).catch(err => { console.log(err)});
+console.log("3333333");
             await http.post(`${process.env.POSTS_SERVER_API}/auths/sign-out`, '' , { 
                 headers: headers 
-            })
-
+            }).catch(err => { console.log(err)});
+console.log("4444444");
             await http.post(`${process.env.WORKSPACES_SERVER_API}/auths/sign-out`, '' , { 
                 headers: headers 
-            })
-
+            }).catch(err => { console.log(err)});
+console.log("5555555");
             // Updating the Auth model and set the signout state
             await Auth.findOneAndUpdate({
                 _user: req['userId'],
@@ -720,9 +720,8 @@ export class AuthsController {
                 }
             }, {
                 new: true
-            })
-
-
+            });
+console.log("6666666");
             req['userId'] = '';
             req.headers.authorization = undefined
 
