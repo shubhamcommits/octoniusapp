@@ -91,7 +91,7 @@ export class PasswordsControllers {
 
             // Send email to user
             axios.post(`${process.env.MANAGEMENT_URL}/api/mail/reset-password`, {
-                    API_KEY: account._workspace[0]['management_private_api_key'],
+                    API_KEY: account._workspaces[0]['management_private_api_key'],
                     user: userEmail,
                     newResetPwdDocId: newResetPwdDoc._id
                 })
