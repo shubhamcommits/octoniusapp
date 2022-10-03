@@ -60,7 +60,7 @@ export class NotificationsService {
      * This function is responsible for fetching the latest first 5 un-read notifications
      * @param userId 
      */
-    async getUnread(userId: string, lastNotificationId: string, limit?: number) {
+    async getUnread(userId: string, limit?: number) {
         try {
             let notifications = [];
 
@@ -69,7 +69,6 @@ export class NotificationsService {
                         $and: [
                             { _owner: userId },
                             { read: false },
-                            { _id: { $lt: lastNotificationId } },
                             { type: { $nin: ["new-post", "launch-approval-flow-due-date"] }}
                         ]
                     })
@@ -89,7 +88,6 @@ export class NotificationsService {
                         $and: [
                             { _owner: userId },
                             { read: false },
-                            { _id: { $lt: lastNotificationId } },
                             { type: { $nin: ["new-post", "launch-approval-flow-due-date"] }}
                         ]
                     })
@@ -115,7 +113,7 @@ export class NotificationsService {
      * This function is responsible for fetching the latest new post notifications
      * @param userId 
      */
-    async getNewPost(userId: string, lastNotificationId: string, limit?: number) {
+    async getNewPost(userId: string, limit?: number) {
         try {
             let notifications = [];
 
@@ -123,7 +121,6 @@ export class NotificationsService {
                 notifications = await Notification.find({
                         $and: [
                             { _owner: userId },
-                            { _id: { $lt: lastNotificationId } },
                             { read: false },
                             { type: 'new-post' }
                         ]
@@ -143,7 +140,6 @@ export class NotificationsService {
                 notifications = await Notification.find({
                         $and: [
                             { _owner: userId },
-                            { _id: { $lt: lastNotificationId } },
                             { read: false },
                             { type: 'new-post' }
                         ]
@@ -170,7 +166,7 @@ export class NotificationsService {
      * This function is responsible for fetching the latest new post notifications
      * @param userId 
      */
-    async getPendingApprovals(userId: string, lastNotificationId: string, limit?: number) {
+    async getPendingApprovals(userId: string, limit?: number) {
         try {
             let notifications = [];
 
@@ -178,7 +174,6 @@ export class NotificationsService {
                 notifications = await Notification.find({
                         $and: [
                             { _owner: userId },
-                            { _id: { $lt: lastNotificationId } },
                             { read: false },
                             { type: 'launch-approval-flow-due-date' }
                         ]
@@ -198,7 +193,6 @@ export class NotificationsService {
                 notifications = await Notification.find({
                         $and: [
                             { _owner: userId },
-                            { _id: { $lt: lastNotificationId } },
                             { read: false },
                             { type: 'launch-approval-flow-due-date' }
                         ]
@@ -1065,7 +1059,7 @@ export class NotificationsService {
         }
     };
 
-    async getAttendingEvents(workspaceId: string, userId: string, lastNotificationId: string, limit?: number) {
+    async getAttendingEvents(workspaceId: string, userId: string, limit?: number) {
         try {
             const today = moment().local().add(1, 'days').format('YYYY-MM-DD');
 
@@ -1076,7 +1070,6 @@ export class NotificationsService {
                 stories= await Story.find({
                         $and: [
                             { _workspace: workspaceId },
-                            { _id: { $lt: lastNotificationId } },
                             { $or: [
                                 { _assistants: userId },
                                 { _maybe_assistants: userId }
@@ -1096,7 +1089,6 @@ export class NotificationsService {
                 stories= await Story.find({
                         $and: [
                             { _workspace: workspaceId },
-                            { _id: { $lt: lastNotificationId } },
                             { $or: [
                                 { _assistants: userId },
                                 { _maybe_assistants: userId }

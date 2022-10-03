@@ -738,14 +738,14 @@ export class NotificationsController {
 
             const limit = 5;
 
-            const unreadNotifications = await notificationService.getUnread(userId, '', limit);
-            const countUnreadNotificationsTotal = (await notificationService.getUnread(userId, '')).length;
-            const unreadPosts = await notificationService.getNewPost(userId, '', limit);
-            const totalUnreadPostsCount = (await notificationService.getNewPost(userId, '')).length;
-            const pendingApprovals = await notificationService.getPendingApprovals(userId, '', limit);
-            const totalUnreadApprovalsCount = (await notificationService.getPendingApprovals(userId, '')).length;
-            const attendingEvents = await notificationService.getAttendingEvents(workspaceId, userId, '', limit);
-            const totalUnreadEventsCount = (await notificationService.getAttendingEvents(workspaceId, userId, '')).length;
+            const unreadNotifications = await notificationService.getUnread(userId, limit);
+            const countUnreadNotificationsTotal = (await notificationService.getUnread(userId)).length;
+            const unreadPosts = await notificationService.getNewPost(userId, limit);
+            const totalUnreadPostsCount = (await notificationService.getNewPost(userId)).length;
+            const pendingApprovals = await notificationService.getPendingApprovals(userId, limit);
+            const totalUnreadApprovalsCount = (await notificationService.getPendingApprovals(userId)).length;
+            const attendingEvents = await notificationService.getAttendingEvents(workspaceId, userId, limit);
+            const totalUnreadEventsCount = (await notificationService.getAttendingEvents(workspaceId, userId)).length;
 
             // Send status 200 response
             return res.status(200).json({
@@ -772,14 +772,12 @@ export class NotificationsController {
 
         const userId = req['userId'];
 
-        var { lastNotificationId } = req.query;
-
         try {
             if (!userId) {
                 return sendErr(res, new Error('Please provide a userId!'), 'Please provide a userId!', 500);
             }
 
-            const notifications = await notificationService.getUnread(userId, lastNotificationId.toString() || '');
+            const notifications = await notificationService.getUnread(userId);
 
             // Send status 200 response
             return res.status(200).json({
@@ -799,14 +797,12 @@ export class NotificationsController {
 
         const userId = req['userId'];
 
-        var { lastNotificationId } = req.query;
-
         try {
             if (!userId) {
                 return sendErr(res, new Error('Please provide a userId!'), 'Please provide a userId!', 500);
             }
 
-            const unreadPosts = await notificationService.getNewPost(userId, lastNotificationId.toString() || '');
+            const unreadPosts = await notificationService.getNewPost(userId);
 
             // Send status 200 response
             return res.status(200).json({
@@ -826,14 +822,12 @@ export class NotificationsController {
 
         const userId = req['userId'];
 
-        var { lastNotificationId } = req.query;
-
         try {
             if (!userId) {
                 return sendErr(res, new Error('Please provide a userId!'), 'Please provide a userId!', 500);
             }
 
-            const pendingApprovals = await notificationService.getPendingApprovals(userId, lastNotificationId.toString() || '');
+            const pendingApprovals = await notificationService.getPendingApprovals(userId);
 
             // Send status 200 response
             return res.status(200).json({
