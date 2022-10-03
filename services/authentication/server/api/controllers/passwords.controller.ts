@@ -65,16 +65,27 @@ export class PasswordsControllers {
                     { email: email }
                 ]
             })
-            .select('_id email')
-            .populate('_workspaces', '_id management_private_api_key');
+            .select('_id email first_name last_name').lean();
 
             // Error finding the user
             if (!account) {
-                return sendError(res, new Error('We were unable to find an account with this email combination! Please try again.'), 'We were unable to find an account with this email combination! Please try again.', 401);
+                return sendError(res, new Error('We were unable to find an account with this email! Please try again.'), 'We were unable to find an account with this email! Please try again.', 401);
+            }
+
+            const users = await User.find({
+                    _account: account._id
+                })
+                .select('first_name last_name')
+                .populate('_workspace', '_id management_private_api_key')
+                .lean();
+
+            // Error finding the user
+            if (!users) {
+                return sendError(res, new Error('We were unable to find an user with this email! Please try again.'), 'We were unable to find an user with this email! Please try again.', 401);
             }
 
             const userEmail = {
-                _id: account._id,
+                _id: users[0]._id,
                 first_name: account['first_name'],
                 last_name: account['last_name'],
                 email: account['email']
@@ -91,7 +102,7 @@ export class PasswordsControllers {
 
             // Send email to user
             axios.post(`${process.env.MANAGEMENT_URL}/api/mail/reset-password`, {
-                    API_KEY: account._workspaces[0]['management_private_api_key'],
+                    API_KEY: users[0]._workspace['management_private_api_key'],
                     user: userEmail,
                     newResetPwdDocId: newResetPwdDoc._id
                 })
