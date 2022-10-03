@@ -57,45 +57,26 @@ export class PasswordsControllers {
     async sendResetPasswordMail(req: Request, res: Response) {
         try {
 
-            let { workspace_name, email } = req.body;
-
-            // Retrieve the workspace
-            const workspace = await Workspace.findOne({ workspace_name: workspace_name })
-                .select('workspace_name')
-
-            // error finding the workspace
-            if (!workspace) {
-                return sendError(res, new Error('We were unable to find this workspace! Please try again.'), 'We were unable to find this workspace! Please try again.', 401);
-            }
+            let { email } = req.body;
 
             // Search for the desired user
             const account = await Account.findOne({
                 $and: [
                     { email: email }
                 ]
-            }).select('_id email');
+            })
+            .select('_id email')
+            .populate('_workspaces', '_id management_private_api_key');
 
             // Error finding the user
             if (!account) {
                 return sendError(res, new Error('We were unable to find an account with this email combination! Please try again.'), 'We were unable to find an account with this email combination! Please try again.', 401);
             }
 
-            const user = await User.findOne({
-                $and: [
-                    { _workspace: workspace._id },
-                    { _account: account._id }
-                ]
-            }).select('first_name last_name');
-
-            // Error finding the user
-            if (!user) {
-                return sendError(res, new Error('We were unable to find a user with this email for the workspace combination! Please try again.'), 'We were unable to find a user with this email for the workspace combination! Please try again.', 401);
-            }
-
             const userEmail = {
-                _id: user._id,
-                first_name: user['first_name'],
-                last_name: user['last_name'],
+                _id: account._id,
+                first_name: account['first_name'],
+                last_name: account['last_name'],
                 email: account['email']
             }
 
@@ -110,14 +91,13 @@ export class PasswordsControllers {
 
             // Send email to user
             axios.post(`${process.env.MANAGEMENT_URL}/api/mail/reset-password`, {
-                API_KEY: workspace['management_private_api_key'],
-                user: userEmail,
-                workspace: workspace,
-                newResetPwdDocId: newResetPwdDoc._id
-            })
-            .catch((err)=>{
-                console.log(err)
-            })
+                    API_KEY: account._workspaces[0]['management_private_api_key'],
+                    user: userEmail,
+                    newResetPwdDocId: newResetPwdDoc._id
+                })
+                .catch((err)=>{
+                    console.log(err)
+                });
 
             // Send the status 200 response 
             return res.status(200).json({

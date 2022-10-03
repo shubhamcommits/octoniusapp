@@ -9,6 +9,7 @@ import { Account } from "./account.model";
 import { Story } from "./story.model";
 import { Workspace } from "./workspace.model";
 import { Auth } from './auth.model';
+import { Lounge } from './lounge.model';
 
 /*  =====================
  *  -- MODELS EXPORTS --
@@ -45,6 +46,9 @@ export {
 
     // Story
     Story as Story,
+
+    // Lounge
+    Lounge as Lounge,
 
     // Workspace
     Workspace as Workspace

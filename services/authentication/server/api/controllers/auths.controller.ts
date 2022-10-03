@@ -688,40 +688,18 @@ export class AuthsController {
      */
     async signOut(req: Request, res: Response, next: NextFunction) {
         try {
-            const headers = {
-                'Content-Type': 'application/json',
-                'Authorization': req.headers.authorization
-            }
-
-            await http.post(`${process.env.USERS_SERVER_API}/auths/sign-out`, '', {
-                 headers: headers 
-            })
-
-            await http.post(`${process.env.GROUPS_SERVER_API}/auths/sign-out`, '', {
-                headers: headers
-            })
-
-            await http.post(`${process.env.POSTS_SERVER_API}/auths/sign-out`, '' , { 
-                headers: headers 
-            })
-
-            await http.post(`${process.env.WORKSPACES_SERVER_API}/auths/sign-out`, '' , { 
-                headers: headers 
-            })
-
             // Updating the Auth model and set the signout state
             await Auth.findOneAndUpdate({
-                _user: req['userId'],
-                token: req.headers.authorization.split(' ')[1]
-            }, {
-                $set: {
-                    token: null,
-                    isLoggedIn: false
-                }
-            }, {
-                new: true
-            })
-
+                    _user: req['userId'],
+                    token: req.headers.authorization.split(' ')[1]
+                }, {
+                    $set: {
+                        token: null,
+                        isLoggedIn: false
+                    }
+                }, {
+                    new: true
+                });
 
             req['userId'] = '';
             req.headers.authorization = undefined

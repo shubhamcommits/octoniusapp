@@ -63,23 +63,17 @@ routes.post('/reject-item', approvalFunctions.rejectItem);
 // POST - item-approved
 routes.post('/item-approved', approvalFunctions.itemApproved);
 
-// GET - get unread notifications
-routes.get('/top-unread', auth.verifyToken, auth.isLoggedIn, notificationFunctions.topUnread);
+// GET - get notifications for the mobile inbox
+routes.get('/:workspaceId/inbox-notifications', auth.verifyToken, auth.isLoggedIn, notificationFunctions.inboxNotifications);
 
 // GET - get unread notifications
 routes.get('/unread', auth.verifyToken, auth.isLoggedIn, notificationFunctions.unread);
-
-// GET - get unread posts
-routes.get('/top-unread-posts', auth.verifyToken, auth.isLoggedIn, notificationFunctions.unreadTopPosts);
 
 // GET - get unread posts
 routes.get('/unread-posts', auth.verifyToken, auth.isLoggedIn, notificationFunctions.unreadPosts);
 
 // POST - mark item as read
 routes.post('/:notificationId/mark-read', auth.verifyToken, auth.isLoggedIn, approvalFunctions.markRead);
-
-// GET - get pending approvals
-routes.get('/top-pending-approvals', auth.verifyToken, auth.isLoggedIn, notificationFunctions.pendingTopApprovals);
 
 // GET - get pending approvals
 routes.get('/pending-approvals', auth.verifyToken, auth.isLoggedIn, notificationFunctions.pendingApprovals);

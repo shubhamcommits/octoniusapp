@@ -17,9 +17,8 @@ export class ForgotPasswordComponent implements OnInit {
   ) { }
 
   // User details for sending the email
-  user: { email: string, workspace: string } = {
-    email: null,
-    workspace: null
+  user: { email: string } = {
+    email: null
   }
 
   // This observable is mapped with email field to recieve updates on change value
@@ -38,30 +37,26 @@ export class ForgotPasswordComponent implements OnInit {
   /**
    * This function is responsible for sending the forgot password email to the user
    * @param email
-   * @param workspace
    * Makes a HTTP Post request to send the email
    */
-  async sendMail(email: string, workspace: string) {
+  async sendMail(email: string) {
     try{
-      if(email == null || workspace == null || email == '' || workspace == ''){
+      if (email == null || email == '') {
         this.utilityService.warningNotification($localize`:@@forgotPwd.insufficientData:Insufficient data, kindly fill up the form correctly!`);
-      }
-      else{
+      } else {
         this.utilityService.asyncNotification($localize`:@@forgotPwd.pleaseWaitProcessing:Please wait while we are processing your request`,
         new Promise((resolve, reject) => {
 
           // Preparing the email data
           let mailData: Object = {
-            email: email.trim(),
-            workspace_name: workspace.trim()
+            email: email.trim()
           };
 
           // Adding the service function to the SubSink(), so that we can unsubscribe the observable when the component gets destroyed
           this.subSink.add(this.authService.sendResetPasswordMail(mailData)
             .subscribe(async (res) => {
               this.user = {
-                email: null,
-                workspace: null
+                email: null
               };
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@forgotPwd.forgotPwdEmailSent:Forgot Password email sent successfully!`));
             }, (err) => {
@@ -88,6 +83,4 @@ export class ForgotPasswordComponent implements OnInit {
     this.subSink.unsubscribe();
     this.utilityService.clearAllNotifications();
   }
-
-
 }

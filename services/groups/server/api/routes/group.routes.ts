@@ -17,7 +17,7 @@ routes.use(authsHelper.verifyToken);
 routes.use(authsHelper.isLoggedIn);
 
 // POST - Logout from the server
-routes.post('/auths/sign-out', authsHelper.signOut);
+// routes.post('/auths/sign-out', authsHelper.signOut);
 
 // GET - Get list of first 10 groups present in the database
 routes.get('/list', group.getAllGroupsList);

@@ -128,12 +128,13 @@ export class Auths {
         })
     }
 
-/**
- * This function is responsible for signing out a user
- * @param req 
- * @param res 
- * @param next 
- */
+    /**
+     * This function is responsible for signing out a user
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    /*
     async signOut(req: Request, res: Response, next: NextFunction) {
         try {
 
@@ -148,5 +149,5 @@ export class Auths {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
-
+    */
 }
