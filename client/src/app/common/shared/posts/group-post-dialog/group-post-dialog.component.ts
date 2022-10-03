@@ -23,6 +23,7 @@ export class GroupPostDialogComponent implements OnInit {
   @Output() parentAssignEvent = new EventEmitter();
   @Output() taskClonnedEvent = new EventEmitter();
   @Output() pinEvent = new EventEmitter();
+  @Output() datesChangeEvent = new EventEmitter();
 
   postData: any;
   userData: any;
@@ -280,6 +281,10 @@ export class GroupPostDialogComponent implements OnInit {
    */
    getStartDate(dateObject: any) {
     this.startDate = dateObject;
+    this.datesChangeEvent.emit({
+        start_date: this.startDate,
+        due_date: this.dueDate
+      });
   }
 
   /**
