@@ -544,6 +544,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
         deleteEventSubs.unsubscribe();
         parentAssignEventSubs.unsubscribe();
         taskClonnedEventSubs.unsubscribe();
+        datesChangeEventSub.unsubscribe();
       });
     }
   }
