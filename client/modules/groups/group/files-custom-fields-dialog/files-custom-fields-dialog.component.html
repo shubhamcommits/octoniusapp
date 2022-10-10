@@ -1,7 +1,7 @@
 <div class="customFieldsDialog">
 
     <mat-dialog-actions align="end">
-        <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
+        <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" appDebounceClick style="cursor: pointer">close</i>
     </mat-dialog-actions>
 
     <h2 mat-dialog-title>
@@ -27,9 +27,9 @@
                 <div class="field" *ngFor="let field of customFields">
                     <div class="title">
                         <i class="material-icons" style="color: #005FD5">label</i>
-                        {{ field.title }}
+                        {{ field.title }}
                         <i class="material-icons" *ngIf="field.name != 'priority'"
-                            (click)="removeCustomField(field)"
+                            (click)="removeCustomField(field)" appDebounceClick
                             style="color: red; cursor: pointer; margin-left: 20px;">highlight_off</i>
                     </div>
 
@@ -37,7 +37,7 @@
                         <span class="badge" *ngFor="let value of field.values">
                             {{ value }}
                             <i class="material-icons" *ngIf="field.name != 'priority'"
-                                (click)="removeValue(field, value)"
+                                (click)="removeValue(field, value)" appDebounceClick
                                 style="cursor: pointer;">highlight_off</i>
                         </span>
                         <div class="newValue" *ngIf="field.name != 'priority'">
@@ -53,22 +53,22 @@
 
                     <div *ngIf="field.name != 'priority'" style="display: flex;">
                       <div [ngStyle]="{'width': '30px', 'height': '30px', 'background-color': field?.badge_color }">
-                        <button *ngIf="field?.badge_color"
-                        class="btn removeImageBtn"
-                        style="margin-left: -9px; margin-top: -5px;"
-                        (click)="removeBadgeColor(field)">
+                        <button appDebounceClick *ngIf="field?.badge_color"
+                            class="btn removeImageBtn"
+                            style="margin-left: -9px; margin-top: -5px;"
+                            (click)="removeBadgeColor(field)">
                       <i class="material-icons">close</i>
                     </button>
                       </div>
 
-                      <i class="material-icons muted" style="cursor: pointer;" (click)="openColorPicker(field)">color_lens</i>
+                      <i class="material-icons muted" style="cursor: pointer;" (click)="openColorPicker(field)" appDebounceClick>color_lens</i>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="newCustomFieldForm" style="padding: 10px; margin-top: 30px">
-            <button class="btn badge-cf" (click)="showNewCustomField = !showNewCustomField">
+            <button appDebounceClick class="btn badge-cf" (click)="showNewCustomField = !showNewCustomField">
                 <i class="material-icons">label</i>
                 <span i18n="@@filesCustomFieldDialog.addCustomField">ADD CUSTOM FIELD</span>
              </button>
@@ -92,10 +92,10 @@
                 </mat-form-field>
 
                 <div class="actions">
-                    <button class="col-md-4 btn btn-primary" (click)="createCustomField()" i18n="@@filesCustomFieldDialog.save">
+                    <button appDebounceClick class="col-md-4 btn btn-primary" (click)="createCustomField()" i18n="@@filesCustomFieldDialog.save">
                       Save
                     </button>
-                    <button class="col-md-4 btn btn-danger" (click)="showNewCustomField = false; this.newCustomFieldTitle = ''"
+                    <button appDebounceClick class="col-md-4 btn btn-danger" (click)="showNewCustomField = false; this.newCustomFieldTitle = ''"
                         i18n="@@filesCustomFieldDialog.cancel">
                       Cancel
                     </button>

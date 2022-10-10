@@ -2,7 +2,7 @@
     <div class="card sideinnercard">
         <div class="card-block">
             <h6 class="card-title"><b i18n="@@userInformation.yourContactInformation">Your contact information</b>
-                <button *ngIf="currentUser" type="button" name="button" class="btn btn-link"
+                <button appDebounceClick *ngIf="currentUser" type="button" name="button" class="btn btn-link"
                     (click)="openUpdateModel()">
                     <i class="material-icons">create</i>
                 </button>
@@ -27,7 +27,7 @@
             </p>
             <!-- LANGUAGE SELECT ends -->
 
-            <button *ngIf="currentUser && userData.role !='owner'"
+            <button appDebounceClick *ngIf="currentUser && userData.role !='owner'"
                 type="button" name="button"
                 class="btn btn-link" (click)="removeUser(userData._id)"
                 i18n="@@userInformation.deleteAccount">

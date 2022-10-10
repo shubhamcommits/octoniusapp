@@ -1,6 +1,6 @@
 <div *ngIf="membersLoaded" class="customFieldsDialog">
     <mat-dialog-actions class="d-flex justify-content-end" align="end">
-        <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
+        <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" appDebounceClick style="cursor: pointer">close</i>
     </mat-dialog-actions>
 
     <h2 mat-dialog-title>
@@ -24,7 +24,7 @@
     <div class="rag" *ngFor="let rag of ragList">
         <div class="d-flex" style="justify-content: space-between;">
             <p class="bold">RAG <span class="tag">{{rag.rag_tag}}</span> <span i18n="@@groupRAGDialog.tasksAreVisibleFor">settings</span>: </p>
-            <button class="btn overdue" (click)="removeTag(rag.rag_tag)"> <i class="material-icons">delete</i> </button>
+            <button appDebounceClick class="btn overdue" (click)="removeTag(rag.rag_tag)"> <i class="material-icons">delete</i> </button>
         </div>
 
         <div style="justify-content: space-between;">
@@ -36,7 +36,7 @@
                     [service]="'user'"
                     [tooltip]="member?.first_name + ' ' + member?.last_name"
                     [styleClass]="'feed-avatar'"
-                    (click)="removeUserFromRag(member,rag)"></app-secured-image>
+                    (click)="removeUserFromRag(member,rag)" appDebounceClick></app-secured-image>
               </div>
 
               <app-component-search-input-box class="ml-2" *ngIf="groupData"
@@ -50,12 +50,12 @@
         </div>
     </div>
 
-    <button class="mt-3 btn btn-warning" (click)="showTagComponent()">
+    <button appDebounceClick class="mt-3 btn btn-warning" (click)="showTagComponent()">
         <span class="material-icons">add</span>
         <span i18n="@@groupRAGDialog.addRule">New RAG entity</span>
     </button>
     <div *ngIf="addNewRag" class="ragnew">
         <input type="text" class="form-control mb-2" name="tag" [(ngModel)]="tag" (keyup.enter)="addTag()" placeholder="Enter RAG tag name">
-        <button button class="btn btn-primary btn-sm" (click)="addTag()" i18n="@@groupRAGDialog.addTag">Add tag</button>
+        <button appDebounceClick button class="btn btn-primary btn-sm" (click)="addTag()" i18n="@@groupRAGDialog.addTag">Add tag</button>
     </div>
 </div>

@@ -8,7 +8,7 @@
             <!-- Questions list container start -->
             <div *ngFor="let question of questions; let i = index;"
                 [ngClass]="i==activeQuestionIndex?'questions-container-active':'questions-container'"
-                (click)="changeActiveIndex(i)" style="position: relative;">
+                (click)="changeActiveIndex(i)" appDebounceClick style="position: relative;">
                 <!-- question icon div -->
                 <div class="question-icon">
                   <span class="material-icons" style="font-size: 40px;">
@@ -39,7 +39,7 @@
                     <app-secured-image *ngIf="i==activeQuestionIndex && question?.image_url"
                         [imgURL]="question?.image_url"
                         [service]="'flamingo'" [inlineStyle]="'width: 30px;height: 30px;'"></app-secured-image>
-                    <button *ngIf="i==activeQuestionIndex && question?.image_url && !flamingo?.publish" class="btn removeImageBtn" style="width: 30px;height: 30px;margin: 0px !important;"
+                    <button appDebounceClick *ngIf="i==activeQuestionIndex && question?.image_url && !flamingo?.publish" class="btn removeImageBtn" style="width: 30px;height: 30px;margin: 0px !important;"
                         (click)="removeImage(i)">
                        <b>X</b>
                     </button>
@@ -48,7 +48,7 @@
                     <!-- background color remove start-->
                     <div *ngIf="i==activeQuestionIndex && question?.background_color" style="height: 30px">
                       <div style="width: 30px; height: 30px; float:left; background-color: {{question?.background_color}};"></div>
-                      <button *ngIf="!flamingo?.publish"
+                      <button appDebounceClick *ngIf="!flamingo?.publish"
                           class="btn removeImageBtn"
                           style="width: 30px;height: 30px;margin: 0px !important;"
                           (click)="removeBackgroundColor(i)">
@@ -61,7 +61,7 @@
                     <!-- background color remove start-->
                     <div *ngIf="i==activeQuestionIndex && question?.text_color" style="height: 30px">
                       <div style="width: 30px; height: 30px; float:left; background-color: {{question?.text_color || '#000000' }}"></div>
-                      <button *ngIf="!flamingo?.publish"
+                      <button appDebounceClick *ngIf="!flamingo?.publish"
                           class="btn removeImageBtn"
                           style="width: 30px;height: 30px;margin: 0px !important;"
                           (click)="removeTextColor(i)">
@@ -175,15 +175,15 @@
                           (change)="makeMandatory($event,i)"></mat-slide-toggle>
                     </div>
                     <div *ngIf="!flamingo?.publish" class="setting-icons-div">
-                        <i class="material-icons icons-color" (click)="openDetails(content)">image_outlined</i>
+                        <i class="material-icons icons-color" (click)="openDetails(content)" appDebounceClick>image_outlined</i>
                     </div>
                     <div *ngIf="!flamingo?.publish" class="setting-icons-div">
-                      <i class="material-icons icons-color" (click)="openColorPicker(i, 'background')">color_lens</i>
+                      <i class="material-icons icons-color" (click)="openColorPicker(i, 'background')" appDebounceClick>color_lens</i>
                     </div>
                     <div *ngIf="!flamingo?.publish" class="setting-icons-div">
-                      <i class="material-icons icons-color" (click)="openColorPicker(i, 'text')">format_color_text</i>
+                      <i class="material-icons icons-color" (click)="openColorPicker(i, 'text')" appDebounceClick>format_color_text</i>
                     </div>
-                    <div *ngIf="!flamingo?.publish" class="setting-icons-div" (click)="deleteQuestion(question._id)">
+                    <div *ngIf="!flamingo?.publish" class="setting-icons-div" (click)="deleteQuestion(question._id)" appDebounceClick>
                         <i class="material-icons icons-color">delete_sweep_outlined</i>
                     </div>
                 </div>
@@ -203,7 +203,7 @@
 
             <!-- Add new question dropdown start -->
             <div class="btn-menu-container" *ngIf="!flamingo?.publish">
-                <button class="btn btn-warning" mat-button [matMenuTriggerFor]="myMenu">
+                <button appDebounceClick class="btn btn-warning" mat-button [matMenuTriggerFor]="myMenu">
                     <span>
                         <i class="material-icons">add_circle</i>
                     </span>
@@ -214,7 +214,7 @@
                         <p style="height: 45px;padding-top: 10px;padding-left: 15px;color: #9B9B9B;" i18n="@@flamingoEditor.chooseQuestionType">
                           Choose a question type
                         </p>
-                        <div class="welcome-screen" (click)="createQuestion('Welcome')">
+                        <div class="welcome-screen" (click)="createQuestion('Welcome')" appDebounceClick>
                             <div class="btn-icon">
                               <span class="material-icons">play_arrow</span>
                             </div>
@@ -227,7 +227,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="thank-screen" (click)="createQuestion('Thanks')">
+                        <div class="thank-screen" (click)="createQuestion('Thanks')" appDebounceClick>
                             <div class="btn-icon">
                               <span class="material-icons">check_circle_outline</span>
                             </div>
@@ -240,7 +240,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="short-text" (click)="createQuestion('ShortText')">
+                        <div class="short-text" (click)="createQuestion('ShortText')" appDebounceClick>
                             <div class="btn-icon">
                               <span class="material-icons">text_snippet</span>
                             </div>
@@ -253,7 +253,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="yes-no" (click)="createQuestion('Yes/No')">
+                        <div class="yes-no" (click)="createQuestion('Yes/No')" appDebounceClick>
                             <div class="btn-icon">
                               <span class="material-icons">rule</span>
                             </div>
@@ -266,7 +266,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="scale" (click)="createQuestion('Scale')">
+                        <div class="scale" (click)="createQuestion('Scale')" appDebounceClick>
                             <div class="btn-icon">
                               <span class="material-icons">align_horizontal_left</span>
                             </div>
@@ -279,7 +279,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="dropdown-question" (click)="createQuestion('Dropdown')">
+                        <div class="dropdown-question" (click)="createQuestion('Dropdown')" appDebounceClick>
                             <div class="btn-icon">
                               <span class="material-icons">list</span>
                             </div>
@@ -292,7 +292,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="dropdown-question" (click)="createQuestion('Multiple')">
+                        <div class="dropdown-question" (click)="createQuestion('Multiple')" appDebounceClick>
                             <div class="btn-icon">
                               <span class="material-icons">list</span>
                             </div>
@@ -331,9 +331,9 @@
 
                 <br/><br/>
 
-                <button *ngIf="activeQuestion?.type==='Thanks'"
+                <button appDebounceClick *ngIf="activeQuestion?.type==='Thanks'"
                     class="btn btn-success" i18n="@@flamingoEditor.submit">Submit</button>
-                <button *ngIf="activeQuestion?.type==='Welcome'"
+                <button appDebounceClick *ngIf="activeQuestion?.type==='Welcome'"
                     class="btn btn-primary" i18n="@@flamingoEditor.start">Start</button>
             </div>
             <!-- welcome and thanks question type preview div end-->
@@ -361,25 +361,25 @@
                         class="input-answer" />
                     <!-- yes/no question button -->
                     <div style="margin-top: 50px;" *ngIf="activeQuestion?.type==='Yes/No'">
-                        <button class="btn btn-success">{{activeQuestion?.positive_option_text || 'Positive'}}</button>
+                        <button appDebounceClick class="btn btn-success">{{activeQuestion?.positive_option_text || 'Positive'}}</button>
                         <br />
                         <br />
-                        <button class="btn btn-danger">{{activeQuestion?.negative_option_text || 'Negative'}}</button>
+                        <button appDebounceClick class="btn btn-danger">{{activeQuestion?.negative_option_text || 'Negative'}}</button>
                     </div>
 
                     <!-- question scale scale buttons and labels -->
                     <div style="margin-top: 50px;" *ngIf="activeQuestion?.type==='Scale'">
-                        <button *ngIf="activeQuestion?.scale?.size > 0" class="scale-button" ng>0</button>
-                        <button *ngIf="activeQuestion?.scale?.size > 1" class="scale-button">1</button>
-                        <button *ngIf="activeQuestion?.scale?.size > 2" class="scale-button">2</button>
-                        <button *ngIf="activeQuestion?.scale?.size > 3" class="scale-button">3</button>
-                        <button *ngIf="activeQuestion?.scale?.size > 4" class="scale-button">4</button>
-                        <button *ngIf="activeQuestion?.scale?.size > 5" class="scale-button">5</button>
-                        <button *ngIf="activeQuestion?.scale?.size > 6" class="scale-button">6</button>
-                        <button *ngIf="activeQuestion?.scale?.size > 7" class="scale-button">7</button>
-                        <button *ngIf="activeQuestion?.scale?.size > 8" class="scale-button">8</button>
-                        <button *ngIf="activeQuestion?.scale?.size > 9" class="scale-button">9</button>
-                        <button *ngIf="activeQuestion?.scale?.size > 10" class="scale-button">10</button>
+                        <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 0" class="scale-button" ng>0</button>
+                        <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 1" class="scale-button">1</button>
+                        <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 2" class="scale-button">2</button>
+                        <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 3" class="scale-button">3</button>
+                        <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 4" class="scale-button">4</button>
+                        <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 5" class="scale-button">5</button>
+                        <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 6" class="scale-button">6</button>
+                        <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 7" class="scale-button">7</button>
+                        <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 8" class="scale-button">8</button>
+                        <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 9" class="scale-button">9</button>
+                        <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 10" class="scale-button">10</button>
 
                         <div *ngIf="activeQuestion.show_scale_labels"
                             [ngStyle]="{'position':'relative','width': (activeQuestion.scale.size * 63)+'px'}">

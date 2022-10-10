@@ -17,19 +17,19 @@
 
                           <!-- Menu Drawer Starts -->
                           <ul class="dropdown-menu">
-                              <li class="dropdown-item" (click)="column.editColumn = !column.editColumn">
+                              <li class="dropdown-item" (click)="column.editColumn = !column.editColumn" appDebounceClick>
                                 <span class="material-icons-outlined">create</span>
                                 <span i18n="@@groupKanbanBoard.edit">Edit</span>
                               </li>
 
                               <li *ngIf="userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager()"
-                                  class="dropdown-item" (click)="deleteColumn(column)">
+                                  class="dropdown-item" (click)="deleteColumn(column)" appDebounceClick>
                                 <span class="material-icons-outlined">delete</span>
                                 <span i18n="@@groupDashboard.delete">Delete</span>
                               </li>
 
                               <li *ngIf="userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager()"
-                                  class="dropdown-item" (click)="unarchiveColumn(column)">
+                                  class="dropdown-item" (click)="unarchiveColumn(column)" appDebounceClick>
                                 <span class="material-icons-outlined">unarchive</span>
                                 <span i18n="@@groupDashboard.unarchive">Unarchive</span>
                               </li>
@@ -49,7 +49,7 @@
               <div class="tasks-container" [id]="column._id">
                   <!-- TASK DETAILS STARTS -->
                   <app-kanban-task-card *ngFor="let task of column.tasks; let j = index;"
-                    (click)="openFullscreenModal(task)"
+                    (click)="openFullscreenModal(task)" appDebounceClick
                     [isProject]="column?.project_type"
                     [isDelay]="isDelay(task?.task?.due_to, column?.due_date)"
                     [task]="task"

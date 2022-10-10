@@ -5,14 +5,14 @@
       <mat-form-field>
         <mat-select ngDefaultControl
                 (selectionChange)="periodSelected($event)"
-                (click)="$event.stopPropagation()"
+                (click)="$event.stopPropagation()" appDebounceClick
                 [(value)]="period"
                 name="period">
             <mat-option *ngFor="let p of periods" [value]="p.key">{{ p.value }}</mat-option>
         </mat-select>
       </mat-form-field>
 
-      <span class="material-icons muted" style="margin-left: 30px; cursor: pointer;" (click)="openWidgetSelectorDialog()">settings</span>
+      <span class="material-icons muted" style="margin-left: 30px; cursor: pointer;" (click)="openWidgetSelectorDialog()" appDebounceClick>settings</span>
     </div>
   </div>
 

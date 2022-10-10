@@ -24,7 +24,7 @@
           </mat-slide-toggle>
           <b i18n="@@adminGeneral.decentralizedUserRoles" style="margin-left: 6px;">My organization uses decentralized
             user roles</b>
-          &nbsp;&nbsp;<span class="material-icons-outlined" (click)="openDialog()" style="cursor: pointer;">info</span>
+          &nbsp;&nbsp;<span class="material-icons-outlined" (click)="openDialog()" appDebounceClick style="cursor: pointer;">info</span>
         </h6>
         <hr />
         <div class="container">
@@ -52,7 +52,7 @@
         <hr />
         <div class="container">
           <div class="row">
-            <button class="btn btn-danger btn-sm" (click)="removeWorkspace(workspaceData['_id'])"
+            <button appDebounceClick class="btn btn-danger btn-sm" (click)="removeWorkspace(workspaceData['_id'])"
               i18n="@@adminGeneral.removeWorkspace">Remove Workspace</button>
           </div>
           <br />

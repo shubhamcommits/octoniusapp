@@ -42,7 +42,7 @@
 
                         <!-- If current skill doesn't exists in the skills array -->
                         <div *ngIf="!hasSkill(item)">
-                            <button (click)="onAddSkill(item)"
+                            <button appDebounceClick (click)="onAddSkill(item)"
                               class="btn mr-1 btn-primary btn-sm"
                               i18n="@@componentSearchInputBox.addSkill">
                                 Add skill
@@ -54,7 +54,7 @@
                     <!-- Tag section starts -->
                     <section *ngIf="(type == 'tag' && (!tagList || !tagList.includes(item))) || (type === 'ragTag' && item.showAddButton)">
                         <!-- Add tags starts -->
-                        <button (click)="onAddTag(item)"
+                        <button appDebounceClick (click)="onAddTag(item)"
                           class="btn btn-primary btn-sm"
                           i18n="@@componentSearchInputBox.addTag">
                             Add tag
@@ -70,7 +70,7 @@
                             <i *ngIf="item.showAddMem == false; else addMem"
                                 class="material-icons mr-1 dropdown-toggle-split btn-sm working">check_circle</i>
                             <ng-template #addMem>
-                                <button (click)="onAddNewMember(item)"
+                                <button appDebounceClick (click)="onAddNewMember(item)"
                                   class="btn btn-primary btn-sm"
                                   i18n="@@componentSearchInputBox.add">
                                     Add
@@ -84,7 +84,7 @@
                             <i *ngIf="item.showAddMem"
                                 class="material-icons mr-1 dropdown-toggle-split btn-sm working">check_circle</i>
                             <div *ngIf="!item.showAddMem">
-                                <button (click)="onAddNewMember(item)"
+                                <button appDebounceClick (click)="onAddNewMember(item)"
                                   class="btn btn-primary btn-sm"
                                   i18n="@@componentSearchInputBox.add">
                                     Add
@@ -98,7 +98,7 @@
                             <i *ngIf="item.showAddMem"
                                 class="material-icons mr-1 dropdown-toggle-split btn-sm working">check_circle</i>
                             <div *ngIf="!item.showAddMem">
-                                <button (click)="onAddNewMember(item)"
+                                <button appDebounceClick (click)="onAddNewMember(item)"
                                   class="btn btn-primary btn-sm"
                                   i18n="@@componentSearchInputBox.select">
                                     Select
@@ -118,7 +118,7 @@
                                     class="material-icons mr-1 dropdown-toggle-split btn-sm working">check_circle</i>
 
                                 <ng-template #notAddedToMap>
-                                    <button (click)="addToSelectedMember(item)"
+                                    <button appDebounceClick (click)="addToSelectedMember(item)"
                                       class="btn btn-primary btn-sm"
                                       i18n="@@componentSearchInputBox.assign">
                                         assign
@@ -131,14 +131,14 @@
                         <div *ngIf="type == 'event'">
                             <i *ngIf="item.showAddMem == false; else addMem"
                                 class="material-icons mr-1 dropdown-toggle-split btn-sm working"
-                                (click)="removeMemberFromMap(item)">check_circle</i>
+                                appDebounceClick (click)="removeMemberFromMap(item)">check_circle</i>
                             <ng-template #addMem>
                                 <i *ngIf="memberJustAddedToMap(item); else notAddedToMap"
                                     class="material-icons mr-1 dropdown-toggle-split btn-sm working"
-                                    (click)="removeMemberFromMap(item)">check_circle</i>
+                                    appDebounceClick (click)="removeMemberFromMap(item)">check_circle</i>
 
                                 <ng-template #notAddedToMap>
-                                    <button (click)="addToSelectedMember(item)"
+                                    <button appDebounceClick (click)="addToSelectedMember(item)"
                                       class="btn btn-primary btn-sm"
                                       i18n="@@componentSearchInputBox.assign">
                                         assign

@@ -15,14 +15,14 @@
               <div class="url-box" *ngIf="fileId && flamingo?.publish">
                 {{ flamingoURL }}
               </div>
-              <i (click)="copyToClipboard()" *ngIf="fileId && flamingo?.publish"
+              <i (click)="copyToClipboard()" appDebounceClick *ngIf="fileId && flamingo?.publish"
                 class="material-icons-outlined" style="cursor: pointer; margin-top: 20px;margin-left: 20px;">
                 content_copy
               </i>
             </div>
             <div class="btn-style">
-              <button class="btn btn-primary" *ngIf="flamingo && !flamingo.publish" (click)="publish()" i18n="@@flamingoPublish.publish">PUBLISH</button>
-              <button class="btn btn-danger" *ngIf="flamingo && flamingo.publish" (click)="publish()" i18n="@@flamingoPublish.unpublish">UNPUBLISH</button>
+              <button appDebounceClick class="btn btn-primary" *ngIf="flamingo && !flamingo.publish" (click)="publish()" i18n="@@flamingoPublish.publish">PUBLISH</button>
+              <button appDebounceClick class="btn btn-danger" *ngIf="flamingo && flamingo.publish" (click)="publish()" i18n="@@flamingoPublish.unpublish">UNPUBLISH</button>
             </div>
         </div>
     </div>

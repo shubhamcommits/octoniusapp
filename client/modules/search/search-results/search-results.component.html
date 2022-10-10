@@ -7,7 +7,7 @@
 
     &nbsp;
 
-    <a *ngIf="type=='file' && (data?.type == 'file' || data?.type == undefined) && isOfficeFile(data?.original_name)" (click)="openOfficeDoc(data?._id)" target="_blank" style="cursor: pointer;">
+    <a *ngIf="type=='file' && (data?.type == 'file' || data?.type == undefined) && isOfficeFile(data?.original_name)" appDebounceClick (click)="openOfficeDoc(data?._id)" target="_blank" style="cursor: pointer;">
       <span class="material-icons">open_in_new</span>
     </a>
 
@@ -30,7 +30,7 @@
   <div class="mb-2" *ngIf="type == 'file' && data.path_to_file">
     <strong i18n="@@searchResult.location">Location: </strong>
   
-    <span style="cursor: pointer;" (click)="closeSearch()" [routerLink]="['/dashboard', 'work', 'groups', 'files']" [queryParams]="{ folder: data?._folder?._id || data?._folder }" routerLinkActive="router-link-active">
+    <span style="cursor: pointer;" appDebounceClick (click)="closeSearch()" [routerLink]="['/dashboard', 'work', 'groups', 'files']" [queryParams]="{ folder: data?._folder?._id || data?._folder }" routerLinkActive="router-link-active">
       {{ data?.path_to_file }}
     </span>
   </div>
@@ -87,7 +87,7 @@
     {{ data?.first_name }} {{ data?.last_name }}
 
     <!--<a [href]="generateUserURL(data._id)" target="_blank">-->
-    <a (click)="openFullscreenModal(data._id)" style="cursor: pointer;">
+    <a appDebounceClick (click)="openFullscreenModal(data._id)" style="cursor: pointer;">
       <span class="material-icons">badge</span>
     </a>
   </div>

@@ -15,8 +15,8 @@
 
     <div class="d-flex justify-content-around">
 
-        <button class="btn btn-primary" (click)="alloweded()" i18n="@@zapAuthConfirmation.allow">Allow</button>
-        <button class="btn btn-danger" (click)="cancel()" i18n="@@zapAuthConfirmation.cancel">Cancel</button>
+        <button appDebounceClick class="btn btn-primary" (click)="alloweded()" i18n="@@zapAuthConfirmation.allow">Allow</button>
+        <button appDebounceClick class="btn btn-danger" (click)="cancel()" i18n="@@zapAuthConfirmation.cancel">Cancel</button>
 
     </div>
 </div>

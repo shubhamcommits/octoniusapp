@@ -99,7 +99,7 @@
     </app-date-picker>
 
     <!-- Clean field starts -->
-    <i *ngIf="type == 'task' || type == 'event'" (click)="getDate(null, 'due_date')" class="material-icons" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+    <i *ngIf="type == 'task' || type == 'event'" appDebounceClick (click)="getDate(null, 'due_date')" class="material-icons" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
     <!-- Clean field ends -->
 
     <!-- Date Picker ends -->
@@ -204,19 +204,19 @@
 
   </div>
 
-  <button type="button" class="btn btn-md btn-link delete-btn" style="margin-right: 30px;" (click)="deletePost()"
+  <button appDebounceClick type="button" class="btn btn-md btn-link delete-btn" style="margin-right: 30px;" (click)="deletePost()"
     *ngIf="edit && (userData?.role == 'admin' || userData?.role == 'owner' || postData?._posted_by == userData?._id)"
     i18n="@@groupCreatePost.delete">
       X DELETE
   </button>
 
-  <button type="button" *ngIf="!edit" class="btn btn-md btn-primary float-right"
+  <button appDebounceClick type="button" *ngIf="!edit" class="btn btn-md btn-primary float-right"
     (click)="createPost()" style="width: 100px;"
     i18n="@@groupCreatePost.post">
       Post
   </button>
   <!-- Update Details Button starts -->
-  <button [disabled]="!showUpdateDetails" *ngIf="edit" class="btn float-right btn-primary btn-md"
+  <button appDebounceClick [disabled]="!showUpdateDetails" *ngIf="edit" class="btn float-right btn-primary btn-md"
     (click)="updateDetails()"i18n="@@groupCreatePost.update">
     Update
   </button>

@@ -22,7 +22,7 @@
           <div class="notification_more">
             <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="general_menu" style="cursor: pointer;">more_horiz</i>
             <mat-menu #general_menu="matMenu">
-              <a mat-menu-item (click)="markAllNotificationAsRead('')">
+              <a mat-menu-item (click)="markAllNotificationAsRead('')" appDebounceClick>
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">check_circle_outline</i>
                 <span i18n="@@recentActivity.markAllAsRead">Mark All As Read</span>
               </a>
@@ -110,21 +110,21 @@
             <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
             <mat-menu #menu="matMenu">
               <a mat-menu-item *ngIf="notification?.type !== 'mention_folio' && (notification?.type != 'approved-item' && notification?.type != 'reject-item' && notification?.type != 'launch-approval-flow')"
-                (click)="viewNotification(notification?._origin_post?._id, notification?._origin_post?.type, notification?._origin_post?._group?._id)">
+                (click)="viewNotification(notification?._origin_post?._id, notification?._origin_post?.type, notification?._origin_post?._group?._id)" appDebounceClick>
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                 <span i18n="@@recentActivity.view">View</span>
               </a>
               <a mat-menu-item *ngIf="notification?.type === 'mention_folio'"
-                (click)="viewFolioNotification(notification?._origin_folio?._id, notification?._origin_folio?._origin_group?._id)">
+                (click)="viewFolioNotification(notification?._origin_folio?._id, notification?._origin_folio?._origin_group?._id)" appDebounceClick>
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                 <span i18n="@@recentActivity.view">View</span>
               </a>
               <a mat-menu-item *ngIf="notification?.type == 'approved-item' || notification?.type == 'reject-item' || notification?.type == 'launch-approval-flow'"
-                (click)="viewApprovalNotification(notification)">
+                (click)="viewApprovalNotification(notification)" appDebounceClick>
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                 <span i18n="@@recentActivity.view">View</span>
               </a>
-              <a mat-menu-item (click)="markNotificationAsRead(notification._id, userData._id, index, '')">
+              <a mat-menu-item (click)="markNotificationAsRead(notification._id, userData._id, index, '')" appDebounceClick>
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">check_circle_outline</i>
                 <span i18n="@@recentActivity.markAsRead">Mark As Read</span>
             </a>
@@ -158,7 +158,7 @@
           <div class="notification_more">
             <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="general_menu" style="cursor: pointer;">more_horiz</i>
             <mat-menu #general_menu="matMenu">
-              <a mat-menu-item (click)="markAllNotificationAsRead('new-post')">
+              <a mat-menu-item (click)="markAllNotificationAsRead('new-post')" appDebounceClick>
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">check_circle_outline</i>
                 <span i18n="@@recentActivity.markAllAsRead">Mark All As Read</span>
               </a>
@@ -197,11 +197,11 @@
             <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
             <mat-menu #menu="matMenu">
               <a mat-menu-item *ngIf="notification?.type !== 'mention_folio'"
-                (click)="viewPost(notification?._origin_post?._id, notification?._origin_post?._group?._id)">
+                (click)="viewPost(notification?._origin_post?._id, notification?._origin_post?._group?._id)" appDebounceClick>
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                 <span i18n="@@recentActivity.view">View</span>
               </a>
-              <a mat-menu-item (click)="markNotificationAsRead(notification._id, userData._id, index, notification?.type)">
+              <a mat-menu-item (click)="markNotificationAsRead(notification._id, userData._id, index, notification?.type)" appDebounceClick>
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">check_circle_outline</i>
                 <span i18n="@@recentActivity.markAsRead">Mark As Read</span>
               </a>
@@ -339,7 +339,7 @@
           </div>
 
           <div class="notification_more">
-            <a mat-menu-item (click)="viewApprovalNotification(notification)">
+            <a mat-menu-item (click)="viewApprovalNotification(notification)" appDebounceClick>
               <i class="material-icons-outlined ml-2 muted" style="margin-right: .7rem;">visibility</i>
               <span i18n="@@recentActivity.view">View</span>
             </a>

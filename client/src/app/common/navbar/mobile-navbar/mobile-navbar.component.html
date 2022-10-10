@@ -2,7 +2,7 @@
   <mat-sidenav #sidenav (keydown.escape)="this.sidenav.toggle()" disableClose autosize>
 
     <!-- SIDE MENU ICON STARTS -->
-    <app-sidebar class="nav navbar-nav navbar-left" (click)="sidenav.toggle()" [userGroups]="userGroups" [sideNav]="sidenav" [isMobile]="isMobile"></app-sidebar>
+    <app-sidebar class="nav navbar-nav navbar-left" appDebounceClick (click)="sidenav.toggle()" [userGroups]="userGroups" [sideNav]="sidenav" [isMobile]="isMobile"></app-sidebar>
     <!-- SIDE MENU ICON ENDS -->
 
   </mat-sidenav>
@@ -10,13 +10,13 @@
     <div class="container-fluid">
       <nav class="navbar navbar-expand-lg mt-2">
           <!-- TOGGLE MENU BUTTON STARTS -->
-          <button type="button" id="sidebarCollapse" class="btn btn-link" (click)="sidenav.toggle()">
+          <button appDebounceClick type="button" id="sidebarCollapse" class="btn btn-link" (click)="sidenav.toggle()">
             <i class="material-icons">menu_open</i>
           </button>
           <!-- TOGGLE MENU BUTTON ENDS -->
 
           <!-- MENU BUTTON STARTS -->
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          <button appDebounceClick class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon">
               <i class="material-icons-outlined muted">dashboard</i>
@@ -33,11 +33,11 @@
             <app-work-navbar *ngIf="isWorkNavbar$ | async"></app-work-navbar>
             <!-- MENU ITEMS ENDS -->
              <!-- SEARCH starts -->
-             <button class="btn btn-link navbar-right d-none d-sm-block" (click)="openSearchModal()">
+             <button appDebounceClick class="btn btn-link navbar-right d-none d-sm-block" (click)="openSearchModal()">
               <span class="material-icons">search</span>
             </button>
             <!-- search for xs screens -->
-            <button class="btn btn-link btn-block d-block d-sm-none" (click)="openSearchModal()">
+            <button appDebounceClick class="btn btn-link btn-block d-block d-sm-none" (click)="openSearchModal()">
               <span class="material-icons">search</span>
             </button>
             <!-- SEARCH ends -->

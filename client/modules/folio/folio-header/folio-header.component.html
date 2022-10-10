@@ -4,7 +4,7 @@
 
     <!-- Go Back starts -->
     <span *ngIf="!this.readOnly" class="navbar-brand ml-5 mr-5" matTooltip="Go Back to Files" matTooltipPosition="below"
-        (click)="goBackToFiles()">
+        (click)="goBackToFiles()" appDebounceClick>
         <i class="material-icons">
             arrow_back
         </i>
@@ -16,7 +16,7 @@
             <li class="nav-item active" *ngIf="file">
                 <!-- Folio Static Title starts -->
                 <span *ngIf="!editTitle"
-                    (click)="enableEdit()"
+                    (click)="enableEdit()" appDebounceClick
                     matTooltip="Click me to rename"
                     matTooltipPosition="below">{{file?.original_name}}
                 </span>
@@ -49,7 +49,7 @@
             accept=".docx, .doc"
         />
 
-        <button
+        <button appDebounceClick
             class="btn btn-link"
             (click)="fileInput.click()"  matTooltip="Import a docx" matTooltipPosition="left"><i class="material-icons muted">cloud_upload</i>
         </button>

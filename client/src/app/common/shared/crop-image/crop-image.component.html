@@ -31,16 +31,16 @@
     <!-- TOOLS MENU STARTS -->
     <!--
     <div class="container menu" *ngIf="imageChangedEvent">
-        <button class="btn btn-md btn-primary" (click)="rotateLeft()">
+        <button appDebounceClick class="btn btn-md btn-primary" (click)="rotateLeft()">
             <i class="material-icons"> rotate_left </i>
             Rotate Left</button>
-        <button class="btn btn-md btn-primary" (click)="rotateRight()">
+        <button appDebounceClick class="btn btn-md btn-primary" (click)="rotateRight()">
             <i class="material-icons"> rotate_right </i>
             Rotate Right</button>
-        <button class="btn btn-md btn-primary" (click)="flipHorizontal()">
+        <button appDebounceClick class="btn btn-md btn-primary" (click)="flipHorizontal()">
             <i class="material-icons"> swap_horiz </i>
             Flip Horizontally</button>
-        <button class="btn btn-md btn-primary" (click)="flipVertical()">
+        <button appDebounceClick class="btn btn-md btn-primary" (click)="flipVertical()">
             <i class="material-icons"> swap_vert </i>
             Flip Vertically</button>
     </div>

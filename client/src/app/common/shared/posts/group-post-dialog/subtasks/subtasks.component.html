@@ -14,7 +14,7 @@
     [ngClass]="{'status-todo': task?.task?.status === 'to do', 'status-inprogress': task?.task?.status === 'in progress', 'status-done': task?.task?.status === 'done' }"
     *ngFor="let task of subtasks">
 
-    <div class="task_content" (click)="openSubtask(task)">
+    <div class="task_content" appDebounceClick (click)="openSubtask(task)">
       <div class="task_title">
         {{ task.title | truncatetext:60 }}
       </div>

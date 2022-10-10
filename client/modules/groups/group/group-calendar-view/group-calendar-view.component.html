@@ -21,15 +21,15 @@
           </div>
           <div class="col-md-4">
               <div class="btn-group">
-                  <div class="btn btn-primary" (click)="setView(CalendarView.Month)"
+                  <div class="btn btn-primary" (click)="setView(CalendarView.Month)" appDebounceClick
                       [class.active]="view === CalendarView.Month" i18n="@@groupCalendarView.month">
                       Month
                   </div>
-                  <div class="btn btn-primary" (click)="setView(CalendarView.Week)"
+                  <div class="btn btn-primary" (click)="setView(CalendarView.Week)" appDebounceClick
                       [class.active]="view === CalendarView.Week" i18n="@@groupCalendarView.week">
                       Week
                   </div>
-                  <div class="btn btn-primary" (click)="setView(CalendarView.Day)"
+                  <div class="btn btn-primary" (click)="setView(CalendarView.Day)" appDebounceClick
                       [class.active]="view === CalendarView.Day" i18n="@@groupCalendarView.day">
                       Day
                   </div>
@@ -37,7 +37,7 @@
           </div>
           <!--
           <div class="col-md-1">
-            <button class="btn badge-cf" (click)="openCreatePostDialog(content)" style="margin:0">
+            <button appDebounceClick class="btn badge-cf" (click)="openCreatePostDialog(content)" style="margin:0">
               <i class="material-icons">add</i>
             </button>
           </div>

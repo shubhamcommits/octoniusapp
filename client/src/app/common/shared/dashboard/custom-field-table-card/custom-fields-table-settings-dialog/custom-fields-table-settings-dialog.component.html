@@ -1,7 +1,7 @@
 <div class="dialog-content">
   <mat-dialog-actions align="end">
       <div class="action-box">
-          <a (click)="cancel()" mat-dialog-close>
+          <a appDebounceClick (click)="cancel()" mat-dialog-close>
           <i  class="material-icons" style="cursor: pointer">close</i>
           </a>
       </div>
@@ -50,8 +50,8 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="center">
-  <button class="btn btn-danger mr-4" (click)="cancel()" i18n="@@cfTableSettingsDialog.cancel">Cancel</button>
-  <button class="btn btn-primary" (click)="save()" i18n="@@cfTableSettingsDialog.updateSettings">Update settings</button>
+  <button appDebounceClick class="btn btn-danger mr-4" (click)="cancel()" i18n="@@cfTableSettingsDialog.cancel">Cancel</button>
+  <button appDebounceClick class="btn btn-primary" (click)="save()" i18n="@@cfTableSettingsDialog.updateSettings">Update settings</button>
 </mat-dialog-actions>
   <!-- Top Right Section ends -->
 </div>

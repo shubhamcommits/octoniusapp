@@ -1,7 +1,7 @@
 <div class="flowStepsDialog">
 
   <mat-dialog-actions align="start">
-    <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">arrow_back</i>
+    <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" appDebounceClick style="cursor: pointer">arrow_back</i>
   </mat-dialog-actions>
 
   <h2 mat-dialog-title style="margin-bottom: 30px">
@@ -17,7 +17,7 @@
       (blur)="flowNameChange($event)"
       class="flow-name" />
     <!-- Flow Name ends -->
-    <i (click)="deleteFlow()" class="material-icons text-danger" style="cursor: pointer">delete</i>
+    <i (click)="deleteFlow()" appDebounceClick class="material-icons text-danger" style="cursor: pointer">delete</i>
   </h2>
 
   <mat-dialog-content>
@@ -55,13 +55,13 @@
                     {{ trigger.status.toUpperCase() }}
                   </div>
 
-                  <button *ngIf="!trigger.status" mat-menu-item [matMenuTriggerFor]="statusMenu"
+                  <button appDebounceClick *ngIf="!trigger.status" mat-menu-item [matMenuTriggerFor]="statusMenu"
                       i18n="@@groupAutomationFlowDetailsDialog.selectStatus">
                     Select Status
                   </button>
                   <mat-menu #statusMenu="matMenu">
                     <ng-container>
-                      <button mat-menu-item *ngFor="let status of statusOptions" (click)="triggerSelected('status', status, stepIndex, triggerIndex)">{{ status.toUpperCase() }}</button>
+                      <button appDebounceClick mat-menu-item *ngFor="let status of statusOptions" (click)="triggerSelected('status', status, stepIndex, triggerIndex)">{{ status.toUpperCase() }}</button>
                     </ng-container>
                   </mat-menu>
                 </div>
@@ -71,25 +71,25 @@
                     {{ trigger?._section?.title }}
                   </div>
 
-                  <button *ngIf="!trigger._section" mat-menu-item [matMenuTriggerFor]="sectionTriggerMenu"
+                  <button appDebounceClick *ngIf="!trigger._section" mat-menu-item [matMenuTriggerFor]="sectionTriggerMenu"
                       i18n="@@groupAutomationFlowDetailsDialog.selectSection">
                     Select Section
                   </button>
                   <mat-menu #sectionTriggerMenu="matMenu">
                     <ng-container>
-                      <button mat-menu-item *ngFor="let section of groupSections" (click)="triggerSelected('section', section, stepIndex, triggerIndex)">{{ section.title }}</button>
+                      <button appDebounceClick mat-menu-item *ngFor="let section of groupSections" (click)="triggerSelected('section', section, stepIndex, triggerIndex)">{{ section.title }}</button>
                     </ng-container>
                   </mat-menu>
                 </div>
 
                 <div *ngIf="trigger.name === 'Custom Field'">
-                  <button *ngIf="!trigger?.custom_field?.name" mat-menu-item [matMenuTriggerFor]="customFieldNameMenu"
+                  <button appDebounceClick *ngIf="!trigger?.custom_field?.name" mat-menu-item [matMenuTriggerFor]="customFieldNameMenu"
                       i18n="@@groupAutomationFlowDetailsDialog.selectCF">
                     Select CF
                   </button>
                   <mat-menu #customFieldNameMenu="matMenu">
                     <ng-container>
-                      <button mat-menu-item *ngFor="let cf of customFieldOptions" (click)="customFieldNameTriggerSelected(cf, stepIndex, triggerIndex)">{{ cf }}</button>
+                      <button appDebounceClick mat-menu-item *ngFor="let cf of customFieldOptions" (click)="customFieldNameTriggerSelected(cf, stepIndex, triggerIndex)">{{ cf }}</button>
                     </ng-container>
                   </mat-menu>
 
@@ -99,13 +99,13 @@
                     </div>
 
                     <div *ngIf="!trigger.custom_field.value">
-                      <button *ngIf="!trigger?.custom_field?.value" mat-menu-item [matMenuTriggerFor]="customFieldValueMenu"
+                      <button appDebounceClick *ngIf="!trigger?.custom_field?.value" mat-menu-item [matMenuTriggerFor]="customFieldValueMenu"
                           i18n="@@groupAutomationFlowDetailsDialog.selectValue">
                         Select Value
                       </button>
                       <mat-menu #customFieldValueMenu="matMenu">
                         <ng-container>
-                          <button mat-menu-item *ngFor="let cfv of getCustomFieldsValues(trigger?.custom_field?.name)" (click)="triggerSelected('cf', cfv, stepIndex, triggerIndex)">{{ cfv }}</button>
+                          <button appDebounceClick mat-menu-item *ngFor="let cfv of getCustomFieldsValues(trigger?.custom_field?.name)" (click)="triggerSelected('cf', cfv, stepIndex, triggerIndex)">{{ cfv }}</button>
                         </ng-container>
                       </mat-menu>
                     </div>
@@ -124,13 +124,13 @@
                     {{ trigger.subtaskStatus.toUpperCase() }}
                   </div>
 
-                  <button *ngIf="!trigger.subtaskStatus" mat-menu-item [matMenuTriggerFor]="subtaskStatusMenu"
+                  <button appDebounceClick *ngIf="!trigger.subtaskStatus" mat-menu-item [matMenuTriggerFor]="subtaskStatusMenu"
                       i18n="@@groupAutomationFlowDetailsDialog.selectStatus">
                     Select Status
                   </button>
                   <mat-menu #subtaskStatusMenu="matMenu">
                     <ng-container>
-                      <button mat-menu-item *ngFor="let status of statusOptions" (click)="triggerSelected('subtaskStatus', status, stepIndex, triggerIndex)">{{ status.toUpperCase() }}</button>
+                      <button appDebounceClick mat-menu-item *ngFor="let status of statusOptions" (click)="triggerSelected('subtaskStatus', status, stepIndex, triggerIndex)">{{ status.toUpperCase() }}</button>
                     </ng-container>
                   </mat-menu>
                 </div>
@@ -138,19 +138,19 @@
             </div>
 
             <div class="add-step">
-              <i class="material-icons-outlined" *ngIf="!step.newTrigger" (click)="step.newTrigger = !step.newTrigger" style="cursor: pointer;">add</i>
+              <i class="material-icons-outlined" *ngIf="!step.newTrigger" (click)="step.newTrigger = !step.newTrigger" appDebounceClick style="cursor: pointer;">add</i>
             </div>
           </div>
 
           <div class="step-element" *ngIf="!step.trigger || step.newTrigger">
             <span i18n="@@groupAutomationFlowDetailsDialog.when">WHEN</span>
             <!-- TRIGGER OPTIONS SECTION -->
-            <button mat-menu-item [matMenuTriggerFor]="triggerMenu"i18n="@@groupAutomationFlowDetailsDialog.selectTrigger">
+            <button appDebounceClick mat-menu-item [matMenuTriggerFor]="triggerMenu"i18n="@@groupAutomationFlowDetailsDialog.selectTrigger">
               Select trigger
             </button>
             <mat-menu #triggerMenu="matMenu">
               <ng-container>
-                <button mat-menu-item *ngFor="let trigger of triggerOptions" (click)="selectTrigger(trigger, stepIndex)">{{ trigger }}</button>
+                <button appDebounceClick mat-menu-item *ngFor="let trigger of triggerOptions" (click)="selectTrigger(trigger, stepIndex)">{{ trigger }}</button>
               </ng-container>
             </mat-menu>
           </div>
@@ -183,13 +183,13 @@
                     {{ action._section.title }}
                   </div>
 
-                  <button *ngIf="!action._section" mat-menu-item [matMenuTriggerFor]="sectionActionMenu"
+                  <button appDebounceClick *ngIf="!action._section" mat-menu-item [matMenuTriggerFor]="sectionActionMenu"
                       i18n="@@groupAutomationFlowDetailsDialog.selectSection">
                     Select Section
                   </button>
                   <mat-menu #sectionActionMenu="matMenu">
                     <ng-container>
-                      <button mat-menu-item *ngFor="let section of groupSections" (click)="actionSelected('section', section, stepIndex, actionIndex)">{{ section.title }}</button>
+                      <button appDebounceClick mat-menu-item *ngFor="let section of groupSections" (click)="actionSelected('section', section, stepIndex, actionIndex)">{{ section.title }}</button>
                     </ng-container>
                   </mat-menu>
                 </div>
@@ -199,25 +199,25 @@
                     {{ action.status.toUpperCase() }}
                   </div>
 
-                  <button *ngIf="!action.status" mat-menu-item [matMenuTriggerFor]="statusActionMenu"
+                  <button appDebounceClick *ngIf="!action.status" mat-menu-item [matMenuTriggerFor]="statusActionMenu"
                       i18n="@@groupAutomationFlowDetailsDialog.selectStatus">
                     Select Status
                   </button>
                   <mat-menu #statusActionMenu="matMenu">
                     <ng-container>
-                      <button mat-menu-item *ngFor="let status of statusOptions" (click)="actionSelected('status', status, stepIndex, actionIndex)">{{ status.toUpperCase() }}</button>
+                      <button appDebounceClick mat-menu-item *ngFor="let status of statusOptions" (click)="actionSelected('status', status, stepIndex, actionIndex)">{{ status.toUpperCase() }}</button>
                     </ng-container>
                   </mat-menu>
                 </div>
 
                 <div *ngIf="action.name === 'Custom Field'">
-                  <button *ngIf="!action?.custom_field?.name" mat-menu-item [matMenuTriggerFor]="customFieldNameActionMenu"
+                  <button appDebounceClick *ngIf="!action?.custom_field?.name" mat-menu-item [matMenuTriggerFor]="customFieldNameActionMenu"
                       i18n="@@groupAutomationFlowDetailsDialog.selectCF">
                     Select CF
                   </button>
                   <mat-menu #customFieldNameActionMenu="matMenu">
                     <ng-container>
-                      <button mat-menu-item *ngFor="let cf of customFieldOptions" (click)="customFieldNameActionSelected(cf, stepIndex, actionIndex)">{{ cf }}</button>
+                      <button appDebounceClick mat-menu-item *ngFor="let cf of customFieldOptions" (click)="customFieldNameActionSelected(cf, stepIndex, actionIndex)">{{ cf }}</button>
                     </ng-container>
                   </mat-menu>
 
@@ -227,13 +227,13 @@
                     </div>
 
                     <div *ngIf="!action.custom_field.value">
-                      <button *ngIf="!action?.custom_field?.value" mat-menu-item [matMenuTriggerFor]="customFieldValueActionMenu"
+                      <button appDebounceClick *ngIf="!action?.custom_field?.value" mat-menu-item [matMenuTriggerFor]="customFieldValueActionMenu"
                           i18n="@@groupAutomationFlowDetailsDialog.selectValue">
                         Select Value
                       </button>
                       <mat-menu #customFieldValueActionMenu="matMenu">
                         <ng-container>
-                          <button mat-menu-item *ngFor="let cfv of getCustomFieldsValues(action?.custom_field?.name)" (click)="actionSelected('cf', cfv, stepIndex, actionIndex)">{{ cfv }}</button>
+                          <button appDebounceClick mat-menu-item *ngFor="let cfv of getCustomFieldsValues(action?.custom_field?.name)" (click)="actionSelected('cf', cfv, stepIndex, actionIndex)">{{ cfv }}</button>
                         </ng-container>
                       </mat-menu>
                     </div>
@@ -252,13 +252,13 @@
                     {{ action?._shuttle_group?.group_name?.toUpperCase() }}
                   </div>
 
-                  <button *ngIf="!action._shuttle_group" mat-menu-item [matMenuTriggerFor]="shuttleActionMenu"
+                  <button appDebounceClick *ngIf="!action._shuttle_group" mat-menu-item [matMenuTriggerFor]="shuttleActionMenu"
                       i18n="@@groupAutomationFlowDetailsDialog.selectShuttleGroup">
                     Select Shuttle Group
                   </button>
                   <mat-menu #shuttleActionMenu="matMenu">
                     <ng-container>
-                      <button mat-menu-item *ngFor="let group of shuttleGroups" (click)="actionSelected('shuttle', group, stepIndex, actionIndex)">{{ group.group_name.toUpperCase() }}</button>
+                      <button appDebounceClick mat-menu-item *ngFor="let group of shuttleGroups" (click)="actionSelected('shuttle', group, stepIndex, actionIndex)">{{ group.group_name.toUpperCase() }}</button>
                     </ng-container>
                   </mat-menu>
                 </div>
@@ -266,25 +266,25 @@
               </div>
             </div>
 
-            <div class="add-step"> <i class="material-icons-outlined" *ngIf="!step.newAction" (click)="step.newAction = !step.newAction" style="cursor: pointer;">add</i></div>
+            <div class="add-step"> <i class="material-icons-outlined" *ngIf="!step.newAction" (click)="step.newAction = !step.newAction" appDebounceClick style="cursor: pointer;">add</i></div>
           </div>
 
           <div class="step-element" *ngIf="!step.action || step.newAction">
             <span i18n="@@groupAutomationFlowDetailsDialog.then">THEN</span>
             <!-- ACTION OPTIONS SECTION -->
-            <button mat-menu-item [matMenuTriggerFor]="actionMenu" i18n="@@groupAutomationFlowDetailsDialog.selectAction">
+            <button appDebounceClick mat-menu-item [matMenuTriggerFor]="actionMenu" i18n="@@groupAutomationFlowDetailsDialog.selectAction">
               Select action
             </button>
             <mat-menu #actionMenu="matMenu">
               <ng-container>
-                <button mat-menu-item *ngFor="let action of actionOptions" (click)="selectAction(action, stepIndex)">{{ action }}</button>
+                <button appDebounceClick mat-menu-item *ngFor="let action of actionOptions" (click)="selectAction(action, stepIndex)">{{ action }}</button>
               </ng-container>
             </mat-menu>
           </div>
 
           <!-- DELETE STEP -->
           <div class="remove-separator">
-            <i class="material-icons text-danger" (click)="removeStep(step._id)"
+            <i class="material-icons text-danger" (click)="removeStep(step._id)" appDebounceClick
               style=" cursor: pointer; margin-left: 20px;">delete</i>
           </div>
         </div>
@@ -293,7 +293,7 @@
 
     <!-- ADD STEP -->
     <div class="newFlowStepForm" style="padding: 10px; margin-top: 30px; width: 70%;">
-      <button class="btn btn-link" style="margin: 10px 0;" (click)="createStep()">
+      <button appDebounceClick class="btn btn-link" style="margin: 10px 0;" (click)="createStep()">
         <i class="material-icons" style="color: #FFAB00">offline_bolt</i>
          <span i18n="@@groupAutomationFlowDetailsDialog.addStep">ADD STEP</span>
       </button>

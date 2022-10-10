@@ -2,12 +2,12 @@
   <p class="box-title" i18n="@@taskActions.actions">Actions</p>
 
   <div *ngIf="!postData?.task?._parent_task">
-    <button mat-menu-item [matMenuTriggerFor]="transferMenu"
+    <button appDebounceClick mat-menu-item [matMenuTriggerFor]="transferMenu"
       (click)="saveTransferAction('copy')">
         <i  class="material-icons">content_copy</i>
         <span i18n="@@taskActions.copyToGroup">COPY TO GROUP</span>
     </button>
-    <button mat-menu-item [matMenuTriggerFor]="transferMenu"
+    <button appDebounceClick mat-menu-item [matMenuTriggerFor]="transferMenu"
       (click)="saveTransferAction('move')">
         <i class="material-icons">arrow_forward</i>
         <span i18n="@@taskActions.moveToGroup">MOVE TO GROUP</span>
@@ -15,9 +15,9 @@
 
     <mat-menu #transferMenu="matMenu">
       <ng-container *ngFor="let group of userGroups; let index = index">
-        <button mat-menu-item [matMenuTriggerFor]="columnsMenu">{{ group.group_name }}</button>
+        <button appDebounceClick mat-menu-item [matMenuTriggerFor]="columnsMenu">{{ group.group_name }}</button>
         <mat-menu #columnsMenu="matMenu">
-          <button *ngFor="let section of userGroups[index]?.sections" mat-menu-item (click)="transferToGroup(userGroups[index]?._id, section)">{{ section.title }}</button>
+          <button appDebounceClick *ngFor="let section of userGroups[index]?.sections" mat-menu-item (click)="transferToGroup(userGroups[index]?._id, section)">{{ section.title }}</button>
         </mat-menu>
       </ng-container>
     </mat-menu>
@@ -35,7 +35,7 @@
 
 
   <div *ngIf="!postData?.task?._parent_task">
-    <button mat-menu-item [matMenuTriggerFor]="templateTaskMenu">
+    <button appDebounceClick mat-menu-item [matMenuTriggerFor]="templateTaskMenu">
         <i class="material-icons-outlined">playlist_add</i>
         <span i18n="@@taskActions.templates">TEMPLATES</span>
     </button>
@@ -44,12 +44,12 @@
       <div>
         <div class="users-card" style="width: 200px">
           <ul class="assignee-list">
-            <button mat-menu-item  class="assignee-list-item" style="line-height: inherit;" *ngFor="let template of groupTemplates" (mouseover)="saveTemplateAction('')" (click)="selectTemplate(template._id)">
+            <button appDebounceClick mat-menu-item  class="assignee-list-item" style="line-height: inherit;" *ngFor="let template of groupTemplates" (mouseover)="saveTemplateAction('')" (click)="selectTemplate(template._id)">
               {{ template.task.template_name }}
             </button>
 
-            <!-- <li class="assignee-list-item save-template" (click)="createTemplate()">Save as template</li> -->
-            <button class="assignee-list-item save-template"
+            <!-- <li class="assignee-list-item save-template" appDebounceClick (click)="createTemplate()">Save as template</li> -->
+            <button appDebounceClick class="assignee-list-item save-template"
               style="line-height: inherit;"
               mat-menu-item [matMenuTriggerFor]="templatesMenu"
               (mouseover)="saveTemplateAction('save')"
@@ -58,7 +58,7 @@
                 <span i18n="@@taskActions.saveTemplate">Save template</span>
             </button>
 
-            <button class="assignee-list-item save-template"
+            <button appDebounceClick class="assignee-list-item save-template"
               *ngIf="userData?.role == 'admin' || userData?.role == 'owner' || postData?._posted_by == userData?._id"
               style="line-height: inherit;"
               mat-menu-item [matMenuTriggerFor]="templatesMenu"
@@ -72,13 +72,13 @@
               <div>
                 <div class="users-card">
                   <ul class="assignee-list">
-                    <li class="assignee-list-item" *ngFor="let template of groupTemplates" (click)="selectTemplate(template._id, template.task.template_name)">
+                    <li class="assignee-list-item" *ngFor="let template of groupTemplates" appDebounceClick (click)="selectTemplate(template._id, template.task.template_name)">
                       {{ template.task.template_name }}
                     </li>
 
                     <li *ngIf="templateAction == 'save'"
                       class="assignee-list-item save-template"
-                      (click)="createTemplate()"
+                      appDebounceClick (click)="createTemplate()"
                       i18n="@@taskActions.saveNewTemplate">
                         Save new template</li>
                   </ul>
@@ -115,7 +115,7 @@
         <div class="media task-item user-list mb-0" *ngFor=" let task of tasksList; let index = index;">
           <div class="media-body mt-2">
             <!-- Display full name of the member starts -->
-            <h4 class="mt-0 full-name-text" (click)="setParentTask(task._id)">
+            <h4 class="mt-0 full-name-text" appDebounceClick (click)="setParentTask(task._id)">
               {{ task?.title | truncatetext: 50 }}
             </h4>
             <!-- Display full name of the member ends -->
@@ -135,7 +135,7 @@
   <div *ngIf="groupData && groupData?.project_type && !isChild" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
     <span i18n="@@taskActions.makeDependencyOf">MAKE DEPENDENCY OF</span>
 
-    <button *ngFor="let task of dependencyTask; let i = index" class="btn dependencylabel" style="margin-right: 1rem;"
+    <button appDebounceClick *ngFor="let task of dependencyTask; let i = index" class="btn dependencylabel" style="margin-right: 1rem;"
        (click)="removeDependencyTask(i)">
       <b>X</b> {{ task.title | truncatetext: 50 }}
     </button>
@@ -148,7 +148,7 @@
       <div class="media task-item user-list mb-0" *ngFor=" let task of tasksList; let index = index;">
         <div class="media-body mt-2" >
           <!-- Display full name of the member starts -->
-          <h4 class="mt-0 full-name-text" (click)="setDependencyTask(task._id)">
+          <h4 class="mt-0 full-name-text" appDebounceClick (click)="setDependencyTask(task._id)">
             {{ task?.title | truncatetext: 50 }}
           </h4>
           <!-- Display full name of the member ends -->
@@ -223,7 +223,7 @@
     </mat-form-field>
 
     <!-- Clean field starts -->
-    <!-- <i *ngIf="postData?.task?._shuttle_group && postData?.task?._shuttle_group != groupData._id" (click)="shuttleTask(null)" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i> -->
+    <!-- <i *ngIf="postData?.task?._shuttle_group && postData?.task?._shuttle_group != groupData._id" appDebounceClick (click)="shuttleTask(null)" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i> -->
     <!-- Clean field ends -->
     <p i18n="@@taskActions.withTaskShuttleYouCan">With Task Shuttle you can assign the task to another group.</p>
   </div>

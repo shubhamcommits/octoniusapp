@@ -8,7 +8,7 @@
                 <b>{{groupData?.group_name }}</b>
 
                 <!-- Edit Group Details starts -->
-                <button *ngIf="userData.role != 'member' && groupData.group_name.toLowerCase() != 'global'"
+                <button appDebounceClick *ngIf="userData.role != 'member' && groupData.group_name.toLowerCase() != 'global'"
                     type="button" name="button" class="btn btn-link-secondary" style="margin-top: -10px;"
                     (click)="this.editGroupDetails(openModal('Update Group Information!', 'assets/images/user-professional-info.svg'))">
                       <i class="material-icons-outlined">settings</i>

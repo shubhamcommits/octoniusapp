@@ -4,9 +4,9 @@
 
 <div *ngIf="storyData" class="category">
   <div class="header-hero" [ngStyle]="{'cursor': canEditStory ? 'pointer' : 'auto'}" style="background-image: url({{storyData?.header_pic}});"
-      (click)="openImageSelector('header_pic')">
+      (click)="openImageSelector('header_pic')" appDebounceClick>
 
-    <div *ngIf="canEditStory" (click)="openImageSelector('header_pic')"
+    <div *ngIf="canEditStory" (click)="openImageSelector('header_pic')" appDebounceClick
         style=" cursor: pointer; width: 300px; text-align:center; margin-left: auto; margin-right: auto; margin-top: 70px;">
       <span *ngIf="!storyData?.header_pic" class="btn btn-warning">
         <span class="material-icons">add_photo_alternate</span>
@@ -39,7 +39,7 @@
         [contents]="storyData.content">
       </app-quill-editor>
      
-        <button type="button" *ngIf="canEditStory" class="btn btn-primary"
+        <button appDebounceClick type="button" *ngIf="canEditStory" class="btn btn-primary"
           (click)="saveStory()" 
           i18n="@@storyDetails.save"><span class="material-icons-outlined">
             history_edu

@@ -1,6 +1,6 @@
 <mat-dialog-actions align="end">
   <div class="action-box">
-      <a (click)="onCloseDialog()" mat-dialog-close>
+      <a appDebounceClick (click)="onCloseDialog()" mat-dialog-close>
         <i class="material-icons" style="cursor: pointer">close</i>
       </a>
   </div>
@@ -81,13 +81,13 @@
         </div>
 
         <div class="clearfix save-content">
-            <button *ngIf="canEdit" [disabled]="!contentChanged"
+            <button appDebounceClick *ngIf="canEdit" [disabled]="!contentChanged"
               class="btn float-right btn-primary btn-md"
               (click)="updateDetails('change_content')" i18n="@@groupCreatePostDialog.save">
                 Save
             </button>
 
-            <button *ngIf="!showSubtasks && !postData?.task?._parent_task && postData?.type === 'task' && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id) && canEdit"
+            <button appDebounceClick *ngIf="!showSubtasks && !postData?.task?._parent_task && postData?.type === 'task' && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id) && canEdit"
               class="btn float-left btn-warning btn-md"
               (click)="prepareToAddSubtasks()"
               i18n="@@groupCreatePostDialog.addSubtask">
@@ -183,7 +183,7 @@
           <p class="box-title"i18n="@@groupCreatePostDialog.parentTask"> Parent task</p>
 
           <div class="parent-task">
-            <div style="display: flex; flex-direction: row; justify-content: space-between; width: 100%;" (click)="openParentTask(postData?.task?._parent_task._id)">
+            <div style="display: flex; flex-direction: row; justify-content: space-between; width: 100%;" appDebounceClick (click)="openParentTask(postData?.task?._parent_task._id)">
               <div class="parent-title">
                 {{ postData?.task?._parent_task.title | truncatetext:40 }}
               </div>
@@ -363,7 +363,7 @@
                       [disabled]="!canEdit"
                       class="col" style="width: 94px;" [value]="selectedCFValues[cf.name]"
                       (keyup.enter)="saveInputCustomField($event, cf.name, cf.title)" />
-                  <i *ngIf="canEdit" (click)="saveCustomField(cf.name, cf.title, selectedCFValues[cf.name]);" class="material-icons muted mr-5"
+                  <i *ngIf="canEdit" appDebounceClick (click)="saveCustomField(cf.name, cf.title, selectedCFValues[cf.name]);" class="material-icons muted mr-5"
                     style="cursor: pointer; font-size: 14px; margin-left: 10px;color: #0bc6a0;">save</i>
                 </div>
 
@@ -378,7 +378,7 @@
                 </div>
 
                 <!-- Clean field starts -->
-                <i *ngIf="canEdit" (click)="saveCustomField(cf.name, cf.title, null);"
+                <i *ngIf="canEdit" appDebounceClick (click)="saveCustomField(cf.name, cf.title, null);"
                   class="material-icons muted mr-5"
                   style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
                 <!-- Clean field ends -->

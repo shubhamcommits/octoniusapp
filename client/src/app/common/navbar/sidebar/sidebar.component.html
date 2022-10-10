@@ -1,13 +1,13 @@
 <nav id="sidebar">
     <div class="sidebar-header" [ngStyle]="{'top': (isMobile) ? 0 : 'none', 'left': (isMobile) ? 0 : 'none'}">
         <!--
-        <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active">
+        <a appDebounceClick (click)="changeToPersonalGroup()" routerLinkActive="router-link-active">
             <img src="assets/images/white_logo.svg" alt="" class="octonius-logo">
         </a>
         -->
 
         <!-- MENU BUTTON STARTS -->
-        <button *ngIf="!isMobile" type="button" id="sidebarCollapse" class="btn dismiss" (click)="switchSideBar()" >
+        <button appDebounceClick *ngIf="!isMobile" type="button" id="sidebarCollapse" class="btn dismiss" (click)="switchSideBar()" >
             <i class="material-icons">menu_open</i>
         </button>
         <!-- MENU BUTTON ENDS -->
@@ -22,7 +22,7 @@
 
             <ul class="collapse list-unstyled" id="pageWorkspacesSubmenu">
                 <li *ngFor="let workspace of userWorkspaces">
-                    <a (click)="goToWorkspace(workspace?._id || workspace)" style="padding: 10px 0;">
+                    <a appDebounceClick (click)="goToWorkspace(workspace?._id || workspace)" style="padding: 10px 0;">
                         <app-secured-image [imgURL]="workspace?.workspace_avatar" [service]="'workspace'" [styleClass]="'avatar'">
                         </app-secured-image>
                         {{ workspace?.workspace_name | truncatetext: 16 }}
@@ -31,7 +31,7 @@
             </ul>
         </div>
         <div *ngIf="userWorkspaces?.length <= 0" class="components" style="margin-top: -25px; width: 78%;">
-            <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active" style="padding: 10px 0;" [matTooltip]="workspaceData?.workspace_name">
+            <a appDebounceClick (click)="changeToPersonalGroup()" routerLinkActive="router-link-active" style="padding: 10px 0;" [matTooltip]="workspaceData?.workspace_name">
                 <app-secured-image [imgURL]="workspaceData?.workspace_avatar" [service]="'workspace'" [styleClass]="'avatar'">
                 </app-secured-image>
                 <span>{{ workspaceData?.workspace_name | truncatetext: 16 }}</span>
@@ -42,7 +42,7 @@
     <div class="menu-options">
         <ul class="list-unstyled components">
             <li>
-              <a (click)="changeToPersonalGroup()" routerLinkActive="active">
+              <a appDebounceClick (click)="changeToPersonalGroup()" routerLinkActive="active">
                     <i class="material-icons-outlined carret">home</i>
                     <span i18n="@@sidebar.mySpace">My Space</span>
               </a>
@@ -58,7 +58,7 @@
 
                 <ul class="collapse list-unstyled show" id="pageSubmenu">
                     <li *ngFor="let group of userGroups">
-                        <a (click)="goToGroup(group?._id, 'groups_activity')" routerLinkActive="active">
+                        <a appDebounceClick (click)="goToGroup(group?._id, 'groups_activity')" routerLinkActive="active">
                             <app-secured-image
                               [imgURL]="group?.group_avatar"
                               [service]="'group'"
@@ -80,7 +80,7 @@
 
             <li> <hr class="divider-line"></li>
             <li *ngIf="this.userData?.role === 'admin' || this.userData?.role === 'owner'">
-                <a (click)="changeState('general')"
+                <a appDebounceClick (click)="changeState('general')"
                     class="nav-link"
                     [routerLink]="['/dashboard', 'admin', 'general']"
                     routerLinkActive="active">
@@ -95,7 +95,7 @@
                 <a class="nav-link" *ngIf="this.userData"
                   [routerLink]="['/dashboard', 'user', 'profile']"
                   routerLinkActive="active"
-                  (click)="changeState('profile')">
+                  appDebounceClick (click)="changeState('profile')">
                     <app-secured-image
                         [imgURL]="userData?.profile_pic"
                         [service]="'user'"
@@ -110,7 +110,7 @@
                 <a class="nav-link"
                     [routerLink]="['/']"
                     routerLinkActive="router-link-active"
-                    (click)="logout()">
+                    appDebounceClick (click)="logout()">
                       <i class="material-icons-outlined carret">logout</i>
                       <span i18n="@@sidebar.signOut">Sign Out</span>
                       <span class="sr-only">(current)</span>

@@ -18,7 +18,7 @@
       <mat-form-field class="mr-3">
         <mat-select ngDefaultControl class="select-field"
             (selectionChange)="customFieldSelected($event.value)"
-            (click)="$event.stopPropagation()"
+            (click)="$event.stopPropagation()" appDebounceClick
             [(value)]="cfName"
             name="names">
           <mat-option
@@ -32,7 +32,7 @@
       <mat-form-field>
 
         <mat-select ngDefaultControl class="select-field"
-            (click)="$event.stopPropagation()"
+            (click)="$event.stopPropagation()" appDebounceClick
             [(value)]="cfValue"
             [disabled]="cfValues.length <= 0"
             name="values">
@@ -42,8 +42,8 @@
       </mat-form-field>
 
       <div style="display: flex; justify-content:space-between; margin: 100px auto; width: 60%">
-        <button class="btn btn-danger" (click)="cancel()" i18n="@@advancedFilterDialog.cancel">X Cancel</button>
-        <button class="btn btn-primary" (click)="filter()" i18n="@@advancedFilterDialog.filter">Filter</button>
+        <button appDebounceClick class="btn btn-danger" (click)="cancel()" i18n="@@advancedFilterDialog.cancel">X Cancel</button>
+        <button appDebounceClick class="btn btn-primary" (click)="filter()" i18n="@@advancedFilterDialog.filter">Filter</button>
       </div>
     </mat-dialog-content>
 </div>

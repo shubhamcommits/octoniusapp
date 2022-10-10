@@ -12,6 +12,6 @@
         <li i18n="@@teamsAuthConfirmation.createTasksProjects">Create and modify tasks, projects, and comments on your behalf.</li>
     </ul>
 
-    <button style="margin-left: 32%;margin-right: 5%;" (click)="alloweded()" i18n="@@teamsAuthConfirmation.allow">Allow</button>
-    <button (click)="cancel()" i18n="@@teamsAuthConfirmation.cancel">Cancel</button>
+    <button appDebounceClick style="margin-left: 32%;margin-right: 5%;" (click)="alloweded()" i18n="@@teamsAuthConfirmation.allow">Allow</button>
+    <button appDebounceClick (click)="cancel()" i18n="@@teamsAuthConfirmation.cancel">Cancel</button>
 </div>

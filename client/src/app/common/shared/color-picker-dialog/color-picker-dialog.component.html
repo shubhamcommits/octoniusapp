@@ -2,7 +2,7 @@
   <div *ngFor="let color of colors"
     class="color" [ngClass]="colorSelected == color ? 'selected' : ''"
     style="background-color: {{ color }}"
-    (click)="selectColor(color)"></div>
+    appDebounceClick (click)="selectColor(color)"></div>
 </div>
 
 <div>
@@ -11,5 +11,5 @@
     class="input"
     [(ngModel)]="colorSelectedInput"
     (keyup.enter)="selectColor(colorSelectedInput)"/>
-  <button class="btn btn-success" (click)="selectColor(colorSelectedInput)" i18n="@@colorPickerDialog.selectColor">Select Color</button>
+  <button appDebounceClick class="btn btn-success" (click)="selectColor(colorSelectedInput)" i18n="@@colorPickerDialog.selectColor">Select Color</button>
 </div>

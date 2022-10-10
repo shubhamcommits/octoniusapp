@@ -22,29 +22,29 @@
 
                             <!-- Menu Drawer Starts -->
                             <ul class="dropdown-menu">
-                                <li class="dropdown-item" (click)="column.editColumn = !column.editColumn">
+                                <li class="dropdown-item" (click)="column.editColumn = !column.editColumn" appDebounceClick>
                                   <span class="material-icons-outlined">create</span>
                                   <span i18n="@@groupKanbanBoard.edit">Edit</span>
                                 </li>
                                 <li *ngIf="userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager()"
-                                    class="dropdown-item" (click)="deleteColumn(column)">
+                                    class="dropdown-item" (click)="deleteColumn(column)" appDebounceClick>
                                   <span class="material-icons-outlined">delete</span>
                                   <span i18n="@@groupDashboard.delete">Delete</span>
                                 </li>
                                 <li *ngIf="(!isShuttleTasksModuleAvailable || column?._id != (groupData?._shuttle_section?._id || groupData?._shuttle_section)) && (userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager())"
-                                    class="dropdown-item" (click)="archiveColumn(column)">
+                                    class="dropdown-item" (click)="archiveColumn(column)" appDebounceClick>
                                   <span class="material-icons-outlined">archive</span>
                                   <span i18n="@@groupDashboard.archive">Archive</span>
                                 </li>
-                                <li class="dropdown-item" *ngIf="groupData?.project_type" (click)="makeColumnProjectDialog(column)">
+                                <li class="dropdown-item" *ngIf="groupData?.project_type" (click)="makeColumnProjectDialog(column)" appDebounceClick>
                                   <img src="assets/images/Icon/icon_launch_project.svg" alt="" >
                                   <span i18n="@@groupDashboard.launchProject">Launch Project</span>
                                 </li>
-                                <li *ngIf="column?.canEdit" class="dropdown-item" (click)="openShowCFDialog(column)">
+                                <li *ngIf="column?.canEdit" class="dropdown-item" (click)="openShowCFDialog(column)" appDebounceClick>
                                   <span class="material-icons-outlined">auto_awesome</span>
                                   <span i18n="@@groupDashboard.showCF">Show CF Data</span>
                                 </li>
-                                <li class="dropdown-item" *ngIf="groupData && checkDataExist(groupData) && groupData.enabled_rights" (click)="openPermissionModal(column)">
+                                <li class="dropdown-item" *ngIf="groupData && checkDataExist(groupData) && groupData.enabled_rights" (click)="openPermissionModal(column)" appDebounceClick>
                                   <span class="material-icons-outlined">vpn_lock</span>
                                   <span i18n="@@groupDashboard.permissions">Permissions</span>
                                 </li>
@@ -97,7 +97,7 @@
 
                     <!-- TASK DETAILS STARTS -->
                     <app-kanban-task-card cdkDrag *ngFor="let task of column.tasks; let j = index;"
-                        (click)="openFullscreenModal(task)"
+                        (click)="openFullscreenModal(task)" appDebounceClick
                         [isProject]="column?.project_type"
                         [isDelay]="isDelay(task?.task?.due_to, column?.due_date)"
                         [task]="task"
@@ -138,29 +138,29 @@
 
                             <!-- Menu Drawer Starts -->
                             <ul class="dropdown-menu">
-                                <li class="dropdown-item" (click)="column.editColumn = !column.editColumn">
+                                <li class="dropdown-item" (click)="column.editColumn = !column.editColumn" appDebounceClick>
                                   <span class="material-icons-outlined">create</span>
                                   <span i18n="@@groupKanbanBoard.edit">Edit</span>
                                 </li>
                                 <li *ngIf="(userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager())"
-                                    class="dropdown-item" (click)="deleteColumn(column)">
+                                    class="dropdown-item" (click)="deleteColumn(column)" appDebounceClick>
                                   <span class="material-icons-outlined">delete</span>
                                   <span i18n="@@groupDashboard.delete">Delete</span>
                                 </li>
                                 <li *ngIf="(!isShuttleTasksModuleAvailable || column?._id != (groupData?._shuttle_section?._id || groupData?._shuttle_section)) && (userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager())"
-                                    class="dropdown-item" (click)="archiveColumn(column)">
+                                    class="dropdown-item" (click)="archiveColumn(column)" appDebounceClick>
                                   <span class="material-icons-outlined">archive</span>
                                   <span i18n="@@groupDashboard.archive">Archive</span>
                                 </li>
-                                <li class="dropdown-item" *ngIf="groupData?.project_type" (click)="makeColumnProjectDialog(column)">
+                                <li class="dropdown-item" *ngIf="groupData?.project_type" (click)="makeColumnProjectDialog(column)" appDebounceClick>
                                   <img src="assets/images/Icon/icon_launch_project.svg" alt="" >
                                   <span i18n="@@groupDashboard.launchProject">Launch Project</span>
                                 </li>
-                                <li *ngIf="column?.canEdit" class="dropdown-item" (click)="openShowCFDialog(column)">
+                                <li *ngIf="column?.canEdit" class="dropdown-item" (click)="openShowCFDialog(column)" appDebounceClick>
                                   <span class="material-icons-outlined">auto_awesome</span>
                                   <span i18n="@@groupDashboard.showCF">Show CF Data</span>
                                 </li>
-                                <li class="dropdown-item" *ngIf="groupData && checkDataExist(groupData) && groupData.enabled_rights" (click)="openPermissionModal(column)">
+                                <li class="dropdown-item" *ngIf="groupData && checkDataExist(groupData) && groupData.enabled_rights" (click)="openPermissionModal(column)" appDebounceClick>
                                   <span class="material-icons-outlined">vpn_lock</span>
                                   <span i18n="@@groupDashboard.permissions">Permissions</span>
                                 </li>
@@ -210,7 +210,7 @@
 
                     <!-- TASK DETAILS STARTS -->
                     <app-kanban-task-card *ngFor="let task of column.tasks; let j = index;"
-                      (click)="openFullscreenModal(task)"
+                      (click)="openFullscreenModal(task)" appDebounceClick
                       [isProject]="column?.project_type"
                       [isDelay]="isDelay(task?.task?.due_to, column?.due_date)"
                       [task]="task"

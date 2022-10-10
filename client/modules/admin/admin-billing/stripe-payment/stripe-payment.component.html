@@ -12,7 +12,7 @@
     <br>
     <img src="assets/images/stripe_pay.svg" alt="" style="width: 240px; margin-top: 30px;">
   </h4>
-  <button (click)="createCustomerPortalSession()" class="btn btn-md btn-primary mt-4"
+  <button appDebounceClick (click)="createCustomerPortalSession()" class="btn btn-md btn-primary mt-4"
     i18n="@@stripePayment.mangaeSubscription">
       Manage subscription
   </button>

@@ -1,4 +1,4 @@
-<button [matMenuTriggerFor]="cloneTaskSearchMenu" #trigger="matMenuTrigger"
+<button appDebounceClick [matMenuTriggerFor]="cloneTaskSearchMenu" #trigger="matMenuTrigger"
   *ngIf="menuFor==='Filter'"
   [ngStyle]="{'cursor': 'pointer','color':filterfor==='users'?'green':'black'}"
   class="dropdownbtn">
@@ -8,21 +8,21 @@
       [service]="'user'"
       [styleClass]="'feed-avatar'"></app-secured-image>
 </button>
-<button mat-menu-item [matMenuTriggerFor]="cloneTaskSearchMenu" *ngIf="menuFor==='Task'">
+<button appDebounceClick mat-menu-item [matMenuTriggerFor]="cloneTaskSearchMenu" *ngIf="menuFor==='Task'">
     <i class="material-icons-outlined">recent_actors</i>
     <span i18n="@@memberListMenu.cloneTask">CLONE TASK</span>
 </button>
 <mat-menu #cloneTaskSearchMenu="matMenu" class="user-filter-menu">
     <div style="padding: 10px;">
         <div class="users-card">
-            <div class="form-group" (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+            <div class="form-group" appDebounceClick (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
                 <label for="search-text">{{menuLable}}</label>
                 <input type="email" class="form-control" id="search-text" aria-describedby="search-text"
                     [(ngModel)]="searchText" placeholder="Search group member" autofocus>
             </div>
             <ul class="assignee-list">
                 <li appHighlight class="assignee-list-item" *ngFor="let member of groupMembers | appFilter: searchText"
-                    (click)="getMemberDetails(member._id)" [searchedWord]="searchText" [content]="member">
+                    appDebounceClick (click)="getMemberDetails(member._id)" [searchedWord]="searchText" [content]="member">
                     {{ member.first_name }} {{ member.last_name }}
                 </li>
             </ul>

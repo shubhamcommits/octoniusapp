@@ -85,7 +85,7 @@
     <th mat-header-cell *matHeaderCellDef>
       <div class="cf_cell" >
         {{ cf.title }}
-        <i class="material-icons small" *ngIf="isAdmin && cf.name != 'priority'" (click)="removeColumn(cf)"
+        <i class="material-icons small" *ngIf="isAdmin && cf.name != 'priority'" (click)="removeColumn(cf)" appDebounceClick
           style="cursor: pointer;">close</i>
       </div>
     </th>
@@ -121,7 +121,7 @@
                 <mat-label i18n="@@asksTableView.selectOption">Select an option</mat-label>
                   <mat-select ngDefaultControl
                       (selectionChange)="addNewColumn($event)"
-                      (click)="$event.stopPropagation()"
+                      (click)="$event.stopPropagation()" appDebounceClick
                       [(ngModel)]="newColumnSelected"
                       name="new_column">
                     <mat-option *ngFor="let f of customFields" [value]="f">{{ f.title }}</mat-option>
@@ -133,7 +133,7 @@
     <td mat-cell *matCellDef="let task">
       <i class="material-icons-outlined muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
       <mat-menu #menu="matMenu">
-        <a mat-menu-item (click)="openFullscreenModal(task)">
+        <a mat-menu-item (click)="openFullscreenModal(task)" appDebounceClick>
             <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
             <span i18n="@@asksTableView.view">View</span>
         </a>

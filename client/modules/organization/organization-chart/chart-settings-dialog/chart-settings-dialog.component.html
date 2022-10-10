@@ -1,6 +1,6 @@
 <div class="integrationsDialog">
   <mat-dialog-actions class="d-flex justify-content-end" align="end">
-    <i mat-dialog-close class="material-icons" (click)="closeDialog()" style="cursor: pointer">close</i>
+    <i mat-dialog-close class="material-icons" appDebounceClick (click)="closeDialog()" style="cursor: pointer">close</i>
   </mat-dialog-actions>
 
   <h2 mat-dialog-title class="text-center">
@@ -37,7 +37,7 @@
   </div>
 
   <div class="content-box">
-    <button
+    <button appDebounceClick
         class="btn btn-danger btn-md"
         (click)="closeDialog()"
         i18n="@@chartSettingsDialog.close">

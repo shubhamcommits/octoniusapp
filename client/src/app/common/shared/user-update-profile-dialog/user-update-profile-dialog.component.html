@@ -22,10 +22,10 @@
                 <!-- FORM FIELD FOR NEW WORKPLACE & SIGNUP COMPONENT -->
                 <div class="form-group clearfix mt-4">
                 <!-- SUBMIT BUTTON SIGN UP COMPONENT -->
-                <button type="submit" class="btn btn-primary float-left" (click)="updatePassword()" i18n="@@userUpdateProfileDialog.update">Update</button>
+                <button appDebounceClick type="submit" class="btn btn-primary float-left" (click)="updatePassword()" i18n="@@userUpdateProfileDialog.update">Update</button>
                 <!-- SUBMIT BUTTON SIGN UP COMPONENT -->
 
-                <button mat-dialog-close type="submit" class="btn btn-danger float-right"
+                <button appDebounceClick mat-dialog-close type="submit" class="btn btn-danger float-right"
                   i18n="@@userUpdateProfileDialog.cancel">Cancel</button>
 
                 </div>

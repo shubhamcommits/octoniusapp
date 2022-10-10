@@ -32,7 +32,7 @@
             (member)="selectUser(cf.name, $event)"></app-select-assignee>
         </div>
         <!-- Clean field starts -->
-        <i (click)="saveCustomField(cf.name, null);" class="material-icons muted mr-5" style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
+        <i appDebounceClick (click)="saveCustomField(cf.name, null);" class="material-icons muted mr-5" style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
         <!-- Clean field ends -->
       </div>
       <!-- Iterate over all the skills present for a particular user ends -->

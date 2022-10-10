@@ -1,4 +1,4 @@
-<div class="card" (click)="openModal(content)" style="padding:0">
+<div class="card" appDebounceClick (click)="openModal(content)" style="padding:0">
     <div class="card-block" style="padding: 0;">
         <div class="postboxheader card-title">
             <div class="d-none d-sm-block">
@@ -9,7 +9,7 @@
             </div>
 
             <div *ngIf="!showPostBox">
-              <button type="text"
+              <button appDebounceClick type="text"
                   class="form-control btn-md noborder-btn postbox"
                   placeholder="What are you working on?"
                   i18n="@@groupPostbox.whatAreYouWorkingOn">

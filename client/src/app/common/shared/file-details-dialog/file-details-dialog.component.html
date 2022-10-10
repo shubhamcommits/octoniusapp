@@ -1,6 +1,6 @@
 <mat-dialog-actions align="end">
   <div class="action-box">
-      <a (click)="onCloseDialog()" mat-dialog-close>
+      <a appDebounceClick (click)="onCloseDialog()" mat-dialog-close>
         <i class="material-icons" style="cursor: pointer">close</i>
       </a>
   </div>
@@ -48,7 +48,7 @@
         </div>
 
         <div class="clearfix save-content">
-            <button *ngIf="canEdit" [disabled]="!contentChanged"
+            <button appDebounceClick *ngIf="canEdit" [disabled]="!contentChanged"
               class="btn float-right btn-primary btn-md"
               (click)="updateDetails()" i18n="@@fileDetailsDialog.save">
                 Save
@@ -168,7 +168,7 @@
                     [disabled]="!canEdit"
                     class="col" style="width: 94px;" [value]="selectedCFValues[cf.name]"
                     (keyup.enter)="saveInputCustomField($event, cf.name)" />
-                <i *ngIf="canEdit" (click)="saveCustomField(cf.name, selectedCFValues[cf.name])" class="material-icons muted mr-5"
+                <i *ngIf="canEdit" appDebounceClick (click)="saveCustomField(cf.name, selectedCFValues[cf.name])" class="material-icons muted mr-5"
                   style="cursor: pointer; font-size: 14px; margin-left: 10px;color: #0bc6a0;">save</i>
               </div>
 
@@ -183,7 +183,7 @@
               </div>
 
               <!-- Clean field starts -->
-              <i *ngIf="canEdit" (click)="saveCustomField(cf.name, null);"
+              <i *ngIf="canEdit" appDebounceClick (click)="saveCustomField(cf.name, null);"
                 class="material-icons muted mr-5"
                 style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
               <!-- Clean field ends -->

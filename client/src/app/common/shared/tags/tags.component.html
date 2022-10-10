@@ -3,7 +3,7 @@
    <div class="col-md-auto" >
 
 
-      <button class="btn tagslabel"
+      <button appDebounceClick class="btn tagslabel"
           style="margin-right: 1rem;"
           (click)="removeTag(i)"
           *ngFor="let tag of tags; let i = index">

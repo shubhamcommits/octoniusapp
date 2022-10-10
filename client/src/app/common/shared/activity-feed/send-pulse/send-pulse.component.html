@@ -9,7 +9,7 @@
 
         <textarea [(ngModel)]="pulseDescription" rows="3" cols="35" placeholder="Type here to send a pulse for today"></textarea>
 
-        <button class="btn btn-primary btn-sm"
+        <button appDebounceClick class="btn btn-primary btn-sm"
           (click)="onClickSendPulse(pulseDescription)"
           i18n="@@sendPulse.sendPulse">
             Send Pulse

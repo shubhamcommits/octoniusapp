@@ -1,6 +1,6 @@
 <!-- START USER -->
 <div *ngIf="searchedUsers" style="text-align: left;" class="mb-2">
-  <div class="media card-tile user-list" *ngFor="let member of searchedUsers" (click)="openFullscreenModal(member._id)">
+  <div class="media card-tile user-list" *ngFor="let member of searchedUsers" appDebounceClick (click)="openFullscreenModal(member._id)">
     <!-- Avatar Image of the member -->
     <app-secured-image *ngIf="member.active"
         [imgURL]="member?.profile_pic"

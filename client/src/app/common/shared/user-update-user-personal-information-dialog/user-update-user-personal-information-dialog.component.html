@@ -17,9 +17,9 @@
                     <textarea cols="5" rows="8" [(ngModel)]="bio" class="form-control" name="date" placeholder="Your Short Bio"></textarea>
                 </div>
                 <div class="form-group clearfix mt-4">
-                  <button type="submit" class="btn btn-primary float-left" (click)="updateInfo()" i18n="@@userUpdateUserPersonalInformationDialog.updateInformation">Update Information!</button>
+                  <button appDebounceClick type="submit" class="btn btn-primary float-left" (click)="updateInfo()" i18n="@@userUpdateUserPersonalInformationDialog.updateInformation">Update Information!</button>
 
-                  <button mat-dialog-close type="submit" class="btn btn-danger float-right"
+                  <button appDebounceClick mat-dialog-close type="submit" class="btn btn-danger float-right"
                     i18n="@@userUpdateUserPersonalInformationDialog.cancel">Cancel</button>
                 </div>
             </div>

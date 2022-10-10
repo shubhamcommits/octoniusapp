@@ -4,7 +4,7 @@
 
     <!-- Go Back starts -->
     <span *ngIf="!this.readOnly" class="navbar-brand ml-5 mr-5" matTooltip="Go Back to Files" matTooltipPosition="below"
-        (click)="goBackToFiles()">
+        (click)="goBackToFiles()"appDebounceClick>
         <i class="material-icons">
             arrow_back
         </i>

@@ -11,7 +11,7 @@
             <!-- Component search bar starts -->
             <input (keyup)="groupsSearchQuery(query)" type="text" [(ngModel)]="query" class="searchTerm"
                 [placeholder]="searchBarPlaceholder">
-            <button type="submit" class="searchButton">
+            <button appDebounceClick type="submit" class="searchButton">
                 <i class="material-icons">search</i>
             </button>
             <!-- Component search bar ends -->
@@ -43,14 +43,14 @@
 
                                   <!-- Changing role functionality starts -->
                                   <div class="dropdown" *ngIf="currentUser.role == 'owner' || currentUser.role == 'admin'">
-                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                    <button appDebounceClick class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
                                         <span i18n="@@adminGroups.manageGroup">Manage Group</span>
                                         <span class="caret"></span>
                                     </button>
 
                                     <!-- Menu Drawer Starts -->
                                     <ul class="dropdown-menu">
-                                        <li class="dropdown-item" (click)="archiveGroup(group._id, true)" i18n="@@adminGroups.archiveGroups">Archive Group</li>
+                                        <li class="dropdown-item" (click)="archiveGroup(group._id, true)" appDebounceClick i18n="@@adminGroups.archiveGroups">Archive Group</li>
                                     </ul>
                                     <!-- Menu Drawer Ends -->
                                 </div>
@@ -85,15 +85,15 @@
 
                                   <!-- Changing role functionality starts -->
                                   <div class="dropdown" *ngIf="currentUser.role == 'owner' || currentUser.role == 'admin'">
-                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                    <button appDebounceClick class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
                                       <span i18n="@@adminGroups.manageGroup">Manage Group</span>
                                         <span class="caret"></span>
                                     </button>
 
                                     <!-- Menu Drawer Starts -->
                                     <ul class="dropdown-menu">
-                                        <li class="dropdown-item" (click)="archiveGroup(group._id, false)" i18n="@@adminGroups.activateGroup">Activate Group</li>
-                                        <li class="btn btn-danger btn-sm" style="margin: auto 1.4rem;" (click)="removeGroup(group._id)" i18n="@@adminGroups.removeGroup">Remove Group</li>
+                                        <li class="dropdown-item" (click)="archiveGroup(group._id, false)" appDebounceClick i18n="@@adminGroups.activateGroup">Activate Group</li>
+                                        <li class="btn btn-danger btn-sm" style="margin: auto 1.4rem;" (click)="removeGroup(group._id)" appDebounceClick i18n="@@adminGroups.removeGroup">Remove Group</li>
                                     </ul>
                                     <!-- Menu Drawer Ends -->
                                 </div>

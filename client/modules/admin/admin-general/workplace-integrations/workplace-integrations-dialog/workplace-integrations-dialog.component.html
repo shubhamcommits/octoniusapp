@@ -1,6 +1,6 @@
 <div class="integrationsDialog" *ngIf="workplaceData">
   <mat-dialog-actions class="d-flex justify-content-end" align="end">
-    <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
+    <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" appDebounceClick style="cursor: pointer">close</i>
   </mat-dialog-actions>
 
   <h2 mat-dialog-title class="text-center">
@@ -163,7 +163,7 @@
   </div>
 
   <div style="margin-top: 20px; text-align: center;">
-    <button class="col-md-4 btn btn-primary" (click)="saveSettings()" i18n="@@workspaceIntegrationsDialog.save">
+    <button appDebounceClick class="col-md-4 btn btn-primary" (click)="saveSettings()" i18n="@@workspaceIntegrationsDialog.save">
       Save
     </button>
   </div>

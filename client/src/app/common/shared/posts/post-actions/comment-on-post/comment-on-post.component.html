@@ -1,4 +1,4 @@
-<span matTooltipPosition="above" matTooltip="Add a comment" (click)="this.showCommentEditor.emit(this.showEditor = !this.showEditor)">
+<span matTooltipPosition="above" matTooltip="Add a comment" appDebounceClick (click)="this.showCommentEditor.emit(this.showEditor = !this.showEditor)">
     <a class="btn btn-link">
         <i class="material-icons-outlined muted">mode_comment</i>
     </a>

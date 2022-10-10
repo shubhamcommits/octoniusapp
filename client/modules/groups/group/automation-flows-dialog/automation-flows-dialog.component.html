@@ -1,7 +1,7 @@
 <div class="flowsDialog">
   <mat-dialog-actions align="end">
     <!--
-      <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
+      <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" appDebounceClick style="cursor: pointer">close</i>
     -->
     <i mat-dialog-close class="material-icons" style="cursor: pointer">close</i>
   </mat-dialog-actions>
@@ -24,7 +24,7 @@
     </div>
 
     <div class="text-center" style="padding: 10px; margin-top: 30px">
-      <button class="btn badge-automator" (click)="createFlow()">
+      <button appDebounceClick class="btn badge-automator" (click)="createFlow()">
         <i class="material-icons">offline_bolt</i>
         <span  i18n="@@groupAutomationFlowsDialog.newAutomation">New automation</span>
       </button>
@@ -35,7 +35,7 @@
 
       <div class="flowsBody">
 
-        <mat-card class="field" *ngFor="let flow of automationFlows" (click)="openFlowDetailsDialog(flow._id)" style="cursor: pointer">
+        <mat-card class="field" *ngFor="let flow of automationFlows" (click)="openFlowDetailsDialog(flow._id)" appDebounceClick style="cursor: pointer">
           <mat-card-content class="text-left">
             <p>
               <i class="material-icons" style="color: #FFAB00">offline_bolt</i>

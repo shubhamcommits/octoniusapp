@@ -1,6 +1,6 @@
 <div class="btn-group">
     <!-- Time Picker Toggle starts -->
-    <button class="btn btn-outline-primary dropdown-toggle btn-sm"
+    <button appDebounceClick class="btn btn-outline-primary dropdown-toggle btn-sm"
         type="button"
         data-toggle="dropdown"
         aria-haspopup="true"
@@ -11,7 +11,7 @@
 
     <!-- Input Placeholder for date picker starts -->
     <div class="dropdown-menu">
-        <div class="time-picker" (click)="$event.stopPropagation()">
+        <div class="time-picker" appDebounceClick (click)="$event.stopPropagation()">
             <ngb-timepicker
                 [ngModel]="timeModal"
                 (ngModelChange)="emitTime($event)">

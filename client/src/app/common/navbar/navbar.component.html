@@ -17,7 +17,7 @@
         <!-- COLLAPSABLE MENU STARTS -->
 
         <!-- MENU BUTTON STARTS -->
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        <button appDebounceClick class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon">
             <i class="material-icons-round">more_horiz</i>
@@ -37,7 +37,7 @@
           <ul class="navbar-nav search-nav">
             <!-- SEARCH starts -->
             <li class="nav-item">
-              <a class="nav-link" (click)="openSearchModal()">
+              <a class="nav-link" appDebounceClick (click)="openSearchModal()">
                 <span class="material-icons">search</span>
               </a>
             </li>

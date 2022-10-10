@@ -14,7 +14,7 @@
   </h5>
 
   <div *ngFor="let task of overdueAndTodayTasks; let i = index;">
-    <a (click)="openModal(task)">
+    <a (click)="openModal(task)" appDebounceClick>
       <!-- My Space Today Tasks -->
       <div *ngIf="task.type== 'task'">
         <div class="media card-tile overview-task todo-bar" *ngIf="task.task.status === 'to do'" role="progressbar">
@@ -121,7 +121,7 @@
   <h5 class="title-overview" *ngIf="this.thisWeekTasks.length !=  0">This week</h5>
 
   <div *ngFor="let task of thisWeekTasks; let i = index;">
-    <a (click)="openModal(task)">
+    <a (click)="openModal(task)" appDebounceClick>
       <!-- My Space This week Tasks -->
 
 
@@ -230,7 +230,7 @@
   <h5 class="title-overview" *ngIf="this.nextWeekTasks.length !=  0" i18n="@@mySpaceTasks.nextWeek">Next week</h5>
 
   <div *ngFor="let task of nextWeekTasks; let i = index;">
-    <a (click)="openModal(task)">
+    <a (click)="openModal(task)" appDebounceClick>
       <!-- My Space This week Tasks -->
       <div *ngIf="task.type== 'task'">
         <div class="media card-tile overview-task todo-bar" *ngIf="task.task.status === 'to do'" role="progressbar">
@@ -338,7 +338,7 @@
   <h5 class="title-overview" *ngIf="this.futureTasks.length !=  0" i18n="@@mySpaceTasks.futureTasks">Future Tasks</h5>
 
   <div *ngFor="let task of futureTasks; let i = index;">
-    <a (click)="openModal(task)">
+    <a (click)="openModal(task)" appDebounceClick>
       <!-- My Space future Tasks -->
 
 

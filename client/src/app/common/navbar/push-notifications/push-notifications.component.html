@@ -22,7 +22,7 @@
 
         <!-- NOTIFICATION ITEM STARTS-->
         <div class="notification-item" *ngIf="this.notificationsData?.unreadNotifications?.length != 0">
-                <button class="dropdown-item"
+                <button appDebounceClick class="dropdown-item"
                     (click)="$event.stopPropagation()"
                     *ngFor="let notifications of notificationsData?.unreadNotifications;">
                         <app-secured-image
@@ -33,7 +33,7 @@
                         {{notifications?._actor?.first_name}} {{notifications?.message}}
                     <br />
                     <span class="mark-notification-read tootip" data-toggle="tooltip"
-                        data-matTooltipPosition="left" title="Mark as Read" (click)="markNotificationAsRead(notifications?._id, userData?._id)">
+                        data-matTooltipPosition="left" title="Mark as Read" appDebounceClick (click)="markNotificationAsRead(notifications?._id, userData?._id)">
                             <i class="material-icons" >check_circle_outline</i>
                     </span>
                     <span class="view-notification" data-toggle="tooltip"
@@ -47,7 +47,7 @@
         <!-- NOTIFICATION ITEM ENDS-->
 
         <div *ngIf="this.notificationsData?.unreadNotifications?.length == 0">
-            <button class="dropdown-item" i18n="@@pushNotifications.allUpToDate">All up to date</button>
+            <button appDebounceClick class="dropdown-item" i18n="@@pushNotifications.allUpToDate">All up to date</button>
         </div>
 
         <div class="dropdown-divider"></div>
@@ -62,7 +62,7 @@
 
         <!-- NOTIFICATION ITEM STARTS-->
         <div class="notification-item" *ngIf="this.notificationsData?.readNotifications?.length != 0">
-                <button (click)="$event.stopPropagation()" class="dropdown-item notification-item" *ngFor="let notifications of notificationsData?.readNotifications;">
+                <button appDebounceClick (click)="$event.stopPropagation()" class="dropdown-item notification-item" *ngFor="let notifications of notificationsData?.readNotifications;">
                         <app-secured-image
                             [imgURL]="notifications?._actor?.profile_pic"
                             [service]="'user'"
@@ -77,7 +77,7 @@
         <!-- NOTIFICATION ITEM ENDS-->
 
         <div *ngIf="this.notificationsData?.readNotifications?.length == 0">
-            <button class="dropdown-item" i18n="@@pushNotifications.allUpToDate">All up to date</button>
+            <button appDebounceClick class="dropdown-item" i18n="@@pushNotifications.allUpToDate">All up to date</button>
         </div>
         <!-- READ/OLDER NOTIFICATIONS ENDS -->
     </div>

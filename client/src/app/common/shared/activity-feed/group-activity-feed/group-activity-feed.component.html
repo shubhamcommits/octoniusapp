@@ -41,7 +41,7 @@
         <div class="col-md-8">
 
             <!-- News Feed Pill -->
-            <app-news-pill *ngIf="showNewPosts" (click)="newPosts()"></app-news-pill>
+            <app-news-pill *ngIf="showNewPosts" appDebounceClick (click)="newPosts()"></app-news-pill>
             <!-- News Feed Pill -->
 
             <!-- Group activity postbox starts -->

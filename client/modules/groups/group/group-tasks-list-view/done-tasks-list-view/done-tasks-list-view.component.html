@@ -90,7 +90,7 @@
           <div class="">
             <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
             <mat-menu #menu="matMenu">
-                <a mat-menu-item (click)="openFullscreenModal(task)">
+                <a mat-menu-item (click)="openFullscreenModal(task)" appDebounceClick>
                     <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                     <span i18n="@@doneTasksListView.view">View</span>
                 </a>

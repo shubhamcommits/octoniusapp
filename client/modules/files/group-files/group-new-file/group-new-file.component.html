@@ -1,5 +1,5 @@
 <!-- Create new file starts -->
-<button class="btn btn-warning mb-3 mt-3 dropdown-toggle" type="button" data-toggle="dropdown">
+<button appDebounceClick class="btn btn-warning mb-3 mt-3 dropdown-toggle" type="button" data-toggle="dropdown">
     <i class="material-icons-outlined">add</i>
     <span i18n="@@groupNewFile.new">New</span>
 </button>
@@ -8,35 +8,35 @@
 <!-- Menu Drawer Starts -->
 <ul class="dropdown-menu">
 
-    <li class="dropdown-item" (click)="createFolder()">
+    <li class="dropdown-item" (click)="createFolder()" appDebounceClick>
         <i class="material-icons-outlined mr-2">create_new_folder</i>
         <span i18n="@@groupNewFile.folder">Folder</span>
     </li>
 
-    <li class="dropdown-item" (click)="file.click()">
+    <li class="dropdown-item" (click)="file.click()" appDebounceClick>
         <i class="material-icons-outlined mr-2">upload_file</i>
         <span i18n="@@groupNewFile.fileUoload">File upload</span>
         <input #file type="file" placeholder="File" multiple (change)="fileInput(file.files)"/>
     </li>
 
-    <li class="dropdown-item" (click)="folderInput.click()">
+    <li class="dropdown-item" (click)="folderInput.click()" appDebounceClick>
         <i class="material-icons-outlined mr-2">drive_folder_upload</i>
         <span i18n="@@groupNewFile.folderUpload"> Folder upload</span>
         <input #folderInput type="file" placeholder="File" webkitdirectory (change)="folderUpload($event)"/>
     </li>
 
     <li class="dropdown-divider"></li>
-    <li class="dropdown-item" (click)="createFolio()">
+    <li class="dropdown-item" (click)="createFolio()" appDebounceClick>
         <img src="assets/images/icon_folio.svg" alt="" class="mr-2">
         <span i18n="@@groupNewFile.folio">Folio</span>
     </li>
-    <li class="dropdown-item" *ngIf="flamingoModuleAvailable" (click)="createFlamingo()">
+    <li class="dropdown-item" *ngIf="flamingoModuleAvailable" (click)="createFlamingo()" appDebounceClick>
         <img src="assets/images/icon_flamingo.svg" alt="" class="mr-2">
         <span i18n="@@groupNewFile.flamingo">Flamingo</span>
     </li>
 
     <li class="dropdown-divider" *ngIf="enabledCampaign && !campaignModuleAvailable"></li>
-    <li class="dropdown-item" (click)="file.click()" *ngIf="enabledCampaign && campaignModuleAvailable">
+    <li class="dropdown-item" (click)="file.click()" appDebounceClick *ngIf="enabledCampaign && campaignModuleAvailable">
         <i class="material-icons-outlined mr-2">upload_file</i>
         <span i18n="@@groupNewFile.importData">Import Data</span>
         <input #file type="file" placeholder="File" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" (change)="fileInput(file.files, 'campaign')"/>

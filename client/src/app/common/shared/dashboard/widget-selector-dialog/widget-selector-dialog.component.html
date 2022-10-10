@@ -1,7 +1,7 @@
 <div class="dialog-content">
   <mat-dialog-actions align="end">
       <div class="action-box">
-          <a (click)="cancel()" mat-dialog-close>
+          <a appDebounceClick (click)="cancel()" mat-dialog-close>
           <i  class="material-icons" style="cursor: pointer">close</i>
           </a>
       </div>
@@ -20,7 +20,7 @@
     </div>
 
     <div class="content-box" *ngFor="let widget of availableWidgets">
-      <div style="display: flex; cursor: pointer;" (click)="selectWidget(widget)">
+      <div style="display: flex; cursor: pointer;" appDebounceClick (click)="selectWidget(widget)">
         <span class="material-icons-outlined mr-4 mt-3" style="color:#119b11;" *ngIf="isSelected(widget.code)">check_circle</span>
         <span class="material-icons-outlined mr-4 mt-3" style="color:#c7c7c7;" *ngIf="!isSelected(widget.code)">check_circle</span>
 
@@ -59,8 +59,8 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="center">
-  <button class="btn btn-danger mr-4" (click)="cancel()" i18n="@@widgetSelectorDialog.cancel">Cancel</button>
-  <button class="btn btn-primary" (click)="save()" i18n="@@widgetSelectorDialog.updateSettings">Update settings</button>
+  <button appDebounceClick class="btn btn-danger mr-4" (click)="cancel()" i18n="@@widgetSelectorDialog.cancel">Cancel</button>
+  <button appDebounceClick class="btn btn-primary" (click)="save()" i18n="@@widgetSelectorDialog.updateSettings">Update settings</button>
 </mat-dialog-actions>
   <!-- Top Right Section ends -->
 </div>

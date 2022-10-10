@@ -14,7 +14,7 @@
       </div>
 
       <div class="right-addon">
-        <i class="material-icons muted" style="cursor: pointer;" (click)="showAdvancedFilters=!showAdvancedFilters">tune</i>
+        <i class="material-icons muted" style="cursor: pointer;" appDebounceClick (click)="showAdvancedFilters=!showAdvancedFilters">tune</i>
       </div>
     </div>
   </div>
@@ -25,7 +25,7 @@
       <div class="filter-cell">
 
         <div *ngFor="let skill of advancedFilters?.skills; let i = index;">
-          <button type="button" name="button" class="btn tagslabel" (click)="removeSkill(i)">
+          <button appDebounceClick type="button" name="button" class="btn tagslabel" (click)="removeSkill(i)">
             {{skill}}
             <i class="material-icons" matTooltipPosition="above" matTooltip="Delete this skill">close</i>
           </button>
@@ -64,11 +64,11 @@
     </div>
 
     <div class="actions">
-      <button class="btn btn-outline-danger" (click)="clear()" i18n="@@peopleDirectory.clear">
+      <button appDebounceClick class="btn btn-outline-danger" (click)="clear()" i18n="@@peopleDirectory.clear">
         Clear
       </button>
       &nbsp;&nbsp;
-      <button class="btn btn-primary" (click)="showAdvancedFilters = !showAdvancedFilters" i18n="@@peopleDirectory.close">
+      <button appDebounceClick class="btn btn-primary" (click)="showAdvancedFilters = !showAdvancedFilters" i18n="@@peopleDirectory.close">
         Close
       </button>
     </div>

@@ -7,7 +7,7 @@
         <p i18n="@@deleteGroup.keepInMindIrreversible">Please keep in mind that this action is irreversible.</p>
         <hr />
 
-        <button *ngIf="numMembers<=1" class="btn btn-md btn-danger" (click)="deleteGroup(groupId)" i18n="@@deleteGroup.delete">Delete</button>
-        <button *ngIf="numMembers > 1" class="btn btn-md btn-danger" (click)="archiveGroup(groupId)" i18n="@@deleteGroup.archive">Archive</button>
+        <button appDebounceClick *ngIf="numMembers<=1" class="btn btn-md btn-danger" (click)="deleteGroup(groupId)" i18n="@@deleteGroup.delete">Delete</button>
+        <button appDebounceClick *ngIf="numMembers > 1" class="btn btn-md btn-danger" (click)="archiveGroup(groupId)" i18n="@@deleteGroup.archive">Archive</button>
     </div>
 </div>

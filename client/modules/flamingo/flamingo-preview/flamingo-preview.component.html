@@ -12,21 +12,21 @@
       <br/><br/>
 
       <div class="btn-group">
-        <button *ngIf="activeQuestionIndex > 0"
+        <button appDebounceClick *ngIf="activeQuestionIndex > 0"
           class="btn btn-light" (click)="previousQuestion()">
             <span class="material-icons">chevron_left</span>
             <span i18n="@@flamingoPreview.previous">Previous</span>
         </button>
 
-        <button *ngIf="(activeQuestionIndex > 0 || (activeQuestion?.type != 'Welcome' && activeQuestion?.type != 'Thanks')) && activeQuestionIndex < questions?.length-2"
+        <button appDebounceClick *ngIf="(activeQuestionIndex > 0 || (activeQuestion?.type != 'Welcome' && activeQuestion?.type != 'Thanks')) && activeQuestionIndex < questions?.length-2"
             class="btn btn-light" [disabled]="disableNext" (click)="nextQuestion()">
           <span i18n="@@flamingoPreview.next">Next</span>
           <span class="material-icons">chevron_right</span>
         </button>
-        <button *ngIf="activeQuestionIndex == questions?.length-2"
+        <button appDebounceClick *ngIf="activeQuestionIndex == questions?.length-2"
             class="btn btn-success" [disabled]="disableNext"
             (click)="submitAnswers()"i18n="@@flamingoPreview.submit">Submit</button>
-        <button *ngIf="activeQuestion?.type==='Welcome' && activeQuestionIndex == 0"
+        <button appDebounceClick *ngIf="activeQuestion?.type==='Welcome' && activeQuestionIndex == 0"
             class="btn btn-primary" (click)="nextQuestion()"i18n="@@flamingoPreview.start">Start</button>
       </div>
     </div>
@@ -67,25 +67,25 @@
 
             <!-- yes/no buttons -->
             <div style="margin-top: 50px;" *ngIf="activeQuestion?.type==='Yes/No'">
-                <button class="btn btn-success" (click)="answerQuestion('positive'); $event.stopPropagation()">{{activeQuestion?.positive_option_text || 'Positive'}}</button>
+                <button appDebounceClick class="btn btn-success" (click)="answerQuestion('positive'); $event.stopPropagation()">{{activeQuestion?.positive_option_text || 'Positive'}}</button>
                 <br />
                 <br />
-                <button class="btn btn-danger" (click)="answerQuestion('negative'); $event.stopPropagation()">{{activeQuestion?.negative_option_text || 'Negative'}}</button>
+                <button appDebounceClick class="btn btn-danger" (click)="answerQuestion('negative'); $event.stopPropagation()">{{activeQuestion?.negative_option_text || 'Negative'}}</button>
             </div>
 
             <!-- scale question scale and scale labels-->
             <div style="margin-top: 50px;" *ngIf="activeQuestion?.type==='Scale'">
-                <button *ngIf="activeQuestion?.scale?.size > 0" class="scale-button" (click)="answerQuestion(0); $event.stopPropagation()">0</button>
-                <button *ngIf="activeQuestion?.scale?.size > 1" class="scale-button" (click)="answerQuestion(1); $event.stopPropagation()">1</button>
-                <button *ngIf="activeQuestion?.scale?.size > 2" class="scale-button" (click)="answerQuestion(2); $event.stopPropagation()">2</button>
-                <button *ngIf="activeQuestion?.scale?.size > 3" class="scale-button" (click)="answerQuestion(3); $event.stopPropagation()">3</button>
-                <button *ngIf="activeQuestion?.scale?.size > 4" class="scale-button" (click)="answerQuestion(4); $event.stopPropagation()">4</button>
-                <button *ngIf="activeQuestion?.scale?.size > 5" class="scale-button" (click)="answerQuestion(5); $event.stopPropagation()">5</button>
-                <button *ngIf="activeQuestion?.scale?.size > 6" class="scale-button" (click)="answerQuestion(6); $event.stopPropagation()">6</button>
-                <button *ngIf="activeQuestion?.scale?.size > 7" class="scale-button" (click)="answerQuestion(7); $event.stopPropagation()">7</button>
-                <button *ngIf="activeQuestion?.scale?.size > 8" class="scale-button" (click)="answerQuestion(8); $event.stopPropagation()">8</button>
-                <button *ngIf="activeQuestion?.scale?.size > 9" class="scale-button" (click)="answerQuestion(9); $event.stopPropagation()">9</button>
-                <button *ngIf="activeQuestion?.scale?.size > 10" class="scale-button" (click)="answerQuestion(10); $event.stopPropagation()">10</button>
+                <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 0" class="scale-button" (click)="answerQuestion(0); $event.stopPropagation()">0</button>
+                <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 1" class="scale-button" (click)="answerQuestion(1); $event.stopPropagation()">1</button>
+                <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 2" class="scale-button" (click)="answerQuestion(2); $event.stopPropagation()">2</button>
+                <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 3" class="scale-button" (click)="answerQuestion(3); $event.stopPropagation()">3</button>
+                <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 4" class="scale-button" (click)="answerQuestion(4); $event.stopPropagation()">4</button>
+                <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 5" class="scale-button" (click)="answerQuestion(5); $event.stopPropagation()">5</button>
+                <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 6" class="scale-button" (click)="answerQuestion(6); $event.stopPropagation()">6</button>
+                <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 7" class="scale-button" (click)="answerQuestion(7); $event.stopPropagation()">7</button>
+                <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 8" class="scale-button" (click)="answerQuestion(8); $event.stopPropagation()">8</button>
+                <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 9" class="scale-button" (click)="answerQuestion(9); $event.stopPropagation()">9</button>
+                <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 10" class="scale-button" (click)="answerQuestion(10); $event.stopPropagation()">10</button>
 
                 <div *ngIf="activeQuestion.show_scale_labels"
                     [ngStyle]="{'position':'relative','width': (activeQuestion.scale.size * 63)+'px'}">

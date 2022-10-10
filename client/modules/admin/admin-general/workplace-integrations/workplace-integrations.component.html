@@ -10,7 +10,7 @@
       </p>
 
       <div style="margin-top: 10px;">
-        <button class="btn btn-primary" (click)="openWorkplaceIntegrationsDialog()" i18n="@@workspaceAddDomain.manageIntegrations">Manage Integrations</button>
+        <button appDebounceClick class="btn btn-primary" (click)="openWorkplaceIntegrationsDialog()" i18n="@@workspaceAddDomain.manageIntegrations">Manage Integrations</button>
       </div>
     </div>
 
@@ -20,7 +20,7 @@
       </p>
 
       <div style="margin-top: 10px;">
-        <button class="btn btn-primary" (click)="getUserInformation()" i18n="@@workspaceAddDomain.syncLDAP">Sync LDAP</button>
+        <button appDebounceClick class="btn btn-primary" (click)="getUserInformation()" i18n="@@workspaceAddDomain.syncLDAP">Sync LDAP</button>
       </div>
     </div>
   </div>

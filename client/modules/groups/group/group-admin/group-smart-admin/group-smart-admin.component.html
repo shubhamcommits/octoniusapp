@@ -14,7 +14,7 @@
       </div>
       <div class="col-md-2">
         <i class="material-icons" style="font-size: 14px; color: #FF6584; cursor: pointer !important;"
-          (click)="onDeleteRule('email_domains')">close</i>
+          (click)="onDeleteRule('email_domains')" appDebounceClick>close</i>
       </div>
     </div>
 
@@ -29,7 +29,7 @@
       </div>
       <div class="col-md-2">
         <i class="material-icons" style="font-size: 14px; color: #FF6584; cursor: pointer !important;"
-          (click)="onDeleteRule('job_positions')">close</i>
+          (click)="onDeleteRule('job_positions')" appDebounceClick>close</i>
       </div>
     </div>
 
@@ -44,7 +44,7 @@
       </div>
       <div class="col-md-2">
         <i class="material-icons" style="font-size: 14px; color: #FF6584; cursor: pointer !important;"
-          (click)="onDeleteRule('skills')">close</i>
+          (click)="onDeleteRule('skills')" appDebounceClick>close</i>
       </div>
     </div>
 
@@ -57,7 +57,7 @@
           style="font-weight: bold; font-size: 14px; font-family: Poppins; border-bottom: 1px solid #005FD5;">
           {{ cf.name }} - {{ cf.value }}
           <i class="material-icons" style="font-size: 14px; color: #FF6584; cursor: pointer !important;"
-            (click)="onDeleteRule('custom_field', cf._id)">close</i>
+            (click)="onDeleteRule('custom_field', cf._id)" appDebounceClick>close</i>
           <span *ngIf="currentSettings.customFields.length > 0 && currentSettings.customFields.length - 1 !== i">,</span>
         </span>
       </div>
@@ -65,7 +65,7 @@
 
     <div class="row">
       <div class="col-md-2">
-        <button class="btn btn-link" [disabled]="condition == ''" (click)="onAddNewRule()">
+        <button appDebounceClick class="btn btn-link" [disabled]="condition == ''" (click)="onAddNewRule()">
           <span id="btn-content">
             <i class="material-icons mr-2">add</i> <span style="vertical-align: 6px;" i18n="@@groupSmartAdmin.newRule">New rule</span>
           </span>
@@ -76,7 +76,7 @@
           <input type="text" id="rule-select" placeholder="Select a rule" class="dropdown-toggle" data-toggle="dropdown"
             [(ngModel)]="rule">
           <div class="dropdown-menu">
-            <li *ngFor="let _rule of rules" (click)="onRuleSelect(_rule)" [ngClass]="{'active': _rule === rule}">{{_rule}}
+            <li *ngFor="let _rule of rules" (click)="onRuleSelect(_rule)" appDebounceClick [ngClass]="{'active': _rule === rule}">{{_rule}}
             </li>
           </div>
         </div>
@@ -86,7 +86,7 @@
           <input type="text" id="condition-select" placeholder="Select a condition" class="dropdown-toggle"
             data-toggle="dropdown" (keyup)="search($event.target.value)" [(ngModel)]="condition">
           <div class="dropdown-menu">
-            <li *ngFor="let _condition of conditions" (click)="onConditionSelect(_condition)"
+            <li *ngFor="let _condition of conditions" (click)="onConditionSelect(_condition)" appDebounceClick
               [ngClass]="{'active': _condition === condition}">{{_condition}}</li>
           </div>
         </div>
@@ -95,7 +95,7 @@
           <mat-form-field>
             <mat-select ngDefaultControl class="select-field"
                 (selectionChange)="customFieldSelected($event.value)"
-                (click)="$event.stopPropagation()"
+                (click)="$event.stopPropagation()" appDebounceClick
                 [(value)]="cfName"
                 name="names">
               <mat-option *ngFor="let cf of customFields" [value]="cf.name">{{ cf.title }}</mat-option>
@@ -105,7 +105,7 @@
           <mat-form-field>
             <mat-select ngDefaultControl class="select-field"
                 (selectionChange)="customFieldValueSelected($event.value)"
-                (click)="$event.stopPropagation()"
+                (click)="$event.stopPropagation()" appDebounceClick
                 [(value)]="cfValue"
                 [disabled]="cfName == ''"
                 name="values">

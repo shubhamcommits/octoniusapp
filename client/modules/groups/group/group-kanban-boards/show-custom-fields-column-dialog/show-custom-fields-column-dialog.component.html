@@ -6,7 +6,7 @@
 
     <div class="content-box">
       <div *ngFor="let cf of customFields" style="display: flex; justify-content: space-between">
-        <div *ngIf="cf.input_type"> {{ cf.title }} </div>
+        <div *ngIf="cf.input_type"> {{ cf.title }} </div>
         <div *ngIf="cf.input_type">
           <mat-slide-toggle color="primary"
             [checked]="cf.showInColumn"
@@ -18,7 +18,7 @@
     </div>
 
     <div class="conten-box save-content">
-      <button
+      <button appDebounceClick
           class="btn btn-danger btn-md"
           (click)="closeDialog()"
           i18n="@@showCustomFieldsColumnDialog.close">

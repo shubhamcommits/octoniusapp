@@ -14,7 +14,7 @@
 
 <!-- Assignee section starts -->
 <section *ngIf="itemData?.approval_active">
-  <button *ngIf="itemData?.approval_active && !itemData?.approval_flow_launched"
+  <button appDebounceClick *ngIf="itemData?.approval_active && !itemData?.approval_flow_launched"
     mat-button [matMenuTriggerFor]="assigneeSearch" #trigger="matMenuTrigger" class="btn tagslabel">
       <span i18n="@@approvalActions.addMember">add member</span>
   </button>
@@ -26,11 +26,11 @@
           <label for="search-text" *ngIf="type != 'filter'" i18n="@@approvalActions.assignee">Assignee</label>
           <input type="email" class="form-control" id="search-text" aria-describedby="search-text" [(ngModel)]="searchText"
             placeholder="Search group member" autofocus
-            (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+            appDebounceClick (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
         </div>
         <ul class="assignee-list">
           <li appHighlight class="assignee-list-item" *ngFor="let member of groupMembers | appFilter: searchText"
-              (click)="getMemberDetails(member)"
+              appDebounceClick (click)="getMemberDetails(member)"
               [searchedWord]="searchText"
               [content]="member">
             {{ member.first_name }} {{ member.last_name }}
@@ -58,7 +58,7 @@
         </div>
 
         <div class="action" *ngIf="!itemData?.approval_flow_launched">
-          <i class="material-icons" style="color: #EE5D5D;" (click)="unassign(approval?._id)">highlight_off</i>
+          <i class="material-icons" style="color: #EE5D5D;" appDebounceClick (click)="unassign(approval?._id)">highlight_off</i>
         </div>
 
         <div class="action" *ngIf="(itemData?.approval_flow_launched && userData?._id != (approval?._assigned_to._id || approval?._assigned_to)) || flowCompleted">
@@ -77,14 +77,14 @@
 
           <!-- Menu Drawer Starts -->
           <ul class="dropdown-menu">
-            <li *ngIf="!approval?.confirmed" class="dropdown-item" (click)="doAction('approved', approval?._id)">
+            <li *ngIf="!approval?.confirmed" class="dropdown-item" appDebounceClick (click)="doAction('approved', approval?._id)">
               <div class="approve action-button">
                 <i class="material-icons">check_circle</i>
                 &nbsp;
                 <span i18n="@@approvalActions.approved">APPROVED</span>
               </div>
             </li>
-            <li class="dropdown-item" (click)="doAction('rejected', approval?._id)">
+            <li class="dropdown-item" appDebounceClick (click)="doAction('rejected', approval?._id)">
               <div class="reject action-button">
                 <i class="material-icons">highlight_off</i>
                 &nbsp;
@@ -100,10 +100,10 @@
       <div *ngIf="(showDescription || showApproveCode) && userData?._id == (approval?._assigned_to._id || approval?._assigned_to)" class="assignee-row">
         <input type="text" class="form-control" [(ngModel)]="confirmation" [placeholder]="descriptionPlaceholder">
         <input *ngIf="showApproveCode" type="text" class="form-control" [(ngModel)]="confirmationCode" [placeholder]="codePlaceholder">
-        <button *ngIf="showApproveCode" class="btn confirm-btn" (click)="confirmAction('approved', approval?._id)" span i18n="@@approvalActions.confirm">
+        <button appDebounceClick *ngIf="showApproveCode" class="btn confirm-btn" (click)="confirmAction('approved', approval?._id)" span i18n="@@approvalActions.confirm">
           Confirm
         </button>
-        <button *ngIf="showDescription" class="btn confirm-btn" (click)="confirmAction('rejected', approval?._id)" span i18n="@@approvalActions.confirm">
+        <button appDebounceClick *ngIf="showDescription" class="btn confirm-btn" (click)="confirmAction('rejected', approval?._id)" span i18n="@@approvalActions.confirm">
           Confirm
         </button>
       </div>
@@ -120,11 +120,11 @@
     </app-date-picker>
 
     <!-- Clean field starts -->
-    <i (click)="getDate(null)" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+    <i appDebounceClick (click)="getDate(null)" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
     <!-- Clean field ends -->
   </div>
 
-  <button *ngIf="canEdit && !itemData?.approval_flow_launched && itemData?.approval_flow && itemData?.approval_flow?.length > 0" mat-button  class="btn tagslabel"
+  <button appDebounceClick *ngIf="canEdit && !itemData?.approval_flow_launched && itemData?.approval_flow && itemData?.approval_flow?.length > 0" mat-button  class="btn tagslabel"
       (click)="launchApprovalFlow()">
     <span i18n="@@approvalActions.launchApprovalFlow">Launch Approval Flow</span>
   </button>
