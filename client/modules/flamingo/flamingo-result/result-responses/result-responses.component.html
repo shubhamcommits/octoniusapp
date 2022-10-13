@@ -3,7 +3,7 @@
       <div class="col-md-2 response-list" [ngStyle]="{'height': responseListHeight,'overflow-y':'auto','overflow-x':'hidden'}">
         <div *ngFor="let response of responses; let i = index;"
             [ngClass]="i==activeResponseIndex?'responses-container-active':'responses-container-inactive'"
-            (click)="changeActiveIndex(i)" appDebounceClick style="position: relative;">
+            (click)="changeActiveIndex(i)" style="position: relative;">
             {{ i }} - {{ response?.created_date | date: 'MMM d, y' }}
         </div>
       </div>

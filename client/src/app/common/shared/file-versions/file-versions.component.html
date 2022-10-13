@@ -44,7 +44,7 @@
                 <span i18n="@@fileVersions.download">Download</span>
               </a>
 
-              <a mat-menu-item *ngIf="canDelete" appDebounceClick (click)="deleteItem(file?._id, file?.type, file?.modified_name)">
+              <a mat-menu-item *ngIf="canDelete" (click)="deleteItem(file?._id, file?.type, file?.modified_name)">
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
                 <span i18n="@@fileVersions.delete">Delete</span>
               </a>

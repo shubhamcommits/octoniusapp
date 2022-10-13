@@ -34,36 +34,36 @@
 </nav>
 
 <mat-menu #menuSort="matMenu" class="widepanel">
-  <a mat-menu-item (click)="sort('none')" appDebounceClick [ngStyle]="{'color' : (sortby==='none') ? '#005fd5' : 'black'}">
+  <a mat-menu-item (click)="sort('none')" [ngStyle]="{'color' : (sortby==='none') ? '#005fd5' : 'black'}">
     <span i18n="@@filesBar.sort.none">None</span>
   </a>
 
-  <a mat-menu-item (click)="sort('name')" appDebounceClick [ngStyle]="{'color' : (sortby==='name') ? '#005fd5' : 'black'}">
+  <a mat-menu-item (click)="sort('name')" [ngStyle]="{'color' : (sortby==='name') ? '#005fd5' : 'black'}">
     <span i18n="@@filesBar.sort.name">Name</span>
   </a>
 
-  <a mat-menu-item (click)="sort('created_date')" appDebounceClick
+  <a mat-menu-item (click)="sort('created_date')"
     [ngStyle]="{'color' : (sortby==='created_date') ? '#005fd5' : 'black'}">
     <span i18n="@@filesBar.sort.creationDate">Creation Date</span>
   </a>
 
-  <a mat-menu-item (click)="sort('tags')" appDebounceClick [ngStyle]="{'color' : (sortby==='tags') ? '#005fd5' : 'black'}">
+  <a mat-menu-item (click)="sort('tags')" [ngStyle]="{'color' : (sortby==='tags') ? '#005fd5' : 'black'}">
     <span i18n="@@filesBar.sort.tags">Tags</span>
   </a>
 
   <a mat-menu-item [matMenuTriggerFor]="menuCustomFieldsSort" class="dropdownbtn widepanel"
-    [ngStyle]="{'color' : (sortby==='priority') ? '#005fd5' : 'black'}" appDebounceClick>
+    [ngStyle]="{'color' : (sortby==='priority') ? '#005fd5' : 'black'}">
       <span i18n="@@filesBar.sort.customField">Custom Field</span>
   </a>
 </mat-menu>
 
 <mat-menu #menuFilter="matMenu" style="overflow: visible !important;" class="filter-menu widepanel">
-  <a mat-menu-item (click)="filter('none')" appDebounceClick [ngStyle]="{'color' : (filterfor==='none') ? '#005fd5' : 'black'}">
+  <a mat-menu-item (click)="filter('none')" [ngStyle]="{'color' : (filterfor==='none') ? '#005fd5' : 'black'}">
     <span i18n="@@filesBar.filter.none">None</span>
   </a>
 
   <a mat-menu-item class="overflowvisible widepanel">
-    <div (click)="$event.stopPropagation()" appDebounceClick (keydown)="$event.stopPropagation()">
+    <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
       <button appDebounceClick [matMenuTriggerFor]="menuDueDate" class="dropdownbtn" style="padding:0">
         <span [ngStyle]="{'cursor': 'pointer','color' : (filterfor==='created_today' ||
           filterfor==='created_last_week' ||
@@ -86,7 +86,7 @@
 
   <span mat-menu-item class="cursordefault overflowvisible"
     [ngStyle]="{'color' : (filterfor==='users') ? '#005fd5' : 'black'}">
-    <div (click)="$event.stopPropagation();" appDebounceClick>
+    <div (click)="$event.stopPropagation();">
       <app-member-list-menu [groupMembers]="groupMembers" [filterfor]="filterfor" [menuLable]="menuLable"
         [menuFor]="menuFor" (userSelctionEmitter)="onUserSelctionEmitter($event)">
       </app-member-list-menu>
@@ -100,21 +100,21 @@
 </mat-menu>
 
 <mat-menu #menuCustomFieldsSort="matMenu">
-  <a mat-menu-item *ngFor="let cf of customFields" (click)="sort('custom_field', cf)" appDebounceClick style="margin: 10px;text-decoration: none;">
+  <a mat-menu-item *ngFor="let cf of customFields" (click)="sort('custom_field', cf)" style="margin: 10px;text-decoration: none;">
     <span>{{ cf.title }}</span>
   </a>
 </mat-menu>
 
 <mat-menu #menuDueDate="matMenu">
-  <a mat-menu-item (click)="filter('created_today')" appDebounceClick style="margin: 10px;text-decoration: none;">
+  <a mat-menu-item (click)="filter('created_today')" style="margin: 10px;text-decoration: none;">
     <span i18n="@@filesBar.filter.today">Today</span>
   </a>
 
-  <a mat-menu-item (click)="filter('created_last_week')" appDebounceClick style="margin: 10px;text-decoration: none;">
+  <a mat-menu-item (click)="filter('created_last_week')" style="margin: 10px;text-decoration: none;">
     <span i18n="@@filesBar.filter.lastWeek">Last week</span>
   </a>
 
-  <a mat-menu-item (click)="filter('created_14_days')" appDebounceClick style="margin: 10px;text-decoration: none;">
+  <a mat-menu-item (click)="filter('created_14_days')" style="margin: 10px;text-decoration: none;">
     <span i18n="@@filesBar.filter.last14Days">Last 14 days</span>
   </a>
 </mat-menu>
@@ -125,13 +125,13 @@
 
     <mat-menu #menuCustomFieldsValuesFilter="matMenu">
       <span *ngIf="!cf.input_type">
-        <a mat-menu-item *ngFor="let cfValue of cf.values" (click)="filter('custom_field', cf, cfValue)" appDebounceClick style="margin: 10px;text-decoration: none;">
+        <a mat-menu-item *ngFor="let cfValue of cf.values" (click)="filter('custom_field', cf, cfValue)" style="margin: 10px;text-decoration: none;">
           <span>{{ cfValue }}</span>
         </a>
       </span>
 
       <span *ngIf="cf.input_type_text">
-        <div class="form-group" (click)="$event.stopPropagation()" appDebounceClick>
+        <div class="form-group" (click)="$event.stopPropagation()">
           <label [for]="cf.name">{{menuLable}}</label>
           <input type="text" class="form-control" [id]="cf.name"
               [(ngModel)]="filterCFInputValue"
@@ -141,7 +141,7 @@
       </span>
 
       <span *ngIf="cf.input_type_number">
-        <div class="form-group" (click)="$event.stopPropagation()" appDebounceClick>
+        <div class="form-group" (click)="$event.stopPropagation()">
           <label [for]="cf.name">{{menuLable}}</label>
           <input type="number" class="form-control" [id]="cf.name"
               [(ngModel)]="filterCFNumberInputValue"

@@ -10,7 +10,7 @@
         [(ngModel)]="searchQuery" (ngModelChange)="search()" style="width: 90%;">
     </div>
     <div class="right-addon">
-      <i class="material-icons muted" style="cursor: pointer;" appDebounceClick (click)="showAdvancedFilters=!showAdvancedFilters">tune</i>
+      <i class="material-icons muted" style="cursor: pointer;" (click)="showAdvancedFilters=!showAdvancedFilters">tune</i>
     </div>
   </div>
 

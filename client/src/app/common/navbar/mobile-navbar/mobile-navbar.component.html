@@ -2,7 +2,7 @@
   <mat-sidenav #sidenav (keydown.escape)="this.sidenav.toggle()" disableClose autosize>
 
     <!-- SIDE MENU ICON STARTS -->
-    <app-sidebar class="nav navbar-nav navbar-left" appDebounceClick (click)="sidenav.toggle()" [userGroups]="userGroups" [sideNav]="sidenav" [isMobile]="isMobile"></app-sidebar>
+    <app-sidebar class="nav navbar-nav navbar-left" (click)="sidenav.toggle()" [userGroups]="userGroups" [sideNav]="sidenav" [isMobile]="isMobile"></app-sidebar>
     <!-- SIDE MENU ICON ENDS -->
 
   </mat-sidenav>

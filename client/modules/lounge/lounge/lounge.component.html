@@ -36,13 +36,13 @@
       <!-- SECTION SEPARATOR INDICATOR ENDS -->
 
       <div class="category-name row">
-        <span class="name" (click)="cleanStoredData()" appDebounceClick
+        <span class="name" (click)="cleanStoredData()"
             [routerLink]="['/dashboard', 'work', 'lounge', 'details']"
             [queryParams]="{ lounge: category?._id  }">
           {{ category.name }}
         </span>
 
-        <i *ngIf="isManager && category.name != 'Global stories'" (click)="openEditLoungeDialog(category)" appDebounceClick
+        <i *ngIf="isManager && category.name != 'Global stories'" (click)="openEditLoungeDialog(category)"
             class="material-icons muted" style="cursor: pointer; font-size: 14px;">
           settings
         </i>
@@ -53,7 +53,7 @@
           <div *ngFor="let item of category.items" class="card img-fluid">
 
 
-            <div *ngIf="item.type == 'lounge'" (click)="cleanStoredData()" appDebounceClick
+            <div *ngIf="item.type == 'lounge'" (click)="cleanStoredData()"
                 [routerLink]="['/dashboard', 'work', 'lounge', 'details']"
                 [queryParams]="{ lounge: item?._id  }">
                 <app-secured-image [imgURL]="item?.icon_pic" [service]="'lounge'"
@@ -72,7 +72,7 @@
               </div>
             </div>
 
-            <div *ngIf="item.type == 'story' || item.type == 'event'" (click)="cleanStoredData()" appDebounceClick
+            <div *ngIf="item.type == 'story' || item.type == 'event'" (click)="cleanStoredData()"
                 [routerLink]="['/dashboard', 'work', 'lounge', 'story']"
                 [queryParams]="{ story: item?._id  }">
                 <app-secured-image [imgURL]="item?.icon_pic" [service]="'lounge'"

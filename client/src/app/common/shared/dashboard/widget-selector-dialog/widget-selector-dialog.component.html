@@ -20,7 +20,7 @@
     </div>
 
     <div class="content-box" *ngFor="let widget of availableWidgets">
-      <div style="display: flex; cursor: pointer;" appDebounceClick (click)="selectWidget(widget)">
+      <div style="display: flex; cursor: pointer;" (click)="selectWidget(widget)">
         <span class="material-icons-outlined mr-4 mt-3" style="color:#119b11;" *ngIf="isSelected(widget.code)">check_circle</span>
         <span class="material-icons-outlined mr-4 mt-3" style="color:#c7c7c7;" *ngIf="!isSelected(widget.code)">check_circle</span>
 

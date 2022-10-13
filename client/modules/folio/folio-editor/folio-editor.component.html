@@ -4,7 +4,7 @@
 
 <div [ngClass]="{'hide-modal' : !commentBool}" class="comment-modal center">
   <div class="comment-container">
-    <a class="close" (click)="closeComment()" appDebounceClick>
+    <a class="close" (click)="closeComment()">
       <i  class="material-icons" style="cursor: pointer">close</i>
     </a>
 
@@ -42,26 +42,26 @@
       <span i18n="@@folioEditor.tableContent">Folio Outline</span>
     </h5>
 
-    <div (click)="highlight(heading.range)" appDebounceClick *ngFor="let heading of headingsMetaData;let ind = index">
+    <div (click)="highlight(heading.range)" *ngFor="let heading of headingsMetaData;let ind = index">
       <div class="heading level1" *ngIf="heading.headingLevel == 1">
         <span>{{ heading.text }}</span>
         <div>
-          <i class="material-icons-outlined" style="cursor: pointer;" (click)="deleteHeading(heading)" appDebounceClick>delete</i>
-          <i class="material-icons-outlined" style="cursor: pointer;" (click)="createLink(heading.range)" appDebounceClick>link</i>
+          <i class="material-icons-outlined" style="cursor: pointer;" (click)="deleteHeading(heading)">delete</i>
+          <i class="material-icons-outlined" style="cursor: pointer;" (click)="createLink(heading.range)">link</i>
         </div>
       </div>
       <div class="heading level2" *ngIf="heading.headingLevel == 2">
         <span>{{ heading.text }}</span>
         <div>
-          <i class="material-icons-outlined" style="cursor: pointer;" (click)="deleteHeading(heading)" appDebounceClick>delete</i>
-          <i class="material-icons-outlined" style="cursor: pointer;" (click)="createLink(heading.range)" appDebounceClick>link</i>
+          <i class="material-icons-outlined" style="cursor: pointer;" (click)="deleteHeading(heading)">delete</i>
+          <i class="material-icons-outlined" style="cursor: pointer;" (click)="createLink(heading.range)">link</i>
         </div>
       </div>
       <div class="heading level3" *ngIf="heading.headingLevel == 3">
         <span [innerHTML]="heading.text"></span>
         <div>
-          <i class="material-icons-outlined" style="cursor: pointer;" (click)="deleteHeading(heading)" appDebounceClick>delete</i>
-          <i class="material-icons-outlined" style="cursor: pointer;" (click)="createLink(heading.range)" appDebounceClick>link</i>
+          <i class="material-icons-outlined" style="cursor: pointer;" (click)="deleteHeading(heading)">delete</i>
+          <i class="material-icons-outlined" style="cursor: pointer;" (click)="createLink(heading.range)">link</i>
         </div>
       </div>
       <!-- <h3 *ngIf="heading.headingLevel == 3"> {{ heading.text }} </h3> -->
@@ -90,7 +90,7 @@
     </h5>
 
     <div class="comment-area">
-      <div *ngFor="let meta of commentsMetaData;let ind = index" (click)="highlight(meta.range)" appDebounceClick
+      <div *ngFor="let meta of commentsMetaData;let ind = index" (click)="highlight(meta.range)"
           class="commentmsg" [ngClass]="{'commentmsg-highlight' : commentsToDisplay.includes(ind)}">
         <div class="comment-profile">
           <div class="profile">
@@ -101,7 +101,7 @@
             <h6>{{meta.user_name}}</h6>
           </div>
 
-          <a class="close" (click)="deleteComment(ind)" appDebounceClick *ngIf="!readOnly || userData?._id == meta.userId">
+          <a class="close" (click)="deleteComment(ind)" *ngIf="!readOnly || userData?._id == meta.userId">
             <i  class="material-icons muted" style="cursor: pointer">close</i>
           </a>
         </div>

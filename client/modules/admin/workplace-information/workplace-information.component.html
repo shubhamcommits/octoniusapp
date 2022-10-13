@@ -15,7 +15,7 @@
                 <span i18n="@@workplaceInformation.workspaceName">Workspace Name</span>:
                 <span *ngIf="!editWorkspaceName">
                     {{ workspaceData?.workspace_name }}
-                    <span (click)="editWorkspaceName = !editWorkspaceName" appDebounceClick class="material-icons-outlined" style="cursor: pointer; font-size: 15px; margin-left: 10px; margin-bottom: 10px;">mode_edit</span>
+                    <span (click)="editWorkspaceName = !editWorkspaceName" class="material-icons-outlined" style="cursor: pointer; font-size: 15px; margin-left: 10px; margin-bottom: 10px;">mode_edit</span>
                 </span>
                 <!-- Workspace Name Input starts -->
                 <input *ngIf="editWorkspaceName"

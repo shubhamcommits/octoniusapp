@@ -39,7 +39,7 @@
       <!-- Time Picker ends -->
 
       <!-- Clean field starts -->
-      <i *ngIf="canEditStory" (click)="updateDate(null)" appDebounceClick class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+      <i *ngIf="canEditStory" (click)="updateDate(null)" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
       <!-- Clean field ends -->
 
     </div>
@@ -65,21 +65,21 @@
 
     <!-- Menu Drawer Starts -->
     <ul class="dropdown-menu">
-      <li *ngIf="!goingToEvent" class="dropdown-item" (click)="confirmAssistance()" appDebounceClick>
+      <li *ngIf="!goingToEvent" class="dropdown-item" (click)="confirmAssistance()">
         <div class="going-to-event">
           <i class="material-icons">check_circle</i>
           <span i18n="@@storyActionsBar.going">GOING</span>
           &nbsp;&nbsp;({{ storyData?._assistants?.length || 0 }})
         </div>
       </li>
-      <li *ngIf="!maybeGoingToEvent" class="dropdown-item" (click)="doubtAssistance()" appDebounceClick>
+      <li *ngIf="!maybeGoingToEvent" class="dropdown-item" (click)="doubtAssistance()">
         <div class="maybe-to-event">
           <i class="material-icons">help</i>
           <span i18n="@@storyActionsBar.maybe">MAYBE</span>
           &nbsp;&nbsp;({{ storyData?._maybe_assistants?.length || 0 }})
         </div>
       </li>
-      <li *ngIf="!notGoingToEvent && (this.goingToEvent || this.maybeGoingToEvent)" class="dropdown-item" (click)="rejectAssistance()" appDebounceClick>
+      <li *ngIf="!notGoingToEvent && (this.goingToEvent || this.maybeGoingToEvent)" class="dropdown-item" (click)="rejectAssistance()">
         <div class="not-going-to-event">
           <i class="material-icons">highlight_off</i>
           <span i18n="@@storyActionsBar.notGoing">NOT GOING</span>
@@ -140,21 +140,21 @@
 
     <!-- Menu Drawer Starts -->
     <ul class="dropdown-menu">
-      <li class="dropdown-item" (click)="canEditAction()" appDebounceClick>
+      <li class="dropdown-item" (click)="canEditAction()">
         <span class="material-icons-outlined">create</span>
         <span i18n="@@storyActionsBar.edit">Edit</span>
       </li>
       <!--
-      <li class="dropdown-item" (click)="openImageSelector('header_pic')" appDebounceClick>
+      <li class="dropdown-item" (click)="openImageSelector('header_pic')">
         <span class="material-icons-outlined">panorama</span>
         <span i18n="@@storyActionsBar.editHeaderImage">Edit Header Image</span>
       </li>
       -->
-      <li class="dropdown-item" (click)="openImageSelector('icon_pic')" appDebounceClick>
+      <li class="dropdown-item" (click)="openImageSelector('icon_pic')">
         <span class="material-icons-outlined">insert_photo</span>
         <span i18n="@@storyActionsBar.editIconImage">Edit Icon Image</span>
       </li>
-      <li class="dropdown-item" (click)="deleteStory(storyData?._id)" appDebounceClick>
+      <li class="dropdown-item" (click)="deleteStory(storyData?._id)">
         <span class="material-icons-outlined">delete</span>
         <span i18n="@@storyActionsBar.delete">Delete</span>
       </li>

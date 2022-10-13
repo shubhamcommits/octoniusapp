@@ -11,7 +11,7 @@
 
     <!-- Input Placeholder for date picker starts -->
     <div class="dropdown-menu">
-        <div class="time-picker" appDebounceClick (click)="$event.stopPropagation()">
+        <div class="time-picker" (click)="$event.stopPropagation()">
             <ngb-timepicker
                 [ngModel]="timeModal"
                 (ngModelChange)="emitTime($event)">

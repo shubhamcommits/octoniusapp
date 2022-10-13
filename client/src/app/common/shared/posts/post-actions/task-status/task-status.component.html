@@ -7,13 +7,13 @@
 
 <!-- Menu Drawer Starts -->
 <ul class="dropdown-menu">
-    <li class="dropdown-item" appDebounceClick (click)="changeStatus('to do')">
+    <li class="dropdown-item" (click)="changeStatus('to do')">
         <span i18n="@@taskStatus.toDo">To Do</span>
     </li>
-    <li class="dropdown-item" appDebounceClick (click)="changeStatus('in progress')">
+    <li class="dropdown-item" (click)="changeStatus('in progress')">
         <span i18n="@@taskStatus.inProgress">In Progress</span>
     </li>
-    <li class="dropdown-item" appDebounceClick (click)="changeStatus('done')">
+    <li class="dropdown-item" (click)="changeStatus('done')">
         <span i18n="@@taskStatus.done">Done</span>
     </li>
 </ul>

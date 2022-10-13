@@ -90,7 +90,7 @@
                     <ul class="dropdown-menu">
 
                         <!-- Edit Comment starts -->
-                        <li class="dropdown-item" appDebounceClick (click)="this.displayCommentEditor = true">
+                        <li class="dropdown-item" (click)="this.displayCommentEditor = true">
                             <span i18n="@@postComment.edit">Edit</span>
                         </li>
                         <!-- Edit Comment ends -->
@@ -98,7 +98,7 @@
                         <li class="dropdown-divider"></li>
 
                         <!-- Delete Comment starts -->
-                        <li class="dropdown-item" appDebounceClick (click)="deleteComment(index)">
+                        <li class="dropdown-item" (click)="deleteComment(index)">
                             <span i18n="@@postComment.delete">Delete</span>
                         </li>
                         <!-- Delete Comment ends-->

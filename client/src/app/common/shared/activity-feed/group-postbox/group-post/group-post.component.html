@@ -99,7 +99,7 @@
     </app-date-picker>
 
     <!-- Clean field starts -->
-    <i *ngIf="type == 'task' || type == 'event'" appDebounceClick (click)="getDate(null, 'due_date')" class="material-icons" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+    <i *ngIf="type == 'task' || type == 'event'" (click)="getDate(null, 'due_date')" class="material-icons" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
     <!-- Clean field ends -->
 
     <!-- Date Picker ends -->

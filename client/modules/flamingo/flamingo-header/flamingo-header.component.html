@@ -13,7 +13,7 @@
             <li class="nav-item active" *ngIf="file">
 
                 <!-- Flamingo Static Title starts -->
-                <span *ngIf="!editTitle " (click)="enableEdit()" appDebounceClick matTooltip="Click me to rename"
+                <span *ngIf="!editTitle " (click)="enableEdit()" matTooltip="Click me to rename"
                     matTooltipPosition="below">{{file?.original_name}}
                 </span>
 
@@ -30,18 +30,18 @@
     <ul class="nav center-align">
         <li class="nav-item">
             <a [ngClass]="activeState == 'create_form'?'nav-link active-nav':'nav-link'"
-                (click)="changeState('create_form')" appDebounceClick routerLink="/document/flamingo/{{fileId}}"
+                (click)="changeState('create_form')" routerLink="/document/flamingo/{{fileId}}"
                 routerLinkActive="active" i18n="@@flamingoHeader.create">Create</a>
         </li>
         <li class="nav-item">
             <a [ngClass]="activeState == 'publish'?'nav-link active-nav':'nav-link'"
-                (click)="changeState('publish')" appDebounceClick
+                (click)="changeState('publish')"
                 routerLink="/document/flamingo/{{fileId}}/publish"
                 i18n="@@flamingoHeader.publish">Publish</a>
         </li>
         <li class="nav-item">
             <a [ngClass]="activeState == 'result'?'nav-link active-nav':'nav-link'"
-                (click)="changeState('result')" appDebounceClick
+                (click)="changeState('result')"
                 routerLink="/document/flamingo/{{fileId}}/result"
                 i18n="@@flamingoHeader.results">Results</a>
         </li>
@@ -54,7 +54,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" (click)="exportToExcel()" appDebounceClick>
+            <a class="nav-link" (click)="exportToExcel()">
                 <i class="material-icons icons-color" >cloud_download</i>
             </a>
         </li>

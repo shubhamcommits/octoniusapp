@@ -1,6 +1,6 @@
 <div class="table-modal center">
     <div class="table-container center">
-      <span class="close" (click)="onClose()" appDebounceClick>&times;</span>
+      <span class="close" (click)="onClose()">&times;</span>
       <br>
       <div class="table-container-content">
         <div>
@@ -14,7 +14,7 @@
           <input type="number" min="1"[(ngModel)]="columnCount" />
         </div>
       </div>
-      <div class="table-submit center-submit" (click)="submitData()" appDebounceClick>
+      <div class="table-submit center-submit" (click)="submitData()">
            Submit
          </div>
         

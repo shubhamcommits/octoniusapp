@@ -33,7 +33,7 @@
                         {{notifications?._actor?.first_name}} {{notifications?.message}}
                     <br />
                     <span class="mark-notification-read tootip" data-toggle="tooltip"
-                        data-matTooltipPosition="left" title="Mark as Read" appDebounceClick (click)="markNotificationAsRead(notifications?._id, userData?._id)">
+                        data-matTooltipPosition="left" title="Mark as Read" (click)="markNotificationAsRead(notifications?._id, userData?._id)">
                             <i class="material-icons" >check_circle_outline</i>
                     </span>
                     <span class="view-notification" data-toggle="tooltip"

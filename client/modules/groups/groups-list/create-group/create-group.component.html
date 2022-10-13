@@ -9,18 +9,18 @@
 <ul class="dropdown-menu">
     <li *ngIf="(userData?.role== 'admin' || userData?.role== 'owner' || userData?.role== 'manager' || workspaceData?.allow_decentralized_roles)"
         class="dropdown-item"
-        (click)="openCreateGroupModal()" appDebounceClick>
+        (click)="openCreateGroupModal()">
         <span i18n="@@createGroup.group">Group</span>
     </li>
     <li
         class="dropdown-item"
-        (click)="openCreateAgoraModal()" appDebounceClick>
+        (click)="openCreateAgoraModal()">
         <span i18n="@@createGroup.agora">Agora</span>
     </li>
     <!--
     <li *ngIf="(userData?.role== 'admin' || userData?.role== 'owner')"
         class="dropdown-item"
-        (click)="openCreateSmartGroupModal()" appDebounceClick>
+        (click)="openCreateSmartGroupModal()">
         <span>Smart Group</span>
     </li>
     -->

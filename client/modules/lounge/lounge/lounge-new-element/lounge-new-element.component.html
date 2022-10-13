@@ -9,12 +9,12 @@
 <ul class="dropdown-menu">
 
     <!-- CREATE STORY STARTS -->
-    <li *ngIf="lounge && !categories" class="dropdown-item" (click)="createStory()" appDebounceClick>
+    <li *ngIf="lounge && !categories" class="dropdown-item" (click)="createStory()">
       <span i18n="@@loungeNewElement.story"><span class="material-icons-outlined">
         history_edu
         </span> Story</span>
     </li>
-    <li *ngIf="lounge && categories" class="dropdown-item" mat-menu-item [matMenuTriggerFor]="categoriesMenu" (click)="$event.stopPropagation()" appDebounceClick>
+    <li *ngIf="lounge && categories" class="dropdown-item" mat-menu-item [matMenuTriggerFor]="categoriesMenu" (click)="$event.stopPropagation()">
       <span i18n="@@loungeNewElement.story"><span class="material-icons-outlined">
         history_edu
         </span> Story</span>
@@ -30,12 +30,12 @@
     <li *ngIf="lounge" class="dropdown-divider"></li>
 
     <!-- CREATE EVENT STARTS -->
-    <li *ngIf="lounge && !categories" class="dropdown-item" (click)="createEvent()" appDebounceClick>
+    <li *ngIf="lounge && !categories" class="dropdown-item" (click)="createEvent()">
       <span i18n="@@loungeNewElement.event"><span class="material-icons-outlined">
         local_activity
         </span> Event</span>
     </li>
-    <li *ngIf="lounge && categories" class="dropdown-item" mat-menu-item [matMenuTriggerFor]="categoriesEventMenu" (click)="$event.stopPropagation()" appDebounceClick>
+    <li *ngIf="lounge && categories" class="dropdown-item" mat-menu-item [matMenuTriggerFor]="categoriesEventMenu" (click)="$event.stopPropagation()">
       <span i18n="@@loungeNewElement.event"><span class="material-icons-outlined">
         local_activity
         </span> Event</span>
@@ -51,7 +51,7 @@
     <li *ngIf="lounge" class="dropdown-divider"></li>
 
     <!-- CREATE LOUNGE STARTS -->
-    <li *ngIf="lounge" class="dropdown-item" (click)="createLounge()" appDebounceClick>
+    <li *ngIf="lounge" class="dropdown-item" (click)="createLounge()">
       <span i18n="@@loungeNewElement.lounge"><span class="material-icons-outlined">
         weekend
         </span> Lounge</span>
@@ -61,7 +61,7 @@
     <li *ngIf="canCreateCategory && lounge" class="dropdown-divider"></li>
 
     <!-- CREATE CATEGORY STARTS -->
-    <li class="dropdown-item" (click)="createCategory()" appDebounceClick *ngIf="canCreateCategory">
+    <li class="dropdown-item" (click)="createCategory()" *ngIf="canCreateCategory">
       <span i18n="@@loungeNewElement.category"><span class="material-icons-outlined">
         sell
         </span> Category</span>

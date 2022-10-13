@@ -58,7 +58,7 @@
         </div>
 
         <div class="action" *ngIf="!itemData?.approval_flow_launched">
-          <i class="material-icons" style="color: #EE5D5D;" appDebounceClick (click)="unassign(approval?._id)">highlight_off</i>
+          <i class="material-icons" style="color: #EE5D5D;" (click)="unassign(approval?._id)">highlight_off</i>
         </div>
 
         <div class="action" *ngIf="(itemData?.approval_flow_launched && userData?._id != (approval?._assigned_to._id || approval?._assigned_to)) || flowCompleted">
@@ -77,14 +77,14 @@
 
           <!-- Menu Drawer Starts -->
           <ul class="dropdown-menu">
-            <li *ngIf="!approval?.confirmed" class="dropdown-item" appDebounceClick (click)="doAction('approved', approval?._id)">
+            <li *ngIf="!approval?.confirmed" class="dropdown-item" (click)="doAction('approved', approval?._id)">
               <div class="approve action-button">
                 <i class="material-icons">check_circle</i>
                 &nbsp;
                 <span i18n="@@approvalActions.approved">APPROVED</span>
               </div>
             </li>
-            <li class="dropdown-item" appDebounceClick (click)="doAction('rejected', approval?._id)">
+            <li class="dropdown-item" (click)="doAction('rejected', approval?._id)">
               <div class="reject action-button">
                 <i class="material-icons">highlight_off</i>
                 &nbsp;

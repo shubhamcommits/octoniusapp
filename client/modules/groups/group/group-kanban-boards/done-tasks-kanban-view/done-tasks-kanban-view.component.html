@@ -7,7 +7,7 @@
       [ngClass]="{'status-todo': task?.task?.status === 'to do', 'status-inprogress': task?.task?.status === 'in progress', 'status-done': task?.task?.status === 'done'}"
       cdkDrag>
 
-      <div class="media" (click)="openFullscreenModal(task)" appDebounceClick>
+      <div class="media" (click)="openFullscreenModal(task)">
         <div class="media-body">
           <h5 class="mt-0 mb-1 kanban-card-title">{{ task?.title | truncatetext:60 }}</h5>
           <span class="small"

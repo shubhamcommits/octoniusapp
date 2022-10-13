@@ -8,7 +8,7 @@
             <!-- Questions list container start -->
             <div *ngFor="let question of questions; let i = index;"
                 [ngClass]="i==activeQuestionIndex?'questions-container-active':'questions-container'"
-                (click)="changeActiveIndex(i)" appDebounceClick style="position: relative;">
+                (click)="changeActiveIndex(i)" style="position: relative;">
                 <!-- question icon div -->
                 <div class="question-icon">
                   <span class="material-icons" style="font-size: 40px;">
@@ -175,15 +175,15 @@
                           (change)="makeMandatory($event,i)"></mat-slide-toggle>
                     </div>
                     <div *ngIf="!flamingo?.publish" class="setting-icons-div">
-                        <i class="material-icons icons-color" (click)="openDetails(content)" appDebounceClick>image_outlined</i>
+                        <i class="material-icons icons-color" (click)="openDetails(content)">image_outlined</i>
                     </div>
                     <div *ngIf="!flamingo?.publish" class="setting-icons-div">
-                      <i class="material-icons icons-color" (click)="openColorPicker(i, 'background')" appDebounceClick>color_lens</i>
+                      <i class="material-icons icons-color" (click)="openColorPicker(i, 'background')">color_lens</i>
                     </div>
                     <div *ngIf="!flamingo?.publish" class="setting-icons-div">
-                      <i class="material-icons icons-color" (click)="openColorPicker(i, 'text')" appDebounceClick>format_color_text</i>
+                      <i class="material-icons icons-color" (click)="openColorPicker(i, 'text')">format_color_text</i>
                     </div>
-                    <div *ngIf="!flamingo?.publish" class="setting-icons-div" (click)="deleteQuestion(question._id)" appDebounceClick>
+                    <div *ngIf="!flamingo?.publish" class="setting-icons-div" (click)="deleteQuestion(question._id)">
                         <i class="material-icons icons-color">delete_sweep_outlined</i>
                     </div>
                 </div>
@@ -214,7 +214,7 @@
                         <p style="height: 45px;padding-top: 10px;padding-left: 15px;color: #9B9B9B;" i18n="@@flamingoEditor.chooseQuestionType">
                           Choose a question type
                         </p>
-                        <div class="welcome-screen" (click)="createQuestion('Welcome')" appDebounceClick>
+                        <div class="welcome-screen" (click)="createQuestion('Welcome')">
                             <div class="btn-icon">
                               <span class="material-icons">play_arrow</span>
                             </div>
@@ -227,7 +227,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="thank-screen" (click)="createQuestion('Thanks')" appDebounceClick>
+                        <div class="thank-screen" (click)="createQuestion('Thanks')">
                             <div class="btn-icon">
                               <span class="material-icons">check_circle_outline</span>
                             </div>
@@ -240,7 +240,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="short-text" (click)="createQuestion('ShortText')" appDebounceClick>
+                        <div class="short-text" (click)="createQuestion('ShortText')">
                             <div class="btn-icon">
                               <span class="material-icons">text_snippet</span>
                             </div>
@@ -253,7 +253,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="yes-no" (click)="createQuestion('Yes/No')" appDebounceClick>
+                        <div class="yes-no" (click)="createQuestion('Yes/No')">
                             <div class="btn-icon">
                               <span class="material-icons">rule</span>
                             </div>
@@ -266,7 +266,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="scale" (click)="createQuestion('Scale')" appDebounceClick>
+                        <div class="scale" (click)="createQuestion('Scale')">
                             <div class="btn-icon">
                               <span class="material-icons">align_horizontal_left</span>
                             </div>
@@ -279,7 +279,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="dropdown-question" (click)="createQuestion('Dropdown')" appDebounceClick>
+                        <div class="dropdown-question" (click)="createQuestion('Dropdown')">
                             <div class="btn-icon">
                               <span class="material-icons">list</span>
                             </div>
@@ -292,7 +292,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="dropdown-question" (click)="createQuestion('Multiple')" appDebounceClick>
+                        <div class="dropdown-question" (click)="createQuestion('Multiple')">
                             <div class="btn-icon">
                               <span class="material-icons">list</span>
                             </div>

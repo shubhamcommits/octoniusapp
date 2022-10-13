@@ -8,7 +8,7 @@
         [styleClass]="'feed-avatar-small'"></app-secured-image>
   </div>
   <!-- Avatar Image of the member -->
-  <div class="box-content" appDebounceClick (click)="selectManager()">
+  <div class="box-content" (click)="selectManager()">
     <div>
       {{ person?.first_name }} {{ person?.last_name }}
     </div>
@@ -28,7 +28,7 @@
     </mat-menu>
   </div>
 
-  <div *ngIf="level == 0 || !isManager" appDebounceClick (click)="selectManager()" class="no-actions-badge" [ngClass]="(selected) ? 'selected' : 'no-selected'">
+  <div *ngIf="level == 0 || !isManager" (click)="selectManager()" class="no-actions-badge" [ngClass]="(selected) ? 'selected' : 'no-selected'">
     {{ person?.nextLevelMembers?.length || 0 }}
   </div>
 </div>

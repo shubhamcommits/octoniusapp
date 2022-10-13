@@ -21,15 +21,15 @@
             </div>
             <div class="col-md-4">
                 <div class="btn-group">
-                    <div class="btn btn-primary" (click)="setView(CalendarView.Month)" appDebounceClick
+                    <div class="btn btn-primary" (click)="setView(CalendarView.Month)"
                         [class.active]="view === CalendarView.Month" i18n="@@groupCalendar.month">
                         Month
                     </div>
-                    <div class="btn btn-primary" (click)="setView(CalendarView.Week)" appDebounceClick
+                    <div class="btn btn-primary" (click)="setView(CalendarView.Week)"
                         [class.active]="view === CalendarView.Week" i18n="@@groupCalendar.week">
                         Week
                     </div>
-                    <div class="btn btn-primary" (click)="setView(CalendarView.Day)" appDebounceClick
+                    <div class="btn btn-primary" (click)="setView(CalendarView.Day)"
                         [class.active]="view === CalendarView.Day" i18n="@@groupCalendar.day">
                         Day
                     </div>

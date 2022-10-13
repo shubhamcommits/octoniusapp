@@ -13,7 +13,7 @@
     <!--Date Picker ends -->
 
     <!-- Clean field starts -->
-    <i *ngIf="canEditDates" appDebounceClick (click)="updateDate(null, 'start_date')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+    <i *ngIf="canEditDates" (click)="updateDate(null, 'start_date')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
     <!-- Clean field ends -->
   </div>
 
@@ -31,7 +31,7 @@
     <!--Date Picker ends -->
 
     <!-- Clean field starts -->
-    <i *ngIf="canEditDates" appDebounceClick (click)="updateDate(null, 'due_date')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+    <i *ngIf="canEditDates" (click)="updateDate(null, 'due_date')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
     <!-- Clean field ends -->
   </div>
   <div *ngIf="postData && postData?.type === 'event'" class="btn-group">

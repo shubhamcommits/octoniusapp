@@ -18,7 +18,7 @@
       <mat-form-field class="mr-3">
         <mat-select ngDefaultControl class="select-field"
             (selectionChange)="customFieldSelected($event.value)"
-            (click)="$event.stopPropagation()" appDebounceClick
+            (click)="$event.stopPropagation()"
             [(value)]="cfName"
             name="names">
           <mat-option
@@ -32,7 +32,7 @@
       <mat-form-field>
 
         <mat-select ngDefaultControl class="select-field"
-            (click)="$event.stopPropagation()" appDebounceClick
+            (click)="$event.stopPropagation()"
             [(value)]="cfValue"
             [disabled]="cfValues.length <= 0"
             name="values">

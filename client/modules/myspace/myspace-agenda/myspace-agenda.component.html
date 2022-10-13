@@ -7,7 +7,7 @@
   <h5 class="title-overview" *ngIf="this.todayTimelineEvents.length != 0" i18n="@@myspaceAgenda.today">Today</h5>
 
   <div *ngFor="let timelineEvent of todayTimelineEvents; let i = index;">
-    <a (click)="openModal(timelineEvent)" appDebounceClick>
+    <a (click)="openModal(timelineEvent)">
 
       <!-- Agenda Timeline Today Events -->
       <div class="media card-tile overview-timeline-event">
@@ -76,7 +76,7 @@
   <h5 class="title-overview" *ngIf="this.thisWeekTimelineEvents.length != 0" i18n="@@myspaceAgenda.thisWeek">This week</h5>
 
   <div *ngFor="let timelineEvent of thisWeekTimelineEvents; let i = index;">
-    <a (click)="openModal(timelineEvent)" appDebounceClick>
+    <a (click)="openModal(timelineEvent)">
       <!-- Agenda Timeline This Week Events -->
       <div class="media card-tile overview-timeline-event">
         <div class=" row media-body">

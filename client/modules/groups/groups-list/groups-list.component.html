@@ -16,7 +16,7 @@
       <ng-container *ngFor="let group of userGroups">
           <div class="cards-list">
               <div *ngIf="group.group_name !== 'private'" class="card img-fluid"
-                  (click)="goToGroup(group?._id)" appDebounceClick>
+                  (click)="goToGroup(group?._id)">
 
                   <app-secured-image [imgURL]="group?.group_avatar" [service]="'group'"
                       [styleClass]="'card-img-top'"></app-secured-image>
@@ -51,7 +51,7 @@
         <div class="row">
             <ng-container *ngFor="let group of userGroups">
                 <div class="col-md-3 col-sm-6 col-xs-12">
-                    <div *ngIf="group.group_name !== 'private'" class=" card" (click)="goToGroup(group?._id)" appDebounceClick>
+                    <div *ngIf="group.group_name !== 'private'" class=" card" (click)="goToGroup(group?._id)">
                         <span class="badge badge-members">{{ (group?._members.length + group?._admins.length) || 0 }}
                             <span i18n="@@groupList.members">Members</span></span>
                         <app-secured-image [imgURL]="group?.group_avatar" [service]="'group'"
@@ -89,7 +89,7 @@
                     <div class="card-img-overlay">
                         <span class="badge badge-members">{{ (group?._members?.length + group?._admins?.length) || 0 }} <span i18n="@@groupList.members">Members</span></span>
                         <a *ngIf="group?.type == 'agora'" class="btn btn-warning btn-public"
-                            (click)="joinGroup(group._id)" appDebounceClick i18n="@@groupList.join">JOIN</a>
+                            (click)="joinGroup(group._id)" i18n="@@groupList.join">JOIN</a>
 
                         <div class="title-overlay">
                             <a>
@@ -119,7 +119,7 @@
                         <app-secured-image [imgURL]="group?.group_avatar" [service]="'group'"
                             [styleClass]="'card-img-top'"></app-secured-image>
                         <a *ngIf="group?.type == 'agora'" class="btn btn-warning btn-public"
-                            (click)="joinGroup(group._id)" appDebounceClick i18n="@@groupList.join">JOIN</a>
+                            (click)="joinGroup(group._id)" i18n="@@groupList.join">JOIN</a>
 
                         <div class="card-body">
                             <a>

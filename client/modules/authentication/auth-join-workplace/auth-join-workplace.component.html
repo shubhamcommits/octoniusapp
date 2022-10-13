@@ -20,7 +20,7 @@
               style="width: 100%; margin:50px auto; padding-bottom: 50px; align-items: center; text-align: center; border-bottom: 1px solid #005fd521;">
             <span class="muted" i18n="@@authJoinWorkplace.workplacesDomainAllowed">These are the workplace in which the domain of your email is allowed:</span>
             <div *ngFor="let workspace of allowedWorkspaces" class="workplace-cells"
-              (click)="selectWorkspace(workspace)" appDebounceClick [ngClass]="workspace._id == selectedWorkplaceId ? 'selected-workplace' : ''">
+              (click)="selectWorkspace(workspace)" [ngClass]="workspace._id == selectedWorkplaceId ? 'selected-workplace' : ''">
               <div class="btn-select-workplace" [ngClass]="'selected-workplace'" style="background-color: #ffffff;">
                 <img src="{{ this.baseUrl }}/{{workspace.workspace_avatar}}?noAuth=true" style="height: 100%; width:100%;"
                   onerror="this.src='assets/images/icon-new-group.svg'" />

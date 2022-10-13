@@ -1,6 +1,6 @@
 <div *ngIf="membersLoaded" class="customFieldsDialog">
     <mat-dialog-actions class="d-flex justify-content-end" align="end">
-        <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" appDebounceClick style="cursor: pointer">close</i>
+        <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
     </mat-dialog-actions>
 
     <h2 mat-dialog-title>
@@ -36,7 +36,7 @@
                     [service]="'user'"
                     [tooltip]="member?.first_name + ' ' + member?.last_name"
                     [styleClass]="'feed-avatar'"
-                    (click)="removeUserFromRag(member,rag)" appDebounceClick></app-secured-image>
+                    (click)="removeUserFromRag(member,rag)"></app-secured-image>
               </div>
 
               <app-component-search-input-box class="ml-2" *ngIf="groupData"

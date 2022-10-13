@@ -1,6 +1,6 @@
 <div class="customFieldsDialog">
     <mat-dialog-actions class="d-flex justify-content-end" align="end">
-        <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" appDebounceClick style="cursor: pointer">close</i>
+        <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
     </mat-dialog-actions>
 
     <div style="margin-bottom: 50px;">
@@ -51,9 +51,9 @@
             </div>
 
             <div class="toolbox">
-              <i (click)="editPermission(permission)" appDebounceClick class="material-icons text-success" style="cursor: pointer;">mode</i>
+              <i (click)="editPermission(permission)" class="material-icons text-success" style="cursor: pointer;">mode</i>
               &nbsp;&nbsp;
-              <i (click)="removePermission(permission?._id)" appDebounceClick class="material-icons text-danger" style="cursor: pointer;">delete</i>
+              <i (click)="removePermission(permission?._id)" class="material-icons text-danger" style="cursor: pointer;">delete</i>
             </div>
           </div>
         </div>
@@ -86,7 +86,7 @@
                 [service]="'user'"
                 [tooltip]="member?.first_name + ' ' + member?.last_name"
                 [styleClass]="'feed-avatar'"
-                (click)="removeMemberFromPermission(member, permissionToEdit?._id)" appDebounceClick></app-secured-image>
+                (click)="removeMemberFromPermission(member, permissionToEdit?._id)"></app-secured-image>
           </div>
 
           <app-component-search-input-box class="ml-2" *ngIf="groupData && permissionToEdit?._id"
@@ -103,7 +103,7 @@
             <div>
               <span class="tag">
                 {{ tag }}
-                <i (click)="removePermissionTag(permissionToEdit._id, tag)" appDebounceClick class="material-icons" style="color: red; cursor: pointer;">clear</i>
+                <i (click)="removePermissionTag(permissionToEdit._id, tag)" class="material-icons" style="color: red; cursor: pointer;">clear</i>
               </span>
             </div>
           </div>

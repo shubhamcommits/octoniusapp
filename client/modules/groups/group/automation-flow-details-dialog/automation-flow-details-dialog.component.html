@@ -1,7 +1,7 @@
 <div class="flowStepsDialog">
 
   <mat-dialog-actions align="start">
-    <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" appDebounceClick style="cursor: pointer">arrow_back</i>
+    <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">arrow_back</i>
   </mat-dialog-actions>
 
   <h2 mat-dialog-title style="margin-bottom: 30px">
@@ -17,7 +17,7 @@
       (blur)="flowNameChange($event)"
       class="flow-name" />
     <!-- Flow Name ends -->
-    <i (click)="deleteFlow()" appDebounceClick class="material-icons text-danger" style="cursor: pointer">delete</i>
+    <i (click)="deleteFlow()" class="material-icons text-danger" style="cursor: pointer">delete</i>
   </h2>
 
   <mat-dialog-content>
@@ -138,7 +138,7 @@
             </div>
 
             <div class="add-step">
-              <i class="material-icons-outlined" *ngIf="!step.newTrigger" (click)="step.newTrigger = !step.newTrigger" appDebounceClick style="cursor: pointer;">add</i>
+              <i class="material-icons-outlined" *ngIf="!step.newTrigger" (click)="step.newTrigger = !step.newTrigger" style="cursor: pointer;">add</i>
             </div>
           </div>
 
@@ -266,7 +266,7 @@
               </div>
             </div>
 
-            <div class="add-step"> <i class="material-icons-outlined" *ngIf="!step.newAction" (click)="step.newAction = !step.newAction" appDebounceClick style="cursor: pointer;">add</i></div>
+            <div class="add-step"> <i class="material-icons-outlined" *ngIf="!step.newAction" (click)="step.newAction = !step.newAction" style="cursor: pointer;">add</i></div>
           </div>
 
           <div class="step-element" *ngIf="!step.action || step.newAction">
@@ -284,7 +284,7 @@
 
           <!-- DELETE STEP -->
           <div class="remove-separator">
-            <i class="material-icons text-danger" (click)="removeStep(step._id)" appDebounceClick
+            <i class="material-icons text-danger" (click)="removeStep(step._id)"
               style=" cursor: pointer; margin-left: 20px;">delete</i>
           </div>
         </div>

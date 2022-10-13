@@ -48,7 +48,7 @@
               {{ template.task.template_name }}
             </button>
 
-            <!-- <li class="assignee-list-item save-template" appDebounceClick (click)="createTemplate()">Save as template</li> -->
+            <!-- <li class="assignee-list-item save-template" (click)="createTemplate()">Save as template</li> -->
             <button appDebounceClick class="assignee-list-item save-template"
               style="line-height: inherit;"
               mat-menu-item [matMenuTriggerFor]="templatesMenu"
@@ -72,7 +72,7 @@
               <div>
                 <div class="users-card">
                   <ul class="assignee-list">
-                    <li class="assignee-list-item" *ngFor="let template of groupTemplates" appDebounceClick (click)="selectTemplate(template._id, template.task.template_name)">
+                    <li class="assignee-list-item" *ngFor="let template of groupTemplates" (click)="selectTemplate(template._id, template.task.template_name)">
                       {{ template.task.template_name }}
                     </li>
 
@@ -115,7 +115,7 @@
         <div class="media task-item user-list mb-0" *ngFor=" let task of tasksList; let index = index;">
           <div class="media-body mt-2">
             <!-- Display full name of the member starts -->
-            <h4 class="mt-0 full-name-text" appDebounceClick (click)="setParentTask(task._id)">
+            <h4 class="mt-0 full-name-text" (click)="setParentTask(task._id)">
               {{ task?.title | truncatetext: 50 }}
             </h4>
             <!-- Display full name of the member ends -->
@@ -148,7 +148,7 @@
       <div class="media task-item user-list mb-0" *ngFor=" let task of tasksList; let index = index;">
         <div class="media-body mt-2" >
           <!-- Display full name of the member starts -->
-          <h4 class="mt-0 full-name-text" appDebounceClick (click)="setDependencyTask(task._id)">
+          <h4 class="mt-0 full-name-text" (click)="setDependencyTask(task._id)">
             {{ task?.title | truncatetext: 50 }}
           </h4>
           <!-- Display full name of the member ends -->
@@ -223,7 +223,7 @@
     </mat-form-field>
 
     <!-- Clean field starts -->
-    <!-- <i *ngIf="postData?.task?._shuttle_group && postData?.task?._shuttle_group != groupData._id" appDebounceClick (click)="shuttleTask(null)" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i> -->
+    <!-- <i *ngIf="postData?.task?._shuttle_group && postData?.task?._shuttle_group != groupData._id" (click)="shuttleTask(null)" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i> -->
     <!-- Clean field ends -->
     <p i18n="@@taskActions.withTaskShuttleYouCan">With Task Shuttle you can assign the task to another group.</p>
   </div>

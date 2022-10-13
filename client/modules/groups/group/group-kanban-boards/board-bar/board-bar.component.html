@@ -50,30 +50,30 @@
       </button>
 
       <mat-menu #menu="matMenu">
-        <a mat-menu-item *ngIf="viewType != 'kanban'" (click)="changeView('kanban')" appDebounceClick class="board-options">
+        <a mat-menu-item *ngIf="viewType != 'kanban'" (click)="changeView('kanban')" class="board-options">
           <img src="assets/images/Icon/board-bar/icon_kanban.svg" alt="" class="mr-2">
 
           <span i18n="@@groupBoardBar.kanbanBoard">Kanban Board</span>
         </a>
 
-        <a mat-menu-item *ngIf="viewType != 'table'" (click)="changeView('table')" appDebounceClick class="board-options">
+        <a mat-menu-item *ngIf="viewType != 'table'" (click)="changeView('table')" class="board-options">
           <img src="assets/images/Icon/board-bar/icon_table.svg" alt="" class="mr-2">
 
           <span i18n="@@groupBoardBar.table">Table</span>
         </a>
 
-        <a mat-menu-item *ngIf="viewType != 'calendar'" (click)="changeView('calendar')" appDebounceClick class="board-options">
+        <a mat-menu-item *ngIf="viewType != 'calendar'" (click)="changeView('calendar')" class="board-options">
           <img src="assets/images/Icon/board-bar/icon_calendar.svg" alt="" class="mr-2">
 
           <span i18n="@@groupBoardBar.calendar">Calendar</span>
         </a>
 
-        <a *ngIf="groupData.project_type && viewType != 'gant'" mat-menu-item (click)="changeView('gantt')" appDebounceClick class="board-options">
+        <a *ngIf="groupData.project_type && viewType != 'gant'" mat-menu-item (click)="changeView('gantt')" class="board-options">
           <img src="assets/images/Icon/board-bar/icon_timeline.svg" alt="" class="mr-2">
           <span i18n="@@groupBoardBar.timeline">Timeline</span>
         </a>
 
-        <a mat-menu-item *ngIf="viewType != 'archived'" (click)="changeView('archived')" appDebounceClick class="board-options">
+        <a mat-menu-item *ngIf="viewType != 'archived'" (click)="changeView('archived')" class="board-options">
           <span class="material-icons-outlined mr-2">archive</span>
 
           <span i18n="@@groupBoardBar.archived">Archived</span>
@@ -81,29 +81,29 @@
       </mat-menu>
 
       <mat-menu #menuSort="matMenu" class="widepanel">
-        <a mat-menu-item (click)="sortTasks('none')" appDebounceClick [ngStyle]="{'color' : (sortby==='none') ? '#005fd5' : 'black'}">
+        <a mat-menu-item (click)="sortTasks('none')" [ngStyle]="{'color' : (sortby==='none') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.sort.none">None</span>
         </a>
 
-        <a mat-menu-item (click)="sortTasks('due_date')" appDebounceClick
+        <a mat-menu-item (click)="sortTasks('due_date')"
           [ngStyle]="{'color' : (sortby==='due_date') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.sort.dueDate">Due Date</span>
         </a>
 
-        <a mat-menu-item (click)="sortTasks('creation_date')" appDebounceClick
+        <a mat-menu-item (click)="sortTasks('creation_date')"
           [ngStyle]="{'color' : (sortby==='creation_date') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.sort.creationDate">Creation Date</span>
         </a>
 
-        <a mat-menu-item (click)="sortTasks('tags')" appDebounceClick [ngStyle]="{'color' : (sortby==='tags') ? '#005fd5' : 'black'}">
+        <a mat-menu-item (click)="sortTasks('tags')" [ngStyle]="{'color' : (sortby==='tags') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.sort.tags">Tags</span>
         </a>
 
-        <a mat-menu-item (click)="sortTasks('status')" appDebounceClick [ngStyle]="{'color' : (sortby==='status') ? '#005fd5' : 'black'}">
+        <a mat-menu-item (click)="sortTasks('status')" [ngStyle]="{'color' : (sortby==='status') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.sort.status">Status</span>
         </a>
 
-        <a mat-menu-item (click)="sortTasks('ideas')" appDebounceClick *ngIf="isIdeaModuleAvailable"
+        <a mat-menu-item (click)="sortTasks('ideas')" *ngIf="isIdeaModuleAvailable"
           [ngStyle]="{'color' : (sortby==='ideas') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.sort.ideas">Ideas</span>
         </a>
@@ -114,25 +114,25 @@
         </a>
 
         <mat-menu #menuCustomFieldsSort="matMenu">
-          <a mat-menu-item *ngFor="let cf of groupData?.custom_fields" (click)="sortTasks('custom_field', cf)" appDebounceClick style="margin: 10px;text-decoration: none;">
+          <a mat-menu-item *ngFor="let cf of groupData?.custom_fields" (click)="sortTasks('custom_field', cf)" style="margin: 10px;text-decoration: none;">
             <span>{{ cf.title }}</span>
           </a>
         </mat-menu>
       </mat-menu>
 
       <mat-menu #menuFilter="matMenu" style="overflow: visible !important;" class="filter-menu widepanel">
-        <a mat-menu-item (click)="filterTask('none')" appDebounceClick [ngStyle]="{'color' : (filterfor==='none') ? '#005fd5' : 'black'}">
+        <a mat-menu-item (click)="filterTask('none')" [ngStyle]="{'color' : (filterfor==='none') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.filter.none">None</span>
         </a>
 
-        <a mat-menu-item (click)="filterTask('mytask')" appDebounceClick
+        <a mat-menu-item (click)="filterTask('mytask')"
           [ngStyle]="{'color' : (filterfor==='mytask') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.filter.myTasks">My Tasks</span>
         </a>
 
         <span mat-menu-item class="overflowvisible"
           [ngStyle]="{'color' : (filterfor==='users') ? '#005fd5' : 'black'}">
-          <div (click)="$event.stopPropagation();" appDebounceClick>
+          <div (click)="$event.stopPropagation();">
             <app-member-list-menu [groupMembers]="groupMembers" [filterfor]="filterfor" [menuLable]="menuLable"
               [menuFor]="menuFor" (userSelctionEmitter)="onUserSelctionEmitter($event)">
             </app-member-list-menu>
@@ -140,7 +140,7 @@
         </span>
 
         <span mat-menu-item class="overflowvisible widepanel">
-          <div (click)="$event.stopPropagation()" appDebounceClick (keydown)="$event.stopPropagation()">
+          <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
             <button appDebounceClick [matMenuTriggerFor]="menuDueDate" class="dropdownbtn" style="padding: 0;">
               <span [ngStyle]="{'cursor': 'pointer','color' : (filterfor==='due_before_today' ||
                 filterfor==='due_today' ||
@@ -169,27 +169,27 @@
             </button>
             <mat-menu #menuDueDate="matMenu">
 
-              <a mat-menu-item (click)="filterTask('due_before_today')" appDebounceClick style="margin: 10px;text-decoration: none;">
+              <a mat-menu-item (click)="filterTask('due_before_today')" style="margin: 10px;text-decoration: none;">
                 <span i18n="@@groupBoardBar.filter.beforeToday">Before today</span>
               </a>
 
-              <a mat-menu-item (click)="filterTask('due_today')" appDebounceClick style="margin: 10px;text-decoration: none;">
+              <a mat-menu-item (click)="filterTask('due_today')" style="margin: 10px;text-decoration: none;">
                 <span i18n="@@groupBoardBar.filter.today">Today</span>
               </a>
 
-              <a mat-menu-item (click)="filterTask('due_tomorrow')" appDebounceClick style="margin: 10px;text-decoration: none;">
+              <a mat-menu-item (click)="filterTask('due_tomorrow')" style="margin: 10px;text-decoration: none;">
                 <span i18n="@@groupBoardBar.filter.tomorrow">Tomorrow</span>
               </a>
 
-              <a mat-menu-item (click)="filterTask('due_week')" appDebounceClick style="margin: 10px;text-decoration: none;">
+              <a mat-menu-item (click)="filterTask('due_week')" style="margin: 10px;text-decoration: none;">
                 <span i18n="@@groupBoardBar.filter.thisWeek">This week</span>
               </a>
 
-              <a mat-menu-item (click)="filterTask('due_next_week')" appDebounceClick style="margin: 10px;text-decoration: none;">
+              <a mat-menu-item (click)="filterTask('due_next_week')" style="margin: 10px;text-decoration: none;">
                 <span i18n="@@groupBoardBar.filter.nextWeek">Next week</span>
               </a>
 
-              <a mat-menu-item (click)="filterTask('due_14_days')" appDebounceClick style="margin: 10px;text-decoration: none;">
+              <a mat-menu-item (click)="filterTask('due_14_days')" style="margin: 10px;text-decoration: none;">
                 <span i18n="@@groupBoardBar.filter.next14Days">Next 14 days</span>
               </a>
 
@@ -197,12 +197,12 @@
           </div>
         </span>
 
-        <a mat-menu-item (click)="filterTask('ideas')" appDebounceClick *ngIf="isIdeaModuleAvailable"
+        <a mat-menu-item (click)="filterTask('ideas')" *ngIf="isIdeaModuleAvailable"
           [ngStyle]="{'color' : (filterfor==='ideas') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.filter.ideas">Ideas</span>
         </a>
 
-        <a mat-menu-item (click)="openAdvancedFilterDialog()" appDebounceClick *ngIf="isIdeaModuleAvailable"
+        <a mat-menu-item (click)="openAdvancedFilterDialog()" *ngIf="isIdeaModuleAvailable"
           [ngStyle]="{'color' : (filterfor==='custom_field') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.filter.advancedFilters">Advanced Filters</span>
         </a>

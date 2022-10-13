@@ -78,7 +78,7 @@
 <ul class="nav mr-auto"  *ngIf="isLoungeNavbar$ | async">
   <!-- Back Route starts -->
   <li class="nav-item d-none d-md-block">
-    <a class="nav-link" appDebounceClick (click)="goBackLounge()">
+    <a class="nav-link" (click)="goBackLounge()">
       <i class="material-icons">arrow_back</i>
     </a>
   </li>

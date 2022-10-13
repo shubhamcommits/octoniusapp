@@ -54,7 +54,7 @@
 
 
 
-      <div class="save" appDebounceClick (click)="saveInitial()" i18n="@@northStar.save">Save</div>
+      <div class="save" (click)="saveInitial()" i18n="@@northStar.save">Save</div>
     </div>
     <!-- Setting Initial Value ends -->
 
@@ -62,7 +62,7 @@
     <div class="focus" *ngIf="!updatingInitialValues">
       <p class="title">
         <span i18n="@@northStar.focus">Focus</span>
-        <i class="material-icons update" appDebounceClick (click)="updatingInitialValues = true; this.updateProgress = false;">settings</i>
+        <i class="material-icons update" (click)="updatingInitialValues = true; this.updateProgress = false;">settings</i>
       </p>
 
       <div class="target_value" *ngIf="northStar?.type === 'Currency $'"><span i18n="@@northStar.target">Target:</span> {{ northStar?.target_value | currency: '$' }}</div>
@@ -80,7 +80,7 @@
         <span class="status">{{ northStar?.values[northStar?.values?.length - 1]?.status }}</span>
       </div>
 
-      <div class="open_update_progress" appDebounceClick (click)="openUpdateProgress()" i18n="@@northStar.updateProgress">Update progress</div>
+      <div class="open_update_progress" (click)="openUpdateProgress()" i18n="@@northStar.updateProgress">Update progress</div>
 
       <div class="update_progress" *ngIf="updateProgress">
         <label for="newValue" i18n="@@northStar.progressUpdate">Progress update:</label>
@@ -97,7 +97,7 @@
           </mat-select>
         </mat-form-field>
 
-        <div class="save" appDebounceClick (click)="addUpdateProgress()" i18n="@@northStar.save">Save</div>
+        <div class="save" (click)="addUpdateProgress()" i18n="@@northStar.save">Save</div>
       </div>
     </div>
     <!-- Updating Initial Value ends -->

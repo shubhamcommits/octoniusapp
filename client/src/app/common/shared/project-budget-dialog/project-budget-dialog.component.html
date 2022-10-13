@@ -148,8 +148,8 @@
         </div>
 
         <div style="display: flex; justify-content: center;">
-          <div class="save" appDebounceClick (click)="saveExpense()" i18n="@@projectBudgetDialog.save">Save</div>
-          <div class="cancel" appDebounceClick (click)="resetExpense()" i18n="@@projectBudgetDialog.cancel">Cancel</div>
+          <div class="save" (click)="saveExpense()" i18n="@@projectBudgetDialog.save">Save</div>
+          <div class="cancel" (click)="resetExpense()" i18n="@@projectBudgetDialog.cancel">Cancel</div>
         </div>
       </div>
     </div>

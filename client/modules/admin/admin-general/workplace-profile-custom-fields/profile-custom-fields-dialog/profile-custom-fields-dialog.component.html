@@ -1,7 +1,7 @@
 <div class="customFieldsDialog">
 
     <mat-dialog-actions align="end">
-        <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" appDebounceClick style="cursor: pointer">close</i>
+        <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
     </mat-dialog-actions>
 
     <h2 mat-dialog-title>
@@ -30,7 +30,7 @@
                         <i class="material-icons" style="color: #005FD5">label</i>
                         {{ field.title }}
                         <i class="material-icons" *ngIf="field.name != 'priority'"
-                            (click)="removeCustomField(field)" appDebounceClick
+                            (click)="removeCustomField(field)"
                             style="color: red; cursor: pointer; margin-left: 20px;">highlight_off</i>
                     </div>
 
@@ -38,7 +38,7 @@
                         <span class="badge" *ngFor="let value of field.values">
                             {{ value }}
                             <i class="material-icons" *ngIf="field.name != 'priority'"
-                                (click)="removeValue(field, value)" appDebounceClick
+                                (click)="removeValue(field, value)"
                                 style="cursor: pointer;">highlight_off</i>
                         </span>
                         <div class="newValue" *ngIf="field.name != 'priority'">

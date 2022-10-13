@@ -50,7 +50,7 @@
 
                                     <!-- Menu Drawer Starts -->
                                     <ul class="dropdown-menu">
-                                        <li class="dropdown-item" (click)="archiveGroup(group._id, true)" appDebounceClick i18n="@@adminGroups.archiveGroups">Archive Group</li>
+                                        <li class="dropdown-item" (click)="archiveGroup(group._id, true)" i18n="@@adminGroups.archiveGroups">Archive Group</li>
                                     </ul>
                                     <!-- Menu Drawer Ends -->
                                 </div>
@@ -92,8 +92,8 @@
 
                                     <!-- Menu Drawer Starts -->
                                     <ul class="dropdown-menu">
-                                        <li class="dropdown-item" (click)="archiveGroup(group._id, false)" appDebounceClick i18n="@@adminGroups.activateGroup">Activate Group</li>
-                                        <li class="btn btn-danger btn-sm" style="margin: auto 1.4rem;" (click)="removeGroup(group._id)" appDebounceClick i18n="@@adminGroups.removeGroup">Remove Group</li>
+                                        <li class="dropdown-item" (click)="archiveGroup(group._id, false)" i18n="@@adminGroups.activateGroup">Activate Group</li>
+                                        <li class="btn btn-danger btn-sm" style="margin: auto 1.4rem;" (click)="removeGroup(group._id)" i18n="@@adminGroups.removeGroup">Remove Group</li>
                                     </ul>
                                     <!-- Menu Drawer Ends -->
                                 </div>
