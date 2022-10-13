@@ -86,10 +86,10 @@
                   'board':'1px solid gray','width':gantt_container_width}" cdkDropList class="example-list"
                   (cdkDropListDropped)="drop($event)">
                   <div  [attr.taskIndex]="j" [attr.projectIndex]="i" [attr.id]="task.id" [ngStyle]="{'left':(task.index_date*step)+'px','top':'0px','width'
-                    :(task.difference*step+step)+'px'}" (click)="openFullscreenModal(task.task)" [ngClass]="
-                  task.custom_class == 'to do'? 'rectangle task_card status-todo'
-                  : task.custom_class == 'in progress' ? 'rectangle task_card status-inprogress'
-                  : task.custom_class == 'done' ? 'rectangle task_card status-done' : 'rectangle task_card status-todo'
+                    :(task.difference*step+step)+'px'}" (click)="openFullscreenModal(task.task)"
+                      [ngClass]="task.custom_class == 'to do'? 'rectangle task_card status-todo'
+                        : task.custom_class == 'in progress' ? 'rectangle task_card status-inprogress'
+                        : task.custom_class == 'done' ? 'rectangle task_card status-done' : 'rectangle task_card status-todo'
                 " cdkDragLockAxis="x" cdkDrag cdkDragBoundary=".example-list" mwlResizable [validateResize]="validate"
                     [enableGhostResize]="true" (resizeEnd)="onResizeEnd($event,task.id,j,i)">
                     <div *ngIf="!task.is_milestone" class="resize-handle-left" [attr.id]="task.id+'l'" mwlResizeHandle
@@ -118,10 +118,10 @@
               'board':'1px solid gray','width':gantt_container_width}" cdkDropList class="example-list"
                   (cdkDropListDropped)="drop($event)">
                   <div [attr.taskIndex]="i" [attr.id]="task.id" [ngStyle]="{'left':(task.index_date*step)+'px','top':'0px','width'
-                :(task.difference*step+step)+'px'}" (click)="openFullscreenModal(task.task)" [ngClass]="
-              task.custom_class == 'to do'? 'rectangle task_card status-todo'
-              : task.custom_class == 'in progress' ? 'rectangle task_card status-inprogress'
-              : task.custom_class == 'done' ? 'rectangle task_card status-done' : 'rectangle task_card status-todo'
+                    :(task.difference*step+step)+'px'}" (click)="openFullscreenModal(task.task)"
+                      [ngClass]="task.custom_class == 'to do'? 'rectangle task_card status-todo'
+                        : task.custom_class == 'in progress' ? 'rectangle task_card status-inprogress'
+                        : task.custom_class == 'done' ? 'rectangle task_card status-done' : 'rectangle task_card status-todo'
             " cdkDragLockAxis="x" cdkDrag cdkDragBoundary=".example-list" mwlResizable [validateResize]="validate"
                     [enableGhostResize]="true" (resizeEnd)="onResizeEnd($event,task.id,i)">
                     <div *ngIf="!task.is_milestone" class="resize-handle-left" [attr.id]="task.id+'l'" mwlResizeHandle

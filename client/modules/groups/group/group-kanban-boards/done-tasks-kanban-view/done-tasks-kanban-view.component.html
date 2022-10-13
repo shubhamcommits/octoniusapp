@@ -1,4 +1,4 @@
-<div *ngIf="tasks?.length > 0" (click)="showDoneTasks = !showDoneTasks">
+<div *ngIf="tasks?.length > 0" (click)="showDoneTasks = !showDoneTasks"appDebounceClick>
   <div class="column-title">
     <p class="done-title"><i class="material-icons-outlined">archive</i> {{tasks?.length}} <span i18n="@@doneTasksKanbanView.doneArchived">DONE (archived)</span><i class="material-icons-outlined">expand_more</i> </p>
   </div>

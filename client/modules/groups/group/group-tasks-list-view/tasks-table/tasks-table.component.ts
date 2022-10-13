@@ -274,12 +274,19 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
       const taskClonnedEventSubs = dialogRef.componentInstance.taskClonnedEvent.subscribe((data) => {
         this.onTaskClonned(data);
       });
+      const datesChangeEventSub = dialogRef.componentInstance.datesChangeEvent.subscribe((data) => {
+        postData.task.start_date = data.start_date;
+        postData.task.due_to = data.due_date;
+        this.updateTask(postData);
+        this.sorting();
+      });
 
       dialogRef.afterClosed().subscribe(result => {
         deleteEventSubs.unsubscribe();
         closeEventSubs.unsubscribe();
         parentAssignEventSubs.unsubscribe();
         taskClonnedEventSubs.unsubscribe();
+        datesChangeEventSub.unsubscribe();
       });
     }
   }

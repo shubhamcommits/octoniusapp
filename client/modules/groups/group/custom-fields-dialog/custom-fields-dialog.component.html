@@ -59,9 +59,9 @@
                     <div *ngIf="field.name != 'priority'" style="display: flex;">
                       <div [ngStyle]="{'width': '30px', 'height': '30px', 'background-color': field?.badge_color }">
                         <button *ngIf="field?.badge_color"
-                        class="btn removeImageBtn"
-                        style="margin-left: -9px; margin-top: -5px;"
-                        (click)="removeBadgeColor(field)">
+                          class="btn removeImageBtn"
+                          style="margin-left: -9px; margin-top: -5px;"
+                          (click)="removeBadgeColor(field)">
                       <i class="material-icons">close</i>
                     </button>
                       </div>

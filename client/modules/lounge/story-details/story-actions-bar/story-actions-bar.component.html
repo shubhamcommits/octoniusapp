@@ -97,7 +97,7 @@
       <button class="btn btn-link">
         <i matTooltipPosition="above" matTooltip="Write a comment"
             [ngClass]="(storyData?._comments && storyData?._comments?.length>0) ? 'material-icons text-primary' : 'material-icons-outlined muted'"
-            (click)="showCommentsAction()">
+            (click)="showCommentsAction()"appDebounceClick>
           comment
         </i>
       </button>

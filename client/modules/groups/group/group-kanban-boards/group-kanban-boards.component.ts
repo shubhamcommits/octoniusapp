@@ -531,6 +531,12 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
         this.onTaskClonned(data);
         this.sorting();
       });
+      const datesChangeEventSub = dialogRef.componentInstance.datesChangeEvent.subscribe((data) => {
+        postData.task.start_date = data.start_date;
+        postData.task.due_to = data.due_date;
+        this.updateTask(postData);
+        this.sorting();
+      });
 
 
       dialogRef.afterClosed().subscribe(result => {
@@ -538,6 +544,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
         deleteEventSubs.unsubscribe();
         parentAssignEventSubs.unsubscribe();
         taskClonnedEventSubs.unsubscribe();
+        datesChangeEventSub.unsubscribe();
       });
     }
   }

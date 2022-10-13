@@ -117,6 +117,7 @@ import { FileVersionsComponent } from './file-versions/file-versions.component';
 import { SelectLanguageComponent } from './select-language/select-language.component';
 import { PostLogsComponent } from './posts/group-post-dialog/post-logs/post-logs.component';
 import { HighlightDirective } from 'src/shared/pipes/highlight.directive';
+import { DebounceClickDirective } from 'src/shared/pipes/debounce-click.directive';
 
 @NgModule({
     declarations: [
@@ -193,6 +194,7 @@ import { HighlightDirective } from 'src/shared/pipes/highlight.directive';
         ShuttleTaskComponent,
         MultipleAssignmentsComponent,
         HighlightDirective,
+        DebounceClickDirective,
         FilterPipe,
         AssigneeAvatarComponent,
         CommentListComponent,
@@ -317,6 +319,7 @@ import { HighlightDirective } from 'src/shared/pipes/highlight.directive';
         FileVersionsComponent,
         PostLogsComponent,
         HighlightDirective,
+        DebounceClickDirective,
         FilterPipe
     ],
     providers: [

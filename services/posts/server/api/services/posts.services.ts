@@ -282,7 +282,7 @@ export class PostService {
       filteredPosts = posts
         .sort((numLikes && numLikes > 0) ? '-likes_count' : '-_id')
         .limit((numLikes && numLikes > 0) ? numLikes : 5)
-        .select('title type permissions task approval_flow_launched tags _group comments_count content _content_mentions created_date')
+        .select('title type permissions task approval_flow_launched tags _group comments_count content _content_mentions created_date files')
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
         //.populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
@@ -300,7 +300,7 @@ export class PostService {
       filteredPosts = posts
         .sort((numLikes && numLikes > 0) ? '-likes_count' : '-_id')
         .limit((numLikes && numLikes > 0) ? numLikes : 5)
-        .select('title type permissions task approval_flow_launched tags _group comments_count content _content_mentions created_date')
+        .select('title type permissions task approval_flow_launched tags _group comments_count content _content_mentions created_date files')
         //.populate({ path: '_group', select: this.groupFields })
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
@@ -318,7 +318,7 @@ export class PostService {
     else if (type === 'task')
       filteredPosts = posts
         .sort((numLikes && numLikes > 0) ? '-likes_count' : '-task.due_to')
-        .select('title type permissions task approval_flow_launched tags _group created_date')
+        .select('title type permissions task approval_flow_launched tags _group created_date files')
         //.populate({ path: '_group', select: this.groupFields })
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
@@ -334,7 +334,7 @@ export class PostService {
     else if (type == 'pinned')
       filteredPosts = posts
         .sort((numLikes && numLikes > 0) ? '-likes_count' : '-created_date')
-        .select('title type permissions task approval_flow_launched tags _group comments_count content _content_mentions created_date')
+        .select('title type permissions task approval_flow_launched tags _group comments_count content _content_mentions created_date files')
         //.populate({ path: '_group', select: this.groupFields })
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
