@@ -5,7 +5,7 @@
         </p>
     </div>
     <div class="col-md-6 push-right">
-      <button appDebounceClick *ngIf="!googleUserExists()" id="google-connect" class="btn btn-primary btn-sm" (click) ="signInToGoogle()" i18n="@@connectGoogleCloud.connect">Connect</button>
-      <button appDebounceClick *ngIf="googleUserExists()" class="btn btn-success btn-sm" i18n="@@connectGoogleCloud.connected">Connected</button>
+      <button *ngIf="!googleUserExists()" id="google-connect" class="btn btn-primary btn-sm" (click) ="signInToGoogle()" i18n="@@connectGoogleCloud.connect">Connect</button>
+      <button *ngIf="googleUserExists()" class="btn btn-success btn-sm" i18n="@@connectGoogleCloud.connected">Connected</button>
     </div>
 </div>

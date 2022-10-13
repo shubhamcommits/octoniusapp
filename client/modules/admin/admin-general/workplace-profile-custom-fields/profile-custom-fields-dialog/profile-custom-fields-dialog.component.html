@@ -55,7 +55,7 @@
             </div>
         </div>
         <div class="newCustomFieldForm" style="padding: 10px; margin-top: 30px">
-            <button appDebounceClick class="btn badge-cf" (click)="showNewCustomField = !showNewCustomField">
+            <button class="btn badge-cf" (click)="showNewCustomField = !showNewCustomField">
                 <i class="material-icons">label</i> <span i18n="@@profileCFDialog.addProfileField">ADD PROFILE FIELD</span>
              </button>
              <div class="add-field" *ngIf="showNewCustomField">
@@ -72,10 +72,10 @@
                  <label class="onoffswitch-label" style="margin-left: 10px; margin-right: 10px;" for="inputType" i18n="@@profileCFDialog.hideInBusinessCard">Hide in Business Card</label>
 
                  <div class="actions">
-                     <button appDebounceClick class="col-md-4 btn btn-primary" (click)="createCustomField()" i18n="@@profileCFDialog.save">
+                     <button class="col-md-4 btn btn-primary" (click)="createCustomField()" i18n="@@profileCFDialog.save">
                          Save
                      </button>
-                     <button appDebounceClick class="col-md-4 btn btn-danger" (click)="showNewCustomField = false; this.newCustomFieldTitle = ''" i18n="@@profileCFDialog.cancel">
+                     <button class="col-md-4 btn btn-danger" (click)="showNewCustomField = false; this.newCustomFieldTitle = ''" i18n="@@profileCFDialog.cancel">
                          Cancel
                      </button>
                  </div>

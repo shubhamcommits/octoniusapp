@@ -39,7 +39,7 @@
                     <app-secured-image *ngIf="i==activeQuestionIndex && question?.image_url"
                         [imgURL]="question?.image_url"
                         [service]="'flamingo'" [inlineStyle]="'width: 30px;height: 30px;'"></app-secured-image>
-                    <button appDebounceClick *ngIf="i==activeQuestionIndex && question?.image_url && !flamingo?.publish" class="btn removeImageBtn" style="width: 30px;height: 30px;margin: 0px !important;"
+                    <button *ngIf="i==activeQuestionIndex && question?.image_url && !flamingo?.publish" class="btn removeImageBtn" style="width: 30px;height: 30px;margin: 0px !important;"
                         (click)="removeImage(i)">
                        <b>X</b>
                     </button>
@@ -48,7 +48,7 @@
                     <!-- background color remove start-->
                     <div *ngIf="i==activeQuestionIndex && question?.background_color" style="height: 30px">
                       <div style="width: 30px; height: 30px; float:left; background-color: {{question?.background_color}};"></div>
-                      <button appDebounceClick *ngIf="!flamingo?.publish"
+                      <button *ngIf="!flamingo?.publish"
                           class="btn removeImageBtn"
                           style="width: 30px;height: 30px;margin: 0px !important;"
                           (click)="removeBackgroundColor(i)">
@@ -61,7 +61,7 @@
                     <!-- background color remove start-->
                     <div *ngIf="i==activeQuestionIndex && question?.text_color" style="height: 30px">
                       <div style="width: 30px; height: 30px; float:left; background-color: {{question?.text_color || '#000000' }}"></div>
-                      <button appDebounceClick *ngIf="!flamingo?.publish"
+                      <button *ngIf="!flamingo?.publish"
                           class="btn removeImageBtn"
                           style="width: 30px;height: 30px;margin: 0px !important;"
                           (click)="removeTextColor(i)">
@@ -203,7 +203,7 @@
 
             <!-- Add new question dropdown start -->
             <div class="btn-menu-container" *ngIf="!flamingo?.publish">
-                <button appDebounceClick class="btn btn-warning" mat-button [matMenuTriggerFor]="myMenu">
+                <button class="btn btn-warning" mat-button [matMenuTriggerFor]="myMenu">
                     <span>
                         <i class="material-icons">add_circle</i>
                     </span>
@@ -331,9 +331,9 @@
 
                 <br/><br/>
 
-                <button appDebounceClick *ngIf="activeQuestion?.type==='Thanks'"
+                <button *ngIf="activeQuestion?.type==='Thanks'"
                     class="btn btn-success" i18n="@@flamingoEditor.submit">Submit</button>
-                <button appDebounceClick *ngIf="activeQuestion?.type==='Welcome'"
+                <button *ngIf="activeQuestion?.type==='Welcome'"
                     class="btn btn-primary" i18n="@@flamingoEditor.start">Start</button>
             </div>
             <!-- welcome and thanks question type preview div end-->
@@ -361,25 +361,25 @@
                         class="input-answer" />
                     <!-- yes/no question button -->
                     <div style="margin-top: 50px;" *ngIf="activeQuestion?.type==='Yes/No'">
-                        <button appDebounceClick class="btn btn-success">{{activeQuestion?.positive_option_text || 'Positive'}}</button>
+                        <button class="btn btn-success">{{activeQuestion?.positive_option_text || 'Positive'}}</button>
                         <br />
                         <br />
-                        <button appDebounceClick class="btn btn-danger">{{activeQuestion?.negative_option_text || 'Negative'}}</button>
+                        <button class="btn btn-danger">{{activeQuestion?.negative_option_text || 'Negative'}}</button>
                     </div>
 
                     <!-- question scale scale buttons and labels -->
                     <div style="margin-top: 50px;" *ngIf="activeQuestion?.type==='Scale'">
-                        <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 0" class="scale-button" ng>0</button>
-                        <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 1" class="scale-button">1</button>
-                        <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 2" class="scale-button">2</button>
-                        <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 3" class="scale-button">3</button>
-                        <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 4" class="scale-button">4</button>
-                        <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 5" class="scale-button">5</button>
-                        <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 6" class="scale-button">6</button>
-                        <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 7" class="scale-button">7</button>
-                        <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 8" class="scale-button">8</button>
-                        <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 9" class="scale-button">9</button>
-                        <button appDebounceClick *ngIf="activeQuestion?.scale?.size > 10" class="scale-button">10</button>
+                        <button *ngIf="activeQuestion?.scale?.size > 0" class="scale-button" ng>0</button>
+                        <button *ngIf="activeQuestion?.scale?.size > 1" class="scale-button">1</button>
+                        <button *ngIf="activeQuestion?.scale?.size > 2" class="scale-button">2</button>
+                        <button *ngIf="activeQuestion?.scale?.size > 3" class="scale-button">3</button>
+                        <button *ngIf="activeQuestion?.scale?.size > 4" class="scale-button">4</button>
+                        <button *ngIf="activeQuestion?.scale?.size > 5" class="scale-button">5</button>
+                        <button *ngIf="activeQuestion?.scale?.size > 6" class="scale-button">6</button>
+                        <button *ngIf="activeQuestion?.scale?.size > 7" class="scale-button">7</button>
+                        <button *ngIf="activeQuestion?.scale?.size > 8" class="scale-button">8</button>
+                        <button *ngIf="activeQuestion?.scale?.size > 9" class="scale-button">9</button>
+                        <button *ngIf="activeQuestion?.scale?.size > 10" class="scale-button">10</button>
 
                         <div *ngIf="activeQuestion.show_scale_labels"
                             [ngStyle]="{'position':'relative','width': (activeQuestion.scale.size * 63)+'px'}">

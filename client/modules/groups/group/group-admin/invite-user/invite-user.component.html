@@ -15,7 +15,7 @@
         (outputEmail)="getValidEmail($event)" class="email-search">
       </app-email-input>
 
-      <button appDebounceClick class="btn btn-primary" [disabled]="!isValidEmail"
+      <button class="btn btn-primary" [disabled]="!isValidEmail"
           (click)="inviteUser(workspaceData?._id, this.email, groupData?._id)"
           i18n="@@groupInviteUser.inviteToJoin">
         Invite to Join

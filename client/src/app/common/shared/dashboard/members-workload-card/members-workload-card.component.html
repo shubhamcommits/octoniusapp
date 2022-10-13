@@ -42,7 +42,7 @@
                     [imgURL]="member?.profile_pic"
                     [service]="'user'"
                     [styleClass]="'ml-2 feed-avatar'"
-                    appDebounceClick (click)="openFullscreenModal(member?._id)"></app-secured-image>
+                    (click)="openFullscreenModal(member?._id)"></app-secured-image>
                 </div>
                 <div class="name">
                   {{ member?.first_name }}  {{ member?.last_name }}

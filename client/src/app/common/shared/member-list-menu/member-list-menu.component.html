@@ -1,4 +1,4 @@
-<button appDebounceClick [matMenuTriggerFor]="cloneTaskSearchMenu" #trigger="matMenuTrigger"
+<button [matMenuTriggerFor]="cloneTaskSearchMenu" #trigger="matMenuTrigger"
   *ngIf="menuFor==='Filter'"
   [ngStyle]="{'cursor': 'pointer','color':filterfor==='users'?'green':'black'}"
   class="dropdownbtn">
@@ -8,7 +8,7 @@
       [service]="'user'"
       [styleClass]="'feed-avatar'"></app-secured-image>
 </button>
-<button appDebounceClick mat-menu-item [matMenuTriggerFor]="cloneTaskSearchMenu" *ngIf="menuFor==='Task'">
+<button mat-menu-item [matMenuTriggerFor]="cloneTaskSearchMenu" *ngIf="menuFor==='Task'">
     <i class="material-icons-outlined">recent_actors</i>
     <span i18n="@@memberListMenu.cloneTask">CLONE TASK</span>
 </button>
@@ -22,7 +22,7 @@
             </div>
             <ul class="assignee-list">
                 <li appHighlight class="assignee-list-item" *ngFor="let member of groupMembers | appFilter: searchText"
-                    appDebounceClick (click)="getMemberDetails(member._id)" [searchedWord]="searchText" [content]="member">
+                    (click)="getMemberDetails(member._id)" [searchedWord]="searchText" [content]="member">
                     {{ member.first_name }} {{ member.last_name }}
                 </li>
             </ul>

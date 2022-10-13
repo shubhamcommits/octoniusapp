@@ -1,7 +1,7 @@
 <div class="dialog-content">
   <mat-dialog-actions align="end" class="mat-dialog-actions">
       <div class="action-box">
-          <a mat-dialog-close appDebounceClick (click)="closeDialog()">
+          <a mat-dialog-close (click)="closeDialog()">
             <i class="material-icons" style="cursor: pointer">close</i>
           </a>
       </div>
@@ -28,10 +28,10 @@
     </div>
 
     <div class="clearfix save-content">
-      <button appDebounceClick mat-dialog-close (click)="closeDialog()" class="btn float-left btn-danger btn-md" i18n="@@userAvailabilityDaysDialog.cancel">
+      <button mat-dialog-close (click)="closeDialog()" class="btn float-left btn-danger btn-md" i18n="@@userAvailabilityDaysDialog.cancel">
         Cancel
       </button>
-      <button appDebounceClick [disabled]="selectedReason == ''" class="btn float-right btn-primary btn-md" (click)="confirmDays()" i18n="@@userAvailabilityDaysDialog.save">
+      <button [disabled]="selectedReason == ''" class="btn float-right btn-primary btn-md" (click)="confirmDays()" i18n="@@userAvailabilityDaysDialog.save">
         Save
       </button>
     </div>

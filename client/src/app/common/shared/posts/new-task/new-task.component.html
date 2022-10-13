@@ -1,6 +1,6 @@
 <div *ngIf="!subtask">
   <div class="task-box" *ngIf="!column.addTask">
-    <button appDebounceClick class="btn btn-block task muted" (click)="column.addTask = true">
+    <button class="btn btn-block task muted" (click)="column.addTask = true">
       <i class="material-icons-outlined">add</i>
       <span *ngIf="!saveAsNorthStar && !saveAsIdea" i18n="@@newTask.newTask">New Task</span>
       <span *ngIf="saveAsNorthStar" i18n="@@newTask.newNorthStar">New North Star</span>
@@ -12,15 +12,15 @@
 
     <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer; line-height: 38px;">expand_more</i>
     <mat-menu #menu="matMenu">
-      <a mat-menu-item appDebounceClick (click)="changeTaskType(false, false)">
+      <a mat-menu-item (click)="changeTaskType(false, false)">
         <span i18n="@@newTask.task">Task</span>
       </a>
       <li class="dropdown-divider"></li>
-      <a mat-menu-item appDebounceClick (click)="changeTaskType(true, false)">
+      <a mat-menu-item (click)="changeTaskType(true, false)">
         <span i18n="@@newTask.northStar">North Star</span>
       </a>
       <li class="dropdown-divider" *ngIf="isIdeaModuleAvailable"></li>
-      <a mat-menu-item appDebounceClick (click)="changeTaskType(false, true)" *ngIf="isIdeaModuleAvailable">
+      <a mat-menu-item (click)="changeTaskType(false, true)" *ngIf="isIdeaModuleAvailable">
         <span i18n="@@newTask.idea">Idea</span>
       </a>
     </mat-menu>
@@ -38,7 +38,7 @@
 </div>
 
 <div *ngIf="subtask">
-  <button appDebounceClick class="btn btn-block task muted" (click)="addSubTask = true" *ngIf="subtask && !addSubTask">
+  <button class="btn btn-block task muted" (click)="addSubTask = true" *ngIf="subtask && !addSubTask">
     <i class="material-icons-outlined">add</i> <span i18n="@@newTask.newTask">New Task</span>
   </button>
   <div class="add-task" *ngIf="subtask && addSubTask">

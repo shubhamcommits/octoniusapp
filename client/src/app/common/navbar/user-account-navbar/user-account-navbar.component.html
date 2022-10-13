@@ -9,7 +9,7 @@
             [styleClass]="'mr-3 feed-avatar'"
             [placement]="'right'"
             [tooltip]="'Change your avatar'"
-            appDebounceClick (click)="openDetails(userContent)"></app-secured-image>
+            (click)="openDetails(userContent)"></app-secured-image>
         <!-- My user avatar ends -->
 
 
@@ -29,7 +29,7 @@
               [routerLink]="['/dashboard', 'user', 'clouds']"
               routerLinkActive="active"
               [ngClass]="activeState == 'clouds'?'nav-link active-nav':'nav-link'"
-              appDebounceClick (click)="changeState('clouds')">
+              (click)="changeState('clouds')">
                 <span i18n="@@userAccountNavbar.integrations">Integrations</span>
                 <span class="sr-only">(current)</span>
           </a>
@@ -39,7 +39,7 @@
               [routerLink]="['/dashboard', 'user', 'workload']"
               routerLinkActive="active"
               [ngClass]="activeState == 'workload'?'nav-link active-nav':'nav-link'"
-              appDebounceClick (click)="changeState('workload')">
+              (click)="changeState('workload')">
                 <span i18n="@@userAccountNavbar.timeOff">Time off</span>
                 <span class="sr-only">(current)</span>
           </a>

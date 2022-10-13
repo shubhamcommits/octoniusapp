@@ -12,7 +12,7 @@
         </app-email-input>
     </div>
 
-    <button appDebounceClick class="btn btn-primary" [disabled]="!isValidEmail"
+    <button class="btn btn-primary" [disabled]="!isValidEmail"
       (click)="inviteUser(workspaceData?._id, this.email)"
       i18n="@@workspaceInviteUser.inviteToJoin">
         Invite to Join

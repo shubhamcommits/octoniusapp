@@ -25,7 +25,7 @@
       <div class="filter-cell">
 
         <div *ngFor="let skill of advancedFilters?.skills; let i = index;">
-          <button appDebounceClick type="button" name="button" class="btn tagslabel" (click)="removeSkill(i)">
+          <button type="button" name="button" class="btn tagslabel" (click)="removeSkill(i)">
             {{skill}}
             <i class="material-icons" matTooltipPosition="above" matTooltip="Delete this skill">close</i>
           </button>
@@ -64,11 +64,11 @@
     </div>
 
     <div class="actions">
-      <button appDebounceClick class="btn btn-outline-danger" (click)="clear()" i18n="@@peopleDirectory.clear">
+      <button class="btn btn-outline-danger" (click)="clear()" i18n="@@peopleDirectory.clear">
         Clear
       </button>
       &nbsp;&nbsp;
-      <button appDebounceClick class="btn btn-primary" (click)="showAdvancedFilters = !showAdvancedFilters" i18n="@@peopleDirectory.close">
+      <button class="btn btn-primary" (click)="showAdvancedFilters = !showAdvancedFilters" i18n="@@peopleDirectory.close">
         Close
       </button>
     </div>

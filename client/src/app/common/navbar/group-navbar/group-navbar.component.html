@@ -11,7 +11,7 @@
         <!-- Group Avatar starts -->
         <app-secured-image *ngIf="groupData && !myWorkplace && isAdmin" [imgURL]="groupData?.group_avatar" [service]="'group'"
           [tooltip]="'Change group avatar'" [placement]="'right'" [styleClass]="'mr-3 feed-avatar'"
-          appDebounceClick (click)="openDetails(content)"></app-secured-image>
+          (click)="openDetails(content)"></app-secured-image>
 
         <app-secured-image *ngIf="groupData && !myWorkplace && !isAdmin" [imgURL]="groupData?.group_avatar" [service]="'group'"
           [placement]="'right'" [styleClass]="'mr-3 feed-avatar'"></app-secured-image>
@@ -42,7 +42,7 @@
 
       <li class="nav-item" *ngIf="myWorkplace || !groupData" >
         <a [ngClass]="activeState == 'myspace_inbox'?'nav-link active-nav':'nav-link'"
-            appDebounceClick (click)="changeState('myspace_inbox')"
+            (click)="changeState('myspace_inbox')"
             routerLink="/dashboard/myspace/inbox"
             routerLinkActive="active" i18n="@@groupNavbar.inbox">
               Inbox
@@ -50,7 +50,7 @@
       </li>
       <li class="nav-item" *ngIf="myWorkplace || !groupData">
         <a [ngClass]="activeState == 'myspace_tasks'?'nav-link active-nav':'nav-link'"
-            appDebounceClick (click)="changeState('myspace_tasks')"
+            (click)="changeState('myspace_tasks')"
             routerLink="/dashboard/myspace/tasks"
             routerLinkActive="active" i18n="@@groupNavbar.tasks">
               Tasks
@@ -58,7 +58,7 @@
       </li>
       <li class="nav-item" *ngIf="myWorkplace">
         <a [ngClass]="activeState == 'groups_activity'?'nav-link active-nav':'nav-link'"
-            appDebounceClick (click)="changeState('groups_activity')" routerLink="/dashboard/work/groups/activity"
+            (click)="changeState('groups_activity')" routerLink="/dashboard/work/groups/activity"
             routerLinkActive="active">
               <span class="dot dot-notes"></span>
               <span i18n="@@groupNavbar.notes"> Notes</span>
@@ -66,7 +66,7 @@
       </li>
       <li class="nav-item" *ngIf="myWorkplace">
         <a [ngClass]="activeState == 'groups_tasks'?'nav-link active-nav':'nav-link'"
-            appDebounceClick (click)="changeState('groups_tasks')"
+            (click)="changeState('groups_tasks')"
             routerLink="/dashboard/work/groups/tasks"
             routerLinkActive="active">
               <span class="dot dot-personal-tasks"></span>
@@ -75,7 +75,7 @@
       </li>
       <li class="nav-item" *ngIf="myWorkplace">
         <a [ngClass]="activeState == 'groups_files'?'nav-link active-nav':'nav-link'"
-            appDebounceClick (click)="changeState('groups_files')"
+            (click)="changeState('groups_files')"
             routerLink="/dashboard/work/groups/files"
             routerLinkActive="active">
               <span class="dot dot-personal-files"></span>
@@ -85,7 +85,7 @@
 
       <li class="nav-item">
         <a *ngIf="!myWorkplace" [ngClass]="activeState == 'groups_activity'?'nav-link active-nav':'nav-link'"
-            appDebounceClick (click)="changeState('groups_activity')"
+            (click)="changeState('groups_activity')"
             routerLink="/dashboard/work/groups/activity"
             routerLinkActive="active" i18n="@@groupNavbar.activity">
               Activity
@@ -93,7 +93,7 @@
       </li>
       <li class="nav-item">
           <a *ngIf="!myWorkplace" [ngClass]="activeState == 'groups_tasks'?'nav-link active-nav':'nav-link'"
-              appDebounceClick (click)="changeState('groups_tasks')"
+              (click)="changeState('groups_tasks')"
               routerLink="/dashboard/work/groups/tasks"
               routerLinkActive="active"
               i18n="@@groupNavbar.tasks">
@@ -102,7 +102,7 @@
       </li>
       <li class="nav-item">
           <a *ngIf="!myWorkplace" [ngClass]="activeState == 'groups_files'?'nav-link active-nav':'nav-link'"
-              appDebounceClick (click)="changeState('groups_files')"
+              (click)="changeState('groups_files')"
               routerLink="/dashboard/work/groups/files"
               routerLinkActive="active"
               i18n="@@groupNavbar.files">
@@ -112,7 +112,7 @@
 
       <li class="nav-item" *ngIf="!myWorkplace">
           <a [ngClass]="activeState == 'groups_members'?'nav-link active-nav':'nav-link'"
-              appDebounceClick (click)="changeState('groups_members')"
+              (click)="changeState('groups_members')"
               routerLink="/dashboard/work/groups/members"
               routerLinkActive="active"
               i18n="@@groupNavbar.members">
@@ -122,7 +122,7 @@
 
       <li class="nav-item d-none d-md-block" *ngIf="!myWorkplace && isAdmin && !isCampaign">
           <a [ngClass]="activeState == 'groups_dashboard'?'nav-link active-nav':'nav-link'"
-              appDebounceClick (click)="changeState('groups_dashboard')"
+              (click)="changeState('groups_dashboard')"
               routerLink="/dashboard/work/groups/dashboard"
               routerLinkActive="active"
               i18n="@@groupNavbar.dashboard">
@@ -133,7 +133,7 @@
       <!-- Campaign is Enabled -->
       <li class="nav-item" *ngIf="!myWorkplace && isCampaign">
         <a [ngClass]="activeState == 'groups_reports'?'nav-link active-nav':'nav-link'"
-            appDebounceClick (click)="changeState('groups_reports')"
+            (click)="changeState('groups_reports')"
             routerLink="/dashboard/work/groups/reports"
             routerLinkActive="active"
             i18n="@@groupNavbar.reports">
@@ -144,7 +144,7 @@
 
       <li class="nav-item" *ngIf="!myWorkplace && isAdmin">
           <a [ngClass]="activeState == 'groups_admin'?'nav-link active-nav':'nav-link'"
-              appDebounceClick (click)="changeState('groups_admin')"
+              (click)="changeState('groups_admin')"
               routerLink="/dashboard/work/groups/admin"
               routerLinkActive="active"
               i18n="@@groupNavbar.admin">

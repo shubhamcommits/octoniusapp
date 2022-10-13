@@ -37,17 +37,17 @@
             </ng-template>
             <!-- FORGOT PASSWORD MODULE ENDS -->
 
-            <button appDebounceClick type="submit" class="btn btn-primary btn-block" (click)="signIn()" i18n="@@welcomePage.logIn">LOG IN</button>
+            <button type="submit" class="btn btn-primary btn-block" (click)="signIn()" i18n="@@welcomePage.logIn">LOG IN</button>
 
           </div>
 
           <div  *ngIf="ssoAvailable" style="width: 100%; margin: 80px auto 0 auto; padding-top: 30px; align-items: center; text-align: center; border-top: 1px solid #005fd521; ">
-            <button appDebounceClick *ngIf="activeDirectoryAvailable" class="btn btn-primary btn-block" (click)="signInAD()">
+            <button *ngIf="activeDirectoryAvailable" class="btn btn-primary btn-block" (click)="signInAD()">
               <span class="material-icons">fingerprint</span>
               <span i18n="@@welcomePage.accessWithAD">Access with Azure AD</span>
             </button>
             <br/>
-            <button appDebounceClick *ngIf="googleAvailable" class="btn btn-primary google-icon" (click)="signInGoogle()">
+            <button *ngIf="googleAvailable" class="btn btn-primary google-icon" (click)="signInGoogle()">
               <img src="assets/images/btn_google_light_normal_ios.svg">
               <span i18n="@@welcomePage.accessWithGoogle" class="mr-1 ml-1">Sign in with Google</span>
             </button>
@@ -57,7 +57,7 @@
             <p class="text-center muted" style="margin-top: 50px;" i18n="@@welcomePage.firstTimeHere">
               First time here? Create your account.
             </p>
-            <button appDebounceClick type="button" class="btn btn-outline-secondary btn-block"
+            <button type="button" class="btn btn-outline-secondary btn-block"
                 [routerLink]="['/authentication', 'sign-up']" routerLinkActive="router-link-active"
                 i18n="@@welcomePage.signUp">
               SIGN UP

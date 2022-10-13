@@ -11,7 +11,7 @@
             <!-- Component search bar starts -->
             <input (keyup)="groupsSearchQuery(query)" type="text" [(ngModel)]="query" class="searchTerm"
                 [placeholder]="searchBarPlaceholder">
-            <button appDebounceClick type="submit" class="searchButton">
+            <button type="submit" class="searchButton">
                 <i class="material-icons">search</i>
             </button>
             <!-- Component search bar ends -->
@@ -43,7 +43,7 @@
 
                                   <!-- Changing role functionality starts -->
                                   <div class="dropdown" *ngIf="currentUser.role == 'owner' || currentUser.role == 'admin'">
-                                    <button appDebounceClick class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
                                         <span i18n="@@adminGroups.manageGroup">Manage Group</span>
                                         <span class="caret"></span>
                                     </button>
@@ -85,7 +85,7 @@
 
                                   <!-- Changing role functionality starts -->
                                   <div class="dropdown" *ngIf="currentUser.role == 'owner' || currentUser.role == 'admin'">
-                                    <button appDebounceClick class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
                                       <span i18n="@@adminGroups.manageGroup">Manage Group</span>
                                         <span class="caret"></span>
                                     </button>

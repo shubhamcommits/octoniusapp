@@ -1,5 +1,5 @@
 <div class="board-column">
-    <button appDebounceClick class="btn create-column" (click)="this.showCreateColumn = !this.showCreateColumn">
+    <button class="btn create-column" (click)="this.showCreateColumn = !this.showCreateColumn">
       <i class="material-icons-outlined">table_chart</i>
       <span i18n="@@createColumn.newSection">New section</span>
     </button>
@@ -7,9 +7,9 @@
     <div class="add-column" *ngIf="this.showCreateColumn">
         <input class="form-control" type="text" placeholder="Section name" [(ngModel)]="newColumn" (keyup)="enableFunctionKeys($event)">
         <div class="container">
-            <button appDebounceClick class="col-md-4 btn btn-sm btn-primary"
+            <button class="col-md-4 btn btn-sm btn-primary"
                 (click)="this.showCreateColumn = !this.showCreateColumn; openCreateColumn()" i18n="@@createColumn.save">Save</button>
-            <button appDebounceClick class="col-md-4 btn btn-sm btn-danger"
+            <button class="col-md-4 btn btn-sm btn-danger"
                 (click)=" this.showCreateColumn = !this.showCreateColumn" i18n="@@createColumn.cancel">Cancel</button>
         </div>
     </div>

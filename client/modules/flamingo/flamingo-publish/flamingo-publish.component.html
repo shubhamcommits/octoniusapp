@@ -21,8 +21,8 @@
               </i>
             </div>
             <div class="btn-style">
-              <button appDebounceClick class="btn btn-primary" *ngIf="flamingo && !flamingo.publish" (click)="publish()" i18n="@@flamingoPublish.publish">PUBLISH</button>
-              <button appDebounceClick class="btn btn-danger" *ngIf="flamingo && flamingo.publish" (click)="publish()" i18n="@@flamingoPublish.unpublish">UNPUBLISH</button>
+              <button class="btn btn-primary" *ngIf="flamingo && !flamingo.publish" (click)="publish()" i18n="@@flamingoPublish.publish">PUBLISH</button>
+              <button class="btn btn-danger" *ngIf="flamingo && flamingo.publish" (click)="publish()" i18n="@@flamingoPublish.unpublish">UNPUBLISH</button>
             </div>
         </div>
     </div>

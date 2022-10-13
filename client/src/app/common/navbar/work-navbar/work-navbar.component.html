@@ -88,12 +88,12 @@
   <li *ngIf="existsElement(loungeData)" class="nav-item d-none d-md-block" style="margin-top: 20px;">
     <!-- Static Title starts -->
     <span *ngIf="!editTitle && loungeData.name == 'Global stories'"
-        appDebounceClick (click)="(isUserManager && loungeData.name != 'Global stories') ? editTitle = !editTitle : null">
+        (click)="(isUserManager && loungeData.name != 'Global stories') ? editTitle = !editTitle : null">
       {{ loungeData?.name }}
     </span>
 
     <span *ngIf="!editTitle && loungeData.name != 'Global stories'"
-        appDebounceClick (click)="(isUserManager && loungeData.name != 'Global stories') ? editTitle = !editTitle : null"
+        (click)="(isUserManager && loungeData.name != 'Global stories') ? editTitle = !editTitle : null"
         matTooltip="Click me to rename"
         matTooltipPosition="below">
       {{ loungeData?.name }}
@@ -117,7 +117,7 @@
     <i class="material-icons-outlined" *ngIf="storyData.type == 'event'">local_activity</i>
     <!-- Static Title starts -->
     <span *ngIf="!editTitle"
-        appDebounceClick (click)="(isUserManager) ? editTitle = !editTitle : null"
+        (click)="(isUserManager) ? editTitle = !editTitle : null"
         matTooltip="Click me to rename"
         matTooltipPosition="below">{{ storyData?.name }}
     </span>

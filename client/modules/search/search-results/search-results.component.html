@@ -87,7 +87,7 @@
     {{ data?.first_name }} {{ data?.last_name }}
 
     <!--<a [href]="generateUserURL(data._id)" target="_blank">-->
-    <a appDebounceClick (click)="openFullscreenModal(data._id)" style="cursor: pointer;">
+    <a (click)="openFullscreenModal(data._id)" style="cursor: pointer;">
       <span class="material-icons">badge</span>
     </a>
   </div>

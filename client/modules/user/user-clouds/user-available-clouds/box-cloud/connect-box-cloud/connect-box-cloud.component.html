@@ -5,7 +5,7 @@
         </p>
     </div>
     <div class="col-md-6 push-right">
-        <button appDebounceClick *ngIf="!boxUserExist()" id="box-connect" class="btn btn-primary btn-sm" (click) ="signInToBox()" i18n="@@connectBoxCloud.connect">Connect</button>
-        <button appDebounceClick *ngIf="boxUserExist()" class="btn btn-success btn-sm" i18n="@@connectBoxCloud.connected">Connected</button>
+        <button *ngIf="!boxUserExist()" id="box-connect" class="btn btn-primary btn-sm" (click) ="signInToBox()" i18n="@@connectBoxCloud.connect">Connect</button>
+        <button *ngIf="boxUserExist()" class="btn btn-success btn-sm" i18n="@@connectBoxCloud.connected">Connected</button>
     </div>
 </div>

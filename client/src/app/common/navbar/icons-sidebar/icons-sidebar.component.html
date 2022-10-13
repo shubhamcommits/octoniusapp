@@ -2,13 +2,13 @@
 <nav id="sidebar">
   <div class="sidebar-header">
     <!-- MENU BUTTON STARTS -->
-    <button appDebounceClick type="button" id="sidebarCollapse" class="btn dismiss" (click)="switchSideBar()" >
+    <button type="button" id="sidebarCollapse" class="btn dismiss" (click)="switchSideBar()" >
       <i class="material-icons">menu_open</i>
     </button>
     <!-- MENU BUTTON ENDS -->
 
     <!--
-    <a appDebounceClick (click)="changeToPersonalGroup()" routerLinkActive="router-link-active">
+    <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active">
       <img src="assets/images/white_logo.svg" alt="" class="octonius-logo">
     </a>
     -->
@@ -21,7 +21,7 @@
     
       <ul class="collapse list-unstyled" id="pageWorkspacesSubmenu">
         <li *ngFor="let workspace of userWorkspaces">
-          <a appDebounceClick (click)="goToWorkspace(workspace?._id || workspace)" style="padding: 10px 0;" [matTooltip]="workspace?.workspace_name">
+          <a (click)="goToWorkspace(workspace?._id || workspace)" style="padding: 10px 0;" [matTooltip]="workspace?.workspace_name">
             <app-secured-image [imgURL]="workspace?.workspace_avatar" [service]="'workspace'" [styleClass]="'avatar'">
             </app-secured-image>
           </a>
@@ -29,7 +29,7 @@
       </ul>
     </div>
     <div *ngIf="userWorkspaces?.length <= 0" class="components" style="margin-top: -25px; width: 78%;">
-      <a appDebounceClick (click)="changeToPersonalGroup()" routerLinkActive="router-link-active" style="padding: 10px 0;" [matTooltip]="workspaceData?.workspace_name">
+      <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active" style="padding: 10px 0;" [matTooltip]="workspaceData?.workspace_name">
         <app-secured-image [imgURL]="workspaceData?.workspace_avatar" [service]="'workspace'" [styleClass]="'avatar'">
         </app-secured-image>
       </a>
@@ -39,7 +39,7 @@
   <div class="menu-options">
       <ul class="list-unstyled components">
           <li>
-              <a appDebounceClick (click)="changeToPersonalGroup()" routerLinkActive="router-link-active">
+              <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active">
                 <i class="material-icons-outlined">home</i>
               </a>
           </li>
@@ -51,7 +51,7 @@
           </li>
 
           <li *ngFor="let group of userGroups">
-            <a appDebounceClick (click)="goToGroup(group?._id, 'groups_activity')">
+            <a (click)="goToGroup(group?._id, 'groups_activity')">
                 <app-secured-image
                     [imgURL]="group?.group_avatar"
                     [service]="'group'"
@@ -67,7 +67,7 @@
         </li>
         <li> <hr class="divider-line"></li>
         <li *ngIf="this.userData?.role === 'admin' || this.userData?.role === 'owner'">
-            <a appDebounceClick (click)="changeState('general')" class="nav-link" [routerLink]="['/dashboard', 'admin', 'general']" routerLinkActive="active">
+            <a (click)="changeState('general')" class="nav-link" [routerLink]="['/dashboard', 'admin', 'general']" routerLinkActive="active">
               <i class="material-icons">settings</i>
             </a>
         </li>
@@ -76,7 +76,7 @@
             <!-- USER PROFILE BADGE STARTS -->
             <a class="nav-link" *ngIf="this.userData"
                 [routerLink]="['/dashboard', 'user', 'profile']"
-                appDebounceClick (click)="changeState('profile')">
+                (click)="changeState('profile')">
                 <app-secured-image
                   [imgURL]="userData?.profile_pic"
                   [service]="'user'"

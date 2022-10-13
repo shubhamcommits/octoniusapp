@@ -53,7 +53,7 @@
 
                     <div *ngIf="field.name != 'priority'" style="display: flex;">
                       <div [ngStyle]="{'width': '30px', 'height': '30px', 'background-color': field?.badge_color }">
-                        <button appDebounceClick *ngIf="field?.badge_color"
+                        <button *ngIf="field?.badge_color"
                             class="btn removeImageBtn"
                             style="margin-left: -9px; margin-top: -5px;"
                             (click)="removeBadgeColor(field)">
@@ -68,7 +68,7 @@
         </div>
 
         <div class="newCustomFieldForm" style="padding: 10px; margin-top: 30px">
-            <button appDebounceClick class="btn badge-cf" (click)="showNewCustomField = !showNewCustomField">
+            <button class="btn badge-cf" (click)="showNewCustomField = !showNewCustomField">
                 <i class="material-icons">label</i>
                 <span i18n="@@filesCustomFieldDialog.addCustomField">ADD CUSTOM FIELD</span>
              </button>
@@ -92,10 +92,10 @@
                 </mat-form-field>
 
                 <div class="actions">
-                    <button appDebounceClick class="col-md-4 btn btn-primary" (click)="createCustomField()" i18n="@@filesCustomFieldDialog.save">
+                    <button class="col-md-4 btn btn-primary" (click)="createCustomField()" i18n="@@filesCustomFieldDialog.save">
                       Save
                     </button>
-                    <button appDebounceClick class="col-md-4 btn btn-danger" (click)="showNewCustomField = false; this.newCustomFieldTitle = ''"
+                    <button class="col-md-4 btn btn-danger" (click)="showNewCustomField = false; this.newCustomFieldTitle = ''"
                         i18n="@@filesCustomFieldDialog.cancel">
                       Cancel
                     </button>

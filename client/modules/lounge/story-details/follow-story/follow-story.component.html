@@ -1,5 +1,5 @@
 <span *ngIf="userData && storyData">
-  <button appDebounceClick class="btn btn-link">
+  <button class="btn btn-link">
     <i *ngIf="!followedByUser" class="material-icons-outlined muted" matTooltipPosition="above"
       matTooltip="Follow Story" (click)="followStory()">star_outline</i>
     <i *ngIf="followedByUser" class="material-icons text-warning" matTooltipPosition="above"

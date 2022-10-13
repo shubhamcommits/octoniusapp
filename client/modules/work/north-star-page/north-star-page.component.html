@@ -21,7 +21,7 @@
 
   <div *ngFor="let task of northStarTasks; let i = index;">
 
-    <a appDebounceClick (click)="openFullscreenModal(task)">
+    <a (click)="openFullscreenModal(task)">
       <!-- My Space Today Tasks -->
       <div>
         <div class="media card-tile overview-task">

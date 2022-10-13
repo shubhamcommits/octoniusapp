@@ -1,6 +1,6 @@
 <mat-dialog-actions align="end">
   <div class="action-box">
-      <a appDebounceClick (click)="onCloseDialog()" mat-dialog-close>
+      <a (click)="onCloseDialog()" mat-dialog-close>
         <i class="material-icons" style="cursor: pointer">close</i>
       </a>
   </div>
@@ -81,13 +81,13 @@
         </div>
 
         <div class="clearfix save-content">
-            <button appDebounceClick *ngIf="canEdit" [disabled]="!contentChanged"
+            <button *ngIf="canEdit" [disabled]="!contentChanged"
               class="btn float-right btn-primary btn-md"
               (click)="updateDetails('change_content')" i18n="@@groupCreatePostDialog.save">
                 Save
             </button>
 
-            <button appDebounceClick *ngIf="!showSubtasks && !postData?.task?._parent_task && postData?.type === 'task' && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id) && canEdit"
+            <button *ngIf="!showSubtasks && !postData?.task?._parent_task && postData?.type === 'task' && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id) && canEdit"
               class="btn float-left btn-warning btn-md"
               (click)="prepareToAddSubtasks()"
               i18n="@@groupCreatePostDialog.addSubtask">

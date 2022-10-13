@@ -1,7 +1,7 @@
 <div *ngIf="type === 'text'">
     <div *ngIf="!editing">
         <p class="list-card-title inline-edit"
-            appDebounceClick (click)="edit(value)"
+            (click)="edit(value)"
             (focus)="edit(value);"
             tabindex="0">
             {{value | truncatetext:60}}
@@ -32,19 +32,19 @@
         <p *ngIf="customFieldValue !== '' && customFieldName == 'priority'"
             [ngClass]="getPriorityClass(customFieldValue)"
             style="margin-left: auto; margin-right: auto;"
-            appDebounceClick (click)="edit(customFieldValue)"
+            (click)="edit(customFieldValue)"
             (focus)="edit(customFieldValue);"
             tabindex="0">
               {{ customFieldValue }}
         </p>
         <p class="list-card-title inline-edit" *ngIf="customFieldValue !== '' && customFieldName != 'priority'"
-            appDebounceClick (click)="edit(customFieldValue)"
+            (click)="edit(customFieldValue)"
             (focus)="edit(customFieldValue);"
             tabindex="0">
             {{customFieldValue}}
         </p>
         <p *ngIf="customFieldValue === ''"
-            appDebounceClick (click)="edit(customFieldValue)"
+            (click)="edit(customFieldValue)"
             (focus)="edit(customFieldValue);"
             tabindex="0" class="inline-edit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
     </div>
@@ -61,7 +61,7 @@
           <input type="text" [name]="customFieldName" [(ngModel)]="customFieldValue"
               class="col" style="width: 94px;" [value]="customFieldValue"
               (keyup.enter)="onCustomFieldChange($event)" />
-          <i appDebounceClick (click)="onCustomFieldChange($event);" class="material-icons muted mr-5"
+          <i (click)="onCustomFieldChange($event);" class="material-icons muted mr-5"
             style="cursor: pointer; font-size: 14px; margin-left: 10px;color: #0bc6a0;">save</i>
         </div>
     </div>

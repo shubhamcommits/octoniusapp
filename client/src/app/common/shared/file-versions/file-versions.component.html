@@ -1,6 +1,6 @@
-<button appDebounceClick *ngIf="canEdit" style="margin-top: 20px; margin-right: 5px; margin-bottom: 5px;"
+<button *ngIf="canEdit" style="margin-top: 20px; margin-right: 5px; margin-bottom: 5px;"
   class="btn float-right btn-warning btn-md"
-  appDebounceClick (click)="file.click()">
+  (click)="file.click()">
     <i class="material-icons-outlined mr-2">upload_file</i>
     <span i18n="@@fileVersions.newVersion">New Version</span>
     <input #file type="file" placeholder="File" (change)="fileInput(file.files)" style="display: none;" />
@@ -21,7 +21,7 @@
     </a>
 
     <a *ngIf="(file?.type == 'file' && isOfficeFile(file?.original_name)) || file?.type === 'campaign'"
-        appDebounceClick (click)="openOfficeDoc(file?._id)" class="mt-0" style="cursor: pointer;">
+        (click)="openOfficeDoc(file?._id)" class="mt-0" style="cursor: pointer;">
       <img [src]="getFileIcon(file?.original_name)"
         onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
       <span i18n="@@fileVersions.version">Version</span>

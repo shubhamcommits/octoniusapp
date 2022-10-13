@@ -1,7 +1,7 @@
 <div class="card-tile">
     <div class="card-block">
         <h6 class="card-title"><b i18n="@@userprofessionalInformation.yourProfessionalInformation">Your professional information</b>
-            <button appDebounceClick *ngIf="currentUser" type="button" name="button" class="btn btn-link"
+            <button *ngIf="currentUser" type="button" name="button" class="btn btn-link"
                 (click)="openUpdateModel()">
                 <i class="material-icons">create</i>
             </button></h6>

@@ -6,14 +6,14 @@
     [alt]="assignee?.first_name + ' ' + assignee?.last_name"
     [styleClass]="'feed-avatar-small'"
     [tooltip]="assignee?.first_name + ' ' + assignee?.last_name"
-    appDebounceClick (click)="unassign(assignee._id)"></app-secured-image>
+    (click)="unassign(assignee._id)"></app-secured-image>
 
   <span *ngIf="(!assigned_to || assigned_to.length === 0) && type != 'filter'"
     i18n="@@multipleAssignments.unassigned">
       Unassigned
   </span>
 
-  <button appDebounceClick *ngIf="((!post?.task?.allocation || post?.task?.allocation == 0) || (assigned_to?.length < 1)) && canEdit"
+  <button *ngIf="((!post?.task?.allocation || post?.task?.allocation == 0) || (assigned_to?.length < 1)) && canEdit"
     mat-button [matMenuTriggerFor]="assigneeSearch" #trigger="matMenuTrigger" class="btn tagslabel">
       <span *ngIf="type != 'filter'"i18n="@@multipleAssignments.addAssignee">add assignee</span>
       <span *ngIf="type == 'filter'"i18n="@@multipleAssignments.addUser">add user</span>
@@ -26,11 +26,11 @@
           <label for="search-text" *ngIf="type != 'filter'"i18n="@@multipleAssignments.assignee">Assignee</label>
           <input type="email" class="form-control" id="search-text" aria-describedby="search-text" [(ngModel)]="searchText"
             placeholder="Search group member" autofocus
-            appDebounceClick (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+            (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
         </div>
         <ul class="assignee-list">
           <li appHighlight class="assignee-list-item" *ngFor="let member of groupMembers | appFilter: searchText"
-              appDebounceClick (click)="getMemberDetails(member)"
+              (click)="getMemberDetails(member)"
               [searchedWord]="searchText"
               [content]="member">
             {{ member.first_name }} {{ member.last_name }}

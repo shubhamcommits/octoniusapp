@@ -1,5 +1,5 @@
 <span *ngIf="userData && storyData">
-  <button appDebounceClick class="btn btn-link">
+  <button class="btn btn-link">
     <i *ngIf="likedByUser" matTooltipPosition="above" matTooltip="Unlike Story" class="material-icons text-primary" (click)="unlikeStory()">thumb_up</i>
     <i *ngIf="!likedByUser" class="material-icons-outlined muted" matTooltipPosition="above" matTooltip="Like Story" (click)="likeStory()">thumb_up</i>
   </button>

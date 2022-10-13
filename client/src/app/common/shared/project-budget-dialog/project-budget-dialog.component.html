@@ -1,7 +1,7 @@
 <div class="budget-dialog-content">
   <mat-dialog-actions align="end">
       <div class="action-box">
-          <a appDebounceClick (click)="cancel()" mat-dialog-close>
+          <a (click)="cancel()" mat-dialog-close>
           <i  class="material-icons" style="cursor: pointer">close</i>
           </a>
       </div>
@@ -55,11 +55,11 @@
           <span>
             <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
             <mat-menu #menu="matMenu">
-              <a mat-menu-item appDebounceClick (click)="editExpense(expense)">
+              <a mat-menu-item (click)="editExpense(expense)">
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">edit</i>
                 <span i18n="@@projectBudgetDialog.edit">Edit</span>
               </a>
-              <a mat-menu-item appDebounceClick (click)="removeExpense(expense)">
+              <a mat-menu-item (click)="removeExpense(expense)">
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
                 <span i18n="@@projectBudgetDialog.delete">Delete</span>
             </a>
@@ -91,7 +91,7 @@
               <mat-form-field style="width:100%; margin-top: -20px;">
                 <mat-select ngDefaultControl
                   (selectionChange)="saveBudget()"
-                  appDebounceClick (click)="$event.stopPropagation()"
+                  (click)="$event.stopPropagation()"
                   [(ngModel)]="budget.currency"
                   name="new_type">
                     <mat-option *ngFor="let t of types" [value]="t">{{ t }}</mat-option>

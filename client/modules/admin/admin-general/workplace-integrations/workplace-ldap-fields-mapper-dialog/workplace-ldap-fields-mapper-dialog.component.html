@@ -51,10 +51,10 @@
     </div>
 
     <div style="margin-top: 20px; text-align: center;">
-      <button appDebounceClick *ngIf="!isGlobal" class="col-md-4 btn btn-primary" [disabled]="!ldapPropertiesNames || ldapPropertiesToMap.length <= 0" (click)="mapProperties()" i18n="@@workplaceLdapFieldsMapperDialog.map">
+      <button *ngIf="!isGlobal" class="col-md-4 btn btn-primary" [disabled]="!ldapPropertiesNames || ldapPropertiesToMap.length <= 0" (click)="mapProperties()" i18n="@@workplaceLdapFieldsMapperDialog.map">
         Map
       </button>
-      <button appDebounceClick *ngIf="isGlobal" class="col-md-4 btn btn-primary" [disabled]="!ldapPropertiesNames || ldapPropertiesToMap.length <= 0" (click)="mapProperties()" i18n="@@workplaceLdapFieldsMapperDialog.saveMapping">
+      <button *ngIf="isGlobal" class="col-md-4 btn btn-primary" [disabled]="!ldapPropertiesNames || ldapPropertiesToMap.length <= 0" (click)="mapProperties()" i18n="@@workplaceLdapFieldsMapperDialog.saveMapping">
         Save Mapping
       </button>
     </div>

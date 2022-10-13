@@ -5,7 +5,7 @@
       <mat-form-field>
         <mat-select ngDefaultControl
                 (selectionChange)="periodSelected($event)"
-                appDebounceClick (click)="$event.stopPropagation()"
+                (click)="$event.stopPropagation()"
                 [(value)]="period"
                 name="period">
             <mat-option *ngFor="let p of periods" [value]="p.key">{{ p.value }}</mat-option>

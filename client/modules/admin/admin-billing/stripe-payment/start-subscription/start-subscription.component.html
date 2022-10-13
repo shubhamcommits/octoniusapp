@@ -18,8 +18,8 @@
   <!-- Start the Subscription -->
   <div *ngFor="let price of subscription_prices">
     <h6>
-      <!-- <button appDebounceClick (click)="handlePayment(price.id, price.amount)" class="ml-3 btn btn-md btn-primary"> -->
-      <button appDebounceClick (click)="startStripeCheckoutSession(price.id)"
+      <!-- <button (click)="handlePayment(price.id, price.amount)" class="ml-3 btn btn-md btn-primary"> -->
+      <button (click)="startStripeCheckoutSession(price.id)"
         class="ml-3 btn btn-md btn-primary"
         i18n="@@startSubscription.purchase">
           Purchase

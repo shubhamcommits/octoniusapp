@@ -20,7 +20,7 @@
             [(ngModel)]="enabledRights">
           <h6><b i18n="@@groupSettings.enableRAG">Enable restricted access groups</b></h6>
           <p class="card-text" i18n="@@groupSettings.RAGAllowAdminsToChose">RAG is the option for creating special bulks of users inside a group, in order to give them fine-grained control over something.<br> If you want only a certain group of users to see a task, or to edit a board section, or view/edit/delete a file etc.</p>
-          <button appDebounceClick button class="btn btn-primary btn-sm" (click)="openRAGModal()" *ngIf="enabledRights" i18n="@@groupSettings.manageRAG">Manage RAG</button>
+          <button button class="btn btn-primary btn-sm" (click)="openRAGModal()" *ngIf="enabledRights" i18n="@@groupSettings.manageRAG">Manage RAG</button>
         </mat-slide-toggle><br>
       </div>
 
@@ -115,7 +115,7 @@
         <h6><b i18n="@@groupSettings.backgroundImage">Select an image to be used as background in the group.</b></h6>
 
         <div>
-          <button appDebounceClick class="btn btn-primary" (click)="openDetails(content)" i18n="@@groupSettings.selectImageº">
+          <button class="btn btn-primary" (click)="openDetails(content)" i18n="@@groupSettings.selectImageº">
             Select Image
           </button>
         </div>
@@ -124,7 +124,7 @@
           <app-secured-image
               [imgURL]="groupData?.background_image"
               [service]="'group'" [inlineStyle]="'width: 30px;height: 30px;'"></app-secured-image>
-          <button appDebounceClick class="btn removeImageBtn" style="width: 30px;height: 30px;margin: 0px !important;"
+          <button class="btn removeImageBtn" style="width: 30px;height: 30px;margin: 0px !important;"
               (click)="removeImage()">
               <b>X</b>
           </button>
@@ -144,7 +144,7 @@
         <div *ngIf="groupData.background_color">
           <div [ngStyle]="{'float': 'left', 'width': '30px', 'height': '30px', 'background-color': groupData.background_color }">
           </div>
-          <button appDebounceClick class="btn removeImageBtn"
+          <button class="btn removeImageBtn"
               (click)="saveBackgroundColor(null)">
               <b>X</b>
           </button>

@@ -5,7 +5,7 @@
         </p>
     </div>
     <div class="col-md-6 push-right">
-        <button appDebounceClick *ngIf="!slackAuthSuccessful" id="slack-connect" class="btn btn-primary btn-sm" (click) ="slackAuth()" i18n="@@connectSlack.connect">Connect</button>
-        <button appDebounceClick *ngIf="slackAuthSuccessful" class="btn btn-success btn-sm" i18n="@@connectSlack.connected">Connected</button>
+        <button *ngIf="!slackAuthSuccessful" id="slack-connect" class="btn btn-primary btn-sm" (click) ="slackAuth()" i18n="@@connectSlack.connect">Connect</button>
+        <button *ngIf="slackAuthSuccessful" class="btn btn-success btn-sm" i18n="@@connectSlack.connected">Connected</button>
     </div>
 </div>

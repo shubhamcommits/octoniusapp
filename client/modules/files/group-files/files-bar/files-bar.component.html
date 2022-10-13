@@ -1,13 +1,13 @@
 <nav class="navbar d-none d-sm-block">
     <div class="rightside">
-      <button appDebounceClick class="btn badge-filters" [matMenuTriggerFor]="menuSort">
+      <button class="btn badge-filters" [matMenuTriggerFor]="menuSort">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" class="badge-filters">
           <path d="M16.199 17.219v-7.01h-2v7.01h-3l4 3.99 4-3.99h-3zm-7-14.01l-4 3.99h3v7.01h2v-7.01h3l-4-3.99z"/>
         </svg>
         <span i18n="@@filesBar.sort">Sort</span>
       </button>
 
-      <button appDebounceClick class="btn badge-filters" [matMenuTriggerFor]="menuFilter">
+      <button class="btn badge-filters" [matMenuTriggerFor]="menuFilter">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" class="badge-filters">
           <path d="M9.597 18.209h4v-2h-4v2zm-7-12v2h18v-2h-18zm3 7h12v-2h-12v2z"/>
         </svg>
@@ -16,7 +16,7 @@
 
       <span class="separator" *ngIf="isAdmin"></span>
 
-      <button appDebounceClick class="btn badge-cf" (click)="openCustomFieldsDialog()" *ngIf="isAdmin">
+      <button class="btn badge-cf" (click)="openCustomFieldsDialog()" *ngIf="isAdmin">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" class="badge-cf">
           <path d="M19 9l1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25L19 9zM19 15l-1.25 2.75L15 19l2.75 1.25L19 23l1.25-2.75L23 19l-2.75-1.25L19 15zM11.5 9.5L9 4 6.5 9.5 1 12l5.5 2.5L9 20l2.5-5.5L17 12l-5.5-2.5zm-1.51 3.49L9 15.17l-.99-2.18L5.83 12l2.18-.99L9 8.83l.99 2.18 2.18.99-2.18.99z"/>
         </svg>
@@ -26,7 +26,7 @@
 
       <span *ngIf="isAdmin" class="separator"></span>
 
-      <button appDebounceClick *ngIf="isAdmin" class="btn badge-cf" (click)="openSettingsDialog()">
+      <button *ngIf="isAdmin" class="btn badge-cf" (click)="openSettingsDialog()">
         <i class="material-icons">settings</i>
         <span i18n="@@filesBar.settings">Settings</span>
       </button>
@@ -64,7 +64,7 @@
 
   <a mat-menu-item class="overflowvisible widepanel">
     <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
-      <button appDebounceClick [matMenuTriggerFor]="menuDueDate" class="dropdownbtn" style="padding:0">
+      <button [matMenuTriggerFor]="menuDueDate" class="dropdownbtn" style="padding:0">
         <span [ngStyle]="{'cursor': 'pointer','color' : (filterfor==='created_today' ||
           filterfor==='created_last_week' ||
           filterfor==='created_14_days') ? '#005fd5' : 'black'}"

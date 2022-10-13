@@ -3,7 +3,7 @@
     <!-- Component search bar starts -->
     <input (keyup)="userSearchQuery(query)" type="text" [(ngModel)]="query" class="searchTerm"
         [placeholder]="placeholder">
-    <button appDebounceClick type="submit" class="searchButton">
+    <button type="submit" class="searchButton">
         <i class="material-icons">search</i>
     </button>
     <!-- Component search bar ends -->
@@ -24,7 +24,7 @@
             [imgURL]="member?.profile_pic"
             [service]="'user'"
             [styleClass]="'feed-avatar'"
-            appDebounceClick (click)="openFullscreenModal(member._id)"></app-secured-image>
+            (click)="openFullscreenModal(member._id)"></app-secured-image>
         <!-- Avatar Image of the member -->
 
         <div *ngIf="member.active || type == 'group'" class="media-body">
@@ -45,7 +45,7 @@
 
               <!-- Changing role functionality starts -->
               <div class="dropdown" *ngIf="member.role != 'owner' && type == 'workspace'">
-                  <button appDebounceClick class="btn btn-primary btn-sm dropdown-toggle"
+                  <button class="btn btn-primary btn-sm dropdown-toggle"
                     type="button" data-toggle="dropdown">
                       <span i18n="@@componentSearchBar.manageUser">Manage User</span>
                       <span class="caret"></span>
@@ -54,14 +54,14 @@
                   <!-- Menu Drawer Starts -->
                   <ul class="dropdown-menu">
                       <li class="dropdown-item" *ngIf="member.role != 'admin'"
-                          appDebounceClick (click)="changeRole(member._id, 'admin')" i18n="@@componentSearchBar.changeToAdmin">Change to Admin</li>
+                          (click)="changeRole(member._id, 'admin')" i18n="@@componentSearchBar.changeToAdmin">Change to Admin</li>
                       <li class="dropdown-item" *ngIf="member.role != 'manager'"
-                          appDebounceClick (click)="changeRole(member._id, 'manager')" i18n="@@componentSearchBar.changeToManager">Change to Work Manager</li>
+                          (click)="changeRole(member._id, 'manager')" i18n="@@componentSearchBar.changeToManager">Change to Work Manager</li>
                       <li class="dropdown-item" *ngIf="member.role != 'member'"
-                          appDebounceClick (click)="changeRole(member._id, 'member')" i18n="@@componentSearchBar.changeToMember">Change to Member</li>
+                          (click)="changeRole(member._id, 'member')" i18n="@@componentSearchBar.changeToMember">Change to Member</li>
                       <li class="dropdown-divider"></li>
                       <li class="dropdown-item">
-                        <button appDebounceClick type="button" class="btn btn-danger btn-sm"
+                        <button type="button" class="btn btn-danger btn-sm"
                           (click)="disableUserInWorkplace(member._id, workspaceId)" i18n="@@componentSearchBar.deactivateUser">Deactivate user</button>
                       </li>
                   </ul>
@@ -72,7 +72,7 @@
               <!-- Remove from Group -->
               <div class="dropdown"
                   *ngIf="(userData?.role === 'owner' || isGroupManager(userData?._id)) && type == 'group'">
-                  <button appDebounceClick class="btn btn-primary btn-sm dropdown-toggle"
+                  <button class="btn btn-primary btn-sm dropdown-toggle"
                     type="button" data-toggle="dropdown">
                       <span i18n="@@componentSearchBar.manageUser">Manage User</span>
                       <span class="caret"></span>
@@ -82,20 +82,20 @@
                   <ul class="dropdown-menu">
                       <!--
                       <li class="dropdown-item" *ngIf="isGroupManager(userData._id)"
-                            appDebounceClick (click)="openUpdatePasswordModal(member)">
-                          <button appDebounceClick type="button" name="button" class="btn btn-warning">
+                            (click)="openUpdatePasswordModal(member)">
+                          <button type="button" name="button" class="btn btn-warning">
                               <i class="material-icons">lock</i> Reset Password
                           </button>
                       </li>
                       <li class="dropdown-divider" *ngIf="isGroupManager(userData._id)"></li>
                       -->
                       <li class="dropdown-item" *ngIf="!isGroupManager(member._id)"
-                          appDebounceClick (click)="changeGroupRole(member, 'manager', groupId)" i18n="@@componentSearchBar.changeToGroupManager">Change to Group Manager</li>
+                          (click)="changeGroupRole(member, 'manager', groupId)" i18n="@@componentSearchBar.changeToGroupManager">Change to Group Manager</li>
                       <li class="dropdown-item" *ngIf="isGroupManager(member._id)"
-                          appDebounceClick (click)="changeGroupRole(member, 'member', groupId)" i18n="@@componentSearchBar.changeToMember">Change to Member</li>
+                          (click)="changeGroupRole(member, 'member', groupId)" i18n="@@componentSearchBar.changeToMember">Change to Member</li>
                       <li class="dropdown-divider"></li>
                       <li class="dropdown-item">
-                        <button appDebounceClick type="button" class="btn btn-danger btn-sm"
+                        <button type="button" class="btn btn-danger btn-sm"
                           (click)="removeUserFromGroup(groupId, member._id)" i18n="@@componentSearchBar.removeMember">Remove Member</button>
                       </li>
                   </ul>
@@ -104,7 +104,7 @@
               </div>
               <div class="dropdown"
                   *ngIf="userData?.role !== 'owner' && !isGroupManager(userData?._id) && userData?._id == member?._id && type == 'group'">
-                  <button appDebounceClick class="btn btn-danger btn-sm" type="button"
+                  <button class="btn btn-danger btn-sm" type="button"
                     (click)="removeUserFromGroup(groupId, member._id)">
                       <span i18n="@@componentSearchBar.leaveGroup">Leave Group</span>
                       <span class="caret"></span>
@@ -133,7 +133,7 @@
                     [imgURL]="member?.profile_pic"
                     [service]="'user'"
                     [styleClass]="'inactive-person feed-avatar'"
-                    appDebounceClick (click)="openFullscreenModal(member._id)"></app-secured-image>
+                    (click)="openFullscreenModal(member._id)"></app-secured-image>
                 <!-- Avatar Image of the member -->
 
                 <div class="media-body">
@@ -151,7 +151,7 @@
 
                     <div *ngIf="!member.active" class="btn-group mr-3 float-right">
                       <div class="dropdown" *ngIf="member.role != 'owner' && type == 'workspace'">
-                          <button appDebounceClick class="btn btn-primary btn-sm dropdown-toggle"
+                          <button class="btn btn-primary btn-sm dropdown-toggle"
                             type="button" data-toggle="dropdown">
                               <span i18n="@@componentSearchBar.manageUser">Manage User</span>
                               <span class="caret"></span>
@@ -160,7 +160,7 @@
                           <!-- Menu Drawer Starts -->
                           <ul class="dropdown-menu" *ngIf="member.role != 'owner'">
                               <li class="dropdown-item">
-                                <button appDebounceClick class="btn btn-success btn-sm" type="button"
+                                <button class="btn btn-success btn-sm" type="button"
                                   (click)="reactivateUserInWorkplace(member._id, workspaceId)"
                                   i18n="@@componentSearchBar.activateUser">
                                     Activate user
@@ -168,7 +168,7 @@
                               </li>
                               <li class="dropdown-divider"></li>
                               <li class="dropdown-item">
-                                <button appDebounceClick type="button" *ngIf="member._id != userData?._id"
+                                <button type="button" *ngIf="member._id != userData?._id"
                                   class="btn btn-danger btn-sm"
                                   (click)="removeUserFromWorkplace(member?._id)"
                                   i18n="@@componentSearchBar.removeUser">

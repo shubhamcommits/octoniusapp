@@ -59,7 +59,7 @@
             <!-- Component search bar starts -->
             <input type="text" [ngModel]="query" (ngModelChange)="fileSearchQuery($event)" class="searchTerm"
                 [placeholder]="'File search'">
-            <button appDebounceClick type="submit" class="searchButton">
+            <button type="submit" class="searchButton">
                 <i class="material-icons">search</i>
             </button>
             <!-- Component search bar ends -->
@@ -108,12 +108,12 @@
 
                             <mat-menu #moveFolderMenu="matMenu">
                               <ng-container *ngFor="let folderMenu of folders; let index = index">
-                                <button appDebounceClick mat-menu-item *ngIf="folder._id != folderMenu._id" (click)="moveToFolder(folder._id, folderMenu?._id, 'folder')">{{ folderMenu?.folder_name }}</button>
+                                <button mat-menu-item *ngIf="folder._id != folderMenu._id" (click)="moveToFolder(folder._id, folderMenu?._id, 'folder')">{{ folderMenu?.folder_name }}</button>
                               </ng-container>
                             </mat-menu>
                           </div>
 
-                          <button appDebounceClick mat-menu-item (click)="openPermissionModal(folder, 'folder')" *ngIf="groupData && groupData.enabled_rights && checkDataExist(groupData)">
+                          <button mat-menu-item (click)="openPermissionModal(folder, 'folder')" *ngIf="groupData && groupData.enabled_rights && checkDataExist(groupData)">
                             <span class="material-icons-outlined">vpn_lock</span>
                             <span i18n="@@groupDashboard.permissions">Permissions</span>
                           </button>
@@ -191,7 +191,7 @@
 
                             <mat-menu #transferMenu="matMenu">
                               <ng-container *ngFor="let group of userGroups; let index = index">
-                                <button appDebounceClick mat-menu-item (click)="transferToGroup(file._id, userGroups[index]?._id, file?.type)">{{ group.group_name }}</button>
+                                <button mat-menu-item (click)="transferToGroup(file._id, userGroups[index]?._id, file?.type)">{{ group.group_name }}</button>
                               </ng-container>
                             </mat-menu>
                           </div>
@@ -204,7 +204,7 @@
 
                             <mat-menu #moveFileMenu="matMenu">
                               <ng-container *ngFor="let folder of folders; let index = index">
-                                <button appDebounceClick mat-menu-item (click)="moveToFolder(file._id, folder?._id, 'file')">{{ folder?.folder_name }}</button>
+                                <button mat-menu-item (click)="moveToFolder(file._id, folder?._id, 'file')">{{ folder?.folder_name }}</button>
                               </ng-container>
                             </mat-menu>
                           </div>
@@ -242,7 +242,7 @@
                               <span i18n="@@groupFiles.exportToPDF">Export To PDF</span>
                           </a>
 
-                          <button appDebounceClick mat-menu-item (click)="openPermissionModal(file, 'file')" *ngIf="groupData && groupData.enabled_rights && checkDataExist(groupData) && file?.canEdit">
+                          <button mat-menu-item (click)="openPermissionModal(file, 'file')" *ngIf="groupData && groupData.enabled_rights && checkDataExist(groupData) && file?.canEdit">
                             <span class="material-icons-outlined">vpn_lock</span>
                             <span i18n="@@groupDashboard.permissions">Permissions</span>
                           </button>

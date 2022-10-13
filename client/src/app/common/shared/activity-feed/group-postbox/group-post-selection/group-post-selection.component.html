@@ -2,7 +2,7 @@
   <div class="col select-post">
 
     <!-- Normal Post Starts -->
-    <button appDebounceClick class="btn btn-md cool"  matTooltip="Create a post"
+    <button class="btn btn-md cool"  matTooltip="Create a post"
       (click)="openModal(content); type = 'normal'">
         <i [style.color]="type === 'normal'" class="material-icons-outlined" id="icon_comment">comment</i>
         <span i18n="@@groupPostSelection.writeAPost">Write a post</span>
@@ -10,7 +10,7 @@
     <!-- Normal Post Ends -->
 
     <!-- Event Post Starts -->
-    <button appDebounceClick class="btn btn-md cool"  matTooltip="Create event"
+    <button class="btn btn-md cool"  matTooltip="Create event"
       (click)="openModal(content); ; type = 'event'">
         <i [style.color]="type === 'event'" class="material-icons-outlined" id="icon_event">event</i>
         <span i18n="@@groupPostSelection.scheduleEvent">Schedule event</span>
@@ -18,7 +18,7 @@
     <!-- Event Post Ends -->
 
     <!-- Task Post Starts -->
-    <button appDebounceClick class="btn btn-lg btn-link cool" matTooltipPosition="above" matTooltip="Create task" (click)="openModal(content); ; type = 'task'">
+    <button class="btn btn-lg btn-link cool" matTooltipPosition="above" matTooltip="Create task" (click)="openModal(content); ; type = 'task'">
       <i [style.color]="type === 'task' ? '#005fd5' : '#9b9b9b'"
         class="material-icons muted" id="icon_check_box">check_box</i>
     </button>

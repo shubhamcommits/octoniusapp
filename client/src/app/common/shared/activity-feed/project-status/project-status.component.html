@@ -11,7 +11,7 @@
         [ngClass]="status_class"
         [(value)]="status"
         (selectionChange)="changeStatus($event)"
-        appDebounceClick (click)="$event.stopPropagation()">
+        (click)="$event.stopPropagation()">
           <mat-option *ngFor="let s of status_types" [value]="s">{{ s }}</mat-option>
       </mat-select>
     </mat-form-field>

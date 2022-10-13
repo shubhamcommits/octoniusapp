@@ -24,7 +24,7 @@
     <div class="rag" *ngFor="let rag of ragList">
         <div class="d-flex" style="justify-content: space-between;">
             <p class="bold">RAG <span class="tag">{{rag.rag_tag}}</span> <span i18n="@@groupRAGDialog.tasksAreVisibleFor">settings</span>: </p>
-            <button appDebounceClick class="btn overdue" (click)="removeTag(rag.rag_tag)"> <i class="material-icons">delete</i> </button>
+            <button class="btn overdue" (click)="removeTag(rag.rag_tag)"> <i class="material-icons">delete</i> </button>
         </div>
 
         <div style="justify-content: space-between;">
@@ -50,12 +50,12 @@
         </div>
     </div>
 
-    <button appDebounceClick class="mt-3 btn btn-warning" (click)="showTagComponent()">
+    <button class="mt-3 btn btn-warning" (click)="showTagComponent()">
         <span class="material-icons">add</span>
         <span i18n="@@groupRAGDialog.addRule">New RAG entity</span>
     </button>
     <div *ngIf="addNewRag" class="ragnew">
         <input type="text" class="form-control mb-2" name="tag" [(ngModel)]="tag" (keyup.enter)="addTag()" placeholder="Enter RAG tag name">
-        <button appDebounceClick button class="btn btn-primary btn-sm" (click)="addTag()" i18n="@@groupRAGDialog.addTag">Add tag</button>
+        <button button class="btn btn-primary btn-sm" (click)="addTag()" i18n="@@groupRAGDialog.addTag">Add tag</button>
     </div>
 </div>

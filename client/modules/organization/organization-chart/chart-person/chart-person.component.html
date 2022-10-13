@@ -2,7 +2,7 @@
   <!-- Avatar Image of the member -->
   <div class="user-image">
     <app-secured-image *ngIf="person?.active"
-        appDebounceClick (click)="openFullscreenModal(person?._id)"
+        (click)="openFullscreenModal(person?._id)"
         [imgURL]="person?.profile_pic"
         [service]="'user'"
         [styleClass]="'feed-avatar-small'"></app-secured-image>
@@ -21,7 +21,7 @@
     {{ person?.nextLevelMembers?.length || 0 }}
     <i [matMenuTriggerFor]="actionsMenu" class="material-icons" style="cursor: pointer;">arrow_drop_down</i>
     <mat-menu #actionsMenu="matMenu" class="actions-list">
-      <a mat-menu-item appDebounceClick (click)="removeFromManager()" *ngIf="level > 0">
+      <a mat-menu-item (click)="removeFromManager()" *ngIf="level > 0">
         <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete_forever</i>
         <span i18n="@@chartPerson.removeManager">Remove Manager</span>
       </a>

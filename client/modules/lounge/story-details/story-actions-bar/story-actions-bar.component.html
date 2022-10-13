@@ -94,7 +94,7 @@
   <div class="story-actions-right">
     <!-- COMMENT action starts -->
     <span *ngIf="userData && storyData">
-      <button appDebounceClick class="btn btn-link">
+      <button class="btn btn-link">
         <i matTooltipPosition="above" matTooltip="Write a comment"
             [ngClass]="(storyData?._comments && storyData?._comments?.length>0) ? 'material-icons text-primary' : 'material-icons-outlined muted'"
             (click)="showCommentsAction()"appDebounceClick>
@@ -125,7 +125,7 @@
 
     <!-- statistics action starts-->
     <span>
-      <button appDebounceClick class="btn btn-link"><i class="material-icons muted" matTooltipPosition="above" matTooltip="Readers">leaderboard</i></button>
+      <button class="btn btn-link"><i class="material-icons muted" matTooltipPosition="above" matTooltip="Readers">leaderboard</i></button>
       <span class="metrics">{{ storyData?._read_by?.length || 0 }}</span>
     </span>
 
@@ -133,7 +133,7 @@
 
 
     <!-- EDIT action starts -->
-    <button appDebounceClick *ngIf="isManager" class="btn btn-link" data-toggle="dropdown">
+    <button *ngIf="isManager" class="btn btn-link" data-toggle="dropdown">
       <span><i class="material-icons muted">more_horiz</i></span>
     </button>
 

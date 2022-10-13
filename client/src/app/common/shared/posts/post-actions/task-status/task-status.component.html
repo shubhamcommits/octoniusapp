@@ -1,6 +1,6 @@
 <!-- TASK STATUS STARTS -->
 
-<button appDebounceClick [disabled]="disabled"
+<button [disabled]="disabled"
     [ngClass]="{'kbn-todo': status === 'to do', 'kbn-working': status === 'in progress', 'kbn-done': status === 'done'}"
     class="btn btn-sm text-capitalize dropdown-toggle" type="button" id="dropdown" data-toggle="dropdown">
     {{ status }}</button>

@@ -2,9 +2,9 @@
 <div class="edit-column" *ngIf="column.editColumn">
     <input class="form-control" type="text" [(ngModel)]="this.newColumnName" placeholder="Rename the column">
     <div class="container">
-        <button appDebounceClick class="col-md-4 btn btn-primary"
+        <button class="col-md-4 btn btn-primary"
             (click)="column.editColumn = false; saveColumnName()" i18n="@@editColumn.save">Save</button>
-        <button appDebounceClick class="col-md-4 btn btn-danger"
+        <button class="col-md-4 btn btn-danger"
             (click)="column.editColumn = false;" i18n="@@editColumn.cancel">Cancel</button>
     </div>
 </div>

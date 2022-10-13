@@ -55,12 +55,12 @@
                   
                   <!--
                   <a *ngIf="currentWorkspace && currentWorkspace?.manager_custom_field && userData?.profile_custom_fields && userData?.profile_custom_fields[currentWorkspace?.manager_custom_field]"
-                    appDebounceClick (click)="closeDialog()"
+                    (click)="closeDialog()"
                     [routerLink]="['/dashboard', 'work', 'organization', 'chart']" [queryParams]="{userId: userData?._id}" routerLinkActive="active">
                       <span i18n="@@memberDialog.openChart">Open on Organization Chart</span>
                   </a>
                   -->
-                  <button appDebounceClick *ngIf="currentWorkspace && currentWorkspace?.manager_custom_field"
+                  <button *ngIf="currentWorkspace && currentWorkspace?.manager_custom_field"
                       (click)="closeDialog()" class="btn btn-md btn-primary"
                       [routerLink]="['/dashboard', 'work', 'organization', 'chart']" [queryParams]="{userId: userData?._id}" routerLinkActive="active"
                       i18n="@@memberDialog.openChart">
