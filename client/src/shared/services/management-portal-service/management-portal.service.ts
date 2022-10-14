@@ -184,4 +184,16 @@ export class ManagementPortalService {
       }
     }).toPromise();
   }
+
+  /**
+   * This function is responsible for check if the workspace has excel module active
+   * @param workspaceId
+   */
+  getWorkspaceBaseURL(workspaceId: string, mgmtApiPrivateKey: string) {
+    return this._http.get(`${this.WORKSPACE_BASE_API_URL}/${workspaceId}/baseURL`, {
+      params: {
+        mgmtApiPrivateKey: mgmtApiPrivateKey
+      }
+    });
+  }
 }

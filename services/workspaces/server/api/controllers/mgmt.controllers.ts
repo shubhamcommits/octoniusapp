@@ -689,5 +689,32 @@ export class ManagementControllers {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
+
+    /**
+     * This function is responsible for check if the workspace has organization mofule active
+     * @param workspaceId
+     */
+    async getWorkspaceBaseURL(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { workspaceId } = req.params;
+            const { mgmtApiPrivateKey } = req.query;
+
+            let message;
+            let baseURL;
+            await managementService.getWorkspaceBaseURL(workspaceId, mgmtApiPrivateKey.toString())
+                .then(res => {
+                    message = res['data']['message'];
+                    baseURL = res['data']['baseURL'];
+                });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: message,
+                baseURL: baseURL
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
 }
 
