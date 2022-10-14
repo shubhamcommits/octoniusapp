@@ -107,7 +107,7 @@ routes.get('/:workspaceId/filesVersions', mgmt.isFilesVersionsModuleAvailable);
 routes.get('/:workspaceId/organization', mgmt.isOrganizationModuleAvailable);
 
 // GET - obtain the base url of the workspace
-routes.get('/:workspaceId/baseURL', mgmt.isOrganizationModuleAvailable);
+routes.get('/:workspaceId/baseURL', mgmt.getWorkspaceBaseURL);
 
 /**
  * Profile Custom Fields
