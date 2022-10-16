@@ -44,12 +44,31 @@ export class ChatService {
 
       let userChats = await Chat.find({
         'members._user': userId,
-      }).select('members').lean()
-
+      }).select('members').lean();
+      /*
+      let userChats = await Chat.find({
+        members: {
+            $elementMatch: {
+                _user: userId
+              }
+          },
+      }).select('members').lean();
+      
+      db.chats.find({
+        'member': {
+          $elemMatch: {
+            _user: ObjectId("5f2d00bcadc9b8004b4dc481")
+          }
+        }
+      })
+      db.chats.find({ 'members._user': ObjectId("5f2d00bcadc9b8004b4dc481")})
+      */
       let members = chatData?.members;
       members = await members?.filter((member, index) => {
           return (members?.findIndex(m => m._user._id == member._user._id) == index);
-      }).sort((m1, m2) => (m1._user._id > m2._user._id) ? 1 : -1);
+        })
+        .sort((m1, m2) => (m1._user._id > m2._user._id) ? 1 : -1)
+        .map(m => m._id);
 
       let chatExists = false;
       let existingChatId = '';
@@ -57,19 +76,26 @@ export class ChatService {
         let dbMembers = userChats[i]?.members;
         dbMembers = await dbMembers?.filter((member, index) => {
             return (dbMembers?.findIndex(m => m._user._id == member._user._id) == index);
-        }).sort((m1, m2) => (m1._user._id > m2._user._id) ? 1 : -1);
+          })
+          .sort((m1, m2) => (m1._user._id > m2._user._id) ? 1 : -1)
+          .map(m => m._id);
 
         if (this.arraysEqual(members, dbMembers)) {
           chatExists = true;
           existingChatId = userChats[0]._id;
         }
+console.log({dbMembers});
       }
-
+console.log({members});
+console.log({chatExists});
+console.log({existingChatId});
       let chat: any;
       if (!chatExists) {
+console.log("1111111");
         // Create new chat
         chat = await Chat.create(chatData);
       } else {
+console.log("2222222");
         chat = await Chat.findOneAndUpdate({
           _id: existingChatId
         }, {
