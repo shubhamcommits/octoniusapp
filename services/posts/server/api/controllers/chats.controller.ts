@@ -198,8 +198,8 @@ export class ChatsController {
      */
     async getMessages(req: Request, res: Response, next: NextFunction) {
 
-        // Fetch groupId and lastPostId from request
-        var { chatId, lastMessageId } = req.query;
+        // Fetch chatId and lastMessageId from request
+        const { params: { chatId }, body: { lastMessageId } } = req;
         const userId = req['userId'];
 
         // If groupId is not present, then return error
