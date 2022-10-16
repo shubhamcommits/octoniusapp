@@ -96,7 +96,7 @@ export class ChatsController {
 
             // Send status 200 response
             return res.status(200).json({
-                message: `Successfully Retrieved Group Chats`,
+                message: `Successfully Retrieved Direct Chats`,
                 chats: directChats
             });
         } catch (error) {

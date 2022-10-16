@@ -89,7 +89,7 @@ app.use('/api', postRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/post/permissions', postsPermissionsRoutes);
 app.use('/api/section/permissions', sectionsPermissionsRoutes);
-app.use('/api/posts/chat', chatRoutes);
+app.use('/api/chat', chatRoutes);
 
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {

@@ -145,8 +145,10 @@ export class ChatService {
         ]
       }).select('_id').lean();
 
+    const userGroupsArray = await userGroups.map(g => g._id);
+    
     return await Chat.find({
-        '_group': {$in: { userGroups }}
+        '_group': {$in: { userGroupsArray }}
       })
       .select(this.chatFields)
       .populate({ path: '_group', select: this.groupFields })
