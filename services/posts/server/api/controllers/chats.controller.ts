@@ -25,7 +25,7 @@ export class ChatsController {
             .catch((err) => {
                 return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
             });
-
+console.log({serviceResponse});
         // Send Status 200 response
         return res.status(200).json({
             message: 'Chat Created Successfully!',
