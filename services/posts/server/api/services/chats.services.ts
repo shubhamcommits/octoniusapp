@@ -68,7 +68,7 @@ export class ChatService {
           return (members?.findIndex(m => m._user._id == member._user._id) == index);
         })
         .sort((m1, m2) => (m1._user._id > m2._user._id) ? 1 : -1)
-        .map(m => m._id || m);
+        .map(m => m._user._id || m._user);
 
       let chatExists = false;
       let existingChatId = '';
@@ -78,7 +78,7 @@ export class ChatService {
             return (dbMembers?.findIndex(m => m._user._id == member._user._id) == index);
           })
           .sort((m1, m2) => (m1._user._id > m2._user._id) ? 1 : -1)
-          .map(m => m._id || m);
+          .map(m => m._user._id || m._user);
 
         if (this.arraysEqual(members, dbMembers)) {
           chatExists = true;
@@ -171,15 +171,17 @@ console.log({chat});
         ]
       }).select('_id').lean();
 
-    const userGroupsArray = await userGroups.map(g => g._id);
-    
-    return await Chat.find({
+    const userGroupsArray = await userGroups.map(g => g._id || g);
+console.log({userGroups});
+    const groupChats = await Chat.find({
         '_group': {$in: userGroupsArray}
       })
       .select(this.chatFields)
       .populate({ path: '_group', select: this.groupFields })
       .populate({ path: 'members._user', select: this.userFields })
       .lean();
+console.log({groupChats});
+      return groupChats;
   }
 
   /**
