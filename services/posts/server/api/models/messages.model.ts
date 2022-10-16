@@ -24,6 +24,10 @@ const MessageSchema = new Schema({
         required: true,
         trim: true
     },
+    _content_mentions: [{
+        type: Schema.Types.Mixed,
+        ref: 'User'
+    }],
     edited: {
         type: Boolean,
         required: true,
