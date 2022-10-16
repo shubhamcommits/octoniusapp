@@ -1111,10 +1111,10 @@ export class NotificationsService {
             var payload = {
                 notification: {
                     title: messageTitle,
-                    body: messageBody
-                },
-                data: {
-                    workspaceId: workspaceId
+                    body: messageBody,
+                    data: {
+                        workspaceId: workspaceId
+                    }
                 }
                 //, topic: 'octonius'
             };

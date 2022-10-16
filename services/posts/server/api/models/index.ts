@@ -8,6 +8,8 @@ import { Flow } from './flow.model';
 import { Notification } from './notification.model';
 import { Column } from './column.model';
 import { Story } from "./story.model";
+import { Chat } from "./chat.model";
+import { Message } from "./messages.model";
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -43,5 +45,8 @@ export {
     Notification as Notification,
 
     // Story
-    Story as Story
+    Story as Story,
+
+    Chat as Chat,
+    Message as Message
 };

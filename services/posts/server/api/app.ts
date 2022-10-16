@@ -6,7 +6,7 @@ import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
 import fileUpload from 'express-fileupload';
-import { postRoutes, commentRoutes, postsPermissionsRoutes, sectionsPermissionsRoutes } from './routes';
+import { postRoutes, commentRoutes, postsPermissionsRoutes, sectionsPermissionsRoutes, chatRoutes } from './routes';
 
 // Defining new Express application
 const app = express();
@@ -89,6 +89,7 @@ app.use('/api', postRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/post/permissions', postsPermissionsRoutes);
 app.use('/api/section/permissions', sectionsPermissionsRoutes);
+app.use('/api/posts/chat', chatRoutes);
 
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {
