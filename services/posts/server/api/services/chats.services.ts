@@ -68,7 +68,7 @@ export class ChatService {
           return (members?.findIndex(m => m._user._id == member._user._id) == index);
         })
         .sort((m1, m2) => (m1._user._id > m2._user._id) ? 1 : -1)
-        .map(m => m._id);
+        .map(m => m._id || m);
 
       let chatExists = false;
       let existingChatId = '';
@@ -78,7 +78,7 @@ export class ChatService {
             return (dbMembers?.findIndex(m => m._user._id == member._user._id) == index);
           })
           .sort((m1, m2) => (m1._user._id > m2._user._id) ? 1 : -1)
-          .map(m => m._id);
+          .map(m => m._id || m);
 
         if (this.arraysEqual(members, dbMembers)) {
           chatExists = true;
@@ -116,7 +116,7 @@ console.log("2222222");
         .populate({ path: '_group', select: this.groupFields })
         .populate({ path: 'members._user', select: this.userFields })
         .lean();
-
+console.log({chat});
       // Return Chat Object
       return {chat: chat, newChat: !chatExists};
     } catch (err) {
@@ -307,6 +307,7 @@ console.log("2222222");
   async sendMessage(newMessage: any) {
 
     try {
+console.log({newMessage});
       let message: any = await Message.create(newMessage);
 
       this.sendNotification(message._chat._id || message._chat, message._id);
