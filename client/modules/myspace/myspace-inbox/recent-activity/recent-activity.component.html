@@ -109,7 +109,7 @@
           <div class="notification_more">
             <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
             <mat-menu #menu="matMenu">
-              <a mat-menu-item *ngIf="notification?.type !== 'mention_folio' && notification?.type !== 'join-group' && (notification?.type != 'approved-item' && notification?.type != 'reject-item' && notification?.type != 'launch-approval-flow')"
+              <a mat-menu-item *ngIf="notification?.type !== 'mention_folio' && notification?.type !== 'join-group' && notification?.type !== 'leave-group' && (notification?.type != 'approved-item' && notification?.type != 'reject-item' && notification?.type != 'launch-approval-flow')"
                 (click)="viewNotification(notification, index)">
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                 <span i18n="@@recentActivity.view">View</span>
