@@ -329,10 +329,10 @@ console.log({newMessage});
       var messages = [];
 
       const chat: any = await Chat.findOne({ _id: chatId }).select('members').lean();
-
+console.log({chat});
       // Fetch posts on the basis of the params @lastPostId
       if (lastMessageId) {
-
+console.log({lastMessageId});
         messages = await Message.find({
             $and: [
                 { _chat: chatId },
@@ -349,6 +349,7 @@ console.log({newMessage});
           .lean();
       }
       else {
+console.log('aaaaaaaa');
         messages = await Message.find({
             $and: [
                 { _chat: chatId },
@@ -363,7 +364,7 @@ console.log({newMessage});
           .populate({ path: '_chat', select: '_id' })
           .lean();
       }
-
+console.log({messages});
       // Return set of posts
       return messages;
 
