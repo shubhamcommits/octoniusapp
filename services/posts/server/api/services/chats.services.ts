@@ -346,65 +346,78 @@ console.log({newMessage});
       var messages = [];
 
       const chat: any = await Chat.findOne({ _id: chatId }).select('members').lean();
-console.log({chat});
-console.log({userId})
-      let member;
+
       if (!chat._group) {
         const memberIndex = (chat.members) ? chat.members.findIndex(m => (m._user._id || m._user) == userId) : -1;
-        member = (memberIndex >= 0) ? chat.members[memberIndex] : null;
-      } else {
-        let memberIndex = (chat._group._admins) ? chat._group._admins.findIndex(m => (m._id || m) == userId) : -1;
+        const member = (memberIndex >= 0) ? chat.members[memberIndex] : null;
 
-        if (memberIndex >= 0) {
-          member = (memberIndex >= 0) ? chat._group._admins[memberIndex] : null;
+        if (!member) {
+          throw new Error('The user is not part of the chat.');
+        }
+
+        // Fetch posts on the basis of the params @lastPostId
+        if (lastMessageId) {
+          messages = await Message.find({
+              $and: [
+                  { _chat: chatId },
+                  { _id: { $lt: lastMessageId } },
+                  { posted_on: { $gte: member.joined_on }}
+                ]
+            })
+            .sort('-_id')
+            .limit(10)
+            .select(this.messageFields)
+            .populate({ path: '_posted_by', select: this.userFields })
+            .populate({ path: '_content_mentions', select: this.userFields })
+            .populate({ path: '_chat', select: '_id' })
+            .lean();
         } else {
-          memberIndex = (chat._group._members) ? chat._group._members.findIndex(m => (m._id || m) == userId) : -1;
+          messages = await Message.find({
+              $and: [
+                  { _chat: chatId },
+                  { posted_on: { $gte: member.joined_on }}
+                ]
+            })
+            .sort('-_id')
+            .limit(10)
+            .select(this.messageFields)
+            .populate({ path: '_posted_by', select: this.userFields })
+            .populate({ path: '_content_mentions', select: this.userFields })
+            .populate({ path: '_chat', select: '_id' })
+            .lean();
         }
-
-        if (memberIndex >= 0) {
-          member = (memberIndex >= 0) ? chat._group._members[memberIndex] : null;
+      } else {
+        // Fetch posts on the basis of the params @lastPostId
+        if (lastMessageId) {
+          messages = await Message.find({
+              $and: [
+                  { _chat: chatId },
+                  { _id: { $lt: lastMessageId } }
+                ]
+            })
+            .sort('-_id')
+            .limit(10)
+            .select(this.messageFields)
+            .populate({ path: '_posted_by', select: this.userFields })
+            .populate({ path: '_content_mentions', select: this.userFields })
+            .populate({ path: '_chat', select: '_id' })
+            .lean();
+        } else {
+          messages = await Message.find({
+              $and: [
+                  { _chat: chatId }
+                ]
+            })
+            .sort('-_id')
+            .limit(10)
+            .select(this.messageFields)
+            .populate({ path: '_posted_by', select: this.userFields })
+            .populate({ path: '_content_mentions', select: this.userFields })
+            .populate({ path: '_chat', select: '_id' })
+            .lean();
         }
       }
-console.log({member});
-      if (!member) {
-        throw new Error('The user is not part of the chat.');
-      }
 
-      // Fetch posts on the basis of the params @lastPostId
-      if (lastMessageId) {
-console.log({lastMessageId});
-        messages = await Message.find({
-            $and: [
-                { _chat: chatId },
-                { _id: { $lt: lastMessageId } },
-                { posted_on: { $gte: member.joined_on }}
-              ]
-          })
-          .sort('-_id')
-          .limit(10)
-          .select(this.messageFields)
-          .populate({ path: '_posted_by', select: this.userFields })
-          .populate({ path: '_content_mentions', select: this.userFields })
-          .populate({ path: '_chat', select: '_id' })
-          .lean();
-      }
-      else {
-console.log('aaaaaaaa');
-        messages = await Message.find({
-            $and: [
-                { _chat: chatId },
-                { posted_on: { $gte: member.joined_on }}
-              ]
-          })
-          .sort('-_id')
-          .limit(10)
-          .select(this.messageFields)
-          .populate({ path: '_posted_by', select: this.userFields })
-          .populate({ path: '_content_mentions', select: this.userFields })
-          .populate({ path: '_chat', select: '_id' })
-          .lean();
-      }
-console.log({messages});
       // Return set of posts
       return messages;
 
