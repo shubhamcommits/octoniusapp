@@ -174,13 +174,13 @@ console.log({chat});
 
     let groupChats = [];
     for (let i = 0; i < userGroups.length; i++) {
-      let groupChat = await Chat.find({
-        '_group': userGroups[i]._id
-      })
-      .select(this.chatFields)
-      .populate({ path: '_group', select: this.groupFields })
-      .populate({ path: 'members._user', select: this.userFields })
-      .lean();
+      let groupChat = await Chat.findOne({
+          '_group': userGroups[i]._id
+        })
+        .select(this.chatFields)
+        .populate({ path: '_group', select: this.groupFields })
+        .populate({ path: 'members._user', select: this.userFields })
+        .lean();
 
       if (!groupChat) {
         let newChat = {
@@ -191,7 +191,9 @@ console.log({chat});
         groupChat = await Chat.create(newChat);
       }
 
-      groupChats.push(groupChat);
+      if (groupChat){
+        groupChats.push(groupChat);
+      }
     }
 
       return groupChats;
@@ -343,9 +345,11 @@ console.log({newMessage});
 
       const chat: any = await Chat.findOne({ _id: chatId }).select('members').lean();
 console.log({chat});
+console.log({userId})
       const memberIndex = (chat.members) ? chat.members.findIndex(m => (m._id || m) == userId) : -1;
       const member = (memberIndex >= 0) ? chat.members[memberIndex] : null;
-
+console.log({member});
+console.log({memberIndex});
       if (!member) {
         throw new Error('The user is not part of the chat.');
       }
