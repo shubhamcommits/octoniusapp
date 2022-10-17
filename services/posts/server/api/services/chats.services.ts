@@ -13,7 +13,7 @@ export class ChatService {
   userFields: any = 'first_name last_name profile_pic role email';
 
   // Select Group Fileds on population
-  groupFields: any = 'group_name group_avatar workspace_name';
+  groupFields: any = 'group_name group_avatar workspace_name _members _admins';
 
   chatFields: any = 'archived members';
   messageFields: any = 'posted_on content edited';
@@ -46,24 +46,7 @@ export class ChatService {
       let userChats = await Chat.find({
         'members._user': userId,
       }).select('members').lean();
-      /*
-      let userChats = await Chat.find({
-        members: {
-            $elementMatch: {
-                _user: userId
-              }
-          },
-      }).select('members').lean();
-      
-      db.chats.find({
-        'member': {
-          $elemMatch: {
-            _user: ObjectId("5f2d00bcadc9b8004b4dc481")
-          }
-        }
-      })
-      db.chats.find({ 'members._user': ObjectId("5f2d00bcadc9b8004b4dc481")})
-      */
+
       let members = chatData?.members;
       members = await members?.filter((member, index) => {
           return (members?.findIndex(m => m._user._id == member._user._id) == index);
@@ -85,18 +68,13 @@ export class ChatService {
           chatExists = true;
           existingChatId = userChats[0]._id;
         }
-console.log({dbMembers});
       }
-console.log({members});
-console.log({chatExists});
-console.log({existingChatId});
+
       let chat: any;
       if (!chatExists) {
-console.log("1111111");
         // Create new chat
         chat = await Chat.create(chatData);
       } else {
-console.log("2222222");
         chat = await Chat.findOneAndUpdate({
           _id: existingChatId
         }, {
@@ -115,9 +93,11 @@ console.log("2222222");
         })
         .select(this.chatFields)
         .populate({ path: '_group', select: this.groupFields })
+        .populate({ path: '_group._members', select: this.userFields })
+        .populate({ path: '_group._admins', select: this.userFields })
         .populate({ path: 'members._user', select: this.userFields })
         .lean();
-console.log({chat});
+
       // Return Chat Object
       return {chat: chat, newChat: !chatExists};
     } catch (err) {
@@ -136,6 +116,8 @@ console.log({chat});
     return await Chat.findOne({ _id: chatId })
       .select(this.chatFields)
       .populate({ path: '_group', select: this.groupFields })
+      .populate({ path: '_group._members', select: this.userFields })
+      .populate({ path: '_group._admins', select: this.userFields })
       .populate({ path: 'members._user', select: this.userFields })
       .lean();
   }
@@ -154,6 +136,8 @@ console.log({chat});
       })
       .select(this.chatFields)
       .populate({ path: '_group', select: this.groupFields })
+      .populate({ path: '_group._members', select: this.userFields })
+      .populate({ path: '_group._admins', select: this.userFields })
       .populate({ path: 'members._user', select: this.userFields })
       .lean();
   }
@@ -179,6 +163,8 @@ console.log({chat});
         })
         .select(this.chatFields)
         .populate({ path: '_group', select: this.groupFields })
+        .populate({ path: '_group._members', select: this.userFields })
+        .populate({ path: '_group._admins', select: this.userFields })
         .populate({ path: 'members._user', select: this.userFields })
         .lean();
 
@@ -224,6 +210,8 @@ console.log({chat});
         })
         .select(this.chatFields)
         .populate({ path: '_group', select: this.groupFields })
+        .populate({ path: '_group._members', select: this.userFields })
+        .populate({ path: '_group._admins', select: this.userFields })
         .populate({ path: 'members._user', select: this.userFields })
         .lean();
 
@@ -274,6 +262,8 @@ console.log({chat});
         })
         .select(this.chatFields)
         .populate({ path: '_group', select: this.groupFields })
+        .populate({ path: '_group._members', select: this.userFields })
+        .populate({ path: '_group._admins', select: this.userFields })
         .populate({ path: 'members._user', select: this.userFields })
         .lean();
 
@@ -307,6 +297,8 @@ console.log({chat});
         })
         .select(this.chatFields)
         .populate({ path: '_group', select: this.groupFields })
+        .populate({ path: '_group._members', select: this.userFields })
+        .populate({ path: '_group._admins', select: this.userFields })
         .populate({ path: 'members._user', select: this.userFields })
         .lean();
 
@@ -326,7 +318,6 @@ console.log({chat});
   async sendMessage(newMessage: any) {
 
     try {
-console.log({newMessage});
       let message: any = await Message.create(newMessage);
 
       this.sendNotification(message._chat._id || message._chat, message._id);
@@ -346,7 +337,7 @@ console.log({newMessage});
       var messages = [];
 
       const chat: any = await Chat.findOne({ _id: chatId }).select('members').lean();
-
+console.log({chat});
       if (!chat._group) {
         const memberIndex = (chat.members) ? chat.members.findIndex(m => (m._user._id || m._user) == userId) : -1;
         const member = (memberIndex >= 0) ? chat.members[memberIndex] : null;
