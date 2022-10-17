@@ -1,5 +1,4 @@
 import { CalendarService } from './calendars.services';
-import { ChatService } from './chats.services';
 import { CommentsService } from './comments.services';
 import { FilesService } from './files.service';
 import { FlowService } from './flows.services';
@@ -17,6 +16,5 @@ export {
     PostService as PostService,
     TagsService as TagsService,
     FilesService as FilesService,
-    FlowService as FlowService,
-    ChatService as ChatService
+    FlowService as FlowService
 };
