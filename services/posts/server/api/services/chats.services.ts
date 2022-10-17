@@ -348,10 +348,24 @@ console.log({newMessage});
       const chat: any = await Chat.findOne({ _id: chatId }).select('members').lean();
 console.log({chat});
 console.log({userId})
-      const memberIndex = (chat.members) ? chat.members.findIndex(m => (m._user._id || m._user) == userId) : -1;
-      const member = (memberIndex >= 0) ? chat.members[memberIndex] : null;
+      let member;
+      if (!chat._group) {
+        const memberIndex = (chat.members) ? chat.members.findIndex(m => (m._user._id || m._user) == userId) : -1;
+        member = (memberIndex >= 0) ? chat.members[memberIndex] : null;
+      } else {
+        let memberIndex = (chat._group._admins) ? chat._group._admins.findIndex(m => (m._id || m) == userId) : -1;
+
+        if (memberIndex >= 0) {
+          member = (memberIndex >= 0) ? chat._group._admins[memberIndex] : null;
+        } else {
+          memberIndex = (chat._group._members) ? chat._group._members.findIndex(m => (m._id || m) == userId) : -1;
+        }
+
+        if (memberIndex >= 0) {
+          member = (memberIndex >= 0) ? chat._group._members[memberIndex] : null;
+        }
+      }
 console.log({member});
-console.log({memberIndex});
       if (!member) {
         throw new Error('The user is not part of the chat.');
       }
@@ -363,7 +377,7 @@ console.log({lastMessageId});
             $and: [
                 { _chat: chatId },
                 { _id: { $lt: lastMessageId } },
-                { posted_on: { $lt: member.joined_on }}
+                { posted_on: { $gte: member.joined_on }}
               ]
           })
           .sort('-_id')
@@ -379,7 +393,7 @@ console.log('aaaaaaaa');
         messages = await Message.find({
             $and: [
                 { _chat: chatId },
-                { posted_on: { $lt: member.joined_on }}
+                { posted_on: { $gte: member.joined_on }}
               ]
           })
           .sort('-_id')
