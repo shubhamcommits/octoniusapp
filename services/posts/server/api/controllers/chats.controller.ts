@@ -191,7 +191,7 @@ console.log({serviceResponse});
     }
 
     /**
-     * This function fetches the 5 recent posts present inside a group
+     * This function fetches the 5 recent messages present inside a group
      * @param { query: { chatId, lastMessageId } } req 
      * @param res 
      * @param next 
@@ -207,18 +207,18 @@ console.log({serviceResponse});
             return sendErr(res, new Error('Please provide the chatId as the query parameter'), 'Please provide the chatId as the query paramater!', 400);
         }
 
-        // Fetch the next 5 recent posts
+        // Fetch the next 5 recent messages
         await chatService.getMessages(chatId, lastMessageId, userId)
             .then((messages) => {
 
-                // If lastPostId is there then, send status 200 response
+                // If lastMessageId is there then, send status 200 response
                 if (lastMessageId)
                     return res.status(200).json({
                         message: `The next ${messages.length} most recent messages!`,
                         messages: messages
                     });
 
-                // If lastPostId is not there then, send status 200 response
+                // If lastMessageId is not there then, send status 200 response
                 else
                     return res.status(200).json({
                         message: `The first ${messages.length} most recent messages!`,
@@ -228,7 +228,7 @@ console.log({serviceResponse});
             .catch((err) => {
 
                 // If there's an error send bad request
-                return sendErr(res, new Error(err), 'Unable to fetch the posts, kindly check the stack trace for error', 400)
+                return sendErr(res, new Error(err), 'Unable to fetch the messages, kindly check the stack trace for error', 400)
             });
     }
 }
