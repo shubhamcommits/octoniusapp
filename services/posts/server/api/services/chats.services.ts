@@ -1,6 +1,7 @@
 import http from 'axios';
 import moment from 'moment';
 import { Chat, Group, Message } from '../models';
+import { sendErr } from '../utils/sendError';
 
 /*  ===============================
  *  -- CHATS Service --
@@ -171,16 +172,28 @@ console.log({chat});
         ]
       }).select('_id').lean();
 
-    const userGroupsArray = await userGroups.map(g => g._id || g);
-console.log({userGroups});
-    const groupChats = await Chat.find({
-        '_group': {$in: userGroupsArray}
+    let groupChats = [];
+    for (let i = 0; i < userGroups.length; i++) {
+      let groupChat = await Chat.find({
+        '_group': userGroups[i]._id
       })
       .select(this.chatFields)
       .populate({ path: '_group', select: this.groupFields })
       .populate({ path: 'members._user', select: this.userFields })
       .lean();
-console.log({groupChats});
+
+      if (!groupChat) {
+        let newChat = {
+          _group: userGroups[i]._id,
+          archived: false
+        };
+
+        groupChat = await Chat.create(newChat);
+      }
+
+      groupChats.push(groupChat);
+    }
+
       return groupChats;
   }
 
@@ -330,6 +343,13 @@ console.log({newMessage});
 
       const chat: any = await Chat.findOne({ _id: chatId }).select('members').lean();
 console.log({chat});
+      const memberIndex = (chat.members) ? chat.members.findIndex(m => (m._id || m) == userId) : -1;
+      const member = (memberIndex >= 0) ? chat.members[memberIndex] : null;
+
+      if (!member) {
+        throw new Error('The user is not part of the chat.');
+      }
+
       // Fetch posts on the basis of the params @lastPostId
       if (lastMessageId) {
 console.log({lastMessageId});
@@ -337,7 +357,7 @@ console.log({lastMessageId});
             $and: [
                 { _chat: chatId },
                 { _id: { $lt: lastMessageId } },
-                { posted_on: { $lt: chat.members.joined_on }}
+                { posted_on: { $lt: member.joined_on }}
               ]
           })
           .sort('-_id')
@@ -353,7 +373,7 @@ console.log('aaaaaaaa');
         messages = await Message.find({
             $and: [
                 { _chat: chatId },
-                { posted_on: { $lt: chat.members.joined_on }}
+                { posted_on: { $lt: member.joined_on }}
               ]
           })
           .sort('-_id')
