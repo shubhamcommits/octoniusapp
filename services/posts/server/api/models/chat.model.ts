@@ -25,8 +25,7 @@ const ChatSchema = new Schema({
     }],
     _group: {
         type: Schema.Types.ObjectId,
-        ref: 'Group',
-        unique: true
+        ref: 'Group'
     },
     archived: {
         type: Boolean,
