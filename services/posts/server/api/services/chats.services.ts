@@ -92,9 +92,6 @@ export class ChatService {
           new: true
         })
         .select(this.chatFields)
-        .populate({ path: '_group', select: this.groupFields })
-        .populate({ path: '_group._members', select: this.userFields })
-        .populate({ path: '_group._admins', select: this.userFields })
         .populate({ path: 'members._user', select: this.userFields })
         .lean();
 
@@ -113,13 +110,23 @@ export class ChatService {
    */
   async get(chatId: any) {
 
-    return await Chat.findOne({ _id: chatId })
+    let chat = await Chat.findOne({ _id: chatId })
       .select(this.chatFields)
-      .populate({ path: '_group', select: this.groupFields })
-      .populate({ path: '_group._members', select: this.userFields })
-      .populate({ path: '_group._admins', select: this.userFields })
       .populate({ path: 'members._user', select: this.userFields })
       .lean();
+    
+    if (chat._group) {
+      const group = await Group.findOne({
+          _id: chat._group._id || chat._group
+        })
+        .populate({ path: '_admins', select: this.userFields })
+        .populate({ path: '_members', select: this.userFields })
+        .lean();
+      
+      chat._group = group;
+    }
+
+    return chat;
   }
 
   /**
@@ -135,9 +142,6 @@ export class ChatService {
         ]
       })
       .select(this.chatFields)
-      .populate({ path: '_group', select: this.groupFields })
-      .populate({ path: '_group._members', select: this.userFields })
-      .populate({ path: '_group._admins', select: this.userFields })
       .populate({ path: 'members._user', select: this.userFields })
       .lean();
   }
@@ -154,7 +158,11 @@ export class ChatService {
             { $or: [{ _members: userId }, { _admins: userId }] },
             { $or: [{ archived_group: false }, { archived_group: { $eq: null }}]}
         ]
-      }).select('_id').lean();
+      })
+      .select('_id _members _admins')
+      .populate({ path: '_members', select: this.userFields })
+      .populate({ path: '_admins', select: this.userFields })
+      .lean();
 
     let groupChats = [];
     for (let i = 0; i < userGroups.length; i++) {
@@ -163,9 +171,6 @@ export class ChatService {
         })
         .select(this.chatFields)
         .populate({ path: '_group', select: this.groupFields })
-        .populate({ path: '_group._members', select: this.userFields })
-        .populate({ path: '_group._admins', select: this.userFields })
-        .populate({ path: 'members._user', select: this.userFields })
         .lean();
 
       if (!groupChat) {
@@ -175,9 +180,9 @@ export class ChatService {
         };
 
         groupChat = await Chat.create(newChat);
-
-        groupChat._group = userGroups[i];
       }
+
+      groupChat._group = userGroups[i];
 
       if (groupChat) {
         groupChats.push(groupChat);
@@ -209,9 +214,6 @@ export class ChatService {
           new: true
         })
         .select(this.chatFields)
-        .populate({ path: '_group', select: this.groupFields })
-        .populate({ path: '_group._members', select: this.userFields })
-        .populate({ path: '_group._admins', select: this.userFields })
         .populate({ path: 'members._user', select: this.userFields })
         .lean();
 
@@ -261,9 +263,6 @@ export class ChatService {
           new: true
         })
         .select(this.chatFields)
-        .populate({ path: '_group', select: this.groupFields })
-        .populate({ path: '_group._members', select: this.userFields })
-        .populate({ path: '_group._admins', select: this.userFields })
         .populate({ path: 'members._user', select: this.userFields })
         .lean();
 
@@ -296,9 +295,6 @@ export class ChatService {
           new: true
         })
         .select(this.chatFields)
-        .populate({ path: '_group', select: this.groupFields })
-        .populate({ path: '_group._members', select: this.userFields })
-        .populate({ path: '_group._admins', select: this.userFields })
         .populate({ path: 'members._user', select: this.userFields })
         .lean();
 
