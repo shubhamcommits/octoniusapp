@@ -23,11 +23,6 @@ const ChatSchema = new Schema({
         },
         default: []
     }],
-    _admins: [{
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        default: []
-    }],
     _group: {
         type: Schema.Types.ObjectId,
         ref: 'Group'
