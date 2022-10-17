@@ -29,7 +29,7 @@ export class ChatService {
     // you might want to clone your array first.
 
     for (var i = 0; i < a.length; ++i) {
-      if (a[i] !== b[i]) return false;
+      if (a[i] != b[i]) return false;
     }
     return true;
   }
