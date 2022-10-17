@@ -119,6 +119,7 @@ export class ChatService {
       const group = await Group.findOne({
           _id: chat._group._id || chat._group
         })
+        .select(this.groupFields)
         .populate({ path: '_admins', select: this.userFields })
         .populate({ path: '_members', select: this.userFields })
         .lean();
@@ -159,7 +160,7 @@ export class ChatService {
             { $or: [{ archived_group: false }, { archived_group: { $eq: null }}]}
         ]
       })
-      .select('_id _members _admins')
+      .select(this.groupFields)
       .populate({ path: '_members', select: this.userFields })
       .populate({ path: '_admins', select: this.userFields })
       .lean();
@@ -183,7 +184,7 @@ export class ChatService {
       }
 
       groupChat._group = userGroups[i];
-
+console.log({groupChat});
       if (groupChat) {
         groupChats.push(groupChat);
       }
@@ -332,8 +333,10 @@ export class ChatService {
     try {
       var messages = [];
 
-      const chat: any = await Chat.findOne({ _id: chatId }).select('members').lean();
+      const chat: any = await Chat.findOne({ _id: chatId }).select('members _group').lean();
 console.log({chat});
+console.log(chat._group);
+console.log(!chat._group);
       if (!chat._group) {
         const memberIndex = (chat.members) ? chat.members.findIndex(m => (m._user._id || m._user) == userId) : -1;
         const member = (memberIndex >= 0) ? chat.members[memberIndex] : null;
