@@ -189,9 +189,11 @@ console.log({chat});
         };
 
         groupChat = await Chat.create(newChat);
+
+        groupChat._group = userGroups[i];
       }
 
-      if (groupChat){
+      if (groupChat) {
         groupChats.push(groupChat);
       }
     }
