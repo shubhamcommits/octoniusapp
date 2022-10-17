@@ -24,7 +24,7 @@ routes.use(auths.isLoggedIn);
 routes.post('/', chatController.create);
 
 // PUT - This route archive or unarchive a chat
-routes.put('/archive-chat', chatController.archiveChat);
+routes.put('/:chatId/archive-chat', chatController.archiveChat);
 
 // GET - This function fetches the group chats
 routes.get('/group-chats', chatController.getGroupChats)
