@@ -14,12 +14,12 @@ pm2 stop groups-server
 pm2 delete groups-server
 
 
-# Stops and kills the workspace server from port 5000
+# Stops and kills the workspace server from port 5001
 pm2 stop workspaces-server
 pm2 delete workspaces-server
 
 
-# Stops and kills the users server from port 7000
+# Stops and kills the users server from port 7001
 pm2 stop users-server
 pm2 delete users-server
 
@@ -54,9 +54,13 @@ pm2 delete flamingo-server
 pm2 stop search-server
 pm2 delete search-server
 
-# Stops and kills the approval server from port 15000
+# Stops and kills the approval server from port 15001
 pm2 stop approval-server
 pm2 delete approval-server
+
+# Stops and kills the chats server from port 16001
+pm2 stop chats-server
+pm2 delete chats-server
 
 # Stops and kills the client server from port 4200
 pm2 stop client-server

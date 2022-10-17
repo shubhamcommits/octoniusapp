@@ -21,7 +21,7 @@ services:
     restart: always
     build:
       dockerfile: Dockerfile
-      context: ./services/authentication/server
+      context: ./services/approval/server
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment:
@@ -51,6 +51,35 @@ services:
     build:
       dockerfile: Dockerfile
       context: ./services/authentication/server
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - acc
+
+  chats-server:
+    container_name: chats-server
+    image: ${DOCKER_USER}/${DOCKER_REPO}:chats-server
+    ports:
+      - ${CHATS_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./services/chats/server
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment:
