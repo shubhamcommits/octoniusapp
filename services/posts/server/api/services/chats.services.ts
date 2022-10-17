@@ -348,7 +348,7 @@ console.log({newMessage});
       const chat: any = await Chat.findOne({ _id: chatId }).select('members').lean();
 console.log({chat});
 console.log({userId})
-      const memberIndex = (chat.members) ? chat.members.findIndex(m => (m._id || m) == userId) : -1;
+      const memberIndex = (chat.members) ? chat.members.findIndex(m => (m._user._id || m._user) == userId) : -1;
       const member = (memberIndex >= 0) ? chat.members[memberIndex] : null;
 console.log({member});
 console.log({memberIndex});
