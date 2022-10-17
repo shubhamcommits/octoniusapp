@@ -15,7 +15,7 @@ export class ChatService {
   // Select Group Fileds on population
   groupFields: any = 'group_name group_avatar workspace_name _members _admins';
 
-  chatFields: any = 'archived members';
+  chatFields: any = 'archived members _group';
   messageFields: any = 'posted_on content edited';
 
   private arraysEqual(a, b) {
@@ -184,7 +184,7 @@ export class ChatService {
       }
 
       groupChat._group = userGroups[i];
-console.log({groupChat});
+
       if (groupChat) {
         groupChats.push(groupChat);
       }
@@ -217,6 +217,8 @@ console.log({groupChat});
         .select(this.chatFields)
         .populate({ path: 'members._user', select: this.userFields })
         .lean();
+
+      this.sendNotification(chatId, 'new-chat-message');
 
       // Create Real time Notification to notify user about the task reassignment
       http.post(`${process.env.NOTIFICATIONS_SERVER_API}/chat-add-member`, {
@@ -317,7 +319,7 @@ console.log({groupChat});
     try {
       let message: any = await Message.create(newMessage);
 
-      this.sendNotification(message._chat._id || message._chat, message._id);
+      this.sendNotification(message._chat._id || message._chat, 'new-chat-message', message._id);
     } catch (err) {
       throw (err);
     }
@@ -333,10 +335,10 @@ console.log({groupChat});
     try {
       var messages = [];
 
-      const chat: any = await Chat.findOne({ _id: chatId }).select('members _group').lean();
-console.log({chat});
-console.log(chat._group);
-console.log(!chat._group);
+      const chat: any = await Chat.findOne({ _id: chatId })
+        .select(this.chatFields)
+        .lean();
+
       if (!chat._group) {
         const memberIndex = (chat.members) ? chat.members.findIndex(m => (m._user._id || m._user) == userId) : -1;
         const member = (memberIndex >= 0) ? chat.members[memberIndex] : null;
@@ -422,8 +424,8 @@ console.log(!chat._group);
    * This function is responsible for sending the related real time notifications to the user(s)
    * @param chat
    */
-  async sendNotification(chatId: string, messageId: string) {
-    return http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-chat-message`, {
+  async sendNotification(chatId: string, notificationType: string, messageId?: string) {
+    return http.post(`${process.env.NOTIFICATIONS_SERVER_API}/${notificationType}`, {
         chatId: chatId,
         messageId: messageId
       }).catch(err => {

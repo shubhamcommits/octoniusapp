@@ -21,6 +21,13 @@ const ChatSchema = new Schema({
             required: true,
             default: false
         },
+        /*
+        archived: {
+            type: Boolean,
+            required: true,
+            default: false
+        },
+        */
         default: []
     }],
     _group: {
