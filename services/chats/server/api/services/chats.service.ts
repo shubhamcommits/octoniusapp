@@ -1,6 +1,7 @@
 import http from 'axios';
 import moment from 'moment';
 import { Chat, Group, Message } from '../models';
+import { sendError } from '../utils';
 
 /*  ===============================
  *  -- CHATS Service --
@@ -43,8 +44,8 @@ export class ChatService {
       chatData = JSON.parse(chatData);
 
       let userChats = await Chat.find({
-        'members._user': userId,
-      }).select('members').lean();
+          'members._user': userId,
+        }).select('members').lean();
 
       let members = chatData?.members;
       members = await members?.filter((member, index) => {
@@ -97,7 +98,7 @@ export class ChatService {
       // Return Chat Object
       return {chat: chat, newChat: !chatExists};
     } catch (err) {
-
+console.log(err);
       // Return with error
       throw (err);
     }
@@ -217,16 +218,7 @@ export class ChatService {
         .populate({ path: 'members._user', select: this.userFields })
         .lean();
 
-      // this.sendNotification(chatId, 'added-to-chat');
-
-      // Create Real time Notification to notify user about the task reassignment
-      http.post(`${process.env.NOTIFICATIONS_SERVER_API}/chat-add-member`, {
-          chatId: chat._id,
-          memberId: memberId,
-          _assigned_from: userId
-        }).catch(err => {
-          console.log(`\n⛔️ Error:\n ${err}`);
-        });
+      this.sendNotification(chatId, 'added-to-chat');
 
       // Return the chat
       return chat;
