@@ -1,7 +1,6 @@
 import http from 'axios';
 import moment from 'moment';
 import { Chat, Group, Message } from '../models';
-import { sendErr } from '../utils/sendError';
 
 /*  ===============================
  *  -- CHATS Service --
@@ -218,7 +217,7 @@ export class ChatService {
         .populate({ path: 'members._user', select: this.userFields })
         .lean();
 
-      this.sendNotification(chatId, 'new-chat-message');
+      // this.sendNotification(chatId, 'added-to-chat');
 
       // Create Real time Notification to notify user about the task reassignment
       http.post(`${process.env.NOTIFICATIONS_SERVER_API}/chat-add-member`, {
@@ -356,7 +355,7 @@ export class ChatService {
                   { posted_on: { $gte: member.joined_on }}
                 ]
             })
-            .sort('-_id')
+            .sort('_id')
             .limit(10)
             .select(this.messageFields)
             .populate({ path: '_posted_by', select: this.userFields })
@@ -370,7 +369,7 @@ export class ChatService {
                   { posted_on: { $gte: member.joined_on }}
                 ]
             })
-            .sort('-_id')
+            .sort('_id')
             .limit(10)
             .select(this.messageFields)
             .populate({ path: '_posted_by', select: this.userFields })
@@ -387,7 +386,7 @@ export class ChatService {
                   { _id: { $lt: lastMessageId } }
                 ]
             })
-            .sort('-_id')
+            .sort('_id')
             .limit(10)
             .select(this.messageFields)
             .populate({ path: '_posted_by', select: this.userFields })
@@ -400,7 +399,7 @@ export class ChatService {
                   { _chat: chatId }
                 ]
             })
-            .sort('-_id')
+            .sort('_id')
             .limit(10)
             .select(this.messageFields)
             .populate({ path: '_posted_by', select: this.userFields })

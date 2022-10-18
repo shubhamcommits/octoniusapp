@@ -5,7 +5,6 @@ import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
-import fileUpload from 'express-fileupload';
 import { chatRoutes } from './routes';
 
 // Defining new Express application
@@ -68,21 +67,13 @@ const encodeResToGzip = (contentType: any) => {
 app.get("*.js", encodeResToGzip('text/javascript'));
 app.get("*.css", encodeResToGzip('text/css'));
 
-// Set file upload middleware
-app.use(fileUpload({
-    limits: {
-        fileSize: 1024 * 1024 * 1024
-    },
-    abortOnLimit: true
-}));
-
-// Availing the static uploads folder to access from server
-app.use('/uploads', express.static(process.env.FILE_UPLOAD_FOLDER));
-
 // Routes which should handle request
 app.all('/', (req: Request, res: Response, next: NextFunction) => {
     res.sendFile(path.join(__dirname, './views/index.html'));
 });
+
+// Availing the static uploads folder to access from server
+app.use('/uploads', express.static(process.env.FILE_UPLOAD_FOLDER));
 
 // Post Routes
 app.use('/api', chatRoutes);

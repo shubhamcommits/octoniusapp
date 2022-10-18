@@ -721,6 +721,26 @@ export class NotificationsController {
     }
 
     /**
+     * This function is responsible for notifying the users when an item was approved by every member in the flow
+     * @param { userId, groupId, posted_by, io } post 
+     */
+    async newChatMessage(req: Request, res: Response, next: NextFunction) {
+
+        let { chatId, messageId, io } = req.body;
+        try {
+            await notificationService.newChatMessage(chatId, messageId, io);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Event Assignments Succeeded!`,
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
      * This function is responsible for returning all users unread notifications for the inbox
      */
     async inboxNotifications(req: Request, res: Response, next: NextFunction) {

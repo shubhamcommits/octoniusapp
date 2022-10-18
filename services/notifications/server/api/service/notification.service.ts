@@ -1,4 +1,4 @@
-import { Notification, User, File, Workspace, Group, Post, Story } from "../models";
+import { Notification, User, File, Workspace, Group, Post, Story, ChatNotification, Chat, Message } from "../models";
 import { Readable } from 'stream';
 import { helperFunctions, axios } from '../../utils';
 import moment from "moment";
@@ -1046,6 +1046,61 @@ export class NotificationsService {
                     shuttleGroupName: shuttleGroup.group_name,
                 });
                 */
+            });
+        } catch (err) {
+            throw err;
+        }
+    };
+    
+    /**
+     * This function is responsible to notifying all the user on assigning of a new event to them
+     * @param { chatId, messageId, io } post 
+     */
+    async newChatMessage(chatId: string, messageId: string, io) {
+        try {
+
+            const message = await Message.findById({ _id: messageId })
+                .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role email' })
+                .lean();
+
+            message._chat = await Chat.findById({ _id: chatId })
+                .select('archived members _group')
+                .populate({ path: 'members._user', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: '_group', select: 'group_name _members _admins _workspace' })
+                .lean();
+
+            let usersArray = [];
+            if (message._chat && message._chat.members) {
+                usersArray = message._chat.members.map(m => { return m._user; });
+            } else if (message._chat && message._chat._group) {
+                usersArray = [...(message._chat._group._members || []), ...(message._chat._group._admins || [])]
+            }
+
+            // Create Readble Stream from the notification
+            let userStream = Readable.from(await User.find({
+                _id: { $in : usersArray}
+            }).select('_id integrations.firebase_token'));
+
+            await userStream.on('data', async (user: any) => {
+                if ((user._id || user) != (message?._posted_by?._id || message?._posted_by)){
+                    const notification = await ChatNotification.create({
+                        _actor: message?._posted_by?._id || message?._posted_by,
+                        _owner: user._id || user,
+                        _message: messageId,
+                        created_date: moment().format(),
+                        message: 'sent you a message',
+                        type: 'new-chat-message'
+                    });
+
+                    if (process.env.DOMAIN == 'app.octonius.com') {
+                        if (user.integrations.firebase_token) {
+                            // Send the notification to firebase for mobile notify
+                            this.sendFirebaseNotification(message._chat?._group?._workspace, user?.integrations?.firebase_token, 'Octonius - New Message', message?._posted_by?.first_name + ' ' + message?._posted_by?.last_name + ' sent you a message');
+                        }
+                    }
+
+                    await helperFunctions.sendNewMessageNotificationFromService(user._id || user, message, io);
+                }
             });
         } catch (err) {
             throw err;

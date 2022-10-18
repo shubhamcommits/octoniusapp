@@ -177,6 +177,7 @@ export class ChatsController {
     async sendMessage(req: Request, res: Response, next: NextFunction) {
 
         const { body: { newMessage } } = req;
+        // const userId = req['userId'];
 
         await chatService.sendMessage(newMessage)
             .catch((err) => {

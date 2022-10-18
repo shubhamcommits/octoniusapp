@@ -57,7 +57,17 @@ async function sendNotificationsFeed(socket: any, userId: string, io: any) {
  */
 async function sendNotificationsFeedFromService(userId: string, io: any, backend?:any) {
     //  here the same as before, I deleted the emit code
-    generateFeed(userId, io,backend);
+    generateFeed(userId, io, backend);
+}
+
+/**
+ * This function sends the generated notifications feed to the user
+ * @param socket 
+ * @param userId 
+ * @param io 
+ */
+async function sendNewMessageNotificationFromService(userId: string, message: any, io: any) {
+    io.sockets.in(userId).emit('new message', message);
 }
 
 /**
@@ -179,6 +189,7 @@ export {
     // SEND NOTIFICATIONS FEED
     sendNotificationsFeed,
     sendNotificationsFeedFromService,
+    sendNewMessageNotificationFromService,
 
     // NOTIFY RELATED USERS
     notifyRelatedUsers,
