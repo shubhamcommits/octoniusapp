@@ -727,8 +727,8 @@ export class NotificationsController {
     async newChatMessage(req: Request, res: Response, next: NextFunction) {
 
         let { chatId, messageId, io } = req.body;
+
         try {
-console.log(io);
             await notificationService.newChatMessage(chatId, messageId, io);
 
             // Send status 200 response

@@ -67,7 +67,7 @@ async function sendNotificationsFeedFromService(userId: string, io: any, backend
  * @param io 
  */
 function sendNewMessageNotificationFromService(message: any, io: any) {
-console.log(message);
+console.log('helperFunction.sendNewMessageNotificationFromService -> ', message);
     io.sockets.to(message?._chat?._id || message?._chat).emit('newMessage', message);
 }
 

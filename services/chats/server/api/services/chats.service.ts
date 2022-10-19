@@ -345,7 +345,7 @@ export class ChatService {
                   { posted_on: { $gte: member.joined_on }}
                 ]
             })
-            .sort('_id')
+            .sort('-_id')
             .limit(10)
             .select(this.messageFields)
             .populate({ path: '_posted_by', select: this.userFields })

@@ -124,19 +124,19 @@ function init(server: any) {
         // -| CHATS NOTIFICATIONS |-
 
         socket.on('join-chat', (room) => {
-console.log(room);
+console.log('socket.join-chat -> ', room);
             // Broadcast edit event to user
             socket.join(room);
         });
 
         socket.on('leave-chat', (room) => {
-console.log(room);
+console.log('socket.leave-chat -> ', room);
             // Broadcast edit event to user
             socket.leave(room);
         });
 
         socket.on('newMessage', (message) => {
-console.log(message);
+console.log('socket.newMessage -> ', message);
             // Broadcast edit event to user
             socket.to(message?._chat?._id || message?._chat).emit('newMessage', message);
         });
