@@ -345,7 +345,7 @@ export class ChatService {
                   { posted_on: { $gte: member.joined_on }}
                 ]
             })
-            .sort('-_id')
+            .sort('-posted_on')
             .limit(10)
             .select(this.messageFields)
             .populate({ path: '_posted_by', select: this.userFields })
@@ -359,7 +359,7 @@ export class ChatService {
                   { posted_on: { $gte: member.joined_on }}
                 ]
             })
-            .sort('_id')
+            .sort('-posted_on')
             .limit(10)
             .select(this.messageFields)
             .populate({ path: '_posted_by', select: this.userFields })
@@ -376,7 +376,7 @@ export class ChatService {
                   { _id: { $lt: lastMessageId } }
                 ]
             })
-            .sort('_id')
+            .sort('-posted_on')
             .limit(10)
             .select(this.messageFields)
             .populate({ path: '_posted_by', select: this.userFields })
@@ -389,7 +389,7 @@ export class ChatService {
                   { _chat: chatId }
                 ]
             })
-            .sort('_id')
+            .sort('-posted_on')
             .limit(10)
             .select(this.messageFields)
             .populate({ path: '_posted_by', select: this.userFields })
