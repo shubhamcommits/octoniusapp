@@ -121,6 +121,12 @@ function init(server: any){
             socket.broadcast.to(roomName).emit('postEditedInGroup', data);
         });
 
+        socket.on('newMessage', (data) => {
+console.log(data);
+            // Broadcast edit event to user
+            socket.broadcast.to(data.userId).emit('newMessage', data.message);
+        });
+
         socket.on('disconnect', () => {
             
             // Remove the socket from globalConnection array

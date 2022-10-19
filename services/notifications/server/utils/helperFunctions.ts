@@ -69,7 +69,7 @@ async function sendNotificationsFeedFromService(userId: string, io: any, backend
 async function sendNewMessageNotificationFromService(userId: string, message: any, io: any) {
 console.log({userId});
 console.log({message});
-    io.sockets.in(userId).emit('new message', message);
+    io.sockets.in(userId).emit('newMessage', { message: message, userId: userId });
 }
 
 /**
