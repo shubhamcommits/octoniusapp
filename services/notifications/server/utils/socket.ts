@@ -129,6 +129,12 @@ console.log(room);
             socket.join(room);
         });
 
+        socket.on('leave-chat', (room) => {
+console.log(room);
+            // Broadcast edit event to user
+            socket.leave(room);
+        });
+
         socket.on('newMessage', (message) => {
 console.log(message);
             // Broadcast edit event to user
