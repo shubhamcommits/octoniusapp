@@ -72,10 +72,10 @@ app.get("*.css", encodeResToGzip('text/css'));
 // app.use(express.static(path.join(__dirname, '../../client/dist')));
   
 // Creating Sockets Microservice Server
- const server = http.createServer(app);
+const server = http.createServer(app);
 
-  // Initializing the sockets
-  const io = sockets.init(server);
+// Initializing the sockets
+const io = sockets.init(server);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
     req.body.io = io; 

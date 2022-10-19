@@ -7,9 +7,9 @@ const notifications = new NotificationsService();
 // Maintains the count of all the connected users
 const globalConnections = [];
 
-function init(server: any){
+function init(server: any) {
 
-    const io: any = require('socket.io')(server,{cors: '*:*'});
+    const io: any = require('socket.io')(server, {cors: '*:*'});
 
     /* =================
      * - NOTIFICATIONS -
@@ -120,6 +120,8 @@ function init(server: any){
             // Broadcast edit event to group
             socket.broadcast.to(roomName).emit('postEditedInGroup', data);
         });
+
+        // -| CHATS NOTIFICATIONS |-
 
         socket.on('newMessage', (data) => {
 console.log(data);
