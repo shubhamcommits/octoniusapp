@@ -1,7 +1,6 @@
 import http from 'axios';
 import moment from 'moment';
 import { Chat, Group, Message } from '../models';
-import { sendError } from '../utils';
 
 /*  ===============================
  *  -- CHATS Service --
@@ -98,7 +97,6 @@ export class ChatService {
       // Return Chat Object
       return {chat: chat, newChat: !chatExists};
     } catch (err) {
-console.log(err);
       // Return with error
       throw (err);
     }
