@@ -1068,20 +1068,21 @@ export class NotificationsService {
                 .populate({ path: 'members._user', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_group', select: 'group_name _members _admins _workspace' })
                 .lean();
-
+console.log({message});
             let usersArray = [];
             if (message._chat && message._chat.members) {
                 usersArray = message._chat.members.map(m => { return m._user; });
             } else if (message._chat && message._chat._group) {
                 usersArray = [...(message._chat._group._members || []), ...(message._chat._group._admins || [])]
             }
-
+console.log({usersArray});
             // Create Readble Stream from the notification
             let userStream = Readable.from(await User.find({
                 _id: { $in : usersArray}
             }).select('_id integrations.firebase_token'));
 
             await userStream.on('data', async (user: any) => {
+console.log({user});
                 if ((user._id || user) != (message?._posted_by?._id || message?._posted_by)){
                     const notification = await ChatNotification.create({
                         _actor: message?._posted_by?._id || message?._posted_by,
