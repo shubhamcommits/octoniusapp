@@ -319,7 +319,7 @@ export class ChatService {
    * @param groupId
    * @param lastPostId
    */
-  async getMessages(chatId: any, lastMessageId: any, userId: string) {
+  async getMessages(chatId: any, lastMessageId: any, userId: string, limit: any) {
 
     try {
       var messages = [];
@@ -346,7 +346,7 @@ export class ChatService {
                 ]
             })
             .sort('-posted_on')
-            .limit(10)
+            .limit(limit)
             .select(this.messageFields)
             .populate({ path: '_posted_by', select: this.userFields })
             .populate({ path: '_content_mentions', select: this.userFields })
@@ -360,7 +360,7 @@ export class ChatService {
                 ]
             })
             .sort('-posted_on')
-            .limit(10)
+            .limit(limit)
             .select(this.messageFields)
             .populate({ path: '_posted_by', select: this.userFields })
             .populate({ path: '_content_mentions', select: this.userFields })
@@ -377,7 +377,7 @@ export class ChatService {
                 ]
             })
             .sort('-posted_on')
-            .limit(10)
+            .limit(limit)
             .select(this.messageFields)
             .populate({ path: '_posted_by', select: this.userFields })
             .populate({ path: '_content_mentions', select: this.userFields })
@@ -390,7 +390,7 @@ export class ChatService {
                 ]
             })
             .sort('-posted_on')
-            .limit(10)
+            .limit(limit)
             .select(this.messageFields)
             .populate({ path: '_posted_by', select: this.userFields })
             .populate({ path: '_content_mentions', select: this.userFields })

@@ -199,7 +199,7 @@ export class ChatsController {
     async getMessages(req: Request, res: Response, next: NextFunction) {
 
         // Fetch chatId and lastMessageId from request
-        const { params: { chatId }, body: { lastMessageId } } = req;
+        const { params: { chatId }, body: { lastMessageId, limit } } = req;
         const userId = req['userId'];
 
         // If groupId is not present, then return error
@@ -207,8 +207,10 @@ export class ChatsController {
             return sendErr(res, new Error('Please provide the chatId as the query parameter'), 'Please provide the chatId as the query paramater!', 400);
         }
 
+        let limitOfMessages = limit || 10;
+
         // Fetch the next 5 recent messages
-        await chatService.getMessages(chatId, lastMessageId, userId)
+        await chatService.getMessages(chatId, lastMessageId, userId, limitOfMessages)
             .then((messages) => {
 
                 // If lastMessageId is there then, send status 200 response
