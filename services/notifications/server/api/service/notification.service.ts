@@ -1099,7 +1099,7 @@ export class NotificationsService {
                         }
                     }
 
-                    await helperFunctions.sendNewMessageNotificationFromService(user._id || user, message, io);
+                    await helperFunctions.sendNewMessageNotificationFromService(message, io);
                 }
             });
         } catch (err) {

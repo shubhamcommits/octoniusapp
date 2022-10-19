@@ -123,10 +123,16 @@ function init(server: any) {
 
         // -| CHATS NOTIFICATIONS |-
 
-        socket.on('newMessage', (data) => {
-console.log(data);
+        socket.on('join-chat', (room) => {
+console.log(room);
             // Broadcast edit event to user
-            socket.broadcast.to(data.userId).emit('newMessage', data.message);
+            socket.join(room);
+        });
+
+        socket.on('newMessage', (message) => {
+console.log(message);
+            // Broadcast edit event to user
+            socket.to(message?._chat?._id || message?._chat).emit('newMessage', message);
         });
 
         socket.on('disconnect', () => {
