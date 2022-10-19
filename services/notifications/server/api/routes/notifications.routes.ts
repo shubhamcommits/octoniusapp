@@ -82,6 +82,6 @@ routes.get('/pending-approvals', auth.verifyToken, auth.isLoggedIn, notification
 routes.post('/save-firebase-token', auth.verifyToken, auth.isLoggedIn, notificationFunctions.saveFirebaseToken);
 
 // POST - This route is responsible for notifying the user when someone send him a message
-routes.post('/new-chat-message', notificationFunctions.shuttleTask);
+routes.post('/new-chat-message', notificationFunctions.newChatMessage);
 
 export { routes as notificationRoutes };
