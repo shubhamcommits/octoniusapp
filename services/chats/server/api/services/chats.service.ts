@@ -338,7 +338,8 @@ export class ChatService {
 console.log(lastMessageId);
 console.log(lastMessagesPostedOn);
         // Fetch posts on the basis of the params @lastPostId
-        if (lastMessageId && lastMessagesPostedOn) {
+        if ((!lastMessageId || lastMessageId === undefined || lastMessageId === null)
+            && (!lastMessagesPostedOn || lastMessagesPostedOn === undefined || lastMessagesPostedOn === null)) {
           messages = await Message.find({
               $and: [
                   { _chat: chatId },
