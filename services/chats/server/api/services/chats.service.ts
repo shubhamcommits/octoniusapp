@@ -335,7 +335,8 @@ export class ChatService {
         if (!member) {
           throw new Error('The user is not part of the chat.');
         }
-
+console.log(lastMessageId);
+console.log(lastMessagesPostedOn);
         // Fetch posts on the basis of the params @lastPostId
         if (lastMessageId && lastMessagesPostedOn) {
           messages = await Message.find({

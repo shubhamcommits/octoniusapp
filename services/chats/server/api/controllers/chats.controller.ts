@@ -199,7 +199,7 @@ export class ChatsController {
     async getMessages(req: Request, res: Response, next: NextFunction) {
 
         // Fetch chatId and lastMessageId from request
-        const { params: { chatId }, body: { lastMessageId, lastMessagesPostedOn, limit } } = req;
+        const { params: { chatId }, query: { lastMessageId, lastMessagesPostedOn, limit } } = req;
         const userId = req['userId'];
 
         // If groupId is not present, then return error
