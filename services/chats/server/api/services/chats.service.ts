@@ -335,11 +335,12 @@ export class ChatService {
         if (!member) {
           throw new Error('The user is not part of the chat.');
         }
-console.log(lastMessageId);
-console.log(lastMessagesPostedOn);
+console.log({lastMessageId});
+console.log({lastMessagesPostedOn});
         // Fetch posts on the basis of the params @lastPostId
-        if ((!lastMessageId || lastMessageId === undefined || lastMessageId === null)
-            && (!lastMessagesPostedOn || lastMessagesPostedOn === undefined || lastMessagesPostedOn === null)) {
+        if ((!lastMessageId || lastMessageId == undefined || lastMessageId == 'undefined' || lastMessageId === null)
+            && (!lastMessagesPostedOn || lastMessagesPostedOn === undefined || lastMessagesPostedOn === 'undefined' || lastMessagesPostedOn === null)) {
+console.log("111111111");
           messages = await Message.find({
               $and: [
                   { _chat: chatId },
@@ -354,6 +355,7 @@ console.log(lastMessagesPostedOn);
             .populate({ path: '_chat', select: '_id' })
             .lean();
         } else {
+console.log("2222222222");
           messages = await Message.find({
               $and: [
                   { _chat: chatId },
