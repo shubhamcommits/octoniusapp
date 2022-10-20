@@ -210,7 +210,7 @@ export class ChatsController {
         let limitOfMessages = limit || 10;
 
         // Fetch the next 5 recent messages
-        await chatService.getMessages(chatId, lastMessageId, userId, limitOfMessages, lastMessagesPostedOn)
+        await chatService.getMessages(chatId, userId, limitOfMessages, lastMessageId, lastMessagesPostedOn)
             .then((messages) => {
 
                 // If lastMessageId is there then, send status 200 response

@@ -319,7 +319,7 @@ export class ChatService {
    * @param groupId
    * @param lastPostId
    */
-  async getMessages(chatId: any, lastMessageId: any, userId: string, limit: any, lastMessagesPostedOn: any) {
+  async getMessages(chatId: any, userId: string, limit: any, lastMessageId?: any, lastMessagesPostedOn?: any) {
 
     try {
       var messages = [];
