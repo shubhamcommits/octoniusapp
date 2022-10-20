@@ -343,8 +343,7 @@ console.log(lastMessagesPostedOn);
           messages = await Message.find({
               $and: [
                   { _chat: chatId },
-                  { _id: { $ne: lastMessageId } },
-                  { posted_on: { $gte: member.joined_on, $lt: lastMessagesPostedOn }}
+                  { posted_on: { $gte: member.joined_on }}
                 ]
             })
             .sort('-posted_on')
@@ -358,7 +357,8 @@ console.log(lastMessagesPostedOn);
           messages = await Message.find({
               $and: [
                   { _chat: chatId },
-                  { posted_on: { $gte: member.joined_on }}
+                  { _id: { $ne: lastMessageId } },
+                  { posted_on: { $gte: member.joined_on, $lt: lastMessagesPostedOn }}
                 ]
             })
             .sort('-posted_on')
