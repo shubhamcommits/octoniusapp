@@ -319,7 +319,7 @@ export class ChatService {
    * @param groupId
    * @param lastPostId
    */
-  async getMessages(chatId: any, lastMessageId: any, userId: string, limit: any) {
+  async getMessages(chatId: any, lastMessageId: any, userId: string, limit: any, lastMessagesPostedOn: any) {
 
     try {
       var messages = [];
@@ -337,12 +337,12 @@ export class ChatService {
         }
 
         // Fetch posts on the basis of the params @lastPostId
-        if (lastMessageId) {
+        if (lastMessageId && lastMessagesPostedOn) {
           messages = await Message.find({
               $and: [
                   { _chat: chatId },
-                  { _id: { $lt: lastMessageId } },
-                  { posted_on: { $gte: member.joined_on }}
+                  { _id: { $ne: lastMessageId } },
+                  { posted_on: { $gte: member.joined_on, $lt: lastMessagesPostedOn }}
                 ]
             })
             .sort('-posted_on')

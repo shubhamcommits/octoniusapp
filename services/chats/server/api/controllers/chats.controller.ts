@@ -199,7 +199,7 @@ export class ChatsController {
     async getMessages(req: Request, res: Response, next: NextFunction) {
 
         // Fetch chatId and lastMessageId from request
-        const { params: { chatId }, body: { lastMessageId, limit } } = req;
+        const { params: { chatId }, body: { lastMessageId, lastMessagesPostedOn, limit } } = req;
         const userId = req['userId'];
 
         // If groupId is not present, then return error
@@ -210,7 +210,7 @@ export class ChatsController {
         let limitOfMessages = limit || 10;
 
         // Fetch the next 5 recent messages
-        await chatService.getMessages(chatId, lastMessageId, userId, limitOfMessages)
+        await chatService.getMessages(chatId, lastMessageId, userId, limitOfMessages, lastMessagesPostedOn)
             .then((messages) => {
 
                 // If lastMessageId is there then, send status 200 response
