@@ -207,7 +207,7 @@ export class ChatsController {
             return sendErr(res, new Error('Please provide the chatId as the query parameter'), 'Please provide the chatId as the query paramater!', 400);
         }
 
-        let limitOfMessages = limit || 10;
+        let limitOfMessages = +limit || 10;
 
         // Fetch the next 5 recent messages
         await chatService.getMessages(chatId, userId, limitOfMessages)
@@ -241,7 +241,7 @@ export class ChatsController {
             return sendErr(res, new Error('Please provide the chatId as the query parameter'), 'Please provide the chatId as the query paramater!', 400);
         }
 
-        let limitOfMessages = limit || 10;
+        let limitOfMessages = +limit || 10;
 
         // Fetch the next 5 recent messages
         await chatService.getMessages(chatId, userId, limitOfMessages, lastMessageId, lastMessagesPostedOn)

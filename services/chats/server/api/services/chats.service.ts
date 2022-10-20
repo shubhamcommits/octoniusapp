@@ -319,7 +319,7 @@ export class ChatService {
    * @param groupId
    * @param lastPostId
    */
-  async getMessages(chatId: any, userId: string, limit: any, lastMessageId?: any, lastMessagesPostedOn?: any) {
+  async getMessages(chatId: any, userId: string, limit: number, lastMessageId?: any, lastMessagesPostedOn?: any) {
 
     try {
       var messages = [];
@@ -335,12 +335,9 @@ export class ChatService {
         if (!member) {
           throw new Error('The user is not part of the chat.');
         }
-console.log({lastMessageId});
-console.log({lastMessagesPostedOn});
+
         // Fetch posts on the basis of the params @lastPostId
-        if ((!lastMessageId || lastMessageId == undefined || lastMessageId == 'undefined' || lastMessageId === null)
-            && (!lastMessagesPostedOn || lastMessagesPostedOn === undefined || lastMessagesPostedOn === 'undefined' || lastMessagesPostedOn === null)) {
-console.log("111111111");
+        if (!lastMessageId || !lastMessagesPostedOn) {
           messages = await Message.find({
               $and: [
                   { _chat: chatId },
@@ -355,7 +352,6 @@ console.log("111111111");
             .populate({ path: '_chat', select: '_id' })
             .lean();
         } else {
-console.log("2222222222");
           messages = await Message.find({
               $and: [
                   { _chat: chatId },
