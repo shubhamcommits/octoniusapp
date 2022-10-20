@@ -199,6 +199,40 @@ export class ChatsController {
     async getMessages(req: Request, res: Response, next: NextFunction) {
 
         // Fetch chatId and lastMessageId from request
+        const { params: { chatId }, query: { limit } } = req;
+        const userId = req['userId'];
+
+        // If groupId is not present, then return error
+        if (!chatId) {
+            return sendErr(res, new Error('Please provide the chatId as the query parameter'), 'Please provide the chatId as the query paramater!', 400);
+        }
+
+        let limitOfMessages = limit || 10;
+
+        // Fetch the next 5 recent messages
+        await chatService.getMessages(chatId, userId, limitOfMessages)
+            .then((messages) => {
+                return res.status(200).json({
+                    message: `The first ${messages.length} most recent messages!`,
+                    messages: messages
+                });
+            })
+            .catch((err) => {
+
+                // If there's an error send bad request
+                return sendErr(res, new Error(err), 'Unable to fetch the messages, kindly check the stack trace for error', 400)
+            });
+    }
+
+    /**
+     * This function fetches the 5 recent messages present inside a group
+     * @param { query: { chatId, lastMessageId } } req 
+     * @param res 
+     * @param next 
+     */
+    async getNextMessages(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch chatId and lastMessageId from request
         const { params: { chatId }, query: { lastMessageId, lastMessagesPostedOn, limit } } = req;
         const userId = req['userId'];
 
@@ -214,18 +248,10 @@ export class ChatsController {
             .then((messages) => {
 
                 // If lastMessageId is there then, send status 200 response
-                if (lastMessageId)
-                    return res.status(200).json({
-                        message: `The next ${messages.length} most recent messages!`,
-                        messages: messages
-                    });
-
-                // If lastMessageId is not there then, send status 200 response
-                else
-                    return res.status(200).json({
-                        message: `The first ${messages.length} most recent messages!`,
-                        messages: messages
-                    });
+                return res.status(200).json({
+                    message: `The next ${messages.length} most recent messages!`,
+                    messages: messages
+                });
             })
             .catch((err) => {
 

@@ -44,6 +44,9 @@ routes.put('/:chatId/remove-member', chatController.removeMember);
 //GET - This route fetches the list of messages from a chat
 routes.get('/:chatId/mesages', chatController.getMessages);
 
+//GET - This route fetches the list of messages from a chat
+routes.get('/:chatId/next-mesages', chatController.getNextMessages);
+
 // PUT - This route is used to like a post
 routes.put('/send-message', chatController.sendMessage);
 
