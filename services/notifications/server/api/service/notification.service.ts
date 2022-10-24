@@ -258,7 +258,7 @@ export class NotificationsService {
                     const actor = await User.findById({ _id: comment?._commented_by }).select('first_name last_name').lean();
 
                     if (owner.integrations.firebase_token) {
-                        this.sendFirebaseNotification(owner._workspace, owner.integrations.firebase_token, 'Octonius - New Mention in Comment', actor?.first_name + ' ' + actor?.last_name + 'mentioned you on a comment.');
+                        this.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Mention in Comment', actor?.first_name + ' ' + actor?.last_name + 'mentioned you on a comment.');
                     }
                 }
             });
@@ -305,7 +305,7 @@ export class NotificationsService {
                     const actor = await User.findById({ _id: (posted_by._id || posted_by) }).select('first_name last_name').lean();
 
                     if (owner.integrations.firebase_token) {
-                        this.sendFirebaseNotification(owner._workspace, owner.integrations.firebase_token, 'Octonius - New Assignment', actor?.first_name + ' ' + actor?.last_name + 'assigned you a event.');
+                        this.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Assignment', actor?.first_name + ' ' + actor?.last_name + 'assigned you a event.');
                     }
                 }
             });
@@ -352,7 +352,7 @@ export class NotificationsService {
                     const actor = await User.findById({ _id: (posted_by._id || posted_by) }).select('first_name last_name').lean();
 
                     if (owner.integrations.firebase_token) {
-                        this.sendFirebaseNotification(owner._workspace, owner.integrations.firebase_token, 'Octonius - New Mention', actor?.first_name + ' ' + actor?.last_name + 'mentioned you on a post.');
+                        this.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Mention', actor?.first_name + ' ' + actor?.last_name + 'mentioned you on a post.');
                     }
                 }
             })
@@ -403,7 +403,7 @@ export class NotificationsService {
 
                     if (user.integrations.firebase_token) {
                         // Send the notification to firebase for mobile notify
-                        this.sendFirebaseNotification(user._workspace, user.integrations.firebase_token, 'Octonius - New Mention', actor?.first_name + ' ' + actor?.last_name + 'mentioned you on a folio.');
+                        this.sendFirebaseNotification(user._workspace._id || user._workspace, user.integrations.firebase_token, 'Octonius - New Mention', actor?.first_name + ' ' + actor?.last_name + 'mentioned you on a folio.');
                     }
                 }
             });
@@ -451,7 +451,7 @@ export class NotificationsService {
 
                         if (owner.integrations.firebase_token) {
                             // Send the notification to firebase for mobile notify
-                            this.sendFirebaseNotification(owner._workspace, owner.integrations.firebase_token, 'Octonius - New Assignment', actor?.first_name + ' ' + actor?.last_name + 'assigned you a task.');
+                            this.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Assignment', actor?.first_name + ' ' + actor?.last_name + 'assigned you a task.');
                         }
                     }
                 }
@@ -483,7 +483,7 @@ export class NotificationsService {
 
                 if (owner.integrations.firebase_token) {
                     // Send the notification to firebase for mobile notify
-                    this.sendFirebaseNotification(owner._workspace, owner.integrations.firebase_token, 'Octonius - New Assignment', actor?.first_name + ' ' + actor?.last_name + 'assigned you a task.');
+                    this.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Assignment', actor?.first_name + ' ' + actor?.last_name + 'assigned you a task.');
                 }
             }
         } catch (err) {
@@ -515,7 +515,7 @@ export class NotificationsService {
 
                     if (owner.integrations.firebase_token) {
                         // Send the notification to firebase for mobile notify
-                        this.sendFirebaseNotification(owner._workspace, owner.integrations.firebase_token, 'Octonius - Task Status Changed', actor?.first_name + ' ' + actor?.last_name + ' changed the task ' + task?.title + ' to ' + status);
+                        this.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - Task Status Changed', actor?.first_name + ' ' + actor?.last_name + ' changed the task ' + task?.title + ' to ' + status);
                     }
                 }
 
@@ -542,7 +542,7 @@ export class NotificationsService {
 
                         if (owner.integrations.firebase_token) {
                             // Send the notification to firebase for mobile notify
-                            this.sendFirebaseNotification(owner._workspace, owner.integrations.firebase_token, 'Octonius - Task Status Changed', actor?.first_name + ' ' + actor?.last_name + ' changed the task ' + task?.title + ' to ' + status);
+                            this.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - Task Status Changed', actor?.first_name + ' ' + actor?.last_name + ' changed the task ' + task?.title + ' to ' + status);
                         }
                     }
                     
@@ -576,7 +576,7 @@ export class NotificationsService {
 
                 if (owner.integrations.firebase_token) {
                     // Send the notification to firebase for mobile notify
-                    this.sendFirebaseNotification(owner._workspace, owner.integrations.firebase_token, 'Octonius - New Comment', actor?.first_name + ' ' + actor?.last_name + 'commented on ');
+                    this.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Comment', actor?.first_name + ' ' + actor?.last_name + 'commented on ');
                 }
             }
         } catch (err) {
@@ -606,7 +606,7 @@ export class NotificationsService {
 
                 if (owner.integrations.firebase_token) {
                     // Send the notification to firebase for mobile notify
-                    this.sendFirebaseNotification(owner._workspace, owner.integrations.firebase_token, 'Octonius - New Like on a Post', actor?.first_name + ' ' + actor?.last_name + ' liked your comment on ' + comment._post.title);
+                    this.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Like on a Post', actor?.first_name + ' ' + actor?.last_name + ' liked your comment on ' + comment._post.title);
                 }
             }
         } catch (err) {
@@ -635,7 +635,7 @@ export class NotificationsService {
 
                 if (owner.integrations.firebase_token) {
                     // Send the notification to firebase for mobile notify
-                    this.sendFirebaseNotification(owner._workspace, owner.integrations.firebase_token, 'Octonius - New Follow on a Post', actor?.first_name + ' ' + actor?.last_name + ' follows ' + post.title);
+                    this.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Follow on a Post', actor?.first_name + ' ' + actor?.last_name + ' follows ' + post.title);
                 }
             }
         } catch (err) {
@@ -661,7 +661,7 @@ export class NotificationsService {
 
                 if (owner.integrations.firebase_token) {
                     // Send the notification to firebase for mobile notify
-                    this.sendFirebaseNotification(owner._workspace, owner.integrations.firebase_token, 'Octonius - New Like on a Post', actor?.first_name + ' ' + actor?.last_name + ' likes ' + post.title);
+                    this.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Like on a Post', actor?.first_name + ' ' + actor?.last_name + ' likes ' + post.title);
                 }
             }
         } catch (err) {
@@ -698,7 +698,7 @@ export class NotificationsService {
 
                     if (user.integrations.firebase_token) {
                         // Send the notification to firebase for mobile notify
-                        this.sendFirebaseNotification(user._workspace, user.integrations.firebase_token, 'Octonius - New Post', actor?.first_name + ' ' + actor?.last_name + ' posted ' + post.title);
+                        this.sendFirebaseNotification(user._workspace._id || user._workspace, user.integrations.firebase_token, 'Octonius - New Post', actor?.first_name + ' ' + actor?.last_name + ' posted ' + post.title);
                     }
                 }
 
@@ -732,7 +732,7 @@ export class NotificationsService {
 
                 if (owner.integrations.firebase_token) {
                     // Send the notification to firebase for mobile notify
-                    this.sendFirebaseNotification(owner._workspace, owner.integrations.firebase_token, 'Octonius - Joined Group', actor?.first_name + ' ' + actor?.last_name + ' added you to group ' + group.group_name);
+                    this.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - Joined Group', actor?.first_name + ' ' + actor?.last_name + ' added you to group ' + group.group_name);
                 }
             }
 
@@ -765,7 +765,7 @@ export class NotificationsService {
 
                 if (owner.integrations.firebase_token) {
                     // Send the notification to firebase for mobile notify
-                    this.sendFirebaseNotification(owner._workspace, owner.integrations.firebase_token, 'Octonius - Leave Group', actor?.first_name + ' ' + actor?.last_name + ' removed you from group ' + group.group_name);
+                    this.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - Leave Group', actor?.first_name + ' ' + actor?.last_name + ' removed you from group ' + group.group_name);
                 }
             }
 
@@ -836,7 +836,7 @@ export class NotificationsService {
 
                 if (owner.integrations.firebase_token) {
                     // Send the notification to firebase for mobile notify
-                    this.sendFirebaseNotification(owner._workspace, owner.integrations.firebase_token, 'Octonius - New Approval Flow Launched', actor?.first_name + ' ' + actor?.last_name + ' launched the approval flow on ' + (itemDB.title || itemDB.original_name));
+                    this.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Approval Flow Launched', actor?.first_name + ' ' + actor?.last_name + ' launched the approval flow on ' + (itemDB.title || itemDB.original_name));
                 }
             }
 
@@ -900,7 +900,7 @@ export class NotificationsService {
 
                 if (owner.integrations.firebase_token) {
                     // Send the notification to firebase for mobile notify
-                    this.sendFirebaseNotification(owner._workspace, owner.integrations.firebase_token, 'Octonius - Approval Flow Rejected', actor?.first_name + ' ' + actor?.last_name + ' rejected the approval flow on ' + (itemDB.title || itemDB.original_name));
+                    this.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - Approval Flow Rejected', actor?.first_name + ' ' + actor?.last_name + ' rejected the approval flow on ' + (itemDB.title || itemDB.original_name));
                 }
             }
 
@@ -958,7 +958,7 @@ export class NotificationsService {
 
                 if (owner.integrations.firebase_token) {
                     // Send the notification to firebase for mobile notify
-                    this.sendFirebaseNotification(owner._workspace, owner.integrations.firebase_token, 'Octonius - Approval Flow Rejected', 'Approval flow on ' + (itemDB.title || itemDB.original_name) + ' has been approved');
+                    this.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - Approval Flow Rejected', 'Approval flow on ' + (itemDB.title || itemDB.original_name) + ' has been approved');
                 }
             }
 
@@ -1019,7 +1019,7 @@ export class NotificationsService {
 
                     if (user.integrations.firebase_token) {
                         // Send the notification to firebase for mobile notify
-                        this.sendFirebaseNotification(shuttleGroup._workspace, user.integrations.firebase_token, 'Octonius - Shuttle Task', actor?.first_name + ' ' + actor?.last_name + ' assigned a Shuttle Task to your group ' + shuttleGroup.group_name);
+                        this.sendFirebaseNotification(shuttleGroup._workspace._id || shuttleGroup._workspace, user.integrations.firebase_token, 'Octonius - Shuttle Task', actor?.first_name + ' ' + actor?.last_name + ' assigned a Shuttle Task to your group ' + shuttleGroup.group_name);
                     }
                 }
 
@@ -1095,7 +1095,7 @@ export class NotificationsService {
                     if (process.env.DOMAIN == 'app.octonius.com') {
                         if (user.integrations.firebase_token) {
                             // Send the notification to firebase for mobile notify
-                            this.sendFirebaseNotification(message._chat?._group?._workspace, user?.integrations?.firebase_token, 'Octonius - New Message', message?._posted_by?.first_name + ' ' + message?._posted_by?.last_name + ' sent you a message');
+                            this.sendFirebaseNotification(message._chat?._group?._workspace._id || message._chat?._group?._workspace, user?.integrations?.firebase_token, 'Octonius - New Message', message?._posted_by?.first_name + ' ' + message?._posted_by?.last_name + ' sent you a message');
                         }
                     }
 
