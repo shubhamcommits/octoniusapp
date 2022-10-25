@@ -348,7 +348,6 @@ export class ChatService {
             .limit(limit)
             .select(this.messageFields)
             .populate({ path: '_posted_by', select: this.userFields })
-            .populate({ path: '_content_mentions', select: this.userFields })
             .populate({ path: '_chat', select: '_id' })
             .lean();
         } else {
@@ -363,7 +362,6 @@ export class ChatService {
             .limit(limit)
             .select(this.messageFields)
             .populate({ path: '_posted_by', select: this.userFields })
-            .populate({ path: '_content_mentions', select: this.userFields })
             .populate({ path: '_chat', select: '_id' })
             .lean();
         }
@@ -380,7 +378,6 @@ export class ChatService {
             .limit(limit)
             .select(this.messageFields)
             .populate({ path: '_posted_by', select: this.userFields })
-            .populate({ path: '_content_mentions', select: this.userFields })
             .populate({ path: '_chat', select: '_id' })
             .lean();
         } else {
@@ -393,7 +390,6 @@ export class ChatService {
             .limit(limit)
             .select(this.messageFields)
             .populate({ path: '_posted_by', select: this.userFields })
-            .populate({ path: '_content_mentions', select: this.userFields })
             .populate({ path: '_chat', select: '_id' })
             .lean();
         }
