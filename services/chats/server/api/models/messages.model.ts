@@ -25,7 +25,7 @@ const MessageSchema = new Schema({
         trim: true
     },
     _content_mentions: [{
-        type: Schema.Types.Mixed,
+        type: Schema.Types.ObjectId,
         ref: 'User'
     }],
     edited: {
