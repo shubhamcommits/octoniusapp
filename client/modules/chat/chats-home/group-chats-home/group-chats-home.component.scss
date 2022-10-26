@@ -12,96 +12,31 @@
   overflow-x: hidden;
 }
 
-  .chat-item {
-    padding: 0;
-    width: 100%;
-    margin: 0;
+.chat-item {
+  padding: 0;
+  width: 100%;
+  margin: 0;
 
-  }
+}
 
-    .chat_title {
-        font-size: 12px;
-    }
+.chat_title {
+    font-size: 12px;
+}
 
-        .chat_post_title {
-          color:$dark-text;
-          font-size: 14px;
-        }
+.chat_post_title {
+  color:$dark-text;
+  font-size: 14px;
+}
 
-        .assignment_chat {
-          color:#ffab00;
-          font-size: 12px;
-        }
-
-        .mention_chat {
-          color:$pink;
-          font-size: 12px;
-        }
-
-        .completed_chat {
-          color: $dark-sky-blue;
-          font-size: 12px;
-        }
-
-        .started_chat {
-          color: #0bc6a0;
-          font-size: 12px;
-        }
-
-        .like_comment_chat {
-          color: #0691e2;
-        }
-
-        .like_chat {
-          color: #0691e2;
-        }
-
-        .follow_chat {
-          color: #0691e2;
-        }
-
-        .comment_chat{
-          color: #0691e2;
-        }
-
-        .join_group_chat {
-          color: #0691e2;
-        }
-
-        .leave_group_chat {
-          color: #0691e2;
-        }
-    
-
-        .chat_actor {
-          text-align: center;
-          width: 24px;
-          margin: auto 6px auto -12px;
-          height: 24px;
-      }
-  
-
-    .chat_date_time {
-        text-align: center;
-
-    }
-
-    .chat_tag {
-        .tags {
-            text-align: center;
-            border: none !important;
-        }
-    }
-
-    .chat_more {
-        width: 60px;
-        flex: 0 0;
-        text-align: right;
-        padding-right: 8px;
-        flex: auto;
-        height: 70px;
-        line-height: 70px;
-    }
+.chat_delete {
+  width: 60px;
+  flex: 0 0;
+  text-align: right;
+  padding-right: 8px;
+  flex: auto;
+  height: 70px;
+  line-height: 70px;
+}
 
 .badge {
   background-color: $dark-sky-blue;
@@ -117,47 +52,3 @@
   border-radius: 10px;
   padding: 2px 10px !important;
 }
-
-.badge-event {
-  margin: 0 1px !important;
-  display: inline;
- 
-  font-style: normal;
-  font-weight: 700 !important;
-  font-size: 12px;
-  align-items: center;
-  color: #FFFFFF;
-  border-radius: 10px;
-  padding: 2px 10px !important;
-}
-
-.going {
-  background-color: #2AA578;
-}
-
-.maygo {
-  background-color: #FBB732;
-}
-
-.event_title {
-  color:$dark-text;
-  font-weight: 700;
-}
-
-ion-col>div {
-  background-color: #f7f7f7;
-  // border: solid 1px #ddd;
-  // padding: 10px;
-  cursor: pointer;
-}
-
-.selected {
-  background-color: #0097dd !important;
-  cursor: default !important;
-}
-.actor_name{
-  font-size: 12px;
-  color: #5E6268;
-}
-
-

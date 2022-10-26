@@ -30,6 +30,7 @@
           </div>
 
           <div class="chat_delete">
+            <span *ngIf="chat?.unreadMessages" class="badge">{{ chat?.unreadMessages }}</span>
             <i class="material-icons-outlined" style="cursor: pointer;" [matMenuTriggerFor]="chatOptions" #trigger="matMenuTrigger">more_vert</i>
 
             <mat-menu #chatOptions="matMenu">

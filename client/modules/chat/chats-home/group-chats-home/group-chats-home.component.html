@@ -28,6 +28,10 @@
               <app-chat-title [chatData]="chat" [userData]="userData"></app-chat-title>
             </div>
           </div>
+
+          <div class="chat_delete" *ngIf="chat?.unreadMessages">
+            <span class="badge">{{ chat?.unreadMessages }}</span>
+          </div>
         </mat-list-item>
         <!-- CHAT ITEM ENDS-->
       </mat-list>

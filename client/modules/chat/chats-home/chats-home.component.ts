@@ -21,6 +21,9 @@ export class ChatsHomeComponent implements OnInit {
 
   openChat;
 
+  unreadMessages: any = [];
+  numUnreadMessages
+
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
@@ -32,7 +35,37 @@ export class ChatsHomeComponent implements OnInit {
     this.userData = await this.publicFunctions.getCurrentUser();
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
-    // this.initChats();
+    this.unreadMessages = await this.publicFunctions.getUnreadChats();
+    this.numUnreadMessages = this.unreadMessages.length;
+
+    await this.mapMessagesInChats();
+  }
+
+  mapMessagesInChats() {
+
+    this.directChats.forEach(chat => {
+      let unreadMessages = 0;
+
+      this.unreadMessages.forEach(unreadMessage => {
+        if ((unreadMessage?._message?._chat?._id || unreadMessage?._message?._chat) == chat?._id) {
+          unreadMessages++;
+        }
+      });
+
+      chat.unreadMessages = unreadMessages;
+    });
+
+    this.groupChats.forEach(chat => {
+      let unreadMessages = 0;
+
+      this.unreadMessages.forEach(unreadMessage => {
+        if ((unreadMessage?._message?._chat?._id || unreadMessage?._message?._chat) == chat?._id) {
+          unreadMessages++;
+        }
+      });
+
+      chat.unreadMessages = unreadMessages;
+    });
   }
 
   showHideChats() {
@@ -66,6 +99,8 @@ export class ChatsHomeComponent implements OnInit {
     if (chatId) {
       await this.chatService.getChatDetails(chatId).then(res => {
         this.openChat = res['chat'];
+
+        this.chatService.markAsRead(chatId);
       });
     } else {
       this.openChat = {

@@ -95,8 +95,8 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, OnChanges, After
 
     await this.initMembers();
 
-   const adminIndex = (this.chatData.members) ? this.chatData.members.findIndex(member => member?._user?._id == this.userData?._id && member?.is_admin) : -1;
-   this.canEdit = adminIndex >= 0 && !this.utilityService.objectExists(this.chatData?._group);
+    const adminIndex = (this.chatData.members) ? this.chatData.members.findIndex(member => member?._user?._id == this.userData?._id && member?.is_admin) : -1;
+    this.canEdit = adminIndex >= 0 && !this.utilityService.objectExists(this.chatData?._group);
   }
 
   /**

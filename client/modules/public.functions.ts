@@ -19,6 +19,7 @@ import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
 import { environment } from 'src/environments/environment';
 import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
+import { ChatService } from 'src/shared/services/chat-service/chat.service';
 
 @Injectable({
   providedIn: 'root'
@@ -2109,5 +2110,17 @@ export class PublicFunctions {
 
       // Return the Array without duplicates
       return Array.from(new Set(usersList))
+    }
+
+    async getUnreadChats() {
+      const chatService = this.injector.get(ChatService);
+      return new Promise(async (resolve) => {
+        await await chatService.getUnreadChats()
+          .then((res) => {
+            if (res) {
+              resolve(res['unreadChats']);
+            }
+          });
+      });
     }
 }

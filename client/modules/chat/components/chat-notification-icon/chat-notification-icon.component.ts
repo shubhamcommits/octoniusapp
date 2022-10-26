@@ -10,7 +10,8 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 export class ChatNotificationIconComponent implements OnChanges {
 
   // User Data Variable
-  @Input('userData') userData: any;
+  @Input() userData: any;
+  @Input() numUnreadMessages: number = 0;
 
   constructor(public utilityService: UtilityService) { }
 
