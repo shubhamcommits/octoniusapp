@@ -79,6 +79,9 @@ export const environment = {
   UTILITIES_WORKSPACES_UPLOADS: 'http://localhost:80/uploads/workspaces',
   UTILITIES_FLAMINGOS_UPLOADS: 'http://localhost:80/uploads/flamingo',
 
+  // Chats URLs
+  CHATS_BASE_API_URL: `http://localhost:80/api/chats`,
+
   // MANAGEMENT_URL: 'https://management.octonius.com',
   MANAGEMENT_URL: `${window["env"]["protocol"]}://${window["env"]["mgmt_portal_domain"]}`,
 };
