@@ -35,7 +35,7 @@ if (cluster.isMaster) {
 } else {
 
   // Define Users Application port
-  const port = process.env.PORT || 7000;
+  const port = 7001;
 
   // Defining the Host Name
   const host: any = process.env.HOST || '0.0.0.0';

@@ -130,16 +130,16 @@ console.log('socket.join-chat -> ', room);
         });
 
         socket.on('leave-chat', (room) => {
-console.log('socket.leave-chat -> ', room);
+        console.log('socket.leave-chat -> ', room);
             // Broadcast edit event to user
             socket.leave(room);
         });
 
-        socket.on('newMessage', (message) => {
-console.log('socket.newMessage -> ', message);
-            // Broadcast edit event to user
-            socket.to(message?._chat?._id || message?._chat).emit('newMessage', message);
-        });
+        // socket.on('newMessage', (message) => {
+        // console.log('socket.newMessage -> ', message);
+        //     // Broadcast edit event to user
+        //     socket.to(message?._chat?._id || message?._chat).emit('newMessage', message);
+        // });
 
         socket.on('disconnect', () => {
             

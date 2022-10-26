@@ -1,16 +1,23 @@
+// This file can be replaced during build by using the `fileReplacements` array.
+// `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
+// The list of file replacements can be found in `angular.json`.
+
+// The file contents for the current environment will overwrite these during build.
+// The build system defaults to the dev environment which uses `environment.ts`, but if you do
+// `ng build --env=prod` then `environment.prod.ts` will be used instead.
+// The list of which env maps to which file can be found in `.angular-cli.json`.
+
 // DNS Details
 const url = {
-  protocol: window["env"]["protocol"], // standard protocol
-  domain: window["env"]["domain"], // your domain name where application is supposed to be visible
-  websocket: window["env"]["websocket"],  // wss in case of https protocol, else pass ws here
-  mgmt_portal_domain: window["env"]["mgmt_portal_domain"]
+  protocol: `http`, // standard protocol
+  domain: `localhost`, // your domain name where application is supposed to be visible
+  websocket: `ws` // wss in case of https protocol, else pass ws here
 }
 
-// Export Environment variables
 export const environment = {
 
   // Environment Configs
-  production: true,
+  production: false,
   hmr: false,
 
   domain: url['domain'],
@@ -21,7 +28,7 @@ export const environment = {
   // Browser Storage Key
   storageKey: `storageKey@20xx`,
 
-  // Google developer console credentials
+  // GOOGLE properties
   GOOGLE_SCOPE: [
     'https://www.googleapis.com/auth/drive',
     'https://www.googleapis.com/auth/calendar',
@@ -35,68 +42,77 @@ export const environment = {
   GOOGLE_OCTONIUS_CLIENT_ID: '833088201902-u8f2kkpve0tsm0qcrq4f40i65bthns9n.apps.googleusercontent.com',
 
   // Base Client Url
-  clientUrl: `${window["env"]["protocol"]}://${window["env"]["domain"]}`,
+  clientUrl: `${url.protocol}://${url.domain}:4200`,
 
   // Octo-doc URL
-  REAL_TIME_URL: `${window["env"]["domain"]}/editor`,
+  REAL_TIME_URL: `${url.domain}:3001`,
 
   // Authentication URLs
-  AUTH_BASE_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/auths`,
-  AUTH_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/auths`,
+  AUTH_BASE_URL: `${url.protocol}://${url.domain}:3000`,
+  AUTH_BASE_API_URL: `${url.protocol}://${url.domain}:3000/api`,
 
   // Groups URLs
-  GROUPS_BASE_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/groups`,
-  GROUPS_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/groups`,
+  GROUPS_BASE_URL: `${url.protocol}://${url.domain}:4000`,
+  GROUPS_BASE_API_URL: `${url.protocol}://${url.domain}:4000/api`,
 
   // Workspace URLs
-  WORKSPACE_BASE_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/workspaces`,
-  WORKSPACE_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/workspaces`,
+  WORKSPACE_BASE_URL: `${url.protocol}://${url.domain}:5001`,
+  WORKSPACE_BASE_API_URL: `${url.protocol}://${url.domain}:5001/api`,
 
   // Search Service URLs
-  SEARCH_BASE_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/search`,
-  SEARCH_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/search`,
-
-  // Slack Auth URLs
-  INTEGRATIONS_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/integrations`,
+  SEARCH_BASE_URL: `${url.protocol}://${url.domain}:12000`,
+  SEARCH_BASE_API_URL: `${url.protocol}://${url.domain}:12000/api`,
 
   // User URLs
-  USER_BASE_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/users`,
-  USER_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/users`,
+  USER_BASE_URL: `${url.protocol}://${url.domain}:7001`,
+  USER_BASE_API_URL: `${url.protocol}://${url.domain}:7001/api`,
 
-  // Posts URLs
-  POST_BASE_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/posts`,
-  POST_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/posts`,
+  // Slack Auth URLs
+  INTEGRATIONS_BASE_API_URL: `${url.protocol}://${url.domain}:13000/api`,
+
+  // Posts URLsi
+  POST_BASE_URL: `${url.protocol}://${url.domain}:8000`,
+  POST_BASE_API_URL: `${url.protocol}://${url.domain}:8000/api`,
 
   // Notifications URLs
-  FLAMINGO_BASE_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/flamingo`,
-  FLAMINGO_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/flamingo`,
+  NOTIFICATIONS_BASE_URL: `ws://${url.domain}:9000`,
+  NOTIFICATIONS_BASE_API_URL: `${url.protocol}://${url.domain}:9000/api`,
 
   // Notifications URLs
-  NOTIFICATIONS_BASE_URL: `${window["env"]["websocket"]}://${window["env"]["domain"]}`,
-  NOTIFICATIONS_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/notifications`,
+  FLAMINGO_BASE_URL: `${url.protocol}://${url.domain}:14000`,
+  FLAMINGO_BASE_API_URL: `${url.protocol}://${url.domain}:14000/api`,
 
   // Approval URLs
-  APPROVAL_BASE_URL: `${window["env"]["websocket"]}://${window["env"]["domain"]}`,
-  APPROVAL_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/approval`,
+  APPROVAL_BASE_URL: `${url.protocol}://${url.domain}:15000`,
+  APPROVAL_BASE_API_URL: `${url.protocol}://${url.domain}:15000/api`,
 
   // Utilities URLs
-  UTILITIES_BASE_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/utilities`,
-  UTILITIES_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/utilities`,
-  UTILITIES_GROUPS_UPLOADS: `${window["env"]["protocol"]}://${window["env"]["domain"]}/uploads/groups`,
-  UTILITIES_FILES_UPLOADS: `${window["env"]["protocol"]}://${window["env"]["domain"]}/uploads/files`,
-  //UTILITIES_GROUP_FILES_UPLOADS: `${window["env"]["protocol"]}://${window["env"]["domain"]}/uploads/groupsFiles`,
-  UTILITIES_POSTS_UPLOADS: `${window["env"]["protocol"]}://${window["env"]["domain"]}/uploads/posts`,
-  UTILITIES_USERS_UPLOADS: `${window["env"]["protocol"]}://${window["env"]["domain"]}/uploads/users`,
-  UTILITIES_WORKSPACES_UPLOADS: `${window["env"]["protocol"]}://${window["env"]["domain"]}/uploads/workspaces`,
-  UTILITIES_FLAMINGOS_UPLOADS: `${window["env"]["protocol"]}://${window["env"]["domain"]}/uploads/flamingo`,
+  UTILITIES_BASE_URL: `${url.protocol}://${url.domain}:10000`,
+  UTILITIES_BASE_API_URL: `${url.protocol}://${url.domain}:10000/api`,
+  UTILITIES_GROUPS_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/groups`,
+  //UTILITIES_GROUP_FILES_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/groupsFiles`,
+  UTILITIES_FILES_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/files`,
+  UTILITIES_POSTS_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/posts`,
+  UTILITIES_USERS_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/users`,
+  UTILITIES_WORKSPACES_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/workspaces`,
+  UTILITIES_FLAMINGOS_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/flamingo`,
 
-  //LIBREOFFICE_BASE_URL
-  LIBREOFFICE_BASE_URL:  `${window["env"]["protocol"]}://${window["env"]["domain"]}/libreoffice`,
+  LIBREOFFICE_BASE_URL: `${url.protocol}://${url.domain}:9980/`,
+  LIBREOFFICE_BASE_PORT: '9980',
 
   // Folio URLs
-  FOLIO_BASE_URL: `${window["env"]["websocket"]}://${window["env"]["domain"]}/folio`,
-  FOLIO_HTTP_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/folio`,
+  FOLIO_BASE_URL: `${url.websocket}://${url.domain}:11000`,
+  FOLIO_HTTP_URL: `${url.protocol}://${url.domain}:11000`,
 
-  // MANAGEMENT_URL
-  MANAGEMENT_URL: `${window["env"]["protocol"]}://${window["env"]["mgmt_portal_domain"]}`,
+  // MANAGEMENT_URL: 'https://management.octonius.com',
+  MANAGEMENT_URL: `${url.protocol}://${url.domain}:3300`,
 };
+
+/*
+ * For easier debugging in development mode, you can import the following file
+ * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
+ *
+ * This import should be commented out in production mode because it will have a negative impact
+ * on performance if an error is thrown.
+ */
+// import `zone.js/dist/zone-error`;  // Included with Angular CLI.

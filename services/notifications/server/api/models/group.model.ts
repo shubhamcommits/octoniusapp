@@ -30,8 +30,7 @@ const GroupSchema = new Schema({
     _members: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
-    }],
-    _admins: [{
+    }], _admins: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],

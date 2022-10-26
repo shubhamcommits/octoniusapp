@@ -11,7 +11,7 @@
 const url = {
   protocol: `http`, // standard protocol
   domain: `localhost`, // your domain name where application is supposed to be visible
-  websocket: `ws` // wss in case of https protocol, else pass ws here
+  websocket: `ws` // wss in case of https protocol, else pass w,s here
 }
 
 export const environment = {
@@ -56,21 +56,21 @@ export const environment = {
   GROUPS_BASE_API_URL: `${url.protocol}://${url.domain}:4000/api`,
 
   // Workspace URLs
-  WORKSPACE_BASE_URL: `${url.protocol}://${url.domain}:5000`,
-  WORKSPACE_BASE_API_URL: `${url.protocol}://${url.domain}:5000/api`,
+  WORKSPACE_BASE_URL: `${url.protocol}://${url.domain}:5001`,
+  WORKSPACE_BASE_API_URL: `${url.protocol}://${url.domain}:5001/api`,
 
   // Search Service URLs
   SEARCH_BASE_URL: `${url.protocol}://${url.domain}:12000`,
   SEARCH_BASE_API_URL: `${url.protocol}://${url.domain}:12000/api`,
 
   // User URLs
-  USER_BASE_URL: `${url.protocol}://${url.domain}:7000`,
-  USER_BASE_API_URL: `${url.protocol}://${url.domain}:7000/api`,
+  USER_BASE_URL: `${url.protocol}://${url.domain}:7001`,
+  USER_BASE_API_URL: `${url.protocol}://${url.domain}:7001/api`,
 
   // Slack Auth URLs
   INTEGRATIONS_BASE_API_URL: `${url.protocol}://${url.domain}:13000/api`,
 
-  // Posts URLs
+  // Posts URLsi
   POST_BASE_URL: `${url.protocol}://${url.domain}:8000`,
   POST_BASE_API_URL: `${url.protocol}://${url.domain}:8000/api`,
 
