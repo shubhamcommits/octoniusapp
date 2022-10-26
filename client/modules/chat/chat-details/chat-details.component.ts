@@ -133,14 +133,10 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, OnChanges, After
   async initMembers() {
     if (!this.utilityService.objectExists(this.chatData?._group)) {
       this.members = await this.chatData?.members;
-      this.members = await this.members?.filter((member, index) => {
-        return (this.members?.findIndex(m => m._user._id == member._user._id) == index);
-      });
+      this.members = await this.members?.filter((member, index) => (this.members?.findIndex(m => m._user._id == member._user._id) == index));
     } else {
       this.members = await this.chatData?._group?._admins?.concat(this.chatData?._group?._members);
-      this.members = await this.members?.filter((member, index) => {
-          return (this.members?.findIndex(m => m._id == member._id) == index);
-      });
+      this.members = await this.members?.filter((member, index) => (this.members?.findIndex(m => m._id == member._id) == index));
     }
   }
 
@@ -180,7 +176,7 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, OnChanges, After
     if (memberIndex >= 0) {
       this.chatData?.members.splice(memberIndex, 1);
     }
-    
+
     this.initMembers();
   }
   /*
@@ -196,7 +192,7 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, OnChanges, After
         _content_mentions = messageContent.memberMentions;
       }
 
-      let newMessage = {
+      const newMessage = {
         _chat: this.chatData?._id,
         posted_on: moment(),
         _posted_by: this.userData?._id,
@@ -223,10 +219,12 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, OnChanges, After
   onCreateChat(chat: any, newMessage: any) {
 
     this.chatService.createChat(JSON.stringify(chat))
-      .then(async (res) => {
-        this.chatData = res['chat'];
+      .then(async (res: any) => {
+        if(res && res.chat) {
+          this.chatData = res.chat;
+        }
 
-        if (!res['newChat']) {
+        if (res && !res.newChat) {
           await this.loadMessages();
         }
 
@@ -246,18 +244,12 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, OnChanges, After
       .then(() => this.pushMessage(newMessage))
       .catch((err) => {
         this.utilityService.errorNotification('Unable to send the message, please try again!');
-      }); 
+      });
   }
 
   private unshiftMessages(messages: any) {
-    messages.sort((m1, m2) => {
-        return (moment.utc(m1.posted_on).isBefore(m2.posted_on)) ? 1 : -1;
-      }).forEach(m => {
-        const index = (this.messages) ? this.messages.findIndex(message => m._id == message._id) : -1;
-        if (index < 0) {
-          this.messages.unshift(m);
-        }
-      });
+    messages.sort((m1, m2) => (moment.utc(m1.posted_on).isBefore(m2.posted_on)) ? 1 : -1)
+      .forEach(m => this.messages.unshift(m));
   }
 
   private pushMessage(newMessage: any) {
@@ -324,20 +316,28 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, OnChanges, After
   // }
 
   private joinChatSocket() {
-    
+
     if (!this.socket){
       this.socket = this.websocketService.serverInit();
     }
 
     this.socket.on('connect', () => {
-console.log("join-chat");
+console.log('join-chat');
       // Connected, let's sign-up for to receive messages for this room
       this.socket.emit('join-chat', this.chatData?._id);
     });
 
+    this.socket.on('connectToRoom', (data)=>{
+      console.log('connected to room', data);
+    });
+
     this.socket.on('newMessage', (data) => {
 console.log('newMessage:', data);
-      this.pushMessage(data)
+      this.pushMessage(data);
+    });
+
+    this.socket.onAny((eventName, ...args) => {
+     console.log('socket fired on any', eventName);
     });
   }
 
@@ -354,6 +354,5 @@ console.log("leave-chat");
 
   closeModal() {
     this.chatClosedEvent.emit({ chatData: this.chatData });
-    // this.modalController.dismiss({ chatData: this.chatData });
   }
 }
