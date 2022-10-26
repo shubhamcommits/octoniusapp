@@ -1,4 +1,4 @@
-import { Component, Inject, Injector, LOCALE_ID } from '@angular/core';
+import { Component, Inject, Injector, LOCALE_ID, OnDestroy, OnInit } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { retry } from 'rxjs/internal/operators/retry';
@@ -20,7 +20,7 @@ declare const gapi: any;
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
 
   // Subsink
   private subSink = new SubSink();
@@ -40,6 +40,8 @@ export class AppComponent {
 
   isMobile = false;
   isAuth : boolean = false;
+
+  isChatAvailable: boolean = false;
 
   constructor(
     // @Inject(LOCALE_ID) protected localeId: string,
@@ -94,6 +96,10 @@ export class AppComponent {
     // Initiate the gapi variable to confirm the check the gapi is ready to work
     this.loadGoogleAPI();
 
+  }
+
+  async ngOnInit() {
+    this.isChatAvailable = await this.publicFunctions.isChatModuleAvailable().catch(() => this.isChatAvailable = true);
   }
 
   /**

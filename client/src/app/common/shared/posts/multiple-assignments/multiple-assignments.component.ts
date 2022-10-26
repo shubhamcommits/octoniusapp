@@ -15,10 +15,11 @@ import { SubSink } from 'subsink';
 export class MultipleAssignmentsComponent implements OnChanges, OnInit {
 
   @Input() groupId;
+  @Input() workspaceData;
   @Input() userData;
   @Input() post;
   @Input() assigned_to = [];
-  @Input() type; // post/flow
+  @Input() type; // post/flow/filter/chat
   @Input() canEdit = true;
 
   @Output() assigneeAddedEmiter = new EventEmitter();
@@ -27,7 +28,7 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
   @ViewChild(MatMenuTrigger, {static: true}) trigger: MatMenuTrigger;
 
   searchText = '';
-  groupMembers = [];
+  members = [];
 
   isNewEvent = false;
 
@@ -49,22 +50,29 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
     private injector: Injector
   ) { }
 
-  ngOnChanges() {
+  async ngOnChanges() {
 
-    this.subSink.add(this.utilityService.currentGroupData.subscribe((res) => {
-      if (JSON.stringify(res) != JSON.stringify({})) {
+    if (this.type != 'chat') {
+      this.subSink.add(this.utilityService.currentGroupData.subscribe((res) => {
+        if (JSON.stringify(res) != JSON.stringify({})) {
 
-        // Assign the GroupData
-        this.groupData = res;
+          // Assign the GroupData
+          this.groupData = res;
 
-        this.groupMembers = this.groupData._members.concat(this.groupData._admins);
-        this.groupMembers = this.groupMembers.filter((member, index) => {
-            return (this.groupMembers.findIndex(m => m._id == member._id) == index)
-        });
+          this.members = this.groupData._members.concat(this.groupData._admins);
+          this.members = this.members.filter((member, index) => {
+              return (this.members.findIndex(m => m._id == member._id) == index)
+          });
 
-        this.groupMembers.unshift({_id: 'all', first_name: 'All', last_name: 'members', email: ''});
-      }
-    }));
+          this.members.unshift({_id: 'all', first_name: 'All', last_name: 'members', email: ''});
+        }
+      }));
+    } else {
+      this.members = await this.workspaceData?.members;
+      this.members = await this.members?.filter((member, index) => {
+          return (this.members?.findIndex(m => m._id == member._id) == index)
+      });
+    }
 
     if (!this.post && this.type == 'post') {
       this.isNewEvent = true;
@@ -73,7 +81,7 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
       };
     }
 
-    if (this.type == 'post') {
+    if (this.type == 'post' && this.post) {
       this.assigned_to = this.post._assigned_to;
     }
 
@@ -112,7 +120,7 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
         }));
       } else if (this.type == 'flow') {
         this.assigneeRemovedEmiter.emit({assigneeId: assigneeId});
-      } else if (this.type == 'filter') {
+      } else if (this.type == 'filter' || this.type == 'chat') {
         const index = this.assigned_to.findIndex((assignee) => assignee._id == assigneeId);
         this.assigned_to.splice(index, 1);
         this.assigneeRemovedEmiter.emit(assigneeId);
@@ -124,7 +132,7 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
     let assignees = [];
 
     if (selectedMember._id == 'all') {
-      assignees = this.groupMembers.filter((member)=> {
+      assignees = this.members.filter((member)=> {
         return member._id != 'all';
       });
     } else {
@@ -162,7 +170,7 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
         } else if (this.type == 'flow') {
           //this.trigger.closeMenu();
           this.assigneeAddedEmiter.emit({assignee: member});
-        } else if (this.type == 'filter') {
+        } else if (this.type == 'filter' || this.type == 'chat') {
           this.assigned_to.push(member);
           this.assigneeAddedEmiter.emit(member);
         }

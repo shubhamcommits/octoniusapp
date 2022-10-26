@@ -1,0 +1,46 @@
+@import "src/assets/scss/variables";
+
+.chats {
+  width: 100%;
+  padding: 20px;
+  background: #FFFFFF;
+  max-height: 250px;
+  min-height: 250px;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.chat-item {
+  padding: 0;
+  width: 100%;
+  margin: 0;
+}
+
+.chat_title {
+    font-size: 12px;
+}
+
+.chat_post_title {
+  color:$dark-text;
+  font-size: 14px;
+}
+
+.chat_delete {
+  width: 60px;
+  flex: 0 0;
+  text-align: right;
+  padding-right: 8px;
+  flex: auto;
+  height: 70px;
+  line-height: 70px;
+}
+
+ul {
+  margin: 0;
+  padding: 10px;
+  
+  li {
+    list-style-type: none;
+    cursor: pointer;
+  }
+}

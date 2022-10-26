@@ -1,0 +1,36 @@
+<div class="chat-header">
+	<div>
+		<i class="material-icons" style="cursor: pointer" (click)="closeModal()">close</i>
+		
+		<app-chat-title [chatData]="chatData" [userData]="userData"></app-chat-title>
+	</div>
+
+	<app-multiple-assignments [canEdit]="canEdit" [workspaceData]="workspaceData" [userData]="userData" [assigned_to]="members"
+		[type]="'chat'" (assigneeAddedEmiter)="onAssignedAdded($event)" (assigneeRemovedEmiter)="onAssignedRemoved($event)">
+	</app-multiple-assignments>
+</div>
+
+<!--<ion-content #chatContent [scrollEvents]="true" (ionScrollStart)="logScrolling($event)">-->
+<div #chatContent (scroll)="loadMoreMessages($event)" class="chat-content" [scrollTop]="chatContent.scrollHeight">
+	<div *ngIf="isLoading" class="loading">
+		<mat-spinner></mat-spinner>
+	</div>
+
+	<!-- <ion-infinite-scroll #infiniteScroll position="top" (ionInfinite)="loadMoreMessages($event)">
+		<ion-infinite-scroll-content loadingSpinner="bubbles"></ion-infinite-scroll-content>
+	</ion-infinite-scroll> -->
+
+	<app-chat-message [message]="message" [userData]="userData" [previousMessage]="messages[index-1]" *ngFor="let message of messages; let index = index"></app-chat-message>
+
+	<!--
+	<ion-fab *ngIf="!scrolledToBottom" vertical="bottom" horizontal="end" slot="fixed">
+		<ion-fab-button color="primary">
+			<ion-icon name="arrow-down-outline" (click)="scrollToBottom()"></ion-icon>
+		</ion-fab-button>
+	</ion-fab>
+	-->
+</div>
+	
+<div class="chat-input">
+	<app-chat-input [chatData]="chatData" (newMessageEmitter)="sendMessage($event)"></app-chat-input>
+</div>

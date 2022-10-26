@@ -1,0 +1,36 @@
+<mat-accordion>
+  <mat-expansion-panel [expanded]="true">
+    <mat-expansion-panel-header class="column-title">
+      <mat-panel-title>
+        <span i18n="@@groupChatsHome.groupChats">Group Chats</span>
+      </mat-panel-title>
+
+      <!-- <mat-panel-description>
+        <span i18n="@@groupChatsHome.groupChats">Group Chats</span>
+      </mat-panel-description> -->
+    </mat-expansion-panel-header>
+
+    <div class="chats">
+      <!-- Empty State starts -->
+      <div *ngIf="!chats || chats?.length === 0" style="text-align: center; margin-top: 30px;">
+        <img src='assets/images/placeholder_newsfeed.png' class="placeholder-img">
+        <p class="muted text-center" i18n="@@groupChatsHome.noGroupChats">No group chats opened.</p>
+      </div>
+      <!-- Empty State ends -->
+    
+      <mat-list *ngIf="chats?.length > 0">
+        <!-- CHAT ITEM STARTS-->
+        <mat-list-item class="chat-item" *ngFor="let chat of chats; let index = index">
+          <div (click)="openChat(chat?._id)" style="width: 100%; cursor: pointer;">
+            <app-chat-avatar [chatData]="chat" [userData]="userData" style="float: left; margin-right: 20px;"></app-chat-avatar>
+      
+            <div class="chat_title">
+              <app-chat-title [chatData]="chat" [userData]="userData"></app-chat-title>
+            </div>
+          </div>
+        </mat-list-item>
+        <!-- CHAT ITEM ENDS-->
+      </mat-list>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>
