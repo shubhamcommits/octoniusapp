@@ -67,8 +67,16 @@ async function sendNotificationsFeedFromService(userId: string, io: any, backend
  * @param io 
  */
 function sendNewMessageNotificationFromService(message: any, io: any) {
-console.log('helperFunction.sendNewMessageNotificationFromService -> ', message);
-    io.sockets.to(message?._chat?._id || message?._chat).emit('newMessage', message);
+    if(message?._chat?._id) {
+        const message_chat_id = message?._chat?._id.toString().trim() || '';
+        io.sockets.to(message_chat_id).emit('newMessage', message);
+    }
+    else {
+        const message_chat =    message?._chat.toString().trim() || '';
+        io.sockets.to(message_chat).emit('newMessage', message);
+
+    }
+
 }
 
 /**

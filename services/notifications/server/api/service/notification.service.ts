@@ -1072,16 +1072,25 @@ export class NotificationsService {
             let usersArray = [];
             if (message._chat && message._chat.members) {
                 usersArray = message._chat.members.map(m => { return m._user; });
-            } else if (message._chat && message._chat._group) {
+            }
+
+            if ( message?._chat?._group) {
                 usersArray = [...(message._chat._group._members || []), ...(message._chat._group._admins || [])]
             }
+
+            console.log('message chat group or members', message._chat, usersArray);
 
             // Create Readble Stream from the notification
             let userStream = Readable.from(await User.find({
                 _id: { $in : usersArray}
             }).select('_id integrations.firebase_token'));
+            const data  = await User.find({
+                _id: { $in : usersArray}
+            })
+
 
             await userStream.on('data', async (user: any) => {
+
                 if ((user._id || user) != (message?._posted_by?._id || message?._posted_by)){
                     const notification = await ChatNotification.create({
                         _actor: message?._posted_by?._id || message?._posted_by,
