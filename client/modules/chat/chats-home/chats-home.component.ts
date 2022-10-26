@@ -34,11 +34,6 @@ export class ChatsHomeComponent implements OnInit {
   async ngOnInit() {
     this.userData = await this.publicFunctions.getCurrentUser();
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-
-    this.unreadMessages = await this.publicFunctions.getUnreadChats();
-    this.numUnreadMessages = this.unreadMessages.length;
-
-    await this.mapMessagesInChats();
   }
 
   mapMessagesInChats() {
@@ -76,9 +71,14 @@ export class ChatsHomeComponent implements OnInit {
     }
   }
 
-  initChats() {
+  async initChats() {
     this.initDirectChats();
     this.initGroupChats();
+
+    this.unreadMessages = await this.publicFunctions.getUnreadChats();
+    this.numUnreadMessages = this.unreadMessages.length;
+
+    await this.mapMessagesInChats();
   }
 
   initDirectChats() {
