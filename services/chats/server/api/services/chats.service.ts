@@ -134,7 +134,7 @@ export class ChatService {
           { archived: false }
         ]
       })
-      .sort('last_message_on')
+      .sort('-last_message_on')
       .select(this.chatFields)
       .populate({ path: 'members._user', select: this.userFields })
       .lean();
