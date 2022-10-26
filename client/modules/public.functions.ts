@@ -2118,7 +2118,7 @@ export class PublicFunctions {
         await await chatService.getUnreadChats()
           .then((res) => {
             if (res) {
-              resolve(res['unreadChats']);
+              resolve(res['unreadChats'] || []);
             }
           });
       });
