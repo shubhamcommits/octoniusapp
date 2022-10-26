@@ -36,6 +36,42 @@ export class ChatsHomeComponent implements OnInit {
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
   }
 
+  showHideChats() {
+    this.showChatsList = !this.showChatsList;
+
+    if (this.showChatsList) {
+      this.initChats();
+    }
+  }
+
+  async initChats() {
+    this.initDirectChats();
+    this.initGroupChats();
+
+    this.initUnreadChats();
+  }
+
+  initDirectChats() {
+    this.chatService.getDirectChats().then(res => {
+      this.directChats = res['chats'];
+      this.sortDirectChats();
+    }).catch(err => this.publicFunctions.sendError(err));
+  }
+
+  initGroupChats() {
+    this.chatService.getGroupChats().then(res => {
+      this.groupChats = res['chats'];
+      this.sortGroupChats();
+    }).catch(err => this.publicFunctions.sendError(err));
+  }
+
+  async initUnreadChats() {
+    this.unreadMessages = await this.publicFunctions.getUnreadChats();
+    this.numUnreadMessages = this.unreadMessages.length;
+
+    await this.mapMessagesInChats();
+  }
+
   mapMessagesInChats() {
 
     this.directChats.forEach(chat => {
@@ -63,38 +99,6 @@ export class ChatsHomeComponent implements OnInit {
     });
   }
 
-  showHideChats() {
-    this.showChatsList = !this.showChatsList;
-
-    if (this.showChatsList) {
-      this.initChats();
-    }
-  }
-
-  async initChats() {
-    this.initDirectChats();
-    this.initGroupChats();
-
-    this.unreadMessages = await this.publicFunctions.getUnreadChats();
-    this.numUnreadMessages = this.unreadMessages.length;
-
-    await this.mapMessagesInChats();
-  }
-
-  initDirectChats() {
-    this.chatService.getDirectChats().then(res => {
-      this.directChats = res['chats'];
-      this.sortDirectChats();
-    }).catch(err => this.publicFunctions.sendError(err));
-  }
-
-  initGroupChats() {
-    this.chatService.getGroupChats().then(res => {
-      this.groupChats = res['chats'];
-      this.sortGroupChats();
-    }).catch(err => this.publicFunctions.sendError(err));
-  }
-
   async openChatDetails(chatId: any) {
     if (chatId) {
       await this.chatService.getChatDetails(chatId).then(res => {
@@ -116,6 +120,8 @@ export class ChatsHomeComponent implements OnInit {
   }
 
   closeChat(event: any) {
+
+    this.initUnreadChats();
     
     let chat = event.chatData;
 
