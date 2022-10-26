@@ -38,6 +38,11 @@ const ChatSchema = new Schema({
         type: Boolean,
         required: true,
         default: false
+    },
+    last_message_on: {
+        type: Date,
+        required: false,
+        default: moment().format()
     }
 });
 

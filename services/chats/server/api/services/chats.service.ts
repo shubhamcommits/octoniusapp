@@ -14,7 +14,7 @@ export class ChatService {
   // Select Group Fileds on population
   groupFields: any = 'group_name group_avatar workspace_name _members _admins';
 
-  chatFields: any = 'archived members _group';
+  chatFields: any = 'archived members _group last_message_on';
   messageFields: any = 'posted_on content edited';
 
   private arraysEqual(a, b) {
@@ -65,7 +65,7 @@ export class ChatService {
 
         if (this.arraysEqual(members, dbMembers)) {
           chatExists = true;
-          existingChatId = userChats[0]._id;
+          existingChatId = userChats[i]._id;
         }
       }
 
@@ -74,25 +74,19 @@ export class ChatService {
         // Create new chat
         chat = await Chat.create(chatData);
       } else {
-        chat = await Chat.findOneAndUpdate({
-          _id: existingChatId
-        }, {
-          archived: false
-        }, {
-          new: true
-        });
+        chat = await Chat.findByIdAndUpdate({
+            _id: existingChatId
+          }, {
+            $set: {
+              archived: false
+            }
+          }, {
+            new: true
+          })
+          .select(this.chatFields)
+          .populate({ path: 'members._user', select: this.userFields })
+          .lean();
       }
-
-      chat = await Chat.findOneAndUpdate({
-          _id: chat._id
-        }, {
-          archived: false
-        }, {
-          new: true
-        })
-        .select(this.chatFields)
-        .populate({ path: 'members._user', select: this.userFields })
-        .lean();
 
       // Return Chat Object
       return {chat: chat, newChat: !chatExists};
@@ -140,6 +134,7 @@ export class ChatService {
           { archived: false }
         ]
       })
+      .sort('last_message_on')
       .select(this.chatFields)
       .populate({ path: 'members._user', select: this.userFields })
       .lean();
@@ -158,6 +153,7 @@ export class ChatService {
             { $or: [{ archived_group: false }, { archived_group: { $eq: null }}]}
         ]
       })
+      .sort('-last_message_on')
       .select(this.groupFields)
       .populate({ path: '_members', select: this.userFields })
       .populate({ path: '_admins', select: this.userFields })
@@ -282,7 +278,9 @@ export class ChatService {
       chat = await Chat.findByIdAndUpdate({
           _id: chatId
         }, {
-          archived: !chat.archived
+          $set: {
+            archived: !chat.archived
+          }
         }, {
           new: true
         })
@@ -307,6 +305,15 @@ export class ChatService {
 
     try {
       let message: any = await Message.create(newMessage);
+
+      await Chat.updateOne({
+          _id: (newMessage._chat._id || newMessage._chat)
+        }, {
+          $set: {
+            last_message_on: moment().format()
+
+          }
+        });
 
       this.sendNotification(message._chat._id || message._chat, 'new-chat-message', message._id);
     } catch (err) {
