@@ -303,6 +303,8 @@ export class ChatService {
    */
   async sendMessage(newMessage: any) {
 
+    //console.log('send message in chat.service called', newMessage);
+
     try {
       let message: any = await Message.create(newMessage);
 
@@ -317,6 +319,7 @@ export class ChatService {
 
       this.sendNotification(message._chat._id || message._chat, 'new-chat-message', message._id);
     } catch (err) {
+      console.log('err in send notification', err);
       throw (err);
     }
   }
@@ -417,6 +420,7 @@ export class ChatService {
    * @param chat
    */
   async sendNotification(chatId: string, notificationType: string, messageId?: string) {
+    console.log('notification type', notificationType)
     return http.post(`${process.env.NOTIFICATIONS_SERVER_API}/${notificationType}`, {
         chatId: chatId,
         messageId: messageId

@@ -4,7 +4,7 @@
   "main": "server.ts",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev server.ts",
+    "dev": "npx ts-node-dev server.ts",
     "build": "tsc",
     "build:dev": "cd ../client/ && ng build && gzipper --verbose ./dist -i js,css && cd dist/ && rm *.js *.css && cd ../../server/ && ts-node-dev server.ts",
     "build:prod": "cd ../client/ && ng build --prod && gzipper --verbose ./dist -i js,css && cd dist/ && rm *.js *.css && cd ../../server/ && NODE_ENV=production ts-node server.ts",
@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@types/compression": "^1.0.1",
-    "gzipper": "^3.4.2"
+    "gzipper": "^3.4.2",
+    "@types/node": "18.11.3"
   }
 }
