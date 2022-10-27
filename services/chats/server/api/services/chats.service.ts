@@ -301,7 +301,7 @@ export class ChatService {
    * @param chatId
    * @param assigneeId
    */
-  async sendMessage(newMessage: any) {
+  async sendMessage(authorization: any, newMessage: any) {
 
     //console.log('send message in chat.service called', newMessage);
 
@@ -317,7 +317,7 @@ export class ChatService {
           }
         });
 
-      this.sendNotification(message._chat._id || message._chat, 'new-chat-message', message._id);
+      this.sendNotification(authorization, message._chat._id || message._chat, 'new-chat-message', message._id);
     } catch (err) {
       console.log('err in send notification', err);
       throw (err);
@@ -420,7 +420,7 @@ export class ChatService {
    * @param chat
    */
   async sendNotification(authorization: any, chatId: string, notificationType: string, messageId?: string) {
-    console.log('notification type', notificationType)
+console.log('notification type', notificationType)
     return http.post(`${process.env.NOTIFICATIONS_SERVER_API}/${notificationType}`, {
         chatId: chatId,
         messageId: messageId

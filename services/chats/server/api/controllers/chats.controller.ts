@@ -179,7 +179,7 @@ export class ChatsController {
         const { body: { newMessage } } = req;
         // const userId = req['userId'];
 
-        await chatService.sendMessage(newMessage)
+        await chatService.sendMessage(req.headers.authorization, newMessage)
             .catch((err) => {
                 return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
             });
