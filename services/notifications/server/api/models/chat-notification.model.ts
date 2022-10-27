@@ -25,7 +25,7 @@ const ChatNotificationSchema = new Schema({
         type: Date,
         default: moment().format()
     },
-    message: {
+    text: {
         type: String,
         required: true
     },

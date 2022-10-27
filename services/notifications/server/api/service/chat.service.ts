@@ -56,7 +56,7 @@ export class ChatService {
                         _message: messageId,
                         _chat: message._chat,
                         created_date: moment().format(),
-                        message: 'sent you a message',
+                        text: 'sent you a message',
                         type: 'new-chat-message'
                     });
 
