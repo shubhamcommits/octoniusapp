@@ -135,7 +135,7 @@ export class ChatsController {
         // Fetch userId from the request
         const userId = req['userId'];
 
-        let chat = await chatService.addMember(chatId, memberId, userId)
+        let chat = await chatService.addMember(req.headers.authorization, chatId, memberId, userId)
             .catch((err) => {
                 return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
             });

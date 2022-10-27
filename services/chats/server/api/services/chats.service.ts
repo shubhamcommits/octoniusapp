@@ -192,7 +192,7 @@ export class ChatService {
    * @param chatId
    * @param assigneeId
    */
-  async addMember(chatId: string, memberId: string, userId: string) {
+  async addMember(authorization: any, chatId: string, memberId: string, userId: string) {
 
     try {
 
@@ -212,7 +212,7 @@ export class ChatService {
         .populate({ path: 'members._user', select: this.userFields })
         .lean();
 
-      this.sendNotification(chatId, 'added-to-chat');
+      this.sendNotification(authorization, chatId, 'added-to-chat');
 
       // Return the chat
       return chat;
@@ -419,11 +419,15 @@ export class ChatService {
    * This function is responsible for sending the related real time notifications to the user(s)
    * @param chat
    */
-  async sendNotification(chatId: string, notificationType: string, messageId?: string) {
+  async sendNotification(authorization: any, chatId: string, notificationType: string, messageId?: string) {
     console.log('notification type', notificationType)
     return http.post(`${process.env.NOTIFICATIONS_SERVER_API}/${notificationType}`, {
         chatId: chatId,
         messageId: messageId
+      }, {
+        headers: {
+          'Authorization': authorization
+        }
       }).catch(err => {
         console.log(`\n⛔️ Error:\n ${err}`);
       });
