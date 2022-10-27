@@ -54,7 +54,7 @@ export class ChatService {
                         _actor: message?._posted_by?._id || message?._posted_by,
                         _owner: user._id || user,
                         _message: messageId,
-                        _chat: message._chat,
+                        _chat: chatId,
                         created_date: moment().format(),
                         text: 'sent you a message',
                         type: 'new-chat-message'
