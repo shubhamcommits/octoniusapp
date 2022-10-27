@@ -88,6 +88,7 @@ export class ChatService {
                 ]
             })
             .select('_actor _owner _message created_date message type read read_date')
+            .populate({ path: '_message', select: '_chat' })
             .populate({ path: '_message', populate: { path: '_chat' } })
             .lean();
 
