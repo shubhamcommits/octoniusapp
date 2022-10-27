@@ -54,6 +54,7 @@ export class ChatService {
                         _actor: message?._posted_by?._id || message?._posted_by,
                         _owner: user._id || user,
                         _message: messageId,
+                        _chat: message._chat,
                         created_date: moment().format(),
                         message: 'sent you a message',
                         type: 'new-chat-message'
@@ -88,8 +89,7 @@ export class ChatService {
                 ]
             })
             .select('_actor _owner _message created_date message type read read_date')
-            .populate({ path: '_message', select: '_chat' })
-            .populate({ path: '_message', populate: { path: '_chat' } })
+            .populate({ path: '_message' , select: '_id _chat'})
             .lean();
 
             return notifications;
