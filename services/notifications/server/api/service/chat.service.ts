@@ -88,9 +88,6 @@ export class ChatService {
                     { read: false }
                 ]
             })
-            .populate({ path: '_actor', select: 'first_name last_name profile_pic role email' })
-            .populate({ path: '_owner', select: 'first_name last_name profile_pic role email' })
-            .populate({ path: '_message', select: '_id _chat' })
             .lean() || [];
 
             return notifications;

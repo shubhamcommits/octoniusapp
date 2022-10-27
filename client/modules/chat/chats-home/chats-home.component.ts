@@ -79,7 +79,7 @@ export class ChatsHomeComponent implements OnInit {
       let unreadMessages = 0;
 
       this.unreadMessages.forEach(unreadMessage => {
-        if ((unreadMessage?._message?._chat?._id || unreadMessage?._message?._chat) == chat?._id) {
+        if (unreadMessage?._chat && ((unreadMessage?._chat?._id || unreadMessage?._chat) == chat?._id)) {
           unreadMessages++;
         }
       });
@@ -91,7 +91,7 @@ export class ChatsHomeComponent implements OnInit {
       let unreadMessages = 0;
 
       this.unreadMessages.forEach(unreadMessage => {
-        if ((unreadMessage?._message?._chat?._id || unreadMessage?._message?._chat) == chat?._id) {
+        if (unreadMessage?._chat && ((unreadMessage?._chat?._id || unreadMessage?._chat) == chat?._id)) {
           unreadMessages++;
         }
       });

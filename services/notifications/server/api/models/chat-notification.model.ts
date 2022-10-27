@@ -17,10 +17,10 @@ const ChatNotificationSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Message'
     },
-    // _chat: {
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'Chat'
-    // },
+    _chat: {
+        type: Schema.Types.ObjectId,
+        ref: 'Chat'
+    },
     created_date: {
         type: Date,
         default: moment().format()
