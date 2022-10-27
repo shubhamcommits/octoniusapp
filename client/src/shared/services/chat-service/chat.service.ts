@@ -9,6 +9,7 @@ export class ChatService {
 
   // BaseUrl of the Post MicroService
   baseURL = environment.CHATS_BASE_API_URL;
+  baseNotificationsURL = environment.NOTIFICATIONS_BASE_API_URL;
   
   constructor(private _http: HttpClient) {
   }
@@ -111,10 +112,10 @@ export class ChatService {
    * @returns 
    */
   getUnreadChats() {
-    return this._http.get(this.baseURL + `/unread-chats`, {}).toPromise();
+    return this._http.get(this.baseNotificationsURL + `/unread-chats`, {}).toPromise();
   }
 
   markAsRead(chatId: string) {
-    return this._http.post(this.baseURL + `/${chatId}/mark-read`, {}).toPromise();
+    return this._http.post(this.baseNotificationsURL + `/${chatId}/mark-read`, {}).toPromise();
   }
 }
