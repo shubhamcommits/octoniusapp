@@ -2,7 +2,6 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { ChatService } from 'src/shared/services/chat-service/chat.service';
-import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-chats-home',
@@ -34,6 +33,8 @@ export class ChatsHomeComponent implements OnInit {
   async ngOnInit() {
     this.userData = await this.publicFunctions.getCurrentUser();
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+
+    this.initUnreadChats();
   }
 
   showHideChats() {
