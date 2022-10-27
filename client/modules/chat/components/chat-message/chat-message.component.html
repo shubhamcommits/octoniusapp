@@ -1,5 +1,5 @@
-<div *ngIf="showDay" class="date-badge">
-	<span class="msg-date">{{ formateDate(message?.posted_on) }}</span>
+<div *ngIf="showDay">
+	<span class="date-badge">{{ formateDate(message?.posted_on) }}</span>
 </div>
 
 <div class="chat-message">
@@ -16,7 +16,7 @@
 		</div>
 
 		<div [innerHTML]="(htmlContent) | safe: 'html'"></div>
-		<!-- <div>{{ message?.content }}</div> -->
+		
 		<span class="msg-date">{{ formateHour(message?.posted_on) }}</span>
 	</div>
 </div>
