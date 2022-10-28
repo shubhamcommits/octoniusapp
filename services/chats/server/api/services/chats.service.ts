@@ -420,7 +420,6 @@ export class ChatService {
    * @param chat
    */
   async sendNotification(authorization: any, chatId: string, notificationType: string, messageId?: string) {
-console.log('notification type', notificationType)
     return http.post(`${process.env.NOTIFICATIONS_SERVER_API}/${notificationType}`, {
         chatId: chatId,
         messageId: messageId

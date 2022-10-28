@@ -16,7 +16,6 @@ export class ChatService {
      */
     async newChatMessage(chatId: string, messageId: string, io) {
         try {
-
             const message = await Message.findById({ _id: messageId })
                 .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role email' })
                 .lean();
@@ -35,8 +34,6 @@ export class ChatService {
             if ( message?._chat?._group) {
                 usersArray = [...(message._chat._group._members || []), ...(message._chat._group._admins || [])]
             }
-
-            console.log('message chat group or members', message._chat, usersArray);
 
             // Create Readble Stream from the notification
             let userStream = Readable.from(await User.find({
@@ -67,7 +64,8 @@ export class ChatService {
                         }
                     }
 
-                    await helperFunctions.sendNewMessageNotificationFromService(message, io);
+                    helperFunctions.sendNewMessage(message, io);
+                    helperFunctions.sendNewMessageNotification(user._id || user, io);
                 }
             });
         } catch (err) {
@@ -112,8 +110,10 @@ export class ChatService {
                             { _message: message._id }
                         ]
                     }, {
-                        read: true,
-                        read_date: moment().format()
+                        $set: {
+                            read: true,
+                            read_date: moment().format()
+                        }
                     })
                     .lean();
             });

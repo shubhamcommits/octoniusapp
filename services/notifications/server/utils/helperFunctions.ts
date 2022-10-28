@@ -66,17 +66,24 @@ async function sendNotificationsFeedFromService(userId: string, io: any, backend
  * @param userId 
  * @param io 
  */
-function sendNewMessageNotificationFromService(message: any, io: any) {
-    if(message?._chat?._id) {
+function sendNewMessageNotification(userId: string, io: any) {
+    io.sockets.to('user_' + userId).emit('newChatNotification', userId);
+}
+
+/**
+ * This function sends the generated notifications feed to the user
+ * @param socket 
+ * @param userId 
+ * @param io 
+ */
+function sendNewMessage(message: any, io: any) {
+    if (message?._chat?._id) {
         const message_chat_id = message?._chat?._id.toString().trim() || '';
         io.sockets.to(message_chat_id).emit('newMessage', message);
-    }
-    else {
-        const message_chat =    message?._chat.toString().trim() || '';
+    } else {
+        const message_chat = message?._chat.toString().trim() || '';
         io.sockets.to(message_chat).emit('newMessage', message);
-
     }
-
 }
 
 /**
@@ -198,7 +205,10 @@ export {
     // SEND NOTIFICATIONS FEED
     sendNotificationsFeed,
     sendNotificationsFeedFromService,
-    sendNewMessageNotificationFromService,
+
+    // APP NOTIFICATIONS
+    sendNewMessageNotification,
+    sendNewMessage,
 
     // NOTIFY RELATED USERS
     notifyRelatedUsers,

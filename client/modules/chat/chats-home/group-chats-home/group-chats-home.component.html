@@ -29,7 +29,7 @@
             </div>
           </div>
 
-          <div class="chat_delete" *ngIf="chat?.unreadMessages">
+          <div class="chat_delete" *ngIf="chat?.unreadMessages > 0">
             <span class="badge">{{ chat?.unreadMessages }}</span>
           </div>
         </mat-list-item>

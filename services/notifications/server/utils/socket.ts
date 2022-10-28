@@ -20,136 +20,140 @@ function init(server: any) {
     
     
     try {
-    // Initiate the connection
-    io.sockets.on('connection', (socket: any) => {
-       
-        // Push the socket into the array
-        globalConnections.push(socket);
+        // Initiate the connection
+        io.sockets.on('connection', (socket: any) => {
+        
+            // Push the socket into the array
+            globalConnections.push(socket);
 
-        // -| USER NOTIFICATION CENTER |-
+            // -| USER NOTIFICATION CENTER |-
 
-        // Join user on private user room
-        socket.on('joinUser', (userId: string) => {
-            socket.join(userId);
-        });
-
-        // User Role Socket 
-        socket.on('userData', (userId: string, userData: Object) => {
-            
-            // Emit socket with 
-            io.sockets.in(userId).emit('userDataUpdate', userData);
-        });
-
-        // Get notifications based on the userId
-        socket.on('getNotifications', async (userId: string) => {
-            // Send notification to the user
-            await helperFunctions.sendNotificationsFeed(socket, userId, io);
-        });
-
-        // Mark the unreadNotifications as read
-        socket.on('markRead', async (topListId: string, userId: string) => {
-            
-            // Mark the notification as read
-            await notifications.markRead(topListId);
-        });
-
-        /* =================
-         * - WORKSPACE DATA -
-         * =================
-         */
-
-        //  Joins the user to the workspace room
-        socket.on("joinWorkspace", async (workspaceData: any) => {
-            // Create the room name
-            const roomName = `${workspaceData.workspace_name}`;
-
-            // Join the workspace room
-            socket.join(roomName, ()=>{
+            // Join user on private user room
+            socket.on('joinUser', (userId: string) => {
+                socket.join(userId);
             });
-            
-        });
 
-        // Listen to workspace data change
-        socket.on("workspaceData", async (workspaceData: any) => {
-            
-            // Create the room name
-            const roomName = `${workspaceData.workspace_name}`;
+            // User Role Socket 
+            socket.on('userData', (userId: string, userData: Object) => {
+                
+                // Emit socket with 
+                io.sockets.in(userId).emit('userDataUpdate', userData);
+            });
 
-            // Send the update to all the members in the room
-            socket.broadcast.to(roomName).emit("workspaceDataUpdate", workspaceData);
-        });
+            // Get notifications based on the userId
+            socket.on('getNotifications', async (userId: string) => {
+                // Send notification to the user
+                await helperFunctions.sendNotificationsFeed(socket, userId, io);
+            });
 
-        // -| GROUP ACTIVITY ROOM |-
+            // Mark the unreadNotifications as read
+            socket.on('markRead', async (topListId: string, userId: string) => {
+                
+                // Mark the notification as read
+                await notifications.markRead(topListId);
+            });
 
-        // Join user on specific group room
-        socket.on('joinGroup', (room) => {
-            // generate room name
-            
-            const roomName = `${room.workspace}_${room.group}`;
+            /* =================
+            * - WORKSPACE DATA -
+            * =================
+            */
 
-            // join room
-            socket.join(roomName, ()=>{
+            //  Joins the user to the workspace room
+            socket.on("joinWorkspace", async (workspaceData: any) => {
+                // Create the room name
+                const roomName = `${workspaceData.workspace_name}`;
+
+                // Join the workspace room
+                socket.join(roomName, ()=>{
+                });
+                
+            });
+
+            // Listen to workspace data change
+            socket.on("workspaceData", async (workspaceData: any) => {
+                
+                // Create the room name
+                const roomName = `${workspaceData.workspace_name}`;
+
+                // Send the update to all the members in the room
+                socket.broadcast.to(roomName).emit("workspaceDataUpdate", workspaceData);
+            });
+
+            // -| GROUP ACTIVITY ROOM |-
+
+            // Join user on specific group room
+            socket.on('joinGroup', (room) => {
+                // generate room name
+                
+                const roomName = `${room.workspace}_${room.group}`;
+
+                // join room
+                socket.join(roomName, ()=>{
+                });
+            });
+
+            // -| POSTS NOTIFICATIONS |-
+
+            // Listen to user likes who follows a post
+            socket.on('userLiked', (data) => {
+            });
+
+            // Listen to new post creation
+            socket.on('postAdded', async (data) => {
+                const roomName = `${data.workspace}_${data.group}`;
+                // Broadcast add event to group
+
+                // Notify the related users
+                await helperFunctions.notifyRelatedUsers(io, socket, data)
+
+                socket.broadcast.to(roomName).emit('postAddedInGroup', data);
+            });
+
+            socket.on('postDeleted', (data) => {
+                const roomName = `${data.workspace}_${data.group}`;
+                // Broadcast delete event to group
+                socket.broadcast.to(roomName).emit('postDeletedInGroup', data);
+            });
+
+            socket.on('postEdited', (data) => {
+                const roomName = `${data.workspace}_${data.group}`;
+                // Broadcast edit event to group
+                socket.broadcast.to(roomName).emit('postEditedInGroup', data);
+            });
+
+            // -| APP NOTIFICATIONS |-
+
+            socket.on('join-app', (room) => {
+                // Broadcast edit event to user
+                socket.join('user_' + room);
+            });
+
+            socket.on('leave-app', (room) => {
+                // Broadcast edit event to user
+                socket.leave('user_' + room);
+            });
+
+            // -| CHATS NOTIFICATIONS |-
+
+            socket.on('join-chat', (room) => {
+                // Broadcast edit event to user
+                socket.join(room);
+            });
+
+            socket.on('leave-chat', (room) => {
+                // Broadcast edit event to user
+                socket.leave(room);
+            });
+
+            socket.on('disconnect', () => {
+                
+                // Remove the socket from globalConnection array
+                globalConnections.splice(globalConnections.indexOf(socket), 1);
             });
         });
-
-        // -| POSTS NOTIFICATIONS |-
-
-        // Listen to user likes who follows a post
-        socket.on('userLiked', (data) => {
-        });
-
-        // Listen to new post creation
-        socket.on('postAdded', async (data) => {
-            const roomName = `${data.workspace}_${data.group}`;
-            // Broadcast add event to group
-
-            // Notify the related users
-            await helperFunctions.notifyRelatedUsers(io, socket, data)
-
-            socket.broadcast.to(roomName).emit('postAddedInGroup', data);
-        });
-
-        socket.on('postDeleted', (data) => {
-            const roomName = `${data.workspace}_${data.group}`;
-            // Broadcast delete event to group
-            socket.broadcast.to(roomName).emit('postDeletedInGroup', data);
-        });
-
-        socket.on('postEdited', (data) => {
-            const roomName = `${data.workspace}_${data.group}`;
-            // Broadcast edit event to group
-            socket.broadcast.to(roomName).emit('postEditedInGroup', data);
-        });
-
-        // -| CHATS NOTIFICATIONS |-
-
-        socket.on('join-chat', (room) => {
-console.log('socket.join-chat -> ', room);
-            // Broadcast edit event to user
-            socket.join(room);
-        });
-
-        socket.on('leave-chat', (room) => {
-        console.log('socket.leave-chat -> ', room);
-            // Broadcast edit event to user
-            socket.leave(room);
-        });
-
-        // socket.on('newMessage', (message) => {
-        // console.log('socket.newMessage -> ', message);
-        //     // Broadcast edit event to user
-        //     socket.to(message?._chat?._id || message?._chat).emit('newMessage', message);
-        // });
-
-        socket.on('disconnect', () => {
-            
-            // Remove the socket from globalConnection array
-            globalConnections.splice(globalConnections.indexOf(socket), 1);
-        });
-    });
-    return io;
+        return io;
     } catch (error) {
-            console.log("Socket server error",error);
+        console.log("Socket server error",error);
     }
 };
 

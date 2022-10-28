@@ -70,12 +70,13 @@ export class ChatsHomeComponent implements OnInit {
     this.unreadMessages = await this.publicFunctions.getUnreadChats();
     this.numUnreadMessages = this.unreadMessages.length;
 
-    await this.mapMessagesInChats();
+    await this.mapUnreadMessagesInChats(this.directChats, this.groupChats);
   }
 
-  mapMessagesInChats() {
+  mapUnreadMessagesInChats(directChats: any, groupChats: any) {
 
-    this.directChats.forEach(chat => {
+    let mappedChats = [];
+    directChats.forEach((chat) => {
       let unreadMessages = 0;
 
       this.unreadMessages.forEach(unreadMessage => {
@@ -85,9 +86,13 @@ export class ChatsHomeComponent implements OnInit {
       });
 
       chat.unreadMessages = unreadMessages;
+      mappedChats.push(chat);
     });
 
-    this.groupChats.forEach(chat => {
+    this.directChats = mappedChats;
+    mappedChats = [];
+
+    groupChats.forEach(chat => {
       let unreadMessages = 0;
 
       this.unreadMessages.forEach(unreadMessage => {
@@ -97,7 +102,9 @@ export class ChatsHomeComponent implements OnInit {
       });
 
       chat.unreadMessages = unreadMessages;
+      mappedChats.push(chat);
     });
+    this.groupChats = mappedChats;
   }
 
   async openChatDetails(chatId: any) {
