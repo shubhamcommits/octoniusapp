@@ -100,23 +100,18 @@ export class ChatService {
      */
     async markAsRead(userId: string, chatId: string) {
         try {
-            let messagesStream = Readable.from(await Message.find({ _chat: chatId }).select('_id'));
-
-            await messagesStream.on('data', async (message: any) => {
-                await ChatNotification.updateMany({
-                        $and: [
-                            { _owner: userId },
-                            { read: false },
-                            { _message: message._id }
-                        ]
-                    }, {
-                        $set: {
-                            read: true,
-                            read_date: moment().format()
-                        }
-                    })
-                    .lean();
-            });
+            await ChatNotification.updateMany({
+                    $and: [
+                        { _owner: userId },
+                        { _chat: chatId },
+                        { read: false }
+                    ]
+                }, {
+                    $set: {
+                        read: true,
+                        read_date: moment().format()
+                    }
+                });
 
             return true;
         } catch (err) {
