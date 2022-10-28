@@ -2,6 +2,7 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { ChatService } from 'src/shared/services/chat-service/chat.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-chats-home',
@@ -27,7 +28,8 @@ export class ChatsHomeComponent implements OnInit {
 
   constructor(
     public injector: Injector,
-    private chatService: ChatService
+    private chatService: ChatService,
+    private utilityService: UtilityService
     ) {}
 
   async ngOnInit() {
@@ -170,5 +172,9 @@ export class ChatsHomeComponent implements OnInit {
   
   deleteChat() {
     this.initDirectChats();
+  }
+
+  objectExists(object: any) {
+    return this.utilityService.objectExists(object);
   }
 }

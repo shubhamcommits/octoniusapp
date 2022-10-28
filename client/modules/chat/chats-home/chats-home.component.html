@@ -1,9 +1,9 @@
 
-<button class="chats-home-fab" mat-fab *ngIf="!showChatsList" (click)="showHideChats()">
+<button class="chats-home-fab" mat-fab *ngIf="objectExists(userData) && !showChatsList" (click)="showHideChats()">
   <app-chat-notification-icon [userData]="userData" [numUnreadMessages]="numUnreadMessages"></app-chat-notification-icon>
 </button>
 
-<div *ngIf="showChatsList" class="chats-home">
+<div *ngIf="objectExists(userData) && showChatsList" class="chats-home">
   <div *ngIf="!openChat">
     <div class="action-box">
       <a (click)="showHideChats()">
