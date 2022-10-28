@@ -79,15 +79,14 @@ export class ChatService {
      */
     async getUnreadChats(userId: string) {
         try {
-            let notifications = [];
-            notifications = await ChatNotification.find({
+console.log({userId});
+            let notifications = await ChatNotification.find({
                 $and: [
                     { _owner: userId },
                     { read: false }
                 ]
-            })
-            .lean() || [];
-
+            }).lean() || [];
+console.log({notifications});
             return notifications;
         } catch (err) {
             throw err;
@@ -100,6 +99,8 @@ export class ChatService {
      */
     async markAsRead(userId: string, chatId: string) {
         try {
+console.log({userId});
+console.log({chatId});
             await ChatNotification.updateMany({
                     $and: [
                         { _owner: userId },
