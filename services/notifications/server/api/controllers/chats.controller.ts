@@ -23,10 +23,11 @@ export class ChatNotificationsController {
      */
     async newChatMessage(req: Request, res: Response, next: NextFunction) {
 
+        const userId = req['userId'];
         let { chatId, messageId, io } = req.body;
 
         try {
-            await chatService.newChatMessage(chatId, messageId, io);
+            await chatService.newChatMessage(userId, chatId, messageId, io);
 
             // Send status 200 response
             return res.status(200).json({
@@ -65,19 +66,21 @@ export class ChatNotificationsController {
 
     async markAsRead(req: Request, res: Response, next: NextFunction) {
         const userId = req['userId'];
-        const { params: { chatId } } = req;
+        const { params: { chatId }, body: { io } } = req;
 
         try {
+console.log({userId});
+console.log({chatId});
             if (!userId || !chatId) {
                 return sendErr(res, new Error('Please provide a userId and a chatId!'), 'Please provide a userId and a chatId!', 500);
             }
 
-            const read = await chatService.markAsRead(userId, chatId);
+            const countReadMessages = await chatService.markAsRead(userId, chatId, io);
 
             // Send status 200 response
             return res.status(200).json({
                 message: `Chat Marked as Read!`,
-                read: read
+                countReadMessages: countReadMessages
             });
         } catch (err) {
             // Error Handling

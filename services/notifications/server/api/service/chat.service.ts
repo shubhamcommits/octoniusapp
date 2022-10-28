@@ -14,7 +14,7 @@ export class ChatService {
      * This function is responsible to notifying all the user on assigning of a new event to them
      * @param { chatId, messageId, io } post 
      */
-    async newChatMessage(chatId: string, messageId: string, io) {
+    async newChatMessage(userId: string, chatId: string, messageId: string, io) {
         try {
             const message = await Message.findById({ _id: messageId })
                 .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role email' })
@@ -46,8 +46,8 @@ export class ChatService {
 
             await userStream.on('data', async (user: any) => {
 
-                if ((user._id || user) != (message?._posted_by?._id || message?._posted_by)){
-                    const notification = await ChatNotification.create({
+                if (user && ((user._id || user) != userId)){
+                    await ChatNotification.create({
                         _actor: message?._posted_by?._id || message?._posted_by,
                         _owner: user._id || user,
                         _message: messageId,
@@ -97,10 +97,19 @@ console.log({notifications});
      * This function is responsible for fetching the latest chat notifications
      * @param userId 
      */
-    async markAsRead(userId: string, chatId: string) {
+    async markAsRead(userId: string, chatId: string, io: any) {
         try {
 console.log({userId});
 console.log({chatId});
+            const countReadMessages = await ChatNotification.find({
+                    $and: [
+                        { _owner: userId },
+                        { _chat: chatId },
+                        { read: false }
+                    ]
+                }).countDocuments();
+
+
             await ChatNotification.updateMany({
                     $and: [
                         { _owner: userId },
@@ -114,7 +123,8 @@ console.log({chatId});
                     }
                 });
 
-            return true;
+            helperFunctions.sendMessagesReadNotification(userId, chatId, countReadMessages, io);
+            return countReadMessages;
         } catch (err) {
             throw err;
         }

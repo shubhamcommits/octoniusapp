@@ -87,6 +87,16 @@ function sendNewMessage(message: any, io: any) {
 }
 
 /**
+ * This function sends the generated notifications feed to the user
+ * @param socket 
+ * @param userId 
+ * @param io 
+ */
+function sendMessagesReadNotification(userId: string, chatId: string, countReadMessages: any, io: any) {
+    io.sockets.to('user_' + userId).emit('messageRead', {chatId: chatId, numMessages: +countReadMessages});
+}
+
+/**
  * This function is responsible for notifying the users
  * @param io 
  * @param socket 
@@ -205,6 +215,7 @@ export {
     // SEND NOTIFICATIONS FEED
     sendNotificationsFeed,
     sendNotificationsFeedFromService,
+    sendMessagesReadNotification,
 
     // APP NOTIFICATIONS
     sendNewMessageNotification,
