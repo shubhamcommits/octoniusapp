@@ -46,7 +46,7 @@ export class ChatService {
 
             await userStream.on('data', async (user: any) => {
 
-                if (user && ((user._id || user) != userId)){
+                if (user && user._id != userId) {
                     await ChatNotification.create({
                         _actor: message?._posted_by?._id || message?._posted_by,
                         _owner: user._id || user,
@@ -79,14 +79,13 @@ export class ChatService {
      */
     async getUnreadChats(userId: string) {
         try {
-console.log({userId});
             let notifications = await ChatNotification.find({
                 $and: [
                     { _owner: userId },
                     { read: false }
                 ]
             }).lean() || [];
-console.log({notifications});
+
             return notifications;
         } catch (err) {
             throw err;

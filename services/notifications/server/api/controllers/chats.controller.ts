@@ -65,10 +65,9 @@ export class ChatNotificationsController {
     }
 
     async markAsRead(req: Request, res: Response, next: NextFunction) {
-        const userId = req['userId'];
-        const { params: { chatId }, body: { io } } = req;
-
         try {
+            const userId = req['userId'];
+            const { params: { chatId }, body: { io } } = req;
 console.log({userId});
 console.log({chatId});
             if (!userId || !chatId) {
