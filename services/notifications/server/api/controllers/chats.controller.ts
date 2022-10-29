@@ -68,8 +68,7 @@ export class ChatNotificationsController {
         try {
             const userId = req['userId'];
             const { params: { chatId }, body: { io } } = req;
-console.log({userId});
-console.log({chatId});
+
             if (!userId || !chatId) {
                 return sendErr(res, new Error('Please provide a userId and a chatId!'), 'Please provide a userId and a chatId!', 500);
             }

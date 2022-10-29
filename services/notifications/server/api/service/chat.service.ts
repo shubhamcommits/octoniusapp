@@ -98,8 +98,6 @@ export class ChatService {
      */
     async markAsRead(userId: string, chatId: string, io: any) {
         try {
-console.log({userId});
-console.log({chatId});
             const countReadMessages = await ChatNotification.find({
                     $and: [
                         { _owner: userId },

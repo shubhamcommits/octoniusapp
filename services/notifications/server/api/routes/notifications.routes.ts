@@ -89,6 +89,6 @@ routes.post('/new-chat-message', auth.verifyToken, auth.isLoggedIn, chatFunction
 routes.get('/unread-chats', auth.verifyToken, auth.isLoggedIn, chatFunctions.unreadChats);
 
 // POST - mark item as read
-routes.post('/:chatId/mark-read', auth.verifyToken, auth.isLoggedIn, chatFunctions.markAsRead);
+routes.post('/:chatId/chat-mark-read', auth.verifyToken, auth.isLoggedIn, chatFunctions.markAsRead);
 
 export { routes as notificationRoutes };
