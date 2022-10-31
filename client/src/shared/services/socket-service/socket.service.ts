@@ -51,7 +51,7 @@ export class SocketService {
 
   public onEmit(eventName: string, ...messageData: any) {
     return new Observable<any>(observer => {
-      this.socket.emit(eventName, ...messageData, (data: any) => {
+      this.socket.volatile.emit(eventName, ...messageData, (data: any) => {
         observer.next(data);
       });
     })

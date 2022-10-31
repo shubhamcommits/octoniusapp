@@ -324,7 +324,7 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, OnChanges, After
     this.socket.on('connect', () => {
 console.log('join-chat');
       // Connected, let's sign-up for to receive messages for this room
-      this.socket.emit('join-chat', this.chatData?._id);
+      this.socket.volatile.emit('join-chat', this.chatData?._id);
     });
 
     this.socket.on('connectToRoom', (data)=>{
@@ -344,7 +344,7 @@ console.log('newMessage:', data);
   private leaveChatSocket() {
 console.log("leave-chat");
     if (this.socket) {
-      this.socket.emit('leave-chat', this.chatData?._id);
+      this.socket.volatile.emit('leave-chat', this.chatData?._id);
     }
   }
 
