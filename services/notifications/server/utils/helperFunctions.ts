@@ -77,12 +77,15 @@ function sendNewMessageNotification(userId: string, chatId: string, io: any) {
  * @param io 
  */
 function sendNewMessage(message: any, io: any) {
+    let room = '';
     if (message?._chat?._id) {
-        const message_chat_id = message?._chat?._id.toString().trim() || '';
-        io.sockets.to(message_chat_id).emit('newMessage', message);
+        room = message?._chat?._id.toString().trim() || '';
     } else {
-        const message_chat = message?._chat.toString().trim() || '';
-        io.sockets.to(message_chat).emit('newMessage', message);
+        room = message?._chat.toString().trim() || '';
+    }
+console.log('sendNewMessage -> ' + room);
+    if (room !== '') {
+        io.sockets.to(room).emit('newMessage', message);
     }
 }
 

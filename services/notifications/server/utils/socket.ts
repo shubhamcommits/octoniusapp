@@ -136,6 +136,7 @@ function init(server: any) {
             // -| CHATS NOTIFICATIONS |-
 
             socket.on('join-chat', (room) => {
+console.log('join-chat -> ' + room);
                 // Broadcast edit event to user
                 socket.join(room);
             });
@@ -146,7 +147,6 @@ function init(server: any) {
             });
 
             socket.on('disconnect', () => {
-                
                 // Remove the socket from globalConnection array
                 globalConnections.splice(globalConnections.indexOf(socket), 1);
             });
