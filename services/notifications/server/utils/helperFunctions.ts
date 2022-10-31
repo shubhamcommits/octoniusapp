@@ -66,8 +66,9 @@ async function sendNotificationsFeedFromService(userId: string, io: any, backend
  * @param userId 
  * @param io 
  */
-function sendNewMessageNotification(userId: string, chatId: string, io: any) {
-    io.sockets.to('user_' + userId).emit('newChatNotification', {userId, chatId});
+function sendNewMessageNotification(message: any, userId: string, chatId: string, io: any) {
+console.log('###### newChatNotification #####');
+    io.sockets.to('user_' + userId).emit('newChatNotification', {message, userId, chatId});
 }
 
 /**
@@ -76,18 +77,18 @@ function sendNewMessageNotification(userId: string, chatId: string, io: any) {
  * @param userId 
  * @param io 
  */
-function sendNewMessage(message: any, io: any) {
-    let room = '';
-    if (message?._chat?._id) {
-        room = message?._chat?._id.toString().trim() || '';
-    } else {
-        room = message?._chat.toString().trim() || '';
-    }
-console.log('sendNewMessage -> ' + room);
-    if (room !== '') {
-        io.sockets.to(room).emit('newMessage', message);
-    }
-}
+// function sendNewMessage(message: any, io: any) {
+//     let room = '';
+//     if (message?._chat?._id) {
+//         room = message?._chat?._id.toString().trim() || '';
+//     } else {
+//         room = message?._chat.toString().trim() || '';
+//     }
+// console.log('sendNewMessage -> ' + room);
+//     if (room !== '') {
+//         io.sockets.to(room).emit('newMessage', message);
+//     }
+// }
 
 /**
  * This function sends the generated notifications feed to the user
@@ -222,7 +223,7 @@ export {
 
     // APP NOTIFICATIONS
     sendNewMessageNotification,
-    sendNewMessage,
+    // sendNewMessage,
 
     // NOTIFY RELATED USERS
     notifyRelatedUsers,

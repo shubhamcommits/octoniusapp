@@ -64,8 +64,8 @@ export class ChatService {
                         }
                     }
 
-                    helperFunctions.sendNewMessage(message, io);
-                    helperFunctions.sendNewMessageNotification(user._id || user, chatId, io);
+                    // helperFunctions.sendNewMessage(message, io);
+                    helperFunctions.sendNewMessageNotification(message, user._id || user, chatId, io);
                 }
             });
         } catch (err) {
