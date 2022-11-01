@@ -21,10 +21,10 @@ async function sendFirebaseNotification(workspaceId: string, registrationToken: 
         var payload = {
             notification: {
                 title: messageTitle,
-                body: messageBody,
-                data: {
-                    workspaceId: workspaceId
-                }
+                body: messageBody
+            },
+            data: {
+                workspaceId: workspaceId
             }
             //, topic: 'octonius'
         };

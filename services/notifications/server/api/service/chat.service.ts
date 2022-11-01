@@ -48,7 +48,7 @@ export class ChatService {
 
                 if (user && user._id != userId) {
                     await ChatNotification.create({
-                        _actor: message?._posted_by?._id || message?._posted_by,
+                        _actor: userId,
                         _owner: user._id || user,
                         _message: messageId,
                         _chat: chatId,
