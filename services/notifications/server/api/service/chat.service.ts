@@ -38,7 +38,7 @@ export class ChatService {
             // Create Readble Stream from the notification
             let userStream = Readable.from(await User.find({
                 _id: { $in : usersArray}
-            }).select('_id integrations.firebase_token'));
+            }).select('_id _workspace integrations.firebase_token'));
             const data  = await User.find({
                 _id: { $in : usersArray}
             })
@@ -60,7 +60,7 @@ export class ChatService {
                     if (process.env.DOMAIN == 'app.octonius.com') {
                         if (user.integrations.firebase_token) {
                             // Send the notification to firebase for mobile notify
-                            firebaseNotifications.sendFirebaseNotification(message._chat?._group?._workspace._id || message._chat?._group?._workspace, user?.integrations?.firebase_token, 'Octonius - New Message', message?._posted_by?.first_name + ' ' + message?._posted_by?.last_name + ' sent you a message');
+                            firebaseNotifications.sendFirebaseNotification(user?._workspace._id || user?._workspace, user?.integrations?.firebase_token, 'Octonius - New Message', message?._posted_by?.first_name + ' ' + message?._posted_by?.last_name + ' sent you a message');
                         }
                     }
 
