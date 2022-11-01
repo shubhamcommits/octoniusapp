@@ -1,10 +1,11 @@
 import express from 'express';
 import { Auths } from '../../utils';
-import { NotificationsController, ApprovalNotificationsController } from '../controllers'
+import { NotificationsController, ApprovalNotificationsController, ChatNotificationsController } from '../controllers'
 
 const routes = express.Router();
 const notificationFunctions = new NotificationsController();
 const approvalFunctions = new ApprovalNotificationsController();
+const chatFunctions = new ChatNotificationsController();
 
 // Define auths helper controllers
 const auth = new Auths();
@@ -80,5 +81,14 @@ routes.get('/pending-approvals', auth.verifyToken, auth.isLoggedIn, notification
 
 // POST - mark item as read
 routes.post('/save-firebase-token', auth.verifyToken, auth.isLoggedIn, notificationFunctions.saveFirebaseToken);
+
+// POST - This route is responsible for notifying the user when someone send him a message
+routes.post('/new-chat-message', auth.verifyToken, auth.isLoggedIn, chatFunctions.newChatMessage);
+
+// GET - get unread posts
+routes.get('/unread-chats', auth.verifyToken, auth.isLoggedIn, chatFunctions.unreadChats);
+
+// POST - mark item as read
+routes.post('/:chatId/chat-mark-read', auth.verifyToken, auth.isLoggedIn, chatFunctions.markAsRead);
 
 export { routes as notificationRoutes };

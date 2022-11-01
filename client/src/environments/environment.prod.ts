@@ -97,6 +97,9 @@ export const environment = {
   FOLIO_BASE_URL: `${window["env"]["websocket"]}://${window["env"]["domain"]}/folio`,
   FOLIO_HTTP_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/folio`,
 
+  // Chats URLs
+  CHATS_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/chats`,
+
   // MANAGEMENT_URL
   MANAGEMENT_URL: `${window["env"]["protocol"]}://${window["env"]["mgmt_portal_domain"]}`,
 };

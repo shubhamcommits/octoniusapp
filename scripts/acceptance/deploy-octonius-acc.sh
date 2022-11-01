@@ -30,6 +30,7 @@ docker login
           docker pull $MONGO_IMAGE_NAME
           docker pull $APPROVAL_IMAGE_NAME
           docker pull $AUTHS_IMAGE_NAME
+          docker pull $CHATS_IMAGE_NAME
           docker pull $GROUPS_IMAGE_NAME
           docker pull $WORKSPACES_IMAGE_NAME
           docker pull $USERS_IMAGE_NAME

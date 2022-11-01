@@ -109,18 +109,23 @@
           <div class="notification_more">
             <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
             <mat-menu #menu="matMenu">
-              <a mat-menu-item *ngIf="notification?.type !== 'mention_folio' && (notification?.type != 'approved-item' && notification?.type != 'reject-item' && notification?.type != 'launch-approval-flow')"
-                (click)="viewNotification(notification?._origin_post?._id, notification?._origin_post?.type, notification?._origin_post?._group?._id)">
+              <a mat-menu-item *ngIf="notification?.type !== 'mention_folio' && notification?.type !== 'join-group' && notification?.type !== 'leave-group' && (notification?.type != 'approved-item' && notification?.type != 'reject-item' && notification?.type != 'launch-approval-flow')"
+                (click)="viewNotification(notification, index)">
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                 <span i18n="@@recentActivity.view">View</span>
               </a>
               <a mat-menu-item *ngIf="notification?.type === 'mention_folio'"
-                (click)="viewFolioNotification(notification?._origin_folio?._id, notification?._origin_folio?._origin_group?._id)">
+                (click)="viewFolioNotification(notification, index)">
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                 <span i18n="@@recentActivity.view">View</span>
               </a>
               <a mat-menu-item *ngIf="notification?.type == 'approved-item' || notification?.type == 'reject-item' || notification?.type == 'launch-approval-flow'"
-                (click)="viewApprovalNotification(notification)">
+                (click)="viewApprovalNotification(notification, index)">
+                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
+                <span i18n="@@recentActivity.view">View</span>
+              </a>
+              <a mat-menu-item *ngIf="notification?.type == 'join-group'"
+                (click)="goToGroup(notification?._origin_group?._id, notification?._origin_post?._id, index, notification?.type)">
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                 <span i18n="@@recentActivity.view">View</span>
               </a>
@@ -339,7 +344,7 @@
           </div>
 
           <div class="notification_more">
-            <a mat-menu-item (click)="viewApprovalNotification(notification)">
+            <a mat-menu-item (click)="viewApprovalNotification(notification, index)">
               <i class="material-icons-outlined ml-2 muted" style="margin-right: .7rem;">visibility</i>
               <span i18n="@@recentActivity.view">View</span>
             </a>

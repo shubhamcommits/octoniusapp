@@ -1,3 +1,4 @@
+import { ChatService } from "./chat.service";
 import { NotificationsService } from "./notification.service";
 
 /*  ==========================
@@ -5,5 +6,6 @@ import { NotificationsService } from "./notification.service";
  *  ==========================
  * */
 export {
-    NotificationsService as NotificationsService
+    NotificationsService as NotificationsService,
+    ChatService as ChatService
 }

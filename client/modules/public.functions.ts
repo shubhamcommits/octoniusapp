@@ -19,6 +19,7 @@ import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
 import { environment } from 'src/environments/environment';
 import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
+import { ChatService } from 'src/shared/services/chat-service/chat.service';
 
 @Injectable({
   providedIn: 'root'
@@ -1607,6 +1608,24 @@ export class PublicFunctions {
           });
     }
 
+      /**
+     * This function is responsible for fetching the status of the Organization module
+     * @returns status
+     */
+    async isChatModuleAvailable() {
+        const workspace: any = await this.getCurrentWorkspace();
+        const managementPortalService = this.injector.get(ManagementPortalService);
+        return managementPortalService.isChatModuleAvailable(workspace?._id, workspace?.management_private_api_key).then(
+          (res) => {
+            if ( !res || !res['status'] ) {
+              return false;
+            }
+            return true;
+          }).catch((err) => {
+            return false;
+          });
+    }
+
 
      /* Helper function fetching the worksapace groups
      * @param workspaceId - current workspaceId
@@ -2061,5 +2080,47 @@ export class PublicFunctions {
       }
 
       return Array.from(new Set([...filesList, ...googleFilesList, ...boxFilesList]));
+    }
+
+    /**
+     * This function is responsible for fetching the group members list
+     * @param searchTerm: string
+     * @param groupId: string
+     * @param workspaceData: any
+     */
+    async suggestMembersForChat(searchTerm: string, chatData: any) {
+
+      // Fetch the users list from the server
+      let usersList: any = [];
+      if (chatData._group) {
+        usersList = await this.searchGroupMembers(chatData?._group?._id || chatData?._group, searchTerm);
+
+        // Map the users list
+        usersList = usersList['users'].map((user) => ({
+          id: user._id,
+          value: user.first_name + " " + user.last_name
+        }));
+      } else {
+
+        usersList = await chatData?.members?.map(member => { return {
+          _id: member._user._id,
+          value: member._user.first_name + " " + member._user.last_name
+        }}).filter(user => user.value.toUpperCase().includes(searchTerm.toUpperCase()));
+      }
+
+      // Return the Array without duplicates
+      return Array.from(new Set(usersList))
+    }
+
+    async getUnreadChats() {
+      const chatService = this.injector.get(ChatService);
+      return new Promise(async (resolve) => {
+        await await chatService.getUnreadChats()
+          .then((res) => {
+            if (res) {
+              resolve(res['unreadChats'] || []);
+            }
+          });
+      });
     }
 }

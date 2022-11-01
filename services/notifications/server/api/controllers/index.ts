@@ -1,5 +1,6 @@
 import { NotificationsController } from "./notifications.controller";
 import { ApprovalNotificationsController } from "./approval-notifications.controller";
+import { ChatNotificationsController } from "./chats.controller";
 
 /*  ==========================
  *  -- CONTROLLERS EXPORTS --
@@ -7,5 +8,6 @@ import { ApprovalNotificationsController } from "./approval-notifications.contro
  * */
 export {
     NotificationsController as NotificationsController,
-    ApprovalNotificationsController as ApprovalNotificationsController
+    ApprovalNotificationsController as ApprovalNotificationsController,
+    ChatNotificationsController as ChatNotificationsController
 }

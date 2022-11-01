@@ -1,5 +1,6 @@
 import * as sockets from "./socket";
 import * as helperFunctions from './helperFunctions';
+import * as firebaseNotifications from './firebaseNotifications';
 import { sendErr } from './sendError';
 import { axios } from "./proxy";
 import { Auths } from "./auth";
@@ -22,5 +23,7 @@ export{
     // Send Error
     sendErr as sendError,
 
-    axios as axios
+    axios as axios,
+
+    firebaseNotifications as firebaseNotifications
 }

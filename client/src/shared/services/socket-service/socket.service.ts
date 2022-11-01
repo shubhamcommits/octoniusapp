@@ -1,16 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { environment } from 'src/environments/environment';
 import { NotificationService } from '../notification-service/notification.service';
 import { io } from 'socket.io-client';
+import { PublicFunctions } from 'modules/public.functions';
 @Injectable({
   providedIn: 'root'
 })
 export class SocketService {
-
-  constructor(
-    private _notificationService: NotificationService) { }
 
   // Define baseurl
   public baseUrl = environment.NOTIFICATIONS_BASE_URL;
@@ -23,13 +21,37 @@ export class SocketService {
    */
   private dataSource = new BehaviorSubject<any>({});
   currentData = this.dataSource.asObservable();
+ 
+	private unreadMessages = new BehaviorSubject<[]>([]);
+	unreadMessagesData = this.unreadMessages.asObservable();
+
+	private numTotalUnreadMessages = new BehaviorSubject<number>(0);
+  	numTotalUnreadMessagesData = this.numTotalUnreadMessages.asObservable();
+ 
+	private numUnreadDirectMessages = new BehaviorSubject<Map<string, number>>(new Map<string, number>());
+	numUnreadDirectMessagesData = this.numUnreadDirectMessages.asObservable();
+ 
+	private numUnreadGroupMessages = new BehaviorSubject<Map<string, number>>(new Map<string, number>());
+	numUnreadGroupMessagesData = this.numUnreadGroupMessages.asObservable();
+
+  // Create public functions object
+  public publicFunctions = new PublicFunctions(this.injector);
+
+  constructor(
+    private _notificationService: NotificationService,
+    private injector: Injector) { }
 
   public onEvent(eventName: string): Observable<any> {
 
     return new Observable<any>(observer => {
-      this.socket.on(eventName, (data: any) => {
+      this.socket.on(eventName, async (data: any) => {
         observer.next(data);
-        if (eventName === 'notificationsFeed' && data.new) {
+        if (eventName === 'connect') {
+
+          const userData = await this.publicFunctions.getCurrentUser();
+          this.socket.volatile.emit('join-app', userData?._id);
+
+        } else if (eventName === 'notificationsFeed' && data.new) {
           const notify = data['unreadNotifications'][0];
           let notifyData: Array<any> = [];
           if (notify?.type === 'mention_folio') {
@@ -51,7 +73,7 @@ export class SocketService {
 
   public onEmit(eventName: string, ...messageData: any) {
     return new Observable<any>(observer => {
-      this.socket.emit(eventName, ...messageData, (data: any) => {
+      this.socket.volatile.emit(eventName, ...messageData, (data: any) => {
         observer.next(data);
       });
     })
@@ -87,17 +109,37 @@ export class SocketService {
     return this.socket;
   }
 
+	public updateUnreadMessages(data: any) {
+		this.unreadMessages.next(data);
+	}
+
+	public updateNumTotalUnreadMessages(data: any) {
+		this.numTotalUnreadMessages.next(data);
+	}
+
+	public updateNumTotalUnreadDirectMessages(data: any) {
+		this.numUnreadDirectMessages.next(data);
+	}
+
+	public updateNumTotalUnreadGroupMessages(data: any) {
+		this.numUnreadGroupMessages.next(data);
+	}
+
   public changeData(data: any) {
     this.dataSource.next(data);
   }
 
   public disconnectSocket() {
-    this.dataSource.next({});
+		this.clear();
     return this.socket.disconnect();
   }
 
   clear() {
     this.changeData({});
+		this.updateUnreadMessages([]);
+		this.updateNumTotalUnreadMessages(0);
+		this.updateNumTotalUnreadDirectMessages(new Map<string, number>());
+		this.updateNumTotalUnreadGroupMessages(new Map<string, number>());
   }
 
 }

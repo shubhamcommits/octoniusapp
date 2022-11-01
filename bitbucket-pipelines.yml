@@ -21,6 +21,7 @@ pipelines:
           - export CLIENT_IMAGE_NAME=octoniusapp/octonius-prod:client
           - export APPROVAL_IMAGE_NAME=octoniusapp/octonius-prod:approval-server
           - export AUTHS_IMAGE_NAME=octoniusapp/octonius-prod:auths-server
+          - export CHATS_IMAGE_NAME=octoniusapp/octonius-prod:chats-server
           - export GROUPS_IMAGE_NAME=octoniusapp/octonius-prod:groups-server
           - export WORKSPACES_IMAGE_NAME=octoniusapp/octonius-prod:workspaces-server
           - export USERS_IMAGE_NAME=octoniusapp/octonius-prod:users-server
@@ -37,6 +38,7 @@ pipelines:
           - docker build -t $CLIENT_IMAGE_NAME --compress=true --force-rm=true ./client
           - docker build -t $APPROVAL_IMAGE_NAME --compress=true --force-rm=true ./services/approval/server
           - docker build -t $AUTHS_IMAGE_NAME --compress=true --force-rm=true ./services/authentication/server
+          - docker build -t $CHATS_IMAGE_NAME --compress=true --force-rm=true ./services/chats/server
           - docker build -t $GROUPS_IMAGE_NAME --compress=true --force-rm=true ./services/groups/server
           - docker build -t $WORKSPACES_IMAGE_NAME --compress=true --force-rm=true ./services/workspaces/server
           - docker build -t $USERS_IMAGE_NAME --compress=true --force-rm=true ./services/users/server
@@ -59,6 +61,7 @@ pipelines:
           - docker push $CLIENT_IMAGE_NAME
           - docker push $APPROVAL_IMAGE_NAME
           - docker push $AUTHS_IMAGE_NAME
+          - docker push $CHATS_IMAGE_NAME
           - docker push $GROUPS_IMAGE_NAME
           - docker push $WORKSPACES_IMAGE_NAME
           - docker push $USERS_IMAGE_NAME
@@ -96,6 +99,7 @@ pipelines:
           - export CLIENT_IMAGE_NAME=octoniusapp/octonius:client
           - export APPROVAL_IMAGE_NAME=octoniusapp/octonius:approval-server
           - export AUTHS_IMAGE_NAME=octoniusapp/octonius:auths-server
+          - export CHATS_IMAGE_NAME=octoniusapp/octonius:chats-server
           - export GROUPS_IMAGE_NAME=octoniusapp/octonius:groups-server
           - export WORKSPACES_IMAGE_NAME=octoniusapp/octonius:workspaces-server
           - export USERS_IMAGE_NAME=octoniusapp/octonius:users-server
@@ -112,6 +116,7 @@ pipelines:
           - docker build -t $CLIENT_IMAGE_NAME --compress=true --force-rm=true ./client
           - docker build -t $APPROVAL_IMAGE_NAME --compress=true --force-rm=true ./services/approval/server
           - docker build -t $AUTHS_IMAGE_NAME --compress=true --force-rm=true ./services/authentication/server
+          - docker build -t $CHATS_IMAGE_NAME --compress=true --force-rm=true ./services/chats/server
           - docker build -t $GROUPS_IMAGE_NAME --compress=true --force-rm=true ./services/groups/server
           - docker build -t $WORKSPACES_IMAGE_NAME --compress=true --force-rm=true ./services/workspaces/server
           - docker build -t $USERS_IMAGE_NAME --compress=true --force-rm=true ./services/users/server
@@ -134,6 +139,7 @@ pipelines:
           - docker push $CLIENT_IMAGE_NAME
           - docker push $APPROVAL_IMAGE_NAME
           - docker push $AUTHS_IMAGE_NAME
+          - docker push $CHATS_IMAGE_NAME
           - docker push $GROUPS_IMAGE_NAME
           - docker push $WORKSPACES_IMAGE_NAME
           - docker push $USERS_IMAGE_NAME

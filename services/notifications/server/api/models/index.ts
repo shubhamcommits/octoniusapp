@@ -10,6 +10,9 @@ import { Story } from "./story.model";
 import { Workspace } from "./workspace.model";
 import { Auth } from './auth.model';
 import { Lounge } from './lounge.model';
+import { ChatNotification } from './chat-notification.model';
+import { Message } from './messages.model';
+import { Chat } from './chat.model';
 
 /*  =====================
  *  -- MODELS EXPORTS --
@@ -51,5 +54,14 @@ export {
     Lounge as Lounge,
 
     // Workspace
-    Workspace as Workspace
+    Workspace as Workspace,
+
+    // CHAT
+    Chat as Chat,
+
+    // Message
+    Message as Message,
+
+    // ChatNotification
+    ChatNotification as ChatNotification
 }

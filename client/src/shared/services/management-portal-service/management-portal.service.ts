@@ -162,7 +162,7 @@ export class ManagementPortalService {
   }
 
   /**
-   * This function is responsible for check if the workspace has excel module active
+   * This function is responsible for check if the workspace has files versions module active
    * @param workspaceId
    */
    isFilesVersionsModuleAvailable(workspaceId: string, mgmtApiPrivateKey: string) {
@@ -174,11 +174,23 @@ export class ManagementPortalService {
   }
 
   /**
-   * This function is responsible for check if the workspace has excel module active
+   * This function is responsible for check if the workspace has organization module active
    * @param workspaceId
    */
    isOrganizationModuleAvailable(workspaceId: string, mgmtApiPrivateKey: string) {
     return this._http.get(`${this.WORKSPACE_BASE_API_URL}/${workspaceId}/organization`, {
+      params: {
+        mgmtApiPrivateKey: mgmtApiPrivateKey
+      }
+    }).toPromise();
+  }
+
+  /**
+   * This function is responsible for check if the workspace has chat module active
+   * @param workspaceId
+   */
+   isChatModuleAvailable(workspaceId: string, mgmtApiPrivateKey: string) {
+    return this._http.get(`${this.WORKSPACE_BASE_API_URL}/${workspaceId}/chat`, {
       params: {
         mgmtApiPrivateKey: mgmtApiPrivateKey
       }

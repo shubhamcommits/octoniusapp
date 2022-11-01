@@ -46,6 +46,28 @@ services:
     networks:
       - octonius
 
+  chats-server:
+    container_name: chats-server
+    build:
+      context: ./services/chats/server
+      dockerfile: Dockerfile.dev
+    ports:
+      - 16001:16001
+    environment:
+      - NODE_ENV=development
+      - PORT=16001
+      - HOST=0.0.0.0
+      - JWT_KEY=asfsaf12safas23fsafa12sf
+      - DB_URL=mongodb://mongodb:27017/octonius
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
+      - PROTOCOL=http
+      - DOMAIN=localhost
+      - MANAGEMENT_URL=https://management.octonius.com
+    networks:
+      - octonius
+
   flamingo-server:
     container_name: flamingo-server
     build:

@@ -59,6 +59,8 @@ export class AuthJoinWorkplaceComponent implements OnInit {
         this.workplaceData.name = workspaceData.workspace_name;
         this.selectedWorkplaceId = workspaceData._id;
       }
+      
+      this.checkWorkspaceAvailability();
     } catch (err) {
       console.log('There\'s some unexpected error occurred, please try again later!', err);
       this.utilityService.errorNotification($localize`:@@authJoinWorkplace.unexpectedError:There\'s some unexpected error occurred, please try again later!`);

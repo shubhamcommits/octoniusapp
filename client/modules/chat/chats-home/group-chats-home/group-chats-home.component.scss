@@ -1,0 +1,54 @@
+@import "src/assets/scss/variables";
+
+
+
+.chats {
+  width: 100%;
+  padding: 20px;
+  background: #FFFFFF;
+  max-height: 250px;
+  min-height: 250px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.chat-item {
+  padding: 0;
+  width: 100%;
+  margin: 0;
+
+}
+
+.chat_title {
+    font-size: 12px;
+}
+
+.chat_post_title {
+  color:$dark-text;
+  font-size: 14px;
+}
+
+.chat_delete {
+  width: 60px;
+  flex: 0 0;
+  text-align: right;
+  padding-right: 8px;
+  flex: auto;
+  height: 70px;
+  line-height: 70px;
+}
+
+.badge {
+  background-color: $dark-sky-blue;
+  margin: 0 1px !important;
+  display: inline;
+  
+  font-style: normal;
+  font-weight: 700 !important;
+  font-size: 12px;
+  align-items: center;
+  color: #005fd5;
+  background-color: #e4edf8;
+  border-radius: 10px;
+  padding: 2px 10px !important;
+}

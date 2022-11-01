@@ -1,0 +1,2 @@
+<i *ngIf="numUnreadMessages > 0" [matBadge]="numUnreadMessages" matBadgeColor="warn" class="material-icons-outlined">forum</i>
+<i *ngIf="!numUnreadMessages || numUnreadMessages < 0" class="material-icons-outlined">forum</i>

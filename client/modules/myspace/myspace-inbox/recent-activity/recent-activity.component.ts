@@ -176,25 +176,40 @@ export class RecentActivityComponent implements OnInit {
    * @param postType - post type
    * @param group - group Id
    */
-  async viewNotification(postId: string, postType: string, groupId: string) {
+  async viewNotification(notification: any, index: any) {
+
+    this.markNotificationAsRead(notification?._id, this.userData?._id, index, notification?.type);
+
     // redirect the user to the post
-    const newGroup = await this.publicFunctions.getGroupDetails(groupId);
+    const newGroup = await this.publicFunctions.getGroupDetails(notification?._origin_post?._group?._id);
     await this.publicFunctions.sendUpdatesToGroupData(newGroup);
     // Set the Value of element selection box to be the url of the post
-    if (postType === 'task') {
-      this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { postId: postId } });
+    if (notification?._origin_post?.type === 'task') {
+      this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { postId: notification?._origin_post?._id } });
     } else {
-      this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { postId: postId } });
+      this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { postId: notification?._origin_post?._id } });
     }
   }
 
-  async viewFolioNotification(folioId: string, groupId: string) {
+  async goToGroup(groupId: string, notificationId: string, index: any, type: string) {
+    this.markNotificationAsRead(notificationId, this.userData._id, index, type);
+
     const newGroup = await this.publicFunctions.getGroupDetails(groupId);
     await this.publicFunctions.sendUpdatesToGroupData(newGroup);
-    this._router.navigate(['/document', folioId]);
+    this._router.navigate(['/dashboard', 'work', 'groups', 'activity']);
   }
 
-  async viewApprovalNotification(notification: any) {
+  async viewFolioNotification(notification: any, index: any) {
+    this.markNotificationAsRead(notification?._id, this.userData?._id, index, notification?.type);
+
+    const newGroup = await this.publicFunctions.getGroupDetails(notification?._origin_folio?._origin_group?._id);
+    await this.publicFunctions.sendUpdatesToGroupData(newGroup);
+    this._router.navigate(['/document', notification?._origin_folio?._id]);
+  }
+
+  async viewApprovalNotification(notification: any, index: any) {
+    this.markNotificationAsRead(notification?._id, this.userData?._id, index, notification?.type)
+
     if (notification?._origin_post && notification?._origin_post?.type == 'task') {
       const groupId = notification?._origin_post?._group._id || notification?._origin_post?._group;
       const newGroup = await this.publicFunctions.getGroupDetails(groupId);

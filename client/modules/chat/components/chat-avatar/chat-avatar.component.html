@@ -1,0 +1,6 @@
+<app-secured-image *ngIf="chatData?._group" [imgURL]="avatarURL" [service]="'group'" [styleClass]="'avatar'"></app-secured-image>
+
+<app-secured-image *ngIf="!chatData?._group && members && members?.length == 1" [imgURL]="avatarURL" [service]="'user'" [styleClass]="'avatar'"></app-secured-image>
+<!-- <ion-badge *ngIf="!chatData?._group && members && members.length > 1">
+  {{ members?.length -1 }}+
+</ion-badge> -->

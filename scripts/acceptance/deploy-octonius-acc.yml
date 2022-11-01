@@ -131,6 +131,41 @@ services:
       - mongo-2.mongo
     networks:
       - acc
+
+  chats-server:
+    container_name: octonius_chats-server
+    image: ${DOCKER_USER}/${DOCKER_REPO}:chats-server
+    ports:
+      - ${CHATS_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+      - MANAGEMENT_URL=${MANAGEMENT_URL}
+      - PROXY_AVAILABLE=${PROXY_AVAILABLE}
+      - PROXY_PROTOCOL=${PROXY_PROTOCOL}
+      - PROXY_HOST=${PROXY_HOST}
+      - PROXY_PORT=${PROXY_PORT}
+    depends_on:
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
+    links:
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
+    networks:
+      - acc
              
   groups-server:
     container_name: octonius_groups-server
@@ -509,6 +544,7 @@ services:
       - mongo-2.mongo
       - approval-server
       - auths-server
+      - chats-server
       - groups-server
       - workspaces-server
       - users-server
@@ -554,6 +590,7 @@ services:
       - approval-server
       - auths-server
       - groups-server
+      - chats-server
       - workspaces-server
       - users-server
       - posts-server

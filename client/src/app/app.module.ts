@@ -86,6 +86,7 @@ import { ManageHttpInterceptor } from 'src/shared/services/manage-http-intercept
 import { MsalModule } from '@azure/msal-angular';
 import { PublicClientApplication } from '@azure/msal-browser';
 import { environment } from 'src/environments/environment';
+import { ChatModule } from 'modules/chat/chat.module';
 
 const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigator.userAgent.indexOf('Trident/') > -1;
 
@@ -119,6 +120,8 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     HttpClientModule,
 
     MatSidenavModule,
+
+    ChatModule,
 
     // SSO Active Directory
 

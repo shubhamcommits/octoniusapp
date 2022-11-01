@@ -57,7 +57,46 @@ async function sendNotificationsFeed(socket: any, userId: string, io: any) {
  */
 async function sendNotificationsFeedFromService(userId: string, io: any, backend?:any) {
     //  here the same as before, I deleted the emit code
-    generateFeed(userId, io,backend);
+    generateFeed(userId, io, backend);
+}
+
+/**
+ * This function sends the generated notifications feed to the user
+ * @param socket 
+ * @param userId 
+ * @param io 
+ */
+function sendNewMessageNotification(message: any, userId: string, chatId: string, io: any) {
+    io.sockets.to('user_' + userId).emit('newChatNotification', {message, userId, chatId});
+}
+
+/**
+ * This function sends the generated notifications feed to the user
+ * @param socket 
+ * @param userId 
+ * @param io 
+ */
+// function sendNewMessage(message: any, io: any) {
+//     let room = '';
+//     if (message?._chat?._id) {
+//         room = message?._chat?._id.toString().trim() || '';
+//     } else {
+//         room = message?._chat.toString().trim() || '';
+//     }
+// console.log('sendNewMessage -> ' + room);
+//     if (room !== '') {
+//         io.sockets.to(room).emit('newMessage', message);
+//     }
+// }
+
+/**
+ * This function sends the generated notifications feed to the user
+ * @param socket 
+ * @param userId 
+ * @param io 
+ */
+function sendMessagesReadNotification(userId: string, chatId: string, countReadMessages: any, io: any) {
+    io.sockets.to('user_' + userId).emit('messageRead', {chatId: chatId, numMessages: +countReadMessages});
 }
 
 /**
@@ -179,6 +218,11 @@ export {
     // SEND NOTIFICATIONS FEED
     sendNotificationsFeed,
     sendNotificationsFeedFromService,
+    sendMessagesReadNotification,
+
+    // APP NOTIFICATIONS
+    sendNewMessageNotification,
+    // sendNewMessage,
 
     // NOTIFY RELATED USERS
     notifyRelatedUsers,

@@ -1,0 +1,22 @@
+<div *ngIf="showDay">
+	<span class="date-badge">{{ formateDate(message?.posted_on) }}</span>
+</div>
+
+<div class="chat-message">
+	<div [ngClass]="(userData?._id == message?._posted_by?._id) ? 'right-bubble' : 'left-bubble'">
+		<div>
+			<div style="width:24px; height: 24px; float: left; margin-right: 20px;">
+				<app-secured-image [imgURL]="message?._posted_by?.profile_pic" [service]="'user'"
+					[alt]="message?._posted_by?.first_name + ' ' + message?._posted_by?.last_name" [styleClass]="'feed-avatar-small'"
+					[tooltip]="message?._posted_by?.first_name + ' ' + message?._posted_by?.last_name">
+				</app-secured-image>
+			</div>
+
+			<span class="msg-name">{{ message?._posted_by?.first_name + ' ' + message?._posted_by?.last_name }}</span>
+		</div>
+
+		<div [innerHTML]="(htmlContent) | safe: 'html'"></div>
+		
+		<span class="msg-date">{{ formateHour(message?.posted_on) }}</span>
+	</div>
+</div>
