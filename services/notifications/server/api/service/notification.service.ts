@@ -507,12 +507,12 @@ export class NotificationsService {
             } else {
 
                 // Create Readble Stream from the Event Assignee
-                const userStream = Readable.from(assigned_to);
+                const assignedStream = Readable.from(assigned_to);
 
-                await userStream.on('data', async (user: any) => {
+                await assignedStream.on('data', async (assignee: any) => {
                     const notification = await Notification.create({
                         _actor: actorId,
-                        _owner: user._id || user,
+                        _owner: assignee._id || assignee,
                         _origin_post: postId,
                         message: status,
                         type: status,
@@ -520,7 +520,7 @@ export class NotificationsService {
                     });
 
                     if (process.env.DOMAIN == 'app.octonius.com') {
-                        const owner = await User.findById({ _id: (user._id || user) }).select('_workspace integrations.firebase_token').lean();
+                        const owner = await User.findById({ _id: (assignee._id || assignee) }).select('_workspace integrations.firebase_token').lean();
                         const actor = await User.findById({ _id: actorId }).select('first_name last_name').lean();
                         const task = await Post.findById({ _id: postId }).select('title').lean();
 
@@ -530,7 +530,7 @@ export class NotificationsService {
                         }
                     }
                     
-                    await helperFunctions.sendNotificationsFeedFromService(user?._id, io);
+                    await helperFunctions.sendNotificationsFeedFromService((assignee?._id || assignee), io);
                 });
             }
         } catch (err) {

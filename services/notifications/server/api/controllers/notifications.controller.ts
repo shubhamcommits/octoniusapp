@@ -253,13 +253,13 @@ export class NotificationsController {
         let { postId, assigned_to, userId, status, followers, posted_by, io } = req.body;
         try {
             status = (status == 'in progress') ? 'started' : 'completed';
-            await notificationService.taskStatusChanged(postId, status, userId, assigned_to, null, req.body.io);
             if (assigned_to && assigned_to?.length > 0) {
-                const index = assigned_to.findIndex(assignee => assignee._id == posted_by);
+                const index = assigned_to.findIndex(assignee => (assignee._id || assignee) == posted_by);
                 if (index < 0) {
                     assigned_to.forEach(async assignedTo => {
                         if (assignedTo._id !== userId) {
-                            await helperFunctions.sendNotificationsFeedFromService(assignedTo._id, io, true);
+                            await notificationService.taskStatusChanged(postId, status, userId, assigned_to, null, req.body.io);
+                            await helperFunctions.sendNotificationsFeedFromService((assignedTo._id || assignedTo), io, true);
                             await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
                                 //userid: assignedTo._id,
                                 userid: userId,
