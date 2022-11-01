@@ -99,7 +99,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    this.isChatAvailable = await this.publicFunctions.isChatModuleAvailable().catch(() => this.isChatAvailable = true);
+    this.isChatAvailable = await this.publicFunctions.isChatModuleAvailable().catch(() => this.isChatAvailable = false);
   }
 
   /**
