@@ -17,14 +17,13 @@ admin.initializeApp({
 async function sendFirebaseNotification(workspaceId: string, registrationToken: string, messageTitle: string, messageBody: string) {
 
     if (registrationToken && messageTitle && messageBody) {         
-console.log({workspaceId});
         var payload = {
             notification: {
                 title: messageTitle,
                 body: messageBody
             },
             data: {
-                workspaceId: workspaceId || ''
+                'workspaceId': workspaceId
             }
             //, topic: 'octonius'
         };
