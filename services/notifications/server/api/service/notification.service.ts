@@ -412,7 +412,7 @@ export class NotificationsService {
                 // Create Readble Stream from the Event Assignee
                 userStream = Readable.from(await User.find({
                     _groups: groupId
-                }).select('first_name email integrations.firebase_token'))
+                }).select('_workspace first_name email integrations.firebase_token'))
             } else {
                 // Create Readble Stream from the Event Assignee
                 userStream = Readable.from(assigned_to);
@@ -663,7 +663,7 @@ export class NotificationsService {
             // Let usersStream
             let userStream = Readable.from(await User.find({
                 _groups: groupId
-            }).select('first_name email integrations.firebase_token'))
+            }).select('_workspace first_name email integrations.firebase_token'))
 
             await userStream.on('data', async (user: any) => {
                 const notification = await Notification.create({
