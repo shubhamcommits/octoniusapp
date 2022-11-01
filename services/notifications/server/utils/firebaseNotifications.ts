@@ -23,7 +23,7 @@ async function sendFirebaseNotification(workspaceId: string, registrationToken: 
                 body: messageBody
             },
             data: {
-                'workspaceId': workspaceId
+                'workspaceId': workspaceId.trim() || ''
             }
             //, topic: 'octonius'
         };
