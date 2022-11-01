@@ -1,15 +1,17 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { ChatService } from 'src/shared/services/chat-service/chat.service';
+import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-chats-home',
   templateUrl: 'chats-home.component.html',
   styleUrls: ['chats-home.component.scss']
 })
-export class ChatsHomeComponent implements OnInit {
+export class ChatsHomeComponent implements OnInit, OnDestroy {
 
   userData;
   workspaceData;
@@ -22,21 +24,31 @@ export class ChatsHomeComponent implements OnInit {
   openChat;
 
   unreadMessages: any = [];
-  numUnreadMessages
+
+  private subSink = new SubSink();
 
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
     public injector: Injector,
     private chatService: ChatService,
-    private utilityService: UtilityService
+    private utilityService: UtilityService,
+    private socketService: SocketService
     ) {}
 
   async ngOnInit() {
     this.userData = await this.publicFunctions.getCurrentUser();
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
+    this.subSink.add(this.socketService.unreadMessagesData.subscribe(data => {
+      this.unreadMessages = data;
+    }));
+
     this.initUnreadChats();
+  }
+
+  ngOnDestroy() {
+    this.subSink.unsubscribe();
   }
 
   showHideChats() {
@@ -69,44 +81,8 @@ export class ChatsHomeComponent implements OnInit {
   }
 
   async initUnreadChats() {
-    this.unreadMessages = await this.publicFunctions.getUnreadChats();
-    this.numUnreadMessages = this.unreadMessages.length;
-
-    await this.mapUnreadMessagesInChats(this.directChats, this.groupChats);
-  }
-
-  mapUnreadMessagesInChats(directChats: any, groupChats: any) {
-
-    let mappedChats = [];
-    directChats.forEach((chat) => {
-      let unreadMessages = 0;
-
-      this.unreadMessages.forEach(unreadMessage => {
-        if (unreadMessage?._chat && ((unreadMessage?._chat?._id || unreadMessage?._chat) == chat?._id)) {
-          unreadMessages++;
-        }
-      });
-
-      chat.unreadMessages = unreadMessages;
-      mappedChats.push(chat);
-    });
-
-    this.directChats = mappedChats;
-    mappedChats = [];
-
-    groupChats.forEach(chat => {
-      let unreadMessages = 0;
-
-      this.unreadMessages.forEach(unreadMessage => {
-        if (unreadMessage?._chat && ((unreadMessage?._chat?._id || unreadMessage?._chat) == chat?._id)) {
-          unreadMessages++;
-        }
-      });
-
-      chat.unreadMessages = unreadMessages;
-      mappedChats.push(chat);
-    });
-    this.groupChats = mappedChats;
+    const unreadMessages = await this.publicFunctions.getUnreadChats();
+    this.socketService.updateUnreadMessages(unreadMessages);
   }
 
   async openChatDetails(chatId: any) {

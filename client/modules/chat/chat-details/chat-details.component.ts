@@ -17,8 +17,6 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, OnChanges, After
   @Input() workspaceData;
   @Input() chatData;
 
-  // @ViewChild('chatContent') chatContent: IonContent;
-  // @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   @ViewChild('chatContent', { static: false }) chatContent: ElementRef;
 
   @Output() chatClosedEvent = new EventEmitter();
@@ -90,7 +88,9 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, OnChanges, After
     }
 
     if (this.chatData._id) {
+      this.joinChatSocket();
       await this.loadMessages();
+      this.markAsRead(this.chatData._id);
     }
 
     await this.initMembers();
@@ -111,7 +111,6 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, OnChanges, After
    * Unsubscribe all the observables on destroying the component
    */
   ngOnDestroy() {
-    this.leaveChatSocket();
     this.subSink.unsubscribe();
   }
 
@@ -317,34 +316,21 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, OnChanges, After
 
   private joinChatSocket() {
 
-    if (!this.socket){
-      this.socket = this.websocketService.serverInit();
-    }
+    this.socket = this.websocketService.serverInit();
 
-    this.socket.on('connect', () => {
-console.log('join-chat');
-      // Connected, let's sign-up for to receive messages for this room
-      this.socket.volatile.emit('join-chat', this.chatData?._id);
-    });
-
-    this.socket.on('connectToRoom', (data)=>{
-      console.log('connected to room', data);
-    });
-
-    this.socket.on('newMessage', (data) => {
-console.log('newMessage:', data);
-      this.pushMessage(data);
-    });
-
-    this.socket.onAny((eventName, ...args) => {
-     console.log('socket fired on any', eventName);
+    this.socket.onAny((eventName, ...args: any) => {
+      if (eventName === 'newChatNotification') {
+        if (this.chatData?._id == args[0].chatId){
+          this.pushMessage(args[0].message);
+          this.markAsRead(this.chatData?._id);
+        }
+      }
     });
   }
 
-  private leaveChatSocket() {
-console.log("leave-chat");
-    if (this.socket) {
-      this.socket.volatile.emit('leave-chat', this.chatData?._id);
+  markAsRead(chatId: string) {
+    if (chatId) {
+      this.chatService.markAsRead(chatId);
     }
   }
 

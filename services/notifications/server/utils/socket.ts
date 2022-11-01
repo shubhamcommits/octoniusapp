@@ -124,7 +124,6 @@ function init(server: any) {
             // -| APP NOTIFICATIONS |-
 
             socket.on('join-app', (room) => {
-console.log('join-app -> user_' + room);
                 // Broadcast edit event to user
                 socket.join('user_' + room);
             });
@@ -133,19 +132,6 @@ console.log('join-app -> user_' + room);
                 // Broadcast edit event to user
                 socket.leave('user_' + room);
             });
-
-            // -| CHATS NOTIFICATIONS |-
-
-//             socket.on('join-chat', (room) => {
-// console.log('join-chat -> ' + room);
-//                 // Broadcast edit event to user
-//                 socket.join(room);
-//             });
-
-//             socket.on('leave-chat', (room) => {
-//                 // Broadcast edit event to user
-//                 socket.leave(room);
-//             });
 
             socket.on('disconnect', () => {
                 // Remove the socket from globalConnection array
