@@ -1,5 +1,6 @@
 import { Component, OnChanges, Input, Injector, OnDestroy } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
+import { NotificationService } from 'src/shared/services/notification-service/notification.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
@@ -27,6 +28,7 @@ export class ChatNotificationIconComponent implements OnChanges, OnDestroy {
   constructor(
     public injector: Injector,
     public utilityService: UtilityService,
+    private notificationService: NotificationService,
     private socketService: SocketService) { }
 
   async ngOnChanges() {
@@ -64,6 +66,14 @@ export class ChatNotificationIconComponent implements OnChanges, OnDestroy {
 
     this.socket.onAny((eventName, ...args: any) => {
       if (eventName === 'newChatNotification') {
+        const notificationText = $localize`:@@directChatsHomoe.sentYouMessage:sent you a message`
+        let notifyData: Array<any> = [];
+        notifyData.push({
+          'title': $localize`:@@directChatsHomoe.newMessage:New Message`,
+          'alertContent': `${args[0].message?._posted_by?.first_name || 'Deleted'} ${args[0].message?._posted_by?.last_name || 'User'} ${notificationText}.`,
+        });
+        this.notificationService.generateNotification(notifyData);
+
         const messageIndex = (this.unreadMessages) ? this.unreadMessages.findIndex(m => m._id == args[0].message._id) : -1
         if (messageIndex < 0) {
           this.unreadMessages.push(args[0].message);
