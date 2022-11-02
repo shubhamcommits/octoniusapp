@@ -4,10 +4,10 @@
 
 .chats {
   width: 100%;
-  padding: 10px;
+  padding: 20px;
   background: #FFFFFF;
-  // max-height: 250px;
-  // min-height: 250px;
+  max-height: 250px;
+  min-height: 250px;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -51,9 +51,4 @@
   background-color: #e4edf8;
   border-radius: 10px;
   padding: 2px 10px !important;
-}
-
-.placeholder-img{
-  width: 90px;
-  height: 90px;
 }

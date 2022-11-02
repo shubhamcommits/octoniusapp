@@ -2,7 +2,7 @@
   <mat-expansion-panel [expanded]="true">
     <mat-expansion-panel-header class="column-title">
       <mat-panel-title>
-        <span i18n="@@groupChatsHome.groupChats">Group Messages</span>
+        <span i18n="@@groupChatsHome.groupChats">Group Chats</span>
       </mat-panel-title>
 
       <!-- <mat-panel-description>
@@ -14,7 +14,7 @@
       <!-- Empty State starts -->
       <div *ngIf="!chats || chats?.length === 0" style="text-align: center; margin-top: 30px;">
         <img src='assets/images/placeholder_newsfeed.png' class="placeholder-img">
-        <p class="muted text-center" i18n="@@groupChatsHome.noGroupChats">Nothing here.</p>
+        <p class="muted text-center" i18n="@@groupChatsHome.noGroupChats">No group chats opened.</p>
       </div>
       <!-- Empty State ends -->
     

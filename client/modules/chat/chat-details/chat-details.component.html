@@ -1,16 +1,16 @@
 <div class="chat-header">
-	
-		<div>
-			<app-chat-title [chatData]="chatData" [userData]="userData"></app-chat-title>
-		</div>
-		
+	<div>
+		<app-chat-title [chatData]="chatData" [userData]="userData"></app-chat-title>
+	</div>
 
-
-	<app-multiple-assignments [canEdit]="canEdit" [workspaceData]="workspaceData" [userData]="userData" [assigned_to]="members"
-		[type]="'chat'" (assigneeAddedEmiter)="onAssignedAdded($event)" (assigneeRemovedEmiter)="onAssignedRemoved($event)">
+	<app-multiple-assignments *ngIf="!objectExists(chatData?._group)" [canEdit]="canEdit" [workspaceData]="workspaceData" [userData]="userData"
+		[assigned_to]="members" [type]="'chat'" (assigneeAddedEmiter)="onAssignedAdded($event)"
+		(assigneeRemovedEmiter)="onAssignedRemoved($event)">
 	</app-multiple-assignments>
+	
 	<i class="material-icons" style="cursor: pointer; float: right;" (click)="closeModal()">close</i>
 </div>
+
 
 <!--<ion-content #chatContent [scrollEvents]="true" (ionScrollStart)="logScrolling($event)">-->
 <div #chatContent (scroll)="loadMoreMessages($event)" class="chat-content" [scrollTop]="chatContent.scrollHeight">

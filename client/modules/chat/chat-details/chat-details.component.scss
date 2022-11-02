@@ -1,18 +1,10 @@
 .chat-header {
     position: absolute;
     top: 0;
+    background-color: #ffffff;
     opacity: 1;
     width: 100%;
     z-index: 1;
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    padding: 14px;
-    background: #005fd5;
-    color: #fff;
-    .mat-menu-trigger.material-icons-outlined{
-        color:#fff !important;
-    }
 }
 
 .chat-content {
@@ -20,7 +12,7 @@
     overflow-x: hidden;
     max-height: 580px;
     min-height: 580px;
-    bottom: 70px;
+    bottom: 40px;
     position: absolute;
     width: 100%;
 }
