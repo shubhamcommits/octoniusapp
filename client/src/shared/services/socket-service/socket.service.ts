@@ -44,14 +44,9 @@ export class SocketService {
   public onEvent(eventName: string): Observable<any> {
 
     return new Observable<any>(observer => {
-      this.socket.on(eventName, async (data: any) => {
+      this.socket.on(eventName, (data: any) => {
         observer.next(data);
-        if (eventName === 'connect') {
-
-          const userData = await this.publicFunctions.getCurrentUser();
-          this.socket.volatile.emit('join-app', userData?._id);
-
-        } else if (eventName === 'notificationsFeed' && data.new) {
+        if (eventName === 'notificationsFeed' && data.new) {
           const notify = data['unreadNotifications'][0];
           let notifyData: Array<any> = [];
           if (notify?.type === 'mention_folio') {
@@ -73,7 +68,7 @@ export class SocketService {
 
   public onEmit(eventName: string, ...messageData: any) {
     return new Observable<any>(observer => {
-      this.socket.volatile.emit(eventName, ...messageData, (data: any) => {
+      this.socket.emit(eventName, ...messageData, (data: any) => {
         observer.next(data);
       });
     })
@@ -85,23 +80,31 @@ export class SocketService {
   public serverInit() {
 
     try {
-      this.socket = io(this.baseUrl, {
-        secure: true,
-        reconnection: true,
-        reconnectionAttempts: Infinity,
-        reconnectionDelay: 1000,
-        reconnectionDelayMax: 2000,
-        randomizationFactor: 0.5,
-        autoConnect: true,
-        transports: ['websocket'],
-        upgrade: true
-      });
+      if (!this.socket) {
+        this.socket = io(this.baseUrl, {
+          secure: true,
+          reconnection: true,
+          reconnectionAttempts: Infinity,
+          reconnectionDelay: 1000,
+          reconnectionDelayMax: 2000,
+          randomizationFactor: 0.5,
+          autoConnect: true,
+          transports: ['websocket'],
+          upgrade: true
+        });
+      }
 
       setTimeout(() => {
         if (!this.socket.connected) {
           return this.serverInit();
         }
       }, 5000);
+
+			this.socket.on("connect_error", () => {
+				setTimeout(() => {
+					this.socket.connect();
+				}, 1000);
+			});
 
     } catch (error) {
       console.log("error", error);
