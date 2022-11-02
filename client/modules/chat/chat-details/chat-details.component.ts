@@ -75,7 +75,7 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, OnChanges, After
       this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     }
 
-    if (!this.utilityService.objectExists(this.chatData)) {
+    if (!this.objectExists(this.chatData)) {
       this.chatData = {
         members: [
           {
@@ -96,7 +96,7 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, OnChanges, After
     await this.initMembers();
 
     const adminIndex = (this.chatData.members) ? this.chatData.members.findIndex(member => member?._user?._id == this.userData?._id && member?.is_admin) : -1;
-    this.canEdit = adminIndex >= 0 && !this.utilityService.objectExists(this.chatData?._group);
+    this.canEdit = adminIndex >= 0 && !this.objectExists(this.chatData?._group);
   }
 
   /**
@@ -130,7 +130,7 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, OnChanges, After
   }
 
   async initMembers() {
-    if (!this.utilityService.objectExists(this.chatData?._group)) {
+    if (!this.objectExists(this.chatData?._group)) {
       this.members = await this.chatData?.members;
       this.members = await this.members?.filter((member, index) => (this.members?.findIndex(m => m._user._id == member._user._id) == index));
     } else {
@@ -340,5 +340,9 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, OnChanges, After
 
   closeModal() {
     this.chatClosedEvent.emit({ chatData: this.chatData });
+  }
+
+  objectExists(object: any) {
+    return this.utilityService.objectExists(object);
   }
 }
