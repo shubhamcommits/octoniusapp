@@ -1,10 +1,14 @@
 .chat-header {
     position: absolute;
     top: 0;
-    background-color: #ffffff;
     opacity: 1;
     width: 100%;
     z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    padding: 14px;
+    background: #005fd5;
+    color: #fff;
 }
 
 .chat-content {
@@ -12,18 +16,21 @@
     overflow-x: hidden;
     max-height: 580px;
     min-height: 580px;
-    bottom: 40px;
+    bottom: 80px;
     position: absolute;
     width: 100%;
 }
+
 .chat-input {
-    bottom: 0px;
+    bottom: 8px;
     position: absolute;
     width: 100%;
 }
-.social-icons{
+
+.social-icons {
     font-size: 24px;
 }
-.content-box{
+
+.content-box {
     padding: 16px;
 }
