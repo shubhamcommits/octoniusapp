@@ -6,11 +6,12 @@
 <div *ngIf="objectExists(userData) && showChatsList" class="chats-home">
   <div *ngIf="!openChat">
     <div class="action-box">
+      
+
+      <i class="material-icons-outlined" (click)="openChatDetails(null)" style="cursor: pointer">send</i>
       <a (click)="showHideChats()">
         <i class="material-icons" style="cursor: pointer">close</i>
       </a>
-
-      <i class="material-icons-outlined" (click)="openChatDetails(null)">create</i>
     </div>
     <app-direct-chats-home [chats]="directChats" [unreadMessages]="unreadMessages" [userData]="userData" [workspaceData]="workspaceData" (chatSelectedEvent)="openChatDetails($event)" (chatDeletedEvent)="deleteChat()"></app-direct-chats-home>
 
