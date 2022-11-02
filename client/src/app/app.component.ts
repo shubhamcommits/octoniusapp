@@ -35,6 +35,7 @@ export class AppComponent implements OnInit, OnDestroy {
   isMobile = false;
   isAuth : boolean = false;
 
+  userData;
   isChatAvailable: boolean = false;
   socket;
 
@@ -102,10 +103,10 @@ export class AppComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     this.isChatAvailable = await this.publicFunctions.isChatModuleAvailable().catch(() => this.isChatAvailable = false);
 
-    const userData = await this.publicFunctions.getCurrentUser();
+    this.userData = await this.publicFunctions.getCurrentUser();
 
-    if (this.utilityService.objectExists(userData)) {
-      this.enableChatNotificationsSocket(userData);
+    if (this.objectExists(this.userData)) {
+      this.enableChatNotificationsSocket(this.userData);
     }
   }
 
@@ -277,4 +278,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }));
   }
 
+  objectExists(object: any) {
+    return this.utilityService.objectExists(object);
+  }
 }

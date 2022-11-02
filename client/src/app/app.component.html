@@ -1,6 +1,6 @@
 <app-navbar *ngIf="isAuth && !isMobile"></app-navbar>
 <app-mobile-navbar *ngIf="isAuth && isMobile"></app-mobile-navbar>
 
-<app-chats-home *ngIf="isChatAvailable"></app-chats-home>
+<app-chats-home *ngIf="isChatAvailable && objectExists(userData)"></app-chats-home>
 
 <router-outlet *ngIf="!isAuth"></router-outlet>
