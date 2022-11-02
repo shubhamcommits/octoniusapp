@@ -23,7 +23,6 @@
     "build:es": "ng build --configuration=es",
     "build:fa": "ng build --configuration=fa",
     "dev": "ng serve",
-    "dev_front": "ng serve --configuration dev_front",
     "build": "ng build",
     "prod": "ng build --configuration production --localize",
     "gzip": "gzipper --verbose ./dist ./gzipped",
