@@ -22,12 +22,6 @@ declare const gapi: any;
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-  // Subsink
-  private subSink = new SubSink();
-
-  // Create public functions object
-  public publicFunctions = new PublicFunctions(this.injector);
-
   /**
    * This function checks the following things in the application
    * @param connectionService - connection service
@@ -42,11 +36,20 @@ export class AppComponent implements OnInit, OnDestroy {
   isAuth : boolean = false;
 
   isChatAvailable: boolean = false;
+  socket;
+
+  // Subsink
+  private subSink = new SubSink();
+
+  // Create public functions object
+  public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
     // @Inject(LOCALE_ID) protected localeId: string,
     private injector: Injector,
     private storageService: StorageService,
+    private socketService: SocketService,
+    private utilityService: UtilityService,
     private _router: Router,
     private _notificationService: NotificationService,
     private routeStateService: RouteStateService,
@@ -78,20 +81,18 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     }));
 
-    let socketService = this.injector.get(SocketService);
-    let utilityService = this.injector.get(UtilityService);
-
     this.publicFunctions.isMobileDevice().then(res => this.isMobile = res);
 
-    this.initSocketServer(socketService);
+    this.initSocketServer();
+
     // Internet connection validity
     this.subSink.add(this.checkInternetConnectivity(utilityService));
 
     // Socket connection initilisation
-    this.subSink.add(this.enableSocketConnection(socketService, utilityService));
+    this.subSink.add(this.enableSocketConnection(utilityService));
 
     // Reconnection Socket Emitter
-    this.subSink.add(this.enableReconnectSocket(socketService));
+    this.subSink.add(this.enableReconnectSocket());
 
     // Initiate the gapi variable to confirm the check the gapi is ready to work
     this.loadGoogleAPI();
@@ -100,6 +101,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.isChatAvailable = await this.publicFunctions.isChatModuleAvailable().catch(() => this.isChatAvailable = false);
+
+    const userData = await this.publicFunctions.getCurrentUser();
+
+    if (this.utilityService.objectExists(userData)) {
+      this.enableChatNotificationsSocket(userData);
+    }
   }
 
   /**
@@ -128,30 +135,31 @@ export class AppComponent implements OnInit, OnDestroy {
    * This function makes the HTTP initial request to the socket server in order to initiate the connection
    * @param socketService
    */
-  initSocketServer(socketService: SocketService) {
-    return socketService.serverInit()
+  initSocketServer() {
+    this.socket = this.socketService.serverInit();
+    return this.socket;
   }
 
   /**
    * This function enables the socket connection in the application
    * @param socketService
    */
-  enableSocketConnection(socketService: SocketService, utilityService: UtilityService) {
-    return socketService.onEvent('connect')
+  enableSocketConnection(utilityService: UtilityService) {
+    return this.socketService.onEvent('connect')
       .pipe(retry(Infinity))
       .subscribe(() => {
 
         // Socket Notifications Data Transmitter
-        this.subSink.add(this.enableNotificationDataTransmitter(socketService));
+        this.subSink.add(this.enableNotificationDataTransmitter());
 
         // Notifications Feed Socket
-        // this.subSink.add(this.enableNotificationsFeedSocket(socketService));
+        // this.subSink.add(this.enableNotificationsFeedSocket());
 
         // Workspace Data Socket
-        this.subSink.add(this.enableWorkspaceDataSocket(socketService, this.publicFunctions));
+        this.subSink.add(this.enableWorkspaceDataSocket(this.publicFunctions));
 
         // User Role Data Socket
-        this.subSink.add(this.enableUserRoleSocket(socketService, this.publicFunctions, utilityService));
+        this.subSink.add(this.enableUserRoleSocket(this.publicFunctions, utilityService));
       })
   }
 
@@ -160,8 +168,8 @@ export class AppComponent implements OnInit, OnDestroy {
    * now we can use this as the data transmitter across the entire application
    * @param socketService
    */
-  enableNotificationDataTransmitter(socketService: SocketService) {
-    return socketService.currentData.pipe(map((res) => res)).subscribe();
+  enableNotificationDataTransmitter() {
+    return this.socketService.currentData.pipe(map((res) => res)).subscribe();
   }
 
   // /**
@@ -169,12 +177,12 @@ export class AppComponent implements OnInit, OnDestroy {
   //  * @param socketService
   //  * calling the @event notificationsFeed to get the notifications for the user
   //  */
-  // enableNotificationsFeedSocket(socketService: SocketService) {
-  //   return socketService.onEvent('notificationsFeed')
+  // enableNotificationsFeedSocket() {
+  //   return this.socketService.onEvent('notificationsFeed')
   //     .pipe(retry(Infinity))
   //     .subscribe((notifications) => {
   //       // Here we send the message to change and update the notifications feed through the shared service
-  //       socketService.changeData(notifications);
+  //       this.socketService.changeData(notifications);
   //     })
   // }
 
@@ -184,8 +192,8 @@ export class AppComponent implements OnInit, OnDestroy {
    * @param socketService
    * calling the @event workspaceDataUpdate to get the workspace data if there's any change in workspace
    */
-  enableWorkspaceDataSocket(socketService: SocketService, publicFunctions: PublicFunctions) {
-    return socketService.onEvent('workspaceDataUpdate')
+  enableWorkspaceDataSocket(publicFunctions: PublicFunctions) {
+    return this.socketService.onEvent('workspaceDataUpdate')
       .pipe(retry(Infinity))
       .subscribe((workspaceData) => {
         // Here we send the message to change and update the workspace data through the shared service
@@ -199,8 +207,8 @@ export class AppComponent implements OnInit, OnDestroy {
    * @param socketService
    * calling the @event userRoleUpdate to get the userRole data if there's any change in userRole
    */
-  enableUserRoleSocket(socketService: SocketService, publicFunctions: PublicFunctions, utilityService: UtilityService) {
-    return socketService.onEvent('userDataUpdate')
+  enableUserRoleSocket(publicFunctions: PublicFunctions, utilityService: UtilityService) {
+    return this.socketService.onEvent('userDataUpdate')
       .pipe(retry(Infinity))
       .subscribe(async (userData) => {
 
@@ -225,11 +233,25 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * This function enables the notifications for the user
+   */
+  enableChatNotificationsSocket(userData: any) {
+    if (!this.socket) {
+      this.socket = this.socketService.serverInit();
+    }
+
+    this.socket.on('connect', () => {
+      // Connected, let's sign-up for to receive messages for this room
+      this.socket.emit('join-app', userData?._id);
+    });
+  }
+
+  /**
    * This function enables the reconnect_attempt socket, to check how many times the socket has been connecting
    * @param socketService
    */
-  enableReconnectSocket(socketService: SocketService) {
-    return socketService.onEvent('reconnect_attempt')
+  enableReconnectSocket() {
+    return this.socketService.onEvent('reconnect_attempt')
       .pipe(retry(Infinity))
       .subscribe();
   }

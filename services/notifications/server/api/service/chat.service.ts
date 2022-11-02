@@ -38,7 +38,7 @@ export class ChatService {
             // Create Readble Stream from the notification
             let userStream = Readable.from(await User.find({
                 _id: { $in : usersArray}
-            }).select('_id _workspace integrations.firebase_token'));
+            }).select('_id first_name last_name _workspace integrations.firebase_token'));
             const data  = await User.find({
                 _id: { $in : usersArray}
             })
@@ -63,6 +63,8 @@ export class ChatService {
                             firebaseNotifications.sendFirebaseNotification(user?._workspace._id || user?._workspace, user?.integrations?.firebase_token, 'Octonius - New Message', message?._posted_by?.first_name + ' ' + message?._posted_by?.last_name + ' sent you a message');
                         }
                     }
+
+                    
 
                     // helperFunctions.sendNewMessage(message, io);
                     helperFunctions.sendNewMessageNotification(message, user._id || user, chatId, io);
