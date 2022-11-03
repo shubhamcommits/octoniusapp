@@ -277,7 +277,7 @@ export class MembersControllers {
                 retUsers.push(user);
             }
 
-            retUsers.sort((u1, u2) => (u1.totalCounts > u2.totalCounts) ? 1 : -1);
+            retUsers.sort((u1, u2) => (u1.totalCounts > u2.totalCounts) ? -1 : 1);
 
             // Send the status 200 response
             return res.status(200).json({
