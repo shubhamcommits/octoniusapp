@@ -13,12 +13,10 @@ export class TopSocialCardComponent implements OnChanges {
   @Input() type = 'group'; // workspace or group
   @Input() filteringGroups; // For workspace type we will filter the
   @Input() period;
+  @Input() parentId; // groupId or workspaceId depending where is the widget used
 
   // Base URL
   baseUrl = environment.UTILITIES_GROUPS_UPLOADS;
-
-  public groupData: any = {};
-  public workspaceData: any = {};
 
   // Members
   public members: any = [];
@@ -46,11 +44,9 @@ export class TopSocialCardComponent implements OnChanges {
     }
 
     if (this.type === 'group') {
-      this.groupData = await this.publicFunctions.getCurrentGroupDetails();
-      this.members = await this.publicFunctions.getGroupMembersSocialStats(this.groupData?._id, this.period);
+      this.members = await this.publicFunctions.getGroupMembersSocialStats(this.parentId, this.period);
     } else {
-      this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-      this.members = await this.publicFunctions.getWorkspaceMembersSocialStats(this.workspaceData?._id, this.period, this.filteringGroups);
+      this.members = await this.publicFunctions.getWorkspaceMembersSocialStats(this.parentId, this.period, this.filteringGroups);
     }
 
     // Stops the spinner and return the value with ngOnInit

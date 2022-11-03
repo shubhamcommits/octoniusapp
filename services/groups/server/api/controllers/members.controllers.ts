@@ -151,17 +151,12 @@ export class MembersControllers {
      * @param next 
      */
     async getWorkspaceMembersSocialStats(req: Request, res: Response, next: NextFunction) {
-
+console.log(req.query);
         // Fetch the variables from request
         let groupId: any = req.query.groupId
         let numDays: any = req.query.numDays
 
         try {
-
-            numDays = +numDays;
-
-            const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');
-            const today = moment().subtract(1, 'days').endOf('day').format();
 
             // If either workspaceId is null or not provided then we throw BAD REQUEST 
             if (!groupId) {
@@ -169,6 +164,11 @@ export class MembersControllers {
                     message: 'Please provide groupId as the query parameter!'
                 })
             }
+
+            numDays = +numDays;
+
+            const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');
+            const today = moment().subtract(1, 'days').endOf('day').format();
 
             let retUsers = [];
             const users = await User.find({

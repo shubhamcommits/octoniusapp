@@ -90,7 +90,7 @@
   <div class="row">
     <div class="col-md-12 box" *ngIf="userData?.selected_widgets?.includes('TOP_SOCIAL')">
       <!-- Work Statistics Card Starts -->
-      <app-top-social-card [period]="period" [filteringGroups]="filteringGroups" [type]="'workspace'"></app-top-social-card>
+      <app-top-social-card [period]="period" [filteringGroups]="filteringGroups" [type]="'workspace'" [parentId]="workspaceData?._id"></app-top-social-card>
       <!-- Work Statistics Card Ends -->
     </div>
   </div>

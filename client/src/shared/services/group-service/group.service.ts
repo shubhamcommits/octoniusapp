@@ -105,14 +105,14 @@ export class GroupService {
   }
 
   /**
-   * Returns the workspace members with the stats for the top-social-card
-   * @param workspaceId 
+   * Returns the group members with the stats for the top-social-card
+   * @param groupId 
    * @returns 
    */
-  getWorkspaceMembersSocialStats(workspaceId: string, numDays: string) {
+  getGroupMembersSocialStats(groupId: string, numDays: string) {
     return this._http.get(this.baseURL + `/members/social-stats`, {
       params: {
-        workspaceId: workspaceId,
+        groupId: groupId,
         numDays: numDays
       }
     }).toPromise()

@@ -254,7 +254,7 @@ export class PublicFunctions {
       return new Promise(async (resolve, reject) => {
             const groupService = this.injector.get(GroupService);
             const utilityService = this.injector.get(UtilityService);
-            groupService.getWorkspaceMembersSocialStats(groupId, numDays)
+            groupService.getGroupMembersSocialStats(groupId, numDays)
                 .then((res) => {
                     resolve(res['users']);
                 })
