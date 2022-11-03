@@ -14,11 +14,12 @@
 .chat-content {
     overflow-y: scroll;
     overflow-x: hidden;
-    max-height: 580px;
-    min-height: 580px;
+    // max-height: 580px;
+    // min-height: 580px;
     bottom: 80px;
     position: absolute;
     width: 100%;
+    top:70px;
 }
 
 .chat-input {
