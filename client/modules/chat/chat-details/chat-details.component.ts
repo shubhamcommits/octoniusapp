@@ -240,7 +240,10 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, OnChanges, After
 
   private onMessageSent(newMessage: any) {
     this.chatService.sendMessage(newMessage)
-      .then(() => this.pushMessage(newMessage))
+      .then(() => {
+        this.pushMessage(newMessage);
+        this.chatData.last_message_on = moment().format();
+      })
       .catch((err) => {
         this.utilityService.errorNotification('Unable to send the message, please try again!');
       });
