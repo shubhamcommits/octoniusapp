@@ -17,11 +17,11 @@
     <app-quill-editor [editorId]="'chat-message-editor'" [toolbar]="true" [readOnly]="false"
       [chat]="true" (content)="getQuillData($event)"></app-quill-editor>
     -->
-    <input #inputField class="form-control" type="text" placeholder="Enter text..." [(ngModel)]="newMessage"
+    <input #inputField class="form-control" type="text" placeholder="Write message..." [(ngModel)]="newMessage"
       (keyup.enter)="sendMessage()" (keyup)="suggest($event)" />
     <!-- Message Content ends -->
   </div>
 
-  <i *ngIf="!newMessage" class="material-icons send-button">send</i>
-  <i *ngIf="newMessage" class="material-icons send-button" style="color:blue; cursor: pointer;" (click)="sendMessage()">send</i>
+  <i *ngIf="!newMessage" class="material-icons send-button muted" style="cursor: pointer">send</i>
+  <i *ngIf="newMessage" class="material-icons send-button" style="color:#005fd5; cursor: pointer;" (click)="sendMessage()">send</i>
 </div>

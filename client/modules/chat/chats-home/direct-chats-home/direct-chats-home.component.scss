@@ -4,8 +4,8 @@
   width: 100%;
   padding: 20px;
   background: #FFFFFF;
-  max-height: 250px;
-  min-height: 250px;
+  // max-height: 250px;
+  // min-height: 250px;
   overflow-x: auto;
   overflow-y: hidden;
 }
@@ -58,4 +58,9 @@ ul {
     list-style-type: none;
     cursor: pointer;
   }
+}
+
+.placeholder-img{
+  width: 90px;
+  height: 90px;
 }
