@@ -271,13 +271,18 @@ export class MembersControllers {
                     }).countDocuments();
 
                 user.numLikes = postLiked + storiesLiked + commentsLiked;
+
+                user.totalCounts = user.numComments + user.numComments + user.numlikes;
+
                 retUsers.push(user);
             }
+
+            retUsers.sort((u1, u2) => (u1.totalCounts > u2.totalCounts) ? 1 : -1);
 
             // Send the status 200 response
             return res.status(200).json({
                 message: `The workspace members found!`,
-                users: retUsers
+                users: await retUsers.slice(0, 5)
             })
 
         } catch (err) {

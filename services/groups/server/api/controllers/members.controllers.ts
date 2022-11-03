@@ -1,7 +1,8 @@
 import { axios, sendError } from '../../utils';
-import { User, Group, Workspace } from '../models';
+import { User, Group, Workspace, Post, Comment } from '../models';
 import { Request, Response, NextFunction } from 'express';
 import http from 'axios';
+import moment from 'moment';
 
 export class MembersControllers {
 
@@ -136,6 +137,107 @@ export class MembersControllers {
             return res.status(200).json({
                 message: `The First ${users.length} group members found!`,
                 users: users
+            })
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for fetching the list of first 10 workspace members based on the workspace and query(optional parameter)
+     * @param { params: { workspaceId }, query: { query } }req 
+     * @param res 
+     * @param next 
+     */
+    async getWorkspaceMembersSocialStats(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the variables from request
+        let groupId: any = req.query.groupId
+        let numDays: any = req.query.numDays
+
+        try {
+
+            numDays = +numDays;
+
+            const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');
+            const today = moment().subtract(1, 'days').endOf('day').format();
+
+            // If either workspaceId is null or not provided then we throw BAD REQUEST 
+            if (!groupId) {
+                return res.status(400).json({
+                    message: 'Please provide groupId as the query parameter!'
+                })
+            }
+
+            let retUsers = [];
+            const users = await User.find({
+                    $and: [
+                        { _groups: groupId },
+                        { active: true }
+                    ]
+                })
+                .sort('_id')
+                .select('first_name last_name email role profile_pic active integrations current_position')
+                .lean() || [];
+
+            const posts = await Post.find({
+                    $and: [
+                        { _group: groupId },
+                        { created_date: { $gte: comparingDate, $lt: today } }
+                    ]
+                }).select('_id').lean();
+
+            const postsIds = posts.map(post => post._id);
+
+            for (let i = 0; i< users.length; i++) {
+                const user = users[i];
+
+                user.numPosts = await Post.find({
+                        $and: [
+                            { _group: { $in: groupId } },
+                            { created_date: { $gte: comparingDate, $lt: today } },
+                            { _posted_by: user?._id }
+                        ]
+                    }).countDocuments();
+
+                user.numComments = await Comment.find({
+                        $and: [
+                            { _post: postsIds },
+                            { created_date: { $gte: comparingDate, $lt: today } },
+                            { _commented_by: user?._id }
+                        ]
+                    }).countDocuments();
+
+                const postLiked = await Post.find({
+                        $and: [
+                            { _group: groupId },
+                            { created_date: { $gte: comparingDate, $lt: today } },
+                            { _liked_by: user?._id }
+                        ]
+                    }).countDocuments();
+
+                const commentsLiked = await Post.find({
+                        $and: [
+                            { _post: { $in: postsIds }},
+                            { created_date: { $gte: comparingDate, $lt: today } },
+                            { _liked_by: user?._id }
+                        ]
+                    }).countDocuments();
+
+                user.numLikes = postLiked + commentsLiked;
+
+                user.totalCounts = user.numComments + user.numComments + user.numlikes;
+
+                retUsers.push(user);
+            }
+
+            retUsers.sort((u1, u2) => (u1.totalCounts > u2.totalCounts) ? 1 : -1);
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `The workspace members found!`,
+                users: await retUsers.slice(0, 5)
             })
 
         } catch (err) {

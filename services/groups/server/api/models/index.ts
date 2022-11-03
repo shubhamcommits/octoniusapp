@@ -7,6 +7,7 @@ import { User } from './user.model';
 import { Notification } from './notification.model';
 import { Workspace } from './workspace.model';
 import { Account } from './account.model';
+import { Comment } from './comment.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -39,5 +40,7 @@ export {
     Flow as Flow,
 
     // NOTIFICATION
-    Notification as Notification
+    Notification as Notification,
+
+    Comment as Comment
 };

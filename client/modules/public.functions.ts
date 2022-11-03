@@ -250,6 +250,22 @@ export class PublicFunctions {
         })
     }
 
+    async getGroupMembersSocialStats(groupId: string, numDays: string) {
+      return new Promise(async (resolve, reject) => {
+            const groupService = this.injector.get(GroupService);
+            const utilityService = this.injector.get(UtilityService);
+            groupService.getWorkspaceMembersSocialStats(groupId, numDays)
+                .then((res) => {
+                    resolve(res['users']);
+                })
+                .catch((err) => {
+                    console.log('Error occurred while fetching the workspace members!', err);
+                    utilityService.errorNotification($localize`:@@publicFunctions.errorOccuredWhileFetchingWorkspaceMembers:Error occurred while fetching the workspace members!, please try again!`);
+                    reject(err)
+               });
+        });
+    }
+
     async getWorkspaceMembersSocialStats(workspaceId: string, numDays: string, filteringGroups: any) {
       return new Promise(async (resolve, reject) => {
             let userData = await this.getCurrentUser();
