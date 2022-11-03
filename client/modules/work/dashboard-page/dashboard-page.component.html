@@ -87,6 +87,14 @@
     </div>
   </div>
 
+  <div class="row">
+    <div class="col-md-12 box" *ngIf="userData?.selected_widgets?.includes('TOP_SOCIAL')">
+      <!-- Work Statistics Card Starts -->
+      <app-top-social-card [period]="period" [filteringGroups]="filteringGroups" [type]="'workspace'"></app-top-social-card>
+      <!-- Work Statistics Card Ends -->
+    </div>
+  </div>
+
   <div class="row" style="justify-content: space-between;" *ngIf="userData?.selected_widgets?.includes('KPI_PERFORMANCE')">
     <div></div>
     <div class="float-right">

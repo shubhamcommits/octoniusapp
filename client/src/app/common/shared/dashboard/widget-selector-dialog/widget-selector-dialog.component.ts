@@ -55,6 +55,10 @@ export class WidgetSelectorDialogComponent implements OnInit {
       code: 'CF_TABLE',
       name: $localize`:@@widgetSelectorDialog.cf:Custom Fields Table`,
       img: 'assets/images/widgets/widget-cf-table.svg'
+    }, {
+      code: 'TOP_SOCIAL',
+      name: $localize`:@@widgetSelectorDialog.topSocialContributors:Top Social Contributors`,
+      img: 'assets/images/widgets/widget-top-social.png'
     }
   ];
 
@@ -99,6 +103,10 @@ export class WidgetSelectorDialogComponent implements OnInit {
       code: 'KPI_PERFORMANCE',
       name: $localize`:@@widgetSelectorDialog.kpiPerformance:KPI Performance`,
       img: 'assets/images/widgets/widget-kpi.png'
+    }, {
+      code: 'TOP_SOCIAL',
+      name: $localize`:@@widgetSelectorDialog.topSocialContributors:Top Social Contributors`,
+      img: 'assets/images/widgets/widget-top-social.png'
     }
   ];
 

@@ -1,7 +1,6 @@
 import { sendError, axios } from '../../utils';
-import { User, Workspace, Group, Account } from '../models';
+import { User, Workspace, Group, Account, Post, Comment, Story } from '../models';
 import { Request, Response, NextFunction } from 'express';
-import http from 'axios';
 import moment from 'moment';
 
 export class MembersControllers {
@@ -38,8 +37,6 @@ export class MembersControllers {
      * @param next 
      */
     async membersNotInGroup(req: Request, res: Response, next: NextFunction) {
-
-        // let { query: { workspaceId, groupId } } = req;
 
         // Fetch the variables from request
         let workspaceId: any = req.query.workspaceId
@@ -152,6 +149,135 @@ export class MembersControllers {
             return res.status(200).json({
                 message: `The next ${users.length} workspace members found !`,
                 users: users
+            })
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for fetching the list of first 10 workspace members based on the workspace and query(optional parameter)
+     * @param { params: { workspaceId }, query: { query } }req 
+     * @param res 
+     * @param next 
+     */
+    async getWorkspaceMembersSocialStats(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the variables from request
+        let workspaceId: any = req.query.workspaceId
+        let numDays: any = req.query.numDays
+        let filteringGroups: any = req.query.filteringGroups
+
+        try {
+
+            numDays = +numDays;
+
+            const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');
+            const today = moment().subtract(1, 'days').endOf('day').format();
+
+            let groups = [];
+            if (filteringGroups && filteringGroups != 'undefined' && filteringGroups.length > 0) {
+                groups = filteringGroups;
+            } else {
+                groups = await Group.find({ _workspace: workspaceId }).select('_id').lean();
+                groups = groups.map(group => group._id);
+            }
+
+            // If either workspaceId is null or not provided then we throw BAD REQUEST 
+            if (!workspaceId) {
+                return res.status(400).json({
+                    message: 'Please provide workspaceId as the query parameter!'
+                })
+            }
+
+            let retUsers = [];
+            const users = await User.find({
+                    _workspace: workspaceId
+                })
+                .sort('_id')
+                .select('first_name last_name email role profile_pic active integrations current_position')
+                .lean() || [];
+
+            const posts = await Post.find({
+                    $and: [
+                        { _group: { $in: groups } },
+                        // { type: 'normal' },
+                        { created_date: { $gte: comparingDate, $lt: today } }
+                    ]
+                }).select('_id').lean();
+
+            const postsIds = posts.map(post => post._id);
+
+            const stories = await Story.find({
+                    $and: [
+                        { _workspace: workspaceId },
+                        { created_date: { $gte: comparingDate, $lt: today } }
+                    ]
+                }).select('_id').lean();
+            const storiesIds = stories.map(story => story._id);
+
+            for (let i = 0; i< users.length; i++) {
+                const user = users[i];
+
+                user.numPosts = await Post.find({
+                        $and: [
+                            { _group: { $in: groups } },
+                            { created_date: { $gte: comparingDate, $lt: today } },
+                            { _posted_by: user?._id }
+                        ]
+                    }).countDocuments();
+
+                user.numComments = await Comment.find({
+                        $and: [
+                            {
+                                $or: [
+                                    { _post: { $in: postsIds }},
+                                    { _story: { $in: storiesIds }}
+                                ]
+                            },
+                            { created_date: { $gte: comparingDate, $lt: today } },
+                            { _commented_by: user?._id }
+                        ]
+                    }).countDocuments();
+
+                const postLiked = await Post.find({
+                        $and: [
+                            { _group: { $in: groups } },
+                            { created_date: { $gte: comparingDate, $lt: today } },
+                            { _liked_by: user?._id }
+                        ]
+                    }).countDocuments();
+
+                const storiesLiked = await Story.find({
+                        $and: [
+                            { _workspace: workspaceId },
+                            { created_date: { $gte: comparingDate, $lt: today } },
+                            { _liked_by: user?._id }
+                        ]
+                    }).countDocuments();
+
+                const commentsLiked = await Post.find({
+                        $and: [
+                            {
+                                $or: [
+                                    { _post: { $in: postsIds }},
+                                    { _story: { $in: storiesIds }}
+                                ]
+                            },
+                            { created_date: { $gte: comparingDate, $lt: today } },
+                            { _liked_by: user?._id }
+                        ]
+                    }).countDocuments();
+
+                user.numLikes = postLiked + storiesLiked + commentsLiked;
+                retUsers.push(user);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `The workspace members found!`,
+                users: retUsers
             })
 
         } catch (err) {

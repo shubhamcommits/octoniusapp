@@ -38,6 +38,9 @@ routes.post('/activate', members.reactivateUserInWorkplace);
 // GET - Get a list of workspace users
 routes.get('/users', members.getWorkspaceUsers);
 
+// GET - Get a list of first workspace members with their social stats
+routes.get('/social-stats', members.getWorkspaceMembersSocialStats);
+
 
 /*  ===================
  *  -- EXPORT ROUTES --

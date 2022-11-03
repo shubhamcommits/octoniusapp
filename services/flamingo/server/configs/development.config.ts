@@ -42,7 +42,7 @@ function devConfigInit() {
   process.env.GROUPS_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.GROUPS_PORT}/api`
 
   // Workspaces Microservice
-  process.env.WORKSPACES_PORT = process.env.WORKSPACES_PORT || '5000'
+  process.env.WORKSPACES_PORT = process.env.WORKSPACES_PORT || '5001'
   process.env.WORKSPACES_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.WORKSPACES_PORT}`
   process.env.WORKSPACES_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.WORKSPACES_PORT}/api`
 
@@ -52,7 +52,7 @@ function devConfigInit() {
   process.env.SEARCH_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.SEARCH_PORT}/api/search-service`
 
   // Users Microservice
-  process.env.USERS_PORT = process.env.USERS_PORT || '7000'
+  process.env.USERS_PORT = process.env.USERS_PORT || '7001'
   process.env.USERS_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.USERS_PORT}`
   process.env.USERS_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.USERS_PORT}/api`
 
