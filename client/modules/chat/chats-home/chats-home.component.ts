@@ -24,6 +24,10 @@ export class ChatsHomeComponent implements OnInit, OnDestroy {
   openChat;
 
   unreadMessages: any = [];
+  numUnreadDirectMessages = new Map<String, number>();
+  numUnreadGroupMessages = new Map<String, number>();
+
+  socket;
 
   private subSink = new SubSink();
 
@@ -34,7 +38,9 @@ export class ChatsHomeComponent implements OnInit, OnDestroy {
     private chatService: ChatService,
     private utilityService: UtilityService,
     private socketService: SocketService
-    ) {}
+    ) {
+      this.enableChatNotificationsSocket();
+    }
 
   async ngOnInit() {
     this.userData = await this.publicFunctions.getCurrentUser();
@@ -44,7 +50,15 @@ export class ChatsHomeComponent implements OnInit, OnDestroy {
       this.unreadMessages = data;
     }));
 
-    this.initUnreadChats();
+    this.subSink.add(this.socketService.numUnreadDirectMessagesData.subscribe(data => {
+      this.numUnreadDirectMessages = data;
+    }));
+
+    this.subSink.add(this.socketService.numUnreadGroupMessagesData.subscribe(data => {
+      this.numUnreadGroupMessages = data;
+    }));
+
+    this.initChats();
   }
 
   ngOnDestroy() {
@@ -60,29 +74,85 @@ export class ChatsHomeComponent implements OnInit, OnDestroy {
   }
 
   async initChats() {
-    this.initDirectChats();
-    this.initGroupChats();
+    const unreadMessages = await this.publicFunctions.getUnreadChats();
+    this.socketService.updateUnreadMessages(unreadMessages);
 
-    this.initUnreadChats();
+    await this.initDirectChats(unreadMessages);
+    await this.initGroupChats(unreadMessages);
   }
 
-  initDirectChats() {
-    this.chatService.getDirectChats().then(res => {
+  initDirectChats(unreadMessages: any) {
+    this.chatService.getDirectChats().then(async res => {
       this.directChats = res['chats'];
+      await this.mapUnreadMessagesInDirectChats(this.directChats, unreadMessages);
       this.sortDirectChats();
     }).catch(err => this.publicFunctions.sendError(err));
   }
 
-  initGroupChats() {
-    this.chatService.getGroupChats().then(res => {
+  initGroupChats(unreadMessages: any) {
+    this.chatService.getGroupChats().then(async res => {
       this.groupChats = res['chats'];
+      await this.mapUnreadMessagesInGroupChats(this.groupChats, unreadMessages);
       this.sortGroupChats();
     }).catch(err => this.publicFunctions.sendError(err));
   }
 
-  async initUnreadChats() {
-    const unreadMessages = await this.publicFunctions.getUnreadChats();
-    this.socketService.updateUnreadMessages(unreadMessages);
+  mapUnreadMessagesInDirectChats(directChats: any, unreadMessages: any) {
+
+    // MAP DIRECT CHATS
+    directChats.forEach((chat) => {
+      let unreadMessagesCount = 0;
+
+      unreadMessages.forEach(unreadMessage => {
+        if (unreadMessage?._chat && ((unreadMessage?._chat?._id || unreadMessage?._chat) == chat?._id)) {
+          unreadMessagesCount++;
+        }
+      });
+      this.numUnreadDirectMessages.set(chat?._id, unreadMessagesCount);
+    });
+
+    this.socketService.updateNumTotalUnreadDirectMessages(this.numUnreadDirectMessages);
+  }
+
+  mapUnreadMessagesInGroupChats(groupChats: any, unreadMessages: any) {
+    // MAP GROUP CHATS
+    groupChats.forEach((chat) => {
+      let unreadMessagesCount = 0;
+
+      unreadMessages.forEach(unreadMessage => {
+        if (unreadMessage?._chat && ((unreadMessage?._chat?._id || unreadMessage?._chat) == chat?._id)) {
+          unreadMessagesCount++;
+        }
+      });
+      this.numUnreadGroupMessages.set(chat?._id, unreadMessagesCount);
+    });
+
+    this.socketService.updateNumTotalUnreadGroupMessages(this.numUnreadGroupMessages);
+  }
+
+  /**
+   * This function enables the notifications for the user
+   */
+  enableChatNotificationsSocket() {
+
+    this.socket = this.socketService.serverInit();
+
+    this.socket.onAny(async (eventName, ...args: any) => {
+      if (eventName === 'newChatNotification') {
+        const chatId = args[0].chatId;
+        const directChatIndex = (this.directChats) ? this.directChats.findIndex(c => c._id == chatId) : -1;
+        const groupChatIndex = (this.groupChats) ? this.groupChats.findIndex(c => c._id == chatId) : -1;
+        if (directChatIndex < 0 || groupChatIndex < 0) {
+          this.initChats();
+        } else if (directChatIndex >= 0) {
+          const numUnread = this.numUnreadDirectMessages.get(chatId);
+          this.numUnreadDirectMessages.set(chatId, numUnread + 1);
+        } else if (groupChatIndex >= 0) {
+          const numUnread = this.numUnreadGroupMessages.get(chatId);
+          this.numUnreadGroupMessages.set(chatId, numUnread + 1);
+        }
+      }
+    });
   }
 
   async openChatDetails(chatId: any) {
@@ -107,8 +177,6 @@ export class ChatsHomeComponent implements OnInit, OnDestroy {
 
   closeChat(event: any) {
 
-    this.initUnreadChats();
-    
     let chat = event.chatData;
 
     if (chat?._id && !chat?._group) {
@@ -146,8 +214,12 @@ export class ChatsHomeComponent implements OnInit, OnDestroy {
     this.groupChats.sort((c1, c2) => (c1.last_message_on > c2.last_message_on) ? 1 : -1);
   }
   
-  deleteChat() {
-    this.initDirectChats();
+  deleteChat(chatId: string) {
+    const directChatIndex = (this.directChats) ? this.directChats.findIndex(c => c._id == chatId) : -1;
+
+    if (directChatIndex >= 0) {
+      this.directChats.splice(directChatIndex, 1);
+    }
   }
 
   objectExists(object: any) {
