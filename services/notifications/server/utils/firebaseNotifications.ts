@@ -22,7 +22,8 @@ async function sendFirebaseNotification(workspaceId: string, registrationToken: 
         var payload = {
             notification: {
                 title: messageTitle,
-                body: messageBody
+                body: messageBody,
+                sound: 'default'
             },
             // TODO: keep getting this error:
             // Error sending message: FirebaseMessagingError: Messaging payload contains an invalid value for the "data.workspaceId" property. Values must be strings
