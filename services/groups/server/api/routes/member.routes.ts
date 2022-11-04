@@ -27,6 +27,9 @@ routes.get('/', members.getGroupMembers);
 // GET - Get a list of next 5 members based on the lastUserId fetched from the first 10 workspace
 routes.get('/next', members.getNextGroupMembers);
 
+// GET - Get a list of first workspace members with their social stats
+routes.get('/social-stats', members.getWorkspaceMembersSocialStats);
+
 // GET - Get a list of members
 routes.get('/all', members.getAllGroupMembers);
 

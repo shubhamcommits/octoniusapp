@@ -105,6 +105,20 @@ export class GroupService {
   }
 
   /**
+   * Returns the group members with the stats for the top-social-card
+   * @param groupId 
+   * @returns 
+   */
+  getGroupMembersSocialStats(groupId: string, numDays: string) {
+    return this._http.get(this.baseURL + `/members/social-stats`, {
+      params: {
+        groupId: groupId,
+        numDays: numDays
+      }
+    }).toPromise()
+  }
+
+  /**
    * This function is responsible for fetching all group members
    * @param groupId
    */

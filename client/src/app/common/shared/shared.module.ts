@@ -118,6 +118,7 @@ import { SelectLanguageComponent } from './select-language/select-language.compo
 import { PostLogsComponent } from './posts/group-post-dialog/post-logs/post-logs.component';
 import { HighlightDirective } from 'src/shared/pipes/highlight.directive';
 import { DebounceClickDirective } from 'src/shared/pipes/debounce-click.directive';
+import { TopSocialCardComponent } from './dashboard/top-social-card/top-social-card.component';
 
 @NgModule({
     declarations: [
@@ -188,6 +189,7 @@ import { DebounceClickDirective } from 'src/shared/pipes/debounce-click.directiv
         SectionStatusCardComponent,
         CustomFieldStatisticsCardComponent,
         CustomFieldTableCardComponent,
+        TopSocialCardComponent,
         NewTaskComponent,
         SubtasksComponent,
         TaskActionsComponent,
@@ -289,6 +291,7 @@ import { DebounceClickDirective } from 'src/shared/pipes/debounce-click.directiv
         SectionStatusCardComponent,
         CustomFieldStatisticsCardComponent,
         CustomFieldTableCardComponent,
+        TopSocialCardComponent,
         NewTaskComponent,
         SubtasksComponent,
         TaskActionsComponent,

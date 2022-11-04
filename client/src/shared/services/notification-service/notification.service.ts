@@ -47,6 +47,8 @@ export class NotificationService {
           }
           let _notify = new Notification(title, options);
           _notify.onshow = function(e) {
+            //   let audio = new Audio(" "); // TODO Add sound url
+            //   audio.play();
               return obs.next({
                   notification: _notify,
                   event: e
@@ -75,7 +77,8 @@ export class NotificationService {
       source.forEach((item) => {
           let options = {
               body: item.alertContent,
-              icon: "../resource/images/bell-icon.png"
+              icon: "../resource/images/bell-icon.png",
+              sileng: false
           };
           let notify = self.create(item.title, options).subscribe();
       })

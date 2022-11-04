@@ -11,9 +11,9 @@
         <i class="material-icons" style="cursor: pointer">close</i>
       </a>
     </div>
-    <app-direct-chats-home [chats]="directChats" [unreadMessages]="unreadMessages" [userData]="userData" [workspaceData]="workspaceData" (chatSelectedEvent)="openChatDetails($event)" (chatDeletedEvent)="deleteChat()"></app-direct-chats-home>
+    <app-direct-chats-home [chats]="directChats" [unreadMessages]="unreadMessages" [userData]="userData" [workspaceData]="workspaceData" [numUnreadMessages]="numUnreadDirectMessages" (chatSelectedEvent)="openChatDetails($event)" (chatDeletedEvent)="deleteChat($event)"></app-direct-chats-home>
 
-    <app-group-chats-home [chats]="groupChats" [unreadMessages]="unreadMessages" [userData]="userData" [workspaceData]="workspaceData" (chatSelectedEvent)="openChatDetails($event)"></app-group-chats-home>
+    <app-group-chats-home [chats]="groupChats" [unreadMessages]="unreadMessages" [userData]="userData" [workspaceData]="workspaceData" [numUnreadMessages]="numUnreadGroupMessages" (chatSelectedEvent)="openChatDetails($event)"></app-group-chats-home>
   </div>
 
   <div *ngIf="openChat">

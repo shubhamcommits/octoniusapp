@@ -121,8 +121,6 @@ export class ChatService {
                         read_date: moment().format()
                     }
                 });
-
-            helperFunctions.sendMessagesReadNotification(userId, chatId, countReadMessages, io);
             return countReadMessages;
         } catch (err) {
             throw err;

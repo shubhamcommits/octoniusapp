@@ -84,6 +84,21 @@ export class WorkspaceService {
   }
 
   /**
+   * Returns the workspace members with the stats for the top-social-card
+   * @param workspaceId 
+   * @returns 
+   */
+  getWorkspaceMembersSocialStats(workspaceId: string, numDays: string, filteringGroups: any) {
+    return this._http.get(this.BASE_API_URL + `/members/social-stats`, {
+      params: {
+        workspaceId: workspaceId,
+        numDays: numDays,
+        filteringGroups : filteringGroups
+      }
+    }).toPromise()
+  }
+
+  /**
    * This function is responsible for fetching first 10 workspace members who are not present in a group
    * @param workspaceId
    * @param groupId

@@ -11,7 +11,7 @@ import { SubSink } from 'subsink';
   templateUrl: './chat-details.component.html',
   styleUrls: ['./chat-details.component.scss']
 })
-export class ChatDetailsComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
+export class ChatDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Input() userData;
   @Input() workspaceData;
@@ -36,6 +36,10 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, OnChanges, After
 
   limitOfMessages = 10;
 
+  numTotalUnreadMessages;
+  numUnreadDirectMessages;
+  numUnreadGroupMessages;
+
   // Subsink Object
   subSink = new SubSink();
 
@@ -50,30 +54,47 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, OnChanges, After
       private utilityService: UtilityService,
       private chatService: ChatService,
       private websocketService: SocketService
-      ) {
-
-    // this.joinChatSocket();
-    // this.subSink.add(this.enableNewMessageNotificationsSocket());
-  }
+      ) {}
 
   ngOnInit() {
     this.initChat();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    // this.initChat();
+  /**
+   * This function handles of sending the data to the user(of skills or members)
+   * Uses Debounce time and subscribe to the itemValueChanged Observable
+   */
+  ngAfterViewInit(): void {
+    this.changeDetectorRef.detectChanges();
+  }
+
+  /**
+   * Unsubscribe all the observables on destroying the component
+   */
+  ngOnDestroy() {
+    this.subSink.unsubscribe();
   }
 
   async initChat() {
-    // this.userData = this.navParams.get('userData');
     if (!this.userData) {
       this.userData = await this.publicFunctions.getCurrentUser();
     }
 
-    // this.workspaceData = this.navParams.get('workspaceData');
     if (!this.workspaceData) {
       this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     }
+
+    this.subSink.add(this.websocketService.numUnreadGroupMessagesData.subscribe(data => {
+      this.numUnreadGroupMessages = data;
+    }));
+
+    this.subSink.add(this.websocketService.numUnreadDirectMessagesData.subscribe(data => {
+      this.numUnreadDirectMessages = data;
+    }));
+
+    this.subSink.add(this.websocketService.numTotalUnreadMessagesData.subscribe(data => {
+      this.numTotalUnreadMessages = data;
+    }));
 
     if (!this.objectExists(this.chatData)) {
       this.chatData = {
@@ -97,21 +118,6 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, OnChanges, After
 
     const adminIndex = (this.chatData.members) ? this.chatData.members.findIndex(member => member?._user?._id == this.userData?._id && member?.is_admin) : -1;
     this.canEdit = adminIndex >= 0 && !this.objectExists(this.chatData?._group);
-  }
-
-  /**
-   * This function handles of sending the data to the user(of skills or members)
-   * Uses Debounce time and subscribe to the itemValueChanged Observable
-   */
-  ngAfterViewInit(): void {
-    this.changeDetectorRef.detectChanges();
-  }
-
-  /**
-   * Unsubscribe all the observables on destroying the component
-   */
-  ngOnDestroy() {
-    this.subSink.unsubscribe();
   }
 
   async loadMessages() {
@@ -221,6 +227,12 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, OnChanges, After
       .then(async (res: any) => {
         if(res && res.chat) {
           this.chatData = res.chat;
+
+          this.chatData.members.forEach(async (member, index) => {
+            if (!member?._user?._id) {
+              this.chatData.members[index]._user = await this.publicFunctions.getOtherUser(member?._user);
+            }
+          });
         }
 
         if (res && !res.newChat) {
@@ -240,7 +252,10 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, OnChanges, After
 
   private onMessageSent(newMessage: any) {
     this.chatService.sendMessage(newMessage)
-      .then(() => this.pushMessage(newMessage))
+      .then(() => {
+        this.pushMessage(newMessage);
+        this.chatData.last_message_on = moment().format();
+      })
       .catch((err) => {
         this.utilityService.errorNotification('Unable to send the message, please try again!');
       });
@@ -283,8 +298,6 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, OnChanges, After
       this.chatService.getMessages(this.chatData._id, this.limitOfMessages, this.lastMessageId, this.lastMessagesPostedOn).then(async res => {
         await this.unshiftMessages(res['messages']);
 
-        // this.infiniteScroll.complete();
-
         if (this.messages.length % this.limitOfMessages != 0) {
           this.moreMessagesToLoad = false;
         }
@@ -294,25 +307,7 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, OnChanges, After
         this.isLoading = false;
       });
     }
-
-    // this.infiniteScroll.complete();
   }
-
-  // onScroll($event) {
-
-  //   if (this.pages === 5) { return; }
-
-  //   const elem: HTMLElement = $event.srcElement;
-
-  //   if (elem.scrollTop < 1) { elem.scrollTo(0, 1); }
-
-  //   if (elem.scrollTop < 50) {
-  //     this.isLoading = true;
-  //     this.addChats(50).then(() => {
-  //       this.isLoading = false;
-  //     });
-  //   }
-  // }
 
   private joinChatSocket() {
 
@@ -330,7 +325,19 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, OnChanges, After
 
   markAsRead(chatId: string) {
     if (chatId) {
-      this.chatService.markAsRead(chatId);
+      this.chatService.markAsRead(chatId).then(res => {
+        if (this.objectExists(this.chatData?._group)) {
+          const numMessagesRead = this.numUnreadGroupMessages.get(chatId);
+          this.numUnreadGroupMessages.set(chatId, 0);
+          this.websocketService.updateNumTotalUnreadGroupMessages(this.numUnreadGroupMessages);
+          this.websocketService.updateNumTotalUnreadMessages(this.numTotalUnreadMessages - numMessagesRead);
+        } else {
+          const numMessagesRead = this.numUnreadDirectMessages.get(chatId);
+          this.numUnreadDirectMessages.set(chatId, 0);
+          this.websocketService.updateNumTotalUnreadDirectMessages(this.numUnreadDirectMessages);
+          this.websocketService.updateNumTotalUnreadMessages(this.numTotalUnreadMessages - numMessagesRead);
+        }
+      });
     }
   }
 
