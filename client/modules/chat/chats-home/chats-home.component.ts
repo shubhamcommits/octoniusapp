@@ -207,11 +207,11 @@ export class ChatsHomeComponent implements OnInit, OnDestroy {
   }
 
   sortDirectChats() {
-    this.directChats.sort((c1, c2) => (c1.last_message_on > c2.last_message_on) ? 1 : -1);
+    this.directChats.sort((c1, c2) => (moment(c1.last_message_on).isAfter(moment(c2.last_message_on))) ? -1 : 1);
   }
 
   sortGroupChats() {
-    this.groupChats.sort((c1, c2) => (c1.last_message_on > c2.last_message_on) ? 1 : -1);
+    this.groupChats.sort((c1, c2) => (moment(c1.last_message_on).isAfter(moment(c2.last_message_on))) ? -1 : 1);
   }
   
   deleteChat(chatId: string) {
