@@ -70,7 +70,7 @@ routes.put('/:postId/content', postController.editPostContent);
 routes.put('/:postId/attach-files', postFileHandler, postController.attachFiles);
 
 // This route is used to edit a post tags
-routes.put('/:postId/editTags', postFileHandler, postController.editTags);
+routes.put('/:postId/editTags', postController.editTags);
 
 // This route is used to retrieve a post
 routes.get('/:postId', postController.get);
