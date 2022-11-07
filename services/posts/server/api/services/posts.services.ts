@@ -519,7 +519,7 @@ export class PostService {
     try {
       // Parse the String to JSON Object
       postData = JSON.parse(postData);
-
+console.log(postData);
       // Create new post
       let post: any = await Post.create(postData);
       post = await Post.findOneAndUpdate({
