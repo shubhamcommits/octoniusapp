@@ -75,6 +75,91 @@ export class PostController {
      * @param res 
      * @param next 
      */
+    async editPostTitle(req: Request, res: Response, next: NextFunction) {
+
+        // Post Object From request
+        const { body: { postTitle }, params: { postId } } = req;
+        const userId = req['userId'];
+
+        // Call service function to edit
+        const updatedPost = await postService.editPostTitle(postTitle, postId, userId)
+            .catch((err) => {
+                if (err == null) {
+                    return sendErr(res, null, 'User not allowed to edit this post!', 403);
+                }
+                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
+            })
+
+        // Send Status 200 response
+        return res.status(200).json({
+            message: 'Post Edited Successfully!',
+            post: updatedPost
+        });
+    }
+
+    /**
+     * This function is responsible for editing a post
+     * @param { post } req
+     * @param res 
+     * @param next 
+     */
+    async editPostContent(req: Request, res: Response, next: NextFunction) {
+
+        // Post Object From request
+        const { body: { post }, params: { postId } } = req;
+        const userId = req['userId'];
+
+        // Call service function to edit
+        const updatedPost = await postService.editPostContent(post, postId, userId)
+            .catch((err) => {
+                if (err == null) {
+                    return sendErr(res, null, 'User not allowed to edit this post!', 403);
+                }
+                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
+            })
+
+        // Send Status 200 response
+        return res.status(200).json({
+            message: 'Post Edited Successfully!',
+            post: updatedPost
+        });
+    }
+
+    /**
+     * This function is responsible for editing a post
+     * @param { post } req
+     * @param res 
+     * @param next 
+     */
+    async attachFiles(req: Request, res: Response, next: NextFunction) {
+
+        // Post Object From request
+        const { body: { post }, params: { postId } } = req;
+        const userId = req['userId'];
+
+        // Call service function to edit
+        const updatedPost = await postService.attachFiles(post, postId, userId)
+            .catch((err) => {
+                if (err == null) {
+                    return sendErr(res, null, 'User not allowed to edit this post!', 403);
+                }
+                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
+            })
+
+        // Send Status 200 response
+        return res.status(200).json({
+            message: 'Post Edited Successfully!',
+            post: updatedPost
+        });
+    }
+
+
+    /**
+     * This function is responsible for editing a post
+     * @param { post } req
+     * @param res 
+     * @param next 
+     */
     async edit(req: Request, res: Response, next: NextFunction) {
 
         // Post Object From request
