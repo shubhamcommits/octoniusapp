@@ -561,6 +561,167 @@ export class PostService {
    * @param post
    * @param postId
    */
+  async editPostTitle(postTitle: string, postId: string, userId: string) {
+    try {
+
+      // Update the post
+      var post = await Post.findOneAndUpdate({
+          _id: postId
+        }, {
+          $set: {
+            title: postTitle
+          }
+        }, {
+          new: true
+        });
+
+        post = await Post.findOneAndUpdate({
+            _id: postId
+          }, {
+            $push: {
+              "logs": {
+                action: 'change_title',
+                action_date: moment().format(),
+                _actor: userId
+              }
+            }
+          }, {
+            new: true
+          });
+
+      // populate the assigned_to property of this document
+      post = await this.populatePostProperties(post);
+
+      // Send all the required notifications
+      this.sendNotifications(post);
+
+      // Return the post
+      return post;
+
+    } catch (err) {
+      // Return with error
+      throw (err);
+    }
+  };
+
+
+  /**
+   * This function is responsible for editing a post
+   * @param post
+   * @param postId
+   */
+  async editPostContent(post: any, postId: string, userId: string) {
+    try {
+
+      // Parse the String to JSON Object
+      post = JSON.parse(post)
+
+      // Update the post
+      var post = await Post.findOneAndUpdate({
+          _id: postId
+        }, {
+          $set: {
+            content: post.content,
+            _content_mentions: post._content_mentions
+          }
+        }, {
+          new: true
+        });
+
+        post = await Post.findOneAndUpdate({
+            _id: postId
+          }, {
+            $push: {
+              "logs": {
+                action: 'change_content',
+                action_date: moment().format(),
+                _actor: userId
+              }
+            }
+          }, {
+            new: true
+          });
+
+      // populate the assigned_to property of this document
+      post = await this.populatePostProperties(post);
+
+      // Send all the required notifications
+      this.sendNotifications(post);
+
+      // Return the post
+      return post;
+
+    } catch (err) {
+      // Return with error
+      throw (err);
+    }
+  };
+
+
+  /**
+   * This function is responsible for editing a post
+   * @param post
+   * @param postId
+   */
+  async attachFiles(post: any, postId: string, userId: string) {
+    try {
+      const files = post.files;
+
+      if (files) {
+        if (!post.files) {
+          post = await Post.findOneAndUpdate({
+              _id: postId
+            }, {
+              files: []
+            }, {
+              new: true
+            });
+        }
+
+        post = await Post.findOneAndUpdate({
+            _id: postId
+          }, {
+            $push: { "files": { $each: files }}
+          }, {
+            new: true
+          });
+      }
+
+      post = await Post.findOneAndUpdate({
+          _id: postId
+        }, {
+          $push: {
+            "logs": {
+              action: 'attach_file',
+              action_date: moment().format(),
+              _actor: userId
+            }
+          }
+        }, {
+          new: true
+        });
+
+      // populate the assigned_to property of this document
+      post = await this.populatePostProperties(post);
+
+      // Send all the required notifications
+      this.sendNotifications(post);
+
+      // Return the post
+      return post;
+
+    } catch (err) {
+      // Return with error
+      throw (err);
+    }
+  };
+
+
+  /**
+   * This function is responsible for editing a post
+   * @param post
+   * @param postId
+   */
   async editPost(post: any, postId: string, userId: string, logAction: string) {
     try {
 
@@ -1053,28 +1214,28 @@ export class PostService {
     try {
       // Update post
       var post: any = await Post.findOneAndUpdate({
-        _id: postId
-      }, {
-        $pull: { _assigned_to: assigneeId }
-      }, {
-        new: true
-      })
+          _id: postId
+        }, {
+          $pull: { _assigned_to: assigneeId }
+        }, {
+          new: true
+        });
 
       // save record of assignment
       post = await Post.findOneAndUpdate({
-        _id: postId
-      }, {
-        $push: {
-          "logs": {
-            action: 'removed_assignee',
-            action_date: moment().format(),
-            _actor: userId,
-            _assignee: assigneeId
+          _id: postId
+        }, {
+          $push: {
+            "logs": {
+              action: 'removed_assignee',
+              action_date: moment().format(),
+              _actor: userId,
+              _assignee: assigneeId
+            }
           }
-        }
-      }, {
-        new: true
-      });
+        }, {
+          new: true
+        });
 
 
       // Populate the post properties
@@ -1096,31 +1257,44 @@ export class PostService {
   async addAssignee(postId: string, assigneeId: string, userId: string) {
 
     try {
+      var post: any = await Post.findOne({
+          _id: postId
+        }).select('_assigned_to').lean();
+
+      if (!post._assigned_to) {
+        post = await Post.findOneAndUpdate({
+            _id: postId
+          }, {
+            _assigned_to: []
+          }, {
+            new: true
+          });
+      }
 
       // Get post data
-      var post: any = await Post.findOneAndUpdate({
-        _id: postId
-      }, {
-        $addToSet: { _assigned_to: assigneeId }
-      }, {
-        new: true
-      })
+      post = await Post.findOneAndUpdate({
+          _id: postId
+        }, {
+          $addToSet: { _assigned_to: assigneeId }
+        }, {
+          new: true
+        });
 
       // save record of assignment
       post = await Post.findOneAndUpdate({
-        _id: postId
-      }, {
-        $push: {
-          "logs": {
-            action: 'assigned_to',
-            action_date: moment().format(),
-            _actor: userId,
-            _assignee: assigneeId
+          _id: postId
+        }, {
+          $push: {
+            "logs": {
+              action: 'assigned_to',
+              action_date: moment().format(),
+              _actor: userId,
+              _assignee: assigneeId
+            }
           }
-        }
-      }, {
-        new: true
-      });
+        }, {
+          new: true
+        });
 
       // Populate the post properties
       post = await this.populatePostProperties(post);
