@@ -6,12 +6,12 @@
     </div>
 
     <div class="social_card">
-      <div *ngFor="let member of members" class="row" style="margin: 10px;">
+      <div *ngFor="let member of members" class="row" style="">
         <div class="col-md-6">
           <app-secured-image
               [imgURL]="member?.profile_pic"
               [service]="'user'"
-              [styleClass]="'avatar'"
+              [styleClass]="'feed-avatar'"
               style="margin-right:15px; float: left;"></app-secured-image>
 
           <div>{{ member?.first_name }} {{ member?.last_name }}</div>
