@@ -13,7 +13,7 @@ case $n in
   1) echo "You have selected npm as your package manager";;
   2) echo "You have selected yarn as your package manager";;
   *) echo "Default option 'npm' is selected";;
-esac
+esac 
 
 # Package Manager Variable
 packageManager="npm"
