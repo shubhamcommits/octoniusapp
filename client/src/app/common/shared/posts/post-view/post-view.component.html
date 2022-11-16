@@ -83,16 +83,31 @@
                     <!-- Event Post Title ends -->
 
                     <!-- Event Post Content Starts -->
-                    <app-quill-editor *ngIf="post.content" [editorId]="('editor_' + post._id) || 'editor'"
+                    <app-quill-editor *ngIf="post.content && showFullContent" [editorId]="('editor_' + post._id) || 'editor'"
                         [toolbar]="false" [readOnly]="true" [contents]="post.content"></app-quill-editor>
-                    <!-- Event Post Content Ends -->
 
+                    <div *ngIf="post.content && !showFullContent" [innerHTML]="postContent | safe: 'html'" style="text-align: left;"></div>
+
+                    <div style="text-align:center">
+                        <button *ngIf="!showFullContent" (click)="showHideFullContent()" class="btn btn-md btn-primary mt-4" i18n="@@postView.readMore">
+                            Read more...
+                        </button>
+                    </div>
+                    <!-- Event Post Content Ends -->
             </div>
         </div>
 
         <!-- Normal Post Content starts -->
-        <app-quill-editor *ngIf="post.content && post.type != 'event'" [editorId]="('editor_' + post._id) || 'editor'"
+        <app-quill-editor *ngIf="post.content && showFullContent && post.type != 'event'" [editorId]="('editor_' + post._id) || 'editor'"
             [toolbar]="false" [readOnly]="true" [contents]="post.content"></app-quill-editor>
+
+        <div *ngIf="post.content && !showFullContent" [innerHTML]="postContent | safe: 'html'" style="text-align: left;"></div>
+
+        <div style="text-align:center">
+            <button *ngIf="!showFullContent" (click)="showHideFullContent()" class="btn btn-md btn-primary mt-4" i18n="@@postView.readMore">
+                Read more...
+            </button>
+        </div>
         <!-- Normal Post Content ends -->
 
         <!-- North Star Stats starts -->

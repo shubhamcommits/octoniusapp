@@ -12731,6 +12731,17 @@
           <context context-type="linenumber">53</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="postView.readMore" datatype="html">
+        <source> Read more... </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/post-view/post-view.component.html</context>
+          <context context-type="linenumber">93,95</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/post-view/post-view.component.html</context>
+          <context context-type="linenumber">108,110</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="projectBudgetDialog.sectionBudget" datatype="html">
         <source>budget</source>
         <context-group purpose="location">
