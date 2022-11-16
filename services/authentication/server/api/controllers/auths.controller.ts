@@ -883,4 +883,18 @@ export class AuthsController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     };
+
+    /**
+     * This method will return true, since if the auth is not correct it will fail in the previous checks
+     * @param req 
+     * @param res 
+     * @param next 
+     * @returns 
+     */
+    isRightAuthToken(req: Request, res: Response, next: NextFunction) {
+        return res.status(200).json({
+                message: 'User is correctly log in.',
+                valid: true
+            });
+    }
 }
