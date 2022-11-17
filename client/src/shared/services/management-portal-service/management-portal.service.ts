@@ -198,6 +198,18 @@ export class ManagementPortalService {
   }
 
   /**
+   * This function is responsible for check if the workspace has chat module active
+   * @param workspaceId
+   */
+   isHRModuleAvailable(workspaceId: string, mgmtApiPrivateKey: string) {
+    return this._http.get(`${this.WORKSPACE_BASE_API_URL}/${workspaceId}/hr`, {
+      params: {
+        mgmtApiPrivateKey: mgmtApiPrivateKey
+      }
+    }).toPromise();
+  }
+
+  /**
    * This function is responsible for check if the workspace has excel module active
    * @param workspaceId
    */

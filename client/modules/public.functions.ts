@@ -1641,8 +1641,8 @@ export class PublicFunctions {
           });
     }
 
-      /**
-     * This function is responsible for fetching the status of the Organization module
+    /**
+     * This function is responsible for fetching the status of the Chat module
      * @returns status
      */
     async isChatModuleAvailable() {
@@ -1659,8 +1659,25 @@ export class PublicFunctions {
           });
     }
 
+    /**
+     * This function is responsible for fetching the status of the HR module
+     * @returns status
+     */
+    async isHRModuleAvailable() {
+        const workspace: any = await this.getCurrentWorkspace();
+        const managementPortalService = this.injector.get(ManagementPortalService);
+        return managementPortalService.isHRModuleAvailable(workspace?._id, workspace?.management_private_api_key).then(
+          (res) => {
+            if ( !res || !res['status'] ) {
+              return false;
+            }
+            return true;
+          }).catch((err) => {
+            return false;
+          });
+    }
 
-     /* Helper function fetching the worksapace groups
+    /* Helper function fetching the worksapace groups
      * @param workspaceId - current workspaceId
      */
     getAllGroupsList(workspaceId: string) {

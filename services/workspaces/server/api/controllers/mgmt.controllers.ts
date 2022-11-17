@@ -691,7 +691,7 @@ export class ManagementControllers {
     }
 
     /**
-     * This function is responsible for check if the workspace has organization mofule active
+     * This function is responsible for check if the workspace has chat mofule active
      * @param workspaceId
      */
     async isChatModuleAvailable(req: Request, res: Response, next: NextFunction) {
@@ -702,6 +702,33 @@ export class ManagementControllers {
             let message;
             let status;
             await managementService.isChatModuleAvailable(workspaceId, mgmtApiPrivateKey.toString())
+                .then(res => {
+                    message = res['data']['message'];
+                    status = res['data']['status'];
+                });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: message,
+                status: status
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for check if the workspace has hr mofule active
+     * @param workspaceId
+     */
+    async isHRModuleAvailable(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { workspaceId } = req.params;
+            const { mgmtApiPrivateKey } = req.query;
+
+            let message;
+            let status;
+            await managementService.isHRModuleAvailable(workspaceId, mgmtApiPrivateKey.toString())
                 .then(res => {
                     message = res['data']['message'];
                     status = res['data']['status'];
