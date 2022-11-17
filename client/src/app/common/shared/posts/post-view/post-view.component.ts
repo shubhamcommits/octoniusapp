@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Injector, OnChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
@@ -11,7 +12,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
   templateUrl: './post-view.component.html',
   styleUrls: ['./post-view.component.scss']
 })
-export class PostViewComponent implements OnInit {
+export class PostViewComponent implements OnInit, OnChanges {
 
   // Base Url for uploads
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
@@ -48,6 +49,9 @@ export class PostViewComponent implements OnInit {
 
   authToken: string;
 
+  showFullContent = false;
+  postContent = ''
+
   constructor(
     private injector: Injector,
     private flowService: FlowService,
@@ -64,6 +68,24 @@ export class PostViewComponent implements OnInit {
     });
 
     this.authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`
+  }
+
+  ngOnChanges() {
+    if (this.post.content) {
+      // Initiate the converter
+      let converter = new QuillDeltaToHtmlConverter(JSON.parse(this.post.content)['ops'], {});
+      if (converter) {
+        // Convert into html
+        this.postContent = converter.convert();
+      }
+    }
+
+    if (this.postContent.length > 250) {
+      this.postContent = this.postContent.substring(0, 250) + '...';
+      this.showFullContent = false;
+    } else {
+      this.showFullContent = true;
+    }
   }
 
   /**
@@ -113,5 +135,9 @@ export class PostViewComponent implements OnInit {
   onPostPin(pin: any) {
     this.post.pin_to_top = pin;
     this.pinEvent.emit({pin: pin, _id: this.post._id});
+  }
+
+  showHideFullContent() {
+    this.showFullContent = !this.showFullContent;
   }
 }

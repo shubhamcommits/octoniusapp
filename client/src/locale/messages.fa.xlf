@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-  <file source-language="en" datatype="plaintext" original="ng2.template" target-language="fa-IR">
+  <file source-language="en" datatype="plaintext" original="ng2.template" target-language="fa">
     <body>
       <trans-unit id="startSubscription.welcomeToYourWorkspace" datatype="html">
         <source>Welcome to your workspace!</source>
@@ -14402,6 +14402,18 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-view/post-view.component.html</context>
           <context context-type="linenumber">53</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="postView.readMore" datatype="html">
+        <source> Read more... </source>
+        <target state="translated">ادامه مطلب...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/post-view/post-view.component.html</context>
+          <context context-type="linenumber">93,95</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/post-view/post-view.component.html</context>
+          <context context-type="linenumber">108,110</context>
         </context-group>
       </trans-unit>
       <trans-unit id="projectBudgetDialog.sectionBudget" datatype="html">
