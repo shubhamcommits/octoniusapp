@@ -339,7 +339,7 @@ export class ManagementService {
     }
 
     /**
-     * This function is responsible for check if the workspace has organization module active
+     * This function is responsible for check if the workspace has chat module active
      * @param workspaceId
      */
      isChatModuleAvailable(workspaceId: string, mgmtApiPrivateKey: string) {

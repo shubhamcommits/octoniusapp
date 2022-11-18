@@ -1641,8 +1641,8 @@ export class PublicFunctions {
           });
     }
 
-      /**
-     * This function is responsible for fetching the status of the Organization module
+    /**
+     * This function is responsible for fetching the status of the Chat module
      * @returns status
      */
     async isChatModuleAvailable() {
@@ -1659,8 +1659,7 @@ export class PublicFunctions {
           });
     }
 
-
-     /* Helper function fetching the worksapace groups
+    /* Helper function fetching the worksapace groups
      * @param workspaceId - current workspaceId
      */
     getAllGroupsList(workspaceId: string) {

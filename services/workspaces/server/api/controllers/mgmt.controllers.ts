@@ -691,7 +691,7 @@ export class ManagementControllers {
     }
 
     /**
-     * This function is responsible for check if the workspace has organization mofule active
+     * This function is responsible for check if the workspace has chat mofule active
      * @param workspaceId
      */
     async isChatModuleAvailable(req: Request, res: Response, next: NextFunction) {

@@ -106,7 +106,7 @@ routes.get('/:workspaceId/filesVersions', mgmt.isFilesVersionsModuleAvailable);
 // GET - obtain if the organization module is availability in the workspace
 routes.get('/:workspaceId/organization', mgmt.isOrganizationModuleAvailable);
 
-// GET - obtain if the organization module is availability in the workspace
+// GET - obtain if the chat module is availability in the workspace
 routes.get('/:workspaceId/chat', mgmt.isChatModuleAvailable);
 
 // GET - obtain the base url of the workspace
