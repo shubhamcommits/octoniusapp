@@ -83,17 +83,21 @@ export class ChatsHomeComponent implements OnInit, OnDestroy {
 
   initDirectChats(unreadMessages: any) {
     this.chatService.getDirectChats().then(async res => {
-      this.directChats = res['chats'];
-      await this.mapUnreadMessagesInDirectChats(this.directChats, unreadMessages);
-      this.sortDirectChats();
+      if (res) {
+        this.directChats = res['chats'];
+        await this.mapUnreadMessagesInDirectChats(this.directChats, unreadMessages);
+        this.sortDirectChats();
+      }
     }).catch(err => this.publicFunctions.sendError(err));
   }
 
   initGroupChats(unreadMessages: any) {
     this.chatService.getGroupChats().then(async res => {
-      this.groupChats = res['chats'];
-      await this.mapUnreadMessagesInGroupChats(this.groupChats, unreadMessages);
-      this.sortGroupChats();
+      if (res) {
+        this.groupChats = res['chats'];
+        await this.mapUnreadMessagesInGroupChats(this.groupChats, unreadMessages);
+        this.sortGroupChats();
+      }
     }).catch(err => this.publicFunctions.sendError(err));
   }
 

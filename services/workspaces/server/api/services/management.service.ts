@@ -366,33 +366,6 @@ export class ManagementService {
     }
 
     /**
-     * This function is responsible for check if the workspace has HR module active
-     * @param workspaceId
-     */
-     isHRModuleAvailable(workspaceId: string, mgmtApiPrivateKey: string) {
-        try {
-            if (process.env.NODE_ENV == 'development') {
-                return new Promise((resolve, reject) => {
-                    resolve({
-                        data: {
-                            message: 'HR module availability is true',
-                            status: true
-                        }
-                    });
-                });
-            } else {
-                return axios.get(`${this.MANAGEMENT_BASE_API_URL}/workspace/${workspaceId}/hr`, {
-                    params: {
-                        API_KEY: mgmtApiPrivateKey
-                    }
-                });
-            }
-        } catch (err) {
-            throw (err);
-        }
-    }
-
-    /**
      * This function is responsible for check if the workspace has organization module active
      * @param workspaceId
      */
