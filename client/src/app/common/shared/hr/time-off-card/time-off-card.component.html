@@ -1,0 +1,25 @@
+<div class="card">
+	<div class="img-fluid">
+		<div class="card-title">
+			<span i18n="@@timeOffCard.timeOff">Time off</span>
+		</div>
+		
+		<div class="card-content">
+			<div *ngFor="let member of membersOff">
+				<div>
+					<app-secured-image [imgURL]="member?.profile_pic" [service]="'user'"
+						[styleClass]="'mr-3 feed-avatar'" [inlineStyle]="'cursor: default;'"></app-secured-image>
+
+					{{ member?.first_name }} {{ member?.last_name }}
+				</div>
+			</div>
+		</div>
+
+		<div class="card-footer" [routerLink]="['/dashboard', 'work', 'organization', 'hive', 'timeoff']">
+			<div>
+				<span i18n="@@timeOffCard.seeWhosOutThisWeek">See who’s out this week</span>
+				<i class="material-icons">arrow_forward</i>
+			</div>
+		</div>
+	</div>
+</div>

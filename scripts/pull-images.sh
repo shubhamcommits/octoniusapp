@@ -23,6 +23,9 @@ APPROVAL_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:approval-server
 # Auths Microservice Image Name
 AUTHS_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:auths-server
 
+# Chats Microservice Image Name
+CHATS_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:chats-server
+
 # Groups Microservice Image Name
 GROUPS_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:groups-server
 
@@ -66,6 +69,7 @@ MONGO_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:mongodb
           docker pull $MONGO_IMAGE_NAME
           docker pull $APPROVAL_IMAGE_NAME
           docker pull $AUTHS_IMAGE_NAME
+          docker pull $CHATS_IMAGE_NAME
           docker pull $GROUPS_IMAGE_NAME
           docker pull $WORKSPACES_IMAGE_NAME
           docker pull $USERS_IMAGE_NAME

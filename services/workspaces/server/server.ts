@@ -35,7 +35,7 @@ if (cluster.isMaster) {
 } else {
 
   // Define Workspace Application port
-  const port = process.env.PORT || 5000;
+  const port = process.env.PORT || 5001;
 
   // Defining the Host Name
   const host: any = process.env.HOST || '0.0.0.0';

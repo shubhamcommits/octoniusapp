@@ -1,0 +1,22 @@
+<div class="card">
+	<div class="img-fluid">
+		<div class="card-title">
+			<span i18n="@@payrollSetupCard.payrollSetup">Payroll Setup</span>
+		</div>
+
+		<div class="card-content">
+			<p i18n="@@payrollSetupCard.cardDescription">
+				Define how your employees’ payment is regulated, create and customize workplaces (these are entities to which you can assign employees).s
+			</p>
+
+			<img src="assets/images/payroll-setup.png" alt="" class="card-img-top">
+		</div>
+
+		<div class="card-footer" [routerLink]="['/dashboard', 'work', 'organization', 'hive', 'setup']">
+			<div>
+				<span i18n="@@payrollSetupCard.goToSetup">Go to setup</span>
+				<i class="material-icons">arrow_forward</i>
+			</div>
+		</div>
+	</div>
+</div>

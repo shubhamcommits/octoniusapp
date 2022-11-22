@@ -1,0 +1,78 @@
+<div class="container-fluid" style="margin-top: 30px; margin-left: 20px;">
+  <div class="row">
+    <div class="card-description">
+      <div class="img-fluid">
+        <div class="card-content">
+          <img src="assets/images/hive_setup.png" alt="" class="card-img-top">
+        
+          <p i18n="@@setup.cardDescription">
+            These are the legal entities of your company. Check that the information is correct and fill what is missing.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="card">
+      <div class="img-fluid">
+        <div class="card-title">
+          <span i18n="@@setup.createEntity">Create Entity</span>
+        </div>
+    
+        <div class="card-content">
+          <p i18n="@@setup.cardDescription">
+            If your company has multiple legal entities, you can create them here.
+          </p>
+    
+          <img src="assets/images/hive_setup.png" alt="" class="card-img-top">
+        </div>
+    
+        <div class="card-footer" (click)="openNewEntity()">
+          <div>
+            <span i18n="@@setup.createNew">Create new</span>
+            <i class="material-icons">arrow_forward</i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" *ngFor="let entity of workspaceEntities">
+      <div class="img-fluid">
+        <div class="card-title">
+          <span>{{ entity.name }}</span>
+
+          <div style="cursor: pointer;" [matMenuTriggerFor]="menu">
+            <i class="material-icons">settings</i>
+          </div>
+
+          <mat-menu #menu="matMenu">
+            <a mat-menu-item (click)="deleteEntity(entity?._id)">
+              <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
+              <span i18n="@@setup.delete">Delete</span>
+            </a>
+          </mat-menu>
+        </div>
+    
+        <div class="card-content">
+          <p i18n="@@setup.cardDescription">
+            Define how your employees’ payment is regulated.
+          </p>
+    
+          <img src="assets/images/entity_setup.png" alt="" class="card-img-top">
+        </div>
+    
+        <div class="card-footer" (click)="openEntityDetails(entity?._id)">
+          <div>
+            <span i18n="@@setup.goToSetup">Go to setup</span>
+            <i class="material-icons">arrow_forward</i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <ng-template #newEntityContent let-modal>
+  <app-new-entity [workspaceId]="workspaceData?._id"></app-new-entity>
+</ng-template> -->

@@ -11,6 +11,8 @@ import { SubSink } from 'subsink';
 })
 export class OrganizationComponent implements OnInit, AfterContentChecked {
 
+  // User data
+  public userData: any = {};
   workspaceData;
 
   searchQuery = '';
@@ -24,6 +26,8 @@ export class OrganizationComponent implements OnInit, AfterContentChecked {
   selectedCustomField;
   searchedUsers = [];
   selectedUser;
+
+  isManager: boolean = false;
 
   isLoading$;
 
@@ -49,6 +53,10 @@ export class OrganizationComponent implements OnInit, AfterContentChecked {
     this.publicFunctions.sendUpdatesToRouterState({
       state: 'work'
     });
+
+    this.userData = await this.publicFunctions.getCurrentUser();
+
+    this.isManager = await this.isManagerUser();
 
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
@@ -156,5 +164,9 @@ export class OrganizationComponent implements OnInit, AfterContentChecked {
     this.advancedFilters.cfValue = event.value;
 
     this.search();
+  }
+
+  isManagerUser() {
+    return this.userData.role == 'manager' || this.userData.role == 'admin' || this.userData.role == 'owner';
   }
 }

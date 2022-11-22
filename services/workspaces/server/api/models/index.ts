@@ -10,6 +10,7 @@ import { Comment } from './comment.model';
 import { Account } from './account.model';
 import { Lounge } from './lounge.model';
 import { Story } from './story.model';
+import { Entity } from './entity.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -51,5 +52,7 @@ export {
     Lounge as Lounge,
 
     // Story
-    Story as Story
+    Story as Story,
+
+    Entity as Entity
 };

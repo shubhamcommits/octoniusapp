@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AdminGuard } from 'src/shared/guards/admin-guard/admin.guard';
 import { OrganizationChartComponent } from './organization-chart/organization-chart.component';
 import { OrganizationComponent } from './organization/organization.component';
 import { PeopleDirectoryComponent } from './people-directory/people-directory.component';
@@ -13,6 +14,12 @@ const routes: Routes = [
   },
   {
     path: 'chart', component: OrganizationChartComponent
+  },
+  {
+    path: 'hive',
+    loadChildren: () => import('./hr/organization-hr.module')
+      .then((module) => module.OrganizationHRModule),
+    canActivate: [AdminGuard]
   }
 ];
 

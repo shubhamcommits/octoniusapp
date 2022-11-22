@@ -1,0 +1,67 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class HRService {
+
+  constructor(private _http: HttpClient) { }
+
+  baseUrl = environment.WORKSPACE_BASE_API_URL + '/hr';
+
+  currencies = [
+    { code: 'USD', name: $localize`:@@editEntityDialog.usd:US Dollar` },
+    { code: 'EUR', name: $localize`:@@editEntityDialog.eur:Euro` }
+  ]
+
+  countries = [
+    { code: 'USA', name: $localize`:@@editEntityDialog.us:United States of America` },
+    { code: 'ES', name: $localize`:@@editEntityDialog.es:Spain` }
+  ]
+
+  getEntities(workspaceId: string) {
+    return this._http.get(this.baseUrl + '/', { params: { workspaceId }}).toPromise();
+  }
+
+  getEntityDetails(entityId: string) {
+    return this._http.get(this.baseUrl + `/${entityId}`).toPromise();
+  }
+
+  /**
+   * This function is responsible for creating an entity
+   */
+  create(workspaceId: string, entityName: string) {
+    // Call the HTTP Request
+    return this._http.post(this.baseUrl + '/', { workspaceId, entityName }).toPromise();
+  }
+
+  saveEntityProperty(entityId: string, propertyToSave: any) {
+    return this._http.post(this.baseUrl +  `/${entityId}`, { propertyToSave }).toPromise();
+  }
+
+  delete(entityId: string) {
+    return this._http.delete(this.baseUrl + `/${entityId}`).toPromise();
+  }
+
+  getCurrencies() {
+    return this.currencies;
+  }
+
+  getCountries() {
+    return this.countries
+  }
+
+  createNewVariable(entityId: string, variable: any) {
+    return this._http.post(this.baseUrl + `/${entityId}/variable`, { variable }).toPromise();
+  }
+
+  editEntityVariable(entityId: string, variable: any) {
+    return this._http.post(this.baseUrl + `/${entityId}/edit-variable`, { variable }).toPromise();
+  }
+
+  deleteEntityVariable(entityId: string, variableId: string) {
+    return this._http.post(this.baseUrl + `/${entityId}/delete-variable`, { variableId }).toPromise();
+  }
+}

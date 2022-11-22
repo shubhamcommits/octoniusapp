@@ -119,9 +119,19 @@ import { PostLogsComponent } from './posts/group-post-dialog/post-logs/post-logs
 import { HighlightDirective } from 'src/shared/pipes/highlight.directive';
 import { DebounceClickDirective } from 'src/shared/pipes/debounce-click.directive';
 import { TopSocialCardComponent } from './dashboard/top-social-card/top-social-card.component';
+import { HiveReportsCardComponent } from './hr/hive-reports-card/hive-reports-card.component';
+import { PayrollSetupCardComponent } from './hr/payroll-setup-card/payroll-setup-card.component';
+import { PendingTasksCardComponent } from './hr/pending-tasks-card/pending-tasks-card.component';
+import { TimeOffCardComponent } from './hr/time-off-card/time-off-card.component';
 
 @NgModule({
     declarations: [
+        HighlightDirective,
+        DebounceClickDirective,
+        ToolTipRendererDirective,
+        FilterPipe,
+        SafePipe,
+        TruncateTextPipe,
         AttachFilesComponent,
         AttachCloudFilesComponent,
         CropImageComponent,
@@ -141,9 +151,6 @@ import { TopSocialCardComponent } from './dashboard/top-social-card/top-social-c
         CommentOnPostComponent,
         FollowPostComponent,
         PostUtilsComponent,
-        // Safe Pipe
-        SafePipe,
-        TruncateTextPipe,
         SelectAssigneeComponent,
         TaskStatusComponent,
         ChangeColumnComponent,
@@ -195,9 +202,6 @@ import { TopSocialCardComponent } from './dashboard/top-social-card/top-social-c
         TaskActionsComponent,
         ShuttleTaskComponent,
         MultipleAssignmentsComponent,
-        HighlightDirective,
-        DebounceClickDirective,
-        FilterPipe,
         AssigneeAvatarComponent,
         CommentListComponent,
         MemberListMenuComponent,
@@ -207,7 +211,6 @@ import { TopSocialCardComponent } from './dashboard/top-social-card/top-social-c
         UserUpdateUserPersonalInformationDialogComponent,
         ProjectBudgetDialogComponent,
         CustomToolTipComponent,
-        ToolTipRendererDirective,
         WidgetSelectorDialogComponent,
         CustomFieldsTableSettingsDialogComponent,
         ColorPickerDialogComponent,
@@ -217,7 +220,11 @@ import { TopSocialCardComponent } from './dashboard/top-social-card/top-social-c
         ApprovalsHistoryComponent,
         PostDatesComponent,
         FileVersionsComponent,
-        PostLogsComponent
+        PostLogsComponent,
+        HiveReportsCardComponent,
+        PayrollSetupCardComponent,
+        PendingTasksCardComponent,
+        TimeOffCardComponent
     ],
     imports: [
         CommonModule,
@@ -229,12 +236,15 @@ import { TopSocialCardComponent } from './dashboard/top-social-card/top-social-c
         ChartsModule,
         ResizableModule,
         MatMenuModule,
-        // Angular Material Module
         MaterialModule,
-        // Chart Module
         ChartModule
     ],
     exports: [
+        HighlightDirective,
+        DebounceClickDirective,
+        TruncateTextPipe,
+        SafePipe,
+        FilterPipe,
         AttachFilesComponent,
         AttachCloudFilesComponent,
         CropImageComponent,
@@ -273,8 +283,6 @@ import { TopSocialCardComponent } from './dashboard/top-social-card/top-social-c
         MatSidenavModule,
         InlineInputComponent,
         GroupPostDialogComponent,
-        TruncateTextPipe,
-        SafePipe,
         ChartsModule,
         WorkStatisticsCardComponent,
         WorkloadCardComponent,
@@ -311,9 +319,7 @@ import { TopSocialCardComponent } from './dashboard/top-social-card/top-social-c
         CustomFieldsTableSettingsDialogComponent,
         ColorPickerDialogComponent,
         FileDetailsDialogComponent,
-        // Sheet Component
         SheetComponent,
-        // Material Module
         MaterialModule,
         CommentSectionComponent,
         ApprovalActionsComponent,
@@ -321,9 +327,10 @@ import { TopSocialCardComponent } from './dashboard/top-social-card/top-social-c
         PostDatesComponent,
         FileVersionsComponent,
         PostLogsComponent,
-        HighlightDirective,
-        DebounceClickDirective,
-        FilterPipe
+        HiveReportsCardComponent,
+        PayrollSetupCardComponent,
+        PendingTasksCardComponent,
+        TimeOffCardComponent
     ],
     providers: [
         { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
