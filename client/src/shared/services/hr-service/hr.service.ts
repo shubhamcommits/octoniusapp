@@ -64,4 +64,16 @@ export class HRService {
   deleteEntityVariable(entityId: string, variableId: string) {
     return this._http.post(this.baseUrl + `/${entityId}/delete-variable`, { variableId }).toPromise();
   }
+
+  createNewCF(entityId: string, cf: any) {
+    return this._http.post(this.baseUrl + `/${entityId}/cf`, { cf }).toPromise();
+  }
+
+  editEntityCF(entityId: string, cf: any) {
+    return this._http.post(this.baseUrl + `/${entityId}/edit-cf`, { cf }).toPromise();
+  }
+
+  deleteEntityCF(entityId: string, cfId: string) {
+    return this._http.post(this.baseUrl + `/${entityId}/delete-cf`, { cfId }).toPromise();
+  }
 }

@@ -58,6 +58,22 @@ const EntitySchema = new Schema({
             required: false
         },
     }],
+    payroll_custom_fields: [{
+        name: {
+            type: String,
+            required: true
+        },
+        type: {
+            type: String,
+            default: false,
+            enum: ['Select', 'Number', 'Text', 'Date']
+        },
+        values: {
+            type: [String],
+            required: true,
+            default: []
+        }
+    }],
     _workspace: {
         type: Schema.Types.ObjectId,
         required:true,

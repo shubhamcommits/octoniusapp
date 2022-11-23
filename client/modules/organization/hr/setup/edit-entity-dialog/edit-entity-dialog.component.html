@@ -114,6 +114,107 @@
             <div class="row">
                 <div class="col">
                     <div class="col-description">
+                        <h4 i18n="@@editEntityDialog.payrollCF">Custom Fields</h4>
+                        <p class="block-description" i18n="@@editEntityDialog.payrollCFDescription">
+                            Set up custom profile fields that will appear in the employee profile. You will be able to track more information from your employees.
+                        </p>
+                    </div>
+                    <hr />
+                </div>
+            
+                <div class="col">
+                    <div class="form-group" *ngFor="let cf of entityData?.payroll_custom_fields">
+                        <div class="card-title">
+                            <span>{{ cf.name }}</span>
+            
+                            <div style="cursor: pointer;" [matMenuTriggerFor]="menu">
+                                <i class="material-icons">settings</i>
+                            </div>
+            
+                            <mat-menu #menu="matMenu">
+                                <a mat-menu-item (click)="deleteEntityCF(cf?._id)">
+                                    <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
+                                    <span i18n="@@setup.delete">Delete</span>
+                                </a>
+                            </mat-menu>
+                        </div>
+            
+                        <label i18n="@@editEntityDialog.cfName">Custom Fields name</label>
+                        <input type="text" class="form-control" [(ngModel)]="cf.name">
+            
+                        <label i18n="@@editEntityDialog.type" style="float: left; width: 100%;">Type</label>
+                        <mat-form-field class="full-width" appearance="outline" style="width: 100%;">
+                            <!-- <mat-label i18n="@@editEntityDialog.type">Type</mat-label> -->
+                            <mat-select [(value)]="cf.type" (selectionChange)="changeCFType($event, cf)">
+                                <mat-option [value]="type" *ngFor="let type of cfTypes">{{ type }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+            
+                        <label *ngIf="cf.type == 'Select'" i18n="@@editEntityDialog.values">Values</label>
+                        <div class="values" *ngIf="cf.type == 'Select'">
+                            <span class="badge" *ngFor="let value of cf.values">
+                                {{ value }}
+                                <i class="material-icons" (click)="removeCFValue(cf, value)" style="cursor: pointer;">highlight_off</i>
+                            </span>
+
+                            <div class="newValue">
+                                <input type="text" autocomplete="off" placeholder="Add value and hit ENTER..." class="newValueInput" (keyup.enter)="addCFValue(cf, $event)" />
+                            </div>
+                        </div>
+            
+                        <div class="card-footer">
+                            <div></div>
+                            <button (click)="editEntityCF(cf)" class="btn save-button"
+                                i18n="@@newEntity.save">Save</button>
+                        </div>
+                    </div>
+            
+                    <div class="form-group" *ngIf="createNewCF">
+                        <label i18n="@@editEntityDialog.cfName">Custom Field name</label>
+                        <input type="text" class="form-control" [(ngModel)]="newCF.name">
+            
+                        <label i18n="@@editEntityDialog.type" style="float: left; width: 100%;">Type</label>
+                        <mat-form-field class="full-width" appearance="outline" style="width: 100%;">
+                            <!-- <mat-label i18n="@@editEntityDialog.type">Type</mat-label> -->
+                            <mat-select [(value)]="newCF.type" (selectionChange)="changeCFType($event, newCF)">
+                                <mat-option [value]="type" *ngFor="let type of cfTypes">{{ type }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+            
+                        <label *ngIf="newCF.type == 'Select'" i18n="@@editEntityDialog.values">Values</label>
+                        <div class="values" *ngIf="newCF.type == 'Select'">
+                            <span class="badge" *ngFor="let value of newCF.values">
+                                {{ value }}
+                                <i class="material-icons" (click)="removeCFValue(newCF, value)" style="cursor: pointer;">highlight_off</i>
+                            </span>
+                        
+                            <div class="newValue">
+                                <input type="text" autocomplete="off" placeholder="Add value and hit ENTER..." class="newValueInput" (keyup.enter)="addCFValue(newCF, $event)" />
+                            </div>
+                        </div>
+            
+                        <div class="card-footer">
+                            <button (click)="cancelNewCF()" class="btn cancel-button" i18n="@@newEntity.cancel">
+                                <i class="material-icons">close</i>
+                                Cancel
+                            </button>
+            
+                            <button (click)="saveNewCF()" class="btn save-button" i18n="@@newEntity.create">
+                                <i class="material-icons">add</i>
+                                Create
+                            </button>
+                        </div>
+                    </div>
+            
+                    <button *ngIf="!createNewCF" (click)="showNewCFForm()" class="btn btn-primary" i18n="@@newEntity.createNewCF">
+                        Create new Custom Field
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="col-description">
                         <h4 i18n="@@editEntityDialog.payrollVariables">Payroll variables</h4>
                         <p class="block-description" i18n="@@editEntityDialog.payrollVariablesDescription">
                             These are variables that will help calculate reports, like taxes, daily compsensation etc.
@@ -123,7 +224,7 @@
                 </div>
 
                 <div class="col">
-                    <div class="form-group" *ngFor="let variable of entityData?.variables">
+                    <div class="form-group" *ngFor="let variable of entityData?.payroll_variables">
                         <div class="card-title">
                             <span>{{ variable.name }}</span>
                         
@@ -187,7 +288,7 @@
                         </div>
                     </div>
 
-                    <button (click)="showNewVariableForm()" class="btn btn-primary" i18n="@@newEntity.createNewVariable">Create new variable</button>
+                    <button *ngIf="!createNewVariable" (click)="showNewVariableForm()" class="btn btn-primary" i18n="@@newEntity.createNewVariable">Create new variable</button>
                 </div>
             </div>
         </mat-tab>

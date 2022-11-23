@@ -43,6 +43,15 @@ routes.post('/:entityId/edit-variable', controller.editEntityVariable);
 // POST - Deletes an entity variable
 routes.post('/:entityId/delete-variable', controller.deleteEntityVariable);
 
+// POST - Creates a new entity custom field
+routes.post('/:entityId/cf', controller.createEntityCF);
+
+// POST - Edits an entity custom field
+routes.post('/:entityId/edit-cf', controller.editEntityCF);
+
+// POST - Deletes an entity custom field
+routes.post('/:entityId/delete-cf', controller.deleteEntityCF);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

@@ -165,7 +165,7 @@ export class HRControllers {
     
             // Send the status 200 response 
             return res.status(200).json({
-                message: 'Entity found.',
+                message: 'Payroll Variables created.',
                 entity: entity
             });
         } catch (err) {
@@ -197,7 +197,7 @@ export class HRControllers {
 
             // Send the status 200 response 
             return res.status(200).json({
-                message: 'Entity found.',
+                message: 'Payroll Variables edited.',
                 entity: entity
             });
         } catch (err) {
@@ -226,7 +226,96 @@ export class HRControllers {
 
             // Send the status 200 response 
             return res.status(200).json({
-                message: 'Entity found.',
+                message: 'Payroll Variables deleted.',
+                entity: entity
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async createEntityCF(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { entityId }, body: { cf } } = req;
+
+            if (!entityId || !cf) {
+                return sendError(res, new Error('Please provide the entityId property!'), 'Please provide the entityId property!', 500);
+            }
+
+            const entity = await Entity.findByIdAndUpdate({
+                    _id: entityId
+                }, {
+                    $addToSet: {
+                        payroll_custom_fields: cf
+                    }
+                })
+                .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+                .lean();
+    
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'Custom Fields created.',
+                entity: entity
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async editEntityCF(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { entityId }, body: { cf } } = req;
+
+            if (!entityId || !cf) {
+                return sendError(res, new Error('Please provide the entityId property!'), 'Please provide the entityId property!', 500);
+            }
+
+            const entity = await Entity.findByIdAndUpdate({
+                    _id: entityId
+                }, {
+                    $set: {
+                        'payroll_custom_fields.$[cf]': cf
+                    }
+                },
+                {
+                    arrayFilters: [{ "cf._id": cf?._id }],
+                    new: true
+                })
+                .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+                .lean();
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'Custom Fields edited.',
+                entity: entity
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async deleteEntityCF(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { entityId }, body: { cfId } } = req;
+
+            if (!entityId || !cfId) {
+                return sendError(res, new Error('Please provide the entityId property!'), 'Please provide the entityId property!', 500);
+            }
+
+            const entity = await Entity.findByIdAndUpdate({
+                    _id: entityId
+                }, {
+                    $pull: { payroll_custom_fields: { _id: cfId }}
+                },
+                {
+                    new: true
+                })
+                .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+                .lean();
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'Custom Fields delted.',
                 entity: entity
             });
         } catch (err) {
