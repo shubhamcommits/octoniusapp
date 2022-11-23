@@ -125,11 +125,11 @@ export class EditEntityDialogComponent implements OnInit {
   saveNewVariable() {
     this.utilityService.asyncNotification($localize`:@@editEntityDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the entity...`, new Promise((resolve, reject) => {
        this.hrService.createNewVariable(this.entityData?._id, this.newVariable).then(res => {
-          if (!this.entityData.variables) {
-            this.entityData.variables = [];
+          if (!this.entityData.payroll_variables) {
+            this.entityData.payroll_variables = [];
           }
 
-          this.entityData.variables.push(this.newVariable);
+          this.entityData.payroll_variables.push(this.newVariable);
           this.cancelNewVariable();
 
           // Resolve with success
@@ -146,9 +146,9 @@ export class EditEntityDialogComponent implements OnInit {
   editEntityVariable(variable: any) {
     this.utilityService.asyncNotification($localize`:@@editEntityDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the entity...`, new Promise((resolve, reject) => {
       this.hrService.editEntityVariable(this.entityData?._id, variable).then(res => {
-        const index = (this.entityData.variables) ? this.entityData.variables.findIndex(v => v._id == variable._id) : -1;
+        const index = (this.entityData.payroll_variables) ? this.entityData.payroll_variables.findIndex(v => v._id == variable._id) : -1;
         if (index >= 0) {
-          this.entityData.variables[index] = variable;
+          this.entityData.payroll_variables[index] = variable;
         }
       
         
@@ -178,9 +178,9 @@ export class EditEntityDialogComponent implements OnInit {
         if (res.value) {
           this.utilityService.asyncNotification($localize`:@@setup.pleaseWaitDeleting:Please wait we are deleting the entity...`, new Promise((resolve, reject) => {
             this.hrService.deleteEntityVariable(this.entityData?._id, variableId).then(res => {
-              const index = (this.entityData.variables) ? this.entityData.variables.findIndex(v => v._id == variableId) : -1;
+              const index = (this.entityData.payroll_variables) ? this.entityData.payroll_variables.findIndex(v => v._id == variableId) : -1;
               if (index >= 0) {
-                this.entityData.variables.splice(index, 1);
+                this.entityData.payroll_variables.splice(index, 1);
               }
 
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@setup.deleted:Entity deleted!`));

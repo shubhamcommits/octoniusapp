@@ -44,7 +44,7 @@ const EntitySchema = new Schema({
         type: String,
         required: false
     },
-    variables: [{
+    payroll_variables: [{
         name: {
             type: String,
             required: false

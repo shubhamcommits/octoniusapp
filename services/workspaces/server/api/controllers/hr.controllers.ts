@@ -157,7 +157,7 @@ export class HRControllers {
                     _id: entityId
                 }, {
                     $addToSet: {
-                        variables: variable
+                        payroll_variables: variable
                     }
                 })
                 .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
@@ -185,7 +185,7 @@ export class HRControllers {
                     _id: entityId
                 }, {
                     $set: {
-                        'variables.$[variable]': variable
+                        'payroll_variables.$[variable]': variable
                     }
                 },
                 {
@@ -216,7 +216,7 @@ export class HRControllers {
             const entity = await Entity.findByIdAndUpdate({
                     _id: entityId
                 }, {
-                    $pull: { variables: { _id: variableId }}
+                    $pull: { payroll_variables: { _id: variableId }}
                 },
                 {
                     new: true
