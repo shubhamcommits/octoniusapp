@@ -83,7 +83,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         else if (this.routerState === 'work' || this.routerState === 'lounge'
             || this.routerState === 'people-directory' || this.routerState === 'people-directory-chart'
-            || this.routerState === 'hive-hr') {
+            || this.routerState === 'hive-hr' || this.routerState == 'hive-hr-setup'
+            || this.routerState == 'hive-hr-timeoff' || this.routerState == 'hive-hr-reports') {
           this.nextWorkNavbar();
         }
         else if (this.routerState === 'user-account') {

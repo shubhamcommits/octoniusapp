@@ -46,6 +46,7 @@ export class SetupComponent implements OnInit, OnDestroy {
 
     this.hrService.getEntities(this.workspaceData?._id).then(res => {
       this.workspaceEntities = res['entities'];
+      this.changeDetection.detectChanges();
     });
   }
 
