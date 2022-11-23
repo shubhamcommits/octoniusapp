@@ -123,6 +123,40 @@
                 </div>
             
                 <div class="col">
+                    <ul>
+                        <li class="titles">
+                            <div class="name title"><span i18n="@@setup.name">Name</span></div>
+                            <div class="type title"><span i18n="@@setup.type">Type</span></div>
+                            <div class="values title" i18n="@@setup.values">Values</div>
+                            <div class="actions title"></div>
+                        </li>
+
+                        <li *ngFor="let cf of entityData?.payroll_custom_fields">
+                            <div class="name"><span>{{ cf.name }}</span></div>
+                            <div class="type"><span>{{ cf.type }}</span></div>
+                            <div class="values">
+                                <span class="badge" *ngFor="let value of cf.values">{{ value }}</span>
+                            </div>
+                            <div class="actions">
+                                <div style="cursor: pointer;" [matMenuTriggerFor]="menu">
+                                    <i class="material-icons">settings</i>
+                                </div>
+                            
+                                <mat-menu #menu="matMenu">
+                                    <a mat-menu-item (click)="editEntityCF(cf)">
+                                        <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">edit</i>
+                                        <span i18n="@@setup.edit">Edit</span>
+                                    </a>
+
+                                    <a mat-menu-item (click)="deleteEntityCF(cf?._id)">
+                                        <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
+                                        <span i18n="@@setup.delete">Delete</span>
+                                    </a>
+                                </mat-menu>
+                            </div>
+                        </li>
+                    </ul>
+                    <!--
                     <div class="form-group" *ngFor="let cf of entityData?.payroll_custom_fields">
                         <div class="card-title">
                             <span>{{ cf.name }}</span>
@@ -144,7 +178,6 @@
             
                         <label i18n="@@editEntityDialog.type" style="float: left; width: 100%;">Type</label>
                         <mat-form-field class="full-width" appearance="outline" style="width: 100%;">
-                            <!-- <mat-label i18n="@@editEntityDialog.type">Type</mat-label> -->
                             <mat-select [(value)]="cf.type" (selectionChange)="changeCFType($event, cf)">
                                 <mat-option [value]="type" *ngFor="let type of cfTypes">{{ type }}</mat-option>
                             </mat-select>
@@ -168,7 +201,8 @@
                                 i18n="@@newEntity.save">Save</button>
                         </div>
                     </div>
-            
+                    -->
+
                     <div class="form-group" *ngIf="createNewCF">
                         <label i18n="@@editEntityDialog.cfName">Custom Field name</label>
                         <input type="text" class="form-control" [(ngModel)]="newCF.name">
@@ -194,14 +228,17 @@
                         </div>
             
                         <div class="card-footer">
-                            <button (click)="cancelNewCF()" class="btn cancel-button" i18n="@@newEntity.cancel">
+                            <button (click)="cancelCF()" class="btn cancel-button">
                                 <i class="material-icons">close</i>
-                                Cancel
+                                <span i18n="@@newEntity.cancel">Cancel</span>
                             </button>
-            
-                            <button (click)="saveNewCF()" class="btn save-button" i18n="@@newEntity.create">
+
+                            <button *ngIf="!newCF?._id || newCF?._id == ''" (click)="saveCF()" class="btn save-button">
                                 <i class="material-icons">add</i>
-                                Create
+                                <span i18n="@@newEntity.create">Create</span>
+                            </button>
+                            <button *ngIf="newCF?._id && newCF?._id != ''" (click)="saveCF()" class="btn save-button">
+                                <span i18n="@@newEntity.save">Save</span>
                             </button>
                         </div>
                     </div>
@@ -224,6 +261,38 @@
                 </div>
 
                 <div class="col">
+                    <ul>
+                        <li class="titles">
+                            <div class="name title"><span i18n="@@setup.name">Name</span></div>
+                            <div class="type title"><span i18n="@@setup.type">Type</span></div>
+                            <div class="values title" i18n="@@setup.value">Value</div>
+                            <div class="actions title"></div>
+                        </li>
+                    
+                        <li *ngFor="let variable of entityData?.payroll_variables">
+                            <div class="name"><span>{{ variable.name }}</span></div>
+                            <div class="type"><span>{{ variable.type }}</span></div>
+                            <div class="values"><span>{{ variable.value }}</span></div>
+                            <div class="actions">
+                                <div style="cursor: pointer;" [matMenuTriggerFor]="menu">
+                                    <i class="material-icons">settings</i>
+                                </div>
+                    
+                                <mat-menu #menu="matMenu">
+                                    <a mat-menu-item (click)="editEntityVariable(variable)">
+                                        <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">edit</i>
+                                        <span i18n="@@setup.edit">Edit</span>
+                                    </a>
+                    
+                                    <a mat-menu-item (click)="deleteEntityVariable(variable?._id)">
+                                        <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
+                                        <span i18n="@@setup.delete">Delete</span>
+                                    </a>
+                                </mat-menu>
+                            </div>
+                        </li>
+                    </ul>
+                    <!--
                     <div class="form-group" *ngFor="let variable of entityData?.payroll_variables">
                         <div class="card-title">
                             <span>{{ variable.name }}</span>
@@ -245,7 +314,6 @@
 
                         <label i18n="@@editEntityDialog.type" style="float: left; width: 100%;">Type</label>
                         <mat-form-field class="full-width" appearance="outline" style="width: 100%;">
-                            <!-- <mat-label i18n="@@editEntityDialog.type">Type</mat-label> -->
                             <mat-select [(value)]="variable.type">
                                 <mat-option [value]="type" *ngFor="let type of variableTypes">{{ type }}</mat-option>
                             </mat-select>
@@ -259,7 +327,7 @@
                             <button (click)="editEntityVariable(variable)" class="btn save-button" i18n="@@newEntity.save">Save</button>
                         </div>
                     </div>
-
+                    -->
                     <div class="form-group" *ngIf="createNewVariable">
                         <label i18n="@@editEntityDialog.variableName">Variable name</label>
                         <input type="text" class="form-control" [(ngModel)]="newVariable.name">
@@ -276,14 +344,17 @@
                         <input type="text" class="form-control" [(ngModel)]="newVariable.value">
                     
                         <div class="card-footer">
-                            <button (click)="cancelNewVariable()" class="btn cancel-button" i18n="@@newEntity.cancel">
+                            <button (click)="cancelVariable()" class="btn cancel-button">
                                 <i class="material-icons">close</i>
-                                Cancel
+                                <span i18n="@@newEntity.cancel">Cancel</span>
                             </button>
 
-                            <button (click)="saveNewVariable()" class="btn save-button" i18n="@@newEntity.create">
+                            <button *ngIf="!newVariable?._id || newVariable?._id == ''" (click)="saveVariable()" class="btn save-button">
                                 <i class="material-icons">add</i>
-                                Create
+                                <span i18n="@@newEntity.create">Create</span>
+                            </button>
+                            <button *ngIf="newVariable?._id && newVariable?._id != ''" (click)="saveVariable()" class="btn save-button">
+                                <span i18n="@@newEntity.save">Save</span>
                             </button>
                         </div>
                     </div>

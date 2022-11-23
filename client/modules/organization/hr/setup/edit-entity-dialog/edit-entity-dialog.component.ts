@@ -25,20 +25,22 @@ export class EditEntityDialogComponent implements OnInit {
   currencies = [];
   countries = [];
 
-  variableTypes = ['Number', 'Percentage'];
-  createNewVariable = false;
-  newVariable = {
-    name: '',
-    type: '',
-    value: 0
-  }
-
   cfTypes = ['Select', 'Number', 'Text', 'Date'];
   createNewCF = false;
   newCF = {
+    _id: '',
     name: '',
     type: '',
     values: []
+  }
+
+  variableTypes = ['Number', 'Percentage'];
+  createNewVariable = false;
+  newVariable = {
+    _id: '',
+    name: '',
+    type: '',
+    value: 0
   }
 
   constructor(
@@ -125,80 +127,6 @@ export class EditEntityDialogComponent implements OnInit {
     }));
   }
 
-  showNewVariableForm() {
-    this.createNewVariable = !this.createNewVariable;
-  }
-
-  saveNewVariable() {
-    this.utilityService.asyncNotification($localize`:@@editEntityDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the entity...`, new Promise((resolve, reject) => {
-       this.hrService.createNewVariable(this.entityData?._id, this.newVariable).then(res => {
-          if (!this.entityData.payroll_variables) {
-            this.entityData.payroll_variables = [];
-          }
-
-          this.entityData.payroll_variables.push(this.newVariable);
-          this.cancelNewVariable();
-
-          // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@editEntityDialog.entityUpdated:Entity updated!`));
-        })
-        .catch(() => {
-          this.cancelNewVariable();
-
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@editEntityDialog.unableToUpdateEntity:Unable to update the entity, please try again!`));
-        });
-    }));
-  }
-
-  editEntityVariable(variable: any) {
-    this.utilityService.asyncNotification($localize`:@@editEntityDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the entity...`, new Promise((resolve, reject) => {
-      this.hrService.editEntityVariable(this.entityData?._id, variable).then(res => {
-        const index = (this.entityData.payroll_variables) ? this.entityData.payroll_variables.findIndex(v => v._id == variable._id) : -1;
-        if (index >= 0) {
-          this.entityData.payroll_variables[index] = variable;
-        }
-      
-        
-        // Resolve with success
-        resolve(this.utilityService.resolveAsyncPromise($localize`:@@editEntityDialog.entityUpdated:Entity updated!`));
-      })
-      .catch(() => {
-        this.cancelNewVariable();
-
-        reject(this.utilityService.rejectAsyncPromise($localize`:@@editEntityDialog.unableToUpdateEntity:Unable to update the entity, please try again!`));
-      });
-    }));
-  }
-
-  cancelNewVariable() {
-    this.newVariable = {
-      name: '',
-      type: '',
-      value: 0
-    }
-    this.createNewVariable = !this.createNewVariable;
-  }
-
-  deleteEntityVariable(variableId: string) {
-    this.utilityService.getConfirmDialogAlert($localize`:@@setup.areYouSure:Are you sure?`, $localize`:@@setup.completelyRemoved:By doing this, the entity be completely removed!`)
-      .then((res) => {
-        if (res.value) {
-          this.utilityService.asyncNotification($localize`:@@setup.pleaseWaitDeleting:Please wait we are deleting the entity...`, new Promise((resolve, reject) => {
-            this.hrService.deleteEntityVariable(this.entityData?._id, variableId).then(res => {
-              const index = (this.entityData.payroll_variables) ? this.entityData.payroll_variables.findIndex(v => v._id == variableId) : -1;
-              if (index >= 0) {
-                this.entityData.payroll_variables.splice(index, 1);
-              }
-
-              resolve(this.utilityService.resolveAsyncPromise($localize`:@@setup.deleted:Entity deleted!`));
-            }).catch((err) => {
-              reject(this.utilityService.rejectAsyncPromise($localize`:@@setup.unableDelete:Unable to delete the entity, please try again!`));
-            });
-          }));
-        }
-      });
-  }
-
   showNewCFForm() {
     this.createNewCF = !this.createNewCF;
   }
@@ -207,48 +135,59 @@ export class EditEntityDialogComponent implements OnInit {
     cf.values = [];
   }
 
-  saveNewCF() {
+  saveCF() {
     this.utilityService.asyncNotification($localize`:@@editEntityDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the entity...`, new Promise((resolve, reject) => {
-       this.hrService.createNewCF(this.entityData?._id, this.newCF).then(res => {
-          if (!this.entityData.payroll_custom_fields) {
-            this.entityData.payroll_custom_fields = [];
+      if (this.newCF?._id && this.newCF?._id != '') {
+        this.hrService.editEntityCF(this.entityData?._id, this.newCF).then(res => {
+          const index = (this.entityData.payroll_custom_fields) ? this.entityData.payroll_custom_fields.findIndex(cfTmp => cfTmp._id == this.newCF._id) : -1;
+          if (index >= 0) {
+            this.entityData.payroll_custom_fields[index] = this.newCF;
           }
 
-          this.entityData.payroll_custom_fields.push(this.newCF);
-          this.cancelNewCF();
+          this.cancelCF();
 
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@editEntityDialog.entityUpdated:Entity updated!`));
         })
         .catch(() => {
-          this.cancelNewCF();
+          this.cancelCF();
 
           reject(this.utilityService.rejectAsyncPromise($localize`:@@editEntityDialog.unableToUpdateEntity:Unable to update the entity, please try again!`));
         });
+      } else {
+        this.hrService.createNewCF(this.entityData?._id, this.newCF).then(res => {
+          // if (!this.entityData.payroll_custom_fields) {
+          //   this.entityData.payroll_custom_fields = [];
+          // }
+
+          // this.entityData.payroll_custom_fields.push(this.newCF);
+          this.entityData = res['entity'];
+          this.cancelCF();
+
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@editEntityDialog.entityUpdated:Entity updated!`));
+        })
+        .catch(() => {
+          this.cancelCF();
+
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@editEntityDialog.unableToUpdateEntity:Unable to update the entity, please try again!`));
+        });
+      }
     }));
   }
 
   editEntityCF(cf: any) {
-    this.utilityService.asyncNotification($localize`:@@editEntityDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the entity...`, new Promise((resolve, reject) => {
-      this.hrService.editEntityCF(this.entityData?._id, cf).then(res => {
-        const index = (this.entityData.payroll_custom_fields) ? this.entityData.payroll_custom_fields.findIndex(cfTmp => cfTmp._id == cf._id) : -1;
-        if (index >= 0) {
-          this.entityData.payroll_custom_fields[index] = cf;
-        }
+    this.newCF._id = cf._id;
+    this.newCF.name = cf.name;
+    this.newCF.type = cf.type;
+    this.newCF.values = cf.values;
 
-        // Resolve with success
-        resolve(this.utilityService.resolveAsyncPromise($localize`:@@editEntityDialog.entityUpdated:Entity updated!`));
-      })
-      .catch(() => {
-        this.cancelNewCF();
-
-        reject(this.utilityService.rejectAsyncPromise($localize`:@@editEntityDialog.unableToUpdateEntity:Unable to update the entity, please try again!`));
-      });
-    }));
+    this.showNewCFForm();
   }
 
-  cancelNewCF() {
+  cancelCF() {
     this.newCF = {
+      _id: '',
       name: '',
       type: '',
       values: []
@@ -299,6 +238,90 @@ export class EditEntityDialogComponent implements OnInit {
     if (index !== -1) {
       cf.values.splice(index, 1);
     }
+  }
+
+  showNewVariableForm() {
+    this.createNewVariable = !this.createNewVariable;
+  }
+
+  saveVariable() {
+    this.utilityService.asyncNotification($localize`:@@editEntityDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the entity...`, new Promise((resolve, reject) => {
+      if (this.newVariable?._id && this.newVariable?._id != '') {
+        this.hrService.editEntityVariable(this.entityData?._id, this.newVariable).then(res => {
+          const index = (this.entityData.payroll_variables) ? this.entityData.payroll_variables.findIndex(v => v._id == this.newVariable._id) : -1;
+          if (index >= 0) {
+            this.entityData.payroll_variables[index] = this.newVariable;
+          }
+
+          this.cancelVariable();
+
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@editEntityDialog.entityUpdated:Entity updated!`));
+        })
+        .catch(() => {
+          this.cancelVariable();
+
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@editEntityDialog.unableToUpdateEntity:Unable to update the entity, please try again!`));
+        });
+      } else {
+       this.hrService.createNewVariable(this.entityData?._id, this.newVariable).then(res => {
+          // if (!this.entityData.payroll_variables) {
+          //   this.entityData.payroll_variables = [];
+          // }
+
+          // this.entityData.payroll_variables.push(this.newVariable);
+          this.entityData = res['entity'];
+          this.cancelVariable();
+
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@editEntityDialog.entityUpdated:Entity updated!`));
+        })
+        .catch(() => {
+          this.cancelVariable();
+
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@editEntityDialog.unableToUpdateEntity:Unable to update the entity, please try again!`));
+        });
+      }
+    }));
+  }
+
+  editEntityVariable(variable: any) {
+    this.newVariable._id = variable._id;
+    this.newVariable.name = variable.name;
+    this.newVariable.type = variable.type;
+    this.newVariable.value = variable.value;
+
+    this.showNewVariableForm();
+  }
+
+  cancelVariable() {
+    this.newVariable = {
+      _id: '',
+      name: '',
+      type: '',
+      value: 0
+    }
+    this.createNewVariable = !this.createNewVariable;
+  }
+
+  deleteEntityVariable(variableId: string) {
+    this.utilityService.getConfirmDialogAlert($localize`:@@setup.areYouSure:Are you sure?`, $localize`:@@setup.completelyRemoved:By doing this, the entity be completely removed!`)
+      .then((res) => {
+        if (res.value) {
+          this.utilityService.asyncNotification($localize`:@@setup.pleaseWaitDeleting:Please wait we are deleting the entity...`, new Promise((resolve, reject) => {
+            this.hrService.deleteEntityVariable(this.entityData?._id, variableId).then(res => {
+              const index = (this.entityData.payroll_variables) ? this.entityData.payroll_variables.findIndex(v => v._id == variableId) : -1;
+              if (index >= 0) {
+                this.entityData.payroll_variables.splice(index, 1);
+              }
+
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@setup.deleted:Entity deleted!`));
+            }).catch((err) => {
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@setup.unableDelete:Unable to delete the entity, please try again!`));
+            });
+          }));
+        }
+      });
   }
 
   closeDialog() {

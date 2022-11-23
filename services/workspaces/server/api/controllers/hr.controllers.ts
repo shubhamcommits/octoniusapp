@@ -153,12 +153,20 @@ export class HRControllers {
                 return sendError(res, new Error('Please provide the entityId property!'), 'Please provide the entityId property!', 500);
             }
 
+            const newVariable = {
+                name: variable.name,
+                type: variable.type,
+                value: variable.value
+            }
+
             const entity = await Entity.findByIdAndUpdate({
                     _id: entityId
                 }, {
                     $addToSet: {
-                        payroll_variables: variable
+                        payroll_variables: newVariable
                     }
+                }, {
+                    new: true
                 })
                 .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
                 .lean();
@@ -242,16 +250,24 @@ export class HRControllers {
                 return sendError(res, new Error('Please provide the entityId property!'), 'Please provide the entityId property!', 500);
             }
 
+            const newCF = {
+                name: cf.name,
+                type: cf.type,
+                values: cf.values
+            }
+
             const entity = await Entity.findByIdAndUpdate({
                     _id: entityId
                 }, {
                     $addToSet: {
-                        payroll_custom_fields: cf
+                        payroll_custom_fields: newCF
                     }
+                }, {
+                    new: true
                 })
                 .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
                 .lean();
-    
+
             // Send the status 200 response 
             return res.status(200).json({
                 message: 'Custom Fields created.',
