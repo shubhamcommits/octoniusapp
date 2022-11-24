@@ -70,8 +70,8 @@ export class NorthStarPageComponent implements OnInit {
     });
   }
 
-  getProgressPercent(northStar) {
-    if (!northStar.values || !northStar.target_value) {
+  getProgressPercent(northStar: any) {
+    if (!northStar.values || northStar.values.length == 0 || !northStar.target_value) {
       return 0;
     }
 
@@ -82,19 +82,31 @@ export class NorthStarPageComponent implements OnInit {
     return northStar.values[northStar.values.length - 1].value / 100;
   }
 
-  getNSStatusClass(northStar) {
-    let retClass = "percentlabel";
-    const status = northStar.values[northStar.values.length - 1].status;
+  // getNSStatusClass(northStar) {
+  //   let retClass = "percentlabel";
+  //   const status = northStar.values[northStar.values.length - 1].status;
+  //   if (status === 'ON TRACK') {
+  //     retClass += ' on_track';
+  //   } else if (status === 'IN DANGER') {
+  //     retClass += ' in_danger';
+  //   } else if (status === 'ACHIEVED') {
+  //     retClass += ' achieved';
+  //   } else {
+  //     retClass += ' not_started';
+  //   }
+  //   return retClass;
+  // }
+
+  getNSStatusColor(status: string) {
     if (status === 'ON TRACK') {
-      retClass += ' on_track';
+      return '#26A69A';
     } else if (status === 'IN DANGER') {
-      retClass += ' in_danger';
+      return '#EB5757';
     } else if (status === 'ACHIEVED') {
-      retClass += ' achieved';
+      return '#4A90E2';
     } else {
-      retClass += ' not_started';
+      return '#FFAB00';
     }
-    return retClass;
   }
 
   /**

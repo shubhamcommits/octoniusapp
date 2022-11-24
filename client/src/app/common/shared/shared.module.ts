@@ -123,11 +123,13 @@ import { HiveReportsCardComponent } from './hr/hive-reports-card/hive-reports-ca
 import { PayrollSetupCardComponent } from './hr/payroll-setup-card/payroll-setup-card.component';
 import { PendingTasksCardComponent } from './hr/pending-tasks-card/pending-tasks-card.component';
 import { TimeOffCardComponent } from './hr/time-off-card/time-off-card.component';
+import { ProgressBarColor } from 'src/shared/pipes/progress-bar-color.directive';
 
 @NgModule({
     declarations: [
         HighlightDirective,
         DebounceClickDirective,
+        ProgressBarColor,
         ToolTipRendererDirective,
         FilterPipe,
         SafePipe,
@@ -242,6 +244,7 @@ import { TimeOffCardComponent } from './hr/time-off-card/time-off-card.component
     exports: [
         HighlightDirective,
         DebounceClickDirective,
+        ProgressBarColor,
         TruncateTextPipe,
         SafePipe,
         FilterPipe,

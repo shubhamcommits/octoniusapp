@@ -31,24 +31,26 @@
       <div>
         <div class="media card-tile overview-task">
           <div class="row media-body">
-            <div class="col-md-7">
+            <div class="col-md-5">
+              <app-assignee-avatar [post]="task" [userData]="userData"></app-assignee-avatar>
+
               <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
             </div>
 
-            <div class="col-md-1">
-              <div [ngClass]="getNSStatusClass(task?.task?.northStar)">
-                {{ getProgressPercent(task?.task?.northStar) | percent: '.2-2'}}
-              </div>
+            <div class="col-md-4" style="text-align-last: center;">
+              
+              {{ getProgressPercent(task?.task?.northStar) | percent: '.2-2'}}
+              <mat-progress-bar
+                mode="determinate"
+                [appProgressBarColor]="getNSStatusColor(task?.task?.northStar?.values[task?.task?.northStar?.values?.length - 1].status)"
+                [value]="getProgressPercent(task?.task?.northStar) * 100"
+                style="height: 10px; border-radius: 20px;"></mat-progress-bar>
             </div>
 
             <div class="col-md-2">
               <div class="grouplabel">
                 {{ task?._group.group_name | truncatetext: 20 }}
               </div>
-            </div>
-
-            <div class="col-md-1">
-              <app-assignee-avatar [post]="task" [userData]="userData"></app-assignee-avatar>
             </div>
 
             <div class="col-md-1">
