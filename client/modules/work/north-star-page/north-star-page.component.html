@@ -1,13 +1,13 @@
 <div class="container">
-  <div class="media" style="margin-top: 40px; margin-bottom: 30px;">
-    <img src="assets/images/northstar-hero.svg" class="mr-3" style="width: 200px">
+  <div class="media" style="margin-top: 60px; margin-bottom: 60px;">
+    <img src="assets/images/ns_placeholder1.svg" class="mr-3" style="width: 200px">
     <div class="media-body" style="color: #242d3a;">
-      <h5 class="mt-0" style="font-weight: 700 !important;">
+      <h5 class="mt-0 mb-3" style="font-weight: 700 !important;">
         <i class="material-icons-round" style="vertical-align: bottom;">explore</i>
-        <span i18n="@@northStarPage.whatIsNS">What is a North Star?</span>
+        <span i18n="@@northStarPage.whatIsNS"> Set and achieve strategic goals.</span>
       </h5>
       <span i18n="@@northStarPage.setAndAchieveStrategic">
-        Set and achieve strategic goals. Align your organization. <br>
+       Align your organization. <br>
         Connect your company goals and the work to support them in one place. <br>You can see progress to keep teams on track. And teams can work wisely to get the right things done.
       </span>
     </div>
@@ -24,6 +24,7 @@
   </div>
   <!-- Empty State of tasks ends -->
 
+
   <div *ngFor="let task of northStarTasks; let i = index;">
 
     <a (click)="openFullscreenModal(task)">
@@ -38,7 +39,7 @@
             </div>
 
             <div class="col-md-4" style="text-align-last: center;">
-              
+
               {{ getProgressPercent(task?.task?.northStar) | percent: '.2-2'}}
               <mat-progress-bar
                 mode="determinate"
@@ -63,4 +64,5 @@
       </div>
     </a>
   </div>
+
 </div>
