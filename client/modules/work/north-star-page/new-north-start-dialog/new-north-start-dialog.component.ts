@@ -39,11 +39,9 @@ export class NewNorthStarDialogComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-    this.publicFunctions.getAllUserGroups(this.workspaceData?._id, this.userId)
+    this.publicFunctions.getAllUserGroups(this.userId)// using the userId because it is not needed in the endpoint.
       .then(async (groups: any) => {
-        this.userGroups = groups;
-        this.userGroups.sort((g1, g2) => (g1.group_name > g2.group_name) ? 1 : -1);
+        this.userGroups = groups.sort((g1, g2) => (g1.group_name.toLowerCase() > g2.group_name.toLowerCase()) ? 1 : -1);
       });
   }
 

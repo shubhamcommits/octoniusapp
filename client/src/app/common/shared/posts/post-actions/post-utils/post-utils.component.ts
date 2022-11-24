@@ -51,14 +51,14 @@ export class PostUtilsComponent implements OnInit {
   async ngOnInit() {
 
     // Fetch the current workspace data
-    const workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    const workspaceData: any = await this.publicFunctions.getCurrentWorkspace();
 
     this.groupId = (this.post._group._id) ? this.post._group._id : this.post._group;
 
     this.canDelete = await this.utilityService.canUserDoTaskAction(this.post, this.groupData, this.userData, 'delete');
 
     // Fetches the user groups from the server
-    await this.publicFunctions.getAllUserGroups(workspaceData['_id'], this.userData?._id)
+    await this.publicFunctions.getAllUserGroups(workspaceData?._id)
       .then(async (groups: any) => {
         await groups.forEach(group => {
           if (group._id != this.groupId) {

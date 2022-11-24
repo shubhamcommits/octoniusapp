@@ -316,25 +316,20 @@ export class GroupController {
     async getAllUserGroups(req: Request, res: Response, next: NextFunction) {
         try {
 
-            const { userId } = req.query;
-            const { workspaceId } = req.params;
+            const userId = req['userId'];
 
             // If either workspaceId or userId is null or not provided then we throw BAD REQUEST 
-            if (!workspaceId || !userId) {
+            if (!userId) {
                 return res.status(400).json({
-                    message: 'Please provide both workspaceId and userId as the query parameter!'
+                    message: 'Please provide both userId!'
                 })
             }
 
             // Finding groups for the user of which they are a part of
             const groups = await Group.find({
                 $and: [
-                    { group_name: { $ne: 'personal' } },
-                    { group_name: { $ne: 'private' } },
-                    { _workspace: workspaceId },
                     { $or: [{ _members: userId }, { _admins: userId }] },
                     { $or: [{ archived_group: false }, { archived_group: { $eq: null }}]}
-                    // { type: { $ne: 'smart' } }
                 ]
             })
                 .sort('_id')
