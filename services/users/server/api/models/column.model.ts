@@ -36,8 +36,7 @@ const ColumnSchema = new Schema({
         },
         currency: {
           type: String,
-          default: 'EUR',
-          enum: ['USD', 'EUR']
+          default: 'EUR'
         },
         expenses: [{
             amount: {

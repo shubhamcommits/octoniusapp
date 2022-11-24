@@ -4,6 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
+import { CountryCurrencyService } from 'src/shared/services/country-currency/country-currency.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
@@ -27,7 +28,7 @@ export class ProjectBudgetDialogComponent implements OnInit {
 
   currentUser: any;
 
-  types = ['USD', 'EUR'];
+  currencies = [];
 
   totalSpent = 0;
 
@@ -37,6 +38,7 @@ export class ProjectBudgetDialogComponent implements OnInit {
   constructor(
     public utilityService: UtilityService,
     private columnService: ColumnService,
+    private countryCurrencyService: CountryCurrencyService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<ProjectBudgetDialogComponent>,
     private injector: Injector
@@ -48,6 +50,8 @@ export class ProjectBudgetDialogComponent implements OnInit {
 
   async ngOnInit() {
     this.currentUser = await this.publicFunctions.getCurrentUser();
+    this.currencies = await this.countryCurrencyService.getCurrencies();
+    
     this.resetExpense();
 
     if (!this.budget.expenses) {

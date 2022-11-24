@@ -11,16 +11,6 @@ export class HRService {
 
   baseUrl = environment.WORKSPACE_BASE_API_URL + '/hr';
 
-  currencies = [
-    { code: 'USD', name: $localize`:@@editEntityDialog.usd:US Dollar` },
-    { code: 'EUR', name: $localize`:@@editEntityDialog.eur:Euro` }
-  ]
-
-  countries = [
-    { code: 'USA', name: $localize`:@@editEntityDialog.us:United States of America` },
-    { code: 'ES', name: $localize`:@@editEntityDialog.es:Spain` }
-  ]
-
   getEntities(workspaceId: string) {
     return this._http.get(this.baseUrl + '/', { params: { workspaceId }}).toPromise();
   }
@@ -43,14 +33,6 @@ export class HRService {
 
   delete(entityId: string) {
     return this._http.delete(this.baseUrl + `/${entityId}`).toPromise();
-  }
-
-  getCurrencies() {
-    return this.currencies;
-  }
-
-  getCountries() {
-    return this.countries
   }
 
   createNewVariable(entityId: string, variable: any) {

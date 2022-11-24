@@ -10,15 +10,13 @@
     <div class="project_stats">
       <div class="muted">
         <span i18n="@@projectBudget.budget">Budget</span>:
-        <span *ngIf="project?.budget?.currency == 'EUR'">{{ project?.budget?.amount_planned | currency: '€'}}</span>
-        <span *ngIf="project?.budget?.currency == 'USD'">{{ project?.budget?.amount_planned | currency: '$'}}</span>
-        <span *ngIf="project?.budget?.currency != 'USD' && project?.budget?.currency != 'EUR'">{{ project?.budget?.amount_planned}}</span>
+        <span>{{ project?.budget?.amount_planned | currency: project?.budget?.currency}}</span>
+        <span *ngIf="!project?.budget?.currency">{{ project?.budget?.amount_planned}}</span>
       </div>
       <div class="real_cost" [class]="projectStatusClass">
         <span i18n="@@projectBudget.realCost">Real cost</span>:
-        <span *ngIf="project?.budget?.currency == 'EUR'">{{ project?.budget?.real_cost | currency: '€'}}</span>
-        <span *ngIf="project?.budget?.currency == 'USD'">{{ project?.budget?.real_cost | currency: '$'}}</span>
-        <span *ngIf="project?.budget?.currency != 'USD' && project?.budget?.currency != 'EUR'">{{ project?.budget?.real_cost}}</span>
+        <span>{{ project?.budget?.amount_planned | currency: project?.budget?.real_cost}}</span>
+        <span *ngIf="!project?.budget?.currency">{{ project?.budget?.real_cost}}</span>
       </div>
     </div>
   </div>

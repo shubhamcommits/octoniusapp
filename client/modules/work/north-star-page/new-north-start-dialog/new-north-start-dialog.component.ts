@@ -74,7 +74,8 @@ export class NewNorthStarDialogComponent implements OnInit {
               date: Date.now(),
               value: 0
             }],
-            type: 'Currency $',
+            type: 'Currency',
+            currency: 'USD',
             status: 'ON TRACK'
           },
         is_milestone: false,

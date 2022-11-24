@@ -602,7 +602,8 @@ export class GroupPostDialogComponent implements OnInit {
         date: Date.now(),
         value: 0
       }],
-      type: 'Currency $',
+      type: 'Currency',
+      currency: 'USD',
       status: 'ON TRACK'
     };
     const makeNSLogAction = (this.postData.task.isNorthStar) ? 'make_ns' : 'make_no_ns';

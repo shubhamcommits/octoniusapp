@@ -300,7 +300,10 @@ const PostSchema = new Schema({
             }],
             type: {
                 type: String,
-                enum: ['Currency $', 'Currency €', 'Percent', 'Number']
+                enum: ['Currency', 'Percent', 'Number']
+            },
+            currency: {
+                type: String
             }
         },
 

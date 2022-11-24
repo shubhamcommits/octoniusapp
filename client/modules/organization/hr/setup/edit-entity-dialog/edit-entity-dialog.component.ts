@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { CountryCurrencyService } from 'src/shared/services/country-currency/country-currency.service';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
@@ -45,6 +46,7 @@ export class EditEntityDialogComponent implements OnInit {
 
   constructor(
     private hrService: HRService,
+    private countryCurrencyService: CountryCurrencyService,
     private utilityService: UtilityService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<EditEntityDialogComponent>
@@ -54,8 +56,8 @@ export class EditEntityDialogComponent implements OnInit {
       this.entityData = res['entity'];
     });
 
-    this.currencies = this.hrService.getCurrencies();
-    this.countries = this.hrService.getCountries();
+    this.currencies = this.countryCurrencyService.getCurrencies();
+    this.countries = this.countryCurrencyService.getCountries();
   }
 
   ngOnInit() {

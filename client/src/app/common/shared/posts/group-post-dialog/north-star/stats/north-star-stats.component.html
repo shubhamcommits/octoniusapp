@@ -18,11 +18,8 @@
                   <span *ngIf="northStar.type === 'Percent'">
                     {{ value.value / 100 | percent: '.2-2' }}
                   </span>
-                  <span *ngIf="northStar.type === 'Currency $'">
-                    {{ value.value | currency: '$' }}
-                  </span>
-                  <span  *ngIf="northStar.type === 'Currency €'">
-                    {{ value.value | currency: '€' }}
+                  <span *ngIf="northStar.type === 'Currency'">
+                    {{ value.value | currency: northStar?.currency }}
                   </span>
                   <span  *ngIf="northStar.type === 'Number'">
                     {{ value.value }}

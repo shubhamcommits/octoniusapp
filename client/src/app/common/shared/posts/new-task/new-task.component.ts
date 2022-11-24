@@ -130,7 +130,8 @@ export class NewTaskComponent implements OnInit {
                   date: Date.now(),
                   value: 0
                 }],
-                type: 'Currency $',
+                type: 'Currency',
+                currency: 'USD',
                 status: 'ON TRACK'
               } : null,
             is_milestone: false,
@@ -159,7 +160,8 @@ export class NewTaskComponent implements OnInit {
                   date: Date.now(),
                   value: 0
                 }],
-                type: 'Currency $',
+                type: 'Currency',
+                currency: 'USD',
                 status: 'ON TRACK'
               } : null,
             is_milestone: false,

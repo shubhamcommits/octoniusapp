@@ -31,6 +31,24 @@
             </mat-form-field>
           </div>
 
+          <div *ngIf="northStar?.type == 'Currency'"  class="col">
+            <label for="target" i18n="@@northStar.currency">Currency:</label>
+          </div>
+
+
+          <div *ngIf="northStar?.type == 'Currency'" class="col" style="padding-left: 0;">
+            <mat-form-field style="width:100%; margin-top: -20px;">
+              <mat-select ngDefaultControl
+                [disabled]="northStar?.values?.length > 1 || !northStar?.type"
+                (selectionChange)="changeCurrency($event)"
+                (click)="$event.stopPropagation()"
+                [(ngModel)]="northStar.currency"
+                name="new_type">
+                  <mat-option *ngFor="let c of currencies" [value]="c.code">{{ c.name }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
           <div class="w-100"></div>
           <div class="col">
             <label for="target" i18n="@@northStar.target">Target:</label>
@@ -65,13 +83,11 @@
         <i class="material-icons update" (click)="updatingInitialValues = true; this.updateProgress = false;">settings</i>
       </p>
 
-      <div class="target_value" *ngIf="northStar?.type === 'Currency $'"><span i18n="@@northStar.target">Target:</span> {{ northStar?.target_value | currency: '$' }}</div>
-      <div class="target_value" *ngIf="northStar?.type === 'Currency €'"><span i18n="@@northStar.target">Target:</span> {{ northStar?.target_value | currency: '€' }}</div>
+      <div class="target_value" *ngIf="northStar?.type === 'Currency'"><span i18n="@@northStar.target">Target:</span> {{ northStar?.target_value | currency: northStar?.currency }}</div>
       <div class="target_value" *ngIf="northStar?.type === 'Number'"><span i18n="@@northStar.target">Target:</span> {{ northStar?.target_value }}</div>
       <div class="target_value" *ngIf="northStar?.type === 'Percent'"><span i18n="@@northStar.target">Target:</span> {{ northStar?.target_value/100 | percent: '.2-2' }}</div>
 
-      <div class="value" *ngIf="northStar?.type === 'Currency $'"> <span i18n="@@northStar.current">Current:</span> {{ northStar?.values[northStar?.values?.length - 1]?.value | currency: '$' }}</div>
-      <div class="value" *ngIf="northStar?.type === 'Currency €'"><span i18n="@@northStar.current">Current:</span>  {{ northStar?.values[northStar?.values?.length - 1]?.value | currency: '€' }}</div>
+      <div class="value" *ngIf="northStar?.type === 'Currency'"> <span i18n="@@northStar.current">Current:</span> {{ northStar?.values[northStar?.values?.length - 1]?.value | currency: northStar?.currency }}</div>
       <div class="value" *ngIf="northStar?.type === 'Percent'"><span i18n="@@northStar.current">Current:</span>  {{ northStar?.values[northStar?.values?.length - 1]?.value/100 | percent: '.2-2' }}</div>
       <div class="value" *ngIf="northStar?.type === 'Number'"> <span i18n="@@northStar.current">Current:</span> {{ northStar?.values[northStar?.values?.length - 1]?.value }}</div>
 
