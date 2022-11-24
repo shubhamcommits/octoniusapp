@@ -147,7 +147,6 @@ export class NorthStarPageComponent implements OnInit {
     const dialogRef = this.dialog.open(NewNorthStarDialogComponent, {
       data: {
         userId: this.userData?._id,
-        userGroups: this.userData._groups
       },
       hasBackdrop: true
     });

@@ -16,6 +16,7 @@ export class NewNorthStarDialogComponent implements OnInit {
   @Output() nsCreatedEvent = new EventEmitter();
 
   userId;
+  workspaceData;
   userGroups = [];
   groupSections: any = [];
 
@@ -35,10 +36,15 @@ export class NewNorthStarDialogComponent implements OnInit {
     private mdDialogRef: MatDialogRef<NewNorthStarDialogComponent>
   ) {
     this.userId = this.data.userId;
-    this.userGroups = this.data.userGroups;
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    this.publicFunctions.getAllUserGroups(this.workspaceData?._id, this.userId)
+      .then(async (groups: any) => {
+        this.userGroups = groups;
+        this.userGroups.sort((g1, g2) => (g1.group_name > g2.group_name) ? 1 : -1);
+      });
   }
 
   async changeGroup() {
