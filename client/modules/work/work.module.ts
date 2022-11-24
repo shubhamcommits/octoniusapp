@@ -10,12 +10,14 @@ import { DashboardPageComponent } from './dashboard-page/dashboard-page.componen
 
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NewNorthStarDialogComponent } from './north-star-page/new-north-start-dialog/new-north-start-dialog.component';
 
 @NgModule({
   declarations: [
     // Pulse Component
     PulseComponent,
     NorthStarPageComponent,
+    NewNorthStarDialogComponent,
     DashboardPageComponent
   ],
   imports: [

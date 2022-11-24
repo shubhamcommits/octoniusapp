@@ -1,0 +1,36 @@
+<!-- FORGOT PASSWORD MODAL STARTS -->
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title" i18n="@@newNorthStarDialog.createNS">Create a new North Star</h4>
+</div>
+
+<div class="modal-body">
+    <div class="form-group">
+        <label i18n="@@newNorthStarDialog.title">Title</label>
+        <input type="text" class="form-control" [(ngModel)]="postTitle">
+    </div>
+
+    <div class="form-group">
+        <label i18n="@@newNorthStarDialog.group">Group</label>
+        <mat-form-field class="full-width" appearance="outline">
+            <mat-select [(value)]="groupId" (valueChange)="changeGroup()">
+                <mat-option [value]="group?._id" *ngFor="let group of userGroups">{{ group?.group_name }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div class="form-group">
+        <label i18n="@@newNorthStarDialog.section" [ngClass]="(!groupSections || groupSections?.length == 0) ? 'muted' : ''">Section</label>
+        <mat-form-field class="full-width" appearance="outline">
+            <mat-select [(value)]="sectionId" [disabled]="!groupSections || groupSections?.length == 0">
+                <mat-option [value]="section?._id" *ngFor="let section of groupSections">{{ section?.title }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-danger btn-md" (click)="closeDialog()" i18n="@@newNorthStarDialog.cancel">Cancel</button>
+    
+    <button [disabled]="!sectionId || !groupId || !postTitle || postTitle == ''" (click)="createNS()" class="btn btn-primary" i18n="@@newNorthStarDialog.createNS">Create North Star</button>
+</div>
+<!-- FORGOT PASSWORD MODAL ENDS -->

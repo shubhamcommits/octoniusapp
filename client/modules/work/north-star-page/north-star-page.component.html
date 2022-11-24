@@ -1,12 +1,5 @@
 <div class="container">
-
-  <!-- Empty State of tasks starts -->
-  <div *ngIf="!northStarTasks || northStarTasks?.length === 0">
-    <h5 class="title-overview" i18n="@@northStarPage.noMission">There are no missions here... Let's create one.</h5>
-  </div>
-  <!-- Empty State of tasks ends -->
-
-  <div class="media" style="margin-top: 140px; margin-bottom: 30px;">
+  <div class="media" style="margin-top: 40px; margin-bottom: 30px;">
     <img src="assets/images/northstar-hero.svg" class="mr-3" style="width: 200px">
     <div class="media-body" style="color: #242d3a;">
       <h5 class="mt-0" style="font-weight: 700 !important;">
@@ -19,6 +12,17 @@
       </span>
     </div>
   </div>
+
+  <button (click)="createNS()" class="btn new-ns-button">
+    <i class="material-icons">add</i>
+    <span i18n="@@northStarPage.newNS">New North Star</span>
+  </button>
+
+  <!-- Empty State of tasks starts -->
+  <div *ngIf="!northStarTasks || northStarTasks?.length === 0" class="card-tile">
+    <h5 class="title-overview media-body" i18n="@@northStarPage.noMission">There are no missions here... Let's create one.</h5>
+  </div>
+  <!-- Empty State of tasks ends -->
 
   <div *ngFor="let task of northStarTasks; let i = index;">
 
