@@ -1,10 +1,11 @@
 <div class="container">
 
   <!-- Empty State of tasks starts -->
-  <div *ngIf="northStarTasks.length === 0">
+  <div *ngIf="!northStarTasks || northStarTasks?.length === 0">
     <h5 class="title-overview" i18n="@@northStarPage.noMission">There are no missions here... Let's create one.</h5>
   </div>
   <!-- Empty State of tasks ends -->
+
   <div class="media" style="margin-top: 140px; margin-bottom: 30px;">
     <img src="assets/images/northstar-hero.svg" class="mr-3" style="width: 200px">
     <div class="media-body" style="color: #242d3a;">

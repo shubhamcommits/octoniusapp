@@ -43,20 +43,20 @@ export class NorthStarPageComponent implements OnInit {
   }
 
   getUserNorthStarTasks(userData) {
-    let groups = userData._groups;
-    groups.push(userData._private_group);
+    let groups = userData._groups.map(group => group?._id || group);
+    groups.push(userData?._private_group?._id || userData?._private_group);
 
     new Promise(async (resolve, reject) => {
       await this.postService.getNorthStarTasks(groups)
         .then((res) => {
-          res['posts'].forEach(async post => {
-            const group = (post._group._id) ? post._group._id : post._group;
-
-            await this.groupService.getGroup(group).then((group) => {
-              post._group = group['group'];
-              this.northStarTasks.push(post);
-            });
-          });
+          this.northStarTasks = res['posts'];
+          // res['posts'].forEach(async post => {
+          //   const group = (post._group._id) ? post._group._id : post._group;
+          //   await this.groupService.getGroup(group).then((group) => {
+          //     post._group = group['group'];
+          //     this.northStarTasks.push(post);
+          //   });
+          // });
         })
         .catch(() => {
           reject([])
@@ -65,6 +65,10 @@ export class NorthStarPageComponent implements OnInit {
   }
 
   getProgressPercent(northStar) {
+    if (!northStar.values || !northStar.target_value) {
+      return 0;
+    }
+
     if (northStar.type !== 'Percent') {
       return (northStar.values[northStar.values.length - 1].value)/northStar.target_value;
     }
@@ -126,5 +130,9 @@ export class NorthStarPageComponent implements OnInit {
       this.northStarTasks[indexTask] = task;
       return;
     }
+  }
+
+  createNS() {
+console.log("111111");
   }
 }

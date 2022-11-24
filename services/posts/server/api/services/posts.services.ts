@@ -1992,13 +1992,16 @@ export class PostService {
 
   async getNorthStarTasks(groups: any) {
     try {
-      return await this.filterGroupPosts(
-        Post.find({
+      return await Post.find({
           '_group': { $in: groups },
           $and: [
             { 'task.isNorthStar': true }
           ]
-        }).sort('-created_date'), 'task');
+        })
+        .sort('-created_date')
+        .populate({ path: '_group', select: this.groupFields })
+        .populate({ path: '_posted_by', select: this.userFields })
+        .populate({ path: '_assigned_to', select: this.userFields });
     } catch (error) {
       throw (error);
     }
