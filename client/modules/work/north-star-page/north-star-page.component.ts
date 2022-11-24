@@ -2,7 +2,6 @@ import { Component, OnInit, Injector } from '@angular/core';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { GroupService } from 'src/shared/services/group-service/group.service';
 import { environment } from 'src/environments/environment';
 import { NewNorthStarDialogComponent } from './new-north-start-dialog/new-north-start-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,7 +17,6 @@ export class NorthStarPageComponent implements OnInit {
   userData;
   groupData;
   northStarTasks: any = [];
-  userGroups = [];
 
   // Base URL of the uploads
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
@@ -38,9 +36,6 @@ export class NorthStarPageComponent implements OnInit {
     // Fetch the current group
     this.groupData = await this.publicFunctions.getCurrentGroupDetails();
 
-    this.userGroups = this.userData._groups;
-    this.userGroups.push(this.userData?._private_group);
-
     await this.getUserNorthStarTasks();
 
     // Send Updates to router state
@@ -50,10 +45,8 @@ export class NorthStarPageComponent implements OnInit {
   }
 
   getUserNorthStarTasks() {
-    let groups = this.userGroups.map(group => group?._id || group);
-
     new Promise(async (resolve, reject) => {
-      await this.postService.getNorthStarTasks(groups)
+      await this.postService.getNorthStarTasks()
         .then((res) => {
           this.northStarTasks = res['posts'];
           // res['posts'].forEach(async post => {
@@ -154,7 +147,7 @@ export class NorthStarPageComponent implements OnInit {
     const dialogRef = this.dialog.open(NewNorthStarDialogComponent, {
       data: {
         userId: this.userData?._id,
-        userGroups: this.userGroups
+        userGroups: this.userData._groups
       },
       hasBackdrop: true
     });

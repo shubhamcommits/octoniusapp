@@ -348,14 +348,9 @@ export class PostController {
      */
     async getNorthStarTasks(req: Request, res: Response, next: NextFunction) {
         // Fetch groupId and lastPostId from request
-        var { groups } = req.query;
+        const userId = req['userId'];
 
-        // If groupId is not present, then return error
-        if (!groups) {
-            return sendErr(res, new Error('Please provide the groups as the query parameter'), 'Please provide the groups as the query paramater!', 400);
-        }
-
-        await postService.getNorthStarTasks(groups)
+       await postService.getNorthStarTasks(userId)
             .then((posts) => {
                 // If lastPostId is there then, send status 200 response
                 return res.status(200).json({

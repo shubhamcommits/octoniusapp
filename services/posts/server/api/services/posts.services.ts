@@ -1990,8 +1990,10 @@ export class PostService {
     }
   }
 
-  async getNorthStarTasks(groups: any) {
+  async getNorthStarTasks(userId: string) {
     try {
+      const groups = await Group.find({ $or: [{ _members: userId }, { _admins: userId }] }).select('_id').lean();
+
       return await Post.find({
           '_group': { $in: groups },
           $and: [
