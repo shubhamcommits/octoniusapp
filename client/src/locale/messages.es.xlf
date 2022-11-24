@@ -1960,7 +1960,7 @@
       </trans-unit>
       <trans-unit id="groupCalendar.delete" datatype="html">
         <source>Delete</source>
-        <target state="translated">Borrar</target>
+        <target state="translated">Eliminar</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/calendar/group-calendar/group-calendar.component.ts</context>
           <context context-type="linenumber">80</context>
@@ -2096,7 +2096,7 @@
       </trans-unit>
       <trans-unit id="directChatsHome.delete" datatype="html">
         <source>Delete</source>
-        <target state="translated">Borrar</target>
+        <target state="translated">Eliminar</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/chat/chats-home/direct-chats-home/direct-chats-home.component.html</context>
           <context context-type="linenumber">41</context>
@@ -2344,7 +2344,7 @@
       </trans-unit>
       <trans-unit id="groupFiles.delete" datatype="html">
         <source>Delete</source>
-        <target state="translated">Borrar</target>
+        <target state="translated">Eliminar</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
           <context context-type="linenumber">100</context>
@@ -4372,7 +4372,7 @@
       </trans-unit>
       <trans-unit id="deleteGroup.delete" datatype="html">
         <source>Delete</source>
-        <target state="translated">Borrar</target>
+        <target state="translated">Eliminar</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/delete-group/delete-group.component.html</context>
           <context context-type="linenumber">10</context>
@@ -5192,7 +5192,7 @@
       </trans-unit>
       <trans-unit id="groupCalendarView.delete" datatype="html">
         <source>Delete</source>
-        <target state="translated">Borrar</target>
+        <target state="translated">Eliminar</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-calendar-view/group-calendar-view.component.ts</context>
           <context context-type="linenumber">85</context>
@@ -5272,7 +5272,7 @@
       </trans-unit>
       <trans-unit id="groupDashboard.delete" datatype="html">
         <source>Delete</source>
-        <target state="translated">Borrar</target>
+        <target state="translated">Eliminar</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-archived-boards/group-kanban-archived-boards.component.html</context>
           <context context-type="linenumber">28</context>
@@ -5844,6 +5844,10 @@
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/create-project-column-dialog/create-project-column-dialog.component.html</context>
           <context context-type="linenumber">44,46</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/new-entity/new-entity.component.html</context>
+          <context context-type="linenumber">13,15</context>
         </context-group>
       </trans-unit>
       <trans-unit id="createProjectColumnDialog.save" datatype="html">
@@ -8098,6 +8102,626 @@
           <context context-type="linenumber">338</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="reports.employees" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{ users.length }}"/> EMPLOYEES</source>
+        <target state="translated"><x id="INTERPOLATION" equiv-text="{{ users.length }}"/> EMPLEADOS</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/reports/reports.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="reports.filter" datatype="html">
+        <source>Filter</source>
+        <target state="translated">Filtros</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/reports/reports.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="reports.firstName" datatype="html">
+        <source> First name </source>
+        <target state="translated">Nombre</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/reports/reports.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="reports.lastName" datatype="html">
+        <source> Last name </source>
+        <target state="translated">Apellidos</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/reports/reports.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="reports.email" datatype="html">
+        <source> E-Mail </source>
+        <target state="translated">E-Mail</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/reports/reports.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="reports.job" datatype="html">
+        <source> Job </source>
+        <target state="translated">Trabajo</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/reports/reports.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="reports.department" datatype="html">
+        <source> Department </source>
+        <target state="translated">Departamento</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/reports/reports.component.html</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="reports.noDataMatchingFilter" datatype="html">
+        <source>No data matching the filter "<x id="INTERPOLATION" equiv-text="{{input.value}}"/>"</source>
+        <target state="translated">No hay datos que coincidan con el filtro "<x id="INTERPOLATION" equiv-text="{{input.value}}"/>"</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/reports/reports.component.html</context>
+          <context context-type="linenumber">71</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.legalInformation" datatype="html">
+        <source>Legal information</source>
+        <target state="translated">Información legal</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.legalInformationDescription" datatype="html">
+        <source> The company's legal information </source>
+        <target state="translated"> Información legal de la empresa. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">26,28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.companyName" datatype="html">
+        <source>Company name</source>
+        <target state="translated">Nombre de empresa</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.taxID" datatype="html">
+        <source>Tax Identification Number</source>
+        <target state="translated">Número de identificación de impuestos</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.currencyInformation" datatype="html">
+        <source>Currency information</source>
+        <target state="translated">Información de moneda</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.currencyInformationDescription" datatype="html">
+        <source> Configure currency for this legal entity. Changes in currency don’t include conversion. </source>
+        <target state="translated">Configure la moneda para esta entidad legal. Los cambios de moneda no incluyen la conversión.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">48,50</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.currency" datatype="html">
+        <source>Currency</source>
+        <target state="translated">Divisa</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.address" datatype="html">
+        <source>Address</source>
+        <target state="translated">Dirección</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">71</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.addressDescription" datatype="html">
+        <source> Fill in the legal address of the company </source>
+        <target state="translated">Complete la dirección legal de la empresa</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">72,74</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.addressLine1" datatype="html">
+        <source>Address Line 1</source>
+        <target state="translated">Dirección Línea 1</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">81</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.addressLine2" datatype="html">
+        <source>Address Line 2</source>
+        <target state="translated">Dirección Línea 2</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">84</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.city" datatype="html">
+        <source>City</source>
+        <target state="translated">Ciudad</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">87</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.zip_code" datatype="html">
+        <source>Zip Code</source>
+        <target state="translated">Código Postal</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">92</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.state" datatype="html">
+        <source>State</source>
+        <target state="translated">Estado</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">97</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.country" datatype="html">
+        <source>Country</source>
+        <target state="translated">País</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">101</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.payrollCF" datatype="html">
+        <source>Custom Fields</source>
+        <target state="translated">Campos Persolanlizados</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">117</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.payrollCFDescription" datatype="html">
+        <source> Set up custom profile fields that will appear in the employee profile. You will be able to track more information from your employees. </source>
+        <target state="translated">Configure campos de perfil personalizados que aparecerán en el perfil del empleado. Podrá rastrear más información de sus empleados.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">118,120</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="setup.name" datatype="html">
+        <source>Name</source>
+        <target state="translated">Nombre</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">128</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">266</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="setup.type" datatype="html">
+        <source>Type</source>
+        <target state="translated">Tipo</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">129</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">267</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="setup.values" datatype="html">
+        <source>Values</source>
+        <target state="translated">Valores</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">130</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="setup.edit" datatype="html">
+        <source>Edit</source>
+        <target state="translated">Editar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">148</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">284</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="setup.delete" datatype="html">
+        <source>Delete</source>
+        <target state="translated">Eliminar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">153</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">289</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/setup.component.html</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.cfName" datatype="html">
+        <source>Custom Field name</source>
+        <target state="translated">Nombre Campo Personalizado</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">207</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.type" datatype="html">
+        <source>Type</source>
+        <target state="translated">Tipo</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">210</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">335</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.values" datatype="html">
+        <source>Values</source>
+        <target state="translated">Valores</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">218</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newEntity.cancel" datatype="html">
+        <source>Cancel</source>
+        <target state="translated">Cancelar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">233</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">349</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newEntity.create" datatype="html">
+        <source>Create</source>
+        <target state="translated">Crear</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">238</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">354</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newEntity.save" datatype="html">
+        <source>Save</source>
+        <target state="translated">Guardar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">241</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">357</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newEntity.createNewCF" datatype="html">
+        <source> Create new Custom Field </source>
+        <target state="translated">Crear nuevo Campo Personalizado</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">246,248</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.payrollVariables" datatype="html">
+        <source>Payroll variables</source>
+        <target state="translated">Variables de nómina</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">255</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.payrollVariablesDescription" datatype="html">
+        <source> These are variables that will help calculate reports, like taxes, daily compsensation etc. </source>
+        <target state="translated">Estas son variables que ayudarán a calcular informes, como impuestos, compensación diaria, etc.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">256,258</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="setup.value" datatype="html">
+        <source>Value</source>
+        <target state="translated">Valor</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">268</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.variableName" datatype="html">
+        <source>Variable name</source>
+        <target state="translated">Nombre de variable</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">332</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.value" datatype="html">
+        <source>Value</source>
+        <target state="translated">Valor</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">343</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newEntity.createNewVariable" datatype="html">
+        <source>Create new variable</source>
+        <target state="translated">Crear nueva variable</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">362</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.general" datatype="html">
+        <source>General</source>
+        <target state="translated">General</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.payroll" datatype="html">
+        <source>Payroll</source>
+        <target state="translated">Nómina</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.plesaeWaitWeAreUpdaing" datatype="html">
+        <source>Please wait we are updating the entity...</source>
+        <target state="translated">Por favor espere estamos actualizando la entidad...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">117</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">139</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">248</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.entityUpdated" datatype="html">
+        <source>Entity updated!</source>
+        <target state="translated">¡Entidad actualizada!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">122</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">150</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">168</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">259</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">277</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.unableToUpdateEntity" datatype="html">
+        <source>Unable to update the entity, please try again!</source>
+        <target state="translated">No se puede actualizar la entidad, inténtalo de nuevo.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">125</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">155</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">173</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">264</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">282</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="setup.areYouSure" datatype="html">
+        <source>Are you sure?</source>
+        <target state="translated">¿Estás seguro?</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">199</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">308</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/setup.component.ts</context>
+          <context context-type="linenumber">103</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="setup.completelyRemoved" datatype="html">
+        <source>By doing this, the entity be completely removed!</source>
+        <target state="translated">Al hacer esto, ¡la entidad será eliminada por completo!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">199</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">308</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/setup.component.ts</context>
+          <context context-type="linenumber">103</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="setup.pleaseWaitDeleting" datatype="html">
+        <source>Please wait we are deleting the entity...</source>
+        <target state="translated">Espere, estamos eliminando la entidad...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">202</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">311</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/setup.component.ts</context>
+          <context context-type="linenumber">106</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="setup.deleted" datatype="html">
+        <source>Entity deleted!</source>
+        <target state="translated">¡Entidad eliminada!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">209</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">318</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/setup.component.ts</context>
+          <context context-type="linenumber">114</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="setup.unableDelete" datatype="html">
+        <source>Unable to delete the entity, please try again!</source>
+        <target state="translated">No se puede eliminar la entidad, inténtalo de nuevo.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">211</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">320</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/setup.component.ts</context>
+          <context context-type="linenumber">116</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="setup.valueAlreadyExists" datatype="html">
+        <source>Value already exists!</source>
+        <target state="translated">¡El valor ya existe!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">227</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newEntity.createEntity" datatype="html">
+        <source>Create a new Entity</source>
+        <target state="translated">Crear una nueva Entidad</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/new-entity/new-entity.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newEntity.createEntityButton" datatype="html">
+        <source>Create Entity</source>
+        <target state="translated">Crear Entidad</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/new-entity/new-entity.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newEntity.enterName" datatype="html">
+        <source>Kindly enter an entity name.</source>
+        <target state="translated">Por favor ingrese un nombre de entidad.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/new-entity/new-entity.component.ts</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="setup.hiveCardDescription" datatype="html">
+        <source> These are the legal entities of your company. Check that the information is correct and fill what is missing. </source>
+        <target state="translated"> Estas son las entidades legales de su empresa. Verifique que la información sea correcta y complete lo que falta. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/setup.component.html</context>
+          <context context-type="linenumber">8,10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="setup.createEntity" datatype="html">
+        <source>Create Entity</source>
+        <target state="translated">Crear Entidad</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/setup.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="setup.createEntityCardDescription" datatype="html">
+        <source> If your company has multiple legal entities, you can create them here. </source>
+        <target state="translated">Si su empresa tiene varias entidades legales, puede crearlas aquí.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/setup.component.html</context>
+          <context context-type="linenumber">24,26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="setup.createNew" datatype="html">
+        <source>Create new</source>
+        <target state="translated">Crear nueva</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/setup.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="setup.settingsCardDescription" datatype="html">
+        <source> Define how your employees’ payment is regulated. </source>
+        <target state="translated">Define cómo se regula el pago de tus empleados.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/setup.component.html</context>
+          <context context-type="linenumber">58,60</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="setup.goToSetup" datatype="html">
+        <source>Go to setup</source>
+        <target state="translated">Ir a configuración</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/setup.component.html</context>
+          <context context-type="linenumber">67</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="chartPerson.removeManager" datatype="html">
         <source>Remove Manager</source>
         <target state="translated">Eliminara Manager</target>
@@ -8255,7 +8879,23 @@
         <target state="translated">Directorio de Personas</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/organization/organization.component.html</context>
-          <context context-type="linenumber">91</context>
+          <context context-type="linenumber">88</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="organization.cardDescriptionPeopleDirectory" datatype="html">
+        <source> Search and connect with other employees. </source>
+        <target state="translated">Busque y conéctese con otros empleados</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization/organization.component.html</context>
+          <context context-type="linenumber">92,94</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="organization.viewPeople" datatype="html">
+        <source>View Directory</source>
+        <target state="translated">Ver Directorio</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization/organization.component.html</context>
+          <context context-type="linenumber">101</context>
         </context-group>
       </trans-unit>
       <trans-unit id="organization.organizationChart" datatype="html">
@@ -8263,7 +8903,47 @@
         <target state="translated">Organigrama</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/organization/organization.component.html</context>
-          <context context-type="linenumber">103</context>
+          <context context-type="linenumber">111</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="organization.cardDescriptionOrganizationChart" datatype="html">
+        <source> Check out the organization chart to understand how your company is structured. </source>
+        <target state="translated">Consulte el organigrama para comprender cómo está estructurada su empresa.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization/organization.component.html</context>
+          <context context-type="linenumber">115,117</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="organization.openChart" datatype="html">
+        <source>Open Chart</source>
+        <target state="translated">Abrir Gráfico</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization/organization.component.html</context>
+          <context context-type="linenumber">124</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="organization.hiveHR" datatype="html">
+        <source>Hive HR</source>
+        <target state="translated">Hive HR</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization/organization.component.html</context>
+          <context context-type="linenumber">134</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="organization.cardDescriptionHiveHR" datatype="html">
+        <source> Manage people and payroll information </source>
+        <target state="translated">Administrar personas e información de nómina</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization/organization.component.html</context>
+          <context context-type="linenumber">138,140</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="organization.openHive" datatype="html">
+        <source>Open Hive</source>
+        <target state="translated">Abrir Hive</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization/organization.component.html</context>
+          <context context-type="linenumber">147</context>
         </context-group>
       </trans-unit>
       <trans-unit id="peopleDirectorySearchResults.role" datatype="html">
@@ -9606,12 +10286,76 @@
           <context context-type="linenumber">75</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="northStarPage.noMission" datatype="html">
-        <source>There are no missions here... Let's create one.</source>
-        <target state="translated">Aquí no hay misiones... Vamos a crear una.</target>
+      <trans-unit id="newNorthStarDialog.createNS" datatype="html">
+        <source>Create a new North Star</source>
+        <target state="translated">Crear una nueva North Star</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/work/north-star-page/north-star-page.component.html</context>
-          <context context-type="linenumber">5</context>
+          <context context-type="sourcefile">modules/work/north-star-page/new-north-start-dialog/new-north-start-dialog.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newNorthStarDialog.title" datatype="html">
+        <source>Title</source>
+        <target state="translated">Titulo</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/north-star-page/new-north-start-dialog/new-north-start-dialog.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newNorthStarDialog.group" datatype="html">
+        <source>Group</source>
+        <target state="translated">Grupo</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/north-star-page/new-north-start-dialog/new-north-start-dialog.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newNorthStarDialog.section" datatype="html">
+        <source>Section</source>
+        <target state="translated">Sección</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/north-star-page/new-north-start-dialog/new-north-start-dialog.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newNorthStarDialog.cancel" datatype="html">
+        <source>Cancel</source>
+        <target state="translated">Cancelar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/north-star-page/new-north-start-dialog/new-north-start-dialog.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newNorthStarDialog.createNSButton" datatype="html">
+        <source>Create North Star</source>
+        <target state="translated">Crear North Star</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/north-star-page/new-north-start-dialog/new-north-start-dialog.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newNorthStarDialog.pleaseWaitCreatingPost" datatype="html">
+        <source>Please wait we are creating the task...</source>
+        <target state="translated">Por favor espere estamos creando la tarea...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/north-star-page/new-north-start-dialog/new-north-start-dialog.component.ts</context>
+          <context context-type="linenumber">93</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newNorthStarDialog.taskCreated" datatype="html">
+        <source>Task Created!</source>
+        <target state="translated">¡Tarea Creada!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/north-star-page/new-north-start-dialog/new-north-start-dialog.component.ts</context>
+          <context context-type="linenumber">110</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newNorthStarDialog.unableCreateNewTask" datatype="html">
+        <source>Unable to create new task, please try again!</source>
+        <target state="translated">No se puede crear una nueva tarea, ¡inténtalo de nuevo!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/north-star-page/new-north-start-dialog/new-north-start-dialog.component.ts</context>
+          <context context-type="linenumber">115</context>
         </context-group>
       </trans-unit>
       <trans-unit id="northStarPage.whatIsNS" datatype="html">
@@ -9619,7 +10363,7 @@
         <target state="translated">¿Qué es una North Star?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/north-star-page/north-star-page.component.html</context>
-          <context context-type="linenumber">13</context>
+          <context context-type="linenumber">7</context>
         </context-group>
       </trans-unit>
       <trans-unit id="northStarPage.setAndAchieveStrategic" datatype="html">
@@ -9627,7 +10371,23 @@
         <target state="translated">Establecer y lograr metas estratégicas. Alinee su organización.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Conecte los objetivos de su empresa y el trabajo para respaldarlos en un solo lugar.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Puede ver el progreso para mantener a los equipos encaminados. Y los equipos pueden trabajar sabiamente para hacer las cosas correctas.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/north-star-page/north-star-page.component.html</context>
-          <context context-type="linenumber">15,18</context>
+          <context context-type="linenumber">9,12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="northStarPage.newNS" datatype="html">
+        <source>New North Star</source>
+        <target state="translated">Nueva North Star</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/north-star-page/north-star-page.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="northStarPage.noMission" datatype="html">
+        <source>There are no missions here... Let's create one.</source>
+        <target state="translated">Aquí no hay misiones... Vamos a crear una.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/north-star-page/north-star-page.component.html</context>
+          <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pulse.whatIsPulse" datatype="html">
@@ -10047,7 +10807,7 @@
         <target state="translated">Se produjo un error al obtener los detalles de su perfil</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/navbar.component.ts</context>
-          <context context-type="linenumber">200</context>
+          <context context-type="linenumber">203</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pushNotifications.recentNotifications" datatype="html">
@@ -10263,7 +11023,7 @@
         <target state="translated">Directorio de personas</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/work-navbar/work-navbar.component.html</context>
-          <context context-type="linenumber">151</context>
+          <context context-type="linenumber">161</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workNavbar.organizationChart" datatype="html">
@@ -10271,7 +11031,39 @@
         <target state="translated">Organigrama</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/work-navbar/work-navbar.component.html</context>
-          <context context-type="linenumber">152</context>
+          <context context-type="linenumber">162</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workNavbar.hrAndPayroll" datatype="html">
+        <source>HR &amp; Payroll</source>
+        <target state="translated">Nómina de recursos humanos</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/work-navbar/work-navbar.component.html</context>
+          <context context-type="linenumber">163</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workNavbar.timeOff" datatype="html">
+        <source>Time Off</source>
+        <target state="translated">Tiempo Libre</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/work-navbar/work-navbar.component.html</context>
+          <context context-type="linenumber">167</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workNavbar.hiveReports" datatype="html">
+        <source>Hive Reports</source>
+        <target state="translated">Reporte Hive</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/work-navbar/work-navbar.component.html</context>
+          <context context-type="linenumber">168</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workNavbar.payrollSetup" datatype="html">
+        <source>Payroll Setup</source>
+        <target state="translated">Configuración de Nómina</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/work-navbar/work-navbar.component.html</context>
+          <context context-type="linenumber">169</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageNotFound.oops" datatype="html">
@@ -11172,7 +11964,7 @@
       </trans-unit>
       <trans-unit id="postComment.delete" datatype="html">
         <source>Delete</source>
-        <target state="translated">Borrar</target>
+        <target state="translated">Eliminar</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/comments/post-comment/post-comment.component.html</context>
           <context context-type="linenumber">102</context>
@@ -12698,6 +13490,78 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-versions/file-versions.component.ts</context>
           <context context-type="linenumber">224</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="hiveReportsCard.payrollSetup" datatype="html">
+        <source>Hive Reports</source>
+        <target state="translated">Reporte Hive</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/hr/hive-reports-card/hive-reports-card.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="hiveReportsCard.cardDescription" datatype="html">
+        <source> Create and track reports for employee activity and payroll. </source>
+        <target state="translated">Cree y realice un seguimiento de los informes sobre la actividad de los empleados y la nómina.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/hr/hive-reports-card/hive-reports-card.component.html</context>
+          <context context-type="linenumber">8,10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="hiveReportsCard.goToReports" datatype="html">
+        <source>Go to reports</source>
+        <target state="translated">Ir a informes</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/hr/hive-reports-card/hive-reports-card.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="payrollSetupCard.payrollSetup" datatype="html">
+        <source>Payroll Setup</source>
+        <target state="translated">Configuración de nómina</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/hr/payroll-setup-card/payroll-setup-card.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="payrollSetupCard.cardDescription" datatype="html">
+        <source> Define how your employees’ payment is regulated, create and customize workplaces (these are entities to which you can assign employees). </source>
+        <target state="translated">Define cómo se regula el pago de tus empleados, crea y personaliza los lugares de trabajo (estas son entidades a las que puedes asignar empleados).</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/hr/payroll-setup-card/payroll-setup-card.component.html</context>
+          <context context-type="linenumber">8,10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="payrollSetupCard.goToSetup" datatype="html">
+        <source>Go to setup</source>
+        <target state="translated">Ir a configuración</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/hr/payroll-setup-card/payroll-setup-card.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="pendingTasksCard.pendingTaks" datatype="html">
+        <source>Pending Taks</source>
+        <target state="translated">Tareas pendientes</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/hr/pending-tasks-card/pending-tasks-card.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="timeOffCard.timeOff" datatype="html">
+        <source>Time off</source>
+        <target state="translated">Tiempo libre</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/hr/time-off-card/time-off-card.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="timeOffCard.seeWhosOutThisWeek" datatype="html">
+        <source>See who’s out this week</source>
+        <target state="translated">Mira quién está fuera esta semana</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/hr/time-off-card/time-off-card.component.html</context>
+          <context context-type="linenumber">20</context>
         </context-group>
       </trans-unit>
       <trans-unit id="inlineInput.pleaseWaitUpdatingContent" datatype="html">
@@ -14409,11 +15273,11 @@
         <target state="translated">Leer más...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-view/post-view.component.html</context>
-          <context context-type="linenumber">93,95</context>
+          <context context-type="linenumber">92,94</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-view/post-view.component.html</context>
-          <context context-type="linenumber">108,110</context>
+          <context context-type="linenumber">107,109</context>
         </context-group>
       </trans-unit>
       <trans-unit id="projectBudgetDialog.sectionBudget" datatype="html">
@@ -14450,7 +15314,7 @@
       </trans-unit>
       <trans-unit id="projectBudgetDialog.delete" datatype="html">
         <source>Delete</source>
-        <target state="translated">Borrar</target>
+        <target state="translated">Eliminar</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/project-budget-dialog/project-budget-dialog.component.html</context>
           <context context-type="linenumber">64</context>
@@ -15001,7 +15865,11 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/guards/organization-module-available-guard/organization-module-available.guard.ts</context>
-          <context context-type="linenumber">27</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/guards/organization-module-available-guard/organization-module-available.guard.ts</context>
+          <context context-type="linenumber">38</context>
         </context-group>
       </trans-unit>
       <trans-unit id="denyNavigationGuard.accessRestricted" datatype="html">
@@ -15086,6 +15954,38 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/guards/group-guard/group.guard.ts</context>
           <context context-type="linenumber">79</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.usd" datatype="html">
+        <source>US Dollar</source>
+        <target state="translated">Dólar Estadounidense</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/hr-service/hr.service.ts</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.eur" datatype="html">
+        <source>Euro</source>
+        <target state="translated">Euro</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/hr-service/hr.service.ts</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.us" datatype="html">
+        <source>United States of America</source>
+        <target state="translated">Estados Unidos de America</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/hr-service/hr.service.ts</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.es" datatype="html">
+        <source>Spain</source>
+        <target state="translated">España</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/hr-service/hr.service.ts</context>
+          <context context-type="linenumber">21</context>
         </context-group>
       </trans-unit>
       <trans-unit id="socketService.notification" datatype="html">
