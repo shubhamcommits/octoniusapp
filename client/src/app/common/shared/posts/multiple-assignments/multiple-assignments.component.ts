@@ -2,6 +2,7 @@ import { Component, Input, Output, OnChanges, EventEmitter, ViewChild, ViewEncap
 import { MatMenuTrigger } from '@angular/material/menu';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
+import { GroupService } from 'src/shared/services/group-service/group.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
@@ -47,26 +48,34 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
   constructor(
     public utilityService: UtilityService,
     private postService: PostService,
+    private groupService: GroupService,
     private injector: Injector
   ) { }
 
   async ngOnChanges() {
 
     if (this.type != 'chat') {
-      this.subSink.add(this.utilityService.currentGroupData.subscribe((res) => {
-        if (JSON.stringify(res) != JSON.stringify({})) {
-
-          // Assign the GroupData
-          this.groupData = res;
-
-          this.members = this.groupData._members.concat(this.groupData._admins);
-          this.members = this.members.filter((member, index) => {
-              return (this.members.findIndex(m => m._id == member._id) == index)
-          });
+      if (this.groupId) {
+        this.groupService.getAllGroupMembers(this.groupId).then(res => {
+          this.members = res['users'];
 
           this.members.unshift({_id: 'all', first_name: 'All', last_name: 'members', email: ''});
-        }
-      }));
+        });
+      }
+      // this.subSink.add(this.utilityService.currentGroupData.subscribe((res) => {
+      //   if (JSON.stringify(res) != JSON.stringify({})) {
+
+      //     // Assign the GroupData
+      //     this.groupData = res;
+
+      //     this.members = this.groupData._members.concat(this.groupData._admins);
+      //     this.members = this.members.filter((member, index) => {
+      //         return (this.members.findIndex(m => m._id == member._id) == index)
+      //     });
+
+      //     this.members.unshift({_id: 'all', first_name: 'All', last_name: 'members', email: ''});
+      //   }
+      // }));
     } else {
       this.members = await this.workspaceData?.members;
       this.members = await this.members?.filter((member, index) => {
