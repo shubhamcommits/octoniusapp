@@ -16,7 +16,7 @@
   <div class="row" style="margin-bottom: 20px;">
     <div class="col card">
       <div class="title">
-        {{ numAssignedToMe }} <span>goals assigned to you</span>
+        {{ numAssignedToMe }} <span i18n="@@northStarPage.goalsAssignedTo">goals assigned to you</span>
       </div>
 
       <div class="d-md-none d-lg-block graph" *ngIf="assignedToChartReady">
@@ -32,7 +32,7 @@
     
     <div class="col card">
       <div class="title">
-        {{ numAssignedByMe }} <span>goals assigned to you</span>
+        {{ numAssignedByMe }} <span i18n="@@northStarPage.goalsAssignedBy">goals assigned by you</span>
       </div>
 
       <div class="d-md-none d-lg-block graph" *ngIf="assignedByChartReady">
@@ -48,7 +48,7 @@
     
     <div class="col card">
       <div class="title">
-        <span>Overall progress</span>
+        <span i18n="@@northStarPage.overallProgress">Overall progress</span>
       </div>
 
       <div class="d-md-none d-lg-block graph" *ngIf="generalChartReady">
