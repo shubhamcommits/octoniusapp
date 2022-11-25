@@ -156,15 +156,11 @@ export class NorthStarPageComponent implements OnInit {
   }
 
   async initGeneralGraph() {
-console.log(this.groupsNorthStarTasks);
     const notStarted = await this.groupsNorthStarTasks.filter(post => !post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status || post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status == 'NOT STARTED');
     const onTrack = await this.groupsNorthStarTasks.filter(post => post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status == 'ON TRACK');
     const inDanger = await this.groupsNorthStarTasks.filter(post => post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status == 'IN DANGER');
     const achieved = await this.groupsNorthStarTasks.filter(post => post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status == 'ACHIEVED');
-console.log(notStarted);
-console.log(onTrack);
-console.log(inDanger);
-console.log(achieved);
+
     this.generalChartData = [onTrack?.length, inDanger?.length, notStarted?.length, achieved?.length];
     this.generalChartReady = true;
   }
