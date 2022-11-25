@@ -1,12 +1,17 @@
 <div class="container" *ngIf="groupData">
 
   <!-- Group presentation -->
-  <div class="card-tile">
+  <!-- <div class="card-tile">
     <div class="card-block">
         <h6><b i18n="@@groupAdmin.group">{{ groupData.group_name }} group</b></h6>
         {{ groupData.description }}
     </div>
-  </div>
+  </div> -->
+
+  <app-group-information
+    *ngIf="groupData && userData && checkDataExist(groupData) && checkDataExist(userData)"
+    [userData]="userData" [groupData]="groupData" [myWorkplace]="myWorkplace">
+  </app-group-information>
 
   <!-- Add Users -->
   <div class="card-tile">

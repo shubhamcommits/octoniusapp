@@ -5,7 +5,7 @@
             <!-- Group Information Header starts -->
             <h6 class="card-title" *ngIf="!myWorkplace" style="margin-bottom: -10px;">
 
-                <b>{{groupData?.group_name }}</b>
+                <b>{{groupData?.group_name }} group</b>
 
                 <!-- Edit Group Details starts -->
                 <button *ngIf="userData.role != 'member' && groupData.group_name.toLowerCase() != 'global'"
@@ -30,7 +30,7 @@
             <p class="card-text" *ngIf="!myWorkplace">
               <strong i18n="@@groupInformation.members">Members:</strong>{{ groupData?._members.length + groupData?._admins.length || 0 }}</p>
             <p class="card-text" *ngIf="!myWorkplace && groupData.group_name.toLowerCase() != 'global'">
-                <strong i18n="@@groupInformation.description">Description: </strong>{{groupData?.description}}
+                <strong i18n="@@groupInformation.description">Description: </strong>{{ groupData?.description }}
             </p>
             <p class="card-text" *ngIf="myWorkplace" i18n="@@groupInformation.thisIsPersonalSpace">
               This is your personal space. Everything you create here is private.

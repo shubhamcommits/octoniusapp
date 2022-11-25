@@ -44,7 +44,8 @@ img{
 .hide-container {
   display: none;
 }
-.card{
+.card {
+  cursor: pointer;
   border:none;
   box-shadow: 0 6px 18px #005fd521;
 }

@@ -1,25 +1,25 @@
 <div class="container">
     <div class="row main-actvity">
 
-        <div class="col-md-4">
+        <!-- <div class="col-md-4"> -->
 
             <!-- Group Information starts -->
-            <app-group-information
+            <!-- <app-group-information
                 *ngIf="groupData && userData && checkDataExist(groupData) && checkDataExist(userData) && !globalFeed"
                 [userData]="userData"
                 [groupData]="groupData"
                 [myWorkplace]="myWorkplace">
-            </app-group-information>
+            </app-group-information> -->
             <!-- Group Information ends -->
 
             <!-- Task Progress Count starts -->
-            <app-group-task-progress *ngIf="groupData && groupData?._id && globalFeed == false" [groupId]="groupData?._id"
-                [myWorkplace]="myWorkplace"></app-group-task-progress>
+            <!-- <app-group-task-progress *ngIf="groupData && groupData?._id && globalFeed == false" [groupId]="groupData?._id"
+                [myWorkplace]="myWorkplace"></app-group-task-progress> -->
             <!-- Task Progress Count ends -->
 
               <!-- Send pulse starts -->
-              <app-activity-filters *ngIf="groupData && globalFeed == false" [group]="groupData" (filterPostsEmitter)="applyFilters($event)">
-              </app-activity-filters>
+              <!-- <app-activity-filters *ngIf="groupData && globalFeed == false" [group]="groupData" (filterPostsEmitter)="applyFilters($event)">
+              </app-activity-filters> -->
               <!-- Send pulse ends -->
 
             <!-- Send pulse starts
@@ -30,15 +30,16 @@
 
 
             <!-- Task Smart Card Starts -->
-            <app-task-smart-card *ngIf="globalFeed"></app-task-smart-card>
+            <!-- <app-task-smart-card *ngIf="globalFeed"></app-task-smart-card> -->
             <!-- Task Smart Card Ends -->
 
             <!-- Agenda Smart Card Starts -->
-            <app-agenda-smart-card *ngIf="globalFeed" [routerLink]="'/dashboard/myspace/agenda'"></app-agenda-smart-card>
+            <!-- <app-agenda-smart-card *ngIf="globalFeed" [routerLink]="'/dashboard/myspace/agenda'"></app-agenda-smart-card> -->
             <!-- Agenda Smart Card Ends -->
-        </div>
+        <!-- </div> -->
 
-        <div class="col-md-8">
+        <div class="col">
+              <i (click)="openFilters()" class="material-icons-outlined float-right" style="cursor: pointer; margin: 10px; width:30px;">filter_list</i>
 
             <!-- News Feed Pill -->
             <app-news-pill *ngIf="showNewPosts" (click)="newPosts()"></app-news-pill>

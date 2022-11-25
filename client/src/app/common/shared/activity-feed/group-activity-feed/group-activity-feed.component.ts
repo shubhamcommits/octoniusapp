@@ -9,6 +9,8 @@ import { retry } from 'rxjs/internal/operators/retry';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import moment from 'moment';
 import { GroupService } from 'src/shared/services/group-service/group.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivityFiltersComponent } from '../activity-filters/activity-filters.component';
 
 @Component({
   selector: 'app-group-activity-feed',
@@ -67,7 +69,8 @@ export class GroupActivityFeedComponent implements OnInit {
     private injector: Injector,
     public utilityService: UtilityService,
     private socketService: SocketService,
-    private postService: PostService
+    private postService: PostService,
+    public dialog: MatDialog
   ) {
 
     this.subSink.add(this._router.events.subscribe(async (e: any) => {
@@ -434,6 +437,25 @@ export class GroupActivityFeedComponent implements OnInit {
         return (moment.utc(p1['created_date']).isBefore(p2['created_date'])) ? -1 : 1;
       });
     }
+  }
+
+  openFilters() {
+    const dialogRef = this.dialog.open(ActivityFiltersComponent, {
+      data: {
+        groupData: this.groupData,
+      },
+      width: '30%',
+      height: '55%',
+      hasBackdrop: true,
+    });
+
+    const filterPostsEmitterSubs = dialogRef.componentInstance.filterPostsEmitter.subscribe((data) => {
+      this.applyFilters(data);
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      filterPostsEmitterSubs.unsubscribe();
+    });
   }
 
   async applyFilters(filters: any) {

@@ -75,7 +75,7 @@ export class NorthStarPageComponent implements OnInit {
     private postService: PostService,
     private utilityService: UtilityService,
     private injector: Injector,
-    public dialog: MatDialog,) { }
+    public dialog: MatDialog) { }
 
   async ngOnInit() {
     this.userData = await this.publicFunctions.getCurrentUser();
