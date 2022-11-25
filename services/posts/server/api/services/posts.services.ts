@@ -2009,6 +2009,31 @@ export class PostService {
     }
   }
 
+  async getNorthStarStats(userId: string) {
+    try {
+      let nsAssignedToMe =await Post.find({
+          $and: [
+            { 'task.isNorthStar': true },
+            { '_assigned_to': userId }
+          ]
+        }).select('task.northStar').lean();
+
+        let nsAssignedByMe =await Post.find({
+          $and: [
+            { 'task.isNorthStar': true },
+            { '_posted_by': userId }
+          ]
+        }).select('task.northStar').lean();
+
+        return {
+          nsAssignedToMe: nsAssignedToMe || [],
+          nsAssignedByMe: nsAssignedByMe || [],
+        };
+    } catch (error) {
+      throw (error);
+    }
+  }
+
   async getWorspacePostsResults(workspaceId: any, type: any, numDays: number, overdue: boolean, isNorthStar: boolean, filteringGroups: any) {
 
     const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');

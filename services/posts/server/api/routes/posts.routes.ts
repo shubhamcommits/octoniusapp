@@ -55,7 +55,13 @@ routes.get('/archived', postController.getArchivedTasks);
  * GET - This route fetches the list of posts present in a group
  * @param { groups Ids } query
  */
-routes.get('/northstar', postController.getNorthStarTasks);
+routes.get('/usergroups-northstar', postController.getNorthStarTasks);
+
+/**
+ * GET - This route fetches the stats for the NS page
+ * @param { groups Ids } query
+ */
+routes.get('/user-northstar', postController.getNorthStarStats);
 
 // This route is used to edit a post
 routes.put('/:postId', postFileHandler, postController.edit);

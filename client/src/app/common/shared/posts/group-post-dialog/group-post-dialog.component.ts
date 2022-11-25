@@ -600,11 +600,11 @@ export class GroupPostDialogComponent implements OnInit {
       target_value: 0,
       values: [{
         date: Date.now(),
-        value: 0
+        value: 0,
+        status: 'NOT STARTED'
       }],
       type: 'Currency',
-      currency: 'USD',
-      status: 'ON TRACK'
+      currency: 'USD'
     };
     const makeNSLogAction = (this.postData.task.isNorthStar) ? 'make_ns' : 'make_no_ns';
     this.updateDetails(makeNSLogAction);

@@ -142,16 +142,13 @@ export class PostService {
    * This function fetches the list of North Star Tasks present in a user´s groups
    * @param { groups } query
    */
-  getNorthStarTasks() {
-
-    // Create the request variable
-    let request: any;
-
-    request = this._http.get(this.baseURL + `/northstar`).toPromise()
-
-    return request;
+  getUserGroupsNorthStarTasks() {
+    return this._http.get(this.baseURL + `/usergroups-northstar`).toPromise();
   }
 
+  getUserNorthStarTasks() {
+    return this._http.get(this.baseURL + `/user-northstar`).toPromise();
+  }
 
   /**
    * This service function is responsible for fetching the tasks and events present in month

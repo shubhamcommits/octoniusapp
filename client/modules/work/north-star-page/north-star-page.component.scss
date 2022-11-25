@@ -23,7 +23,7 @@
   border-radius: 8px;
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14);
 }
-  .card-tile {
+  .tile {
     padding: 0;
     align-items: center;
     // background: linear-gradient(90.01deg, #5E2FE5 0.01%, #5E2FE5 99.99%);
@@ -147,5 +147,24 @@
   // margin-bottom: 20px;
   &:hover{
     background-color: #4a20c3;
+  }
+}
+
+.card {
+  width: 288px;
+  background: #FFFFFF;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14);
+  border-radius: 8px;
+  margin-right: 10px;
+  padding-bottom: 20px;
+
+  .title {
+    align-self: center;
+    margin: 20px 0;
+  }
+
+  .graph {
+    width: 90%;
+    align-self: center;
   }
 }
