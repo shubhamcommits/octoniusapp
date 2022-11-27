@@ -621,10 +621,6 @@
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations.component.html</context>
           <context context-type="linenumber">23</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/user/user-profile/user-profile.component.html</context>
-          <context context-type="linenumber">16</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="workplaceLdapFieldsMapperDialog.mapFields" datatype="html">
         <source>Map Fields</source>
@@ -8505,6 +8501,10 @@
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
           <context context-type="linenumber">250</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-profile/user-profile.component.ts</context>
+          <context context-type="linenumber">194</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="editEntityDialog.entityUpdated" datatype="html">
         <source>Entity updated!</source>
@@ -8529,6 +8529,10 @@
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
           <context context-type="linenumber">279</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-profile/user-profile.component.ts</context>
+          <context context-type="linenumber">200</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="editEntityDialog.unableToUpdateEntity" datatype="html">
         <source>Unable to update the entity, please try again!</source>
@@ -8552,6 +8556,10 @@
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
           <context context-type="linenumber">284</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-profile/user-profile.component.ts</context>
+          <context context-type="linenumber">203</context>
         </context-group>
       </trans-unit>
       <trans-unit id="setup.areYouSure" datatype="html">
@@ -9802,6 +9810,62 @@
           <context context-type="linenumber">31</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="userProfile.hrFields" datatype="html">
+        <source>HR fields</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-hive/user-hive.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userProfile.hrFieldsDescription" datatype="html">
+        <source> Fields created by the HR team. These fields are mandatory. </source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-hive/user-hive.component.html</context>
+          <context context-type="linenumber">7,9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userProfile.payrollInfo" datatype="html">
+        <source>Payroll info</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-hive/user-hive.component.html</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userProfile.payrollInfoDescription" datatype="html">
+        <source> Fields created by the HR team. These fields are mandatory. </source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-hive/user-hive.component.html</context>
+          <context context-type="linenumber">50,52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userHive.pleaseWaitWeUpdateContents" datatype="html">
+        <source>Please wait we are updating the contents...</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-hive/user-hive.component.ts</context>
+          <context context-type="linenumber">164</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userHive.cfUpdated" datatype="html">
+        <source>Field updated!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-hive/user-hive.component.ts</context>
+          <context context-type="linenumber">176</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userHive.unableToUpdateCF" datatype="html">
+        <source>Unable to update field, please try again!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-hive/user-hive.component.ts</context>
+          <context context-type="linenumber">179</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="userInformation.yourContactInformation" datatype="html">
         <source>Your contact information</source>
         <target state="translated">Ihre Kontaktinformation</target>
@@ -9879,7 +9943,11 @@
         <target state="translated">Sind Sie sicher?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-information/user-information.component.ts</context>
-          <context context-type="linenumber">47</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.ts</context>
+          <context context-type="linenumber">189</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userInformation.thisActionWillDeleteAccount" datatype="html">
@@ -9887,7 +9955,11 @@
         <target state="translated">Durch diese Aktion wird Ihr Konto gelöscht.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-information/user-information.component.ts</context>
-          <context context-type="linenumber">48</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.ts</context>
+          <context context-type="linenumber">190</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userInformation.pleaseWaitWeDeleteUser" datatype="html">
@@ -9895,7 +9967,11 @@
         <target state="translated">Bitte warten Sie, wir löschen den Arbeitsbereich...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-information/user-information.component.ts</context>
-          <context context-type="linenumber">52</context>
+          <context context-type="linenumber">53</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.ts</context>
+          <context context-type="linenumber">194</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userInformation.successfullyLoggedOut" datatype="html">
@@ -9903,7 +9979,11 @@
         <target state="translated">Erfolgreich abgemeldet!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-information/user-information.component.ts</context>
-          <context context-type="linenumber">65</context>
+          <context context-type="linenumber">66</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.ts</context>
+          <context context-type="linenumber">207</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userInformation.errorOccurredWhileLogginOut" datatype="html">
@@ -9911,7 +9991,11 @@
         <target state="translated">Beim Abmelden ist ein Fehler aufgetreten! Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-information/user-information.component.ts</context>
-          <context context-type="linenumber">68</context>
+          <context context-type="linenumber">69</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.ts</context>
+          <context context-type="linenumber">210</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userInformation.userDeleted" datatype="html">
@@ -9919,7 +10003,11 @@
         <target state="translated">Benutzer gelöscht!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-information/user-information.component.ts</context>
-          <context context-type="linenumber">72</context>
+          <context context-type="linenumber">73</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.ts</context>
+          <context context-type="linenumber">214</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userInformation.unableToRemoveUser" datatype="html">
@@ -9927,7 +10015,11 @@
         <target state="translated">Der Benutzer kann nicht vom Arbeitsplatz entfernt werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-information/user-information.component.ts</context>
-          <context context-type="linenumber">74</context>
+          <context context-type="linenumber">75</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.ts</context>
+          <context context-type="linenumber">216</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userPasswordUpdate.passwordUpdate" datatype="html">
@@ -10001,6 +10093,10 @@
           <context context-type="sourcefile">modules/user/user-profile/user-profile-custom-fields/user-profile-custom-fields.component.ts</context>
           <context context-type="linenumber">85</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-profile/user-profile.component.ts</context>
+          <context context-type="linenumber">166</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="userProfileCF.cfUpdated" datatype="html">
         <source><x id="PH" equiv-text="customFieldName"/> updated!</source>
@@ -10008,6 +10104,10 @@
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-profile/user-profile-custom-fields/user-profile-custom-fields.component.ts</context>
           <context context-type="linenumber">98</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-profile/user-profile.component.ts</context>
+          <context context-type="linenumber">181</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userProfileCF.unableToUpdateCF" datatype="html">
@@ -10017,6 +10117,10 @@
           <context context-type="sourcefile">modules/user/user-profile/user-profile-custom-fields/user-profile-custom-fields.component.ts</context>
           <context context-type="linenumber">101</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-profile/user-profile.component.ts</context>
+          <context context-type="linenumber">184</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="userProfileCF.errorOccurredWhileModifyingMembers" datatype="html">
         <source>An error occurred while modifying the members of the group.</source>
@@ -10025,13 +10129,97 @@
           <context context-type="sourcefile">modules/user/user-profile/user-profile-custom-fields/user-profile-custom-fields.component.ts</context>
           <context context-type="linenumber">126</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-profile/user-profile.component.ts</context>
+          <context context-type="linenumber">229</context>
+        </context-group>
       </trans-unit>
-      <trans-unit id="userProfile.fetchInfo" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;&gt;"/>cable<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Fetch Information from LDAP </source>
-        <target state="translated"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;&gt;"/>Kabel<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Abrufen von Informationen aus LDAP </target>
+      <trans-unit id="userProfile.personalInformation" datatype="html">
+        <source>Personal information</source>
+        <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-profile/user-profile.component.html</context>
-          <context context-type="linenumber">12</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userProfile.legalInformationDescription" datatype="html">
+        <source> Your personal information </source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-profile/user-profile.component.html</context>
+          <context context-type="linenumber">6,8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userProfile.firstName" datatype="html">
+        <source>First name</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-profile/user-profile.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userProfile.lastName" datatype="html">
+        <source>Last name</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-profile/user-profile.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userProfile.email" datatype="html">
+        <source>E-Mail</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-profile/user-profile.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userProfile.phoneNumber" datatype="html">
+        <source>Phone number</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-profile/user-profile.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userProfile.cellNumber" datatype="html">
+        <source>Cell number</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-profile/user-profile.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userProfile.language" datatype="html">
+        <source>Language</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-profile/user-profile.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userProfile.profileFields" datatype="html">
+        <source>Profile fields</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-profile/user-profile.component.html</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userProfile.profileFieldsDescription" datatype="html">
+        <source> Fields created by the workplace admin. These fields are mandatory in order to customize your experience and access to resources. </source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-profile/user-profile.component.html</context>
+          <context context-type="linenumber">47,49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userProfile.skills" datatype="html">
+        <source>Skills</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-profile/user-profile.component.html</context>
+          <context context-type="linenumber">79</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userProfile.userNoExists" datatype="html">
@@ -10039,7 +10227,11 @@
         <target state="translated">Ihr Benutzer existiert nicht in LDAP!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-profile/user-profile.component.ts</context>
-          <context context-type="linenumber">76</context>
+          <context context-type="linenumber">122</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.ts</context>
+          <context context-type="linenumber">129</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userSkills.yourSkills" datatype="html">
@@ -10353,7 +10545,6 @@
       <trans-unit id="northStarPage.whatIsNS" datatype="html">
         <source> Set and achieve strategic goals.</source>
         <target state="needs-adaptation">Was ist ein Nordstern?</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/north-star-page/north-star-page.component.html</context>
           <context context-type="linenumber">7</context>
@@ -10362,7 +10553,6 @@
       <trans-unit id="northStarPage.setAndAchieveStrategic" datatype="html">
         <source> Align your organization. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Connect your company goals and the work to support them in one place. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>You can see progress to keep teams on track. And teams can work wisely to get the right things done. </source>
         <target state="needs-adaptation"> Setzen und erreichen Sie strategische Ziele. Richten Sie Ihre Organisation aus. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Verknüpfen Sie Ihre Unternehmensziele und die Arbeit zu deren Erreichung an einem Ort. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Sie können den Fortschritt sehen, um die Teams auf Kurs zu halten. Und die Teams können klug arbeiten, um die richtigen Dinge zu tun </target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/north-star-page/north-star-page.component.html</context>
           <context context-type="linenumber">9,12</context>
@@ -11012,12 +11202,52 @@
           <context context-type="linenumber">217</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="userAccountNavbar.edit" datatype="html">
+        <source>Edit</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userAccountNavbar.syncLDAP" datatype="html">
+        <source>Sync LDAP</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userAccountNavbar.changePassword" datatype="html">
+        <source>Change Password</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userAccountNavbar.deleteAccount" datatype="html">
+        <source>Delete Account</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="userAccountNavbar.profile" datatype="html">
         <source>Profile</source>
         <target state="translated">Profil</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.html</context>
-          <context context-type="linenumber">23</context>
+          <context context-type="linenumber">53</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userAccountNavbar.hiveHR" datatype="html">
+        <source>Hive HR</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.html</context>
+          <context context-type="linenumber">64</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userAccountNavbar.integrations" datatype="html">
@@ -11025,7 +11255,7 @@
         <target state="translated">Integrationen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.html</context>
-          <context context-type="linenumber">33</context>
+          <context context-type="linenumber">75</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userAccountNavbar.timeOff" datatype="html">
@@ -11033,7 +11263,7 @@
         <target state="translated">Auszeit</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.html</context>
-          <context context-type="linenumber">43</context>
+          <context context-type="linenumber">86</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workNavbar.work" datatype="html">
@@ -16718,20 +16948,1940 @@
           <context context-type="linenumber">95</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="countryCurrencyService.us" datatype="html">
-        <source>United States of America</source>
+      <trans-unit id="countrycurrencyservice.AF" datatype="html">
+        <source>Afghanistan</source>
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
           <context context-type="linenumber">99</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="countryCurrencyService.es" datatype="html">
-        <source>Spain</source>
+      <trans-unit id="countrycurrencyservice.AX" datatype="html">
+        <source>Aland Islands</source>
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
           <context context-type="linenumber">100</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.al" datatype="html">
+        <source>Albania</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">101</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.dz" datatype="html">
+        <source>Algeria</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">102</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.as" datatype="html">
+        <source>American Samoa</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">103</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ad" datatype="html">
+        <source>Andorra</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">104</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ao" datatype="html">
+        <source>Angola</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">105</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ai" datatype="html">
+        <source>Anguilla</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">106</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.aq" datatype="html">
+        <source>Antarctica</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">107</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ag" datatype="html">
+        <source>Antigua and Barbuda</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">108</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ar" datatype="html">
+        <source>Argentina</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">109</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.am" datatype="html">
+        <source>Armenia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">110</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.aw" datatype="html">
+        <source>Aruba</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">111</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.au" datatype="html">
+        <source>Australia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">112</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.at" datatype="html">
+        <source>Austria</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">113</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.az" datatype="html">
+        <source>Azerbaijan</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">114</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.bs" datatype="html">
+        <source>Bahamas</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">115</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.bh" datatype="html">
+        <source>Bahrain</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">116</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.bd" datatype="html">
+        <source>Bangladesh</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">117</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.bb" datatype="html">
+        <source>Barbados</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">118</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.by" datatype="html">
+        <source>Belarus</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">119</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.be" datatype="html">
+        <source>Belgium</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">120</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.bz" datatype="html">
+        <source>Belize</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">121</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.bj" datatype="html">
+        <source>Benin</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">122</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.bm" datatype="html">
+        <source>Bermuda</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">123</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.bt" datatype="html">
+        <source>Bhutan</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">124</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.bo" datatype="html">
+        <source>Bolivia, Plurinational State of</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">125</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ba" datatype="html">
+        <source>Bosnia and Herzegovina</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">126</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.bw" datatype="html">
+        <source>Botswana</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">127</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.br" datatype="html">
+        <source>Brazil</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">128</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.io" datatype="html">
+        <source>British Indian Ocean Territory</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">129</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.bn" datatype="html">
+        <source>Brunei Darussalam</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">130</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.bg" datatype="html">
+        <source>Bulgaria</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">131</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.bf" datatype="html">
+        <source>Burkina Faso</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">132</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.bi" datatype="html">
+        <source>Burundi</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">133</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.kh" datatype="html">
+        <source>Cambodia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">134</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.cm" datatype="html">
+        <source>Cameroon</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">135</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ca" datatype="html">
+        <source>Canada</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">136</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.cv" datatype="html">
+        <source>Cape Verde</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">137</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ky" datatype="html">
+        <source>Cayman Islands</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">138</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.cf" datatype="html">
+        <source>Central African Republic</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">139</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.td" datatype="html">
+        <source>Chad</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">140</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.cl" datatype="html">
+        <source>Chile</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">141</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.cn" datatype="html">
+        <source>China</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">142</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.cx" datatype="html">
+        <source>Christmas Island</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">143</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.cc" datatype="html">
+        <source>Cocos (Keeling) Islands</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">144</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.co" datatype="html">
+        <source>Colombia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">145</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.km" datatype="html">
+        <source>Comoros</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">146</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.cg" datatype="html">
+        <source>Congo</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">147</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.cd" datatype="html">
+        <source>Congo, The Democratic Republic of the Congo</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">148</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ck" datatype="html">
+        <source>Cook Islands</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">149</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.cr" datatype="html">
+        <source>Costa Rica</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">150</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ci" datatype="html">
+        <source>Cote d'Ivoire</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">151</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.hr" datatype="html">
+        <source>Croatia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">152</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.cu" datatype="html">
+        <source>Cuba</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">153</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.cy" datatype="html">
+        <source>Cyprus</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">154</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.cz" datatype="html">
+        <source>Czech Republic</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">155</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.dk" datatype="html">
+        <source>Denmark</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">156</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.dj" datatype="html">
+        <source>Djibouti</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">157</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.dm" datatype="html">
+        <source>Dominica</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">158</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.do" datatype="html">
+        <source>Dominican Republic</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">159</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ec" datatype="html">
+        <source>Ecuador</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">160</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.eg" datatype="html">
+        <source>Egypt</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">161</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.sv" datatype="html">
+        <source>El Salvador</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">162</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.gq" datatype="html">
+        <source>Equatorial Guinea</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">163</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.er" datatype="html">
+        <source>Eritrea</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">164</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ee" datatype="html">
+        <source>Estonia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">165</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.et" datatype="html">
+        <source>Ethiopia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">166</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.fk" datatype="html">
+        <source>Falkland Islands (Malvinas)</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">167</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.fo" datatype="html">
+        <source>Faroe Islands</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">168</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.fj" datatype="html">
+        <source>Fiji</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">169</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.fi" datatype="html">
+        <source>Finland</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">170</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.fr" datatype="html">
+        <source>France</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">171</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.gf" datatype="html">
+        <source>French Guiana</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">172</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.pf" datatype="html">
+        <source>French Polynesia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">173</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ga" datatype="html">
+        <source>Gabon</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">174</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.gm" datatype="html">
+        <source>Gambia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">175</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ge" datatype="html">
+        <source>Georgia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">176</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.de" datatype="html">
+        <source>Germany</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">177</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.gh" datatype="html">
+        <source>Ghana</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">178</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.gi" datatype="html">
+        <source>Gibraltar</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">179</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.gr" datatype="html">
+        <source>Greece</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">180</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.gl" datatype="html">
+        <source>Greenland</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">181</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.gd" datatype="html">
+        <source>Grenada</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">182</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.gp" datatype="html">
+        <source>Guadeloupe</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">183</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.gu" datatype="html">
+        <source>Guam</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">184</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.gt" datatype="html">
+        <source>Guatemala</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">185</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.gg" datatype="html">
+        <source>Guernsey</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">186</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.gn" datatype="html">
+        <source>Guinea</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">187</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.gw" datatype="html">
+        <source>Guinea-Bissau</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">188</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.gy" datatype="html">
+        <source>Guyana</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">189</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ht" datatype="html">
+        <source>Haiti</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">190</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.va" datatype="html">
+        <source>Holy See (Vatican City State)</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">191</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.hn" datatype="html">
+        <source>Honduras</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">192</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.hk" datatype="html">
+        <source>Hong Kong</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">193</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.hu" datatype="html">
+        <source>Hungary</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">194</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.is" datatype="html">
+        <source>Iceland</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">195</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.in" datatype="html">
+        <source>India</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">196</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.id" datatype="html">
+        <source>Indonesia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">197</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ir" datatype="html">
+        <source>Iran, Islamic Republic of Persian Gulf</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">198</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.iq" datatype="html">
+        <source>Iraq</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">199</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ie" datatype="html">
+        <source>Ireland</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">200</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.im" datatype="html">
+        <source>Isle of Man</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">201</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.il" datatype="html">
+        <source>Israel</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">202</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.it" datatype="html">
+        <source>Italy</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">203</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.jm" datatype="html">
+        <source>Jamaica</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">204</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.jp" datatype="html">
+        <source>Japan</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">205</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.je" datatype="html">
+        <source>Jersey</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">206</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.jo" datatype="html">
+        <source>Jordan</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">207</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.kz" datatype="html">
+        <source>Kazakhstan</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">208</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ke" datatype="html">
+        <source>Kenya</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">209</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ki" datatype="html">
+        <source>Kiribati</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">210</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.kp" datatype="html">
+        <source>Korea, Democratic People's Republic of Korea</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">211</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.kr" datatype="html">
+        <source>Korea, Republic of South Korea</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">212</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.kw" datatype="html">
+        <source>Kuwait</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">213</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.kg" datatype="html">
+        <source>Kyrgyzstan</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">214</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.la" datatype="html">
+        <source>Laos</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">215</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.lv" datatype="html">
+        <source>Latvia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">216</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.lb" datatype="html">
+        <source>Lebanon</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">217</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ls" datatype="html">
+        <source>Lesotho</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">218</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.lr" datatype="html">
+        <source>Liberia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">219</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ly" datatype="html">
+        <source>Libyan Arab Jamahiriya</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">220</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.li" datatype="html">
+        <source>Liechtenstein</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">221</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.lt" datatype="html">
+        <source>Lithuania</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">222</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.lu" datatype="html">
+        <source>Luxembourg</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">223</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.mo" datatype="html">
+        <source>Macao</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">224</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.mk" datatype="html">
+        <source>Macedonia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">225</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.mg" datatype="html">
+        <source>Madagascar</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">226</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.mw" datatype="html">
+        <source>Malawi</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">227</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.my" datatype="html">
+        <source>Malaysia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">228</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.mv" datatype="html">
+        <source>Maldives</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">229</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ml" datatype="html">
+        <source>Mali</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">230</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.mt" datatype="html">
+        <source>Malta</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">231</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.mh" datatype="html">
+        <source>Marshall Islands</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">232</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.mq" datatype="html">
+        <source>Martinique</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">233</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.mr" datatype="html">
+        <source>Mauritania</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">234</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.mu" datatype="html">
+        <source>Mauritius</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">235</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.yt" datatype="html">
+        <source>Mayotte</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">236</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.mx" datatype="html">
+        <source>Mexico</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">237</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.fm" datatype="html">
+        <source>Micronesia, Federated States of Micronesia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">238</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.md" datatype="html">
+        <source>Moldova</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">239</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.mc" datatype="html">
+        <source>Monaco</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">240</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.mn" datatype="html">
+        <source>Mongolia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">241</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.me" datatype="html">
+        <source>Montenegro</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">242</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ms" datatype="html">
+        <source>Montserrat</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">243</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ma" datatype="html">
+        <source>Morocco</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">244</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.mz" datatype="html">
+        <source>Mozambique</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">245</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.mm" datatype="html">
+        <source>Myanmar</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">246</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.na" datatype="html">
+        <source>Namibia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">247</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.nr" datatype="html">
+        <source>Nauru</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">248</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.np" datatype="html">
+        <source>Nepal</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">249</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.nl" datatype="html">
+        <source>Netherlands</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">250</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.an" datatype="html">
+        <source>Netherlands Antilles</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">251</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.nc" datatype="html">
+        <source>New Caledonia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">252</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.nz" datatype="html">
+        <source>New Zealand</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">253</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ni" datatype="html">
+        <source>Nicaragua</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">254</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ne" datatype="html">
+        <source>Niger</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">255</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ng" datatype="html">
+        <source>Nigeria</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">256</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.nu" datatype="html">
+        <source>Niue</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">257</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.nf" datatype="html">
+        <source>Norfolk Island</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">258</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.mp" datatype="html">
+        <source>Northern Mariana Islands</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">259</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.no" datatype="html">
+        <source>Norway</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">260</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.om" datatype="html">
+        <source>Oman</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">261</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.pk" datatype="html">
+        <source>Pakistan</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">262</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.pw" datatype="html">
+        <source>Palau</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">263</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ps" datatype="html">
+        <source>Palestinian Territory, Occupied</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">264</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.pa" datatype="html">
+        <source>Panama</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">265</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.pg" datatype="html">
+        <source>Papua New Guinea</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">266</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.py" datatype="html">
+        <source>Paraguay</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">267</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.pe" datatype="html">
+        <source>Peru</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">268</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ph" datatype="html">
+        <source>Philippines</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">269</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.pn" datatype="html">
+        <source>Pitcairn</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">270</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.pl" datatype="html">
+        <source>Poland</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">271</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.pt" datatype="html">
+        <source>Portugal</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">272</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.pr" datatype="html">
+        <source>Puerto Rico</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">273</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.qa" datatype="html">
+        <source>Qatar</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">274</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ro" datatype="html">
+        <source>Romania</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">275</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ru" datatype="html">
+        <source>Russia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">276</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.rw" datatype="html">
+        <source>Rwanda</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">277</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.re" datatype="html">
+        <source>Reunion</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">278</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.bl" datatype="html">
+        <source>Saint Barthelemy</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">279</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.sh" datatype="html">
+        <source>Saint Helena, Ascension and Tristan Da Cunha</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">280</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.kn" datatype="html">
+        <source>Saint Kitts and Nevis</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">281</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.lc" datatype="html">
+        <source>Saint Lucia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">282</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.mf" datatype="html">
+        <source>Saint Martin</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">283</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.pm" datatype="html">
+        <source>Saint Pierre and Miquelon</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">284</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.vc" datatype="html">
+        <source>Saint Vincent and the Grenadines</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">285</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ws" datatype="html">
+        <source>Samoa</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">286</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.sm" datatype="html">
+        <source>San Marino</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">287</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.st" datatype="html">
+        <source>Sao Tome and Principe</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">288</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.sa" datatype="html">
+        <source>Saudi Arabia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">289</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.sn" datatype="html">
+        <source>Senegal</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">290</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.rs" datatype="html">
+        <source>Serbia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">291</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.sc" datatype="html">
+        <source>Seychelles</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">292</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.sl" datatype="html">
+        <source>Sierra Leone</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">293</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.sg" datatype="html">
+        <source>Singapore</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">294</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.sk" datatype="html">
+        <source>Slovakia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">295</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.si" datatype="html">
+        <source>Slovenia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">296</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.sb" datatype="html">
+        <source>Solomon Islands</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">297</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.so" datatype="html">
+        <source>Somalia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">298</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.za" datatype="html">
+        <source>South Africa</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">299</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ss" datatype="html">
+        <source>South Sudan</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">300</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.gs" datatype="html">
+        <source>South Georgia and the South Sandwich Islands</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">301</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.es" datatype="html">
+        <source>Spain</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">302</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.lk" datatype="html">
+        <source>Sri Lanka</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">303</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.sd" datatype="html">
+        <source>Sudan</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">304</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.sr" datatype="html">
+        <source>Suriname</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">305</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.sj" datatype="html">
+        <source>Svalbard and Jan Mayen</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">306</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.sz" datatype="html">
+        <source>Swaziland</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">307</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.se" datatype="html">
+        <source>Sweden</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">308</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ch" datatype="html">
+        <source>Switzerland</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">309</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.sy" datatype="html">
+        <source>Syrian Arab Republic</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">310</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ty" datatype="html">
+        <source>Taiwan</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">311</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.tj" datatype="html">
+        <source>Tajikistan</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">312</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.tz" datatype="html">
+        <source>Tanzania, United Republic of Tanzania</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">313</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.th" datatype="html">
+        <source>Thailand</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">314</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.tl" datatype="html">
+        <source>Timor-Leste</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">315</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.tg" datatype="html">
+        <source>Togo</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">316</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.tk" datatype="html">
+        <source>Tokelau</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">317</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.to" datatype="html">
+        <source>Tonga</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">318</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.tt" datatype="html">
+        <source>Trinidad and Tobago</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">319</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.tn" datatype="html">
+        <source>Tunisia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">320</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.tr" datatype="html">
+        <source>Turkey</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">321</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.tm" datatype="html">
+        <source>Turkmenistan</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">322</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.tc" datatype="html">
+        <source>Turks and Caicos Islands</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">323</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.tv" datatype="html">
+        <source>Tuvalu</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">324</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ug" datatype="html">
+        <source>Uganda</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">325</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ua" datatype="html">
+        <source>Ukraine</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">326</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ae" datatype="html">
+        <source>United Arab Emirates</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">327</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.gb" datatype="html">
+        <source>United Kingdom</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">328</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.us" datatype="html">
+        <source>United States of America</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">329</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.uy" datatype="html">
+        <source>Uruguay</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">330</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.uz" datatype="html">
+        <source>Uzbekistan</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">331</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.vu" datatype="html">
+        <source>Vanuatu</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">332</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ve" datatype="html">
+        <source>Venezuela, Bolivarian Republic of Venezuela</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">333</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.vn" datatype="html">
+        <source>Vietnam</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">334</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.vg" datatype="html">
+        <source>Virgin Islands, British</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">335</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.vi" datatype="html">
+        <source>Virgin Islands, U.S.</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">336</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.wf" datatype="html">
+        <source>Wallis and Futuna</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">337</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.ye" datatype="html">
+        <source>Yemen</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">338</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.zm" datatype="html">
+        <source>Zambia</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">339</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="countrycurrencyservice.zw" datatype="html">
+        <source>Zimbabwe</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/services/country-currency/country-currency.service.ts</context>
+          <context context-type="linenumber">340</context>
         </context-group>
       </trans-unit>
       <trans-unit id="socketService.notification" datatype="html">

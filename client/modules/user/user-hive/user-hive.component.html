@@ -1,0 +1,74 @@
+<div class="container">
+
+  <div class="row main-actvity">
+    <div class="col">
+      <div class="col-description">
+        <h4 i18n="@@userProfile.hrFields">HR fields</h4>
+        <p class="block-description" i18n="@@userProfile.hrFieldsDescription">
+          Fields created by the HR team. These fields are mandatory.
+        </p>
+      </div>
+      <hr />
+    </div>
+  
+    <div class="col">
+      <div class="form-group">
+        <div *ngFor="let cf of hrCustomFields">
+          <label [for]="cf._id">{{ cf.name }}</label>
+        
+          <mat-select ngDefaultControl *ngIf="isCurrentUser && cf.type == 'Select'" [(value)]="selectedHRCFValues[cf._id]"
+            (selectionChange)="onSelectEntityCustomFieldChange($event, cf._id)" appearance="fill" [name]="cf._id">
+            <mat-select-trigger>{{ selectedHRCFValues[cf._id] }}</mat-select-trigger>
+            <mat-option *ngFor="let val of cf.values" [value]="val">{{ val }}</mat-option>
+          </mat-select>
+          <span *ngIf="!isCurrentUser && cf.type == 'Select'">{{ selectedHRCFValues[cf._id] }}</span>
+
+          <input type="number" *ngIf="isCurrentUser && cf.type == 'Number'" [name]="cf.name" [(ngModel)]="selectedHRCFValues[cf._id]" [disabled]="!isCurrentUser"
+            class="form-control" [value]="selectedHRCFValues[cf._id]"
+            (keyup.enter)="onInputEntityCustomFieldChange($event, cf._id)"
+            (blur)="onInputEntityCustomFieldChange($event, cf._id)" />
+
+          <input type="text" *ngIf="isCurrentUser && cf.type == 'Text'" [name]="cf.name" [(ngModel)]="selectedHRCFValues[cf._id]" [disabled]="!isCurrentUser"
+            class="form-control" [value]="selectedHRCFValues[cf._id]"
+            (keyup.enter)="onInputEntityCustomFieldChange($event, cf._id)"
+            (blur)="onInputEntityCustomFieldChange($event, cf._id)" />
+
+          <app-date-picker *ngIf="isCurrentUser && cf.type == 'Date'" class="form-control"
+            [styleClass]="'btn-group input-date'" [canEdit]="isCurrentUser"
+            [selectedDate]="formateDate(selectedHRCFValues[cf._id])"
+            (date)="onDateEntityCustomFieldChange($event, cf._id)">
+          </app-date-picker>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row main-actvity">
+    <div class="col">
+      <div class="col-description">
+        <h4 i18n="@@userProfile.payrollInfo">Payroll info</h4>
+        <p class="block-description" i18n="@@userProfile.payrollInfoDescription">
+          Fields created by the HR team. These fields are mandatory.
+        </p>
+      </div>
+      <hr />
+    </div>
+  
+    <div class="col">
+      <div class="form-group">
+        <div *ngFor="let variable of hrVariables">
+          <label [for]="variable._id">{{ variable.name }}</label>
+
+          <input type="number" [name]="variable.name" [(ngModel)]="selectedHRVariablesValues[variable._id]" disabled="true"
+            class="form-control" [value]="selectedHRVariablesValues[variable._id]"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading Spinner Starts -->
+<ng-container *ngIf="isLoading$">
+  <app-loading-spinner class="media"></app-loading-spinner>
+</ng-container>
+<!-- Loading Spinner Ends -->

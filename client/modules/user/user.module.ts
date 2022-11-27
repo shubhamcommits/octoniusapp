@@ -26,6 +26,8 @@ import { UserAvailabilityDayDialogComponent } from './user-workload/user-availab
 import { MatSelectModule } from '@angular/material/select';
 import { UserPasswordUpdateComponent } from './user-profile/user-password-update/user-password-update.component';
 import { UserProfileCustomFieldsComponent } from './user-profile/user-profile-custom-fields/user-profile-custom-fields.component';
+import { FormsModule } from '@angular/forms';
+import { UserHiveComponent } from './user-hive/user-hive.component';
 
 
 @NgModule({
@@ -34,6 +36,7 @@ import { UserProfileCustomFieldsComponent } from './user-profile/user-profile-cu
         UserProfileComponent,
         UserCloudsComponent,
         UserInformationComponent,
+        UserHiveComponent,
         UserProfessionalInformationComponent,
         UserSkillsComponent,
         UserAvailableCloudsComponent,
@@ -47,6 +50,7 @@ import { UserProfileCustomFieldsComponent } from './user-profile/user-profile-cu
     imports: [
         CommonModule,
         SharedModule,
+        FormsModule,
         GoogleCloudModule,
         BoxCloudModule,
         SlackCloudModule,

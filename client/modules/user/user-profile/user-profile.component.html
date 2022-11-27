@@ -1,36 +1,124 @@
 <div class="container">
-    <div class="row main-actvity" *ngIf="userData">
+  <div class="row main-actvity">
+    <div class="col">
+      <div class="col-description">
+        <h4 i18n="@@userProfile.personalInformation">Personal information</h4>
+        <p class="block-description" i18n="@@userProfile.legalInformationDescription">
+          Your personal information
+        </p>
+      </div>
+      <hr />
+    </div>
+  
+    <div class="col">
+      <div class="form-group">
+        <label for="first_name" i18n="@@userProfile.firstName">First name</label>
+        <input type="text" class="form-control" [(ngModel)]="userData.first_name" name="first_name"
+          (blur)="saveProperty('first_name', $event.target.value)">
+  
+        <label for="last_name" i18n="@@userProfile.lastName">Last name</label>
+        <input type="text" class="form-control" [(ngModel)]="userData.last_name" name="last_name"
+          (blur)="saveProperty('last_name', $event.target.value)">
 
-        <div class="col-md-4">
-            <app-user-information [userData]="userData" [currentUser]="isCurrentUser"  (updateData)="onUpdateUserEmitter($event)"></app-user-information>
+        <label for="email" i18n="@@userProfile.email">E-Mail</label>
+        <input type="text" class="form-control" [(ngModel)]="userData.email" name="email"
+          (blur)="saveProperty('email', $event.target.value)">
+        
+        <label for="phone_number" i18n="@@userProfile.phoneNumber">Phone number</label>
+        <input type="text" class="form-control" [(ngModel)]="userData.phone_number" name="phone_number"
+          (blur)="saveProperty('phone_number', $event.target.value)">
+        
+        <label for="mobile_number" i18n="@@userProfile.cellNumber">Cell number</label>
+        <input type="text" class="form-control" [(ngModel)]="userData.mobile_number" name="mobile_number"
+          (blur)="saveProperty('mobile_number', $event.target.value)">
 
-            <!-- LDAP Integration STARTS -->
-            <div class="sidecontent" *ngIf="isCurrentUser && workspaceData?.integrations?.is_ldap_connected && workspaceData?.ldapPropertiesMap">
-              <div class="card sideinnercard">
-                <div class="card-block">
-                  <h6 class="card-title">
-                    <b i18n="@@userProfile.fetchInfo"> <i class="material-icons">cable</i> Fetch Information from LDAP </b>
-                  </h6>
+        <!-- LANGUAGE SELECT starts -->
+        <label i18n="@@userProfile.language">Language</label>
+        <app-select-language [userData]="userData"></app-select-language>
+        <!-- LANGUAGE SELECT ends -->
+      </div>
+    </div>
+  </div>
 
-                  <div style="margin-top: 20px;">
-                    <button class="btn btn-primary" (click)="getUserInformation()" i18n="@@workspaceAddDomain.syncLDAP">Sync LDAP</button>
-                  </div>
+  <div class="row main-actvity">
+    <div class="col">
+      <div class="col-description">
+        <h4 i18n="@@userProfile.profileFields">Profile fields</h4>
+        <p class="block-description" i18n="@@userProfile.profileFieldsDescription">
+          Fields created by the workplace admin. These fields are mandatory in order to customize your experience and access to resources.
+        </p>
+      </div>
+      <hr />
+    </div>
+  
+    <div class="col">
+      <div class="form-group">
+        <div *ngFor="let cf of customFields">
+          <label  [for]="cf.name">{{ cf.title }}</label>
+        
+          <mat-select ngDefaultControl *ngIf="!cf.user_type && isCurrentUser"
+            [(value)]="selectedCFValues[cf.name]" [name]="cf.name"
+            (selectionChange)="onCustomFieldChange($event, cf.name)" appearance="fill">
+            <mat-select-trigger>{{ selectedCFValues[cf.name] }}</mat-select-trigger>
+            <mat-option *ngFor="let val of cf.values" [value]="val">{{ val }}</mat-option>
+          </mat-select>
+      
+          <span *ngIf="!cf.user_type && !isCurrentUser">{{ selectedCFValues[cf.name] }}</span>
+          
+          <app-select-assignee *ngIf="cf.user_type" type="workspaceMembers"
+            [userData]="selectedCFValues[cf.name]" [workspaceData]="workspaceData"
+            [showBar]="isCurrentUser" (member)="selectUser(cf.name, $event)"></app-select-assignee>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row main-actvity">
+    <div class="col">
+      <div class="col-description">
+        <h4 i18n="@@userProfile.skills">Skills</h4>
+        <p class="block-description" i18n="@@userProfile.skillsDescription">
+          
+        </p>
+      </div>
+      <hr />
+    </div>
+  
+    <div class="col">
+      <div class="form-group">
+        <app-user-skills [userData]="userData" [currentUser]="isCurrentUser"></app-user-skills>
+      </div>
+    </div>
+  </div>
+
+  <!--
+  <div class="row main-actvity" *ngIf="userData">
+      <div class="col-md-4">
+          <app-user-information [userData]="userData" [currentUser]="isCurrentUser"  (updateData)="onUpdateUserEmitter($event)"></app-user-information>
+
+          <div class="sidecontent" *ngIf="isCurrentUser && workspaceData?.integrations?.is_ldap_connected && workspaceData?.ldapPropertiesMap">
+            <div class="card sideinnercard">
+              <div class="card-block">
+                <h6 class="card-title">
+                  <b i18n="@@userProfile.fetchInfo"> <i class="material-icons">cable</i> Fetch Information from LDAP </b>
+                </h6>
+
+                <div style="margin-top: 20px;">
+                  <button class="btn btn-primary" (click)="getUserInformation()" i18n="@@workspaceAddDomain.syncLDAP">Sync LDAP</button>
                 </div>
               </div>
             </div>
-            <!-- LDAP Integration ENDS -->
-        </div>
+          </div>
+      </div>
 
-        <div class="col-md-8">
-            <app-user-professional-information [userData]="userData" [currentUser]="isCurrentUser" (updateData)="onUpdateUserEmitter($event)"></app-user-professional-information>
-
-            <app-user-profile-custom-fields [userData]="userData" [currentUser]="isCurrentUser" [workspaceData]="workspaceData"></app-user-profile-custom-fields>
-
-            <app-user-skills [userData]="userData" [currentUser]="isCurrentUser"></app-user-skills>
-
-            <app-user-password-update [userData]="userData" [currentUser]="isCurrentUser"></app-user-password-update>
-        </div>
-    </div>
+      <div class="col-md-8">
+          <app-user-professional-information [userData]="userData" [currentUser]="isCurrentUser" (updateData)="onUpdateUserEmitter($event)"></app-user-professional-information>
+          <app-user-profile-custom-fields [userData]="userData" [currentUser]="isCurrentUser" [workspaceData]="workspaceData"></app-user-profile-custom-fields>
+          <app-user-skills [userData]="userData" [currentUser]="isCurrentUser"></app-user-skills>
+          <app-user-password-update [userData]="userData" [currentUser]="isCurrentUser"></app-user-password-update>
+      </div>
+  </div>
+  -->
 </div>
 
 <!-- Loading Spinner Starts -->

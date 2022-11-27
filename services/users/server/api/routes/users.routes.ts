@@ -146,6 +146,13 @@ routes.put('/:userId/saveCustomFieldsFromLDAP', user.saveCustomFieldsFromLDAP);
 // PUT - Change custom field value
 routes.put('/locale', user.saveLocale);
 
+// -| HR |-
+// PUT - Change payroll custom field value
+routes.put('/:userId/payrollCustomField', user.savePayrollCustomField);
+
+// PUT - Change payroll variable
+routes.put('/:userId/payrollVariable', user.savePayrollVariable);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

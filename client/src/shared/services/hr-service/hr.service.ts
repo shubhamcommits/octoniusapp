@@ -47,6 +47,10 @@ export class HRService {
     return this._http.post(this.baseUrl + `/${entityId}/delete-variable`, { variableId }).toPromise();
   }
 
+  getEntityPayrollVariablesAndCustomFields(userId: string) {
+    return this._http.get(this.baseUrl + `/${userId}/entityVariablesCF`).toPromise();
+  }
+
   createNewCF(entityId: string, cf: any) {
     return this._http.post(this.baseUrl + `/${entityId}/cf`, { cf }).toPromise();
   }

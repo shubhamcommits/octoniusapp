@@ -103,6 +103,20 @@ const UserSchema = new Schema({
         type: [String],
         default: ['WORK_STATISTICS', 'WORKLOAD', 'VELOCITY'/*, 'PULSE'*/, 'PEOPLE_DIRECTORY', 'ORGANIZATIONAL_STRUCTURE', 'WORK_STATISTICS_NORTH_STAR', 'ENGAGEMENT', 'KPI_PERFORMANCE', 'TOP_SOCIAL']
     },
+    hr: {
+        _entity:{
+            type: Schema.Types.ObjectId,
+            ref: 'Entity',
+        },
+        entity_custom_fields: {
+            type: Map,
+            of: String
+        },
+        entity_variables: {
+            type: Map,
+            of: String
+        }
+    },
     stats: {
         lastTaskView: {
             type: String,

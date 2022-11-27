@@ -694,7 +694,7 @@ export class GroupPostDialogComponent implements OnInit {
    * This function is responsible for receiving the date from @module <app-date-picker></app-date-picker>
    * @param dateObject
    */
-   getCFDate(dateObject: any, cfName: string, cfTitle: string) {
+  getCFDate(dateObject: any, cfName: string, cfTitle: string) {
     this.saveCustomField(cfName, cfTitle, dateObject.toDate());
   }
 

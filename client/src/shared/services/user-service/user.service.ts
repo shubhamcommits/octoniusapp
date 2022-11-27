@@ -412,4 +412,20 @@ export class UserService {
   getUserWorkspaces(userId: string) {
     return this._http.get(this.BASE_API_URL + `/${userId}/userWorkspaces`).toPromise();
   }
+
+  savePayrollCustomField(userId: string, customFieldId: string, customFieldValue: string) {
+    // Call the HTTP Request
+    return this._http.put(this.BASE_API_URL + `/${userId}/payrollCustomField`, {
+      customFieldId: customFieldId,
+      customFieldValue: customFieldValue
+    }).toPromise();
+  }
+
+  savePayrollVariable(userId: string, customFieldId: string, customFieldValue: string) {
+    // Call the HTTP Request
+    return this._http.put(this.BASE_API_URL + `/${userId}/payrollVariable`, {
+      customFieldId: customFieldId,
+      customFieldValue: customFieldValue
+    }).toPromise();
+  }
 }

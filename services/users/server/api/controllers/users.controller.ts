@@ -1343,4 +1343,80 @@ export class UsersControllers {
             return sendError(res, err, 'Internal Server Error!', 500);           
         }
     }
+
+    async savePayrollCustomField(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { userId } = req.params;
+
+        // Fetch the newCustomField from fileHandler middleware
+        const customFieldValue = req.body['customFieldValue'];
+        const customFieldId = req.body['customFieldId'];
+
+        let user: any = await User.findById(userId);
+
+        if (!user.hr) {
+            user.hr = {};
+        }
+
+        if (!user.hr.entity_custom_fields) {
+            user.hr.entity_custom_fields = new Map<string, string>();
+        }
+        user.hr.entity_custom_fields.set(customFieldId, customFieldValue);
+
+        // Find the post and update the custom field
+        user = await User.findByIdAndUpdate({
+            _id: userId
+        }, {
+            $set: { "hr.entity_custom_fields": user.hr.entity_custom_fields }
+        }, {
+            new: true
+        });
+
+        // user.custom_fields[customFieldId] = customFieldValue;
+
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Payroll Custom Field updated!',
+            user: user
+        });
+    }
+
+    async savePayrollVariable(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { userId } = req.params;
+
+        // Fetch the newCustomField from fileHandler middleware
+        const customFieldValue = req.body['customFieldValue'];
+        const customFieldId = req.body['customFieldId'];
+
+        let user = await User.findById(userId);
+
+        if (!user.hr) {
+            user.hr = {};
+        }
+        
+        if (!user.hr.entity_variables) {
+            user.hr.entity_variables = new Map<string, string>();
+        }
+        user.hr.entity_variables.set(customFieldId, customFieldValue);
+
+        // Find the post and update the custom field
+        user = await User.findByIdAndUpdate({
+            _id: userId
+        }, {
+            $set: { "hr.entity_variables": user.hr.entity_variables }
+        }, {
+            new: true
+        });
+
+        // user.custom_fields[customFieldId] = customFieldValue;
+
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Payroll Variable updated!',
+            user: user
+        });
+    }
 }

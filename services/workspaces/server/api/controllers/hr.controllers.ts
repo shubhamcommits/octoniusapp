@@ -1,6 +1,6 @@
 import { sendError } from '../../utils';
 import { Request, Response, NextFunction } from 'express';
-import { Entity } from '../models';
+import { Entity, User } from '../models';
 import moment from 'moment';
 
 export class HRControllers {
@@ -239,6 +239,35 @@ export class HRControllers {
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async getEntityVariablesCF(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            const userId = req['userId'];
+
+            // Find the workspace based on the workspaceId
+            const user: any = await User.findOne({
+                _id: userId
+            }).select('hr._entity').lean();
+
+            // Check if workspace already exist with the same workspaceId
+            if (!user || ! user.hr || ! user.hr._entity) {
+                return sendError(res, new Error('Oops, user not found or doesn´t have an payroll entity assigned!'), 'User not found or doesn´t have an payroll entity assigned!', 404);
+            }
+
+            const entity: any = await Entity.findOne({
+                    _id: user?.hr?._entity
+                }).select('payroll_custom_fields payroll_variables').lean();
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Entity found!',
+                entity: entity
+            });
+        } catch (err) {
+            return sendError(res, err);
         }
     }
 

@@ -51,7 +51,8 @@ const EntitySchema = new Schema({
         },
         type: {
             type: String,
-            required: false
+            required: false,
+            enum: ['Number', 'Percentage']
         },
         value: {
             type: Number,
