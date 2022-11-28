@@ -7454,12 +7454,20 @@
           <context context-type="linenumber">145</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="storyActionsBar.cancelEdit" datatype="html">
+        <source>Cancel Edit</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/lounge/story-details/story-actions-bar/story-actions-bar.component.html</context>
+          <context context-type="linenumber">146</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="storyActionsBar.editIconImage" datatype="html">
         <source>Edit Icon Image</source>
         <target state="translated">Symbolbild bearbeiten</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/story-details/story-actions-bar/story-actions-bar.component.html</context>
-          <context context-type="linenumber">155</context>
+          <context context-type="linenumber">156</context>
         </context-group>
       </trans-unit>
       <trans-unit id="storyActionsBar.delete" datatype="html">
@@ -7467,7 +7475,7 @@
         <target state="translated">Löschen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/story-details/story-actions-bar/story-actions-bar.component.html</context>
-          <context context-type="linenumber">159</context>
+          <context context-type="linenumber">160</context>
         </context-group>
       </trans-unit>
       <trans-unit id="storyDetails.pleaseWaitWeSend" datatype="html">
@@ -10685,134 +10693,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-profile/user-skills/user-skills.component.ts</context>
           <context context-type="linenumber">113</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="userAvailabilityDaysDialog.selectedDays" datatype="html">
-        <source>Selected days</source>
-        <target state="translated">Ausgewählte Tage</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/user/user-workload/user-availability-day-dialog/user-availability-day-dialog.component.html</context>
-          <context context-type="linenumber">12</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="userAvailabilityDaysDialog.reason" datatype="html">
-        <source>Reason</source>
-        <target state="translated">Grund</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/user/user-workload/user-availability-day-dialog/user-availability-day-dialog.component.html</context>
-          <context context-type="linenumber">19</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="userAvailabilityDaysDialog.cancel" datatype="html">
-        <source> Cancel </source>
-        <target state="translated"> Abbrechen </target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/user/user-workload/user-availability-day-dialog/user-availability-day-dialog.component.html</context>
-          <context context-type="linenumber">31,33</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="userAvailabilityDaysDialog.save" datatype="html">
-        <source> Save </source>
-        <target state="translated"> Speichern </target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/user/user-workload/user-availability-day-dialog/user-availability-day-dialog.component.html</context>
-          <context context-type="linenumber">34,36</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="userAvailabilityDAyDialog.pleaseWaitSavingDays" datatype="html">
-        <source>Please wait we are saving your days...</source>
-        <target state="translated">Bitte warten Sie, wir retten Ihre Tage...</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/user/user-workload/user-availability-day-dialog/user-availability-day-dialog.component.ts</context>
-          <context context-type="linenumber">40</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="userAvailabilityDAyDialog.daysSaved" datatype="html">
-        <source>Days saved!</source>
-        <target state="translated">Tage gerettet!</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/user/user-workload/user-availability-day-dialog/user-availability-day-dialog.component.ts</context>
-          <context context-type="linenumber">55</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="userAvailabilityDAyDialog.unableToSaveDates" datatype="html">
-        <source>Unable to save the dates, please try again!</source>
-        <target state="translated">Die Daten können nicht gespeichert werden. Bitte versuchen Sie es erneut!</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/user/user-workload/user-availability-day-dialog/user-availability-day-dialog.component.ts</context>
-          <context context-type="linenumber">58</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="userWorkloadCalendar.previous" datatype="html">
-        <source> Previous </source>
-        <target state="translated"> Vorherige </target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/user/user-workload/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">5,7</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="userWorkloadCalendar.today" datatype="html">
-        <source> Today </source>
-        <target state="translated"> Heute </target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/user/user-workload/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">8,10</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="userWorkloadCalendar.next" datatype="html">
-        <source> Next </source>
-        <target state="translated"> Weiter </target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/user/user-workload/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">11,13</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="userWorkloadCalendar.clean" datatype="html">
-        <source> Clean </source>
-        <target state="translated"> Sauber </target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/user/user-workload/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">26,28</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="userWorkloadCalendar.areYouSure" datatype="html">
-        <source>Are you sure?</source>
-        <target state="translated">Sind Sie sicher?</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/user/user-workload/user-workload-calendar/user-workload-calendar.component.ts</context>
-          <context context-type="linenumber">146</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="userWorkloadCalendar.dayWillBeCAncelled" datatype="html">
-        <source>By doing this the day will be cancelled!</source>
-        <target state="translated">Damit entfällt der Tag!</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/user/user-workload/user-workload-calendar/user-workload-calendar.component.ts</context>
-          <context context-type="linenumber">146</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="userWorkloadCalendar.pleaseWaitWeCancelDay" datatype="html">
-        <source>Please wait we are cancelling the day...</source>
-        <target state="translated">Bitte warten Sie, wir sagen den Tag ab...</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/user/user-workload/user-workload-calendar/user-workload-calendar.component.ts</context>
-          <context context-type="linenumber">149</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="userWorkloadCalendar.dayCancelled" datatype="html">
-        <source>👍 Day/s cancelled!</source>
-        <target state="translated">👍 Tag/e abgesagt!</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/user/user-workload/user-workload-calendar/user-workload-calendar.component.ts</context>
-          <context context-type="linenumber">165</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="userWorkloadCalendar.errorWhileCancellingDay" datatype="html">
-        <source>Error while cancelling the days!</source>
-        <target state="translated">Fehler beim Stornieren der Tage!</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/user/user-workload/user-workload-calendar/user-workload-calendar.component.ts</context>
-          <context context-type="linenumber">168</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardPage.everythingHappening" datatype="html">
@@ -16591,6 +16471,134 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-update-user-personal-information-dialog/user-update-user-personal-information-dialog.component.ts</context>
           <context context-type="linenumber">56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userAvailabilityDaysDialog.selectedDays" datatype="html">
+        <source>Selected days</source>
+        <target state="translated">Ausgewählte Tage</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-availability-day-dialog/user-availability-day-dialog.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userAvailabilityDaysDialog.reason" datatype="html">
+        <source>Reason</source>
+        <target state="translated">Grund</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-availability-day-dialog/user-availability-day-dialog.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userAvailabilityDaysDialog.cancel" datatype="html">
+        <source> Cancel </source>
+        <target state="translated"> Abbrechen </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-availability-day-dialog/user-availability-day-dialog.component.html</context>
+          <context context-type="linenumber">31,33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userAvailabilityDaysDialog.save" datatype="html">
+        <source> Save </source>
+        <target state="translated"> Speichern </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-availability-day-dialog/user-availability-day-dialog.component.html</context>
+          <context context-type="linenumber">34,36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userAvailabilityDAyDialog.pleaseWaitSavingDays" datatype="html">
+        <source>Please wait we are saving your days...</source>
+        <target state="translated">Bitte warten Sie, wir retten Ihre Tage...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-availability-day-dialog/user-availability-day-dialog.component.ts</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userAvailabilityDAyDialog.daysSaved" datatype="html">
+        <source>Days saved!</source>
+        <target state="translated">Tage gerettet!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-availability-day-dialog/user-availability-day-dialog.component.ts</context>
+          <context context-type="linenumber">55</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userAvailabilityDAyDialog.unableToSaveDates" datatype="html">
+        <source>Unable to save the dates, please try again!</source>
+        <target state="translated">Die Daten können nicht gespeichert werden. Bitte versuchen Sie es erneut!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-availability-day-dialog/user-availability-day-dialog.component.ts</context>
+          <context context-type="linenumber">58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.previous" datatype="html">
+        <source> Previous </source>
+        <target state="translated"> Vorherige </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">5,7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.today" datatype="html">
+        <source> Today </source>
+        <target state="translated"> Heute </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">8,10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.next" datatype="html">
+        <source> Next </source>
+        <target state="translated"> Weiter </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">11,13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.clean" datatype="html">
+        <source> Clean </source>
+        <target state="translated"> Sauber </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">28,30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.areYouSure" datatype="html">
+        <source>Are you sure?</source>
+        <target state="translated">Sind Sie sicher?</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.ts</context>
+          <context context-type="linenumber">158</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.dayWillBeCAncelled" datatype="html">
+        <source>By doing this the day will be cancelled!</source>
+        <target state="translated">Damit entfällt der Tag!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.ts</context>
+          <context context-type="linenumber">158</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.pleaseWaitWeCancelDay" datatype="html">
+        <source>Please wait we are cancelling the day...</source>
+        <target state="translated">Bitte warten Sie, wir sagen den Tag ab...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.ts</context>
+          <context context-type="linenumber">161</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.dayCancelled" datatype="html">
+        <source>👍 Day/s cancelled!</source>
+        <target state="translated">👍 Tag/e abgesagt!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.ts</context>
+          <context context-type="linenumber">177</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.errorWhileCancellingDay" datatype="html">
+        <source>Error while cancelling the days!</source>
+        <target state="translated">Fehler beim Stornieren der Tage!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.ts</context>
+          <context context-type="linenumber">180</context>
         </context-group>
       </trans-unit>
       <trans-unit id="serverError.notAuthorizedToProcced" datatype="html">

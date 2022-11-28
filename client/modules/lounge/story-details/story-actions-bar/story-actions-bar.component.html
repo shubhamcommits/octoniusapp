@@ -142,7 +142,8 @@
     <ul class="dropdown-menu">
       <li class="dropdown-item" (click)="canEditAction()">
         <span class="material-icons-outlined">create</span>
-        <span i18n="@@storyActionsBar.edit">Edit</span>
+        <span *ngIf="!canEditStory" i18n="@@storyActionsBar.edit">Edit</span>
+        <span *ngIf="canEditStory" i18n="@@storyActionsBar.cancelEdit">Cancel Edit</span>
       </li>
       <!--
       <li class="dropdown-item" (click)="openImageSelector('header_pic')">

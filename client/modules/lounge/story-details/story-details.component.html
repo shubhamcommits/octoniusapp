@@ -60,7 +60,7 @@
     <app-section-separator></app-section-separator>
 
     <!-- COMMENTS SECTION STARTS -->
-    <div class="row mt-3">
+    <div class="row mt-3" *ngIf="!canEditStory">
       <comment-section *ngIf="userData && storyData && showComments"
         [userData]="userData"
         [editorId]="'_new_comment'"
