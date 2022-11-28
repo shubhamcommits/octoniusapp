@@ -9,6 +9,7 @@ import { HRService } from 'src/shared/services/hr-service/hr.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
+import { UserTimeOffDialogComponent } from './user-time-off-dialog/user-time-off-dialog.component';
 
 @Component({
   selector: 'app-time-off',
@@ -69,5 +70,25 @@ export class TimneOffComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  openCalendar(userId: string) {
+    const dialogRef = this.dialog.open(UserTimeOffDialogComponent, {
+      data: {
+        userId: userId
+      },
+      width: '85%',
+      height: '95%',
+      disableClose: true,
+      hasBackdrop: true
+    });
+
+    // const memberEditedEventSubs = dialogRef.componentInstance.memberEditedEvent.subscribe((data) => {
+    //   this.initUsersTable();
+    // });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // memberEditedEventSubs.unsubscribe();
+    });
   }
 }

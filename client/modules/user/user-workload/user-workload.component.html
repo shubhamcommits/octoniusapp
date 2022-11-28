@@ -1,3 +1,3 @@
 <div class="container">
-  <app-user-workload-calendar [userId]="userData?._id"></app-user-workload-calendar>
+  <app-user-workload-calendar *ngIf="userData && userData?._id" [userId]="userData?._id"></app-user-workload-calendar>
 </div>
