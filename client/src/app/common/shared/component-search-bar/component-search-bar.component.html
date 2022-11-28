@@ -60,9 +60,9 @@
                         <li class="dropdown-item" *ngIf="member.role != 'member'"
                             (click)="changeRole(member._id, 'member')" i18n="@@componentSearchBar.changeToMember">Change to Member</li>
                         <li class="dropdown-item" *ngIf="!member.hr_role && member.role != 'guest'" (click)="changeHRRole(member._id, true)"
-                            i18n="@@componentSearchBar.changeToAdmin">Add to HR Team</li>
+                            i18n="@@componentSearchBar.addToHRTeam">Add to HR Team</li>
                         <li class="dropdown-item" *ngIf="member.hr_role && member.role != 'guest'" (click)="changeHRRole(member._id, false)"
-                            i18n="@@componentSearchBar.changeToAdmin">Remove from HR Team</li>
+                            i18n="@@componentSearchBar.removeFromHRTeam">Remove from HR Team</li>
                         <li class="dropdown-divider"></li>
                         <li class="dropdown-item">
                             <button type="button" class="btn btn-danger btn-sm"
