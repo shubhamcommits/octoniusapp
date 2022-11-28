@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
+import { EditMemberPayrollDialogComponent } from './edit-member-payroll-dialog/edit-member-payroll-dialog.component';
 
 @Component({
   selector: 'app-reports',
@@ -76,5 +77,25 @@ export class ReportsComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  openMemberDialog(userId: string) {
+    const dialogRef = this.dialog.open(EditMemberPayrollDialogComponent, {
+      data: {
+        memberId: userId
+      },
+      width: '65%',
+      height: '75%',
+      disableClose: true,
+      hasBackdrop: true
+    });
+
+    const memberEditedEventSubs = dialogRef.componentInstance.memberEditedEvent.subscribe((data) => {
+      this.initUsersTable();
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      memberEditedEventSubs.unsubscribe();
+    });
   }
 }

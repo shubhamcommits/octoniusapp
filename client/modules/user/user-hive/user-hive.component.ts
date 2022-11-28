@@ -83,7 +83,7 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
         if (!this.userData.hr) {
           this.userData.hr = {
             entity_custom_fields: new Map<string, string>(),
-            payroll_variables: new Map<string, string>()
+            entity_variables: new Map<string, string>()
           };
         }
 
@@ -94,20 +94,11 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
               this.userData.hr.entity_custom_fields = new Map<string, string>();
             }
 
-            if (!this.userData.hr.entity_custom_fields[field.name]) {
+            if (!this.userData.hr.entity_custom_fields[field._id]) {
               this.userData.hr.entity_custom_fields[field.name] = '';
-              this.selectedHRCFValues[field.name] = '';
+              this.selectedHRCFValues[field._id] = '';
             } else {
-              if (!field.user_type) {
-                this.selectedHRCFValues[field.name] = this.userData.hr.entity_custom_fields[field.name];
-              } else {
-                this.selectedHRCFValues[field.name] = await this.publicFunctions.getOtherUser(this.userData.hr.entity_custom_fields[field.name]);
-              }
-            }
-
-            const ldapFieldValue = this.selectedHRCFValues[field.name];
-            if (ldapFieldValue && field.values.findIndex(value => value == ldapFieldValue) < 0) {
-              field.values.push(ldapFieldValue);
+              this.selectedHRCFValues[field._id] = this.userData.hr.entity_custom_fields[field._id];
             }
 
             if (this.isCurrentUser || ['owner', 'admin', 'manager'].includes(this.userData?.role) || !field.hide_in_business_card) {
@@ -118,27 +109,18 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
 
         if (res['entity']['payroll_variables']) {
           res['entity']['payroll_variables'].forEach(async field => {
-              if (!this.userData.hr.entity_custom_fields) {
-                this.userData.hr.entity_custom_fields = new Map<string, string>();
+              if (!this.userData.hr.entity_variables) {
+                this.userData.hr.entity_variables = new Map<string, string>();
               }
 
-              if (!this.userData.hr.entity_custom_fields[field.name]) {
-                this.userData.hr.entity_custom_fields[field.name] = '';
-                this.selectedHRVariablesValues[field.name] = '';
+              if (!this.userData.hr.entity_variables[field._id]) {
+                this.userData.hr.entity_variables[field._id] = '';
+                this.selectedHRVariablesValues[field._id] = '';
               } else {
-                if (!field.user_type) {
-                  this.selectedHRVariablesValues[field.name] = this.userData.hr.entity_custom_fields[field.name];
-                } else {
-                  this.selectedHRVariablesValues[field.name] = await this.publicFunctions.getOtherUser(this.userData.hr.entity_custom_fields[field.name]);
-                }
+                this.selectedHRVariablesValues[field._id] = this.userData.hr.entity_variables[field._id];
               }
 
-              const ldapFieldValue = this.selectedHRVariablesValues[field.name];
-              if (ldapFieldValue && field.values.findIndex(value => value == ldapFieldValue) < 0) {
-                field.values.push(ldapFieldValue);
-              }
-
-              if (this.isCurrentUser || ['owner', 'admin', 'manager'].includes(this.userData?.role) || !field.hide_in_business_card) {
+              if (this.isCurrentUser || ['owner', 'admin', 'manager'].includes(this.userData?.role)) {
                 this.hrVariables.push(field);
               }
             });
@@ -194,7 +176,7 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
         .then(async (res) => {
 
           const field = this.hrCustomFields[this.hrCustomFields.findIndex(cf => cf.name == customFieldId)];
-          if (field && !field.user_type) {
+          if (field) {
             this.selectedHRCFValues[customFieldId] = customFieldValue;
             this.userData.hr.entity_custom_fields[customFieldId] = customFieldValue;
           }

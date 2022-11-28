@@ -10,7 +10,7 @@ import { ReportsComponent } from './reports/reports.component';
 import { SetupComponent } from './setup/setup.component';
 import { NewEntityComponent } from './setup/new-entity/new-entity.component';
 import { EditEntityDialogComponent } from './setup/edit-entity-dialog/edit-entity-dialog.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { EditMemberPayrollDialogComponent } from './reports/edit-member-payroll-dialog/edit-member-payroll-dialog.component';
 
 
 @NgModule({
@@ -20,7 +20,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ReportsComponent,
     SetupComponent,
     NewEntityComponent,
-    EditEntityDialogComponent
+    EditEntityDialogComponent,
+    EditMemberPayrollDialogComponent
   ],
   imports: [
     CommonModule,
