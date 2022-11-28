@@ -67,6 +67,12 @@ routes.post('/:entityId/addMemberToEntity', controller.addMemberToEntity);
 // POST - Add all users to an entity
 routes.post('/:entityId/addAllMemberToEntity', controller.addAllMemberToEntity);
 
+// GET - Returns top 4 members which are currently off
+routes.get('/:workspaceId/topMembersOff', controller.getTopMembersOff);
+
+// GET - Returns all members which are currently off
+routes.get('/:workspaceId/membersOff', controller.getMembersOff);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

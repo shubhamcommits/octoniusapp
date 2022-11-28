@@ -78,4 +78,12 @@ export class HRService {
   addAllMemberToEntity(entityId: string, workspaceId: string) {
     return this._http.post(this.baseUrl + `/${entityId}/addAllMemberToEntity`, { workspaceId }).toPromise();
   }
+
+  getTopMembersOff(workspaceId: string) {
+    return this._http.get(this.baseUrl + `/${workspaceId}/topMembersOff`).toPromise();
+  }
+
+  getMembersOff(workspaceId: string) {
+    return this._http.get(this.baseUrl + `/${workspaceId}/membersOff`).toPromise();
+  }
 }

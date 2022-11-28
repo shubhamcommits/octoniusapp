@@ -1,6 +1,7 @@
 import { Component, OnInit, Injector, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
+import { HRService } from 'src/shared/services/hr-service/hr.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
@@ -23,7 +24,8 @@ export class TimeOffCardComponent implements OnInit {
 
   constructor(
     private injector: Injector,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private hrService: HRService
   ) { }
 
   async ngOnInit() {
@@ -35,6 +37,8 @@ export class TimeOffCardComponent implements OnInit {
       this.userData = await this.publicFunctions.getCurrentUser();
     }
 
-    this.membersOff = this.workspaceData?.members?.slice(0, 4);
+    this.hrService.getTopMembersOff(this.workspaceData?._id).then(res => {
+      this.membersOff = res['members'];
+    });
   }
 }

@@ -1,7 +1,11 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
+import { HRService } from 'src/shared/services/hr-service/hr.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
@@ -13,8 +17,15 @@ import { WorkspaceService } from 'src/shared/services/workspace-service/workspac
 })
 export class TimneOffComponent implements OnInit {
 
-  userData;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+
   workspaceData;
+
+  membersOff = [];
+
+  dataSource: MatTableDataSource<any>;
+  displayedColumns: string[] = ['photo', 'first_name', 'last_name', 'email', 'job', 'department', 'star'];
 
   // Public functions
   public publicFunctions = new PublicFunctions(this.injector);
@@ -23,9 +34,7 @@ export class TimneOffComponent implements OnInit {
   public utilityService = this.injector.get(UtilityService);
 
   constructor(
-    private userService: UserService,
-    private workspaceService: WorkspaceService,
-    private router: Router,
+    private hrService: HRService,
     private injector: Injector,
     public dialog: MatDialog
   ) { }
@@ -36,7 +45,29 @@ export class TimneOffComponent implements OnInit {
       state: 'hive-hr-timeoff'
     });
 
-    this.userData = await this.publicFunctions.getCurrentUser();
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+
+    this.initUsersTable();
+  }
+
+  initUsersTable() {
+    this.hrService.getMembersOff(this.workspaceData?._id).then(res => {
+      this.membersOff = res['members'];
+      
+      // Assign the data to the data source for the table to render
+      this.dataSource = new MatTableDataSource(this.membersOff);
+
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    });
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 }

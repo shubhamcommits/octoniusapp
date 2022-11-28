@@ -487,4 +487,66 @@ export class HRControllers {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
+
+    async getTopMembersOff(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { workspaceId } } = req;
+
+            const from_date = moment().startOf('week');
+            const to_date = moment().endOf('week');
+
+            // Find the workspace based on the workspaceId
+            const users: any = await User.find({
+                $and: [
+                    { _workspace: workspaceId },
+                    {'out_of_office.date': { $gte: from_date, $lte: to_date }},
+                    {'out_of_office.approved': true },
+                ]
+            }).limit(4).select('_id first_name last_name email profile_pic hr').lean();
+
+            // Check if workspace already exist with the same workspaceId
+            if (!users) {
+                return sendError(res, new Error('Oops, users not found!'), 'Users not found!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Users found!',
+                members: users
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    }
+
+    async getMembersOff(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { workspaceId } } = req;
+
+            const from_date = moment().startOf('week');
+            const to_date = moment().endOf('week');
+
+            // Find the workspace based on the workspaceId
+            const users: any = await User.find({
+                $and: [
+                    { _workspace: workspaceId },
+                    {'out_of_office.date': { $gte: from_date, $lte: to_date }},
+                    {'out_of_office.approved': true },
+                ]
+            }).select('_id first_name last_name email profile_pic hr').lean();
+
+            // Check if workspace already exist with the same workspaceId
+            if (!users) {
+                return sendError(res, new Error('Oops, users not found!'), 'Users not found!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Users found!',
+                members: users
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    }
 }
