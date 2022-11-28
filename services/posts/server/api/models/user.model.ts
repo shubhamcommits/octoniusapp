@@ -108,6 +108,30 @@ const UserSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'Entity',
         },
+        address_line_1: {
+            type: String,
+            required: false
+        },
+        address_line_2: {
+            type: String,
+            required: false
+        },
+        city: {
+            type: String,
+            required: false
+        },
+        zip_code: {
+            type: String,
+            required: false
+        },
+        state: {
+            type: String,
+            required: false
+        },
+        country: {
+            type: String,
+            required: false
+        },
         entity_custom_fields: {
             type: Map,
             of: String

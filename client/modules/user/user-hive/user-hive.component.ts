@@ -4,8 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
 import { UserService } from 'src/shared/services/user-service/user.service';
-import { GroupsService } from 'src/shared/services/groups-service/groups.service';
-import { GroupService } from 'src/shared/services/group-service/group.service';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
 import moment from 'moment';
 
@@ -56,6 +54,9 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
 
     this.userData = await this.publicFunctions.getCurrentUser();
     this.isCurrentUser = true;
+    if (!this.userData.hr) {
+      this.userData.hr = {};
+    }
 
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
@@ -144,6 +145,33 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
         }
       }
     });
+  }
+
+  changeCountry(value: any) {
+    if (value) {
+      this.userData.hr.country = value;
+      this.saveProperty('hr.country', value);
+    }
+  }
+
+  saveProperty(property_name: string, value: any) {
+
+    if (value != '') {
+      this.userData[property_name] = value;
+      
+      this.utilityService.asyncNotification($localize`:@@editEntityDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the entity...`, new Promise((resolve, reject) => {
+        this.userService.updateUser(this.userData)
+          .then(async (res) => {
+            this.publicFunctions.sendUpdatesToUserData(this.userData);
+
+            // Resolve with success
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@editEntityDialog.entityUpdated:Entity updated!`));
+          })
+          .catch(() => {
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@editEntityDialog.unableToUpdateEntity:Unable to update the entity, please try again!`));
+          });
+      }));
+    }
   }
 
   onSelectEntityCustomFieldChange(event: any, customFieldId: string) {

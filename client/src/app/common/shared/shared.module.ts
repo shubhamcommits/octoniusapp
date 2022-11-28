@@ -124,6 +124,7 @@ import { PayrollSetupCardComponent } from './hr/payroll-setup-card/payroll-setup
 import { PendingTasksCardComponent } from './hr/pending-tasks-card/pending-tasks-card.component';
 import { TimeOffCardComponent } from './hr/time-off-card/time-off-card.component';
 import { ProgressBarColor } from 'src/shared/pipes/progress-bar-color.directive';
+import { CountrySelectComponent } from './country-select/country-select.component';
 
 @NgModule({
     declarations: [
@@ -144,6 +145,7 @@ import { ProgressBarColor } from 'src/shared/pipes/progress-bar-color.directive'
         SectionSeparatorComponent,
         SecuredImageComponent,
         ComponentSearchInputBoxComponent,
+        CountrySelectComponent,
         QuillEditorComponent,
         TimePickerComponent,
         PostViewComponent,
@@ -253,6 +255,7 @@ import { ProgressBarColor } from 'src/shared/pipes/progress-bar-color.directive'
         CropImageComponent,
         ComponentSearchBarComponent,
         ComponentSearchInputBoxComponent,
+        CountrySelectComponent,
         DatePickerComponent,
         EmailInputComponent,
         LoadingSpinnerComponent,

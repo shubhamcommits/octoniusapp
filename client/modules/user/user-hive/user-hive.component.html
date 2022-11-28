@@ -1,10 +1,53 @@
-<div class="container">
-
-  <div class="row main-actvity">
+<div class="container" *ngIf="userData">
+  <div class="row">
     <div class="col">
       <div class="col-description">
-        <h4 i18n="@@userProfile.hrFields">HR fields</h4>
-        <p class="block-description" i18n="@@userProfile.hrFieldsDescription">
+        <h4 i18n="@@userHive.address">Address</h4>
+        <p class="block-description" i18n="@@userHive.addressDescription">
+          Fill in the legal address Where do you live currently?
+        </p>
+      </div>
+      <hr />
+    </div>
+  
+    <div class="col">
+      <div class="form-group">
+        <label for="address_line_1" i18n="@@userHive.addressLine1">Address Line 1</label>
+        <input type="text" class="form-control" [(ngModel)]="userData.hr.address_line_1" name="address_line_1"
+          (blur)="saveProperty('address_line_1', $event.target.value)">
+  
+        <label for="address_line_2" i18n="@@userHive.addressLine2">Address Line 2</label>
+        <input type="text" class="form-control" [(ngModel)]="userData.hr.address_line_2" name="address_line_2"
+          (blur)="saveProperty('address_line_2', $event.target.value)">
+  
+        <label for="city" i18n="@@userHive.city">City</label>
+        <input type="text" class="form-control" [(ngModel)]="userData.hr.city" name="city"
+          (blur)="saveProperty('city', $event.target.value)">
+  
+        <div class="row" style="margin: 0 !important; padding: 0 !important;">
+          <div class="col" style="margin-left: 0 !important; padding-left: 0 !important;">
+            <label for="zip_code" i18n="@@userHive.zip_code">Zip Code</label>
+            <input type="text" class="form-control" [(ngModel)]="userData.hr.zip_code" name="zip_code"
+              (blur)="saveProperty('zip_code', $event.target.value)">
+          </div>
+  
+          <div class="col" style="margin-right: 0 !important; padding-right: 0 !important;">
+            <label for="state" i18n="@@userHive.state">State</label>
+            <input type="text" class="form-control" [(ngModel)]="userData.hr.state" name="state"
+              (blur)="saveProperty('state', $event.target.value)">
+          </div>
+        </div>
+        
+        <app-country-select [countryCode]="userData?.hr?.country" (countrySelected)="changeCountry($event)"></app-country-select>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="col-description">
+        <h4 i18n="@@userHive.hrFields">HR fields</h4>
+        <p class="block-description" i18n="@@userHive.hrFieldsDescription">
           Fields created by the HR team. These fields are mandatory.
         </p>
       </div>
@@ -43,11 +86,11 @@
     </div>
   </div>
 
-  <div class="row main-actvity">
+  <div class="row">
     <div class="col">
       <div class="col-description">
-        <h4 i18n="@@userProfile.payrollInfo">Payroll info</h4>
-        <p class="block-description" i18n="@@userProfile.payrollInfoDescription">
+        <h4 i18n="@@userHive.payrollInfo">Payroll info</h4>
+        <p class="block-description" i18n="@@userHive.payrollInfoDescription">
           Fields created by the HR team. These fields are mandatory.
         </p>
       </div>

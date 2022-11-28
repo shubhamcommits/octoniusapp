@@ -1,5 +1,5 @@
-<div class="container">
-  <div class="row main-actvity">
+<div class="container" *ngIf="userData">
+  <div class="row">
     <div class="col">
       <div class="col-description">
         <h4 i18n="@@userProfile.personalInformation">Personal information</h4>
@@ -32,15 +32,13 @@
         <input type="text" class="form-control" [(ngModel)]="userData.mobile_number" name="mobile_number"
           (blur)="saveProperty('mobile_number', $event.target.value)">
 
-        <!-- LANGUAGE SELECT starts -->
         <label i18n="@@userProfile.language">Language</label>
         <app-select-language [userData]="userData"></app-select-language>
-        <!-- LANGUAGE SELECT ends -->
       </div>
     </div>
   </div>
 
-  <div class="row main-actvity">
+  <div class="row">
     <div class="col">
       <div class="col-description">
         <h4 i18n="@@userProfile.profileFields">Profile fields</h4>
@@ -90,35 +88,6 @@
       </div>
     </div>
   </div>
-
-  <!--
-  <div class="row main-actvity" *ngIf="userData">
-      <div class="col-md-4">
-          <app-user-information [userData]="userData" [currentUser]="isCurrentUser"  (updateData)="onUpdateUserEmitter($event)"></app-user-information>
-
-          <div class="sidecontent" *ngIf="isCurrentUser && workspaceData?.integrations?.is_ldap_connected && workspaceData?.ldapPropertiesMap">
-            <div class="card sideinnercard">
-              <div class="card-block">
-                <h6 class="card-title">
-                  <b i18n="@@userProfile.fetchInfo"> <i class="material-icons">cable</i> Fetch Information from LDAP </b>
-                </h6>
-
-                <div style="margin-top: 20px;">
-                  <button class="btn btn-primary" (click)="getUserInformation()" i18n="@@workspaceAddDomain.syncLDAP">Sync LDAP</button>
-                </div>
-              </div>
-            </div>
-          </div>
-      </div>
-
-      <div class="col-md-8">
-          <app-user-professional-information [userData]="userData" [currentUser]="isCurrentUser" (updateData)="onUpdateUserEmitter($event)"></app-user-professional-information>
-          <app-user-profile-custom-fields [userData]="userData" [currentUser]="isCurrentUser" [workspaceData]="workspaceData"></app-user-profile-custom-fields>
-          <app-user-skills [userData]="userData" [currentUser]="isCurrentUser"></app-user-skills>
-          <app-user-password-update [userData]="userData" [currentUser]="isCurrentUser"></app-user-password-update>
-      </div>
-  </div>
-  -->
 </div>
 
 <!-- Loading Spinner Starts -->

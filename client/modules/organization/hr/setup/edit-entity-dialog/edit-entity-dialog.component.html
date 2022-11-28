@@ -98,13 +98,8 @@
                                 <input type="text" class="form-control" [(ngModel)]="entityData.state" name="state" (blur)="saveProperty('state', $event.target.value)">
                             </div>
                         </div>
-                        <label for="country" i18n="@@editEntityDialog.country" style="float: left; width: 100%;">Country</label>
-                        <mat-form-field class="full-width" appearance="outline" style="width: 100%;">
-                            <!-- <mat-label for="country" i18n="@@editEntityDialog.country">Country</mat-label> -->
-                            <mat-select [(value)]="entityData.country" (valueChange)="changeCountry($event)" name="country">
-                                <mat-option [value]="country?.code" *ngFor="let country of countries">{{ country?.name }}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
+
+                        <app-country-select [countryCode]="entityData?.country" (countrySelected)="changeCountry($event)"></app-country-select>
                     </div>
                 </div>
             </div>
