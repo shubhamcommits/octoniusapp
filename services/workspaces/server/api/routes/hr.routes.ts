@@ -55,6 +55,18 @@ routes.post('/:entityId/edit-cf', controller.editEntityCF);
 // POST - Deletes an entity custom field
 routes.post('/:entityId/delete-cf', controller.deleteEntityCF);
 
+// GET - Returns all the members in an entity
+routes.get('/:entityId/entityMembers', controller.getEntityMembers);
+
+// POST - Removes a user from an entity
+routes.post('/:entityId/removeMemberFromentity', controller.removeMemberFromentity);
+
+// POST - Add a user to an entity
+routes.post('/:entityId/addMemberToEntity', controller.addMemberToEntity);
+
+// POST - Add all users to an entity
+routes.post('/:entityId/addAllMemberToEntity', controller.addAllMemberToEntity);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

@@ -58,6 +58,10 @@ const UserSchema = new Schema({
         default: 'member',
         enum: ['owner', 'member', 'admin', 'manager', 'guest']
     },
+    hr_role: {
+        type: Boolean,
+        default: false
+    },
     phone_number: {
         type: String,
         default: null

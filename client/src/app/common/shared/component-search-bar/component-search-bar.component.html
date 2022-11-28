@@ -53,17 +53,21 @@
 
                   <!-- Menu Drawer Starts -->
                   <ul class="dropdown-menu">
-                      <li class="dropdown-item" *ngIf="member.role != 'admin'"
-                          (click)="changeRole(member._id, 'admin')" i18n="@@componentSearchBar.changeToAdmin">Change to Admin</li>
-                      <li class="dropdown-item" *ngIf="member.role != 'manager'"
-                          (click)="changeRole(member._id, 'manager')" i18n="@@componentSearchBar.changeToManager">Change to Work Manager</li>
-                      <li class="dropdown-item" *ngIf="member.role != 'member'"
-                          (click)="changeRole(member._id, 'member')" i18n="@@componentSearchBar.changeToMember">Change to Member</li>
-                      <li class="dropdown-divider"></li>
-                      <li class="dropdown-item">
-                        <button type="button" class="btn btn-danger btn-sm"
-                          (click)="disableUserInWorkplace(member._id, workspaceId)" i18n="@@componentSearchBar.deactivateUser">Deactivate user</button>
-                      </li>
+                        <li class="dropdown-item" *ngIf="member.role != 'admin'"
+                            (click)="changeRole(member._id, 'admin')" i18n="@@componentSearchBar.changeToAdmin">Change to Admin</li>
+                        <li class="dropdown-item" *ngIf="member.role != 'manager'"
+                            (click)="changeRole(member._id, 'manager')" i18n="@@componentSearchBar.changeToManager">Change to Work Manager</li>
+                        <li class="dropdown-item" *ngIf="member.role != 'member'"
+                            (click)="changeRole(member._id, 'member')" i18n="@@componentSearchBar.changeToMember">Change to Member</li>
+                        <li class="dropdown-item" *ngIf="!member.hr_role && member.role != 'guest'" (click)="changeHRRole(member._id, true)"
+                            i18n="@@componentSearchBar.changeToAdmin">Add to HR Team</li>
+                        <li class="dropdown-item" *ngIf="member.hr_role && member.role != 'guest'" (click)="changeHRRole(member._id, false)"
+                            i18n="@@componentSearchBar.changeToAdmin">Remove from HR Team</li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-item">
+                            <button type="button" class="btn btn-danger btn-sm"
+                            (click)="disableUserInWorkplace(member._id, workspaceId)" i18n="@@componentSearchBar.deactivateUser">Deactivate user</button>
+                        </li>
                   </ul>
                   <!-- Menu Drawer Ends -->
 

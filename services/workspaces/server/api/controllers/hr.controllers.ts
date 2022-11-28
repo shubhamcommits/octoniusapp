@@ -1,6 +1,7 @@
 import { sendError } from '../../utils';
 import { Request, Response, NextFunction } from 'express';
 import { Entity, User } from '../models';
+import { Readable } from 'stream';
 import moment from 'moment';
 
 export class HRControllers {
@@ -362,6 +363,125 @@ export class HRControllers {
             return res.status(200).json({
                 message: 'Custom Fields delted.',
                 entity: entity
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async getEntityMembers(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            const { params: { entityId } } = req;
+
+            // Find the workspace based on the workspaceId
+            const users: any = await User.find({
+                'hr._entity': entityId
+            }).select('_id first_name last_name email profile_pic hr').lean();
+
+            // Check if workspace already exist with the same workspaceId
+            if (!users) {
+                return sendError(res, new Error('Oops, users not found!'), 'Users not found!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Users found!',
+                members: users
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    }
+
+    async removeMemberFromentity(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { entityId }, body: { memberId } } = req;
+
+            if (!entityId || !memberId) {
+                return sendError(res, new Error('Please provide the entityId and memberId property!'), 'Please provide the entityId and memberId property!', 500);
+            }
+
+            const user = await User.findOne({
+                $and: [
+                    { _id: memberId },
+                    { 'hr._entity' : entityId }
+                ]
+            }).select('_id').lean();
+
+            if (!user) {
+                return sendError(res, new Error('The user provided is not part of the entity provided!'), 'The user provided is not part of the entity provided', 500);
+            }
+
+            const member = await User.findByIdAndUpdate({
+                    _id: memberId
+                }, {
+                    $set: { 'hr._entity': null }
+                },
+                {
+                    new: true
+                }).select('_id first_name last_name email profile_pic hr').lean();
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'Member removed.',
+                member: member
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async addMemberToEntity(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { entityId }, body: { memberId } } = req;
+
+            if (!entityId || !memberId) {
+                return sendError(res, new Error('Please provide the entityId and memberId property!'), 'Please provide the entityId and memberId property!', 500);
+            }
+
+            const member = await User.findByIdAndUpdate({
+                    _id: memberId
+                }, {
+                    $set: { 'hr._entity': entityId }
+                },
+                {
+                    new: true
+                }).select('_id first_name last_name email profile_pic hr').lean();
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'Member added.',
+                member: member
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async addAllMemberToEntity(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { entityId }, body: { workspaceId }  } = req;
+
+            if (!entityId || !workspaceId) {
+                return sendError(res, new Error('Please provide the entityId and workspaceId property!'), 'Please provide the entityId and workspaceId property!', 500);
+            }
+
+            const userStream = Readable.from(await User.find({
+                    _workspace: workspaceId
+                }).select('_id'));
+
+            await userStream.on('data', async (user: any) => {
+                await User.findByIdAndUpdate({
+                    _id: user?._id
+                }, {
+                    $set: { 'hr._entity': entityId }
+                });
+            });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'Users Added.'
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);

@@ -505,8 +505,8 @@ export class MembersControllers {
     }
 
     /**
-     * This function is responsible for fetching the list of first 10 workspace members based on the workspace and query(optional parameter)
-     * @param { params: { workspaceId, period } }req 
+     * This function is responsible for fetching the list all workspace members based on the workspace
+     * @param { params: { workspaceId } }req 
      * @param res 
      * @param next 
      */
@@ -530,7 +530,7 @@ export class MembersControllers {
 
             // Send the status 200 response
             return res.status(200).json({
-                message: `The First ${users.length} workspace members found!`,
+                message: `The workspace members found!`,
                 users: users
             })
 

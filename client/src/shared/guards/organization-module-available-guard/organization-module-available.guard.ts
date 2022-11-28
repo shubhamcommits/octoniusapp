@@ -25,7 +25,7 @@ export class OrganizationModuleAvailableGuard implements CanActivate, CanActivat
       const isOrganizationModuleAvailable = await this.publicFunctions.isOrganizationModuleAvailable();
 
       if (!isOrganizationModuleAvailable) {
-        this.utilityService.warningNotification($localize`:@@adminGuard.oopsNoPermission:Oops seems like you don\'t have the permission to access the admin section, kindly contact your superior to provide you the proper admin rights!`);
+        this.utilityService.warningNotification($localize`:@@organizationGuard.oopsNoPermission:Oops seems like you don\'t have the permission to access the admin section, kindly contact your superior to provide you the proper admin rights!`);
         this.router.navigate(['/']);
       }
       return isOrganizationModuleAvailable;
@@ -35,7 +35,7 @@ export class OrganizationModuleAvailableGuard implements CanActivate, CanActivat
     const isOrganizationModuleAvailable = await this.publicFunctions.isOrganizationModuleAvailable();
 
     if (!isOrganizationModuleAvailable) {
-      this.utilityService.warningNotification($localize`:@@adminGuard.oopsNoPermission:Oops seems like you don\'t have the permission to access the admin section, kindly contact your superior to provide you the proper admin rights!`);
+      this.utilityService.warningNotification($localize`:@@organizationGuard.oopsNoPermission:Oops seems like you don\'t have the permission to access the admin section, kindly contact your superior to provide you the proper admin rights!`);
       this.router.navigate(['/']);
     }
     return isOrganizationModuleAvailable;

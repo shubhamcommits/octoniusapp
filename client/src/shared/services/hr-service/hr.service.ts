@@ -62,4 +62,20 @@ export class HRService {
   deleteEntityCF(entityId: string, cfId: string) {
     return this._http.post(this.baseUrl + `/${entityId}/delete-cf`, { cfId }).toPromise();
   }
+
+  getEntityMembers(entityId: string) {
+    return this._http.get(this.baseUrl + `/${entityId}/entityMembers`).toPromise();
+  }
+
+  removeMemberFromentity(entityId: string, memberId: string) {
+    return this._http.post(this.baseUrl + `/${entityId}/removeMemberFromentity`, { memberId }).toPromise();
+  }
+
+  addMemberToEntity(entityId: string, memberId: string) {
+    return this._http.post(this.baseUrl + `/${entityId}/addMemberToEntity`, { memberId }).toPromise();
+  }
+
+  addAllMemberToEntity(entityId: string, workspaceId: string) {
+    return this._http.post(this.baseUrl + `/${entityId}/addAllMemberToEntity`, { workspaceId }).toPromise();
+  }
 }

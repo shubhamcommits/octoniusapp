@@ -93,6 +93,9 @@ routes.put('/', user.edit);
 // PUT - Updates the role of the user on the basis of userId
 routes.put('/update-role', user.updateUserRole);
 
+// PUT - Updates the role of the user on the basis of userId
+routes.put('/change-hr-role', user.changeHRRole);
+
 // PUT - Updates the profileImage of the user on the basis of userId
 routes.put('/image', userFileHandler, user.updateImage);
 

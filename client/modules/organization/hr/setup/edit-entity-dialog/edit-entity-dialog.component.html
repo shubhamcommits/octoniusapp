@@ -151,52 +151,6 @@
                             </div>
                         </li>
                     </ul>
-                    <!--
-                    <div class="form-group" *ngFor="let cf of entityData?.payroll_custom_fields">
-                        <div class="card-title">
-                            <span>{{ cf.name }}</span>
-            
-                            <div style="cursor: pointer;" [matMenuTriggerFor]="menu">
-                                <i class="material-icons">settings</i>
-                            </div>
-            
-                            <mat-menu #menu="matMenu">
-                                <a mat-menu-item (click)="deleteEntityCF(cf?._id)">
-                                    <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
-                                    <span i18n="@@setup.delete">Delete</span>
-                                </a>
-                            </mat-menu>
-                        </div>
-            
-                        <label i18n="@@editEntityDialog.cfName">Custom Fields name</label>
-                        <input type="text" class="form-control" [(ngModel)]="cf.name">
-            
-                        <label i18n="@@editEntityDialog.type" style="float: left; width: 100%;">Type</label>
-                        <mat-form-field class="full-width" appearance="outline" style="width: 100%;">
-                            <mat-select [(value)]="cf.type" (selectionChange)="changeCFType($event, cf)">
-                                <mat-option [value]="type" *ngFor="let type of cfTypes">{{ type }}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-            
-                        <label *ngIf="cf.type == 'Select'" i18n="@@editEntityDialog.values">Values</label>
-                        <div class="values" *ngIf="cf.type == 'Select'">
-                            <span class="badge" *ngFor="let value of cf.values">
-                                {{ value }}
-                                <i class="material-icons" (click)="removeCFValue(cf, value)" style="cursor: pointer;">highlight_off</i>
-                            </span>
-
-                            <div class="newValue">
-                                <input type="text" autocomplete="off" placeholder="Add value and hit ENTER..." class="newValueInput" (keyup.enter)="addCFValue(cf, $event)" />
-                            </div>
-                        </div>
-            
-                        <div class="card-footer">
-                            <div></div>
-                            <button (click)="editEntityCF(cf)" class="btn save-button"
-                                i18n="@@newEntity.save">Save</button>
-                        </div>
-                    </div>
-                    -->
 
                     <div class="form-group" *ngIf="createNewCF">
                         <label i18n="@@editEntityDialog.cfName">Custom Field name</label>
@@ -204,7 +158,6 @@
             
                         <label i18n="@@editEntityDialog.type" style="float: left; width: 100%;">Type</label>
                         <mat-form-field class="full-width" appearance="outline" style="width: 100%;">
-                            <!-- <mat-label i18n="@@editEntityDialog.type">Type</mat-label> -->
                             <mat-select [(value)]="newCF.type" (selectionChange)="changeCFType($event, newCF)">
                                 <mat-option [value]="type" *ngFor="let type of cfTypes">{{ type }}</mat-option>
                             </mat-select>
@@ -287,42 +240,7 @@
                             </div>
                         </li>
                     </ul>
-                    <!--
-                    <div class="form-group" *ngFor="let variable of entityData?.payroll_variables">
-                        <div class="card-title">
-                            <span>{{ variable.name }}</span>
-                        
-                            <div style="cursor: pointer;" [matMenuTriggerFor]="menu">
-                                <i class="material-icons">settings</i>
-                            </div>
-                        
-                            <mat-menu #menu="matMenu">
-                                <a mat-menu-item (click)="deleteEntityVariable(variable?._id)">
-                                    <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
-                                    <span i18n="@@setup.delete">Delete</span>
-                                </a>
-                            </mat-menu>
-                        </div>
 
-                        <label i18n="@@editEntityDialog.variableName">Variable name</label>
-                        <input type="text" class="form-control" [(ngModel)]="variable.name">
-
-                        <label i18n="@@editEntityDialog.type" style="float: left; width: 100%;">Type</label>
-                        <mat-form-field class="full-width" appearance="outline" style="width: 100%;">
-                            <mat-select [(value)]="variable.type">
-                                <mat-option [value]="type" *ngFor="let type of variableTypes">{{ type }}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-
-                        <label i18n="@@editEntityDialog.value">Value</label>
-                        <input type="text" class="form-control" [(ngModel)]="variable.value">
-
-                        <div class="card-footer">
-                            <div></div>
-                            <button (click)="editEntityVariable(variable)" class="btn save-button" i18n="@@newEntity.save">Save</button>
-                        </div>
-                    </div>
-                    -->
                     <div class="form-group" *ngIf="createNewVariable">
                         <label i18n="@@editEntityDialog.variableName">Variable name</label>
                         <input type="text" class="form-control" [(ngModel)]="newVariable.name">
@@ -358,10 +276,55 @@
                 </div>
             </div>
         </mat-tab>
+
+        <mat-tab [label]="membersLabel">
+            <div class="row">
+                <div class="col">
+                    <div class="col-description">
+                        <h4 i18n="@@editEntityDialog.payrollVariables">Entity Members</h4>
+                        <p class="block-description" i18n="@@editEntityDialog.payrollVariablesDescription">
+
+                        </p>
+
+                        <button (click)="openAddMembersDialog()" class="btn btn-primary"
+                            i18n="@@newEntity.addMembers">Add members</button>
+                    </div>
+                    <hr />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <ul class="members">
+                        <li class="titles">
+                            <div class="avatar title"></div>
+                            <div class="name title"><span i18n="@@setup.name">Name</span></div>
+                            <div class="email title"><span i18n="@@setup.email">E-Mail</span></div>
+                            <div class="actions title"></div>
+                        </li>
+        
+                        <li *ngFor="let member of entityMembers">
+                            <div class="avatar title">
+                                <app-secured-image [imgURL]="member?.profile_pic" [service]="'user'" [styleClass]="'feed-avatar-small'"></app-secured-image>
+                            </div>
+                            <div class="name"><span>{{ member.first_name }} {{ member.last_name }}</span></div>
+                            <div class="email"><span>{{ member.type }}</span></div>
+                            <div class="actions">
+                                <div style="cursor: pointer;" [matMenuTriggerFor]="menu">
+                                    <i class="material-icons">settings</i>
+                                </div>
+        
+                                <mat-menu #menu="matMenu">
+                                   <a mat-menu-item (click)="removeMemberFromEntity(member?._id)">
+                                        <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
+                                        <span i18n="@@setup.remove">Remove</span>
+                                    </a>
+                                </mat-menu>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </mat-tab>
     </mat-tab-group>
 </div>
-<!--
-<div class="modal-footer">
-    <button (click)="closeDialog()" class="btn btn-primary" i18n="@@newEntity.close">Close</button>
-</div>
--->

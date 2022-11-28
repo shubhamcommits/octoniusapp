@@ -543,7 +543,7 @@ export class UsersControllers {
                 role: role
             }, {
                 new: true
-            }).select('first_name last_name profile_pic role _workspace _account integrations');
+            }).select('first_name last_name profile_pic role _workspace _account integrations hr_role');
 
             if (user.role == 'guest') {
                 // Add new user to workspace's group
@@ -629,6 +629,43 @@ export class UsersControllers {
                 message: `Role updated for user ${user.first_name}`,
                 user: user,
                 groupsUpdate
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for updating the HR role of the user
+     * @param { memberId }req 
+     * @param res 
+     */
+    async changeHRRole(req: Request, res: Response, next: NextFunction) {
+
+        const { memberId, hr_role } = req.body;
+        try {
+
+            // find the user
+            let user: any = await User.findOne({
+                $and: [
+                    { _id: memberId },
+                    { active: true }
+                ]
+            }, {
+                hr_role: hr_role
+            }, {
+                new: true
+            }).select('first_name last_name profile_pic role _workspace _account integrations hr_role');
+
+            // Error updating the user
+            if (!user) {
+                return sendError(res, new Error('Unable to update the user, some unexpected error occurred!'), 'Unable to update the user, some unexpected error occurred!', 500);
+            }
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Role updated for user ${user.first_name}`,
+                user: user
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
