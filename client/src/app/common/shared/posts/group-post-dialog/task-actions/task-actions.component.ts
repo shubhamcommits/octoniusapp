@@ -157,9 +157,11 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   }
 
   ngOnInit() {
-    this.postService.getGroupTemplates(this.groupData?._id || this.postData?._group?._id || this.postData?._group).then(res => {
-      this.groupTemplates = res['posts'];
-    });
+    if (this.groupData?._id || this.postData?._group) {
+      this.postService.getGroupTemplates(this.groupData?._id || this.postData?._group?._id || this.postData?._group).then(res => {
+        this.groupTemplates = res['posts'];
+      });
+    }
   }
 
   ngAfterViewInit() {

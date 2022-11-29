@@ -46,7 +46,7 @@ const PostSchema = new Schema({
     _group: {
         type: Schema.Types.ObjectId,
         ref: 'Group',
-        required: true
+        required: false
     },
     _posted_by: {
         type: Schema.Types.ObjectId,

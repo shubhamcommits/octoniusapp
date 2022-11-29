@@ -54,14 +54,12 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
 
   async ngOnChanges() {
 
-    if (this.type != 'chat') {
-      if (this.groupId) {
+    if (this.type != 'chat' && this.groupId) {
         this.groupService.getAllGroupMembers(this.groupId).then(res => {
           this.members = res['users'];
 
           this.members.unshift({_id: 'all', first_name: 'All', last_name: 'members', email: ''});
         });
-      }
       // this.subSink.add(this.utilityService.currentGroupData.subscribe((res) => {
       //   if (JSON.stringify(res) != JSON.stringify({})) {
 
@@ -77,6 +75,10 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
       //   }
       // }));
     } else {
+      if (!this.workspaceData) {
+        this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+      }
+      
       this.members = await this.workspaceData?.members;
       this.members = await this.members?.filter((member, index) => {
           return (this.members?.findIndex(m => m._id == member._id) == index)

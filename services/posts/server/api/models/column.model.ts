@@ -8,7 +8,7 @@ const ColumnSchema = new Schema({
     _group: {
         type: Schema.Types.ObjectId,
         ref: 'Group',
-        required: true
+        required: false
     },
     title: {
         type: String,

@@ -522,6 +522,7 @@ export class PostService {
 
       // Create new post
       let post: any = await Post.create(postData);
+
       post = await Post.findOneAndUpdate({
           _id: post._id
         }, {
@@ -2009,6 +2010,23 @@ export class PostService {
     }
   }
 
+  async getGlobalNorthStarTasks() {
+    try {
+      return await Post.find({
+          '_group': { $eq: null },
+          $and: [
+            { 'task.isNorthStar': true }
+          ]
+        })
+        .sort('-created_date')
+        .populate({ path: '_group', select: this.groupFields })
+        .populate({ path: '_posted_by', select: this.userFields })
+        .populate({ path: '_assigned_to', select: this.userFields });
+    } catch (error) {
+      throw (error);
+    }
+  }
+
   async getNorthStarStats(userId: string) {
     try {
       let nsAssignedToMe =await Post.find({
@@ -2018,23 +2036,50 @@ export class PostService {
           ]
         }).select('task.northStar').lean();
 
-        let nsAssignedByMe =await Post.find({
+      let nsAssignedByMe =await Post.find({
           $and: [
             { 'task.isNorthStar': true },
             { '_posted_by': userId }
           ]
         }).select('task.northStar').lean();
 
-        return {
-          nsAssignedToMe: nsAssignedToMe || [],
-          nsAssignedByMe: nsAssignedByMe || [],
-        };
+      return {
+        nsAssignedToMe: nsAssignedToMe || [],
+        nsAssignedByMe: nsAssignedByMe || []
+      };
     } catch (error) {
       throw (error);
     }
   }
 
-  async getWorspacePostsResults(workspaceId: any, type: any, numDays: number, overdue: boolean, isNorthStar: boolean, filteringGroups: any) {
+  async getGlobalNorthStarStats(userId: string) {
+    try {
+      let nsAssignedToMe =await Post.find({
+          $and: [
+            { 'task.isNorthStar': true },
+            { '_assigned_to': userId },
+            { '_group': { $eq: null }}
+          ]
+        }).select('task.northStar').lean();
+
+      let nsAssignedByMe =await Post.find({
+          $and: [
+            { 'task.isNorthStar': true },
+            { '_posted_by': userId },
+            { '_group': { $eq: null }}
+          ]
+        }).select('task.northStar').lean();
+
+      return {
+        nsAssignedToMe: nsAssignedToMe || [],
+        nsAssignedByMe: nsAssignedByMe || []
+      };
+    } catch (error) {
+      throw (error);
+    }
+  }
+
+  async getWorspacePostsResults(workspaceId: any, type: any, numDays: number, overdue: boolean, filteringGroups: any) {
 
     const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');
 

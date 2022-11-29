@@ -2,7 +2,7 @@ import { Response, Request, NextFunction } from "express";
 import { FlowService, PostService, TagsService } from '../services';
 import moment from "moment/moment";
 import { sendErr } from '../utils/sendError';
-import { Group, Post } from "../models";
+import { Post } from "../models";
 
 const ObjectId = require('mongoose').Types.ObjectId;
 
@@ -35,24 +35,28 @@ export class PostController {
      * @param { post } req
      */
     async add(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Post Object From request
+            const { post, isShuttleTasksModuleAvailable } = req.body;
 
-        // Post Object From request
-        const { post, isShuttleTasksModuleAvailable } = req.body;
+            // Fetch userId from the request
+            const userId = req['userId'];
 
-        // Fetch userId from the request
-        const userId = req['userId'];
+            // Call servide function for adding the post
+            const postData = await this.callAddPostService(post, userId, isShuttleTasksModuleAvailable == 'true')
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
+                })
 
-        // Call servide function for adding the post
-        const postData = await this.callAddPostService(post, userId, isShuttleTasksModuleAvailable == 'true')
-            .catch((err) => {
-                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-            })
-
-        // Send Status 200 response
-        return res.status(200).json({
-            message: 'Post Added Successfully!',
-            post: postData
-        });
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'Post Added Successfully!',
+                post: postData
+            });
+        } catch(err) {
+            return sendErr(res, new Error(err), 'ERROR', 400);
+        }
+        
     }
 
     async callAddPostService(post: any, userId: string, isShuttleTasksModuleAvailable: boolean) {
@@ -60,7 +64,7 @@ export class PostController {
         // Call Service function to change the assignee
         post = await postService.addPost(post, userId);
 
-        if (post.type === 'task') {
+        if (post.type === 'task' && post._group) {
             // Execute Automation Flows
             post = await this.executeAutomationFlows((post._group._id || post._group), post, userId, true, isShuttleTasksModuleAvailable);
         }
@@ -365,6 +369,27 @@ export class PostController {
     }
 
     /**
+     * This function fetches the North Star tasks without a group
+     * @param { userId } req 
+     * @param res 
+     * @param next 
+     */
+    async getGlobalNorthStarTasks(req: Request, res: Response, next: NextFunction) {
+       await postService.getGlobalNorthStarTasks()
+            .then((posts) => {
+                // If lastPostId is there then, send status 200 response
+                return res.status(200).json({
+                    message: `The North Star Tasks!`,
+                    posts: posts
+                });
+            })
+            .catch((err) => {
+                // If there's an error send bad request
+                return sendErr(res, new Error(err), 'Unable to fetch the north star tasks, kindly check the stack trace for error', 400)
+            });
+    }
+
+    /**
      * This function fetches the North Star tasks present inside multiple groups
      * @param { userId } req 
      * @param res 
@@ -375,6 +400,30 @@ export class PostController {
         const userId = req['userId'];
 
        await postService.getNorthStarStats(userId)
+            .then((ns) => {
+                // If lastPostId is there then, send status 200 response
+                return res.status(200).json({
+                    message: `The North Stars!`,
+                    northstars: ns
+                });
+            })
+            .catch((err) => {
+                // If there's an error send bad request
+                return sendErr(res, new Error(err), 'Unable to fetch the north star tasks, kindly check the stack trace for error', 400)
+            });
+    }
+
+    /**
+     * This function fetches the North Star tasks present inside multiple groups
+     * @param { userId } req 
+     * @param res 
+     * @param next 
+     */
+    async getGlobalNorthStarStats(req: Request, res: Response, next: NextFunction) {
+        // Fetch groupId and lastPostId from request
+        const userId = req['userId'];
+
+       await postService.getGlobalNorthStarStats(userId)
             .then((ns) => {
                 // If lastPostId is there then, send status 200 response
                 return res.status(200).json({
@@ -1070,7 +1119,7 @@ export class PostController {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 })
         } else {
-            posts = await postService.getWorspacePostsResults(workspaceId, type, +numDays, (overdue == "true"), (isNorthStar == "true"), filteringGroups)
+            posts = await postService.getWorspacePostsResults(workspaceId, type, +numDays, (overdue == "true"), filteringGroups)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 })

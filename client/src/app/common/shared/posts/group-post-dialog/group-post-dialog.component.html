@@ -24,7 +24,7 @@
 
                 <i class="material-icons-outlined ml-2" *ngIf="isIdeaModuleAvailable && postData?.task?.is_idea" style="color: #FBB732;">emoji_objects</i>
 
-                <app-post-utils *ngIf="groupData && userData"
+                <app-post-utils *ngIf="userData"
                     [post]="postData"
                     [userData]="userData"
                     [groupData]="groupData"
@@ -343,7 +343,7 @@
             <!-- Post Tags ends -->
         </div>
 
-        <div class="content-box" *ngIf="postData && postData?.type === 'task'">
+        <div class="content-box" *ngIf="postData && postData?.type === 'task' && postData?._group">
             <p class="box-title" i18n="@@groupCreatePostDialog.customFields">Custom fields</p>
 
             <div *ngFor="let cf of customFields" class="d-flex custom-field justify-content-start mb-3 row">
@@ -385,7 +385,7 @@
             </div>
         </div>
 
-        <app-task-actions *ngIf="postData && groupData && userData && postData?.type === 'task' && canEdit"
+        <app-task-actions *ngIf="postData && userData && postData?.type === 'task' && canEdit"
           [postData]="postData"
           [groupData]="groupData"
           [userData]="userData"

@@ -54,75 +54,76 @@ export class NewNorthStarDialogComponent implements OnInit {
    */
   async createNS() {
 
-    // Prepare Post Data
-    let postData: any;
-    const today = moment().format();
+    if (this.postTitle &&  this.postTitle != '') {
+      // Prepare Post Data
+      let postData: any;
+      const today = moment().format();
 
-    postData = {
-      title: this.postTitle,
-      content: '',
-      type: 'task',
-      _posted_by: this.userId,
-      created_date: today,
-      _group: this.groupId,
-      _content_mentions: [],
-      task: {
-        _assigned_to: null,
-        status: 'to do',
-        custom_fields: [],
-        _column: this.sectionId,
-        isNorthStar: true,
-        northStar: {
-            target_value: 0,
-            values: [{
-              date: Date.now(),
-              value: 0,
-              status: 'NOT STARTED'
-            }],
-            type: 'Currency',
-            currency: 'USD'
-          },
-        is_milestone: false,
-        is_idea: false
+      postData = {
+        title: this.postTitle,
+        content: '',
+        type: 'task',
+        _posted_by: this.userId,
+        created_date: today,
+        // _group: this.groupId,
+        _content_mentions: [],
+        task: {
+          _assigned_to: null,
+          status: 'to do',
+          custom_fields: [],
+          // _column: this.sectionId,
+          isNorthStar: true,
+          northStar: {
+              target_value: 0,
+              values: [{
+                date: Date.now(),
+                value: 0,
+                status: 'NOT STARTED'
+              }],
+              type: 'Currency',
+              currency: 'USD'
+            },
+          is_milestone: false,
+          is_idea: false
+        }
       }
+
+      // Create FormData Object
+      let formData = new FormData();
+
+      // Append Post Data
+      formData.append('post', JSON.stringify(postData))
+      formData.append('isShuttleTasksModuleAvailable', (await this.publicFunctions.isShuttleTasksModuleAvailable()).toString());
+
+      // Call the Helper Function
+      this.utilityService.asyncNotification($localize`:@@newNorthStarDialog.pleaseWaitCreatingPost:Please wait we are creating the task...`, new Promise((resolve, reject) => {
+        this.postService.create(formData)
+          .then(async (res) => {
+            postData = res['post'];
+
+            if (postData.type === 'task' && postData?._group) {
+              let flows = [];
+              this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
+                flows = res['flows'];
+              });
+              postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(flows, postData, this.groupId, true);
+            }
+
+            this.nsCreatedEvent.emit(postData);
+            this.closeDialog();
+
+            // Resolve with success
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@newNorthStarDialog.taskCreated:Task Created!`))
+          })
+          .catch((err) => {
+            // Catch the error and reject the promise
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@newNorthStarDialog.unableCreateNewTask:Unable to create new task, please try again!`))
+          })
+      }))
+
+      // Clear the postTitle
+      this.postTitle = undefined;
     }
-
-    // Create FormData Object
-    let formData = new FormData();
-
-    // Append Post Data
-    formData.append('post', JSON.stringify(postData))
-    formData.append('isShuttleTasksModuleAvailable', (await this.publicFunctions.isShuttleTasksModuleAvailable()).toString());
-
-    // Call the Helper Function
-    this.utilityService.asyncNotification($localize`:@@newNorthStarDialog.pleaseWaitCreatingPost:Please wait we are creating the task...`, new Promise((resolve, reject) => {
-      this.postService.create(formData)
-        .then(async (res) => {
-          postData = res['post'];
-
-          if (postData.type === 'task') {
-            let flows = [];
-            this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
-              flows = res['flows'];
-            });
-            postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(flows, postData, this.groupId, true);
-          }
-
-          this.nsCreatedEvent.emit(postData);
-          this.closeDialog();
-
-          // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@newNorthStarDialog.taskCreated:Task Created!`))
-        })
-        .catch((err) => {
-
-          // Catch the error and reject the promise
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@newNorthStarDialog.unableCreateNewTask:Unable to create new task, please try again!`))
-        })
-    }))
-
-    // Clear the postTitle
-    this.postTitle = undefined;
   }
 
   closeDialog() {

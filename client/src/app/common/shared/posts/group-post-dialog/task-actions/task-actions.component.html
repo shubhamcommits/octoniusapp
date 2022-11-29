@@ -2,12 +2,12 @@
   <p class="box-title" i18n="@@taskActions.actions">Actions</p>
 
   <div *ngIf="!postData?.task?._parent_task">
-    <button mat-menu-item [matMenuTriggerFor]="transferMenu"
+    <button *ngIf="postData?._group" mat-menu-item [matMenuTriggerFor]="transferMenu"
       (click)="saveTransferAction('copy')">
         <i  class="material-icons">content_copy</i>
         <span i18n="@@taskActions.copyToGroup">COPY TO GROUP</span>
     </button>
-    <button mat-menu-item [matMenuTriggerFor]="transferMenu"
+    <button *ngIf="postData?._group" mat-menu-item [matMenuTriggerFor]="transferMenu"
       (click)="saveTransferAction('move')">
         <i class="material-icons">arrow_forward</i>
         <span i18n="@@taskActions.moveToGroup">MOVE TO GROUP</span>
@@ -24,17 +24,16 @@
   </div>
 
   <div>
-    <app-member-list-menu
-    [groupMembers]="groupMembers"
-    [menuLable]="menuLable"
-    [menuFor]="menuFor"
-    (userSelctionEmitter)="onUserSelctionEmitter($event)"
-    >
+    <app-member-list-menu *ngIf="postData?._group"
+      [groupMembers]="groupMembers"
+      [menuLable]="menuLable"
+      [menuFor]="menuFor"
+      (userSelctionEmitter)="onUserSelctionEmitter($event)">
     </app-member-list-menu>
   </div>
 
 
-  <div *ngIf="!postData?.task?._parent_task">
+  <div *ngIf="!postData?.task?._parent_task && postData?._group">
     <button mat-menu-item [matMenuTriggerFor]="templateTaskMenu">
         <i class="material-icons-outlined">playlist_add</i>
         <span i18n="@@taskActions.templates">TEMPLATES</span>
@@ -85,7 +84,6 @@
                 </div>
               </div>
             </mat-menu>
-
           </ul>
         </div>
       </div>
@@ -100,8 +98,6 @@
       <input type="text" name="allocation" [ngModel]="allocation" (blur)="allocationChange($event)" class="input-search" placeholder="Allocation" />
       <!-- INPUT ENDS -->
   </div>
-
-
 
   <div *ngIf="!parentTask && !isDependent && !isMilestone && (groupData?.shuttle_type && (!postData?.task?._shuttle_group || (postData?.task?._shuttle_group?._id || postData?.task?._shuttle_group) != groupData?._id))" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
    <span i18n="@@taskActions.makeSubtaskOf">MAKE SUBTASK OF</span>
@@ -164,9 +160,6 @@
     </div>
   </div>
 
-
-
-
   <!-- North Start Switch starts -->
   <div class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
     <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;"> explore </i>
@@ -195,7 +188,6 @@
     </mat-slide-toggle>
   </div>
   <!-- Idea Switch ends -->
-
 
   <!-- Milestone Switch starts -->
   <div *ngIf="groupData && groupData.project_type" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">

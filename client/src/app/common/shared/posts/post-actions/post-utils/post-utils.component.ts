@@ -53,24 +53,26 @@ export class PostUtilsComponent implements OnInit {
     // Fetch the current workspace data
     const workspaceData: any = await this.publicFunctions.getCurrentWorkspace();
 
-    this.groupId = (this.post._group._id) ? this.post._group._id : this.post._group;
+    this.groupId = (this.post._group) ? ((this.post._group._id) ? this.post._group._id : this.post._group) : null;
 
     this.canDelete = await this.utilityService.canUserDoTaskAction(this.post, this.groupData, this.userData, 'delete');
 
-    // Fetches the user groups from the server
-    await this.publicFunctions.getAllUserGroups(workspaceData?._id)
-      .then(async (groups: any) => {
-        await groups.forEach(group => {
-          if (group._id != this.groupId) {
-            this.userGroups.push(group);
-          }
+    if (this.groupId) {
+      // Fetches the user groups from the server
+      await this.publicFunctions.getAllUserGroups(workspaceData?._id)
+        .then(async (groups: any) => {
+          await groups.forEach(group => {
+            if (group._id != this.groupId) {
+              this.userGroups.push(group);
+            }
+          });
+          this.userGroups.sort((g1, g2) => (g1.group_name > g2.group_name) ? 1 : -1);
+        })
+        .catch(() => {
+          // If the function breaks, then catch the error and console to the application
+          this.publicFunctions.sendError(new Error($localize`:@@postUtils.unableToConnectToServer:Unable to connect to the server, please try again later!`));
         });
-        this.userGroups.sort((g1, g2) => (g1.group_name > g2.group_name) ? 1 : -1);
-      })
-      .catch(() => {
-        // If the function breaks, then catch the error and console to the application
-        this.publicFunctions.sendError(new Error($localize`:@@postUtils.unableToConnectToServer:Unable to connect to the server, please try again later!`));
-      });
+    }
   }
 
   ngAfterViewInit() {

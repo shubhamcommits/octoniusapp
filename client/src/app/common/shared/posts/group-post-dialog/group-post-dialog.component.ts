@@ -131,22 +131,42 @@ export class GroupPostDialogComponent implements OnInit {
     this.isIdeaModuleAvailable = this.data.isIdeaModuleAvailable;
 
     if (!this.groupId) {
-      this.groupId = (this.postData._group._id || this.postData._group);
-    }
+      this.groupId = (this.postData._group) ? (this.postData._group._id || this.postData._group) : null;
+      this.myWorkplace = false;
+    } else {
+      this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
 
-    this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
+      this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
+
+      this.myWorkplace = this.publicFunctions.isPersonalNavigation(this.groupData, this.userData);
+
+      this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
+        this.flows = res['flows'];
+      });
+
+      this.groupService.getGroupCustomFields(this.groupId).then((res) => {
+        if (res['group']['custom_fields']) {
+          res['group']['custom_fields'].forEach(field => {
+            this.customFields.push(field);
+
+            if (!this.postData?.task.custom_fields) {
+              this.postData.task.custom_fields = new Map<string, string>();
+            }
+
+            if (!this.postData?.task.custom_fields[field.name]) {
+              this.postData.task.custom_fields[field.name] = '';
+              this.selectedCFValues[field.name] = '';
+            } else {
+              this.selectedCFValues[field.name] = this.postData?.task.custom_fields[field.name];
+            }
+          });
+        }
+      });
+    }
 
     this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
 
     this.userData = await this.publicFunctions.getCurrentUser();
-
-    this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
-
-    this.myWorkplace = this.publicFunctions.isPersonalNavigation(this.groupData, this.userData);
-
-    this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
-      this.flows = res['flows'];
-    });
 
     await this.initPostData();
     this.canEdit = await this.utilityService.canUserDoTaskAction(this.postData, this.groupData, this.userData, 'edit');
@@ -200,24 +220,6 @@ export class GroupPostDialogComponent implements OnInit {
 
       this.customFields = [];
       this.selectedCFValues = [];
-      this.groupService.getGroupCustomFields(this.groupId).then((res) => {
-        if (res['group']['custom_fields']) {
-          res['group']['custom_fields'].forEach(field => {
-            this.customFields.push(field);
-
-            if (!this.postData?.task.custom_fields) {
-              this.postData.task.custom_fields = new Map<string, string>();
-            }
-
-            if (!this.postData?.task.custom_fields[field.name]) {
-              this.postData.task.custom_fields[field.name] = '';
-              this.selectedCFValues[field.name] = '';
-            } else {
-              this.selectedCFValues[field.name] = this.postData?.task.custom_fields[field.name];
-            }
-          });
-        }
-      });
 
       await this.postService.getSubTasks(this.postData?._id).then((res) => {
         this.subtasks = res['subtasks'];

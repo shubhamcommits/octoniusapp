@@ -143,11 +143,19 @@ export class PostService {
    * @param { groups } query
    */
   getUserGroupsNorthStarTasks() {
-    return this._http.get(this.baseURL + `/usergroups-northstar`).toPromise();
+    return this._http.get(this.baseURL + `/user-groups-northstar`).toPromise();
+  }
+
+  getUserGlobalNorthStarTasks() {
+    return this._http.get(this.baseURL + `/user-global-northstar`).toPromise();
   }
 
   getUserNorthStarTasks() {
     return this._http.get(this.baseURL + `/user-northstar`).toPromise();
+  }
+
+  getGlobalNorthStarTasks() {
+    return this._http.get(this.baseURL + `/global-northstar`).toPromise();
   }
 
   /**

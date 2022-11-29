@@ -15,9 +15,8 @@ export class NorthStarPageComponent implements OnInit {
 
   isIdeaModuleAvailable;
   userData;
-  groupData;
-  groupsNorthStarTasks: any = [];
-  userNorthStarTasks: any = [];
+  // groupData;
+  globalNorthStarTasks: any = [];
 
   assignedChartLabels = [$localize`:@@northStarPage.completed:Completed`, $localize`:@@northStarPage.goalsPending:Goals pending`];
   chartType = 'doughnut';
@@ -81,9 +80,9 @@ export class NorthStarPageComponent implements OnInit {
     this.userData = await this.publicFunctions.getCurrentUser();
 
     // Fetch the current group
-    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+    // this.groupData = await this.publicFunctions.getCurrentGroupDetails();
 
-    await this.getUserGroupsNorthStarTasks();
+    await this.getUserGlobalNorthStarTasks();
 
     this.initGraphs();
 
@@ -93,18 +92,18 @@ export class NorthStarPageComponent implements OnInit {
     });
   }
 
-  async getUserGroupsNorthStarTasks() {
-    await this.postService.getUserGroupsNorthStarTasks()
+  async getUserGlobalNorthStarTasks() {
+    await this.postService.getUserGlobalNorthStarTasks()
       .then((res) => {
-        this.groupsNorthStarTasks = res['posts'];
+        this.globalNorthStarTasks = res['posts'];
       })
       .catch(() => {
-        this.groupsNorthStarTasks = [];
+        this.globalNorthStarTasks = [];
       });
   }
 
   async initGraphs() {
-    await this.getUserNorthStarTasks();
+    await this.getGlobalNorthStarTasks();
 
     // this.assignedChartPlugins = [{
     //     beforeDraw(chart) {
@@ -127,15 +126,16 @@ export class NorthStarPageComponent implements OnInit {
     this.initGeneralGraph();
   }
 
-  async getUserNorthStarTasks() {
-   await this.postService.getUserNorthStarTasks()
+  async getGlobalNorthStarTasks() {
+   await this.postService.getGlobalNorthStarTasks()
     .then((res) => {
       const northstars = res['northstars'];
       this.nsAssignedToMe = northstars.nsAssignedToMe;
       this.nsAssignedByMe = northstars.nsAssignedByMe;
     })
     .catch(() => {
-      this.userNorthStarTasks = [];
+      this.nsAssignedToMe = [];
+      this.nsAssignedByMe = [];
     });
   }
 
@@ -151,15 +151,15 @@ export class NorthStarPageComponent implements OnInit {
     this.numAssignedByMe = this.nsAssignedByMe.length;
     const completed = await this.nsAssignedByMe.filter(post => post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status == 'ACHIEVED');
     const numCompleted = (completed) ? this.numAssignedByMe - completed.length : 0;
-    this.assignedByChartData = [numCompleted, this.numAssignedByMe - numCompleted];
+    this.assignedByChartData = [this.numAssignedByMe - numCompleted, numCompleted];
     this.assignedByChartReady = true;
   }
 
   async initGeneralGraph() {
-    const notStarted = await this.groupsNorthStarTasks.filter(post => !post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status || post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status == 'NOT STARTED');
-    const onTrack = await this.groupsNorthStarTasks.filter(post => post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status == 'ON TRACK');
-    const inDanger = await this.groupsNorthStarTasks.filter(post => post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status == 'IN DANGER');
-    const achieved = await this.groupsNorthStarTasks.filter(post => post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status == 'ACHIEVED');
+    const notStarted = await this.globalNorthStarTasks.filter(post => !post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status || post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status == 'NOT STARTED');
+    const onTrack = await this.globalNorthStarTasks.filter(post => post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status == 'ON TRACK');
+    const inDanger = await this.globalNorthStarTasks.filter(post => post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status == 'IN DANGER');
+    const achieved = await this.globalNorthStarTasks.filter(post => post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status == 'ACHIEVED');
 
     this.generalChartData = [onTrack?.length, inDanger?.length, notStarted?.length, achieved?.length];
     this.generalChartReady = true;
@@ -208,8 +208,7 @@ export class NorthStarPageComponent implements OnInit {
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
   openFullscreenModal(postData: any): void {
-    const canOpen = !this.groupData?.enabled_rights || postData?.canView || postData?.canEdit;
-    const dialogRef = this.utilityService.openPostDetailsFullscreenModal(postData._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen);
+    const dialogRef = this.utilityService.openPostDetailsFullscreenModal(postData._id, null, this.isIdeaModuleAvailable, true);
     const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
       this.onDeleteEvent(data);
     });
@@ -230,17 +229,17 @@ export class NorthStarPageComponent implements OnInit {
   }
 
   onDeleteEvent(id) {
-    const indexTask = this.groupsNorthStarTasks.findIndex((task: any) => task._id === id);
+    const indexTask = this.globalNorthStarTasks.findIndex((task: any) => task._id === id);
     if (indexTask !== -1) {
-      this.groupsNorthStarTasks.splice(indexTask, 1);
+      this.globalNorthStarTasks.splice(indexTask, 1);
       return;
     }
   }
 
   updateTask(task) {
-    const indexTask = this.groupsNorthStarTasks.findIndex((t: any) => t._id === task._id);
+    const indexTask = this.globalNorthStarTasks.findIndex((t: any) => t._id === task._id);
     if (indexTask !== -1) {
-      this.groupsNorthStarTasks[indexTask] = task;
+      this.globalNorthStarTasks[indexTask] = task;
       return;
     }
   }
@@ -254,10 +253,10 @@ export class NorthStarPageComponent implements OnInit {
     });
 
     const nsCreatedEventSubs = dialogRef.componentInstance.nsCreatedEvent.subscribe((data) => {
-      if (!this.groupsNorthStarTasks) {
-        this.groupsNorthStarTasks = [];
+      if (!this.globalNorthStarTasks) {
+        this.globalNorthStarTasks = [];
       }
-      this.groupsNorthStarTasks.push(data);
+      this.globalNorthStarTasks.push(data);
     });
 
     dialogRef.afterClosed().subscribe(result => {
