@@ -4,13 +4,13 @@
 }
 
 .postbox{
-    outline: none; 
-    box-shadow: none !important; 
+    outline: none;
+    box-shadow: none !important;
     margin-top: 12px;
-    border: 0px solid #ccc !important; 
-    text-align: left; 
+    border: 0px solid #ccc !important;
+    text-align: left;
     cursor: pointer;
-    color: #005fd5;
+    // color: #005fd5;
 }
 
 // Adding pointer to image
@@ -19,7 +19,7 @@ img{
     margin-top: 8px;
     transition: transform .2s ease;
   }
-  
+
   img:hover{
     transform: scale(1.1);
   }
@@ -48,4 +48,5 @@ img{
   cursor: pointer;
   border:none;
   box-shadow: 0 6px 18px #005fd521;
+  padding: 16px !important;
 }

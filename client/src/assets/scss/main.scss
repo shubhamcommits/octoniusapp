@@ -94,9 +94,10 @@ body {
   // background-color: transparent;
   // border: 1px solid $border-color !important;
   border: none;
-  padding: 0px;
+  padding: 16px;
   border-radius: $card-radius !important;
-  box-shadow: 0 3px 0 #005fd521;
+  // box-shadow: 0 3px 0 #005fd521;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14);
 }
 
 h6,

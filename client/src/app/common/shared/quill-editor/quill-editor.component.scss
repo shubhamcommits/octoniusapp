@@ -1,9 +1,11 @@
 .postbox-editor{
     border: none !important;
-    // max-height: 45vh !important;
     overflow-y: auto !important;
 }
 
 .ql-container{
     border:none !important;
+}
+.ql-editor{
+  max-height: 45vh !important;
 }
