@@ -49,6 +49,7 @@ export class DatePickerComponent implements OnChanges {
   @Input() lowerLimit: any;
   @Input() styleClass;
   @Input() canEdit = true;
+  @Input() showInput = true;
 
   // Output date event emitter
   @Output('date') date = new EventEmitter();

@@ -1,90 +1,134 @@
 <div class="container">
+  <div *ngIf="storyData" class="category">
+    <div class="header-hero" [ngStyle]="{'cursor': canEditStory ? 'pointer' : 'auto'}" style="background-image: url({{storyData?.header_pic}});"
+        (click)="openImageSelector('header_pic')">
 
+      <div *ngIf="canEditStory" (click)="openImageSelector('header_pic')"
+          style=" cursor: pointer; width: 300px; text-align:center; margin-left: auto; margin-right: auto; margin-top: 70px;">
+        <span *ngIf="!storyData?.header_pic" class="btn btn-warning">
+          <span class="material-icons">add_photo_alternate</span>
+          <span i18n="@@storyDetails.addImage">Add image</span>
+        </span>
 
-
-<div *ngIf="storyData" class="category">
-  <div class="header-hero" [ngStyle]="{'cursor': canEditStory ? 'pointer' : 'auto'}" style="background-image: url({{storyData?.header_pic}});"
-      (click)="openImageSelector('header_pic')">
-
-    <div *ngIf="canEditStory" (click)="openImageSelector('header_pic')"
-        style=" cursor: pointer; width: 300px; text-align:center; margin-left: auto; margin-right: auto; margin-top: 70px;">
-      <span *ngIf="!storyData?.header_pic" class="btn btn-warning">
-        <span class="material-icons">add_photo_alternate</span>
-        <span i18n="@@storyDetails.addImage">Add image</span>
-      </span>
-
-      <span *ngIf="storyData?.header_pic" class="btn btn-warning">
-        <span class="material-icons">add_photo_alternate</span>
-        <span i18n="@@storyDetails.changeImage">Change image</span>
-      </span>
+        <span *ngIf="storyData?.header_pic" class="btn btn-warning">
+          <span class="material-icons">add_photo_alternate</span>
+          <span i18n="@@storyDetails.changeImage">Change image</span>
+        </span>
+      </div>
     </div>
-  </div>
 
-  <app-story-actions-bar class="row"
-    [storyData]="storyData"
-    [workspaceData]="workspaceData"
-    [userData]="userData"
-    [isManager]="isManager"
-    [canEditStory]="canEditStory"
-    [showComments]="showComments"
-    (onEditActionEvent)="canEditStory = !canEditStory"
-    (onShowCommentsActionEvent)="showCommentsAction($event)"></app-story-actions-bar>
+    <div class="event-date" *ngIf="storyData?.type == 'event'">
+      <div *ngIf="!canEditStory" class="date-no-edit-box">
+        <div class="day">{{ storyData.event_date | date: 'dd' }}</div>
+        <div class="month">{{ storyData.event_date | date: 'MM' }}</div>
+        <hr />
+        <div class="time">{{ storyData.event_date | date: 'h:mm a' }}</div>
+      </div>
+    
+      <div *ngIf="canEditStory" class="date-edit-box">
+        <div style="justify-content: space-evenly; display: flex;">
+          <div>
+            <div class="day">{{ storyData.event_date | date: 'dd' }}</div>
+            <div class="month">{{ storyData.event_date | date: 'MM' }}</div>
+          </div>
 
-  <div class="media-body">
-    <div class="category-body row">
-      <app-quill-editor *ngIf="storyData.content && !canEditStory"
-        [editorId]="'story_viewer'"
-        [toolbar]="false"
-        [readOnly]="true"
-        [contents]="storyData.content">
-      </app-quill-editor>
-     
-        <button type="button" *ngIf="canEditStory" class="btn btn-primary"
-          (click)="saveStory()" 
-          i18n="@@storyDetails.save"><span class="material-icons-outlined">
-            history_edu
-            </span>
-            Save
-        </button>
+          <app-date-picker (date)="getDate($event)" [selectedDate]="formateDate(storyData?.event_date)" [showInput]="false"
+            class="btn-group input-date">
+          </app-date-picker>
+        </div>
+
+        <hr />
+
+        <div style="justify-content: space-evenly; display: flex;">
+          <div style="padding-left: 20px;">
+            <div *ngIf="!editTime" (click)="enableEditTime()" class="time" style="padding-top: 8px;">{{ storyData.event_date | date: 'h:mm' }}</div>
+            
+            <input *ngIf="editTime" type="text" autocomplete="off" [(ngModel)]="this.eventTimeStr"
+              (blur)="getTime($event.target.value)" (keyup.enter)="getTime($event.target.value)"
+              (keyup.esc)="enableEditTime()" class="form-control" style="width: 80%;" />
+          </div>
+          
+          <div>
+            <button class="btn btn-link" data-toggle="dropdown">
+              <span class="time">{{ am_pm }}</span>
+            </button>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item" (click)="getAMPM('AM')">
+                <span i18n="@@storyActions.AM">AM</span>
+              </li>
+              <li class="dropdown-item" (click)="getAMPM('PM')">
+                <span i18n="@@storyActions.PM">PM</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <app-story-actions-bar class="row"
+      [storyData]="storyData"
+      [workspaceData]="workspaceData"
+      [userData]="userData"
+      [isManager]="isManager"
+      [canEditStory]="canEditStory"
+      [showComments]="showComments"
+      (onEditActionEvent)="canEditAction()"
+      (onShowCommentsActionEvent)="showCommentsAction($event)"></app-story-actions-bar>
+
+    <div class="media-body">
+      <div class="category-body row">
+        <app-quill-editor *ngIf="storyData.content && !canEditStory"
+          [editorId]="'story_viewer'"
+          [toolbar]="false"
+          [readOnly]="true"
+          [contents]="storyData.content">
+        </app-quill-editor>
       
-      <app-quill-editor style="margin-bottom: 30px;" *ngIf="canEditStory"
-        [editorId]="'story_editor'"
-        [toolbar]="true"
-        [readOnly]="false"
-        [workspaceId]="storyData._workspace._id || storyData._workspace"
-        [contents]="storyData.content"
-        (content)="getQuillData($event)">
-      </app-quill-editor>
+          <button type="button" *ngIf="canEditStory" class="btn btn-primary"
+            (click)="saveStory()" 
+            i18n="@@storyDetails.save"><span class="material-icons-outlined">
+              history_edu
+              </span>
+              Save
+          </button>
+        
+        <app-quill-editor style="margin-bottom: 30px;" *ngIf="canEditStory"
+          [editorId]="'story_editor'"
+          [toolbar]="true"
+          [readOnly]="false"
+          [workspaceId]="storyData._workspace._id || storyData._workspace"
+          [contents]="storyData.content"
+          (content)="getQuillData($event)">
+        </app-quill-editor>
+      </div>
+
+      <app-section-separator></app-section-separator>
+
+      <!-- COMMENTS SECTION STARTS -->
+      <div class="row mt-3" *ngIf="!canEditStory">
+        <comment-section *ngIf="userData && storyData && showComments"
+          [userData]="userData"
+          [editorId]="'_new_comment'"
+          [storyId]="storyData?._id"
+          [workspaceId]="storyData?._workspace?._id || storyData?._workspace"
+          (comment)="newCommentReceived($event)"
+          (close)="showComments = !showComments">
+        </comment-section>
+
+        <app-comment-list style="width: 90%;"
+          [storyId]="storyData?._id"
+          [userData]="userData"
+          [length]="(storyData?._comments?.length || 0)"
+          [newComment]="newComment"
+          (removeCommentEvent)="onRemoveComment($event)"></app-comment-list>
+      </div>
+      <!-- COMMENTS SECTION ENDS -->
     </div>
 
-    <app-section-separator></app-section-separator>
-
-    <!-- COMMENTS SECTION STARTS -->
-    <div class="row mt-3" *ngIf="!canEditStory">
-      <comment-section *ngIf="userData && storyData && showComments"
-        [userData]="userData"
-        [editorId]="'_new_comment'"
-        [storyId]="storyData?._id"
-        [workspaceId]="storyData?._workspace?._id || storyData?._workspace"
-        (comment)="newCommentReceived($event)"
-        (close)="showComments = !showComments">
-      </comment-section>
-
-      <app-comment-list style="width: 90%;"
-        [storyId]="storyData?._id"
-        [userData]="userData"
-        [length]="(storyData?._comments?.length || 0)"
-        [newComment]="newComment"
-        (removeCommentEvent)="onRemoveComment($event)"></app-comment-list>
-    </div>
-    <!-- COMMENTS SECTION ENDS -->
+    <!-- LOADING SPINNER STARTS -->
+    <ng-container *ngIf="isLoading$ | async">
+      <app-loading-spinner></app-loading-spinner>
+    </ng-container>
+    <!-- LOADING SPINNER ENDS -->
   </div>
-
-  <!-- LOADING SPINNER STARTS -->
-  <ng-container *ngIf="isLoading$ | async">
-    <app-loading-spinner></app-loading-spinner>
-  </ng-container>
-  <!-- LOADING SPINNER ENDS -->
-</div>
-
 </div>
