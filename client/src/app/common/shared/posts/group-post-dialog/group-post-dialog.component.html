@@ -87,11 +87,17 @@
                 Save
             </button>
 
-            <button *ngIf="!showSubtasks && !postData?.task?._parent_task && postData?.type === 'task' && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id) && canEdit"
+            <button *ngIf="!showSubtasks && !postData?.task?._parent_task && postData?.type === 'task' && !postData?.task?.isNorthStar && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id) && canEdit"
               class="btn float-left btn-warning btn-md"
               (click)="prepareToAddSubtasks()"
               i18n="@@groupCreatePostDialog.addSubtask">
                 + Add Subtasks
+            </button>
+
+            <button
+              *ngIf="!showSubtasks && !postData?.task?._parent_task && postData?.type === 'task' && postData?.task?.isNorthStar && !postData?._group && canEdit"
+              class="btn float-left new-ns-button" (click)="prepareToAddSubtasks()" i18n="@@groupCreatePostDialog.addTarget">
+              + Add Target
             </button>
         </div>
 
@@ -112,6 +118,7 @@
                 [groupData]="groupData"
                 [userData]="userData"
                 [parentId]="postData?._id"
+                [parentNS]="postData?.task?.isNorthStar"
                 (openSubtaskEmitter)="onOpenSubtask($event)"></app-subtasks>
             </mat-tab>
             <!-- subtasks ENDS-->

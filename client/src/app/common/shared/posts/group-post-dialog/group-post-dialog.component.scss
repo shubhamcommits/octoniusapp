@@ -171,3 +171,11 @@
     padding: 5px;
 }
 
+.new-ns-button {
+    background-color: #5E2FE5;
+    color: #FFFFFF;
+
+    &:hover {
+        background-color: #4a20c3;
+    }
+}

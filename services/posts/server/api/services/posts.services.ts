@@ -1996,9 +1996,10 @@ export class PostService {
       const groups = await Group.find({ $or: [{ _members: userId }, { _admins: userId }] }).select('_id').lean();
 
       return await Post.find({
-          '_group': { $in: groups },
           $and: [
-            { 'task.isNorthStar': true }
+            { '_group': { $in: groups }},
+            { 'task.isNorthStar': true },
+            { 'task._parent_task': null }
           ]
         })
         .sort('-created_date')
@@ -2013,9 +2014,10 @@ export class PostService {
   async getGlobalNorthStarTasks() {
     try {
       return await Post.find({
-          '_group': { $eq: null },
           $and: [
-            { 'task.isNorthStar': true }
+            { '_group': { $eq: null }},
+            { 'task.isNorthStar': true },
+            { 'task._parent_task': null }
           ]
         })
         .sort('-created_date')
@@ -2057,6 +2059,7 @@ export class PostService {
       let nsAssignedToMe =await Post.find({
           $and: [
             { 'task.isNorthStar': true },
+            { 'task._parent_task': null },
             { '_assigned_to': userId },
             { '_group': { $eq: null }}
           ]
@@ -2065,6 +2068,7 @@ export class PostService {
       let nsAssignedByMe =await Post.find({
           $and: [
             { 'task.isNorthStar': true },
+            { 'task._parent_task': null },
             { '_posted_by': userId },
             { '_group': { $eq: null }}
           ]

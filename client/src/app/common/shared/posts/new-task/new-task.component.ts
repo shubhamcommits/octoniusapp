@@ -28,6 +28,7 @@ export class NewTaskComponent implements OnInit {
 
   @Input() subtask: boolean;
   @Input() parentId: string;
+  @Input() parentNS: boolean = false;
 
   @Input() isIdeaModuleAvailable;
 
@@ -94,7 +95,7 @@ export class NewTaskComponent implements OnInit {
         type: 'task',
         _posted_by: this.userData._id,
         created_date: today,
-        _group: this.groupData._id,
+        _group: this.groupData?._id || this.groupData,
         _content_mentions: [],
         task: {
           _assigned_to: null,
@@ -102,7 +103,17 @@ export class NewTaskComponent implements OnInit {
           _column: null,
           custom_fields: [],
           _parent_task: this.parentId,
-          isNorthStar: false,
+          isNorthStar: this.parentNS,
+          northStar: (this.parentNS) ? {
+              target_value: 0,
+              values: [{
+                date: Date.now(),
+                value: 0,
+                status: 'NOT STARTED'
+              }],
+              type: 'Currency',
+              currency: 'USD'
+            } : null,
           is_milestone: false,
           is_idea: false
         }

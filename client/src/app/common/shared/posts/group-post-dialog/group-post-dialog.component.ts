@@ -656,10 +656,12 @@ export class GroupPostDialogComponent implements OnInit {
 
     this.comments = [];
 
-    /**
+     /**
      * Here we fetch all the columns available in a group, and if null we initialise them with the default one
      */
-    this.columns = await this.publicFunctions.getAllColumns(this.groupId);
+    if (this.groupId) {
+      this.columns = await this.publicFunctions.getAllColumns(this.groupId);
+    }
 
     await this.initPostData();
   }
