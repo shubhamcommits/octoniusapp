@@ -1,5 +1,8 @@
+
 <div class="container">
+
   <div *ngIf="storyData" class="category">
+
     <div class="header-hero" [ngStyle]="{'cursor': canEditStory ? 'pointer' : 'auto'}" style="background-image: url({{storyData?.header_pic}});"
         (click)="openImageSelector('header_pic')">
 
@@ -16,7 +19,6 @@
         </span>
       </div>
     </div>
-
     <div class="event-date" *ngIf="storyData?.type == 'event'">
       <div *ngIf="!canEditStory" class="date-no-edit-box">
         <div class="day">{{ storyData.event_date | date: 'dd' }}</div>
@@ -24,7 +26,7 @@
         <hr />
         <div class="time">{{ storyData.event_date | date: 'h:mm a' }}</div>
       </div>
-    
+
       <div *ngIf="canEditStory" class="date-edit-box">
         <div style="justify-content: space-evenly; display: flex;">
           <div>
@@ -42,12 +44,12 @@
         <div style="justify-content: space-evenly; display: flex;">
           <div style="padding-left: 20px;">
             <div *ngIf="!editTime" (click)="enableEditTime()" class="time" style="padding-top: 8px;">{{ storyData.event_date | date: 'h:mm' }}</div>
-            
+
             <input *ngIf="editTime" type="text" autocomplete="off" [(ngModel)]="this.eventTimeStr"
               (blur)="getTime($event.target.value)" (keyup.enter)="getTime($event.target.value)"
               (keyup.esc)="enableEditTime()" class="form-control" style="width: 80%;" />
           </div>
-          
+
           <div>
             <button class="btn btn-link" data-toggle="dropdown">
               <span class="time">{{ am_pm }}</span>
@@ -83,15 +85,15 @@
           [readOnly]="true"
           [contents]="storyData.content">
         </app-quill-editor>
-      
+
           <button type="button" *ngIf="canEditStory" class="btn btn-primary"
-            (click)="saveStory()" 
+            (click)="saveStory()"
             i18n="@@storyDetails.save"><span class="material-icons-outlined">
               history_edu
               </span>
               Save
           </button>
-        
+
         <app-quill-editor style="margin-bottom: 30px;" *ngIf="canEditStory"
           [editorId]="'story_editor'"
           [toolbar]="true"
@@ -106,6 +108,7 @@
 
       <!-- COMMENTS SECTION STARTS -->
       <div class="row mt-3" *ngIf="!canEditStory">
+
         <comment-section *ngIf="userData && storyData && showComments"
           [userData]="userData"
           [editorId]="'_new_comment'"
@@ -115,7 +118,7 @@
           (close)="showComments = !showComments">
         </comment-section>
 
-        <app-comment-list style="width: 90%;"
+        <app-comment-list style="width: 100%;"
           [storyId]="storyData?._id"
           [userData]="userData"
           [length]="(storyData?._comments?.length || 0)"

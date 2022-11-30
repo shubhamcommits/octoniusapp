@@ -2,6 +2,7 @@
 <div class="modal-header">
     <i class="material-icons-outlined ml-2" style="color: #5E2FE5;">explore</i>
     <h4 class="modal-title" id="modal-basic-title" i18n="@@newNorthStarDialog.createNS">Create a new North Star</h4>
+  
 </div>
 
 <div class="modal-body">
@@ -34,7 +35,7 @@
 
 <div class="modal-footer">
     <button class="btn btn-danger btn-md" (click)="closeDialog()" i18n="@@newNorthStarDialog.cancel">Cancel</button>
-    
+
     <!-- <button [disabled]="!sectionId || !groupId || !postTitle || postTitle == ''" (click)="createNS()" class="btn btn-primary" i18n="@@newNorthStarDialog.createNSButton">Create North Star</button> -->
     <button [disabled]="!postTitle || postTitle == ''" (click)="createNS()" class="btn btn-primary" i18n="@@newNorthStarDialog.createNSButton">Create North Star</button>
 </div>

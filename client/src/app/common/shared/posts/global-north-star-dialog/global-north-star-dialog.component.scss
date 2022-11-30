@@ -24,6 +24,7 @@
             .task-content {
                 width: 69%;
                 float: left;
+                padding: 16px;
             }
 
             .graph {
@@ -81,7 +82,8 @@
     }
 
     .post-content {
-        width: 100%;
+        width: 70%;
+        margin: 0 auto;
 
         .save-content {
             margin-bottom: 10px;
@@ -93,20 +95,20 @@
         margin-top: 10px;
         padding: 12px;
     }
-        
+
     .tile {
         padding: 0;
         align-items: center;
         border-bottom: 1px solid #E4EDF8;
-    
+
         .media-body {
             padding: 10px;
         }
-    
+
         &:hover {
             cursor: pointer;
         }
-    
+
         p {
             font-size: 14px !important;
         }
@@ -130,7 +132,7 @@
 /* Smartphones (portrait and landscape) ----------- */
 @media only screen and (min-device-width : 320px) and (max-device-width : 860px) {
     /* Styles */
-    
+
     .post-content {
         width: 100% !important;
         margin: 18px 0 !important;
@@ -142,9 +144,9 @@
         margin: 18px 0 !important;
         display: flex;
         flex-wrap: wrap;
-        flex-direction: column;  
+        flex-direction: column;
         align-content: flex-start;
-       
+
     }
 
     .post-dialog-content{
@@ -169,4 +171,9 @@
     &:hover {
         background-color: #4a20c3;
     }
+}
+
+.title{
+  font-size: 24px !important;
+  padding: 0 !important;
 }

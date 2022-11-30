@@ -83,10 +83,11 @@ $day-sick-approved: #d5590014;
   background: $weekend-bg !important;
   margin: 5px !important;
   width: auto !important;
-  border-top: none !important;
-  border-left: none !important;
-  border-right: none !important;
-  border-bottom: 4px solid #f7f7f7 !important;
+  // border-top: none !important;
+  // border-left: none !important;
+  // border-right: none !important;
+  // border-bottom: 4px solid #f7f7f7 !important;
+  padding: 16px !important;
 }
 .margin5 {
   margin: 5px !important;

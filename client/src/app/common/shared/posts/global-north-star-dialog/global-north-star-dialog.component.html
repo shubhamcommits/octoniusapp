@@ -12,11 +12,11 @@
           <div class="ns-header" [ngStyle]="{ 'background-color': postData?.task?.northStar?.header_background_color || '#FBB732' }">
               <div class="modal-header">
                 <!-- Event Post Header starts -->
-                <h4 *ngIf="!editContent" (click)="editTitle = !editTitle">
+                <h2 *ngIf="!editContent" (click)="editTitle = !editTitle" class="title">
                   <span>{{ title }}</span>
-                </h4>
+                </h2>
 
-                <h4 class="modal-title" *ngIf="editContent" (click)="editTitle = !editTitle">
+                <h2 class="modal-title" *ngIf="editContent" (click)="editTitle = !editTitle">
                   <span *ngIf="!editTitle">{{ title }}</span>
 
                   <!-- Post Title starts -->
@@ -29,7 +29,7 @@
                       class="post-title"
                       placeholder="✍🏻 Title" />
                   <!-- Post Title ends -->
-                </h4>
+                </h2>
 
                 <app-post-utils *ngIf="userData"
                     [post]="postData"
@@ -117,7 +117,7 @@
 
         <div class="subtasks">
           <div *ngFor="let task of subtasks; let i = index;">
-          
+
             <a (click)="openSubtask(task)">
               <!-- My Space Today Tasks -->
               <div>
@@ -130,9 +130,9 @@
                     <div class="col-md-4">
                       <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
                     </div>
-          
+
                     <div class="col-md-4" style="text-align-last: center;">
-          
+
                       {{ getProgressPercent(task?.task?.northStar) | percent: '.2-2'}}
 
                       <mat-progress-bar mode="determinate"
@@ -140,13 +140,13 @@
                         [value]="getProgressPercent(task?.task?.northStar) * 100" style="height: 10px; border-radius: 20px;">
                       </mat-progress-bar>
                     </div>
-          
+
                     <div class="col-md-2">
                       <div class="grouplabel" *ngIf="task?._group">
                         {{ task?._group?.group_name | truncatetext: 20 }}
                       </div>
                     </div>
-          
+
                     <div class="col-md-1">
                       <div class="overview-item small">
                         {{task.task.due_to | date:'MMM d' }}
@@ -159,9 +159,9 @@
           </div>
         </div>
 
-        <div class="subtasks">  
+        <div class="subtasks">
           <h4 i18n="@@globalNorthStarDialog.changeLogs">Change Logs</h4>
-          
+
           <app-global-north-star-stats [northStarValues]="northStarValues"></app-global-north-star-stats>
         </div>
     </div>
