@@ -439,7 +439,7 @@ export class GroupPostDialogComponent implements OnInit {
       // Task due date
       post.date_due_to = this.dueDate;
 
-      if (this.groupData.project_type) {
+      if (this.groupData && this.groupData.project_type) {
         post.start_date = this.startDate;
       }
 
@@ -603,7 +603,8 @@ export class GroupPostDialogComponent implements OnInit {
       values: [{
         date: Date.now(),
         value: 0,
-        status: 'NOT STARTED'
+        status: 'NOT STARTED',
+        _user: this.userData?._id
       }],
       type: 'Currency',
       currency: 'USD'

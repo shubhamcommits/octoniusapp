@@ -123,6 +123,7 @@ export class NorthStarComponent implements OnInit {
 
   addUpdateProgress() {
     this.updateProgress = false;
+    this.newValue._user = this.currentUser?._id;
     this.northStar.values.push(this.newValue);
     this.addProgressNorthStarEmitter.emit(this.northStar);
   }

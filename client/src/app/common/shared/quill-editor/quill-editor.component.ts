@@ -82,6 +82,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
   // GroupId variable
   @Input('groupId') groupId: any;
   @Input() workspaceId: any;
+  @Input() theme = 'snow';
 
   // Output the content present in the editor
   @Output('content') content = new EventEmitter();
@@ -305,10 +306,10 @@ export class QuillEditorComponent implements OnInit, OnChanges {
    * @param modules
    * @param {String} theme - 'snow' or 'bubble'
    */
-  quillEditor(modules: any, theme?: string) {
+  quillEditor(modules: any) {
     // Return the instance with modules
     return new Quill(`#${this.editorId}`, {
-      theme: theme || 'snow',
+      theme: this.theme || 'snow',
       modules: modules,
       readOnly: this.readOnly,
       placeholder: (this.readOnly) ? '' : $localize`:@@quillEditor.writeSomethingAwesome:Write something awesome...`

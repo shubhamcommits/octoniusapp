@@ -90,11 +90,12 @@
 
             <div class="col-md-4" style="text-align-last: center;">
 
-              {{ getProgressPercent(task?.task?.northStar) | percent: '.2-2'}}
+              {{ getProgressPercent(task?.northStarValues) | percent: '.2-2'}}
+
               <mat-progress-bar
                 mode="determinate"
-                [appProgressBarColor]="getNSStatusColor(task?.task?.northStar?.values[task?.task?.northStar?.values?.length - 1].status)"
-                [value]="getProgressPercent(task?.task?.northStar) * 100"
+                [appProgressBarColor]="getNSStatusColor(task?.northStarValues)"
+                [value]="getProgressPercent(task?.northStarValues) * 100"
                 style="height: 10px; border-radius: 20px;"></mat-progress-bar>
             </div>
 

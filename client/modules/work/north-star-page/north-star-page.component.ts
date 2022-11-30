@@ -5,6 +5,8 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { environment } from 'src/environments/environment';
 import { NewNorthStarDialogComponent } from './new-north-start-dialog/new-north-start-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { GroupPostDialogComponent } from 'src/app/common/shared/posts/group-post-dialog/group-post-dialog.component';
+import { GlobalNorthStarDialogComponent } from 'src/app/common/shared/posts/global-north-star-dialog/global-north-star-dialog.component';
 
 @Component({
   selector: 'app-north-star-page',
@@ -79,9 +81,6 @@ export class NorthStarPageComponent implements OnInit {
   async ngOnInit() {
     this.userData = await this.publicFunctions.getCurrentUser();
 
-    // Fetch the current group
-    // this.groupData = await this.publicFunctions.getCurrentGroupDetails();
-
     await this.getUserGlobalNorthStarTasks();
 
     this.initGraphs();
@@ -104,22 +103,6 @@ export class NorthStarPageComponent implements OnInit {
 
   async initGraphs() {
     await this.getGlobalNorthStarTasks();
-
-    // this.assignedChartPlugins = [{
-    //     beforeDraw(chart) {
-    //       const ctx = chart.ctx;
-
-    //       ctx.textAlign = 'center';
-    //       ctx.textBaseline = 'middle';
-    //       const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
-    //       const centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
-
-    //       ctx.font = '25px Nunito';
-    //       ctx.fillStyle = '#9d9fa1';
-
-    //       ctx.fillText('No Goals', centerX, centerY);
-    //     }
-    //   }];
 
     this.initAssignedToGraph();
     this.initAssignedByGraph();
@@ -165,32 +148,14 @@ export class NorthStarPageComponent implements OnInit {
     this.generalChartReady = true;
   }
 
-  getProgressPercent(northStar: any) {
-    if (!northStar.values || northStar.values.length == 0 || !northStar.target_value) {
+  getProgressPercent(northStarValues: any) {
+    if (!northStarValues || northStarValues.length == 0) {
       return 0;
     }
+    const completedNS = northStarValues.filter(ns => ns.status == 'ACHIEVED').lenth || 0;
 
-    if (northStar.type !== 'Percent') {
-      return (northStar.values[northStar.values.length - 1].value)/northStar.target_value;
-    }
-
-    return northStar.values[northStar.values.length - 1].value / 100;
+    return (100 * completedNS) / northStarValues.length;
   }
-
-  // getNSStatusClass(northStar) {
-  //   let retClass = "percentlabel";
-  //   const status = northStar.values[northStar.values.length - 1].status;
-  //   if (status === 'ON TRACK') {
-  //     retClass += ' on_track';
-  //   } else if (status === 'IN DANGER') {
-  //     retClass += ' in_danger';
-  //   } else if (status === 'ACHIEVED') {
-  //     retClass += ' achieved';
-  //   } else {
-  //     retClass += ' not_started';
-  //   }
-  //   return retClass;
-  // }
 
   getNSStatusColor(status: string) {
     if (status === 'ON TRACK') {
@@ -208,7 +173,15 @@ export class NorthStarPageComponent implements OnInit {
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
   openFullscreenModal(postData: any): void {
-    const dialogRef = this.utilityService.openPostDetailsFullscreenModal(postData._id, null, this.isIdeaModuleAvailable, true);
+    const dialogRef = this.dialog.open(GlobalNorthStarDialogComponent, {
+          width: '100%',
+          height: '100%',
+          disableClose: true,
+          panelClass: 'groupCreatePostDialog',
+          data: {
+            postId: postData?._id
+          }
+        });
     const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
       this.onDeleteEvent(data);
     });
@@ -217,13 +190,10 @@ export class NorthStarPageComponent implements OnInit {
       const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
         this.updateTask(data);
       });
-      const parentAssignEventSubs = dialogRef.componentInstance.parentAssignEvent.subscribe((data) => {
-        this.onDeleteEvent(data._id);
-      });
+
       dialogRef.afterClosed().subscribe(result => {
         closeEventSubs.unsubscribe();
         deleteEventSubs.unsubscribe();
-        parentAssignEventSubs.unsubscribe();
       });
     }
   }

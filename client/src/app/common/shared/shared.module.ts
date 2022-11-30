@@ -129,6 +129,8 @@ import { UserAvailabilityDayDialogComponent } from './user-workload-calendar/use
 import { UserWorkloadCalendarComponent } from './user-workload-calendar/user-workload-calendar.component';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { GlobalNorthStarDialogComponent } from './posts/global-north-star-dialog/global-north-star-dialog.component';
+import { GlobalNorthStarStatsComponent } from './posts/global-north-star-dialog/stats/global-north-star-stats.component';
 
 @NgModule({
     declarations: [
@@ -189,6 +191,8 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
         NorthStarComponent,
         NorthStarStatsComponent,
         GroupPostDialogComponent,
+        GlobalNorthStarDialogComponent,
+        GlobalNorthStarStatsComponent,
         WorkStatisticsCardComponent,
         WorkloadCardComponent,
         VelocityCardComponent,
@@ -299,6 +303,8 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
         MatSidenavModule,
         InlineInputComponent,
         GroupPostDialogComponent,
+        GlobalNorthStarDialogComponent,
+        GlobalNorthStarStatsComponent,
         ChartsModule,
         WorkStatisticsCardComponent,
         WorkloadCardComponent,

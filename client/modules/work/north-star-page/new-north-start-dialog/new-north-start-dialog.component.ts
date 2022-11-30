@@ -20,6 +20,8 @@ export class NewNorthStarDialogComponent implements OnInit {
   userGroups = [];
   groupSections: any = [];
 
+  _parent_task = '';
+
   postTitle: string = '';
   groupId;
   sectionId;
@@ -36,6 +38,7 @@ export class NewNorthStarDialogComponent implements OnInit {
     private mdDialogRef: MatDialogRef<NewNorthStarDialogComponent>
   ) {
     this.userId = this.data.userId;
+    this._parent_task = this.data._parent_task;
   }
 
   async ngOnInit() {
@@ -73,12 +76,14 @@ export class NewNorthStarDialogComponent implements OnInit {
           custom_fields: [],
           // _column: this.sectionId,
           isNorthStar: true,
+          _parent_task: this._parent_task,
           northStar: {
               target_value: 0,
               values: [{
                 date: Date.now(),
                 value: 0,
-                status: 'NOT STARTED'
+                status: 'NOT STARTED',
+                _user: this.userId
               }],
               type: 'Currency',
               currency: 'USD'

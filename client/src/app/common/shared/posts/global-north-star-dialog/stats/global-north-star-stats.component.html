@@ -1,0 +1,25 @@
+<div class="content-box" *ngIf="northStarValues">
+  <div *ngFor="let value of northStarValues; let index = index;">
+      <div class="media tile overview-task" style="cursor: default;">
+        <div class="row media-body">
+          <div class="col-md-1">
+            <app-assignee-avatar [post]="value" [userData]="value._user"></app-assignee-avatar>
+          </div>
+
+          <div class="col-md-10 overview-item title-nowrap pl-0">
+            {{ value?.post_title }}
+
+            <div class="grouplabel" [ngStyle]="{'background-color' : (value?.difference > 0) ? '#2AA578' : ((value?.difference == 0) ? '#E4EDF8' : '#EE5D5D')}">
+              {{ value?.difference }}
+            </div>
+          </div>
+
+          <div class="col-md-1">
+            <div class="overview-item small">
+              {{value.date | date:'MMM d' }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

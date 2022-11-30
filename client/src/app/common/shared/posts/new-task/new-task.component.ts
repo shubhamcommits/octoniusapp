@@ -109,7 +109,8 @@ export class NewTaskComponent implements OnInit {
               values: [{
                 date: Date.now(),
                 value: 0,
-                status: 'NOT STARTED'
+                status: 'NOT STARTED',
+                _user: this.userData?._id
               }],
               type: 'Currency',
               currency: 'USD'
@@ -140,7 +141,8 @@ export class NewTaskComponent implements OnInit {
                 values: [{
                   date: Date.now(),
                   value: 0,
-                  status: 'NOT STARTED'
+                  status: 'NOT STARTED',
+                  _user: this.userData?._id
                 }],
                 type: 'Currency',
                 currency: 'USD'
@@ -170,7 +172,8 @@ export class NewTaskComponent implements OnInit {
                 values: [{
                   date: Date.now(),
                   value: 0,
-                  status: 'NOT STARTED'
+                  status: 'NOT STARTED',
+                  _user: this.userData?._id
                 }],
                 type: 'Currency',
                 currency: 'USD'

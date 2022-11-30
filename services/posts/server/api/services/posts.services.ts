@@ -2013,7 +2013,7 @@ export class PostService {
 
   async getGlobalNorthStarTasks() {
     try {
-      return await Post.find({
+      const posts = await Post.find({
           $and: [
             { '_group': { $eq: null }},
             { 'task.isNorthStar': true },
@@ -2021,9 +2021,40 @@ export class PostService {
           ]
         })
         .sort('-created_date')
-        .populate({ path: '_group', select: this.groupFields })
         .populate({ path: '_posted_by', select: this.userFields })
-        .populate({ path: '_assigned_to', select: this.userFields });
+        .populate({ path: '_assigned_to', select: this.userFields })
+        .lean();
+
+      for (let i = 0; i < posts.length; i++) {
+        let post = posts[i];
+
+        const subtasks = await Post.find({
+          $and: [
+            { 'task.isNorthStar': true },
+            { 'task._parent_task': post?._id },
+          ]
+        }).select('task.northStar').lean();
+
+        if (subtasks && subtasks.length > 0) {
+          let northStarValues = [];
+          subtasks.forEach(st => {
+            const value = st?.task?.northStar?.values[st?.task?.northStar?.values?.length-1];
+            const nsValues = {
+                // currency: st?.task?.northStar?.currency,
+                type: st?.task?.northStar?.type,
+                value: value?.value,
+                status: value?.status,
+              };
+            
+            northStarValues = northStarValues.concat(nsValues);
+          });
+          post.northStarValues = northStarValues;
+        }
+
+        posts[i] = post;
+      }
+
+      return posts;
     } catch (error) {
       throw (error);
     }

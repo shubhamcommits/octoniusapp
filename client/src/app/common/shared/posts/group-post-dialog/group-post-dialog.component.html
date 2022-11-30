@@ -186,7 +186,7 @@
     <!-- Top Right Section starts -->
     <div class="post-properties">
         <!-- Parent Task starts -->
-        <div *ngIf="postData && postData?.task?._parent_task && postData?.type === 'task' && groupData?._id == postData?._group?._id" class="content-box">
+        <div *ngIf="postData && postData?.task?._parent_task && postData?.type === 'task' && postData?._group && groupData?._id == postData?._group?._id" class="content-box">
           <p class="box-title"i18n="@@groupCreatePostDialog.parentTask"> Parent task</p>
 
           <div class="parent-task">

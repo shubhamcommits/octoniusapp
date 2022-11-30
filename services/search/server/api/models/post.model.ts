@@ -304,6 +304,9 @@ const PostSchema = new Schema({
             },
             currency: {
                 type: String
+            },
+            header_background_color: {
+                type: String
             }
         },
 

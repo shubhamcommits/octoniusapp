@@ -365,12 +365,12 @@ export class UtilityService {
         }
 
         dialogOpen = this.dialog.open(GroupPostDialogComponent, {
-        width: '100%',
-        height: '100%',
-        disableClose: true,
-        panelClass: 'groupCreatePostDialog',
-        data: data
-      });
+          width: '100%',
+          height: '100%',
+          disableClose: true,
+          panelClass: 'groupCreatePostDialog',
+          data: data
+        });
     } else {
       this.warningNotification($localize`:@@utilityService.noRightToOpenPost:You does not have rights to access the post. Contact with the Manager!`);
     }
