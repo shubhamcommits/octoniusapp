@@ -21,6 +21,17 @@
             border-radius: 8px;
             padding: 20px;
 
+            .task-content {
+                width: 69%;
+                float: left;
+            }
+
+            .graph {
+                width: 29%;
+                align-self: center;
+                float: right;
+            }
+
             .change-color {
                 margin-top: 20px;
 

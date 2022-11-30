@@ -83,7 +83,7 @@
         <div class="media tile overview-task">
           <div class="row media-body">
             <div class="col-md-5">
-              <app-assignee-avatar [post]="task" [userData]="userData"></app-assignee-avatar>
+              <app-assignee-avatar [post]="task" [userData]="task?._assigned_to"></app-assignee-avatar>
 
               <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
             </div>

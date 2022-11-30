@@ -201,8 +201,7 @@ export class PostService {
       assigneeId: assigneeId,
       groupId: groupId,
       isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable
-    }).
-      toPromise()
+    }).toPromise();
   }
 
   /**

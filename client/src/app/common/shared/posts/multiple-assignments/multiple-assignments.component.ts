@@ -46,7 +46,7 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
   subSink = new SubSink();
 
   constructor(
-    public utilityService: UtilityService,
+    private utilityService: UtilityService,
     private postService: PostService,
     private groupService: GroupService,
     private injector: Injector
@@ -60,20 +60,6 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
 
           this.members.unshift({_id: 'all', first_name: 'All', last_name: 'members', email: ''});
         });
-      // this.subSink.add(this.utilityService.currentGroupData.subscribe((res) => {
-      //   if (JSON.stringify(res) != JSON.stringify({})) {
-
-      //     // Assign the GroupData
-      //     this.groupData = res;
-
-      //     this.members = this.groupData._members.concat(this.groupData._admins);
-      //     this.members = this.members.filter((member, index) => {
-      //         return (this.members.findIndex(m => m._id == member._id) == index)
-      //     });
-
-      //     this.members.unshift({_id: 'all', first_name: 'All', last_name: 'members', email: ''});
-      //   }
-      // }));
     } else {
       if (!this.workspaceData) {
         this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
@@ -156,7 +142,7 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
         if (this.type == 'post') {
           if (!this.isNewEvent) {
             this.utilityService.asyncNotification($localize`:@@multipleAssignments.pleaseWaitWeAreUpdatingContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-              this.postService.addAssigneeToPost(this.post._id, member._id, (this.post._group || this.post._group._id), this.isShuttleTasksModuleAvailable)
+              this.postService.addAssigneeToPost(this.post._id, member._id, this.groupId, this.isShuttleTasksModuleAvailable)
                 .then((res) => {
                   this.post = res['post'];
                   this.assigned_to.push(member);

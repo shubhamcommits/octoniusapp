@@ -41,10 +41,10 @@
             </div>
             <!-- Post Header Title ends -->
 
-            <div *ngIf="!editContent" [innerHTML]="(htmlContent) | safe: 'html'" class=""></div>
+            <div *ngIf="!editContent" [innerHTML]="(htmlContent) | safe: 'html'" class="task-content"></div>
 
             <!-- Post Content starts -->
-            <app-quill-editor *ngIf="editContent"
+            <app-quill-editor *ngIf="editContent" class="task-content"
                 [editorId]="'global-ns-editor'"
                 [toolbar]="true"
                 [readOnly]="!canEdit"
@@ -52,6 +52,25 @@
                 (content)="quillContentChanged($event)">
             </app-quill-editor>
             <!-- Post Content ends -->
+
+            <div class="d-md-none d-lg-block graph">
+              <canvas baseChart height="250" style="margin-bottom: 20px;"
+                [data]="chartData"
+                [labels]="chartLabels"
+                [chartType]="chartType"
+                [options]="chartOptions"
+                [colors]="chartColors"
+                [plugins]="chartPlugins"></canvas>
+
+                <app-multiple-assignments
+                  [canEdit]="canEdit"
+                  [userData]="userData"
+                  [post]="postData"
+                  [type]="'post'"
+                  (assigneeAddedEmiter)="onAssigned($event)"
+                  (assigneeRemovedEmiter)="onAssigned($event)">
+                </app-multiple-assignments>
+            </div>
 
             <!--
             <app-post-actions
@@ -61,6 +80,8 @@
                 [canEdit]="canEdit">
             </app-post-actions>
             -->
+
+            <br class="clearfix" />
 
             <div *ngIf="editContent" class="change-color">
               <span (click)="openColorPicker()" i18n="@@globalNorthStarDialog.changeColor">Change color</span>
@@ -103,7 +124,7 @@
                 <div class="media tile overview-task">
                   <div class="row media-body">
                     <div class="col-md-1">
-                      <app-assignee-avatar [post]="task" [userData]="userData"></app-assignee-avatar>
+                      <app-assignee-avatar [post]="task" [userData]="task?._assigned_to"></app-assignee-avatar>
                     </div>
 
                     <div class="col-md-4">

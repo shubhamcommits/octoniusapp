@@ -38,7 +38,6 @@ export class GlobalNorthStarDialogComponent implements OnInit {
   // Variable to enable or disable save button
   contentChanged = false;
 
-  taskAssignee = [];
   lastAssignedBy: any;
 
   showSubtasks = true;
@@ -48,6 +47,25 @@ export class GlobalNorthStarDialogComponent implements OnInit {
   northStarValues = [];
 
   myWorkplace = false;
+
+  chartLabels = [$localize`:@@globalNorthStarDialog.completed:Completed`, $localize`:@@globalNorthStarDialog.goalsPending:Targets pending`];
+  chartReady = false;
+  chartData = [0];
+  chartType = 'doughnut';
+  chartOptions = {
+    cutoutPercentage: 50,
+    responsive: true,
+    legend: {
+      display: false
+    }
+  };
+  chartColors = [{
+    backgroundColor: [
+      '#17B2E3',
+      '#F9FAFA'
+    ]
+  }];
+  chartPlugins = [];
 
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
@@ -76,6 +94,9 @@ export class GlobalNorthStarDialogComponent implements OnInit {
     this.userData = await this.publicFunctions.getCurrentUser();
 
     await this.initPostData();
+
+    this.initGraph();
+
     this.canEdit = await this.utilityService.canUserDoTaskAction(this.postData, null, this.userData, 'edit');
     if (!this.canEdit) {
       const hide = await this.utilityService.canUserDoTaskAction(this.postData, null, this.userData, 'hide');
@@ -83,10 +104,6 @@ export class GlobalNorthStarDialogComponent implements OnInit {
     } else {
       this.canView = true;
     }
-  }
-
-  formateDate(date) {
-    return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
   }
 
   async initPostData() {
@@ -98,11 +115,6 @@ export class GlobalNorthStarDialogComponent implements OnInit {
       // Convert into html
       this.htmlContent = converter.convert();
     }
-
-    // Set the taskAssignee
-    this.taskAssignee = this.postData?._assigned_to || [];
-
-    this.setAssignedBy();
 
     await this.postService.getSubTasks(this.postData?._id).then((res) => {
       this.subtasks = res['subtasks'];
@@ -132,6 +144,27 @@ export class GlobalNorthStarDialogComponent implements OnInit {
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
+  }
+
+  async initGraph() {
+    if (this.subtasks && this.subtasks.length > 0) {
+      let northStarValues = [];
+      this.subtasks.forEach(st => {
+        const value = st?.task?.northStar?.values[st?.task?.northStar?.values?.length-1];
+        const nsValues = {
+            value: value?.value,
+            status: value?.status,
+          };
+        
+        northStarValues = northStarValues.concat(nsValues);
+      });
+      this.postData.northStarValues = northStarValues;
+
+      const completed = await this.postData.northStarValues?.filter(value => value?.status == 'ACHIEVED');
+      const numCompleted = (completed) ? this.postData.northStarValues.length - completed.length : 0;
+      this.chartData = [this.postData.northStarValues.length - numCompleted, numCompleted];
+    }
+    this.chartReady = true;
   }
 
   /**
@@ -206,20 +239,6 @@ export class GlobalNorthStarDialogComponent implements OnInit {
 
   async onAssigned(res) {
     this.postData = res['post'];
-    this.setAssignedBy();
-  }
-
-  async setAssignedBy() {
-
-    if (this.postData?.logs && this.postData?.logs?.length > 0) {
-      const logs = this.postData?.logs
-        .filter(log => (log.action == 'assigned_to' || log.action == 'removed_assignee') && log?._actor)
-        .sort((l1, l2) => (moment(l1.action_date).isBefore(l2.action_date)) ? 1 : -1);
-
-      if (logs[0]) {
-        this.lastAssignedBy = await this.publicFunctions.getOtherUser(logs[0]._actor?._id);
-      }
-    }
   }
 
   /**
@@ -362,5 +381,9 @@ export class GlobalNorthStarDialogComponent implements OnInit {
     } else {
       return '#FFAB00';
     }
+  }
+
+  formateDate(date) {
+    return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
   }
 }
