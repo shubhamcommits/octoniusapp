@@ -9,7 +9,7 @@
 <div class="post-dialog-content" *ngIf="postData">
     <div class="post-content">
         <div class="content-box">
-          <div class="ns-header" [ngStyle]="{ 'background-color': postData?.task?.northStar?.header_background_color }">
+          <div class="ns-header" [ngStyle]="{ 'background-color': postData?.task?.northStar?.header_background_color || '#FBB732' }">
               <div class="modal-header">
                 <!-- Event Post Header starts -->
                 <h4 *ngIf="!editContent" (click)="editTitle = !editTitle">
@@ -54,7 +54,7 @@
             <!-- Post Content ends -->
 
             <div class="d-md-none d-lg-block graph">
-              <canvas baseChart height="250" style="margin-bottom: 20px;"
+              <canvas *ngIf="chartReady" baseChart height="250" style="margin-bottom: 20px;"
                 [data]="chartData"
                 [labels]="chartLabels"
                 [chartType]="chartType"

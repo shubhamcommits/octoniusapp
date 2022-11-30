@@ -110,10 +110,12 @@ export class GlobalNorthStarDialogComponent implements OnInit {
     // Set the title of the post
     this.title = this.postData?.title;
 
-    let converter = new QuillDeltaToHtmlConverter(JSON.parse(this.postData?.content)['ops'], {});
-    if (converter) {
-      // Convert into html
-      this.htmlContent = converter.convert();
+    if (this.postData?.content){
+      let converter = new QuillDeltaToHtmlConverter(JSON.parse(this.postData?.content)['ops'], {});
+      if (converter) {
+        // Convert into html
+        this.htmlContent = converter.convert();
+      }
     }
 
     await this.postService.getSubTasks(this.postData?._id).then((res) => {
@@ -163,8 +165,9 @@ export class GlobalNorthStarDialogComponent implements OnInit {
       const completed = await this.postData.northStarValues?.filter(value => value?.status == 'ACHIEVED');
       const numCompleted = (completed) ? this.postData.northStarValues.length - completed.length : 0;
       this.chartData = [this.postData.northStarValues.length - numCompleted, numCompleted];
+
+      this.chartReady = true;
     }
-    this.chartReady = true;
   }
 
   /**
