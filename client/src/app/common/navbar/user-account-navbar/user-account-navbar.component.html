@@ -3,12 +3,12 @@
     <div class="avatar">
       <!-- My user avatar starts -->
       <app-secured-image *ngIf="userData" [imgURL]="userData?.profile_pic" [service]="'user'"
-        [styleClass]="'mr-3 feed-avatar'" [placement]="'right'" [tooltip]="'Change your avatar'"
+        [styleClass]="'mr-3 peoplecard-avatar'" [placement]="'right'" [tooltip]="'Change your avatar'"
         (click)="openDetails(userContent)"></app-secured-image>
       <!-- My user avatar ends -->
     </div>
 
-    <div class="user-info">
+    <div class="user-info ml-3">
       <div class="name">
         {{ userData?.first_name }} {{ userData?.last_name }}
       </div>
@@ -19,26 +19,28 @@
     </div>
 
     <div class="options" *ngIf="isCurrentUser">
-      <i class="material-icons-outlined muted" [matMenuTriggerFor]="menu" style="text-align: center; cursor: pointer;">more_horiz</i>
+      <button mat-button [matMenuTriggerFor]="menu"><i class="material-icons-outlined muted">more_horiz</i></button>
+
       <mat-menu #menu="matMenu">
-        <a mat-menu-item (click)="openUpdateModel()">
-          <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">edit</i>
+        <button mat-menu-item (click)="openUpdateModel()">
+          <i class="material-icons-outlined ml-2">edit</i>
           <span i18n="@@userAccountNavbar.edit">Edit</span>
-        </a>
+        </button>
 
-        <a mat-menu-item (click)="getUserInformation()" *ngIf="isCurrentUser && workspaceData?.integrations?.is_ldap_connected && workspaceData?.ldapPropertiesMap">
-          <i class="material-icons ml-2" style="margin-right: .7rem;">cable</i>
+        <button mat-menu-item (click)="getUserInformation()" *ngIf="isCurrentUser && workspaceData?.integrations?.is_ldap_connected && workspaceData?.ldapPropertiesMap">
+          <i class="material-icons ml-2">cable</i>
           <span i18n="@@userAccountNavbar.syncLDAP">Sync LDAP</span>
-        </a>
+        </button>
 
-        <a *ngIf="isCurrentUser" (click)="openUpdatePasswordModal()">
-            <i class="material-icons ml-2" style="margin-right: .7rem;">lock</i>
+        <button mat-menu-item *ngIf="isCurrentUser" (click)="openUpdatePasswordModal()">
+            <i class="material-icons ml-2">lock</i>
             <span i18n="@@userAccountNavbar.changePassword">Change Password</span>
-        </a>
+        </button>
 
-        <a *ngIf="isCurrentUser && userData?.role !='owner'" (click)="removeUser(userData._id)">
+        <button mat-menu-item *ngIf="isCurrentUser && userData?.role !='owner'" (click)="removeUser(userData._id)">
+          <i class="material-icons ml-2">delete</i>
           <span i18n="@@userAccountNavbar.deleteAccount">Delete Account</span>
-        </a>
+        </button>
       </mat-menu>
     </div>
   </div>

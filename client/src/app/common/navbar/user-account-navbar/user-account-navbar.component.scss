@@ -7,12 +7,15 @@
 .header {
   display: flex;
   background: #FFFFFF;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14);
-  border-radius: 8px;
+  border-bottom: $border-gray;
+  // box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14);
+  // border-radius: 8px;
   padding: 20px;
 
   .avatar {
     margin: 10px;
+    width:100px;
+    height: 100px;
   }
 
   .user-info {
@@ -30,6 +33,7 @@
 
     .bio {
       margin: 10px;
+      width: 50%;
     }
   }
 

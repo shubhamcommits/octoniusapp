@@ -7,37 +7,39 @@
           Fill in the legal address Where do you live currently?
         </p>
       </div>
-      <hr />
+      <div class="color-separator">
+
+      </div>
     </div>
-  
+
     <div class="col">
       <div class="form-group">
-        <label for="address_line_1" i18n="@@userHive.addressLine1">Address Line 1</label>
+        <label for="address_line_1" i18n="@@userHive.addressLine1" class="muted">Address Line 1</label>
         <input type="text" class="form-control" [(ngModel)]="userData.hr.address_line_1" name="address_line_1"
           (blur)="saveProperty('address_line_1', $event.target.value)">
-  
-        <label for="address_line_2" i18n="@@userHive.addressLine2">Address Line 2</label>
+
+        <label for="address_line_2" i18n="@@userHive.addressLine2" class="muted">Address Line 2</label>
         <input type="text" class="form-control" [(ngModel)]="userData.hr.address_line_2" name="address_line_2"
           (blur)="saveProperty('address_line_2', $event.target.value)">
-  
-        <label for="city" i18n="@@userHive.city">City</label>
+
+        <label for="city" i18n="@@userHive.city" class="muted">City</label>
         <input type="text" class="form-control" [(ngModel)]="userData.hr.city" name="city"
           (blur)="saveProperty('city', $event.target.value)">
-  
+
         <div class="row" style="margin: 0 !important; padding: 0 !important;">
           <div class="col" style="margin-left: 0 !important; padding-left: 0 !important;">
-            <label for="zip_code" i18n="@@userHive.zip_code">Zip Code</label>
+            <label for="zip_code" i18n="@@userHive.zip_code" class="muted">Zip Code</label>
             <input type="text" class="form-control" [(ngModel)]="userData.hr.zip_code" name="zip_code"
               (blur)="saveProperty('zip_code', $event.target.value)">
           </div>
-  
+
           <div class="col" style="margin-right: 0 !important; padding-right: 0 !important;">
-            <label for="state" i18n="@@userHive.state">State</label>
+            <label for="state" i18n="@@userHive.state" class="muted">State</label>
             <input type="text" class="form-control" [(ngModel)]="userData.hr.state" name="state"
               (blur)="saveProperty('state', $event.target.value)">
           </div>
         </div>
-        
+
         <app-country-select [countryCode]="userData?.hr?.country" (countrySelected)="changeCountry($event)"></app-country-select>
       </div>
     </div>
@@ -51,19 +53,22 @@
           Fields created by the HR team. These fields are mandatory.
         </p>
       </div>
-      <hr />
+      <div class="color-separator">
+
+      </div>
     </div>
-  
+
     <div class="col">
       <div class="form-group">
-        <div *ngFor="let cf of hrCustomFields">
-          <label [for]="cf._id">{{ cf.name }}</label>
-        
+        <div *ngFor="let cf of hrCustomFields" class="fieldUI">
+          <label [for]="cf._id" class="muted">{{ cf.name }}</label>
+
           <mat-select ngDefaultControl *ngIf="isCurrentUser && cf.type == 'Select'" [(value)]="selectedHRCFValues[cf._id]"
             (selectionChange)="onSelectEntityCustomFieldChange($event, cf._id)" appearance="fill" [name]="cf._id">
             <mat-select-trigger>{{ selectedHRCFValues[cf._id] }}</mat-select-trigger>
             <mat-option *ngFor="let val of cf.values" [value]="val">{{ val }}</mat-option>
           </mat-select>
+
           <span *ngIf="!isCurrentUser && cf.type == 'Select'">{{ selectedHRCFValues[cf._id] }}</span>
 
           <input type="number" *ngIf="isCurrentUser && cf.type == 'Number'" [name]="cf.name" [(ngModel)]="selectedHRCFValues[cf._id]" [disabled]="!isCurrentUser"
@@ -76,7 +81,7 @@
             (keyup.enter)="onInputEntityCustomFieldChange($event, cf._id)"
             (blur)="onInputEntityCustomFieldChange($event, cf._id)" />
 
-          <app-date-picker *ngIf="isCurrentUser && cf.type == 'Date'" class="form-control"
+          <app-date-picker *ngIf="isCurrentUser && cf.type == 'Date'" class="form-control" style="height: 50px"
             [styleClass]="'btn-group input-date'" [canEdit]="isCurrentUser"
             [selectedDate]="formateDate(selectedHRCFValues[cf._id])"
             (date)="onDateEntityCustomFieldChange($event, cf._id)">
@@ -94,13 +99,15 @@
           Fields created by the HR team. These fields are mandatory.
         </p>
       </div>
-      <hr />
+      <div class="color-separator">
+
+      </div>
     </div>
-  
+
     <div class="col">
       <div class="form-group">
         <div *ngFor="let variable of hrVariables">
-          <label [for]="variable._id">{{ variable.name }}</label>
+          <label [for]="variable._id" class="muted">{{ variable.name }}</label>
 
           <input type="number" [name]="variable.name" [(ngModel)]="selectedHRVariablesValues[variable._id]" disabled="true"
             class="form-control" [value]="selectedHRVariablesValues[variable._id]"/>

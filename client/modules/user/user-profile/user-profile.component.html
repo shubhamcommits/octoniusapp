@@ -7,32 +7,34 @@
           Your personal information
         </p>
       </div>
-      <hr />
+      <div class="color-separator">
+
+      </div>
     </div>
-  
+
     <div class="col">
       <div class="form-group">
-        <label for="first_name" i18n="@@userProfile.firstName">First name</label>
+        <label for="first_name" i18n="@@userProfile.firstName" class="muted">First name</label>
         <input type="text" class="form-control" [(ngModel)]="userData.first_name" name="first_name"
           (blur)="saveProperty('first_name', $event.target.value)">
-  
-        <label for="last_name" i18n="@@userProfile.lastName">Last name</label>
+
+        <label for="last_name" i18n="@@userProfile.lastName" class="muted">Last name</label>
         <input type="text" class="form-control" [(ngModel)]="userData.last_name" name="last_name"
           (blur)="saveProperty('last_name', $event.target.value)">
 
-        <label for="email" i18n="@@userProfile.email">E-Mail</label>
+        <label for="email" i18n="@@userProfile.email" class="muted">E-Mail</label>
         <input type="text" class="form-control" [(ngModel)]="userData.email" name="email"
           (blur)="saveProperty('email', $event.target.value)">
-        
-        <label for="phone_number" i18n="@@userProfile.phoneNumber">Phone number</label>
+
+        <label for="phone_number" i18n="@@userProfile.phoneNumber" class="muted">Phone number</label>
         <input type="text" class="form-control" [(ngModel)]="userData.phone_number" name="phone_number"
           (blur)="saveProperty('phone_number', $event.target.value)">
-        
-        <label for="mobile_number" i18n="@@userProfile.cellNumber">Cell number</label>
+
+        <label for="mobile_number" i18n="@@userProfile.cellNumber" class="muted">Cell number</label>
         <input type="text" class="form-control" [(ngModel)]="userData.mobile_number" name="mobile_number"
           (blur)="saveProperty('mobile_number', $event.target.value)">
 
-        <label i18n="@@userProfile.language">Language</label>
+        <label i18n="@@userProfile.language" class="muted">Language</label>
         <app-select-language [userData]="userData"></app-select-language>
       </div>
     </div>
@@ -46,23 +48,25 @@
           Fields created by the workplace admin. These fields are mandatory in order to customize your experience and access to resources.
         </p>
       </div>
-      <hr />
+      <div class="color-separator">
+
+      </div>
     </div>
-  
+
     <div class="col">
       <div class="form-group">
-        <div *ngFor="let cf of customFields">
-          <label  [for]="cf.name">{{ cf.title }}</label>
-        
+        <div *ngFor="let cf of customFields" class="fieldUI">
+          <label  [for]="cf.name" class="muted">{{ cf.title }}</label>
+
           <mat-select ngDefaultControl *ngIf="!cf.user_type && isCurrentUser"
             [(value)]="selectedCFValues[cf.name]" [name]="cf.name"
             (selectionChange)="onCustomFieldChange($event, cf.name)" appearance="fill">
             <mat-select-trigger>{{ selectedCFValues[cf.name] }}</mat-select-trigger>
             <mat-option *ngFor="let val of cf.values" [value]="val">{{ val }}</mat-option>
           </mat-select>
-      
+
           <span *ngIf="!cf.user_type && !isCurrentUser">{{ selectedCFValues[cf.name] }}</span>
-          
+
           <app-select-assignee *ngIf="cf.user_type" type="workspaceMembers"
             [userData]="selectedCFValues[cf.name]" [workspaceData]="workspaceData"
             [showBar]="isCurrentUser" (member)="selectUser(cf.name, $event)"></app-select-assignee>
@@ -76,12 +80,14 @@
       <div class="col-description">
         <h4 i18n="@@userProfile.skills">Skills</h4>
         <p class="block-description" i18n="@@userProfile.skillsDescription">
-          
+
         </p>
       </div>
-      <hr />
+      <div class="color-separator">
+
+      </div>
     </div>
-  
+
     <div class="col">
       <div class="form-group">
         <app-user-skills [userData]="userData" [currentUser]="isCurrentUser"></app-user-skills>
