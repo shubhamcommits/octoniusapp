@@ -180,14 +180,18 @@ export class RecentActivityComponent implements OnInit {
 
     this.markNotificationAsRead(notification?._id, this.userData?._id, index, notification?.type);
 
-    // redirect the user to the post
-    const newGroup = await this.publicFunctions.getGroupDetails(notification?._origin_post?._group?._id);
-    await this.publicFunctions.sendUpdatesToGroupData(newGroup);
-    // Set the Value of element selection box to be the url of the post
-    if (notification?._origin_post?.type === 'task') {
-      this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { postId: notification?._origin_post?._id } });
+    if (notification?._origin_post?._group?._id) {
+      // redirect the user to the post
+      const newGroup = await this.publicFunctions.getGroupDetails(notification?._origin_post?._group?._id);
+      await this.publicFunctions.sendUpdatesToGroupData(newGroup);
+      // Set the Value of element selection box to be the url of the post
+      if (notification?._origin_post?.type === 'task') {
+        this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { postId: notification?._origin_post?._id } });
+      } else {
+        this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { postId: notification?._origin_post?._id } });
+      } 
     } else {
-      this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { postId: notification?._origin_post?._id } });
+      this._router.navigate(['/dashboard', 'work', 'northstar'], { queryParams: { postId: notification?._origin_post?._id } });
     }
   }
 

@@ -1,6 +1,5 @@
 <div class="container">
-
-
+  <!--
   <div class="row" style="margin-bottom: 20px;">
     <div class="col card">
       <div class="title">
@@ -50,7 +49,7 @@
       </div>
     </div>
   </div>
-
+  -->
   <button (click)="createNS()" class="btn new-ns-button mb-3 mt-3">
     <i class="material-icons">add</i>
     <span i18n="@@northStarPage.newNS">New North Star</span>
@@ -81,7 +80,7 @@
 
   <div *ngFor="let task of globalNorthStarTasks; let i = index;">
 
-    <a (click)="openFullscreenModal(task)">
+    <a (click)="openGlobalNSModal(task?._id)">
       <!-- My Space Today Tasks -->
 
         <div class="media tile overview-task">
