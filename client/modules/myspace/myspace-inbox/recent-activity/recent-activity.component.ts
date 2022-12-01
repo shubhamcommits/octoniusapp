@@ -1,11 +1,9 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs';
 import { retry } from 'rxjs/internal/operators/retry';
 import { take } from 'rxjs/internal/operators/take';
-import { GlobalNorthStarDialogComponent } from 'src/app/common/shared/posts/global-north-star-dialog/global-north-star-dialog.component';
 import { environment } from 'src/environments/environment';
 import { LoungeService } from 'src/shared/services/lounge-service/lounge.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
@@ -50,7 +48,6 @@ export class RecentActivityComponent implements OnInit {
   constructor(
     private _router: Router,
     private injector: Injector,
-    public dialog: MatDialog,
     private socketService: SocketService,
     private loungeService: LoungeService
   ) {
@@ -183,14 +180,18 @@ export class RecentActivityComponent implements OnInit {
 
     this.markNotificationAsRead(notification?._id, this.userData?._id, index, notification?.type);
 
-    // redirect the user to the post
-    const newGroup = await this.publicFunctions.getGroupDetails(notification?._origin_post?._group?._id);
-    await this.publicFunctions.sendUpdatesToGroupData(newGroup);
-    // Set the Value of element selection box to be the url of the post
-    if (notification?._origin_post?.type === 'task') {
-      this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { postId: notification?._origin_post?._id } });
+    if (notification?._origin_post?._group?._id) {
+      // redirect the user to the post
+      const newGroup = await this.publicFunctions.getGroupDetails(notification?._origin_post?._group?._id);
+      await this.publicFunctions.sendUpdatesToGroupData(newGroup);
+      // Set the Value of element selection box to be the url of the post
+      if (notification?._origin_post?.type === 'task') {
+        this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { postId: notification?._origin_post?._id } });
+      } else {
+        this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { postId: notification?._origin_post?._id } });
+      } 
     } else {
-      this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { postId: notification?._origin_post?._id } });
+      this._router.navigate(['/dashboard', 'work', 'northstar'], { queryParams: { postId: notification?._origin_post?._id } });
     }
   }
 
@@ -231,16 +232,11 @@ export class RecentActivityComponent implements OnInit {
    * @param postId - userId of the current user
    * @param group - group Id
    */
-  async viewPost(postId: string, group: any, notificationId: string, index, type) {
+  async viewPost(postId: string, group: any) {
     const groupId = (group._id) ? group._id : group;
-    if (groupId) {
-      const newGroup = await this.publicFunctions.getGroupDetails(groupId);
-      await this.publicFunctions.sendUpdatesToGroupData(newGroup);
-      this.markNotificationAsRead(notificationId, this.userData?._id, index, type);
-      this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { postId: postId } });
-    } else {
-      this._router.navigate(['/dashboard', 'work', 'northstar'], { queryParams: { postId: postId } });
-    }
+    const newGroup = await this.publicFunctions.getGroupDetails(groupId);
+    await this.publicFunctions.sendUpdatesToGroupData(newGroup);
+    this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { postId: postId } });
   }
 
   selectedDefaultTab() {
