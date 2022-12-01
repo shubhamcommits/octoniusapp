@@ -5,8 +5,8 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { environment } from 'src/environments/environment';
 import { NewNorthStarDialogComponent } from './new-north-start-dialog/new-north-start-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { GroupPostDialogComponent } from 'src/app/common/shared/posts/group-post-dialog/group-post-dialog.component';
 import { GlobalNorthStarDialogComponent } from 'src/app/common/shared/posts/global-north-star-dialog/global-north-star-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-north-star-page',
@@ -76,9 +76,18 @@ export class NorthStarPageComponent implements OnInit {
     private postService: PostService,
     private utilityService: UtilityService,
     private injector: Injector,
+    private _router: Router,
     public dialog: MatDialog) { }
 
   async ngOnInit() {
+    if (this._router.routerState.snapshot.root.queryParamMap.has('postId')) {
+      const postId = this._router.routerState.snapshot.root.queryParamMap.get('postId');
+
+      let post: any = await this.publicFunctions.getPost(postId);
+
+      this.openGlobalNSModal(postId, (post?.task?._parent_task?._id || post?.task?._parent_task));
+    }
+
     this.userData = await this.publicFunctions.getCurrentUser();
 
     await this.getUserGlobalNorthStarTasks();
@@ -171,14 +180,15 @@ export class NorthStarPageComponent implements OnInit {
   /**
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
-  openFullscreenModal(postData: any): void {
+  openGlobalNSModal(postData: any, parentTaskId?: string): void {
     const dialogRef = this.dialog.open(GlobalNorthStarDialogComponent, {
           width: '100%',
           height: '100%',
           disableClose: true,
           panelClass: 'groupCreatePostDialog',
           data: {
-            postId: postData?._id
+            postId: postData?._id,
+            parentTaskId: parentTaskId
           }
         });
     const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {

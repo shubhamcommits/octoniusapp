@@ -119,7 +119,7 @@
         <div class="subtasks">
           <div *ngFor="let task of subtasks; let i = index;">
 
-            <a (click)="openSubtask(task)">
+            <a (click)="openSubtask(task?._id)">
               <!-- My Space Today Tasks -->
               <div>
                 <div class="media tile overview-task">

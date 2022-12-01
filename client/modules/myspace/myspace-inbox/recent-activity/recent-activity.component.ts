@@ -1,9 +1,11 @@
 import { Component, Injector, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs';
 import { retry } from 'rxjs/internal/operators/retry';
 import { take } from 'rxjs/internal/operators/take';
+import { GlobalNorthStarDialogComponent } from 'src/app/common/shared/posts/global-north-star-dialog/global-north-star-dialog.component';
 import { environment } from 'src/environments/environment';
 import { LoungeService } from 'src/shared/services/lounge-service/lounge.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
@@ -48,6 +50,7 @@ export class RecentActivityComponent implements OnInit {
   constructor(
     private _router: Router,
     private injector: Injector,
+    public dialog: MatDialog,
     private socketService: SocketService,
     private loungeService: LoungeService
   ) {
@@ -228,11 +231,16 @@ export class RecentActivityComponent implements OnInit {
    * @param postId - userId of the current user
    * @param group - group Id
    */
-  async viewPost(postId: string, group: any) {
+  async viewPost(postId: string, group: any, notificationId: string, index, type) {
     const groupId = (group._id) ? group._id : group;
-    const newGroup = await this.publicFunctions.getGroupDetails(groupId);
-    await this.publicFunctions.sendUpdatesToGroupData(newGroup);
-    this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { postId: postId } });
+    if (groupId) {
+      const newGroup = await this.publicFunctions.getGroupDetails(groupId);
+      await this.publicFunctions.sendUpdatesToGroupData(newGroup);
+      this.markNotificationAsRead(notificationId, this.userData?._id, index, type);
+      this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { postId: postId } });
+    } else {
+      this._router.navigate(['/dashboard', 'work', 'northstar'], { queryParams: { postId: postId } });
+    }
   }
 
   selectedDefaultTab() {

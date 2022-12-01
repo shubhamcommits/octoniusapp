@@ -89,7 +89,14 @@ export class GlobalNorthStarDialogComponent implements OnInit {
     this.isLoading$.next(true);
 
     const postId = this.data.postId;
-    this.postData = await this.publicFunctions.getPost(postId);
+    const parentTaskId = this.data.parentTaskId;
+
+    if (parentTaskId) {
+      this.openSubtask(postId);
+      this.postData = await this.publicFunctions.getPost(parentTaskId);
+    } else {
+      this.postData = await this.publicFunctions.getPost(postId);
+    }
     
     this.userData = await this.publicFunctions.getCurrentUser();
 
@@ -282,8 +289,8 @@ export class GlobalNorthStarDialogComponent implements OnInit {
     }));
   }
 
-  async openSubtask(subtask: any) {
-    const dialogRef = this.utilityService.openPostDetailsFullscreenModal(subtask._id, null, false, true);
+  async openSubtask(subtaskId: string) {
+    const dialogRef = this.utilityService.openPostDetailsFullscreenModal(subtaskId, null, false, true);
 
     if (dialogRef) {
       const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
