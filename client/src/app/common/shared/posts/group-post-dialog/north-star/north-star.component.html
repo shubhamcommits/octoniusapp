@@ -88,13 +88,13 @@
       <div class="target_value" *ngIf="northStar?.type === 'Number'"><span i18n="@@northStar.target">Target:</span> {{ northStar?.target_value }}</div>
       <div class="target_value" *ngIf="northStar?.type === 'Percent'"><span i18n="@@northStar.target">Target:</span> {{ northStar?.target_value/100 | percent: '.2-2' }}</div>
 
-      <div class="value" *ngIf="northStar?.type === 'Currency'"> <span i18n="@@northStar.current">Current:</span> {{ northStar?.values[northStar?.values?.length - 1]?.value | currency: northStar?.currency }}</div>
-      <div class="value" *ngIf="northStar?.type === 'Percent'"><span i18n="@@northStar.current">Current:</span>  {{ northStar?.values[northStar?.values?.length - 1]?.value/100 | percent: '.2-2' }}</div>
-      <div class="value" *ngIf="northStar?.type === 'Number'"> <span i18n="@@northStar.current">Current:</span> {{ northStar?.values[northStar?.values?.length - 1]?.value }}</div>
+      <div class="value" *ngIf="northStar?.type === 'Currency'"> <span i18n="@@northStar.current">Current:</span> {{ northStar?.values[0]?.value | currency: northStar?.currency }}</div>
+      <div class="value" *ngIf="northStar?.type === 'Percent'"><span i18n="@@northStar.current">Current:</span>  {{ northStar?.values[0]?.value/100 | percent: '.2-2' }}</div>
+      <div class="value" *ngIf="northStar?.type === 'Number'"> <span i18n="@@northStar.current">Current:</span> {{ northStar?.values[0]?.value }}</div>
 
       <div>
         <span i18n="@@northStar.status">Status: </span>
-        <span class="status">{{ northStar?.values[northStar?.values?.length - 1]?.status }}</span>
+        <span class="status">{{ northStar?.values[0]?.status }}</span>
       </div>
 
       <div class="open_update_progress" (click)="openUpdateProgress()" i18n="@@northStar.updateProgress">Update progress</div>
