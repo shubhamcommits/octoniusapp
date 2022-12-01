@@ -14,7 +14,6 @@
         // border: 1px solid #E4EDF8;
         border-radius: 10px;
         margin-bottom: 10px;
-        padding: 12px;
 
         .ns-header {
             // background: #FBB732;
@@ -92,7 +91,7 @@
     }
 
     .subtasks {
-        margin-top: 10px;
+        margin-top: 20px;
         padding: 12px;
     }
 
@@ -120,6 +119,7 @@
         white-space: nowrap;
         // overflow: hidden !important;
         text-overflow: ellipsis;
+        line-height: 40px;
     }
 }
 

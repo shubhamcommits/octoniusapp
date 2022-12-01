@@ -54,7 +54,7 @@
             <!-- Post Content ends -->
 
             <div class="d-md-none d-lg-block graph">
-              <canvas *ngIf="chartReady" baseChart height="250" style="margin-bottom: 20px;"
+              <canvas *ngIf="chartReady" baseChart height="200" style="margin-bottom: 20px;"
                 [data]="chartData"
                 [labels]="chartLabels"
                 [chartType]="chartType"
@@ -89,11 +89,11 @@
           </div>
         </div>
 
-        <div class="clearfix save-content">
+        <div class="clearfix save-content mb-3">
           <button *ngIf="canEdit && !editContent"
-            class="btn float-right btn-primary btn-md" style="margin-left: 10px;"
+            class="btn float-right btn-light btn-md" style="margin-left: 10px;"
             (click)="editContent = !editContent" i18n="@@globalNorthStarDialog.edit">
-              Edit
+              Edit North Star details
           </button>
           <button *ngIf="canEdit && editContent" [disabled]="!contentChanged"
             class="btn float-right btn-primary btn-md" style="margin-left: 10px;"
@@ -106,14 +106,15 @@
             i18n="@@globalNorthStarDialog.cancel">
             Cancel
           </button>
-
-          <button *ngIf="canEdit"
-            class="btn float-left new-ns-button" (click)="createNS()" i18n="@@globalNorthStarDialog.addTarget">
-            + Add Target
-          </button>
-
-          <span style="margin-left: 20px; vertical-align: -10px;" i18n="@@globalNorthStarDialog.goalsDescription">Goals are specific and measurable pieces that must be accomplished in order to reach your North Star.</span>
         </div>
+
+        <button *ngIf="canEdit"
+          class="btn new-ns-button" (click)="createNS()" i18n="@@globalNorthStarDialog.addTarget">
+          + Add Target
+        </button>
+
+        <span style="margin-left: 20px" i18n="@@globalNorthStarDialog.goalsDescription">Targets are specific and measurable pieces that must be accomplished in order to reach your North Star.</span>
+
 
         <div class="subtasks">
           <div *ngFor="let task of subtasks; let i = index;">
@@ -160,7 +161,7 @@
         </div>
 
         <div class="subtasks">
-          <h4 i18n="@@globalNorthStarDialog.changeLogs">Change Logs</h4>
+          <h4 i18n="@@globalNorthStarDialog.changeLogs">Change Log</h4>
 
           <app-global-north-star-stats [northStarValues]="northStarValues"></app-global-north-star-stats>
         </div>

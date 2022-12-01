@@ -3,7 +3,7 @@
     <button class="btn btn-block task muted" (click)="column.addTask = true">
       <i class="material-icons-outlined">add</i>
       <span *ngIf="!saveAsNorthStar && !saveAsIdea" i18n="@@newTask.newTask">New Task</span>
-      <span *ngIf="saveAsNorthStar" i18n="@@newTask.newNorthStar">New North Star</span>
+      <span *ngIf="saveAsNorthStar" i18n="@@newTask.newNorthStar">New Target</span>
       <span *ngIf="saveAsIdea" i18n="@@newTask.newIdea">New Idea</span>
     </button>
 
@@ -17,7 +17,7 @@
       </a>
       <li class="dropdown-divider"></li>
       <a mat-menu-item (click)="changeTaskType(true, false)">
-        <span i18n="@@newTask.northStar">North Star</span>
+        <span i18n="@@newTask.northStar">Target</span>
       </a>
       <li class="dropdown-divider" *ngIf="isIdeaModuleAvailable"></li>
       <a mat-menu-item (click)="changeTaskType(false, true)" *ngIf="isIdeaModuleAvailable">

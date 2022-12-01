@@ -4,7 +4,7 @@
   <div class="row" style="margin-bottom: 20px;">
     <div class="col card">
       <div class="title">
-        {{ numAssignedToMe }} <span i18n="@@northStarPage.goalsAssignedTo">goals assigned to you</span>
+       <span i18n="@@northStarPage.goalsAssignedTo">Goals assigned to you: </span>   {{ numAssignedToMe }}
       </div>
 
       <div class="d-md-none d-lg-block graph" *ngIf="assignedToChartReady">
@@ -20,7 +20,7 @@
 
     <div class="col card">
       <div class="title">
-        {{ numAssignedByMe }} <span i18n="@@northStarPage.goalsAssignedBy">goals assigned by you</span>
+         <span i18n="@@northStarPage.goalsAssignedBy">Goals you assigned: </span> {{ numAssignedByMe }}
       </div>
 
       <div class="d-md-none d-lg-block graph" *ngIf="assignedByChartReady">
@@ -51,7 +51,7 @@
     </div>
   </div>
 
-  <button (click)="createNS()" class="btn new-ns-button">
+  <button (click)="createNS()" class="btn new-ns-button mb-3 mt-3">
     <i class="material-icons">add</i>
     <span i18n="@@northStarPage.newNS">New North Star</span>
   </button>
@@ -75,18 +75,21 @@
   </div>
   <!-- Empty State of tasks ends -->
 
+<div class="ns-wrapper">
+
+
 
   <div *ngFor="let task of globalNorthStarTasks; let i = index;">
 
     <a (click)="openFullscreenModal(task)">
       <!-- My Space Today Tasks -->
-      <div>
+
         <div class="media tile overview-task">
           <div class="row media-body">
             <div class="col-md-5">
               <app-assignee-avatar [post]="task" [userData]="task?._assigned_to"></app-assignee-avatar>
 
-              <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
+              <div class="overview-item title-nowrap pl-0 ml-2" [innerHTML]="task?.title"></div>
             </div>
 
             <div class="col-md-4" style="text-align-last: center;">
@@ -113,8 +116,9 @@
             </div>
           </div>
         </div>
-      </div>
+
     </a>
+  </div>
   </div>
 
 </div>
