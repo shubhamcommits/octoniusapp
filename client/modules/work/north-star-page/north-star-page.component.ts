@@ -149,12 +149,11 @@ export class NorthStarPageComponent implements OnInit {
   }
 
   getProgressPercent(northStarValues: any) {
-    if (!northStarValues || northStarValues.length == 0) {
+    if (!northStarValues || northStarValues?.length == 0) {
       return 0;
     }
-    const completedNS = northStarValues.filter(ns => ns.status == 'ACHIEVED').lenth || 0;
 
-    return (100 * completedNS) / northStarValues.length;
+    return (northStarValues.filter(ns => ns.status == 'ACHIEVED').length || 0) / northStarValues.length;
   }
 
   getNSStatusColor(status: string) {

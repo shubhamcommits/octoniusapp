@@ -163,7 +163,7 @@
         <div class="subtasks">
           <h4 i18n="@@globalNorthStarDialog.changeLogs">Change Log</h4>
 
-          <app-global-north-star-stats [northStarValues]="northStarValues"></app-global-north-star-stats>
+          <app-global-north-star-stats *ngIf="northStarValues" [northStarValues]="northStarValues"></app-global-north-star-stats>
         </div>
     </div>
 </div>

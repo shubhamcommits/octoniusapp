@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, OnChanges, Input } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 
 @Component({
@@ -7,13 +7,14 @@ import { CurrencyPipe } from '@angular/common';
   styleUrls: ['./global-north-star-stats.component.scss'],
   providers:[CurrencyPipe]
 })
-export class GlobalNorthStarStatsComponent implements OnInit {
+export class GlobalNorthStarStatsComponent implements OnChanges {
 
   @Input() northStarValues = [];
 
-  constructor(private currencyPipe : CurrencyPipe) { }
+  constructor() { }
 
-  ngOnInit() {
+  ngOnChanges() {
+console.log(this.northStarValues);
   }
 
   getNSStatusClass(status) {

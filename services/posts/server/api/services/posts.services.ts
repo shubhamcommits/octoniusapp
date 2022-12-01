@@ -464,13 +464,13 @@ export class PostService {
     switch (post.type) {
 
       case 'task':
-        if (post._assigned_to && post._assigned_to.length > 0) {
+        if (post?._assigned_to && post?._assigned_to.length > 0) {
           // Real time notification for new task assignment
           return http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-task`, {
-            postId: post._id,
-            assigned_to: post._assigned_to,
-            groupId: post._group._id || post._group,
-            posted_by: post._posted_by
+            postId: post?._id,
+            assigned_to: post?._assigned_to,
+            groupId: post?._group?._id || post?._group,
+            posted_by: post?._posted_by
           }).catch(err => {
             console.log(`\n⛔️ Error:\n ${err}`);
           });
@@ -2559,6 +2559,7 @@ export class PostService {
       .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
       .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
       .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
+      .populate({ path: 'task.northStar.values._user', select: this.userFields })
       .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
       .populate({ path: 'permissions._members', select: this.userFields })
       .lean();
