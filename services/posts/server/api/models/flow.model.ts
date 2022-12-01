@@ -12,7 +12,7 @@ const FlowSchema = new Schema({
     _group: {
         type: Schema.Types.ObjectId,
         ref: 'Group',
-        required: true
+        required: false
     },
     steps: [{
         created_date: {

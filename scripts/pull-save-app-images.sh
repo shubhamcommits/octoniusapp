@@ -23,6 +23,9 @@ APPROVAL_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:approval-server
 # Auths Microservice Image Name
 AUTHS_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:auths-server
 
+# Chats Microservice Image Name
+CHATS_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:chats-server
+
 # Groups Microservice Image Name
 GROUPS_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:groups-server
 
@@ -66,6 +69,7 @@ MONGO_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:mongodb
           docker pull $MONGO_IMAGE_NAME
           docker pull $APPROVAL_IMAGE_NAME
           docker pull $AUTHS_IMAGE_NAME
+          docker pull $CHATS_IMAGE_NAME
           docker pull $GROUPS_IMAGE_NAME
           docker pull $WORKSPACES_IMAGE_NAME
           docker pull $USERS_IMAGE_NAME
@@ -92,6 +96,8 @@ echo "Save $APPROVAL_IMAGE_NAME"
 docker save $APPROVAL_IMAGE_NAME | gzip > "docker-images/${DOCKER_REPO}.approval-server.tar.gz"
 echo "Save $AUTHS_IMAGE_NAME"
 docker save $AUTHS_IMAGE_NAME | gzip > "docker-images/${DOCKER_REPO}.auths-server.tar.gz"
+echo "Save $CHATS_IMAGE_NAME"
+docker save $CHATS_IMAGE_NAME | gzip > "docker-images/${DOCKER_REPO}.chats-server.tar.gz"
 echo "Save $GROUPS_IMAGE_NAME"
 docker save $GROUPS_IMAGE_NAME | gzip > "docker-images/${DOCKER_REPO}.groups-server.tar.gz"
 echo "Save $WORKSPACES_IMAGE_NAME"

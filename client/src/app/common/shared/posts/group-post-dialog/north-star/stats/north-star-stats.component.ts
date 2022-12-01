@@ -1,5 +1,7 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, Injector } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
+import moment from 'moment';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
   selector: 'app-north-star-stats',
@@ -12,9 +14,23 @@ export class NorthStarStatsComponent implements OnInit {
   @Input() isNorthStar = false;
   @Input() northStar;
 
-  constructor(private currencyPipe : CurrencyPipe) { }
+  // Public Functions Object
+  public publicFunctions = new PublicFunctions(this.injector)
+
+  constructor(
+    private injector: Injector
+    ) { }
 
   ngOnInit() {
+    this.northStar.values = this.northStar?.values?.sort((v1, v2) => (moment.utc(v1.date).isBefore(v2.date)) ? 1 : -1);
+    
+    this.northStar?.values?.forEach(async (v, index) => {
+      if (!v._user._id) {
+        v._user = await this.publicFunctions.getOtherUser(v._user);
+      }
+
+      v.difference = v.value - ((this.northStar?.values[index + 1]) ? this.northStar?.values[index + 1].value : 0);
+    });
   }
 
   getNSStatusClass(status) {

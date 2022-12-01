@@ -52,10 +52,24 @@ routes.get('/', postController.getPosts);
 routes.get('/archived', postController.getArchivedTasks);
 
 /**
- * GET - This route fetches the list of posts present in a group
- * @param { groups Ids } query
+ * GET - This route fetches the list of NS present in user´s groups
  */
-routes.get('/northstar', postController.getNorthStarTasks);
+routes.get('/user-groups-northstar', postController.getNorthStarTasks);
+
+/**
+ * GET - This route fetches the list of global NS
+ */
+routes.get('/user-global-northstar', postController.getGlobalNorthStarTasks);
+
+/**
+ * GET - This route fetches the stats for the NS page
+ */
+routes.get('/user-northstar', postController.getNorthStarStats);
+
+/**
+ * GET - This route fetches the stats for the NS page
+ */
+routes.get('/global-northstar', postController.getGlobalNorthStarStats);
 
 // This route is used to edit a post
 routes.put('/:postId', postFileHandler, postController.edit);

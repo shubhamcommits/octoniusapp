@@ -131,22 +131,42 @@ export class GroupPostDialogComponent implements OnInit {
     this.isIdeaModuleAvailable = this.data.isIdeaModuleAvailable;
 
     if (!this.groupId) {
-      this.groupId = (this.postData._group._id || this.postData._group);
-    }
+      this.groupId = (this.postData._group) ? (this.postData._group._id || this.postData._group) : null;
+      this.myWorkplace = false;
+    } else {
+      this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
 
-    this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
+      this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
+
+      this.myWorkplace = this.publicFunctions.isPersonalNavigation(this.groupData, this.userData);
+
+      this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
+        this.flows = res['flows'];
+      });
+
+      this.groupService.getGroupCustomFields(this.groupId).then((res) => {
+        if (res['group']['custom_fields']) {
+          res['group']['custom_fields'].forEach(field => {
+            this.customFields.push(field);
+
+            if (!this.postData?.task.custom_fields) {
+              this.postData.task.custom_fields = new Map<string, string>();
+            }
+
+            if (!this.postData?.task.custom_fields[field.name]) {
+              this.postData.task.custom_fields[field.name] = '';
+              this.selectedCFValues[field.name] = '';
+            } else {
+              this.selectedCFValues[field.name] = this.postData?.task.custom_fields[field.name];
+            }
+          });
+        }
+      });
+    }
 
     this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
 
     this.userData = await this.publicFunctions.getCurrentUser();
-
-    this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
-
-    this.myWorkplace = this.publicFunctions.isPersonalNavigation(this.groupData, this.userData);
-
-    this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
-      this.flows = res['flows'];
-    });
 
     await this.initPostData();
     this.canEdit = await this.utilityService.canUserDoTaskAction(this.postData, this.groupData, this.userData, 'edit');
@@ -200,24 +220,6 @@ export class GroupPostDialogComponent implements OnInit {
 
       this.customFields = [];
       this.selectedCFValues = [];
-      this.groupService.getGroupCustomFields(this.groupId).then((res) => {
-        if (res['group']['custom_fields']) {
-          res['group']['custom_fields'].forEach(field => {
-            this.customFields.push(field);
-
-            if (!this.postData?.task.custom_fields) {
-              this.postData.task.custom_fields = new Map<string, string>();
-            }
-
-            if (!this.postData?.task.custom_fields[field.name]) {
-              this.postData.task.custom_fields[field.name] = '';
-              this.selectedCFValues[field.name] = '';
-            } else {
-              this.selectedCFValues[field.name] = this.postData?.task.custom_fields[field.name];
-            }
-          });
-        }
-      });
 
       await this.postService.getSubTasks(this.postData?._id).then((res) => {
         this.subtasks = res['subtasks'];
@@ -437,7 +439,7 @@ export class GroupPostDialogComponent implements OnInit {
       // Task due date
       post.date_due_to = this.dueDate;
 
-      if (this.groupData.project_type) {
+      if (this.groupData && this.groupData.project_type) {
         post.start_date = this.startDate;
       }
 
@@ -600,10 +602,12 @@ export class GroupPostDialogComponent implements OnInit {
       target_value: 0,
       values: [{
         date: Date.now(),
-        value: 0
+        value: 0,
+        status: 'NOT STARTED',
+        _user: this.userData?._id
       }],
-      type: 'Currency $',
-      status: 'ON TRACK'
+      type: 'Currency',
+      currency: 'USD'
     };
     const makeNSLogAction = (this.postData.task.isNorthStar) ? 'make_ns' : 'make_no_ns';
     this.updateDetails(makeNSLogAction);
@@ -653,10 +657,12 @@ export class GroupPostDialogComponent implements OnInit {
 
     this.comments = [];
 
-    /**
+     /**
      * Here we fetch all the columns available in a group, and if null we initialise them with the default one
      */
-    this.columns = await this.publicFunctions.getAllColumns(this.groupId);
+    if (this.groupId) {
+      this.columns = await this.publicFunctions.getAllColumns(this.groupId);
+    }
 
     await this.initPostData();
   }
@@ -693,7 +699,7 @@ export class GroupPostDialogComponent implements OnInit {
    * This function is responsible for receiving the date from @module <app-date-picker></app-date-picker>
    * @param dateObject
    */
-   getCFDate(dateObject: any, cfName: string, cfTitle: string) {
+  getCFDate(dateObject: any, cfName: string, cfTitle: string) {
     this.saveCustomField(cfName, cfTitle, dateObject.toDate());
   }
 

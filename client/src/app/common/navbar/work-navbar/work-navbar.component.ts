@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, AfterContentChecked, SimpleChanges, OnChanges, OnDestroy } from '@angular/core';
+import { Component, OnInit, Injector, AfterContentChecked, SimpleChanges, OnChanges, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
@@ -12,7 +12,7 @@ import { LoungeService } from 'src/shared/services/lounge-service/lounge.service
   templateUrl: './work-navbar.component.html',
   styleUrls: ['./work-navbar.component.scss']
 })
-export class WorkNavbarComponent implements OnInit, OnChanges, AfterContentChecked, OnDestroy {
+export class WorkNavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
 
   // USER DATA
   userData: any;
@@ -44,9 +44,10 @@ export class WorkNavbarComponent implements OnInit, OnChanges, AfterContentCheck
   private publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
-    private utilityService: UtilityService,
     private router: Router,
     private injector: Injector,
+    private changeDetection: ChangeDetectorRef,
+    private utilityService: UtilityService,
     private loungeService: LoungeService
   ) { }
 
@@ -70,9 +71,6 @@ export class WorkNavbarComponent implements OnInit, OnChanges, AfterContentCheck
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
   }
 
-  async ngOnChanges(changes: SimpleChanges) {
-  }
-
   ngAfterContentChecked() {
     this.subSink.add(this.utilityService.routerStateData.subscribe((res) => {
       if (JSON.stringify(res) != JSON.stringify({})) {
@@ -83,21 +81,23 @@ export class WorkNavbarComponent implements OnInit, OnChanges, AfterContentCheck
         else if (this.routerState == 'lounge') {
           this.nextLoungeNavbar();
         }
-        else if (this.routerState == 'people-directory' || this.routerState == 'people-directory-chart') {
+        else if (this.routerState == 'people-directory' || this.routerState == 'people-directory-chart'
+            || this.routerState == 'hive-hr' || this.routerState == 'hive-hr-setup'
+            || this.routerState == 'hive-hr-timeoff' || this.routerState == 'hive-hr-reports') {
           this.nextPeopleDirectoryNavbar();
         }
       }
+    }));
 
-      // Subscribe to the change in lounge data from the socket server
-      this.subSink.add(this.utilityService.loungeData.subscribe((res) => {
-        this.loungeData = res;
-      }));
+    // Subscribe to the change in lounge data from the socket server
+    this.subSink.add(this.utilityService.loungeData.subscribe((res) => {
+      this.loungeData = res;
+    }));
 
-      // Subscribe to the change in story data from the socket server
-      this.subSink.add(this.utilityService.storyData.subscribe((res) => {
-        this.storyData = res;
-        this.storyOriginalName = this.storyData?.name;
-      }));
+    // Subscribe to the change in story data from the socket server
+    this.subSink.add(this.utilityService.storyData.subscribe((res) => {
+      this.storyData = res;
+      this.storyOriginalName = this.storyData?.name;
     }));
   }
 
@@ -112,18 +112,24 @@ export class WorkNavbarComponent implements OnInit, OnChanges, AfterContentCheck
     this.isLoungeNavbar$.next(false);
     this.isPeopleDirectoryNavbar$.next(false);
     this.isWorkNavbar$.next(true);
+
+    this.changeDetection.detectChanges();
   }
 
   nextLoungeNavbar() {
     this.isWorkNavbar$.next(false);
     this.isPeopleDirectoryNavbar$.next(false);
     this.isLoungeNavbar$.next(true);
+
+    this.changeDetection.detectChanges();
   }
 
   nextPeopleDirectoryNavbar() {
     this.isWorkNavbar$.next(false);
     this.isLoungeNavbar$.next(false);
     this.isPeopleDirectoryNavbar$.next(true);
+
+    this.changeDetection.detectChanges();
   }
 
   canSeeDashboard() {

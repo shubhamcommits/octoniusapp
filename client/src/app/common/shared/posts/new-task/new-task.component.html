@@ -3,7 +3,7 @@
     <button class="btn btn-block task muted" (click)="column.addTask = true">
       <i class="material-icons-outlined">add</i>
       <span *ngIf="!saveAsNorthStar && !saveAsIdea" i18n="@@newTask.newTask">New Task</span>
-      <span *ngIf="saveAsNorthStar" i18n="@@newTask.newNorthStar">New North Star</span>
+      <span *ngIf="saveAsNorthStar" i18n="@@newTask.newNorthStar">New Target</span>
       <span *ngIf="saveAsIdea" i18n="@@newTask.newIdea">New Idea</span>
     </button>
 
@@ -17,7 +17,7 @@
       </a>
       <li class="dropdown-divider"></li>
       <a mat-menu-item (click)="changeTaskType(true, false)">
-        <span i18n="@@newTask.northStar">North Star</span>
+        <span i18n="@@newTask.northStar">Target</span>
       </a>
       <li class="dropdown-divider" *ngIf="isIdeaModuleAvailable"></li>
       <a mat-menu-item (click)="changeTaskType(false, true)" *ngIf="isIdeaModuleAvailable">
@@ -39,12 +39,13 @@
 
 <div *ngIf="subtask">
   <button class="btn btn-block task muted" (click)="addSubTask = true" *ngIf="subtask && !addSubTask">
-    <i class="material-icons-outlined">add</i> <span i18n="@@newTask.newTask">New Task</span>
+    <i class="material-icons-outlined" *ngIf="!parentNS">add</i> <span i18n="@@newTask.newTask" *ngIf="!parentNS">New Task</span>
+    <i class="material-icons-outlined ml-2" *ngIf="parentNS" style="color: #5E2FE5; line-height: 38px;">explore</i><span i18n="@@newTask.newTarget" *ngIf="parentNS">New Target</span>
   </button>
   <div class="add-task" *ngIf="subtask && addSubTask">
     <input class="form-control" type="text" placeholder="Enter task title"
       [(ngModel)]="postTitle"
       (keyup.enter)="newTask()"
-      (keyup.esc)="column.addTask = false">
+      (keyup.esc)="addSubTask = false">
   </div>
 </div>

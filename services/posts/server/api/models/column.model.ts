@@ -8,7 +8,7 @@ const ColumnSchema = new Schema({
     _group: {
         type: Schema.Types.ObjectId,
         ref: 'Group',
-        required: true
+        required: false
     },
     title: {
         type: String,
@@ -37,8 +37,7 @@ const ColumnSchema = new Schema({
         },
         currency: {
           type: String,
-          default: 'EUR',
-          enum: ['USD', 'EUR']
+          default: 'EUR'
         },
         expenses: [{
             amount: {

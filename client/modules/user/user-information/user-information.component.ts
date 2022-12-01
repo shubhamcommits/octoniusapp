@@ -41,6 +41,7 @@ export class UserInformationComponent implements OnInit {
 
   ngOnInit() {
   }
+  
   async removeUser(userID: string){
 
     // Ask User to remove this user from the group or not

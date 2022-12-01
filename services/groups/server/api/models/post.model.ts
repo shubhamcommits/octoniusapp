@@ -46,7 +46,7 @@ const PostSchema = new Schema({
     _group: {
         type: Schema.Types.ObjectId,
         ref: 'Group',
-        required: true
+        required: false
     },
     _posted_by: {
         type: Schema.Types.ObjectId,
@@ -300,7 +300,13 @@ const PostSchema = new Schema({
             }],
             type: {
                 type: String,
-                enum: ['Currency $', 'Currency €', 'Percent', 'Number']
+                enum: ['Currency', 'Percent', 'Number']
+            },
+            currency: {
+                type: String
+            },
+            header_background_color: {
+                type: String
             }
         },
 

@@ -1,20 +1,52 @@
 <nav class="navbar">
+  <div class="header">
+    <div class="avatar">
+      <!-- My user avatar starts -->
+      <app-secured-image *ngIf="userData" [imgURL]="userData?.profile_pic" [service]="'user'"
+        [styleClass]="'mr-3 peoplecard-avatar'" [placement]="'right'" [tooltip]="'Change your avatar'"
+        (click)="openDetails(userContent)"></app-secured-image>
+      <!-- My user avatar ends -->
+    </div>
+
+    <div class="user-info ml-3">
+      <div class="name">
+        {{ userData?.first_name }} {{ userData?.last_name }}
+      </div>
+
+      <div class="bio">
+        {{ userData?.bio }}
+      </div>
+    </div>
+
+    <div class="options" *ngIf="isCurrentUser">
+      <button mat-button [matMenuTriggerFor]="menu"><i class="material-icons-outlined muted">more_horiz</i></button>
+
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="openUpdateModel()">
+          <i class="material-icons-outlined ml-2">edit</i>
+          <span i18n="@@userAccountNavbar.edit">Edit</span>
+        </button>
+
+        <button mat-menu-item (click)="getUserInformation()" *ngIf="isCurrentUser && workspaceData?.integrations?.is_ldap_connected && workspaceData?.ldapPropertiesMap">
+          <i class="material-icons ml-2">cable</i>
+          <span i18n="@@userAccountNavbar.syncLDAP">Sync LDAP</span>
+        </button>
+
+        <button mat-menu-item *ngIf="isCurrentUser" (click)="openUpdatePasswordModal()">
+            <i class="material-icons ml-2">lock</i>
+            <span i18n="@@userAccountNavbar.changePassword">Change Password</span>
+        </button>
+
+        <button mat-menu-item *ngIf="isCurrentUser && userData?.role !='owner'" (click)="removeUser(userData._id)">
+          <i class="material-icons ml-2">delete</i>
+          <span i18n="@@userAccountNavbar.deleteAccount">Delete Account</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="nav">
-      <li class="nav-item mr-3 d-none d-sm-block">
-        <!-- My user avatar starts -->
-        <app-secured-image *ngIf="userData"
-            [imgURL]="userData?.profile_pic"
-            [service]="'user'"
-            [styleClass]="'mr-3 feed-avatar'"
-            [placement]="'right'"
-            [tooltip]="'Change your avatar'"
-            (click)="openDetails(userContent)"></app-secured-image>
-        <!-- My user avatar ends -->
-
-
-      </li>
-
       <li class="nav-item">
         <a class="nav-link"
             [routerLink]="['/dashboard', 'user', 'profile']"
@@ -24,6 +56,18 @@
               <span class="sr-only">(current)</span>
         </a>
       </li>
+
+      <li class="nav-item" *ngIf="isOrganizationModuleAvailable">
+          <a class="nav-link"
+              [routerLink]="['/dashboard', 'user', 'hive']"
+              routerLinkActive="active"
+              [ngClass]="activeState == 'hive'?'nav-link active-nav':'nav-link'"
+              (click)="changeState('hive')">
+                <span i18n="@@userAccountNavbar.hiveHR">Hive HR</span>
+                <span class="sr-only">(current)</span>
+          </a>
+      </li>
+
       <li class="nav-item">
           <a class="nav-link"
               [routerLink]="['/dashboard', 'user', 'clouds']"
@@ -34,6 +78,7 @@
                 <span class="sr-only">(current)</span>
           </a>
       </li>
+
       <li class="nav-item">
           <a class="nav-link"
               [routerLink]="['/dashboard', 'user', 'workload']"

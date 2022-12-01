@@ -427,6 +427,49 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
       }))
   }
 
+  changeHRRole(memberId: string, hr_role: boolean) {
+    // Create a new User Service Object
+    let userService = this.injector.get(UserService);
+
+    // Create a new utility Service Object
+    let utilityService = this.injector.get(UtilityService);
+
+    // Create a new Socket Service Object
+    let socketService = this.injector.get(SocketService);
+
+    // Instatiate the request to change the role
+    utilityService.asyncNotification($localize`:@@componentSearchBar.pleaseWaitWeUpdatingUserRoleWorkspace:Please wait we are updating the role as per your request...`,
+      new Promise((resolve, reject) => {
+        userService.updateUserHRRole(memberId, hr_role)
+          .then((res) => {
+            const index = this.members.findIndex((user: any) => user._id == memberId);
+
+            // Update the current member role
+            this.members[index].hr_role = hr_role;
+            this.ActiveMembers[this.ActiveMembers.findIndex((user: any) => user._id == memberId)].hr_role = hr_role;
+
+            // Update the current workspace data with updated list of members
+            this.workspaceData.members = this.members;
+
+            // Send the data over the service and storage layer throughout the entire app
+            this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
+
+            // Update the localdata of all the connected users
+            this.publicFunctions.emitWorkspaceData(socketService, this.workspaceData);
+
+            // Updates the local data of the user to tell them about that their role has been updated
+            this.publicFunctions.emitUserData(socketService, this.members[index]['_id'], this.members[index]);
+
+            // Resolve the promise with success
+            resolve(utilityService.resolveAsyncPromise($localize`:@@componentSearchBar.roleUpdated:User role updated!`))
+          })
+          .catch((err) => {
+            console.log('Error occurred, while updating the role', err);
+            reject(utilityService.rejectAsyncPromise($localize`:@@componentSearchBar.oopsErrorWhileUpdatingRole:Oops, an error occurred while updating the role, please try again!`))
+          })
+      }));
+  }
+
   /**
    * This function is responsible for changing the roles of the users
    * @param user - user member object

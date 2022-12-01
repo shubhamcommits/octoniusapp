@@ -23,6 +23,8 @@ export class GroupAdminComponent implements OnInit {
   // Current Workspace Data
   workspaceData: any = {};
 
+  myWorkplace = false;
+
   shuttleTasksModuleAvailable: boolean = false;
 
   // Campaign Module Available
@@ -44,6 +46,8 @@ export class GroupAdminComponent implements OnInit {
 
     // Fetch Current Workspace
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+
+    this.myWorkplace = await this.publicFunctions.isPersonalNavigation(this.groupData, this.userData);
 
     this.shuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable()
 

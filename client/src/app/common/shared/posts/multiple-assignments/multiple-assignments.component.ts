@@ -2,6 +2,7 @@ import { Component, Input, Output, OnChanges, EventEmitter, ViewChild, ViewEncap
 import { MatMenuTrigger } from '@angular/material/menu';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
+import { GroupService } from 'src/shared/services/group-service/group.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
@@ -45,29 +46,25 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
   subSink = new SubSink();
 
   constructor(
-    public utilityService: UtilityService,
+    private utilityService: UtilityService,
     private postService: PostService,
+    private groupService: GroupService,
     private injector: Injector
   ) { }
 
   async ngOnChanges() {
 
-    if (this.type != 'chat') {
-      this.subSink.add(this.utilityService.currentGroupData.subscribe((res) => {
-        if (JSON.stringify(res) != JSON.stringify({})) {
-
-          // Assign the GroupData
-          this.groupData = res;
-
-          this.members = this.groupData._members.concat(this.groupData._admins);
-          this.members = this.members.filter((member, index) => {
-              return (this.members.findIndex(m => m._id == member._id) == index)
-          });
+    if (this.type != 'chat' && this.groupId) {
+        this.groupService.getAllGroupMembers(this.groupId).then(res => {
+          this.members = res['users'];
 
           this.members.unshift({_id: 'all', first_name: 'All', last_name: 'members', email: ''});
-        }
-      }));
+        });
     } else {
+      if (!this.workspaceData) {
+        this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+      }
+      
       this.members = await this.workspaceData?.members;
       this.members = await this.members?.filter((member, index) => {
           return (this.members?.findIndex(m => m._id == member._id) == index)
@@ -145,7 +142,7 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
         if (this.type == 'post') {
           if (!this.isNewEvent) {
             this.utilityService.asyncNotification($localize`:@@multipleAssignments.pleaseWaitWeAreUpdatingContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-              this.postService.addAssigneeToPost(this.post._id, member._id, (this.post._group || this.post._group._id), this.isShuttleTasksModuleAvailable)
+              this.postService.addAssigneeToPost(this.post._id, member._id, this.groupId, this.isShuttleTasksModuleAvailable)
                 .then((res) => {
                   this.post = res['post'];
                   this.assigned_to.push(member);

@@ -1,0 +1,11 @@
+.form-group {
+	label {
+		float: left;
+		width: 100%;
+	}
+
+	input,
+	mat-form-field {
+		width: 100%;
+	}
+}

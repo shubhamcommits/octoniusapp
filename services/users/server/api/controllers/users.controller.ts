@@ -31,7 +31,7 @@ export class UsersControllers {
                     { active: true }
                 ]
             })
-            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields')
+            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
@@ -157,7 +157,7 @@ export class UsersControllers {
                     { active: true }
                 ]
             })
-            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields profile_custom_fields')
+            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr profile_custom_fields hr')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
@@ -248,7 +248,7 @@ export class UsersControllers {
                 }, {
                     new: true
                 })
-                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields')
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr')
                 .populate({
                     path: 'stats.favorite_groups',
                     select: '_id group_name group_avatar'
@@ -543,7 +543,7 @@ export class UsersControllers {
                 role: role
             }, {
                 new: true
-            }).select('first_name last_name profile_pic role _workspace _account integrations');
+            }).select('first_name last_name profile_pic role _workspace _account integrations hr_role');
 
             if (user.role == 'guest') {
                 // Add new user to workspace's group
@@ -629,6 +629,43 @@ export class UsersControllers {
                 message: `Role updated for user ${user.first_name}`,
                 user: user,
                 groupsUpdate
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for updating the HR role of the user
+     * @param { memberId }req 
+     * @param res 
+     */
+    async changeHRRole(req: Request, res: Response, next: NextFunction) {
+
+        const { memberId, hr_role } = req.body;
+        try {
+
+            // find the user
+            let user: any = await User.findOne({
+                $and: [
+                    { _id: memberId },
+                    { active: true }
+                ]
+            }, {
+                hr_role: hr_role
+            }, {
+                new: true
+            }).select('first_name last_name profile_pic role _workspace _account integrations hr_role');
+
+            // Error updating the user
+            if (!user) {
+                return sendError(res, new Error('Unable to update the user, some unexpected error occurred!'), 'Unable to update the user, some unexpected error occurred!', 500);
+            }
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Role updated for user ${user.first_name}`,
+                user: user
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
@@ -816,7 +853,7 @@ export class UsersControllers {
                 'stats.groups._group': {$ne: groupId }
                 }, { $push: { 'stats.groups': { _group: groupId, count: 1 }}}
                 )
-                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields')
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr')
                 .populate({
                     path: 'stats.favorite_groups',
                     select: '_id group_name group_avatar'
@@ -835,7 +872,7 @@ export class UsersControllers {
                 'stats.groups._group': groupId 
                 }, { $inc: { 'stats.groups.$.count': 1 }
                 })
-                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields')
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr')
                 .populate({
                     path: 'stats.favorite_groups',
                     select: '_id group_name group_avatar'
@@ -876,7 +913,7 @@ export class UsersControllers {
         }
 
         const user = await User.findOne({_id: userId})
-            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields')
+            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
@@ -930,7 +967,7 @@ export class UsersControllers {
             let user = await User.findOneAndUpdate({
                     _id: userId
                 }, update)
-                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields')
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr')
                 .populate({
                     path: 'stats.favorite_groups',
                     select: '_id group_name group_avatar'
@@ -1091,7 +1128,7 @@ export class UsersControllers {
             let user: any = await User.findOneAndUpdate({
                 _id: userId
                 }, { $set: { 'stats.default_icons_sidebar': iconsSidebar }})
-                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields')
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr')
                 .populate({
                     path: 'stats.favorite_groups',
                     select: '_id group_name group_avatar'
@@ -1319,7 +1356,7 @@ export class UsersControllers {
                 }, {
                     new: true
                 })
-                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields')
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr')
                 .populate({
                     path: 'stats.favorite_groups',
                     select: '_id group_name group_avatar'
@@ -1342,5 +1379,81 @@ export class UsersControllers {
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);           
         }
+    }
+
+    async savePayrollCustomField(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { userId } = req.params;
+
+        // Fetch the newCustomField from fileHandler middleware
+        const customFieldValue = req.body['customFieldValue'];
+        const customFieldId = req.body['customFieldId'];
+
+        let user: any = await User.findById(userId);
+
+        if (!user.hr) {
+            user.hr = {};
+        }
+
+        if (!user.hr.entity_custom_fields) {
+            user.hr.entity_custom_fields = new Map<string, string>();
+        }
+        user.hr.entity_custom_fields.set(customFieldId, customFieldValue);
+
+        // Find the post and update the custom field
+        user = await User.findByIdAndUpdate({
+            _id: userId
+        }, {
+            $set: { "hr.entity_custom_fields": user.hr.entity_custom_fields }
+        }, {
+            new: true
+        });
+
+        // user.custom_fields[customFieldId] = customFieldValue;
+
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Payroll Custom Field updated!',
+            user: user
+        });
+    }
+
+    async savePayrollVariable(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { userId } = req.params;
+
+        // Fetch the newCustomField from fileHandler middleware
+        const customFieldValue = req.body['customFieldValue'];
+        const customFieldId = req.body['customFieldId'];
+
+        let user = await User.findById(userId);
+
+        if (!user.hr) {
+            user.hr = {};
+        }
+        
+        if (!user.hr.entity_variables) {
+            user.hr.entity_variables = new Map<string, string>();
+        }
+        user.hr.entity_variables.set(customFieldId, customFieldValue);
+
+        // Find the post and update the custom field
+        user = await User.findByIdAndUpdate({
+            _id: userId
+        }, {
+            $set: { "hr.entity_variables": user.hr.entity_variables }
+        }, {
+            new: true
+        });
+
+        // user.custom_fields[customFieldId] = customFieldValue;
+
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Payroll Variable updated!',
+            user: user
+        });
     }
 }

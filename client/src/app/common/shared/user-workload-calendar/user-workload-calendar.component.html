@@ -13,10 +13,12 @@
                 </div>
             </div>
         </div>
+
         <div class="col-md-4">
             <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
         </div>
-        <div class="col-md-3">
+        
+        <div class="col-md-3" *ngIf="isCurrentUser">
           <button class="btn" (click)="openDialog('add')" style="margin:0">
             <i class="material-icons">add</i>
           </button>

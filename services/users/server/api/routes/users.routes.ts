@@ -93,6 +93,9 @@ routes.put('/', user.edit);
 // PUT - Updates the role of the user on the basis of userId
 routes.put('/update-role', user.updateUserRole);
 
+// PUT - Updates the role of the user on the basis of userId
+routes.put('/change-hr-role', user.changeHRRole);
+
 // PUT - Updates the profileImage of the user on the basis of userId
 routes.put('/image', userFileHandler, user.updateImage);
 
@@ -145,6 +148,13 @@ routes.put('/:userId/saveCustomFieldsFromLDAP', user.saveCustomFieldsFromLDAP);
 
 // PUT - Change custom field value
 routes.put('/locale', user.saveLocale);
+
+// -| HR |-
+// PUT - Change payroll custom field value
+routes.put('/:userId/payrollCustomField', user.savePayrollCustomField);
+
+// PUT - Change payroll variable
+routes.put('/:userId/payrollVariable', user.savePayrollVariable);
 
 /*  ===================
  *  -- EXPORT ROUTES --

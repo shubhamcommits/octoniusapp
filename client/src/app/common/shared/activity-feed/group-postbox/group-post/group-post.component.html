@@ -161,7 +161,9 @@
       </div>
     </div>
 
+
     <!-- Quill Editor with content of post if edit property is enabled -->
+
     <app-quill-editor
       *ngIf="!edit"
       [editorId]="'postbox-editor'"
@@ -209,12 +211,12 @@
     i18n="@@groupCreatePost.delete">
       X DELETE
   </button>
-
-  <button type="button" *ngIf="!edit" class="btn btn-md btn-primary float-right"
+  <button type="button" *ngIf="!edit" class="btn btn-primary float-right"
     (click)="createPost()" style="width: 100px;"
     i18n="@@groupCreatePost.post">
       Post
   </button>
+
   <!-- Update Details Button starts -->
   <button [disabled]="!showUpdateDetails" *ngIf="edit" class="btn float-right btn-primary btn-md"
     (click)="updateDetails()"i18n="@@groupCreatePost.update">
@@ -233,4 +235,3 @@
     (closeModalEvent)="postModalCloseEvent()"></app-post-actions>
 
 </div>
-

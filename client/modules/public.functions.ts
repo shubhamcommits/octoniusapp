@@ -635,13 +635,11 @@ export class PublicFunctions {
 
     /**
      * Fetch list of groups of which a user is a part of
-     * @param workspaceId
-     * @param userId
      */
-    public async getAllUserGroups(workspaceId: string, userId: string) {
+    public async getAllUserGroups(workspaceId: string) {
         return new Promise((resolve, reject) => {
             let groupsService = this.injector.get(GroupsService);
-            groupsService.getAllUserGroups(workspaceId, userId)
+            groupsService.getAllUserGroups(workspaceId)
                 .then((res) => resolve(res['groups']))
                 .catch(() => reject([]))
         })

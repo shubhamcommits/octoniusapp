@@ -17,10 +17,10 @@
     <span i18n="@@postUtils.unpin">Unpin</span>
   </button>
 
-  <li class="dropdown-divider" *ngIf="post?.type !== 'task' && canEdit"></li>
+  <li class="dropdown-divider" *ngIf="post?.type !== 'task' && canEdit && groupId"></li>
 
-  <button mat-menu-item [matMenuTriggerFor]="copyMenu" *ngIf="post?.type !== 'task' && canEdit" i18n="@@postUtils.copyToGroup">Copy to Group</button>
-  <button mat-menu-item [matMenuTriggerFor]="moveMenu" *ngIf="post?.type !== 'task' && canEdit" i18n="@@postUtils.moveToGroup">Move to Group</button>
+  <button mat-menu-item [matMenuTriggerFor]="copyMenu" *ngIf="post?.type !== 'task' && canEdit && groupId" i18n="@@postUtils.copyToGroup">Copy to Group</button>
+  <button mat-menu-item [matMenuTriggerFor]="moveMenu" *ngIf="post?.type !== 'task' && canEdit && groupId" i18n="@@postUtils.moveToGroup">Move to Group</button>
 
   <li class="dropdown-divider" *ngIf="post?.type == 'task' && (userData?.role == 'admin' || userData?.role == 'owner' || post?._posted_by?._id == userData?._id) && canEdit"></li>
 

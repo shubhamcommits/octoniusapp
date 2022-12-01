@@ -53,6 +53,10 @@ const UserSchema = new Schema({
         default: 'member',
         enum: ['owner', 'member', 'admin', 'manager', 'guest']
     },
+    hr_role: {
+        type: Boolean,
+        default: false
+    },
     phone_number: {
         type: String,
         default: null
@@ -102,6 +106,44 @@ const UserSchema = new Schema({
     selected_widgets: {
         type: [String],
         default: ['WORK_STATISTICS', 'WORKLOAD', 'VELOCITY'/*, 'PULSE'*/, 'PEOPLE_DIRECTORY', 'ORGANIZATIONAL_STRUCTURE', 'WORK_STATISTICS_NORTH_STAR', 'ENGAGEMENT', 'KPI_PERFORMANCE', 'TOP_SOCIAL']
+    },
+    hr: {
+        _entity:{
+            type: Schema.Types.ObjectId,
+            ref: 'Entity',
+        },
+        address_line_1: {
+            type: String,
+            required: false
+        },
+        address_line_2: {
+            type: String,
+            required: false
+        },
+        city: {
+            type: String,
+            required: false
+        },
+        zip_code: {
+            type: String,
+            required: false
+        },
+        state: {
+            type: String,
+            required: false
+        },
+        country: {
+            type: String,
+            required: false
+        },
+        entity_custom_fields: {
+            type: Map,
+            of: String
+        },
+        entity_variables: {
+            type: Map,
+            of: String
+        }
     },
     stats: {
         lastTaskView: {

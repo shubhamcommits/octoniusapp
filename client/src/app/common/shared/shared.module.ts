@@ -119,9 +119,28 @@ import { PostLogsComponent } from './posts/group-post-dialog/post-logs/post-logs
 import { HighlightDirective } from 'src/shared/pipes/highlight.directive';
 import { DebounceClickDirective } from 'src/shared/pipes/debounce-click.directive';
 import { TopSocialCardComponent } from './dashboard/top-social-card/top-social-card.component';
+import { HiveReportsCardComponent } from './hr/hive-reports-card/hive-reports-card.component';
+import { PayrollSetupCardComponent } from './hr/payroll-setup-card/payroll-setup-card.component';
+import { PendingTasksCardComponent } from './hr/pending-tasks-card/pending-tasks-card.component';
+import { TimeOffCardComponent } from './hr/time-off-card/time-off-card.component';
+import { ProgressBarColor } from 'src/shared/pipes/progress-bar-color.directive';
+import { CountrySelectComponent } from './country-select/country-select.component';
+import { UserAvailabilityDayDialogComponent } from './user-workload-calendar/user-availability-day-dialog/user-availability-day-dialog.component';
+import { UserWorkloadCalendarComponent } from './user-workload-calendar/user-workload-calendar.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { GlobalNorthStarDialogComponent } from './posts/global-north-star-dialog/global-north-star-dialog.component';
+import { GlobalNorthStarStatsComponent } from './posts/global-north-star-dialog/stats/global-north-star-stats.component';
 
 @NgModule({
     declarations: [
+        HighlightDirective,
+        DebounceClickDirective,
+        ProgressBarColor,
+        ToolTipRendererDirective,
+        FilterPipe,
+        SafePipe,
+        TruncateTextPipe,
         AttachFilesComponent,
         AttachCloudFilesComponent,
         CropImageComponent,
@@ -132,6 +151,7 @@ import { TopSocialCardComponent } from './dashboard/top-social-card/top-social-c
         SectionSeparatorComponent,
         SecuredImageComponent,
         ComponentSearchInputBoxComponent,
+        CountrySelectComponent,
         QuillEditorComponent,
         TimePickerComponent,
         PostViewComponent,
@@ -141,9 +161,6 @@ import { TopSocialCardComponent } from './dashboard/top-social-card/top-social-c
         CommentOnPostComponent,
         FollowPostComponent,
         PostUtilsComponent,
-        // Safe Pipe
-        SafePipe,
-        TruncateTextPipe,
         SelectAssigneeComponent,
         TaskStatusComponent,
         ChangeColumnComponent,
@@ -174,6 +191,8 @@ import { TopSocialCardComponent } from './dashboard/top-social-card/top-social-c
         NorthStarComponent,
         NorthStarStatsComponent,
         GroupPostDialogComponent,
+        GlobalNorthStarDialogComponent,
+        GlobalNorthStarStatsComponent,
         WorkStatisticsCardComponent,
         WorkloadCardComponent,
         VelocityCardComponent,
@@ -195,9 +214,6 @@ import { TopSocialCardComponent } from './dashboard/top-social-card/top-social-c
         TaskActionsComponent,
         ShuttleTaskComponent,
         MultipleAssignmentsComponent,
-        HighlightDirective,
-        DebounceClickDirective,
-        FilterPipe,
         AssigneeAvatarComponent,
         CommentListComponent,
         MemberListMenuComponent,
@@ -207,7 +223,6 @@ import { TopSocialCardComponent } from './dashboard/top-social-card/top-social-c
         UserUpdateUserPersonalInformationDialogComponent,
         ProjectBudgetDialogComponent,
         CustomToolTipComponent,
-        ToolTipRendererDirective,
         WidgetSelectorDialogComponent,
         CustomFieldsTableSettingsDialogComponent,
         ColorPickerDialogComponent,
@@ -217,7 +232,13 @@ import { TopSocialCardComponent } from './dashboard/top-social-card/top-social-c
         ApprovalsHistoryComponent,
         PostDatesComponent,
         FileVersionsComponent,
-        PostLogsComponent
+        PostLogsComponent,
+        HiveReportsCardComponent,
+        PayrollSetupCardComponent,
+        PendingTasksCardComponent,
+        TimeOffCardComponent,
+        UserWorkloadCalendarComponent,
+        UserAvailabilityDayDialogComponent
     ],
     imports: [
         CommonModule,
@@ -229,17 +250,26 @@ import { TopSocialCardComponent } from './dashboard/top-social-card/top-social-c
         ChartsModule,
         ResizableModule,
         MatMenuModule,
-        // Angular Material Module
         MaterialModule,
-        // Chart Module
-        ChartModule
+        ChartModule,
+        CalendarModule.forRoot({
+            provide: DateAdapter,
+            useFactory: adapterFactory
+        })
     ],
     exports: [
+        HighlightDirective,
+        DebounceClickDirective,
+        ProgressBarColor,
+        TruncateTextPipe,
+        SafePipe,
+        FilterPipe,
         AttachFilesComponent,
         AttachCloudFilesComponent,
         CropImageComponent,
         ComponentSearchBarComponent,
         ComponentSearchInputBoxComponent,
+        CountrySelectComponent,
         DatePickerComponent,
         EmailInputComponent,
         LoadingSpinnerComponent,
@@ -273,8 +303,8 @@ import { TopSocialCardComponent } from './dashboard/top-social-card/top-social-c
         MatSidenavModule,
         InlineInputComponent,
         GroupPostDialogComponent,
-        TruncateTextPipe,
-        SafePipe,
+        GlobalNorthStarDialogComponent,
+        GlobalNorthStarStatsComponent,
         ChartsModule,
         WorkStatisticsCardComponent,
         WorkloadCardComponent,
@@ -311,9 +341,7 @@ import { TopSocialCardComponent } from './dashboard/top-social-card/top-social-c
         CustomFieldsTableSettingsDialogComponent,
         ColorPickerDialogComponent,
         FileDetailsDialogComponent,
-        // Sheet Component
         SheetComponent,
-        // Material Module
         MaterialModule,
         CommentSectionComponent,
         ApprovalActionsComponent,
@@ -321,9 +349,12 @@ import { TopSocialCardComponent } from './dashboard/top-social-card/top-social-c
         PostDatesComponent,
         FileVersionsComponent,
         PostLogsComponent,
-        HighlightDirective,
-        DebounceClickDirective,
-        FilterPipe
+        HiveReportsCardComponent,
+        PayrollSetupCardComponent,
+        PendingTasksCardComponent,
+        TimeOffCardComponent,
+        UserWorkloadCalendarComponent,
+        UserAvailabilityDayDialogComponent
     ],
     providers: [
         { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },

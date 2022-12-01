@@ -146,7 +146,7 @@ export class GroupFilesComponent implements OnInit {
       this.workspaceId = this.groupData._workspace;
 
       // Fetches the user groups from the server
-      await this.publicFunctions.getAllUserGroups(this.groupData._workspace, this.userData._id)
+      await this.publicFunctions.getAllUserGroups(this.workspaceId)
         .then((groups: any) => {
 
           groups.splice(groups.findIndex(group => group._id == this.groupData?._id), 1);

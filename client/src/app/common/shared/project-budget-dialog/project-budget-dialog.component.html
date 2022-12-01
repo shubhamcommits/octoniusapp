@@ -35,11 +35,8 @@
           &nbsp;
           <span style="color: #f51616;">
             &nbsp;<span i18n="@@projectBudgetDialog.added">added</span>&nbsp;
-            <span *ngIf="budget.currency === 'USD'">
-              {{ expense.amount | currency: '$' }}
-            </span>
-            <span  *ngIf="budget.currency === 'EUR'">
-              {{ expense.amount | currency: '€' }}
+            <span>
+              {{ expense.amount | currency: budget.currency }}
             </span>
             &nbsp;-&nbsp;
             <span style="font-weight: 900;">
@@ -94,7 +91,7 @@
                   (click)="$event.stopPropagation()"
                   [(ngModel)]="budget.currency"
                   name="new_type">
-                    <mat-option *ngFor="let t of types" [value]="t">{{ t }}</mat-option>
+                    <mat-option *ngFor="let currency of currencies" [value]="currency.code">{{ currency.name }}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -113,8 +110,7 @@
               <label for="value" class="bold" i18n="@@projectBudgetDialog.totalSpent">Total spent</label>
             </div>
             <div class="col" style="text-align: center; line-height: 30px;">
-              <span *ngIf="budget.currency === 'USD'">{{ totalSpent | currency: '$' }}</span>
-              <span *ngIf="budget.currency === 'EUR'">{{ totalSpent | currency: '€' }}</span>
+              <span>{{ totalSpent | currency: budget.currency }}</span>
             </div>
             <div class="w-100"></div>
 
@@ -122,8 +118,7 @@
               <label for="value" class="bold" i18n="@@projectBudgetDialog.available">Available</label>
             </div>
             <div class="col" style="text-align: center; line-height: 30px;" [ngClass]="getBudgetStyle()">
-              <span *ngIf="budget.currency === 'USD'">{{ budget.amount_planned - totalSpent | currency: '$' }}</span>
-              <span *ngIf="budget.currency === 'EUR'">{{ budget.amount_planned - totalSpent | currency: '€' }}</span>
+              <span>{{ budget.amount_planned - totalSpent | currency: budget.currency }}</span>
             </div>
           </div>
         </div>

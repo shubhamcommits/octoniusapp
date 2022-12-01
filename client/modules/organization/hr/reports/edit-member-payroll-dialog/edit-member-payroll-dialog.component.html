@@ -1,0 +1,83 @@
+<mat-dialog-actions align="end" style="float: right;">
+    <div class="action-box">
+        <a (click)="closeDialog()" mat-dialog-close>
+            <i class="material-icons" style="cursor: pointer">close</i>
+        </a>
+    </div>
+</mat-dialog-actions>
+
+<div style="margin: 20px; width: 50%;">
+    <app-secured-image [imgURL]="memberData?.profile_pic" [service]="'user'" style="float: left; margin-top: -15px;" [styleClass]="'mr-3 feed-avatar'"
+        [inlineStyle]="'cursor: default;'"></app-secured-image>
+
+    <h2>{{ memberData?.first_name }} {{ memberData?.last_name }}</h2>
+</div>
+
+<div class="modal-body">
+    <div class="row">
+        <div class="col">
+            <div class="col-description">
+                <h4 i18n="@@editMemberPayrollDialog.hrFields">HR fields</h4>
+                <p class="block-description" i18n="@@editMemberPayrollDialog.hrFieldsDescription">
+                Fields created by the HR team.
+                </p>
+            </div>
+            <hr />
+        </div>
+    
+        <div class="col">
+            <div class="form-group">
+                <div *ngFor="let cf of hrCustomFields">
+                    <label [for]="cf._id">{{ cf.name }}</label>
+                    
+                    <mat-select ngDefaultControl *ngIf="cf.type == 'Select'" [(value)]="selectedHRCFValues[cf._id]"
+                        (selectionChange)="onSelectEntityCustomFieldChange($event, cf._id)" appearance="fill">
+                        <mat-select-trigger>{{ selectedHRCFValues[cf._id] }}</mat-select-trigger>
+                        <mat-option *ngFor="let val of cf.values" [value]="val">{{ val }}</mat-option>
+                    </mat-select>
+
+                    <input type="number" *ngIf="cf.type == 'Number'" [name]="cf.name" [(ngModel)]="selectedHRCFValues[cf._id]"
+                        class="form-control" [value]="selectedHRCFValues[cf._id]"
+                        (keyup.enter)="onInputEntityCustomFieldChange($event, cf._id)"
+                        (blur)="onInputEntityCustomFieldChange($event, cf._id)" />
+
+                    <input type="text" *ngIf="cf.type == 'Text'" [name]="cf.name" [(ngModel)]="selectedHRCFValues[cf._id]"
+                        class="form-control" [value]="selectedHRCFValues[cf._id]"
+                        (keyup.enter)="onInputEntityCustomFieldChange($event, cf._id)"
+                        (blur)="onInputEntityCustomFieldChange($event, cf._id)" />
+
+                    <app-date-picker *ngIf="cf.type == 'Date'" class="form-control"
+                        [styleClass]="'btn-group input-date'" [canEdit]="true"
+                        [selectedDate]="formateDate(selectedHRCFValues[cf._id])"
+                        (date)="onDateEntityCustomFieldChange($event, cf._id)">
+                    </app-date-picker>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="col-description">
+                <h4 i18n="@@editMemberPayrollDialog.payrollInfo">Payroll info</h4>
+                <p class="block-description" i18n="@@editMemberPayrollDialog.payrollInfoDescription">
+                    Fields created by the HR team.
+                </p>
+            </div>
+            <hr />
+        </div>
+    
+        <div class="col">
+            <div class="form-group">
+                <div *ngFor="let variable of hrVariables">
+                    <label [for]="variable._id">{{ variable.name }}</label>
+    
+                    <input type="number" [name]="variable.name" [(ngModel)]="selectedHRVariablesValues[variable._id]"
+                        class="form-control" [value]="selectedHRVariablesValues[variable._id]"
+                        (keyup.enter)="onInputEntityVariableChange($event, variable._id)"
+                        (blur)="onInputEntityVariableChange($event, variable._id)"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

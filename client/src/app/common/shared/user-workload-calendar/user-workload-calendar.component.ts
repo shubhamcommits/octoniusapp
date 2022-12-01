@@ -1,12 +1,13 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation, Input, Injector } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CalendarEvent, CalendarMonthViewDay, CalendarView, DAYS_OF_WEEK } from 'angular-calendar';
 import { WeekViewHourColumn } from 'calendar-utils';
+import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment/moment';
 import { Subject } from 'rxjs';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { UserAvailabilityDayDialogComponent } from '../user-availability-day-dialog/user-availability-day-dialog.component';
+import { UserAvailabilityDayDialogComponent } from './user-availability-day-dialog/user-availability-day-dialog.component';
 
 @Component({
   selector: 'app-user-workload-calendar',
@@ -18,6 +19,9 @@ import { UserAvailabilityDayDialogComponent } from '../user-availability-day-dia
 export class UserWorkloadCalendarComponent implements OnInit {
 
   @Input() userId;
+
+  userData;
+  isCurrentUser = false;
 
   view: CalendarView = CalendarView.Month;
   weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
@@ -38,13 +42,20 @@ export class UserWorkloadCalendarComponent implements OnInit {
   bookedDays: any = [];
   daysToCancel: any = [];
 
+  // Public functions
+  public publicFunctions = new PublicFunctions(this.injector);
+
   constructor(
     private userService: UserService,
     private utilityService: UtilityService,
+    private injector: Injector,
     public dialog: MatDialog
     ) { }
 
   async ngOnInit() {
+    this.userData = await this.publicFunctions.getCurrentUser();
+
+    this.isCurrentUser = (this.userData._id == this.userId);
     await this.userService.getOutOfTheOfficeDays(this.userId).then(res => {
       this.bookedDays = res['user']?.out_of_office;
     });
@@ -55,30 +66,31 @@ export class UserWorkloadCalendarComponent implements OnInit {
   dayClicked(day: CalendarMonthViewDay): void {
 
     // check if the day is already booked, so we will remove it from out of offie days
-
-    const bookedDayIndex = this.bookedDays.findIndex((bookedDay) => moment(moment.utc(bookedDay.date).format('YYYY-MM-DD')).isSame(moment(moment(day.date).format('YYYY-MM-DD')), 'day'));
-    if (bookedDayIndex < 0) {
-      this.selectedMonthViewDay = day;
-      const dateIndex = this.selectedDays.findIndex((selectedDay) => moment(selectedDay.date).isSame(moment(day.date), 'day'));
-
-      if (dateIndex > -1) {
-        delete this.selectedMonthViewDay.cssClass;
-        this.selectedDays.splice(dateIndex, 1);
-      } else {
-        this.selectedDays.push(this.selectedMonthViewDay);
-        day.cssClass = 'cal-day-selected';
+    if (this.isCurrentUser){
+      const bookedDayIndex = this.bookedDays.findIndex((bookedDay) => moment(moment.utc(bookedDay.date).format('YYYY-MM-DD')).isSame(moment(moment(day.date).format('YYYY-MM-DD')), 'day'));
+      if (bookedDayIndex < 0) {
         this.selectedMonthViewDay = day;
-      }
-    } else {
-      this.selectedMonthViewDay = day;
-      const dateIndex = this.daysToCancel.findIndex((dayToCancel) => moment(dayToCancel.date).isSame(moment(day.date), 'day'));
-      if (dateIndex > -1) {
-        this.daysToCancel.splice(dateIndex, 1);
-        this.refresh.next();
+        const dateIndex = this.selectedDays.findIndex((selectedDay) => moment(selectedDay.date).isSame(moment(day.date), 'day'));
+
+        if (dateIndex > -1) {
+          delete this.selectedMonthViewDay.cssClass;
+          this.selectedDays.splice(dateIndex, 1);
+        } else {
+          this.selectedDays.push(this.selectedMonthViewDay);
+          day.cssClass = 'cal-day-selected';
+          this.selectedMonthViewDay = day;
+        }
       } else {
-        this.daysToCancel.push(this.selectedMonthViewDay);
-        day.cssClass = 'cal-day-cancel-selected';
         this.selectedMonthViewDay = day;
+        const dateIndex = this.daysToCancel.findIndex((dayToCancel) => moment(dayToCancel.date).isSame(moment(day.date), 'day'));
+        if (dateIndex > -1) {
+          this.daysToCancel.splice(dateIndex, 1);
+          this.refresh.next();
+        } else {
+          this.daysToCancel.push(this.selectedMonthViewDay);
+          day.cssClass = 'cal-day-cancel-selected';
+          this.selectedMonthViewDay = day;
+        }
       }
     }
   }

@@ -83,24 +83,69 @@
 
     <div *ngIf="(!searchedUsers || searchedUsers.length == 0) && !isLoading$" class="row cards-list" style="margin-top: 50px;">
       <div class="card">
-        <div class="img-fluid" [routerLink]="['/dashboard', 'work', 'organization', 'directory']">
-          <img src="assets/images/people_directory.png" alt="" class="card-img-top">
+        <div class="img-fluid">
+          <div class="card-title">
+            <span i18n="@@organization.peopleDirectory">People Directory</span>
+          </div>
+          
+          <div class="card-content">
+            <p i18n="@@organization.cardDescriptionPeopleDirectory">
+              Search and connect with other employees.
+            </p>
+          
+            <img src="assets/images/people_directory.png" alt="" class="card-img-top">
+          </div>
 
-          <div class="card-img-overlay">
-            <div class="title-overlay">
-              <h2 class="card-title" i18n="@@organization.peopleDirectory">People Directory</h2>
+          <div class="card-footer" [routerLink]="['/dashboard', 'work', 'organization', 'directory']">
+            <div>
+              <span i18n="@@organization.viewPeople">View Directory</span>
+				      <i class="material-icons">arrow_forward</i>
             </div>
           </div>
         </div>
       </div>
 
       <div class="card">
-        <div class="img-fluid" [routerLink]="['/dashboard', 'work', 'organization', 'chart']">
-          <img src="assets/images/organization-chart.png" alt="" class="card-img-top">
+        <div class="img-fluid">
+          <div class="card-title">
+            <span i18n="@@organization.organizationChart">Organization Chart</span>
+          </div>
+      
+          <div class="card-content">
+            <p i18n="@@organization.cardDescriptionOrganizationChart">
+              Check out the organization chart to understand how your company is structured.
+            </p>
+      
+            <img src="assets/images/organization-chart.png" alt="" class="card-img-top">
+          </div>
+      
+          <div class="card-footer" [routerLink]="['/dashboard', 'work', 'organization', 'chart']">
+            <div>
+              <span i18n="@@organization.openChart">Open Chart</span>
+              <i class="material-icons">arrow_forward</i>
+            </div>
+          </div>
+        </div>
+      </div>
 
-          <div class="card-img-overlay">
-            <div class="title-overlay">
-              <h2 class="card-title" i18n="@@organization.organizationChart">Organization Chart</h2>
+      <div class="card">
+        <div class="img-fluid">
+          <div class="card-title">
+            <span i18n="@@organization.hiveHR">Hive HR</span>
+          </div>
+      
+          <div class="card-content">
+            <p i18n="@@organization.cardDescriptionHiveHR">
+              Manage people and payroll information
+            </p>
+      
+            <img src="assets/images/hive-hr.png" alt="" class="card-img-top">
+          </div>
+      
+          <div class="card-footer" [routerLink]="['/dashboard', 'work', 'organization', 'hive']">
+            <div>
+              <span i18n="@@organization.openHive">Open Hive</span>
+              <i class="material-icons">arrow_forward</i>
             </div>
           </div>
         </div>

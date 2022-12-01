@@ -1,4 +1,5 @@
-import { Component, OnInit, Injector, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Injector, Input, EventEmitter, Output, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
@@ -27,7 +28,12 @@ export class ActivityFiltersComponent implements OnInit {
 
   public publicFunctions = new PublicFunctions(this.injector);
 
-  constructor(public injector: Injector) { }
+  constructor(
+    public injector: Injector,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private mdDialogRef: MatDialogRef<ActivityFiltersComponent>) {
+      this.groupData = this.data.groupData;
+    }
 
   async ngOnInit() {
     if (!this.groupData) {
@@ -58,5 +64,10 @@ export class ActivityFiltersComponent implements OnInit {
 
   async onLikesEmitter() {
     this.filterPostsEmitter.emit({ tags: this.filterTags, users: this.usersIds, numLikes: this.numLikes });
+  }
+
+  closeDialog() {
+    // Close the modal
+    this.mdDialogRef.close();
   }
 }

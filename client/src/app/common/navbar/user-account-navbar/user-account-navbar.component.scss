@@ -1,5 +1,51 @@
 @import "src/assets/scss/_variables";
 
+.navbar {
+  display: block;
+}
+
+.header {
+  display: flex;
+  background: #FFFFFF;
+  border-bottom: $border-gray;
+  // box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14);
+  // border-radius: 8px;
+  padding: 20px;
+
+  .avatar {
+    margin: 10px;
+    width:100px;
+    height: 100px;
+  }
+
+  .user-info {
+    width: 100%;
+
+    .name {
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 27px;
+      display: flex;
+      align-items: center;
+
+      margin: 10px;
+    }
+
+    .bio {
+      margin: 10px;
+      width: 50%;
+    }
+  }
+
+  .options {
+    margin: 10px;
+
+    a {
+      cursor: pointer;
+    }
+  }
+}
+
 .nav-link {
   font-family: $poppins;
   font-weight: 400;
@@ -10,7 +56,7 @@
   cursor: pointer;
   &:hover {
     text-decoration: none;
-    background: #ffffff;
+    // background: #ffffff;
     color: $brand-primary !important;
   }
 }

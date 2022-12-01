@@ -10,6 +10,7 @@ import { PeopleDirectorySearchResultsComponent } from './people-directory-search
 import { OrganizationChartComponent } from './organization-chart/organization-chart.component';
 import { ChartPersonComponent } from './organization-chart/chart-person/chart-person.component';
 import { ChartSettingsDialogComponent } from './organization-chart/chart-settings-dialog/chart-settings-dialog.component';
+import { EntityAddMembersDialogComponent } from './hr/setup/entity-add-members-dialog/entity-add-members-dialog.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ChartSettingsDialogComponent } from './organization-chart/chart-setting
     PeopleDirectorySearchResultsComponent,
     OrganizationChartComponent,
     ChartPersonComponent,
-    ChartSettingsDialogComponent
+    ChartSettingsDialogComponent,
+    EntityAddMembersDialogComponent
   ],
   imports: [
     CommonModule,

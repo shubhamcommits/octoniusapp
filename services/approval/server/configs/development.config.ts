@@ -9,7 +9,7 @@ function devConfigInit() {
   process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 
   // Application Port
-  process.env.PORT = process.env.PORT || '15000'
+  process.env.PORT = process.env.PORT || '15001'
 
   // Application Host
   process.env.HOST = process.env.HOST || '0.0.0.0'
@@ -47,7 +47,7 @@ function devConfigInit() {
   process.env.GROUPS_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.GROUPS_PORT}/api`
 
   // Workspaces Microservice
-  process.env.WORKSPACES_PORT = process.env.WORKSPACES_PORT || '5000'
+  process.env.WORKSPACES_PORT = process.env.WORKSPACES_PORT || '5001'
   process.env.WORKSPACES_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.WORKSPACES_PORT}`
   process.env.WORKSPACES_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.WORKSPACES_PORT}/api`
 
@@ -57,7 +57,7 @@ function devConfigInit() {
   process.env.SEARCH_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.SEARCH_PORT}/api/search-service`
 
   // Users Microservice
-  process.env.USERS_PORT = process.env.USERS_PORT || '7000'
+  process.env.USERS_PORT = process.env.USERS_PORT || '7001'
   process.env.USERS_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.USERS_PORT}`
   process.env.USERS_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.USERS_PORT}/api`
 
@@ -83,7 +83,7 @@ function devConfigInit() {
   process.env.FLAMINGO_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.FLAMINGO_PORT}/api`
 
   // Approval Microservice
-  process.env.APPROVAL_PORT = process.env.APPROVAL_PORT || '15000'
+  process.env.APPROVAL_PORT = process.env.APPROVAL_PORT || '15001'
   process.env.APPROVAL_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.APPROVAL_PORT}`
   process.env.APPROVAL_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.APPROVAL_PORT}/api/approval-service`
 

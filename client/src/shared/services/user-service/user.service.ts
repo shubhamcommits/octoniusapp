@@ -97,6 +97,10 @@ export class UserService {
     .toPromise();
   }
 
+  updateUserHRRole(memberId: string, hr_role: boolean) {
+    return this._http.put(this.BASE_API_URL + '/change-hr-role', { memberId, hr_role }).toPromise();
+  }
+
   /**
    * This function updates the password of currently loggedIn user
    * @param userData { password: password }
@@ -411,5 +415,21 @@ export class UserService {
 
   getUserWorkspaces(userId: string) {
     return this._http.get(this.BASE_API_URL + `/${userId}/userWorkspaces`).toPromise();
+  }
+
+  savePayrollCustomField(userId: string, customFieldId: string, customFieldValue: string) {
+    // Call the HTTP Request
+    return this._http.put(this.BASE_API_URL + `/${userId}/payrollCustomField`, {
+      customFieldId: customFieldId,
+      customFieldValue: customFieldValue
+    }).toPromise();
+  }
+
+  savePayrollVariable(userId: string, customFieldId: string, customFieldValue: string) {
+    // Call the HTTP Request
+    return this._http.put(this.BASE_API_URL + `/${userId}/payrollVariable`, {
+      customFieldId: customFieldId,
+      customFieldValue: customFieldValue
+    }).toPromise();
   }
 }

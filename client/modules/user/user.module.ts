@@ -19,13 +19,11 @@ import { BoxCloudModule } from './user-clouds/user-available-clouds/box-cloud/bo
 import { TeamModule } from './user-clouds/user-available-clouds/team/team.module';
 import { ZapModule } from './user-clouds/user-available-clouds/zapier/zapier.module';
 import { UserWorkloadComponent } from './user-workload/user-workload.component';
-import { CalendarModule, DateAdapter } from 'angular-calendar';
-import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-import { UserWorkloadCalendarComponent } from './user-workload/user-workload-calendar/user-workload-calendar.component';
-import { UserAvailabilityDayDialogComponent } from './user-workload/user-availability-day-dialog/user-availability-day-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
 import { UserPasswordUpdateComponent } from './user-profile/user-password-update/user-password-update.component';
 import { UserProfileCustomFieldsComponent } from './user-profile/user-profile-custom-fields/user-profile-custom-fields.component';
+import { FormsModule } from '@angular/forms';
+import { UserHiveComponent } from './user-hive/user-hive.component';
 
 
 @NgModule({
@@ -34,36 +32,31 @@ import { UserProfileCustomFieldsComponent } from './user-profile/user-profile-cu
         UserProfileComponent,
         UserCloudsComponent,
         UserInformationComponent,
+        UserHiveComponent,
         UserProfessionalInformationComponent,
         UserSkillsComponent,
         UserAvailableCloudsComponent,
         UserConnectedCloudsComponent,
         UserWorkloadComponent,
-        UserWorkloadCalendarComponent,
-        UserAvailabilityDayDialogComponent,
         UserPasswordUpdateComponent,
         UserProfileCustomFieldsComponent
     ],
     imports: [
         CommonModule,
         SharedModule,
+        FormsModule,
         GoogleCloudModule,
         BoxCloudModule,
         SlackCloudModule,
         TeamModule,
         ZapModule,
         UserRoutingModule,
-        MatSelectModule,
-        CalendarModule.forRoot({
-            provide: DateAdapter,
-            useFactory: adapterFactory
-        })
+        MatSelectModule
     ],
     providers: [
         UserService
     ],
     exports: [
-        UserAvailabilityDayDialogComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

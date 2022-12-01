@@ -464,13 +464,13 @@ export class PostService {
     switch (post.type) {
 
       case 'task':
-        if (post._assigned_to && post._assigned_to.length > 0) {
+        if (post?._assigned_to && post?._assigned_to.length > 0) {
           // Real time notification for new task assignment
           return http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-task`, {
-            postId: post._id,
-            assigned_to: post._assigned_to,
-            groupId: post._group._id || post._group,
-            posted_by: post._posted_by
+            postId: post?._id,
+            assigned_to: post?._assigned_to,
+            groupId: post?._group?._id || post?._group,
+            posted_by: post?._posted_by
           }).catch(err => {
             console.log(`\n⛔️ Error:\n ${err}`);
           });
@@ -522,6 +522,7 @@ export class PostService {
 
       // Create new post
       let post: any = await Post.create(postData);
+
       post = await Post.findOneAndUpdate({
           _id: post._id
         }, {
@@ -1990,21 +1991,130 @@ export class PostService {
     }
   }
 
-  async getNorthStarTasks(groups: any) {
+  async getNorthStarTasks(userId: string) {
     try {
-      return await this.filterGroupPosts(
-        Post.find({
-          '_group': { $in: groups },
+      const groups = await Group.find({ $or: [{ _members: userId }, { _admins: userId }] }).select('_id').lean();
+
+      return await Post.find({
           $and: [
-            { 'task.isNorthStar': true }
+            { '_group': { $in: groups }},
+            { 'task.isNorthStar': true },
+            { 'task._parent_task': null }
           ]
-        }).sort('-created_date'), 'task');
+        })
+        .sort('-created_date')
+        .populate({ path: '_group', select: this.groupFields })
+        .populate({ path: '_posted_by', select: this.userFields })
+        .populate({ path: '_assigned_to', select: this.userFields });
     } catch (error) {
       throw (error);
     }
   }
 
-  async getWorspacePostsResults(workspaceId: any, type: any, numDays: number, overdue: boolean, isNorthStar: boolean, filteringGroups: any) {
+  async getGlobalNorthStarTasks() {
+    try {
+      const posts = await Post.find({
+          $and: [
+            { '_group': { $eq: null }},
+            { 'task.isNorthStar': true },
+            { 'task._parent_task': null }
+          ]
+        })
+        .sort('-created_date')
+        .populate({ path: '_posted_by', select: this.userFields })
+        .populate({ path: '_assigned_to', select: this.userFields })
+        .lean();
+
+      for (let i = 0; i < posts.length; i++) {
+        let post = posts[i];
+
+        const subtasks = await Post.find({
+          $and: [
+            { 'task.isNorthStar': true },
+            { 'task._parent_task': post?._id },
+          ]
+        }).select('task.northStar').lean();
+
+        if (subtasks && subtasks.length > 0) {
+          let northStarValues = [];
+          subtasks.forEach(st => {
+            const value = st?.task?.northStar?.values[st?.task?.northStar?.values?.length-1];
+            const nsValues = {
+                // currency: st?.task?.northStar?.currency,
+                type: st?.task?.northStar?.type,
+                value: value?.value,
+                status: value?.status,
+              };
+            
+            northStarValues = northStarValues.concat(nsValues);
+          });
+          post.northStarValues = northStarValues;
+        }
+
+        posts[i] = post;
+      }
+
+      return posts;
+    } catch (error) {
+      throw (error);
+    }
+  }
+
+  async getNorthStarStats(userId: string) {
+    try {
+      let nsAssignedToMe =await Post.find({
+          $and: [
+            { 'task.isNorthStar': true },
+            { '_assigned_to': userId }
+          ]
+        }).select('task.northStar').lean();
+
+      let nsAssignedByMe =await Post.find({
+          $and: [
+            { 'task.isNorthStar': true },
+            { '_posted_by': userId }
+          ]
+        }).select('task.northStar').lean();
+
+      return {
+        nsAssignedToMe: nsAssignedToMe || [],
+        nsAssignedByMe: nsAssignedByMe || []
+      };
+    } catch (error) {
+      throw (error);
+    }
+  }
+
+  async getGlobalNorthStarStats(userId: string) {
+    try {
+      let nsAssignedToMe =await Post.find({
+          $and: [
+            { 'task.isNorthStar': true },
+            { 'task._parent_task': null },
+            { '_assigned_to': userId },
+            { '_group': { $eq: null }}
+          ]
+        }).select('task.northStar').lean();
+
+      let nsAssignedByMe =await Post.find({
+          $and: [
+            { 'task.isNorthStar': true },
+            { 'task._parent_task': null },
+            { '_posted_by': userId },
+            { '_group': { $eq: null }}
+          ]
+        }).select('task.northStar').lean();
+
+      return {
+        nsAssignedToMe: nsAssignedToMe || [],
+        nsAssignedByMe: nsAssignedByMe || []
+      };
+    } catch (error) {
+      throw (error);
+    }
+  }
+
+  async getWorspacePostsResults(workspaceId: any, type: any, numDays: number, overdue: boolean, filteringGroups: any) {
 
     const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');
 
@@ -2449,6 +2559,7 @@ export class PostService {
       .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
       .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
       .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
+      .populate({ path: 'task.northStar.values._user', select: this.userFields })
       .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
       .populate({ path: 'permissions._members', select: this.userFields })
       .lean();

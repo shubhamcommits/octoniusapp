@@ -7,6 +7,7 @@ import { LoungeService } from 'src/shared/services/lounge-service/lounge.service
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoungeImageUpdateComponent } from '../lounge-image-update/lounge-image-update.component';
+import moment from 'moment';
 
 @Component({
   selector: 'app-story-details',
@@ -40,6 +41,16 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
 
   newComment: any;
   showComments: boolean = false;
+
+  editTime = false;
+  eventTime: any = {
+    hour: 1,
+    minute: 30
+  };
+  eventTimeStr = '';
+
+  am_pm = '';
+  editAMPM = false;
 
   // IsLoading behaviou subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
@@ -88,6 +99,25 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
     this.isLoading$.complete();
   }
 
+  canEditAction() {
+    this.canEditStory = !this.canEditStory;
+
+    if (this.storyData.event_date) {
+      const eventMoment = moment(this.storyData.event_date);
+      this.eventTime.hour = eventMoment.hours();
+      this.eventTime.minute = eventMoment.minutes();
+
+      if (this.eventTime.hour >= 12) {
+        this.am_pm = 'PM';
+        if (this.eventTime.hour > 12) {
+          this.eventTime.hour = this.eventTime.hour - 12;
+        }
+      } else {
+        this.am_pm = 'AM';
+      }
+      this.eventTimeStr = this.eventTime.hour + ':' + ((this.eventTime.minute < 10) ? '0' : '') + this.eventTime.minute;
+    }
+  }
 
   initStoryHeaderImage() {
     if (this.storyData.header_pic && !this.storyData.header_pic.includes('assets/images')) {
@@ -201,4 +231,77 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
   isManagerUser() {
     return this.userData.role == 'manager' || this.userData.role == 'admin' || this.userData.role == 'owner';
   }
+  
+  getDate(dateObject: any) {
+    const now = moment(dateObject.toDate());
+    now.hours(this.eventTime.hour);
+    now.minute(this.eventTime.minute);
+    this.storyData.event_date  = now;
+    this.updateDate(this.storyData.event_date);
+  }
+
+  enableEditTime() {
+    this.editTime = !this.editTime;
+  }
+
+  getTime(timeObject: string) {
+    this.eventTimeStr = timeObject;
+    
+    if (!this.isValidTime(this.eventTimeStr)) {
+      return this.utilityService.errorNotification($localize`:@@storyDetails.wrongTimeFormat:Wront time format, hh:mm!`);
+    }
+
+    let time = this.eventTimeStr.split(':');
+    this.eventTime.hour = time[0];
+    this.eventTime.minute = time[1];
+
+    const now = moment(this.storyData.event_date);
+    now.hours((this.am_pm == 'PM') ? this.eventTime.hour + 12 : this.eventTime.hour);
+    now.minute(this.eventTime.minute);
+    this.storyData.event_date  = now;
+    this.enableEditTime();
+    this.updateDate(this.storyData.event_date);
+  }
+
+  getAMPM(ampm: string) {
+    this.am_pm = ampm;
+    const now = moment(this.storyData.event_date);
+    now.hours((this.am_pm == 'PM') ? this.eventTime.hour + 12 : this.eventTime.hour);
+    now.minute(this.eventTime.minute);
+    this.storyData.event_date  = now;
+    this.updateDate(this.storyData.event_date);
+  }
+
+  updateDate(date: any) {
+    this.utilityService.asyncNotification($localize`:@@storyDetails.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+      this.loungeService.editStory(this.storyData?._id, { 'event_date': date }).then(res => {
+          this.storyData = res['story'];
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@storyDetails.dateUpdated:Date updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@storyDetails.unableToUpdateDetails:Unable to update the details, please try again!`));
+        });
+    }));
+  }
+
+  formateDate(date) {
+    return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
+  }
+
+  isValidTime(str) {
+    // time in 12-hour format
+    let regex = new RegExp(/((1[0-2]|0?[1-9]):([0-5][0-9]))/);
+ 
+    if (str == null) {
+        return false;
+    }
+
+    if (regex.test(str) == true) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
 }

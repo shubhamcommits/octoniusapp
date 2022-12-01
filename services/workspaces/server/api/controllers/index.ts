@@ -1,4 +1,5 @@
 import { DomainsControllers } from "./domains.controllers";
+import { HRControllers } from "./hr.controllers";
 import { LoungeController } from "./lounges.controllers";
 import { MembersControllers } from "./members.controllers";
 import { StoriesController } from "./stories.controllers";
@@ -23,5 +24,7 @@ export {
     LoungeController as LoungeController,
 
     // stories
-    StoriesController as StoriesController
+    StoriesController as StoriesController,
+
+    HRControllers as HRControllers
 }

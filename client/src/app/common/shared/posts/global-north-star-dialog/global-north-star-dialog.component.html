@@ -1,0 +1,175 @@
+<mat-dialog-actions align="end" style="float: right;">
+  <div class="action-box">
+      <a (click)="onCloseDialog()" mat-dialog-close>
+        <i class="material-icons" style="cursor: pointer">close</i>
+      </a>
+  </div>
+</mat-dialog-actions>
+
+<div class="post-dialog-content" *ngIf="postData">
+    <div class="post-content">
+        <div class="content-box">
+          <div class="ns-header" [ngStyle]="{ 'background-color': postData?.task?.northStar?.header_background_color || '#FBB732' }">
+              <div class="modal-header">
+                <!-- Event Post Header starts -->
+                <h2 *ngIf="!editContent" (click)="editTitle = !editTitle" class="title">
+                  <span>{{ title }}</span>
+                </h2>
+
+                <h2 class="modal-title" *ngIf="editContent" (click)="editTitle = !editTitle">
+                  <span *ngIf="!editTitle">{{ title }}</span>
+
+                  <!-- Post Title starts -->
+                  <input *ngIf="editTitle"
+                      name="postTitle"
+                      type="text"
+                      [ngModel]="title"
+                      (keyup.esc)="editTitle = !editTitle"
+                      (blur)="titleChange($event)"
+                      class="post-title"
+                      placeholder="✍🏻 Title" />
+                  <!-- Post Title ends -->
+                </h2>
+
+                <app-post-utils *ngIf="userData"
+                    [post]="postData"
+                    [userData]="userData"
+                    [canEdit]="canEdit"
+                    mode="fullscreen"
+                    (delete)="deletePost()">
+                </app-post-utils>
+            </div>
+            <!-- Post Header Title ends -->
+
+            <div *ngIf="!editContent" [innerHTML]="(htmlContent) | safe: 'html'" class="task-content"></div>
+
+            <!-- Post Content starts -->
+            <app-quill-editor *ngIf="editContent" class="task-content"
+                [editorId]="'global-ns-editor'"
+                [toolbar]="true"
+                [readOnly]="!canEdit"
+                [contents]="postData?.content"
+                (content)="quillContentChanged($event)">
+            </app-quill-editor>
+            <!-- Post Content ends -->
+
+            <div class="d-md-none d-lg-block graph">
+              <canvas *ngIf="chartReady" baseChart height="200" style="margin-bottom: 20px;"
+                [data]="chartData"
+                [labels]="chartLabels"
+                [chartType]="chartType"
+                [options]="chartOptions"
+                [colors]="chartColors"
+                [plugins]="chartPlugins"></canvas>
+
+                <app-multiple-assignments
+                  [canEdit]="canEdit"
+                  [userData]="userData"
+                  [post]="postData"
+                  [type]="'post'"
+                  (assigneeAddedEmiter)="onAssigned($event)"
+                  (assigneeRemovedEmiter)="onAssigned($event)">
+                </app-multiple-assignments>
+            </div>
+
+            <!--
+            <app-post-actions
+                [post]="postData"
+                [userData]="userData"
+                [fullscreen]="true"
+                [canEdit]="canEdit">
+            </app-post-actions>
+            -->
+
+            <br class="clearfix" />
+
+            <div *ngIf="editContent" class="change-color">
+              <span (click)="openColorPicker()" i18n="@@globalNorthStarDialog.changeColor">Change color</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="clearfix save-content mb-3">
+          <button *ngIf="canEdit && !editContent"
+            class="btn float-right btn-light btn-md" style="margin-left: 10px;"
+            (click)="editContent = !editContent" i18n="@@globalNorthStarDialog.edit">
+              Edit North Star details
+          </button>
+          <button *ngIf="canEdit && editContent" [disabled]="!contentChanged"
+            class="btn float-right btn-primary btn-md" style="margin-left: 10px;"
+            (click)="updateDetails('change_content')" i18n="@@globalNorthStarDialog.save">
+              Save
+          </button>
+          <button *ngIf="canEdit && editContent"
+            class="btn float-right btn-danger btn-md" style="margin-left: 10px;"
+            (click)="editContent = !editContent"
+            i18n="@@globalNorthStarDialog.cancel">
+            Cancel
+          </button>
+        </div>
+
+        <button *ngIf="canEdit"
+          class="btn new-ns-button" (click)="createNS()" i18n="@@globalNorthStarDialog.addTarget">
+          + Add Target
+        </button>
+
+        <span style="margin-left: 20px" i18n="@@globalNorthStarDialog.goalsDescription">Targets are specific and measurable pieces that must be accomplished in order to reach your North Star.</span>
+
+
+        <div class="subtasks">
+          <div *ngFor="let task of subtasks; let i = index;">
+
+            <a (click)="openSubtask(task)">
+              <!-- My Space Today Tasks -->
+              <div>
+                <div class="media tile overview-task">
+                  <div class="row media-body">
+                    <div class="col-md-1">
+                      <app-assignee-avatar [post]="task" [userData]="task?._assigned_to"></app-assignee-avatar>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
+                    </div>
+
+                    <div class="col-md-4" style="text-align-last: center;">
+
+                      {{ getProgressPercent(task?.task?.northStar) | percent: '.2-2'}}
+
+                      <mat-progress-bar mode="determinate"
+                        [appProgressBarColor]="getNSStatusColor(task?.task?.northStar?.values[task?.task?.northStar?.values?.length - 1].status)"
+                        [value]="getProgressPercent(task?.task?.northStar) * 100" style="height: 10px; border-radius: 20px;">
+                      </mat-progress-bar>
+                    </div>
+
+                    <div class="col-md-2">
+                      <div class="grouplabel" *ngIf="task?._group">
+                        {{ task?._group?.group_name | truncatetext: 20 }}
+                      </div>
+                    </div>
+
+                    <div class="col-md-1">
+                      <div class="overview-item small">
+                        {{task.task.due_to | date:'MMM d' }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="subtasks">
+          <h4 i18n="@@globalNorthStarDialog.changeLogs">Change Log</h4>
+
+          <app-global-north-star-stats *ngIf="northStarValues" [northStarValues]="northStarValues"></app-global-north-star-stats>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Spinner Starts -->
+<ng-container *ngIf="isLoading$ | async">
+  <app-loading-spinner class="media"></app-loading-spinner>
+</ng-container>
+<!-- Loading Spinner Ends -->

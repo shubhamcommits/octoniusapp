@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
-import { domainRoutes, loungesRoutes, memberRoutes, mgmtRoutes, workspaceRoutes, storiesRoutes } from './routes';
+import { domainRoutes, loungesRoutes, memberRoutes, mgmtRoutes, workspaceRoutes, storiesRoutes, hrRoutes } from './routes';
 import fileUpload from 'express-fileupload';
 
 // Defining new Express application
@@ -89,6 +89,7 @@ app.use('/api/members', memberRoutes);
 app.use('/api/management', mgmtRoutes);
 app.use('/api/lounges', loungesRoutes);
 app.use('/api/stories', storiesRoutes);
+app.use('/api/hr', hrRoutes);
 app.use('/api', workspaceRoutes);
 
 // Invalid routes handling middleware

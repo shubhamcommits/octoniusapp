@@ -85,7 +85,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
 
     if (this.postData.type === 'task' && this.groupData && this.userData) {
       // Fetches the user groups from the server
-      await this.publicFunctions.getAllUserGroups(this.groupData._workspace, this.userData._id)
+      await this.publicFunctions.getAllUserGroups(this.groupData._workspace)
         .then((groups: any) => {
           groups.forEach(async group => {
             group.sections = await this.publicFunctions.getAllColumns(group._id);
@@ -157,9 +157,11 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   }
 
   ngOnInit() {
-    this.postService.getGroupTemplates(this.groupData?._id || this.postData?._group?._id || this.postData?._group).then(res => {
-      this.groupTemplates = res['posts'];
-    });
+    if (this.groupData?._id || this.postData?._group) {
+      this.postService.getGroupTemplates(this.groupData?._id || this.postData?._group?._id || this.postData?._group).then(res => {
+        this.groupTemplates = res['posts'];
+      });
+    }
   }
 
   ngAfterViewInit() {

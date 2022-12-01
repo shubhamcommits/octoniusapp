@@ -1,3 +1,65 @@
 .container {
     margin-top: 30px;
 }
+
+.row {
+    margin: 0 !important;
+    padding: 20px 0 !important;
+}
+
+.col-description {
+    padding: 40px 0;
+}
+
+.form-group {
+    background: #FFFFFF;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14);
+    border-radius: 8px;
+    padding: 30px 20px 30px 20px;
+
+    .card-title {
+        color: #000000;
+        font-weight: 700 !important;
+        font-size: 20px !important;
+        border-bottom: 1px solid #E4EDF8;
+        height: 50px;
+        line-height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    input {
+        margin-bottom: 20px;
+    }
+
+    .card-footer {
+        height: 50px;
+        line-height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+    }
+
+    .cancel-button {
+        background-color: #FFFFFF;
+        color: #5E6268;
+        border: 1px solid #5E6268;
+    }
+
+    .save-button {
+        background-color: #FBB732;
+        color: #FFFFFF;
+    }
+}
+.color-separator{
+  width: 100px;
+  height: 5px;
+  border-bottom: 3px solid #ffab00;
+}
+.fieldUI{
+  border-bottom: 1px solid #E4EDF8;
+  margin-bottom: 16px;
+}

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { PublicFunctions } from 'modules/public.functions';
+import { CountryCurrencyService } from 'src/shared/services/country-currency/country-currency.service';
 
 @Component({
   selector: 'app-north-star',
@@ -17,7 +18,8 @@ export class NorthStarComponent implements OnInit {
   @Output() saveInitialNorthStarEmitter = new EventEmitter();
   @Output() addProgressNorthStarEmitter = new EventEmitter();
 
-  types = ['Currency $', 'Currency €', 'Percent', 'Number'];
+  types = ['Currency', 'Percent', 'Number'];
+  currencies = [];
   status_types = ['NOT STARTED', 'ON TRACK', 'IN DANGER', 'ACHIEVED'];
   updatingInitialValues = false;
   updateProgress = false;
@@ -39,14 +41,28 @@ export class NorthStarComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector)
 
   constructor(
-    private currencyPipe : CurrencyPipe,
+    private countryCurrencyService : CountryCurrencyService,
     private injector: Injector) { }
 
   async ngOnInit() {
 
     await this.publicFunctions.getCurrentUser().then(user => this.currentUser = user);
 
+    this.currencies = await this.countryCurrencyService.getCurrencies();
+
+    if (this.northStar.type == 'Currency $' || this.northStar.type == 'Currency €') {
+      if (this.northStar.type == 'Currency $') {
+        this.northStar.currency = 'USD';
+      }
+      if (this.northStar.type == 'Currency €') {
+        this.northStar.currency = 'EUR';
+      }
+
+      this.northStar.type = 'Currency';
+    }
+
     if (this.isNorthStar) {
+
       if (this.northStar.target_value === 0) {
         this.updatingInitialValues = true;
       }
@@ -61,6 +77,9 @@ export class NorthStarComponent implements OnInit {
   }
 
   changeType(type) {
+  }
+
+  changeCurrency(currency) {
   }
 
   changeStatus(status) {
@@ -104,6 +123,7 @@ export class NorthStarComponent implements OnInit {
 
   addUpdateProgress() {
     this.updateProgress = false;
+    this.newValue._user = this.currentUser?._id;
     this.northStar.values.push(this.newValue);
     this.addProgressNorthStarEmitter.emit(this.northStar);
   }

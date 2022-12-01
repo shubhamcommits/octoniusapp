@@ -137,18 +137,35 @@
 
 <ul class="nav mr-auto" *ngIf="isPeopleDirectoryNavbar$ | async">
   <!-- Back Route starts -->
-  <li class="nav-item d-none d-md-block">
+  <li class="nav-item d-none d-md-block"
+      *ngIf="routerState == 'people-directory' || routerState == 'people-directory-chart' || routerState == 'hive-hr'">
     <a class="nav-link"
         routerLink="/dashboard/work/organization"
         routerLinkActive="active">
       <i class="material-icons">arrow_back</i>
     </a>
   </li>
+
+  <li class="nav-item d-none d-md-block"
+      *ngIf="routerState == 'hive-hr-timeoff' || routerState == 'hive-hr-reports' || routerState == 'hive-hr-setup'">
+    <a class="nav-link"
+        routerLink="/dashboard/work/organization/hive"
+        routerLinkActive="active">
+      <i class="material-icons">arrow_back</i>
+    </a>
+  </li>
   <!-- Back Page Route ends -->
 
-  <li style="margin-top: 20px;">
+  <li style="margin-top: 20px;" *ngIf="routerState == 'people-directory' || routerState == 'people-directory-chart' || routerState == 'hive-hr'">
     {{ workspaceData?.company_name }}
     <span *ngIf="routerState == 'people-directory'" i18n="@@workNavbar.peopleDirectory">People Directory</span>
     <span *ngIf="routerState == 'people-directory-chart'" i18n="@@workNavbar.organizationChart">Organization Chart</span>
+    <span *ngIf="routerState == 'hive-hr'" i18n="@@workNavbar.hrAndPayroll">HR & Payroll</span>
+  </li>
+
+  <li style="margin-top: 20px;" *ngIf="routerState == 'hive-hr-timeoff' || routerState == 'hive-hr-reports' || routerState == 'hive-hr-setup'">
+    <span *ngIf="routerState == 'hive-hr-timeoff'" i18n="@@workNavbar.timeOff">Time Off</span>
+    <span *ngIf="routerState == 'hive-hr-reports'" i18n="@@workNavbar.hiveReports">Hive Reports</span>
+    <span *ngIf="routerState == 'hive-hr-setup'" i18n="@@workNavbar.payrollSetup">Payroll Setup</span>
   </li>
 </ul>

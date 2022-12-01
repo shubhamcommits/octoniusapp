@@ -5,6 +5,7 @@ import { memberRoutes } from './member.routes';
 import { mgmtRoutes } from './mgmt.routes';
 import { storiesRoutes } from './stories.routes';
 import { loungesRoutes } from './lounges.routes';
+import { hrRoutes } from './hr.routes';
 
 /*  =====================
  *  -- EXPORTS ROUTES --
@@ -29,4 +30,6 @@ export {
 
     // Lounges
     storiesRoutes as storiesRoutes,
+
+    hrRoutes as hrRoutes
 }

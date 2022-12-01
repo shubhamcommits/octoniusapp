@@ -1,4 +1,4 @@
-<div class="card sideinnercard">
+<div class="">
     <div class="card-block">
         <h6 class="card-title">
           <strong i18n="@@activityFilters.filters">Filters</strong>
@@ -39,5 +39,9 @@
           placeholder="Enter number of post to show..."
           (focusout)="onLikesEmitter()" (keyup.enter)="$event.target.blur();">
         <!-- Post Likes ends -->
+    </div>
+
+    <div class="modal-footer">
+      <button (click)="closeDialog()" class="btn btn-primary" i18n="@@activityFilters.close">Close</button>
     </div>
 </div>

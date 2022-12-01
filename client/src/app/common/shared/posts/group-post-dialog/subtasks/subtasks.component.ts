@@ -14,6 +14,7 @@ export class SubtasksComponent implements OnInit {
   @Input() userData: any;
   @Input() subtask: any;
   @Input() parentId: any;
+  @Input() parentNS: boolean = false;
 
   @Output() openSubtaskEmitter = new EventEmitter();
 

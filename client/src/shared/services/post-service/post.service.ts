@@ -142,20 +142,21 @@ export class PostService {
    * This function fetches the list of North Star Tasks present in a user´s groups
    * @param { groups } query
    */
-  getNorthStarTasks(groups) {
-
-    // Create the request variable
-    let request: any;
-
-    request = this._http.get(this.baseURL + `/northstar`, {
-      params: {
-        groups: groups
-      }
-    }).toPromise()
-
-    return request;
+  getUserGroupsNorthStarTasks() {
+    return this._http.get(this.baseURL + `/user-groups-northstar`).toPromise();
   }
 
+  getUserGlobalNorthStarTasks() {
+    return this._http.get(this.baseURL + `/user-global-northstar`).toPromise();
+  }
+
+  getUserNorthStarTasks() {
+    return this._http.get(this.baseURL + `/user-northstar`).toPromise();
+  }
+
+  getGlobalNorthStarTasks() {
+    return this._http.get(this.baseURL + `/global-northstar`).toPromise();
+  }
 
   /**
    * This service function is responsible for fetching the tasks and events present in month
@@ -200,8 +201,7 @@ export class PostService {
       assigneeId: assigneeId,
       groupId: groupId,
       isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable
-    }).
-      toPromise()
+    }).toPromise();
   }
 
   /**

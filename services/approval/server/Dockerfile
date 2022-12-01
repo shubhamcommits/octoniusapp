@@ -21,7 +21,7 @@ RUN yarn run build
 RUN mv ./node_modules/ /usr/ && rm -rf *.ts && mv /usr/node_modules ./
 
 # Expose the port
-EXPOSE 15000
+EXPOSE 15001
 
 # Start the Server
 CMD ["yarn", "run", "prod"]
