@@ -82,9 +82,7 @@ export class NorthStarPageComponent implements OnInit {
   async ngOnInit() {
     if (this._router.routerState.snapshot.root.queryParamMap.has('postId')) {
       const postId = this._router.routerState.snapshot.root.queryParamMap.get('postId');
-
       let post: any = await this.publicFunctions.getPost(postId);
-
       this.openGlobalNSModal(postId, (post?.task?._parent_task?._id || post?.task?._parent_task));
     }
 
@@ -180,14 +178,14 @@ export class NorthStarPageComponent implements OnInit {
   /**
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
-  openGlobalNSModal(postData: any, parentTaskId?: string): void {
+  openGlobalNSModal(postId: string, parentTaskId?: string): void {
     const dialogRef = this.dialog.open(GlobalNorthStarDialogComponent, {
           width: '100%',
           height: '100%',
           disableClose: true,
           panelClass: 'groupCreatePostDialog',
           data: {
-            postId: postData?._id,
+            postId: postId,
             parentTaskId: parentTaskId
           }
         });

@@ -81,7 +81,7 @@
 
   <div *ngFor="let task of globalNorthStarTasks; let i = index;">
 
-    <a (click)="openGlobalNSModal(task)">
+    <a (click)="openGlobalNSModal(task?._id)">
       <!-- My Space Today Tasks -->
 
         <div class="media tile overview-task">
