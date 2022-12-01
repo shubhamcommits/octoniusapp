@@ -133,7 +133,9 @@ export class GroupPostDialogComponent implements OnInit {
     if (!this.groupId) {
       this.groupId = (this.postData._group) ? (this.postData._group._id || this.postData._group) : null;
       this.myWorkplace = false;
-    } else {
+    }
+
+    if (this.groupId) {
       this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
 
       this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
