@@ -14,7 +14,7 @@ export class GlobalNorthStarStatsComponent implements OnChanges {
   constructor() { }
 
   ngOnChanges() {
-console.log(this.northStarValues);
+
   }
 
   getNSStatusClass(status) {
