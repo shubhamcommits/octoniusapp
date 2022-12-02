@@ -31,7 +31,7 @@ export class GroupPostDialogComponent implements OnInit {
   columns: any;
   // shuttleColumns: any;
   tasks:any;
-  customFields = [];
+  customFields;
   selectedCFValues = [];
   groupData: any;
   shuttleIndex = -1;
@@ -145,25 +145,6 @@ export class GroupPostDialogComponent implements OnInit {
       this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
         this.flows = res['flows'];
       });
-
-      this.groupService.getGroupCustomFields(this.groupId).then((res) => {
-        if (res['group']['custom_fields']) {
-          res['group']['custom_fields'].forEach(field => {
-            this.customFields.push(field);
-
-            if (!this.postData?.task.custom_fields) {
-              this.postData.task.custom_fields = new Map<string, string>();
-            }
-
-            if (!this.postData?.task.custom_fields[field.name]) {
-              this.postData.task.custom_fields[field.name] = '';
-              this.selectedCFValues[field.name] = '';
-            } else {
-              this.selectedCFValues[field.name] = this.postData?.task.custom_fields[field.name];
-            }
-          });
-        }
-      });
     }
 
     this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
@@ -171,17 +152,6 @@ export class GroupPostDialogComponent implements OnInit {
     this.userData = await this.publicFunctions.getCurrentUser();
 
     await this.initPostData();
-    this.canEdit = await this.utilityService.canUserDoTaskAction(this.postData, this.groupData, this.userData, 'edit');
-    if (!this.canEdit) {
-      const hide = await this.utilityService.canUserDoTaskAction(this.postData, this.groupData, this.userData, 'hide');
-      this.canView = await this.utilityService.canUserDoTaskAction(this.postData, this.groupData, this.userData, 'view') || !hide;
-    } else {
-      this.canView = true;
-    }
-  }
-
-  formateDate(date) {
-    return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
   }
 
   async initPostData() {
@@ -220,9 +190,6 @@ export class GroupPostDialogComponent implements OnInit {
 
       this.setAssignedBy();
 
-      this.customFields = [];
-      this.selectedCFValues = [];
-
       await this.postService.getSubTasks(this.postData?._id).then((res) => {
         this.subtasks = res['subtasks'];
 
@@ -251,8 +218,55 @@ export class GroupPostDialogComponent implements OnInit {
 
     this.tags = this.postData?.tags;
 
+    this.canEdit = await this.utilityService.canUserDoTaskAction(this.postData, this.groupData, this.userData, 'edit');
+    if (!this.canEdit) {
+      const hide = await this.utilityService.canUserDoTaskAction(this.postData, this.groupData, this.userData, 'hide');
+      this.canView = await this.utilityService.canUserDoTaskAction(this.postData, this.groupData, this.userData, 'view') || !hide;
+    } else {
+      this.canView = true;
+    }
+
+    if (this.groupId) {
+
+      this.customFields = null;
+      this.selectedCFValues = [];
+  
+      this.initCustomFields();
+    }
+
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
+  }
+
+  async initCustomFields() {
+    let customFieldsTmnp = this.groupData?.custom_fields;
+
+    if (!customFieldsTmnp) {
+      await this.groupService.getGroupCustomFields(this.groupId).then((res) => {
+        if (res['group']['custom_fields']) {
+          customFieldsTmnp = res['group']['custom_fields'];
+        }
+      });
+    }
+
+    if (customFieldsTmnp) {
+      this.customFields = [];
+      
+      customFieldsTmnp.forEach(field => {
+        this.customFields.push(field);
+
+        if (!this.postData?.task.custom_fields) {
+          this.postData.task.custom_fields = new Map<string, string>();
+        }
+
+        if (!this.postData?.task.custom_fields[field.name]) {
+          this.postData.task.custom_fields[field.name] = '';
+          this.selectedCFValues[field.name] = '';
+        } else {
+          this.selectedCFValues[field.name] = this.postData?.task.custom_fields[field.name];
+        }
+      });
+    }
   }
 
   /**
@@ -633,9 +647,6 @@ export class GroupPostDialogComponent implements OnInit {
     this.postData = subtask;
     this.showSubtasks = false;
 
-    this.customFields = [];
-    this.selectedCFValues = [];
-
     this.comments = [];
 
     this.columns = null;
@@ -653,9 +664,6 @@ export class GroupPostDialogComponent implements OnInit {
     });
 
     this.showSubtasks = false;
-
-    this.customFields = [];
-    this.selectedCFValues = [];
 
     this.comments = [];
 
@@ -713,5 +721,9 @@ export class GroupPostDialogComponent implements OnInit {
     this.postData = itemData;
     this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId, false, this.shuttleIndex);
     this.canEdit = !this.postData?.approval_flow_launched;
+  }
+
+  formateDate(date) {
+    return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
   }
 }
