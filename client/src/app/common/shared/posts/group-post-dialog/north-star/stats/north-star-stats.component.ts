@@ -25,7 +25,7 @@ export class NorthStarStatsComponent implements OnInit {
     this.northStar.values = this.northStar?.values?.sort((v1, v2) => (moment.utc(v1.date).isBefore(v2.date)) ? 1 : -1);
     
     this.northStar?.values?.forEach(async (v, index) => {
-      if (!v._user._id) {
+      if (v?._user && !v?._user?._id) {
         v._user = await this.publicFunctions.getOtherUser(v._user);
       }
 

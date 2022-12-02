@@ -18,7 +18,8 @@
       
             <div class="col-md-10 overview-item title-nowrap pl-0">
               
-              {{ value?._user?.first_name }} {{ value?._user?.last_name }}
+              <span *ngIf="value?._user">{{ value?._user?.first_name }} {{ value?._user?.last_name }}</span>
+              <span *ngIf="!value?._user" i18n="@@northStarStats.unknownUser">An unknown user</span>
               
               <span *ngIf="value?.difference > 0" style="color: #2AA578; margin: 0 10px;" i18n="@@northStarStats.increased">increased</span>
               <span *ngIf="value?.difference < 0" style="color: #EE5D5D; margin: 0 10px;" i18n="@@northStarStats.decreased">decreased</span>

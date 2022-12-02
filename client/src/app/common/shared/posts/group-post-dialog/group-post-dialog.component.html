@@ -350,7 +350,7 @@
             <!-- Post Tags ends -->
         </div>
 
-        <div class="content-box" *ngIf="postData && postData?.type === 'task' && postData?._group">
+        <div class="content-box" *ngIf="postData && postData?.type === 'task' && postData?._group && customFields?.length > 0">
             <p class="box-title" i18n="@@groupCreatePostDialog.customFields">Custom fields</p>
 
             <div *ngFor="let cf of customFields" class="d-flex custom-field justify-content-start mb-3 row">
