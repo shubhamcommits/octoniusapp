@@ -259,7 +259,7 @@
           <div class="notification_date_time">
             <span class="text-primary small"><span class="material-icons">
               local_activity
-              </span> {{ event?.event_date | date: 'MMM dd, yyyy HH:mm' }}</span>
+              </span> {{ event?.event_date | date: 'MMM dd, yyyy' }} {{ event?.event_time }} {{ event?.event_am_pm }}</span>
           </div>
 
           <div class="notification_tag float-right d-none d-sm-block">
