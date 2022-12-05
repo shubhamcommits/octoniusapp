@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { environment } from 'src/environments/environment';
 import { LoungeService } from 'src/shared/services/lounge-service/lounge.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { LoungeImageUpdateComponent } from '../lounge-image-update/lounge-image-update.component';
 import moment from 'moment';
 
@@ -43,13 +43,6 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
   showComments: boolean = false;
 
   editTime = false;
-  // eventTime: any = {
-  //   hour: 1,
-  //   minute: 30
-  // };
-  // eventTimeStr = '';
-
-  // am_pm = '';
   editAMPM = false;
 
   // IsLoading behaviou subject maintains the state for loading spinner
@@ -102,22 +95,6 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
 
   canEditAction() {
     this.canEditStory = !this.canEditStory;
-
-    // if (this.storyData.event_date) {
-    //   const eventMoment = moment(this.storyData.event_date);
-    //   this.eventTime.hour = eventMoment.hours();
-    //   this.eventTime.minute = eventMoment.minutes();
-
-    //   if (this.eventTime.hour >= 12) {
-    //     this.am_pm = 'PM';
-    //     if (this.eventTime.hour > 12) {
-    //       this.eventTime.hour = this.eventTime.hour - 12;
-    //     }
-    //   } else {
-    //     this.am_pm = 'AM';
-    //   }
-    //   this.eventTimeStr = this.eventTime.hour + ':' + ((this.eventTime.minute < 10) ? '0' : '') + this.eventTime.minute;
-    // }
   }
 
   initStoryHeaderImage() {
@@ -248,8 +225,6 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
   
   getDate(dateObject: any) {
     const selcetedMomentDate = moment(dateObject.toDate());
-    // selcetedMomentDate.hours(this.eventTime.hour);
-    // selcetedMomentDate.minute(this.eventTime.minute);
     this.storyData.event_date  = selcetedMomentDate;
     this.updateDate({ 'event_date': this.storyData.event_date });
   }
@@ -259,7 +234,6 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
   }
 
   getTime() {
-    // this.eventTimeStr = timeObject;
     if (!this.isValidTime(this.storyData?.event_time)) {
       return this.utilityService.errorNotification($localize`:@@storyDetails.wrongTimeFormat:Wront time format, hh:mm!`);
     }
@@ -306,5 +280,5 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
     else {
         return false;
     }
-}
+  }
 }
