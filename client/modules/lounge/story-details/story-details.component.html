@@ -21,21 +21,21 @@
     </div>
     <div class="event-date" *ngIf="storyData?.type == 'event'">
       <div *ngIf="!canEditStory" class="date-no-edit-box">
-        <div class="day">{{ storyData.event_date | date: 'dd' }}</div>
-        <div class="month">{{ storyData.event_date | date: 'MM' }}</div>
+        <div class="day">{{ storyData?.event_date | date: 'dd' }}</div>
+        <div class="month">{{ storyData?.event_date | date: 'MM' }}</div>
         <hr />
-        <div class="time">{{ storyData.event_date | date: 'h:mm a' }}</div>
+        <div class="time">{{ storyData?.event_time }} {{ storyData?.event_am_pm }}</div>
       </div>
 
       <div *ngIf="canEditStory" class="date-edit-box">
         <div style="justify-content: space-evenly; display: flex;">
           <div>
-            <div class="day">{{ storyData.event_date | date: 'dd' }}</div>
-            <div class="month">{{ storyData.event_date | date: 'MM' }}</div>
+            <div class="day">{{ storyData?.event_date | date: 'dd' }}</div>
+            <div class="month">{{ storyData?.event_date | date: 'MM' }}</div>
           </div>
 
-          <app-date-picker (date)="getDate($event)" [selectedDate]="formateDate(storyData?.event_date)" [showInput]="false"
-            class="btn-group input-date">
+          <app-date-picker (date)="getDate($event)" [selectedDate]="formateDate(storyData?.event_date)" 
+            [showInput]="false" class="btn-group input-date">
           </app-date-picker>
         </div>
 
@@ -43,16 +43,16 @@
 
         <div style="justify-content: space-evenly; display: flex;">
           <div style="padding-left: 20px;">
-            <div *ngIf="!editTime" (click)="enableEditTime()" class="time" style="padding-top: 8px;">{{ storyData.event_date | date: 'h:mm' }}</div>
+            <div *ngIf="!editTime" (click)="enableEditTime()" class="time" style="padding-top: 8px;">{{ storyData?.event_time }}</div>
 
-            <input *ngIf="editTime" type="text" autocomplete="off" [(ngModel)]="this.eventTimeStr"
-              (blur)="getTime($event.target.value)" (keyup.enter)="getTime($event.target.value)"
+            <input *ngIf="editTime" type="text" autocomplete="off" [(ngModel)]="storyData.event_time"
+              (blur)="getTime()" (keyup.enter)="getTime()"
               (keyup.esc)="enableEditTime()" class="form-control" style="width: 80%;" />
           </div>
 
           <div>
             <button class="btn btn-link" data-toggle="dropdown">
-              <span class="time">{{ am_pm }}</span>
+              <span class="time">{{ storyData?.event_am_pm }}</span>
             </button>
             <ul class="dropdown-menu">
               <li class="dropdown-item" (click)="getAMPM('AM')">

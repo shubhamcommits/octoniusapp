@@ -130,18 +130,7 @@ export class GlobalNorthStarDialogComponent implements OnInit {
 
       if (this.subtasks && this.subtasks.length > 0) {
         this.subtasks.forEach(st => {
-          const nsValues = st?.task?.northStar?.values.map((value, index, array) => {
-            return {
-              currency: st?.task?.northStar?.currency,
-              type: st?.task?.northStar?.type,
-              value: value?.value,
-              status: value?.status,
-              date: value?.date,
-              _user: value?._user,
-              post_title: st?.title,
-              difference: (array[index-1]) ? (value?.value - array[index-1].value) : value?.value
-            };
-          });
+          const nsValues = this.mapNSValues(st);
           
           this.northStarValues = this.northStarValues.concat(nsValues);
         });
@@ -298,7 +287,8 @@ export class GlobalNorthStarDialogComponent implements OnInit {
       });
 
       const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-        this.updateSubTask(data);
+        this.initPostData();
+        // this.updateSubTask(data);
       });
       
       dialogRef.afterClosed().subscribe(result => {
@@ -321,6 +311,7 @@ export class GlobalNorthStarDialogComponent implements OnInit {
       if (!this.subtasks) {
         this.subtasks = [];
       }
+
       this.subtasks.push(data);
     });
 
@@ -361,12 +352,33 @@ export class GlobalNorthStarDialogComponent implements OnInit {
     }
   }
 
-  updateSubTask(task) {
-    const indexTask = this.subtasks.findIndex((t: any) => t._id === task._id);
-    if (indexTask !== -1) {
-      this.subtasks[indexTask] = task;
-      return;
-    }
+  // updateSubTask(task) {
+  //   const indexTask = this.subtasks.findIndex((t: any) => t._id === task._id);
+  //   if (indexTask !== -1) {
+  //     this.subtasks[indexTask] = task;
+  //     const nsValues = this.mapNSValues(task);
+
+  //     this.northStarValues = this.northStarValues.filter(v => v._task != task._id);
+
+  //     this.northStarValues = this.northStarValues.concat(nsValues);
+  //     return;
+  //   }
+  // }
+
+  mapNSValues(task) {
+    return task?.task?.northStar?.values.map((value, index, array) => {
+        return {
+          _task: task._id,
+          currency: task?.task?.northStar?.currency,
+          type: task?.task?.northStar?.type,
+          value: value?.value,
+          status: value?.status,
+          date: value?.date,
+          _user: value?._user,
+          post_title: task?.title,
+          difference: (array[index-1]) ? (value?.value - array[index-1].value) : value?.value
+        };
+      });
   }
 
   getProgressPercent(northStar: any) {

@@ -76,6 +76,16 @@ const StorySchema = new Schema({
         type: Date,
         default: moment().format()
     },
+    event_time: {
+        type: String,
+        trim: true,
+        default: ''
+    },
+    event_am_pm: {
+        type: String,
+        trim: true,
+        default: 'AM'
+    },
     _posted_by: {
         type: Schema.Types.ObjectId,
         required: true,

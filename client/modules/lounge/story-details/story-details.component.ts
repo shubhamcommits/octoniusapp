@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { environment } from 'src/environments/environment';
 import { LoungeService } from 'src/shared/services/lounge-service/lounge.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { LoungeImageUpdateComponent } from '../lounge-image-update/lounge-image-update.component';
 import moment from 'moment';
 
@@ -43,13 +43,6 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
   showComments: boolean = false;
 
   editTime = false;
-  eventTime: any = {
-    hour: 1,
-    minute: 30
-  };
-  eventTimeStr = '';
-
-  am_pm = '';
   editAMPM = false;
 
   // IsLoading behaviou subject maintains the state for loading spinner
@@ -82,6 +75,7 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
       await this.loungeService.getStory(this.storyId).then (async res => {
         this.storyData = res['story'] || {};
         await this.initStoryHeaderImage();
+        await this.initTime();
         this.publicFunctions.sendUpdatesToStoryData(this.storyData);
       });
     }
@@ -101,22 +95,6 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
 
   canEditAction() {
     this.canEditStory = !this.canEditStory;
-
-    if (this.storyData.event_date) {
-      const eventMoment = moment(this.storyData.event_date);
-      this.eventTime.hour = eventMoment.hours();
-      this.eventTime.minute = eventMoment.minutes();
-
-      if (this.eventTime.hour >= 12) {
-        this.am_pm = 'PM';
-        if (this.eventTime.hour > 12) {
-          this.eventTime.hour = this.eventTime.hour - 12;
-        }
-      } else {
-        this.am_pm = 'AM';
-      }
-      this.eventTimeStr = this.eventTime.hour + ':' + ((this.eventTime.minute < 10) ? '0' : '') + this.eventTime.minute;
-    }
   }
 
   initStoryHeaderImage() {
@@ -126,12 +104,24 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
       this.storyData.header_pic = 'assets/images/lounge_details_header.jpg';
     }
   }
+
+  initTime() {
+    if (!this.storyData?.event_time) {
+      this.storyData.event_time = '0:00';
+    }
+
+    if (!this.storyData?.event_am_pm) {
+      this.storyData.event_am_pm = 'AM';
+    }
+  }
+
   /**
    * Edit the lounge in the proper array with the new values
    */
   async editStory(story: any) {
     this.storyData = story;
     await this.initStoryHeaderImage();
+    await this.initTime();
     this.publicFunctions.sendUpdatesToStoryData(this.storyData);
   }
 
@@ -196,6 +186,7 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
         this.loungeService.editStory(this.storyData?._id, { 'content': content, '_content_mentions': this._content_mentions }).then(async res => {
             this.storyData = res['story'];
             await this.initStoryHeaderImage();
+            await this.initTime();
             this.canEditStory = !this.canEditStory;
             resolve(this.utilityService.resolveAsyncPromise($localize`:@@storyDetails.storyUpdated:Story updated`))
           })
@@ -233,49 +224,35 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
   }
   
   getDate(dateObject: any) {
-    const now = moment(dateObject.toDate());
-    now.hours(this.eventTime.hour);
-    now.minute(this.eventTime.minute);
-    this.storyData.event_date  = now;
-    this.updateDate(this.storyData.event_date);
+    const selcetedMomentDate = moment(dateObject.toDate());
+    this.storyData.event_date  = selcetedMomentDate;
+    this.updateDate({ 'event_date': this.storyData.event_date });
   }
 
   enableEditTime() {
     this.editTime = !this.editTime;
   }
 
-  getTime(timeObject: string) {
-    this.eventTimeStr = timeObject;
-    
-    if (!this.isValidTime(this.eventTimeStr)) {
+  getTime() {
+    if (!this.isValidTime(this.storyData?.event_time)) {
       return this.utilityService.errorNotification($localize`:@@storyDetails.wrongTimeFormat:Wront time format, hh:mm!`);
     }
-
-    let time = this.eventTimeStr.split(':');
-    this.eventTime.hour = time[0];
-    this.eventTime.minute = time[1];
-
-    const now = moment(this.storyData.event_date);
-    now.hours((this.am_pm == 'PM') ? this.eventTime.hour + 12 : this.eventTime.hour);
-    now.minute(this.eventTime.minute);
-    this.storyData.event_date  = now;
     this.enableEditTime();
-    this.updateDate(this.storyData.event_date);
+    this.updateDate({ 'event_time': this.storyData?.event_time });
   }
 
   getAMPM(ampm: string) {
-    this.am_pm = ampm;
-    const now = moment(this.storyData.event_date);
-    now.hours((this.am_pm == 'PM') ? this.eventTime.hour + 12 : this.eventTime.hour);
-    now.minute(this.eventTime.minute);
-    this.storyData.event_date  = now;
-    this.updateDate(this.storyData.event_date);
+    this.updateDate({ 'event_am_pm': ampm });
   }
 
-  updateDate(date: any) {
+  updateDate(dateObject: any) {
     this.utilityService.asyncNotification($localize`:@@storyDetails.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.loungeService.editStory(this.storyData?._id, { 'event_date': date }).then(res => {
+      this.loungeService.editStory(this.storyData?._id, dateObject).then(async res => {
           this.storyData = res['story'];
+
+          await this.initStoryHeaderImage();
+          await this.initTime();
+          
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@storyDetails.dateUpdated:Date updated!`));
         })
@@ -303,5 +280,5 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
     else {
         return false;
     }
-}
+  }
 }
