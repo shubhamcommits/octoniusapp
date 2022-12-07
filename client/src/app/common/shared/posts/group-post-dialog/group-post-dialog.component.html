@@ -186,7 +186,7 @@
     <!-- Top Right Section starts -->
     <div class="post-properties">
         <!-- Parent Task starts -->
-        <div *ngIf="postData && postData?.task?._parent_task && postData?.type === 'task' && postData?._group && groupData?._id == postData?._group?._id" class="content-box">
+        <div *ngIf="postData && postData?.task?._parent_task && (!postData?.task?._parent_task?.task?.isNorthStar&& postData?.task?._parent_task?._group) && postData?.type === 'task' && postData?._group && groupData?._id == postData?._group?._id" class="content-box">
           <p class="box-title"i18n="@@groupCreatePostDialog.parentTask"> Parent task</p>
 
           <div class="parent-task">
@@ -243,7 +243,7 @@
           </div>
 
           <div class="shuttle-box" *ngIf="postData && columns">
-            <p class="mt-1" *ngIf="(((shuttle?._shuttle_group?._id || shuttle?._shuttle_group) != groupId) && !postData?.task?._parent_task) || ((shuttle?._shuttle_group?._id || shuttle?._shuttle_group) == groupId)"
+            <p class="mt-1" *ngIf="(((shuttle?._shuttle_group?._id || shuttle?._shuttle_group) != groupId) && (!postData?.task?._parent_task || !this.postData?.task?._parent_task?._group)) || ((shuttle?._shuttle_group?._id || shuttle?._shuttle_group) == groupId)"
                 style="margin-top: 18px; width:70px" i18n="@@groupCreatePostDialog.section">
               Section
             </p>

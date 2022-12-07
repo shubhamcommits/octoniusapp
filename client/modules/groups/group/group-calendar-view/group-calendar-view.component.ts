@@ -18,16 +18,13 @@ const colors: any = {
 @Component({
   selector: 'app-group-calendar-view',
   templateUrl: './group-calendar-view.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrls: ['./group-calendar-view.component.scss']
+  styleUrls: ['./group-calendar-view.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GroupCalendarViewComponent implements OnInit {
 
-  // Fetch groupId from router snapshot
   @Input() groupId
-
-  @Input() tasks:any;
-
+  @Input() tasks: any;
   @Input() isIdeaModuleAvailable;
 
   // Modal Content
@@ -232,14 +229,14 @@ export class GroupCalendarViewComponent implements OnInit {
     if (this.post) {
       const canOpen = !this.groupData?.enabled_rights || this.post?.canView || this.post?.canEdit;
       if (this.post.type === 'task' && !this.post.task._parent_task) {
-        dialogRef = this.utilityService.openPostDetailsFullscreenModal(this.post._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen, this.columns);
+        dialogRef = this.utilityService.openPostDetailsFullscreenModal(this.post._id, this.groupData._id, canOpen, this.columns);
       } else {
         if (this.post.task._parent_task && !this.post.task._parent_task._id) {
           this.publicFunctions.getPost(this.post.task._parent_task).then(post => {
             this.post.task._parent_task = post;
           });
         }
-        dialogRef = this.utilityService.openPostDetailsFullscreenModal(this.post._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen);
+        dialogRef = this.utilityService.openPostDetailsFullscreenModal(this.post._id, this.groupData._id, canOpen);
       }
     }
 

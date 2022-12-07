@@ -11,8 +11,6 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 })
 export class MyspaceAgendaComponent implements OnInit {
 
-  @Input() isIdeaModuleAvailable;
-
   // Modal Content
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>
 
@@ -62,7 +60,7 @@ export class MyspaceAgendaComponent implements OnInit {
   openModal(event) {
     this.post = event;
     const canOpen = !this.groupData?.enabled_rights || this.post?.canView || this.post?.canEdit;
-    const dialogRef = this.utilityService.openPostDetailsFullscreenModal(this.post._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen);
+    const dialogRef = this.utilityService.openPostDetailsFullscreenModal(this.post._id, this.groupData._id, canOpen);
 
     if (dialogRef) {
       const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {

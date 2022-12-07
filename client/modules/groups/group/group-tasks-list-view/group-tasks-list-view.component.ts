@@ -1,7 +1,6 @@
-import { Component, OnChanges, Input, Injector, ViewChild, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, Input, Injector, ViewChild, Output, EventEmitter, SimpleChanges, OnInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { MatDialog } from '@angular/material/dialog';
 import { MatAccordion } from '@angular/material/expansion';
@@ -13,14 +12,11 @@ import moment from 'moment/moment';
   templateUrl: './group-tasks-list-view.component.html',
   styleUrls: ['./group-tasks-list-view.component.scss']
 })
-export class GroupTasksListViewComponent implements OnChanges {
+export class GroupTasksListViewComponent implements OnInit, OnChanges {
 
-  // Current Group Data
   @Input() groupData: any;
-  // Current User Data
   @Input() userData: any;
   @Input() sections: any;
-  // Task Posts array variable
   @Input() tasks: any;
   @Input() customFields: any;
   @Input() sortingBit: any;
@@ -33,8 +29,6 @@ export class GroupTasksListViewComponent implements OnChanges {
   @Output() newSectionEvent = new EventEmitter();
 
   @ViewChild(MatAccordion, { static: true }) accordion: MatAccordion;
-
-  // customFieldsToShow: any[] = [];
 
   // Today's date object
   today = moment().local().startOf('day').format('YYYY-MM-DD');
@@ -56,9 +50,11 @@ export class GroupTasksListViewComponent implements OnChanges {
     public utilityService: UtilityService,
     private columnService: ColumnService,
     private injector: Injector,
-    private router: ActivatedRoute,
     public dialog: MatDialog
   ) { }
+
+  async ngOnInit() {
+  }
 
   async ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {

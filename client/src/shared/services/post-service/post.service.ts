@@ -36,6 +36,17 @@ export class PostService {
   }
 
   /**
+   * This function is responsible for editing a post title
+   * @param postId
+   * @param postTitle
+   */
+  editTitle(postId: string, postTitle: string) {
+
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/${postId}/title`, { postTitle }).toPromise();
+  }
+
+  /**
    * This function is responsible for fetching a post details
    * @param postId
    */

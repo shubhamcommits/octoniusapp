@@ -18,7 +18,7 @@ export class PostService {
   userFields: any = 'first_name last_name profile_pic role email';
 
   // Select Group Fileds on population
-  groupFields: any = 'group_name group_avatar workspace_name';
+  groupFields: any = 'group_name group_avatar workspace_name enabled_rights';
 
   groupsService = new GroupsService();
 
@@ -930,7 +930,7 @@ export class PostService {
       .populate({ path: '_assigned_to', select: this.userFields })
       .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
       .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-      .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+      .populate({ path: 'task._parent_task', select: '_id title _assigned_to _group task.isNorthStar' })
       .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
       .populate({ path: 'task.shuttles._shuttle_group', select: '_id group_name group_avatar' })
       .populate({ path: 'task.shuttles._shuttle_section',select:'_id title' })
@@ -2560,6 +2560,7 @@ export class PostService {
       .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
       .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
       .populate({ path: 'task.northStar.values._user', select: this.userFields })
+      .populate({ path: 'logs._actor', select: this.userFields })
       .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
       .populate({ path: 'permissions._members', select: this.userFields })
       .lean();
@@ -2831,30 +2832,43 @@ export class PostService {
   async setParentTask(postId: string, userId: string, parentTaskId: string) {
 
     try {
-      // Update the post
-      let post = await Post.findOneAndUpdate({
-        _id: postId
-      }, {
-        'task._parent_task': parentTaskId,
-        $unset: { 'task._column': '' }
-      }, {
-        new: true
-      });
+
+      const parent: any = await Post.findOne({_id: parentTaskId}).select('_group').lean();
+
+      let post: any;
+      if (parent && parent._group) {
+        post = await Post.findOneAndUpdate({
+            _id: postId
+          }, {
+            'task._parent_task': parentTaskId,
+            $unset: { 'task._column': '' }
+          }, {
+            new: true
+          });
+      } else {
+        post = await Post.findOneAndUpdate({
+            _id: postId
+          }, {
+            'task._parent_task': parentTaskId,
+          }, {
+            new: true
+          });
+      }
 
       post = await Post.findOneAndUpdate({
-        _id: postId
-      }, {
-        $push: {
-          "logs": {
-            action: 'set_parent',
-            action_date: moment().format(),
-            _actor: userId,
-            _task: parentTaskId
+          _id: postId
+        }, {
+          $push: {
+            "logs": {
+              action: 'set_parent',
+              action_date: moment().format(),
+              _actor: userId,
+              _task: parentTaskId
+            }
           }
-        }
-      }, {
-        new: true
-      });
+        }, {
+          new: true
+        });
 
       // populate the properties of this document
       post = await this.populatePostProperties(post);

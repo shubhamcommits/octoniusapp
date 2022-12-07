@@ -345,7 +345,7 @@ export class UtilityService {
   /**
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
-  openPostDetailsFullscreenModal(postId: string, groupId: string, isIdeaModuleAvailable: boolean, canOpen: boolean, columns?: any) {
+  openPostDetailsFullscreenModal(postId: string, groupId: string, canOpen: boolean, columns?: any) {
     let dialogOpen;
 
     // !groupData?.enabled_rights || postData?.canView || postData?.canEdit
@@ -354,14 +354,12 @@ export class UtilityService {
         {
           postId: postId,
           groupId: groupId,
-          columns: columns,
-          isIdeaModuleAvailable: isIdeaModuleAvailable
+          columns: columns
         }
       :
         {
           postId: postId,
-          groupId: groupId,
-          isIdeaModuleAvailable: isIdeaModuleAvailable
+          groupId: groupId
         }
 
         dialogOpen = this.dialog.open(GroupPostDialogComponent, {
@@ -634,8 +632,13 @@ export class UtilityService {
   async canUserDoTaskAction(item: any, groupData: any, userData: any, action: string) {
 
     const isGroupManager = (groupData && groupData._admins) ? (groupData?._admins.findIndex((admin: any) => (admin?._id || admin) == userData?._id) >= 0) : false;
+    const isGroupMember = (groupData && groupData._members) ? (groupData?._members.findIndex((member: any) => (member?._id || member) == userData?._id) >= 0) : false;
     let createdBy = (item?._posted_by ) ? ((item?._posted_by?._id || item?._posted_by) == userData?._id) : false;
     createdBy = (!createdBy && item?._created_by) ? ((item?._created_by?._id || item?._created_by) == userData?._id) : createdBy;
+
+    if (!isGroupManager && !isGroupMember && userData?.role != 'admin' && userData?.role != 'owner' && !createdBy) {
+      return false;
+    }
 
     if (action == 'edit' && item?.approval_flow_launched) {
       return false;

@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angular/core';
-import { CommentService } from 'src/shared/services/comment-service/comment.service';
 import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
@@ -9,27 +8,19 @@ import { PublicFunctions } from 'modules/public.functions';
 })
 export class PostActionsComponent implements OnInit {
 
-  constructor(
-    private commentService: CommentService,
-    private injector: Injector
-  ) { }
-
-  // Post Input
   @Input('post') post: any;
-
-  // User Data Object
   @Input('userData') userData: any;
-
   @Input() fullscreen: boolean = false;
-
   @Input() groupData: any;
-  @Input() isIdeaModuleAvailable;
   @Input() canEdit = true;
+  @Input() isIdeaModuleAvailable;
 
-  // Delete Post Event Emitter
   @Output('delete') delete = new EventEmitter()
-
   @Output() pinEvent = new EventEmitter();
+  @Output('showCommentEditor') showCommentEditorEmitter = new EventEmitter()
+  @Output('comments') showCommentsEmitter = new EventEmitter();
+  @Output() newCommentEmitter = new EventEmitter();
+  @Output() closeModalEvent = new EventEmitter();
 
   // Show Comment State
   showComments: boolean = false;
@@ -46,15 +37,9 @@ export class PostActionsComponent implements OnInit {
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
 
-  // Show Comment Editor
-  @Output('showCommentEditor') showCommentEditorEmitter = new EventEmitter()
-
-  // Comments
-  @Output('comments') showCommentsEmitter = new EventEmitter();
-
-  @Output() newCommentEmitter = new EventEmitter();
-
-  @Output() closeModalEvent = new EventEmitter();
+  constructor(
+    private injector: Injector
+  ) { }
 
   async ngOnInit() {
     await this.post._liked_by.forEach(user => {

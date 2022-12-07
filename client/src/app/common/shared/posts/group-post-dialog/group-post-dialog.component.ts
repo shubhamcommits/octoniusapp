@@ -128,7 +128,6 @@ export class GroupPostDialogComponent implements OnInit {
     this.postData = await this.publicFunctions.getPost(postId);
     this.groupId = this.data.groupId;
     this.columns = this.data.columns;
-    this.isIdeaModuleAvailable = this.data.isIdeaModuleAvailable;
 
     if (!this.groupId) {
       this.groupId = (this.postData._group) ? (this.postData._group._id || this.postData._group) : null;
@@ -148,6 +147,7 @@ export class GroupPostDialogComponent implements OnInit {
     }
 
     this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
+    this.isIdeaModuleAvailable = await this.publicFunctions.checkIdeaStatus();
 
     this.userData = await this.publicFunctions.getCurrentUser();
 
@@ -168,7 +168,11 @@ export class GroupPostDialogComponent implements OnInit {
         this.shuttle = this.postData?.task?.shuttles[this.shuttleIndex];
       }
 
-      if(this.postData?.task?._parent_task && this.columns && (this.shuttle?._shuttle_group?._id || this.shuttle?._shuttle_group) != this.groupId){
+      if (this.postData?.task?._parent_task?._group == undefined) {
+        this.postData.task._parent_task._group = null;
+      }
+
+      if((this.postData?.task?._parent_task && this.postData?.task?._parent_task?._group) && this.columns && (this.shuttle?._shuttle_group?._id || this.shuttle?._shuttle_group) != this.groupId){
         this.columns = null;
       }
 
@@ -233,7 +237,7 @@ export class GroupPostDialogComponent implements OnInit {
   
       this.initCustomFields();
     }
-
+console.log(this.columns);
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
   }
@@ -274,11 +278,24 @@ export class GroupPostDialogComponent implements OnInit {
    * Show update detail option if title has been changed
    * @param event - new title value
    */
-  titleChange(event: any) {
+  async titleChange(event: any) {
     const newTitle = event.target.value;
     if (newTitle !== this.title) {
       this.title = newTitle;
-      this.updateDetails('change_title');
+
+      await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+        this.postService.editTitle(this.postData?._id, newTitle)
+          .then((res) => {
+            this.postData = res['post'];
+            this.contentChanged = false;
+            // Resolve with success
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
+          })
+          .catch(() => {
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePostDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
+          });
+      }));
+      // this.updateDetails('change_title');
 
       if (this.subtasks && this.subtasks.length > 0) {
         this.subtasks.forEach(subtask => {

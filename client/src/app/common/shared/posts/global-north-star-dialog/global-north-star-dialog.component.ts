@@ -9,6 +9,8 @@ import { BehaviorSubject } from 'rxjs';
 import { NewNorthStarDialogComponent } from 'modules/work/north-star-page/new-north-start-dialog/new-north-start-dialog.component';
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
 import { ColorPickerDialogComponent } from '../../color-picker-dialog/color-picker-dialog.component';
+import { SearchTaskDialogComponent } from 'modules/work/north-star-page/search-task-dialog/search-task-dialog.component';
+import { ColumnService } from 'src/shared/services/column-service/column.service';
 
 @Component({
   selector: 'app-global-north-star-dialog',
@@ -78,6 +80,7 @@ export class GlobalNorthStarDialogComponent implements OnInit {
   constructor(
     private postService: PostService,
     private utilityService: UtilityService,
+    private columService: ColumnService,
     private injector: Injector,
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -130,9 +133,19 @@ export class GlobalNorthStarDialogComponent implements OnInit {
 
       if (this.subtasks && this.subtasks.length > 0) {
         this.subtasks.forEach(st => {
-          const nsValues = this.mapNSValues(st);
-          
-          this.northStarValues = this.northStarValues.concat(nsValues);
+          if (st.task.isNorthStar) {
+            const nsValues = this.mapNSValues(st);
+            this.northStarValues = this.northStarValues.concat(nsValues);
+          } else {
+            const taskLogs = this.mapTaskLogs(st);
+            this.northStarValues = this.northStarValues.concat(taskLogs);
+          }
+
+          if (st?.task?._column) {
+            this.columService.getSection(st?.task?._column).then(res2 => {
+              st.task._column = res2['section'];
+            });
+          }
         });
 
         this.northStarValues = this.northStarValues.sort((v1, v2) => (moment.utc(v1.date).isBefore(v2.date)) ? 1 : -1);
@@ -148,13 +161,15 @@ export class GlobalNorthStarDialogComponent implements OnInit {
     if (this.subtasks && this.subtasks.length > 0) {
       let northStarValues = [];
       this.subtasks.forEach(st => {
-        const value = st?.task?.northStar?.values[st?.task?.northStar?.values?.length-1];
-        const nsValues = {
-            value: value?.value,
-            status: value?.status,
-          };
-        
-        northStarValues = northStarValues.concat(nsValues);
+        if (st?.task?.isNorthStar) {
+          const value = st?.task?.northStar?.values[st?.task?.northStar?.values?.length-1];
+          const nsValues = {
+              value: value?.value,
+              status: value?.status,
+            };
+          
+          northStarValues = northStarValues.concat(nsValues);
+        }
       });
       this.postData.northStarValues = northStarValues;
 
@@ -278,8 +293,25 @@ export class GlobalNorthStarDialogComponent implements OnInit {
     }));
   }
 
-  async openSubtask(subtaskId: string) {
-    const dialogRef = this.utilityService.openPostDetailsFullscreenModal(subtaskId, null, false, true);
+  async openSubtask(subtask: any) {
+
+    let canOpen = true;
+    if (subtask?._group?.enabled_rights) {
+      const canEdit = await this.utilityService.canUserDoTaskAction(subtask, subtask?._group, this.userData, 'edit');
+      let canView = false;
+      if (!canEdit) {
+        const hide = await this.utilityService.canUserDoTaskAction(subtask, subtask?._group, this.userData, 'hide');
+        canView = await this.utilityService.canUserDoTaskAction(subtask, subtask?._group, this.userData, 'view') || !hide;
+      }
+      canOpen = canView || canEdit;
+    }
+
+    let columns = null;
+    if (subtask?.task?._column) {
+      columns = await this.publicFunctions.getAllColumns(subtask?._group?._id)
+    }
+
+    const dialogRef = this.utilityService.openPostDetailsFullscreenModal(subtask?._id, subtask?._group?._id, canOpen, columns);
 
     if (dialogRef) {
       const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
@@ -308,16 +340,32 @@ export class GlobalNorthStarDialogComponent implements OnInit {
     });
 
     const nsCreatedEventSubs = dialogRef.componentInstance.nsCreatedEvent.subscribe((data) => {
-      if (!this.subtasks) {
-        this.subtasks = [];
-      }
-
-      this.subtasks.push(data);
+      this.pushTask(data);
     });
 
     dialogRef.afterClosed().subscribe(result => {
       nsCreatedEventSubs.unsubscribe();
-      // this.changeDetection.detectChanges();
+    });
+  }
+
+  openSearchTaskDialog() {
+    const dialogRef = this.dialog.open(SearchTaskDialogComponent, {
+      data: {
+        userId: this.userData?._id,
+        parentTaskId: this.postData?._id
+      },
+      width: '40%',
+      height: '75%',
+      disableClose: false,
+      hasBackdrop: true,
+    });
+
+    const taskSelectedEventSubs = dialogRef.componentInstance.taskSelectedEvent.subscribe((data) => {
+      this.pushTask(data);
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      taskSelectedEventSubs.unsubscribe();
     });
   }
 
@@ -339,6 +387,20 @@ export class GlobalNorthStarDialogComponent implements OnInit {
       colorPickedSubs.unsubscribe();
     });
   }
+
+  pushTask(post: any) {
+    if (!this.subtasks) {
+      this.subtasks = [];
+    }
+
+    this.subtasks.push(post);
+  }
+
+  removeTaskFromNS(taskId: string) {
+    this.postService.setParentTask(taskId, null).then(res => {
+      this.onDeleteSubTaskEvent(taskId);
+    });
+  }
   
   prepareToAddSubtasks() {
     this.showSubtasks = true;
@@ -352,23 +414,11 @@ export class GlobalNorthStarDialogComponent implements OnInit {
     }
   }
 
-  // updateSubTask(task) {
-  //   const indexTask = this.subtasks.findIndex((t: any) => t._id === task._id);
-  //   if (indexTask !== -1) {
-  //     this.subtasks[indexTask] = task;
-  //     const nsValues = this.mapNSValues(task);
-
-  //     this.northStarValues = this.northStarValues.filter(v => v._task != task._id);
-
-  //     this.northStarValues = this.northStarValues.concat(nsValues);
-  //     return;
-  //   }
-  // }
-
   mapNSValues(task) {
     return task?.task?.northStar?.values.map((value, index, array) => {
         return {
           _task: task._id,
+          isNorthStar: true,
           currency: task?.task?.northStar?.currency,
           type: task?.task?.northStar?.type,
           value: value?.value,
@@ -379,6 +429,43 @@ export class GlobalNorthStarDialogComponent implements OnInit {
           difference: (array[index-1]) ? (value?.value - array[index-1].value) : value?.value
         };
       });
+  }
+
+  mapTaskLogs(task) {
+    let logs = [];
+    task?.logs?.forEach(async log => {
+        if (log?.action == 'change_status' || log?.action == 'change_section') {
+          let sectionTitle;
+          if (log?.action == 'change_section' && log?._new_section) {
+            sectionTitle = this.getSectionTitle(log?._new_section);
+          }
+
+          logs.push({
+            _task: task._id,
+            isNorthStar: false,
+            action: log?.action,
+            new_status: log?.new_status,
+            _new_section: sectionTitle,
+            date: log?.action_date,
+            _user: log?._actor,
+            post_title: task?.title
+          });
+        }
+      });
+
+    return logs;
+  }
+
+  getSectionTitle(sectionId: string) {
+    return new Promise((resolve, reject) => {
+      this.columService.getSection(sectionId).then((res: any) => {
+          resolve(res?.section?.title);
+        })
+        .catch((err) => {
+            // Catch the error and reject the promise
+            reject(err)
+        });
+    });
   }
 
   getProgressPercent(northStar: any) {

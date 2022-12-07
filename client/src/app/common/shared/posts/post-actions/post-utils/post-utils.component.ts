@@ -12,17 +12,10 @@ import { Router } from '@angular/router';
 })
 export class PostUtilsComponent implements OnInit {
 
-  // Post Object
   @Input('post') post: any;
-
-  // User Data Object
   @Input('userData') userData: any;
-
   @Input() mode: string = 'normal';
-
   @Input() groupData: any;
-
-  @Input() isIdeaModuleAvailable;
   @Input() canEdit = true;
 
   // Delete Post Event Emitter
@@ -83,7 +76,7 @@ export class PostUtilsComponent implements OnInit {
    */
   openFullscreenModal(): void {
     const canOpen = !this.groupData?.enabled_rights || this.post?.canView || this.post?.canEdit;
-    const dialogRef = this.utilityService.openPostDetailsFullscreenModal(this.post._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen);
+    const dialogRef = this.utilityService.openPostDetailsFullscreenModal(this.post._id, this.groupData._id, canOpen);
 
     if (dialogRef) {
       const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {

@@ -1535,6 +1535,16 @@ export class PublicFunctions {
       return (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
     }
 
+    /**
+     * This method returns the highest date of the posts passed by parameter
+     * @param posts
+     * @returns
+     */
+    getHighestDate(posts: any) {
+      const highestDate = moment(Math.max(...posts.map(post => moment(post.task.due_to))));
+      return (!highestDate || !highestDate.isValid()) ? null : highestDate;
+    }
+
     async checkFlamingoStatus(workspaceId: string, mgmtApiPrivateKey: string) {
       const managementPortalService = this.injector.get(ManagementPortalService);
       return managementPortalService.getFlamingoStatus(workspaceId, mgmtApiPrivateKey).then(
@@ -1548,7 +1558,14 @@ export class PublicFunctions {
         });
     }
 
-    async checkIdeaStatus(workspaceId: string, mgmtApiPrivateKey: string) {
+    async checkIdeaStatus(workspaceId?: string, mgmtApiPrivateKey?: string) {
+      let workspace;
+      if (!workspaceId) {
+        workspace = await this.getCurrentWorkspace();
+        workspaceId = workspace?._id;
+        mgmtApiPrivateKey = workspace?.management_private_api_key;
+      }
+
       const managementPortalService = this.injector.get(ManagementPortalService);
       return managementPortalService.getIdeaStatus(workspaceId, mgmtApiPrivateKey).then(
         (res) => {
@@ -1559,16 +1576,6 @@ export class PublicFunctions {
         }).catch((err) => {
           return false;
         });
-    }
-
-    /**
-     * This method returns the highest date of the posts passed by parameter
-     * @param posts
-     * @returns
-     */
-    getHighestDate(posts: any) {
-      const highestDate = moment(Math.max(...posts.map(post => moment(post.task.due_to))));
-      return (!highestDate || !highestDate.isValid()) ? null : highestDate;
     }
 
     async isShuttleTasksModuleAvailable() {
