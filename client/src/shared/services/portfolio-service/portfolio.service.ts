@@ -87,7 +87,7 @@ export class PortfolioService {
    * @param portfolioId
    * @param groupId
    */
-  removeGroupToPortfolio(portfolioId: string, groupId: string) {
+  removeGroupFromPortfolio(portfolioId: string, groupId: string) {
     return this._http.put(this.baseURL + `/${portfolioId}/remove-group`, { groupId }).toPromise();
   }
 

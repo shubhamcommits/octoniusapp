@@ -44,11 +44,18 @@ export class GroupSelectorDialogComponent implements OnInit {
     });
   }
 
-  selectGroup(groupId: string) {
-    this.portfolioService.addGroupToPortfolio(this.portfolioId, groupId).then(res => {
-      this.groupAddedEvent.emit(res['group']);
-      this.closeDialog();
-    });
+  async selectGroup(groupId: string) {
+    await this.utilityService.asyncNotification($localize`:@@portfolioGroupsList.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+        this.portfolioService.addGroupToPortfolio(this.portfolioId, groupId).then(res => {
+            this.groupAddedEvent.emit(res['group']);
+            // Resolve with success
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@portfolioGroupsList.detailsUpdated:Details updated!`));
+            this.closeDialog();
+          })
+          .catch(() => {
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@portfolioGroupsList.unableToUpdateDetails:Unable to update the details, please try again!`));
+          });
+      }));
   }
 
   closeDialog() {

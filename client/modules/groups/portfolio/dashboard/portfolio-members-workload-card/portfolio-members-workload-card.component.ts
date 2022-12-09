@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, Input } from '@angular/core';
+import { Component, OnInit, Injector, Input, OnChanges } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
@@ -12,7 +12,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
   templateUrl: './portfolio-members-workload-card.component.html',
   styleUrls: ['./portfolio-members-workload-card.component.scss']
 })
-export class PortfolioMembersWorkloadCardComponent implements OnInit {
+export class PortfolioMembersWorkloadCardComponent implements OnChanges {
 
   @Input() portfolioData;
   @Input() userData;
@@ -42,11 +42,13 @@ export class PortfolioMembersWorkloadCardComponent implements OnInit {
     public utilityService: UtilityService
   ) { }
 
-  async ngOnInit() {
+  async ngOnChanges() {
     // Starts the spinner
     this.isLoading$.next(true);
 
-    await this.initTable();
+    if (this.portfolioData && this.portfolioData?._id) {
+      await this.initTable();
+    }
 
     // Stops the spinner and return the value with ngOnInit
     this.isLoading$.next(false);

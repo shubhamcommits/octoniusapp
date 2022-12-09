@@ -1,12 +1,9 @@
-import { Component, OnInit, Injector, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { environment } from 'src/environments/environment';
-import { Router } from '@angular/router';
-import { GroupSelectorDialogComponent } from './group-selector-dialog/group-selector-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { UserService } from 'src/shared/services/user-service/user.service';
 import { PortfolioService } from 'src/shared/services/portfolio-service/portfolio.service';
 
 @Component({
@@ -53,12 +50,11 @@ export class PortfolioDetailsComponent implements OnInit {
 
   constructor(
     public injector: Injector,
-    private router: Router,
     public dialog: MatDialog,
-    private changeDetection: ChangeDetectorRef,
     private utilityService: UtilityService,
     private portfolioService: PortfolioService
-  ) { }
+  ) {
+  }
 
   async ngOnInit() {
 
@@ -100,7 +96,7 @@ export class PortfolioDetailsComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.isLoading$.complete()
+    this.isLoading$.complete();
   }
 
   async periodSelected(event) {
@@ -110,40 +106,6 @@ export class PortfolioDetailsComponent implements OnInit {
     // Update user´s period
     await this.portfolioService.updatePortfolioProperties(this.portfolioData?._id, { 'dashboard_period': this.period });
     await this.publicFunctions.sendUpdatesToPortfolioData(this.portfolioData);
-  }
-
-  async openGroupSelecter() {
-    const data = {
-      portfolioId: this.portfolioData?._id,
-      userId: this.userData?._id,
-      portfolioGroups: this.portfolioData?._groups,
-      userGroups: this.userGroups
-    }
-
-    const dialogRef = this.dialog.open(GroupSelectorDialogComponent, {
-      data: data,
-      panelClass: 'groupCreatePostDialog',
-      width: '50%',
-      disableClose: true,
-      hasBackdrop: true
-    });
-
-    const groupAddedEventSubs = dialogRef.componentInstance.groupAddedEvent.subscribe(async (data) => {
-      const index = 
-      this.portfolioData?._groups?.push(data);
-      await this.publicFunctions.sendUpdatesToPortfolioData(this.portfolioData);
-      this.changeDetection.detectChanges();
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      groupAddedEventSubs.unsubscribe();
-    });
-  }
-
-  async goToGroup(groupId: string) {
-    const newGroup = await this.publicFunctions.getGroupDetails(groupId);
-    await this.publicFunctions.sendUpdatesToGroupData(newGroup);
-    this.router.navigate(['/dashboard', 'work', 'groups', 'activity']);
   }
 
   objectExists(object: any) {

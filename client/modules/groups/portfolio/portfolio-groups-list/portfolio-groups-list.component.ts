@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, Input } from '@angular/core';
+import { Component, OnInit, Injector, Input, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { environment } from 'src/environments/environment';
@@ -18,6 +18,8 @@ export class PortfolioGroupsListComponent implements OnInit {
   @Input() userData;
   @Input() workspaceData;
   @Input() userGroups: any = [];
+
+  editGroups = false;
 
   // Base Url
   baseUrl = environment.UTILITIES_GROUPS_UPLOADS;
@@ -80,7 +82,6 @@ export class PortfolioGroupsListComponent implements OnInit {
     });
 
     const groupAddedEventSubs = dialogRef.componentInstance.groupAddedEvent.subscribe(async (data) => {
-      const index = 
       this.portfolioData?._groups?.push(data);
       await this.publicFunctions.sendUpdatesToPortfolioData(this.portfolioData);
     });
@@ -88,6 +89,26 @@ export class PortfolioGroupsListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       groupAddedEventSubs.unsubscribe();
     });
+  }
+
+  async deleteGroup(groupId: string) {
+    await this.utilityService.asyncNotification($localize`:@@portfolioGroupsList.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+        this.portfolioService.removeGroupFromPortfolio(this.portfolioData?._id, groupId)
+          .then((res) => {
+            this.portfolioData = res['portfolio'];
+            this.publicFunctions.sendUpdatesToPortfolioData(this.portfolioData);
+
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@portfolioGroupsList.detailsUpdated:Details updated!`));
+          })
+          .catch(() => {
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@portfolioGroupsList.unableToUpdateDetails:Unable to update the details, please try again!`));
+          });
+      }));
+  }
+
+  confirmGroups() {
+    this.editGroups = !this.editGroups
+    window.location.reload();
   }
 
   async goToGroup(groupId: string) {

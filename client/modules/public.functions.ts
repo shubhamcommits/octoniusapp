@@ -37,7 +37,7 @@ export class PublicFunctions {
      * This function unsubscribes the data from the observables
      */
     ngOnDestroy(): void {
-        this.subSink.unsubscribe();
+      this.subSink.unsubscribe();
     }
 
     public async getCurrentUser(readOnly?: boolean) {
@@ -75,8 +75,7 @@ export class PublicFunctions {
             const utilityService = this.injector.get(UtilityService);
             this.subSink.add(utilityService.currentUserData.subscribe((res) => {
                 resolve(res)
-            })
-            )
+            }));
         })
     }
 

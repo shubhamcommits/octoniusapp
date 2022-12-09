@@ -2,7 +2,11 @@
 
 <mat-tab-group>
     <mat-tab [label]="groupsLabel">
-        <app-portfolio-groups-list *ngIf="portfolioData" [userData]="userData" [portfolioData]="portfolioData" [workspaceData]="workspaceData" [userGroups]="userGroups"></app-portfolio-groups-list>
+        <app-portfolio-groups-list *ngIf="portfolioData"
+            [userData]="userData"
+            [portfolioData]="portfolioData"
+            [workspaceData]="workspaceData"
+            [userGroups]="userGroups"></app-portfolio-groups-list>
 
         <div class="row" style="padding: 0 20px;justify-content: space-between;">
             <div class="col-md-9" style="padding: 20px 0;">
