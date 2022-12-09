@@ -84,6 +84,7 @@ import { PortfolioProjectsPerformanceCardComponent } from './portfolio/dashboard
 import { PortfolioWorkStatisticsCardComponent } from './portfolio/dashboard/portfolio-work-statistics-card/portfolio-work-statistics-card.component';
 import { PortfolioProjectStatisticsComponent } from './portfolio/dashboard/portfolio-projects-performance-card/portfolio-project-statistics/portfolio-project-statistics.component';
 import { PortfolioProjectBudgetComponent } from './portfolio/dashboard/portfolio-projects-performance-card/portfolio-project-budget/portfolio-project-budget.component';
+import { PortfolioHeaderComponent } from './portfolio/portfolio-header/portfolio-header.component';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -97,6 +98,7 @@ import { PortfolioProjectBudgetComponent } from './portfolio/dashboard/portfolio
         CreateGroupComponent,
         PortfolioComponent,
         PortfolioDetailsComponent,
+        PortfolioHeaderComponent,
         PortfolioGroupsListComponent,
         CreatePortfolioComponent,
         PortfolioMembersWorkloadCardComponent,

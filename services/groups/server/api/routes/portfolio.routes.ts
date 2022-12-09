@@ -28,11 +28,20 @@ routes.post('/', portfolio.create);
 // PUT - Updates the portfolio property
 routes.put('/:portfolioId', portfolio.update);
 
+// PUT - Updates the portfolio property
+routes.put('/:portfolioId/content', portfolio.updateContent);
+
 // PUT - Add a group to the portfolio
 routes.put('/:portfolioId/add-group', portfolio.addGroup);
 
 // PUT - Removes a group to the portfolio
 routes.put('/:portfolioId/remove-group', portfolio.removeGroup);
+
+// PUT - Add a group to the portfolio
+routes.put('/:portfolioId/add-manager', portfolio.addManager);
+
+// PUT - Removes a group to the portfolio
+routes.put('/:portfolioId/remove-manager', portfolio.removeManager);
 
 // DELETE - Removes the portfolio from the database
 routes.delete('/:portfolioId', portfolio.remove);
@@ -51,6 +60,9 @@ routes.get('/:portfolioId/projects-portfolio', portfolio.getAllPortfolioProjectC
 
 // get all existing project columns filtering by groups
 routes.get('/:portfolioId/tasks-in-period', portfolio.getPortfolioTasks);
+
+// get all existing project columns filtering by groups
+routes.get('/:portfolioId/all-tasks-stats', portfolio.getAllPortfolioTasksStats);
 
 /*  ===================
  *  -- EXPORT ROUTES --

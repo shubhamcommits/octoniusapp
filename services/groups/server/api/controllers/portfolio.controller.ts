@@ -25,6 +25,7 @@ export class PortfolioController {
                 .sort('_id')
                 .populate({ path: '_members', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_groups', select: 'group_name group_avatar _members _admins' })
+                .populate({ path: '_content_mentions', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role email' })
                 .lean() || []
 
@@ -65,6 +66,7 @@ export class PortfolioController {
                 })
                 .populate({ path: '_members', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_groups', select: 'group_name group_avatar _members _admins' })
+                .populate({ path: '_content_mentions', select: 'first_name last_name profile_pic role email' })
                 .lean();
 
             // Check if portfolio already exist with the same portfolioId
@@ -140,6 +142,7 @@ export class PortfolioController {
                 )
                 .populate({ path: '_members', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_groups', select: 'group_name group_avatar _members _admins' })
+                .populate({ path: '_content_mentions', select: 'first_name last_name profile_pic role email' })
                 .lean();
 
             if (!portfolio) {
@@ -149,6 +152,46 @@ export class PortfolioController {
             return res.status(200).json({
                 message: `${portfolio.portfolio_name} portfolio was updated successfully!`,
                 portfolio: portfolio
+            });
+
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
+     * This function is responsible for updating the portfolio data to the corresponding @constant portfolioId
+     * @param req - @constant portfolioId 
+     */
+    async updateContent(req: Request, res: Response) {
+        try {
+            const { portfolioId } = req.params;
+            const { body: { portfolio } } = req;
+
+            // If portfolioId is null or not provided then we throw BAD REQUEST 
+            if (!portfolioId || !portfolio) {
+                return res.status(400).json({
+                    message: 'Please provide portfolioId and properties to update!'
+                });
+            }
+
+            const portfolioData: any = await Portfolio.findOneAndUpdate(
+                    { _id: portfolioId },
+                    { $set: JSON.parse(portfolio) },
+                    { new: true }
+                )
+                .populate({ path: '_members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: '_groups', select: 'group_name group_avatar _members _admins' })
+                .populate({ path: '_content_mentions', select: 'first_name last_name profile_pic role email' })
+                .lean();
+
+            if (!portfolioData) {
+                return sendError(res, new Error('Oops, portfolio not found!'), 'Portfolio not found, invalid portfolioId!', 404);
+            }
+
+            return res.status(200).json({
+                message: `${portfolioData.portfolio_name} portfolio was updated successfully!`,
+                portfolio: portfolioData
             });
 
         } catch (err) {
@@ -195,6 +238,7 @@ export class PortfolioController {
                 )
                 .populate({ path: '_members', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_groups', select: 'group_name group_avatar _members _admins' })
+                .populate({ path: '_content_mentions', select: 'first_name last_name profile_pic role email' })
                 .lean();
 
             if (!portfolio) {
@@ -235,6 +279,7 @@ export class PortfolioController {
                 )
                 .populate({ path: '_members', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_groups', select: 'group_name group_avatar _members _admins' })
+                .populate({ path: '_content_mentions', select: 'first_name last_name profile_pic role email' })
                 .lean();
 
             if (!portfolio) {
@@ -243,6 +288,90 @@ export class PortfolioController {
 
             return res.status(200).json({
                 message: `Group removed from portfolio successfully!`,
+                portfolio: portfolio
+            });
+
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
+     * This function is responsible for updating the portfolio data to the corresponding @constant portfolioId
+     */
+    async addManager(req: Request, res: Response) {
+        try {
+            const { portfolioId } = req.params;
+            const { assigneeId } = req.body;
+
+            // If portfolioId is null or not provided then we throw BAD REQUEST 
+            if (!portfolioId || !assigneeId) {
+                return res.status(400).json({
+                    message: 'Please provide portfolioId and assigneeId!'
+                });
+            }
+
+            const portfolio: any = await Portfolio.findOneAndUpdate(
+                    { _id: portfolioId },
+                    { 
+                        $addToSet: {
+                            _members: assigneeId
+                        }
+                    },
+                    { new: true }
+                )
+                .populate({ path: '_members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: '_groups', select: 'group_name group_avatar _members _admins' })
+                .populate({ path: '_content_mentions', select: 'first_name last_name profile_pic role email' })
+                .lean();
+
+            if (!portfolio) {
+                return sendError(res, new Error('Oops, portfolio not found!'), 'Portfolio not found, invalid portfolioId!', 404);
+            }
+
+            return res.status(200).json({
+                message: `Manager added to portfolio successfully!`,
+                portfolio: portfolio
+            });
+
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
+     * This function is responsible for updating the portfolio data to the corresponding @constant portfolioId
+     */
+    async removeManager(req: Request, res: Response) {
+        try {
+            const { portfolioId } = req.params;
+            const { assigneeId } = req.body;
+
+            // If portfolioId is null or not provided then we throw BAD REQUEST 
+            if (!portfolioId || !assigneeId) {
+                return res.status(400).json({
+                    message: 'Please provide portfolioId and assigneeId!'
+                });
+            }
+
+            const portfolio: any = await Portfolio.findOneAndUpdate(
+                    { _id: portfolioId },
+                    { 
+                        $pull: { _members: assigneeId }
+                    },
+                    { new: true }
+                )
+                .populate({ path: '_members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: '_groups', select: 'group_name group_avatar _members _admins' })
+                .populate({ path: '_content_mentions', select: 'first_name last_name profile_pic role email' })
+                .lean();
+
+            if (!portfolio) {
+                return sendError(res, new Error('Oops, portfolio not found!'), 'Portfolio not found, invalid portfolioId!', 404);
+            }
+
+            return res.status(200).json({
+                message: `Manager removed from portfolio successfully!`,
                 portfolio: portfolio
             });
 
@@ -325,6 +454,7 @@ export class PortfolioController {
                 })
                 .populate({ path: '_members', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_groups', select: 'group_name group_avatar _members _admins' })
+                .populate({ path: '_content_mentions', select: 'first_name last_name profile_pic role email' })
                 .lean();
 
             // Send status 200 response
@@ -512,6 +642,44 @@ export class PortfolioController {
             message: 'Posts fetched!',
             tasks: tasks,
             overdueTasks: overdueTasks
+        });
+    }
+
+    /**
+     * This function is responsible for fetching the posts of a workspace
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async getAllPortfolioTasksStats(req: Request, res: Response, next: NextFunction) {
+
+        const { params: { portfolioId } } = req;
+
+        // Only groups where user is manager
+        const portfolio = await Portfolio.findOne({ _id: portfolioId })
+            .select('_groups')
+            .lean() || [];
+
+        let completed = await Post.find({
+                $and: [
+                    { _group: { $in: portfolio?._groups } },
+                    { type: 'task' },
+                    { 'task.status': 'done' }
+                ]
+            }).countDocuments() || 0;
+        
+        let numTasks = await Post.find({
+                $and: [
+                    { _group: { $in: portfolio?._groups } },
+                    { type: 'task' },
+                ]
+            }).countDocuments() || 0;
+
+        // // Send status 200 response
+        return res.status(200).json({
+            message: 'Stats fetched!',
+            completed: completed,
+            numTasks: numTasks
         });
     }
 }

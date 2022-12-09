@@ -1,3 +1,5 @@
+<app-portfolio-header [portfolioData]="portfolioData" [userData]="userData"></app-portfolio-header>
+
 <mat-tab-group>
     <mat-tab [label]="groupsLabel">
         <app-portfolio-groups-list *ngIf="portfolioData" [userData]="userData" [portfolioData]="portfolioData" [workspaceData]="workspaceData" [userGroups]="userGroups"></app-portfolio-groups-list>

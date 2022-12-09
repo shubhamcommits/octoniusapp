@@ -47,12 +47,39 @@ export class PortfolioService {
   }
 
   /**
+   * This function updates the portfolio quill data
+   * @param portfolioId
+   * @param portfolioForm
+   */
+  updatePortfolioContent(portfolioId: string, portfolioForm: any) {
+    return this._http.put(this.baseURL + `/${portfolioId}/content`, portfolioForm).toPromise();
+  }
+
+  /**
    * This function adds a group to a portfolio
    * @param portfolioId
    * @param groupId
    */
   addGroupToPortfolio(portfolioId: string, groupId: string) {
     return this._http.put(this.baseURL + `/${portfolioId}/add-group`, { groupId }).toPromise();
+  }
+
+  /**
+   * This function removes a Manager to a portfolio
+   * @param portfolioId
+   * @param assigneeId
+   */
+  removeManagerToPortfolio(portfolioId: string, assigneeId: string) {
+    return this._http.put(this.baseURL + `/${portfolioId}/remove-manager`, { assigneeId }).toPromise();
+  }
+
+  /**
+   * This function adds a Manager to a portfolio
+   * @param portfolioId
+   * @param assigneeId
+   */
+  addManagerToPortfolio(portfolioId: string, assigneeId: string) {
+    return this._http.put(this.baseURL + `/${portfolioId}/add-manager`, { assigneeId }).toPromise();
   }
 
   /**
@@ -129,5 +156,9 @@ export class PortfolioService {
         numDays: numDays.toString().trim()
       }
     }).toPromise();
+  }
+
+  getAllPortfolioTasksStats(portfolioId: string) {
+    return this._http.get(this.baseURL + `/${portfolioId}/all-tasks-stats`, {}).toPromise();
   }
 }

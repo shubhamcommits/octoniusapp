@@ -35,6 +35,14 @@ const PortfolioSchema = new Schema({
     background_image: {
         type: String
     },
+    content: {
+        type: String,
+        trim: true
+    },
+    _content_mentions: [{
+        type: Schema.Types.Mixed,
+        ref: 'User'
+    }],
     dashboard_period: {
         type: Number,
         default: 7
