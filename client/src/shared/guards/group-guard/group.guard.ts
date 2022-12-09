@@ -20,7 +20,6 @@ export class GroupGuard implements CanActivate  {
   private publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
-    private groupService: GroupService,
     private utilityService: UtilityService,
     private storageService: StorageService,
     private router: Router,

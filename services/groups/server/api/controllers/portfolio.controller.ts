@@ -21,7 +21,12 @@ export class PortfolioController {
             }
 
             // Finding portfolios for the user of which they are a part of
-            const portfolios = await Portfolio.find({ _members: userId })
+            const portfolios = await Portfolio.find({ 
+                    $or: [
+                        { _members: userId },
+                        { _created_by: userId }
+                    ]
+                })
                 .sort('_id')
                 .populate({ path: '_members', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_groups', select: 'group_name group_avatar _members _admins' })

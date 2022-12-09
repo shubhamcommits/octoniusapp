@@ -20,6 +20,7 @@ import { GroupDashboardComponent } from './group/group-dashboard/group-dashboard
 import { GroupReportsComponent } from './group/group-reports/group-reports.component';
 import { GroupsComponent } from './groups.component';
 import { PortfolioDetailsComponent } from './portfolio/portfolio-details.component';
+import { PortfolioGuard } from 'src/shared/guards/portfolio-guard/portfolio.guard';
 
 
 /**
@@ -29,7 +30,7 @@ const routes: Routes = [
 
   // All Groups List Route
   { path: 'all', component: GroupsComponent },
-  { path: 'portfolio', component: PortfolioDetailsComponent },
+  { path: 'portfolio', component: PortfolioDetailsComponent, canActivate: [PortfolioGuard] },
   // Group Specific Route
   {
     path: '', component: GroupComponent, children: [

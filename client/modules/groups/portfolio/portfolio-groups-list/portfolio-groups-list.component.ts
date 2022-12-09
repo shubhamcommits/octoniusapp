@@ -112,9 +112,19 @@ export class PortfolioGroupsListComponent implements OnInit {
   }
 
   async goToGroup(groupId: string) {
-    const newGroup = await this.publicFunctions.getGroupDetails(groupId);
-    await this.publicFunctions.sendUpdatesToGroupData(newGroup);
-    this.router.navigate(['/dashboard', 'work', 'groups', 'activity']);
+    const group: any = await this.publicFunctions.getGroupDetails(groupId);
+    const groupMembersIndex = group._members.findIndex((member: any) => member._id == this.userData._id);
+    const groupAdminsIndex = group._admins.findIndex((admin: any) => admin._id == this.userData._id);
+    const userGroupsIndex = this.userData._groups.findIndex((usergroup: any) => usergroup == group?._id);
+
+    if (groupMembersIndex >= 0 || groupAdminsIndex >= 0 || userGroupsIndex >= 0) {
+      const newGroup = await this.publicFunctions.getGroupDetails(groupId);
+      await this.publicFunctions.sendUpdatesToGroupData(newGroup);
+      await this.publicFunctions.sendUpdatesToPortfolioData({});
+      this.router.navigate(['/dashboard', 'work', 'groups', 'activity']);
+    } else {
+      this.utilityService.warningNotification($localize`:@@portfolioGroupsList.cannotAccess:You are not allow to access the group, you are not a member of it!`)
+    }
   }
 
   objectExists(object: any) {

@@ -173,7 +173,7 @@ export class UtilityService {
    * @param text
    * @param title - optional
    */
-  warningNotification(text: string, title?: string){
+  warningNotification(text: string, title?: string) {
     const Toast = Swal.mixin({
       toast: true,
       position: 'bottom',
