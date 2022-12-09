@@ -32,6 +32,7 @@
           <app-user-account-navbar *ngIf="isUserAccountNavbar$ | async" style="width: 100%;"></app-user-account-navbar>
           <app-group-navbar *ngIf="isGroupNavbar$ | async" (favoriteGroupSaved)="onFavoriteGroupSaved()"></app-group-navbar>
           <app-work-navbar *ngIf="isWorkNavbar$ | async"></app-work-navbar>
+          <app-portfolio-navbar *ngIf="isPortfolioNavbar$ | async"></app-portfolio-navbar>
           <!-- MENU ITEMS ENDS -->
 
           <ul class="navbar-nav search-nav" *ngIf="!(isUserAccountNavbar$ | async)">

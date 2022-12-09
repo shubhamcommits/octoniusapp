@@ -83,6 +83,14 @@ export class UtilityService {
 
   /**
    * Both of the variables listed down below are used to share the data through this common service among different components in the app
+   * @constant currentPortfolioDataSource
+   * @constant currentPortfolioData
+   */
+  private currentPortfolioDataSource = new BehaviorSubject<any>({});
+  currentPortfolioData = this.currentPortfolioDataSource.asObservable();
+
+  /**
+   * Both of the variables listed down below are used to share the data through this common service among different components in the app
    * @constant routerStateDataSource
    * @constant routerState
    */
@@ -433,6 +441,14 @@ export class UtilityService {
    */
   public updateGroupData(groupData: any){
     this.groupDataSource.next(groupData);
+  }
+
+  /**
+   * Used to emit the next value of observable so that where this is subscribed, will get the updated value
+   * @param portfolioData
+   */
+  public updatePortfolioData(portfolioData: any){
+    this.currentPortfolioDataSource.next(portfolioData);
   }
 
   /**

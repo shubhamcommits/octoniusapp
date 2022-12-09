@@ -1,5 +1,6 @@
-import { Group, Post, User } from "../models";
+import { Group, Portfolio, Post, User } from "../models";
 import moment from "moment";
+import { sendError } from "../../utils";
 
 export class PostsService {
 
@@ -393,6 +394,50 @@ export class PostsService {
                 }
             ]
         })
+            .sort('-task.due_to')
+            .populate('_group', this.groupFields)
+            .populate('_posted_by', this.userFields)
+            .populate('_assigned_to', this.userFields)
+            .populate('_followers', this.userFields)
+            .populate('_liked_by', this.userFields)
+            .lean();
+
+        // Return tasks
+        return tasks
+    }
+
+    /**
+     * This function is responsible for fetching overdue tasks of a member in a specific group
+     * @param userId 
+     * @param groupId
+     */
+    async getWorkloadCardOverduePortfolioTasks(userId: string, portfolioId: string) {
+
+        // Find the Portfolio based on the portfolioId
+        let portfolio = await Portfolio.findOne({
+                _id: portfolioId
+            })
+            .select('_groups')
+            .lean();
+
+        // Generate the actual time
+        const today = moment().format('YYYY-MM-DD');
+
+        // Fetch the tasks posts
+        const tasks = await Post.find({
+                $and: [
+                    { _assigned_to: userId },
+                    { _group: { $in : portfolio?._groups }},
+                    { 'task.due_to': { $lt: today }},
+                    { 'task.is_template': { $ne: true }},
+                    {
+                        $or: [
+                            { 'task.status': 'to do' },
+                            { 'task.status': 'in progress' }
+                        ]
+                    }
+                ]
+            })
             .sort('-task.due_to')
             .populate('_group', this.groupFields)
             .populate('_posted_by', this.userFields)

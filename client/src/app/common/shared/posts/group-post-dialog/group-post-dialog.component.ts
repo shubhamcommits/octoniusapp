@@ -168,7 +168,7 @@ export class GroupPostDialogComponent implements OnInit {
         this.shuttle = this.postData?.task?.shuttles[this.shuttleIndex];
       }
 
-      if (this.postData?.task?._parent_task?._group == undefined) {
+      if (this.postData?.task?._parent_task && this.postData?.task?._parent_task?._group == undefined) {
         this.postData.task._parent_task._group = null;
       }
 

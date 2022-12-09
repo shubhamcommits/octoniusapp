@@ -21,18 +21,21 @@ import { WorkspaceDetailsComponent } from '../common/navbar/common-navbar/worksp
 import { UserImageDetailsComponent } from '../common/navbar/common-navbar/user-image-details/user-image-details.component';
 import { IconsSidebarComponent } from '../common/navbar/icons-sidebar/icons-sidebar.component';
 import { UserAccountNavbarComponent } from '../common/navbar/user-account-navbar/user-account-navbar.component';
+import { PortfolioNavbarComponent } from '../common/navbar/portfolio-navbar/portfolio-navbar.component';
+import { PortfolioImageDetailsComponent } from '../common/navbar/portfolio-navbar/portfolio-image-details/portfolio-image-details.component';
 
 @NgModule({
   declarations: [
     NavbarComponent,
     MobileNavbarComponent,
     PushNotificationsComponent,
-    // TimeAgoPipe,
     GroupNavbarComponent,
+    PortfolioNavbarComponent,
     CommonNavbarComponent,
     UserAccountNavbarComponent,
     WorkNavbarComponent,
     GroupImageDetailsComponent,
+    PortfolioImageDetailsComponent,
     SidebarComponent,
     IconsSidebarComponent,
     WorkspaceDetailsComponent,

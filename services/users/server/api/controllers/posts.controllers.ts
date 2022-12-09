@@ -284,4 +284,36 @@ export class PostsControllers {
             return sendError(res, new Error(err), 'Internal Server Error!', 500);
         }
     }
+
+    /**
+     * Fetches all the overdue tasks for a specific group and user
+     * 
+     * @param req 
+     * @param res 
+     * @param next 
+     * @returns 
+     */
+    async getWorkloadCardOverduePortfolioTasks(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Fetch the userId from the request query
+            const { userId, portfolioId } = req.query;
+
+            // If userId is not found
+            if(!userId || !portfolioId){
+                return sendError(res, new Error('Unable to find the user and portfolioId, either userId and portfolioId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
+            }
+
+            // Fetch overdue task
+            const tasks: any = await postsService.getWorkloadCardOverduePortfolioTasks(userId.toString(), portfolioId.toString());
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Overdue tasks found!',
+                tasks: tasks
+            });
+
+        } catch (err) {
+            return sendError(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
 }

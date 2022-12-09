@@ -2117,7 +2117,7 @@ export class PostService {
   async getWorspacePostsResults(workspaceId: any, type: any, numDays: number, overdue: boolean, filteringGroups: any) {
 
     const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');
-
+console.log({filteringGroups});
     let groups = [];
     if (filteringGroups && filteringGroups != 'undefined' && filteringGroups.length > 0) {
       groups = filteringGroups;
@@ -2135,18 +2135,18 @@ export class PostService {
 
       // Fetch the tasks posts
       posts = await Post.find({
-        $and: [
-          { _group: { $in: groups } },
-          { type: type },
-          { 'task.due_to': { $gte: comparingDate, $lt: today } },
-          {
-            $or: [
-              { 'task.status': 'to do' },
-              { 'task.status': 'in progress' }
-            ]
-          }
-        ]
-      })
+          $and: [
+            { _group: { $in: groups } },
+            { type: type },
+            { 'task.due_to': { $gte: comparingDate, $lt: today } },
+            {
+              $or: [
+                { 'task.status': 'to do' },
+                { 'task.status': 'in progress' }
+              ]
+            }
+          ]
+        })
         .sort('-task.due_to')
         .populate('_group', this.groupFields)
         .populate('_posted_by', this.userFields)
@@ -2160,12 +2160,12 @@ export class PostService {
 
     } else {
       posts = await Post.find({
-        $and: [
-          { _group: { $in: groups } },
-          { type: type },
-          { 'task.due_to': { $gte: comparingDate } }
-        ]
-      })
+          $and: [
+            { _group: { $in: groups } },
+            { type: type },
+            { 'task.due_to': { $gte: comparingDate } }
+          ]
+        })
         .sort('-task.due_to')
         .populate({ path: '_group', select: this.groupFields })
         .populate({ path: '_posted_by', select: this.userFields })
@@ -2199,17 +2199,17 @@ export class PostService {
     if (overdue) {
 
       // Generate the actual time
-      const today = moment().subtract(1, 'days').endOf('day').format()
+      const today = moment().subtract(1, 'days').endOf('day').format();
 
       // Fetch the tasks posts
       posts = await Post.find({
-        $and: [
-          { _group: { $in: groups } },
-          { type: type },
-          { 'task.isNorthStar': isNorthStar },
-          { 'task.due_to': { $gte: comparingDate, $lt: today } }
-        ]
-      })
+          $and: [
+            { _group: { $in: groups } },
+            { type: type },
+            { 'task.isNorthStar': isNorthStar },
+            { 'task.due_to': { $gte: comparingDate, $lt: today } }
+          ]
+        })
         .sort('-task.due_to')
         .populate('_group', this.groupFields)
         .populate('_posted_by', this.userFields)
@@ -2223,13 +2223,13 @@ export class PostService {
 
     } else {
       posts = await Post.find({
-        $and: [
-          { _group: { $in: groups } },
-          { type: type },
-          { 'task.isNorthStar': isNorthStar },
-          { 'task.due_to': { $gte: comparingDate } }
-        ]
-      })
+          $and: [
+            { _group: { $in: groups } },
+            { type: type },
+            { 'task.isNorthStar': isNorthStar },
+            { 'task.due_to': { $gte: comparingDate } }
+          ]
+        })
         .sort('-task.due_to')
         .populate({ path: '_group', select: this.groupFields })
         .populate({ path: '_posted_by', select: this.userFields })

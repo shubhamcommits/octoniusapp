@@ -8,6 +8,7 @@ import { Notification } from './notification.model';
 import { Workspace } from './workspace.model';
 import { Account } from './account.model';
 import { Comment } from './comment.model';
+import { Portfolio } from './portfolio.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -26,6 +27,8 @@ export {
 
     // GROUP
     Group as Group,
+
+    Portfolio as Portfolio,
 
     // POST
     Post as Post,

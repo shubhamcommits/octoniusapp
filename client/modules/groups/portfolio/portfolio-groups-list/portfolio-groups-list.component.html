@@ -1,0 +1,50 @@
+<div style="padding: 20px;">
+    <div class="row">
+        <div class="col-md-9">
+            <h2 i18n="@@portfolioGroupsList.portfolioContent" style="float: left; margin-right: 10px; margin-top: 30px;">Portfolio content</h2>
+            <span class="material-icons-outlined" style="cursor: pointer; margin-top: 30px;">info</span>
+        </div>
+
+        <div class="col-md-3" style="text-align: right;">
+            <button class="btn btn-warning mb-3 mt-3" type="button" (click)="openGroupSelecter()">
+                <i class="material-icons-outlined">add</i>
+                <span i18n="@@portfolioGroupsList.add">Add</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- STARTS USER GROUPS -->
+    <div class="media-body">
+        <div class="row">
+            <ng-container *ngFor="let group of portfolioData?._groups">
+                <div class="cards-list">
+                    <div *ngIf="group.group_name !== 'private'" class="card img-fluid" (click)="goToGroup(group?._id)">
+
+                        <app-secured-image [imgURL]="group?.group_avatar" [service]="'group'" [styleClass]="'card-img-top'">
+                        </app-secured-image>
+
+                        <div class="card-img-overlay">
+                            <span class="badge badge-members">
+                                {{ (group?._members?.length + group?._admins?.length) || 0 }}
+                                <span i18n="@@portfolioGroupsList.members">Members</span>
+                            </span>
+
+                            <a *ngIf="group?.type == 'agora'" class="btn btn-light btn-public"><i
+                                    class="material-icons">account_balance</i></a>
+                            <a *ngIf="group?.type == 'smart'" class="btn btn-info btn-smart"><i
+                                    class="material-icons">fingerprint</i></a>
+
+                            <div class="title-overlay">
+                                <a>
+                                    <h2 class="card-title">{{group?.group_name}}</h2>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+        <!-- ENDS USER GROUPS -->
+    </div>
+</div>

@@ -63,6 +63,9 @@ routes.get('/tasks/future', post.getFutureTasks);
 // GET - Fetches all the overdue tasks for a specific group and user
 routes.get('/tasks/workloadOverdue', post.getWorkloadCardOverdueTasks);
 
+// GET - Fetches all the overdue tasks for a portfolio and user
+routes.get('/tasks/workloadOverduePortfolio', post.getWorkloadCardOverduePortfolioTasks);
+
 // GET - Fetches today's events
 routes.get('/events/today', post.getTodayEvents)
 

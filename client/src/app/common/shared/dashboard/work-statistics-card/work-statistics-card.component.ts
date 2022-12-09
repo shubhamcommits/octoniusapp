@@ -1,7 +1,6 @@
-import { Component, Injector, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Injector, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { PostService } from 'src/shared/services/post-service/post.service';
-import { UserService } from 'src/shared/services/user-service/user.service';
 
 @Component({
   selector: 'app-work-statistics-card',

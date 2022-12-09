@@ -1,0 +1,103 @@
+<div style="padding: 20px 50px;">
+  <div class="row">
+    <div class="col-md-12" style="padding: 10px;">
+      <h2 i18n="@@portfolioPortfolioMembersWorkloadCard.myTeam" style="float: left; margin-right: 10px;">My team</h2>
+      <span class="material-icons-outlined" style="cursor: pointer;">info</span>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12" style="padding: 20px;">
+      <span class="badge to-do-task"> {{ portfolioGroupsMembers?.length }} </span>
+      &nbsp;
+      <span i18n="@@portfolioPortfolioMembersWorkloadCard.membersCount">Members shared across 4 groups</span>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12" style="padding: 10px;">
+      <h2 i18n="@@portfolioPortfolioMembersWorkloadCard.workloadAllocation" style="float: left; margin-right: 10px;">Workload allocation</h2>
+      <span class="material-icons-outlined" style="cursor: pointer;">info</span>
+    </div>
+  </div>
+
+  <div *ngIf="portfolioGroupsMembers && portfolioGroupsMembers?.length > 0">
+    <div class="row text-center mb-3">
+      <div class="col-md-1">
+      </div>
+      <div class="col-md-7">
+          <h6>{{ dates[0] | date:'MMM dd' }} - {{ dates[dates?.length - 1] | date:'MMM dd' }}</h6>
+      </div>
+      <div class="col-md-4">
+        <div class="btn btn-default" (click)="changeDates(7, 'sub')">
+          <i class="material-icons">navigate_before</i>
+        </div>
+        <div class="btn btn-default" (click)="changeDates(0, 'today')" i18n="@@portfolioMembersWorkloadCard.today">
+          Today
+        </div>
+        <div class="btn btn-default" (click)="changeDates(7, 'add')">
+          <i class="material-icons">navigate_next</i>
+        </div>
+      </div>
+
+    </div>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th class="header"> {{ currentMonth }} </th>
+            <th *ngFor="let date of dates" [ngClass]="{'today': isCurrentDay(date),'muted': !isCurrentDay(date), 'weekend': isWeekend(date)}"> {{ date | date: 'dd' }} </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let member of portfolioGroupsMembers">
+            <td>
+              <div class="member">
+                <div>
+                  <app-secured-image
+                    [imgURL]="member?.profile_pic"
+                    [service]="'user'"
+                    [styleClass]="'ml-2 feed-avatar-small'"
+                    (click)="openFullscreenModal(member?._id)"></app-secured-image>
+                </div>
+                <div class="name">
+                  {{ member?.first_name }}  {{ member?.last_name }}
+                  <p class="muted"> {{ member?.current_position | truncatetext: 25 }} </p>
+                </div>
+              </div>
+            </td>
+            <td *ngFor="let workload of member.workload" [ngClass]="workload?.outOfTheOfficeClass">
+
+                 <span class="muted mr-2" i18n="@@portfolioMembersWorkloadCard.totalTasks"> Total tasks</span>
+                 <span class="badge">{{ workload.numTasks }}</span>
+
+                <div class="allocation">
+                  <i  class="material-icons">update</i> &nbsp;&nbsp;
+                  <span>{{ workload.allocation || 0 }}h</span>
+                </div>
+
+                <div class="tasks-list">
+                  <ul>
+                    <li><span class="badge overdue-task" *ngIf="this.isCurrentDay(workload.date)">{{ workload.overdue_tasks }}</span></li>
+                    <li><span class="badge to-do-task">{{ workload.todo_tasks }}</span></li>
+                    <li><span class="badge in-progress-task">{{ workload.inprogress_tasks }}</span></li>
+                    <li><span class="badge badge-done">{{ workload.numDoneTasks }}</span></li>
+                  </ul>
+                </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="col-5" *ngIf="!portfolioGroupsMembers || portfolioGroupsMembers?.length === 0">
+    <img src='assets/images/inbox-tasks-card-empty.svg'>
+  </div>
+
+  <!-- LOADING SPINNER STARTS -->
+  <ng-container *ngIf="isLoading$ | async">
+    <app-loading-spinner></app-loading-spinner>
+  </ng-container>
+  <!-- LOADING SPINNER ENDS -->
+</div>

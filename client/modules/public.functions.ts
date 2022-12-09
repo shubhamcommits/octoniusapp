@@ -20,6 +20,7 @@ import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.s
 import { environment } from 'src/environments/environment';
 import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
 import { ChatService } from 'src/shared/services/chat-service/chat.service';
+import { PortfolioService } from 'src/shared/services/portfolio-service/portfolio.service';
 
 @Injectable({
   providedIn: 'root'
@@ -385,6 +386,63 @@ export class PublicFunctions {
       });
     }
 
+    public async getCurrentPortfolioDetails() {
+
+        let portfolioData = {};
+
+        portfolioData = await this.getCurrentPortfolioFromService();
+        const utilityService = this.injector.get(UtilityService);
+
+        if (!utilityService.objectExists(portfolioData)) {
+          portfolioData = await this.getPortfolioDetailsFromStorage();
+        }
+
+        this.sendUpdatesToPortfolioData(portfolioData);
+
+        return portfolioData || {};
+    }
+
+    async getCurrentPortfolioFromService() {
+        return new Promise((resolve) => {
+            const utilityService = this.injector.get(UtilityService);
+            this.subSink.add(utilityService.currentPortfolioData.subscribe((res) => {
+                resolve(res);
+            }));
+        });
+    }
+
+    async getPortfolioDetailsFromStorage() {
+        const storageService = this.injector.get(StorageService);
+        return (storageService.existData('portfolioData') === null) ? {} : storageService.getLocalData('portfolioData');
+    }
+
+    /**
+     * This function fetches the Portfolio details
+     * @param portfolioId
+     */
+    public async getPortfolioDetails(portfolioId: string) {
+        return new Promise((resolve, reject) => {
+            let portfolioService = this.injector.get(PortfolioService);
+            portfolioService.getPortfolio(portfolioId)
+                .then((res) => {
+                  if (res) {
+                    resolve(res['portfolio']);
+                  }
+                })
+                .catch((err) => {
+                    this.sendError(new Error($localize`:@@publicFunctions.unableToFetchPortfolioDetails:Unable to fetch the portfolio details, please try again!`))
+                    reject(err)
+                });
+        });
+    }
+
+    async sendUpdatesToPortfolioData(portfolioData: Object) {
+        const storageService = this.injector.get(StorageService);
+        const utilityService = this.injector.get(UtilityService);
+        utilityService.updatePortfolioData(portfolioData);
+        storageService.setLocalData('portfolioData', JSON.stringify(portfolioData));
+    }
+
     isPersonalNavigation(groupData: Object, userData: Object) {
       return (groupData)
         ?((groupData['group_name'] === 'personal') && (groupData['_id'] == (userData['_private_group']._id || userData['_private_group'])))
@@ -610,12 +668,12 @@ export class PublicFunctions {
      * @param userId
      */
     public async getUserGroups(workspaceId: string, userId: string) {
-        return new Promise((resolve, reject) => {
-            let groupsService = this.injector.get(GroupsService);
-            groupsService.getUserGroups(workspaceId, userId)
-                .then((res) => resolve(res['groups']))
-                .catch(() => reject([]))
-        })
+      return new Promise((resolve, reject) => {
+        let groupsService = this.injector.get(GroupsService);
+        groupsService.getUserGroups(workspaceId, userId)
+          .then((res) => resolve(res['groups']))
+          .catch(() => reject([]));
+      });
     }
 
     /**
@@ -666,6 +724,18 @@ export class PublicFunctions {
               .then((res) => resolve(res['groups']))
               .catch(() => reject([]))
       })
+    }
+
+    /**
+     * Fetch list of portfolios of which a user is a part of
+     */
+    public async getUserPortfolios() {
+        return new Promise((resolve, reject) => {
+            let portfolioService = this.injector.get(PortfolioService);
+            portfolioService.getUserPortfolios()
+                .then((res) => resolve(res['portfolios']))
+                .catch(() => reject([]))
+        });
     }
 
     /**

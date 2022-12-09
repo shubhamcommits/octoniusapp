@@ -1,0 +1,22 @@
+<div class="smart-card" style="padding: 10px;">
+  <div class="row" style="margin: 0 0 20px; justify-content: space-between;">
+    <div class="card-title mt-1" i18n="@@portfolioWorkStatisticsCard.workStatistics">
+      Work Statistics
+    </div>
+  </div>
+
+  <div class="card-icon">
+    <span class="number">{{ task_count }}</span>&nbsp;<span i18n="@@portfolioWorkStatisticsCard.totalTasks">total tasks</span>
+  </div>
+  <div class="col-12 d-none d-sm-block" style="padding-top: 15px;" *ngIf="chartReady">
+    <canvas
+      baseChart
+      height="250"
+      [data]="chartData"
+      [labels]="chartLabels"
+      [chartType]="chartType"
+      [options]="chartOptions"
+      [colors]="chartColors"
+      [plugins]="chartPlugins"></canvas>
+  </div>
+</div>

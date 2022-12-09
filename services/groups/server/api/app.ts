@@ -11,6 +11,7 @@ import {
     pulseRoutes,
     columnRoutes,
     flowRoutes,
+    portfolioRoutes
 } from './routes';
 import fileUpload from 'express-fileupload';
 
@@ -94,6 +95,7 @@ app.use('/api/columns', columnRoutes);
 app.use('/api/members', memberRoutes);
 app.use('/api/flows', flowRoutes);
 app.use('/api/pulse', pulseRoutes);
+app.use('/api/portfolio', portfolioRoutes);
 app.use('/api', groupsRoutes);
 
 // Invalid routes handling middleware
