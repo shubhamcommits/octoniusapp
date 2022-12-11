@@ -1,11 +1,13 @@
-import { Component, OnInit, Injector, Input, OnChanges } from '@angular/core';
+import { Component, Injector, Input, OnChanges } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PortfolioService } from 'src/shared/services/portfolio-service/portfolio.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { PortfolioUserWorkloadDialogComponent } from '../../portfolio-user-workload-dialog/portfolio-user-workload-dialog.component';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-portfolio-members-workload-card',
@@ -22,9 +24,7 @@ export class PortfolioMembersWorkloadCardComponent implements OnChanges {
 
   //date for calendar Nav
   dates: any = [];
-
-  currentDate: any = moment().format();
-
+  currentDate: any = DateTime.now();
   currentMonth = '';
 
   // IsLoading behavior subject maintains the state for loading spinner
@@ -39,6 +39,7 @@ export class PortfolioMembersWorkloadCardComponent implements OnChanges {
     private portfolioService: PortfolioService,
     private userService: UserService,
     private injector: Injector,
+    public dialog: MatDialog,
     public utilityService: UtilityService
   ) { }
 
@@ -64,12 +65,12 @@ export class PortfolioMembersWorkloadCardComponent implements OnChanges {
   }
 
   async generateNavDates() {
-    const firstDay = moment(this.currentDate).startOf('week').add(1, 'd');
+    const firstDay = this.currentDate.startOf("week");
 
     this.dates = await this.getRangeDates(firstDay);
 
     let tasks = [];
-    await this.portfolioService.getPortfolioGroupTasksBetweenDays(this.portfolioData?._id, moment(this.dates[0]).format('YYYY-MM-DD'), moment(this.dates[this.dates.length -1]).format('YYYY-MM-DD')).then(res => {
+    await this.portfolioService.getPortfolioGroupTasksBetweenDays(this.portfolioData?._id, this.dates[0].toISODate(), this.dates[this.dates.length -1].toISODate()).then(res => {
       tasks = res['posts'];
     });
 
@@ -82,6 +83,8 @@ export class PortfolioMembersWorkloadCardComponent implements OnChanges {
       this.dates.forEach(async date => {
         let workloadDay = {
           date: date,
+          is_current_day: this.isCurrentDay(date),
+          is_weekend_day: this.isWeekend(date),
           numTasks: 0,
           numDoneTasks: 0,
           allocation: 0,
@@ -92,7 +95,9 @@ export class PortfolioMembersWorkloadCardComponent implements OnChanges {
           inprogress_tasks: 0
         };
 
-        if (this.isCurrentDay(date)) {
+        const isToday = await this.isCurrentDay(date);
+
+        if (isToday) {
           this.userService.getWorkloadOverdueTasksPortfolio(member?._id, this.portfolioData?._id)
             .then((res) => {
               workloadDay.overdue_tasks = res['tasks'].length;
@@ -100,9 +105,11 @@ export class PortfolioMembersWorkloadCardComponent implements OnChanges {
             .catch(() => {
               workloadDay.overdue_tasks = 0;
             });
+        } else {
+          workloadDay.overdue_tasks = 0;
         }
 
-        const tasksTmp = await memberTasks.filter(post => {return moment(date).isSame(moment(post.task.due_to), 'day') });
+        const tasksTmp = await memberTasks.filter(post => {return this.isSameDay(date, DateTime.fromISO(post.task.due_to)) });
         workloadDay.numTasks = tasksTmp.length;
 
         if (tasksTmp && tasksTmp.length > 0) {
@@ -124,7 +131,7 @@ export class PortfolioMembersWorkloadCardComponent implements OnChanges {
           workloadDay.inprogress_tasks = 0;
         }
 
-        const index = member?.out_of_office?.findIndex(outOfficeDay => moment.utc(outOfficeDay.date).isSame(date, 'day'));
+        const index = member?.out_of_office?.findIndex(outOfficeDay => this.isSameDay(DateTime.fromISO(outOfficeDay.date), date));
 
         if (index >= 0) {
           const outOfficeDay = member?.out_of_office[index];
@@ -136,23 +143,26 @@ export class PortfolioMembersWorkloadCardComponent implements OnChanges {
 
           workloadDay.outOfTheOfficeClass += (workloadDay.outOfTheOfficeClass != '' && outOfficeDay.approved) ? '-approved' : '';
         }
-
         member.workload.push(workloadDay);
       });
-      member.workload = member.workload.sort((w1, w2) => moment.utc(w1.date).isBefore(w2.date) ? -1 : 1);
+
+      member.workload = member.workload.sort((w1, w2) => (w1.date < w2.date) ? -1 : 1);
     });
   }
 
   getRangeDates(firstDay) {
     let dates = [];
     for (var i = 0; i < 7; i++) {
-      dates.push(moment(firstDay).add(i, 'd'));
+      let date = firstDay.plus({ days: i });
+      date.is_current_day = this.isCurrentDay(date);
+      date.is_weekend_day = this.isWeekend(date);
+      dates.push(date);
     }
 
     if (this.dates[0]?.month == this.dates[this.dates?.length -1]?.month) {
-      this.currentMonth = moment(this.dates[0]).format('MMMM');
+      this.currentMonth = this.dates[0]?.toFormat('LLLL');
     } else {
-      this.currentMonth = moment(this.dates[0]).format('MMMM') + ' / ' + moment(this.dates[this.dates?.length -1]).format('MMMM');
+      this.currentMonth = this.dates[0]?.toFormat('LLLL') + ' / ' + this.dates[this.dates?.length -1]?.toFormat('LLLL');
     }
 
     return dates;
@@ -160,28 +170,44 @@ export class PortfolioMembersWorkloadCardComponent implements OnChanges {
 
   changeDates(numDays: number, type: string) {
     if (type == 'add') {
-      this.currentDate = moment(this.currentDate).add(numDays, 'd');
+      this.currentDate = this.currentDate.plus({ days: numDays })
     } else if (type == 'sub') {
-      this.currentDate = moment(this.currentDate).subtract(numDays, 'd');
+      this.currentDate = this.currentDate.plus({ days: -numDays })
     } else if (type == 'today') {
-      this.currentDate = moment().format();
+      this.currentDate = DateTime.now();
     }
-    this.generateNavDates()
+
+    this.generateNavDates();
   }
 
   isCurrentDay(day) {
-    return moment(day).isSame(this.currentDate, 'day');
+    return this.isSameDay(day, DateTime.now());
+  }
+
+  isSameDay(day1: DateTime, day2: DateTime) {
+    return day1.startOf('day').toMillis() === day2.startOf('day').toMillis();
   }
 
   isWeekend(date) {
-    var day = date.format('d');
+    var day = date.toFormat('d');
     return (day == '6') || (day == '0');
   }
 
   /**
    * This function is responsible for opening a fullscreen dialog to see the member profile
    */
-  openFullscreenModal(userId: string): void {
-    this.utilityService.openMeberBusinessCard(userId);
+  openUserWorkload(): void {
+    const data = {
+      portfolioId: this.portfolioData?._id,
+      userId: this.userData?._id
+    }
+
+    // const dialogRef = 
+    this.dialog.open(PortfolioUserWorkloadDialogComponent, {
+      data: data,
+      width: '80%',
+      disableClose: true,
+      hasBackdrop: true
+    });
   }
 }

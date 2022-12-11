@@ -161,4 +161,59 @@ export class PortfolioService {
   getAllPortfolioTasksStats(portfolioId: string) {
     return this._http.get(this.baseURL + `/${portfolioId}/all-tasks-stats`, {}).toPromise();
   }
+
+  /**
+   * USER TODAY'S TASKS
+   */
+  getUserTodayTasks(portfolioId: string, userId: string) {
+    return this._http.get(this.baseURL + `/${portfolioId}/tasks-today`, {
+      params: {
+        userId: userId
+      }
+    }).toPromise();
+  }
+
+  /**
+   * USER THIS WEEK'S TASKS
+   */
+  getUserThisWeekTasks(portfolioId: string, userId: string) {
+    return this._http.get(this.baseURL + `/${portfolioId}/tasks-week`, {
+      params: {
+        userId: userId
+      }
+    }).toPromise();
+  }
+
+  /**
+   * USER NEXT WEEK'S TASKS
+   */
+  getUserNextWeekTasks(portfolioId: string, userId: string) {
+    return this._http.get(this.baseURL + `/${portfolioId}/tasks-next-week`, {
+      params: {
+        userId: userId
+      }
+    }).toPromise();
+  }
+
+  /**
+   * USER FUTURE TASKS
+   */
+  getUserFutureTasks(portfolioId: string, userId: string) {
+    return this._http.get(this.baseURL + `/${portfolioId}/tasks-future`, {
+      params: {
+        userId: userId
+      }
+    }).toPromise();
+  }
+
+  /**
+   * USER OVERDUE TASK
+   */
+  getUserOverdueTasks(portfolioId: string, userId: string) {
+    return this._http.get(this.baseURL + `/${portfolioId}/tasks-overdue`, {
+      params: {
+        userId: userId
+      }
+    }).toPromise();
+  }
 }

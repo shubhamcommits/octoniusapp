@@ -124,11 +124,11 @@ export class MembersControllers {
 
             // Find the users based on the regex expression matched with either full_name or email property present in the current group
             const users = await User.find({
-                $and: [
-                    { _groups: groupId },
-                    { active: true }
-                ]
-            })
+                    $and: [
+                        { _groups: groupId },
+                        { active: true }
+                    ]
+                })
                 .sort('_id')
                 .select('first_name last_name full_name email current_position active role profile_pic created_date out_of_office integrations')
                 .lean() || []

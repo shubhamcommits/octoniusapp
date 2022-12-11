@@ -687,4 +687,292 @@ export class PortfolioController {
             numTasks: numTasks
         });
     }
+
+    async getTodayTasks(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            const { portfolioId } = req.params;
+            const { query: { userId } } = req;
+
+            // If userId is not found
+            if (!userId || !portfolioId) {
+                return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
+            }
+
+            // Generate the actual time
+            const startOfDay = moment().startOf('day').format('YYYY-MM-DD');
+
+            // Generate the +24h time
+            const endOfDay = moment().endOf('day').format('YYYY-MM-DD');
+
+            // Only groups where user is manager
+            const portfolio = await Portfolio.findOne({ _id: portfolioId })
+                .select('_groups')
+                .lean() || [];
+
+            // Fetch users task for today
+            const tasks = await Post.find({
+                    $and: [
+                        { _assigned_to: userId },
+                        { _group: { $in: portfolio?._groups }},
+                        { type: 'task' },
+                        { 'task.due_to': { $gte: startOfDay, $lte: endOfDay }},
+                        { 'task.is_template': { $ne: true }},
+                        {
+                            $or: [
+                                { 'task.status': 'to do' },
+                                { 'task.status': 'in progress' },
+                                { 'task.status': 'done' }
+                            ]
+                        }
+                    ]
+                })
+                .sort('-task.due_to')
+                .populate('_group', 'group_name group_avatar _members _admins')
+                .populate('_posted_by', 'first_name last_name profile_pic role email')
+                .populate('_assigned_to', 'first_name last_name profile_pic role email')
+                .populate('_followers', 'first_name last_name profile_pic role email')
+                .populate('_liked_by', 'first_name last_name profile_pic role email')
+                .lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Today\'s tasks found!',
+                tasks: tasks
+            });
+
+        } catch (err) {
+            return sendError(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    async getOverdueTasks(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { portfolioId } = req.params;
+            const { query: { userId } } = req;
+
+            // If userId is not found
+            if (!userId || !portfolioId) {
+                return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
+            }
+
+            // Generate the actual time
+            const today = moment().format('YYYY-MM-DD');
+
+            // Only groups where user is manager
+            const portfolio = await Portfolio.findOne({ _id: portfolioId })
+                .select('_groups')
+                .lean() || [];
+
+            // Fetch the tasks posts
+            const tasks = await Post.find({
+                    $and: [
+                        { _assigned_to: userId },
+                        { _group: { $in: portfolio?._groups }},
+                        { type: 'task' },
+                        { 'task.due_to': { $lt: today }},
+                        { 'task.is_template': { $ne: true }},
+                        {
+                            $or: [
+                                { 'task.status': 'to do' },
+                                { 'task.status': 'in progress' }
+                            ]
+                        }
+                    ]
+                })
+                .sort('-task.due_to')
+                .populate('_group', 'group_name group_avatar _members _admins')
+                .populate('_posted_by', 'first_name last_name profile_pic role email')
+                .populate('_assigned_to', 'first_name last_name profile_pic role email')
+                .populate('_followers', 'first_name last_name profile_pic role email')
+                .populate('_liked_by', 'first_name last_name profile_pic role email')
+                .lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Overdue tasks found!',
+                tasks: tasks
+            });
+
+        } catch (err) {
+            return sendError(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    async getThisWeekTasks(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            const { portfolioId } = req.params;
+            const { query: { userId } } = req;
+
+            // If userId is not found
+            if (!userId || !portfolioId) {
+                return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
+            }
+
+            // Fetch this week's task
+            // Generate the today
+            const tomorrow = moment().add(1, 'days').startOf('day').format('YYYY-MM-DD');
+
+            // Generate the date for the end of the week
+            const endOfWeek = moment().add(1, 'days').endOf('day').endOf('isoWeek').format('YYYY-MM-DD');
+
+            // Only groups where user is manager
+            const portfolio = await Portfolio.findOne({ _id: portfolioId })
+                .select('_groups')
+                .lean() || [];
+
+            // Fetch the tasks posts
+            const tasks = await Post.find({
+                    $and: [
+                        { _assigned_to: userId },
+                        { _group: { $in: portfolio?._groups }},
+                        { type: 'task' },
+                        { 'task.due_to': { $gte: tomorrow, $lte: endOfWeek }},
+                        { 'task.is_template': { $ne: true }},
+                        {
+                            $or: [
+                                { 'task.status': 'to do' },
+                                { 'task.status': 'in progress' },
+                                { 'task.status': 'done' }
+                            ]
+                        }
+                    ]
+                })
+                .sort('-task.due_to')
+                .populate('_group', 'group_name group_avatar _members _admins')
+                .populate('_posted_by', 'first_name last_name profile_pic role email')
+                .populate('_assigned_to', 'first_name last_name profile_pic role email')
+                .populate('_followers', 'first_name last_name profile_pic role email')
+                .populate('_liked_by', 'first_name last_name profile_pic role email')
+                .lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'This weeks\' tasks found!',
+                tasks: tasks
+            });
+
+        } catch (err) {
+            return sendError(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+
+    async getNextWeekTasks(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { portfolioId } = req.params;
+            const { query: { userId } } = req;
+
+            // If userId is not found
+            if (!userId || !portfolioId) {
+                return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
+            }
+
+            // Generate the date for the end of the week
+            const endOfWeek = moment().add(1, 'days').endOf('day').endOf('isoWeek').format('YYYY-MM-DD');
+
+            // Generate the date for the end of the next week
+            const endOfNextWeek = moment().endOf('isoWeek').add(1, 'days').endOf('day').endOf('isoWeek').format('YYYY-MM-DD');
+
+            // Only groups where user is manager
+            const portfolio = await Portfolio.findOne({ _id: portfolioId })
+                .select('_groups')
+                .lean() || [];
+
+            // Fetch the tasks posts
+            const tasks = await Post.find({
+                    $and: [
+                        { _assigned_to: userId },
+                        { _group: { $in: portfolio?._groups }},
+                        { type: 'task' },
+                        {'task.due_to': { $gt: endOfWeek, $lte: endOfNextWeek }},
+                        { 'task.is_template': { $ne: true }},
+                        {
+                            $or: [
+                                { 'task.status': 'to do' },
+                                { 'task.status': 'in progress' },
+                                { 'task.status': 'done' }
+                            ]
+                        }
+                    ]
+                })
+                .sort('-task.due_to')
+                .populate('_group', 'group_name group_avatar _members _admins')
+                .populate('_posted_by', 'first_name last_name profile_pic role email')
+                .populate('_assigned_to', 'first_name last_name profile_pic role email')
+                .populate('_followers', 'first_name last_name profile_pic role email')
+                .populate('_liked_by', 'first_name last_name profile_pic role email')
+                .lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Next weeks\' tasks found!',
+                tasks: tasks
+            });
+
+        } catch (err) {
+            return sendError(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    async getFutureTasks(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            const { portfolioId } = req.params;
+            const { query: { userId } } = req;
+
+            // If userId is not found
+            if (!userId || !portfolioId) {
+                return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
+            }
+
+            // Generate the +14days from today time
+            const todayPlus14Days = moment().add(14, 'days').endOf('day').format('YYYY-MM-DD');
+
+            // Only groups where user is manager
+            const portfolio = await Portfolio.findOne({ _id: portfolioId })
+                .select('_groups')
+                .lean() || [];
+
+            // Fetch the tasks posts
+            const tasks = await Post.find({
+                    $and:[
+                        { _assigned_to: userId },
+                        { _group: { $in: portfolio?._groups }},
+                        { type: 'task' },
+                        { 'task.is_template': { $ne: true }},
+                        {
+                            $or: [
+                                { 'task.due_to': { $gte: todayPlus14Days }},
+                                { 'task.due_to': null }
+                            ]
+                            
+                        },
+                        {
+                            $or: [
+                                { 'task.status': 'to do' },
+                                { 'task.status': 'in progress' }
+                            ]
+                        }
+                    ]
+                })
+                .sort('-task.due_to')
+                .populate('_group', 'group_name group_avatar _members _admins')
+                .populate('_posted_by', 'first_name last_name profile_pic role email')
+                .populate('_assigned_to', 'first_name last_name profile_pic role email')
+                .populate('_followers', 'first_name last_name profile_pic role email')
+                .populate('_liked_by', 'first_name last_name profile_pic role email')
+                .lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Future tasks found!',
+                tasks: tasks
+            });
+
+        } catch (err) {
+            return sendError(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
 }

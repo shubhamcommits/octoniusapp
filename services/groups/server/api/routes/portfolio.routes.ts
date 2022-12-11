@@ -64,6 +64,21 @@ routes.get('/:portfolioId/tasks-in-period', portfolio.getPortfolioTasks);
 // get all existing project columns filtering by groups
 routes.get('/:portfolioId/all-tasks-stats', portfolio.getAllPortfolioTasksStats);
 
+// GET - Fetches the today's tasks
+routes.get('/:portfolioId/tasks-today', portfolio.getTodayTasks);
+
+// GET - Fetches all the overdue tasks
+routes.get('/:portfolioId/tasks-overdue', portfolio.getOverdueTasks);
+
+// GET - Fetches this week's tasks
+routes.get('/:portfolioId/tasks-week', portfolio.getThisWeekTasks);
+
+// GET - Fetches next week's tasks
+routes.get('/:portfolioId/tasks-next-week', portfolio.getNextWeekTasks);
+
+// GET - Fetches future tasks
+routes.get('/:portfolioId/tasks-future', portfolio.getFutureTasks);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

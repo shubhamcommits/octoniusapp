@@ -3,8 +3,7 @@ import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { environment } from 'src/environments/environment';
-import { ActivatedRoute, Router } from '@angular/router';
-import { PortfolioService } from 'src/shared/services/portfolio-service/portfolio.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-portfolio',
@@ -31,7 +30,6 @@ export class PortfolioComponent implements OnInit {
   constructor(
     public injector: Injector,
     private router: Router,
-    private portfolioService: PortfolioService,
     private utilityService: UtilityService
   ) {
   }
