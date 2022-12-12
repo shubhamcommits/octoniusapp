@@ -1,0 +1,41 @@
+<div class="dialog-content">
+  <!--
+  <mat-dialog-actions align="end">
+      <div class="action-box">
+          <a (click)="cancel()" mat-dialog-close>
+          <i  class="material-icons" style="cursor: pointer">close</i>
+          </a>
+      </div>
+  </mat-dialog-actions>
+  -->
+  <mat-dialog-content>
+    <div class="content">
+      <div class="">
+          <div class="modal-header">
+            <h4 class="modal-title" i18n="@@groupSelectorDialog.selectGroup">
+              Select a group
+            </h4>
+          </div>
+
+          <p class="ml-3" i18n="@@groupSelectorDialog.selectGroupDescription">Select what group should be added to your portfolio.</p>
+          <div class="clearfix"></div>
+      </div>
+
+      <div class="content-box" *ngFor="let group of userGroups">
+        <div style="display: flex; cursor: pointer;" (click)="selectGroup(group?._id)">
+          <app-secured-image
+            [imgURL]="group?.group_avatar"
+            [service]="'group'"
+            [tooltip]="'Group avatar'" [placement]="'right'" [styleClass]="'mr-3 feed-avatar-small'"></app-secured-image>
+
+          <h4 class="ml-3 mt-4"> {{ group.group_name }}</h4>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="center">
+    <button class="btn btn-danger mr-4" (click)="closeDialog()" i18n="@@groupSelectorDialog.cancel">Cancel</button>
+  </mat-dialog-actions>
+  <!-- Top Right Section ends -->
+</div>

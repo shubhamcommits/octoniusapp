@@ -272,6 +272,15 @@ export class UserService {
     }).toPromise();
   }
 
+  getWorkloadOverdueTasksPortfolio(userId: string, portfolioId: string) {
+    return this._http.get(this.BASE_API_URL + `/tasks/workloadOverduePortfolio`, {
+      params: {
+        userId: userId,
+        portfolioId: portfolioId
+      }
+    }).toPromise();
+  }
+
   /**
    * USER TODAY'S EVENTS
    */

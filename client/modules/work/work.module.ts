@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewNorthStarDialogComponent } from './north-star-page/new-north-start-dialog/new-north-start-dialog.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { SearchTaskDialogComponent } from './north-star-page/search-task-dialog/search-task-dialog.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     PulseComponent,
     NorthStarPageComponent,
     NewNorthStarDialogComponent,
+    SearchTaskDialogComponent,
     DashboardPageComponent
   ],
   imports: [

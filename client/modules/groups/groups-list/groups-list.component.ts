@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, Input } from '@angular/core';
 import { GroupsService } from 'src/shared/services/groups-service/groups.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
@@ -13,20 +13,11 @@ import { Router } from '@angular/router';
 })
 export class GroupsListComponent implements OnInit {
 
+  @Input() userData;
+  @Input() workspaceData;
+
   // Base Url
   baseUrl = environment.UTILITIES_GROUPS_UPLOADS;
-
-  // Groups Service
-  public groupsService = this.injector.get(GroupsService);
-
-  // Public functions
-  public publicFunctions = new PublicFunctions(this.injector);
-
-  // User data for the current user
-  public userData: any = {};
-
-  // Workspace data for the current workspace
-  public workspaceData: any = {};
 
   // Array of user groups
   public userGroups: any = [];
@@ -51,12 +42,13 @@ export class GroupsListComponent implements OnInit {
 
   public isLoadingAgora$ = new BehaviorSubject(false);
 
-  // Utility Service
-  public utilityService = this.injector.get(UtilityService);
+  // Public functions
+  public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
     public injector: Injector,
-    private router: Router
+    private router: Router,
+    private utilityService: UtilityService
   ) { }
 
   async ngOnInit() {
@@ -71,20 +63,24 @@ export class GroupsListComponent implements OnInit {
     })
 
     // Fetch the current loggedIn user data
-    this.userData = await this.publicFunctions.getCurrentUser();
+    if (!this.utilityService.objectExists(this.userData)) {
+      this.userData = await this.publicFunctions.getCurrentUser();
+    }
 
-    // Fetch the current workspace data
-    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    if (!this.utilityService.objectExists(this.workspaceData)) {
+      // Fetch the current workspace data
+      this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    }
 
     // Fetches the user groups from the server
-    this.userGroups = await this.publicFunctions.getUserGroups(this.workspaceData['_id'], this.userData['_id'])
+    this.userGroups = await this.publicFunctions.getUserGroups(this.workspaceData?._id, this.userData?._id)
       .catch(() => {
         // If the function breaks, then catch the error and console to the application
         this.publicFunctions.sendError(new Error($localize`:@@groupList.unableToConnectToServer:Unable to connect to the server, please try again later!`));
         this.isLoading$.next(false);
       })
 
-    this.agoraGroups = await this.publicFunctions.getAgoraGroupsNotJoined(this.workspaceData['_id'], this.userData['_id'])
+    this.agoraGroups = await this.publicFunctions.getAgoraGroupsNotJoined(this.workspaceData?._id, this.userData?._id)
       .catch(() => {
         // If the function breaks, then catch the error and console to the application
         this.publicFunctions.sendError(new Error($localize`:@@groupList.unableToConnectToServer:Unable to connect to the server, please try again later!`));
@@ -129,7 +125,7 @@ export class GroupsListComponent implements OnInit {
     if (this.userGroups && this.lastGroupId && this.lastGroupId != '' && this.lastGroupId != null) {
 
       // Fetching next pulse groups based on the lasgGroupId
-      let nextPulseGroups: any = await this.publicFunctions.getNextUserGroups(this.workspaceData['_id'], this.userData['_id'], this.lastGroupId);
+      let nextPulseGroups: any = await this.publicFunctions.getNextUserGroups(this.workspaceData?._id, this.userData?._id, this.lastGroupId);
 
       // If we have 0 groups, then stop the function immediately and set moreToLoad to false
       if (nextPulseGroups.length == 0) {
@@ -161,7 +157,7 @@ export class GroupsListComponent implements OnInit {
    */
   public async AgoraScrolled() {
 
-    let nextAgoraGroups: any = await this.publicFunctions.getNextAgoraGroups(this.workspaceData['_id'], this.userData['_id'], this.lastAgoraGroupId);
+    let nextAgoraGroups: any = await this.publicFunctions.getNextAgoraGroups(this.workspaceData?._id, this.userData?._id, this.lastAgoraGroupId);
 
     // Adding into existing array
     this.agoraGroups = [...this.agoraGroups, ...nextAgoraGroups];

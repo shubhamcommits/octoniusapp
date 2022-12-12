@@ -19,7 +19,10 @@ router.use(auth.verifyToken);
 // Check if user is logged in
 router.use(auth.isLoggedIn);
 
-// -| Main search |-
+// GET -| Main search |-
 router.get('/getSearchResults/:filter', search.getSearchResults);
+
+// GET -| Main search |-
+router.get('/searchTasksForNS', search.searchTasksForNS);
 
 export { router as searchRoutes };

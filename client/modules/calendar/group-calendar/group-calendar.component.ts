@@ -23,8 +23,6 @@ const colors: any = {
 })
 export class GroupCalendarComponent implements OnInit {
 
-  @Input() isIdeaModuleAvailable;
-
   // Modal Content
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
 
@@ -227,14 +225,14 @@ export class GroupCalendarComponent implements OnInit {
     if (this.post) {
       const canOpen = !this.groupData?.enabled_rights || this.post?.canView || this.post?.canEdit;
       if (this.post.type === 'task' && !this.post.task._parent_task) {
-        dialogRef = this.utilityService.openPostDetailsFullscreenModal(this.post._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen, this.columns);
+        dialogRef = this.utilityService.openPostDetailsFullscreenModal(this.post._id, this.groupData._id, canOpen, this.columns);
       } else {
         if (this.post.task._parent_task && !this.post.task._parent_task._id) {
           this.publicFunctions.getPost(this.post.task._parent_task).then(post => {
             this.post.task._parent_task = post;
           });
         }
-        dialogRef = this.utilityService.openPostDetailsFullscreenModal(this.post._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen);
+        dialogRef = this.utilityService.openPostDetailsFullscreenModal(this.post._id, this.groupData._id, canOpen);
       }
     }
 

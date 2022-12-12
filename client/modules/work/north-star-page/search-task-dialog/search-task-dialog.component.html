@@ -1,0 +1,61 @@
+<div mat-dialog-title class="modal-header" style="text-align:center">
+    <h4 class="modal-title" id="modal-basic-title" i18n="@@newNorthStarDialog.addTask">Add Tasks to North Star</h4>
+    <img src="assets/images/select-task-ns.svg" alt="" style="width:180px; margin: 30px auto">
+
+</div>
+
+<mat-dialog-content class="modal-body">
+
+
+    <div class="form-group">
+        <label i18n="@@newNorthStarDialog.title">Title</label>
+        <input type="text" class="form-control" [(ngModel)]="postTitle" (keyup)="search()">
+    </div>
+
+    <div class="form-group">
+        <label i18n="@@newNorthStarDialog.group">Group</label>
+        <mat-form-field class="full-width" appearance="outline">
+            <mat-select [(value)]="groupId" (valueChange)="search()">
+                <mat-option [value]="group?._id" *ngFor="let group of userGroups">{{ group?.group_name }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <!--
+    <div class="form-group">
+        <label i18n="@@newNorthStarDialog.section" [ngClass]="(!groupSections || groupSections?.length == 0) ? 'muted' : ''">Section</label>
+        <mat-form-field class="full-width" appearance="outline">
+            <mat-select [(value)]="sectionId" [disabled]="!groupSections || groupSections?.length == 0">
+                <mat-option [value]="section?._id" *ngFor="let section of groupSections">{{ section?.title }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    -->
+
+    <div *ngIf="taskSearchResult.length > 0" class="tasks">
+        <div class="row tile">
+            <div class="col-md-8">
+                <strong i18n="@@newNorthStarDialog.title">Title</strong>
+            </div>
+
+            <div class="col-md-4">
+                <strong i18n="@@newNorthStarDialog.group">Group</strong>
+            </div>
+        </div>
+
+        <div *ngFor="let post of taskSearchResult" (click)="selectTask(post)"
+            class="row tile">
+            <div class="col-md-8">
+                {{ post?.title }}
+            </div>
+
+            <div class="col-md-4">
+                {{ post?._group?.group_name }}
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+
+<div mat-dialog-actions class="modal-footer">
+    <button class="btn btn-danger btn-md" (click)="closeDialog()" i18n="@@newNorthStarDialog.cancel">Cancel</button>
+</div>

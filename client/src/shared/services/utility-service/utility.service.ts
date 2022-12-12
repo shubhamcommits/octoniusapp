@@ -12,6 +12,7 @@ import * as XLSX from 'xlsx';
 import * as fileSaver from 'file-saver';
 import moment from 'moment';
 import { FilesService } from '../files-service/files.service';
+import { LikedByDialogComponent } from 'src/app/common/shared/liked-by-dialog/liked-by-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -80,6 +81,14 @@ export class UtilityService {
    */
   private groupDataSource = new BehaviorSubject<any>({});
   currentGroupData = this.groupDataSource.asObservable();
+
+  /**
+   * Both of the variables listed down below are used to share the data through this common service among different components in the app
+   * @constant currentPortfolioDataSource
+   * @constant currentPortfolioData
+   */
+  private currentPortfolioDataSource = new BehaviorSubject<any>({});
+  currentPortfolioData = this.currentPortfolioDataSource.asObservable();
 
   /**
    * Both of the variables listed down below are used to share the data through this common service among different components in the app
@@ -165,7 +174,7 @@ export class UtilityService {
    * @param text
    * @param title - optional
    */
-  warningNotification(text: string, title?: string){
+  warningNotification(text: string, title?: string) {
     const Toast = Swal.mixin({
       toast: true,
       position: 'bottom',
@@ -345,7 +354,7 @@ export class UtilityService {
   /**
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
-  openPostDetailsFullscreenModal(postId: string, groupId: string, isIdeaModuleAvailable: boolean, canOpen: boolean, columns?: any) {
+  openPostDetailsFullscreenModal(postId: string, groupId: string, canOpen: boolean, columns?: any) {
     let dialogOpen;
 
     // !groupData?.enabled_rights || postData?.canView || postData?.canEdit
@@ -354,14 +363,12 @@ export class UtilityService {
         {
           postId: postId,
           groupId: groupId,
-          columns: columns,
-          isIdeaModuleAvailable: isIdeaModuleAvailable
+          columns: columns
         }
       :
         {
           postId: postId,
-          groupId: groupId,
-          isIdeaModuleAvailable: isIdeaModuleAvailable
+          groupId: groupId
         }
 
         dialogOpen = this.dialog.open(GroupPostDialogComponent, {
@@ -435,6 +442,14 @@ export class UtilityService {
    */
   public updateGroupData(groupData: any){
     this.groupDataSource.next(groupData);
+  }
+
+  /**
+   * Used to emit the next value of observable so that where this is subscribed, will get the updated value
+   * @param portfolioData
+   */
+  public updatePortfolioData(portfolioData: any){
+    this.currentPortfolioDataSource.next(portfolioData);
   }
 
   /**
@@ -546,6 +561,16 @@ export class UtilityService {
     });
   }
 
+  openLikedByDialog(usersList: any) {
+    return this.dialog.open(LikedByDialogComponent, {
+      disableClose: false,
+      hasBackdrop: true,
+      data: {
+        usersList: usersList
+      }
+    });
+  }
+
   /**
    * This method is used to identify if the user can edit or view an elemnent
    * @param item This element can be a file or a folder
@@ -634,8 +659,13 @@ export class UtilityService {
   async canUserDoTaskAction(item: any, groupData: any, userData: any, action: string) {
 
     const isGroupManager = (groupData && groupData._admins) ? (groupData?._admins.findIndex((admin: any) => (admin?._id || admin) == userData?._id) >= 0) : false;
+    const isGroupMember = (groupData && groupData._members) ? (groupData?._members.findIndex((member: any) => (member?._id || member) == userData?._id) >= 0) : false;
     let createdBy = (item?._posted_by ) ? ((item?._posted_by?._id || item?._posted_by) == userData?._id) : false;
     createdBy = (!createdBy && item?._created_by) ? ((item?._created_by?._id || item?._created_by) == userData?._id) : createdBy;
+
+    if (!isGroupManager && !isGroupMember && userData?.role != 'admin' && userData?.role != 'owner' && !createdBy) {
+      return false;
+    }
 
     if (action == 'edit' && item?.approval_flow_launched) {
       return false;

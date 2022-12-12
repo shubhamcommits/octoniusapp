@@ -35,6 +35,11 @@ export class CommentService {
       toPromise()
   }
 
+  getLikedByUsers(commentId: string) {
+
+    // Call the HTTP Request
+    return this._http.get(this.baseURL + `/comments/${commentId}/liked-by`).toPromise();
+  }
 
   /**
    * This function is responsible for adding a new comment

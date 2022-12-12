@@ -20,4 +20,12 @@ export class SearchService {
         advancedFilters: JSON.stringify(advancedFilters)
       }}).toPromise();
   }
+
+  searchTasksForNS(textQuery: string, groupId: string) {
+    return this._http.get(this.localURL + `/searchTasksForNS`, {
+      params:{
+        textQuery: textQuery,
+        groupId: groupId
+      }}).toPromise();
+  }
 }

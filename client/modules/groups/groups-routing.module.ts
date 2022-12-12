@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 /**
  * GROUPS COMPONENTS
  */
-import { GroupsListComponent } from './groups-list/groups-list.component';
+// import { GroupsListComponent } from './groups-list/groups-list.component';
 
 /**
  * GROUP COMPONENTS
@@ -18,6 +18,9 @@ import { GroupTasksViewsComponent } from './group/group-tasks-views/group-tasks-
 import { GroupGuard } from 'src/shared/guards/group-guard/group.guard';
 import { GroupDashboardComponent } from './group/group-dashboard/group-dashboard.component';
 import { GroupReportsComponent } from './group/group-reports/group-reports.component';
+import { GroupsComponent } from './groups.component';
+import { PortfolioDetailsComponent } from './portfolio/portfolio-details.component';
+import { PortfolioGuard } from 'src/shared/guards/portfolio-guard/portfolio.guard';
 
 
 /**
@@ -26,8 +29,8 @@ import { GroupReportsComponent } from './group/group-reports/group-reports.compo
 const routes: Routes = [
 
   // All Groups List Route
-  { path: 'all', component: GroupsListComponent },
-
+  { path: 'all', component: GroupsComponent },
+  { path: 'portfolio', component: PortfolioDetailsComponent, canActivate: [PortfolioGuard] },
   // Group Specific Route
   {
     path: '', component: GroupComponent, children: [

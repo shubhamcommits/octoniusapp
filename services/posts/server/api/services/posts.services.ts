@@ -18,7 +18,7 @@ export class PostService {
   userFields: any = 'first_name last_name profile_pic role email';
 
   // Select Group Fileds on population
-  groupFields: any = 'group_name group_avatar workspace_name';
+  groupFields: any = 'group_name group_avatar workspace_name enabled_rights';
 
   groupsService = new GroupsService();
 
@@ -930,7 +930,7 @@ export class PostService {
       .populate({ path: '_assigned_to', select: this.userFields })
       .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
       .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-      .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+      .populate({ path: 'task._parent_task', select: '_id title _assigned_to _group task.isNorthStar' })
       .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
       .populate({ path: 'task.shuttles._shuttle_group', select: '_id group_name group_avatar' })
       .populate({ path: 'task.shuttles._shuttle_section',select:'_id title' })
@@ -1131,6 +1131,22 @@ export class PostService {
       post,
       user
     }
+  }
+
+
+  /**
+   * This function is used to return the users who like the post
+   * @param { postId }
+   */
+  async likedBy(postId: string) {
+
+    const post = await Post.findOne({ _id: postId })
+      .select('_liked_by')
+      .populate({ path: '_liked_by', select: this.userFields })
+      .lean();
+
+    // Return the Data
+    return post?._liked_by || []
   }
 
   /**
@@ -2029,25 +2045,35 @@ export class PostService {
         let post = posts[i];
 
         const subtasks = await Post.find({
-          $and: [
-            { 'task.isNorthStar': true },
-            { 'task._parent_task': post?._id },
-          ]
-        }).select('task.northStar').lean();
+            $and: [
+              { type: 'task' },
+              { 'task._parent_task': post?._id },
+            ]
+          }).select('task.status task.isNorthStar task.northStar').lean();
 
         if (subtasks && subtasks.length > 0) {
           let northStarValues = [];
           subtasks.forEach(st => {
-            const value = st?.task?.northStar?.values[st?.task?.northStar?.values?.length-1];
-            const nsValues = {
-                // currency: st?.task?.northStar?.currency,
-                type: st?.task?.northStar?.type,
-                value: value?.value,
-                status: value?.status,
+            let nsValues:any = {};
+            if (st?.task?.isNorthStar) {
+              const value = st?.task?.northStar?.values[st?.task?.northStar?.values?.length-1];
+              nsValues = {
+                  // currency: st?.task?.northStar?.currency,
+                  type: st?.task?.northStar?.type,
+                  value: value?.value,
+                  status: value?.status,
+                };
+            } else {
+              nsValues = {
+                type: '',
+                value: 0,
+                status: st?.task?.status
               };
-            
+            }
+
             northStarValues = northStarValues.concat(nsValues);
           });
+
           post.northStarValues = northStarValues;
         }
 
@@ -2135,18 +2161,18 @@ export class PostService {
 
       // Fetch the tasks posts
       posts = await Post.find({
-        $and: [
-          { _group: { $in: groups } },
-          { type: type },
-          { 'task.due_to': { $gte: comparingDate, $lt: today } },
-          {
-            $or: [
-              { 'task.status': 'to do' },
-              { 'task.status': 'in progress' }
-            ]
-          }
-        ]
-      })
+          $and: [
+            { _group: { $in: groups } },
+            { type: type },
+            { 'task.due_to': { $gte: comparingDate, $lt: today } },
+            {
+              $or: [
+                { 'task.status': 'to do' },
+                { 'task.status': 'in progress' }
+              ]
+            }
+          ]
+        })
         .sort('-task.due_to')
         .populate('_group', this.groupFields)
         .populate('_posted_by', this.userFields)
@@ -2160,12 +2186,12 @@ export class PostService {
 
     } else {
       posts = await Post.find({
-        $and: [
-          { _group: { $in: groups } },
-          { type: type },
-          { 'task.due_to': { $gte: comparingDate } }
-        ]
-      })
+          $and: [
+            { _group: { $in: groups } },
+            { type: type },
+            { 'task.due_to': { $gte: comparingDate } }
+          ]
+        })
         .sort('-task.due_to')
         .populate({ path: '_group', select: this.groupFields })
         .populate({ path: '_posted_by', select: this.userFields })
@@ -2199,17 +2225,17 @@ export class PostService {
     if (overdue) {
 
       // Generate the actual time
-      const today = moment().subtract(1, 'days').endOf('day').format()
+      const today = moment().subtract(1, 'days').endOf('day').format();
 
       // Fetch the tasks posts
       posts = await Post.find({
-        $and: [
-          { _group: { $in: groups } },
-          { type: type },
-          { 'task.isNorthStar': isNorthStar },
-          { 'task.due_to': { $gte: comparingDate, $lt: today } }
-        ]
-      })
+          $and: [
+            { _group: { $in: groups } },
+            { type: type },
+            { 'task.isNorthStar': isNorthStar },
+            { 'task.due_to': { $gte: comparingDate, $lt: today } }
+          ]
+        })
         .sort('-task.due_to')
         .populate('_group', this.groupFields)
         .populate('_posted_by', this.userFields)
@@ -2223,13 +2249,13 @@ export class PostService {
 
     } else {
       posts = await Post.find({
-        $and: [
-          { _group: { $in: groups } },
-          { type: type },
-          { 'task.isNorthStar': isNorthStar },
-          { 'task.due_to': { $gte: comparingDate } }
-        ]
-      })
+          $and: [
+            { _group: { $in: groups } },
+            { type: type },
+            { 'task.isNorthStar': isNorthStar },
+            { 'task.due_to': { $gte: comparingDate } }
+          ]
+        })
         .sort('-task.due_to')
         .populate({ path: '_group', select: this.groupFields })
         .populate({ path: '_posted_by', select: this.userFields })
@@ -2546,11 +2572,11 @@ export class PostService {
     let posts = [];
 
     posts = await Post.find({
-      $and: [
-        { type: 'task' },
-        { 'task._parent_task': parentId }
-      ]
-    })
+        $and: [
+          { type: 'task' },
+          { 'task._parent_task': parentId }
+        ]
+      })
       .sort('created_date')
       .populate({ path: '_group', select: this.groupFields })
       .populate({ path: '_posted_by', select: this.userFields })
@@ -2560,6 +2586,7 @@ export class PostService {
       .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
       .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
       .populate({ path: 'task.northStar.values._user', select: this.userFields })
+      .populate({ path: 'logs._actor', select: this.userFields })
       .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
       .populate({ path: 'permissions._members', select: this.userFields })
       .lean();
@@ -2831,30 +2858,43 @@ export class PostService {
   async setParentTask(postId: string, userId: string, parentTaskId: string) {
 
     try {
-      // Update the post
-      let post = await Post.findOneAndUpdate({
-        _id: postId
-      }, {
-        'task._parent_task': parentTaskId,
-        $unset: { 'task._column': '' }
-      }, {
-        new: true
-      });
+
+      const parent: any = await Post.findOne({_id: parentTaskId}).select('_group').lean();
+
+      let post: any;
+      if (parent && parent._group) {
+        post = await Post.findOneAndUpdate({
+            _id: postId
+          }, {
+            'task._parent_task': parentTaskId,
+            $unset: { 'task._column': '' }
+          }, {
+            new: true
+          });
+      } else {
+        post = await Post.findOneAndUpdate({
+            _id: postId
+          }, {
+            'task._parent_task': parentTaskId,
+          }, {
+            new: true
+          });
+      }
 
       post = await Post.findOneAndUpdate({
-        _id: postId
-      }, {
-        $push: {
-          "logs": {
-            action: 'set_parent',
-            action_date: moment().format(),
-            _actor: userId,
-            _task: parentTaskId
+          _id: postId
+        }, {
+          $push: {
+            "logs": {
+              action: 'set_parent',
+              action_date: moment().format(),
+              _actor: userId,
+              _task: parentTaskId
+            }
           }
-        }
-      }, {
-        new: true
-      });
+        }, {
+          new: true
+        });
 
       // populate the properties of this document
       post = await this.populatePostProperties(post);
@@ -3494,6 +3534,24 @@ export class PostService {
             case 'Shuttle task':
                 if (shuttleIndex < 0) {
                   post = await this.selectShuttleGroup(post._id, action?._shuttle_group?._id || action?._shuttle_group, userId);
+                }
+                break;
+            case 'Set Due date':
+                if (shuttleIndex < 0) {
+                  let newDueDate;
+                  if (action?.due_date_value == 'tomorrow') {
+                    newDueDate = moment().add(1,'days');
+                  } else if (action?.due_date_value == 'end_of_week') {
+                    newDueDate = moment().endOf('week').subtract(1,'days');
+                  } else if (action?.due_date_value == 'end_of_next_week') {
+                    newDueDate = moment().add(1,'weeks').endOf('week').subtract(1,'days');
+                  } else if (action?.due_date_value == 'end_of_month') {
+                    newDueDate = moment().endOf('month');
+                  }
+
+                  if (newDueDate) {
+                    post = await this.changeTaskDueDate(post._id, userId, newDueDate);
+                  }
                 }
                 break;
             default:

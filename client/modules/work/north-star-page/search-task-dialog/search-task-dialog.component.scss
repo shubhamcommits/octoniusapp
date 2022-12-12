@@ -1,0 +1,25 @@
+.form-group {
+	label {
+		float: left;
+		width: 100%;
+	}
+
+	input,
+	mat-form-field {
+		width: 100%;
+	}
+}
+
+.tasks {
+
+	.tile {
+		padding: 10px 0;
+		margin: 5px 0;
+		align-items: center;
+		border: 1px solid #E4EDF8;
+
+		&:hover {
+			cursor: pointer;
+		}
+	}
+}

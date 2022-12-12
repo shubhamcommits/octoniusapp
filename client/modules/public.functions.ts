@@ -20,6 +20,7 @@ import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.s
 import { environment } from 'src/environments/environment';
 import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
 import { ChatService } from 'src/shared/services/chat-service/chat.service';
+import { PortfolioService } from 'src/shared/services/portfolio-service/portfolio.service';
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +37,7 @@ export class PublicFunctions {
      * This function unsubscribes the data from the observables
      */
     ngOnDestroy(): void {
-        this.subSink.unsubscribe();
+      this.subSink.unsubscribe();
     }
 
     public async getCurrentUser(readOnly?: boolean) {
@@ -74,8 +75,7 @@ export class PublicFunctions {
             const utilityService = this.injector.get(UtilityService);
             this.subSink.add(utilityService.currentUserData.subscribe((res) => {
                 resolve(res)
-            })
-            )
+            }));
         })
     }
 
@@ -385,6 +385,63 @@ export class PublicFunctions {
       });
     }
 
+    public async getCurrentPortfolioDetails() {
+
+        let portfolioData = {};
+
+        portfolioData = await this.getCurrentPortfolioFromService();
+        const utilityService = this.injector.get(UtilityService);
+
+        if (!utilityService.objectExists(portfolioData)) {
+          portfolioData = await this.getPortfolioDetailsFromStorage();
+        }
+
+        this.sendUpdatesToPortfolioData(portfolioData);
+
+        return portfolioData || {};
+    }
+
+    async getCurrentPortfolioFromService() {
+        return new Promise((resolve) => {
+            const utilityService = this.injector.get(UtilityService);
+            this.subSink.add(utilityService.currentPortfolioData.subscribe((res) => {
+                resolve(res);
+            }));
+        });
+    }
+
+    async getPortfolioDetailsFromStorage() {
+        const storageService = this.injector.get(StorageService);
+        return (storageService.existData('portfolioData') === null) ? {} : storageService.getLocalData('portfolioData');
+    }
+
+    /**
+     * This function fetches the Portfolio details
+     * @param portfolioId
+     */
+    public async getPortfolioDetails(portfolioId: string) {
+        return new Promise((resolve, reject) => {
+            let portfolioService = this.injector.get(PortfolioService);
+            portfolioService.getPortfolio(portfolioId)
+                .then((res) => {
+                  if (res) {
+                    resolve(res['portfolio']);
+                  }
+                })
+                .catch((err) => {
+                    this.sendError(new Error($localize`:@@publicFunctions.unableToFetchPortfolioDetails:Unable to fetch the portfolio details, please try again!`))
+                    reject(err)
+                });
+        });
+    }
+
+    async sendUpdatesToPortfolioData(portfolioData: Object) {
+        const storageService = this.injector.get(StorageService);
+        const utilityService = this.injector.get(UtilityService);
+        utilityService.updatePortfolioData(portfolioData);
+        storageService.setLocalData('portfolioData', JSON.stringify(portfolioData));
+    }
+
     isPersonalNavigation(groupData: Object, userData: Object) {
       return (groupData)
         ?((groupData['group_name'] === 'personal') && (groupData['_id'] == (userData['_private_group']._id || userData['_private_group'])))
@@ -610,12 +667,12 @@ export class PublicFunctions {
      * @param userId
      */
     public async getUserGroups(workspaceId: string, userId: string) {
-        return new Promise((resolve, reject) => {
-            let groupsService = this.injector.get(GroupsService);
-            groupsService.getUserGroups(workspaceId, userId)
-                .then((res) => resolve(res['groups']))
-                .catch(() => reject([]))
-        })
+      return new Promise((resolve, reject) => {
+        let groupsService = this.injector.get(GroupsService);
+        groupsService.getUserGroups(workspaceId, userId)
+          .then((res) => resolve(res['groups']))
+          .catch(() => reject([]));
+      });
     }
 
     /**
@@ -666,6 +723,18 @@ export class PublicFunctions {
               .then((res) => resolve(res['groups']))
               .catch(() => reject([]))
       })
+    }
+
+    /**
+     * Fetch list of portfolios of which a user is a part of
+     */
+    public async getUserPortfolios() {
+        return new Promise((resolve, reject) => {
+            let portfolioService = this.injector.get(PortfolioService);
+            portfolioService.getUserPortfolios()
+                .then((res) => resolve(res['portfolios']))
+                .catch(() => reject([]))
+        });
     }
 
     /**
@@ -1506,8 +1575,22 @@ export class PublicFunctions {
                           });
                         }
                         return Promise.resolve({});
+                    case 'Set Due date':
+                        if (shuttleIndex < 0) {
+                          if (action?.due_date_value == 'tomorrow') {
+                            post.task.due_to = moment().add(1,'days');
+                          } else if (action?.due_date_value == 'end_of_week') {
+                            post.task.due_to = moment().endOf('week').subtract(1,'days');
+                          } else if (action?.due_date_value == 'end_of_next_week') {
+                            post.task.due_to = moment().add(1,'weeks').endOf('week').subtract(1,'days');
+                          } else if (action?.due_date_value == 'end_of_month') {
+                            post.task.due_to = moment().endOf('month');
+                          }
+                        }
+
+                        return post;
                     default:
-                        return Promise.resolve({});
+                        return post;
                 }
             });
             return post;
@@ -1535,6 +1618,16 @@ export class PublicFunctions {
       return (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
     }
 
+    /**
+     * This method returns the highest date of the posts passed by parameter
+     * @param posts
+     * @returns
+     */
+    getHighestDate(posts: any) {
+      const highestDate = moment(Math.max(...posts.map(post => moment(post.task.due_to))));
+      return (!highestDate || !highestDate.isValid()) ? null : highestDate;
+    }
+
     async checkFlamingoStatus(workspaceId: string, mgmtApiPrivateKey: string) {
       const managementPortalService = this.injector.get(ManagementPortalService);
       return managementPortalService.getFlamingoStatus(workspaceId, mgmtApiPrivateKey).then(
@@ -1548,7 +1641,14 @@ export class PublicFunctions {
         });
     }
 
-    async checkIdeaStatus(workspaceId: string, mgmtApiPrivateKey: string) {
+    async checkIdeaStatus(workspaceId?: string, mgmtApiPrivateKey?: string) {
+      let workspace;
+      if (!workspaceId) {
+        workspace = await this.getCurrentWorkspace();
+        workspaceId = workspace?._id;
+        mgmtApiPrivateKey = workspace?.management_private_api_key;
+      }
+
       const managementPortalService = this.injector.get(ManagementPortalService);
       return managementPortalService.getIdeaStatus(workspaceId, mgmtApiPrivateKey).then(
         (res) => {
@@ -1559,16 +1659,6 @@ export class PublicFunctions {
         }).catch((err) => {
           return false;
         });
-    }
-
-    /**
-     * This method returns the highest date of the posts passed by parameter
-     * @param posts
-     * @returns
-     */
-    getHighestDate(posts: any) {
-      const highestDate = moment(Math.max(...posts.map(post => moment(post.task.due_to))));
-      return (!highestDate || !highestDate.isValid()) ? null : highestDate;
     }
 
     async isShuttleTasksModuleAvailable() {

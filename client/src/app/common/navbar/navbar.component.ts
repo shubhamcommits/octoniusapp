@@ -48,6 +48,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   isAdminNavbar$ = new BehaviorSubject(false);
   isWorkNavbar$ = new BehaviorSubject(false);
   isUserAccountNavbar$ = new BehaviorSubject(false);
+  isPortfolioNavbar$ = new BehaviorSubject(false);
 
   userGroups: any = [];
 
@@ -89,6 +90,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         else if (this.routerState === 'user-account') {
           this.nextUserAccountNavbarState();
+        } else if (this.routerState === 'portfolio') {
+          this.nextPortfolioNavbarState();
         }
       }
     }));
@@ -165,6 +168,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isAdminNavbar$.next(false);
     this.isWorkNavbar$.next(false);
     this.isGroupNavbar$.next(true);
+    this.isPortfolioNavbar$.next(false);
   }
 
   nextCommonNavbarState() {
@@ -172,6 +176,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isGroupNavbar$.next(false);
     this.isWorkNavbar$.next(false);
     this.isAdminNavbar$.next(true);
+    this.isPortfolioNavbar$.next(false);
   }
 
   nextWorkNavbar() {
@@ -179,10 +184,20 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isAdminNavbar$.next(false);
     this.isGroupNavbar$.next(false);
     this.isWorkNavbar$.next(true);
+    this.isPortfolioNavbar$.next(false);
   }
 
   nextUserAccountNavbarState() {
     this.isUserAccountNavbar$.next(true);
+    this.isAdminNavbar$.next(false);
+    this.isGroupNavbar$.next(false);
+    this.isWorkNavbar$.next(false);
+    this.isPortfolioNavbar$.next(false);
+  }
+
+  nextPortfolioNavbarState() {
+    this.isPortfolioNavbar$.next(true);
+    this.isUserAccountNavbar$.next(false);
     this.isAdminNavbar$.next(false);
     this.isGroupNavbar$.next(false);
     this.isWorkNavbar$.next(false);

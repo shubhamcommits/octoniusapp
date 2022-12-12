@@ -1,21 +1,3 @@
-/**
- * !===== GROUPS MODULE OF OCTONIUS CLIENT =====!
- *
- * Please read the points below, before importing and injecting any dependencies:-
- * 1. Make sure that you document your import and if it's a part of exisiting module then import
- * that under the particular section, otherwise make a new suitable one.
- * 2. Insert the entries under the section in lexographical order.
- */
-
-/**
- * !===== INDEX =====!
- *
- * 1. COMPONENTS
- * 2. MODULES
- * 3. SERVICES
- * 4. DECLARATIONS, IMPORTS, & PROVIDERS
- */
-
  /**
   * 1. !===== COMPONENTS =====!
   */
@@ -91,6 +73,19 @@ import { PermissionDialogComponent } from './group/permission-dialog/permission-
 import { FilesCustomFieldsDialogComponent } from './group/files-custom-fields-dialog/files-custom-fields-dialog.component';
 import { GroupSettingsComponent } from './group/group-admin/group-settings/group-settings.component';
 import { GroupBackgroundImageDetailsComponent } from './group/group-admin/group-settings/group-background-image-details/group-background-image-details.component';
+import { GroupsComponent } from './groups.component';
+import { PortfolioDetailsComponent } from './portfolio/portfolio-details.component';
+import { CreatePortfolioComponent } from './portfolio/create-portfolio/create-portfolio.component';
+import { PortfolioComponent } from './portfolio/portfolio-details/portfolio.component';
+import { GroupSelectorDialogComponent } from './portfolio/group-selector-dialog/group-selector-dialog.component';
+import { PortfolioGroupsListComponent } from './portfolio/portfolio-groups-list/portfolio-groups-list.component';
+import { PortfolioMembersWorkloadCardComponent } from './portfolio/dashboard/portfolio-members-workload-card/portfolio-members-workload-card.component';
+import { PortfolioProjectsPerformanceCardComponent } from './portfolio/dashboard/portfolio-projects-performance-card/portfolio-projects-performance-card.component';
+import { PortfolioWorkStatisticsCardComponent } from './portfolio/dashboard/portfolio-work-statistics-card/portfolio-work-statistics-card.component';
+import { PortfolioProjectStatisticsComponent } from './portfolio/dashboard/portfolio-projects-performance-card/portfolio-project-statistics/portfolio-project-statistics.component';
+import { PortfolioProjectBudgetComponent } from './portfolio/dashboard/portfolio-projects-performance-card/portfolio-project-budget/portfolio-project-budget.component';
+import { PortfolioHeaderComponent } from './portfolio/portfolio-header/portfolio-header.component';
+import { PortfolioUserWorkloadDialogComponent } from './portfolio/portfolio-user-workload-dialog/portfolio-user-workload-dialog.component';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -99,17 +94,24 @@ import { GroupBackgroundImageDetailsComponent } from './group/group-admin/group-
     declarations: [
         GroupRAGDialogComponent,
         ColumnProjectSectionComponent,
-        // Groups List Component
+        GroupsComponent,
         GroupsListComponent,
-        // Create Group Component
         CreateGroupComponent,
-        // // Group Smart Admin Component
+        PortfolioComponent,
+        PortfolioDetailsComponent,
+        PortfolioHeaderComponent,
+        PortfolioGroupsListComponent,
+        CreatePortfolioComponent,
+        PortfolioMembersWorkloadCardComponent,
+        PortfolioUserWorkloadDialogComponent,
+        PortfolioProjectsPerformanceCardComponent,
+        PortfolioWorkStatisticsCardComponent,
+        PortfolioProjectStatisticsComponent,
+        PortfolioProjectBudgetComponent,
+        GroupSelectorDialogComponent,
         GroupSmartAdminComponent,
-        // Group Members Component
         GroupMembersComponent,
-        // Group Component
         GroupComponent,
-        // GroupHeaderComponent,
         GroupAdminComponent,
         GroupActivityComponent,
         DeleteGroupComponent,

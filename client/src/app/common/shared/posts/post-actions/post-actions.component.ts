@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angular/core';
-import { CommentService } from 'src/shared/services/comment-service/comment.service';
 import { PublicFunctions } from 'modules/public.functions';
+import { PostService } from 'src/shared/services/post-service/post.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-post-actions',
@@ -9,27 +10,19 @@ import { PublicFunctions } from 'modules/public.functions';
 })
 export class PostActionsComponent implements OnInit {
 
-  constructor(
-    private commentService: CommentService,
-    private injector: Injector
-  ) { }
-
-  // Post Input
   @Input('post') post: any;
-
-  // User Data Object
   @Input('userData') userData: any;
-
   @Input() fullscreen: boolean = false;
-
   @Input() groupData: any;
-  @Input() isIdeaModuleAvailable;
   @Input() canEdit = true;
+  @Input() isIdeaModuleAvailable;
 
-  // Delete Post Event Emitter
   @Output('delete') delete = new EventEmitter()
-
   @Output() pinEvent = new EventEmitter();
+  @Output('showCommentEditor') showCommentEditorEmitter = new EventEmitter()
+  @Output('comments') showCommentsEmitter = new EventEmitter();
+  @Output() newCommentEmitter = new EventEmitter();
+  @Output() closeModalEvent = new EventEmitter();
 
   // Show Comment State
   showComments: boolean = false;
@@ -38,33 +31,34 @@ export class PostActionsComponent implements OnInit {
   showCommentQuillEditor = false;
 
   likedByUsers = [];
-  likedByUsersStr = '';
+  topLikedByUsers = [];
+  
   followedByUsers = [];
-  followedByUsersStr = '';
   newComment;
 
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
 
-  // Show Comment Editor
-  @Output('showCommentEditor') showCommentEditorEmitter = new EventEmitter()
-
-  // Comments
-  @Output('comments') showCommentsEmitter = new EventEmitter();
-
-  @Output() newCommentEmitter = new EventEmitter();
-
-  @Output() closeModalEvent = new EventEmitter();
+  constructor(
+    private injector: Injector,
+    private utilityService: UtilityService,
+    private postService: PostService
+  ) { }
 
   async ngOnInit() {
-    await this.post._liked_by.forEach(user => {
+
+    await this.postService.getLikedByUsers(this.post?._id).then(res => {
+      this.likedByUsers = res['likedBy'];
+    });
+    
+    await this.likedByUsers.slice(0, 10).forEach(user => {
       if(user._id) {
-        this.likedByUsers.push((user['first_name'] || 'Deleted') + ' ' + (user['last_name'] || 'User'));
+        this.topLikedByUsers.push((user['first_name'] || 'Deleted') + ' ' + (user['last_name'] || 'User'));
       } else {
         this.publicFunctions.getOtherUser(user).then(otherUser => {
-          this.likedByUsers.push(otherUser['first_name'] + ' ' + otherUser['last_name']);
+          this.topLikedByUsers.push(otherUser['first_name'] + ' ' + otherUser['last_name']);
         }).catch(err => {
-          this.likedByUsers.push($localize`:@@postActions.deletedUser:Deleted User`);
+          this.topLikedByUsers.push($localize`:@@postActions.deletedUser:Deleted User`);
         });
       }
     });
@@ -149,5 +143,11 @@ export class PostActionsComponent implements OnInit {
 
   onPostPin(pin: any) {
     this.pinEvent.emit(pin);
+  }
+
+  async openLikedByDialog() {
+    if (this.likedByUsers?.length > 0) {
+      this.utilityService.openLikedByDialog(this.likedByUsers);
+    }
   }
 }

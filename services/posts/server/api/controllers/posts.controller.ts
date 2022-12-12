@@ -495,6 +495,30 @@ export class PostController {
 
 
     /**
+     * This function is used to unlike a post
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async likedBy(req: Request, res: Response, next: NextFunction) {
+        // Fetch postId from the request
+        const { params: { postId } } = req;
+
+        // Call Service function to unlike a post
+        let likedBy: any = await postService.likedBy(postId)
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+            })
+
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'List of users like the post',
+            likedBy: likedBy
+        });
+    }
+
+
+    /**
      * This function is used to like a post
      * @param req 
      * @param res 

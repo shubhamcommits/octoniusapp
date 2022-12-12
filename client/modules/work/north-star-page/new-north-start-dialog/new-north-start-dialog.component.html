@@ -1,15 +1,17 @@
 <!-- FORGOT PASSWORD MODAL STARTS -->
 <div class="modal-header">
-    <i class="material-icons-outlined ml-2" style="color: #5E2FE5;">explore</i>
-    <h4 class="modal-title" id="modal-basic-title" i18n="@@newNorthStarDialog.createNS">Create a new North Star</h4>
-  
+
+    <img src="assets/images/create-target-ns.svg" alt="" style="width:180px; margin: 0 auto">
+
+
 </div>
 
 <div class="modal-body">
+  <h4 class="modal-title" id="modal-basic-title" i18n="@@newNorthStarDialog.createNS">Create a new North Star</h4>
     <div class="form-group">
-        <label i18n="@@newNorthStarDialog.title">Title</label>
-        <input type="text" class="form-control" [(ngModel)]="postTitle"
-            (keyup.enter)="createNS()">
+
+        <input type="text" class="form-control" [(ngModel)]="postTitle" placeholder="Enter title"
+            (keyup.enter)="createNS()" i18n="@@newNorthStarDialog.title">
     </div>
 
     <!--

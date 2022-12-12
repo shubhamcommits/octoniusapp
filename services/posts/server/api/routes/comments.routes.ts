@@ -46,6 +46,9 @@ router.post('/:commentId/like', commentsController.like);
 // This route is used to unlike a comment
 router.post('/:commentId/unlike', commentsController.unlike);
 
+// This route is used to unlike a post
+router.get('/:postId/liked-by', commentsController.likedBy);
+
 // GET - Get number of posts
 router.get('/count', commentsController.getCommentsCount);
 

@@ -49,7 +49,58 @@ const groupUploadFileHandler = (req: Request, res: Response, next: NextFunction)
             next();
         });
     }
+}
+
+/**
+ * This function is the boiler plate for file handler mechanism for user profileImage
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+const portfolioUploadFileHandler = (req: Request, res: Response, next: NextFunction) => {
+
+    if (!req.files) {
+        next();
+    } else {
+        const portfolioId = req.params.portfolioId;
+        req.body.fileData = JSON.parse(req.body.fileData);
+
+        // Get the file from the request
+        const file: any = req['files'].portfolioAvatar;
+
+        // Get the folder link from the environment
+        let folder = process.env.FILE_UPLOAD_FOLDER;
+
+        // Instantiate the fileName variable and add the date object in the name
+        let fileName = '';
+        if (req.body.fileData._workspace) {
+            fileName += req.body.fileData._workspace +  '_';
+      
+            if (portfolioId) {
+                fileName += portfolioId +  '_';
+            }
+        }
+        fileName += Date.now().toString() + req['files'].portfolioAvatar['name'];
+
+        // Modify the file accordingly and handle request
+        file.mv(folder + fileName, (error) => {
+            if (error) {
+                fileName = null;
+                return res.status(500).json({
+                    status: '500',
+                    message: 'file upload error',
+                    error
+                });
+            }
+
+            // Modify the current request to add 
+            req['fileName'] = fileName;
+
+            // Pass the middleware// Pass the middleware
+            next();
+        });
+    }
 
 }
 
-export { groupUploadFileHandler }
+export { groupUploadFileHandler, portfolioUploadFileHandler }

@@ -12,24 +12,12 @@ import moment from 'moment';
 })
 export class NewTaskComponent implements OnInit {
 
-  constructor(
-    private flowService: FlowService,
-    public injector: Injector
-  ) { }
-
-  // Column as the Input object
   @Input('column') column: any;
-
-  // User Data Object
   @Input('userData') userData: any;
-
-  // Group Data Object
   @Input('groupData') groupData: any;
-
   @Input() subtask: boolean;
   @Input() parentId: string;
   @Input() parentNS: boolean = false;
-
   @Input() isIdeaModuleAvailable;
 
   // Post Event Emitter
@@ -47,6 +35,11 @@ export class NewTaskComponent implements OnInit {
 
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
+
+  constructor(
+    private flowService: FlowService,
+    public injector: Injector
+  ) { }
 
   ngOnInit() {
     if (this.subtask) {

@@ -30,7 +30,7 @@
         <thead>
           <tr>
             <th class="header"> {{ currentMonth }} </th>
-            <th *ngFor="let date of dates" [ngClass]="{'today': isCurrentDay(date),'muted': !isCurrentDay(date), 'weekend': isWeekend(date)}"> {{ date | date: 'dd' }} </th>
+            <th *ngFor="let date of dates" [ngClass]="{'today': date?.is_current_day,'muted': !date?.is_current_day, 'weekend': date?.is_weekend_day}"> {{ date | date: 'dd' }} </th>
           </tr>
         </thead>
         <tbody>
@@ -62,7 +62,7 @@
 
                 <div class="tasks-list">
                   <ul>
-                    <li><span class="badge overdue-task" *ngIf="this.isCurrentDay(workload.date)">{{ workload.overdue_tasks }}</span></li>
+                    <li><span class="badge overdue-task" *ngIf="workload?.date?.is_current_day">{{ workload.overdue_tasks }}</span></li>
                     <li><span class="badge to-do-task">{{ workload.todo_tasks }}</span></li>
                     <li><span class="badge in-progress-task">{{ workload.inprogress_tasks }}</span></li>
                     <li><span class="badge badge-done">{{ workload.numDoneTasks }}</span></li>

@@ -19,8 +19,9 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
   @Input() workspaceData;
   @Input() userData;
   @Input() post;
+  @Input() portfolio;
   @Input() assigned_to = [];
-  @Input() type; // post/flow/filter/chat
+  @Input() type; // post/flow/filter/chat/portfolio
   @Input() canEdit = true;
 
   @Output() assigneeAddedEmiter = new EventEmitter();
@@ -60,6 +61,15 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
 
           this.members.unshift({_id: 'all', first_name: 'All', last_name: 'members', email: ''});
         });
+    } else if (this.type != 'portfolio') {
+      if (!this.workspaceData) {
+        this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+      }
+      
+      this.members = await this.workspaceData?.members;
+      this.members = await this.members?.filter((member) => {
+        return ['owner', 'admin', 'manager'].includes(member?.role);
+      });
     } else {
       if (!this.workspaceData) {
         this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
@@ -80,6 +90,10 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
 
     if (this.type == 'post' && this.post) {
       this.assigned_to = this.post._assigned_to;
+    }
+
+    if (this.type == 'portfolio' && this.portfolio) {
+      this.assigned_to = this.portfolio?._members;
     }
 
     if (!this.assigned_to) {
@@ -116,7 +130,11 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
             });
         }));
       } else if (this.type == 'flow') {
-        this.assigneeRemovedEmiter.emit({assigneeId: assigneeId});
+        this.assigneeRemovedEmiter.emit({ assigneeId: assigneeId });
+      } else if (this.type == 'portfolio') {
+        const index = this.assigned_to.findIndex((assignee) => assignee._id == assigneeId);
+        this.assigned_to.splice(index, 1);
+        this.assigneeRemovedEmiter.emit({ assignee: assigneeId });
       } else if (this.type == 'filter' || this.type == 'chat') {
         const index = this.assigned_to.findIndex((assignee) => assignee._id == assigneeId);
         this.assigned_to.splice(index, 1);
@@ -146,7 +164,6 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
                 .then((res) => {
                   this.post = res['post'];
                   this.assigned_to.push(member);
-                  //this.trigger.closeMenu();
 
                   // Emit the post to other components
                   this.assigneeAddedEmiter.emit({post: this.post, assigneeId: member._id});
@@ -159,17 +176,18 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
                 });
             }));
           } else {
-            //this.trigger.closeMenu();
-
             // Emit the post to other components
             this.assigneeAddedEmiter.emit({post: this.post, assigneeId: member._id});
           }
         } else if (this.type == 'flow') {
           //this.trigger.closeMenu();
-          this.assigneeAddedEmiter.emit({assignee: member});
+          this.assigneeAddedEmiter.emit({ assignee: member });
         } else if (this.type == 'filter' || this.type == 'chat') {
           this.assigned_to.push(member);
           this.assigneeAddedEmiter.emit(member);
+        } else if (this.type == 'portfolio') {
+          this.assigned_to.push(member);
+          this.assigneeAddedEmiter.emit({ assignee: member?._id });
         }
       }
     });

@@ -1,11 +1,11 @@
 import { Component, OnInit, Injector, Input } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-members-workload-card',
@@ -25,9 +25,7 @@ export class MembersWorkloadCardComponent implements OnInit {
 
   //date for calendar Nav
   dates: any = [];
-
-  currentDate: any = moment().format();
-
+  currentDate: any = DateTime.now();
   currentMonth = '';
 
   // IsLoading behavior subject maintains the state for loading spinner
@@ -65,12 +63,12 @@ export class MembersWorkloadCardComponent implements OnInit {
   }
 
   async generateNavDates() {
-    const firstDay = moment(this.currentDate).startOf('week').add(1, 'd');
+    const firstDay = this.currentDate.startOf("week");
 
     this.dates = await this.getRangeDates(firstDay);
 
     let tasks = [];
-    await this.groupService.getGroupTasksBetweenDays(this.groupData._id, moment(this.dates[0]).format('YYYY-MM-DD'), moment(this.dates[this.dates.length -1]).format('YYYY-MM-DD')).then(res => {
+    await this.groupService.getGroupTasksBetweenDays(this.groupData._id, this.dates[0].toISODate(), this.dates[this.dates.length -1].toISODate()).then(res => {
       tasks = res['posts'];
     });
 
@@ -84,6 +82,8 @@ export class MembersWorkloadCardComponent implements OnInit {
       this.dates.forEach(async date => {
         let workloadDay = {
           date: date,
+          is_current_day: this.isCurrentDay(date),
+          is_weekend_day: this.isWeekend(date),
           numTasks: 0,
           numDoneTasks: 0,
           allocation: 0,
@@ -104,7 +104,7 @@ export class MembersWorkloadCardComponent implements OnInit {
             });
         }
 
-        const tasksTmp = await memberTasks.filter(post => {return moment(date).isSame(moment(post.task.due_to), 'day') });
+        const tasksTmp = await memberTasks.filter(post => {return this.isSameDay(new DateTime(date), DateTime.fromISO(post.task.due_to)) });
         workloadDay.numTasks = tasksTmp.length;
 
         if (tasksTmp && tasksTmp.length > 0) {
@@ -128,7 +128,7 @@ export class MembersWorkloadCardComponent implements OnInit {
           workloadDay.inprogress_tasks = 0;
         }
 
-        const index = member?.out_of_office?.findIndex(outOfficeDay => moment.utc(outOfficeDay.date).isSame(date, 'day'));
+        const index = member?.out_of_office?.findIndex(outOfficeDay => this.isSameDay(DateTime.fromISO(outOfficeDay.date), date));
 
         if (index >= 0) {
           const outOfficeDay = member?.out_of_office[index];
@@ -143,20 +143,24 @@ export class MembersWorkloadCardComponent implements OnInit {
 
         member.workload.push(workloadDay);
       });
-      member.workload = member.workload.sort((w1, w2) => moment.utc(w1.date).isBefore(w2.date) ? -1 : 1);
+
+      member.workload = member.workload.sort((w1, w2) => (w1.date < w2.date) ? -1 : 1);
     });
   }
 
   getRangeDates(firstDay) {
     let dates = [];
     for (var i = 0; i < 7; i++) {
-      dates.push(moment(firstDay).add(i, 'd'));
+      let date = firstDay.plus({ days: i });
+      date.is_current_day = this.isCurrentDay(date);
+      date.is_weekend_day = this.isWeekend(date);
+      dates.push(date);
     }
 
     if (this.dates[0]?.month == this.dates[this.dates?.length -1]?.month) {
-      this.currentMonth = moment(this.dates[0]).format('MMMM');
+      this.currentMonth = this.dates[0]?.toFormat('LLLL');
     } else {
-      this.currentMonth = moment(this.dates[0]).format('MMMM') + ' / ' + moment(this.dates[this.dates?.length -1]).format('MMMM');
+      this.currentMonth = this.dates[0]?.toFormat('LLLL') + ' / ' + this.dates[this.dates?.length -1]?.toFormat('LLLL');
     }
 
     return dates;
@@ -164,21 +168,26 @@ export class MembersWorkloadCardComponent implements OnInit {
 
   changeDates(numDays: number, type: string) {
     if (type == 'add') {
-      this.currentDate = moment(this.currentDate).add(numDays, 'd');
+      this.currentDate = this.currentDate.plus({ days: numDays })
     } else if (type == 'sub') {
-      this.currentDate = moment(this.currentDate).subtract(numDays, 'd');
+      this.currentDate = this.currentDate.plus({ days: -numDays })
     } else if (type == 'today') {
-      this.currentDate = moment().format();
+      this.currentDate = DateTime.now();
     }
-    this.generateNavDates()
+    
+    this.generateNavDates();
   }
 
   isCurrentDay(day) {
-    return moment(day).isSame(this.currentDate, 'day');
+    return this.isSameDay(day, DateTime.now());
+  }
+
+  isSameDay(day1: DateTime, day2: DateTime) {
+    return day1.startOf('day').toMillis() === day2.startOf('day').toMillis();
   }
 
   isWeekend(date) {
-    var day = date.format('d');
+    var day = date.toFormat('d');
     return (day == '6') || (day == '0');
   }
 

@@ -532,6 +532,22 @@ const fs = require('fs');
         }
       };
 
+
+      /**
+       * This function is used to return the users who like the comment
+       * @param { postId }
+       */
+      async likedBy(commentId: string) {
+
+        const comment = await Comment.findOne({ _id: commentId })
+          .select('_liked_by')
+          .populate({ path: '_liked_by', select: 'first_name last_name profile_pic role email' })
+          .lean();
+
+        // Return the Data
+        return comment?._liked_by || []
+      }
+
       /**
        * Function to get next 5 comments on a post
        * @param { postId, commentId }

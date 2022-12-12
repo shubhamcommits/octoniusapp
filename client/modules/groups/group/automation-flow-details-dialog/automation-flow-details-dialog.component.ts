@@ -5,6 +5,7 @@ import { FlowService } from 'src/shared/services/flow-service/flow.service';
 import { environment } from 'src/environments/environment';
 import { SubSink } from 'subsink';
 import { PublicFunctions } from 'modules/public.functions';
+import moment from 'moment';
 
 @Component({
   selector: 'app-automation-flow-details-dialog',
@@ -26,11 +27,17 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
   flowName = '';
 
   triggerOptions = ['Assigned to', 'Custom Field', 'Section is', 'Status is', 'Task is CREATED', 'Subtasks Status', 'Approval Flow is Completed'];
-  actionOptions = ['Assign to', 'Change Status to', 'Custom Field', 'Move to'];
+  actionOptions = ['Assign to', 'Change Status to', 'Custom Field', 'Move to', 'Set Due date'];
   statusOptions = ['to do', 'in progress', 'done'];
   customFields = [];
   customFieldOptions = [];
   shuttleGroups = [];
+  dueDateOptions = [
+    { type: 'tomorrow', title: $localize`:@@automationFlowDetailsDialog.tomorrow:Tomorrow`},
+    { type: 'end_of_week', title: $localize`:@@automationFlowDetailsDialog.endOfWeek:End of the Week`},
+    { type: 'end_of_next_week', title: $localize`:@@automationFlowDetailsDialog.endOfNextWeek:End of Next Week`},
+    { type: 'end_of_month', title: $localize`:@@automationFlowDetailsDialog.endOfMonth:End of the Month`}
+  ];
 
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
@@ -289,6 +296,10 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
         this.flowSteps[stepIndex].action[actionIndex]._shuttle_group = (value['_id'] || value);
         break;
 
+      case 'set_due_date':
+        this.flowSteps[stepIndex].action[actionIndex].due_date_value = value;
+        break;
+
       default:
         break;
     }
@@ -331,5 +342,13 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
           }));
         }
       });
+  }
+
+  getDueDateIndex(dueDateValue: string) {
+    return this.dueDateOptions.findIndex(dd => dd.type == dueDateValue);
+  }
+
+  formateDate(date){
+    return moment(moment.utc(date), "YYYY-MM-DD").toDate();
   }
 }

@@ -581,4 +581,57 @@ export class SearchService {
 
     return files;
   }
+
+  async searchTasksForNS(userId: string, textQuery: any, groupId: any) {
+    try {
+      let query = {};
+      if (groupId) {
+        query = {
+          $and: [
+            { _group: groupId },
+            { type: 'task' },
+            { _parent: null },
+            { 'task._column': { $ne: null }},
+            {
+              $or: [
+                { content: { $regex: textQuery, $options: 'i' } },
+                { title: { $regex: textQuery, $options: 'i' } },
+                { tags: { $regex: textQuery, $options: 'i' } }
+              ]
+            }
+          ]
+        };
+      } else {
+        const user = await User.findOne({ _id: userId }).lean();
+
+        query = {
+          $and: [
+            { _group: { $in: user['_groups'] } },
+            { type: 'task' },
+            { _parent: null },
+            { 'task._column': { $ne: null }},
+            {
+              $or: [
+                { content: { $regex: textQuery, $options: 'i' } },
+                { title: { $regex: textQuery, $options: 'i' } },
+                { tags: { $regex: textQuery, $options: 'i' } }
+              ]
+            }
+          ]
+        };
+      }
+
+      return await Post.find(query)
+        .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+        .populate({ path: '_group', select: '_id group_name custom_fields' })
+        .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
+        .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+        .populate({ path: 'task._column', select: '_id title' })
+        .sort({ created_date: -1 })
+        .lean();
+
+    } catch (err) {
+      throw err;
+    }
+  }
 }

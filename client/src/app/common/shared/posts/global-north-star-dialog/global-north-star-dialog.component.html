@@ -62,24 +62,15 @@
                 [colors]="chartColors"
                 [plugins]="chartPlugins"></canvas>
 
-                <app-multiple-assignments
-                  [canEdit]="canEdit"
-                  [userData]="userData"
-                  [post]="postData"
-                  [type]="'post'"
-                  (assigneeAddedEmiter)="onAssigned($event)"
-                  (assigneeRemovedEmiter)="onAssigned($event)">
-                </app-multiple-assignments>
-            </div>
-
-            <!--
-            <app-post-actions
-                [post]="postData"
+              <app-multiple-assignments
+                [canEdit]="canEdit"
                 [userData]="userData"
-                [fullscreen]="true"
-                [canEdit]="canEdit">
-            </app-post-actions>
-            -->
+                [post]="postData"
+                [type]="'post'"
+                (assigneeAddedEmiter)="onAssigned($event)"
+                (assigneeRemovedEmiter)="onAssigned($event)">
+              </app-multiple-assignments>
+            </div>
 
             <br class="clearfix" />
 
@@ -93,7 +84,7 @@
           <button *ngIf="canEdit && !editContent"
             class="btn float-right btn-light btn-md" style="margin-left: 10px;"
             (click)="editContent = !editContent" i18n="@@globalNorthStarDialog.edit">
-              Edit North Star details
+              Edit details
           </button>
           <button *ngIf="canEdit && editContent" [disabled]="!contentChanged"
             class="btn float-right btn-primary btn-md" style="margin-left: 10px;"
@@ -107,56 +98,81 @@
             Cancel
           </button>
         </div>
+        <div class="btn-group">
+          <button *ngIf="canEdit"
+            class="btn new-ns-button" (click)="createNS()" i18n="@@globalNorthStarDialog.addTarget">
+            Add Target
+          </button>
+          <button *ngIf="canEdit" class="btn btn-warning btn-md"
+            (click)="openSearchTaskDialog()" i18n="@@globalNorthStarDialog.addTask">
+              Select Task
+          </button>
+        </div>
 
-        <button *ngIf="canEdit"
-          class="btn new-ns-button" (click)="createNS()" i18n="@@globalNorthStarDialog.addTarget">
-          + Add Target
-        </button>
 
-        <span style="margin-left: 20px" i18n="@@globalNorthStarDialog.goalsDescription">Targets are specific and measurable pieces that must be accomplished in order to reach your North Star.</span>
+        <p i18n="@@globalNorthStarDialog.goalsDescription" class="mt-2 muted">Targets are specific and measurable pieces that must be accomplished in order to reach your North Star.</p>
+
 
 
         <div class="subtasks">
           <div *ngFor="let task of subtasks; let i = index;">
+            <div class="media tile overview-task">
+              <div class="row media-body">
+                <div class="col-md-1" (click)="openSubtask(task)">
+                  <app-assignee-avatar [post]="task" [userData]="task?._assigned_to"></app-assignee-avatar>
+                </div>
 
-            <a (click)="openSubtask(task?._id)">
-              <!-- My Space Today Tasks -->
-              <div>
-                <div class="media tile overview-task">
-                  <div class="row media-body">
-                    <div class="col-md-1">
-                      <app-assignee-avatar [post]="task" [userData]="task?._assigned_to"></app-assignee-avatar>
-                    </div>
+                <div (click)="openSubtask(task)" [ngClass]="(!task?.task?.isNorthStar && task?._group) ? 'col-md-3' : 'col-md-4'">
+                  <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
+                </div>
 
-                    <div class="col-md-4">
-                      <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
-                    </div>
+                <div (click)="openSubtask(task)" class="col-md-4" style="text-align-last: center;" *ngIf="task?.task?.isNorthStar">
 
-                    <div class="col-md-4" style="text-align-last: center;">
+                  {{ getProgressPercent(task?.task?.northStar) | percent: '.2-2'}}
 
-                      {{ getProgressPercent(task?.task?.northStar) | percent: '.2-2'}}
+                  <mat-progress-bar mode="determinate"
+                    [appProgressBarColor]="getNSStatusColor(task?.task?.northStar?.values[task?.task?.northStar?.values?.length - 1].status)"
+                    [value]="getProgressPercent(task?.task?.northStar) * 100" style="height: 10px; border-radius: 20px;">
+                  </mat-progress-bar>
+                </div>
 
-                      <mat-progress-bar mode="determinate"
-                        [appProgressBarColor]="getNSStatusColor(task?.task?.northStar?.values[task?.task?.northStar?.values?.length - 1].status)"
-                        [value]="getProgressPercent(task?.task?.northStar) * 100" style="height: 10px; border-radius: 20px;">
-                      </mat-progress-bar>
-                    </div>
-
-                    <div class="col-md-2">
-                      <div class="grouplabel" *ngIf="task?._group">
-                        {{ task?._group?.group_name | truncatetext: 20 }}
-                      </div>
-                    </div>
-
-                    <div class="col-md-1">
-                      <div class="overview-item small">
-                        {{task.task.due_to | date:'MMM d' }}
-                      </div>
-                    </div>
+                <div (click)="openSubtask(task)" *ngIf="!task?.task?.isNorthStar" class="col-md-2">
+                  <div class="grouplabel" [ngClass]="task?.task?.status == 'to do' ? 'to-do-task'
+                    : task?.task?.status == 'in progress' ? 'in-progress-task'
+                    : task?.task?.status == 'done' ? 'done-task' : ''">
+                    {{ task?.task?.status }}
                   </div>
                 </div>
+
+                <div (click)="openSubtask(task)" *ngIf="!task?.task?.isNorthStar" class="col-md-2">
+                  <div class="grouplabel">
+                    {{ task?.task?._column?.title }}
+                  </div>
+                </div>
+
+                <div (click)="openSubtask(task)" class="col-md-2">
+                  <div class="grouplabel" *ngIf="task?._group">
+                    {{ task?._group?.group_name | truncatetext: 20 }}
+                  </div>
+                </div>
+
+                <div (click)="openSubtask(task)" class="col-md-1">
+                  <div class="overview-item small">
+                    {{task.task.due_to | date:'MMM d' }}
+                  </div>
+                </div>
+
+                <div *ngIf="!task?.task?.isNorthStar && task?._group" class="col-md-1">
+                  <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
+                  <mat-menu #menu="matMenu">
+                    <a mat-menu-item (click)="removeTaskFromNS(task?._id)">
+                      <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
+                      <span i18n="@@groupFiles.delete">Delete</span>
+                    </a>
+                  </mat-menu>
+                </div>
               </div>
-            </a>
+            </div>
           </div>
         </div>
 

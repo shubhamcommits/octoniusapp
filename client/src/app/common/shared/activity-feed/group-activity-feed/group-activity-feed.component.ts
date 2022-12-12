@@ -19,8 +19,6 @@ import { ActivityFiltersComponent } from '../activity-filters/activity-filters.c
 })
 export class GroupActivityFeedComponent implements OnInit {
 
-  @Input() isIdeaModuleAvailable;
-
   // Global Feed Variable check
   globalFeed: boolean = (this.router.snapshot.url.findIndex((segment) => segment.path == 'inbox') == -1) ? false : true
 
@@ -118,9 +116,9 @@ export class GroupActivityFeedComponent implements OnInit {
 
       let dialogRef;
       if (post['type'] === 'task') {
-        dialogRef = this.utilityService.openPostDetailsFullscreenModal(postId, this.groupData._id, this.isIdeaModuleAvailable, canOpen, this.columns);
+        dialogRef = this.utilityService.openPostDetailsFullscreenModal(postId, this.groupData._id, canOpen, this.columns);
       } else {
-        dialogRef = this.utilityService.openPostDetailsFullscreenModal(postId, this.groupData._id, this.isIdeaModuleAvailable, canOpen);
+        dialogRef = this.utilityService.openPostDetailsFullscreenModal(postId, this.groupData._id, canOpen);
       }
 
       if (dialogRef) {

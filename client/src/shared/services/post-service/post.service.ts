@@ -36,6 +36,17 @@ export class PostService {
   }
 
   /**
+   * This function is responsible for editing a post title
+   * @param postId
+   * @param postTitle
+   */
+  editTitle(postId: string, postTitle: string) {
+
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/${postId}/title`, { postTitle }).toPromise();
+  }
+
+  /**
    * This function is responsible for fetching a post details
    * @param postId
    */
@@ -66,6 +77,11 @@ export class PostService {
     // Call the HTTP Request
     return this._http.post(this.baseURL + `/${postId}/unlike`, '').
       toPromise()
+  }
+
+  getLikedByUsers(postId: string) {
+    // Call the HTTP Request
+    return this._http.get(this.baseURL + `/${postId}/liked-by`).toPromise();
   }
 
   /**
