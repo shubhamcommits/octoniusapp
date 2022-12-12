@@ -79,6 +79,11 @@ export class PostService {
       toPromise()
   }
 
+  getLikedByUsers(postId: string) {
+    // Call the HTTP Request
+    return this._http.get(this.baseURL + `/${postId}/liked-by`).toPromise();
+  }
+
   /**
    * This function is responsible for liking a post
    * @param postId

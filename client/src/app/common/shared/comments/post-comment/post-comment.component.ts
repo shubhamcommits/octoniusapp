@@ -49,6 +49,7 @@ export class PostCommentComponent implements OnInit {
   _content_mentions: any;
 
   likedByUsers = [];
+  topLikedByUsers = [];
 
   // Files Variable
   files: any = []
@@ -63,21 +64,39 @@ export class PostCommentComponent implements OnInit {
   publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
-    private injector: Injector
+    private injector: Injector,
+    private utilityService: UtilityService,
+    private commentService: CommentService
   ) { }
 
   async ngOnInit() {
-    if (this.comment && this.comment._liked_by) {
-      await this.comment._liked_by.forEach(user => {
-        (user['first_name'] && user['last_name'])
-          ? this.likedByUsers.push(user['first_name'] || 'Deleted' + ' ' + user['last_name'] || 'User')
-          : this.publicFunctions.getOtherUser(user._id || user).then(otherUser => {
-              this.likedByUsers.push(otherUser['first_name'] + ' ' + otherUser['last_name']);
-            }).catch(err => {
-              this.likedByUsers.push($localize`:@@postComment.deletedUser:Deleted User`);
-            });
-      });
-    }
+    await this.commentService.getLikedByUsers(this.comment?._id).then(res => {
+      this.likedByUsers = res['likedBy'];
+    });
+    
+    await this.likedByUsers.slice(0, 10).forEach(user => {
+      if(user._id) {
+        this.topLikedByUsers.push((user['first_name'] || 'Deleted') + ' ' + (user['last_name'] || 'User'));
+      } else {
+        this.publicFunctions.getOtherUser(user).then(otherUser => {
+          this.topLikedByUsers.push(otherUser['first_name'] + ' ' + otherUser['last_name']);
+        }).catch(err => {
+          this.topLikedByUsers.push($localize`:@@postActions.deletedUser:Deleted User`);
+        });
+      }
+    });
+
+    // if (this.comment && this.comment._liked_by) {
+    //   await this.comment._liked_by.forEach(user => {
+    //     (user['first_name'] && user['last_name'])
+    //       ? this.likedByUsers.push(user['first_name'] || 'Deleted' + ' ' + user['last_name'] || 'User')
+    //       : this.publicFunctions.getOtherUser(user._id || user).then(otherUser => {
+    //           this.likedByUsers.push(otherUser['first_name'] + ' ' + otherUser['last_name']);
+    //         }).catch(err => {
+    //           this.likedByUsers.push($localize`:@@postComment.deletedUser:Deleted User`);
+    //         });
+    //   });
+    // }
 
     this.displayCommentEditor = false;
   }
@@ -93,7 +112,6 @@ export class PostCommentComponent implements OnInit {
   saveCommentData() {
     if (this.quillData) {
       this.comment.content = JSON.stringify(this.quillData.contents)
-      let commentService = this.injector.get(CommentService);
       this._content_mentions = this.quillData.mention.users.map((user)=> user.insert.mention.id)
 
       // If content mentions has 'all' then only pass 'all' inside the array
@@ -118,7 +136,7 @@ export class PostCommentComponent implements OnInit {
         }
       }
 
-      commentService.edit(formData, this.comment._id);
+      this.commentService.edit(formData, this.comment._id);
     }
 
     this.displayCommentEditor = false;
@@ -126,17 +144,13 @@ export class PostCommentComponent implements OnInit {
 
   deleteComment(index: number) {
 
-    // Utility Service Instancr
-    let utilityService = this.injector.get(UtilityService);
-
     // Ask User to delete the comment or not
-    utilityService.getConfirmDialogAlert()
+    this.utilityService.getConfirmDialogAlert()
       .then((result) => {
         if (result.value) {
-          let commentService = this.injector.get(CommentService);
-          commentService.remove(this.comment._id).then((res)=>{
+          this.commentService.remove(this.comment._id).then((res)=>{
             this.remove.emit(index)
-            utilityService.warningNotification($localize`:@@postComment.commentRemoved:Comment Removed!`);
+            this.utilityService.warningNotification($localize`:@@postComment.commentRemoved:Comment Removed!`);
           })
         }
       })
@@ -174,5 +188,15 @@ export class PostCommentComponent implements OnInit {
     }
   }
 
+  async openLikedByDialog() {
+    if (this.comment?.likes_count > 0) {
+      let usersList = [];
+      await this.commentService.getLikedByUsers(this.comment?._id).then(res => {
+        usersList = res['likedBy'];
+      });
+      
+      this.utilityService.openLikedByDialog(usersList);
+    }
+  }
 }
 

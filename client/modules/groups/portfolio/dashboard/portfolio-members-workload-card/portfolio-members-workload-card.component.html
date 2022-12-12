@@ -50,7 +50,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let member of portfolioGroupsMembers" class="member-row" (click)="openUserWorkload()">
+          <tr *ngFor="let member of portfolioGroupsMembers" class="member-row" (click)="openUserWorkload(member?._id)">
             <td>
               <div class="member">
                 <div>
