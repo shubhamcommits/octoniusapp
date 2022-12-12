@@ -2029,25 +2029,35 @@ export class PostService {
         let post = posts[i];
 
         const subtasks = await Post.find({
-          $and: [
-            { 'task.isNorthStar': true },
-            { 'task._parent_task': post?._id },
-          ]
-        }).select('task.northStar').lean();
+            $and: [
+              { type: 'task' },
+              { 'task._parent_task': post?._id },
+            ]
+          }).select('task.status task.isNorthStar task.northStar').lean();
 
         if (subtasks && subtasks.length > 0) {
           let northStarValues = [];
           subtasks.forEach(st => {
-            const value = st?.task?.northStar?.values[st?.task?.northStar?.values?.length-1];
-            const nsValues = {
-                // currency: st?.task?.northStar?.currency,
-                type: st?.task?.northStar?.type,
-                value: value?.value,
-                status: value?.status,
+            let nsValues:any = {};
+            if (st?.task?.isNorthStar) {
+              const value = st?.task?.northStar?.values[st?.task?.northStar?.values?.length-1];
+              nsValues = {
+                  // currency: st?.task?.northStar?.currency,
+                  type: st?.task?.northStar?.type,
+                  value: value?.value,
+                  status: value?.status,
+                };
+            } else {
+              nsValues = {
+                type: '',
+                value: 0,
+                status: st?.task?.status
               };
-            
+            }
+
             northStarValues = northStarValues.concat(nsValues);
           });
+
           post.northStarValues = northStarValues;
         }
 
@@ -2117,7 +2127,7 @@ export class PostService {
   async getWorspacePostsResults(workspaceId: any, type: any, numDays: number, overdue: boolean, filteringGroups: any) {
 
     const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');
-console.log({filteringGroups});
+
     let groups = [];
     if (filteringGroups && filteringGroups != 'undefined' && filteringGroups.length > 0) {
       groups = filteringGroups;
@@ -2546,11 +2556,11 @@ console.log({filteringGroups});
     let posts = [];
 
     posts = await Post.find({
-      $and: [
-        { type: 'task' },
-        { 'task._parent_task': parentId }
-      ]
-    })
+        $and: [
+          { type: 'task' },
+          { 'task._parent_task': parentId }
+        ]
+      })
       .sort('created_date')
       .populate({ path: '_group', select: this.groupFields })
       .populate({ path: '_posted_by', select: this.userFields })

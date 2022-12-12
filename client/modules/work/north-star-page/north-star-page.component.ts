@@ -90,7 +90,7 @@ export class NorthStarPageComponent implements OnInit {
 
     await this.getUserGlobalNorthStarTasks();
 
-    this.initGraphs();
+    // this.initGraphs();
 
     // Send Updates to router state
     this.publicFunctions.sendUpdatesToRouterState({
@@ -108,59 +108,59 @@ export class NorthStarPageComponent implements OnInit {
       });
   }
 
-  async initGraphs() {
-    await this.getGlobalNorthStarTasks();
+  // async initGraphs() {
+  //   await this.getGlobalNorthStarTasks();
 
-    this.initAssignedToGraph();
-    this.initAssignedByGraph();
-    this.initGeneralGraph();
-  }
+  //   this.initAssignedToGraph();
+  //   this.initAssignedByGraph();
+  //   this.initGeneralGraph();
+  // }
 
-  async getGlobalNorthStarTasks() {
-   await this.postService.getGlobalNorthStarTasks()
-    .then((res) => {
-      const northstars = res['northstars'];
-      this.nsAssignedToMe = northstars.nsAssignedToMe;
-      this.nsAssignedByMe = northstars.nsAssignedByMe;
-    })
-    .catch(() => {
-      this.nsAssignedToMe = [];
-      this.nsAssignedByMe = [];
-    });
-  }
+  // async getGlobalNorthStarTasks() {
+  //  await this.postService.getGlobalNorthStarTasks()
+  //   .then((res) => {
+  //     const northstars = res['northstars'];
+  //     this.nsAssignedToMe = northstars.nsAssignedToMe;
+  //     this.nsAssignedByMe = northstars.nsAssignedByMe;
+  //   })
+  //   .catch(() => {
+  //     this.nsAssignedToMe = [];
+  //     this.nsAssignedByMe = [];
+  //   });
+  // }
 
-  async initAssignedToGraph() {
-    this.numAssignedToMe = this.nsAssignedToMe.length;
-    const completed = await this.nsAssignedToMe.filter(post => post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status == 'ACHIEVED');
-    const numCompleted = (completed) ? this.numAssignedToMe - completed.length : 0;
-    this.assignedToChartData = [this.numAssignedToMe - numCompleted, numCompleted];
-    this.assignedToChartReady = true;
-  }
+  // async initAssignedToGraph() {
+  //   this.numAssignedToMe = this.nsAssignedToMe.length;
+  //   const completed = await this.nsAssignedToMe.filter(post => post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status == 'ACHIEVED');
+  //   const numCompleted = (completed) ? this.numAssignedToMe - completed.length : 0;
+  //   this.assignedToChartData = [this.numAssignedToMe - numCompleted, numCompleted];
+  //   this.assignedToChartReady = true;
+  // }
 
-  async initAssignedByGraph() {
-    this.numAssignedByMe = this.nsAssignedByMe.length;
-    const completed = await this.nsAssignedByMe.filter(post => post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status == 'ACHIEVED');
-    const numCompleted = (completed) ? this.numAssignedByMe - completed.length : 0;
-    this.assignedByChartData = [this.numAssignedByMe - numCompleted, numCompleted];
-    this.assignedByChartReady = true;
-  }
+  // async initAssignedByGraph() {
+  //   this.numAssignedByMe = this.nsAssignedByMe.length;
+  //   const completed = await this.nsAssignedByMe.filter(post => post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status == 'ACHIEVED');
+  //   const numCompleted = (completed) ? this.numAssignedByMe - completed.length : 0;
+  //   this.assignedByChartData = [this.numAssignedByMe - numCompleted, numCompleted];
+  //   this.assignedByChartReady = true;
+  // }
 
-  async initGeneralGraph() {
-    const notStarted = await this.globalNorthStarTasks.filter(post => !post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status || post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status == 'NOT STARTED');
-    const onTrack = await this.globalNorthStarTasks.filter(post => post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status == 'ON TRACK');
-    const inDanger = await this.globalNorthStarTasks.filter(post => post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status == 'IN DANGER');
-    const achieved = await this.globalNorthStarTasks.filter(post => post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status == 'ACHIEVED');
+  // async initGeneralGraph() {
+  //   const notStarted = await this.globalNorthStarTasks.filter(post => !post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status || post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status == 'NOT STARTED');
+  //   const onTrack = await this.globalNorthStarTasks.filter(post => post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status == 'ON TRACK');
+  //   const inDanger = await this.globalNorthStarTasks.filter(post => post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status == 'IN DANGER');
+  //   const achieved = await this.globalNorthStarTasks.filter(post => post?.task?.northStar?.values[post?.task?.northStar?.values?.length - 1].status == 'ACHIEVED');
 
-    this.generalChartData = [onTrack?.length, inDanger?.length, notStarted?.length, achieved?.length];
-    this.generalChartReady = true;
-  }
+  //   this.generalChartData = [onTrack?.length, inDanger?.length, notStarted?.length, achieved?.length];
+  //   this.generalChartReady = true;
+  // }
 
   getProgressPercent(northStarValues: any) {
     if (!northStarValues || northStarValues?.length == 0) {
       return 0;
     }
 
-    return (northStarValues.filter(ns => ns.status == 'ACHIEVED').length || 0) / northStarValues.length;
+    return (northStarValues.filter(ns => (ns?.status == 'ACHIEVED' || ns?.status?.toUpperCase() == 'DONE')).length || 0) / northStarValues.length;
   }
 
   getNSStatusColor(status: string) {

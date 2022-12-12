@@ -161,19 +161,25 @@ export class GlobalNorthStarDialogComponent implements OnInit {
     if (this.subtasks && this.subtasks.length > 0) {
       let northStarValues = [];
       this.subtasks.forEach(st => {
+        let nsValues: any = {};
         if (st?.task?.isNorthStar) {
           const value = st?.task?.northStar?.values[st?.task?.northStar?.values?.length-1];
-          const nsValues = {
+          nsValues = {
               value: value?.value,
               status: value?.status,
             };
-          
-          northStarValues = northStarValues.concat(nsValues);
+        } else {
+          nsValues = {
+              value: 0,
+              status: st?.task?.status,
+            };
         }
+          
+        northStarValues = northStarValues.concat(nsValues);
       });
       this.postData.northStarValues = northStarValues;
 
-      const completed = await this.postData.northStarValues?.filter(value => value?.status == 'ACHIEVED');
+      const completed = await this.postData.northStarValues?.filter(value => (value?.status == 'ACHIEVED' || value?.status?.toUpperCase() == 'DONE'));
       const numCompleted = (completed) ? this.postData.northStarValues.length - completed.length : 0;
       this.chartData = [this.postData.northStarValues.length - numCompleted, numCompleted];
 
