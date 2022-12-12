@@ -1,9 +1,11 @@
-import { Component, OnInit, Injector, OnDestroy, Inject } from '@angular/core';
+import { Component, OnInit, Injector, OnDestroy, Inject, AfterViewInit } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment/moment';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PortfolioService } from 'src/shared/services/portfolio-service/portfolio.service';
+import { SubSink } from 'subsink';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-portfolio-user-workload-dialog',
@@ -30,29 +32,34 @@ export class PortfolioUserWorkloadDialogComponent implements OnInit, OnDestroy {
 
   columns;
 
+  isLoading$ = new BehaviorSubject(false);
+
+  private subSink = new SubSink();
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<PortfolioUserWorkloadDialogComponent>,
     private injector: Injector,
     private utilityService: UtilityService,
     private portfolioService: PortfolioService
-  ) { }
+  ) {
+  }
 
   async ngOnInit() {
+
+    this.isLoading$.next(true);
 
     this.portfolioId = this.data.portfolioId;
     this.userData = await this.publicFunctions.getOtherUser(this.data.userId);
 
     await this.loadTasks();
-    this.overdueAndTodayTasks = this.sortTasksByPriority(this.overdueTasks.concat(this.todayTasks));
+    this.overdueAndTodayTasks = await this.sortTasksByPriority(this.overdueTasks.concat(this.todayTasks));
 
-    // Send Updates to router state
-    this.publicFunctions.sendUpdatesToRouterState({
-      state: 'home'
-    })
+    this.isLoading$.next(false);
   }
 
   ngOnDestroy() {
+    this.subSink.unsubscribe();
   }
 
   async loadTasks() {
