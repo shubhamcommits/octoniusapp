@@ -16,8 +16,8 @@ export class GroupsComponent implements OnInit {
 
   selectedTab;
 
-  groupsLabel = $localize`:@@groups.general:Groups`;
-  portfolioLabel = $localize`:@@groups.general:Portfolio`;
+  groupsLabel = $localize`:@@groups.groups:Groups`;
+  portfolioLabel = $localize`:@@groups.portfolio:Portfolio`;
 
   // Public functions
   public publicFunctions = new PublicFunctions(this.injector);
