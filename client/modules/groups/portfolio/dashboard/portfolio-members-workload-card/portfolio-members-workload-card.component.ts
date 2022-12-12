@@ -196,10 +196,10 @@ export class PortfolioMembersWorkloadCardComponent implements OnChanges {
   /**
    * This function is responsible for opening a fullscreen dialog to see the member profile
    */
-  openUserWorkload(): void {
+  openUserWorkload(memberId: string): void {
     const data = {
       portfolioId: this.portfolioData?._id,
-      userId: this.userData?._id
+      userId: memberId
     }
 
     // const dialogRef = 

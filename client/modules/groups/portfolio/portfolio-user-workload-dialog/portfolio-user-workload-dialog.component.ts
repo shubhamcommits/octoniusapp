@@ -41,8 +41,6 @@ export class PortfolioUserWorkloadDialogComponent implements OnInit, OnDestroy {
   async ngOnInit() {
 
     this.portfolioId = this.data.portfolioId;
-
-    // Fetch the current user
     this.userData = await this.publicFunctions.getOtherUser(this.data.userId);
 
     await this.loadTasks();
