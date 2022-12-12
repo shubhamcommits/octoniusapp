@@ -46,9 +46,9 @@
 </div>
 
 <div class="clearfix save-content mb-3">
-    <button *ngIf="!editContent" class="btn float-right btn-light btn-md" style="margin-left: 10px;"
+    <button *ngIf="!editContent" class="btn float-right btn-light btn-md" style="margin-right: 20px;"
         (click)="editContent = !editContent" i18n="@@portfolioHeader.edit">
-        Edit
+        Edit details
     </button>
     <button *ngIf="editContent" [disabled]="!contentChanged" class="btn float-right btn-primary btn-md"
         style="margin-left: 10px;" (click)="updateContent()" i18n="@@portfolioHeader.save">

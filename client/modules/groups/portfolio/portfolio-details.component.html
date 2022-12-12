@@ -1,3 +1,4 @@
+<div class="container">
 <app-portfolio-header [portfolioData]="portfolioData" [userData]="userData"></app-portfolio-header>
 
 <mat-tab-group>
@@ -11,7 +12,7 @@
         <div class="row" style="padding: 0 20px;justify-content: space-between;">
             <div class="col-md-9" style="padding: 20px 0;">
                 <h2 i18n="@@portfolioDetails.performanceDashboard" style="float: left; margin-right: 10px;">Performance dashboard</h2>
-                <span class="material-icons-outlined" style="cursor: pointer;">info</span>
+                <!-- <span class="material-icons-outlined" style="cursor: pointer;">info</span> -->
             </div>
 
             <div>
@@ -28,7 +29,7 @@
             <div class="col-md-3 box">
                 <app-portfolio-work-statistics-card [period]="period" [portfolioId]="portfolioData?._id" [type]="'bar'"></app-portfolio-work-statistics-card>
             </div>
-        
+
             <div class="col-md-3 box">
                 <app-portfolio-work-statistics-card [period]="period" [portfolioId]="portfolioData?._id" [type]="'doughnut'"></app-portfolio-work-statistics-card>
             </div>
@@ -50,4 +51,5 @@
 <ng-container *ngIf="isLoading$ | async">
     <app-loading-spinner></app-loading-spinner>
 </ng-container>
+</div>
 <!-- LOADING SPINNER ENDS -->
