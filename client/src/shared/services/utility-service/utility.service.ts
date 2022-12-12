@@ -12,6 +12,7 @@ import * as XLSX from 'xlsx';
 import * as fileSaver from 'file-saver';
 import moment from 'moment';
 import { FilesService } from '../files-service/files.service';
+import { LikedByDialogComponent } from 'src/app/common/shared/liked-by-dialog/liked-by-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -556,6 +557,16 @@ export class UtilityService {
         groupData: groupData,
         userData: userData,
         type: type
+      }
+    });
+  }
+
+  openLikedByDialog(usersList: any) {
+    return this.dialog.open(LikedByDialogComponent, {
+      disableClose: false,
+      hasBackdrop: true,
+      data: {
+        usersList: usersList
       }
     });
   }

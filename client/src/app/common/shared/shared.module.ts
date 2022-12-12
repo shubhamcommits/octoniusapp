@@ -131,6 +131,7 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { GlobalNorthStarDialogComponent } from './posts/global-north-star-dialog/global-north-star-dialog.component';
 import { GlobalNorthStarStatsComponent } from './posts/global-north-star-dialog/stats/global-north-star-stats.component';
+import { LikedByDialogComponent } from './liked-by-dialog/liked-by-dialog.component';
 
 @NgModule({
     declarations: [
@@ -238,7 +239,8 @@ import { GlobalNorthStarStatsComponent } from './posts/global-north-star-dialog/
         PendingTasksCardComponent,
         TimeOffCardComponent,
         UserWorkloadCalendarComponent,
-        UserAvailabilityDayDialogComponent
+        UserAvailabilityDayDialogComponent,
+        LikedByDialogComponent
     ],
     imports: [
         CommonModule,
@@ -354,7 +356,8 @@ import { GlobalNorthStarStatsComponent } from './posts/global-north-star-dialog/
         PendingTasksCardComponent,
         TimeOffCardComponent,
         UserWorkloadCalendarComponent,
-        UserAvailabilityDayDialogComponent
+        UserAvailabilityDayDialogComponent,
+        LikedByDialogComponent
     ],
     providers: [
         { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },

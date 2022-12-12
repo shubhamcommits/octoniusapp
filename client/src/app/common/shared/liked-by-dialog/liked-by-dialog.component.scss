@@ -1,0 +1,15 @@
+.row {
+    padding: 0;
+    align-items: center;
+    transition: box-shadow 0.3s ease-in-out;
+    padding: 0;
+    align-items: center;
+    border-radius: 8px;
+    border: 1px solid #E4EDF8;
+    background: #ffffff;
+    margin-bottom: 5px;
+
+    &:hover {
+        box-shadow: 0 4px 24px 0 rgba(37, 38, 94, 0.1);
+    }
+}

@@ -1133,6 +1133,22 @@ export class PostService {
     }
   }
 
+
+  /**
+   * This function is used to return the users who like the post
+   * @param { postId }
+   */
+  async likedBy(postId: string) {
+
+    const post = await Post.findOne({ _id: postId })
+      .select('_liked_by')
+      .populate({ path: '_liked_by', select: this.userFields })
+      .lean();
+
+    // Return the Data
+    return post?._liked_by || []
+  }
+
   /**
    * This function is used to follow a post
    * @param { userId, postId }

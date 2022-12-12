@@ -1,0 +1,20 @@
+<div class="customFieldsDialog">
+  <div *ngFor="let user of usersList; let i = index;" class="row">
+    <div class="col-md-4">
+      <app-secured-image [imgURL]="user?.profile_pic" [service]="'user'"
+        [alt]="user?.first_name + ' ' + user?.last_name" [styleClass]="'feed-avatar-small'"
+        [tooltip]="user?.first_name + ' ' + user?.last_name">
+      </app-secured-image>
+    </div>
+
+    <div class="col-md-8">
+      {{ user?.first_name }} {{ user?.last_name }}
+    </div>
+  </div>
+
+  <div style="margin-top: 20px;">
+    <button class="btn btn-primary" (click)="closeDialog()" i18n="@@permissionDialog.close">
+      Close
+    </button>
+  </div>
+</div>
