@@ -1,9 +1,12 @@
-<div mat-dialog-title class="modal-header">
-    <i class="material-icons-outlined ml-2" style="color: #5E2FE5; float: left; margin-right: 15px;">explore</i>
+<div mat-dialog-title class="modal-header" style="text-align:center">
     <h4 class="modal-title" id="modal-basic-title" i18n="@@newNorthStarDialog.addTask">Add Tasks to North Star</h4>
+    <img src="assets/images/select-task-ns.svg" alt="" style="width:180px; margin: 30px auto">
+
 </div>
 
 <mat-dialog-content class="modal-body">
+
+
     <div class="form-group">
         <label i18n="@@newNorthStarDialog.title">Title</label>
         <input type="text" class="form-control" [(ngModel)]="postTitle" (keyup)="search()">
@@ -34,7 +37,7 @@
             <div class="col-md-8">
                 <strong i18n="@@newNorthStarDialog.title">Title</strong>
             </div>
-        
+
             <div class="col-md-4">
                 <strong i18n="@@newNorthStarDialog.group">Group</strong>
             </div>
