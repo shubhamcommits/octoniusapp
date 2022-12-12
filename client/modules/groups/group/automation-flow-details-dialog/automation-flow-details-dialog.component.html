@@ -247,6 +247,24 @@
                   </div>
                 </div>
 
+                <div *ngIf="action.name === 'Set Due date'">
+                  <div *ngIf="action?.due_date_value" style="margin-right: 10px;" class="badge-cf">
+                    {{ dueDateOptions[getDueDateIndex(action?.due_date_value)]?.title }}
+                  </div>
+
+                  <button *ngIf="!action?.custom_field?.name" mat-menu-item [matMenuTriggerFor]="customFieldNameActionMenu"
+                    i18n="@@groupAutomationFlowDetailsDialog.select">
+                    Select
+                  </button>
+
+                  <mat-menu #customFieldNameActionMenu="matMenu">
+                    <ng-container>
+                      <button mat-menu-item *ngFor="let dd of dueDateOptions"
+                        (click)="actionSelected('set_due_date', dd.type, stepIndex, actionIndex)">{{ dd.title }}</button>
+                    </ng-container>
+                  </mat-menu>
+                </div>
+
                 <div *ngIf="isShuttleTasksModuleAvailable && action.name === 'Shuttle task'">
                   <div *ngIf="action._shuttle_group">
                     {{ action?._shuttle_group?.group_name?.toUpperCase() }}

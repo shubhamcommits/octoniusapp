@@ -3536,6 +3536,24 @@ export class PostService {
                   post = await this.selectShuttleGroup(post._id, action?._shuttle_group?._id || action?._shuttle_group, userId);
                 }
                 break;
+            case 'Set Due date':
+                if (shuttleIndex < 0) {
+                  let newDueDate;
+                  if (action?.due_date_value == 'tomorrow') {
+                    newDueDate = moment().add(1,'days');
+                  } else if (action?.due_date_value == 'end_of_week') {
+                    newDueDate = moment().endOf('week').subtract(1,'days');
+                  } else if (action?.due_date_value == 'end_of_next_week') {
+                    newDueDate = moment().add(1,'weeks').endOf('week').subtract(1,'days');
+                  } else if (action?.due_date_value == 'end_of_month') {
+                    newDueDate = moment().endOf('month');
+                  }
+
+                  if (newDueDate) {
+                    post = await this.changeTaskDueDate(post._id, userId, newDueDate);
+                  }
+                }
+                break;
             default:
                 break;
         }

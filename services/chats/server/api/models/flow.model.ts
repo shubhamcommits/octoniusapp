@@ -54,7 +54,7 @@ const FlowSchema = new Schema({
         action: [{
             name: {
                 type: String,
-                enum: ['Assign to', 'Change Status to', 'Custom Field', 'Move to', 'Shuttle task']
+                enum: ['Assign to', 'Change Status to', 'Custom Field', 'Move to', 'Shuttle task', 'Set Due date']
             },
             _user: [{
                 type: Schema.Types.ObjectId,
@@ -81,6 +81,10 @@ const FlowSchema = new Schema({
             _shuttle_group: {
                 type: Schema.Types.ObjectId,
                 ref: 'Group'
+            },
+            due_date_value: {
+                type: String,
+                enum: ['tomorrow', 'end_of_week', 'end_of_next_week', 'end_of_month']
             }
         }]
     }]

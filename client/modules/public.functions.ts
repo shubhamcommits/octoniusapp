@@ -1575,8 +1575,22 @@ export class PublicFunctions {
                           });
                         }
                         return Promise.resolve({});
+                    case 'Set Due date':
+                        if (shuttleIndex < 0) {
+                          if (action?.due_date_value == 'tomorrow') {
+                            post.task.due_to = moment().add(1,'days');
+                          } else if (action?.due_date_value == 'end_of_week') {
+                            post.task.due_to = moment().endOf('week').subtract(1,'days');
+                          } else if (action?.due_date_value == 'end_of_next_week') {
+                            post.task.due_to = moment().add(1,'weeks').endOf('week').subtract(1,'days');
+                          } else if (action?.due_date_value == 'end_of_month') {
+                            post.task.due_to = moment().endOf('month');
+                          }
+                        }
+
+                        return post;
                     default:
-                        return Promise.resolve({});
+                        return post;
                 }
             });
             return post;
