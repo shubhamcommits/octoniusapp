@@ -342,8 +342,24 @@ export class GroupCalendarViewComponent implements OnInit {
     this.refresh.complete()
   }
 
-  openCreatePostDialog(content) {
-    this.utilityService.openModal(content, {});
+  openCreatePostDialog() {
+    // this.utilityService.openModal(content, {});
+    const dialogRef = this.utilityService.openCreatePostDialog(this.groupId, this.userData, null, false, null, 'task');
+
+    if (dialogRef) {
+      const postEventSubs = dialogRef.componentInstance.post.subscribe((data) => {
+        this.getPost(data);
+      });
+
+      const closeEventSubs = dialogRef.componentInstance.close.subscribe((data) => {
+        this.closeModal();
+      });
+      
+      dialogRef.afterClosed().subscribe(result => {
+        closeEventSubs.unsubscribe();
+        postEventSubs.unsubscribe();
+      });
+    }
   }
 
   /**
