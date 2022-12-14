@@ -32,15 +32,36 @@ export class GroupPostSelectionComponent implements OnInit {
 
   }
 
-  openModal(content: any){
-    this.utilityService.openModal(content, {});
+  openModal(type: string) {
+    // this.utilityService.openModal(content, {});
+    const dialogRef = this.utilityService.openCreatePostDialog(this.groupId, this.userData, null, false, null, type);
+
+    if (dialogRef) {
+      const postEventSubs = dialogRef.componentInstance.post.subscribe((data) => {
+        this.getPost(data);
+      });
+
+      const editedEventSubs = dialogRef.componentInstance.edited.subscribe((data) => {
+        this.editedPost(data);
+      });
+
+      const closeEventSubs = dialogRef.componentInstance.close.subscribe((data) => {
+        this.closeModal();
+      });
+      
+      dialogRef.afterClosed().subscribe(result => {
+        closeEventSubs.unsubscribe();
+        postEventSubs.unsubscribe();
+        editedEventSubs.unsubscribe();
+      });
+    }
   }
 
   /**
    * This function is responsible for emitting the post object to other components
    * @param post
    */
-  getPost(post: any){
+  getPost(post: any) {
 
     // Emit the post to other connected components
     this.post.emit(post)

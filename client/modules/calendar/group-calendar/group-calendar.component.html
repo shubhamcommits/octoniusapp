@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="col-md-1">
-              <button class="btn badge-cf" (click)="openCreateEventDialog(content)" style="margin:0">
+              <button class="btn badge-cf" (click)="openCreateEventDialog()" style="margin:0">
                 <i class="material-icons">add</i>
               </button>
             </div>
@@ -62,11 +62,9 @@
 </div>
 
 <!-- Modal Template for post creation starts -->
-<ng-template #content let-modal>
-  <!-- Create post starts -->
+<!-- <ng-template #content let-modal>
   <app-group-post *ngIf="userData && checkDataExist(userData)" [userData]="userData" [groupId]="groupData?._id"
     [type]="'task'" (post)="getPost($event)" (close)="closeModal()">
   </app-group-post>
-  <!-- Create post ends -->
-</ng-template>
+</ng-template> -->
 <!-- Modal Template for post creation ends -->

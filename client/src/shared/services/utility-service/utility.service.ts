@@ -13,6 +13,7 @@ import * as fileSaver from 'file-saver';
 import moment from 'moment';
 import { FilesService } from '../files-service/files.service';
 import { LikedByDialogComponent } from 'src/app/common/shared/liked-by-dialog/liked-by-dialog.component';
+import { GroupPostComponent } from 'src/app/common/shared/activity-feed/group-postbox/group-post/group-post.component';
 
 @Injectable({
   providedIn: 'root'
@@ -382,6 +383,30 @@ export class UtilityService {
       this.warningNotification($localize`:@@utilityService.noRightToOpenPost:You does not have rights to access the post. Contact with the Manager!`);
     }
     return dialogOpen;
+  }
+
+  /**
+   * This function is responsible for opening a fullscreen dialog to edit a task
+   */
+  openCreatePostDialog(groupId: string, userData: any, postData: any, edit: boolean, columns: any, type: string) {
+
+    const data = {
+      groupId: groupId,
+      postData: postData,
+      edit: edit,
+      columns: columns,
+      userData: userData,
+      type: type
+    }
+
+    return this.dialog.open(GroupPostComponent, {
+      width: '80%',
+      height: '75%',
+      disableClose: false,
+      hasBackdrop: true,
+      panelClass: 'groupCreatePostDialog',
+      data: data
+    });
   }
 
   /**

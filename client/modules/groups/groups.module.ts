@@ -12,7 +12,6 @@ import { GroupKanbanBoardsComponent } from './group/group-kanban-boards/group-ka
 import { CreateColumnComponent } from './group/group-kanban-boards/create-column/create-column.component';
 import { BoardBarComponent } from './group/group-kanban-boards/board-bar/board-bar.component';
 import { EditColumnComponent } from './group/group-kanban-boards/edit-column/edit-column.component';
-import { GroupPostComponent } from './group/group-post/group-post.component';
 import { InviteUserComponent } from './group/group-admin/invite-user/invite-user.component';
 import { GroupTasksViewsComponent } from './group/group-tasks-views/group-tasks-views.component';
 import { GroupTasksListViewComponent } from './group/group-tasks-list-view/group-tasks-list-view.component';
@@ -122,7 +121,6 @@ import { PortfolioUserWorkloadDialogComponent } from './portfolio/portfolio-user
         CreateSectionComponent,
         BoardBarComponent,
         EditColumnComponent,
-        GroupPostComponent,
         InviteUserComponent,
         GroupTasksViewsComponent,
         CustomFieldsDialogComponent,

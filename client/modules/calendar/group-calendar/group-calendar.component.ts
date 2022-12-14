@@ -338,11 +338,27 @@ export class GroupCalendarComponent implements OnInit {
     this.refresh.complete()
   }
 
-  openCreateEventDialog(content) {
-    this.utilityService.openModal(content, {
-      disableClose: false,
-      hasBackdrop: true
-    });
+  openCreateEventDialog() {
+    // this.utilityService.openModal(content, {
+    //   disableClose: false,
+    //   hasBackdrop: true
+    // });
+    const dialogRef = this.utilityService.openCreatePostDialog(this.groupData?._id, this.userData, null, false, null, 'task');
+
+    if (dialogRef) {
+      const postEventSubs = dialogRef.componentInstance.post.subscribe((data) => {
+        this.getPost(data);
+      });
+
+      const closeEventSubs = dialogRef.componentInstance.close.subscribe((data) => {
+        this.closeModal();
+      });
+      
+      dialogRef.afterClosed().subscribe(result => {
+        closeEventSubs.unsubscribe();
+        postEventSubs.unsubscribe();
+      });
+    }
   }
 
   /**

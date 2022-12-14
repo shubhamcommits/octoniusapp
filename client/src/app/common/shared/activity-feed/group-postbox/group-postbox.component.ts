@@ -48,18 +48,39 @@ export class GroupPostboxComponent implements OnInit {
     this.post.emit(post)
   }
 
-  editedPost(post: any){
+  editedPost(post: any) {
     this.edited.emit(post);
   }
 
-  openModal(content: any){
-    this.utilityService.openModal(content, {});
+  openModal() {
+    // this.utilityService.openModal(content, {});
+    const dialogRef = this.utilityService.openCreatePostDialog(this.groupId, this.userData, null, false, null, 'normal');
+
+    if (dialogRef) {
+      const postEventSubs = dialogRef.componentInstance.post.subscribe((data) => {
+        this.getPost(data);
+      });
+
+      const editedEventSubs = dialogRef.componentInstance.edited.subscribe((data) => {
+        this.editedPost(data);
+      });
+
+      const closeEventSubs = dialogRef.componentInstance.close.subscribe((data) => {
+        this.closeModal();
+      });
+      
+      dialogRef.afterClosed().subscribe(result => {
+        closeEventSubs.unsubscribe();
+        postEventSubs.unsubscribe();
+        editedEventSubs.unsubscribe();
+      });
+    }
   }
 
   /**
    * This function closes all the modals
    */
-  closeModal(){
+  closeModal() {
     this.utilityService.closeAllModals();
   }
 }

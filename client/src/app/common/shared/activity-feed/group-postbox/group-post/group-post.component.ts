@@ -1,10 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Injector, Inject } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment/moment';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-group-post',
@@ -13,12 +14,22 @@ import { FlowService } from 'src/shared/services/flow-service/flow.service';
 })
 export class GroupPostComponent implements OnInit {
 
-  constructor(
-    private postService: PostService,
-    private utilityService: UtilityService,
-    private flowService: FlowService,
-    private injector: Injector
-  ) { }
+  @Input('post') postData: any
+  @Input('edit') edit: boolean = false;
+  @Input('columns') columns: any
+  @Input('userData') userData: any;
+  @Input('groupId') groupId: any;
+  @Input('type') type: string = 'normal';
+
+  @Output('moveTask') moveTask = new EventEmitter();
+  @Output('taskStatus') taskStatus = new EventEmitter();
+  @Output('member') member = new EventEmitter()
+  @Output('date') date = new EventEmitter()
+  @Output() pinEvent = new EventEmitter();
+  @Output('close') close = new EventEmitter();
+  @Output('post') post = new EventEmitter()
+  @Output('edited') edited = new EventEmitter();
+  @Output('delete') delete = new EventEmitter();
 
   // BASE URL OF THE APPLICATION
   baseUrl = environment.UTILITIES_BASE_URL;
@@ -64,20 +75,6 @@ export class GroupPostComponent implements OnInit {
   // Assigned State of Task
   assigned: boolean = false;
 
-  // Move Task to another column output event emitter
-  @Output('moveTask') moveTask = new EventEmitter();
-
-  // Change task status output event emitter
-  @Output('taskStatus') taskStatus = new EventEmitter();
-
-  // Output the task assignee
-  @Output('member') member = new EventEmitter()
-
-  // Output the task due date
-  @Output('date') date = new EventEmitter()
-
-  @Output() pinEvent = new EventEmitter();
-
   // Asignees
   eventAssignees: any = [];
 
@@ -90,43 +87,30 @@ export class GroupPostComponent implements OnInit {
     minute: 30
   }
 
-  /* Event Variables */
-
-  // PostData Variable which is used for showing post content
-  @Input('post') postData: any
-
-  // Edit Check variable to keep a track whether the modal opened is in the edit mode or not
-  @Input('edit') edit: boolean = false;
-
-  // Columns variable to keep a track of for list of kanban columns
-  @Input('columns') columns: any
-
-  // UserData Object
-  @Input('userData') userData: any;
-
-  // GroupId variable
-  @Input('groupId') groupId: any;
-
-  // Post Type = 'normal', 'task', or 'event'
-  @Input('type') type: string = 'normal';
-
-  // Close event emitter takes care of closing the modal
-  @Output('close') close = new EventEmitter();
-
-  // Post Event Emitter - Emits the post to the other components
-  @Output('post') post = new EventEmitter()
-
-  // Edited EVent Emitter - Emits edited event
-  @Output('edited') edited = new EventEmitter();
-
-  // Delete Event Emitter - Emits delete event
-  @Output('delete') delete = new EventEmitter();
-
   groupData: any;
 
   flows = [];
 
+  constructor(
+    private postService: PostService,
+    private utilityService: UtilityService,
+    private flowService: FlowService,
+    private injector: Injector,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private mdDialogRef: MatDialogRef<GroupPostComponent>
+  ) { }
+
   async ngOnInit() {
+
+    if (this.data) {
+      this.postData = this.data.postData;
+      this.edit = this.data.edit;
+      this.columns = this.data.columns;
+      this.userData = this.data.userData;
+      this.groupId = this.data.groupId;
+      this.type = this.data.type;
+    }
+
     this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
 
     /*
@@ -139,7 +123,7 @@ export class GroupPostComponent implements OnInit {
     if (this.edit) {
 
       // Set the title of the post
-      this.title = this.postData.title
+      this.title = this.postData.title;
 
       // If Post is task and is assigned
       if (this.postData._assigned_to && this.type == 'task') {
@@ -259,7 +243,8 @@ export class GroupPostComponent implements OnInit {
   }
 
   closeModal() {
-    this.close.emit()
+    this.close.emit();
+    this.mdDialogRef.close();
   }
 
   postModalCloseEvent() {

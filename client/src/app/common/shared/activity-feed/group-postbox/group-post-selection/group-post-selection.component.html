@@ -3,7 +3,7 @@
 
     <!-- Normal Post Starts -->
     <button class="btn btn-md cool"  matTooltip="Create a post"
-      (click)="openModal(content); type = 'normal'">
+      (click)="openModal('normal'); type = 'normal'">
         <i [style.color]="type === 'normal'" class="material-icons-outlined" id="icon_comment">comment</i>
         <span i18n="@@groupPostSelection.writeAPost">Write a post</span>
     </button>
@@ -11,14 +11,14 @@
 
     <!-- Event Post Starts -->
     <button class="btn btn-md cool"  matTooltip="Create event"
-      (click)="openModal(content); ; type = 'event'">
+      (click)="openModal('event'); ; type = 'event'">
         <i [style.color]="type === 'event'" class="material-icons-outlined" id="icon_event">event</i>
         <span i18n="@@groupPostSelection.scheduleEvent">Schedule event</span>
     </button>
     <!-- Event Post Ends -->
 
     <!-- Task Post Starts -->
-    <button class="btn btn-lg btn-link cool" matTooltipPosition="above" matTooltip="Create task" (click)="openModal(content); ; type = 'task'">
+    <button class="btn btn-lg btn-link cool" matTooltipPosition="above" matTooltip="Create task" (click)="openModal('task'); ; type = 'task'">
       <i [style.color]="type === 'task' ? '#005fd5' : '#9b9b9b'"
         class="material-icons muted" id="icon_check_box">check_box</i>
     </button>
@@ -30,9 +30,9 @@
 <!-- Modal Template for post creation starts -->
 <ng-template #content let-modal>
   <!-- Create post starts -->
-  <app-group-post *ngIf="userData && checkDataExist(userData)" [userData]="userData" [groupId]="groupId"
+  <!-- <app-group-post *ngIf="userData && checkDataExist(userData)" [userData]="userData" [groupId]="groupId"
     [type]="type" (post)="getPost($event)" (edited)="editedPost($event)" (close)="closeModal()">
-  </app-group-post>
+  </app-group-post> -->
   <!-- Create post ends -->
 </ng-template>
 <!-- Modal Template for post creation ends -->
