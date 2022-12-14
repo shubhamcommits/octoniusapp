@@ -237,7 +237,7 @@ export class GroupPostDialogComponent implements OnInit {
   
       this.initCustomFields();
     }
-console.log(this.columns);
+
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
   }
