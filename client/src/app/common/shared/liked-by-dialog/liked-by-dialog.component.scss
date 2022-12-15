@@ -16,5 +16,8 @@
 
 .customFieldsDialog{
   width: 360px;
-  padding: 12px;
+  padding: 32px;
+  max-height: 500px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
