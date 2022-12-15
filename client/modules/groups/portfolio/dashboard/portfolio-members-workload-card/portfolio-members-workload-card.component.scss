@@ -11,6 +11,7 @@ a {
 
 .table-wrapper {
   overflow-y: auto;
+  box-shadow: $box-shadow;
 
   .member-row {
     cursor: pointer;
