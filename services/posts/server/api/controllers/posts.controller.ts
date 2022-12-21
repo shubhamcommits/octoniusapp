@@ -824,14 +824,16 @@ export class PostController {
     async changeTaskDueDate(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { params: { postId }, body: { date_due_to } } = req;
+        const { params: { postId }, body: { date_due_to, isShuttleTasksModuleAvailable } } = req;
         const userId = req['userId'];
 
         // Call Service function to change the assignee
-        const post = await postService.changeTaskDueDate(postId, userId, date_due_to)
+        let post = await postService.changeTaskDueDate(postId, userId, date_due_to)
             .catch((err) => {
                 return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-            })
+            });
+
+        post = await this.executeAutomationFlows((post._group || post._group._id), post, userId, false, isShuttleTasksModuleAvailable);
 
         // Send status 200 response
         return res.status(200).json({
@@ -849,24 +851,27 @@ export class PostController {
     async updateGanttTasksDates(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { params: { postId }, body: { date_due_to, start_date, s_days, e_days, group_id } } = req;
+        const { params: { postId }, body: { date_due_to, start_date, s_days, e_days, group_id, isShuttleTasksModuleAvailable } } = req;
         const userId = req['userId'];
 
         try {
-            async function update(p_Id, d_date, s_date , s_day, e_day, rec){
+            async function update(p_Id, d_date, s_date , s_day, e_day, rec) {
                 if (s_day != 0){
-                    var post = await postService.changeTaskDate(p_Id, userId,'start_date',s_date)
-                    .catch((err) => {
-                        return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                    })
+                    let post = await postService.changeTaskDate(p_Id, userId,'start_date',s_date)
+                        .catch((err) => {
+                            return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                        });
+                    post = await this.executeAutomationFlows((post._group || post._group._id), post, userId, false, isShuttleTasksModuleAvailable);
                     
                 }
                 
                 if (e_day != 0){
-                    var post = await postService.changeTaskDueDate(p_Id, userId, d_date)
-                    .catch((err) => {
-                        return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                    })
+                    let post = await postService.changeTaskDueDate(p_Id, userId, d_date)
+                        .catch((err) => {
+                            return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                        });
+
+                    post = await this.executeAutomationFlows((post._group || post._group._id), post, userId, false, isShuttleTasksModuleAvailable);
     
                     if(post?.task?._dependent_child && post?.task?._dependent_child.length>0){
                         
@@ -1607,6 +1612,14 @@ export class PostController {
                                 retValue = await this.isApprovalFlowCompleted(post.approval_flow);
                             } else {
                                 retValue = false;
+                            }
+                            break;
+                        case 'Due date is':
+                            const today = moment().startOf('day').format('YYYY-MM-DD');
+                            if (((trigger?.due_date_value == 'overdue') && (post?.task?.status != 'done') && (moment.utc(post?.task?.due_to).format('YYYY-MM-DD') < today))
+                                    || ((trigger?.due_date_value == 'today') && (moment.utc(post?.task?.due_to).isSame(today)))
+                                    || ((trigger?.due_date_value == 'tomorrow') && (moment.utc(post?.task?.due_to).isSame(moment().startOf('day').add(1, 'days'))))) {
+                                retValue = true;
                             }
                             break;
                         default:

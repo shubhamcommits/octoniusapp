@@ -114,7 +114,7 @@ export class NewTaskComponent implements OnInit {
       }
     } else {
       // Check if private group
-      if (this.groupData._id == this.userData._private_group) {
+      if (this.groupData?._id == this.userData?._private_group) {
         postData = {
           title: this.postTitle,
           content: '',

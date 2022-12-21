@@ -362,10 +362,11 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   }
 
   //Update Dates
-  dateupdate(task, start, end, sday, eday, groupid) {
+  async dateupdate(task, start, end, sday, eday, groupid) {
+    const isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
     const startdate = this.datePipe.transform(start, "yyyy-MM-dd");
     const enddate = this.datePipe.transform(end, "yyyy-MM-dd");
-    this.postService.updateGanttTasksDates(task['id'], groupid, enddate, startdate, sday, eday)
+    this.postService.updateGanttTasksDates(task['id'], groupid, enddate, startdate, sday, eday, isShuttleTasksModuleAvailable)
       .then((res) => {
         this.tasks = res['posts'];
 

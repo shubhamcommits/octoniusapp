@@ -128,9 +128,10 @@ export class PostDatesComponent implements OnInit, OnChanges {
    * @param property
    */
   async updateDate(date, property) {
-    await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+    await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise(async (resolve, reject) => {
       if (property === 'due_date') {
-        this.postService.changeTaskDueDate(this.postData?._id, date?moment(date).format('YYYY-MM-DD'):null)
+        const isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
+        this.postService.changeTaskDueDate(this.postData?._id, date?moment(date).format('YYYY-MM-DD'):null, isShuttleTasksModuleAvailable)
         .then((res) => {
           this.postData = res['post'];
           this.dueDate = moment(this.postData?.task?.due_to);

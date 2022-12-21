@@ -66,7 +66,7 @@ export class FlamingoGuard implements CanActivate  {
           canView = await this.utilityService.canUserDoFileAction(file, currentGroup, currentUser, 'view') || !hide;
         }
 
-        if (canEdit || canView || currentUser._private_group == currentGroup?._id) {
+        if (canEdit || canView || currentUser?._private_group == currentGroup?._id) {
           return true;
         } else {
           this.utilityService.warningNotification($localize`:@@flamingoGuard.oopsNoPermissionForGroup:Oops seems like you don\'t have the permission to access the group, kindly contact your superior to provide you the proper access!`);

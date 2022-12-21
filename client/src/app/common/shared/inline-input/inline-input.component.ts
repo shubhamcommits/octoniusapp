@@ -174,9 +174,10 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges, On
   }
 
   async updateDate(date, property) {
-    await this.utilityService.asyncNotification($localize`:@@inlineInput.pleaseWaitUpdatingContent:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+    await this.utilityService.asyncNotification($localize`:@@inlineInput.pleaseWaitUpdatingContent:Please wait we are updating the contents...`, new Promise(async (resolve, reject) => {
       if (property === 'due_date') {
-        this.postService.changeTaskDueDate(this.domainObject._id, moment(date).format('YYYY-MM-DD'))
+        const isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
+        this.postService.changeTaskDueDate(this.domainObject._id, moment(date).format('YYYY-MM-DD'), isShuttleTasksModuleAvailable)
           .then((res) => {
             // Emit the post to other components
             this.post.emit({post: res['post']});

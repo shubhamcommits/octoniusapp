@@ -167,7 +167,7 @@ routes.put('/:postId/remove-assignee', postController.removeAssignee.bind(postCo
 routes.put('/:postId/task-assignee', postController.changeTaskAssignee.bind(postController));
 
 // PUT - Change task due-date
-routes.put('/:postId/task-due-date', postController.changeTaskDueDate);
+routes.put('/:postId/task-due-date', postController.changeTaskDueDate.bind(postController));
 
 // PUT - Change task status
 routes.put('/:postId/task-status', postController.changeTaskStatus.bind(postController));
@@ -176,7 +176,7 @@ routes.put('/:postId/task-status', postController.changeTaskStatus.bind(postCont
 routes.put('/:postId/task-column', postController.changeTaskColumn.bind(postController));
 
 // PUT - Change task start or end date
-routes.put('/:postId/update-date', postController.changeTaskDate);
+routes.put('/:postId/update-date', postController.changeTaskDate.bind(postController));
 
 // This route is used to get the subtasks of a task
 routes.get('/post/subtasks', postController.getSubtasks);
@@ -223,7 +223,7 @@ routes.put('/:postId/remove-dependency', postController.removeDependencyTask);
 
 
 
-routes.post('/:postId/gantt-task-dates-update',postController.updateGanttTasksDates)
+routes.post('/:postId/gantt-task-dates-update',postController.updateGanttTasksDates.bind(postController))
 
 // POST - Used to clone the post to a user
 routes.post('/clone-to-assignee', postController.cloneToAssignee);
@@ -253,7 +253,7 @@ routes.put('/:postId/pin-to-top', postController.pinToTop);
 routes.put('/:postId/vote-idea', postController.voteIdea);
 
 // PUT - Enable/Disable Shuttle Type on a task
-routes.put('/:postId/selectShuttleGroup', postController.selectShuttleGroup);
+routes.put('/:postId/selectShuttleGroup', postController.selectShuttleGroup.bind(postController));
 
 // PUT - Change the section of the Shuttle task
 routes.put('/:postId/selectShuttleSection', postController.selectShuttleSection.bind(postController));

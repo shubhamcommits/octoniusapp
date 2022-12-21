@@ -442,9 +442,9 @@ export class PublicFunctions {
         storageService.setLocalData('portfolioData', JSON.stringify(portfolioData));
     }
 
-    isPersonalNavigation(groupData: Object, userData: Object) {
-      return (groupData)
-        ?((groupData['group_name'] === 'personal') && (groupData['_id'] == (userData['_private_group']._id || userData['_private_group'])))
+    isPersonalNavigation(groupData: any, userData: any) {
+      return (groupData && userData)
+        ?((groupData?.group_name === 'personal') && (groupData?._id == (userData?._private_group?._id || userData?._private_group)))
           ? true : false
         : true;
     }
@@ -1229,10 +1229,10 @@ export class PublicFunctions {
         let utilityService = this.injector.get(UtilityService)
 
         utilityService.asyncNotification($localize`:@@publicFunctions.pleaseWaitChangingTaskDueDate:Please wait we are changing the task due date...`,
-            new Promise((resolve, reject) => {
-
+            new Promise(async (resolve, reject) => {
+                const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
                 // Call HTTP Request to change the request
-                postService.changeTaskDueDate(postId, dueDate)
+                postService.changeTaskDueDate(postId, dueDate, isShuttleTasksModuleAvailable)
                     .then((res) => {
                         resolve(utilityService.resolveAsyncPromise($localize`:@@publicFunctions.taskDueDAteChanged:Task due date changed to ${moment(dueDate).format('YYYY-MM-DD')}!`))
                     })
@@ -1500,6 +1500,14 @@ export class PublicFunctions {
                               retValue = false;
                             }
                             break;
+                        case 'Due date is':
+                            const today = moment().startOf('day').format('YYYY-MM-DD');
+                            if (((trigger?.due_date_value == 'overdue') && (post?.task?.status != 'done') && (moment.utc(post?.task?.due_to).format('YYYY-MM-DD') < today))
+                                    || ((trigger?.due_date_value == 'today') && (moment.utc(post?.task?.due_to).isSame(today)))
+                                    || ((trigger?.due_date_value == 'tomorrow') && (moment.utc(post?.task?.due_to).isSame(moment().startOf('day').add(1, 'days'))))) {
+                                retValue = true;
+                            }
+                            break;
                         default:
                             retValue = true;
                             return Promise.resolve({});
@@ -1587,7 +1595,11 @@ export class PublicFunctions {
                             post.task.due_to = moment().endOf('month');
                           }
                         }
-
+                        return post;
+                    case 'Set Time Allocation to':
+                        if (shuttleIndex < 0) {
+                          post.task.allocation = action?.allocation;
+                        }
                         return post;
                     default:
                         return post;

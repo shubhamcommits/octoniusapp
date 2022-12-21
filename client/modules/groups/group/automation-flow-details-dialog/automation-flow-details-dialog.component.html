@@ -134,6 +134,24 @@
                     </ng-container>
                   </mat-menu>
                 </div>
+
+                <div *ngIf="trigger.name === 'Due date is'">
+                  <div *ngIf="trigger?.due_date_value" style="margin-right: 10px;" class="badge-cf">
+                    {{ dueDateTriggerOptions[getTriggerDueDateIndex(trigger?.due_date_value)]?.title }}
+                  </div>
+                
+                  <button *ngIf="!trigger?.due_date_value" mat-menu-item [matMenuTriggerFor]="dueDateTriggerMenu"
+                    i18n="@@groupAutomationFlowDetailsDialog.select">
+                    Select
+                  </button>
+                
+                  <mat-menu #dueDateTriggerMenu="matMenu">
+                    <ng-container>
+                      <button mat-menu-item *ngFor="let dd of dueDateTriggerOptions"
+                        (click)="triggerSelected('set_due_date', dd.type, stepIndex, triggerIndex)">{{ dd.title }}</button>
+                    </ng-container>
+                  </mat-menu>
+                </div>
               </div>
             </div>
 
@@ -247,24 +265,6 @@
                   </div>
                 </div>
 
-                <div *ngIf="action.name === 'Set Due date'">
-                  <div *ngIf="action?.due_date_value" style="margin-right: 10px;" class="badge-cf">
-                    {{ dueDateOptions[getDueDateIndex(action?.due_date_value)]?.title }}
-                  </div>
-
-                  <button *ngIf="!action?.custom_field?.name" mat-menu-item [matMenuTriggerFor]="customFieldNameActionMenu"
-                    i18n="@@groupAutomationFlowDetailsDialog.select">
-                    Select
-                  </button>
-
-                  <mat-menu #customFieldNameActionMenu="matMenu">
-                    <ng-container>
-                      <button mat-menu-item *ngFor="let dd of dueDateOptions"
-                        (click)="actionSelected('set_due_date', dd.type, stepIndex, actionIndex)">{{ dd.title }}</button>
-                    </ng-container>
-                  </mat-menu>
-                </div>
-
                 <div *ngIf="isShuttleTasksModuleAvailable && action.name === 'Shuttle task'">
                   <div *ngIf="action._shuttle_group">
                     {{ action?._shuttle_group?.group_name?.toUpperCase() }}
@@ -279,6 +279,31 @@
                       <button mat-menu-item *ngFor="let group of shuttleGroups" (click)="actionSelected('shuttle', group, stepIndex, actionIndex)">{{ group.group_name.toUpperCase() }}</button>
                     </ng-container>
                   </mat-menu>
+                </div>
+
+                <div *ngIf="action.name === 'Set Due date'">
+                  <div *ngIf="action?.due_date_value" style="margin-right: 10px;" class="badge-cf">
+                    {{ dueDateActionOptions[getActionDueDateIndex(action?.due_date_value)]?.title }}
+                  </div>
+
+                  <button *ngIf="!action?.due_date_value" mat-menu-item [matMenuTriggerFor]="dueDateNameActionMenu"
+                    i18n="@@groupAutomationFlowDetailsDialog.select">
+                    Select
+                  </button>
+
+                  <mat-menu #dueDateNameActionMenu="matMenu">
+                    <ng-container>
+                      <button mat-menu-item *ngFor="let dd of dueDateActionOptions"
+                        (click)="actionSelected('set_due_date', dd.type, stepIndex, actionIndex)">{{ dd.title }}</button>
+                    </ng-container>
+                  </mat-menu>
+                </div>
+
+                <div *ngIf="action.name === 'Set Time Allocation to' && groupData?.enable_allocation">
+                  <div *ngIf="action.allocation" style="margin-right: 10px;" class="badge-section">
+                    {{ action.allocation }}
+                  </div>
+                  <input *ngIf="!action.allocation" (blur)="actionSelected('allocation', action.allocation, stepIndex, actionIndex)" [name]="action.allocation" [(ngModel)]="action.allocation" type="number"/>
                 </div>
 
               </div>
