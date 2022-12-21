@@ -421,6 +421,43 @@ export class GroupPostDialogComponent implements OnInit {
     }));
   }
 
+  async updateContent() {
+    if(this.quillData && this.quillData?.mention){
+      this._content_mentions = this.quillData.mention.users.map((user)=> user.insert.mention.id)
+    }
+
+    const post: any = {
+      content: this.quillData ? JSON.stringify(this.quillData.contents) : this.postData?.content,
+      _content_mentions: this._content_mentions,
+    };
+
+    // Create FormData Object
+    let formData = new FormData();
+
+    // Append Post Data
+    formData.append('post', JSON.stringify(post));
+
+    // Append all the file attachments
+    if (this.files && this.files.length != 0) {
+      for (let index = 0; index < this.files.length; index++) {
+        formData.append('attachments', this.files[index], this.files[index]['name']);
+      }
+    }
+
+    await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+      this.postService.editContent(this.postData?._id, formData)
+        .then((res) => {
+          this.postData = res['post'];
+          this.contentChanged = false;
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePostDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
+        });
+    }));
+  }
+
   async updateDetails(logAction: string) {
     // Prepare the normal  object
 

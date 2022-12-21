@@ -47,6 +47,15 @@ export class PostService {
   }
 
   /**
+   * This function updates the post quill data
+   * @param postId
+   * @param portfolioForm
+   */
+  editContent(postId: string, postForm: any) {
+    return this._http.put(this.baseURL + `/${postId}/content`, postForm).toPromise();
+  }
+
+  /**
    * This function is responsible for fetching a post details
    * @param postId
    */
