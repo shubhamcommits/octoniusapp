@@ -442,9 +442,9 @@ export class PublicFunctions {
         storageService.setLocalData('portfolioData', JSON.stringify(portfolioData));
     }
 
-    isPersonalNavigation(groupData: Object, userData: Object) {
-      return (groupData)
-        ?((groupData['group_name'] === 'personal') && (groupData['_id'] == (userData['_private_group']._id || userData['_private_group'])))
+    isPersonalNavigation(groupData: any, userData: any) {
+      return (groupData && userData)
+        ?((groupData?.group_name === 'personal') && (groupData?._id == (userData?._private_group?._id || userData?._private_group)))
           ? true : false
         : true;
     }
