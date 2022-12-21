@@ -393,9 +393,12 @@ export class GroupPostComponent implements OnInit {
           this.closeModal();
         })
         .catch((err) => {
-
-          // Catch the error and reject the promise
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePost.unableToCreatePost:Unable to create post, please try again!`))
+          this.utilityService.clearAllNotifications();
+          if (err.status === 0) {
+            reject(this.utilityService.errorNotification($localize`:@@groupCreatePost.connectionError:Sorry, we are having a hard time connecting to the server. You have a poor connection. The post can't be created.`));
+          } else {
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePost.unableToCreatePost:Unable to create post, please try again!`))
+          }
         })
     }))
   }

@@ -830,8 +830,7 @@ export class PublicFunctions {
                     // Resolve with sucess
                     resolve(res['posts'])
                 })
-                .catch(() => {
-
+                .catch((err) => {
                     // If there's an error, then reject with empty array
                     reject([]);
                 })

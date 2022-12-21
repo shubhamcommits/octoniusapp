@@ -121,8 +121,12 @@ export class NewNorthStarDialogComponent implements OnInit {
             resolve(this.utilityService.resolveAsyncPromise($localize`:@@newNorthStarDialog.taskCreated:Task Created!`))
           })
           .catch((err) => {
-            // Catch the error and reject the promise
-            reject(this.utilityService.rejectAsyncPromise($localize`:@@newNorthStarDialog.unableCreateNewTask:Unable to create new task, please try again!`))
+            this.utilityService.clearAllNotifications();
+            if (err.status === 0) {
+              reject(this.utilityService.errorNotification($localize`:@@newNorthStarDialog.connectionError:Sorry, we are having a hard time connecting to the server. You have a poor connection. The NS can't be created.`));
+            } else {
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@newNorthStarDialog.unableToCreatePost:Unable to create NS, please try again!`))
+            }
           })
       }))
 

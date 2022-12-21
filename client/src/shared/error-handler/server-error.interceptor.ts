@@ -12,14 +12,16 @@ export class ServerErrorInterceptor implements HttpInterceptor {
     { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        let injector = this.injector.get(UtilityService);
+        let utilityService = this.injector.get(UtilityService);
         return next.handle(request).pipe(
-            retry(2),
+            // retry(2),
             catchError((error: HttpErrorResponse) => {
+                    utilityService.clearAllNotifications();
+                if (error.status === 0) {
+                    utilityService.errorNotification($localize`:@@serverError.connectionError:Sorry, we are having a hard time connecting to the server. You have a poor connection.`);
+                }
                 if (error.status === 401) {
-                    // refresh token
-                    injector.clearAllNotifications();
-                    injector.errorNotification($localize`:@@serverError.notAuthorizedToProcced:You are not authorized to proceed, kindly check your credentials!`);
+                    utilityService.errorNotification($localize`:@@serverError.notAuthorizedToProcced:You are not authorized to proceed, kindly check your credentials!`);
                 } else {
                     return throwError(error);
                 }

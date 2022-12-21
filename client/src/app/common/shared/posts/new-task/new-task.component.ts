@@ -222,9 +222,12 @@ export class NewTaskComponent implements OnInit {
           resolve(utilityService.resolveAsyncPromise($localize`:@@newTask.taskCreated:Task Created!`))
         })
         .catch((err) => {
-
-          // Catch the error and reject the promise
-          reject(utilityService.rejectAsyncPromise($localize`:@@newTask.unableCreateNewTask:Unable to create new task, please try again!`))
+          utilityService.clearAllNotifications();
+          if (err.status === 0) {
+            reject(utilityService.errorNotification($localize`:@@newTask.connectionError:Sorry, we are having a hard time connecting to the server. You have a poor connection. The task can't be created.`));
+          } else {
+            reject(utilityService.rejectAsyncPromise($localize`:@@newTask.unableCreateNewTask:Unable to create new task, please try again!`));
+          }
         })
     }))
   }

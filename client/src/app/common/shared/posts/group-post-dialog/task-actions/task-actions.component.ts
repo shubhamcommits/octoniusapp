@@ -475,7 +475,14 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
                   this.taskFromTemplateEmitter.emit(this.postData._id);
                   resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskActions.taskUpdated:Task updated!`))
                 })
-                .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@taskActions.unexpectedErrorOccuredWhileUpdatingTask:An unexpected error occurred while updating the task, please try again!`)))
+                .catch((err) => {
+                  this.utilityService.clearAllNotifications();
+                  if (err.status === 0) {
+                    reject(this.utilityService.errorNotification($localize`:@@taskActions.connectionError:Sorry, we are having a hard time connecting to the server. You have a poor connection. The task can't be created.`));
+                  } else {
+                    reject(this.utilityService.rejectAsyncPromise($localize`:@@taskActions.unableToCreatePost:Unable to create task, please try again!`))
+                  }
+                });
             }))
           }
         });
