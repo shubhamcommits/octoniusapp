@@ -1500,6 +1500,14 @@ export class PublicFunctions {
                               retValue = false;
                             }
                             break;
+                        case 'Due date is':
+                            const today = moment().startOf('day').format('YYYY-MM-DD');
+                            if (((trigger?.due_date_value == 'overdue') && (post?.task?.status != 'done') && (moment.utc(post?.task?.due_to).format('YYYY-MM-DD') < today))
+                                    || ((trigger?.due_date_value == 'today') && (moment.utc(post?.task?.due_to).isSame(today)))
+                                    || ((trigger?.due_date_value == 'tomorrow') && (moment.utc(post?.task?.due_to).isSame(moment().startOf('day').add(1, 'days'))))) {
+                                retValue = true;
+                            }
+                            break;
                         default:
                             retValue = true;
                             return Promise.resolve({});

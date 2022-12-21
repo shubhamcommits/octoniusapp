@@ -26,13 +26,18 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
 
   flowName = '';
 
-  triggerOptions = ['Assigned to', 'Custom Field', 'Section is', 'Status is', 'Task is CREATED', 'Subtasks Status', 'Approval Flow is Completed'];
+  triggerOptions = ['Assigned to', 'Custom Field', 'Section is', 'Status is', 'Task is CREATED', 'Subtasks Status', 'Approval Flow is Completed', 'Due date is'];
   actionOptions = ['Assign to', 'Change Status to', 'Custom Field', 'Move to', 'Set Due date'];
   statusOptions = ['to do', 'in progress', 'done'];
   customFields = [];
   customFieldOptions = [];
   shuttleGroups = [];
-  dueDateOptions = [
+  dueDateTriggerOptions = [
+    { type: 'overdue', title: $localize`:@@automationFlowDetailsDialog.overdue:Overdue`},
+    { type: 'tomorrow', title: $localize`:@@automationFlowDetailsDialog.tomorrow:Tomorrow`},
+    { type: 'today', title: $localize`:@@automationFlowDetailsDialog.today:Today`}
+  ];
+  dueDateActionOptions = [
     { type: 'tomorrow', title: $localize`:@@automationFlowDetailsDialog.tomorrow:Tomorrow`},
     { type: 'end_of_week', title: $localize`:@@automationFlowDetailsDialog.endOfWeek:End of the Week`},
     { type: 'end_of_next_week', title: $localize`:@@automationFlowDetailsDialog.endOfNextWeek:End of Next Week`},
@@ -264,6 +269,10 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
         this.flowSteps[stepIndex].trigger[triggerIndex]._section = (value['_id'] || value);
         break;
 
+      case 'set_due_date':
+        this.flowSteps[stepIndex].trigger[triggerIndex].due_date_value = value;
+        break;
+
       default:
         break;
     }
@@ -344,8 +353,12 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
       });
   }
 
-  getDueDateIndex(dueDateValue: string) {
-    return this.dueDateOptions.findIndex(dd => dd.type == dueDateValue);
+  getTriggerDueDateIndex(dueDateValue: string) {
+    return this.dueDateTriggerOptions.findIndex(dd => dd.type == dueDateValue);
+  }
+
+  getActionDueDateIndex(dueDateValue: string) {
+    return this.dueDateActionOptions.findIndex(dd => dd.type == dueDateValue);
   }
 
   formateDate(date){

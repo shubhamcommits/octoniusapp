@@ -22,7 +22,7 @@ const FlowSchema = new Schema({
         trigger: [{
             name: {
                 type: String,
-                enum: ['Assigned to', 'Custom Field', 'Section is', 'Status is', 'Task is CREATED', 'Subtasks Status', 'Approval Flow is Completed']
+                enum: ['Assigned to', 'Custom Field', 'Section is', 'Status is', 'Task is CREATED', 'Subtasks Status', 'Approval Flow is Completed', 'Due date is']
             },
             _user: [{
                 type: Schema.Types.ObjectId,
@@ -49,6 +49,10 @@ const FlowSchema = new Schema({
                     type: String,
                     default: ''
                 }
+            },
+            due_date_value: {
+                type: String,
+                enum: ['tomorrow', 'today', 'overdue']
             }
         }],
         action: [{
