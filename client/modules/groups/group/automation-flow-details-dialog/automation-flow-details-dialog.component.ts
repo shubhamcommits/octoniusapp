@@ -24,6 +24,8 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
   groupSections = [];
   workspaceId;
 
+  groupData;
+
   flowName = '';
 
   triggerOptions = ['Assigned to', 'Custom Field', 'Section is', 'Status is', 'Task is CREATED', 'Subtasks Status', 'Approval Flow is Completed', 'Due date is'];
@@ -82,6 +84,11 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
 
     if (this.isShuttleTasksModuleAvailable) {
       this.actionOptions.push('Shuttle task');
+    }
+
+    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+    if (this.groupData.enable_allocation) {
+      this.actionOptions.push('Set Time Allocation to');
     }
 
     // GETTING USER DATA FROM THE SHARED SERVICE
@@ -307,6 +314,10 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
 
       case 'set_due_date':
         this.flowSteps[stepIndex].action[actionIndex].due_date_value = value;
+        break;
+
+      case 'allocation':
+        this.flowSteps[stepIndex].action[actionIndex].allocation = value;
         break;
 
       default:

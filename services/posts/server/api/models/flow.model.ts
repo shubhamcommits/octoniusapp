@@ -58,7 +58,7 @@ const FlowSchema = new Schema({
         action: [{
             name: {
                 type: String,
-                enum: ['Assign to', 'Change Status to', 'Custom Field', 'Move to', 'Shuttle task', 'Set Due date']
+                enum: ['Assign to', 'Change Status to', 'Custom Field', 'Move to', 'Shuttle task', 'Set Due date', 'Set Time Allocation to']
             },
             _user: [{
                 type: Schema.Types.ObjectId,
@@ -88,8 +88,12 @@ const FlowSchema = new Schema({
             },
             due_date_value: {
                 type: String,
-                enum: ['tomorrow', 'end_of_week', 'end_of_month']
-            }
+                enum: ['tomorrow', 'end_of_week', 'end_of_next_week', 'end_of_month']
+            },
+            allocation: {
+                type: Number,
+                default: 0
+            },
         }]
     }]
 });

@@ -3554,6 +3554,11 @@ export class PostService {
                   }
                 }
                 break;
+            case 'Set Time Allocation to':
+                if (shuttleIndex < 0) {
+                  post = await this.saveAllocation(post._id, userId, action?.allocation);
+                }
+                break;
             default:
                 break;
         }

@@ -147,7 +147,7 @@
                 
                   <mat-menu #dueDateTriggerMenu="matMenu">
                     <ng-container>
-                      <button mat-menu-item *ngFor="let dd of dueDateActionOptions"
+                      <button mat-menu-item *ngFor="let dd of dueDateTriggerOptions"
                         (click)="triggerSelected('set_due_date', dd.type, stepIndex, triggerIndex)">{{ dd.title }}</button>
                     </ng-container>
                   </mat-menu>
@@ -265,6 +265,22 @@
                   </div>
                 </div>
 
+                <div *ngIf="isShuttleTasksModuleAvailable && action.name === 'Shuttle task'">
+                  <div *ngIf="action._shuttle_group">
+                    {{ action?._shuttle_group?.group_name?.toUpperCase() }}
+                  </div>
+
+                  <button *ngIf="!action._shuttle_group" mat-menu-item [matMenuTriggerFor]="shuttleActionMenu"
+                      i18n="@@groupAutomationFlowDetailsDialog.selectShuttleGroup">
+                    Select Shuttle Group
+                  </button>
+                  <mat-menu #shuttleActionMenu="matMenu">
+                    <ng-container>
+                      <button mat-menu-item *ngFor="let group of shuttleGroups" (click)="actionSelected('shuttle', group, stepIndex, actionIndex)">{{ group.group_name.toUpperCase() }}</button>
+                    </ng-container>
+                  </mat-menu>
+                </div>
+
                 <div *ngIf="action.name === 'Set Due date'">
                   <div *ngIf="action?.due_date_value" style="margin-right: 10px;" class="badge-cf">
                     {{ dueDateActionOptions[getActionDueDateIndex(action?.due_date_value)]?.title }}
@@ -283,20 +299,11 @@
                   </mat-menu>
                 </div>
 
-                <div *ngIf="isShuttleTasksModuleAvailable && action.name === 'Shuttle task'">
-                  <div *ngIf="action._shuttle_group">
-                    {{ action?._shuttle_group?.group_name?.toUpperCase() }}
+                <div *ngIf="action.name === 'Set Time Allocation to' && groupData?.enable_allocation">
+                  <div *ngIf="action.allocation" style="margin-right: 10px;" class="badge-section">
+                    {{ action.allocation }}
                   </div>
-
-                  <button *ngIf="!action._shuttle_group" mat-menu-item [matMenuTriggerFor]="shuttleActionMenu"
-                      i18n="@@groupAutomationFlowDetailsDialog.selectShuttleGroup">
-                    Select Shuttle Group
-                  </button>
-                  <mat-menu #shuttleActionMenu="matMenu">
-                    <ng-container>
-                      <button mat-menu-item *ngFor="let group of shuttleGroups" (click)="actionSelected('shuttle', group, stepIndex, actionIndex)">{{ group.group_name.toUpperCase() }}</button>
-                    </ng-container>
-                  </mat-menu>
+                  <input *ngIf="!action.allocation" (blur)="actionSelected('allocation', action.allocation, stepIndex, actionIndex)" [name]="action.allocation" [(ngModel)]="action.allocation" type="number"/>
                 </div>
 
               </div>

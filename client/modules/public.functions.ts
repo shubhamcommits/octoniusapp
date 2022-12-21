@@ -1229,10 +1229,10 @@ export class PublicFunctions {
         let utilityService = this.injector.get(UtilityService)
 
         utilityService.asyncNotification($localize`:@@publicFunctions.pleaseWaitChangingTaskDueDate:Please wait we are changing the task due date...`,
-            new Promise((resolve, reject) => {
-
+            new Promise(async (resolve, reject) => {
+                const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
                 // Call HTTP Request to change the request
-                postService.changeTaskDueDate(postId, dueDate)
+                postService.changeTaskDueDate(postId, dueDate, isShuttleTasksModuleAvailable)
                     .then((res) => {
                         resolve(utilityService.resolveAsyncPromise($localize`:@@publicFunctions.taskDueDAteChanged:Task due date changed to ${moment(dueDate).format('YYYY-MM-DD')}!`))
                     })
@@ -1595,7 +1595,11 @@ export class PublicFunctions {
                             post.task.due_to = moment().endOf('month');
                           }
                         }
-
+                        return post;
+                    case 'Set Time Allocation to':
+                        if (shuttleIndex < 0) {
+                          post.task.allocation = action?.allocation;
+                        }
                         return post;
                     default:
                         return post;

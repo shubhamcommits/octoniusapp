@@ -240,11 +240,12 @@ export class PostService {
    * @param postId
    * @param dateDueTo
    */
-  changeTaskDueDate(postId: string, dateDueTo: string) {
+  changeTaskDueDate(postId: string, dateDueTo: string, isShuttleTasksModuleAvailable: boolean) {
 
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/task-due-date`, {
-      date_due_to: dateDueTo
+      date_due_to: dateDueTo,
+      isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable
     }).
       toPromise()
   }
@@ -254,7 +255,7 @@ export class PostService {
    * @param postId
    * @param dateDueTo
    */
-  updateGanttTasksDates(postId: string, groupId: string, dateDueTo: string, startdate: string, startdays: number, enddays: number) {
+  updateGanttTasksDates(postId: string, groupId: string, dateDueTo: string, startdate: string, startdays: number, enddays: number, isShuttleTasksModuleAvailable: boolean) {
 
     // Call the HTTP Request
     return this._http.post(this.baseURL + `/${postId}/gantt-task-dates-update`, {
@@ -262,7 +263,8 @@ export class PostService {
       start_date: startdate,
       s_days: startdays,
       e_days: enddays,
-      group_id:groupId
+      group_id:groupId,
+      isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable
     }).
       toPromise()
   }
