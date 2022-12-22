@@ -229,6 +229,6 @@ export class FileVersionsComponent implements OnInit {
   }
 
   formateDate(date: any) {
-    return (date) ? moment(moment.utc(date), "MMM dd, yyyy HH:mm").toDate() : '';
+    return (date) ? moment(date).format("MMM dd, yyyy HH:mm") : '';
   }
 }
