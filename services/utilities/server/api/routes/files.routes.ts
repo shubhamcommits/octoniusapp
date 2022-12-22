@@ -38,6 +38,9 @@ routes.get('/:fileId', files.getOne);
 // GET - Get all the versions of a file on the basis of fileId
 routes.get('/:fileId/fileVersions', files.getFileVersions);
 
+// GET - Get the last version of a file on the basis of fileId
+routes.get('/:fileId/lastVersion', files.getFileLastVersion);
+
 // GET - Get full path string to ther file on the basis of fileId
 routes.get('/:fileId/fullPathString', files.getPathToFile);
 

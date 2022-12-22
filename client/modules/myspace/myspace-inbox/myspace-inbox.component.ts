@@ -1,15 +1,8 @@
 import { Component, OnInit, Injector, OnDestroy } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
 import { PublicFunctions } from 'modules/public.functions';
-import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { SubSink } from 'subsink';
-import { take } from 'rxjs/internal/operators/take';
 import { environment } from 'src/environments/environment';
 import { UserService } from 'src/shared/services/user-service/user.service';
-import moment from 'moment';
-import { retry } from 'rxjs/internal/operators/retry';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({

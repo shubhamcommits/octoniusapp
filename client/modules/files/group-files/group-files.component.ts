@@ -580,11 +580,16 @@ export class GroupFilesComponent implements OnInit {
   }
 
   getFileExtension(fileName: string) {
-    let file = fileName.split(".");
-    let fileType = file[file.length-1].toLowerCase();
-    if (fileType == 'mp4') {
-      fileType = 'mov';
+// console.log({fileName});
+    let fileType = '';
+    if (fileName) {
+      let file = fileName?.split(".");
+      fileType = file[file.length-1].toLowerCase();
+      if (fileType == 'mp4') {
+        fileType = 'mov';
+      }
     }
+    
     return fileType;
   }
 
@@ -1022,12 +1027,15 @@ export class GroupFilesComponent implements OnInit {
     // Start the loading spinner
     this.isLoading$.next(true);
 
-    const lastFileVersion: any = await this.utilityService.getFileLastVersion(file);
-
-    if (this.isOfficeFile(lastFileVersion?.original_name)) {
-      window.open(await this.getLibreOfficeURL(lastFileVersion), "_blank");
+    if (this.isFilesVersionsModuleAvailable) {
+      const lastFileVersion: any = await this.utilityService.getFileLastVersion(file?._id);
+      if (this.isOfficeFile(lastFileVersion?.original_name)) {
+        window.open(await this.getLibreOfficeURL(lastFileVersion), "_blank");
+      } else {
+        window.open(this.filesBaseUrl + '/' + lastFileVersion?.modified_name + '?authToken=' + this.authToken, "_blank");
+      }
     } else {
-      this.openDocument(lastFileVersion);
+      window.open(await this.getLibreOfficeURL(file?._id), "_blank");
     }
 
     this.isLoading$.next(false);
@@ -1052,7 +1060,16 @@ export class GroupFilesComponent implements OnInit {
     // Start the loading spinner
     this.utilityService.updateIsLoadingSpinnerSource(true);
 
-    window.open(this.filesBaseUrl + '/' + file?.modified_name + '?authToken=' + this.authToken, "_blank");
+    if (this.isFilesVersionsModuleAvailable) {
+      const lastFileVersion: any = await this.utilityService.getFileLastVersion(file?._id);
+      if (this.isOfficeFile(lastFileVersion?.original_name)) {
+        window.open(await this.getLibreOfficeURL(lastFileVersion), "_blank");
+      } else {
+        window.open(this.filesBaseUrl + '/' + lastFileVersion?.modified_name + '?authToken=' + this.authToken, "_blank");
+      }
+    } else {
+      window.open(this.filesBaseUrl + '/' + file?.modified_name + '?authToken=' + this.authToken, "_blank");
+    }
 
     // Stop the loading spinner
     this.utilityService.updateIsLoadingSpinnerSource(false);

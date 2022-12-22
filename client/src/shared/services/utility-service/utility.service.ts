@@ -763,28 +763,16 @@ export class UtilityService {
     this.isLoadingSpinnerSource.next(status);
   }
 
-  async getFileLastVersion(file: any) {
-    let fileVersions;
+  async getFileLastVersion(fileId: string) {
     let filesService = this.injector.get(FilesService);
-    await filesService.getFileVersions(file?._id).then(async res => {
-      fileVersions = res['fileVersions'];
-      fileVersions?.sort((f1, f2) => {
-        if (f1.created_date && f2.created_date) {
-          if (moment.utc(f1.created_date).isBefore(f2.created_date)) {
-            return 1;
-          } else {
-            return -1;
-          }
-        } else {
-          if (f1.created_date && !f2.created_date) {
-            return 1;
-          } else if (!f1.created_date && f2.created_date) {
-            return -1;
-          }
-        }
+    return new Promise(async (resolve) => {
+        await filesService.getFileLastVersion(fileId)
+          .then((res) => {
+            if (res) {
+              resolve(res['file']);
+            }
+          })
       });
-    });
-    return (fileVersions && fileVersions.length > 0) ? fileVersions[0] : file;
   }
 
   objectExists(objectData: Object) {

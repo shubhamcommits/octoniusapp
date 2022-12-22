@@ -79,25 +79,26 @@ export class FilesService {
             if (numVersions <= 1) {
                 const parentFile: any =  await File.findById({ _id: fileData._parent }).lean();
                 await File.create({
-                    _group: parentFile._group,
-                    _posted_by: parentFile._posted_by,
-                    original_name: parentFile.original_name,
-                    modified_name: parentFile.modified_name,
-                    type: parentFile.type,
-                    mime_type: parentFile.mime_type,
-                    _folder: parentFile._folder,
-                    _parent: parentFile._id
+                    _group: parentFile?._group,
+                    original_name: parentFile?.original_name,
+                    modified_name: parentFile?.modified_name,
+                    type: parentFile?.type,
+                    mime_type: parentFile?.mime_type,
+                    _folder: parentFile?._folder,
+                    _parent: parentFile?._id,
+                    created_date: parentFile?.created_date,
+                    _posted_by: parentFile?._posted_by
                 });
             }
 
             // Update the parent modified_name, so it will point to the last version
             await File.findByIdAndUpdate({
-                _id: fileData._parent
-              }, {
-                $set: { "modified_name": fileData.modified_name }
-              }, {
-                  new: true
-              });
+                    _id: fileData._parent
+                }, {
+                    $set: { "modified_name": fileData.modified_name }
+                }, {
+                    new: true
+                });
         }
 
         // Populate File Properties
@@ -127,7 +128,7 @@ export class FilesService {
     }
 
     /**
-     * This function is responsible for fetching files details
+     * This function is responsible for fetching file versions
      * @param fileId 
      */
     async getFileVersions(fileId: string) {
@@ -135,7 +136,7 @@ export class FilesService {
         if (fileId) {
 
             // Find the file by Id
-            let files: any = await File.find({ _parent: fileId });
+            let files: any = await File.find({ _parent: fileId }).sort('-created_date');
 
             // Populate File Properties
             files = this.populateFileProperties(files);
@@ -143,6 +144,29 @@ export class FilesService {
             // Return file
             return files;
         }
+    }
+
+    /**
+     * This function is responsible for fetching the last version of a file
+     * @param fileId 
+     */
+    async getFileLastVersion(fileId: string) {
+        let file;
+        if (fileId) {
+            let files: any = await File.find({ _parent: fileId }).sort('-created_date');
+
+            if (files && files.length > 0) {
+                file = files[0];
+            } else {
+                file = await File.findOne({_id: fileId});
+            }
+
+            // Populate File Properties
+            file = this.populateFileProperties(file);
+        }
+
+        // Return file
+        return file;
     }
 
     /**

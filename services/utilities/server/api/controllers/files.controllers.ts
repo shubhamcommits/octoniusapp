@@ -139,6 +139,31 @@ export class FilesControllers {
         }
     }
 
+    async getFileLastVersion(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Fetch the fileId from the request
+            let { fileId } = req.params
+
+            // If fileId is not found, then throw the error
+            if (!fileId)
+                return res.status(400).json({
+                    message: 'Please pass the fileId in the request params'
+                })
+
+            // Get File on the basis of the fileId
+            let fileLastVersion = await filesService.getFileLastVersion(fileId)
+
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'File last version retrieved!',
+                file: fileLastVersion
+            })
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
     async getPathToFile(req: Request, res: Response, next: NextFunction) {
         try {
             // Fetch the fileId from the request
