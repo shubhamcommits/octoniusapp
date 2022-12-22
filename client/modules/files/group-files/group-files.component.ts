@@ -385,7 +385,7 @@ export class GroupFilesComponent implements OnInit {
     } else if (file?.type == 'flamingo') {
       url += '/document/flamingo/' + file?._id;
     } else if (file?.type == 'file') {
-      const lastFileVersion: any = await this.utilityService.getFileLastVersion(file);
+      const lastFileVersion: any = await this.utilityService.getFileLastVersion(file?._id);
       if (this.isOfficeFile(lastFileVersion?.original_name)) {
         url = await this.getLibreOfficeURL(lastFileVersion);
       } else {

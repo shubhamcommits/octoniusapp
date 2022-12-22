@@ -1,5 +1,5 @@
-import moment from 'moment';
 import mongoose from 'mongoose';
+import { DateTime } from 'luxon';
 
 const { Schema } = mongoose;
 
@@ -28,7 +28,7 @@ const FileSchema = new Schema({
     },
     created_date: {
         type: Date,
-        default: moment().format()
+        default: DateTime.now()
     },
     _posted_by: {
         type: Schema.Types.ObjectId,
@@ -55,6 +55,11 @@ const FileSchema = new Schema({
         }
     },
     show_headings: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    show_comments: {
         type: Boolean,
         required: true,
         default: false
@@ -124,7 +129,7 @@ const FileSchema = new Schema({
             },
             confirmation_date: {
                 type: Date,
-                default: moment().format()
+                default: DateTime.now()
             },
             signature_code: {
                 type: String,
@@ -152,7 +157,7 @@ const FileSchema = new Schema({
             },
             approval_date: {
                 type: Date,
-                default: moment().format()
+                default: DateTime.now()
             }
         }
     ]

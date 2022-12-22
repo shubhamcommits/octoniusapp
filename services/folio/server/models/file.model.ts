@@ -1,5 +1,5 @@
-import moment from 'moment';
 import mongoose from 'mongoose';
+import { DateTime } from 'luxon';
 
 const { Schema } = mongoose;
 
@@ -28,7 +28,7 @@ const FileSchema = new Schema({
     },
     created_date: {
         type: Date,
-        default: moment().format()
+        default: DateTime.now()
     },
     _posted_by: {
         type: Schema.Types.ObjectId,
@@ -93,7 +93,74 @@ const FileSchema = new Schema({
     custom_fields: {
         type: Map,
         of: String
-    }
+    },
+    approval_active: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    approval_flow_launched: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    approval_due_date: {
+        type: Date,
+        default: null
+    },
+    approval_envelope: {
+        type: String,
+        required: false
+    },
+    approval_flow: [
+        {
+            _assigned_to: {
+                type: Schema.Types.ObjectId,
+                ref: 'User',
+                required: true
+            },
+            confirmation_code: {
+                type: String
+            },
+            confirmed: {
+                type: Boolean,
+                required: true,
+                default: false
+            },
+            confirmation_date: {
+                type: Date,
+                default: DateTime.now()
+            },
+            signature_code: {
+                type: String,
+                required: false
+            },
+            description: {
+                type: String
+            }
+        }
+    ],
+    approval_history: [
+        {
+            _actor: {
+                type: Schema.Types.ObjectId,
+                ref: 'User',
+                required: true
+            },
+            description: {
+                type: String
+            },
+            action: {
+                type: String,
+                required: true,
+                enum: ['created', 'deleted', 'launch', 'rejected', 'approved']
+            },
+            approval_date: {
+                type: Date,
+                default: DateTime.now()
+            }
+        }
+    ]
 });
 
 const File = mongoose.model('File', FileSchema);

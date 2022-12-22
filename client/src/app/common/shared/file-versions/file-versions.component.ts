@@ -7,7 +7,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { ApprovalPDFSignaturesService } from 'src/shared/services/approval-pdf-signatures-service/approval-pdf-signatures.service';
 import { FilesService } from 'src/shared/services/files-service/files.service';
 import { SubSink } from 'subsink';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-file-versions',
@@ -210,6 +210,6 @@ export class FileVersionsComponent implements OnInit {
   }
 
   formateDate(date: any) {
-    return (date) ? moment(date).format("MMM dd, yyyy HH:mm") : '';
+    return (date) ? DateTime.fromISO(date).toLocaleString(DateTime.DATETIME_MED) : '';
   }
 }
