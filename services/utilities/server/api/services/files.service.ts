@@ -127,7 +127,7 @@ export class FilesService {
     }
 
     /**
-     * This function is responsible for fetching files details
+     * This function is responsible for fetching file versions
      * @param fileId 
      */
     async getFileVersions(fileId: string) {
@@ -135,7 +135,7 @@ export class FilesService {
         if (fileId) {
 
             // Find the file by Id
-            let files: any = await File.find({ _parent: fileId });
+            let files: any = await File.find({ _parent: fileId }).sort('-created_date');
 
             // Populate File Properties
             files = this.populateFileProperties(files);
@@ -143,6 +143,40 @@ export class FilesService {
             // Return file
             return files;
         }
+    }
+
+    /**
+     * This function is responsible for fetching the last version of a file
+     * @param fileId 
+     */
+    async getFileLastVersion(fileId: string) {
+        let file;
+        if (fileId) {
+            // Find the file by Id
+            let files: any = await File.find({ _parent: fileId }).sort('-created_date');
+
+            // files?.sort((f1, f2) => {
+            //     if (f1.created_date && f2.created_date) {
+            //         if (moment.utc(f1.created_date).isBefore(f2.created_date)) {
+            //             return 1;
+            //         } else {
+            //             return -1;
+            //         }
+            //     } else {
+            //         if (f1.created_date && !f2.created_date) {
+            //             return 1;
+            //         } else if (!f1.created_date && f2.created_date) {
+            //             return -1;
+            //         }
+            //     }
+            // });
+
+            // Populate File Properties
+            file = this.populateFileProperties(files[0]);
+        }
+
+        // Return file
+        return file;
     }
 
     /**

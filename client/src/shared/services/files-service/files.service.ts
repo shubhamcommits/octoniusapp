@@ -209,8 +209,6 @@ export class FilesService {
    *
    */
 
-
-
   /**
    * This function is used to save a custom field value
    * @param postId
@@ -225,6 +223,10 @@ export class FilesService {
 
   getFileVersions(fileId: string) {
     return this._http.get(this.baseURL + `/files/${fileId}/fileVersions`, {}).toPromise();
+  }
+
+  getFileLastVersion(fileId: string) {
+    return this._http.get(this.baseURL + `/files/${fileId}/lastVersion`, {}).toPromise();
   }
 
   getPathToFile(fileId: string) {

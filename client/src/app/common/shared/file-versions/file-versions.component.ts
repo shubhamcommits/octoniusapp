@@ -6,7 +6,6 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { ApprovalPDFSignaturesService } from 'src/shared/services/approval-pdf-signatures-service/approval-pdf-signatures.service';
 import { FilesService } from 'src/shared/services/files-service/files.service';
-import { ActivatedRoute } from '@angular/router';
 import { SubSink } from 'subsink';
 import moment from 'moment';
 
@@ -54,7 +53,6 @@ export class FileVersionsComponent implements OnInit {
     public storageService: StorageService,
     public utilityService: UtilityService,
     public approvalPDFSignaturesService: ApprovalPDFSignaturesService,
-    private router: ActivatedRoute,
     private injector: Injector
   ) { }
 
@@ -74,7 +72,7 @@ export class FileVersionsComponent implements OnInit {
       if (this.fileVersions.length == 0) {
         this.fileVersions.unshift(this.fileData);
       }
-      await this.sortVersions();
+      // await this.sortVersions();
     });
   }
 
@@ -84,23 +82,23 @@ export class FileVersionsComponent implements OnInit {
     this.subSink.unsubscribe();
   }
 
-  sortVersions() {
-    this.fileVersions?.sort((f1, f2) => {
-      if (f1.created_date && f2.created_date) {
-        if (moment.utc(f1.created_date).isBefore(f2.created_date)) {
-          return 1;
-        } else {
-          return -1;
-        }
-      } else {
-        if (f1.created_date && !f2.created_date) {
-          return 1;
-        } else if (!f1.created_date && f2.created_date) {
-          return -1;
-        }
-      }
-    });
-  }
+  // sortVersions() {
+  //   this.fileVersions?.sort((f1, f2) => {
+  //     if (f1.created_date && f2.created_date) {
+  //       if (moment.utc(f1.created_date).isBefore(f2.created_date)) {
+  //         return 1;
+  //       } else {
+  //         return -1;
+  //       }
+  //     } else {
+  //       if (f1.created_date && !f2.created_date) {
+  //         return 1;
+  //       } else if (!f1.created_date && f2.created_date) {
+  //         return -1;
+  //       }
+  //     }
+  //   });
+  // }
 
   /**
    * This function is used to return the mime type icon based on the extension of the fileName
@@ -228,5 +226,9 @@ export class FileVersionsComponent implements OnInit {
 
     // Stop the loading spinner
     this.utilityService.updateIsLoadingSpinnerSource(false);
+  }
+
+  formateDate(date: any) {
+    return (date) ? moment(moment.utc(date), "MMM dd, yyyy HH:mm").toDate() : '';
   }
 }

@@ -15,7 +15,7 @@
       <span i18n="@@fileVersions.version">Version</span>
       {{ (fileVersions?.length - index) }}
       <span i18n="@@fileVersions.at">at</span>
-      {{ file?.created_date | date: 'MMM dd, yyyy HH:mm' }}
+      {{ formateDate(file?.created_date) }}
       <span i18n="@@fileVersions.by">by</span>
       {{ file?._posted_by?.first_name }}&nbsp;{{ file?._posted_by?.last_name }}
     </a>
@@ -28,7 +28,7 @@
       {{ (fileVersions?.length - index) }}
       <span i18n="@@fileVersions.at">at</span>
       <span *ngIf="file?.type=='campaign'"><b i18n="@@fileVersions.campaignFile">Campaign File: </b></span>
-      {{ file?.created_date | date: 'MMM dd, yyyy HH:mm' }}
+      {{ formateDate(file?.created_date) }}
       <span i18n="@@fileVersions.by">by</span>
       {{ file?._posted_by?.first_name }}&nbsp;{{ file?._posted_by?.last_name }}
     </a>
