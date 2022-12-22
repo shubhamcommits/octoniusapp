@@ -26,6 +26,7 @@
     "farmhash": "^3.0.0",
     "jsonwebtoken": "^8.5.1",
     "ldapjs": "2.3.2",
+    "luxon": "^3.1.0",
     "moment": "^2.24.0",
     "mongoose": "^5.8.7",
     "morgan": "^1.9.1",
