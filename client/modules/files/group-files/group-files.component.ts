@@ -1023,7 +1023,7 @@ export class GroupFilesComponent implements OnInit {
     this.isLoading$.next(true);
 
     if (this.isFilesVersionsModuleAvailable) {
-      const lastFileVersion: any = await this.utilityService.getFileLastVersion(file);
+      const lastFileVersion: any = await this.utilityService.getFileLastVersion(file?._id);
 
       if (this.isOfficeFile(lastFileVersion?.original_name)) {
         window.open(await this.getLibreOfficeURL(lastFileVersion), "_blank");
@@ -1031,7 +1031,7 @@ export class GroupFilesComponent implements OnInit {
         this.openDocument(lastFileVersion);
       }
     } else {
-      window.open(await this.getLibreOfficeURL(file), "_blank");
+      window.open(await this.getLibreOfficeURL(file?._id), "_blank");
     }
 
     this.isLoading$.next(false);
@@ -1057,7 +1057,7 @@ export class GroupFilesComponent implements OnInit {
     this.utilityService.updateIsLoadingSpinnerSource(true);
 
     if (this.isFilesVersionsModuleAvailable) {
-      const lastFileVersion: any = await this.utilityService.getFileLastVersion(file);
+      const lastFileVersion: any = await this.utilityService.getFileLastVersion(file?._id);
 
       if (this.isOfficeFile(lastFileVersion?.original_name)) {
         window.open(await this.getLibreOfficeURL(lastFileVersion), "_blank");
