@@ -72,7 +72,6 @@ export class FileVersionsComponent implements OnInit {
       if (this.fileVersions.length == 0) {
         this.fileVersions.unshift(this.fileData);
       }
-      // await this.sortVersions();
     });
   }
 
@@ -81,24 +80,6 @@ export class FileVersionsComponent implements OnInit {
     //Add 'implements OnDestroy' to the class.
     this.subSink.unsubscribe();
   }
-
-  // sortVersions() {
-  //   this.fileVersions?.sort((f1, f2) => {
-  //     if (f1.created_date && f2.created_date) {
-  //       if (moment.utc(f1.created_date).isBefore(f2.created_date)) {
-  //         return 1;
-  //       } else {
-  //         return -1;
-  //       }
-  //     } else {
-  //       if (f1.created_date && !f2.created_date) {
-  //         return 1;
-  //       } else if (!f1.created_date && f2.created_date) {
-  //         return -1;
-  //       }
-  //     }
-  //   });
-  // }
 
   /**
    * This function is used to return the mime type icon based on the extension of the fileName
