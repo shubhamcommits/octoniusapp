@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { DateTime } from 'luxon';
 import { File, Group, Flamingo } from '../models';
 import { Question } from '../models/questions.model';
 
@@ -44,13 +45,14 @@ export class FilesService {
         // Preparing File Data
         let file: any = {
             _group: fileData._group,
-            _posted_by: fileData._posted_by,
             original_name: fileData.original_name,
             modified_name: fileData.modified_name,
             type: fileData.type,
             mime_type: fileData.mime_type,
             _folder: (fileData._folder && fileData._folder != '') ? fileData._folder : null,
-            _parent: fileData._parent
+            _parent: fileData._parent,
+            _posted_by: fileData._posted_by,
+            created_date: DateTime.now()
         }
 
         // Create the new File
@@ -59,22 +61,23 @@ export class FilesService {
         // If it is the first version of the file, add a new version
         if (!fileData._parent) {
             await File.create({
-                _group: fileData._group,
-                _posted_by: fileData._posted_by,
-                original_name: fileData.original_name,
-                modified_name: fileData.modified_name,
-                type: fileData.type,
-                mime_type: fileData.mime_type,
-                _folder: (fileData._folder && fileData._folder != '') ? fileData._folder : null,
-                _parent: file._id
-            });
+                    _group: fileData._group,
+                    original_name: fileData.original_name,
+                    modified_name: fileData.modified_name,
+                    type: fileData.type,
+                    mime_type: fileData.mime_type,
+                    _folder: (fileData._folder && fileData._folder != '') ? fileData._folder : null,
+                    _parent: file._id,
+                    _posted_by: fileData._posted_by,
+                    created_date: DateTime.now()
+                });
         } else {
             // In case the file is old (previous to versions) we count the number of versions and if there is no versions we add a 1st version
             let numVersions = await File.find({
-                $and: [
-                    { _parent: fileData._parent }
-                ]
-            }).countDocuments();
+                    $and: [
+                        { _parent: fileData._parent }
+                    ]
+                }).countDocuments();
 
             if (numVersions <= 1) {
                 const parentFile: any =  await File.findById({ _id: fileData._parent }).lean();
