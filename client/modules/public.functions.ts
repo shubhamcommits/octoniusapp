@@ -751,6 +751,19 @@ export class PublicFunctions {
     }
 
     /**
+     * Fetch list of user´s favorite portfolios
+     * @param userId
+     */
+    public async getUserFavoritePortfolios(userId: string) {
+        return new Promise((resolve, reject) => {
+            let usersService = this.injector.get(UserService);
+            usersService.getUserFavoritePortfolios(userId)
+                .then((res) => resolve(res['user']['stats']['favorite_portfolios']))
+                .catch(() => reject([]))
+        })
+    }
+
+    /**
      * This is the service function which calls the edit user API
      * @param userService
      * @param userData

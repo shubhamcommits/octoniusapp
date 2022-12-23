@@ -164,6 +164,10 @@ const UserSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'Group'
         }],
+        favorite_portfolios: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Portfolio'
+        }],
         dashboard_period: {
             type: Number,
             default: 7

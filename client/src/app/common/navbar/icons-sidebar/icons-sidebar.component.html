@@ -38,27 +38,28 @@
 
   <div class="menu-options">
       <ul class="list-unstyled components">
-          <li>
-              <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active">
-                <i class="material-icons-outlined">home</i>
-              </a>
-          </li>
-          <li> <hr class="divider-line"></li>
-
-          <li class="static">
-
-            <i class="material-icons-outlined">star_outline</i>
-          </li>
-
-          <li *ngFor="let group of userGroups">
-            <a (click)="goToGroup(group?._id, 'groups_activity')">
-                <app-secured-image
-                    [imgURL]="group?.group_avatar"
-                    [service]="'group'"
-                    [tooltip]="group?.group_name"
-                    [styleClass]="'avatar'"></app-secured-image>
+        <li>
+            <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active">
+              <i class="material-icons-outlined">home</i>
             </a>
         </li>
+        <li> <hr class="divider-line"></li>
+
+        <li class="static">
+
+          <i class="material-icons-outlined">star_outline</i>
+        </li>
+
+        <li *ngFor="let group of userGroupsAndPortfolios">
+          <a (click)="goToGroupOrPortfolio(group)">
+              <app-secured-image
+                  [imgURL]="group?.avatar"
+                  [service]="'group'"
+                  [tooltip]="group?.name"
+                  [styleClass]="'avatar'"></app-secured-image>
+          </a>
+        </li>
+
         <li> <hr class="divider-line"></li>
         <li>
           <a routerLinkActive="active" routerLink="/dashboard/work/groups/all" class="explore-work">

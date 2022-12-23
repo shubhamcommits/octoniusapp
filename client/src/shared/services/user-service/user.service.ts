@@ -319,6 +319,13 @@ export class UserService {
   }
 
   /**
+   * GET USER FAVORITE PORTFOLIOS
+   */
+  getUserFavoritePortfolios(userId: string){
+    return this._http.get(this.BASE_API_URL + `/favorite-portfolios/${userId}`).toPromise();
+  }
+
+  /**
    * GET MOST USED GROUPS
    */
   getRecentGroups(userId: string) {
@@ -350,6 +357,18 @@ export class UserService {
       userId: userId,
       groupId: groupId,
       isFavoriteGroup: isFavoriteGroup
+    })
+    .toPromise();
+  }
+
+  /**
+   * Save a portfolio as favorite for the user
+   */
+  saveFavoritePortfolio(userId: string, portfolioId: string, isFavoritePortfolio: boolean) {
+    return this._http.put(this.BASE_API_URL + '/add-favorite-portfolio', {
+      userId: userId,
+      portfolioId: portfolioId,
+      isFavoritePortfolio: isFavoritePortfolio
     })
     .toPromise();
   }

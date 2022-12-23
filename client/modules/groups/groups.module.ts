@@ -73,9 +73,9 @@ import { FilesCustomFieldsDialogComponent } from './group/files-custom-fields-di
 import { GroupSettingsComponent } from './group/group-admin/group-settings/group-settings.component';
 import { GroupBackgroundImageDetailsComponent } from './group/group-admin/group-settings/group-background-image-details/group-background-image-details.component';
 import { GroupsComponent } from './groups.component';
-import { PortfolioDetailsComponent } from './portfolio/portfolio-details.component';
+import { PortfolioDetailsComponent } from './portfolio/portfolio-details/portfolio-details.component';
 import { CreatePortfolioComponent } from './portfolio/create-portfolio/create-portfolio.component';
-import { PortfolioComponent } from './portfolio/portfolio-details/portfolio.component';
+import { PortfolioComponent } from './portfolio/portfolio.component';
 import { GroupSelectorDialogComponent } from './portfolio/group-selector-dialog/group-selector-dialog.component';
 import { PortfolioGroupsListComponent } from './portfolio/portfolio-groups-list/portfolio-groups-list.component';
 import { PortfolioMembersWorkloadCardComponent } from './portfolio/dashboard/portfolio-members-workload-card/portfolio-members-workload-card.component';

@@ -51,7 +51,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   isPortfolioNavbar$ = new BehaviorSubject(false);
 
   userGroups: any = [];
-
+  userPortfolios: any = [];
+  
   iconsSidebar = false;
   isDocumentPage = false;
 
@@ -135,6 +136,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // this.userData = await this.publicFunctions.getCurrentUser();
     this.userGroups = this.userData['stats']['favorite_groups'];
+    this.userPortfolios = this.userData['stats']['favorite_portfolios'];
     this.iconsSidebar = this.userData['stats']['default_icons_sidebar'] || false;
 
     if (this.userData?.integrations?.gdrive?.token) {
@@ -240,6 +242,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   async onFavoriteGroupSaved() {
     this.userData = await this.getCurrentUser();
     this.userGroups = this.userData['stats']['favorite_groups'];
+  }
+
+  async onFavoritePortfolioSaved() {
+    this.userData = await this.getCurrentUser();
+    this.userPortfolios = this.userData['stats']['favorite_portfolios'];
   }
 
   showSideBar() {

@@ -123,6 +123,9 @@ routes.put('/increment-group-visit', user.incrementGroupVisit);
 // Get user favorite groups
 routes.get('/favorite-groups/:userId', user.getFavoriteGroups);
 
+// Get user favorite portfolios
+routes.get('/favorite-portfolios/:userId', user.getFavoritePortfolios);
+
 // PUT - Transfer ownership of the workspace
 routes.put('/transefer-ownership', user.transferOwnership);
 
@@ -130,6 +133,8 @@ routes.put('/transefer-ownership', user.transferOwnership);
 routes.delete('/:userId', user.removeUser);
 
 routes.put('/add-favorite-group', user.addFavoriteGroup);
+
+routes.put('/add-favorite-portfolio', user.addFavoritePortfolio);
 
 routes.put('/default-icons-sidebar', user.saveIconSidebarByDefault);
 

@@ -22,6 +22,7 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
   @Input() sideNav: MatSidenav;
   @Input() iconsSidebar = false;
   @Input() userGroups = [];
+  @Input() userPortfolios = [];
   @Output() sidebarChange = new EventEmitter();
 
   // CURRENT USER DATA
@@ -29,6 +30,8 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
 
   accountData: any = {};
   userWorkspaces = [];
+
+  userGroupsAndPortfolios = [];
 
   // Workspace data for the current workspace
   public workspaceData: any = {};
@@ -68,8 +71,13 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
       const to = change.currentValue;
       if (propName === 'userGroups') {
         this.userGroups = to;
-        await this.sort();
       }
+
+      if (propName === 'userPortfolios') {
+        this.userPortfolios = to;
+      }
+
+      await this.mapGroupsAndPortfolios();
     }
   }
 
@@ -85,16 +93,29 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     this.accountData = await this.publicFunctions.getCurrentAccount();
     await this.getUserWorkspaces();
+
+    this.userGroups = this.userData['stats']['favorite_groups'];
+    this.userPortfolios = this.userData['stats']['favorite_portfolios'];
   }
 
-  async sort() {
-    this.userGroups.sort((t1, t2) => {
-      const name1 = t1?.group_name.toLowerCase();
-      const name2 = t2?.group_name.toLowerCase();
-      if (name1 > name2) { return 1; }
-      if (name1 < name2) { return -1; }
-      return 0;
-    });
+  async mapGroupsAndPortfolios() {
+    this.userGroupsAndPortfolios = [...this.userGroups, ...this.userPortfolios];
+    this.userGroupsAndPortfolios = this.userGroupsAndPortfolios?.map(group => {
+        return {
+          _id: group._id,
+          name: group.group_name || group.portfolio_name,
+          avatar: group.group_avatar || group.portfolio_avatar,
+          type: (group.group_name) ? 'group' : 'portfolio'
+        };
+      });
+
+    this.userGroupsAndPortfolios = this.userGroupsAndPortfolios?.sort((t1, t2) => {
+        const name1 = t1?.name.toLowerCase();
+        const name2 = t2?.name.toLowerCase();
+        if (name1 > name2) { return 1; }
+        if (name1 < name2) { return -1; }
+        return 0;
+      });
   }
 
   /**
@@ -131,11 +152,20 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
     this.sidebarChange.emit();
   }
 
-  async goToGroup(groupId: string, state: string) {
-    this.changeState(state);
-    const newGroup = await this.publicFunctions.getGroupDetails(groupId);
-    await this.publicFunctions.sendUpdatesToGroupData(newGroup);
-    this.router.navigate(['/dashboard', 'work', 'groups', 'activity']);
+  async goToGroupOrPortfolio(group: any) {
+    if (group?.type == 'group') {
+      this.changeState('groups_activity');
+      const newGroup = await this.publicFunctions.getGroupDetails(group?._id);
+      await this.publicFunctions.sendUpdatesToGroupData(newGroup);
+      await this.publicFunctions.sendUpdatesToPortfolioData({});
+      this.router.navigate(['/dashboard', 'work', 'groups', 'activity']);
+    } else if (group?.type == 'portfolio') {
+      this.changeState('portfolio');
+      const newPortfolio = await this.publicFunctions.getPortfolioDetails(group?._id);
+      await this.publicFunctions.sendUpdatesToPortfolioData(newPortfolio);
+      await this.publicFunctions.sendUpdatesToGroupData({});
+      this.router.navigate(['/dashboard', 'work', 'groups', 'portfolio']);
+    }
   }
 
   async changeState(state:string) {
@@ -178,13 +208,10 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
           await this.storeUserData(res);
 
           await this.initProperties();
-          await this.sort();
-
-          this.userGroups = this.userData['stats']['favorite_groups'];
-          const workspaceData = await this.publicFunctions.getCurrentWorkspace();
+          await this.mapGroupsAndPortfolios();
 
           let workspaceBlocked = false;
-          await this.managementPortalService.getBillingStatus(workspaceId, workspaceData['management_private_api_key']).then(res => {
+          await this.managementPortalService.getBillingStatus(workspaceId, this.workspaceData?.management_private_api_key).then(res => {
             if (res['blocked'] ) {
               workspaceBlocked = res['blocked'];
             }
