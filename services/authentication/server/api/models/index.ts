@@ -4,28 +4,18 @@ import { Resetpwd } from './resetpwd.model';
 import { User } from './user.model';
 import { Account } from './account.model';
 import { Workspace } from './workspace.model';
+import { Portfolio } from './portfolio.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
  *  =====================
  * */
 export {
-
-    // AUTH
     Auth as Auth,
-
-    // GROUP
     Group as Group,
-
-    // RESET PASSWORD
     Resetpwd as Resetpwd,
-
-    // USER
     User as User,
-
-    // ACCOUNT 
     Account as Account,
-
-    // WORKSPACE
-    Workspace as Workspace
+    Workspace as Workspace,
+    Portfolio as Portfolio
 };
