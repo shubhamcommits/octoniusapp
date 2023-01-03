@@ -18,8 +18,8 @@ import { GroupGuard } from 'src/shared/guards/group-guard/group.guard';
 import { GroupDashboardComponent } from './group/group-dashboard/group-dashboard.component';
 import { GroupReportsComponent } from './group/group-reports/group-reports.component';
 import { GroupsComponent } from './groups.component';
-import { PortfolioDetailsComponent } from './portfolio/portfolio-details.component';
 import { PortfolioGuard } from 'src/shared/guards/portfolio-guard/portfolio.guard';
+import { PortfolioDetailsComponent } from './portfolio/portfolio-details/portfolio-details.component';
 
 
 /**

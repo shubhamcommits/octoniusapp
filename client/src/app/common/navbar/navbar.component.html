@@ -2,11 +2,11 @@
   <mat-drawer *ngIf="showSideBar() && myAuthCheck()" opened="true" mode="side" #sidenav disableClose autosize >
 
     <!-- SIDE MENU ICON STARTS -->
-    <app-sidebar *ngIf="!iconsSidebar" class="nav navbar-nav navbar-left" [userGroups]="userGroups" [sideNav]="sidenav" [iconsSidebar]="iconsSidebar" (sidebarChange)="switchSideBar()"></app-sidebar>
+    <app-sidebar *ngIf="!iconsSidebar" class="nav navbar-nav navbar-left" [userGroups]="userGroups" [userPortfolios]=" userPortfolios" [sideNav]="sidenav" [iconsSidebar]="iconsSidebar" (sidebarChange)="switchSideBar()"></app-sidebar>
     <!-- SIDE MENU ICON ENDS -->
 
     <!-- ICONS SIDE MENU ICON STARTS -->
-    <app-icons-sidebar *ngIf="iconsSidebar" class="nav navbar-nav navbar-left" [userGroups]="userGroups" [sideNav]="sidenav" [iconsSidebar]="iconsSidebar" (sidebarChange)="switchSideBar()"></app-icons-sidebar>
+    <app-icons-sidebar *ngIf="iconsSidebar" class="nav navbar-nav navbar-left" [userGroups]="userGroups" [userPortfolios]=" userPortfolios" [sideNav]="sidenav" [iconsSidebar]="iconsSidebar" (sidebarChange)="switchSideBar()"></app-icons-sidebar>
     <!-- ICONS SIDE MENU ICON ENDS -->
 
   </mat-drawer>
@@ -32,7 +32,7 @@
           <app-user-account-navbar *ngIf="isUserAccountNavbar$ | async" style="width: 100%;"></app-user-account-navbar>
           <app-group-navbar *ngIf="isGroupNavbar$ | async" (favoriteGroupSaved)="onFavoriteGroupSaved()"></app-group-navbar>
           <app-work-navbar *ngIf="isWorkNavbar$ | async"></app-work-navbar>
-          <app-portfolio-navbar *ngIf="isPortfolioNavbar$ | async"></app-portfolio-navbar>
+          <app-portfolio-navbar *ngIf="isPortfolioNavbar$ | async" (favoritePortfolioSaved)="onFavoritePortfolioSaved()"></app-portfolio-navbar>
           <!-- MENU ITEMS ENDS -->
 
           <ul class="navbar-nav search-nav" *ngIf="!(isUserAccountNavbar$ | async)">

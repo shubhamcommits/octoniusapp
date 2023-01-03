@@ -2,7 +2,7 @@
   <mat-sidenav #sidenav (keydown.escape)="this.sidenav.toggle()" disableClose autosize>
 
     <!-- SIDE MENU ICON STARTS -->
-    <app-sidebar class="nav navbar-nav navbar-left" (click)="sidenav.toggle()" [userGroups]="userGroups" [sideNav]="sidenav" [isMobile]="isMobile"></app-sidebar>
+    <app-sidebar class="nav navbar-nav navbar-left" (click)="sidenav.toggle()" [userGroups]="userGroups" [userPortfolios]=" userPortfolios" [sideNav]="sidenav" [isMobile]="isMobile"></app-sidebar>
     <!-- SIDE MENU ICON ENDS -->
 
   </mat-sidenav>
@@ -31,6 +31,7 @@
             <app-user-account-navbar *ngIf="isUserAccountNavbar$ | async" ></app-user-account-navbar>
             <app-group-navbar *ngIf="isGroupNavbar$ | async" (favoriteGroupSaved)="onFavoriteGroupSaved()"></app-group-navbar>
             <app-work-navbar *ngIf="isWorkNavbar$ | async"></app-work-navbar>
+            <app-portfolio-navbar *ngIf="isPortfolioNavbar$ | async" (favoritePortfolioSaved)="onFavoritePortfolioSaved()"></app-portfolio-navbar>
             <!-- MENU ITEMS ENDS -->
              <!-- SEARCH starts -->
              <button class="btn btn-link navbar-right d-none d-sm-block" (click)="openSearchModal()">

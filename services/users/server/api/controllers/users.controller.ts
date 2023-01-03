@@ -37,6 +37,10 @@ export class UsersControllers {
                 select: '_id group_name group_avatar'
             })
             .populate({
+                path: 'stats.favorite_portfolios',
+                select: '_id portfolio_name portfolio_avatar'
+            })
+            .populate({
                 path: '_groups',
                 select: '_id group_name group_avatar'
             })
@@ -45,10 +49,18 @@ export class UsersControllers {
                 select: '_id email _workspaces first_name last_name created_date'
             });
 
-            if (user['stats'] && user['stats']['favorite_groups']) {
-                user['stats']['favorite_groups'].sort(function(a, b) {
-                  return b.group_name - a.group_name;
-                });
+            if (user['stats']) {
+                if (user['stats']['favorite_groups']) {
+                    user['stats']['favorite_groups'].sort(function(a, b) {
+                        return b.group_name - a.group_name;
+                    });
+                }
+
+                if (user['stats']['favorite_portfolios']) {
+                    user['stats']['favorite_portfolios'].sort(function(a, b) {
+                        return b.portfolio_name - a.portfolio_name;
+                    });
+                }
             }
 
             // If user not found
@@ -152,29 +164,41 @@ export class UsersControllers {
 
             // Find the user based on the userId
             const user = await User.findOne({
-                $and: [
-                    { _id: userId },
-                    { active: true }
-                ]
-            })
-            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr profile_custom_fields hr')
-            .populate({
-                path: 'stats.favorite_groups',
-                select: '_id group_name group_avatar'
-            })
-            .populate({
-                path: '_groups',
-                select: '_id group_name group_avatar'
-            })
-            .populate({
-                path: '_account',
-                select: '_id email _workspaces first_name last_name created_date'
-            });
-
-            if (user && user['stats'] && user['stats']['favorite_groups']) {
-                user['stats']['favorite_groups'].sort(function(a, b) {
-                  return b.group_name - a.group_name;
+                    $and: [
+                        { _id: userId },
+                        { active: true }
+                    ]
+                })
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr profile_custom_fields hr')
+                .populate({
+                    path: 'stats.favorite_groups',
+                    select: '_id group_name group_avatar'
+                })
+                .populate({
+                    path: 'stats.favorite_portfolios',
+                    select: '_id portfolio_name portfolio_avatar'
+                })
+                .populate({
+                    path: '_groups',
+                    select: '_id group_name group_avatar'
+                })
+                .populate({
+                    path: '_account',
+                    select: '_id email _workspaces first_name last_name created_date'
                 });
+
+            if (user['stats']) {
+                if (user['stats']['favorite_groups']) {
+                    user['stats']['favorite_groups'].sort(function(a, b) {
+                        return b.group_name - a.group_name;
+                    });
+                }
+
+                if (user['stats']['favorite_portfolios']) {
+                    user['stats']['favorite_portfolios'].sort(function(a, b) {
+                        return b.portfolio_name - a.portfolio_name;
+                    });
+                }
             }
 
             // If user not found
@@ -254,6 +278,10 @@ export class UsersControllers {
                     select: '_id group_name group_avatar'
                 })
                 .populate({
+                    path: 'stats.favorite_portfolios',
+                    select: '_id portfolio_name portfolio_avatar'
+                })
+                .populate({
                     path: '_groups',
                     select: '_id group_name group_avatar'
                 })
@@ -267,10 +295,18 @@ export class UsersControllers {
                 return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
             }
 
-            if (user['stats'] && user['stats']['favorite_groups']) {
-                user['stats']['favorite_groups'].sort(function(a, b) {
-                  return b.group_name - a.group_name;
-                });
+            if (user['stats']) {
+                if (user['stats']['favorite_groups']) {
+                    user['stats']['favorite_groups'].sort(function(a, b) {
+                        return b.group_name - a.group_name;
+                    });
+                }
+
+                if (user['stats']['favorite_portfolios']) {
+                    user['stats']['favorite_portfolios'].sort(function(a, b) {
+                        return b.portfolio_name - a.portfolio_name;
+                    });
+                }
             }
     
             if (body.email) {
@@ -859,6 +895,10 @@ export class UsersControllers {
                     select: '_id group_name group_avatar'
                 })
                 .populate({
+                    path: 'stats.favorite_portfolios',
+                    select: '_id portfolio_name portfolio_avatar'
+                })
+                .populate({
                     path: '_groups',
                     select: '_id group_name group_avatar'
                 })
@@ -876,6 +916,10 @@ export class UsersControllers {
                 .populate({
                     path: 'stats.favorite_groups',
                     select: '_id group_name group_avatar'
+                })
+                .populate({
+                    path: 'stats.favorite_portfolios',
+                    select: '_id portfolio_name portfolio_avatar'
                 })
                 .populate({
                     path: '_groups',
@@ -919,6 +963,10 @@ export class UsersControllers {
                 select: '_id group_name group_avatar'
             })
             .populate({
+                path: 'stats.favorite_portfolios',
+                select: '_id portfolio_name portfolio_avatar'
+            })
+            .populate({
                 path: '_groups',
                 select: '_id group_name group_avatar'
             })
@@ -928,10 +976,77 @@ export class UsersControllers {
             })
             .lean();
 
-        if (user['stats'] && user['stats']['favorite_groups']) {
-            user['stats']['favorite_groups'].sort(function(a, b) {
-            return b.group_name - a.group_name;
-            });
+        if (user['stats']) {
+            if (user['stats']['favorite_groups']) {
+                user['stats']['favorite_groups'].sort(function(a, b) {
+                    return b.group_name - a.group_name;
+                });
+            }
+
+            if (user['stats']['favorite_portfolios']) {
+                user['stats']['favorite_portfolios'].sort(function(a, b) {
+                    return b.portfolio_name - a.portfolio_name;
+                });
+            }
+        }
+
+        // Send the status 200 response
+        return res.status(200).json({
+            message: `User found!`,
+            user: user
+        });
+        } catch (err) {
+        return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for retreiving the user´s favorite portfolios
+     * @param { userId }req 
+     * @param res 
+     */
+    async getFavoritePortfolios(req: Request, res: Response, next: NextFunction) {
+        try {
+        const { params: { userId } } = req;
+
+        if (!userId) {
+            return res.status(400).json({
+            message: 'Please provide the userId!'
+            })
+        }
+
+        const user = await User.findOne({_id: userId})
+            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr')
+            .populate({
+                path: 'stats.favorite_groups',
+                select: '_id group_name group_avatar'
+            })
+            .populate({
+                path: 'stats.favorite_portfolios',
+                select: '_id portfolio_name portfolio_avatar'
+            })
+            .populate({
+                path: '_groups',
+                select: '_id group_name group_avatar'
+            })
+            .populate({
+                path: '_account',
+                select: '_id email _workspaces first_name last_name created_date'
+            })
+            .lean();
+
+        if (user['stats']) {
+            if (user['stats']['favorite_groups']) {
+                user['stats']['favorite_groups'].sort(function(a, b) {
+                    return b.group_name - a.group_name;
+                });
+            }
+
+            if (user['stats']['favorite_portfolios']) {
+                user['stats']['favorite_portfolios'].sort(function(a, b) {
+                    return b.portfolio_name - a.portfolio_name;
+                });
+            }
         }
 
         // Send the status 200 response
@@ -973,6 +1088,10 @@ export class UsersControllers {
                     select: '_id group_name group_avatar'
                 })
                 .populate({
+                    path: 'stats.favorite_portfolios',
+                    select: '_id portfolio_name portfolio_avatar'
+                })
+                .populate({
                     path: '_groups',
                     select: '_id group_name group_avatar'
                 })
@@ -981,10 +1100,84 @@ export class UsersControllers {
                     select: '_id email _workspaces first_name last_name created_date'
                 });
 
-            if (user['stats'] && user['stats']['favorite_groups']) {
-                user['stats']['favorite_groups'].sort(function(a, b) {
-                    return b.group_name - a.group_name;
+            if (user['stats']) {
+                if (user['stats']['favorite_groups']) {
+                    user['stats']['favorite_groups'].sort(function(a, b) {
+                        return b.group_name - a.group_name;
+                    });
+                }
+
+                if (user['stats']['favorite_portfolios']) {
+                    user['stats']['favorite_portfolios'].sort(function(a, b) {
+                        return b.portfolio_name - a.portfolio_name;
+                    });
+                }
+            }
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `User Stats has been updated`,
+                user: user
+            });
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for adding/removing a group from user´s favorites
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async addFavoritePortfolio(req: Request, res: Response, next: NextFunction) {
+
+        const { userId, portfolioId, isFavoritePortfolio } = req.body;
+
+        try {
+
+            let update = {};
+            if (isFavoritePortfolio) {
+                update = { $push: { 'stats.favorite_portfolios': portfolioId}};
+            } else {
+                update = { $pull: { 'stats.favorite_portfolios': portfolioId}};
+            }
+
+            // Find the user and update their respective role
+            let user = await User.findOneAndUpdate({
+                    _id: userId
+                }, update)
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr')
+                .populate({
+                    path: 'stats.favorite_groups',
+                    select: '_id group_name group_avatar'
+                })
+                .populate({
+                    path: 'stats.favorite_portfolios',
+                    select: '_id portfolio_name portfolio_avatar'
+                })
+                .populate({
+                    path: '_groups',
+                    select: '_id group_name group_avatar'
+                })
+                .populate({
+                    path: '_account',
+                    select: '_id email _workspaces first_name last_name created_date'
                 });
+
+            if (user['stats']) {
+                if (user['stats']['favorite_groups']) {
+                    user['stats']['favorite_groups'].sort(function(a, b) {
+                        return b.group_name - a.group_name;
+                    });
+                }
+
+                if (user['stats']['favorite_portfolios']) {
+                    user['stats']['favorite_portfolios'].sort(function(a, b) {
+                        return b.portfolio_name - a.portfolio_name;
+                    });
+                }
             }
 
             // Send status 200 response
@@ -1134,6 +1327,10 @@ export class UsersControllers {
                     select: '_id group_name group_avatar'
                 })
                 .populate({
+                    path: 'stats.favorite_portfolios',
+                    select: '_id portfolio_name portfolio_avatar'
+                })
+                .populate({
                     path: '_groups',
                     select: '_id group_name group_avatar'
                 })
@@ -1142,10 +1339,18 @@ export class UsersControllers {
                     select: '_id email _workspaces first_name last_name created_date'
                 });
 
-            if (user['stats'] && user['stats']['favorite_groups']) {
-                user['stats']['favorite_groups'].sort(function(a, b) {
-                return b.group_name - a.group_name;
-                });
+            if (user['stats']) {
+                if (user['stats']['favorite_groups']) {
+                    user['stats']['favorite_groups'].sort(function(a, b) {
+                        return b.group_name - a.group_name;
+                    });
+                }
+
+                if (user['stats']['favorite_portfolios']) {
+                    user['stats']['favorite_portfolios'].sort(function(a, b) {
+                        return b.portfolio_name - a.portfolio_name;
+                    });
+                }
             }
 
         // Send status 200 response
@@ -1360,6 +1565,10 @@ export class UsersControllers {
                 .populate({
                     path: 'stats.favorite_groups',
                     select: '_id group_name group_avatar'
+                })
+                .populate({
+                    path: 'stats.favorite_portfolios',
+                    select: '_id portfolio_name portfolio_avatar'
                 })
                 .populate({
                     path: '_groups',

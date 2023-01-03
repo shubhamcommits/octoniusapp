@@ -574,14 +574,26 @@ export class AuthsController {
                     select: '_id group_name group_avatar'
                 })
                 .populate({
+                    path: 'stats.favorite_portfolios',
+                    select: '_id portfolio_name portfolio_avatar'
+                })
+                .populate({
                     path: '_account',
                     select: '_id email _workspaces first_name last_name created_date'
                 });
 
-            if (user['stats'] && user['stats']['favorite_groups']) {
-                user['stats']['favorite_groups'].sort(function(a, b) {
-                  return b.group_name - a.group_name;
-                });
+            if (user['stats']) {
+                if (user['stats']['favorite_groups']) {
+                    user['stats']['favorite_groups'].sort(function(a, b) {
+                        return b.group_name - a.group_name;
+                    });
+                }
+
+                if (user['stats']['favorite_portfolios']) {
+                    user['stats']['favorite_portfolios'].sort(function(a, b) {
+                        return b.portfolio_name - a.portfolio_name;
+                    });
+                }
             }
 
             // If user wasn't found or user was previsously removed/disabled, return error

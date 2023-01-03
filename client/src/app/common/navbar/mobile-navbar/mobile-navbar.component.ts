@@ -1,15 +1,13 @@
-import { Component, OnInit, Injector, Input, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, Injector, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { retry } from 'rxjs/internal/operators/retry';
 import { SubSink } from 'subsink';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { SocketService } from 'src/shared/services/socket-service/socket.service';
+import { NavigationEnd, Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
-import moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 import { SearchHeaderComponent } from 'modules/search/search-header/search-header.component';
 import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
@@ -47,8 +45,10 @@ export class MobileNavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   isAdminNavbar$ = new BehaviorSubject(false);
   isWorkNavbar$ = new BehaviorSubject(false);
   isUserAccountNavbar$ = new BehaviorSubject(false);
+  isPortfolioNavbar$ = new BehaviorSubject(false);
 
   userGroups: any = [];
+  userPortfolios: any = [];
 
   iconsSidebar = false;
   isDocumentPage = false;
@@ -83,8 +83,9 @@ export class MobileNavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // FETCH THE USER DETAILS FROM THE SERVER
     this.userData = await this.getCurrentUser();
-    // this.userData = await this.publicFunctions.getCurrentUser();
+
     this.userGroups = this.userData['stats']['favorite_groups'];
+    this.userPortfolios = this.userData['stats']['favorite_portfolios'];
     this.iconsSidebar = this.userData['stats']['default_icons_sidebar'] || false;
 
     // Fetch current user from the service
@@ -150,6 +151,7 @@ export class MobileNavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isAdminNavbar$.next(false);
     this.isWorkNavbar$.next(false);
     this.isGroupNavbar$.next(true);
+    this.isPortfolioNavbar$.next(false);
   }
 
   nextCommonNavbarState() {
@@ -157,6 +159,7 @@ export class MobileNavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isGroupNavbar$.next(false);
     this.isWorkNavbar$.next(false);
     this.isAdminNavbar$.next(true);
+    this.isPortfolioNavbar$.next(false);
   }
 
   nextWorkNavbar() {
@@ -164,10 +167,20 @@ export class MobileNavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isAdminNavbar$.next(false);
     this.isGroupNavbar$.next(false);
     this.isWorkNavbar$.next(true);
+    this.isPortfolioNavbar$.next(false);
   }
 
   nextUserAccountNavbarState() {
     this.isUserAccountNavbar$.next(true);
+    this.isAdminNavbar$.next(false);
+    this.isGroupNavbar$.next(false);
+    this.isWorkNavbar$.next(false);
+    this.isPortfolioNavbar$.next(false);
+  }
+
+  nextPortfolioNavbarState() {
+    this.isPortfolioNavbar$.next(true);
+    this.isUserAccountNavbar$.next(false);
     this.isAdminNavbar$.next(false);
     this.isGroupNavbar$.next(false);
     this.isWorkNavbar$.next(false);
@@ -177,17 +190,23 @@ export class MobileNavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subSink.add(this.utilityService.routerStateData.subscribe((res) => {
       if (JSON.stringify(res) != JSON.stringify({})) {
         this.routerState = res['state'];
+
         if (this.routerState === 'admin') {
           this.nextCommonNavbarState();
 
         } else if (this.routerState === 'group' || this.routerState === 'home') {
           this.nextGroupNavbarState();
         }
-        else if (this.routerState === 'work' || this.routerState === 'lounge') {
+        else if (this.routerState === 'work' || this.routerState === 'lounge'
+            || this.routerState === 'people-directory' || this.routerState === 'people-directory-chart'
+            || this.routerState === 'hive-hr' || this.routerState == 'hive-hr-setup'
+            || this.routerState == 'hive-hr-timeoff' || this.routerState == 'hive-hr-reports') {
           this.nextWorkNavbar();
         }
         else if (this.routerState === 'user-account') {
           this.nextUserAccountNavbarState();
+        } else if (this.routerState === 'portfolio') {
+          this.nextPortfolioNavbarState();
         }
       }
     }));
@@ -229,8 +248,12 @@ export class MobileNavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async onFavoriteGroupSaved() {
     this.userData = await this.getCurrentUser();
-    // this.userData = await this.publicFunctions.getCurrentUser();
     this.userGroups = this.userData['stats']['favorite_groups'];
+  }
+
+  async onFavoritePortfolioSaved() {
+    this.userData = await this.getCurrentUser();
+    this.userPortfolios = this.userData['stats']['favorite_portfolios'];
   }
 
   showSideBar() {

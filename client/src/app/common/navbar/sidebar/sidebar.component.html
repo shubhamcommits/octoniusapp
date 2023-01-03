@@ -57,13 +57,13 @@
                 </a>
 
                 <ul class="collapse list-unstyled show" id="pageSubmenu">
-                    <li *ngFor="let group of userGroups">
-                        <a (click)="goToGroup(group?._id, 'groups_activity')" routerLinkActive="active">
+                    <li *ngFor="let group of userGroupsAndPortfolios">
+                        <a (click)="goToGroupOrPortfolio(group)" routerLinkActive="active">
                             <app-secured-image
-                              [imgURL]="group?.group_avatar"
+                              [imgURL]="group?.avatar"
                               [service]="'group'"
                               [styleClass]="'avatar'"></app-secured-image>
-                            {{ group?.group_name | truncatetext: 16 }}
+                            {{ group?.name | truncatetext: 16 }}
                         </a>
                     </li>
                 </ul>
