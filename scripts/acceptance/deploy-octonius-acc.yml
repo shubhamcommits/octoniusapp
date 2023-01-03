@@ -1,5 +1,21 @@
 version: '3.7'
 
+# Settings and configurations that are common for all containers
+x-minio-common: &minio-common
+  image: quay.io/minio/minio:RELEASE.2022-12-12T19-27-27Z
+  command: server --address 0.0.0.0:9000 --console-address ":9001" http://minio{1...3}/data1
+  expose:
+    - "9000"
+    - "9001"
+  environment:
+    MINIO_ROOT_USER: ${MINIO_USER}
+    MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
+  healthcheck:
+    test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+    interval: 30s
+    timeout: 20s
+    retries: 3
+
 services:
   mongo-setup:
     container_name: mongo-setup
@@ -604,6 +620,43 @@ services:
     networks:
       - acc
 
+minio1:
+    <<: *minio-common
+    hostname: minio1
+    volumes:
+      - data1-1:/data1
+    # deploy:
+    #   placement:
+    #     constraints:
+    #       - node.hostname==swarm01
+    networks:
+      - acc
+
+  minio2:
+    <<: *minio-common
+    hostname: minio2
+    volumes:
+      - data2-1:/data1
+    # deploy:
+    #   placement:
+    #     constraints:
+    #       - node.hostname==swarm02
+    networks:
+      - acc
+
+  minio3:
+    <<: *minio-common
+    hostname: minio3
+    volumes:
+      - data3-1:/data1
+    # deploy:
+    #   placement:
+    #     constraints:
+    #       - node.hostname==swarm03
+    networks:
+      - acc
+
+
 volumes:
   #acc_db_data:
   #  driver: local
@@ -662,7 +715,28 @@ volumes:
       o: bind
 
   acc_lool_config_volume:
-        
+
+  data1-1:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/minio/data1
+      o: bind
+
+  data2-1:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/minio/data2
+      o: bind
+
+  data3-1:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/minio/data3
+      o: bind  
+
 networks:
   acc: 
     driver: bridge
