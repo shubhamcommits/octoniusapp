@@ -16,16 +16,16 @@ ARG APP_NAME
 
 ### Environment Variables
 ENV COLLABORA_ONLINE_BRANCH=${COLLABORA_ONLINE_BRANCH:-"master"} \
-    COLLABORA_ONLINE_VERSION=${COLLABORA_ONLINE_VERSION:-"cp-21.11.5-2"} \
+    COLLABORA_ONLINE_VERSION=${COLLABORA_ONLINE_VERSION:-"cp-22.05.9-2"} \
     COLLABORA_ONLINE_REPO_URL=${COLLABORA_ONLINE_REPO_URL:-"https://github.com/CollaboraOnline/online"} \
     #
     LIBREOFFICE_BRANCH=${LIBREOFFICE_BRANCH:-"master"} \
-    LIBREOFFICE_VERSION=${LIBREOFFICE_VERSION:-"cp-21.06.31-1"} \
+    LIBREOFFICE_VERSION=${LIBREOFFICE_VERSION:-"cp-22.05.9-2"} \
     LIBREOFFICE_REPO_URL=${LIBREOFFICE_REPO_URL:-"https://github.com/LibreOffice/core"} \
     #
     APP_NAME=${APP_NAME:-"Document Editor"} \
     #
-    POCO_VERSION=${POCO_VERSION:-"poco-1.11.1-release.tar.gz"} \
+    POCO_VERSION=${POCO_VERSION:-"poco-1.12.4-release.tar.gz"} \
     POCO_URL=${POCO_URL:-"https://github.com/pocoproject/poco/archive/"} \
     #
     MAX_CONNECTIONS=${MAX_CONNECTIONS:-"100000"} \
@@ -70,6 +70,7 @@ RUN set -x && \
     libssl-dev \
     libtool \
     libubsan1 \
+    libzstd-dev \
     locales-all \
     m4 \
     nasm \
