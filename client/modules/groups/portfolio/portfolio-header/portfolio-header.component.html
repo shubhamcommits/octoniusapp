@@ -46,10 +46,11 @@
 </div>
 
 <div class="clearfix save-content mb-3">
-    <button *ngIf="!editContent" class="btn float-right btn-light btn-md" style="margin-right: 20px;"
-        (click)="editContent = !editContent" i18n="@@portfolioHeader.edit">
-        Edit details
+    <button *ngIf="!editContent" class="btn float-right btn-light btn-md tagslabel" style="margin-right: 20px;"
+        mat-button [matMenuTriggerFor]="portfolioActions" #trigger="matMenuTrigger" i18n="@@portfolioHeader.actions">
+        Actions
     </button>
+
     <button *ngIf="editContent" [disabled]="!contentChanged" class="btn float-right btn-primary btn-md"
         style="margin-left: 10px;" (click)="updateContent()" i18n="@@portfolioHeader.save">
         Save
@@ -58,4 +59,21 @@
         (click)="editContent = !editContent" i18n="@@portfolioHeader.cancel">
         Cancel
     </button>
+
+    <mat-menu #portfolioActions="matMenu">
+        <ul style="list-style: none; padding: 0 20px; margin: 0;">
+            <li>
+                <a *ngIf="!editContent" (click)="editContent = !editContent" class="btn btn-light btn-md" style="margin: 0;">
+                    <i class="material-icons-outlined">edit</i>
+                    <span i18n="@@portfolioHeader.edit">Edit details</span>
+                </a>
+            </li>
+            <li style="margin-top: 20px;">
+                <a *ngIf="!editContent" (click)="deletePortfolio()" class="btn btn-light btn-md" style="margin: 0;">
+                    <i class="material-icons-outlined">delete</i>
+                    <span i18n="@@portfolioHeader.delete">Delete</span>
+                </a>
+            </li>
+        </ul>
+    </mat-menu>
 </div>
