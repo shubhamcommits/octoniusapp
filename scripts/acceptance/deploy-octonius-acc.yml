@@ -620,7 +620,7 @@ services:
     networks:
       - acc
 
-minio1:
+  minio1:
     <<: *minio-common
     hostname: minio1
     volumes:

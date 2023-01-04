@@ -128,6 +128,8 @@ pipelines:
           - docker build -t $INTEGRATIONS_IMAGE_NAME --compress=true --force-rm=true ./services/integrations/server
           - docker build -t $FLAMINGO_IMAGE_NAME --compress=true --force-rm=true ./services/flamingo/server
           - docker build -t $NGINX_IMAGE_NAME --compress=true --force-rm=true ./nginx
+          - docker build -t $MINIO_IMAGE_NAME --compress=true --force-rm=true ./services/minio
+
 
           # Clear unnecessary Image build
           - docker image prune -f 
@@ -151,6 +153,7 @@ pipelines:
           - docker push $INTEGRATIONS_IMAGE_NAME
           - docker push $FLAMINGO_IMAGE_NAME
           - docker push $NGINX_IMAGE_NAME
+          - docker push $MINIO_IMAGE_NAME
 
     - step:
        name: Deploy to stating server
