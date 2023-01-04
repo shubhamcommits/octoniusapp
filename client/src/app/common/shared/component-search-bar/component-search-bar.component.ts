@@ -411,6 +411,11 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
             // Send the data over the service and storage layer throughout the entire app
             this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
 
+            if (this.userData?._id == userId) {
+              this.userData.role = role;
+              this.publicFunctions.sendUpdatesToUserData(this.userData);
+            }
+
             // Update the localdata of all the connected users
             this.publicFunctions.emitWorkspaceData(socketService, this.workspaceData)
 
@@ -453,6 +458,11 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
 
             // Send the data over the service and storage layer throughout the entire app
             this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
+
+            if (this.userData?._id == memberId) {
+              this.userData.hr_role = hr_role;
+              this.publicFunctions.sendUpdatesToUserData(this.userData);
+            }
 
             // Update the localdata of all the connected users
             this.publicFunctions.emitWorkspaceData(socketService, this.workspaceData);
