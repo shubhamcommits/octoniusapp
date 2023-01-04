@@ -111,6 +111,7 @@ pipelines:
           - export INTEGRATIONS_IMAGE_NAME=octoniusapp/octonius:integrations-server
           - export FLAMINGO_IMAGE_NAME=octoniusapp/octonius:flamingo-server
           - export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
+          - export MINIO_IMAGE_NAME=octoniusapp/octonius:minio
 
           # build the Docker image (this will use the Dockerfile in the root of the repo)
           - docker build -t $CLIENT_IMAGE_NAME --compress=true --force-rm=true ./client
