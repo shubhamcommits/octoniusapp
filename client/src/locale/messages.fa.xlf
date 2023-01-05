@@ -17739,7 +17739,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="hrGuard.oopsNoPermission" datatype="html">
-        <source>Oops seems like you don't have the permission to access the admin section, kindly contact your superior to provide you the proper admin rights!</source>
+        <source>Oops seems like you don't have the permission to access the HR section, kindly contact your superior to provide you the proper admin rights!</source>
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/guards/hr-guard/hr.guard.ts</context>

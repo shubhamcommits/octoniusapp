@@ -17740,8 +17740,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="hrGuard.oopsNoPermission" datatype="html">
-        <source>Oops seems like you don't have the permission to access the admin section, kindly contact your superior to provide you the proper admin rights!</source>
-        <target state="translated">Vaya, parece que no tiene permiso para acceder a la sección de administración. Póngase en contacto con su superior para que le proporcione los derechos de administración adecuados.</target>
+        <source>Oops seems like you don't have the permission to access the HR section, kindly contact your superior to provide you the proper admin rights!</source>
+        <target state="translated">Vaya, parece que no tiene permiso para acceder a la sección de HHRR. Póngase en contacto con su superior para que le proporcione los derechos de administración adecuados.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/guards/hr-guard/hr.guard.ts</context>
           <context context-type="linenumber">26</context>
