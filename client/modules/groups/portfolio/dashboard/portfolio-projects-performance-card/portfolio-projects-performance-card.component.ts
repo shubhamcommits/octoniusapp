@@ -16,9 +16,6 @@ export class PortfolioProjectsPerformanceCardComponent implements OnChanges {
 
   groupName = '';
 
-  // Base URL
-  baseUrl = environment.UTILITIES_GROUPS_UPLOADS;
-
   // Workspace data
   public workspaceData: Object = {};
 

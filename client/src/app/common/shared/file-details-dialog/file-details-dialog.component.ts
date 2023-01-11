@@ -245,7 +245,7 @@ export class FileDetailsDialogComponent implements OnInit {
   deleteFile() {
     const id = this.fileData._id;
     this.utilityService.asyncNotification($localize`:@@fileDetailsDialog.pleaseWaitWeAreDeleting:Please wait we are deleting the file...`, new Promise((resolve, reject) => {
-      this.filesService.deleteFile(this.fileData._id, this.fileData.modified_name)
+      this.filesService.deleteFile(this.fileData._id, this.fileData.modified_name, this.groupData?._workspace?._id)
         .then((res) => {
           // Emit the Deleted file to all the compoents in order to update the UI
           this.deleteEvent.emit(id);

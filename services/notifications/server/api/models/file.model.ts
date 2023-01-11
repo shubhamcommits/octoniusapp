@@ -12,6 +12,12 @@ const FileSchema = new Schema({
         type: String,
         default: 'New Folio'
     },
+    minio_etag:  {
+        type: String
+    },
+    minio_versionId:  {
+        type: String
+    },
     type: {
         type: String,
         default: 'folio',

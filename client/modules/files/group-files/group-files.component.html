@@ -213,12 +213,12 @@
                             <img src="assets/images/icon_flamingo.svg" onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: top;">
                             <span i18n="@@groupFiles.copyFlamingo">Copy Flamingo</span>
                           </a>
-
+                          <!--
                           <a *ngIf="file?.type === 'file' && !isOfficeFile(file?.original_name)" mat-menu-item (click)="openViewFileDialog(file)" style="cursor: pointer">
                               <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                               <span i18n="@@groupFiles.view">View</span>
                           </a>
-
+                          -->
                           <a *ngIf="file?.type === 'folio'" mat-menu-item
                             routerLink="/document/{{file?._id}}" [queryParams]="{ readOnly: !file?.canEdit }">
                             <!--(click)="openViewFolioDialog(file?._id)"-->

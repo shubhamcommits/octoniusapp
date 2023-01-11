@@ -128,11 +128,12 @@ export class FilesService {
    * @param fileId
    * @param fileName
    */
-  deleteFile(fileId: string, fileName: any, flamingoType?: boolean) {
+  deleteFile(fileId: string, fileName: any, workspaceId: string, flamingoType?: boolean) {
     return this._http.request('delete', this.baseURL + `/files/${fileId}`, {
       body: {
         fileName: fileName,
-        flamingoType: flamingoType
+        flamingoType: flamingoType,
+        workspaceId: workspaceId
       }
     }).toPromise();
   }
@@ -231,5 +232,15 @@ export class FilesService {
 
   getPathToFile(fileId: string) {
     return this._http.get(this.baseURL + `/files/${fileId}/fullPathString`, {}).toPromise();
+  }
+
+  getMinioFile(fileId: string, modified_name: string, workspaceId: string, token: string) {
+    return this._http.get(this.baseURL + `/files/${fileId}/minio`, {
+      params: {
+        token: token,
+        modified_name: modified_name,
+        workspaceId: workspaceId
+      }
+    }).toPromise();
   }
 }

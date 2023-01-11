@@ -11,7 +11,6 @@ export class GroupComponent implements OnInit, OnDestroy {
 
   groupData;
 
-  UTILITIES_GROUPS_UPLOADS = environment.UTILITIES_GROUPS_UPLOADS;
   backgroundImageUrl = '';
 
   // Public Functions Object
@@ -32,7 +31,7 @@ export class GroupComponent implements OnInit, OnDestroy {
     this.groupData =await this.publicFunctions.getCurrentGroupDetails();
 
     if (this.groupData && this.groupData?.background_image) {
-      this.backgroundImageUrl = this.UTILITIES_GROUPS_UPLOADS + '/' + this.groupData?.background_image.replace(/\s/g, '%20') + '?noAuth=true';
+      this.backgroundImageUrl = environment.UTILITIES_GROUPS_UPLOADS + '/' + this.groupData?.background_image.replace(/\s/g, '%20') + '?noAuth=true';
     }
   }
 

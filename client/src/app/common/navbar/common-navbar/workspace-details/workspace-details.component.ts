@@ -19,9 +19,6 @@ export class WorkspaceDetailsComponent implements OnInit {
   // Workspace Data Variable
   @Input('workspaceData') workspaceData: any;
 
-  // Base Url of the Application
-  @Input('baseUrl') baseUrl: string;
-
   // Cropped Image of the Input Image File
   croppedImage: File;
 

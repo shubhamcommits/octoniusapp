@@ -36,13 +36,7 @@ export class GroupFilesComponent implements OnInit {
   // Delete Event Emitter - Emits delete event
   @Output('delete') delete = new EventEmitter();
 
-  // Base Url of the users uploads
-  userBaseUrl = environment.UTILITIES_USERS_UPLOADS;
-
-  // Base Url of the files uploads
-  filesBaseUrl = environment.UTILITIES_FILES_UPLOADS;
-
-  utilitiesBaseAPIUrl = environment.UTILITIES_BASE_API_URL;
+  baseAPIUrl = environment.UTILITIES_BASE_API_URL;
 
   // Client Url of the global application
   clientUrl = environment.clientUrl;
@@ -271,7 +265,7 @@ export class GroupFilesComponent implements OnInit {
           // Remove the file
           this.utilityService.asyncNotification($localize`:@@groupFiles.pleaseWaitDeleting:Please wait, we are deleting...`, new Promise((resolve, reject) => {
             if (type == 'file' || type == 'folio' || type == 'flamingo' || type == 'campaign') {
-              this.filesService.deleteFile(itemId, fileName, type == 'flamingo')
+              this.filesService.deleteFile(itemId, fileName, this.workspaceId, type == 'flamingo')
                 .then((res) => {
                   // Emit the Deleted file to all the components in order to update the UI
                   this.delete.emit(res['file']);
@@ -302,15 +296,18 @@ export class GroupFilesComponent implements OnInit {
       });
   }
 
-  async openViewFileDialog(file: any) {
-    const dialogRef = this.dialog.open(PreviewFilesDialogComponent, {
-      width: '90%',
-      height: '90%',
-      data: {
-        url: this.filesBaseUrl + '/' + file?.modified_name
-      }
-    });
-  }
+  // async openViewFileDialog(file: any) {
+  //   const dialogRef = this.dialog.open(PreviewFilesDialogComponent, {
+  //     width: '90%',
+  //     height: '90%',
+  //     data: {
+  //       modified_name: file?.modified_name,
+  //       fileId: file?._id,
+  //       workspaceId: this.workspaceId,
+  //       authToken: this.authToken
+  //     }
+  //   });
+  // }
 
   openViewFolioDialog(folioId: string) {
     const dialogRef = this.dialog.open(PreviewFilesDialogComponent, {
@@ -389,7 +386,10 @@ export class GroupFilesComponent implements OnInit {
       if (this.isOfficeFile(lastFileVersion?.original_name)) {
         url = await this.getLibreOfficeURL(lastFileVersion);
       } else {
-        url = this.filesBaseUrl + '/' + file?.modified_name + '?authToken=' + this.authToken;
+        // url = this.filesBaseUrl + '/' + file?.modified_name + '?authToken=' + this.authToken;
+        await this.filesService.getMinioFile(file?._id, file?.modified_name, this.workspaceId, this.authToken).then(async res =>{
+          url = res['url'];
+        });
       }
     }
 
@@ -968,22 +968,25 @@ export class GroupFilesComponent implements OnInit {
 
   async modifyPdf(fileData: any) {
     const token = this.storageService.getLocalData('authToken')['token'];
-    const url = this.filesBaseUrl + '/' + fileData?.modified_name + '?authToken=Bearer ' + token;
-    const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer());
-    const pdfDoc = await PDFDocument.load(existingPdfBytes);
+    // const url = this.filesBaseUrl + '/' + fileData?.modified_name + '?authToken=Bearer ' + token;
+    // const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer());
+    // const pdfDoc = await PDFDocument.load(existingPdfBytes);
+    this.filesService.getMinioFile(fileData?._id, fileData?.modified_name, this.workspaceId, this.authToken).then(async res =>{
+      const pdfDoc = await PDFDocument.load(res['url']);
 
-    let pdfBytes;
-    if (fileData
-        && fileData.approval_active && fileData.approval_flow_launched
-        && fileData.approval_flow && fileData.approval_flow.length > 0) {
-      pdfBytes = await this.approvalPDFSignaturesService.addSignaturePage(fileData, pdfDoc, token);
-    } else {
-      pdfBytes = await pdfDoc.save();
-    }
+      let pdfBytes;
+      if (fileData
+          && fileData.approval_active && fileData.approval_flow_launched
+          && fileData.approval_flow && fileData.approval_flow.length > 0) {
+        pdfBytes = await this.approvalPDFSignaturesService.addSignaturePage(fileData, pdfDoc, token);
+      } else {
+        pdfBytes = await pdfDoc.save();
+      }
 
-    saveAs(new Blob([pdfBytes], { type: "application/pdf" }), fileData?.original_name);
+      saveAs(new Blob([pdfBytes], { type: "application/pdf" }), fileData?.original_name);
 
-    this.isLoading$.next(false);
+      this.isLoading$.next(false);
+    });
   }
 
   async modifyFolio(fileData: any) {
@@ -1032,7 +1035,10 @@ export class GroupFilesComponent implements OnInit {
       if (this.isOfficeFile(lastFileVersion?.original_name)) {
         window.open(await this.getLibreOfficeURL(lastFileVersion), "_blank");
       } else {
-        window.open(this.filesBaseUrl + '/' + lastFileVersion?.modified_name + '?authToken=' + this.authToken, "_blank");
+        // window.open(this.filesBaseUrl + '/' + lastFileVersion?.modified_name + '?authToken=' + this.authToken, "_blank");
+        this.filesService.getMinioFile(lastFileVersion?._id, lastFileVersion?.modified_name, this.workspaceId, this.authToken).then(res =>{
+          window.open(res['url'], "_blank");
+        });
       }
     } else {
       window.open(await this.getLibreOfficeURL(file?._id), "_blank");
@@ -1045,7 +1051,7 @@ export class GroupFilesComponent implements OnInit {
     // wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
     let wopiClientURL = '';
     await this.libreofficeService.getLibreofficeUrl().then(res => {
-        wopiClientURL = res['url'] + 'WOPISrc=' + `${this.utilitiesBaseAPIUrl}/libreoffice/wopi/files/${file?._id}?authToken=${this.authToken}`;
+        wopiClientURL = res['url'] + 'WOPISrc=' + `${this.baseAPIUrl}/libreoffice/wopi/files/${file?._id}?authToken=${this.authToken}`;
       }).catch(error => {
         this.utilityService.errorNotification($localize`:@@groupFiles.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
       });
@@ -1065,10 +1071,14 @@ export class GroupFilesComponent implements OnInit {
       if (this.isOfficeFile(lastFileVersion?.original_name)) {
         window.open(await this.getLibreOfficeURL(lastFileVersion), "_blank");
       } else {
-        window.open(this.filesBaseUrl + '/' + lastFileVersion?.modified_name + '?authToken=' + this.authToken, "_blank");
+        this.filesService.getMinioFile(lastFileVersion?._id, lastFileVersion?.modified_name, this.workspaceId, this.authToken).then(res =>{
+          window.open(res['url'], "_blank");
+        });
       }
     } else {
-      window.open(this.filesBaseUrl + '/' + file?.modified_name + '?authToken=' + this.authToken, "_blank");
+      this.filesService.getMinioFile(file?._id, file?.modified_name, this.workspaceId, this.authToken).then(res =>{
+        window.open(res['url'], "_blank");
+      });
     }
 
     // Stop the loading spinner

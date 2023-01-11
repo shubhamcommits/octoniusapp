@@ -15,9 +15,6 @@ export class TopSocialCardComponent implements OnChanges {
   @Input() period;
   @Input() parentId; // groupId or workspaceId depending where is the widget used
 
-  // Base URL
-  baseUrl = environment.UTILITIES_GROUPS_UPLOADS;
-
   // Members
   public members: any = [];
 

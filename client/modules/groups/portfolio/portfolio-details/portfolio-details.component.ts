@@ -39,9 +39,6 @@ export class PortfolioDetailsComponent implements OnInit {
     }
   ];
 
-  // Base Url
-  baseUrl = environment.UTILITIES_GROUPS_UPLOADS;
-
   // IsLoading behaviou subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
 
