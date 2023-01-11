@@ -525,8 +525,11 @@ export class MembersControllers {
             }
 
             // Find the users present in the current workspace
-            const users = await User.find(
-                { _workspace: workspaceId }).lean() || []
+            const users = await User.find({
+                $and: [
+                    { active: true },
+                    { _workspace: workspaceId }
+                ]}).lean() || []
 
             // Send the status 200 response
             return res.status(200).json({
