@@ -205,10 +205,9 @@ export class WorkspaceController {
                     });
                 }
 
-                const encryption = new minio.AES256();
                 if (!exists) {
                     // Make a bucket.
-                    await minioClient.makeBucket(workspace._id, encryption, (error) => {
+                    await minioClient.makeBucket(workspace._id, (error) => {
                         if (error) {
                             return res.status(500).json({
                                 status: '500',
@@ -216,6 +215,10 @@ export class WorkspaceController {
                                 error: error
                             });
                         }
+
+                        minioClient.setBucketEncryption(req.body.fileData._workspace, { algorithm: "AES256" })
+                            .then(() => console.log("Encryption enabled"))
+                            .catch((error) => console.error(error));
                     });
                 }
             });

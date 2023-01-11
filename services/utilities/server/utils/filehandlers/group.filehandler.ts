@@ -164,11 +164,9 @@ const groupFileUploader = async (req: Request, res: Response, next: NextFunction
         });
       }
 
-      const encryption = new minio.AES256();
-
       if (!exists) {
         // Make a bucket.
-        await minioClient.makeBucket(req.body.fileData._workspace, encryption, (error) => {
+        await minioClient.makeBucket(req.body.fileData._workspace, async (error) => {
           if (error) {
             fileName = null;
             return res.status(500).json({
@@ -178,8 +176,13 @@ const groupFileUploader = async (req: Request, res: Response, next: NextFunction
             });
           }
 
+          const encryption = { algorithm: "AES256" };
+          await minioClient.setBucketEncryption(req.body.fileData._workspace, encryption)
+            .then(() => console.log("Encryption enabled"))
+            .catch((error) => console.error(error));
+
           // Using fPutObject API upload your file to the bucket.
-          minioClient.putObject(req.body.fileData._workspace, folder + fileName, file.data, encryption, (error, objInfo) => {
+          minioClient.putObject(req.body.fileData._workspace, folder + fileName, file.data, (error, objInfo) => {
             if (error) {
               fileName = null;
               return res.status(500).json({
@@ -200,7 +203,7 @@ const groupFileUploader = async (req: Request, res: Response, next: NextFunction
         });
       } else {
         // Using fPutObject API upload your file to the bucket.
-        minioClient.putObject(req.body.fileData._workspace, folder + fileName, file.data, encryption, (error, objInfo) => {
+        minioClient.putObject(req.body.fileData._workspace, folder + fileName, file.data, (error, objInfo) => {
           if (error) {
             fileName = null;
             return res.status(500).json({
