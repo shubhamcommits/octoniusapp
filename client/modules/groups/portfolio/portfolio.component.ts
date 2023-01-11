@@ -15,9 +15,6 @@ export class PortfolioComponent implements OnInit {
   @Input() userData;
   @Input() workspaceData;
 
-  // Base Url
-  baseUrl = environment.UTILITIES_GROUPS_UPLOADS;
-
   // Array of user portfolios
   public userPortfolios: any = [];
 

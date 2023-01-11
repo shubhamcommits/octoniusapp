@@ -21,9 +21,6 @@ export class PortfolioGroupsListComponent implements OnInit {
 
   editGroups = false;
 
-  // Base Url
-  baseUrl = environment.UTILITIES_GROUPS_UPLOADS;
-
   // Public functions
   public publicFunctions = new PublicFunctions(this.injector);
 

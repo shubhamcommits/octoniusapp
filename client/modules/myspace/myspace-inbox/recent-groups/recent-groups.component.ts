@@ -1,7 +1,6 @@
-import { Component, Injector, Input, OnInit } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
-import { environment } from 'src/environments/environment';
 import { UserService } from 'src/shared/services/user-service/user.service';
 
 @Component({
@@ -13,9 +12,6 @@ export class RecentGroupsComponent implements OnInit {
 
   userData;
   recentGroups;
-
-  groupBaseUrl = environment.UTILITIES_GROUPS_UPLOADS;
-
 
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector);

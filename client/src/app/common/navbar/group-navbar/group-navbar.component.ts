@@ -21,11 +21,6 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
   isAdmin: boolean = false;
 
   routerFromEvent: any;
-  // baseUrl for uploads
-  baseUrl = environment.UTILITIES_GROUPS_UPLOADS
-
-  // baseUrl for users
-  userBaseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   // Groups Data
   groupData: any;

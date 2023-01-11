@@ -3,7 +3,7 @@ import { sendError } from "../senderror";
 import { File, Flamingo } from '../../api/models';
 import moment from 'moment';
 
-const fs = require("fs");
+const minio = require('minio');
 
 /**
  * This function is the boiler plate for file handler mechanism for group avatar
@@ -26,8 +26,6 @@ const fs = require("fs");
 }
 
 /**
- * @deprecated
- * 
  * @param req 
  * @param res 
  * @param next 
@@ -35,7 +33,6 @@ const fs = require("fs");
  */
 const groupsFilesHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-
     // Fetch the File Name From the request
     let { params: { fileId } } = req;
 
@@ -111,43 +108,119 @@ const groupFileUploader = async (req: Request, res: Response, next: NextFunction
       }
     }
 
-    await fs.mkdir(process.env.FILE_UPLOAD_FOLDER + folder, { recursive: true }, function(error) {
-      if (error) {
-        fileName = null;
-        return res.status(500).json({
-          status: '500',
-          message: 'file upload error',
-          error: error
-        });
-      }
-    })
+    // await fs.mkdir(process.env.FILE_UPLOAD_FOLDER + folder, { recursive: true }, function(error) {
+    //   if (error) {
+    //     fileName = null;
+    //     return res.status(500).json({
+    //       status: '500',
+    //       message: 'file upload error',
+    //       error: error
+    //     });
+    //   }
+    // })
 
     // Modify the file accordingly and handle request
-    file.mv(process.env.FILE_UPLOAD_FOLDER + folder + fileName, (error) => {
+    // file.mv(process.env.FILE_UPLOAD_FOLDER + folder + fileName, (error) => {
+    //   if (error) {
+    //     fileName = null;
+    //     return res.status(500).json({
+    //       status: '500',
+    //       message: 'file upload error',
+    //       error: error
+    //     });
+    //   }
+
+    //   // Modify the file and serialise the object
+    //   const file = {
+    //     original_name: req['files'].file['name'],
+    //     modified_name: folder + fileName
+    //   };
+
+    //   // Modify the current request to add 
+    //   req.body.fileData.original_name = file.original_name;
+    //   req.body.fileData.modified_name = file.modified_name;
+
+    //   // Pass the middleware// Pass the middleware
+    //   next();
+    // });
+
+    // Instantiate the minio client with the endpoint
+    // and access keys as shown below.
+    var minioClient = new minio.Client({
+        endPoint: process.env.MINIO_DOMAIN,
+        port: +(process.env.MINIO_API_PORT),
+        useSSL: process.env.MINIO_PROTOCOL == 'https',
+        accessKey: process.env.MINIO_ACCESS_KEY,
+        secretKey: process.env.MINIO_SECRET_KEY
+    });
+
+    await minioClient.bucketExists(req.body.fileData._workspace, async (error, exists) => {
       if (error) {
         fileName = null;
         return res.status(500).json({
           status: '500',
-          message: 'file upload error',
+          message: 'Error checking bucket exists.',
           error: error
         });
       }
 
-      // Modify the file and serialise the object
-      const file = {
-        original_name: req['files'].file['name'],
-        modified_name: folder + fileName
-      };
+      const encryption = new minio.AES256();
 
-      // Modify the current request to add 
-      req.body.fileData.original_name = file.original_name;
-      req.body.fileData.modified_name = file.modified_name;
+      if (!exists) {
+        // Make a bucket.
+        await minioClient.makeBucket(req.body.fileData._workspace, encryption, (error) => {
+          if (error) {
+            fileName = null;
+            return res.status(500).json({
+              status: '500',
+              message: 'Error creating bucket.',
+              error: error
+            });
+          }
 
-      // Pass the middleware// Pass the middleware
-      next();
+          // Using fPutObject API upload your file to the bucket.
+          minioClient.putObject(req.body.fileData._workspace, folder + fileName, file.data, encryption, (error, objInfo) => {
+            if (error) {
+              fileName = null;
+              return res.status(500).json({
+                status: '500',
+                message: 'Error uploading file.',
+                error: error
+              });
+            }
+
+            // Modify the current request to add 
+            req.body.fileData.original_name = req['files'].file['name'];
+            req.body.fileData.modified_name = folder + fileName;
+            req.body.fileData.minio_etag = objInfo.etag;
+            req.body.fileData.minio_versionId = objInfo.versionId;
+
+            next();
+          });
+        });
+      } else {
+        // Using fPutObject API upload your file to the bucket.
+        minioClient.putObject(req.body.fileData._workspace, folder + fileName, file.data, encryption, (error, objInfo) => {
+          if (error) {
+            fileName = null;
+            return res.status(500).json({
+              status: '500',
+              message: 'Error uploading file.',
+              error: error
+            });
+          }
+
+          // Modify the current request to add 
+          req.body.fileData.original_name = req['files'].file['name'];
+          req.body.fileData.modified_name = folder + fileName;
+          req.body.fileData.minio_etag = objInfo.etag;
+          req.body.fileData.minio_versionId = objInfo.versionId;
+
+          next();
+        });
+      }
     });
   }
-
 }
 
 /**
@@ -160,21 +233,39 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
 
   const { fileId } = req.params;
   let deletedFile: any = await File.findById({ _id: fileId });
+
+  var minioClient = new minio.Client({
+      endPoint: process.env.MINIO_DOMAIN,
+      port: +(process.env.MINIO_API_PORT),
+      useSSL: process.env.MINIO_PROTOCOL == 'https',
+      accessKey: process.env.MINIO_ACCESS_KEY,
+      secretKey: process.env.MINIO_SECRET_KEY
+  });
   
   if (req.body.fileName && req.body.fileName != '' && deletedFile && (deletedFile.type == 'file' || deletedFile.type == 'campaign')) {
-    if (fs.existsSync(process.env.FILE_UPLOAD_FOLDER + req.body.fileName)) {
-      // Delete the file accordingly and handle request
-      fs.unlink(process.env.FILE_UPLOAD_FOLDER + req.body.fileName, (error) => {
-        if (error) {
-          req.body.fileName = null;
-          return res.status(500).json({
-            status: '500',
-            message: 'Error deleting file: ' + req.body.fileName,
-            error: error
-          });
-        }
-      });
-    }
+    // if (fs.existsSync(process.env.FILE_UPLOAD_FOLDER + req.body.fileName)) {
+    //   // Delete the file accordingly and handle request
+    //   fs.unlink(process.env.FILE_UPLOAD_FOLDER + req.body.fileName, (error) => {
+    //     if (error) {
+    //       req.body.fileName = null;
+    //       return res.status(500).json({
+    //         status: '500',
+    //         message: 'Error deleting file: ' + req.body.fileName,
+    //         error: error
+    //       });
+    //     }
+    //   });
+    // }
+    await minioClient.removeObject(req.body.workspaceId, req.body.fileName, (error) => {
+      if (error) {
+        req.body.fileName = null;
+        return res.status(500).json({
+          status: '500',
+          message: 'Error deleting file: ' + req.body.fileName,
+          error: error
+        });
+      }
+    });
   }
 
   // Delete the imgs from the questions of flamingos
@@ -187,18 +278,27 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
     if (flamingo) {
       flamingo._questions.forEach(async question => {
         if (question.image_url && question.image_url != '') {
-          if (fs.existsSync(process.env.FILE_UPLOAD_FOLDER + question.image_url)) {
-            // Delete the file accordingly and handle request
-            fs.unlink(process.env.FILE_UPLOAD_FOLDER + question.image_url, (error) => {
-              if (error) {
-                return res.status(500).json({
-                  status: '500',
-                  message: 'Error deleting image of flamingo: ' + question.image_url,
-                  error: error
-                });
-              }
-            });
-          }
+          // if (fs.existsSync(process.env.FILE_UPLOAD_FOLDER + question.image_url)) {
+          //   // Delete the file accordingly and handle request
+          //   fs.unlink(process.env.FILE_UPLOAD_FOLDER + question.image_url, (error) => {
+          //     if (error) {
+          //       return res.status(500).json({
+          //         status: '500',
+          //         message: 'Error deleting image of flamingo: ' + question.image_url,
+          //         error: error
+          //       });
+          //     }
+          //   });
+          // }
+          await minioClient.removeObject(req.body.workspaceId, question.image_url, (error) => {
+            if (error) {
+              return res.status(500).json({
+                status: '500',
+                message: 'Error deleting image of flamingo: ' + question.image_url,
+                error: error
+              });
+            }
+          });
         }
       });
     }
@@ -215,20 +315,32 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
   }
 
   if (fileVersions) {
-    fileVersions.forEach(file => {
-      if (fs.existsSync(process.env.FILE_UPLOAD_FOLDER + file.modified_name)) {
-        // Delete the file version accordingly and handle request
-        fs.unlink(process.env.FILE_UPLOAD_FOLDER + file.modified_name, (error) => {
-          if (error) {
-            return res.status(500).json({
-              status: '500',
-              message: 'Error deleting version of the file: ' + file.modified_name ,
-              error: error
-            });
-          }
-        });
-      }
-    });
+    for (let i = 0; i < fileVersions.length; i++) {
+      let file = fileVersions[i];
+    // fileVersions.forEach(async file => {
+      // if (fs.existsSync(process.env.FILE_UPLOAD_FOLDER + file.modified_name)) {
+      //   // Delete the file version accordingly and handle request
+      //   fs.unlink(process.env.FILE_UPLOAD_FOLDER + file.modified_name, (error) => {
+      //     if (error) {
+      //       return res.status(500).json({
+      //         status: '500',
+      //         message: 'Error deleting version of the file: ' + file.modified_name ,
+      //         error: error
+      //       });
+      //     }
+      //   });
+      // }
+      await minioClient.removeObject(req.body.workspaceId, file.modified_name, (error) => {
+        if (error) {
+          return res.status(500).json({
+            status: '500',
+            message: 'Error deleting version of the file: ' + file.modified_name ,
+            error: error
+          });
+        }
+      });
+    // });
+    }
   }
 
   // Pass the middleware// Pass the middleware
@@ -236,4 +348,66 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
 
 }
 
-export { groupFileHandler, groupFileUploader, groupFileDelete, groupsFilesHandler }
+/**
+ * This function is the boiler plate for file handler mechanism for group avatar
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+ const minioFileHandler = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+
+    // Fetch the File Name From the request
+    let { params: { file } } = req;
+
+    var minioClient = new minio.Client({
+      endPoint: process.env.MINIO_DOMAIN,
+      port: +(process.env.MINIO_API_PORT),
+      useSSL: process.env.MINIO_PROTOCOL == 'https',
+      accessKey: process.env.MINIO_ACCESS_KEY,
+      secretKey: process.env.MINIO_SECRET_KEY
+    });
+
+    await minioClient.getObject(req.query.workspaceId, req.query.modified_name, async (error, data) => {
+      if (error) {
+        return res.status(500).json({
+          message: 'Error getting file.',
+          error: error
+        });
+      }
+
+      // const objectUrl = await minioClient.presignedGetObject(req.query.workspaceId, req.query.modified_name);
+      const objectUrl = await minioClient.presignedUrl('GET', req.query.workspaceId, req.query.modified_name);
+      return res.status(200).json({
+        url: objectUrl,
+        message: 'File succesfully obtained.'
+      });
+    });
+    // minioClient.getObject('mybucket', 'photo.jpg', (error, dataStream) => {
+    //   if (error) {
+    //     return res.status(500).json({
+    //       status: '500',
+    //       message: 'Error getting file.',
+    //       error: error
+    //     });
+    //   }
+
+    //   dataStream.on('data', (chunk) => {
+
+    //   });
+
+    //   dataStream.on('end', () => {
+    //     console.log('End. Total');
+    //   });
+
+    //   dataStream.on('error', function(err) {
+    //     console.log(err)
+    //   });
+    // });
+
+  } catch (err) {
+    return sendError(res, err, 'Internal Server Error!', 500);
+  }
+}
+
+export { groupFileHandler, groupFileUploader, groupFileDelete, groupsFilesHandler, minioFileHandler }

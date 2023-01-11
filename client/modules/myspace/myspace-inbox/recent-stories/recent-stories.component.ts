@@ -13,9 +13,6 @@ export class RecentStoriesComponent implements OnInit {
   workspaceData;
   recentStories;
 
-  groupBaseUrl = environment.UTILITIES_GROUPS_UPLOADS;
-
-
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector);
 

@@ -128,14 +128,14 @@ export class FileVersionsComponent implements OnInit {
    * Call function to delete file or a folder
    * @param itemId
    */
-  deleteItem(itemId: string, type: string, fileName?: string) {
+  deleteItem(itemId: string, type: string, fileName: string) {
     // Ask User to remove this file or not
     this.utilityService.getConfirmDialogAlert()
       .then((result) => {
         if (result.value) {
           // Remove the file
           this.utilityService.asyncNotification($localize`:@@fileVersions.pleaseWaitDeleting:Please wait, we are deleting...`, new Promise((resolve, reject) => {
-            this.filesService.deleteFile(itemId, fileName, type == 'flamingo')
+            this.filesService.deleteFile(itemId, fileName, this.groupData?._workspace?._id, type == 'flamingo')
               .then((res) => {
 
                 // Remove the file from the list

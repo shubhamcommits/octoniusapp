@@ -75,6 +75,13 @@ function prodConfigInit() {
   process.env.LIBREOFFICE_PROTOCOL = process.env.LIBREOFFICE_PROTOCOL
   process.env.LIBREOFFICE_DOMAIN = process.env.LIBREOFFICE_DOMAIN
   process.env.LIBREOFFICE_SERVER = `${process.env.LIBREOFFICE_PROTOCOL}://${process.env.LIBREOFFICE_DOMAIN}`
+
+  process.env.MINIO_API_PORT = process.env.MINIO_API_PORT
+  process.env.MINIO_DOMAIN = process.env.MINIO_DOMAIN
+  process.env.MINIO_ACCESS_KEY = process.env.MINIO_ACCESS_KEY
+  process.env.MINIO_SECRET_KEY = process.env.MINIO_SECRET_KEY
+  process.env.MINIO_PORT = process.env.MINIO_PORT
+  process.env.MINIO_PROTOCOL = process.env.MINIO_PROTOCOL
 };
 
 export { prodConfigInit as productionConfig } 

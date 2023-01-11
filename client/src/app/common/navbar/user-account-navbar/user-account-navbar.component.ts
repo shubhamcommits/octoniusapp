@@ -35,8 +35,6 @@ export class UserAccountNavbarComponent implements OnInit, OnDestroy {
   isCurrentUser: boolean = true;
 
   isOrganizationModuleAvailable = false;
-
-  baseUrl = environment.UTILITIES_WORKSPACES_UPLOADS;
   userBaseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   // Public Functions Object

@@ -20,8 +20,6 @@ export class GroupSettingsComponent implements OnInit {
   @Input() shuttleTasksModuleAvailable: any;
   @Input() campaignModuleAvailable: any;
 
-  UTILITIES_GROUPS_UPLOADS = environment.UTILITIES_GROUPS_UPLOADS
-
   enabledRights: boolean = false;
   enabledProjectType: boolean = false;
   enabledShuttleType: boolean = false;

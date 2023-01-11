@@ -4,6 +4,7 @@ import { SubSink } from 'subsink';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-user-image-details',
@@ -24,9 +25,6 @@ export class UserImageDetailsComponent implements OnInit {
 
   // Workspace Data Variable
   @Input('workspaceData') workspaceData: any;
-
-  // Base Url of the Application
-  @Input('baseUrl') baseUrl: string;
 
   // Cropped Image of the Input Image File
   croppedImage: File;
@@ -88,7 +86,7 @@ export class UserImageDetailsComponent implements OnInit {
   }
 
   getUserProfilePicURL(fileName: string) {
-    return this.baseUrl + '/' + fileName;
+    return environment.UTILITIES_WORKSPACES_UPLOADS + '/' + fileName;
   }
 
   close() {

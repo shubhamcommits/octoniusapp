@@ -14,9 +14,6 @@ export class GlobalPerformanceCardComponent implements OnChanges {
 
   @Input() period;
 
-  // Base URL
-  baseUrl = environment.UTILITIES_GROUPS_UPLOADS;
-
   // Workspace data
   public workspaceData: Object = {};
 

@@ -2,7 +2,7 @@ import { sendError, Auths, axios } from '../../utils';
 import { Group, Workspace, User, Account, Lounge } from '../models';
 import { Request, Response, NextFunction } from 'express';
 import { UsersService, WorkspaceService } from '../services';
-import http from 'axios';
+const minio = require('minio');
 import moment from 'moment';
 
 // User Service Instance
@@ -170,23 +170,55 @@ export class WorkspaceController {
 
             // Pass user as workspace member and _owner
             const workspaceUpdate: any = await Workspace.findByIdAndUpdate({
-                _id: workspace._id
-            }, {
-                $set: {
-                    _owner: user,
-                },
-                $push: {
-                    members: user
-                }
-            }, {
-                new: true
-            })
-                .select('_id workspace_name owner_first_name owner_email management_private_api_key')
+                    _id: workspace._id
+                }, {
+                    $set: {
+                        _owner: user,
+                    },
+                    $push: {
+                        members: user
+                    }
+                }, {
+                    new: true
+                }).select('_id workspace_name owner_first_name owner_email management_private_api_key')
 
             // Error updating the workspace
             if (!workspaceUpdate) {
                 return sendError(res, new Error('Unable to update the workspace, some unexpected error occurred!'), 'Unable to update the workspace, some unexpected error occurred!', 500);
             }
+
+            // Create a bucket when the workspace is created
+            var minioClient = new minio.Client({
+                endPoint: process.env.MINIO_DOMAIN,
+                port: +(process.env.MINIO_API_PORT),
+                useSSL: process.env.MINIO_PROTOCOL == 'https',
+                accessKey: process.env.MINIO_ACCESS_KEY,
+                secretKey: process.env.MINIO_SECRET_KEY
+            });
+
+            await minioClient.bucketExists(workspace._id, async (error, exists) => {
+                if (error) {
+                    return res.status(500).json({
+                    status: '500',
+                    message: 'Error checking bucket exists.',
+                    error: error
+                    });
+                }
+
+                const encryption = new minio.AES256();
+                if (!exists) {
+                    // Make a bucket.
+                    await minioClient.makeBucket(workspace._id, encryption, (error) => {
+                        if (error) {
+                            return res.status(500).json({
+                                status: '500',
+                                message: 'Error creating bucket.',
+                                error: error
+                            });
+                        }
+                    });
+                }
+            });
 
             // Add workspace to user account
             const accountUpdate: any = await Account.findByIdAndUpdate({
@@ -229,25 +261,25 @@ export class WorkspaceController {
 
             // Find the group and update their respective group avatar
             group = await Group.findByIdAndUpdate({
-                _id: group._id
-            }, {
-                //custom_fields: newCustomField
-                $push: { "custom_fields": default_CF }
-            }, {
-                new: true
-            });
+                    _id: group._id
+                }, {
+                    //custom_fields: newCustomField
+                    $push: { "custom_fields": default_CF }
+                }, {
+                    new: true
+                });
 
             // Add Global group to user's groups
             var userUpdate: any = await User.findByIdAndUpdate({
-                _id: user._id
-            }, {
-                $push: {
-                    _groups: group,
-                    'stats.favorite_groups': group._id
-                }
-            }, {
-                new: true
-            });
+                    _id: user._id
+                }, {
+                    $push: {
+                        _groups: group,
+                        'stats.favorite_groups': group._id
+                    }
+                }, {
+                    new: true
+                });
 
             // Error updating the user
             if (!userUpdate) {
