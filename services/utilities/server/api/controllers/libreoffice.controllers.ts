@@ -11,6 +11,7 @@ let Dom = require('xmldom').DOMParser;
 let xpath = require('xpath');
 const fs = require('fs');
 const path = require('path');
+const minio = require('minio');
 
 // Create instance of files service
 let filesService = new FilesService();
@@ -154,7 +155,7 @@ export class LibreofficeControllers {
     *
     *  Given a request access token and a document id, sends back the contents of the file.
     *  The GetFile wopi endpoint is triggered by a request with a GET verb at
-    *  https://HOSTNAME/wopi/files/<document_id>/contents
+    *  https://HOSTNAME/wopi/files/<document_id>/<workspace_id>/contents
     */
     async getFile(req, res) {
         const fileId = req.params.fileId;
@@ -166,8 +167,45 @@ export class LibreofficeControllers {
         const file = await filesService.getOne(fileId);
 
         if (file) {
-            const fileBuffer = fs.readFileSync(`${process.env.FILE_UPLOAD_FOLDER}/${file.modified_name}`);
-            res.send(fileBuffer);
+            // const fileBuffer = fs.readFileSync(`${process.env.FILE_UPLOAD_FOLDER}/${file.modified_name}`);
+            // res.send(fileBuffer);
+
+            var minioClient = new minio.Client({
+                endPoint: process.env.MINIO_DOMAIN,
+                port: +(process.env.MINIO_API_PORT),
+                useSSL: process.env.MINIO_PROTOCOL == 'https',
+                accessKey: process.env.MINIO_ACCESS_KEY,
+                secretKey: process.env.MINIO_SECRET_KEY
+            });
+
+            // return minioClient.getObject(req.params.workspaceId, file.modified_name);
+
+            minioClient.getObject(req.params.workspaceId, file.modified_name, (error, stream) => {
+                if (error) {
+                    return res.status(500).json({
+                        message: 'Error getting file.',
+                        error: error
+                    });
+                }
+
+                res.setHeader('Content-Type', 'application/octet-stream');
+                res.setHeader('Content-Disposition', `attachment; filename=${file.modified_name}`);
+                stream.pipe(res);
+            });
+
+            // await minioClient.getObject(req.params.workspaceId, file.modified_name, async (error, data) => {
+            //     if (error) {
+            //         return res.status(500).json({
+            //         message: 'Error getting file.',
+            //         error: error
+            //         });
+            //     }
+
+            //     // const objectUrl = await minioClient.presignedGetObject(req.params.workspaceId, file.modified_name);
+            //     const objectUrl = await minioClient.presignedUrl('GET', req.params.workspaceId, file.modified_name);
+            //     const fileBuffer = fs.readFileSync(`${objectUrl}`);
+            //     res.send(fileBuffer);
+            // });
         } else {
             // we just return the content of a fake text file
             // in a real case you should use the file id
@@ -182,7 +220,7 @@ export class LibreofficeControllers {
     *
     *  Given a request access token and a document id, replaces the files with the POST request body.
     *  The PutFile wopi endpoint is triggered by a request with a POST verb at
-    *  https://HOSTNAME/wopi/files/<document_id>/contents
+    *  https://HOSTNAME/wopi/files/<document_id>/<workspace_id>/contents
     */
     async putFile(req, res) {
         const fileId = req.params.fileId;
@@ -196,9 +234,26 @@ export class LibreofficeControllers {
         // we log to the console so that is possible
         // to check that saving has triggered this wopi endpoint
         if (req.body) {
-            var wstream = fs.createWriteStream(`${process.env.FILE_UPLOAD_FOLDER}${file.modified_name}`);
-            wstream.write(req.body);
-            res.sendStatus(200);
+            // var wstream = fs.createWriteStream(`${process.env.FILE_UPLOAD_FOLDER}${file.modified_name}`);
+            // wstream.write(req.body);
+            // res.sendStatus(200);
+
+            var minioClient = new minio.Client({
+                endPoint: process.env.MINIO_DOMAIN,
+                port: +(process.env.MINIO_API_PORT),
+                useSSL: process.env.MINIO_PROTOCOL == 'https',
+                accessKey: process.env.MINIO_ACCESS_KEY,
+                secretKey: process.env.MINIO_SECRET_KEY
+            });
+            minioClient.putObject(req.params.workspaceId, file.modified_name, req.body, (error) => {
+                if (error) {
+                    return res.status(500).json({
+                        message: 'Error getting file.',
+                        error: error
+                    });
+                }
+                res.sendStatus(200);
+            });
         } else {
             return sendError(res, new Error('Not possible to get the file content.'), 'Not possible to get the file content.', 404);
         }
