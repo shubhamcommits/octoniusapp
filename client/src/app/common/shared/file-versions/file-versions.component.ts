@@ -108,16 +108,16 @@ export class FileVersionsComponent implements OnInit {
     // Start the loading spinner
     this.utilityService.updateIsLoadingSpinnerSource(true);
 
-    window.open(await this.getLibreOfficeURL(fileId), "_blank");
+    window.open(await this.getLibreOfficeURL(fileId, this.groupData?._workspace?._id), "_blank");
 
     this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 
-  async getLibreOfficeURL(fileId: string) {
+  async getLibreOfficeURL(fileId: string, workspaceId: string) {
     // wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
     let wopiClientURL = '';
     await this.libreofficeService.getLibreofficeUrl().then(res => {
-        wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}?authToken=${this.authToken}`;
+        wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}/${workspaceId}?authToken=${this.authToken}`;
       }).catch(error => {
         this.utilityService.errorNotification($localize`:@@fileVersions.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
       });

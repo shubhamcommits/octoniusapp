@@ -18,12 +18,12 @@ routes.use(authsHelper.verifyToken);
 
 routes.get('/libreofficeUrl', libreofficeController.libreofficeUrl);
 
-routes.get('/wopi/files/:fileId', libreofficeController.checkFileInfo);
+routes.get('/wopi/files/:fileId/:workspaceId', libreofficeController.checkFileInfo);
 
-routes.get('/wopi/files/:fileId/contents', libreofficeController.getFile);
+routes.get('/wopi/files/:fileId/:workspaceId/contents', libreofficeController.getFile);
 
-routes.post('/wopi/files/:fileId/contents', libreofficeController.putFile);
-//routes.put('/wopi/files/:fileId/contents', libreofficeController.putFile);
+routes.post('/wopi/files/:fileId/:workspaceId/contents', libreofficeController.putFile);
+//routes.put('/wopi/files/:fileId/:workspaceId/contents', libreofficeController.putFile);
 
 
 /*  ===================
