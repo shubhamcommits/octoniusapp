@@ -1,4 +1,5 @@
 import { Response, Request, NextFunction } from "express";
+import { sendError } from ".";
 
 const minio = require('minio');
 
@@ -246,7 +247,45 @@ const portfolioUploadFileUpload = async (req: Request, res: Response, next: Next
             }
         });
     }
-
 }
 
-export { groupUploadFileUpload, portfolioUploadFileUpload }
+/**
+ * This function is the boiler plate for file handler
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+const fileHandler = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+    // Fetch the File Name From the request
+    let { params: { workspaceId, file } } = req;
+
+    // Redirect the Response to the Groups Microservice
+    // return res.status(301).redirect(`${process.env.GROUPS_SERVER}/uploads/${file}`)
+    var minioClient = new minio.Client({
+      endPoint: process.env.MINIO_DOMAIN,
+      port: +(process.env.MINIO_API_PORT),
+      useSSL: process.env.MINIO_PROTOCOL == 'https',
+      accessKey: process.env.MINIO_ACCESS_KEY,
+      secretKey: process.env.MINIO_SECRET_KEY
+    });
+
+    await minioClient.getObject(workspaceId, file, async (error, data) => {
+      if (error) {
+        return res.status(500).json({
+          message: 'Error getting file.',
+          error: error
+        });
+      }
+
+      const objectUrl = await minioClient.presignedUrl('GET', workspaceId, file);
+      return res.status(301).redirect(objectUrl);
+    });
+
+  } catch (err) {
+    return sendError(res, err, 'Internal Server Error!', 500);
+  }
+}
+
+export { groupUploadFileUpload, portfolioUploadFileUpload, fileHandler }

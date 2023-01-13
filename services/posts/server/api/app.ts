@@ -7,6 +7,7 @@ import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
 import fileUpload from 'express-fileupload';
 import { postRoutes, commentRoutes, postsPermissionsRoutes, sectionsPermissionsRoutes } from './routes';
+import { fileHandler } from './utils/filehandler';
 
 // Defining new Express application
 const app = express();
@@ -77,7 +78,8 @@ app.use(fileUpload({
 }));
 
 // Availing the static uploads folder to access from server
-app.use('/uploads', express.static(process.env.FILE_UPLOAD_FOLDER));
+// app.use('/uploads', express.static(process.env.FILE_UPLOAD_FOLDER));
+app.use('/uploads', fileHandler);
 
 // Routes which should handle request
 app.all('/', (req: Request, res: Response, next: NextFunction) => {

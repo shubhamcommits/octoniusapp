@@ -1,7 +1,7 @@
 import { Auths } from './auth';
 import { sendErr } from './sendError';
 import { hasProperty } from './helperFunctions';
-import { userFileUploader } from "./filehandler";
+import { fileHandler, userFileUploader } from "./filehandler";
 import { Password } from './password';
 import { axios } from './proxy'
 
@@ -18,6 +18,7 @@ export {
 
     // USER FILEHANDLER
     userFileUploader as userFileUploader,
+    fileHandler as fileHandler,
 
     Password as PasswordHelper,
 
