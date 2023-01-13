@@ -1,6 +1,6 @@
 import { Auths } from './auth';
 import { sendErr } from './sendError';
-import { postFileUploader } from "./filehandler";
+import { fileHandler, postFileUploader } from "./filehandler";
 import { commentFileUploader } from './commentFileHandler';
 
 export {
@@ -15,5 +15,7 @@ export {
     postFileUploader as postFileUploader,
 
     // COMMENT FILEHANDLER
-    commentFileUploader as commentFileUploader
+    commentFileUploader as commentFileUploader,
+
+    fileHandler as filehandler
 }

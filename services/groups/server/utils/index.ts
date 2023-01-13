@@ -1,7 +1,7 @@
 import { Auths } from './auth';
 import { sendErr } from './sendError';
 import { hasProperty } from './helperFunctions';
-import { groupUploadFileUpload, portfolioUploadFileUpload } from './filehandler';
+import { fileHandler, groupUploadFileUpload, portfolioUploadFileUpload } from './filehandler';
 import { axios } from './proxy'
 
 export {
@@ -10,7 +10,7 @@ export {
     hasProperty as hasProperty,
     groupUploadFileUpload as groupUploadFileUpload,
     portfolioUploadFileUpload as portfolioUploadFileUpload,
-
+    fileHandler as fileHandler,
     // PROXY CONFIGS
     axios as axios
 }
