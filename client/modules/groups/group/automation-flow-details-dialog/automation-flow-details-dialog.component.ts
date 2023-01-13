@@ -46,8 +46,6 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
     { type: 'end_of_month', title: $localize`:@@automationFlowDetailsDialog.endOfMonth:End of the Month`}
   ];
 
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
-
   userData: any;
 
   isShuttleTasksModuleAvailable = false;

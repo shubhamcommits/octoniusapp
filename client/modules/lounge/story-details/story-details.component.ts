@@ -99,7 +99,7 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
 
   initStoryHeaderImage() {
     if (this.storyData.header_pic && !this.storyData.header_pic.includes('assets/images')) {
-      this.storyData.header_pic = this.baseUrl + '/' + this.storyData.header_pic + '?noAuth=true';
+      this.storyData.header_pic = this.baseUrl + '/' + this.workspaceData?._id + '/' + this.storyData.header_pic + '?noAuth=true';
     } else {
       this.storyData.header_pic = 'assets/images/lounge_details_header.jpg';
     }

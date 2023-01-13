@@ -34,6 +34,7 @@
                   <app-secured-image
                     [imgURL]="member?.profile_pic"
                     [service]="'user'"
+                    [workspaceId]="(groupData?._workspace?._id || groupData?._workspace)"
                     [tooltip]="member?.first_name + ' ' + member?.last_name"
                     [styleClass]="'feed-avatar'"
                     (click)="removeUserFromRag(member,rag)"></app-secured-image>

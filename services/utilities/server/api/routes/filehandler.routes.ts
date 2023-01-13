@@ -1,6 +1,6 @@
 import express from 'express';
 import { Auths } from '../../utils/auths';
-import { flamingoFileHandler, groupFileHandler, postFileHandler, userFileHandler, workspaceFileHandler, groupsFilesHandler } from '../../utils/filehandlers';
+import { flamingoFileHandler, groupFileHandler, postFileHandler, userFileHandler, workspaceFileHandler, groupsFilesHandler, utilitiesFileHandler } from '../../utils/filehandlers';
 
 const routes = express.Router();
 
@@ -14,22 +14,25 @@ routes.use(authsHelper.verifyToken);
 routes.use(authsHelper.isLoggedIn);
 
 // GET - Handles the file attachment(group_avatar, group files) for the groups
-routes.get('/groups/:file', groupFileHandler);
+routes.get('/groups/:workspaceId/:file', groupFileHandler);
 
 // GET - Handles the file attachments for the posts
-routes.get('/posts/:file', postFileHandler);
+routes.get('/posts/:workspaceId/:file', postFileHandler);
 
 // GET - Handles the file attachment(profileImage) for the user
-routes.get('/users/:file', userFileHandler);
+routes.get('/users/:workspaceId/:file', userFileHandler);
 
 // GET - Handles the file attachment(workspace_avatar) for the workspace
-routes.get('/workspaces/:file', workspaceFileHandler);
+routes.get('/workspaces/:workspaceId/:file', workspaceFileHandler);
 
 // GET - Handles the file added in the flamingo forms
-routes.get('/flamingo/:file', flamingoFileHandler);
+routes.get('/flamingo/:workspaceId/:file', flamingoFileHandler);
+
+// GET - Handles the utilities files 
+routes.get('/files/:workspaceId/:file', utilitiesFileHandler);
 
 // GET - Download the last version of a file
-routes.get('/groupsFiles/:fileId', groupsFilesHandler);
+routes.get('/groupsFiles/:workspaceId/:fileId', groupsFilesHandler);
 
 
 /*  ===================

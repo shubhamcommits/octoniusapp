@@ -1,6 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Inject, Injector } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
-import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -68,8 +67,6 @@ export class GlobalNorthStarDialogComponent implements OnInit {
     ]
   }];
   chartPlugins = [];
-
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);

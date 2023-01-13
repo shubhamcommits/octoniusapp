@@ -18,6 +18,8 @@ export class TopSocialCardComponent implements OnChanges {
   // Members
   public members: any = [];
 
+  userData: any;
+
   // Public functions
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -27,6 +29,10 @@ export class TopSocialCardComponent implements OnChanges {
   constructor(
     private injector: Injector
   ) { }
+
+  async ngOnInit() {
+    this.userData = await this.publicFunctions.getCurrentUser();
+  }
 
   ngOnChanges() {
     // Starts the spinner

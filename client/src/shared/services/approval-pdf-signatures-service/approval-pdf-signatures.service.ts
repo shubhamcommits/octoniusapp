@@ -24,7 +24,6 @@ export class ApprovalPDFSignaturesService {
     const islandMomentsBytes = await fetch(url).then(res => res.arrayBuffer());
     const fonts = {
       helvetica: await pdfDoc.embedFont(StandardFonts.Helvetica),
-      //calligraffitti: await pdfDoc.embedFont(calligraffittiFontBytes),
       islandMoments: await pdfDoc.embedFont(new Uint8Array(islandMomentsBytes))
     };
 

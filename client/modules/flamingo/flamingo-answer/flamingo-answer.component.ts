@@ -25,6 +25,8 @@ export class FlamingoAnswerComponent implements OnInit {
 
   progressValue = 0;
 
+  workspaceData: any;
+
   FLAMINGO_UPLOADS = environment.UTILITIES_FLAMINGOS_UPLOADS;
 
   // Public Functions
@@ -41,6 +43,8 @@ export class FlamingoAnswerComponent implements OnInit {
   async ngOnInit() {
     // Set the fileId variable
     this.fileId = this._ActivatedRoute.snapshot.params['id'];
+
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     // Fetch Files Details
     this.flamingo = await this.publicFunctions.getFlamingo(this.fileId);

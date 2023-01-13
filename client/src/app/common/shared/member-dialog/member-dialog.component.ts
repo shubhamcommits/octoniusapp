@@ -1,7 +1,6 @@
 import { Component, Inject, Injector, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-member-dialog',
@@ -14,8 +13,6 @@ export class MemberDialogComponent implements OnInit {
   userData;
   currentWorkspace;
   currentUser;
-
-  userBaseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   // Public functions class member
   publicFunctions = new PublicFunctions(this.injector);

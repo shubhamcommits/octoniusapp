@@ -11,6 +11,8 @@ export class LikedByDialogComponent implements OnInit {
 
   usersList: any = [];
 
+  workspaceData: any;
+
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
   constructor(
@@ -19,7 +21,9 @@ export class LikedByDialogComponent implements OnInit {
       private mdDialogRef: MatDialogRef<LikedByDialogComponent>
     ) {}
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+
     this.usersList = this.data.usersList;
   }
 

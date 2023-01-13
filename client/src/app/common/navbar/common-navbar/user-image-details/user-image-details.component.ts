@@ -86,7 +86,7 @@ export class UserImageDetailsComponent implements OnInit {
   }
 
   getUserProfilePicURL(fileName: string) {
-    return environment.UTILITIES_WORKSPACES_UPLOADS + '/' + fileName;
+    return environment.UTILITIES_WORKSPACES_UPLOADS + '/' + this.workspaceData?._id + '/' + fileName;
   }
 
   close() {

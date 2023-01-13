@@ -35,9 +35,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector);
 
-  // BASE URL OF THE APPLICATION
-  baseUrl = environment.UTILITIES_USERS_UPLOADS
-
   // UNSUBSCRIBE THE DATA
   private subSink = new SubSink()
 

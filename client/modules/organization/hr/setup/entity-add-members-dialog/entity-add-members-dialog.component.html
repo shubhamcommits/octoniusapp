@@ -38,7 +38,7 @@
 
                 <li *ngFor="let member of workspaceMembers">
                     <div class="avatar title">
-                        <app-secured-image [imgURL]="member?.profile_pic" [service]="'user'" [styleClass]="'feed-avatar-small'"></app-secured-image>
+                        <app-secured-image [imgURL]="member?.profile_pic" [service]="'user'"[workspaceId]="workspaceData?._id" [styleClass]="'feed-avatar-small'"></app-secured-image>
                     </div>
                     <div class="name"><span>{{ member.first_name }} {{ member.last_name }}</span></div>
                     <div class="email"><span>{{ member.type }}</span></div>

@@ -26,7 +26,7 @@
             <ng-container *ngFor="let group of portfolioData?._groups">
                 <div class="cards-list">
                     <div *ngIf="editGroups" class="card img-fluid" style="cursor: default;">
-                        <app-secured-image [imgURL]="group?.group_avatar" [service]="'group'" [styleClass]="'card-img-top'">
+                        <app-secured-image [imgURL]="group?.group_avatar" [service]="'group'" [workspaceId]="workspaceData?._id" [styleClass]="'card-img-top'">
                         </app-secured-image>
 
                         <div class="card-img-overlay">
@@ -44,7 +44,7 @@
                     </div>
 
                     <div *ngIf="!editGroups" class="card img-fluid" (click)="goToGroup(group?._id)">
-                        <app-secured-image [imgURL]="group?.group_avatar" [service]="'group'" [styleClass]="'card-img-top'">
+                        <app-secured-image [imgURL]="group?.group_avatar" [service]="'group'" [workspaceId]="workspaceData?._id" [styleClass]="'card-img-top'">
                         </app-secured-image>
 
                         <div class="card-img-overlay">

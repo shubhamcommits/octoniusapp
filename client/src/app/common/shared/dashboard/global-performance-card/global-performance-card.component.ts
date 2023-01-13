@@ -15,7 +15,7 @@ export class GlobalPerformanceCardComponent implements OnChanges {
   @Input() period;
 
   // Workspace data
-  public workspaceData: Object = {};
+  public workspaceData: any = {};
 
   // Pulse groups
   public groups: any = [];

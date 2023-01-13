@@ -25,7 +25,7 @@
         <div style="display: flex; cursor: pointer;" (click)="selectGroup(group?._id)">
           <app-secured-image
             [imgURL]="group?.group_avatar"
-            [service]="'group'"
+            [service]="'group'" [workspaceId]="workspaceData?._id"
             [tooltip]="'Group avatar'" [placement]="'right'" [styleClass]="'mr-3 feed-avatar-small'"></app-secured-image>
 
           <h4 class="ml-3 mt-4"> {{ group.group_name }}</h4>

@@ -30,9 +30,6 @@ export class PortfolioMembersWorkloadCardComponent implements OnChanges {
   // IsLoading behavior subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
 
-  // Base URL
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
-
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(

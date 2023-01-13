@@ -31,7 +31,7 @@ export class GroupComponent implements OnInit, OnDestroy {
     this.groupData =await this.publicFunctions.getCurrentGroupDetails();
 
     if (this.groupData && this.groupData?.background_image) {
-      this.backgroundImageUrl = environment.UTILITIES_GROUPS_UPLOADS + '/' + this.groupData?.background_image.replace(/\s/g, '%20') + '?noAuth=true';
+      this.backgroundImageUrl = environment.UTILITIES_GROUPS_UPLOADS + '/' + (this.groupData?._workspace?._id || this.groupData?._workspace) + '/' + this.groupData?.background_image.replace(/\s/g, '%20') + '?noAuth=true';
     }
   }
 

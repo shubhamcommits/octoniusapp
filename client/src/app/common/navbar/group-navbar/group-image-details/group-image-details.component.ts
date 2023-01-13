@@ -9,19 +9,19 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
   styleUrls: ['./group-image-details.component.scss']
 })
 export class GroupImageDetailsComponent implements OnInit {
-
+  
+  // Group Data
+  @Input('groupData') groupData: any;
+  
+  // Cropped Image of the Input Image File
+  croppedImage: File;
+  
+  // Public Functions
+  public publicFunctions = new PublicFunctions(this.injector);
+  
   constructor(
     private injector: Injector
   ) { }
-
-  // Group Data
-  @Input('groupData') groupData: any;
-
-  // Cropped Image of the Input Image File
-  croppedImage: File;
-
-  // Public Functions
-  public publicFunctions = new PublicFunctions(this.injector);
 
   ngOnInit() {
   }

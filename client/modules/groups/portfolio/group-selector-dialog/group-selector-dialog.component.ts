@@ -21,6 +21,8 @@ export class GroupSelectorDialogComponent implements OnInit {
   portfolioGroups = [];
   userGroups = [];
 
+  workspaceData: any;
+
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -38,6 +40,8 @@ export class GroupSelectorDialogComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+
     this.userGroups = this.userGroups.filter(group => {
       const index = (this.portfolioGroups) ? this.portfolioGroups.findIndex(g => g?._id == group?._id) : -1;
       return index < 0;

@@ -23,6 +23,7 @@ export class SecuredImageComponent implements OnChanges  {
   @Input() alt: string = ''; // alternative text
   @Input() inlineStyle: string = ''; // inline styles
   @Input() noAuth: boolean = false; // in case we need a work around for security (only valid for selecting workplace because the user is not logged in yet)
+  @Input() workspaceId: string;
 
   onErrorUrl: string = '';
 
@@ -53,7 +54,7 @@ export class SecuredImageComponent implements OnChanges  {
         }
 
         if (!this.isLocalImg && this.imgURL.indexOf(environment.UTILITIES_WORKSPACES_UPLOADS) == -1) {
-          this.src$.next(environment.UTILITIES_WORKSPACES_UPLOADS + '/' + this.imgURL);
+          this.src$.next(environment.UTILITIES_WORKSPACES_UPLOADS + '/' + this.workspaceId + '/' + this.imgURL);
         } else {
           this.src$.next(this.imgURL);
         }
@@ -71,7 +72,7 @@ export class SecuredImageComponent implements OnChanges  {
         }
 
         if (!this.isLocalImg && this.imgURL.indexOf(environment.UTILITIES_WORKSPACES_UPLOADS) == -1) {
-          this.src$.next(environment.UTILITIES_WORKSPACES_UPLOADS + '/' + this.imgURL);
+          this.src$.next(environment.UTILITIES_WORKSPACES_UPLOADS + '/' + this.workspaceId + '/' + this.imgURL);
         } else {
           this.src$.next(this.imgURL);
         }
@@ -85,7 +86,7 @@ export class SecuredImageComponent implements OnChanges  {
         }
 
         if (!this.isLocalImg && this.imgURL.indexOf(environment.UTILITIES_GROUPS_UPLOADS) == -1) {
-          this.src$.next(environment.UTILITIES_GROUPS_UPLOADS + '/' + this.imgURL);
+          this.src$.next(environment.UTILITIES_GROUPS_UPLOADS + '/' + this.workspaceId + '/' + this.imgURL);
         } else {
           this.src$.next(this.imgURL);
         }
@@ -99,7 +100,7 @@ export class SecuredImageComponent implements OnChanges  {
         }
 
         if (!this.isLocalImg && this.imgURL.indexOf(environment.UTILITIES_USERS_UPLOADS) == -1) {
-          this.src$.next(environment.UTILITIES_USERS_UPLOADS + '/' + this.imgURL);
+          this.src$.next(environment.UTILITIES_USERS_UPLOADS + '/' + this.workspaceId + '/' + this.imgURL);
         } else {
           this.src$.next(this.imgURL);
         }
@@ -113,7 +114,7 @@ export class SecuredImageComponent implements OnChanges  {
           }
 
           if (!this.isLocalImg && this.imgURL.indexOf(environment.UTILITIES_FLAMINGOS_UPLOADS) == -1) {
-            this.src$.next(environment.UTILITIES_FLAMINGOS_UPLOADS + '/' + this.imgURL);
+            this.src$.next(environment.UTILITIES_FLAMINGOS_UPLOADS + '/' + this.workspaceId + '/' + this.imgURL);
           } else {
             this.src$.next(this.imgURL);
           }

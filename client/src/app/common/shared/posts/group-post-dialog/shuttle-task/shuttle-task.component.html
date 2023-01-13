@@ -14,6 +14,7 @@
       <app-secured-image
         [imgURL]="shuttle?._shuttle_group?.group_avatar"
         [service]="'group'"
+        [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
         [styleClass]="'feed-avatar-small'"></app-secured-image>
     </div>
 
@@ -25,6 +26,7 @@
       <app-secured-image
         [imgURL]="postData?._group?.group_avatar"
         [service]="'group'"
+        [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
         [styleClass]="'feed-avatar-small'"></app-secured-image>
     </div>
   </div>

@@ -7,7 +7,7 @@
 </mat-dialog-actions>
 
 <div style="margin: 20px; width: 50%;">
-    <app-secured-image [imgURL]="memberData?.profile_pic" [service]="'user'" style="float: left; margin-top: -15px;" [styleClass]="'mr-3 feed-avatar'"
+    <app-secured-image [imgURL]="memberData?.profile_pic" [service]="'user'" [workspaceId]="(memberData?._workspace?._id || memberData?._workspace)" style="float: left; margin-top: -15px;" [styleClass]="'mr-3 feed-avatar'"
         [inlineStyle]="'cursor: default;'"></app-secured-image>
 
     <h2>{{ memberData?.first_name }} {{ memberData?.last_name }}</h2>

@@ -16,6 +16,7 @@ export class SearchResultsComponent implements OnChanges {
 
   @Input() data: any;
   @Input() type: string;
+  @Input() workspaceId: string;
 
   @Output() closeSearchEvent = new EventEmitter();
 
@@ -140,7 +141,7 @@ export class SearchResultsComponent implements OnChanges {
   }
 
   generateFileURL() {
-    return environment.UTILITIES_FILES_UPLOADS + '/' + this.data.modified_name + '?authToken=Bearer ' + this.storageService.getLocalData('authToken')['token'];
+    return environment.UTILITIES_FILES_UPLOADS + '/' + this.workspaceId + '/' + this.data.modified_name + '?authToken=Bearer ' + this.storageService.getLocalData('authToken')['token'];
   }
 
   getFileExtension(fileName: string) {

@@ -1,5 +1,4 @@
 import { Component, OnInit, Injector } from '@angular/core';
-import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
 import { PublicFunctions } from 'modules/public.functions';
@@ -18,9 +17,6 @@ export class MyspaceHeaderComponent implements OnInit {
 
   // CURRENT USER DATA
   userData: any;
-
-  // BASE URL OF THE APPLICATION
-  BASE_URL = environment.UTILITIES_USERS_UPLOADS;
 
   // UNSUBSCRIBE THE DATA
   private subSink = new SubSink();

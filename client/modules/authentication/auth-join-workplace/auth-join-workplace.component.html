@@ -22,7 +22,7 @@
             <div *ngFor="let workspace of allowedWorkspaces" class="workplace-cells"
               (click)="selectWorkspace(workspace)" [ngClass]="workspace._id == selectedWorkplaceId ? 'selected-workplace' : ''">
               <div class="btn-select-workplace" [ngClass]="'selected-workplace'" style="background-color: #ffffff;">
-                <img src="{{ this.baseUrl }}/{{workspace.workspace_avatar}}?noAuth=true" style="height: 100%; width:100%;"
+                <img src="{{ this.baseUrl }}/{{ workspace?._id }}/{{ workspace.workspace_avatar }}?noAuth=true" style="height: 100%; width:100%;"
                   onerror="this.src='assets/images/icon-new-group.svg'" />
               </div>
           

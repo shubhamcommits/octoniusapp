@@ -1,13 +1,10 @@
 import { Component, OnInit, EventEmitter, Output, Inject, Injector } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import moment from 'moment';
-// ShareDB Client
 import { BehaviorSubject } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
 import { FilesService } from 'src/shared/services/files-service/files.service';
 
 @Component({
@@ -66,14 +63,11 @@ export class FileDetailsDialogComponent implements OnInit {
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
 
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
-
   constructor(
     private filesService: FilesService,
     private groupService: GroupService,
     private utilityService: UtilityService,
     private injector: Injector,
-    private router: ActivatedRoute,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<FileDetailsDialogComponent>
     ) {}

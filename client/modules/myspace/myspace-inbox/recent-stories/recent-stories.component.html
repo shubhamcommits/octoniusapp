@@ -13,7 +13,7 @@
       [routerLink]="['/dashboard', 'work', 'lounge', 'story']" [queryParams]="{ story: story?._id  }">
     <app-secured-image
       [imgURL]="story?.icon_pic"
-      [service]="'lounge'"
+      [service]="'lounge'" [workspaceId]="workspaceData?._id"
       [styleClass]="'mr-3 group-avatar'"></app-secured-image>
 
     <div class="media-body">

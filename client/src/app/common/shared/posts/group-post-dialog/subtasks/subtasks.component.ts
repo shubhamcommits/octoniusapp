@@ -21,8 +21,6 @@ export class SubtasksComponent implements OnInit {
   percentageSubtasksCompleted = 0;
   completitionPercentageClass: string = 'badge';
 
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
-
   constructor() { }
 
   ngOnInit() {
@@ -62,6 +60,6 @@ export class SubtasksComponent implements OnInit {
       return 'assets/images/user.png';
     }
 
-    return this.baseUrl + '/' + assignee.profile_pic;
+    return environment.UTILITIES_USERS_UPLOADS + '/' + (this.groupData?._workspace?._id || this.groupData?._workspace) + '/' + assignee.profile_pic;
   }
 }

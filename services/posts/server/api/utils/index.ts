@@ -1,7 +1,7 @@
 import { Auths } from './auth';
 import { sendErr } from './sendError';
-import { postFileHandler } from "./filehandler";
-import { commentFileHandler } from './commentFileHandler';
+import { postFileUploader } from "./filehandler";
+import { commentFileUploader } from './commentFileHandler';
 
 export {
 
@@ -12,8 +12,8 @@ export {
     sendErr as sendError,
 
     // POST FILEHANDLER
-    postFileHandler as postFileHandler,
+    postFileUploader as postFileUploader,
 
     // COMMENT FILEHANDLER
-    commentFileHandler as commentFileHandler
+    commentFileUploader as commentFileUploader
 }

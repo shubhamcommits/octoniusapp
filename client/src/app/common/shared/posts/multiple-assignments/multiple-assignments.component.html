@@ -4,6 +4,7 @@
     <app-secured-image *ngFor="let assignee of assigned_to"
       [imgURL]="assignee?.profile_pic"
       [service]="'user'"
+      [workspaceId]="workspaceData?._id"
       [alt]="assignee?.first_name + ' ' + assignee?.last_name"
       [styleClass]="'feed-avatar-small'"
       [tooltip]="assignee?.first_name + ' ' + assignee?.last_name"
@@ -13,6 +14,7 @@
   <div *ngIf="type == 'chat'" style="overflow: auto; overflow-y: hidden; float: left;">
     <app-secured-image *ngFor="let assignee of assigned_to" style="width: 24px; height: 24px; margin: 0 10px;"
       [imgURL]="(assignee?._user?.profile_pic || assignee?.profile_pic)" [service]="'user'"
+      [workspaceId]="workspaceData?._id"
       [alt]="(assignee?._user?.first_name || assignee?.first_name) + ' ' + (assignee?._user?.last_name || assignee?.last_name)"
       [styleClass]="'feed-avatar-small'" [inlineStyle]="'margin: 0px;'"
       [tooltip]="(assignee?._user?.first_name || assignee?.first_name) + ' ' + (assignee?._user?.last_name || assignee?.last_name)"
@@ -46,7 +48,8 @@
           <li appHighlight class="assignee-list-item" *ngFor="let member of members | appFilter: searchText"
               (click)="getMemberDetails(member)"
               [searchedWord]="searchText"
-              [content]="member">
+              [content]="member"
+              [workspaceId]="workspaceData?._id">
             {{ member.first_name }} {{ member.last_name }}
           </li>
         </ul>
