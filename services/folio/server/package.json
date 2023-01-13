@@ -47,6 +47,7 @@
   "devDependencies": {
     "@types/compression": "^1.0.1",
     "@types/ejs": "^3.0.1",
+    "@types/minio": "^7.0.15",
     "gzipper": "^3.4.2"
   }
 }
