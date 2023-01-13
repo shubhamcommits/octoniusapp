@@ -1,9 +1,8 @@
 import { Component, OnInit, Injector, OnDestroy } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { environment } from 'src/environments/environment';
 import { UserService } from 'src/shared/services/user-service/user.service';
-import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
+// import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({
   selector: 'app-myspace-inbox',
@@ -15,14 +14,11 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
   // Current User Data
   userData: any;
 
-  // BASE URL OF THE APPLICATION
-  baseUrl = environment.UTILITIES_USERS_UPLOADS
-
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
-    private managementPortalService: ManagementPortalService,
+    // private managementPortalService: ManagementPortalService,
     private injector: Injector,
     public utilityService: UtilityService,
     public userService: UserService

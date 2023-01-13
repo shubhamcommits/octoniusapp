@@ -79,7 +79,7 @@ app.use(fileUpload({
 app.use('/uploads', fileHandlerRoutes);
 
 // GET - Fetches the files attachment
-app.use('/uploads/files', express.static(process.env.FILE_UPLOAD_FOLDER));
+app.use('/uploads/files/assets', express.static(process.env.FILE_UPLOAD_FOLDER));
 
 // Routes which should handle request
 app.all('/', (req: Request, res: Response, next: NextFunction) => {

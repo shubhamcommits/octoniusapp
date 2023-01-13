@@ -13,44 +13,30 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
   styleUrls: ['./post-view.component.scss']
 })
 export class PostViewComponent implements OnInit, OnChanges {
-
-  // Base Url for uploads
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
-
-  // Post Files baseURL
-  fileBaseUrl = environment.UTILITIES_POSTS_UPLOADS;
-
-  // Post as the Input from component
+  
   @Input('post') post: any;
-
-  // User Data Object
   @Input('userData') userData: any;
-
   @Input('globalFeed') isGlobal: boolean = false;
-
-  // Group Data Object
   @Input() groupData: any;
+  @Input() workspaceId: string;
 
-  // Delete Post Event Emitter
   @Output('delete') delete = new EventEmitter()
-
-  // Task Status Event Emitter
   @Output('taskStatus') taskStatus = new EventEmitter();
-
-  // Fullscreen modal closed
   @Output() closeModalEvent = new EventEmitter();
-
   @Output() pinEvent = new EventEmitter();
-
-  // Public Functions class object
-  publicFunctions = new PublicFunctions(this.injector);
-
+  
   flows = [];
-
+  
   authToken: string;
-
+  
   showFullContent = false;
   postContent = ''
+  
+  // Post Files baseURL
+  fileBaseUrl = environment.UTILITIES_POSTS_UPLOADS;
+  
+  // Public Functions class object
+  publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
     private injector: Injector,

@@ -84,6 +84,7 @@
                       <app-secured-image (click)="openFullscreenModal(folder?._created_by?._id)"
                           [imgURL]="folder?._created_by?.profile_pic"
                           [service]="'user'"
+                          [workspaceId]="workspaceId"
                           [styleClass]="'mr-3 feed-avatar'">
                       </app-secured-image>
 
@@ -160,6 +161,7 @@
                       <app-secured-image (click)="openFullscreenModal(file?._posted_by?._id)"
                           [imgURL]="file?._posted_by?.profile_pic"
                           [service]="'user'"
+                          [workspaceId]="workspaceId"
                           [styleClass]="'feed-avatar'">
                       </app-secured-image>
 

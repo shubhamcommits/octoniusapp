@@ -1,7 +1,6 @@
 import { Component, Input, Output, OnChanges, EventEmitter, ViewChild, ViewEncapsulation, Injector, OnInit } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { PublicFunctions } from 'modules/public.functions';
-import { environment } from 'src/environments/environment';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -36,8 +35,6 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
 
   groupData;
 
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
-
   isShuttleTasksModuleAvailable = false;
 
   // Public Functions class object
@@ -55,6 +52,10 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
 
   async ngOnChanges() {
 
+    if (!this.workspaceData) {
+      this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    }
+      
     if (this.type != 'chat' && this.groupId) {
         this.groupService.getAllGroupMembers(this.groupId).then(res => {
           this.members = res['users'];
@@ -62,19 +63,11 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
           this.members.unshift({_id: 'all', first_name: 'All', last_name: 'members', email: ''});
         });
     } else if (this.type != 'portfolio') {
-      if (!this.workspaceData) {
-        this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-      }
-      
       this.members = await this.workspaceData?.members;
       this.members = await this.members?.filter((member) => {
         return ['owner', 'admin', 'manager'].includes(member?.role);
       });
     } else {
-      if (!this.workspaceData) {
-        this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-      }
-      
       this.members = await this.workspaceData?.members;
       this.members = await this.members?.filter((member, index) => {
           return (this.members?.findIndex(m => m._id == member._id) == index)

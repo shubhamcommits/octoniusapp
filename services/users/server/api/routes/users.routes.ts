@@ -1,4 +1,4 @@
-import { Auths, userFileHandler } from '../../utils';
+import { Auths, userFileUploader } from '../../utils';
 import express from 'express';
 import {  PostsControllers, SkillControllers, UserControllers } from '../controllers';
 
@@ -100,7 +100,7 @@ routes.put('/update-role', user.updateUserRole);
 routes.put('/change-hr-role', user.changeHRRole);
 
 // PUT - Updates the profileImage of the user on the basis of userId
-routes.put('/image', userFileHandler, user.updateImage);
+routes.put('/image', userFileUploader, user.updateImage);
 
 // PUT - Updates the user´s password on the basis of userId
 routes.put('/change-password', user.changePassword);

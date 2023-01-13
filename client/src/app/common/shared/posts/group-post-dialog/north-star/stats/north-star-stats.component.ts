@@ -14,6 +14,8 @@ export class NorthStarStatsComponent implements OnInit {
   @Input() isNorthStar = false;
   @Input() northStar;
 
+  workspaceData: any;
+
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector)
 
@@ -21,7 +23,9 @@ export class NorthStarStatsComponent implements OnInit {
     private injector: Injector
     ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+
     this.northStar.values = this.northStar?.values?.sort((v1, v2) => (moment.utc(v1.date).isBefore(v2.date)) ? 1 : -1);
     
     this.northStar?.values?.forEach(async (v, index) => {

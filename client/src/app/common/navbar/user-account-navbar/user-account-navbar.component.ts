@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { WorkplaceLdapFieldsMapperDialogComponent } from 'modules/admin/admin-general/workplace-integrations/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component';
 import { PublicFunctions } from 'modules/public.functions';
-import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { RouteStateService } from 'src/shared/services/router-service/route-state.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
@@ -35,7 +34,6 @@ export class UserAccountNavbarComponent implements OnInit, OnDestroy {
   isCurrentUser: boolean = true;
 
   isOrganizationModuleAvailable = false;
-  userBaseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector)

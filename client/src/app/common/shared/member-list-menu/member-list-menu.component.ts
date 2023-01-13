@@ -1,4 +1,5 @@
 import { OnInit, Component, EventEmitter, SimpleChanges,Injector, Input, OnDestroy, OnChanges, Output } from '@angular/core';
+import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -8,19 +9,31 @@ import { environment } from 'src/environments/environment';
 })
 export class MemberListMenuComponent implements OnInit {
 
-  constructor() { }
-  @Input() groupMembers:any
-  @Input() filterfor:string
-  @Input() menuLable:string
-  @Input() menuFor:string
+  @Input() groupMembers: any;
+  @Input() filterfor: string;
+  @Input() menuLable: string;
+  @Input() menuFor: string;
+  @Input() workspaceId: string;
+  
+  // Emitter to notify that a customField was edited/added
+  @Output() userSelctionEmitter = new EventEmitter();
+
   searchText = '';
   picsUrl:string='';
 
+  workspaceData;
+
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
-  // Emitter to notify that a customField was edited/added
-  @Output() userSelctionEmitter = new EventEmitter();
+
+  // Public Functions
+  public publicFunctions = new PublicFunctions(this.injector);
+
+  constructor(
+    private injector: Injector
+    ) { }
   
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
   }
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -38,7 +51,7 @@ export class MemberListMenuComponent implements OnInit {
   getMemberDetails(selectedMemberId: any) {
     this.groupMembers.forEach(element => {
       if(element._id==selectedMemberId){
-        this.picsUrl = this.baseUrl + '/' +element.profile_pic;
+        this.picsUrl = this.baseUrl + '/' + this.workspaceId + '/' +element.profile_pic;
       }
     });
     this.userSelctionEmitter.emit(selectedMemberId);

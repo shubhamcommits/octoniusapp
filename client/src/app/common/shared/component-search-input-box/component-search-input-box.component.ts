@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Injector, Output, EventEmitter } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
-import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs/internal/Subject';
 import { SubSink } from 'subsink';
 import { debounceTime } from 'rxjs/internal/operators/debounceTime';
@@ -17,9 +16,6 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 export class ComponentSearchInputBoxComponent implements OnInit {
 
   constructor(private injector: Injector) { }
-
-  // Define User server base Url
-  userBaseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   @Input('placeholder') placeholder: string = '';
 

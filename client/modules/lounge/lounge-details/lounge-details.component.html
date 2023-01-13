@@ -51,6 +51,7 @@
           [routerLink]="['/dashboard', 'work', 'lounge', 'details']"
           [queryParams]="{ lounge: item?._id  }">
           <app-secured-image [imgURL]="item?.icon_pic" [service]="'lounge'"
+            [workspaceId]="workspaceData?._id"
             [styleClass]="'card-img-top'"></app-secured-image>
 
         <div class="card-img-overlay">
@@ -70,7 +71,7 @@
           [routerLink]="['/dashboard', 'work', 'lounge', 'story']"
           [queryParams]="{ story: item?._id  }">
           <app-secured-image [imgURL]="item?.icon_pic" [service]="'lounge'"
-          [styleClass]="'card-img-top'"></app-secured-image>
+            [workspaceId]="workspaceData?._id" [styleClass]="'card-img-top'"></app-secured-image>
         <div class="card-img-overlay">
           <span *ngIf="item.type == 'story' || item.type == 'event'" class="badge badge-members">
             {{ item?.type }}

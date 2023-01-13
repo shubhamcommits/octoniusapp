@@ -37,7 +37,10 @@
                 </div>
                 <ul class="members-list">
                   <li appHighlight class="members-list-item" *ngFor="let member of possibleMembers | appFilter: searchText"
-                      (click)="getMemberDetails(member, level?.managerId, index); searchText = ''" [searchedWord]="searchText" [content]="member">
+                      (click)="getMemberDetails(member, level?.managerId, index); searchText = ''"
+                      [searchedWord]="searchText"
+                      [content]="member"
+                      [workspaceId]="workspaceData?._id">
                     {{ member.first_name }} {{ member.last_name }}
                   </li>
                 </ul>

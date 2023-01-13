@@ -1,55 +1,4 @@
 <div class="container">
-  <!--
-  <div class="row" style="margin-bottom: 20px;">
-    <div class="col card">
-      <div class="title">
-       <span i18n="@@northStarPage.goalsAssignedTo">Goals assigned to you: </span>   {{ numAssignedToMe }}
-      </div>
-
-      <div class="d-md-none d-lg-block graph" *ngIf="assignedToChartReady">
-        <canvas baseChart height="250"
-          [data]="assignedToChartData"
-          [labels]="assignedChartLabels"
-          [chartType]="chartType"
-          [options]="assignedChartOptions"
-          [colors]="assignedChartColors"
-          [plugins]="chartPlugins"></canvas>
-      </div>
-    </div>
-
-    <div class="col card">
-      <div class="title">
-         <span i18n="@@northStarPage.goalsAssignedBy">Goals you assigned: </span> {{ numAssignedByMe }}
-      </div>
-
-      <div class="d-md-none d-lg-block graph" *ngIf="assignedByChartReady">
-        <canvas baseChart height="250"
-          [data]="assignedByChartData"
-          [labels]="assignedChartLabels"
-          [chartType]="chartType"
-          [options]="assignedChartOptions"
-          [colors]="assignedChartColors"
-          [plugins]="chartPlugins"></canvas>
-      </div>
-    </div>
-
-    <div class="col card">
-      <div class="title">
-        <span i18n="@@northStarPage.overallProgress">Overall progress</span>
-      </div>
-
-      <div class="d-md-none d-lg-block graph" *ngIf="generalChartReady">
-        <canvas baseChart height="250"
-          [data]="generalChartData"
-          [labels]="generalChartLabels"
-          [chartType]="chartType"
-          [options]="generalChartOptions"
-          [colors]="generalChartColors"
-          [plugins]="chartPlugins"></canvas>
-      </div>
-    </div>
-  </div>
-  -->
   <button (click)="createNS()" class="btn new-ns-button mb-3 mt-3">
     <i class="material-icons">add</i>
     <span i18n="@@northStarPage.newNS">New North Star</span>
@@ -75,11 +24,7 @@
   <!-- Empty State of tasks ends -->
 
 <div class="ns-wrapper">
-
-
-
   <div *ngFor="let task of globalNorthStarTasks; let i = index;">
-
     <a (click)="openGlobalNSModal(task?._id)">
       <!-- My Space Today Tasks -->
 
@@ -115,9 +60,7 @@
             </div>
           </div>
         </div>
-
-    </a>
+      </a>
+    </div>
   </div>
-  </div>
-
 </div>

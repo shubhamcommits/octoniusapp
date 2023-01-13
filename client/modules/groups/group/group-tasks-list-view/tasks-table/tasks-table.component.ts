@@ -34,9 +34,6 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   unchangedTasks: any;
   newColumnSelected;
 
-  // Base URL of the uploads
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
-
   displayedColumns = ['title', 'tags', 'asignee', 'due_to', 'nsPercent', 'star'];
 
   // Public Functions class object

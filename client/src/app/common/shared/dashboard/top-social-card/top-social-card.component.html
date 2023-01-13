@@ -11,6 +11,7 @@
           <app-secured-image
               [imgURL]="member?.profile_pic"
               [service]="'user'"
+              [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
               [styleClass]="'feed-avatar'"
               style="margin-right:15px; float: left;"></app-secured-image>
 

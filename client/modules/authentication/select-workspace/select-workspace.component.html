@@ -25,7 +25,7 @@
             <div *ngFor="let workspace of accountData?._workspaces"
                 class="workplace-cells" (click)="selectWorkspace(workspace._id)">
               <div class="btn-select-workplace">
-                <img src="{{ this.baseUrl }}/{{workspace.workspace_avatar}}?noAuth=true"
+                <img src="{{ this.baseUrl }}/{{ workspace?._id }}/{{ workspace.workspace_avatar }}?noAuth=true"
                     style="height: 100%; width:100%"
                     onerror="this.src='assets/images/icon-new-group.svg'" />
               </div>

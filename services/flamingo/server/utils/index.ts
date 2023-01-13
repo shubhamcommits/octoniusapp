@@ -1,6 +1,6 @@
 import { sendErr } from './sendError';
 import { Auths } from './auth';
-import { flamingoFileHandler } from './flamingo.filehandler';
+import { flamingoFileHandler, flamingoFileUploader } from './flamingo.filehandler';
 /*  =====================
  *  -- UTILS EXPORTS --
  *  =====================
@@ -11,5 +11,6 @@ export {
 
     Auths as Auths,
 
+    flamingoFileUploader as flamingoFileUploader,
     flamingoFileHandler as flamingoFileHandler
 }

@@ -11,7 +11,7 @@
     <div class="form-group">
         <app-secured-image *ngIf="!imageSrc && activeQuestion?.image_url"
           [imgURL]="activeQuestion?.image_url"
-          [service]="'flamingo'"></app-secured-image>
+          [service]="'flamingo'" [workspaceId]="workspaceId"></app-secured-image>
         <img *ngIf="imageSrc" [src]="imageSrc" />
         <div class="input-group mb-3">
             <div class="custom-file">

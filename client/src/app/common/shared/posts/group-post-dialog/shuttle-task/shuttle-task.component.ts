@@ -1,8 +1,6 @@
 import { Component, Injector, Input, OnDestroy, OnChanges, OnInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
-import { PostService } from 'src/shared/services/post-service/post.service';
-import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
 
 @Component({
@@ -27,8 +25,6 @@ export class ShuttleTaskComponent implements OnChanges, OnInit, OnDestroy {
   publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
-    private utilityService: UtilityService,
-    private postService: PostService,
     private injector: Injector,
   ) { }
 

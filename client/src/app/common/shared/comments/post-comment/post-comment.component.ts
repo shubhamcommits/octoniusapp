@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, Injector } from '@angular/core';
-import { environment } from 'src/environments/environment';
+import { Component, EventEmitter, Input, OnInit, Output, Injector } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
 import { PublicFunctions } from 'modules/public.functions';
@@ -56,9 +55,6 @@ export class PostCommentComponent implements OnInit {
 
   // Cloud files
   cloudFiles: any = [];
-
-  // Baseurl
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);

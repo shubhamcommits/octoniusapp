@@ -22,7 +22,7 @@
   <!-- PULSE GROUPS ITERATOR STARTS -->
   <app-infinite-scroll (scrolled)="onScroll()">
 
-    <div *ngFor="let group of pulseGroups" class="pulse_card" (click)="openModal(group.group_name, this.baseUrl + '/' + group.group_avatar, group.pulse_description ? group.pulse_description: 'Waiting for a new Pulse...', pulseToDoTasks[group._id], pulseInProgressTasks[group._id], pulseDoneTasks[group._id])">
+    <div *ngFor="let group of pulseGroups" class="pulse_card" (click)="openModal(group.group_name, this.baseUrl + '/' + workspaceData?._id + '/' + group.group_avatar, group.pulse_description ? group.pulse_description: 'Waiting for a new Pulse...', pulseToDoTasks[group._id], pulseInProgressTasks[group._id], pulseDoneTasks[group._id])">
 
 
         <!-- GROUP DETAILS STARTS -->
@@ -30,6 +30,7 @@
           <app-secured-image
             [imgURL]="group?.group_avatar"
             [service]="'group'"
+            [workspaceId]="workspaceData?._id"
             [alt]="'group_avatar'"
             [styleClass]="'feed-avatar'"></app-secured-image>
         </div>

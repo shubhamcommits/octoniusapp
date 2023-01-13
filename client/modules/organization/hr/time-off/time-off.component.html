@@ -13,7 +13,7 @@
       <ng-container matColumnDef="photo">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let user">
-          <app-secured-image [imgURL]="user?.profile_pic" [service]="'user'" [styleClass]="'mr-3 feed-avatar-small'"
+          <app-secured-image [imgURL]="user?.profile_pic" [service]="'user'" [workspaceId]="workspaceData?._id" [styleClass]="'mr-3 feed-avatar-small'"
             [inlineStyle]="'cursor: default;'"></app-secured-image>
         </td>
       </ng-container>

@@ -1,11 +1,9 @@
-import { Component, OnInit, OnChanges, Injector, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, Injector, Input, Output, EventEmitter } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { environment } from 'src/environments/environment';
 import { LoungeService } from 'src/shared/services/lounge-service/lounge.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { LoungeImageUpdateComponent } from '../../lounge-image-update/lounge-image-update.component';
 import moment from 'moment';
 
@@ -29,14 +27,6 @@ export class StoryActionsBarComponent implements OnInit, OnChanges {
   goingToEvent: boolean = false;
   notGoingToEvent: boolean = false;
   maybeGoingToEvent: boolean = false;
-
-  // eventTime: any = {
-  //   hour: 1,
-  //   minute: 30
-  // }
-
-  // Base URL
-  baseUrl = environment.UTILITIES_WORKSPACES_UPLOADS;
 
   // Public functions
   public publicFunctions = new PublicFunctions(this.injector);

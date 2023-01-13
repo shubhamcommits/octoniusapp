@@ -3,7 +3,6 @@ import { PublicFunctions } from "modules/public.functions";
 import { ActivatedRoute } from "@angular/router";
 import { SubSink } from "subsink";
 import { FilesService } from "src/shared/services/files-service/files.service";
-import { StorageService } from "src/shared/services/storage-service/storage.service";
 import { FolioService } from 'src/shared/services/folio-service/folio.service';
 import { environment } from "src/environments/environment";
 import { UtilityService } from "src/shared/services/utility-service/utility.service";
@@ -36,7 +35,6 @@ import * as ShareDB from "sharedb/lib/client";
 import { pdfExporter } from "quill-to-pdf";
 import * as quillToWord from "quill-to-word";
 import { saveAs } from "file-saver";
-import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
 
 // Register the Types of the Sharedb
 ShareDB.types.register(require('rich-text').type);
@@ -140,21 +138,16 @@ export class FolioEditorComponent implements AfterViewInit {
   // SubSink Variable
   subSink = new SubSink();
 
-  // Uploads url for Files
-  filesBaseUrl = environment.UTILITIES_FILES_UPLOADS;
-
   // Public functions class member
   publicFunctions = new PublicFunctions(this._Injector);
 
   constructor(
     @Inject(LOCALE_ID) public locale: string,
-    private integrationsService: IntegrationsService,
     private _Injector: Injector,
     private _ActivatedRoute: ActivatedRoute,
     private folioService: FolioService,
     private filesService: FilesService,
-    private utilityService: UtilityService,
-    private storageService: StorageService
+    private utilityService: UtilityService
   ) {
     this.folioService.follioSubject.subscribe(data => {
       if (data) {

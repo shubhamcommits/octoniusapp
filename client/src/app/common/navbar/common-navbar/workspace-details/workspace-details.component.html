@@ -11,7 +11,8 @@
     <div class="form-group">
         <app-secured-image *ngIf="workspaceData"
           [imgURL]="workspaceData?.workspace_avatar"
-          [service]="'workspace'"></app-secured-image>
+          [service]="'workspace'"
+          [workspaceId]="workspaceData?._id"></app-secured-image>
         <app-crop-image class="container" [resizeToWidth]="300" [cropperMinWidth]="300" (outputImage)="getCroppedImage($event)"></app-crop-image>
     </div>
 </div>

@@ -12,60 +12,60 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./pulse.component.scss']
 })
 export class PulseComponent implements OnInit {
-
+  
+  // Base URL
+  baseUrl = environment.UTILITIES_GROUPS_UPLOADS;
+  
+  // Workspace data
+  public workspaceData: any = {};
+  
+  // LastGroupId
+  public lastGroupId: string = '';
+  
+  // Pulse groups
+  public pulseGroups: any = [];
+  
+  // Pulse total tasks
+  public pulseTotalTasks = [];
+  
+  // Pulse to do tasks
+  public pulseToDoTasks = [];
+  
+  // Pulse in progress tasks
+  public pulseInProgressTasks = [];
+  
+  // Pulse done tasks
+  public pulseDoneTasks = [];
+  
+  // Public functions
+  public publicFunctions = new PublicFunctions(this.injector);
+  
+  // Utility Service
+  public utilityService = this.injector.get(UtilityService);
+  
+  // IsLoading behaviou subject maintains the state for loading spinner
+  public isLoading$ = new BehaviorSubject(false);
+  
+  // More to load maintains check if we have more to load groups on scroll
+  public moreToLoad: boolean = true;
+  
+  // Subsink to add subscriptions to this array
+  public subSink = new SubSink();
+  
   constructor(
     private groupService: GroupsService,
     private injector: Injector
   ) { }
-
-  // Base URL
-  baseUrl = environment.UTILITIES_GROUPS_UPLOADS;
-
-  // Workspace data
-  public workspaceData: Object = {};
-
-  // LastGroupId
-  public lastGroupId: string = '';
-
-  // Pulse groups
-  public pulseGroups: any = [];
-
-  // Pulse total tasks
-  public pulseTotalTasks = [];
-
-  // Pulse to do tasks
-  public pulseToDoTasks = [];
-
-  // Pulse in progress tasks
-  public pulseInProgressTasks = [];
-
-  // Pulse done tasks
-  public pulseDoneTasks = [];
-
-  // Public functions
-  public publicFunctions = new PublicFunctions(this.injector);
-
-  // Utility Service
-  public utilityService = this.injector.get(UtilityService);
-
-  // IsLoading behaviou subject maintains the state for loading spinner
-  public isLoading$ = new BehaviorSubject(false);
-
-  // More to load maintains check if we have more to load groups on scroll
-  public moreToLoad: boolean = true;
-
-  // Subsink to add subscriptions to this array
-  public subSink = new SubSink();
-
+  
   async ngOnInit() {
     // Starts the spinner
     this.isLoading$.next(true);
-
+    
     // Fetches the workspace data
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     // Fetches the groups from the server
-    this.pulseGroups = await this.getAllPulseGroups(this.workspaceData['_id'])
+    this.pulseGroups = await this.getAllPulseGroups(this.workspaceData?._id)
       .catch(() => {
         // If the function breaks, then catch the error and console to the application
         this.publicFunctions.sendError(new Error($localize`:@@workPulse.unableToConnectToServer:Unable to connect to the server, please try again later!`));
@@ -164,7 +164,7 @@ export class PulseComponent implements OnInit {
     if (this.pulseGroups && this.lastGroupId && this.lastGroupId != '' && this.lastGroupId != null) {
 
       // Fetching next pulse groups based on the lasgGroupId
-      let nextPulseGroups: any = await this.getNextPulseGroups(this.workspaceData['_id'], this.lastGroupId);
+      let nextPulseGroups: any = await this.getNextPulseGroups(this.workspaceData?._id, this.lastGroupId);
 
       // If we have 0 groups, then stop the function immediately and set moreToLoad to false
       if (nextPulseGroups.length == 0) {

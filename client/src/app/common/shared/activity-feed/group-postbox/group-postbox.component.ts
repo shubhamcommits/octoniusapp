@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
@@ -12,9 +11,6 @@ export class GroupPostboxComponent implements OnInit {
   constructor(
     private utilityService: UtilityService
     ) { }
-
-  // BASE URL OF THE APPLICATION
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   // GroupId variable
   @Input('groupId') groupId: any;

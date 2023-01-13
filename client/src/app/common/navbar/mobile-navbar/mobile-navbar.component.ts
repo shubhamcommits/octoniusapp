@@ -1,5 +1,4 @@
 import { Component, OnInit, Injector, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { environment } from 'src/environments/environment';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { retry } from 'rxjs/internal/operators/retry';
@@ -31,9 +30,6 @@ export class MobileNavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector)
-
-  // BASE URL OF THE APPLICATION
-  baseUrl = environment.UTILITIES_USERS_UPLOADS
 
   // UNSUBSCRIBE THE DATA
   private subSink = new SubSink()

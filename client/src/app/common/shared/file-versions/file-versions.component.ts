@@ -30,13 +30,11 @@ export class FileVersionsComponent implements OnInit {
   fileVersions;
 
   groupData;
+  workspaceData;
 
   authToken: string;
 
   shareDBSocket;
-
-  // Base Url of the users uploads
-  userBaseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   // Base Url of the files uploads
   filesBaseUrl = environment.UTILITIES_FILES_UPLOADS;
@@ -57,6 +55,7 @@ export class FileVersionsComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     if (!this.currentGroupId) {
       this.groupData = await this.publicFunctions.getCurrentGroupDetails();
       this.currentGroupId = this.groupData?._id;

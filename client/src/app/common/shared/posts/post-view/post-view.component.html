@@ -8,6 +8,7 @@
                 <app-secured-image
                     [imgURL]="post?._posted_by?.profile_pic"
                     [service]="'user'"
+                    [workspaceId]="workspaceId"
                     [styleClass]="'ml-2 feed-avatar'"
                     (click)="openMeberBusinessCard(post?._posted_by?._id)"></app-secured-image>
             </div>
@@ -119,7 +120,7 @@
 
         <!-- Attached Files Starts -->
         <div *ngIf="post" class="ml-2 mt-2">
-            <a href="{{ fileBaseUrl }}/{{ file?.modified_name }}?authToken={{authToken}}" target="_blank"
+            <a href="{{ fileBaseUrl }}/{{ workspaceId }}/{{ file?.modified_name }}?authToken={{authToken}}" target="_blank"
                 *ngFor="let file of post.files; let index = index">
                 <span class="fileslabel">{{ file?.original_name }}</span>
             </a>

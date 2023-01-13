@@ -35,12 +35,14 @@
             <app-secured-image *ngIf="notification?._actor"
               [imgURL]="notification?._actor?.profile_pic"
               [service]="'user'"
+              [workspaceId]="workspaceData?._id"
               [styleClass]="'avatar'"
               style="margin-right:15px"></app-secured-image>
 
             <app-secured-image *ngIf="!notification?._actor"
               [imgURL]="notification?._owner?.profile_pic"
               [service]="'user'"
+              [workspaceId]="workspaceData?._id"
               [styleClass]="'avatar'"
               style="margin-right:15px"></app-secured-image>
           </div>
@@ -176,6 +178,7 @@
             <app-secured-image
               [imgURL]="notification?._actor?.profile_pic"
               [service]="'user'"
+              [workspaceId]="workspaceData?._id"
               [styleClass]="'avatar'"
               style="margin-right:15px"></app-secured-image>
           </div>
@@ -242,6 +245,7 @@
           <div class="notification_actor">
             <app-secured-image
               [imgURL]="event?.icon_pic"
+              [workspaceId]="workspaceData?._id"
               [service]="'lounge'"
               [styleClass]="'avatar'"
               style="margin-right:15px"></app-secured-image>
@@ -266,6 +270,7 @@
             <app-secured-image
               [imgURL]="event?._posted_by?.profile_pic"
               [service]="'user'"
+              [workspaceId]="workspaceData?._id"
               [styleClass]="'avatar'"
               style="margin-right:15px"></app-secured-image>
 
@@ -312,12 +317,14 @@
             <app-secured-image *ngIf="notification?._actor"
               [imgURL]="notification?._actor?.profile_pic"
               [service]="'user'"
+              [workspaceId]="workspaceData?._id"
               [styleClass]="'avatar'"
               style="margin-right:15px"></app-secured-image>
 
             <app-secured-image *ngIf="!notification?._actor"
               [imgURL]="notification?._owner?.profile_pic"
               [service]="'user'"
+              [workspaceId]="workspaceData?._id"
               [styleClass]="'avatar'"
               style="margin-right:15px"></app-secured-image>
           </div>

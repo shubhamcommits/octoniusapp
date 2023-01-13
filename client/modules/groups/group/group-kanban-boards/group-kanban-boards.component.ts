@@ -33,8 +33,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
 
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
-  // Base URL of the uploads
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   // Today's date object
   today = moment().startOf('day').format('YYYY-MM-DD');

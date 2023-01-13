@@ -1,6 +1,6 @@
 import express from 'express';
 import { FlamingoController } from '../controllers'
-import { Auths ,flamingoFileHandler} from '../../utils';
+import { Auths ,flamingoFileUploader } from '../../utils';
 
 const routes = express.Router();
 
@@ -16,7 +16,7 @@ routes.get('/', flamingoFunctions.get);
 
 routes.put('/publish', auths.verifyToken, auths.isLoggedIn, flamingoFunctions.publish);
 
-routes.put('/question/image', auths.verifyToken, auths.isLoggedIn, flamingoFileHandler , flamingoFunctions.updloadQuestionImage);
+routes.put('/question/image', auths.verifyToken, auths.isLoggedIn, flamingoFileUploader, flamingoFunctions.updloadQuestionImage);
 
 routes.put('/question', auths.verifyToken, auths.isLoggedIn, flamingoFunctions.updateQuestion);
 

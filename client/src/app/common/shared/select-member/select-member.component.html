@@ -4,6 +4,7 @@
     <app-secured-image
         [imgURL]="userData?.profile_pic"
         [service]="'user'"
+        [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
         [styleClass]="'feed-avatar'"></app-secured-image>
     <!-- Profile Picture Ends -->
 

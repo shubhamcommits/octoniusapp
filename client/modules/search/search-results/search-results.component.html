@@ -52,6 +52,7 @@
       <app-secured-image
         [imgURL]="data?._posted_by.profile_pic"
         [service]="'user'"
+        [workspaceId]="workspaceId"
         [styleClass]="'feed-avatar-small'"
         style="float: left; cursor: auto;"></app-secured-image>
 
@@ -81,6 +82,7 @@
     <app-secured-image
       [imgURL]="data?.profile_pic"
       [service]="'user'"
+      [workspaceId]="workspaceId"
       [styleClass]="'feed-avatar-small'"
       style="float: left; cursor: auto;"></app-secured-image>
 

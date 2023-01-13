@@ -69,7 +69,7 @@ export class GroupReportsComponent implements OnInit {
     // Pickup the latest campaign file
     if (this.files.length > 0) {
       this.campaignFile = this.files[0]
-      this.campaignFileUrl = `${this.filesBaseUrl}/${this.files[0].modified_name}?authToken=${this.authToken}`
+      this.campaignFileUrl = `${this.filesBaseUrl}/${(this.groupData?._workspace?._id || this.groupData?._workspace)}/${this.files[0].modified_name}?authToken=${this.authToken}`
     }
 
     // Change the loading state
@@ -78,7 +78,7 @@ export class GroupReportsComponent implements OnInit {
 
   changeValue(event){
     this.campaignFile = event
-    this.campaignFileUrl = `${this.filesBaseUrl}/${event.modified_name}?authToken=${this.authToken}`
+    this.campaignFileUrl = `${this.filesBaseUrl}/${(this.groupData?._workspace?._id || this.groupData?._workspace)}/${event.modified_name}?authToken=${this.authToken}`
   }
 
 }

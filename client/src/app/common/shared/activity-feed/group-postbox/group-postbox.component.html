@@ -5,6 +5,7 @@
               <app-secured-image
                 [imgURL]="userData?.profile_pic"
                 [service]="'user'"
+                [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
                 [styleClass]="'feed-avatar'"></app-secured-image>
             </div>
 
@@ -16,24 +17,6 @@
                   What are you working on, <strong>{{ userData?.first_name }}</strong>?
               </button>
             </div>
-            <!--
-            <section  [ngClass]="(showPostBox) ? 'show-container' : 'hide-container'">
-                <app-group-post-selection  *ngIf="userData && checkDataExist(userData)"
-                    [userData]="userData"
-                    [groupId]="groupId"
-                    (post)="getPost($event)"
-                    (edited)="editedPost($event)">
-                </app-group-post-selection>
-            </section>
-            -->
         </div>
-
-        <!-- Modal Template for post creation starts -->
-        <!-- <ng-template #content let-modal>
-          <app-group-post *ngIf="userData && checkDataExist(userData)" [userData]="userData" [groupId]="groupId"
-            [type]="'normal'" (post)="getPost($event)" (edited)="editedPost($event)" (close)="closeModal()">
-          </app-group-post>
-        </ng-template> -->
-        <!-- Modal Template for post creation ends -->
     </div>
 </div>

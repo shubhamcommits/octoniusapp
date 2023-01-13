@@ -4,6 +4,7 @@
       <app-secured-image
         [imgURL]="log?._actor?.profile_pic"
         [service]="'user'"
+        [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
         [styleClass]="'avatar'"
         style="margin-right:15px"></app-secured-image>
     </div>

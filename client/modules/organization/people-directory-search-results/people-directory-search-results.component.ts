@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input, SimpleChanges, Injector, LOCALE_ID, Inject } from '@angular/core';
+import { Component, OnChanges, Input, SimpleChanges, Injector, LOCALE_ID, Inject, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
@@ -9,9 +9,11 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
   templateUrl: './people-directory-search-results.component.html',
   styleUrls: ['./people-directory-search-results.component.scss']
 })
-export class PeopleDirectorySearchResultsComponent implements OnChanges {
+export class PeopleDirectorySearchResultsComponent implements OnChanges, OnInit {
 
   @Input() searchedUsers: any;
+
+  workspaceData: any;
 
   customFields: any = [];
 
@@ -24,6 +26,10 @@ export class PeopleDirectorySearchResultsComponent implements OnChanges {
       public utilityService: UtilityService,
       private injector: Injector
     ) { }
+
+  async ngOnInit() {
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+  }
 
   async ngOnChanges(changes: SimpleChanges) {
     this.searchedUsers = changes?.searchedUsers?.currentValue;

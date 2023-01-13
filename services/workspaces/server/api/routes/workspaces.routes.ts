@@ -1,5 +1,5 @@
 import express from 'express';
-import { Auths, workspaceFileHandler } from '../../utils';
+import { Auths, workspaceFileUploader } from '../../utils';
 import { WorkspaceController } from '../controllers';
 import { ManagementControllers } from '../controllers/mgmt.controllers';
 
@@ -38,10 +38,10 @@ routes.use(authsHelper.isLoggedIn);
 routes.get('/:workspaceId', workspaces.getWorkspace);
 
 // PUT - Edit the workspace details
-routes.put('/:workspaceId', workspaceFileHandler, workspaces.updateWorkspace);
+routes.put('/:workspaceId', workspaceFileUploader, workspaces.updateWorkspace);
 
 // PUT - Edit the workspace properties
-routes.put('/:workspaceId/update', workspaceFileHandler, workspaces.updateWorkspaceProperties);
+routes.put('/:workspaceId/update', workspaceFileUploader, workspaces.updateWorkspaceProperties);
 
 // POST - Invite the user
 routes.post('/invite', workspaces.inviteUser);

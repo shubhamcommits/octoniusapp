@@ -21,6 +21,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   @Input() userData;
   @Input() columns: any;
   @Input() isIdeaModuleAvailable;
+  @Input() workspaceId;
 
   @Output() taskClonnedEvent = new EventEmitter();
 
@@ -31,6 +32,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
   // Base URL of the uploads
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
+  
   //Calendaer start and end date
   datesToShow: any = { start: '2020-12-30', end: '2021-01-15' };
   //task parsed data
@@ -757,7 +759,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
             custom_class: sortedTask?.task.status,
             _groupid: sortedTask?._group._id || sortedTask?._group,
             dependency: sortedTask?.task._dependency_task,
-            image: (sortedTask?._assigned_to?.length > 0) ? this.baseUrl + '/' + sortedTask._assigned_to[0].profile_pic : undefined,
+            image: (sortedTask?._assigned_to?.length > 0) ? this.baseUrl + '/' + this.workspaceId + '/' + sortedTask._assigned_to[0].profile_pic : undefined,
             noOfParticipants: (sortedTask?._assigned_to?.length > 1) ? sortedTask?._assigned_to?.length - 1 : undefined,
             projectId: (sortedTask?.task?._column) ? sortedTask?.task?._column._id || sortedTask?.task?._column : '',
             canEdit: sortedTask.canEdit,
@@ -778,7 +780,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
               custom_class: sortedTask?.task.status,
               _groupid: sortedTask?._group._id || sortedTask?._group,
               dependency: sortedTask?.task._dependency_task,
-              image: (sortedTask?._assigned_to?.length > 0) ? this.baseUrl + '/' + sortedTask._assigned_to[0].profile_pic : undefined,
+              image: (sortedTask?._assigned_to?.length > 0) ? this.baseUrl + '/' + this.workspaceId + '/' + sortedTask._assigned_to[0].profile_pic : undefined,
               noOfParticipants: (sortedTask?._assigned_to?.length > 1) ? sortedTask?._assigned_to?.length - 1 : undefined,
               projectId: (sortedTask?.task?._column) ? sortedTask?.task?._column._id || sortedTask?.task?._column : '',
               canEdit: sortedTask.canEdit,

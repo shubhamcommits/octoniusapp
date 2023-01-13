@@ -33,9 +33,6 @@ export class GroupTasksListViewComponent implements OnInit, OnChanges {
   // Today's date object
   today = moment().local().startOf('day').format('YYYY-MM-DD');
 
-  // Base URL of the uploads
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
-
   // Property to know the selected field to add as column
   field: string;
 

@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-select-assignee',
@@ -27,9 +26,6 @@ export class SelectAssigneeComponent implements OnInit {
 
   // Show Input Search Bar
   @Input('showBar') showBar = true
-
-  // BASE URL OF THE APPLICATION
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   /* Task Variables */
 

@@ -3,6 +3,7 @@
   <div *ngFor="let user of usersList; let i = index;" class="row">
     <div class="col-md-2">
       <app-secured-image [imgURL]="user?.profile_pic" [service]="'user'"
+        [workspaceId]="workspaceData?._id"
         [alt]="user?.first_name + ' ' + user?.last_name" [styleClass]="'feed-avatar-small'"
         [tooltip]="user?.first_name + ' ' + user?.last_name">
       </app-secured-image>

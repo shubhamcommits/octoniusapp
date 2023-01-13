@@ -11,6 +11,7 @@
             <app-secured-image *ngIf="type != 'skill' && type != 'tag' && type !== 'ragTag'"
                 [imgURL]="item?.profile_pic"
                 [service]="'user'"
+                [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
                 [styleClass]="'feed-avatar-search'"></app-secured-image>
             <div class="media-body mt-2">
                 <div class="float-left ml-0 mt-1">

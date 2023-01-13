@@ -25,6 +25,8 @@ export class FlamingoPreviewComponent implements OnInit {
 
   progressValue = 0;
 
+  workspaceData: any;
+
   FLAMINGO_UPLOADS = environment.UTILITIES_FLAMINGOS_UPLOADS;
 
   // Public functions class member
@@ -37,6 +39,9 @@ export class FlamingoPreviewComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    
     // Set the fileId variable
     this.fileId = this._ActivatedRoute.snapshot.params['id'];
 

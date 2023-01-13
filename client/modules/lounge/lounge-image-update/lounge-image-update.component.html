@@ -15,7 +15,7 @@
       <div class="form-group">
           <app-secured-image *ngIf="elementData && elementData[elementPropertyName]"
             [imgURL]="elementData[elementPropertyName]"
-            [service]="'lounge'"
+            [service]="'lounge'" [workspaceId]="workspaceData?._id"
             [inlineStyle]="'max-width: 555px;'"></app-secured-image>
 
           <div class="input-group mb-3" style="margin-top: 10px">

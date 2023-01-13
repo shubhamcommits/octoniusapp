@@ -1,7 +1,6 @@
 import { Component, OnInit, Injector, Input } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -30,9 +29,6 @@ export class MembersWorkloadCardComponent implements OnInit {
 
   // IsLoading behavior subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
-
-  // Base URL
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   constructor(
     private userService: UserService,

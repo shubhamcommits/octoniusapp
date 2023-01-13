@@ -134,7 +134,7 @@
           [ngStyle]="{'color' : (filterfor==='users') ? '#005fd5' : 'black'}">
           <div (click)="$event.stopPropagation();">
             <app-member-list-menu [groupMembers]="groupMembers" [filterfor]="filterfor" [menuLable]="menuLable"
-              [menuFor]="menuFor" (userSelctionEmitter)="onUserSelctionEmitter($event)">
+              [menuFor]="menuFor" [workspaceId]="groupData?._workspace" (userSelctionEmitter)="onUserSelctionEmitter($event)">
             </app-member-list-menu>
           </div>
         </span>
