@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Injector, Input, OnChanges } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -36,8 +37,12 @@ export class SecuredImageComponent implements OnChanges  {
   dataUrl$;
 
   isLocalImg: boolean = false;
+  
+  // Public Functions class object
+  publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    private injector: Injector,
     private httpClient: HttpClient,
     private domSanitizer: DomSanitizer) {
   }
@@ -127,20 +132,46 @@ export class SecuredImageComponent implements OnChanges  {
   }
 
   private loadImage(url: string): Observable<any> {
-    if (this.noAuth) {
-      let params = new HttpParams().set('noAuth', this.noAuth.toString());
-      return this.httpClient
-        // load the image as a blob
-        .get(url, { responseType: 'blob', params: params })
-        // create an object url of that blob that we can use in the src attribute
-        .pipe(map(e => this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(e))));
-    } else {
-      return this.httpClient
-        // load the image as a blob
+    try {
+      if (this.noAuth) {
+        let params = new HttpParams().set('noAuth', this.noAuth.toString());
+        return this.httpClient
+          // load the image as a blob
+          .get(url, { responseType: 'blob', params: params })
+          // create an object url of that blob that we can use in the src attribute
+          .pipe(map(e => this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(e))));
+      } else {
+        return this.httpClient
+          // load the image as a blob
+          .get(url, { responseType: 'blob' })
+          // create an object url of that blob that we can use in the src attribute
+          .pipe(map(e => this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(e))));
+      }
+    } catch (err) {
+      this.publicFunctions.sendError(err);
+      switch (this.service) {
+        case 'workspace':
+          this.imgURL = "assets/images/organization.png";
+          break;
+        case 'lounge':
+          this.imgURL = "assets/images/lounge-icon.jpg";
+          break;
+        case 'group':
+          this.imgURL = "assets/images/icon-new-group.svg";
+          break;
+        case 'user':
+          this.imgURL = "assets/images/user.png";
+          break;
+        case 'flamingo':
+          this.imgURL = "http://placehold.it/180";
+          break;
+        default:
+          break;
+      }
 
-        .get(url, { responseType: 'blob' })
-        // create an object url of that blob that we can use in the src attribute
-        .pipe(map(e => this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(e))));
+      this.isLocalImg = true;
+      this.src$.next(this.imgURL);
+      return this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
     }
   }
 }
