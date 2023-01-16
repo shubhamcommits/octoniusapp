@@ -25,19 +25,28 @@ const userFileHandler = async (req: Request, res: Response, next: NextFunction) 
       secretKey: process.env.MINIO_SECRET_KEY
     });
 
-    await minioClient.getObject(workspaceId, file, async (error, data) => {
+    await minioClient.bucketExists(workspaceId, async (error, exists) => {
       if (error) {
         return res.status(500).json({
-          message: 'Error getting file.',
+          status: '500',
+          message: 'Error checking bucket exists.',
           error: error
         });
       }
 
-      // const objectUrl = await minioClient.presignedGetObject(req.query.workspaceId, req.query.modified_name);
-      const objectUrl = await minioClient.presignedUrl('GET', workspaceId, file);
-      return res.status(301).redirect(objectUrl);
-    });
+      if (exists) {
+        await minioClient.getObject(workspaceId, process.env.FILE_UPLOAD_FOLDER + file, async (error, data) => {
+          if (error) {
+            return res.status(500).json({
+              message: 'Error getting file.',
+              error: error
+            });
+          }
 
+          data.pipe(res);
+        });
+      }
+    });
   } catch (err) {
     return sendError(res, err, 'Internal Server Error!', 500);
   }

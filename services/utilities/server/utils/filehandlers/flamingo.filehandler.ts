@@ -34,8 +34,9 @@ const flamingoFileHandler = async (req: Request, res: Response, next: NextFuncti
       }
 
       // const objectUrl = await minioClient.presignedGetObject(req.query.workspaceId, req.query.modified_name);
-      const objectUrl = await minioClient.presignedUrl('GET', workspaceId, file);
-      return res.status(301).redirect(objectUrl);
+      // const objectUrl = await minioClient.presignedUrl('GET', workspaceId, file);
+      // return res.status(301).redirect(objectUrl);
+      data.pipe(res);
     });
   } catch (err) {
     return sendError(res, err, 'Internal Server Error!', 500);

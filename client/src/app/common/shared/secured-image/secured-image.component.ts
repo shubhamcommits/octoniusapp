@@ -63,7 +63,7 @@ export class SecuredImageComponent implements OnChanges  {
         } else {
           this.src$.next(this.imgURL);
         }
-        this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
+
         this.onErrorUrl = "assets/images/organization.png";
         break;
       case 'lounge':
@@ -81,7 +81,7 @@ export class SecuredImageComponent implements OnChanges  {
         } else {
           this.src$.next(this.imgURL);
         }
-        this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
+
         this.onErrorUrl = "assets/images/lounge-icon.jpg";
         break;
       case 'group':
@@ -95,7 +95,7 @@ export class SecuredImageComponent implements OnChanges  {
         } else {
           this.src$.next(this.imgURL);
         }
-        this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
+
         this.onErrorUrl = "assets/images/icon-new-group.svg";
         break;
       case 'user':
@@ -109,7 +109,7 @@ export class SecuredImageComponent implements OnChanges  {
         } else {
           this.src$.next(this.imgURL);
         }
-        this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
+
         this.onErrorUrl = "assets/images/user.png";
         break;
       case 'flamingo':
@@ -123,30 +123,27 @@ export class SecuredImageComponent implements OnChanges  {
           } else {
             this.src$.next(this.imgURL);
           }
-          this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
+
           this.onErrorUrl = "http://placehold.it/180";
           break;
       default:
         break;
     }
+
+    this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
   }
 
   private loadImage(url: string): Observable<any> {
     try {
+      let params = {};
       if (this.noAuth) {
-        let params = new HttpParams().set('noAuth', this.noAuth.toString());
-        return this.httpClient
-          // load the image as a blob
-          .get(url, { responseType: 'blob', params: params })
-          // create an object url of that blob that we can use in the src attribute
-          .pipe(map(e => this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(e))));
-      } else {
-        return this.httpClient
-          // load the image as a blob
-          .get(url, { responseType: 'blob' })
-          // create an object url of that blob that we can use in the src attribute
-          .pipe(map(e => this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(e))));
+        params = { params: new HttpParams().set('noAuth', this.noAuth.toString()) };
       }
+      return this.httpClient
+        // load the image as a blob
+        .get(url, { responseType: 'blob', params })
+        // create an object url of that blob that we can use in the src attribute
+        .pipe(map(e => this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(e))));
     } catch (err) {
       this.publicFunctions.sendError(err);
       switch (this.service) {
