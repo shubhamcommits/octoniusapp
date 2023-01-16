@@ -91,7 +91,14 @@ function devConfigInit() {
   process.env.CLIENT_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.CLIENT_PORT}`
 
   // Image Process URL for Notification
-  process.env.IMAGE_PROCESS_URL = process.env.IMAGE_PROCESS_URL 
+  process.env.IMAGE_PROCESS_URL = process.env.IMAGE_PROCESS_URL
+
+  process.env.MINIO_API_PORT = process.env.MINIO_API_PORT || '19000'
+  process.env.MINIO_DOMAIN = process.env.MINIO_DOMAIN || process.env.DOMAIN
+  process.env.MINIO_ACCESS_KEY = process.env.MINIO_ACCESS_KEY || '7UbsSPpbmzERsFFN'
+  process.env.MINIO_SECRET_KEY = process.env.MINIO_SECRET_KEY || '0IOHSeS1tULlsRks3CUYIohIXHCOQaNg'
+  process.env.MINIO_PORT = process.env.MINIO_PORT || '9090'
+  process.env.MINIO_PROTOCOL = process.env.MINIO_PROTOCOL || 'http'
 };
 
 export { devConfigInit as developmentConfig }
