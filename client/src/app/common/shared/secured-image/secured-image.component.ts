@@ -145,7 +145,8 @@ export class SecuredImageComponent implements OnChanges  {
         // create an object url of that blob that we can use in the src attribute
         .pipe(map(e => this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(e))));
     } catch (err) {
-      this.publicFunctions.sendError(err);
+      // this.publicFunctions.sendError(err);
+      console.log(err);
       switch (this.service) {
         case 'workspace':
           this.imgURL = "assets/images/organization.png";
