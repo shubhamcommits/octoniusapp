@@ -25,7 +25,7 @@ function prodConfigInit() {
   process.env.REDIS_PORT = process.env.REDIS_PORT
 
   // Files Uploads Folder
-  process.env.FILE_UPLOAD_FOLDER = process.env.FILE_UPLOAD_FOLDER || path.join(__dirname, '../uploads/');
+  process.env.FILE_UPLOAD_FOLDER = process.env.FILE_UPLOAD_FOLDER;
 
   // Slack Keys
   process.env.SLACK_BOT_ACCESS_TOKEN = process.env.SLACK_BOT_ACCESS_TOKEN

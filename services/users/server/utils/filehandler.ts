@@ -17,7 +17,7 @@ const userFileUploader = async (req: Request, res: Response, next: NextFunction)
 
   // Get the folder link from the environment
   let folder = process.env.FILE_UPLOAD_FOLDER;
-
+  
   // Instantiate the fileName variable and add the date object in the name
   let fileName = '';
   if (req.body.fileData._workspace) {

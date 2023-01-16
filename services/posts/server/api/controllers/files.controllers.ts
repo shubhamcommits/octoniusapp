@@ -27,7 +27,7 @@ export class FilesControllers {
                 })
 
             // Get File on the basis of the fileName
-            let file = await filesService.deleteAttachedFiles(fileName);
+            let file = await filesService.deleteAttachedFiles(fileName, groupId);
 
             if (postId) {
                 await Post.findOneAndUpdate({

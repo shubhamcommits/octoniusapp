@@ -1,5 +1,7 @@
 import { Post, Notification, Column, Flow, Group, Comment } from '../models';
+
 const fs = require('fs');
+const minio = require('minio');
 
 /*  ===============================
  *  -- COMMON Service --
@@ -11,7 +13,7 @@ export class CommonService {
    * This function is used to remove a group
    * @param { groupId }
    */
-  async removeGroup(groupId: string ) {
+  async removeGroup(groupId: string, workspaceId: string) {
     try {
 
       // Find the group and remove it from the database
@@ -21,7 +23,7 @@ export class CommonService {
       // Delete Posts and Files too
       const posts = await Post.find({ _group: groupId });
       posts.forEach(async post => {
-          await this.removePost(post._id);
+          await this.removePost(post._id, workspaceId);
       });
 
       await Notification.deleteMany({ _group: groupId });
@@ -41,7 +43,7 @@ export class CommonService {
    * This function is used to remove a post
    * @param { postId }
    */
-  async removePost(postId: string ) {
+  async removePost(postId: string, workspaceId: string) {
     try {
 
       // Get post data
@@ -76,12 +78,28 @@ export class CommonService {
         //gather source file
         function deleteFiles(files, callback) {
           var i = files.length;
-          files.forEach(function (filepath) {
+          files.forEach(async function (filepath) {
             const finalpath = `${process.env.FILE_UPLOAD_FOLDER}${filepath.modified_name}`
-            fs.unlink(finalpath, function (err) {
+            // fs.unlink(finalpath, function (err) {
+            //   i--;
+            //   if (err) {
+            //     callback(err);
+            //     return;
+            //   } else if (i <= 0) {
+            //     callback(null);
+            //   }
+            // });
+            var minioClient = new minio.Client({
+              endPoint: process.env.MINIO_DOMAIN,
+              port: +(process.env.MINIO_API_PORT),
+              useSSL: process.env.MINIO_PROTOCOL == 'https',
+              accessKey: process.env.MINIO_ACCESS_KEY,
+              secretKey: process.env.MINIO_SECRET_KEY
+            });
+            await minioClient.removeObject(workspaceId, finalpath, (error) => {
               i--;
-              if (err) {
-                callback(err);
+              if (error) {
+                callback(error);
                 return;
               } else if (i <= 0) {
                 callback(null);
@@ -97,17 +115,27 @@ export class CommonService {
       //chec/delete document files that were exported
       const filepath = `${process.env.FILE_UPLOAD_FOLDER}${postId + post._group + 'export' + '.docx'}`;
       //check if file exists
-      fs.access(filepath, fs.F_OK, error => {
-        //if error there was no file
-        if (!error) {
-          //the file was there now unlink it
-          fs.unlink(filepath, (err) => {
-            //handle error when file was not deleted properly
-            if (err) { throw (err); }
-            //deleted document
-          })
-        }
-      })
+      // fs.access(filepath, fs.F_OK, error => {
+      //   //if error there was no file
+      //   if (!error) {
+      //     //the file was there now unlink it
+      //     fs.unlink(filepath, (err) => {
+      //       //handle error when file was not deleted properly
+      //       if (err) { throw (err); }
+      //       //deleted document
+      //     })
+      //   }
+      // })
+      var minioClient = new minio.Client({
+        endPoint: process.env.MINIO_DOMAIN,
+        port: +(process.env.MINIO_API_PORT),
+        useSSL: process.env.MINIO_PROTOCOL == 'https',
+        accessKey: process.env.MINIO_ACCESS_KEY,
+        secretKey: process.env.MINIO_SECRET_KEY
+      });
+      await minioClient.removeObject(workspaceId, filepath, (error) => {
+        if (error) { throw (error); }
+      });
 
       // Delete the notifications
       await Notification.deleteMany({ _origin_post: postId });
