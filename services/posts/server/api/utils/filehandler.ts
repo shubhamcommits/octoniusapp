@@ -370,8 +370,9 @@ const fileHandler = async (req: Request, res: Response, next: NextFunction) => {
         });
       }
 
-      const objectUrl = await minioClient.presignedUrl('GET', workspaceId, file);
-      return res.status(301).redirect(objectUrl);
+      // const objectUrl = await minioClient.presignedUrl('GET', workspaceId, file);
+      // return res.status(301).redirect(objectUrl);
+      data.pipe(res);
     });
 
   } catch (err) {
