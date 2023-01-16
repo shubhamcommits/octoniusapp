@@ -102,6 +102,12 @@ services:
       - PROXY_PROTOCOL=${PROXY_PROTOCOL}
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
+      - MINIO_ACCESS_KEY=${MINIO_USER}
+      - MINIO_SECRET_KEY=${MINIO_PASSWORD}
+      - MINIO_DOMAIN=${MINIO_DOMAIN}
+      - MINIO_API_PORT=${MINIO_API_PORT}
+      - MINIO_PORT=${MINIO_PORT}
+      - MINIO_PROTOCOL=${MINIO_PROTOCOL}
     depends_on:
       - mongo-0.mongo
       - mongo-1.mongo
@@ -137,6 +143,12 @@ services:
       - PROXY_PROTOCOL=${PROXY_PROTOCOL}
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
+      - MINIO_ACCESS_KEY=${MINIO_USER}
+      - MINIO_SECRET_KEY=${MINIO_PASSWORD}
+      - MINIO_DOMAIN=${MINIO_DOMAIN}
+      - MINIO_API_PORT=${MINIO_API_PORT}
+      - MINIO_PORT=${MINIO_PORT}
+      - MINIO_PROTOCOL=${MINIO_PROTOCOL}
     depends_on:
       - mongo-0.mongo
       - mongo-1.mongo
@@ -172,6 +184,12 @@ services:
       - PROXY_PROTOCOL=${PROXY_PROTOCOL}
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
+      - MINIO_ACCESS_KEY=${MINIO_USER}
+      - MINIO_SECRET_KEY=${MINIO_PASSWORD}
+      - MINIO_DOMAIN=${MINIO_DOMAIN}
+      - MINIO_API_PORT=${MINIO_API_PORT}
+      - MINIO_PORT=${MINIO_PORT}
+      - MINIO_PROTOCOL=${MINIO_PROTOCOL}
     depends_on:
       - mongo-0.mongo
       - mongo-1.mongo
@@ -208,6 +226,12 @@ services:
       - PROXY_PROTOCOL=${PROXY_PROTOCOL}
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
+      - MINIO_ACCESS_KEY=${MINIO_USER}
+      - MINIO_SECRET_KEY=${MINIO_PASSWORD}
+      - MINIO_DOMAIN=${MINIO_DOMAIN}
+      - MINIO_API_PORT=${MINIO_API_PORT}
+      - MINIO_PORT=${MINIO_PORT}
+      - MINIO_PROTOCOL=${MINIO_PROTOCOL}
     depends_on:
       - mongo-0.mongo
       - mongo-1.mongo
@@ -436,6 +460,12 @@ services:
       - PROXY_PROTOCOL=${PROXY_PROTOCOL}
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
+      - MINIO_ACCESS_KEY=${MINIO_USER}
+      - MINIO_SECRET_KEY=${MINIO_PASSWORD}
+      - MINIO_DOMAIN=${MINIO_DOMAIN}
+      - MINIO_API_PORT=${MINIO_API_PORT}
+      - MINIO_PORT=${MINIO_PORT}
+      - MINIO_PROTOCOL=${MINIO_PROTOCOL}
     depends_on:
       - mongo-0.mongo
       - mongo-1.mongo
@@ -472,6 +502,12 @@ services:
       - PROXY_PROTOCOL=${PROXY_PROTOCOL}
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
+      - MINIO_ACCESS_KEY=${MINIO_USER}
+      - MINIO_SECRET_KEY=${MINIO_PASSWORD}
+      - MINIO_DOMAIN=${MINIO_DOMAIN}
+      - MINIO_API_PORT=${MINIO_API_PORT}
+      - MINIO_PORT=${MINIO_PORT}
+      - MINIO_PROTOCOL=${MINIO_PROTOCOL}
     depends_on:
       - mongo-0.mongo
       - mongo-1.mongo
@@ -509,6 +545,12 @@ services:
       - PROXY_PROTOCOL=${PROXY_PROTOCOL}
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
+      - MINIO_ACCESS_KEY=${MINIO_USER}
+      - MINIO_SECRET_KEY=${MINIO_PASSWORD}
+      - MINIO_DOMAIN=${MINIO_DOMAIN}
+      - MINIO_API_PORT=${MINIO_API_PORT}
+      - MINIO_PORT=${MINIO_PORT}
+      - MINIO_PROTOCOL=${MINIO_PROTOCOL}
     depends_on:
       - mongo-0.mongo
       - mongo-1.mongo
@@ -545,6 +587,12 @@ services:
       - PROXY_PROTOCOL=${PROXY_PROTOCOL}
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
+      - MINIO_ACCESS_KEY=${MINIO_USER}
+      - MINIO_SECRET_KEY=${MINIO_PASSWORD}
+      - MINIO_DOMAIN=${MINIO_DOMAIN}
+      - MINIO_API_PORT=${MINIO_API_PORT}
+      - MINIO_PORT=${MINIO_PORT}
+      - MINIO_PROTOCOL=${MINIO_PROTOCOL}
     depends_on:
       - mongo-0.mongo
       - mongo-1.mongo
