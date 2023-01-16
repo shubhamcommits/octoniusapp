@@ -6,3 +6,12 @@
   matTooltip="{{ tooltip }}"
   alt="{{ alt }}"
   [style]="inlineStyle" />
+
+<img *ngIf="!dataUrl$"
+  [src]="onErrorUrl"
+  class="{{ styleClass }}"
+  onerror="this.src=this.onErrorUrl"
+  matTooltipPosition="{{ placement }}"
+  matTooltip="{{ tooltip }}"
+  alt="{{ alt }}"
+  [style]="inlineStyle" />

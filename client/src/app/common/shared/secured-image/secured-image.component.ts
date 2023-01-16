@@ -150,26 +150,32 @@ export class SecuredImageComponent implements OnChanges  {
       switch (this.service) {
         case 'workspace':
           this.imgURL = "assets/images/organization.png";
-          break;
+          this.isLocalImg = true;
+          this.src$.next(this.imgURL);
+          return this.dataUrl$ = null;
         case 'lounge':
           this.imgURL = "assets/images/lounge-icon.jpg";
-          break;
+          this.isLocalImg = true;
+          this.src$.next(this.imgURL);
+          return this.dataUrl$ = null;
         case 'group':
           this.imgURL = "assets/images/icon-new-group.svg";
-          break;
+          this.isLocalImg = true;
+          this.src$.next(this.imgURL);
+          return this.dataUrl$ = null;
         case 'user':
           this.imgURL = "assets/images/user.png";
-          break;
+          this.isLocalImg = true;
+          this.src$.next(this.imgURL);
+          return this.dataUrl$ = null;
         case 'flamingo':
           this.imgURL = "http://placehold.it/180";
-          break;
+          this.isLocalImg = false;
+          this.src$.next(this.imgURL);
+          return this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
         default:
           break;
       }
-
-      this.isLocalImg = true;
-      this.src$.next(this.imgURL);
-      return this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
     }
   }
 }
