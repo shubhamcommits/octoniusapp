@@ -34,7 +34,17 @@ export class PostsService {
                     },
                     { 'task.due_to': { $gte: startOfDay, $lte: endOfDay }},
                     { 'task.is_template': { $ne: true }},
-                    { '_group': { $ne: null }},
+                    { $or: [
+                            { 
+                                $and: [
+                                    { '_group': null },
+                                    { 'task.isNorthStar': true },
+                                    { 'task._parent_task': null }
+                                ]
+                            },
+                            { '_group': { $ne: null }}
+                        ]
+                    },
                     {
                         $or: [
                             { 'task.status': 'to do' },
@@ -77,7 +87,17 @@ export class PostsService {
                     },
                     { 'task.due_to': { $lt: today }},
                     { 'task.is_template': { $ne: true }},
-                    { '_group': { $ne: null }},
+                    { $or: [
+                            { 
+                                $and: [
+                                    { '_group': null },
+                                    { 'task.isNorthStar': true },
+                                    { 'task._parent_task': null }
+                                ]
+                            },
+                            { '_group': { $ne: null }}
+                        ]
+                    },
                     {
                         $or: [
                             { 'task.status': 'to do' },
@@ -122,7 +142,17 @@ export class PostsService {
                     },
                     { 'task.due_to': { $gte: tomorrow, $lte: endOfWeek }},
                     { 'task.is_template': { $ne: true }},
-                    { '_group': { $ne: null }},
+                    { $or: [
+                            { 
+                                $and: [
+                                    { '_group': null },
+                                    { 'task.isNorthStar': true },
+                                    { 'task._parent_task': null }
+                                ]
+                            },
+                            { '_group': { $ne: null }}
+                        ]
+                    },
                     {
                         $or: [
                             { 'task.status': 'to do' },
@@ -168,7 +198,17 @@ export class PostsService {
                     },
                     {'task.due_to': { $gt: endOfWeek, $lte: endOfNextWeek }},
                     { 'task.is_template': { $ne: true }},
-                    { '_group': { $ne: null }},
+                    { $or: [
+                            { 
+                                $and: [
+                                    { '_group': null },
+                                    { 'task.isNorthStar': true },
+                                    { 'task._parent_task': null }
+                                ]
+                            },
+                            { '_group': { $ne: null }}
+                        ]
+                    },
                     {
                         $or: [
                             { 'task.status': 'to do' },
@@ -218,7 +258,17 @@ export class PostsService {
                         ]
                         
                     },
-                    { '_group': { $ne: null }},
+                    { $or: [
+                            { 
+                                $and: [
+                                    { '_group': null },
+                                    { 'task.isNorthStar': true },
+                                    { 'task._parent_task': null }
+                                ]
+                            },
+                            { '_group': { $ne: null }}
+                        ]
+                    },
                     {
                         $or: [
                             { 'task.status': 'to do' },
