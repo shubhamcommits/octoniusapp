@@ -42,7 +42,7 @@ export class MyspaceTasksComponent implements OnInit, OnDestroy {
 
     await this.loadTasks();
     this.overdueAndTodayTasks = this.sortTasksByPriority(this.overdueTasks.concat(this.todayTasks));
-
+console.log(this.overdueTasks);
     // Send Updates to router state
     this.publicFunctions.sendUpdatesToRouterState({
       state: 'home'
