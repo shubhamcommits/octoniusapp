@@ -1,7 +1,6 @@
 import {  Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { SubSink } from 'subsink';
-import { ChildActivationEnd, Router } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 
@@ -38,16 +37,15 @@ export class TaskSmartCardComponent implements OnInit, OnDestroy {
   constructor(
     private userService: UserService,
     private utilityService: UtilityService,
-    private injector: Injector,
-    private _router: Router
+    private injector: Injector
   ) { }
 
   async ngOnInit() {
 
     this.userData = await this.publicFunctions.getCurrentUser();
     
-    this.todayTasks = this.publicFunctions.filterRAGTasks(await this.getUserTodayTasks(), this.userData);
-    this.overdueTasks = this.publicFunctions.filterRAGTasks(await this.getUserOverdueTasks(), this.userData);
+    this.todayTasks = await this.publicFunctions.filterRAGTasks(await this.getUserTodayTasks(), this.userData);
+    this.overdueTasks = await this.publicFunctions.filterRAGTasks(await this.getUserOverdueTasks(), this.userData);
 
     this.markOverdueTasks();
 
