@@ -2270,29 +2270,33 @@ export class PublicFunctions {
 
 
 
-  filterRAGTasks(tasks: any, userData: any) {
+  async filterRAGTasks(tasks: any, userData: any) {
     const utilityService = this.injector.get(UtilityService);
     let tasksTmp = [];
 
     if (tasks) {
+      tasks = await tasks.filter(task => utilityService.objectExists(task?._group));
       // Filtering other tasks
       tasks.forEach(async task => {
-        if (task?.permissions && task?.permissions?.length > 0) {
-          const canEdit = await utilityService.canUserDoTaskAction(task, userData?._private_group, userData, 'edit');
-          let canView = false;
-          if (!canEdit) {
-            const hide = await utilityService.canUserDoTaskAction(task, userData?._private_group, userData, 'hide');
-            canView = await utilityService.canUserDoTaskAction(task, userData?._private_group, userData, 'view') || !hide;
-          }
+        // if (utilityService.objectExists(task?._group)) {
+          if (task?.permissions && task?.permissions?.length > 0) {
+            const groupData = await this.getGroupDetails(task?._group?._id || task?._group);
+            const canEdit = await utilityService.canUserDoTaskAction(task, groupData, userData, 'edit');
+            let canView = false;
+            if (!canEdit) {
+              const hide = await utilityService.canUserDoTaskAction(task, groupData, userData, 'hide');
+              canView = await utilityService.canUserDoTaskAction(task, groupData, userData, 'view') || !hide;
+            }
 
-          if (canEdit || canView) {
+            if (canEdit || canView) {
+              task.canView = true;
+              tasksTmp.push(task);
+            }
+          } else {
             task.canView = true;
             tasksTmp.push(task);
           }
-        } else {
-          task.canView = true;
-          tasksTmp.push(task);
-        }
+        // }
       });
     }
 

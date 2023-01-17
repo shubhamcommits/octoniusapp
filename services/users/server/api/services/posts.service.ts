@@ -26,23 +26,24 @@ export class PostsService {
 
         // Fetch users task for today
         const tasks = await Post.find({
-            $and: [
-                { $or: [
-                        { '_assigned_to': userId },
-                        { '_group': user._private_group }
-                    ]
-                },
-                { 'task.due_to': { $gte: startOfDay, $lte: endOfDay }},
-                { 'task.is_template': { $ne: true }},
-                {
-                    $or: [
-                        { 'task.status': 'to do' },
-                        { 'task.status': 'in progress' },
-                        { 'task.status': 'done' }
-                    ]
-                }
-            ]
-        })
+                $and: [
+                    { $or: [
+                            { '_assigned_to': userId },
+                            { '_group': user._private_group }
+                        ]
+                    },
+                    { 'task.due_to': { $gte: startOfDay, $lte: endOfDay }},
+                    { 'task.is_template': { $ne: true }},
+                    { '_group': { $ne: null }},
+                    {
+                        $or: [
+                            { 'task.status': 'to do' },
+                            { 'task.status': 'in progress' },
+                            { 'task.status': 'done' }
+                        ]
+                    }
+                ]
+            })
             .sort('-task.due_to')
             .populate('_group', this.groupFields)
             .populate('_posted_by', this.userFields)
@@ -68,22 +69,23 @@ export class PostsService {
 
         // Fetch the tasks posts
         const tasks = await Post.find({
-            $and: [
-                { $or: [
-                        { '_assigned_to': userId },
-                        { '_group': user._private_group }
-                    ]
-                },
-                { 'task.due_to': { $lt: today }},
-                { 'task.is_template': { $ne: true }},
-                {
-                    $or: [
-                        { 'task.status': 'to do' },
-                        { 'task.status': 'in progress' }
-                    ]
-                }
-            ]
-        })
+                $and: [
+                    { $or: [
+                            { '_assigned_to': userId },
+                            { '_group': user._private_group }
+                        ]
+                    },
+                    { 'task.due_to': { $lt: today }},
+                    { 'task.is_template': { $ne: true }},
+                    { '_group': { $ne: null }},
+                    {
+                        $or: [
+                            { 'task.status': 'to do' },
+                            { 'task.status': 'in progress' }
+                        ]
+                    }
+                ]
+            })
             .sort('-task.due_to')
             .populate('_group', this.groupFields)
             .populate('_posted_by', this.userFields)
@@ -112,23 +114,24 @@ export class PostsService {
 
         // Fetch the tasks posts
         const tasks = await Post.find({
-            $and: [
-                { $or: [
-                        { '_assigned_to': userId },
-                        { '_group': user._private_group }
-                    ]
-                },
-                { 'task.due_to': { $gte: tomorrow, $lte: endOfWeek }},
-                { 'task.is_template': { $ne: true }},
-                {
-                    $or: [
-                        { 'task.status': 'to do' },
-                        { 'task.status': 'in progress' },
-                        { 'task.status': 'done' }
-                    ]
-                }
-            ]
-        })
+                $and: [
+                    { $or: [
+                            { '_assigned_to': userId },
+                            { '_group': user._private_group }
+                        ]
+                    },
+                    { 'task.due_to': { $gte: tomorrow, $lte: endOfWeek }},
+                    { 'task.is_template': { $ne: true }},
+                    { '_group': { $ne: null }},
+                    {
+                        $or: [
+                            { 'task.status': 'to do' },
+                            { 'task.status': 'in progress' },
+                            { 'task.status': 'done' }
+                        ]
+                    }
+                ]
+            })
             .sort('-task.due_to')
             .populate('_group', this.groupFields)
             .populate('_posted_by', this.userFields)
@@ -157,23 +160,24 @@ export class PostsService {
 
         // Fetch the tasks posts
         const tasks = await Post.find({
-            $and: [
-                { $or: [
-                        { '_assigned_to': userId },
-                        { '_group': user._private_group }
-                    ]
-                },
-                {'task.due_to': { $gt: endOfWeek, $lte: endOfNextWeek }},
-                { 'task.is_template': { $ne: true }},
-                {
-                    $or: [
-                        { 'task.status': 'to do' },
-                        { 'task.status': 'in progress' },
-                        { 'task.status': 'done' }
-                    ]
-                }
-            ]
-        })
+                $and: [
+                    { $or: [
+                            { '_assigned_to': userId },
+                            { '_group': user._private_group }
+                        ]
+                    },
+                    {'task.due_to': { $gt: endOfWeek, $lte: endOfNextWeek }},
+                    { 'task.is_template': { $ne: true }},
+                    { '_group': { $ne: null }},
+                    {
+                        $or: [
+                            { 'task.status': 'to do' },
+                            { 'task.status': 'in progress' },
+                            { 'task.status': 'done' }
+                        ]
+                    }
+                ]
+            })
             .sort('-task.due_to')
             .populate('_group', this.groupFields)
             .populate('_posted_by', this.userFields)
@@ -199,29 +203,30 @@ export class PostsService {
 
         // Fetch the tasks posts
         const tasks = await Post.find({
-            $and:[
-                { 'task.is_template': { $ne: true }},
-                { 
-                    $or: [
-                        { '_assigned_to': userId },
-                        { '_group': user._private_group }
-                    ]
-                },
-                {
-                    $or: [
-                        { 'task.due_to': { $gte: todayPlus14Days }},
-                        { 'task.due_to': null }
-                    ]
-                    
-                },
-                {
-                    $or: [
-                        { 'task.status': 'to do' },
-                        { 'task.status': 'in progress' }
-                    ]
-                }
-            ]
-        })
+                $and:[
+                    { 'task.is_template': { $ne: true }},
+                    { 
+                        $or: [
+                            { '_assigned_to': userId },
+                            { '_group': user._private_group }
+                        ]
+                    },
+                    {
+                        $or: [
+                            { 'task.due_to': { $gte: todayPlus14Days }},
+                            { 'task.due_to': null }
+                        ]
+                        
+                    },
+                    { '_group': { $ne: null }},
+                    {
+                        $or: [
+                            { 'task.status': 'to do' },
+                            { 'task.status': 'in progress' }
+                        ]
+                    }
+                ]
+            })
             .sort('-task.due_to')
             .populate('_group', this.groupFields)
             .populate('_posted_by', this.userFields)
@@ -255,17 +260,16 @@ export class PostsService {
 
         // Find the user's today agenda events
         const events = await Post.find({
+                // Find events due to today
+                'type': 'event',
+                $or: [
+                    { '_assigned_to': userId },
+                    // { '_assigned_to': 'all' }
+                    { '_group': user._private_group }
+                ],
+                'event.due_to': { $gte: startOfDay, $lte: endOfDay }
 
-            // Find events due to today
-            'type': 'event',
-            $or: [
-                { '_assigned_to': userId },
-                // { '_assigned_to': 'all' }
-                { '_group': user._private_group }
-            ],
-            'event.due_to': { $gte: startOfDay, $lte: endOfDay }
-
-        })
+            })
             .sort('event.due_to')
             .populate('_posted_by', this.userFields)
             .populate('_group', this.groupFields)
@@ -292,16 +296,15 @@ export class PostsService {
 
         // Find the user's today agenda events
         const events = await Post.find({
-
-            // Find events due to this week
-            'type': 'event',
-            $or: [
-                { '_assigned_to': userId },
-                // { '_assigned_to': 'all' }
-                { '_group': user._private_group }
-            ],
-            'event.due_to': { $gte: todayForEvent, $lte: todayPlus7Days }
-        })
+                // Find events due to this week
+                'type': 'event',
+                $or: [
+                    { '_assigned_to': userId },
+                    // { '_assigned_to': 'all' }
+                    { '_group': user._private_group }
+                ],
+                'event.due_to': { $gte: todayForEvent, $lte: todayPlus7Days }
+            })
             .sort('event.due_to')
             .populate('_posted_by', this.userFields)
             .populate('_group', this.groupFields)
@@ -326,9 +329,9 @@ export class PostsService {
 
         // Fetch the tasks and events
         let posts: any = await Post.find({
-            '_group': { $in: user._groups },
-            'created_date': { $gte: today, $lt: tomorrow }
-        })
+                '_group': { $in: user._groups },
+                'created_date': { $gte: today, $lt: tomorrow }
+            })
             .sort('-created_date')
             .populate('_group', this.groupFields)
             .populate('_posted_by', this.userFields)
@@ -381,19 +384,19 @@ export class PostsService {
 
         // Fetch the tasks posts
         const tasks = await Post.find({
-            $and: [
-                { '_assigned_to': userId },        
-                { '_group': groupId },
-                { 'task.due_to': { $lt: today }},
-                { 'task.is_template': { $ne: true }},
-                {
-                    $or: [
-                        { 'task.status': 'to do' },
-                        { 'task.status': 'in progress' }
-                    ]
-                }
-            ]
-        })
+                $and: [
+                    { '_assigned_to': userId },        
+                    { '_group': groupId },
+                    { 'task.due_to': { $lt: today }},
+                    { 'task.is_template': { $ne: true }},
+                    {
+                        $or: [
+                            { 'task.status': 'to do' },
+                            { 'task.status': 'in progress' }
+                        ]
+                    }
+                ]
+            })
             .sort('-task.due_to')
             .populate('_group', this.groupFields)
             .populate('_posted_by', this.userFields)

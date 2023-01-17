@@ -50,7 +50,7 @@ export class TaskSmartCardComponent implements OnInit, OnDestroy {
     this.overdueTasks = this.publicFunctions.filterRAGTasks(await this.getUserOverdueTasks(), this.userData);
 
     this.markOverdueTasks();
-
+console.log(this.overdueTasks);
     for (let task of this.todayTasks){
       if (task.task.status=='to do') this.to_do_task_count++;
       else if (task.task.status=='in progress') this.in_progress_task_count++;
