@@ -54,11 +54,11 @@ export class MyspaceTasksComponent implements OnInit, OnDestroy {
   }
 
   async loadTasks() {
-    this.todayTasks = this.publicFunctions.filterRAGTasks(await this.getUserTodayTasks(), this.userData);
-    this.thisWeekTasks = this.publicFunctions.filterRAGTasks(await this.getUserThisWeekTasks(), this.userData);
-    this.overdueTasks = this.publicFunctions.filterRAGTasks(await this.getUserOverdueTasks(), this.userData);
-    this.nextWeekTasks = this.publicFunctions.filterRAGTasks(await this.getUserNextWeekTasks(), this.userData);
-    this.futureTasks = this.publicFunctions.filterRAGTasks(await this.getUserFutureTasks(), this.userData);
+    this.todayTasks = await this.publicFunctions.filterRAGTasks(await this.getUserTodayTasks(), this.userData);
+    this.thisWeekTasks = await this.publicFunctions.filterRAGTasks(await this.getUserThisWeekTasks(), this.userData);
+    this.overdueTasks = await this.publicFunctions.filterRAGTasks(await this.getUserOverdueTasks(), this.userData);
+    this.nextWeekTasks = await this.publicFunctions.filterRAGTasks(await this.getUserNextWeekTasks(), this.userData);
+    this.futureTasks = await this.publicFunctions.filterRAGTasks(await this.getUserFutureTasks(), this.userData);
 
     this.markOverdueTasks();
   }
