@@ -136,7 +136,7 @@ export class LibreofficeControllers {
                 UserId: user._id || '',
                 UserFriendlyName: user.first_name + ' ' + user.last_name,
                 UserExtraInfo: {
-                    avatar: process.env.UTILITIES_USERS_UPLOADS + '/' + user.profile_pic + '?noAuth=true',
+                    avatar: process.env.UTILITIES_USERS_UPLOADS + '/' + req.params.workspaceId + '/' + user.profile_pic + '?noAuth=true',
                     mail: user.email
                 },
                 UserCanWrite: canEdit,
