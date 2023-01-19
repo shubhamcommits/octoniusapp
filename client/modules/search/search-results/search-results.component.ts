@@ -175,7 +175,7 @@ export class SearchResultsComponent implements OnChanges {
     let wopiClientURL = '';
     await this.libreofficeService.getLibreofficeUrl().then(res => {
         const authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`;
-        wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}/${workspaceId}?authToken=${authToken}`;
+        wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}/${workspaceId}?access_token=${authToken}`;
       }).catch(error => {
         this.utilityService.errorNotification($localize`:@@groupFiles.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
       });

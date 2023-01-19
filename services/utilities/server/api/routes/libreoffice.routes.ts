@@ -11,7 +11,7 @@ const routes = express.Router();
 const authsHelper = new Auths();
 
 // Verify the token
-routes.use(authsHelper.verifyToken);
+routes.use(authsHelper.verifyLOOLToken);
 
 // Checks whether the current user is loggedIn or not
 //routes.use(authsHelper.isLoggedIn);
