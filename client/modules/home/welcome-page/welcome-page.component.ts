@@ -146,7 +146,6 @@ export class WelcomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${response.credential}`)
       .then(res => res.json())
       .then(res => {
-console.log({res});
         this.signInGoogle(res);
       })
       .catch(error => console.log(error));
@@ -335,10 +334,10 @@ console.log({res});
       new Promise((resolve, reject) => {
 
         let userData: any = {
-          email: response.credential.email,
-          first_name: response.credential.given_name,
-          last_name: response.credential.family_name,
-          // picture: response.credential.picture,
+          email: response.email,
+          first_name: response.given_name,
+          last_name: response.family_name,
+          // picture: response.picture,
           ssoType: 'GOOGLE'
         }
 
