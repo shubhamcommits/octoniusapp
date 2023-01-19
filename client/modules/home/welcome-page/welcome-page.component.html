@@ -47,10 +47,11 @@
               <span i18n="@@welcomePage.accessWithAD">Access with Azure AD</span>
             </button>
             <br/>
-            <button *ngIf="googleAvailable" class="btn btn-primary google-icon" (click)="signInGoogle()">
+            <div class="" id="google-button"></div>
+            <!-- <button *ngIf="googleAvailable" class="btn btn-primary google-icon" (click)="signInGoogle()">
               <img src="assets/images/btn_google_light_normal_ios.svg">
               <span i18n="@@welcomePage.accessWithGoogle" class="mr-1 ml-1">Sign in with Google</span>
-            </button>
+            </button> -->
           </div>
 
           <div style="width: 100%; margin:50px auto; align-items: center; text-align: center; border-top: 1px solid #005fd521;">
