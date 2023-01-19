@@ -59,6 +59,60 @@ export class Auths {
         } catch (err) {
             return sendError(res, err);
         }
+    };/**
+     * This function verifies the token coming from the request authorization headers
+     * It returns and feeds the userId into req object for future use
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async verifyLOOLToken(req: Request, res: Response, next: NextFunction) {
+        try {
+            var url = require('url');
+            var url_parts = url.parse(req.url, true);
+            var query = url_parts.query;
+
+            // Allow this situation for when selecting a workplace where user is not login yet
+            if (query.noAuth || query.readOnly) {
+                next();
+            } else {
+                let token = query?.access_token?.split(' ')[1];
+                // Authorization header is not present on request
+                if (!req.headers.authorization && !token) {
+                    return res.status(401).json({
+                        message: 'Unauthorized request, it must include an authorization header!'
+                    })
+                }
+
+                if (!token) {
+                    // Split the authorization header
+                    token = req.headers.authorization.split(' ')[1]
+                }
+
+                // Token is not present on authorization header
+                if (!token) {
+                    return res.status(401).json({
+                        message: 'Unauthorized request, it must include an authorization token!'
+                    })
+                }
+
+                // Verify the token
+                jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
+                    if (err || !decoded) {
+                        // Send status 401 response
+                        return res.status(401).json({
+                            message: 'Unauthorized request, it must have a valid authorization token!'
+                        })
+                    } else {
+                        // Assigning and feeding the userId into the req object
+                        req['userId'] = decoded['subject']
+                        next();
+                    }
+                });
+            }
+        } catch (err) {
+            return sendError(res, err);
+        }
     };
 
     /**

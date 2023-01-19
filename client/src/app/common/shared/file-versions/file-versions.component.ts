@@ -116,7 +116,7 @@ export class FileVersionsComponent implements OnInit {
     // wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
     let wopiClientURL = '';
     await this.libreofficeService.getLibreofficeUrl().then(res => {
-        wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}/${workspaceId}?authToken=${this.authToken}`;
+        wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}/${workspaceId}?access_token=${this.authToken}`;
       }).catch(error => {
         this.utilityService.errorNotification($localize`:@@fileVersions.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
       });
