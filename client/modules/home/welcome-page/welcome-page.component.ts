@@ -143,8 +143,13 @@ export class WelcomePageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   async handleCredentialResponse(response: any) {
     // Here will be your response from Google.
-console.log(response);
-    this.signInGoogle(response);
+    fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${response.credential}`)
+      .then(res => res.json())
+      .then(res => {
+console.log({res});
+        this.signInGoogle(res);
+      })
+      .catch(error => console.log(error));
   }
 
   /**
