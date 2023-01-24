@@ -1,4 +1,4 @@
-import { Comment, Post, User, Notification, Story } from '../models';
+import { Comment, Post, User, Notification, Story, Page } from '../models';
 import http from 'axios';
 import moment from 'moment';
 import followRedirects from 'follow-redirects';
@@ -21,7 +21,7 @@ const minio = require('minio');
         try {
           let {
             userId,
-            query: { postId, storyId },
+            query: { postId, storyId, pageId },
             body: { comment }
           } = req;
 
@@ -126,6 +126,17 @@ const minio = require('minio');
               }, { maxContentLength: 60 * 1024 * 1024 }
             );
             */
+          } else if (pageId) {
+            // Update post: add new comment id, increase post count
+            const page = await Page.findOneAndUpdate({
+                _id: pageId
+              }, {
+                $addToSet: {
+                  _comments: newComment._id
+                }
+              }, {
+                new: true
+              }).select('_id');
           }
       
           if (newComment._content_mentions.length !== 0) {
@@ -222,9 +233,9 @@ const minio = require('minio');
        * Function to get all comments of a post
        * @param { postId }
        */
-      getAllComments = async (postId, storyId) => {
+      getAllComments = async (postId, storyId, pageId) => {
         try {
-          let query = (storyId) ? { _story: storyId } : { _post: postId };
+          let query = (storyId) ? { _story: storyId } : ((pageId) ? { _page: pageId } : { _post: postId });
           const comments = await Comment.find(query)
             //  sorting them on ID will make the more recent ones be fetched first
             .sort('-_id')
@@ -243,9 +254,9 @@ const minio = require('minio');
        * Function to get first 5 comments on a post
        * @param { postId }
        */
-      getComments = async (postId, storyId) => {
+      getComments = async (postId, storyId, pageId) => {
         try {
-          let query = (storyId) ? { _story: storyId } : { _post: postId };
+          let query = (storyId) ? { _story: storyId } : ((pageId) ? { _page: pageId } : { _post: postId });
           const comments = await Comment.find(query)
             //  sorting them on ID will make the more recent ones be fetched first
             .sort('-_id')
@@ -265,15 +276,29 @@ const minio = require('minio');
        * Function to get next 5 comments on a post
        * @param { postId, commentId }
        */
-      getNextComments = async (postId, commentId) => {
+      getNextComments = async (postId, storyId, pageId, commentId) => {
         try {
-      
-          const comments = await Comment.find({
-            $and: [
-              { _post: postId },
-              { _id: { $lt: commentId } }
-            ]
-          })
+          let query = (storyId) 
+            ? {
+              $and: [
+                { _story: storyId },
+                { _id: { $lt: commentId } }
+              ]
+            }
+              : ((pageId) 
+                ? {
+                    $and: [
+                      { _page: pageId },
+                      { _id: { $lt: commentId } }
+                    ]
+                  }
+                  : {
+                      $and: [
+                        { _post: postId },
+                        { _id: { $lt: commentId } }
+                      ]
+                    });
+          const comments = await Comment.find(query)
             .sort('-_id')
             .limit(5)
             .populate('_commented_by', 'first_name last_name profile_pic')

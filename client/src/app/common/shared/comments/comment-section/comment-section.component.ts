@@ -9,23 +9,15 @@ import moment from 'moment/moment';
 })
 export class CommentSectionComponent implements OnInit {
 
-  // EditorId of the Quill Comment Content
   @Input('editorId') editorId: any
-
-  // GroupId Input Variable
   @Input('groupId') groupId: any;
   @Input('workspaceId') workspaceId: any;
-
-  // User Data Variable
   @Input('userData') userData: any
-
   @Input('postId') postId: any;
   @Input('storyId') storyId: any;
+  @Input('pageId') pageId: any;
 
-  // Comment Emitter
   @Output('comment') comment: any = new EventEmitter()
-
-  // Close Comment Editor
   @Output('close') close: any = new EventEmitter();
 
   // Quill Data Variable
@@ -91,6 +83,7 @@ export class CommentSectionComponent implements OnInit {
       _content_mentions: this._content_mentions,
       _postId: this.postId,
       _storyId: this.storyId,
+      _pageId: this.pageId,
       _highlighted_content_range: []
     }
 
@@ -117,16 +110,29 @@ export class CommentSectionComponent implements OnInit {
 
     if ((content && content !== '') || this.files.length > 0) {
       await this.utilityService.asyncNotification($localize`:@@commentSection.pleaseWaitUpdatingContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-        this.commentService.new(formData, this.postId, this.storyId)
-          .then((res) => {
-            // Emit the Comment to the other compoentns
-            this.comment.emit(res['comment']);
-            // Resolve with success
-            resolve(this.utilityService.resolveAsyncPromise($localize`:@@commentSection.commentAdded:Comment added!`));
-          })
-          .catch(() => {
-            reject(this.utilityService.rejectAsyncPromise($localize`:@@commentSection.unableToSubmitComment:Unable to submit the comment, please try again!`));
-          });
+        if (this.pageId) {
+          this.commentService.newCommentPage(formData, this.pageId)
+            .then((res) => {
+              // Emit the Comment to the other compoentns
+              this.comment.emit(res['comment']);
+              // Resolve with success
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@commentSection.commentAdded:Comment added!`));
+            })
+            .catch(() => {
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@commentSection.unableToSubmitComment:Unable to submit the comment, please try again!`));
+            });
+        } else {
+          this.commentService.newCommentPage(formData, this.pageId)
+            .then((res) => {
+              // Emit the Comment to the other compoentns
+              this.comment.emit(res['comment']);
+              // Resolve with success
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@commentSection.commentAdded:Comment added!`));
+            })
+            .catch(() => {
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@commentSection.unableToSubmitComment:Unable to submit the comment, please try again!`));
+            });
+        }
       }));
     }
   }
