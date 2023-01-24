@@ -209,6 +209,12 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
             if (res['blocked'] ) {
               workspaceBlocked = res['blocked'];
             }
+          }).catch((err) => {
+            this.authService.signout().subscribe(async (res) => {
+              this.clearUserData();
+              this.socketService.disconnectSocket();
+              this.router.navigate(['/home']);
+            });
           });
 
           if (workspaceBlocked) {
