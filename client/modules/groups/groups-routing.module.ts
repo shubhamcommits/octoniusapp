@@ -50,6 +50,16 @@ const routes: Routes = [
         }
       },
 
+      // Group Library
+      {
+        path: 'library',
+        loadChildren: () => import('modules/library/library.module')
+          .then((module) => module.LibraryModule),
+        data: {
+          preload: false
+        }
+      },
+
       // Group Calendar
       {
         path: 'calendar',

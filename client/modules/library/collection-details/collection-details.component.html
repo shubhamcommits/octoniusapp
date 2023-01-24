@@ -1,0 +1,69 @@
+<div class="container">
+    <app-collection-header [collectionData]="collectionData" [userData]="userData" [workspaceData]="workspaceData"></app-collection-header>
+
+    <mat-tab-group>
+        <mat-tab [label]="pagesLabel">
+            <div class="row" style="padding: 20px;">
+                <!-- Create new Collection starts -->
+                <button class="btn btn-primary mb-3 mt-3" type="button" (click)="createPage()">
+                    <i class="material-icons-outlined">add</i>
+                    <span i18n="@@collectionDetails.newPage">New Page</span>
+                </button>
+                <!-- Create new Collection ends -->
+            </div>
+            
+            <div style="padding: 20px;">
+                <app-page-row *ngFor="let page of collectionData?._pages" [pageData]="page" [userData]="userData" [workspaceId]="workspaceData?._id" (subpageDeletedEmitter)="initPages()"></app-page-row>
+            </div>
+        </mat-tab>
+
+        <mat-tab [label]="filesLabel">
+            <!-- <div dragDropFile (fileDropped)="fileDropped($event)"> -->
+                <div class="row" style="padding: 20px;">
+                    <!-- Create new Collection starts -->
+                    <button class="btn btn-primary mb-3 mt-3" type="button" (click)="file.click()">
+                        <i class="material-icons-outlined mr-2">upload_file</i>
+                        <span i18n="@@collectionDetails.uloadFile">Upload file</span>
+                        <input #file type="file" placeholder="File" multiple (change)="fileInput(file.files)" />
+                    </button>
+                    <!-- Create new Collection ends -->
+                </div>
+
+                <div class="row">
+                    <div class="media card-tile user-list" style="border-bottom: 1px solid #e4edf8;" *ngFor="let file of collectionData?._files">
+                    
+                        <a class="mt-0" style="cursor: pointer" (click)="openDocument(file)">
+                            <img [src]="getFileIcon(file?.original_name)" onerror="this.src='assets/images/icon_file.svg'"
+                                class="file-type mt-3 mr-1" style="vertical-align: bottom;">
+                            {{file?.original_name}}
+                        </a>
+
+                        <div class="media-body">
+                            <div class="float-right">
+                                <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
+
+                                <mat-menu #menu="matMenu">
+                                    <a mat-menu-item style="cursor: pointer" (click)="openDocument(file)">
+                                        <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">file_download</i>
+                                        <span i18n="@@collectionDetails.download">Download</span>
+                                    </a>
+                                
+                                    <a mat-menu-item (click)="deleteFile(file?._id)">
+                                        <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
+                                        <span i18n="@@collectionDetails.delete">Delete</span>
+                                    </a>
+                                </mat-menu>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <!-- </div> -->
+        </mat-tab>
+    </mat-tab-group>
+
+    <!-- LOADING SPINNER STARTS -->
+    <ng-container *ngIf="isLoading$ | async">
+        <app-loading-spinner></app-loading-spinner>
+    </ng-container>
+    <!-- LOADING SPINNER ENDS -->
+</div>

@@ -38,6 +38,10 @@ const CommentSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Story'
     },
+    _page: {
+        type: Schema.Types.ObjectId,
+        ref: 'Page'
+    },
     _liked_by: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
