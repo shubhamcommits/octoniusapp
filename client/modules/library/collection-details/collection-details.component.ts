@@ -59,9 +59,7 @@ export class CollectionDetailsComponent implements OnInit {
     this.collectionId = this.activatedRoute.snapshot.queryParams['collection'];
 
     if (!this.collectionId) {
-      this._router.navigate(['/dashboard/work/groups/library']).then(() => {
-        window.location.reload();
-      });
+      this._router.navigate(['/dashboard/work/groups/library']);
     }
   }
 
