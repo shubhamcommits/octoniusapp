@@ -36,6 +36,7 @@ const minio = require('minio');
             _commented_by: userId,
             _post: postId,
             _story: storyId,
+            _page: pageId,
             files: comment.files,
             created_date: moment().format()
           };

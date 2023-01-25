@@ -99,7 +99,7 @@
 
             <!-- COMMENTS SECTION STARTS -->
             <div class="row comments" *ngIf="userData && pageData">
-                <comment-section
+                <comment-section *ngIf="showComments && userData && pageData"
                     [userData]="userData"
                     [editorId]="'_new_comment'"
                     [pageId]="pageData?._id"
