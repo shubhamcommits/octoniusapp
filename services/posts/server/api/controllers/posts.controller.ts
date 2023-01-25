@@ -938,7 +938,8 @@ export class PostController {
     async changeTaskStatus(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { params: { postId }, body: { status, userId, groupId, isShuttleTasksModuleAvailable } } = req;
+        const { params: { postId }, body: { status, groupId, isShuttleTasksModuleAvailable } } = req;
+        const userId = req['userId'];
 
         // Call Service function to change the assignee
         await this.callChangeTaskStatusService(postId, status, userId, groupId, isShuttleTasksModuleAvailable)
@@ -978,7 +979,8 @@ export class PostController {
     async changeTaskColumn(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { params: { postId }, body: { columnId, userId, groupId, isShuttleTasksModuleAvailable } } = req;
+        const { params: { postId }, body: { columnId, groupId, isShuttleTasksModuleAvailable } } = req;
+        const userId = req['userId'];
 
         if (!postId || !columnId || !userId) {
             return sendErr(res, new Error('Please provide the post, title and user as parameters'), 'Please provide the post, title and user as paramaters!', 400);
@@ -1330,7 +1332,8 @@ export class PostController {
     async moveToGroup(req: Request, res: Response, next: NextFunction) {
 
         // Post Object From request
-        const { body: { groupId, oldGroupId, userId, columnId }, params: { postId } } = req;
+        const { body: { groupId, oldGroupId, columnId }, params: { postId } } = req;
+        const userId = req['userId'];
 
         // Call service function to edit
         const updatedPost = await postService.moveToGroup(postId, groupId, columnId, oldGroupId, userId)
@@ -1357,7 +1360,8 @@ export class PostController {
     async copyToGroup(req: Request, res: Response, next: NextFunction) {
 
         // Post Object From request
-        const { postId, groupId, columnId, oldGroupId, userId } = req.body;
+        const { postId, groupId, columnId, oldGroupId } = req.body;
+        const userId = req['userId'];
 
         // Call servide function for adding the post
         const postData = await postService.copyToGroup(postId, groupId, columnId, oldGroupId, userId)
@@ -1940,7 +1944,8 @@ export class PostController {
         const { postId } = req.params;
 
         // Fetch userId and isShuttleTasksModuleAvailable
-        const { userId, isShuttleTasksModuleAvailable } = req.body;
+        const { isShuttleTasksModuleAvailable } = req.body;
+        const userId = req['userId'];
 
         try {
             let post = await Post.findOne({

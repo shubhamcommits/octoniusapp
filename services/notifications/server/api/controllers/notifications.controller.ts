@@ -250,7 +250,8 @@ export class NotificationsController {
 
 
     async taskStatusChanged(req: Request, res: Response, next: NextFunction) {
-        let { postId, assigned_to, userId, status, followers, posted_by, io } = req.body;
+        let { postId, assigned_to, status, followers, posted_by, io } = req.body;
+        let userId = req['userId'];
         try {
             status = (status == 'in progress') ? 'started' : 'completed';
             if (assigned_to && assigned_to?.length > 0) {
@@ -277,11 +278,9 @@ export class NotificationsController {
                 await notificationService.taskStatusChanged(postId, status, userId, assigned_to, posted_by, req.body.io);
                 await helperFunctions.sendNotificationsFeedFromService(posted_by?._id, io, true);
                 await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
-                    //userid: posted_by._id,
                     userid: userId,
                     postId,
                     assigned_to,
-                    //userId,
                     type: "STATUSCHANGED"
                 });
             }
@@ -292,11 +291,9 @@ export class NotificationsController {
                     await notificationService.taskStatusChanged(postId, status, userId, null, followers, req.body.io);
                     await helperFunctions.sendNotificationsFeedFromService(follower, io, true);
                     await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
-                        //userid: follower,
                         userid: userId,
                         postId,
                         follower,
-                        //userId,
                         type: "STATUSCHANGED"
                     });
                 }
