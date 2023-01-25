@@ -11,7 +11,7 @@
         <ul class="navbar-nav ml-4">
             <li class="nav-item active">
                 <!-- Folio Static Title starts -->
-                <span *ngIf="!editTitle" (click)="editTitle != editTitle"
+                <span *ngIf="!editTitle" (click)="editTitle = !editTitle"
                         matTooltip="Click me to rename"
                         matTooltipPosition="below">
                     {{ pageData?.title }}

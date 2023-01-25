@@ -56,26 +56,18 @@ export class PageNavbarComponent implements OnInit {
 
     // KeyCode = 13 - User hits enter
     if (event.keyCode == 13) {
+      await this.utilityService.asyncNotification($localize`:@@pageNavbar.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+        this.libraryService.editPage(this.pageData?._id, { 'title': this.pageData?.title })
+          .then((res) => {
+            // Resolve with success
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@pageNavbar.detailsUpdated:Details updated!`));
+          })
+          .catch(() => {
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@pageNavbar.unableToUpdateDetails:Unable to update the details, please try again!`));
+          });
+      }));
 
-      // Set the edit title to false
-      this.editTitle = false
-
-      const newTitle = event.target.value;
-      if (newTitle !== this.pageData?.name) {
-        this.pageData.name = newTitle;
-        await this.utilityService.asyncNotification($localize`:@@pageHeader.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-            this.libraryService.editPage(this.pageData?._id, { 'name': this.pageData?.name })
-              .then((res) => {
-                // Resolve with success
-                resolve(this.utilityService.resolveAsyncPromise($localize`:@@pageHeader.detailsUpdated:Details updated!`));
-              })
-              .catch(() => {
-                reject(this.utilityService.rejectAsyncPromise($localize`:@@pageHeader.unableToUpdateDetails:Unable to update the details, please try again!`));
-              });
-          }));
-
-        this.editTitle = !this.editTitle;
-      }
+      this.editTitle = !this.editTitle;
     } else if (event.keyCode == 27) {
       // Only Set the edit title to false
       this.editTitle = false
