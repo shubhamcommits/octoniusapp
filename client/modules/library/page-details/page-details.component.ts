@@ -71,7 +71,10 @@ export class PageDetailsComponent implements OnInit {
 
     if (!this.pageId) {
       this._router.navigate(['/dashboard/work/groups/library']).then(() => {
-        window.location.reload();
+        // Send Updates to router state
+        this.publicFunctions.sendUpdatesToRouterState({
+          state: 'group'
+        });
       });
     }
   }
