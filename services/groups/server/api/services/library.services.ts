@@ -1,4 +1,4 @@
-import { Page, File, Collection } from "../models";
+import { Page, File, Collection, Comment } from "../models";
 import { Readable } from 'stream';
 
 const minio = require('minio');
@@ -29,7 +29,13 @@ export class LibraryService {
       }
     });
 
-    await Page.deleteMany({ _collection: collectionId });
+    let pagesStream: any = Readable.from(await Page.find({ _collection: collectionId }).select('_id').lean());
+    
+    await pagesStream.on('data', async (page: any) => {
+      this.deletePage(page?._id, workspaceId);
+    });
+
+    // await Page.deleteMany({ _collection: collectionId });
 
     this.deleteCollectionFiles(workspaceId, collectionId);
   }
@@ -109,6 +115,8 @@ export class LibraryService {
     });
 
     await this.deletePageFiles(workspaceId, pageId);
+
+    await Comment.deleteMany({ _page: pageId });
 
     await Page.findByIdAndRemove({
         _id: pageId

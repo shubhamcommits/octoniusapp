@@ -1,5 +1,5 @@
 import { Component, OnInit, Injector } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -60,6 +60,7 @@ export class PageDetailsComponent implements OnInit {
     public injector: Injector,
     private activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
+    private _router: Router,
     private utilityService: UtilityService,
     private libraryService: LibraryService,
     private libreofficeService: LibreofficeService,
@@ -67,6 +68,12 @@ export class PageDetailsComponent implements OnInit {
     private filesService: FilesService
   ) {
     this.pageId = this.activatedRoute.snapshot.queryParams['page'];
+
+    if (!this.pageId) {
+      this._router.navigate(['/dashboard/work/groups/library']).then(() => {
+        window.location.reload();
+      });
+    }
   }
 
   async ngOnInit() {

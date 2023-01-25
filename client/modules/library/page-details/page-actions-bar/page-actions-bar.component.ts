@@ -74,7 +74,7 @@ export class PageActionsBarComponent implements OnInit, OnChanges {
         ['/dashboard', 'work', 'groups', 'library'],
         {
           queryParams: {
-            collection: this.pageData._lounge._id
+            collection: this.pageData?._collection?._id
           }
         }
       );

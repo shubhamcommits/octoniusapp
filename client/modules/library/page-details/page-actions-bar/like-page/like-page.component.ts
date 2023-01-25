@@ -36,6 +36,7 @@ export class LikePageComponent implements OnInit, OnChanges {
     // Call the Service Function to like a Page
     this.libraryService.likePage(this.pageData._id).then(res => {
       this.pageData = res['page'];
+      this.likedByUser = true;
       this.pageLiked.emit(this.pageData);
     });
   }
@@ -47,6 +48,7 @@ export class LikePageComponent implements OnInit, OnChanges {
     // Call the Service Function to unlike a page
     this.libraryService.unlikePage(this.pageData._id).then(res => {
       this.pageData = res['page'];
+      this.likedByUser = false;
       this.pageUnLiked.emit(this.pageData);
     });
   }

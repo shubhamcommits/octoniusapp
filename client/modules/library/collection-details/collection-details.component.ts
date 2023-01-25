@@ -1,5 +1,5 @@
 import { Component, OnInit, Injector } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -49,6 +49,7 @@ export class CollectionDetailsComponent implements OnInit {
     public injector: Injector,
     private activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
+    private _router: Router,
     private utilityService: UtilityService,
     public storageService: StorageService,
     private filesService: FilesService,
@@ -56,6 +57,12 @@ export class CollectionDetailsComponent implements OnInit {
     private libraryService: LibraryService
   ) {
     this.collectionId = this.activatedRoute.snapshot.queryParams['collection'];
+
+    if (!this.collectionId) {
+      this._router.navigate(['/dashboard/work/groups/library']).then(() => {
+        window.location.reload();
+      });
+    }
   }
 
   async ngOnInit() {
