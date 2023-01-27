@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { LoungeRoutingModule } from './library-routing.module';
+import { LibraryRoutingModule } from './library-routing.module';
 
 import { SharedModule } from 'src/app/common/shared/shared.module';
 
@@ -38,7 +38,7 @@ import { LikePageComponent } from './page-details/page-actions-bar/like-page/lik
   imports: [
     CommonModule,
     SharedModule,
-    LoungeRoutingModule,
+    LibraryRoutingModule,
     MatSelectModule,
     FormsModule
   ],

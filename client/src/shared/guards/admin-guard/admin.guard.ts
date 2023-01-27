@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { CanActivate, CanActivateChild, CanLoad, Router, Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { PublicFunctions } from 'modules/public.functions';
 import { Observable } from 'rxjs/internal/Observable';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -9,15 +10,19 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 })
 export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
 
+  // Public Functions Object
+  public publicFunctions = new PublicFunctions(this.injector);
+
   constructor(
+    private injector: Injector,
     private storageService: StorageService,
     private utilityService: UtilityService,
     private router: Router
   ){ }
 
-  canActivate(
+  async canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    state: RouterStateSnapshot) {
 
       const workspaceData = this.storageService.getLocalData('workspaceData');
       const userData = this.storageService.getLocalData('userData');
@@ -28,6 +33,7 @@ export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
       } else {
         this.utilityService.warningNotification($localize`:@@adminGuard.oopsNoPermission:Oops seems like you don\'t have the permission to access the admin section, kindly contact your superior to provide you the proper admin rights!`);
         if (state.url.match('/dashboard/admin/.*')) {
+          await this.publicFunctions.sendUpdatesToGroupData({});
           this.router.navigate(['dashboard', 'myspace', 'inbox']);
         }
         return false;

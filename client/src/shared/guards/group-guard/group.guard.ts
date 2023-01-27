@@ -43,18 +43,20 @@ export class GroupGuard implements CanActivate  {
 
     if (currentGroup.archived_group) {
       this.utilityService.warningNotification($localize`:@@groupGuard.oopsGroupDoesNotExist:Oops seems like the group don\'t exist!`);
+      await this.publicFunctions.sendUpdatesToGroupData({});
       this.router.navigate(['dashboard', 'myspace', 'inbox']);
       return false;
     }
 
-    const groupMembersIndex = currentGroup._members.findIndex((member: any) => member._id == userData._id);
-    const groupAdminsIndex = currentGroup._admins.findIndex((admin: any) => admin._id == userData._id);
-    const userGroupsIndex = userData._groups.findIndex((group: any) => group == currentGroup?._id);
+    const groupMembersIndex = (currentGroup) ? currentGroup?._members.findIndex((member: any) => member._id == userData._id) : -1;
+    const groupAdminsIndex = (currentGroup) ? currentGroup?._admins.findIndex((admin: any) => admin._id == userData._id) : -1;
+    const userGroupsIndex = (userData._groups) ? userData._groups.findIndex((group: any) => group == currentGroup?._id) : -1;
 
     if (groupMembersIndex >= 0 || groupAdminsIndex >= 0 || userGroupsIndex >= 0 || userData?._private_group == currentGroup?._id) {
       return true;
     } else {
       this.utilityService.warningNotification($localize`:@@groupGuard.oopsNoPermissionForGroup:Oops seems like you don\'t have the permission to access the group, kindly contact your superior to provide you the proper access!`);
+      await this.publicFunctions.sendUpdatesToGroupData({});
       this.router.navigate(['dashboard', 'myspace', 'inbox']);
       return false;
     }

@@ -20,6 +20,7 @@ import { GroupReportsComponent } from './group/group-reports/group-reports.compo
 import { GroupsComponent } from './groups.component';
 import { PortfolioGuard } from 'src/shared/guards/portfolio-guard/portfolio.guard';
 import { PortfolioDetailsComponent } from './portfolio/portfolio-details/portfolio-details.component';
+import { LibraryGuard } from 'src/shared/guards/library-guard/library.guard';
 
 
 /**
@@ -57,7 +58,8 @@ const routes: Routes = [
           .then((module) => module.LibraryModule),
         data: {
           preload: false
-        }
+        },
+        canActivateChild: [LibraryGuard]
       },
 
       // Group Calendar
@@ -82,7 +84,7 @@ const routes: Routes = [
       // Group Reports
       { path: 'reports', component: GroupReportsComponent }
     ],
-    runGuardsAndResolvers: `always`,
+    runGuardsAndResolvers: `always`, 
     canActivate: [GroupGuard]
   }
 ];

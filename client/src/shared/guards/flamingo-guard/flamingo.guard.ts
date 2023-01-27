@@ -8,12 +8,14 @@ import {
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { PublicFunctions } from 'modules/public.functions';
-import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FlamingoGuard implements CanActivate  {
+
+  // Public Functions Object
+  public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
     private groupService: GroupService,
@@ -70,6 +72,7 @@ export class FlamingoGuard implements CanActivate  {
           return true;
         } else {
           this.utilityService.warningNotification($localize`:@@flamingoGuard.oopsNoPermissionForGroup:Oops seems like you don\'t have the permission to access the group, kindly contact your superior to provide you the proper access!`);
+          await this.publicFunctions.sendUpdatesToGroupData({});
           this.router.navigate(['dashboard', 'myspace', 'inbox']);
           return false;
         }
