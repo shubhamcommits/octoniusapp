@@ -20,7 +20,7 @@ routes.use(authsHelper.isLoggedIn);
 routes.get('/collection/:collectionId', libarry.getCollection);
 
 // GET - Get all  collections by groups
-routes.get('/collections/:groupId/by-group', libarry.getCollectionsByGroup);
+routes.get('/collection/:groupId/by-group', libarry.getCollectionsByGroup);
 
 // POST - Create new collection in the group
 routes.post('/create-collection', libarry.createCollection);
@@ -72,6 +72,12 @@ routes.post('/page/:pageId/files/:workspaceId/:collectionId', pageFileUploader, 
 
 // PUT - Delete a file from a page
 routes.put('/page/:fileId/remove-file/:workspaceId', libarry.removePageFile);
+
+// GET - Get group by collection
+routes.get('/collection/:collectionId/group-by-collection', libarry.getGroupByCollection);
+
+// GET - Get group by page
+routes.get('/page/:pageId/group-by-page', libarry.getGroupByPage);
 
 /*  ===================
  *  -- EXPORT ROUTES --

@@ -24,7 +24,7 @@ export class LibraryService {
    * @param groupId
    */
   getCollectionsByGroup(groupId: string) {
-    return this._http.get(this.baseUrl + `/library/collections/${groupId}/by-group`).toPromise();
+    return this._http.get(this.baseUrl + `/library/collection/${groupId}/by-group`).toPromise();
   }
 
   /**
@@ -165,5 +165,13 @@ export class LibraryService {
 
   removePageFile(fileId: string, workspaceId: string) {
     return this._http.put(this.baseUrl + `/library/page/${fileId}/remove-file/${workspaceId}`, {}).toPromise();
+  }
+
+  getGroupByCollection(collectionId: string) {
+    return this._http.get(this.baseUrl + `/library/collection/${collectionId}/group-by-collection`).toPromise();
+  }
+
+  getGroupByPage(pageId: string) {
+    return this._http.get(this.baseUrl + `/library/page/${pageId}/group-by-page`).toPromise();
   }
 }

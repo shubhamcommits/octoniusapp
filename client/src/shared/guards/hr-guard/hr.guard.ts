@@ -27,6 +27,7 @@ export class HRGuard implements CanActivate, CanActivateChild, CanLoad {
         return true;
       } else {
         this.utilityService.warningNotification($localize`:@@hrGuard.oopsNoPermission:Oops seems like you don\'t have the permission to access the HR section, kindly contact your superior to provide you the proper admin rights!`);
+        await this.publicFunctions.sendUpdatesToGroupData({});
         this.router.navigate(['dashboard', 'myspace', 'inbox']);
         return false;
       }
