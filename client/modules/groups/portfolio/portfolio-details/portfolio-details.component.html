@@ -42,7 +42,7 @@
         </div>
     </mat-tab>
 
-    <mat-tab [label]="workloadLabel">
+    <mat-tab [label]="workloadLabel" *ngIf="numPortfolioGroupsMembers <= 50">
         <app-portfolio-members-workload-card *ngIf="portfolioData" [portfolioData]="portfolioData" [userData]="userData"></app-portfolio-members-workload-card>
     </mat-tab>
 </mat-tab-group>
