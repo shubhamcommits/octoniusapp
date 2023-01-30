@@ -70,7 +70,7 @@
     </div>
   </div>
 
-  <div class="row d-none d-md-block">
+  <div class="row d-none d-md-block" *ngIf="((groupData?._admins?.length || 0) + (groupData?._members?.length || 0)) <= 50">
     <div class="col-md-12 box" *ngIf="groupData?.selected_widgets?.includes('RESOURCE_MANAGEMENT')">
       <!-- Members Workload Card Starts -->
       <app-members-workload-card [groupId]="groupData?._id"></app-members-workload-card>

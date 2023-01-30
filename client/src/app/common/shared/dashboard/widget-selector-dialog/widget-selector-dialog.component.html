@@ -20,23 +20,25 @@
     </div>
 
     <div class="content-box" *ngFor="let widget of availableWidgets">
-      <div style="display: flex; cursor: pointer;" (click)="selectWidget(widget)">
-        <span class="material-icons-outlined mr-4 mt-3" style="color:#119b11;" *ngIf="isSelected(widget.code)">check_circle</span>
-        <span class="material-icons-outlined mr-4 mt-3" style="color:#c7c7c7;" *ngIf="!isSelected(widget.code)">check_circle</span>
+      <div *ngIf="widget.code != 'RESOURCE_MANAGEMENT' || (widget.code == 'RESOURCE_MANAGEMENT' && numGroupMembers <= 50)">
+        <div style="display: flex; cursor: pointer;" (click)="selectWidget(widget)">
+          <span class="material-icons-outlined mr-4 mt-3" style="color:#119b11;" *ngIf="isSelected(widget.code)">check_circle</span>
+          <span class="material-icons-outlined mr-4 mt-3" style="color:#c7c7c7;" *ngIf="!isSelected(widget.code)">check_circle</span>
 
-        <img [src]="widget.img" alt="" class="widget-img">
+          <img [src]="widget.img" alt="" class="widget-img">
 
-        <h4 class="ml-3 mt-4"> {{ widget.name }}</h4>
-      </div>
+          <h4 class="ml-3 mt-4"> {{ widget.name }}</h4>
+        </div>
 
-      <div style="margin-left: 120px; margin-top: 30px;" *ngIf="widget.code == 'RESOURCE_MANAGEMENT' && groupId && groupEnableAllocation">
-        <mat-slide-toggle color="primary"
-            [disabled]="!isSelected(widget.code)"
-            [checked]="resource_management_allocation"
-            [name]="'share_files'"
-            (change)="enableDisplayAllocation($event)">
-          <h6><b i18n="@@widgetSelectorDialog.allocation">Allocation</b></h6>
-        </mat-slide-toggle>
+        <div style="margin-left: 120px; margin-top: 30px;" *ngIf="widget.code == 'RESOURCE_MANAGEMENT' && groupId && groupEnableAllocation">
+          <mat-slide-toggle color="primary"
+              [disabled]="!isSelected(widget.code)"
+              [checked]="resource_management_allocation"
+              [name]="'share_files'"
+              (change)="enableDisplayAllocation($event)">
+            <h6><b i18n="@@widgetSelectorDialog.allocation">Allocation</b></h6>
+          </mat-slide-toggle>
+        </div>
       </div>
     </div>
 

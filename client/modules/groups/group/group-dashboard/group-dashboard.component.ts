@@ -101,7 +101,8 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
       selectedWidgets: this.groupData.selected_widgets,
       resource_management_allocation: this.groupData.resource_management_allocation,
       groupEnableAllocation: this.groupData.enable_allocation,
-      custom_fields: this.groupData.custom_fields
+      custom_fields: this.groupData.custom_fields,
+      numGroupMembers: ((this.groupData?._admins?.length || 0) + (this.groupData?._members?.length || 0))
     }
 
     const dialogRef = this.dialog.open(WidgetSelectorDialogComponent, {
