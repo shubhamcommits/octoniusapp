@@ -19,7 +19,10 @@ export class GlobalErrorHandler implements ErrorHandler {
             // Server error
             message = errorService.getServerErrorMessage(error);
             stackTrace = errorService.getServerStack(error);
-            notifier.errorNotification(message);
+
+            if(!error.url.includes('uploads')) {
+                notifier.errorNotification(message);
+            }
         } else {
             // Client Error
             message = errorService.getClientErrorMessage(error);
@@ -27,6 +30,5 @@ export class GlobalErrorHandler implements ErrorHandler {
         }
         // Always log errors
         logger.logError(message, stackTrace);
-        console.error(error);
     }
 }

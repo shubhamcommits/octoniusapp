@@ -140,13 +140,11 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
 
   providers: [
     HttpCancelService,
-
     // HASH LOCATION STRATEGY
     {
       provide: LocationStrategy,
       useClass: PathLocationStrategy
     },
-
     // ERROR HANDLERS
     {
       provide: ErrorHandler,

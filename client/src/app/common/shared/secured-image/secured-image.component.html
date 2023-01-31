@@ -1,8 +1,18 @@
-<img *ngIf="dataUrl$ | async as url"
-  [src]="url"
-  class="{{ styleClass }}"
-  onerror="this.src=this.onErrorUrl"
-  matTooltipPosition="{{ placement }}"
-  matTooltip="{{ tooltip }}"
-  alt="{{ alt }}"
-  [style]="inlineStyle" />
+<div *ngIf="(!isLocalImg && (dataUrl$ | async));else locaImg">
+  <img *ngIf="dataUrl$ | async as url"
+    [src]="url"
+    class="{{ styleClass }}"
+    onerror="this.src=this.onErrorUrl"
+    matTooltipPosition="{{ placement }}"
+    matTooltip="{{ tooltip }}"
+    alt="{{ alt }}"
+    [style]="inlineStyle" />
+</div>
+
+<ng-template #locaImg>
+  <img [src]="onErrorUrl"
+    class="{{ styleClass }}"
+    onerror="this.src=this.onErrorUrl"
+    alt="{{ alt }}"
+    [style]="inlineStyle" />
+</ng-template>
