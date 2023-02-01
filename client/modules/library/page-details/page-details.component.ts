@@ -223,8 +223,7 @@ export class PageDetailsComponent implements OnInit {
    */
   uploadFile(fileData: any, file: File) {
     // Call the HTTP Request Asynschronously
-    this.utilityService.asyncNotification(
-      (file) ? $localize`:@@pageDetails.pleaseWaitUploadingFile:Please wait we are uploading your file - ${file['name']} ...` : $localize`:@@pageDetails.pleaseWaitCreatingFolio:Please wait while we are creating a new folio`,
+    this.utilityService.asyncNotification($localize`:@@pageDetails.pleaseWaitUploadingFile:Please wait we are uploading your file - ${file['name']} ...`,
       new Promise((resolve, reject) => {
         this.libraryService.addPageFile(this.pageData?._id, this.workspaceData?._id, (this.pageData?._collection?._id || this.pageData?._collection), fileData, file)
           .then((res) => {
