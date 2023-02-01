@@ -25,7 +25,7 @@ function devConfigInit() {
   process.env.REDIS_PORT = process.env.REDIS_PORT || '6379'
 
   // Files Uploads Folder
-  process.env.FILE_UPLOAD_FOLDER = process.env.FILE_UPLOAD_FOLDER || '/flamingo/';
+  process.env.FILE_UPLOAD_FOLDER = process.env.FILE_UPLOAD_FOLDER || '/';
 
   // External Key
   process.env.HEADER_EXTERNAL_KEY = process.env.HEADER_EXTERNAL_KEY || 'HEADERIDSHAREDFOROCTONIUS'

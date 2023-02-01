@@ -25,7 +25,7 @@ const utilitiesFileHandler = async (req: Request, res: Response, next: NextFunct
       secretKey: process.env.MINIO_SECRET_KEY
     });
 
-    await minioClient.getObject(workspaceId, file, async (error, data) => {
+    await minioClient.getObject(workspaceId, process.env.FILE_UPLOAD_FOLDER + file, async (error, data) => {
       if (error) {
         return res.status(500).json({
           message: 'Error getting file.',

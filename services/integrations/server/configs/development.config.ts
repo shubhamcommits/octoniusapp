@@ -25,7 +25,7 @@ function devConfigInit() {
   process.env.REDIS_PORT = process.env.REDIS_PORT || '6379'
 
   // Files Uploads Folder
-  process.env.FILE_UPLOAD_FOLDER = process.env.FILE_UPLOAD_FOLDER || '/integrations/';
+  process.env.FILE_UPLOAD_FOLDER = process.env.FILE_UPLOAD_FOLDER || '/';
 
   // Slack Keys
   process.env.SLACK_BOT_ACCESS_TOKEN = process.env.SLACK_BOT_ACCESS_TOKEN || "xoxb-2561616476-1145480914898-bFLn6YJrfzbJ9jvCTU34uNuu"
