@@ -31,7 +31,7 @@
     "luxon": "^3.1.0",
     "minio": "^7.0.32",
     "moment": "^2.24.0",
-    "mongoose": "^6.0.0",
+    "mongoose": "~5.8.7",
     "morgan": "^1.9.1",
     "rich-text": "^4.1.0",
     "sharedb": "^1.9.1",
