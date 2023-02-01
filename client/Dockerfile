@@ -1,7 +1,7 @@
 ### STAGE 1: Build ###
 
 # We label our stage as ‘builder’
-FROM node:14.21 as builder
+FROM node:18.12 as builder
 
 # Defining Workdir
 WORKDIR /usr/app
