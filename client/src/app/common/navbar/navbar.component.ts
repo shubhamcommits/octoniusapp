@@ -52,6 +52,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   
   iconsSidebar = false;
   isDocumentPage = false;
+  isCollectionPage = false;
 
   // NOTIFICATIONS DATA
   public notificationsData: { readNotifications: [], unreadNotifications: [] } = {
@@ -77,8 +78,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.routerState === 'admin') {
           this.nextCommonNavbarState();
 
-        } else if (this.routerState === 'group' || this.routerState === 'home') {
+        } else if (this.routerState === 'group' || this.routerState === 'home' || this.routerState === 'library' || this.routerState === 'collection') {
           this.nextGroupNavbarState();
+
+          if (this.routerState === 'collection') {
+            this.isCollectionPage = true;
+          }
         }
         else if (this.routerState === 'work' || this.routerState === 'lounge'
             || this.routerState === 'people-directory' || this.routerState === 'people-directory-chart'
@@ -128,6 +133,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subSink.add(this._router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
         this.isDocumentPage = e.url.includes('/document/');
+        this.isCollectionPage = e.url.includes('/library/collection');
       }
     }));
 
@@ -247,7 +253,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   showSideBar() {
-    return !this.isDocumentPage;
+    return !this.isDocumentPage && !this.isCollectionPage;
   }
 
   selectLanguage(languageCode: any) {

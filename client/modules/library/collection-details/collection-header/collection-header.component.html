@@ -1,0 +1,75 @@
+<div class="content-box">
+    <div class="collection-header"
+        [ngStyle]="{ 'background-color': collectionData?.background_color || '#FBB732' }">
+        <div class="modal-header">
+            <!-- Event Collection Header starts -->
+            <h2 *ngIf="!editContent || !editTitle" (click)="editTitle = !editTitle" class="title">
+                <span>{{ title }}</span>
+            </h2>
+
+            <h2 class="modal-title" *ngIf="editTitle && editContent">
+                <span *ngIf="!editTitle">{{ title }}</span>
+
+                <!-- Title starts -->
+                <input *ngIf="editTitle" name="collectionTitle" type="text" [ngModel]="title"
+                    (keyup.esc)="editTitle = !editTitle" placeholder="✍🏻 Title" 
+                    (keyup.enter)="titleChange($event)" (blur)="titleChange($event)" class="collection-title"/>
+                <!-- Title ends -->
+            </h2>
+        </div>
+        <!-- Collection Header Title ends -->
+
+        <div *ngIf="!editContent" [innerHTML]="(htmlContent) | safe: 'html'" class="collection-content"></div>
+
+        <!-- Collection Content starts -->
+        <app-quill-editor *ngIf="editContent" class="collection-content" [editorId]="'global-ns-editor'" [toolbar]="true"
+            [readOnly]="false" [contents]="collectionData?.content" (content)="quillContentChanged($event)">
+        </app-quill-editor>
+        <!-- Collection Content ends -->
+
+        <div class="d-md-none d-lg-block graph">
+            <!-- <app-multiple-assignments [canEdit]="editContent" [userData]="userData" [collection]="collectionData" [type]="'collection'"
+                (assigneeAddedEmiter)="addManager($event)" (assigneeRemovedEmiter)="removeManager($event)">
+            </app-multiple-assignments> -->
+        </div>
+
+        <br class="clearfix" />
+
+        <div *ngIf="editContent" class="change-color">
+            <span (click)="openColorPicker()" i18n="@@collectionHeader.changeColor">Change color</span>
+        </div>
+    </div>
+</div>
+
+<div class="clearfix save-content mb-3">
+    <button *ngIf="!editContent" class="btn btn-primary btn-md float-right" style="margin-right: 20px;"
+        [matMenuTriggerFor]="collectionActions" #trigger="matMenuTrigger" i18n="@@collectionHeader.actions">
+        Actions
+    </button>
+
+    <button *ngIf="editContent" [disabled]="!contentChanged" class="btn float-right btn-primary btn-md"
+        style="margin-left: 10px;" (click)="updateContent()" i18n="@@collectionHeader.save">
+        Save
+    </button>
+    <button *ngIf="editContent" class="btn float-right btn-danger btn-md" style="margin-left: 10px;"
+        (click)="editContent = !editContent" i18n="@@collectionHeader.cancel">
+        Cancel
+    </button>
+
+    <mat-menu #collectionActions="matMenu">
+        <ul style="list-style: none; padding: 0 20px; margin: 0;">
+            <li>
+                <a *ngIf="!editContent" (click)="editContent = !editContent" class="btn btn-light btn-md" style="margin: 0;">
+                    <i class="material-icons-outlined">edit</i>
+                    <span i18n="@@collectionHeader.edit">Edit details</span>
+                </a>
+            </li>
+            <li style="margin-top: 20px;">
+                <a *ngIf="!editContent" (click)="deleteCollection()" class="btn btn-light btn-md" style="margin: 0;">
+                    <i class="material-icons-outlined">delete</i>
+                    <span i18n="@@collectionHeader.delete">Delete</span>
+                </a>
+            </li>
+        </ul>
+    </mat-menu>
+</div>

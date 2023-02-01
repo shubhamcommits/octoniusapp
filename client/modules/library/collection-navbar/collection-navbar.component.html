@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-md fixed-top" style="min-height: 86px;">
+    <!-- Go Back starts -->
+    <span class="navbar-brand ml-5 mr-5" routerLink="/dashboard/work/groups/library" routerLinkActive="active">
+        <i class="material-icons">arrow_back</i>
+    </span>
+    <!-- Go Back ends -->
+
+    <app-secured-image [imgURL]="collectionData?.collection_avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
+        [styleClass]="'group-avatar'" (click)="openDetails(content)"></app-secured-image>
+
+    <ng-template #content let-modal>
+        <app-collection-image-details [groupData]="groupData" [workspaceId]="workspaceData?._id">
+        </app-collection-image-details>
+    </ng-template>
+
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ml-4">
+            <li class="nav-item active">
+                <!-- Folio Static Title starts -->
+                <span *ngIf="!editTitle" (click)="editTitle = !editTitle"
+                        matTooltip="Click me to rename"
+                        matTooltipPosition="below">
+                    {{ collectionData?.name }}
+                </span>
+                <!-- Folio Static Title ends -->
+
+                <!-- Folio edit title name starts -->
+                <input *ngIf="editTitle" type="search"
+                    autocomplete="off"
+                    [(ngModel)]="collectionData.name"
+                    (keyup)="changeTitle($event)"
+                    placeholder="Give me a name"
+                    class="input-search" />
+                <!-- Folio edit title name ends -->
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<router-outlet></router-outlet>

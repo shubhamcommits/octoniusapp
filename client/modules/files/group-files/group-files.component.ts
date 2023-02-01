@@ -580,7 +580,6 @@ export class GroupFilesComponent implements OnInit {
   }
 
   getFileExtension(fileName: string) {
-// console.log({fileName});
     let fileType = '';
     if (fileName) {
       let file = fileName?.split(".");

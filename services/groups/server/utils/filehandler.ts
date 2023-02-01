@@ -289,4 +289,325 @@ const fileHandler = async (req: Request, res: Response, next: NextFunction) => {
   }
 }
 
-export { groupUploadFileUpload, portfolioUploadFileUpload, fileHandler }
+const collectionUploadFileUpload = async (req: Request, res: Response, next: NextFunction) => {
+
+    if (!req.files) {
+        next();
+    } else {
+        const collectionId = req.params.collectionId;
+        const workspaceId = req.params.workspaceId;
+
+        // Get the file from the request
+        const file: any = req['files'].file;
+
+        // Get the folder link from the environment
+        let folder = process.env.FILE_UPLOAD_FOLDER + 'library/';
+
+        // Instantiate the fileName variable and add the date object in the name
+        let fileName = '';
+        if (workspaceId) {
+            fileName += workspaceId +  '_';
+        }
+
+        if (collectionId) {
+            fileName += collectionId +  '_';
+        }
+
+        fileName += Date.now().toString() + req['files'].groupAvatar['name'];
+
+        var minioClient = new minio.Client({
+            endPoint: process.env.MINIO_DOMAIN,
+            port: +(process.env.MINIO_API_PORT),
+            useSSL: process.env.MINIO_PROTOCOL == 'https',
+            accessKey: process.env.MINIO_ACCESS_KEY,
+            secretKey: process.env.MINIO_SECRET_KEY
+        });
+
+        await minioClient.bucketExists(workspaceId, async (error, exists) => {
+            if (error) {
+                fileName = null;
+                return res.status(500).json({
+                    status: '500',
+                    message: 'Error checking bucket exists.',
+                    error: error
+                });
+            }
+
+            if (!exists) {
+                // Make a bucket.
+                await minioClient.makeBucket(workspaceId, async (error) => {
+                    if (error) {
+                        fileName = null;
+                        return res.status(500).json({
+                            status: '500',
+                            message: 'Error creating bucket.',
+                            error: error
+                        });
+                    }
+
+                    const encryption = { algorithm: "AES256" };
+                    await minioClient.setBucketEncryption(workspaceId, encryption)
+                        .then(() => console.log("Encryption enabled"))
+                        .catch((error) => console.error(error));
+
+                    // Using fPutObject API upload your file to the bucket.
+                    minioClient.putObject(workspaceId, folder + fileName, file.data, (error, objInfo) => {
+                    if (error) {
+                        fileName = null;
+                        return res.status(500).json({
+                        status: '500',
+                        message: 'Error uploading file.',
+                        error: error
+                        });
+                    }
+
+                    // Modify the current request to add 
+                    req['fileName'] = folder + fileName;
+
+                    next();
+                    });
+                });
+            } else {
+                // Using fPutObject API upload your file to the bucket.
+                minioClient.putObject(workspaceId, folder + fileName, file.data, (error, objInfo) => {
+                    if (error) {
+                        fileName = null;
+                        return res.status(500).json({
+                            status: '500',
+                            message: 'Error uploading file.',
+                            error: error
+                        });
+                    }
+
+                    // Modify the current request to add 
+                    req['fileName'] = folder + fileName;
+
+                    next();
+                });
+            }
+        });
+    }
+}
+
+const collectionFileUploader = async (req: Request, res: Response, next: NextFunction) => {
+
+    if (!req.files) {
+        next();
+    } else {
+        const collectionId = req.params.collectionId;
+        const workspaceId = req.params.workspaceId;
+
+        req.body.fileData = JSON.parse(req.body.fileData);
+
+        // Get the file from the request
+        const file: any = req['files'].file;
+
+        // Get the folder link from the environment
+        let folder = process.env.FILE_UPLOAD_FOLDER + 'library/' + req.body.fileData._group + '/' + collectionId + '/';
+
+        // Instantiate the fileName variable and add the date object in the name
+        let fileName = '';
+        if (workspaceId) {
+            fileName += workspaceId +  '_';
+        }
+
+        if (collectionId) {
+            fileName += collectionId +  '_';
+        }
+
+        fileName += Date.now().toString() + req.files.file['name'];
+        
+        req.body.fileData.original_name = req.files.file['name'];
+
+        var minioClient = new minio.Client({
+            endPoint: process.env.MINIO_DOMAIN,
+            port: +(process.env.MINIO_API_PORT),
+            useSSL: process.env.MINIO_PROTOCOL == 'https',
+            accessKey: process.env.MINIO_ACCESS_KEY,
+            secretKey: process.env.MINIO_SECRET_KEY
+        });
+
+        await minioClient.bucketExists(workspaceId, async (error, exists) => {
+            if (error) {
+                fileName = null;
+                return res.status(500).json({
+                    status: '500',
+                    message: 'Error checking bucket exists.',
+                    error: error
+                });
+            }
+
+            if (!exists) {
+                // Make a bucket.
+                await minioClient.makeBucket(workspaceId, async (error) => {
+                    if (error) {
+                        fileName = null;
+                        return res.status(500).json({
+                            status: '500',
+                            message: 'Error creating bucket.',
+                            error: error
+                        });
+                    }
+
+                    const encryption = { algorithm: "AES256" };
+                    await minioClient.setBucketEncryption(workspaceId, encryption)
+                        .then(() => console.log("Encryption enabled"))
+                        .catch((error) => console.error(error));
+
+                    // Using fPutObject API upload your file to the bucket.
+                    minioClient.putObject(workspaceId, folder + fileName, file.data, (error, objInfo) => {
+                        if (error) {
+                            fileName = null;
+                            return res.status(500).json({
+                            status: '500',
+                            message: 'Error uploading file.',
+                            error: error
+                            });
+                        }
+
+                        // Modify the current request to add 
+                        req.body.fileData.modified_name = folder + fileName;
+                        req.body.fileData.minio_etag = objInfo.etag;
+                        req.body.fileData.minio_versionId = objInfo.versionId;
+
+                        next();
+                    });
+                });
+            } else {
+                // Using fPutObject API upload your file to the bucket.
+                minioClient.putObject(workspaceId, folder + fileName, file.data, (error, objInfo) => {
+                    if (error) {
+                        fileName = null;
+                        return res.status(500).json({
+                            status: '500',
+                            message: 'Error uploading file.',
+                            error: error
+                        });
+                    }
+
+                    // Modify the current request to add 
+                    req.body.fileData.modified_name = folder + fileName;
+                    req.body.fileData.minio_etag = objInfo.etag;
+                    req.body.fileData.minio_versionId = objInfo.versionId;
+
+                    next();
+                });
+            }
+        });
+    }
+}
+
+const pageFileUploader = async (req: Request, res: Response, next: NextFunction) => {
+
+    if (!req.files) {
+        next();
+    } else {
+        const collectionId = req.params.collectionId;
+        const workspaceId = req.params.workspaceId;
+        const pageId = req.params.pageId;
+
+        req.body.fileData = JSON.parse(req.body.fileData);
+
+        // Get the file from the request
+        const file: any = req['files'].file;
+
+        // Get the folder link from the environment
+        let folder = process.env.FILE_UPLOAD_FOLDER + 'library/' + req.body.fileData._group + '/' + collectionId + '/';
+
+        // Instantiate the fileName variable and add the date object in the name
+        let fileName = '';
+        if (workspaceId) {
+            fileName += workspaceId +  '_';
+        }
+
+        if (collectionId) {
+            fileName += collectionId +  '_';
+        }
+
+        if (pageId) {
+            fileName += pageId +  '_';
+        }
+
+        fileName += Date.now().toString() + req.files.file['name'];
+        
+        req.body.fileData.original_name = req.files.file['name'];
+
+        var minioClient = new minio.Client({
+            endPoint: process.env.MINIO_DOMAIN,
+            port: +(process.env.MINIO_API_PORT),
+            useSSL: process.env.MINIO_PROTOCOL == 'https',
+            accessKey: process.env.MINIO_ACCESS_KEY,
+            secretKey: process.env.MINIO_SECRET_KEY
+        });
+
+        await minioClient.bucketExists(workspaceId, async (error, exists) => {
+            if (error) {
+                fileName = null;
+                return res.status(500).json({
+                    status: '500',
+                    message: 'Error checking bucket exists.',
+                    error: error
+                });
+            }
+
+            if (!exists) {
+                // Make a bucket.
+                await minioClient.makeBucket(workspaceId, async (error) => {
+                    if (error) {
+                        fileName = null;
+                        return res.status(500).json({
+                            status: '500',
+                            message: 'Error creating bucket.',
+                            error: error
+                        });
+                    }
+
+                    const encryption = { algorithm: "AES256" };
+                    await minioClient.setBucketEncryption(workspaceId, encryption)
+                        .then(() => console.log("Encryption enabled"))
+                        .catch((error) => console.error(error));
+
+                    // Using fPutObject API upload your file to the bucket.
+                    minioClient.putObject(workspaceId, folder + fileName, file.data, (error, objInfo) => {
+                        if (error) {
+                            fileName = null;
+                            return res.status(500).json({
+                            status: '500',
+                            message: 'Error uploading file.',
+                            error: error
+                            });
+                        }
+
+                        // Modify the current request to add 
+                        req.body.fileData.modified_name = folder + fileName;
+                        req.body.fileData.minio_etag = objInfo.etag;
+                        req.body.fileData.minio_versionId = objInfo.versionId;
+
+                        next();
+                    });
+                });
+            } else {
+                // Using fPutObject API upload your file to the bucket.
+                minioClient.putObject(workspaceId, folder + fileName, file.data, (error, objInfo) => {
+                    if (error) {
+                        fileName = null;
+                        return res.status(500).json({
+                            status: '500',
+                            message: 'Error uploading file.',
+                            error: error
+                        });
+                    }
+
+                    // Modify the current request to add 
+                    req.body.fileData.modified_name = folder + fileName;
+                    req.body.fileData.minio_etag = objInfo.etag;
+                    req.body.fileData.minio_versionId = objInfo.versionId;
+
+                    next();
+                });
+            }
+        });
+    }
+}
+
+export { groupUploadFileUpload, portfolioUploadFileUpload, fileHandler, collectionUploadFileUpload, collectionFileUploader, pageFileUploader }

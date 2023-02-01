@@ -11,6 +11,7 @@ export class CommentListComponent implements OnChanges {
 
   @Input() postId;
   @Input() storyId;
+  @Input() pageId;
   @Input() groupId;
   @Input() userData;
   @Input() length;
@@ -68,6 +69,11 @@ export class CommentListComponent implements OnChanges {
         this.comments = res['comments'];
         this.displayShowMore = this.length > this.comments.length;
       });
+    } else if (this.pageId) {
+      this.commentService.getPageComments(this.pageId).subscribe((res) => {
+        this.comments = res['comments'];
+        this.displayShowMore = this.length > this.comments.length;
+      });
     }
   }
 
@@ -96,6 +102,11 @@ export class CommentListComponent implements OnChanges {
       });
     } else if (this.storyId) {
       this.commentService.getAllComments(null, this.storyId).subscribe((res) => {
+        this.comments = res['comments'];
+        this.displayShowMore = this.length > this.comments.length;
+      });
+    } else if (this.pageId) {
+      this.commentService.getAllPageComments(this.pageId).subscribe((res) => {
         this.comments = res['comments'];
         this.displayShowMore = this.length > this.comments.length;
       });

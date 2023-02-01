@@ -60,6 +60,18 @@ export class CommentService {
     }).toPromise();
   }
 
+  /**
+   * This function is responsible for adding a new comment
+   * @param formData
+   */
+  newCommentPage(formData: any, pageId: string) {
+    return this._http.post(this.baseURL + '/comments/new-comment', formData, {
+      params: {
+        pageId : pageId
+      }
+    }).toPromise();
+  }
+
 
   /**
    * This function is responsible for editing a comment
@@ -96,6 +108,12 @@ export class CommentService {
     });
   }
 
+  getAllPageComments(pageId: string): Observable<any>{
+    return this._http.get(this.baseURL + '/comments/allComments', {
+      params: { pageId }
+    });
+  }
+
   /**
    * This function is responsible for fetching top 5 comments
    * @param postId
@@ -112,15 +130,41 @@ export class CommentService {
     });
   }
 
-
   /**
    * This function is responsible for fetching next 5 comments
    * @param postId
    * @param commentId
    */
-  getNextComments(postId: any, commentId: any){
+  getNextComments(postId: any, commentId: any, storyId?: string){
+    if (storyId) {
+      return this._http.get(this.baseURL + '/comments/next-comments', {
+        params: { storyId }
+      });
+    }
+
     return this._http.get(this.baseURL + '/comments/next-comments', {
       params: {postId, commentId}
+    }).toPromise();
+  }
+
+  /**
+   * This function is responsible for fetching comments from a page
+   * @param pageId
+   */
+  getPageComments(pageId: string): Observable<any>{
+    return this._http.get(this.baseURL + '/comments/comments', {
+      params: { pageId }
+    });
+  }
+
+  /**
+   * This function is responsible for fetching next 5 comments
+   * @param pageId
+   * @param commentId
+   */
+  getNextPageComments(pageId: any, commentId: any){
+    return this._http.get(this.baseURL + '/comments/next-comments', {
+      params: {pageId, commentId}
     }).toPromise();
   }
 

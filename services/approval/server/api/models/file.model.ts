@@ -46,6 +46,14 @@ const FileSchema = new Schema({
         ref: 'Group',
         required: true
     },
+    _page: {
+        type: Schema.Types.ObjectId,
+        ref: 'Page'
+    },
+    _collection: {
+        type: Schema.Types.ObjectId,
+        ref: 'Collection'
+    },
     _folder : {
         type: Schema.Types.ObjectId,
         ref: 'Folder',
