@@ -29,7 +29,7 @@
     "luxon": "^3.1.0",
     "minio": "^7.0.32",
     "moment": "^2.24.0",
-    "mongoose": "^5.8.7",
+    "mongoose": "~5.8.7",
     "morgan": "^1.9.1",
     "ts-node": "^8.6.2",
     "ts-node-dev": "^1.1.8",
