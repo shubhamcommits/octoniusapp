@@ -9218,7 +9218,7 @@
       </trans-unit>
       <trans-unit id="storyDetails.save" datatype="html">
         <source>Save</source>
-        <target state="needs-adaptation"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;material-icons-outlined&quot;&gt;"/>history_edu<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> ذخیره کنید</target>
+        <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/story-details/story-details.component.html</context>
           <context context-type="linenumber">91</context>
