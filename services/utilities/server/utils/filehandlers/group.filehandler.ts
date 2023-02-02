@@ -27,7 +27,7 @@ const minio = require('minio');
       secretKey: process.env.MINIO_SECRET_KEY
     });
 
-    await minioClient.getObject(workspaceId, process.env.FILE_UPLOAD_FOLDER + file, async (error, data) => {
+    await minioClient.getObject(workspaceId, /*process.env.FILE_UPLOAD_FOLDER + */file, async (error, data) => {
       if (error) {
         return res.status(500).json({
           message: 'Error getting file.',
@@ -88,7 +88,7 @@ const groupsFilesHandler = async (req: Request, res: Response, next: NextFunctio
         });
 
         // return res.status(301).redirect(`${process.env.GROUPS_SERVER}/uploads/${fileVersions[0].modified_name}`)
-        await minioClient.getObject(workspaceId, process.env.FILE_UPLOAD_FOLDER + fileVersions[0].modified_name, async (error, data) => {
+        await minioClient.getObject(workspaceId, /*process.env.FILE_UPLOAD_FOLDER + */fileVersions[0].modified_name, async (error, data) => {
           if (error) {
             return res.status(500).json({
               message: 'Error getting file.',
@@ -97,14 +97,14 @@ const groupsFilesHandler = async (req: Request, res: Response, next: NextFunctio
           }
 
           // const objectUrl = await minioClient.presignedGetObject(req.query.workspaceId, req.query.modified_name);
-          const objectUrl = await minioClient.presignedUrl('GET', workspaceId, process.env.FILE_UPLOAD_FOLDER + fileVersions[0].modified_name);
+          const objectUrl = await minioClient.presignedUrl('GET', workspaceId, /*process.env.FILE_UPLOAD_FOLDER + */fileVersions[0].modified_name);
           return res.status(301).redirect(objectUrl);
         });
       }
     } else {
       // Redirect the Response to the Groups Microservice
       // return res.status(301).redirect(`${process.env.GROUPS_SERVER}/uploads/${file.modified_name}`)
-      await minioClient.getObject(workspaceId, process.env.FILE_UPLOAD_FOLDER + file.modified_name, async (error, data) => {
+      await minioClient.getObject(workspaceId, /*process.env.FILE_UPLOAD_FOLDER + */file.modified_name, async (error, data) => {
         if (error) {
           return res.status(500).json({
             message: 'Error getting file.',
@@ -113,7 +113,7 @@ const groupsFilesHandler = async (req: Request, res: Response, next: NextFunctio
         }
 
         // const objectUrl = await minioClient.presignedGetObject(req.query.workspaceId, req.query.modified_name);
-        const objectUrl = await minioClient.presignedUrl('GET', workspaceId, process.env.FILE_UPLOAD_FOLDER + file.modified_name);
+        const objectUrl = await minioClient.presignedUrl('GET', workspaceId, /*process.env.FILE_UPLOAD_FOLDER + */file.modified_name);
         return res.status(301).redirect(objectUrl);
       });
     }
@@ -148,7 +148,7 @@ const groupFileUploader = async (req: Request, res: Response, next: NextFunction
     const file: any = req['files'].file;
 
     // Get the folder link from the environment
-    let folder = process.env.FILE_UPLOAD_FOLDER;
+    let folder = '';//process.env.FILE_UPLOAD_FOLDER;
     if (req.body.fileData._workspace) {
       folder += req.body.fileData._workspace +  '/';
 
@@ -312,7 +312,7 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
     //     }
     //   });
     // }
-    await minioClient.removeObject(req.body.workspaceId, process.env.FILE_UPLOAD_FOLDER + req.body.fileName, (error) => {
+    await minioClient.removeObject(req.body.workspaceId, /*process.env.FILE_UPLOAD_FOLDER + */req.body.fileName, (error) => {
       if (error) {
         req.body.fileName = null;
         return res.status(500).json({
@@ -346,7 +346,7 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
           //     }
           //   });
           // }
-          await minioClient.removeObject(req.body.workspaceId, process.env.FILE_UPLOAD_FOLDER + question.image_url, (error) => {
+          await minioClient.removeObject(req.body.workspaceId, /*process.env.FILE_UPLOAD_FOLDER + */question.image_url, (error) => {
             if (error) {
               return res.status(500).json({
                 status: '500',
@@ -386,7 +386,7 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
       //     }
       //   });
       // }
-      await minioClient.removeObject(req.body.workspaceId, process.env.FILE_UPLOAD_FOLDER + file.modified_name, (error) => {
+      await minioClient.removeObject(req.body.workspaceId, /*process.env.FILE_UPLOAD_FOLDER + */file.modified_name, (error) => {
         if (error) {
           return res.status(500).json({
             status: '500',
@@ -424,7 +424,7 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
       secretKey: process.env.MINIO_SECRET_KEY
     });
 
-    await minioClient.getObject(req.query.workspaceId, process.env.FILE_UPLOAD_FOLDER + req.query.modified_name, async (error, data) => {
+    await minioClient.getObject(req.query.workspaceId, /*process.env.FILE_UPLOAD_FOLDER + */req.query.modified_name, async (error, data) => {
       if (error) {
         return res.status(500).json({
           message: 'Error getting file.',

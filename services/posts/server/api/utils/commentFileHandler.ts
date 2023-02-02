@@ -34,7 +34,7 @@ const commentFileUploader = async (req: Request, res: Response, next: NextFuncti
     files.attachments.forEach(async (currentFile: any, index: Number) => {
 
       // Get the folder link from the environment
-      const folder = process.env.FILE_UPLOAD_FOLDER;
+    //   const folder = process.env.FILE_UPLOAD_FOLDER;
 
       // Get the modified name from the comment files
       const indexFile = req.body.comment.files.findIndex(file => file.original_name === currentFile.name);
@@ -85,7 +85,7 @@ const commentFileUploader = async (req: Request, res: Response, next: NextFuncti
                 .catch((error) => console.error(error));
 
                 // Using fPutObject API upload your file to the bucket.
-                minioClient.putObject(req.body.fileData._workspace, folder + modified_name, currentFile.data, (error, objInfo) => {
+                minioClient.putObject(req.body.fileData._workspace, /*folder + */modified_name, currentFile.data, (error, objInfo) => {
                 if (error) {
                     return res.status(500).json({
                     status: '500',
@@ -97,7 +97,7 @@ const commentFileUploader = async (req: Request, res: Response, next: NextFuncti
             });
         } else {
             // Using fPutObject API upload your file to the bucket.
-            minioClient.putObject(req.body.fileData._workspace, folder + modified_name, currentFile.data, (error, objInfo) => {
+            minioClient.putObject(req.body.fileData._workspace, /*folder + */modified_name, currentFile.data, (error, objInfo) => {
                 if (error) {
                     return res.status(500).json({
                         status: '500',
@@ -124,7 +124,7 @@ const commentFileUploader = async (req: Request, res: Response, next: NextFuncti
     const currentFile: any = req['files'].attachments;
 
     // Get the folder link from the environment
-    const folder = process.env.FILE_UPLOAD_FOLDER;
+    // const folder = process.env.FILE_UPLOAD_FOLDER;
 
     // Get the modified name from the comment files
     const index = comment['files'].findIndex(file => file.original_name === currentFile.name);
@@ -176,7 +176,7 @@ const commentFileUploader = async (req: Request, res: Response, next: NextFuncti
               .catch((error) => console.error(error));
 
               // Using fPutObject API upload your file to the bucket.
-              minioClient.putObject(req.body.fileData._workspace, folder + modified_name, currentFile.data, (error, objInfo) => {
+              minioClient.putObject(req.body.fileData._workspace, /*folder + */modified_name, currentFile.data, (error, objInfo) => {
               if (error) {
                   return res.status(500).json({
                   status: '500',
@@ -193,7 +193,7 @@ const commentFileUploader = async (req: Request, res: Response, next: NextFuncti
           });
       } else {
           // Using fPutObject API upload your file to the bucket.
-          minioClient.putObject(req.body.fileData._workspace, folder + modified_name, currentFile.data, (error, objInfo) => {
+          minioClient.putObject(req.body.fileData._workspace, /*folder + */modified_name, currentFile.data, (error, objInfo) => {
               if (error) {
                   return res.status(500).json({
                       status: '500',
