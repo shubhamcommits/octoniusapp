@@ -23,7 +23,7 @@ const workspaceFileUploader = async (req: Request, res: Response, next: NextFunc
     const file: any = req['files'].workspace_avatar;
 
     // Get the folder link from the environment
-    let folder = process.env.FILE_UPLOAD_FOLDER;
+    // let folder = process.env.FILE_UPLOAD_FOLDER;
     
     // Instantiate the fileName variable and add the date object in the name
     let fileName = '';
@@ -85,7 +85,7 @@ const workspaceFileUploader = async (req: Request, res: Response, next: NextFunc
               .catch((error) => console.error(error));
 
             // Using fPutObject API upload your file to the bucket.
-            minioClient.putObject(req.body.fileData._workspace, folder + fileName, file.data, (error, objInfo) => {
+            minioClient.putObject(req.body.fileData._workspace, /*folder + */fileName, file.data, (error, objInfo) => {
               if (error) {
                 fileName = null;
                 return res.status(500).json({
@@ -103,7 +103,7 @@ const workspaceFileUploader = async (req: Request, res: Response, next: NextFunc
           });
         } else {
           // Using fPutObject API upload your file to the bucket.
-          minioClient.putObject(req.body.fileData._workspace, folder + fileName, file.data, (error, objInfo) => {
+          minioClient.putObject(req.body.fileData._workspace, /*folder + */fileName, file.data, (error, objInfo) => {
             if (error) {
               fileName = null;
               return res.status(500).json({
@@ -144,7 +144,7 @@ const loungeImageFileUploader = async (req: Request, res: Response, next: NextFu
     const elementPropertyName = req.body.elementPropertyName.toString();
 
     // Get the folder link from the environment
-    let folder = process.env.FILE_UPLOAD_FOLDER;
+    // let folder = process.env.FILE_UPLOAD_FOLDER;
     
     // Instantiate the fileName variable and add the date object in the name
     let fileName = 'lounges_';
@@ -207,7 +207,7 @@ const loungeImageFileUploader = async (req: Request, res: Response, next: NextFu
             .catch((error) => console.error(error));
 
           // Using fPutObject API upload your file to the bucket.
-          minioClient.putObject(req.body.fileData._workspace, folder + fileName, file.data, (error, objInfo) => {
+          minioClient.putObject(req.body.fileData._workspace, /*folder + */fileName, file.data, (error, objInfo) => {
             if (error) {
               fileName = null;
               return res.status(500).json({
@@ -225,7 +225,7 @@ const loungeImageFileUploader = async (req: Request, res: Response, next: NextFu
         });
       } else {
         // Using fPutObject API upload your file to the bucket.
-        minioClient.putObject(req.body.fileData._workspace, folder + fileName, file.data, (error, objInfo) => {
+        minioClient.putObject(req.body.fileData._workspace, /*folder + */fileName, file.data, (error, objInfo) => {
           if (error) {
             fileName = null;
             return res.status(500).json({

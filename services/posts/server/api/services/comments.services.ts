@@ -362,7 +362,8 @@ const minio = require('minio');
             function deleteFiles(files, callback) {
               var i = files.length;
               files.forEach(async function (filepath) {
-                const finalpath = `${process.env.FILE_UPLOAD_FOLDER}${filepath.modified_name}`
+                // const finalpath = `${process.env.FILE_UPLOAD_FOLDER}${filepath.modified_name}`
+                const finalpath = `${filepath.modified_name}`
                 // fs.unlink(finalpath, function (err) {
                 //   i--;
                 //   if (err) {
@@ -400,7 +401,8 @@ const minio = require('minio');
           if (post) {
             // TODO - not sure if the files are being deleted. Wrong name
             //chec/delete document files that were exported
-            const filepath = `${process.env.FILE_UPLOAD_FOLDER}${post._id + post._group + 'export' + '.docx'}`;
+            // const filepath = `${process.env.FILE_UPLOAD_FOLDER}${post._id + post._group + 'export' + '.docx'}`;
+            const filepath = `${post._id + post._group + 'export' + '.docx'}`;
             //check if file exists
             // fs.access(filepath, fs.F_OK, error => {
             //   //if error there was no file
@@ -447,7 +449,8 @@ const minio = require('minio');
           } else if (story) {
             // TODO - not sure if the files are being deleted. Wrong name
             //chec/delete document files that were exported
-            const filepath = `${process.env.FILE_UPLOAD_FOLDER}${story._id + 'export' + '.docx'}`;
+            // const filepath = `${process.env.FILE_UPLOAD_FOLDER}${story._id + 'export' + '.docx'}`;
+            const filepath = `${story._id + 'export' + '.docx'}`;
             //check if file exists
             // fs.access(filepath, fs.F_OK, error => {
             //   //if error there was no file

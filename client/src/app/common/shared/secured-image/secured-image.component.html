@@ -1,4 +1,4 @@
-<div *ngIf="(!isLocalImg && (dataUrl$ | async));else locaImg">
+<span *ngIf="(!isLocalImg && (dataUrl$ | async));else locaImg">
   <img *ngIf="dataUrl$ | async as url"
     [src]="url"
     class="{{ styleClass }}"
@@ -7,7 +7,7 @@
     matTooltip="{{ tooltip }}"
     alt="{{ alt }}"
     [style]="inlineStyle" />
-</div>
+</span>
 
 <ng-template #locaImg>
   <img [src]="onErrorUrl"

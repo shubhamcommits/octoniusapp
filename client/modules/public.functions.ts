@@ -30,7 +30,7 @@ export class PublicFunctions {
     private subSink = new SubSink();
 
     constructor(
-        private injector: Injector
+      private injector: Injector
     ) { }
 
     /**
