@@ -135,15 +135,20 @@ export class SecuredImageComponent implements OnChanges  {
 
   private loadImage(url: string): Observable<any> {
     try {
-      let params = {};
       if (this.noAuth) {
-        params = { params: new HttpParams().set('noAuth', this.noAuth.toString()) };
+        let params = new HttpParams().set('noAuth', this.noAuth.toString());
+        return this.httpClient
+          // load the image as a blob
+          .get(url, { responseType: 'blob', params: params })
+          // create an object url of that blob that we can use in the src attribute
+          .pipe(map(e => this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(e))));
+      } else {
+        return this.httpClient
+          // load the image as a blob
+          .get(url, { responseType: 'blob' })
+          // create an object url of that blob that we can use in the src attribute
+          .pipe(map(e => this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(e))));
       }
-      return this.httpClient
-        // load the image as a blob
-        .get(url, { responseType: 'blob', params })
-        // create an object url of that blob that we can use in the src attribute
-        .pipe(map(e => this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(e))));
     } catch (err) {
       // this.publicFunctions.sendError(err);
       console.log(err);
