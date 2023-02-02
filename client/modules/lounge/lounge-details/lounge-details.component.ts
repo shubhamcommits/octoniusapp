@@ -106,7 +106,7 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
     });
 
     if (this.loungeData.header_pic && !this.loungeData.header_pic.includes('assets/images')) {
-      this.loungeData.header_pic = this.baseUrl + '/' + this.loungeData.header_pic + '?noAuth=true';
+      this.loungeData.header_pic = this.baseUrl + '/' + this.workspaceData?._id + '/' + this.loungeData.header_pic + '?noAuth=true';
     } else {
       this.loungeData.header_pic = 'assets/images/lounge_details_header.jpg';
     }
