@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import { sendError } from ".";
-import { Group, Portfolio } from "../api/models";
+import { Collection, Group, Portfolio } from "../api/models";
 
 const minio = require('minio');
 
@@ -319,7 +319,7 @@ const collectionUploadFileUpload = async (req: Request, res: Response, next: Nex
     } else {
         const collectionId = req.params.collectionId;
         const workspaceId = req.params.workspaceId;
-
+console.log({workspaceId});
         // Get the file from the request
         const file: any = req['files'].file;
 
@@ -391,6 +391,19 @@ const collectionUploadFileUpload = async (req: Request, res: Response, next: Nex
                     });
                 });
             } else {
+                const collection = await Collection.findById(collectionId).select('collection_avatar').lean();
+                if (collection && collection?.collection_avatar && !collection?.collection_avatar?.includes('assets/images/icon-new-group.svg')) {
+                    await minioClient.removeObject(workspaceId, collection?.collection_avatar, (error) => {
+                        if (error) {
+                            return res.status(500).json({
+                                status: '500',
+                                message: 'Error removing previous collection avatar.',
+                                error: error
+                            });
+                        }
+                    });
+                }
+
                 // Using fPutObject API upload your file to the bucket.
                 minioClient.putObject(workspaceId, /*folder + */fileName, file.data, (error, objInfo) => {
                     if (error) {
@@ -419,7 +432,7 @@ const collectionFileUploader = async (req: Request, res: Response, next: NextFun
     } else {
         const collectionId = req.params.collectionId;
         const workspaceId = req.params.workspaceId;
-
+console.log({workspaceId});
         req.body.fileData = JSON.parse(req.body.fileData);
 
         // Get the file from the request
@@ -528,7 +541,7 @@ const pageFileUploader = async (req: Request, res: Response, next: NextFunction)
         const collectionId = req.params.collectionId;
         const workspaceId = req.params.workspaceId;
         const pageId = req.params.pageId;
-
+console.log(workspaceId);
         req.body.fileData = JSON.parse(req.body.fileData);
 
         // Get the file from the request
