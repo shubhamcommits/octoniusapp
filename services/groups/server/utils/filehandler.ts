@@ -439,12 +439,16 @@ const collectionFileUploader = async (req: Request, res: Response, next: NextFun
         const file: any = req['files'].file;
 
         // Get the folder link from the environment
-        let folder = process.env.FILE_UPLOAD_FOLDER + 'library/' + req.body.fileData._group + '/' + collectionId + '/';
+        // let folder = process.env.FILE_UPLOAD_FOLDER + req.body.fileData._group + '/library/' + collectionId + '/';
 
         // Instantiate the fileName variable and add the date object in the name
         let fileName = '';
         if (workspaceId) {
             fileName += workspaceId +  '_';
+        }
+
+        if ( + req.body.fileData._group) {
+            fileName +=  + req.body.fileData._group + '_';
         }
 
         if (collectionId) {
@@ -491,7 +495,7 @@ const collectionFileUploader = async (req: Request, res: Response, next: NextFun
                         .catch((error) => console.error(error));
 
                     // Using fPutObject API upload your file to the bucket.
-                    minioClient.putObject(workspaceId, folder + fileName, file.data, (error, objInfo) => {
+                    minioClient.putObject(workspaceId, /*folder + */fileName, file.data, (error, objInfo) => {
                         if (error) {
                             fileName = null;
                             return res.status(500).json({
@@ -502,7 +506,7 @@ const collectionFileUploader = async (req: Request, res: Response, next: NextFun
                         }
 
                         // Modify the current request to add 
-                        req.body.fileData.modified_name = folder + fileName;
+                        req.body.fileData.modified_name = /*folder + */fileName;
                         req.body.fileData.minio_etag = objInfo.etag;
                         req.body.fileData.minio_versionId = objInfo.versionId;
 
@@ -511,7 +515,7 @@ const collectionFileUploader = async (req: Request, res: Response, next: NextFun
                 });
             } else {
                 // Using fPutObject API upload your file to the bucket.
-                minioClient.putObject(workspaceId, folder + fileName, file.data, (error, objInfo) => {
+                minioClient.putObject(workspaceId, /*folder + */fileName, file.data, (error, objInfo) => {
                     if (error) {
                         fileName = null;
                         return res.status(500).json({
@@ -522,7 +526,7 @@ const collectionFileUploader = async (req: Request, res: Response, next: NextFun
                     }
 
                     // Modify the current request to add 
-                    req.body.fileData.modified_name = folder + fileName;
+                    req.body.fileData.modified_name = /*folder + */fileName;
                     req.body.fileData.minio_etag = objInfo.etag;
                     req.body.fileData.minio_versionId = objInfo.versionId;
 
@@ -548,12 +552,16 @@ const pageFileUploader = async (req: Request, res: Response, next: NextFunction)
         const file: any = req['files'].file;
 
         // Get the folder link from the environment
-        let folder = process.env.FILE_UPLOAD_FOLDER + 'library/' + req.body.fileData._group + '/' + collectionId + '/';
+        // let folder = process.env.FILE_UPLOAD_FOLDER + '/' + req.body.fileData._group + '/library/' + collectionId + '/';
 
         // Instantiate the fileName variable and add the date object in the name
         let fileName = '';
         if (workspaceId) {
             fileName += workspaceId +  '_';
+        }
+
+        if ( + req.body.fileData._group) {
+            fileName +=  + req.body.fileData._group + '_';
         }
 
         if (collectionId) {
@@ -604,7 +612,7 @@ const pageFileUploader = async (req: Request, res: Response, next: NextFunction)
                         .catch((error) => console.error(error));
 
                     // Using fPutObject API upload your file to the bucket.
-                    minioClient.putObject(workspaceId, folder + fileName, file.data, (error, objInfo) => {
+                    minioClient.putObject(workspaceId, /*folder + */fileName, file.data, (error, objInfo) => {
                         if (error) {
                             fileName = null;
                             return res.status(500).json({
@@ -615,7 +623,7 @@ const pageFileUploader = async (req: Request, res: Response, next: NextFunction)
                         }
 
                         // Modify the current request to add 
-                        req.body.fileData.modified_name = folder + fileName;
+                        req.body.fileData.modified_name = /*folder + */fileName;
                         req.body.fileData.minio_etag = objInfo.etag;
                         req.body.fileData.minio_versionId = objInfo.versionId;
 
@@ -624,7 +632,7 @@ const pageFileUploader = async (req: Request, res: Response, next: NextFunction)
                 });
             } else {
                 // Using fPutObject API upload your file to the bucket.
-                minioClient.putObject(workspaceId, folder + fileName, file.data, (error, objInfo) => {
+                minioClient.putObject(workspaceId, /*folder + */fileName, file.data, (error, objInfo) => {
                     if (error) {
                         fileName = null;
                         return res.status(500).json({
@@ -635,7 +643,7 @@ const pageFileUploader = async (req: Request, res: Response, next: NextFunction)
                     }
 
                     // Modify the current request to add 
-                    req.body.fileData.modified_name = folder + fileName;
+                    req.body.fileData.modified_name = /*folder + */fileName;
                     req.body.fileData.minio_etag = objInfo.etag;
                     req.body.fileData.minio_versionId = objInfo.versionId;
 
