@@ -66,12 +66,10 @@ export class GroupService {
     formData.append('groupAvatar', fileToUpload);
 
     const fileData = {
-      _workspace: workspaceId,
-      _group: groupId,
       isBackbroundImage: isBackbroundImage
     }
     formData.append('fileData', JSON.stringify(fileData));
-    return this._http.put(this.baseURL + `/${groupId}/image`, formData).toPromise()
+    return this._http.put(this.baseURL + `/${groupId}/image/${workspaceId}`, formData).toPromise()
   }
 
   /**

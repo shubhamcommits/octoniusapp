@@ -116,7 +116,7 @@ export class PortfolioService {
       isBackbroundImage: isBackbroundImage
     }
     formData.append('fileData', JSON.stringify(fileData));
-    return this._http.put(this.baseURL + `/${portfolioId}/image`, formData).toPromise();
+    return this._http.put(this.baseURL + `/${portfolioId}/image/${workspaceId}`, formData).toPromise();
   }
 
   /**
