@@ -61,12 +61,12 @@ const groupUploadFileUpload = async (req: Request, res: Response, next: NextFunc
 
         await minioClient.bucketExists(workspaceId, async (error, exists) => {
             if (error) {
-            fileName = null;
-            return res.status(500).json({
-                status: '500',
-                message: 'Error checking bucket exists.',
-                error: error
-            });
+                fileName = null;
+                return res.status(500).json({
+                    status: '500',
+                    message: 'Error checking bucket exists.',
+                    error: error
+                });
             }
 
             if (!exists) {
@@ -195,12 +195,12 @@ const portfolioUploadFileUpload = async (req: Request, res: Response, next: Next
 
         await minioClient.bucketExists(workspaceId, async (error, exists) => {
             if (error) {
-            fileName = null;
-            return res.status(500).json({
-                status: '500',
-                message: 'Error checking bucket exists.',
-                error: error
-            });
+                fileName = null;
+                return res.status(500).json({
+                    status: '500',
+                    message: 'Error checking bucket exists.',
+                    error: error
+                });
             }
 
             if (!exists) {
@@ -319,7 +319,7 @@ const collectionUploadFileUpload = async (req: Request, res: Response, next: Nex
     } else {
         const collectionId = req.params.collectionId;
         const workspaceId = req.params.workspaceId;
-console.log({workspaceId});
+
         // Get the file from the request
         const file: any = req['files'].file;
 
@@ -432,7 +432,7 @@ const collectionFileUploader = async (req: Request, res: Response, next: NextFun
     } else {
         const collectionId = req.params.collectionId;
         const workspaceId = req.params.workspaceId;
-console.log({workspaceId});
+
         req.body.fileData = JSON.parse(req.body.fileData);
 
         // Get the file from the request
@@ -541,7 +541,7 @@ const pageFileUploader = async (req: Request, res: Response, next: NextFunction)
         const collectionId = req.params.collectionId;
         const workspaceId = req.params.workspaceId;
         const pageId = req.params.pageId;
-console.log(workspaceId);
+
         req.body.fileData = JSON.parse(req.body.fileData);
 
         // Get the file from the request
