@@ -67,7 +67,7 @@ routes.put('/page/:pageId/like', libarry.like);
 // POST - Unlike a story
 routes.put('/page/:pageId/unlike', libarry.unlike);
 
-// POST - Create new page in the collection
+// POST - Uploads a file to the page
 routes.post('/page/:pageId/files/:workspaceId/:collectionId', pageFileUploader, libarry.addPageFile);
 
 // PUT - Delete a file from a page
