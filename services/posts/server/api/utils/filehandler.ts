@@ -101,12 +101,12 @@ const postFileUploader = async (req: Request, res: Response, next: NextFunction)
 
         await minioClient.bucketExists((group._workspace._id || group._workspace), async (error, exists) => {
             if (error) {
-            fileName = null;
-            return res.status(500).json({
-                status: '500',
-                message: 'Error checking bucket exists.',
-                error: error
-            });
+              fileName = null;
+              return res.status(500).json({
+                  status: '500',
+                  message: 'Error checking bucket exists.',
+                  error: error
+              });
             }
 
             if (!exists) {
@@ -255,12 +255,12 @@ const postFileUploader = async (req: Request, res: Response, next: NextFunction)
 
     await minioClient.bucketExists(req.body.fileData._workspace, async (error, exists) => {
         if (error) {
-        fileName = null;
-        return res.status(500).json({
-            status: '500',
-            message: 'Error checking bucket exists.',
-            error: error
-        });
+          fileName = null;
+          return res.status(500).json({
+              status: '500',
+              message: 'Error checking bucket exists.',
+              error: error
+          });
         }
 
         if (!exists) {
