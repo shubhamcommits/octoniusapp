@@ -73,6 +73,9 @@
 
         <div class="media-body page-content">
             <div class="page-body row">
+                <div *ngIf="!pageData?.content && !canEditPage">
+                    <img src="assets/images/placeholder_workplace_integrations.svg" alt="" style="width: 90%; margin: 14px" />
+                </div>
                 <app-quill-editor style="margin-bottom: 30px;" *ngIf="pageData?.content && !canEditPage" [editorId]="'story_viewer'" [toolbar]="false"
                     [readOnly]="true" [contents]="pageData?.content">
                 </app-quill-editor>
