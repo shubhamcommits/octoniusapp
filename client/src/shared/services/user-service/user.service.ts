@@ -70,12 +70,7 @@ export class UserService {
     let formData = new FormData();
     formData.append('profileImage', fileToUpload);
 
-    const fileData = {
-      _workspace: workspaceId
-    }
-    formData.append('fileData', JSON.stringify(fileData));
-
-    return this._http.put(this.BASE_API_URL + `/image`, formData);
+    return this._http.put(this.BASE_API_URL + `/image/${workspaceId}`, formData);
   }
 
 

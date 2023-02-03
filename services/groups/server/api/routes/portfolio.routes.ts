@@ -47,7 +47,7 @@ routes.put('/:portfolioId/remove-manager', portfolio.removeManager);
 routes.delete('/:portfolioId', portfolio.remove);
 
 // PUT - Change the Group Image
-routes.put('/:portfolioId/image', portfolioUploadFileUpload, portfolio.updateImage);
+routes.put('/:portfolioId/image/:workspaceId', portfolioUploadFileUpload, portfolio.updateImage);
 
 // GET - Get members of all groups of the portfolio based on the portfolioId
 routes.get('/:portfolioId/groups-members', portfolio.getAllGroupsMembers);

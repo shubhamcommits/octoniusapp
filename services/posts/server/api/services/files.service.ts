@@ -19,9 +19,10 @@ export class FilesService {
 
             //delete files, this catches both document insertion as well as multiple file attachment deletes
             this.deleteFile(fileName, groupId, (err) => {
-                if (err) { throw (err); }
-                //all files removed);
-                });
+                if (err) {
+                    throw (err);
+                }
+            });
         }
     }
 

@@ -56,7 +56,7 @@ routes.delete('/:groupId', group.remove);
 routes.put('/:groupId/archive', group.archive);
 
 // PUT - Change the Group Image
-routes.put('/:groupId/image', groupUploadFileUpload, group.updateImage);
+routes.put('/:groupId/image/:workspaceId', groupUploadFileUpload, group.updateImage);
 
 // GET - Get list of first 10 groups of which a user is a part of
 routes.get('/', group.getUserGroups);

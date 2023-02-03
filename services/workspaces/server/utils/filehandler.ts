@@ -1,5 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import { sendError } from ".";
+import { Workspace } from "../api/models";
 
 const minio = require('minio');
 
@@ -102,6 +103,19 @@ const workspaceFileUploader = async (req: Request, res: Response, next: NextFunc
             });
           });
         } else {
+          const workspace = await Workspace.findById(workspaceId).select('workspace_avatar').lean();
+          if (workspace && workspace?.workspace_avatar && !workspace?.workspace_avatar?.includes('assets/images/organization.png')) {
+              await minioClient.removeObject(workspaceId, workspace?.workspace_avatar, (error) => {
+                  if (error) {
+                      return res.status(500).json({
+                          status: '500',
+                          message: 'Error removing previous workspace avatar.',
+                          error: error
+                      });
+                  }
+              });
+          }
+
           // Using fPutObject API upload your file to the bucket.
           minioClient.putObject(req.body.fileData._workspace, /*folder + */fileName, file.data, (error, objInfo) => {
             if (error) {

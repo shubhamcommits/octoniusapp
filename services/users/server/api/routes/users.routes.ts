@@ -100,7 +100,7 @@ routes.put('/update-role', user.updateUserRole);
 routes.put('/change-hr-role', user.changeHRRole);
 
 // PUT - Updates the profileImage of the user on the basis of userId
-routes.put('/image', userFileUploader, user.updateImage);
+routes.put('/image/:workspaceId', userFileUploader, user.updateImage);
 
 // PUT - Updates the user´s password on the basis of userId
 routes.put('/change-password', user.changePassword);

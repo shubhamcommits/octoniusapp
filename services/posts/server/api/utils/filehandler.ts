@@ -47,10 +47,7 @@ const postFileUploader = async (req: Request, res: Response, next: NextFunction)
       groupId = postDB._group._id || postDB._group;
     }
 
-    let group;
-    if (groupId) {
-      group = await Group.findById({_id: groupId}).select('_workspace').lean();
-    }
+    const group = await Group.findById({_id: groupId}).select('_workspace').lean();
 
     // Fetch the files from the current request
     files.attachments.forEach(async (currentFile: any, index: Number) => {
