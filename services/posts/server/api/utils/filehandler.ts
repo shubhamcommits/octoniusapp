@@ -142,6 +142,10 @@ const postFileUploader = async (req: Request, res: Response, next: NextFunction)
                       modified_name: fileName
                     };
 
+                    if (!req.body.post.files) {
+                      req.body.post.files = [];
+                    }
+
                     // Push the file object
                     req.body.post.files.push(file);
 
@@ -165,6 +169,10 @@ const postFileUploader = async (req: Request, res: Response, next: NextFunction)
                     original_name: currentFile.name,
                     modified_name: fileName
                   };
+
+                  if (!req.body.post.files) {
+                    req.body.post.files = [];
+                  }
 
                   // Push the file object
                   req.body.post.files.push(file);
@@ -296,6 +304,10 @@ const postFileUploader = async (req: Request, res: Response, next: NextFunction)
                   modified_name: fileName
                 };
 
+                if (!req.body.post.files) {
+                  req.body.post.files = [];
+                }
+
                 // Push the file object
                 req.body.post.files.push(file);
 
@@ -319,6 +331,10 @@ const postFileUploader = async (req: Request, res: Response, next: NextFunction)
                 original_name: currentFile.name,
                 modified_name: fileName
               };
+
+              if (!req.body.post.files) {
+                req.body.post.files = [];
+              }
 
               // Push the file object
               req.body.post.files.push(file);
