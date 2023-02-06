@@ -378,7 +378,7 @@ export class GroupPostComponent implements OnInit {
    */
   onCreatePost(postData: FormData) {
     this.utilityService.asyncNotification($localize`:@@groupCreatePost.pleaseWaitWeCreatingPost:Please wait we are creating the post...`, new Promise((resolve, reject) => {
-      this.postService.create(postData)
+      this.postService.create((this.groupData?._workspace?._id || this.groupData?._workspace), postData)
         .then(async (res) => {
 
           this.postData = res['post'];
@@ -469,7 +469,7 @@ export class GroupPostComponent implements OnInit {
    */
   editPost(postId: any, formData: FormData) {
     this.utilityService.asyncNotification($localize`:@@groupCreatePost.pleaseWaitWeUpdatingContent:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.postService.edit(postId, formData)
+      this.postService.edit(postId, (this.groupData?._workspace?._id || this.groupData?._workspace), formData)
         .then((res) => {
 
           // Emit the post to other components

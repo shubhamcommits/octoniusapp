@@ -207,7 +207,7 @@ export class NewTaskComponent implements OnInit {
 
     // Asynchronously call the utility service
     utilityService.asyncNotification($localize`:@@newTask.pleaseWaitCreatingPost:Please wait we are creating the post...`, new Promise((resolve, reject) => {
-      postService.create(postData)
+      postService.create((this.groupData?._workspace?._id || this.groupData?._workspace), postData)
         .then(async (res) => {
           let postData = res['post'];
 
