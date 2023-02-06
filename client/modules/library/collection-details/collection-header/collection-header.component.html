@@ -42,9 +42,9 @@
 </div>
 
 <div class="clearfix save-content mb-3">
-    <button *ngIf="!editContent" class="btn btn-primary btn-md float-right" style="margin-right: 20px;"
+    <button *ngIf="!editContent" class="btn btn-light btn-md float-right" style="margin-right: 20px;"
         [matMenuTriggerFor]="collectionActions" #trigger="matMenuTrigger" i18n="@@collectionHeader.actions">
-        Actions
+        Edit details
     </button>
 
     <button *ngIf="editContent" [disabled]="!contentChanged" class="btn float-right btn-primary btn-md"
@@ -67,7 +67,7 @@
             <li style="margin-top: 20px;">
                 <a *ngIf="!editContent" (click)="deleteCollection()" class="btn btn-light btn-md" style="margin: 0;">
                     <i class="material-icons-outlined">delete</i>
-                    <span i18n="@@collectionHeader.delete">Delete</span>
+                    <span i18n="@@collectionHeader.delete">Delete collection</span>
                 </a>
             </li>
         </ul>
