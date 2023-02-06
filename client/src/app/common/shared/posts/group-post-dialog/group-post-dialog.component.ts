@@ -609,7 +609,7 @@ export class GroupPostDialogComponent implements OnInit {
    */
   async editPost(postId: any, formData: FormData) {
     await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.postService.edit(postId, formData)
+      this.postService.edit(postId, this.userData?._workspace?._id || this.userData?._workspace, formData)
         .then((res) => {
           this.postData = res['post'];
           this.contentChanged = false;

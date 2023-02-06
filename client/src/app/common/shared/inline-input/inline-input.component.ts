@@ -65,6 +65,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges, On
   @Input() domainObject: any; // Complete object to be updated
   @Input() styleClass = '';
   @Input() groupId: string;
+  @Input() workspaceId: string;
   @Input() options: [string];
   @Input() customFieldName='';
   @Input() customFieldTitle='';
@@ -279,7 +280,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges, On
       }
 
       this.utilityService.asyncNotification($localize`:@@inlineInput.pleaseWaitUpdatingContent:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-        this.postService.edit(this.domainObject._id, formData)
+        this.postService.edit(this.domainObject._id, this.workspaceId, formData)
           .then((res) => {
             // Emit the post to other components
             this.post.emit({post: res['post']});
