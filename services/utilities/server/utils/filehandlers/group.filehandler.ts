@@ -207,7 +207,7 @@ const groupFileUploader = async (req: Request, res: Response, next: NextFunction
         secretKey: process.env.MINIO_SECRET_KEY
     });
 
-    await minioClient.bucketExists(req.body.fileData._workspace, async (error, exists) => {
+    await minioClient.bucketExists((req.body.fileData._workspace).toLowerCase(), async (error, exists) => {
       if (error) {
         fileName = null;
         return res.status(500).json({
@@ -219,7 +219,7 @@ const groupFileUploader = async (req: Request, res: Response, next: NextFunction
 
       if (!exists) {
         // Make a bucket.
-        await minioClient.makeBucket(req.body.fileData._workspace, async (error) => {
+        await minioClient.makeBucket((req.body.fileData._workspace).toLowerCase(), async (error) => {
           if (error) {
             fileName = null;
             return res.status(500).json({
@@ -230,7 +230,7 @@ const groupFileUploader = async (req: Request, res: Response, next: NextFunction
           }
 
           const encryption = { algorithm: "AES256" };
-          await minioClient.setBucketEncryption(req.body.fileData._workspace, encryption)
+          await minioClient.setBucketEncryption((req.body.fileData._workspace).toLowerCase(), encryption)
             .then(() => console.log("Encryption enabled"))
             .catch((error) => console.error(error));
 
@@ -256,7 +256,7 @@ const groupFileUploader = async (req: Request, res: Response, next: NextFunction
         });
       } else {
         // Using fPutObject API upload your file to the bucket.
-        minioClient.putObject(req.body.fileData._workspace, folder + fileName, file.data, (error, objInfo) => {
+        minioClient.putObject((req.body.fileData._workspace).toLowerCase(), folder + fileName, file.data, (error, objInfo) => {
           if (error) {
             fileName = null;
             return res.status(500).json({
@@ -312,7 +312,7 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
     //     }
     //   });
     // }
-    await minioClient.removeObject(req.body.workspaceId, /*process.env.FILE_UPLOAD_FOLDER + */req.body.fileName, (error) => {
+    await minioClient.removeObject((req.body.workspaceId).toLowerCase(), /*process.env.FILE_UPLOAD_FOLDER + */req.body.fileName, (error) => {
       if (error) {
         req.body.fileName = null;
         return res.status(500).json({
@@ -346,7 +346,7 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
           //     }
           //   });
           // }
-          await minioClient.removeObject(req.body.workspaceId, /*process.env.FILE_UPLOAD_FOLDER + */question.image_url, (error) => {
+          await minioClient.removeObject((req.body.workspaceId).toLowerCase(), /*process.env.FILE_UPLOAD_FOLDER + */question.image_url, (error) => {
             if (error) {
               return res.status(500).json({
                 status: '500',
@@ -386,7 +386,7 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
       //     }
       //   });
       // }
-      await minioClient.removeObject(req.body.workspaceId, /*process.env.FILE_UPLOAD_FOLDER + */file.modified_name, (error) => {
+      await minioClient.removeObject((req.body.workspaceId).toLowerCase(), /*process.env.FILE_UPLOAD_FOLDER + */file.modified_name, (error) => {
         if (error) {
           return res.status(500).json({
             status: '500',
@@ -424,7 +424,9 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
       secretKey: process.env.MINIO_SECRET_KEY
     });
 
-    await minioClient.getObject(req.query.workspaceId, /*process.env.FILE_UPLOAD_FOLDER + */req.query.modified_name, async (error, data) => {
+    let workspaceId = (req.query.workspaceId + '').toLowerCase();
+
+    await minioClient.getObject(workspaceId, /*process.env.FILE_UPLOAD_FOLDER + */req.query.modified_name, async (error, data) => {
       if (error) {
         return res.status(500).json({
           message: 'Error getting file.',
@@ -432,8 +434,8 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
         });
       }
 
-      // const objectUrl = await minioClient.presignedGetObject(req.query.workspaceId, req.query.modified_name);
-      const objectUrl = await minioClient.presignedUrl('GET', req.query.workspaceId, req.query.modified_name);
+      // const objectUrl = await minioClient.presignedGetObject(workspaceId, req.query.modified_name);
+      const objectUrl = await minioClient.presignedUrl('GET', workspaceId, req.query.modified_name);
       return res.status(200).json({
         url: objectUrl,
         message: 'File succesfully obtained.'

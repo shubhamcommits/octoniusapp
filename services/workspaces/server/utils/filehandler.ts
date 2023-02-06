@@ -58,7 +58,7 @@ const workspaceFileUploader = async (req: Request, res: Response, next: NextFunc
           secretKey: process.env.MINIO_SECRET_KEY
       });
 
-      await minioClient.bucketExists(req.body.fileData._workspace, async (error, exists) => {
+      await minioClient.bucketExists((req.body.fileData._workspace).toLowerCase(), async (error, exists) => {
         if (error) {
           fileName = null;
           return res.status(500).json({
@@ -70,7 +70,7 @@ const workspaceFileUploader = async (req: Request, res: Response, next: NextFunc
 
         if (!exists) {
           // Make a bucket.
-          await minioClient.makeBucket(req.body.fileData._workspace, async (error) => {
+          await minioClient.makeBucket((req.body.fileData._workspace).toLowerCase(), async (error) => {
             if (error) {
               fileName = null;
               return res.status(500).json({
@@ -81,12 +81,12 @@ const workspaceFileUploader = async (req: Request, res: Response, next: NextFunc
             }
 
             const encryption = { algorithm: "AES256" };
-            await minioClient.setBucketEncryption(req.body.fileData._workspace, encryption)
+            await minioClient.setBucketEncryption((req.body.fileData._workspace).toLowerCase(), encryption)
               .then(() => console.log("Encryption enabled"))
               .catch((error) => console.error(error));
 
             // Using fPutObject API upload your file to the bucket.
-            minioClient.putObject(req.body.fileData._workspace, /*folder + */fileName, file.data, (error, objInfo) => {
+            minioClient.putObject((req.body.fileData._workspace).toLowerCase(), /*folder + */fileName, file.data, (error, objInfo) => {
               if (error) {
                 fileName = null;
                 return res.status(500).json({
@@ -105,7 +105,7 @@ const workspaceFileUploader = async (req: Request, res: Response, next: NextFunc
         } else {
           const workspace = await Workspace.findById(workspaceId).select('workspace_avatar').lean();
           if (workspace && workspace?.workspace_avatar && !workspace?.workspace_avatar?.includes('assets/images/organization.png')) {
-              await minioClient.removeObject(workspaceId, workspace?.workspace_avatar, (error) => {
+              await minioClient.removeObject(workspaceId.toLowerCase(), workspace?.workspace_avatar, (error) => {
                   if (error) {
                       return res.status(500).json({
                           status: '500',
@@ -117,7 +117,7 @@ const workspaceFileUploader = async (req: Request, res: Response, next: NextFunc
           }
 
           // Using fPutObject API upload your file to the bucket.
-          minioClient.putObject(req.body.fileData._workspace, /*folder + */fileName, file.data, (error, objInfo) => {
+          minioClient.putObject((req.body.fileData._workspace).toLowerCase(), /*folder + */fileName, file.data, (error, objInfo) => {
             if (error) {
               fileName = null;
               return res.status(500).json({
@@ -193,7 +193,7 @@ const loungeImageFileUploader = async (req: Request, res: Response, next: NextFu
         secretKey: process.env.MINIO_SECRET_KEY
     });
 
-    await minioClient.bucketExists(req.body.fileData._workspace, async (error, exists) => {
+    await minioClient.bucketExists((req.body.fileData._workspace).toLowerCase(), async (error, exists) => {
       if (error) {
         fileName = null;
         return res.status(500).json({
@@ -205,7 +205,7 @@ const loungeImageFileUploader = async (req: Request, res: Response, next: NextFu
 
       if (!exists) {
         // Make a bucket.
-        await minioClient.makeBucket(req.body.fileData._workspace, async (error) => {
+        await minioClient.makeBucket((req.body.fileData._workspace).toLowerCase(), async (error) => {
           if (error) {
             fileName = null;
             return res.status(500).json({
@@ -216,12 +216,12 @@ const loungeImageFileUploader = async (req: Request, res: Response, next: NextFu
           }
 
           const encryption = { algorithm: "AES256" };
-          await minioClient.setBucketEncryption(req.body.fileData._workspace, encryption)
+          await minioClient.setBucketEncryption((req.body.fileData._workspace).toLowerCase(), encryption)
             .then(() => console.log("Encryption enabled"))
             .catch((error) => console.error(error));
 
           // Using fPutObject API upload your file to the bucket.
-          minioClient.putObject(req.body.fileData._workspace, /*folder + */fileName, file.data, (error, objInfo) => {
+          minioClient.putObject((req.body.fileData._workspace).toLowerCase(), /*folder + */fileName, file.data, (error, objInfo) => {
             if (error) {
               fileName = null;
               return res.status(500).json({
@@ -239,7 +239,7 @@ const loungeImageFileUploader = async (req: Request, res: Response, next: NextFu
         });
       } else {
         // Using fPutObject API upload your file to the bucket.
-        minioClient.putObject(req.body.fileData._workspace, /*folder + */fileName, file.data, (error, objInfo) => {
+        minioClient.putObject((req.body.fileData._workspace).toLowerCase(), /*folder + */fileName, file.data, (error, objInfo) => {
           if (error) {
             fileName = null;
             return res.status(500).json({
@@ -281,7 +281,7 @@ const fileHandler = async (req: Request, res: Response, next: NextFunction) => {
       secretKey: process.env.MINIO_SECRET_KEY
     });
 
-    await minioClient.getObject(workspaceId, file, async (error, data) => {
+    await minioClient.getObject(workspaceId.toLowerCase(), file, async (error, data) => {
       if (error) {
         return res.status(500).json({
           message: 'Error getting file.',
