@@ -1,15 +1,12 @@
 <div class="row page">
 	<div style="cursor: pointer;"
 		[routerLink]="['/dashboard', 'work', 'groups', 'library', 'collection', 'page']"
-		[queryParams]="{ page: pageData?._id  }">
+		[queryParams]="{ page: pageData?._id  }" class="page-info">
 		<div>
-			<i class="material-icons-outlined" style="color: #005FD5;">library_books</i>
-		</div>
-
-		<div>
+			<i class="material-icons-outlined mr-3" style="color: #005FD5;">library_books</i>
 			{{ pageData?.title }}
 		</div>
-
+		<div>
 		<div class="muted">
 			<span i18n="@@pageRow.createdBy">Created by</span>
 			<span>{{ pageData?._created_by?.first_name }} {{ pageData?._created_by?.last_name }}</span>
@@ -20,8 +17,9 @@
 			<span>{{ formateDate(pageData?.updated_date) }}</span>
 		</div>
 	</div>
+	</div>
 
-	<div class="float-right">
+	<div class="options">
 		<i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
 	
 		<mat-menu #menu="matMenu">

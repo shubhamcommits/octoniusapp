@@ -4,4 +4,16 @@
 	border-radius: 8px;
 	padding: 20px;
 	margin-top: 20px;
+	display: flex;
+	width: 100%;
+}
+
+.page-info{
+	width: 95%;
+	display: flex;
+}
+
+.options{
+	display: flex;
+	align-self: flex-end;
 }
