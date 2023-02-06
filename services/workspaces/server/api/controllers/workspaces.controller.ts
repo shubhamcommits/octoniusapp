@@ -196,7 +196,7 @@ export class WorkspaceController {
                 secretKey: process.env.MINIO_SECRET_KEY
             });
 
-            await minioClient.bucketExists(workspace._id, async (error, exists) => {
+            await minioClient.bucketExists((workspace._id).toLowerCase(), async (error, exists) => {
                 if (error) {
                     return res.status(500).json({
                     status: '500',
@@ -207,7 +207,7 @@ export class WorkspaceController {
 
                 if (!exists) {
                     // Make a bucket.
-                    await minioClient.makeBucket(workspace._id, (error) => {
+                    await minioClient.makeBucket((workspace._id).toLowerCase(), (error) => {
                         if (error) {
                             return res.status(500).json({
                                 status: '500',
@@ -216,7 +216,7 @@ export class WorkspaceController {
                             });
                         }
 
-                        minioClient.setBucketEncryption(req.body.fileData._workspace, { algorithm: "AES256" })
+                        minioClient.setBucketEncryption((workspace._id).toLowerCase(), { algorithm: "AES256" })
                             .then(() => console.log("Encryption enabled"))
                             .catch((error) => console.error(error));
                     });

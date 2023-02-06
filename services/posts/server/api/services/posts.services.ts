@@ -2772,25 +2772,25 @@ export class PostService {
           var conds = new minio.CopyConditions();
           // conds.setMatchETag('bd891862ea3e22c93ed53a098218791d');
 
-          await minioClient.bucketExists(group._workspace, async (error, exists) => {
+          await minioClient.bucketExists((group._workspace).toLowerCase(), async (error, exists) => {
             if (error) {
               throw (error);
             }
 
             if (!exists) {
               // Make a bucket.
-              await minioClient.makeBucket(group._workspace, async (error) => {
+              await minioClient.makeBucket((group._workspace).toLowerCase(), async (error) => {
                 if (error) {
                   throw (error);
                 }
 
                 const encryption = { algorithm: "AES256" };
-                await minioClient.setBucketEncryption(group._workspace, encryption)
+                await minioClient.setBucketEncryption((group._workspace).toLowerCase(), encryption)
                   .then(() => console.log("Encryption enabled"))
                   .catch((error) => console.error(error));
 
                 // Using fPutObject API upload your file to the bucket.
-                minioClient.copyObject(group._workspace, fileName, currentFile.modified_name, conds, (e, data) => {
+                minioClient.copyObject((group._workspace).toLowerCase(), fileName, currentFile.modified_name, conds, (e, data) => {
                   if (e) {
                     throw (e);
                   }
@@ -2798,7 +2798,7 @@ export class PostService {
               });
             } else {
               // Using fPutObject API upload your file to the bucket.
-              minioClient.copyObject(group._workspace, fileName, currentFile.modified_name, conds, (e, data) => {
+              minioClient.copyObject((group._workspace).toLowerCase(), fileName, currentFile.modified_name, conds, (e, data) => {
                 if (error) {
                   throw (error);
                 }
@@ -3154,25 +3154,25 @@ export class PostService {
           var conds = new minio.CopyConditions();
           // conds.setMatchETag('bd891862ea3e22c93ed53a098218791d');
 
-          await minioClient.bucketExists(group._workspace, async (error, exists) => {
+          await minioClient.bucketExists((group._workspace).toLowerCase(), async (error, exists) => {
             if (error) {
               throw (error);
             }
 
             if (!exists) {
               // Make a bucket.
-              await minioClient.makeBucket(group._workspace, async (error) => {
+              await minioClient.makeBucket((group._workspace).toLowerCase(), async (error) => {
                 if (error) {
                   throw (error);
                 }
 
                 const encryption = { algorithm: "AES256" };
-                await minioClient.setBucketEncryption(group._workspace, encryption)
+                await minioClient.setBucketEncryption((group._workspace).toLowerCase(), encryption)
                   .then(() => console.log("Encryption enabled"))
                   .catch((error) => console.error(error));
 
                 // Using fPutObject API upload your file to the bucket.
-                minioClient.copyObject(group._workspace, fileName, currentFile.modified_name, conds, (e, data) => {
+                minioClient.copyObject((group._workspace).toLowerCase(), fileName, currentFile.modified_name, conds, (e, data) => {
                   if (e) {
                     throw (e);
                   }
@@ -3180,7 +3180,7 @@ export class PostService {
               });
             } else {
               // Using fPutObject API upload your file to the bucket.
-              minioClient.copyObject(group._workspace, fileName, currentFile.modified_name, conds, (e, data) => {
+              minioClient.copyObject((group._workspace).toLowerCase(), fileName, currentFile.modified_name, conds, (e, data) => {
                 if (error) {
                   throw (error);
                 }
@@ -3324,25 +3324,25 @@ export class PostService {
           var conds = new minio.CopyConditions();
           // conds.setMatchETag('bd891862ea3e22c93ed53a098218791d');
 
-          await minioClient.bucketExists(group._workspace, async (error, exists) => {
+          await minioClient.bucketExists((group._workspace).toLowerCase(), async (error, exists) => {
             if (error) {
               throw (error);
             }
 
             if (!exists) {
               // Make a bucket.
-              await minioClient.makeBucket(group._workspace, async (error) => {
+              await minioClient.makeBucket((group._workspace).toLowerCase(), async (error) => {
                 if (error) {
                   throw (error);
                 }
 
                 const encryption = { algorithm: "AES256" };
-                await minioClient.setBucketEncryption(group._workspace, encryption)
+                await minioClient.setBucketEncryption((group._workspace).toLowerCase(), encryption)
                   .then(() => console.log("Encryption enabled"))
                   .catch((error) => console.error(error));
 
                 // Using fPutObject API upload your file to the bucket.
-                minioClient.copyObject(group._workspace, fileName, currentFile.modified_name, conds, (e, data) => {
+                minioClient.copyObject((group._workspace).toLowerCase(), fileName, currentFile.modified_name, conds, (e, data) => {
                   if (e) {
                     throw (e);
                   }
@@ -3350,7 +3350,7 @@ export class PostService {
               });
             } else {
               // Using fPutObject API upload your file to the bucket.
-              minioClient.copyObject(group._workspace, fileName, currentFile.modified_name, conds, (e, data) => {
+              minioClient.copyObject((group._workspace).toLowerCase(), fileName, currentFile.modified_name, conds, (e, data) => {
                 if (error) {
                   throw (error);
                 }
@@ -3448,7 +3448,7 @@ export class PostService {
               accessKey: process.env.MINIO_ACCESS_KEY,
               secretKey: process.env.MINIO_SECRET_KEY
             });
-            await minioClient.removeObject(user._workspace, filepath.modified_name, (error) => {
+            await minioClient.removeObject((user._workspace).toLowerCase(), filepath.modified_name, (error) => {
               i--;
               if (error) {
                 callback(error);
@@ -3487,7 +3487,7 @@ export class PostService {
         accessKey: process.env.MINIO_ACCESS_KEY,
         secretKey: process.env.MINIO_SECRET_KEY
       });
-      await minioClient.removeObject(user._workspace, filepath, (error) => {
+      await minioClient.removeObject((user._workspace).toLowerCase(), filepath, (error) => {
         if (error) { throw (error); }
       });
 
@@ -3525,25 +3525,25 @@ export class PostService {
           var conds = new minio.CopyConditions();
           // conds.setMatchETag('bd891862ea3e22c93ed53a098218791d');
 
-          await minioClient.bucketExists(user._workspace, async (error, exists) => {
+          await minioClient.bucketExists((user._workspace).toLowerCase(), async (error, exists) => {
             if (error) {
               throw (error);
             }
 
             if (!exists) {
               // Make a bucket.
-              await minioClient.makeBucket(user._workspace, async (error) => {
+              await minioClient.makeBucket((user._workspace).toLowerCase(), async (error) => {
                 if (error) {
                   throw (error);
                 }
 
                 const encryption = { algorithm: "AES256" };
-                await minioClient.setBucketEncryption(user._workspace, encryption)
+                await minioClient.setBucketEncryption((user._workspace).toLowerCase(), encryption)
                   .then(() => console.log("Encryption enabled"))
                   .catch((error) => console.error(error));
 
                 // Using fPutObject API upload your file to the bucket.
-                minioClient.copyObject(user._workspace, fileName, currentFile.modified_name, conds, (e, data) => {
+                minioClient.copyObject((user._workspace).toLowerCase(), fileName, currentFile.modified_name, conds, (e, data) => {
                   if (e) {
                     throw (e);
                   }
@@ -3551,7 +3551,7 @@ export class PostService {
               });
             } else {
               // Using fPutObject API upload your file to the bucket.
-              minioClient.copyObject(user._workspace, fileName, currentFile.modified_name, conds, (e, data) => {
+              minioClient.copyObject((user._workspace).toLowerCase(), fileName, currentFile.modified_name, conds, (e, data) => {
                 if (error) {
                   throw (error);
                 }
