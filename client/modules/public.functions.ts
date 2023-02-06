@@ -1099,14 +1099,14 @@ export class PublicFunctions {
      * @param postId
      * @param postData
      */
-    onEditPost(postId: string, postData: FormData) {
+    onEditPost(postId: string, workspaceId: string, postData: FormData) {
 
         // Create Post Service Instance
         let postService = this.injector.get(PostService)
 
         // Asynchronously call the utility service
         return new Promise((resolve, reject) => {
-            postService.edit(postId, postData)
+            postService.edit(postId, workspaceId, postData)
                 .then((res) => {
 
                     // Resolve with success
