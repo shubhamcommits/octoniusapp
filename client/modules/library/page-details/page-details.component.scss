@@ -1,11 +1,12 @@
-.container {
+.container-fluid {
   margin: 0 10px;
 }
 
-.collection-pages {
-  width: 20%;
-  float: left;
-  margin-right: 20px;
+.page-navbar {
+  width: 25%;
+  display: flex;
+  margin-right: 32px;
+  font-family: 'Nunito' !important;
 
   input {
     display: none;
@@ -14,15 +15,12 @@
 
 .page {
   margin: 10px;
-  background: #fff;
-
-  .media-body {
-    align-items: left;
-    margin: 0 240px;
-    width: 93%;
-  }
+  width: 100%;
+  display: flex;
+}
 
   .page-content {
+   width: 75%;
 
     .page-body {
       background: #FFFFFF;
@@ -37,4 +35,3 @@
       padding-top: 10px;
     }
   }
-}

@@ -1,12 +1,14 @@
-<div class="container">
+<div class="container-fluid">
     <div *ngIf="pageData" class="page">
-        <div class="collection-pages">
-            <div class="row">
+        <div class="page-navbar">
+
+            <div class="col">
+            <div>
                 <i class="material-icons-outlined">library_books</i>
                 <span i18n="@@pageDetails.collectionPages">Collection Pages</span>
             </div>
 
-            <div class="row" style="padding: 20px;">
+            <div style="padding: 20px;">
                 <!-- Create new Page starts -->
                 <button class="btn" type="button" (click)="createPage()">
                     <i class="material-icons-outlined">add</i>
@@ -19,22 +21,22 @@
 
             <app-section-separator></app-section-separator>
 
-            <div class="row">
+            <div>
                 <span i18n="@@pageDetails.pageInformation">Page Information</span>
             </div>
 
-            <div class="row">
+            <div>
                 <i class="material-icons-outlined">attach_file</i>
                 <span i18n="@@pageDetails.attachments">Attachments</span>
             </div>
 
-            <div class="row dropdown-item btn btn-link" (click)="file.click()">
+            <div class="ropdown-item btn btn-link" (click)="file.click()">
                 <i class="material-icons-outlined mr-2">upload_file</i>
                 <span i18n="@@groupNewFile.uloadFile">Upload file</span>
                 <input #file type="file" placeholder="File" multiple (change)="fileInput(file.files)" />
             </div>
 
-            <div class="row" *ngFor="let file of pageData?._files">
+            <div *ngFor="let file of pageData?._files">
                 <span class="btn" (click)="openDocument(file)">{{ file?.original_name }}</span>
 
                 <button class="btn btn-link" data-toggle="dropdown">
@@ -51,12 +53,12 @@
                 <!-- Menu Ends -->
             </div>
 
-            <div class="row">
+            <div>
                 <i class="material-icons-outlined">menu_book</i>
                 <span i18n="@@pageDetails.authors">Authors</span>
             </div>
 
-            <div *ngFor="let author of pageData?._updated_by" class="row">
+            <div *ngFor="let author of pageData?._updated_by">
                 <app-secured-image
                     [imgURL]="author?.profile_pic"
                     [service]="'user'"
@@ -70,8 +72,9 @@
                 </div>
             </div>
         </div>
+        </div>
 
-        <div class="media-body page-content">
+        <div class="page-content">
             <div class="page-body row">
                 <div *ngIf="!pageData?.content && !canEditPage">
                     <img src="assets/images/placeholder_workplace_integrations.svg" alt="" style="width: 90%; margin: 14px" />

@@ -2,6 +2,9 @@
 
 # Octonius Development Services Installation Script
 
+
+export NODE_OPTIONS=--max_old_space_size=8192 #this was added to help build on linux and avoid memory allocation heaps error
+
 echo -e "\n \t ============================ |- Welcome to Octonius Development Server -| ========================== \n"
 echo -e "\t Kindly choose the package manager below to start installing the services locally (type the option number)..."
 echo "  1) npm"
