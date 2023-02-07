@@ -1,5 +1,5 @@
 import { Component, OnChanges, Input, SimpleChanges, Injector, LOCALE_ID, Inject, Output, EventEmitter } from '@angular/core';
-import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
+
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';

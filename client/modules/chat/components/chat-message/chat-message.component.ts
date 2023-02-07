@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { connect } from 'http2';
 import moment from 'moment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-// import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
+// ;
 
 
 @Component({

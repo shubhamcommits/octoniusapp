@@ -6,7 +6,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
 import { NewNorthStarDialogComponent } from 'modules/work/north-star-page/new-north-start-dialog/new-north-start-dialog.component';
-import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
+;
 import { ColorPickerDialogComponent } from '../../color-picker-dialog/color-picker-dialog.component';
 import { SearchTaskDialogComponent } from 'modules/work/north-star-page/search-task-dialog/search-task-dialog.component';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
