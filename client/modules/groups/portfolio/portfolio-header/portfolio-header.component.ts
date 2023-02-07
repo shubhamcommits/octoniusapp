@@ -188,7 +188,9 @@ export class PortfolioHeaderComponent implements OnInit {
 
     await this.utilityService.asyncNotification($localize`:@@portfolioHeader.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
         this.portfolioService.updatePortfolioContent(this.portfolioData?._id, formData)
-          .then((res) => {
+          .then(async (res) => {
+            this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.portfolioData?.content)['ops']);
+
             this.contentChanged = false;
             this.editContent = false;
             this.publicFunctions.sendUpdatesToPortfolioData(this.portfolioData);
