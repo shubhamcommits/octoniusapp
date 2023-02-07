@@ -21,6 +21,7 @@ import { environment } from 'src/environments/environment';
 import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
 import { ChatService } from 'src/shared/services/chat-service/chat.service';
 import { PortfolioService } from 'src/shared/services/portfolio-service/portfolio.service';
+import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
 
 @Injectable({
   providedIn: 'root'
@@ -2301,5 +2302,36 @@ export class PublicFunctions {
     }
 
     return tasksTmp;
+  }
+
+  convertQuillToHTMLContent(contentOps) {
+    let converter = new QuillDeltaToHtmlConverter(contentOps, {});
+    if (converter) {
+      converter.renderCustomWith((customOp) => {
+        // Conditionally renders blot of mention type
+        if(customOp.insert.type === 'mention'){
+          // Get Mention Blot Data
+          const mention = customOp.insert.value;
+
+          // Template Return Data
+          return (
+            `<span
+              class="mention"
+              data-index="${mention.index}"
+              data-denotation-char="${mention.denotationChar}"
+              data-link="${mention.link}"
+              data-value='${mention.value}'>
+              <span contenteditable="false">
+                ${mention.value}
+              </span>
+            </span>`
+          )
+        }
+      });
+      // Convert into html
+      return converter.convert();
+    }
+
+    return '';
   }
 }

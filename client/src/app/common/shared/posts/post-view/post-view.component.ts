@@ -56,14 +56,36 @@ export class PostViewComponent implements OnInit, OnChanges {
     this.authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`
   }
 
-  ngOnChanges() {
+  async ngOnChanges() {
     if (this.post.content) {
       // Initiate the converter
-      let converter = new QuillDeltaToHtmlConverter(JSON.parse(this.post.content)['ops'], {});
-      if (converter) {
-        // Convert into html
-        this.postContent = converter.convert();
-      }
+      // let converter = new QuillDeltaToHtmlConverter(JSON.parse(this.post.content)['ops'], {});
+      // if (converter) {
+      //   converter.renderCustomWith((customOp) => {
+      //     // Conditionally renders blot of mention type
+      //     if(customOp.insert.type === 'mention'){
+      //       // Get Mention Blot Data
+      //       const mention = customOp.insert.value;
+
+      //       // Template Return Data
+      //       return (
+      //         `<span
+      //           class="mention"
+      //           data-index="${mention.index}"
+      //           data-denotation-char="${mention.denotationChar}"
+      //           data-link="${mention.link}"
+      //           data-value='${mention.value}'>
+      //           <span contenteditable="false">
+      //             ${mention.value}
+      //           </span>
+      //         </span>`
+      //       )
+      //     }
+      //   });
+      //   // Convert into html
+      //   this.postContent = converter.convert();
+      // }
+      this.postContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.post?.content)['ops']);
     }
 
     if (this.postContent.length > 250) {
