@@ -15,7 +15,8 @@ const userFileUploader = async (req: Request, res: Response, next: NextFunction)
   const workspaceId = req.params.workspaceId;
   // Get the file from the request
   const file: any = req['files'].profileImage;
-  req.body.fileData = JSON.parse(req.body.fileData);
+
+  // req.body.fileData = JSON.parse(req.body.fileData);
 
   // Get the folder link from the environment
   // let folder = process.env.FILE_UPLOAD_FOLDER;
