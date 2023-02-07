@@ -95,20 +95,45 @@ export class SearchResultsComponent implements OnChanges {
     let cfg = {};
     let converter;
     let html;
+    let contentOps;
     if (this.type == 'post' && this.data && this.data.content && this.data.content != "") {
       // Initiate the converter
-      converter = new QuillDeltaToHtmlConverter(JSON.parse(this.data.content)['ops'], cfg);
+      // converter = new QuillDeltaToHtmlConverter(JSON.parse(this.data.content)['ops'], cfg);
+      contentOps = JSON.parse(this.data.content)['ops'];
     }
 
     if (this.type == 'file' && this.data && this.data.description && this.data.description != "") {
       // Initiate the converter
-      converter = new QuillDeltaToHtmlConverter(JSON.parse(this.data.description)['ops'], cfg);
+      // converter = new QuillDeltaToHtmlConverter(JSON.parse(this.data.description)['ops'], cfg);
+      contentOps = JSON.parse(this.data.description)['ops'];
     }
 
-    if (converter) {
-      // Convert into html
-      html = converter.convert();
-    }
+    // if (converter) {
+    //   converter.renderCustomWith((customOp) => {
+    //     // Conditionally renders blot of mention type
+    //     if(customOp.insert.type === 'mention'){
+    //       // Get Mention Blot Data
+    //       const mention = customOp.insert.value;
+
+    //       // Template Return Data
+    //       return (
+    //         `<span
+    //           class="mention"
+    //           data-index="${mention.index}"
+    //           data-denotation-char="${mention.denotationChar}"
+    //           data-link="${mention.link}"
+    //           data-value='${mention.value}'>
+    //           <span contenteditable="false">
+    //             ${mention.value}
+    //           </span>
+    //         </span>`
+    //       )
+    //     }
+    //   });
+    //   // Convert into html
+    //   html = converter.convert();
+    // }
+    html = await this.publicFunctions.convertQuillToHTMLContent(contentOps);
 
     if (html) {
       this.data.html = html
