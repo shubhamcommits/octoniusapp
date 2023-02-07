@@ -375,7 +375,7 @@ export class GroupPostDialogComponent implements OnInit {
 
     // Set the current files variable to the output of the module
     this.files = files;
-
+console.log(this.files);
     this.updateDetails('attach_file');
   }
 
@@ -612,6 +612,7 @@ export class GroupPostDialogComponent implements OnInit {
       this.postService.edit(postId, this.userData?._workspace?._id || this.userData?._workspace, formData)
         .then((res) => {
           this.postData = res['post'];
+
           this.contentChanged = false;
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));

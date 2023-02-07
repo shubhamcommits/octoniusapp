@@ -16,8 +16,8 @@
 
 
 <!-- Attached Files Starts -->
-<div *ngIf="post" class="ml-2 mt-2">
-    <p><strong *ngIf="post.files" i18n="@@attachFiles.attachedFiles">Attached Files </strong></p>
+<div *ngIf="post && post.files && post.files.length > 0" class="ml-2 mt-2">
+    <p><strong i18n="@@attachFiles.attachedFiles">Attached Files </strong></p>
     <div *ngFor="let file of post.files; let index = index">
       <a href="{{ baseUrl }}/{{ workspaceData?._id }}/{{ file?.modified_name }}?authToken={{authToken}}" target="_blank">
           {{ file?.original_name }}
@@ -30,8 +30,8 @@
 
 
 <!-- Attached Files Starts -->
-<div *ngIf="comment" class="ml-2 mt-2">
-  <p><strong *ngIf="comment.files" i18n="@@attachFiles.attachedFiles">Attached Files </strong></p>
+<div *ngIf="comment && comment.files && comment.files.length > 0" class="ml-2 mt-2">
+  <p><strong i18n="@@attachFiles.attachedFiles">Attached Files </strong></p>
   <div *ngFor="let file of comment.files; let index = index">
     <a href="{{ baseUrl }}/{{ workspaceData?._id }}/{{ file?.modified_name }}?authToken={{authToken}}" target="_blank">
         {{ file?.original_name }}

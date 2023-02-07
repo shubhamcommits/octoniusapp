@@ -16,7 +16,8 @@ const postFileUploader = async (req: Request, res: Response, next: NextFunction)
   let files: any = req['files']
 
   // Conver the String into the JSON Object
-  req.body.post = JSON.parse(req.body.post)
+  let post = JSON.parse(req.body.post);
+
   const postId = req.params.postId;
   const workspaceId = req.params.workspaceId;
 
@@ -24,10 +25,10 @@ const postFileUploader = async (req: Request, res: Response, next: NextFunction)
   if (!files) {
 
     // Set the body.files object as null
-    req.body.post.files = null;
+    post.files = null;
 
     // Convert the Object Back to string
-    req.body.post = JSON.stringify(req.body.post)
+    req.body.post = JSON.stringify(post)
 
     // Pass the middleware
     next();
@@ -36,9 +37,7 @@ const postFileUploader = async (req: Request, res: Response, next: NextFunction)
   } else if (files.attachments.length > 1) {
 
     // Set the files property to an array
-    req.body.post.files = [];
-
-    let post = req.body.post;
+    post.files = [];
 
     let groupId;
     if (post._group) {
@@ -142,14 +141,12 @@ const postFileUploader = async (req: Request, res: Response, next: NextFunction)
                       modified_name: fileName
                     };
 
-                    if (!req.body.post.files) {
-                      req.body.post.files = [];
+                    if (!post.files) {
+                      post.files = [];
                     }
 
                     // Push the file object
-                    req.body.post.files.push(file);
-
-                    next();
+                    post.files.push(file);
                   });
               });
             } else {
@@ -170,29 +167,25 @@ const postFileUploader = async (req: Request, res: Response, next: NextFunction)
                     modified_name: fileName
                   };
 
-                  if (!req.body.post.files) {
-                    req.body.post.files = [];
+                  if (!post.files) {
+                    post.files = [];
                   }
 
                   // Push the file object
-                  req.body.post.files.push(file);
-
-                  next();
+                  post.files.push(file);
               });
             }
         });
     });
 
     // Convert the Object Back to string
-    req.body.post = JSON.stringify(req.body.post)
+    req.body.post = JSON.stringify(post)
 
     // Pass the middleware
     next();
 
     // If only single file is attached with post
   } else {
-
-    let post = req.body.post;
 
     let groupId;
     if (post._group) {
@@ -202,13 +195,8 @@ const postFileUploader = async (req: Request, res: Response, next: NextFunction)
       groupId = postDB._group._id || postDB._group;
     }
 
-    let group;
-    if (groupId) {
-      group = await Group.findById({_id: groupId}).select('_workspace').lean();
-    }
-
     // Set the files property to an array
-    req.body.post.files = [];
+    post.files = [];
 
     // Fetch the file from the current request
     const currentFile: any = req['files'].attachments;
@@ -289,30 +277,34 @@ const postFileUploader = async (req: Request, res: Response, next: NextFunction)
 
                 // Using fPutObject API upload your file to the bucket.
                 minioClient.putObject(workspaceId.toLowerCase(), /*folder + */fileName, currentFile.data, (error, objInfo) => {
-                if (error) {
-                    fileName = null;
-                    return res.status(500).json({
-                    status: '500',
-                    message: 'Error uploading file.',
-                    error: error
-                    });
-                }
+                  if (error) {
+                      fileName = null;
+                      return res.status(500).json({
+                      status: '500',
+                      message: 'Error uploading file.',
+                      error: error
+                      });
+                  }
 
-                // Modify the file and serialise the object
-                const file = {
-                  original_name: currentFile.name,
-                  modified_name: fileName
-                };
+                  // Modify the file and serialise the object
+                  const file = {
+                    original_name: currentFile.name,
+                    modified_name: fileName
+                  };
 
-                if (!req.body.post.files) {
-                  req.body.post.files = [];
-                }
+                  if (!post.files) {
+                    post.files = [];
+                  }
 
-                // Push the file object
-                req.body.post.files.push(file);
+                  // Push the file object
+                  post.files.push(file);
 
-                next();
-              });
+                  // Convert the Object Back to string
+                  req.body.post = JSON.stringify(post)
+
+                  // Pass the middleware
+                  next();
+                });
           });
         } else {
           // Using fPutObject API upload your file to the bucket.
@@ -332,23 +324,21 @@ const postFileUploader = async (req: Request, res: Response, next: NextFunction)
                 modified_name: fileName
               };
 
-              if (!req.body.post.files) {
-                req.body.post.files = [];
+              if (!post.files) {
+                post.files = [];
               }
 
               // Push the file object
-              req.body.post.files.push(file);
+              post.files.push(file);
 
+              // Convert the Object Back to string
+              req.body.post = JSON.stringify(post)
+
+              // Pass the middleware
               next();
           });
         }
     });
-
-    // Convert the Object Back to string
-    req.body.post = JSON.stringify(req.body.post)
-
-    // Pass the middleware
-    next();
   }
 }
 
