@@ -2,15 +2,12 @@
 	<mat-expansion-panel [expanded]="true">
 		<mat-expansion-panel-header>
 			<mat-panel-title>
-				<div style="cursor: pointer;" [ngStyle]="{'color' : (selectedPage) ? '#005FD5' : '#9D9FA2'}"
+				<div style="cursor: pointer;" [ngStyle]="{'color' : (selectedPage) ? '#005FD5' : '#9D9FA2', 'font-family' : 'Nunito'}"
 					[routerLink]="['/dashboard', 'work', 'groups', 'library', 'collection', 'page']"
 					[queryParams]="{ page: pageData?._id  }">
 					{{ pageData?.title }}
 				</div>
 			</mat-panel-title>
-
-			<mat-panel-description>
-			</mat-panel-description>
 		</mat-expansion-panel-header>
 
 		<div style="padding-left: 20px;">
@@ -21,16 +18,18 @@
 		<div class="row" style="padding-left: 20px;" *ngIf="selectedPage">
 			<!-- Create new Collection starts -->
 			<button class="btn mb-3 mt-3" type="button" (click)="createSubPage(pageData?._id)">
-				<i class="material-icons-outlined">add</i>
-				<span i18n="@@collectionDetails.newPage">New Pages</span>
+				<i class="material-icons">add</i>
+				<span i18n="@@collectionDetails.newPage">New Page</span>
 			</button>
 			<!-- Create new Collection ends -->
 		</div>
 	</mat-expansion-panel>
 </mat-accordion>
 
+
+
 <div *ngIf="pageData && (!pageData?._pages || pageData?._pages?.length == 0)" style="padding-left: 20px; margin-top: 20px;">
-	<div style="cursor: pointer;" [ngStyle]="{'color' : (selectedPage) ? '#005FD5' : '#9D9FA2'}"
+	<div style="cursor: pointer;" [ngStyle]="{'color' : (selectedPage) ? '#005FD5' : '#9D9FA2', 'font-family' : 'Nunito'}"
 		[routerLink]="['/dashboard', 'work', 'groups', 'library', 'collection', 'page']"
 		[queryParams]="{ page: pageData?._id  }">
 		{{ pageData?.title }}
@@ -39,7 +38,7 @@
 	<div class="row" style="padding-left: 20px;" *ngIf="selectedPage">
 		<!-- Create new Collection starts -->
 		<button class="btn mb-3 mt-3" type="button" (click)="createSubPage(pageData?._id)">
-			<i class="material-icons-outlined">add</i>
+			<i class="material-icons">add</i>
 			<span i18n="@@collectionDetails.newPage">New Page</span>
 		</button>
 		<!-- Create new Collection ends -->
