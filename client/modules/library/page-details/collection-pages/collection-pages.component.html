@@ -4,8 +4,8 @@
 			<mat-panel-title>
 				<div style="cursor: pointer;" [ngStyle]="{'color' : (selectedPage) ? '#005FD5' : '#9D9FA2', 'font-family' : 'Nunito'}"
 					[routerLink]="['/dashboard', 'work', 'groups', 'library', 'collection', 'page']"
-					[queryParams]="{ page: pageData?._id  }">
-					{{ pageData?.title }}
+					[queryParams]="{ page: pageData?._id  }" [matTooltip]="pageData?.title">
+					{{ pageData?.title | truncatetext: 25 }}
 				</div>
 			</mat-panel-title>
 		</mat-expansion-panel-header>
@@ -31,8 +31,8 @@
 <div *ngIf="pageData && (!pageData?._pages || pageData?._pages?.length == 0)" style="padding-left: 20px; margin-top: 20px;">
 	<div style="cursor: pointer;" [ngStyle]="{'color' : (selectedPage) ? '#005FD5' : '#9D9FA2', 'font-family' : 'Nunito'}"
 		[routerLink]="['/dashboard', 'work', 'groups', 'library', 'collection', 'page']"
-		[queryParams]="{ page: pageData?._id  }">
-		{{ pageData?.title }}
+		[queryParams]="{ page: pageData?._id  }" [matTooltip]="pageData?.title">
+		{{ pageData?.title | truncatetext: 25  }}
 	</div>
 		
 	<div class="row" style="padding-left: 20px;" *ngIf="selectedPage">
