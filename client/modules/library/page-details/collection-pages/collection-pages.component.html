@@ -2,24 +2,24 @@
 	<mat-expansion-panel [expanded]="true">
 		<mat-expansion-panel-header>
 			<mat-panel-title>
-				<div style="cursor: pointer;" [ngStyle]="{'color' : (selectedPage) ? '#005FD5' : '#9D9FA2', 'font-family' : 'Nunito'}"
+				<button class="btn btn-light" 
 					[routerLink]="['/dashboard', 'work', 'groups', 'library', 'collection', 'page']"
 					[queryParams]="{ page: pageData?._id  }" [matTooltip]="pageData?.title">
 					{{ pageData?.title | truncatetext: 25 }}
-				</div>
+			</button>
 			</mat-panel-title>
 		</mat-expansion-panel-header>
 
-		<div style="padding-left: 20px;">
+		<div style="padding-left: 40px;">
 			<app-collection-pages *ngFor="let page of pageData?._pages" [pageData]="page" [userData]="userData" [workspaceId]="workspaceId"
 				(subpageDeletedEmitter)="initSubPages()"></app-collection-pages>
 		</div>
 		
-		<div class="row" style="padding-left: 20px;" *ngIf="selectedPage">
+		<div style="padding-left: 40px;" *ngIf="selectedPage">
 			<!-- Create new Collection starts -->
-			<button class="btn mb-3 mt-3" type="button" (click)="createSubPage(pageData?._id)">
+			<button class="btn btn-light mb-3 mt-3" type="button" (click)="createSubPage(pageData?._id)">
 				<i class="material-icons">add</i>
-				<span i18n="@@collectionDetails.newPage">New Page</span>
+				<span i18n="@@collectionDetails.newPage">New child page</span>
 			</button>
 			<!-- Create new Collection ends -->
 		</div>
@@ -28,18 +28,18 @@
 
 
 
-<div *ngIf="pageData && (!pageData?._pages || pageData?._pages?.length == 0)" style="padding-left: 20px; margin-top: 20px;">
-	<div style="cursor: pointer;" [ngStyle]="{'color' : (selectedPage) ? '#005FD5' : '#9D9FA2', 'font-family' : 'Nunito'}"
+<div *ngIf="pageData && (!pageData?._pages || pageData?._pages?.length == 0)" >
+	<button class="btn btn-light" 
 		[routerLink]="['/dashboard', 'work', 'groups', 'library', 'collection', 'page']"
 		[queryParams]="{ page: pageData?._id  }" [matTooltip]="pageData?.title">
 		{{ pageData?.title | truncatetext: 25  }}
-	</div>
+</button>
 		
-	<div class="row" style="padding-left: 20px;" *ngIf="selectedPage">
+	<div  *ngIf="selectedPage">
 		<!-- Create new Collection starts -->
-		<button class="btn mb-3 mt-3" type="button" (click)="createSubPage(pageData?._id)">
+		<button class="btn btn-light mb-3 mt-3" type="button" (click)="createSubPage(pageData?._id)">
 			<i class="material-icons">add</i>
-			<span i18n="@@collectionDetails.newPage">New Page</span>
+			<span i18n="@@collectionDetails.newPage">New child page</span>
 		</button>
 		<!-- Create new Collection ends -->
 	</div>
