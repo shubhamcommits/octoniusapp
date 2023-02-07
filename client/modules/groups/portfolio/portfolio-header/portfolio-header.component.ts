@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 import { MatDialog } from '@angular/material/dialog';
 import { PortfolioService } from 'src/shared/services/portfolio-service/portfolio.service';
 import { ColorPickerDialogComponent } from 'src/app/common/shared/color-picker-dialog/color-picker-dialog.component';
-import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
+;
 import { Router } from '@angular/router';
 
 @Component({

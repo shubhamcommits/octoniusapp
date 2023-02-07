@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, Injector, OnChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
+;
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';

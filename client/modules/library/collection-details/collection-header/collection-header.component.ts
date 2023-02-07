@@ -3,7 +3,7 @@ import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ColorPickerDialogComponent } from 'src/app/common/shared/color-picker-dialog/color-picker-dialog.component';
-import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
+;
 import { Router } from '@angular/router';
 import { LibraryService } from 'src/shared/services/library-service/library.service';
 
