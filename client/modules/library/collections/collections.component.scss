@@ -51,6 +51,7 @@ h2{
   }
 
   .category-body {
+    display: flex;
     .cards-list{
       display: flex;
       flex-wrap: wrap;
