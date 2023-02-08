@@ -41,34 +41,24 @@
       (storyLiked)="editPage($event)"
       (storyUnLiked)="editPage($event)"></app-like-page>
     <!-- LIKE action ends -->
-
+   
     <!-- EDIT action starts -->
-    <button class="btn btn-link" data-toggle="dropdown">
-      <span><i class="material-icons muted">more_horiz</i></span>
-    </button>
+   
 
     <!-- Menu Starts -->
-    <ul class="dropdown-menu">
+    <!-- <ul class="dropdown-menu">
       <li class="dropdown-item" (click)="canEditAction()">
-        <span class="material-icons-outlined">create</span>
-        <span *ngIf="!canEditPage" i18n="@@storyActionsBar.edit">Edit</span>
-        <span *ngIf="canEditPage" i18n="@@storyActionsBar.cancelEdit">Cancel Edit</span>
+        
+        <span *ngIf="!canEditPage" i18n="@@storyActionsBar.edit"><i class="material-icons">create</i>Edit</span>
+ 
       </li>
-      <!--
-      <li class="dropdown-item" (click)="openImageSelector('header_pic')">
-        <span class="material-icons-outlined">panorama</span>
-        <span i18n="@@storyActionsBar.editHeaderImage">Edit Header Image</span>
+     
+      <li class="dropdown-item">
+        <span (click)="deletePage(pageData?._id)" i18n="@@storyActionsBar.delete">
+          <i class="material-icons">delete</i> Delete</span>
+        
       </li>
-      <li class="dropdown-item" (click)="openImageSelector('icon_pic')">
-        <span class="material-icons-outlined">insert_photo</span>
-        <span i18n="@@storyActionsBar.editIconImage">Edit Icon Image</span>
-      </li>
-      -->
-      <li class="dropdown-item" (click)="deletePage(pageData?._id)">
-        <span class="material-icons-outlined">delete</span>
-        <span i18n="@@storyActionsBar.delete">Delete</span>
-      </li>
-    </ul>
+    </ul> -->
     <!-- Menu Ends -->
     <!-- EDIT action ends -->
   </div>
