@@ -992,3 +992,7 @@ mat-expansion-panel{
   // max-height: 45vh !important;
   overflow-y: auto;
 }
+
+.mat-tab-group, .mat-tab-label{
+  font-family: $font-family-base !important;
+}
