@@ -3,7 +3,7 @@
 }
 
 .page-navbar {
-  width: 25%;
+  width: 20%;
   display: flex;
   margin-right: 32px;
   font-family: 'Nunito' !important;
@@ -21,7 +21,12 @@
 }
 
   .page-content {
-   width: 75%;
+   width: 80%;
+
+   .editbar{
+    width: 100%;
+    text-align: right;
+   }
 
     .page-body {
       background: #FFFFFF;

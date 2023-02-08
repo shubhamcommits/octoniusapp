@@ -76,11 +76,20 @@
         </div>
 
         <div class="page-content">
-            <div class="page-body row">
-                <div *ngIf="!pageData?.content && !canEditPage">
-                    <img src="assets/images/placeholder_workplace_integrations.svg" alt="" style="width: 90%; margin: 14px" />
+            <div class="page-body">
+                <div *ngIf="!pageData?.content && !canEditPage" style="width: 100%; text-align: center;">
+                    <img src="assets/images/placeholder_new_page.svg" alt="" style="width: 40%; margin: 14px" />
+                    <p class="muted">Start writing something awesome!</p>
                 </div>
-
+                 <!-- Menu Starts -->
+                <div class="editbar">
+                    <button class="btn btn-link"><i class="material-icons">create</i></button>
+                    <button class="btn btn-link ml-2" data-toggle="dropdown">
+                        <i class="material-icons muted">more_horiz</i>
+                      </button>
+                </div>
+        
+                 <!-- Menu Ends -->
                 <app-quill-editor style="margin-bottom: 30px;" *ngIf="pageData?.content && !canEditPage" [editorId]="'story_viewer'" [toolbar]="false"
                     [readOnly]="true" [contents]="pageData?.content">
                 </app-quill-editor>
@@ -89,11 +98,14 @@
                     [readOnly]="false" [workspaceId]="workspaceData?._id"
                     [contents]="pageData?.content" (content)="getQuillData($event)">
                 </app-quill-editor>
-        
+                <div style="width: 100%; text-align: right;">
+                    <button *ngIf="canEditPage" i18n="@@storyActionsBar.edit" class="btn btn-danger mr-2" (click)="canEditAction()">Cancel</button>
                 <button type="button" *ngIf="canEditPage" class="btn btn-primary"
                     (click)="savePage()" i18n="@@pageDetails.save">
                     Save
                 </button>
+                </div>
+                
             </div>
 
             <app-page-actions-bar class="row"
