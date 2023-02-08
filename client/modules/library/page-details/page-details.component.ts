@@ -171,6 +171,40 @@ export class PageDetailsComponent implements OnInit {
     }
   }
 
+  deletePage(pageId: string) {
+    // Open the Confirm Dialog to ask for permission
+    this.utilityService.getConfirmDialogAlert($localize`:@@pageDetails.areYouSure:Are you sure?`, $localize`:@@pageDetails.byDoingThisPageWillBeDeleted:By doing this the page will be deleted!`)
+      .then((res) => {
+        if (res.value) {
+
+          // Call the HTTP Service function
+          this.utilityService.asyncNotification($localize`:@@pageDetails.pleaseWaitWeRemovingPage:Please wait we are removing your page...`, new Promise((resolve, reject) => {
+            this.libraryService.deletePage(pageId, this.workspaceData?._id)
+              .then((res) => {
+                this.goBack();
+                resolve(this.utilityService.resolveAsyncPromise($localize`:@@pageDetails.pageRemoved:Page Removed!`));
+              })
+              .catch((err) => {
+                reject(this.utilityService.rejectAsyncPromise($localize`:@@pageDetails.unableToRemovePage:Unable to remove the page at the moment, please try again!`))
+              });
+          }));
+        }
+      });
+  }
+
+  async goBack() {
+    if (this.pageData && this.pageData._collection) {
+      this._router.navigate(
+        ['/dashboard', 'work', 'groups', 'library'],
+        {
+          queryParams: {
+            collection: this.pageData?._collection?._id
+          }
+        }
+      );
+    }
+  }
+
   getQuillData(quillData: any) {
     // Set the quill data object to the quillData output
     this.quillData = quillData
