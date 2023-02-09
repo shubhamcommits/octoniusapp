@@ -6,7 +6,7 @@ const { Schema } = mongoose;
 const PageSchema = new Schema({
     title: {
         type: String,
-        default: 'New Folio'
+        default: 'New Page'
     },
     _parent: {
         type: Schema.Types.ObjectId,

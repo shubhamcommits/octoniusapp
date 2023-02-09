@@ -129,9 +129,9 @@ const postFileUploader = async (req: Request, res: Response, next: NextFunction)
                     if (error) {
                         fileName = null;
                         return res.status(500).json({
-                        status: '500',
-                        message: 'Error uploading file.',
-                        error: error
+                          status: '500',
+                          message: 'Error uploading file.',
+                          error: error
                         });
                     }
 
