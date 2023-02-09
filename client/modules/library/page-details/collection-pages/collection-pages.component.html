@@ -5,7 +5,7 @@
 				<button class="btn btn-light" style="font-family: 'Nunito';" 
 					[routerLink]="['/dashboard', 'work', 'groups', 'library', 'collection', 'page']"
 					[queryParams]="{ page: pageData?._id  }" [matTooltip]="pageData?.title">
-					{{ pageData?.title | truncatetext: 25 }}
+					{{ pageData?.title | truncatetext: 20 }}
 			</button>
 			</mat-panel-title>
 		</mat-expansion-panel-header>
@@ -32,7 +32,7 @@
 	<button class="btn btn-light" style="font-family: 'Nunito';"
 		[routerLink]="['/dashboard', 'work', 'groups', 'library', 'collection', 'page']"
 		[queryParams]="{ page: pageData?._id  }" [matTooltip]="pageData?.title">
-		{{ pageData?.title | truncatetext: 25  }}
+		{{ pageData?.title | truncatetext: 20  }}
 </button>
 		
 	<div  *ngIf="selectedPage">

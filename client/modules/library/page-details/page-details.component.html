@@ -37,7 +37,7 @@
                 </div>
 
                 <div *ngFor="let file of pageData?._files">
-                    <span class="btn" (click)="openDocument(file)">{{ file?.original_name }}</span>
+                    <span class="btn" (click)="openDocument(file)">{{ file?.original_name | truncatetext: 20 }}</span>
 
                     <button class="btn btn-link" data-toggle="dropdown">
                         <span><i class="material-icons muted">more_vert</i></span>
