@@ -638,7 +638,7 @@ export class GroupFilesComponent implements OnInit {
     this.utilityService.asyncNotification(
       (file) ? $localize`:@@groupFiles.pleaseWaitUploadingFile:Please wait, we are uploading your file - ${file['name']} ...` : $localize`:@@groupFiles.pleaseWaitCreatingFolio:Please wait while we are creating a new folio`,
       new Promise((resolve, reject) => {
-        this.filesService.addFile(fileData, file)
+        this.filesService.addFile(fileData, this.workspaceId, this.groupData?._id, (this.currentFolder) ? this.currentFolder._id : null, file)
           .then((res) => {
 
             // Output the created file to the top components
@@ -1104,14 +1104,13 @@ export class GroupFilesComponent implements OnInit {
 
     // Loop through each file and begin the process of uploading
     Array.prototype.forEach.call(files, (uploadFile: File) => {
-
       // Adding Mime Type of the file uploaded
       fileData.mime_type = uploadFile.type
 
       // Call the HTTP Request Asynschronously
       this.utilityService.asyncNotification($localize`:@@groupFiles.pleaseWaitUploadingNewVersion:Please wait we are uploading your new version...`,
         new Promise((resolve, reject) => {
-          this.filesService.addFile(fileData, uploadFile)
+          this.filesService.addFile(fileData, this.workspaceId, this.groupData?._id, (this.currentFolder) ? this.currentFolder._id : null, uploadFile)
             .then((res) => {
               const index = (this.files) ? this.files.findIndex(f => f._id == file?._id) : -1;
               this.files[index].modified_name = res['file'].modified_name

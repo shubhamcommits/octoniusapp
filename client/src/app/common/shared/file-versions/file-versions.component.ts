@@ -183,7 +183,7 @@ export class FileVersionsComponent implements OnInit {
       // Call the HTTP Request Asynschronously
       this.utilityService.asyncNotification($localize`:@@fileVersions.pleaseWaitUploadingFile:Please wait we are uploading your new version...`,
         new Promise((resolve, reject) => {
-          this.filesService.addFile(fileData, file)
+          this.filesService.addFile(fileData, this.workspaceData?._id, this.currentGroupId, null, file)
             .then((res) => {
               if (!this.fileVersions) {
                 this.fileVersions = [];

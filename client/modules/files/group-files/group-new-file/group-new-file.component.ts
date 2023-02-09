@@ -196,7 +196,7 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
 
                 // Call the Upload file service function
                 // this.uploadFile(this.fileData, file);
-                await fileService.addFile(this.fileData, file)
+                await fileService.addFile(this.fileData, this.workspaceId, this.groupData?._id, (folderIndex >= 0) ? folders[folderIndex]._id : this.folderId, file)
                   .catch((err) => {
                     throw (err);
                   });
@@ -311,7 +311,7 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
     utilityService.asyncNotification(
       (file) ? $localize`:@@groupNewFile.pleaseWaitUploadingFile:Please wait we are uploading your file - ${file['name']} ...` : $localize`:@@groupNewFile.pleaseWaitCreatingFolio:Please wait while we are creating a new folio`,
       new Promise((resolve, reject) => {
-        fileService.addFile(fileData, file)
+        fileService.addFile(fileData, this.workspaceId, this.groupData?._id, null, file)
           .then((res) => {
 
             // Output the created file to the top components

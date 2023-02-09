@@ -72,7 +72,7 @@ routes.get('/user-northstar', postController.getNorthStarStats);
 routes.get('/global-northstar', postController.getGlobalNorthStarStats);
 
 // This route is used to edit a post
-routes.put('/:postId/:workspaceId', postFileUploader, postController.edit);
+routes.put('/:postId/edit/:workspaceId', postFileUploader, postController.edit);
 
 // This route is used to edit a post
 routes.put('/:postId/title', postController.editPostTitle);
