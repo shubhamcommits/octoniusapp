@@ -31,7 +31,7 @@ export class PostService {
   edit(postId: string, workspaceId: string, formData: FormData) {
 
     // Call the HTTP Request
-    return this._http.put(this.baseURL + `/${postId}/${workspaceId}`, formData).
+    return this._http.put(this.baseURL + `/${postId}/edit/${workspaceId}`, formData).
       toPromise()
   }
 

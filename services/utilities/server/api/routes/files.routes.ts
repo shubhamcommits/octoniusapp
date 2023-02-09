@@ -18,7 +18,7 @@ routes.use(authsHelper.verifyToken);
 routes.use(authsHelper.isLoggedIn);
 
 // POST - Handles the adding files inside a group
-routes.post('/groups', groupFileUploader, files.add);
+routes.post('/groups/:workspaceId/:groupId/:folderId', groupFileUploader, files.add);
 
 // GET - Fetches the files list
 routes.get('/groups', files.get);

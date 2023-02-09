@@ -16,19 +16,23 @@ export class FilesService {
    * This function is responsible for uploding a file to the group
    * @param fileData
    */
-  addFile(fileData: any, fileToUpload?: File) {
+  addFile(fileData: any, workspaceId: string, groupId: string, folderId: string, fileToUpload?: File) {
+    try{
+      // PREPARING FORM DATA
+      let formData = new FormData();
+      // Adding File Data
+      formData.append('fileData', JSON.stringify(fileData));
 
-    // PREPARING FORM DATA
-    let formData = new FormData();
-
-    // Adding File Data
-    formData.append('fileData', JSON.stringify(fileData));
-
-    // Appending file
-    if(fileToUpload)
+      // Appending file
+      if(fileToUpload) {
         formData.append('file', fileToUpload, fileToUpload['name']);
+      }
 
-    return this._http.post(this.baseURL + `/files/groups`, formData).toPromise();
+      return this._http.post(this.baseURL + `/files/groups/${workspaceId}/${groupId}/${folderId}`, formData).toPromise();
+    } catch(error) {
+      console.log(error);
+      throw error;
+    }
   }
 
   /**
