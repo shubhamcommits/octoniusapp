@@ -323,7 +323,11 @@ export class LibraryController {
         const fileName = req['fileName'];
 
         try {
-            const collection = libraryService.updateCollectionImage(collectionId, workspaceId, fileName);
+            if (!collectionId || !workspaceId || !fileName) {
+                return sendError(res, new Error(`Please provide a file to upload, a collectionId, and a workspaceId!`), 'Please provide a file to upload, a collectionId, and a workspaceId!', 500);
+            }
+
+            const collection = await libraryService.updateCollectionImage(collectionId, workspaceId, fileName);
 
             // Send status 200 response
             return res.status(200).json({

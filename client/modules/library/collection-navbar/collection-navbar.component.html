@@ -9,7 +9,7 @@
         [styleClass]="'group-avatar'" (click)="openDetails(content)"></app-secured-image>
 
     <ng-template #content let-modal>
-        <app-collection-image-details [groupData]="groupData" [workspaceId]="workspaceData?._id">
+        <app-collection-image-details [collectionData]="collectionData" [workspaceId]="workspaceData?._id">
         </app-collection-image-details>
     </ng-template>
 

@@ -61,10 +61,10 @@ export class LibraryService {
     return this._http.put(this.baseUrl + `/library/collection/${collectionId}/content`, portfolioForm).toPromise();
   }
 
-  updateCollectionImage(workspaceId: string, collectionId: string, image: any) {
+  updateCollectionImage(workspaceId: string, collectionId: string, image: File) {
     let formData = new FormData();
     formData.append('image', image);
-    return this._http.put<any>(this.baseUrl + `/library/collection/${workspaceId}/updateCollectionImage/${collectionId}`, formData).toPromise();
+    return this._http.put<any>(this.baseUrl + `/library/collection/${collectionId}/updateCollectionImage/${workspaceId}`, formData).toPromise();
   }
 
   /**
