@@ -59,10 +59,12 @@ export class LibraryService {
       accessKey: process.env.MINIO_ACCESS_KEY,
       secretKey: process.env.MINIO_SECRET_KEY
     });
-    
-    // Remove previuos image
-    const finalpath = `${collection.collection_avatar}`
-    await minioClient.removeObject(workspaceId, finalpath, (error) => {});
+
+    if (collection && collection.collection_avatar) {
+      // Remove previuos image
+      const finalpath = `${collection.collection_avatar}`
+      await minioClient.removeObject(workspaceId, finalpath, (error) => {});
+    }
     
     collection = await Collection.findByIdAndUpdate({
           _id: collectionId

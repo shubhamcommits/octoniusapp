@@ -321,7 +321,7 @@ const collectionUploadFileUpload = async (req: Request, res: Response, next: Nex
         const workspaceId = req.params.workspaceId;
 
         // Get the file from the request
-        const file: any = req['files'].file;
+        const file: any = req['files'].image;
 
         // Get the folder link from the environment
         // let folder = process.env.FILE_UPLOAD_FOLDER + 'library/';
@@ -336,7 +336,7 @@ const collectionUploadFileUpload = async (req: Request, res: Response, next: Nex
             fileName += collectionId +  '_';
         }
 
-        fileName += Date.now().toString() + req['files'].groupAvatar['name'];
+        fileName += Date.now().toString() + file['name'];
 
         var minioClient = new minio.Client({
             endPoint: process.env.MINIO_DOMAIN,

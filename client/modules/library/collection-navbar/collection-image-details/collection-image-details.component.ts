@@ -37,17 +37,19 @@ export class CollectionImageDetailsComponent implements OnInit {
   }
 
   updateImage() {
-    // Group Service Instance
-    this.utilityService.asyncNotification($localize`:@@collectionImageDetails.pleaseWaitWhileWeUpdate:Please wait while we are updating the collection avatar...`,
-      new Promise((resolve, reject) => {
-        this.libraryService.updateCollectionImage(this.workspaceId, this.collectionData._id, this.croppedImage).then((res)=>{
-          this.collectionData.collection_avatar = res['collection']['collection_avatar'];
-
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@collectionImageDetails.collectionAvatarUpdated:Collection Avatar Updated!`))
-        })
-        .catch((error)=>{
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@collectionImageDetails.unableToUpdateAvatar:Unable to update the collection avatar!`))
-        });
-      }));
+    if (this.croppedImage) {
+      this.utilityService.asyncNotification($localize`:@@collectionImageDetails.pleaseWaitWhileWeUpdate:Please wait while we are updating the collection avatar...`,
+        new Promise((resolve, reject) => {
+          this.libraryService.updateCollectionImage(this.workspaceId, this.collectionData?._id, this.croppedImage).then((res)=>{
+            this.collectionData.collection_avatar = res['collection']['collection_avatar'];
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@collectionImageDetails.collectionAvatarUpdated:Collection Avatar Updated!`))
+          })
+          .catch((error)=>{
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@collectionImageDetails.unableToUpdateAvatar:Unable to update the collection avatar!`))
+          });
+        }));
+    } else {
+      this.utilityService.errorNotification($localize`:@@collectionImageDetails.noImageToUpload:Please, provide an image to upload!`);
+    }
   }
 }
