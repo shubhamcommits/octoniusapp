@@ -85,32 +85,6 @@ export class CollectionHeaderComponent implements OnInit, OnChanges {
 
   async updateHTMLContent() {
     if (this.collectionData?.content){
-      // let converter = new QuillDeltaToHtmlConverter(JSON.parse(this.collectionData?.content)['ops'], {});
-      // if (converter) {
-      //   converter.renderCustomWith((customOp) => {
-      //     // Conditionally renders blot of mention type
-      //     if(customOp.insert.type === 'mention'){
-      //       // Get Mention Blot Data
-      //       const mention = customOp.insert.value;
-
-      //       // Template Return Data
-      //       return (
-      //         `<span
-      //           class="mention"
-      //           data-index="${mention.index}"
-      //           data-denotation-char="${mention.denotationChar}"
-      //           data-link="${mention.link}"
-      //           data-value='${mention.value}'>
-      //           <span contenteditable="false">
-      //             ${mention.value}
-      //           </span>
-      //         </span>`
-      //       )
-      //     }
-      //   });
-      //   // Convert into html
-      //   this.htmlContent = converter.convert();
-      // }
       this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.collectionData?.content)['ops']);
     }
   }
