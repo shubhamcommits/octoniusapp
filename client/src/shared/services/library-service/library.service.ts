@@ -174,4 +174,14 @@ export class LibraryService {
   getGroupByPage(pageId: string) {
     return this._http.get(this.baseUrl + `/library/page/${pageId}/group-by-page`).toPromise();
   }
+
+  getUserConfluenceSpaces(workspaceId: string) {
+    return this._http.get(this.baseUrl + `/library/collection/${workspaceId}/confluence-spaces`).toPromise();
+  }
+
+  exportConfluenceSpaces(spacesToExport : any, workspaceId: string, groupId: string) {
+    let formData = new FormData();
+    formData.append('spacesToExport', spacesToExport);
+    return this._http.post(this.baseUrl + `/library/collection/${workspaceId}/export-spaces/${groupId}`, formData).toPromise();
+  }
 }

@@ -6,7 +6,7 @@ import { LibraryRoutingModule } from './library-routing.module';
 import { SharedModule } from 'src/app/common/shared/shared.module';
 
 import { MatSelectModule } from '@angular/material/select';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CollectionsComponent } from './collections/collections.component';
 import { CollectionNewElementComponent } from './collections/collection-new-element/collection-new-element.component';
 import { CollectionDetailsComponent } from './collection-details/collection-details.component';
@@ -19,6 +19,7 @@ import { PageDetailsComponent } from './page-details/page-details.component';
 import { CollectionPagesComponent } from './page-details/collection-pages/collection-pages.component';
 import { PageActionsBarComponent } from './page-details/page-actions-bar/page-actions-bar.component';
 import { LikePageComponent } from './page-details/page-actions-bar/like-page/like-page.component';
+import { ConfluenceImportDialogComponent } from './collections/collection-new-element/confluence-import-dialog/confluence-import-dialog.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { LikePageComponent } from './page-details/page-actions-bar/like-page/lik
     CollectionNavbarComponent,
     CollectionDetailsComponent,
     CollectionHeaderComponent,
+    ConfluenceImportDialogComponent,
     PageRowComponent,
     CollectionImageDetailsComponent,
     PageNavbarComponent,
@@ -40,7 +42,8 @@ import { LikePageComponent } from './page-details/page-actions-bar/like-page/lik
     SharedModule,
     LibraryRoutingModule,
     MatSelectModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

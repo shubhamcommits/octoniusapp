@@ -60,11 +60,13 @@ export class CollectionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    this.isLoading$.complete()
+    this.isLoading$.complete();
   }
 
-  onCollectionEmiter(category: any) {
-    this.collections.push(category);
+  onCollectionEmiter(collections: any) {
+    if (collections && collections.length > 0) {
+      this.collections = this.collections.concat(collections);
+    }
   }
 
   isManagerUser() {

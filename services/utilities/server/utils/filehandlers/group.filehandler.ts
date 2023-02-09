@@ -412,10 +412,6 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
  */
  const minioFileHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-
-    // Fetch the File Name From the request
-    let { params: { file } } = req;
-
     var minioClient = new minio.Client({
       endPoint: process.env.MINIO_DOMAIN,
       port: +(process.env.MINIO_API_PORT),

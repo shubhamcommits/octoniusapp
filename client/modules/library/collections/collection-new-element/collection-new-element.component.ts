@@ -1,8 +1,11 @@
 import { Component, OnInit, OnDestroy, Output, Input, Injector, EventEmitter } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
+import { ThemeService } from 'ng2-charts';
 import { BehaviorSubject } from 'rxjs';
 import { LibraryService } from 'src/shared/services/library-service/library.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { ConfluenceImportDialogComponent } from './confluence-import-dialog/confluence-import-dialog.component';
 
 @Component({
   selector: 'app-collection-new-element',
@@ -18,6 +21,7 @@ export class CollectionNewElementComponent implements OnInit, OnDestroy {
 
   userData: any;
   groupData: any;
+  workspaceData: any;
 
   collections: any = [];
 
@@ -36,6 +40,7 @@ export class CollectionNewElementComponent implements OnInit, OnDestroy {
 
   constructor(
     public Injector: Injector,
+    public dialog: MatDialog,
     private utilityService: UtilityService,
     private libraryService: LibraryService
   ) { }
@@ -43,6 +48,7 @@ export class CollectionNewElementComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     this.userData = await this.publicFunctions.getCurrentUser();
     this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
   }
 
   ngOnDestroy() {
@@ -56,7 +62,7 @@ export class CollectionNewElementComponent implements OnInit, OnDestroy {
       this.newCollectionData.name = $localize`:@@collectionNewElement.newCollection:New Collection`;
 
       this.libraryService.createCollection(this.newCollectionData).then(res => {
-        this.collectionEmitter.emit(res['collection']);
+        this.collectionEmitter.emit([res['collection']]);
         this.initCollection();
 
         // Resolve with success
@@ -74,5 +80,25 @@ export class CollectionNewElementComponent implements OnInit, OnDestroy {
       _created_by: this.userData?._id,
       _group: this.groupData?._id
     }
+  }
+
+  openImportDialog() {
+    const dialogRef = this.dialog.open(ConfluenceImportDialogComponent, {
+      // width: '80%',
+      // height: '900%',
+      disableClose: true,
+      hasBackdrop: true,
+      data: {  }
+    });
+
+    const sub = dialogRef.componentInstance.spacesImportedEvent.subscribe((data) => {
+      if (data) {
+        this.collectionEmitter.emit(data);
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      sub.unsubscribe();
+    });
   }
 }

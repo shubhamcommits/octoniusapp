@@ -1,6 +1,6 @@
-import { File, Collection, Page, Group } from '../models';
+import { File, Collection, Page, Group, User, Workspace } from '../models';
 import { Response, Request, NextFunction } from 'express';
-import { sendError } from '../../utils';
+import { axios, sendError } from '../../utils';
 import { LibraryService } from '../services';
 import { DateTime } from 'luxon';
 
@@ -424,33 +424,19 @@ export class LibraryController {
             const userId = req['userId'];
 
             // Preparing File Data
-            let file: any = {
+            let file = await File.create({
                 _group: fileData._group,
+                _collection: fileData._collection,
                 original_name: fileData.original_name,
                 modified_name: fileData.modified_name,
                 minio_etag: fileData.minio_etag,
                 minio_versionId: fileData.minio_versionId,
                 type: fileData.type,
                 mime_type: fileData.mime_type,
-                _folder: (fileData._folder && fileData._folder != '') ? fileData._folder : null,
-                _parent: fileData._parent,
-                _posted_by: fileData._posted_by,
+                _folder: null,
+                _posted_by: userId,
                 created_date: DateTime.now()
-            };
-
-            file = await File.create({
-                    _group: fileData._group,
-                    _collection: fileData._collection,
-                    original_name: fileData.original_name,
-                    modified_name: fileData.modified_name,
-                    minio_etag: fileData.minio_etag,
-                    minio_versionId: fileData.minio_versionId,
-                    type: fileData.type,
-                    mime_type: fileData.mime_type,
-                    _folder: null,
-                    _posted_by: userId,
-                    created_date: DateTime.now()
-                });
+            });
 
             file = await File.populate(file, [
                     { path: '_posted_by', select: '_id first_name last_name profile_pic email' }
@@ -489,6 +475,98 @@ export class LibraryController {
     }
 
     /**
+     * This function fetches the list of spaces from confluence based on the user
+     */
+    async getUserConfluenceSpaces(req: Request, res: Response) {
+        try {
+
+            const userId = req['userId'];
+            const { workspaceId } = req.params;
+
+            // If collectionId is null or not provided then we throw BAD REQUEST 
+            if (!userId || !workspaceId) {
+                return res.status(400).json({
+                    message: 'Please provide a userId && workspaceId!'
+                });
+            }
+
+            let spaces = [];
+
+            const user = await User.findById(userId).select('email').lean();
+            const workspace = await Workspace.findById(workspaceId).select('integrations').lean();
+
+            const domain = workspace?.integrations?.atlassia_url;
+            const token = workspace?.integrations?.atlassia_token;
+            const email = user.email + ':' + token;
+//ATATT3xFfGF0_9HXph47_wu1Q1Yhfa9O1YW2Sodb2k-q_sFWAT3Z-G_7yA3Wv8xMhk7MsBZ-I5Hm3Rp7jh2c7uRPl--f6bmJ1DE22vt_U3yTrrOhJUwzFWMBQM_YcMoA6OrCxH2VhB4gMvRplFgNfSh_d6UMbrzsTxRtw_PPx13XRXiP8JkWAuo=C060CB65
+//juan-octonius.atlassian.net
+            await axios.get(`https://${domain}/wiki/rest/api/space`, {
+                    headers: {
+                            'Authorization': `Basic ${Buffer.from(email).toString('base64')}`,
+                            'Accept': 'application/json'
+                        }
+                    }
+                )
+                .then(response => {
+                    spaces = response.data.results;
+                    // return response.text();
+                })
+                // .then(text => console.log(text))
+                .catch(err => console.error(err));
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `Confluence Spaces found!`,
+                spaces: spaces
+            })
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
+     * This function fetches the list of spaces from confluence based on the user
+     */
+    async exportConfluenceSpaces(req: Request, res: Response) {
+        try {
+
+            const userId = req['userId'];
+            let { body: { spacesToExport } } = req;
+            const { workspaceId, groupId } = req.params;
+
+            // If collectionId is null or not provided then we throw BAD REQUEST 
+            if (!userId || !workspaceId || !workspaceId) {
+                return res.status(400).json({
+                    message: 'Please provide a userId, a workspaceId, and a groupId!'
+                });
+            }
+
+            let collections = [];
+
+            const user = await User.findById(userId).select('email').lean();
+            const workspace = await Workspace.findById(workspaceId).select('integrations').lean();
+
+            const domain = workspace?.integrations?.atlassia_url;
+            const token = workspace?.integrations?.atlassia_token;
+            const email = user.email + ':' + token;
+
+            const spacesArray = spacesToExport.split(',');
+
+            for (let i = 0; i < spacesArray.length ; i++) {
+                collections = collections.concat(await libraryService.exportConfluenceSpaceDetailsToCollection(domain, spacesArray[i], email, userId, groupId, workspaceId));
+            }
+// ATATT3xFfGF0_9HXph47_wu1Q1Yhfa9O1YW2Sodb2k-q_sFWAT3Z-G_7yA3Wv8xMhk7MsBZ-I5Hm3Rp7jh2c7uRPl--f6bmJ1DE22vt_U3yTrrOhJUwzFWMBQM_YcMoA6OrCxH2VhB4gMvRplFgNfSh_d6UMbrzsTxRtw_PPx13XRXiP8JkWAuo=C060CB65
+// juan-octonius.atlassian.net
+            return res.status(200).json({
+                message: `Confluence Spaces found!`,
+                collections: collections
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
      * This function creates the new page in collection
      */
     async createPage(req: Request, res: Response) {
@@ -502,7 +580,7 @@ export class LibraryController {
             // If collection_name is null or not provided then we throw BAD REQUEST 
             if (!newPageName || !collectionId ) {
                 return res.status(400).json({
-                    message: 'Please provide collectionId and a newPageName!'
+                    message: 'Please provide collectionId and a newPageName and a collectionId!'
                 });
             }
 

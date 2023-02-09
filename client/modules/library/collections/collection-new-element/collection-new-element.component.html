@@ -1,6 +1,32 @@
 <!-- Create new Collection starts -->
-<button class="btn btn-warning mb-3 mt-3" type="button" (click)="createCollection()">
+<button class="btn btn-warning mb-3 mt-3" type="button" (click)="createCollection()"
+    *ngIf="!workspaceData?.integrations?.is_atlassia_connected
+        || !workspaceData?.integrations?.atlassia_url || workspaceData?.integrations?.atlassia_url == ''
+        || !workspaceData?.integrations?.atlassia_token || workspaceData?.integrations?.atlassia_token == ''">
   <i class="material-icons-outlined">add</i>
   <span i18n="@@collectionNewElement.new">New</span>
 </button>
 <!-- Create new Collection ends -->
+
+<button class="btn btn-warning mb-3 mt-3" type="button" data-toggle="dropdown"
+    *ngIf="workspaceData?.integrations?.is_atlassia_connected
+        && workspaceData?.integrations?.atlassia_url && workspaceData?.integrations?.atlassia_url != ''
+        && workspaceData?.integrations?.atlassia_token && workspaceData?.integrations?.atlassia_token != ''">
+  <!-- <i class="material-icons-outlined">add</i> -->
+  <span i18n="@@collectionNewElement.new">Add</span>
+</button>
+
+<ul class="dropdown-menu">
+  <li class="dropdown-item" (click)="createCollection()">
+    <i class="material-icons-outlined">add</i>
+    <span i18n="@@collectionNewElement.newCollection">New Collection</span>
+  </li>
+
+  <li class="dropdown-item" (click)="openImportDialog()"
+      *ngIf="workspaceData?.integrations?.is_atlassia_connected
+        && workspaceData?.integrations?.atlassia_url && workspaceData?.integrations?.atlassia_url != ''
+        && workspaceData?.integrations?.atlassia_token && workspaceData?.integrations?.atlassia_token != ''">
+    <i class="material-icons-outlined">publish</i>
+    <span i18n="@@collectionNewElement.importConfluence">Import From Confluence</span>
+  </li>
+</ul>

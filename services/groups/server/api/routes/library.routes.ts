@@ -43,6 +43,12 @@ routes.post('/collection/:collectionId/files/:workspaceId', collectionFileUpload
 // PUT - Delete a file from a page
 routes.put('/collection/:fileId/remove-file/:workspaceId', libarry.removeCollectionFile);
 
+// GET - Get all user´s confluence spaces
+routes.get('/collection/:workspaceId/confluence-spaces', libarry.getUserConfluenceSpaces);
+
+// GET - Export selected confluence spaces
+routes.post('/collection/:workspaceId/export-spaces/:groupId', libarry.exportConfluenceSpaces);
+
 // POST - Create new page in the collection
 routes.post('/page/:collectionId', libarry.createPage);
 
