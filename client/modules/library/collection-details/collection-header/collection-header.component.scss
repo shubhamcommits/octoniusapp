@@ -8,9 +8,8 @@
     padding: 20px;
 
     .collection-content {
-      width: 69%;
-      float: left;
-      padding: 16px;
+      padding: 16px;  
+      width: 100%;
     }
 
     .graph {
@@ -69,4 +68,8 @@
     background-color: white;
     width: 100%;
   }
+}
+
+.ql-image{
+  width: 100% !important;
 }
