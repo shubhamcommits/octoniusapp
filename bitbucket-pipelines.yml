@@ -53,7 +53,7 @@ pipelines:
           - docker build -t $FLAMINGO_IMAGE_NAME --compress=true --force-rm=true ./services/flamingo/server
           - docker build -t $NGINX_IMAGE_NAME --compress=true --force-rm=true ./nginx
           - docker build -t $MINIO_IMAGE_NAME --compress=true --force-rm=true ./services/minio
-          - docker build -t $MINIO_BALANCER_IMAGE_NAME --compress=true --force-rm=true -f ./services/minio/Dockerfile.balancer
+          - docker build -t $MINIO_BALANCER_IMAGE_NAME --compress=true --force-rm=true -f ./services/minio/Dockerfile.balancer .
 
           # Clear unnecessary Image build
           - docker image prune -f 
@@ -137,7 +137,7 @@ pipelines:
           - docker build -t $FLAMINGO_IMAGE_NAME --compress=true --force-rm=true ./services/flamingo/server
           - docker build -t $NGINX_IMAGE_NAME --compress=true --force-rm=true ./nginx
           - docker build -t $MINIO_IMAGE_NAME --compress=true --force-rm=true ./services/minio
-          - docker build -t $MINIO_BALANCER_IMAGE_NAME --compress=true --force-rm=true -f ./services/minio/Dockerfile.balancer
+          - docker build -t $MINIO_BALANCER_IMAGE_NAME --compress=true --force-rm=true -f ./services/minio/Dockerfile.balancer .
 
 
           # Clear unnecessary Image build
