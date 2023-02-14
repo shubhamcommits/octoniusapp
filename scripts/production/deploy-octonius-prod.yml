@@ -652,7 +652,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.hostname==manager
+          - node.role==manager
     networks:
       - octonius_production
 
@@ -664,7 +664,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.hostname==manager
+          - node.role==manager
     networks:
       - octonius_production
 
@@ -676,10 +676,17 @@ services:
     deploy:
       placement:
         constraints:
-          - node.hostname==manager
+          - node.role==manager
     networks:
       - octonius_production
 
+  migrate: 
+    image: ruby
+    command: sleep 1000000
+    volumes:
+      - /mnt/volume_fra1_01/data/uploads:/data
+    networks:
+      - octonius_production
 
 volumes:
   octonius_production_db_data:
