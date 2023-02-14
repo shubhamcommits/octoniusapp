@@ -682,7 +682,7 @@ services:
 
   balancer:
     hostname: balancer
-    image: minio/sidekick:v2.0.2
+    image: ${DOCKER_USER}/${DOCKER_REPO}:minio-balancer
     command: --address :8000 --health-path=/minio/health/live --insecure --log http://minio{1...3}:9000
     depends_on:
       - minio1

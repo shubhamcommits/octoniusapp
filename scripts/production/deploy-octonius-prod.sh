@@ -13,6 +13,9 @@ mkdir -p data \
       data/mongo/db2  \
       data/mongo/db0   \
       data/uploads \
+      data/minio/data1 \
+      data/minio/data2 \
+      data/minio/data3 \
       data/uploads/groups \
       data/uploads/posts \
       data/uploads/search\
