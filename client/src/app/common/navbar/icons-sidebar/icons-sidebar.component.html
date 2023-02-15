@@ -14,7 +14,7 @@
     -->
     <div *ngIf="userWorkspaces?.length > 0" class="components" style="margin-top: -25px; width: 78%;">
       <a href="#pageWorkspacesSubmenu" data-toggle="collapse" aria-expanded="true" style="padding: 10px 0;" [matTooltip]="workspaceData?.workspace_name">
-        <app-secured-image [imgURL]="workspaceData?.workspace_avatar" [service]="'workspace'" [styleClass]="'avatar'">
+        <app-secured-image [imgURL]="workspaceData?.workspace_avatar" [service]="'workspace'" [workspaceId]="workspaceData?._id" [styleClass]="'avatar'">
         </app-secured-image>
         <i class="material-icons-outlined carret">keyboard_arrow_down</i>
       </a>
@@ -22,7 +22,7 @@
       <ul class="collapse list-unstyled" id="pageWorkspacesSubmenu">
         <li *ngFor="let workspace of userWorkspaces">
           <a (click)="goToWorkspace(workspace?._id || workspace)" style="padding: 10px 0;" [matTooltip]="workspace?.workspace_name">
-            <app-secured-image [imgURL]="workspace?.workspace_avatar" [service]="'workspace'" [styleClass]="'avatar'">
+            <app-secured-image [imgURL]="workspace?.workspace_avatar" [service]="'workspace'" [workspaceId]="workspace?._id" [styleClass]="'avatar'">
             </app-secured-image>
           </a>
         </li>
@@ -30,7 +30,7 @@
     </div>
     <div *ngIf="userWorkspaces?.length <= 0" class="components" style="margin-top: -25px; width: 78%;">
       <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active" style="padding: 10px 0;" [matTooltip]="workspaceData?.workspace_name">
-        <app-secured-image [imgURL]="workspaceData?.workspace_avatar" [service]="'workspace'" [styleClass]="'avatar'">
+        <app-secured-image [imgURL]="workspaceData?.workspace_avatar" [service]="'workspace'" [workspaceId]="workspaceData?._id" [styleClass]="'avatar'">
         </app-secured-image>
       </a>
     </div>
@@ -55,6 +55,7 @@
               <app-secured-image
                   [imgURL]="group?.avatar"
                   [service]="'group'"
+                  [workspaceId]="workspaceData?._id"
                   [tooltip]="group?.name"
                   [styleClass]="'avatar'"></app-secured-image>
           </a>
@@ -67,7 +68,7 @@
           </a>
         </li>
         <li> <hr class="divider-line"></li>
-        <li *ngIf="this.userData?.role === 'admin' || this.userData?.role === 'owner'">
+        <li *ngIf="userData?.role === 'admin' || userData?.role === 'owner'">
             <a (click)="changeState('general')" class="nav-link" [routerLink]="['/dashboard', 'admin', 'general']" routerLinkActive="active">
               <i class="material-icons">settings</i>
             </a>
@@ -81,6 +82,7 @@
                 <app-secured-image
                   [imgURL]="userData?.profile_pic"
                   [service]="'user'"
+                  [workspaceId]="workspaceData?._id"
                   [styleClass]="'avatar'"></app-secured-image>
             </a>
             <!-- USER PROFILE BADGE ENDS -->

@@ -14,7 +14,7 @@
 
         <div *ngIf="userWorkspaces?.length > 0" class="components" style="margin-top: -25px; width: 78%;">
             <a href="#pageWorkspacesSubmenu" data-toggle="collapse" aria-expanded="true" style="padding: 10px 0;" [matTooltip]="workspaceData?.workspace_name">
-                <app-secured-image [imgURL]="workspaceData?.workspace_avatar" [service]="'workspace'" [styleClass]="'avatar'" style="float: left;">
+                <app-secured-image [imgURL]="workspaceData?.workspace_avatar" [service]="'workspace'" [workspaceId]="workspaceData?._id" [styleClass]="'avatar'" style="float: left;">
                 </app-secured-image>
                 <div class="workspace_name">{{ workspaceData?.workspace_name | truncatetext: 16 }}</div>
                 <i class="material-icons-outlined carret" style="line-height: 40px;">keyboard_arrow_down</i>
@@ -23,7 +23,7 @@
             <ul class="collapse list-unstyled" id="pageWorkspacesSubmenu">
                 <li *ngFor="let workspace of userWorkspaces">
                     <a (click)="goToWorkspace(workspace?._id || workspace)" style="padding: 10px 0;">
-                        <app-secured-image [imgURL]="workspace?.workspace_avatar" [service]="'workspace'" [styleClass]="'avatar'">
+                        <app-secured-image [imgURL]="workspace?.workspace_avatar" [service]="'workspace'" [workspaceId]="workspace?._id" [styleClass]="'avatar'">
                         </app-secured-image>
                         {{ workspace?.workspace_name | truncatetext: 16 }}
                     </a>
@@ -32,7 +32,7 @@
         </div>
         <div *ngIf="userWorkspaces?.length <= 0" class="components" style="margin-top: -25px; width: 78%;">
             <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active" style="padding: 10px 0;" [matTooltip]="workspaceData?.workspace_name">
-                <app-secured-image [imgURL]="workspaceData?.workspace_avatar" [service]="'workspace'" [styleClass]="'avatar'">
+                <app-secured-image [imgURL]="workspaceData?.workspace_avatar" [service]="'workspace'" [workspaceId]="workspaceData?._id" [styleClass]="'avatar'">
                 </app-secured-image>
                 <span>{{ workspaceData?.workspace_name | truncatetext: 16 }}</span>
             </a>
@@ -62,6 +62,7 @@
                             <app-secured-image
                               [imgURL]="group?.avatar"
                               [service]="'group'"
+                              [workspaceId]="workspaceData?._id"
                               [styleClass]="'avatar'"></app-secured-image>
                             {{ group?.name | truncatetext: 16 }}
                         </a>
@@ -99,6 +100,7 @@
                     <app-secured-image
                         [imgURL]="userData?.profile_pic"
                         [service]="'user'"
+                        [workspaceId]="workspaceData?._id"
                         [styleClass]="'avatar'"></app-secured-image>
                     <span i18n="@@sidebar.myAccount">My Account</span>
                 </a>

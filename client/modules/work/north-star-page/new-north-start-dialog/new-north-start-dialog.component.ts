@@ -102,7 +102,8 @@ export class NewNorthStarDialogComponent implements OnInit {
 
       // Call the Helper Function
       this.utilityService.asyncNotification($localize`:@@newNorthStarDialog.pleaseWaitCreatingPost:Please wait we are creating the task...`, new Promise((resolve, reject) => {
-        this.postService.create(formData)
+        this.workspaceData = this.publicFunctions.getCurrentWorkspace();
+        this.postService.create(this.workspaceData?._id, formData)
           .then(async (res) => {
             postData = res['post'];
 

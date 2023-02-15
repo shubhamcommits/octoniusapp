@@ -123,7 +123,7 @@
         <div *ngIf="groupData?.background_image">
           <app-secured-image
               [imgURL]="groupData?.background_image"
-              [service]="'group'" [inlineStyle]="'width: 30px;height: 30px;'"></app-secured-image>
+              [service]="'group'" [workspaceId]="(groupData?._workspace?._id || groupData?._workspace)" [inlineStyle]="'width: 30px;height: 30px;'"></app-secured-image>
           <button class="btn removeImageBtn" style="width: 30px;height: 30px;margin: 0px !important;"
               (click)="removeImage()">
               <b>X</b>
@@ -157,8 +157,6 @@
 
 
 <ng-template #content let-modal>
-  <app-group-background-image-details
-    [groupData]="groupData"
-    [baseUrl]="UTILITIES_GROUPS_UPLOADS">
+  <app-group-background-image-details [groupData]="groupData">
   </app-group-background-image-details>
 </ng-template>

@@ -1,11 +1,12 @@
-import { Component, OnInit, Injector, ChangeDetectorRef, Input } from '@angular/core';
+import { Component, OnInit, Injector, Input } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { environment } from 'src/environments/environment';
 import { MatDialog } from '@angular/material/dialog';
 import { PortfolioService } from 'src/shared/services/portfolio-service/portfolio.service';
 import { ColorPickerDialogComponent } from 'src/app/common/shared/color-picker-dialog/color-picker-dialog.component';
-import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
+;
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-portfolio-header',
@@ -43,9 +44,6 @@ export class PortfolioHeaderComponent implements OnInit {
     ]
   }];
   chartPlugins = [];
-  
-  // Base Url
-  baseUrl = environment.UTILITIES_GROUPS_UPLOADS;
 
   // Public functions
   public publicFunctions = new PublicFunctions(this.injector);
@@ -53,7 +51,7 @@ export class PortfolioHeaderComponent implements OnInit {
   constructor(
     public injector: Injector,
     public dialog: MatDialog,
-    private changeDetection: ChangeDetectorRef,
+    private router: Router,
     private utilityService: UtilityService,
     private portfolioService: PortfolioService
   ) { }
@@ -71,11 +69,33 @@ export class PortfolioHeaderComponent implements OnInit {
     this.title = this.portfolioData.portfolio_name;
 
     if (this.portfolioData?.content){
-      let converter = new QuillDeltaToHtmlConverter(JSON.parse(this.portfolioData?.content)['ops'], {});
-      if (converter) {
-        // Convert into html
-        this.htmlContent = converter.convert();
-      }
+      // let converter = new QuillDeltaToHtmlConverter(JSON.parse(this.portfolioData?.content)['ops'], {});
+      // if (converter) {
+      //   converter.renderCustomWith((customOp) => {
+      //     // Conditionally renders blot of mention type
+      //     if(customOp.insert.type === 'mention'){
+      //       // Get Mention Blot Data
+      //       const mention = customOp.insert.value;
+
+      //       // Template Return Data
+      //       return (
+      //         `<span
+      //           class="mention"
+      //           data-index="${mention.index}"
+      //           data-denotation-char="${mention.denotationChar}"
+      //           data-link="${mention.link}"
+      //           data-value='${mention.value}'>
+      //           <span contenteditable="false">
+      //             ${mention.value}
+      //           </span>
+      //         </span>`
+      //       )
+      //     }
+      //   });
+      //   // Convert into html
+      //   this.htmlContent = converter.convert();
+      // }
+      this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.portfolioData?.content)['ops']);
     }
 
     await this.portfolioService.getAllPortfolioTasksStats(this.portfolioData._id)
@@ -168,7 +188,9 @@ export class PortfolioHeaderComponent implements OnInit {
 
     await this.utilityService.asyncNotification($localize`:@@portfolioHeader.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
         this.portfolioService.updatePortfolioContent(this.portfolioData?._id, formData)
-          .then((res) => {
+          .then(async (res) => {
+            this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.portfolioData?.content)['ops']);
+
             this.contentChanged = false;
             this.editContent = false;
             this.publicFunctions.sendUpdatesToPortfolioData(this.portfolioData);
@@ -210,6 +232,32 @@ export class PortfolioHeaderComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       colorPickedSubs.unsubscribe();
     });
+  }
+
+  deletePortfolio() {
+    this.utilityService.getConfirmDialogAlert()
+      .then((result) => {
+        if (result.value) {
+          // Remove the file
+          this.utilityService.asyncNotification($localize`:@@portfolioHeader.pleaseWaitDeleting:Please wait we are deleting the portfolio...`, new Promise((resolve, reject) => {
+            this.portfolioService.deletePortfolio(this.portfolioData?._id)
+              .then((res) => {
+                this.publicFunctions.sendUpdatesToPortfolioData({});
+                this.router.navigate(['/dashboard', 'work', 'groups', 'all'],
+                    {
+                      queryParams: {
+                        selectedTab: 'portfolio'
+                      }
+                    }
+                  );
+
+                resolve(this.utilityService.resolveAsyncPromise($localize`:@@portfolioHeader.deleted:Portfolio deleted!`));
+              }).catch((err) => {
+                reject(this.utilityService.rejectAsyncPromise($localize`:@@portfolioHeader.unableDelete:Unable to delete the portfolio, please try again!`));
+              });
+          }));
+        }
+      });
   }
 
   objectExists(object: any) {

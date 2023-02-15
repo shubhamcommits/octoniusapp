@@ -6,11 +6,13 @@
         <app-secured-image *ngIf="!isCurrentUser && userData"
             [imgURL]="userData?.profile_pic"
             [service]="'user'"
+            [workspaceId]="workspaceData?._id"
             [styleClass]="'mr-3 feed-avatar'"></app-secured-image>
 
         <app-secured-image *ngIf="isCurrentUser && userData"
           [imgURL]="userData?.profile_pic"
           [service]="'user'"
+          [workspaceId]="workspaceData?._id"
           [placement]="'below'"
           [tooltip]="'Change your avatar'"
           [styleClass]="'mr-3 feed-avatar'"></app-secured-image>

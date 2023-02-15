@@ -20,9 +20,6 @@ export class DoneTasksKanbanViewComponent implements OnInit {
 
   showDoneTasks = false;
 
-  // BASE URL OF THE APPLICATION
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
-
   constructor(public utilityService: UtilityService) { }
 
   ngOnInit() {

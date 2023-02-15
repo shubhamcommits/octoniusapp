@@ -15,9 +15,6 @@ import moment from 'moment';
 })
 export class LoungeComponent implements OnInit, OnDestroy {
 
-  // Base URL
-  baseUrl = environment.UTILITIES_WORKSPACES_UPLOADS;
-
   // Workspace data
   public workspaceData: any = {};
 

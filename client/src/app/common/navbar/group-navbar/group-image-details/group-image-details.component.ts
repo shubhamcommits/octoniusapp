@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Injector } from '@angular/core';
-import { SubSink } from 'subsink';
 import { PublicFunctions } from 'modules/public.functions';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -10,25 +9,19 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
   styleUrls: ['./group-image-details.component.scss']
 })
 export class GroupImageDetailsComponent implements OnInit {
-
+  
+  // Group Data
+  @Input('groupData') groupData: any;
+  
+  // Cropped Image of the Input Image File
+  croppedImage: File;
+  
+  // Public Functions
+  public publicFunctions = new PublicFunctions(this.injector);
+  
   constructor(
     private injector: Injector
   ) { }
-
-  // BaseUrl
-  @Input('baseUrl') baseUrl: any;
-
-  // Group Data
-  @Input('groupData') groupData: any;
-
-  // Cropped Image of the Input Image File
-  croppedImage: File;
-
-  // Unsubscribe the Data
-  private subSink = new SubSink();
-
-  // Public Functions
-  public publicFunctions = new PublicFunctions(this.injector);
 
   ngOnInit() {
   }

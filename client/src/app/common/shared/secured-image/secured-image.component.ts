@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Injector, Input, OnChanges } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -23,6 +24,7 @@ export class SecuredImageComponent implements OnChanges  {
   @Input() alt: string = ''; // alternative text
   @Input() inlineStyle: string = ''; // inline styles
   @Input() noAuth: boolean = false; // in case we need a work around for security (only valid for selecting workplace because the user is not logged in yet)
+  @Input() workspaceId: string;
 
   onErrorUrl: string = '';
 
@@ -35,8 +37,12 @@ export class SecuredImageComponent implements OnChanges  {
   dataUrl$;
 
   isLocalImg: boolean = false;
+  
+  // Public Functions class object
+  publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    private injector: Injector,
     private httpClient: HttpClient,
     private domSanitizer: DomSanitizer) {
   }
@@ -53,11 +59,11 @@ export class SecuredImageComponent implements OnChanges  {
         }
 
         if (!this.isLocalImg && this.imgURL.indexOf(environment.UTILITIES_WORKSPACES_UPLOADS) == -1) {
-          this.src$.next(environment.UTILITIES_WORKSPACES_UPLOADS + '/' + this.imgURL);
+          this.src$.next(environment.UTILITIES_WORKSPACES_UPLOADS + '/' + this.workspaceId + '/' + this.imgURL);
         } else {
           this.src$.next(this.imgURL);
         }
-        this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
+
         this.onErrorUrl = "assets/images/organization.png";
         break;
       case 'lounge':
@@ -71,11 +77,11 @@ export class SecuredImageComponent implements OnChanges  {
         }
 
         if (!this.isLocalImg && this.imgURL.indexOf(environment.UTILITIES_WORKSPACES_UPLOADS) == -1) {
-          this.src$.next(environment.UTILITIES_WORKSPACES_UPLOADS + '/' + this.imgURL);
+          this.src$.next(environment.UTILITIES_WORKSPACES_UPLOADS + '/' + this.workspaceId + '/' + this.imgURL);
         } else {
           this.src$.next(this.imgURL);
         }
-        this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
+
         this.onErrorUrl = "assets/images/lounge-icon.jpg";
         break;
       case 'group':
@@ -85,11 +91,11 @@ export class SecuredImageComponent implements OnChanges  {
         }
 
         if (!this.isLocalImg && this.imgURL.indexOf(environment.UTILITIES_GROUPS_UPLOADS) == -1) {
-          this.src$.next(environment.UTILITIES_GROUPS_UPLOADS + '/' + this.imgURL);
+          this.src$.next(environment.UTILITIES_GROUPS_UPLOADS + '/' + this.workspaceId + '/' + this.imgURL);
         } else {
           this.src$.next(this.imgURL);
         }
-        this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
+
         this.onErrorUrl = "assets/images/icon-new-group.svg";
         break;
       case 'user':
@@ -99,11 +105,11 @@ export class SecuredImageComponent implements OnChanges  {
         }
 
         if (!this.isLocalImg && this.imgURL.indexOf(environment.UTILITIES_USERS_UPLOADS) == -1) {
-          this.src$.next(environment.UTILITIES_USERS_UPLOADS + '/' + this.imgURL);
+          this.src$.next(environment.UTILITIES_USERS_UPLOADS + '/' + this.workspaceId + '/' + this.imgURL);
         } else {
           this.src$.next(this.imgURL);
         }
-        this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
+
         this.onErrorUrl = "assets/images/user.png";
         break;
       case 'flamingo':
@@ -113,33 +119,68 @@ export class SecuredImageComponent implements OnChanges  {
           }
 
           if (!this.isLocalImg && this.imgURL.indexOf(environment.UTILITIES_FLAMINGOS_UPLOADS) == -1) {
-            this.src$.next(environment.UTILITIES_FLAMINGOS_UPLOADS + '/' + this.imgURL);
+            this.src$.next(environment.UTILITIES_FLAMINGOS_UPLOADS + '/' + this.workspaceId + '/' + this.imgURL);
           } else {
             this.src$.next(this.imgURL);
           }
-          this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
+
           this.onErrorUrl = "http://placehold.it/180";
           break;
       default:
         break;
     }
+
+    this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
   }
 
   private loadImage(url: string): Observable<any> {
-    if (this.noAuth) {
-      let params = new HttpParams().set('noAuth', this.noAuth.toString());
-      return this.httpClient
-        // load the image as a blob
-        .get(url, { responseType: 'blob', params: params })
-        // create an object url of that blob that we can use in the src attribute
-        .pipe(map(e => this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(e))));
-    } else {
-      return this.httpClient
-        // load the image as a blob
-
-        .get(url, { responseType: 'blob' })
-        // create an object url of that blob that we can use in the src attribute
-        .pipe(map(e => this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(e))));
+    try {
+      if (this.noAuth) {
+        let params = new HttpParams().set('noAuth', this.noAuth.toString());
+        return this.httpClient
+          // load the image as a blob
+          .get(url, { responseType: 'blob', params: params })
+          // create an object url of that blob that we can use in the src attribute
+          .pipe(map(e => this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(e))));
+      } else {
+        return this.httpClient
+          // load the image as a blob
+          .get(url, { responseType: 'blob' })
+          // create an object url of that blob that we can use in the src attribute
+          .pipe(map(e => this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(e))));
+      }
+    } catch (err) {
+      // this.publicFunctions.sendError(err);
+      console.log(err);
+      switch (this.service) {
+        case 'workspace':
+          this.imgURL = "assets/images/organization.png";
+          this.isLocalImg = true;
+          this.src$.next(this.imgURL);
+          return this.dataUrl$ = null;
+        case 'lounge':
+          this.imgURL = "assets/images/lounge-icon.jpg";
+          this.isLocalImg = true;
+          this.src$.next(this.imgURL);
+          return this.dataUrl$ = null;
+        case 'group':
+          this.imgURL = "assets/images/icon-new-group.svg";
+          this.isLocalImg = true;
+          this.src$.next(this.imgURL);
+          return this.dataUrl$ = null;
+        case 'user':
+          this.imgURL = "assets/images/user.png";
+          this.isLocalImg = true;
+          this.src$.next(this.imgURL);
+          return this.dataUrl$ = null;
+        case 'flamingo':
+          this.imgURL = "http://placehold.it/180";
+          this.isLocalImg = false;
+          this.src$.next(this.imgURL);
+          return this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
+        default:
+          break;
+      }
     }
   }
 }

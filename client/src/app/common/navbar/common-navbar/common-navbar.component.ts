@@ -1,7 +1,6 @@
-import { Component, OnInit, Injector ,Input, OnDestroy} from '@angular/core';
+import { Component, OnInit, Injector, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
-import { environment } from 'src/environments/environment';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { RouteStateService } from 'src/shared/services/router-service/route-state.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -13,10 +12,6 @@ import { SubSink } from 'subsink';
   styleUrls: ['./common-navbar.component.scss']
 })
 export class CommonNavbarComponent implements OnInit, OnDestroy {
-
-  // BASE URL OF THE APPLICATION
-  baseUrl = environment.UTILITIES_WORKSPACES_UPLOADS;
-  userBaseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   routerFromEvent: any;
   activeState:string;

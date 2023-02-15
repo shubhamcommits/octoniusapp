@@ -15,9 +15,6 @@ export class GroupBackgroundImageDetailsComponent implements OnInit {
     private injector: Injector
   ) { }
 
-  // BaseUrl
-  @Input('baseUrl') baseUrl: any;
-
   // Group Data
   @Input('groupData') groupData: any;
 

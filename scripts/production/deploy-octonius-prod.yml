@@ -1,4 +1,19 @@
 version: '3.7'
+# Settings and configurations that are common for all containers
+x-minio-common: &minio-common
+  image: ${DOCKER_USER}/${DOCKER_REPO}:minio
+  command: server --address 0.0.0.0:9000 --console-address ":9001" http://minio{1...3}/data1
+  expose:
+    - "9000"
+    - "9001"
+  environment:
+    MINIO_ROOT_USER: ${MINIO_USER}
+    MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
+  healthcheck:
+    test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+    interval: 30s
+    timeout: 20s
+    retries: 3
 
 services:
 
@@ -40,6 +55,12 @@ services:
       - PROXY_PROTOCOL=${PROXY_PROTOCOL}
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
+      - MINIO_ACCESS_KEY=${MINIO_USER}
+      - MINIO_SECRET_KEY=${MINIO_PASSWORD}
+      - MINIO_DOMAIN=${MINIO_DOMAIN}
+      - MINIO_API_PORT=${MINIO_API_PORT}
+      - MINIO_PORT=${MINIO_PORT}
+      - MINIO_PROTOCOL=${MINIO_PROTOCOL}
     deploy:
       replicas: ${REPLICAS}
       placement:
@@ -74,6 +95,12 @@ services:
       - PROXY_PROTOCOL=${PROXY_PROTOCOL}
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
+      - MINIO_ACCESS_KEY=${MINIO_USER}
+      - MINIO_SECRET_KEY=${MINIO_PASSWORD}
+      - MINIO_DOMAIN=${MINIO_DOMAIN}
+      - MINIO_API_PORT=${MINIO_API_PORT}
+      - MINIO_PORT=${MINIO_PORT}
+      - MINIO_PROTOCOL=${MINIO_PROTOCOL}
     deploy:
       replicas: ${REPLICAS}
       placement:
@@ -108,6 +135,12 @@ services:
       - PROXY_PROTOCOL=${PROXY_PROTOCOL}
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
+      - MINIO_ACCESS_KEY=${MINIO_USER}
+      - MINIO_SECRET_KEY=${MINIO_PASSWORD}
+      - MINIO_DOMAIN=${MINIO_DOMAIN}
+      - MINIO_API_PORT=${MINIO_API_PORT}
+      - MINIO_PORT=${MINIO_PORT}
+      - MINIO_PROTOCOL=${MINIO_PROTOCOL}
     deploy:
       replicas: ${REPLICAS}
       placement:
@@ -143,6 +176,12 @@ services:
       - PROXY_PROTOCOL=${PROXY_PROTOCOL}
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
+      - MINIO_ACCESS_KEY=${MINIO_USER}
+      - MINIO_SECRET_KEY=${MINIO_PASSWORD}
+      - MINIO_DOMAIN=${MINIO_DOMAIN}
+      - MINIO_API_PORT=${MINIO_API_PORT}
+      - MINIO_PORT=${MINIO_PORT}
+      - MINIO_PROTOCOL=${MINIO_PROTOCOL}
     deploy:
       replicas: ${REPLICAS}
       placement:
@@ -178,6 +217,12 @@ services:
       - PROXY_PROTOCOL=${PROXY_PROTOCOL}
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
+      - MINIO_ACCESS_KEY=${MINIO_USER}
+      - MINIO_SECRET_KEY=${MINIO_PASSWORD}
+      - MINIO_DOMAIN=${MINIO_DOMAIN}
+      - MINIO_API_PORT=${MINIO_API_PORT}
+      - MINIO_PORT=${MINIO_PORT}
+      - MINIO_PROTOCOL=${MINIO_PROTOCOL}
     deploy:
       replicas: ${REPLICAS}
       placement:
@@ -213,6 +258,12 @@ services:
       - PROXY_PROTOCOL=${PROXY_PROTOCOL}
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
+      - MINIO_ACCESS_KEY=${MINIO_USER}
+      - MINIO_SECRET_KEY=${MINIO_PASSWORD}
+      - MINIO_DOMAIN=${MINIO_DOMAIN}
+      - MINIO_API_PORT=${MINIO_API_PORT}
+      - MINIO_PORT=${MINIO_PORT}
+      - MINIO_PROTOCOL=${MINIO_PROTOCOL}
     deploy:
       replicas: ${REPLICAS}
       placement:
@@ -248,6 +299,12 @@ services:
       - PROXY_PROTOCOL=${PROXY_PROTOCOL}
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
+      - MINIO_ACCESS_KEY=${MINIO_USER}
+      - MINIO_SECRET_KEY=${MINIO_PASSWORD}
+      - MINIO_DOMAIN=${MINIO_DOMAIN}
+      - MINIO_API_PORT=${MINIO_API_PORT}
+      - MINIO_PORT=${MINIO_PORT}
+      - MINIO_PROTOCOL=${MINIO_PROTOCOL}
     deploy:
       replicas: ${REPLICAS}
       placement:
@@ -282,6 +339,12 @@ services:
       - PROXY_PROTOCOL=${PROXY_PROTOCOL}
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
+      - MINIO_ACCESS_KEY=${MINIO_USER}
+      - MINIO_SECRET_KEY=${MINIO_PASSWORD}
+      - MINIO_DOMAIN=${MINIO_DOMAIN}
+      - MINIO_API_PORT=${MINIO_API_PORT}
+      - MINIO_PORT=${MINIO_PORT}
+      - MINIO_PROTOCOL=${MINIO_PROTOCOL}
     deploy:
       replicas: ${REPLICAS}
       placement:
@@ -319,6 +382,12 @@ services:
       - PROXY_PROTOCOL=${PROXY_PROTOCOL}
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
+      - MINIO_ACCESS_KEY=${MINIO_USER}
+      - MINIO_SECRET_KEY=${MINIO_PASSWORD}
+      - MINIO_DOMAIN=${MINIO_DOMAIN}
+      - MINIO_API_PORT=${MINIO_API_PORT}
+      - MINIO_PORT=${MINIO_PORT}
+      - MINIO_PROTOCOL=${MINIO_PROTOCOL}
     deploy:
       replicas: ${REPLICAS}
       placement:
@@ -353,6 +422,12 @@ services:
       - PROXY_PROTOCOL=${PROXY_PROTOCOL}
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
+      - MINIO_ACCESS_KEY=${MINIO_USER}
+      - MINIO_SECRET_KEY=${MINIO_PASSWORD}
+      - MINIO_DOMAIN=${MINIO_DOMAIN}
+      - MINIO_API_PORT=${MINIO_API_PORT}
+      - MINIO_PORT=${MINIO_PORT}
+      - MINIO_PROTOCOL=${MINIO_PROTOCOL}
     deploy:
       replicas: ${REPLICAS}
       placement:
@@ -388,6 +463,12 @@ services:
       - PROXY_PROTOCOL=${PROXY_PROTOCOL}
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
+      - MINIO_ACCESS_KEY=${MINIO_USER}
+      - MINIO_SECRET_KEY=${MINIO_PASSWORD}
+      - MINIO_DOMAIN=${MINIO_DOMAIN}
+      - MINIO_API_PORT=${MINIO_API_PORT}
+      - MINIO_PORT=${MINIO_PORT}
+      - MINIO_PROTOCOL=${MINIO_PROTOCOL}
     deploy:
       replicas: ${REPLICAS}
       placement:
@@ -424,6 +505,12 @@ services:
       - PROXY_PROTOCOL=${PROXY_PROTOCOL}
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
+      - MINIO_ACCESS_KEY=${MINIO_USER}
+      - MINIO_SECRET_KEY=${MINIO_PASSWORD}
+      - MINIO_DOMAIN=${MINIO_DOMAIN}
+      - MINIO_API_PORT=${MINIO_API_PORT}
+      - MINIO_PORT=${MINIO_PORT}
+      - MINIO_PROTOCOL=${MINIO_PROTOCOL}
     deploy:
       replicas: ${REPLICAS}
       placement:
@@ -459,6 +546,12 @@ services:
       - PROXY_PROTOCOL=${PROXY_PROTOCOL}
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
+      - MINIO_ACCESS_KEY=${MINIO_USER}
+      - MINIO_SECRET_KEY=${MINIO_PASSWORD}
+      - MINIO_DOMAIN=${MINIO_DOMAIN}
+      - MINIO_API_PORT=${MINIO_API_PORT}
+      - MINIO_PORT=${MINIO_PORT}
+      - MINIO_PROTOCOL=${MINIO_PROTOCOL}
     deploy:
       replicas: ${REPLICAS}
       placement:
@@ -535,6 +628,66 @@ services:
     networks:
       - octonius_production
 
+  balancer:
+    hostname: balancer
+    image: ${DOCKER_USER}/${DOCKER_REPO}:minio-balancer
+    command: --address :8000 --health-path=/minio/health/live --insecure --log http://minio{1...3}:9000
+    ports:
+      - "127.0.0.1:8181:9001"
+      - "127.0.0.1:8001:8000"
+    depends_on:
+      - minio1
+      - minio2
+      - minio3 
+    deploy:
+      mode: global         
+    networks:
+      - octonius_production
+
+  minio1:
+    <<: *minio-common
+    hostname: minio1
+    volumes:
+      - data1-1:/data1
+    deploy:
+      placement:
+        constraints:
+          - node.role==manager
+    networks:
+      - octonius_production
+
+  minio2:
+    <<: *minio-common
+    hostname: minio2
+    volumes:
+      - data2-1:/data1
+    deploy:
+      placement:
+        constraints:
+          - node.role==manager
+    networks:
+      - octonius_production
+
+  minio3:
+    <<: *minio-common
+    hostname: minio3
+    volumes:
+      - data3-1:/data1
+    deploy:
+      placement:
+        constraints:
+          - node.role==manager
+    networks:
+      - octonius_production
+
+  migrate: 
+    image: ruby
+    command: sleep 1000000
+    volumes:
+      - /mnt/volume_fra1_01/data/uploads:/data
+    networks:
+      - octonius_production
+
 volumes:
   octonius_production_db_data:
     driver: local
@@ -591,6 +744,27 @@ volumes:
       type: none
       device: /mnt/volume_fra1_01/data/uploads/search
       o: bind 
+
+  data1-1:
+    driver: local
+    driver_opts:
+      type: none
+      device: /mnt/volume_fra1_01/data/minio/data1
+      o: bind
+
+  data2-1:
+    driver: local
+    driver_opts:
+      type: none
+      device: /mnt/volume_fra1_01/data/minio/data2
+      o: bind
+
+  data3-1:
+    driver: local
+    driver_opts:
+      type: none
+      device: /mnt/volume_fra1_01/data/minio/data3
+      o: bind  
 
 networks:
   octonius_production:

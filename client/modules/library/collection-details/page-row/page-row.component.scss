@@ -1,0 +1,26 @@
+@import "src/assets/scss/variables";
+
+.page {
+	background: #FFFFFF;
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14);
+	border-radius: 8px;
+	padding: 16px;
+	margin-top: 20px;
+	display: flex;
+	width: 100%;
+}
+
+.page-info{
+	width: 90%;
+	display: flex;
+	align-items: center;
+}
+
+.options{
+	display: flex;
+	align-self: center;
+}
+.page-title{
+	font-size: 16px;
+	font-weight: bold;
+}

@@ -2,7 +2,6 @@ import { Component, OnInit, Input, Injector, Inject, EventEmitter, Output } from
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { LoungeService } from 'src/shared/services/lounge-service/lounge.service';
-import { environment } from 'src/environments/environment';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
@@ -18,8 +17,7 @@ export class LoungeImageUpdateComponent implements OnInit {
   elementData: any;
   elementPropertyName: string = '';
 
-  // Base Url of the Application
-  baseUrl = environment.UTILITIES_WORKSPACES_UPLOADS;
+  workspaceData: any;
 
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector);
@@ -32,9 +30,11 @@ export class LoungeImageUpdateComponent implements OnInit {
     private injector: Injector,
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.elementData = this.data.elementData;
     this.elementPropertyName = this.data.elementPropertyName;
+
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
   }
 
   /**

@@ -112,7 +112,9 @@ export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDe
 
           return true;
         }).catch((err) => {
-          this.router.navigate(['/home']);
+          this.authService.signout().subscribe(async (res) => {
+            this.goHome();
+          });
           return false;
         });
     } else {

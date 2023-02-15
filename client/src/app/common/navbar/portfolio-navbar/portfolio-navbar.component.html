@@ -17,6 +17,7 @@
         <app-secured-image
           [imgURL]="portfolioData?.portfolio_avatar"
           [service]="'group'"
+          [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
           [tooltip]="'Change portfolio avatar'" [placement]="'right'" [styleClass]="'mr-3 feed-avatar'"
           (click)="openDetails(content)"></app-secured-image>
         <!-- Portfolio Avatar ends -->

@@ -21,9 +21,6 @@ export class DoneTasksListViewComponent implements OnChanges {
 
   collapse = true;
 
-  // BASE URL OF THE APPLICATION
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
-
   constructor(public utilityService: UtilityService) { }
 
   ngOnChanges() {

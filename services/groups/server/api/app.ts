@@ -11,9 +11,11 @@ import {
     pulseRoutes,
     columnRoutes,
     flowRoutes,
-    portfolioRoutes
+    portfolioRoutes,
+    libraryRoutes
 } from './routes';
 import fileUpload from 'express-fileupload';
+import { fileHandler } from '../utils';
 
 // Defining new Express application
 const app = express();
@@ -83,7 +85,8 @@ app.use(fileUpload({
 }));
 
 // Availing the static uploads folder to access from server
-app.use('/uploads', express.static(process.env.FILE_UPLOAD_FOLDER));
+// app.use('/uploads', express.static(process.env.FILE_UPLOAD_FOLDER));
+app.use('/uploads', fileHandler);
 
 // Routes which should handle request
 app.all('/', (req: Request, res: Response, next: NextFunction) => {
@@ -96,6 +99,7 @@ app.use('/api/members', memberRoutes);
 app.use('/api/flows', flowRoutes);
 app.use('/api/pulse', pulseRoutes);
 app.use('/api/portfolio', portfolioRoutes);
+app.use('/api/library', libraryRoutes);
 app.use('/api', groupsRoutes);
 
 // Invalid routes handling middleware

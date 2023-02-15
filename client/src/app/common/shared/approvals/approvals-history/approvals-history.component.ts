@@ -1,7 +1,6 @@
 import { Component, Input, OnChanges, ViewEncapsulation, Injector, OnInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
-import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
 
@@ -19,8 +18,6 @@ export class ApprovalsHistoryComponent implements OnChanges, OnInit {
   @Input() type; // post/file
 
   groupData;
-
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);

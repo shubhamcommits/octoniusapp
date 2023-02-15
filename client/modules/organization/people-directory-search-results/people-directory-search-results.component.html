@@ -5,6 +5,7 @@
     <app-secured-image *ngIf="member.active"
         [imgURL]="member?.profile_pic"
         [service]="'user'"
+        [workspaceId]="workspaceData?._id"
         [styleClass]="'feed-avatar'"></app-secured-image>
     <!-- Avatar Image of the member -->
 

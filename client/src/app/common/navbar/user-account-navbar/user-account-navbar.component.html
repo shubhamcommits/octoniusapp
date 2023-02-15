@@ -3,6 +3,7 @@
     <div class="avatar">
       <!-- My user avatar starts -->
       <app-secured-image *ngIf="userData" [imgURL]="userData?.profile_pic" [service]="'user'"
+        [workspaceId]="workspaceData?._id"
         [styleClass]="'mr-3 peoplecard-avatar'" [placement]="'right'" [tooltip]="'Change your avatar'"
         (click)="openDetails(userContent)"></app-secured-image>
       <!-- My user avatar ends -->
@@ -94,6 +95,6 @@
 </nav>
 
 <ng-template #userContent let-modal>
-  <app-user-image-details [userData]="userData" [baseUrl]="baseUrl" [workspaceData]="workspaceData">
+  <app-user-image-details [userData]="userData" [workspaceData]="workspaceData">
   </app-user-image-details>
 </ng-template>

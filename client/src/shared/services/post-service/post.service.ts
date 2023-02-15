@@ -16,10 +16,10 @@ export class PostService {
    * This function is responsible for creating a post
    * @param { title, content, type, _posted_by, _group, _content_mentions } postData
    */
-  create(formData: FormData) {
+  create(workspaceId: string, formData: FormData) {
 
     // Call the HTTP Request
-    return this._http.post(this.baseURL + '/', formData).
+    return this._http.post(this.baseURL + `/${workspaceId}`, formData).
       toPromise()
   }
 
@@ -28,10 +28,10 @@ export class PostService {
    * @param postId
    * @param formData
    */
-  edit(postId: string, formData: FormData) {
+  edit(postId: string, workspaceId: string, formData: FormData) {
 
     // Call the HTTP Request
-    return this._http.put(this.baseURL + `/${postId}`, formData).
+    return this._http.put(this.baseURL + `/${postId}/edit/${workspaceId}`, formData).
       toPromise()
   }
 

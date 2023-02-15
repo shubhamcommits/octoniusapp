@@ -113,17 +113,42 @@ export class WelcomePageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   googleInit() {
-    if( this.possibleIntegrations) {
-      gapi.load('auth2', () => {
-        this.auth2 = gapi.auth2.init({
-          'client_id': environment.GOOGLE_OCTONIUS_CLIENT_ID,//this.possibleIntegrations.google_client_id,
-          'scope': environment.GOOGLE_LOGIN_SCOPE,
-          'immediate': false,
-          'access_type': 'offline',
-          'response_type': 'token code'
+    if(this.possibleIntegrations && this.googleAvailable) {
+      // gapi.load('auth2', () => {
+      //   this.auth2 = gapi.auth2.init({
+      //     'client_id': environment.GOOGLE_OCTONIUS_CLIENT_ID,//this.possibleIntegrations.google_client_id,
+      //     'scope': environment.GOOGLE_LOGIN_SCOPE,
+      //     'immediate': false,
+      //     'access_type': 'offline',
+      //     'response_type': 'token code'
+      //   });
+      // });
+      // @ts-ignore
+        google.accounts.id.initialize({
+          client_id: environment.GOOGLE_OCTONIUS_CLIENT_ID,
+          callback: this.handleCredentialResponse.bind(this),
+          auto_select: false,
+          cancel_on_tap_outside: true,
+
         });
-      });
+        // @ts-ignore
+        google.accounts.id.renderButton(
+          // @ts-ignore
+          document.getElementById("google-button"),
+            { theme: "outline", size: "large", width: "100%" }
+        );
+        // @ts-ignore
+        google.accounts.id.prompt((notification: PromptMomentNotification) => {});
     }
+  }
+  async handleCredentialResponse(response: any) {
+    // Here will be your response from Google.
+    fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${response.credential}`)
+      .then(res => res.json())
+      .then(res => {
+        this.signInGoogle(res);
+      })
+      .catch(error => console.log(error));
   }
 
   /**
@@ -304,52 +329,91 @@ export class WelcomePageComponent implements OnInit, AfterViewInit, OnDestroy {
       }));
   }
 
-  signInGoogle() {
+  signInGoogle(response: any) {
     this.utilityService.asyncNotification($localize`:@@welcomePage.pleaseWaitWhileWeSighYouIn:Please wait while we sign you in...`,
       new Promise((resolve, reject) => {
-        var auth2 = gapi.auth2.getAuthInstance();
-        // Sign the user in, and then retrieve their ID.
 
-        auth2.signIn().then(() => {
-          let accountGoogle = auth2.currentUser.get().getBasicProfile();
+        let userData: any = {
+          email: response.email,
+          first_name: response.given_name,
+          last_name: response.family_name,
+          // picture: response.picture,
+          ssoType: 'GOOGLE'
+        }
 
-          let userData: any = {
-            email: accountGoogle.getEmail(),
-            first_name: accountGoogle.getGivenName(),
-            last_name: accountGoogle.getFamilyName(),
-            ssoType: 'GOOGLE'
+        this.authenticationService.authenticateSSOUser(userData).then(async res => {
+          const newAccount = res['newAccount'];
+          const accountData = res['account'];
+
+          await this.clearAccountData();
+          await this.storeAccountData(res);
+
+          if (newAccount || (!accountData || !accountData._workspaces || accountData._workspaces.length == 0)) {
+            this.router.navigate(['authentication', 'join-workplace'])
+              .then(() => {
+                resolve(this.utilityService.successNotification($localize`:@@welcomePage.hiGoogle:Hi ${res['account']['first_name']}!`));
+              })
+              .catch((err) => {
+                console.error('Error occurred while signing in the user', err);
+                this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`);
+                this.storageService.clear();
+              });
+          } else {
+            this.router.navigate(['authentication', 'select-workspace'])
+              .then(() => {
+                resolve(this.utilityService.successNotification($localize`:@@welcomePage.hiGoogle:Hi ${res['account']['first_name']}!`));
+              })
+              .catch((err) => {
+                console.error('Error occurred while signing in the user', err);
+                reject(this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`));
+                this.storageService.clear();
+              });
           }
-
-          this.authenticationService.authenticateSSOUser(userData).then(async res => {
-            const newAccount = res['newAccount'];
-            const accountData = res['account'];
-
-            await this.clearAccountData();
-            await this.storeAccountData(res);
-
-            if (newAccount || (!accountData || !accountData._workspaces || accountData._workspaces.length == 0)) {
-              this.router.navigate(['authentication', 'join-workplace'])
-                .then(() => {
-                  resolve(this.utilityService.successNotification($localize`:@@welcomePage.hiGoogle:Hi ${res['account']['first_name']}!`));
-                })
-                .catch((err) => {
-                  console.error('Error occurred while signing in the user', err);
-                  this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`);
-                  this.storageService.clear();
-                });
-            } else {
-              this.router.navigate(['authentication', 'select-workspace'])
-                .then(() => {
-                  resolve(this.utilityService.successNotification($localize`:@@welcomePage.hiGoogle:Hi ${res['account']['first_name']}!`));
-                })
-                .catch((err) => {
-                  console.error('Error occurred while signing in the user', err);
-                  reject(this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`));
-                  this.storageService.clear();
-                });
-            }
-          });
         });
+        
+        // var auth2 = gapi.auth2.getAuthInstance();
+        // // Sign the user in, and then retrieve their ID.
+
+        // auth2.signIn().then(() => {
+        //   let accountGoogle = auth2.currentUser.get().getBasicProfile();
+
+        //   let userData: any = {
+        //     email: accountGoogle.getEmail(),
+        //     first_name: accountGoogle.getGivenName(),
+        //     last_name: accountGoogle.getFamilyName(),
+        //     ssoType: 'GOOGLE'
+        //   }
+
+        //   this.authenticationService.authenticateSSOUser(userData).then(async res => {
+        //     const newAccount = res['newAccount'];
+        //     const accountData = res['account'];
+
+        //     await this.clearAccountData();
+        //     await this.storeAccountData(res);
+
+        //     if (newAccount || (!accountData || !accountData._workspaces || accountData._workspaces.length == 0)) {
+        //       this.router.navigate(['authentication', 'join-workplace'])
+        //         .then(() => {
+        //           resolve(this.utilityService.successNotification($localize`:@@welcomePage.hiGoogle:Hi ${res['account']['first_name']}!`));
+        //         })
+        //         .catch((err) => {
+        //           console.error('Error occurred while signing in the user', err);
+        //           this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`);
+        //           this.storageService.clear();
+        //         });
+        //     } else {
+        //       this.router.navigate(['authentication', 'select-workspace'])
+        //         .then(() => {
+        //           resolve(this.utilityService.successNotification($localize`:@@welcomePage.hiGoogle:Hi ${res['account']['first_name']}!`));
+        //         })
+        //         .catch((err) => {
+        //           console.error('Error occurred while signing in the user', err);
+        //           reject(this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`));
+        //           this.storageService.clear();
+        //         });
+        //     }
+        //   });
+        // });
       }));
   }
 }

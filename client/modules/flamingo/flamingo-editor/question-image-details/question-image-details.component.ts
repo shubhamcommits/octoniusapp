@@ -2,7 +2,6 @@ import { Component, OnInit, Input,Output, EventEmitter, ViewChild,  Injector } f
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-question-image-details',
@@ -10,10 +9,6 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./question-image-details.component.scss']
 })
 export class QuestionImageDetailsComponent implements OnInit {
-
-  constructor(
-    private injector: Injector
-  ) { }
 
   // BaseUrl
   @Input('baseUrl') baseUrl: any;
@@ -30,9 +25,6 @@ export class QuestionImageDetailsComponent implements OnInit {
   // Emitter to notify that the view is changing
   @Output() uploadImageEmitter: EventEmitter<any> = new EventEmitter<any>();
 
-
-  FLAMINGO_UPLOADS = environment.UTILITIES_FLAMINGOS_UPLOADS;
-
   // Cropped Image of the Input Image File
   croppedImage: File;
 
@@ -40,6 +32,10 @@ export class QuestionImageDetailsComponent implements OnInit {
 
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector);
+
+  constructor(
+    private injector: Injector
+  ) { }
 
   ngOnInit() {
   }
@@ -51,9 +47,9 @@ export class QuestionImageDetailsComponent implements OnInit {
    fileChangeEvent(event:any){
     this.croppedImage = event.target['files'][0];
     const reader = new FileReader();
-        reader.onload = e => this.imageSrc = reader.result;
+    reader.onload = e => this.imageSrc = reader.result;
 
-        reader.readAsDataURL(event.target['files'][0]);
+    reader.readAsDataURL(event.target['files'][0]);
    }
 
   uploadImage() {

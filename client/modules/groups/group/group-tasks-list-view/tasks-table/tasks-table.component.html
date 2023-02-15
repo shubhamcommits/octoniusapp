@@ -10,6 +10,7 @@
             label="Name"
             [domainObject]="task"
             [required]="true"
+            [workspaceId]="userData?._workspace?._id || userData?._workspace"
             type="text"
             (post)="fieldUpdated($event)">
         </app-inline-input>
@@ -70,6 +71,7 @@
             [styleClass]="checkOverdue(task) ? 'overdue' : 'due'"
             [domainObject]="task"
             [required]="true"
+            [workspaceId]="userData?._workspace?._id || userData?._workspace"
             type="date"
             (post)="fieldUpdated($event)">
         </app-inline-input>
@@ -99,6 +101,7 @@
             [required]="true"
             [options]="customFieldValues(cf.name)"
             [groupId]="groupData._id"
+            [workspaceId]="userData?._workspace?._id || userData?._workspace"
             type="customField"
             (post)="fieldUpdated($event)">
         </app-inline-input>

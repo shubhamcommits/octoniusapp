@@ -1,9 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
 import { SubSink } from 'subsink';
-import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 
 @Component({
   selector: 'app-admin-header',
@@ -14,15 +12,11 @@ export class AdminHeaderComponent implements OnInit {
 
   constructor(
     private utilityService: UtilityService,
-    private workspaceService: WorkspaceService,
     private injector: Injector) {
   }
 
   // USER DATA
   userData: any;
-
-  // BASE URL OF THE APPLICATION
-  baseUrl = environment.UTILITIES_WORKSPACES_UPLOADS;
 
   // WORKSPACE DATA
   workspaceData: any;

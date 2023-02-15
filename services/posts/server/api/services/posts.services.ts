@@ -1,12 +1,13 @@
 import http from 'axios';
 import moment from 'moment';
-import { Readable } from 'stream';
 import { Comment, Group, Post, User, Notification } from '../models';
-import { sendErr } from '../utils/sendError';
 import { CommentsService } from './comments.services';
 import { GroupsService } from './groups.services';
-const fs = require('fs');
 import axios from 'axios';
+
+const fs = require('fs');
+const minio = require('minio');
+
 /*  ===============================
  *  -- POSTS Service --
  *  ===============================
@@ -1016,12 +1017,28 @@ export class PostService {
         //gather source file
         function deleteFiles(files, callback) {
           var i = files.length;
-          files.forEach(function (filepath) {
-            const finalpath = `${process.env.FILE_UPLOAD_FOLDER}${filepath.modified_name}`
-            fs.unlink(finalpath, function (err) {
+          files.forEach(async function (filepath) {
+            // const finalpath = `${process.env.FILE_UPLOAD_FOLDER}${filepath.modified_name}`
+            // fs.unlink(finalpath, function (err) {
+            //   i--;
+            //   if (err) {
+            //     callback(err);
+            //     return;
+            //   } else if (i <= 0) {
+            //     callback(null);
+            //   }
+            // });
+            var minioClient = new minio.Client({
+              endPoint: process.env.MINIO_DOMAIN,
+              port: +(process.env.MINIO_API_PORT),
+              useSSL: process.env.MINIO_PROTOCOL == 'https',
+              accessKey: process.env.MINIO_ACCESS_KEY,
+              secretKey: process.env.MINIO_SECRET_KEY
+            });
+            await minioClient.removeObject(user._workspace, filepath.modified_name, (error) => {
               i--;
-              if (err) {
-                callback(err);
+              if (error) {
+                callback(error);
                 return;
               } else if (i <= 0) {
                 callback(null);
@@ -1035,19 +1052,30 @@ export class PostService {
         });
       }
       //chec/delete document files that were exported
-      const filepath = `${process.env.FILE_UPLOAD_FOLDER}${postId + post._group + 'export' + '.docx'}`;
+      // const filepath = `${process.env.FILE_UPLOAD_FOLDER}${postId + post._group + 'export' + '.docx'}`;
+      const filepath = `${postId + post._group + 'export' + '.docx'}`;
       //check if file exists
-      fs.access(filepath, fs.F_OK, error => {
-        //if error there was no file
-        if (!error) {
-          //the file was there now unlink it
-          fs.unlink(filepath, (err) => {
-            //handle error when file was not deleted properly
-            if (err) { throw (err); }
-            //deleted document
-          })
-        }
-      })
+      // fs.access(filepath, fs.F_OK, error => {
+      //   //if error there was no file
+      //   if (!error) {
+      //     //the file was there now unlink it
+      //     fs.unlink(filepath, (err) => {
+      //       //handle error when file was not deleted properly
+      //       if (err) { throw (err); }
+      //       //deleted document
+      //     })
+      //   }
+      // })
+      var minioClient = new minio.Client({
+        endPoint: process.env.MINIO_DOMAIN,
+        port: +(process.env.MINIO_API_PORT),
+        useSSL: process.env.MINIO_PROTOCOL == 'https',
+        accessKey: process.env.MINIO_ACCESS_KEY,
+        secretKey: process.env.MINIO_SECRET_KEY
+      });
+      await minioClient.removeObject(user._workspace, filepath, (error) => {
+        if (error) { throw (error); }
+      });
 
       // Delete the notifications
       await Notification.deleteMany({ _origin_post: postId });
@@ -2713,6 +2741,8 @@ export class PostService {
         let files = newPost.files;
         newPost.files = [];
 
+        const group: any = await Group.findById(groupId).select('_workspace').lean();
+
         // Fetch the files from the current request
         await files.forEach(async (currentFile: any, index: Number) => {
 
@@ -2723,11 +2753,56 @@ export class PostService {
           const folder = process.env.FILE_UPLOAD_FOLDER;
 
           // Modify the file accordingly and handle request
-          await fs.copyFile(folder + currentFile.modified_name, folder + fileName, (error: Error) => {
+          // await fs.copyFile(folder + currentFile.modified_name, folder + fileName, (error: Error) => {
+          //   if (error) {
+          //     fileName = null;
+          //     console.log(`\n⛔️ Error:\n ${error}`);
+          //     throw (error);
+          //   }
+          // });
+
+          var minioClient = new minio.Client({
+              endPoint: process.env.MINIO_DOMAIN,
+              port: +(process.env.MINIO_API_PORT),
+              useSSL: process.env.MINIO_PROTOCOL == 'https',
+              accessKey: process.env.MINIO_ACCESS_KEY,
+              secretKey: process.env.MINIO_SECRET_KEY
+          });
+
+          var conds = new minio.CopyConditions();
+          // conds.setMatchETag('bd891862ea3e22c93ed53a098218791d');
+
+          await minioClient.bucketExists((group._workspace).toLowerCase(), async (error, exists) => {
             if (error) {
-              fileName = null;
-              console.log(`\n⛔️ Error:\n ${error}`);
               throw (error);
+            }
+
+            if (!exists) {
+              // Make a bucket.
+              await minioClient.makeBucket((group._workspace).toLowerCase(), async (error) => {
+                if (error) {
+                  throw (error);
+                }
+
+                const encryption = { algorithm: "AES256" };
+                await minioClient.setBucketEncryption((group._workspace).toLowerCase(), encryption)
+                  .then(() => console.log("Encryption enabled"))
+                  .catch((error) => console.error(error));
+
+                // Using fPutObject API upload your file to the bucket.
+                minioClient.copyObject((group._workspace).toLowerCase(), fileName, currentFile.modified_name, conds, (e, data) => {
+                  if (e) {
+                    throw (e);
+                  }
+                });
+              });
+            } else {
+              // Using fPutObject API upload your file to the bucket.
+              minioClient.copyObject((group._workspace).toLowerCase(), fileName, currentFile.modified_name, conds, (e, data) => {
+                if (error) {
+                  throw (error);
+                }
+              });
             }
           });
 
@@ -3048,6 +3123,8 @@ export class PostService {
         let files = newPost.files;
         newPost.files = [];
 
+        const group: any = await Group.findById(newPost?._group).select('_workspace').lean();
+
         // Fetch the files from the current request
         await files.forEach(async (currentFile: any, index: Number) => {
 
@@ -3058,11 +3135,56 @@ export class PostService {
           const folder = process.env.FILE_UPLOAD_FOLDER;
 
           // Modify the file accordingly and handle request
-          await fs.copyFile(folder + currentFile.modified_name, folder + fileName, (error: Error) => {
+          // await fs.copyFile(folder + currentFile.modified_name, folder + fileName, (error: Error) => {
+          //   if (error) {
+          //     fileName = null;
+          //     console.log(`\n⛔️ Error:\n ${error}`);
+          //     throw (error);
+          //   }
+          // });
+
+          var minioClient = new minio.Client({
+              endPoint: process.env.MINIO_DOMAIN,
+              port: +(process.env.MINIO_API_PORT),
+              useSSL: process.env.MINIO_PROTOCOL == 'https',
+              accessKey: process.env.MINIO_ACCESS_KEY,
+              secretKey: process.env.MINIO_SECRET_KEY
+          });
+
+          var conds = new minio.CopyConditions();
+          // conds.setMatchETag('bd891862ea3e22c93ed53a098218791d');
+
+          await minioClient.bucketExists((group._workspace).toLowerCase(), async (error, exists) => {
             if (error) {
-              fileName = null;
-              console.log(`\n⛔️ Error:\n ${error}`);
               throw (error);
+            }
+
+            if (!exists) {
+              // Make a bucket.
+              await minioClient.makeBucket((group._workspace).toLowerCase(), async (error) => {
+                if (error) {
+                  throw (error);
+                }
+
+                const encryption = { algorithm: "AES256" };
+                await minioClient.setBucketEncryption((group._workspace).toLowerCase(), encryption)
+                  .then(() => console.log("Encryption enabled"))
+                  .catch((error) => console.error(error));
+
+                // Using fPutObject API upload your file to the bucket.
+                minioClient.copyObject((group._workspace).toLowerCase(), fileName, currentFile.modified_name, conds, (e, data) => {
+                  if (e) {
+                    throw (e);
+                  }
+                });
+              });
+            } else {
+              // Using fPutObject API upload your file to the bucket.
+              minioClient.copyObject((group._workspace).toLowerCase(), fileName, currentFile.modified_name, conds, (e, data) => {
+                if (error) {
+                  throw (error);
+                }
+              });
             }
           });
 
@@ -3171,6 +3293,8 @@ export class PostService {
         let files = template.files;
         template.files = [];
 
+        const group: any = await Group.findById(groupId).select('_workspace').lean();
+
         // Fetch the files from the current request
         await files.forEach(async (currentFile: any, index: Number) => {
 
@@ -3178,14 +3302,59 @@ export class PostService {
           let fileName = Date.now().toString() + currentFile.original_name;
 
           // Get the folder link from the environment
-          const folder = process.env.FILE_UPLOAD_FOLDER;
+          // const folder = process.env.FILE_UPLOAD_FOLDER;
 
           // Modify the file accordingly and handle request
-          await fs.copyFile(folder + currentFile.modified_name, folder + fileName, (error: Error) => {
+          // await fs.copyFile(folder + currentFile.modified_name, folder + fileName, (error: Error) => {
+          //   if (error) {
+          //     fileName = null;
+          //     console.log(`\n⛔️ Error:\n ${error}`);
+          //     throw (error);
+          //   }
+          // });
+
+          var minioClient = new minio.Client({
+              endPoint: process.env.MINIO_DOMAIN,
+              port: +(process.env.MINIO_API_PORT),
+              useSSL: process.env.MINIO_PROTOCOL == 'https',
+              accessKey: process.env.MINIO_ACCESS_KEY,
+              secretKey: process.env.MINIO_SECRET_KEY
+          });
+
+          var conds = new minio.CopyConditions();
+          // conds.setMatchETag('bd891862ea3e22c93ed53a098218791d');
+
+          await minioClient.bucketExists((group._workspace).toLowerCase(), async (error, exists) => {
             if (error) {
-              fileName = null;
-              console.log(`\n⛔️ Error:\n ${error}`);
               throw (error);
+            }
+
+            if (!exists) {
+              // Make a bucket.
+              await minioClient.makeBucket((group._workspace).toLowerCase(), async (error) => {
+                if (error) {
+                  throw (error);
+                }
+
+                const encryption = { algorithm: "AES256" };
+                await minioClient.setBucketEncryption((group._workspace).toLowerCase(), encryption)
+                  .then(() => console.log("Encryption enabled"))
+                  .catch((error) => console.error(error));
+
+                // Using fPutObject API upload your file to the bucket.
+                minioClient.copyObject((group._workspace).toLowerCase(), fileName, currentFile.modified_name, conds, (e, data) => {
+                  if (e) {
+                    throw (e);
+                  }
+                });
+              });
+            } else {
+              // Using fPutObject API upload your file to the bucket.
+              minioClient.copyObject((group._workspace).toLowerCase(), fileName, currentFile.modified_name, conds, (e, data) => {
+                if (error) {
+                  throw (error);
+                }
+              });
             }
           });
 
@@ -3254,17 +3423,35 @@ export class PostService {
         _assigned_to: template._assigned_to
       });
 
+      const user: any = await User.findOne({ _id: template._assigned_to }).select('_workspace');
+
       //delete files, this catches both document insertion as well as multiple file attachment deletes
       if (newPost.files?.length > 0) {
         //gather source file
         function deleteFiles(files, callback) {
           var i = files.length;
-          files.forEach(function (filepath) {
-            const finalpath = `${process.env.FILE_UPLOAD_FOLDER}${filepath.modified_name}`
-            fs.unlink(finalpath, function (err) {
+          files.forEach(async function (filepath) {
+            // const finalpath = `${process.env.FILE_UPLOAD_FOLDER}${filepath.modified_name}`
+            // fs.unlink(finalpath, function (err) {
+            //   i--;
+            //   if (err) {
+            //     callback(err);
+            //     return;
+            //   } else if (i <= 0) {
+            //     callback(null);
+            //   }
+            // });
+            var minioClient = new minio.Client({
+              endPoint: process.env.MINIO_DOMAIN,
+              port: +(process.env.MINIO_API_PORT),
+              useSSL: process.env.MINIO_PROTOCOL == 'https',
+              accessKey: process.env.MINIO_ACCESS_KEY,
+              secretKey: process.env.MINIO_SECRET_KEY
+            });
+            await minioClient.removeObject((user._workspace).toLowerCase(), filepath.modified_name, (error) => {
               i--;
-              if (err) {
-                callback(err);
+              if (error) {
+                callback(error);
                 return;
               } else if (i <= 0) {
                 callback(null);
@@ -3279,19 +3466,30 @@ export class PostService {
       }
 
       //chec/delete document files that were exported
-      const filepath = `${process.env.FILE_UPLOAD_FOLDER}${newPostId + (newPost._group._id || newPost._group) + 'export' + '.docx'}`;
+      // const filepath = `${process.env.FILE_UPLOAD_FOLDER}${newPostId + (newPost._group._id || newPost._group) + 'export' + '.docx'}`;
+      const filepath = `${newPostId + (newPost._group._id || newPost._group) + 'export' + '.docx'}`;
       //check if file exists
-      fs.access(filepath, fs.F_OK, error => {
-        //if error there was no file
-        if (!error) {
-          //the file was there now unlink it
-          fs.unlink(filepath, (err) => {
-            //handle error when file was not deleted properly
-            if (err) { throw (err); }
-            //deleted document
-          })
-        }
-      })
+      // fs.access(filepath, fs.F_OK, error => {
+      //   //if error there was no file
+      //   if (!error) {
+      //     //the file was there now unlink it
+      //     fs.unlink(filepath, (err) => {
+      //       //handle error when file was not deleted properly
+      //       if (err) { throw (err); }
+      //       //deleted document
+      //     })
+      //   }
+      // })
+      var minioClient = new minio.Client({
+        endPoint: process.env.MINIO_DOMAIN,
+        port: +(process.env.MINIO_API_PORT),
+        useSSL: process.env.MINIO_PROTOCOL == 'https',
+        accessKey: process.env.MINIO_ACCESS_KEY,
+        secretKey: process.env.MINIO_SECRET_KEY
+      });
+      await minioClient.removeObject((user._workspace).toLowerCase(), filepath, (error) => {
+        if (error) { throw (error); }
+      });
 
       if (template.files) {
         // Start adding the files from the template
@@ -3305,14 +3503,59 @@ export class PostService {
           let fileName = Date.now().toString() + currentFile.original_name;
 
           // Get the folder link from the environment
-          const folder = process.env.FILE_UPLOAD_FOLDER;
+          // const folder = process.env.FILE_UPLOAD_FOLDER;
 
           // Modify the file accordingly and handle request
-          await fs.copyFile(folder + currentFile.modified_name, folder + fileName, (error: Error) => {
+          // await fs.copyFile(folder + currentFile.modified_name, folder + fileName, (error: Error) => {
+          //   if (error) {
+          //     fileName = null;
+          //     console.log(`\n⛔️ Error:\n ${error}`);
+          //     throw (error);
+          //   }
+          // });
+
+          var minioClient = new minio.Client({
+              endPoint: process.env.MINIO_DOMAIN,
+              port: +(process.env.MINIO_API_PORT),
+              useSSL: process.env.MINIO_PROTOCOL == 'https',
+              accessKey: process.env.MINIO_ACCESS_KEY,
+              secretKey: process.env.MINIO_SECRET_KEY
+          });
+
+          var conds = new minio.CopyConditions();
+          // conds.setMatchETag('bd891862ea3e22c93ed53a098218791d');
+
+          await minioClient.bucketExists((user._workspace).toLowerCase(), async (error, exists) => {
             if (error) {
-              fileName = null;
-              console.log(`\n⛔️ Error:\n ${error}`);
               throw (error);
+            }
+
+            if (!exists) {
+              // Make a bucket.
+              await minioClient.makeBucket((user._workspace).toLowerCase(), async (error) => {
+                if (error) {
+                  throw (error);
+                }
+
+                const encryption = { algorithm: "AES256" };
+                await minioClient.setBucketEncryption((user._workspace).toLowerCase(), encryption)
+                  .then(() => console.log("Encryption enabled"))
+                  .catch((error) => console.error(error));
+
+                // Using fPutObject API upload your file to the bucket.
+                minioClient.copyObject((user._workspace).toLowerCase(), fileName, currentFile.modified_name, conds, (e, data) => {
+                  if (e) {
+                    throw (e);
+                  }
+                });
+              });
+            } else {
+              // Using fPutObject API upload your file to the bucket.
+              minioClient.copyObject((user._workspace).toLowerCase(), fileName, currentFile.modified_name, conds, (e, data) => {
+                if (error) {
+                  throw (error);
+                }
+              });
             }
           });
 

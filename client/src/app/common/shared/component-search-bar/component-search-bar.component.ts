@@ -4,7 +4,6 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
-import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs/internal/Subject';
 import { debounceTime } from 'rxjs/internal/operators/debounceTime';
 import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
@@ -47,9 +46,6 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
   @Input('members') members: any = [];
 
   panelOpenState:any=false;
-
-  // BASE URL OF THE APPLICATION
-  public baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   // Public Functions class
   private publicFunctions = new PublicFunctions(this.injector);
@@ -411,6 +407,11 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
             // Send the data over the service and storage layer throughout the entire app
             this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
 
+            if (this.userData?._id == userId) {
+              this.userData.role = role;
+              this.publicFunctions.sendUpdatesToUserData(this.userData);
+            }
+
             // Update the localdata of all the connected users
             this.publicFunctions.emitWorkspaceData(socketService, this.workspaceData)
 
@@ -453,6 +454,11 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
 
             // Send the data over the service and storage layer throughout the entire app
             this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
+
+            if (this.userData?._id == memberId) {
+              this.userData.hr_role = hr_role;
+              this.publicFunctions.sendUpdatesToUserData(this.userData);
+            }
 
             // Update the localdata of all the connected users
             this.publicFunctions.emitWorkspaceData(socketService, this.workspaceData);

@@ -1,9 +1,10 @@
-import { Comment, Post, User, Notification, Story } from '../models';
+import { Comment, Post, User, Notification, Story, Page } from '../models';
 import http from 'axios';
-import { sendErr } from '../utils/sendError';
 import moment from 'moment';
 import followRedirects from 'follow-redirects';
+
 const fs = require('fs');
+const minio = require('minio');
 
 /*  ===============================
  *  -- COMMENTS Service --
@@ -20,7 +21,7 @@ const fs = require('fs');
         try {
           let {
             userId,
-            query: { postId, storyId },
+            query: { postId, storyId, pageId },
             body: { comment }
           } = req;
 
@@ -35,6 +36,7 @@ const fs = require('fs');
             _commented_by: userId,
             _post: postId,
             _story: storyId,
+            _page: pageId,
             files: comment.files,
             created_date: moment().format()
           };
@@ -125,6 +127,17 @@ const fs = require('fs');
               }, { maxContentLength: 60 * 1024 * 1024 }
             );
             */
+          } else if (pageId) {
+            // Update post: add new comment id, increase post count
+            const page = await Page.findOneAndUpdate({
+                _id: pageId
+              }, {
+                $addToSet: {
+                  _comments: newComment._id
+                }
+              }, {
+                new: true
+              }).select('_id');
           }
       
           if (newComment._content_mentions.length !== 0) {
@@ -221,9 +234,9 @@ const fs = require('fs');
        * Function to get all comments of a post
        * @param { postId }
        */
-      getAllComments = async (postId, storyId) => {
+      getAllComments = async (postId, storyId, pageId) => {
         try {
-          let query = (storyId) ? { _story: storyId } : { _post: postId };
+          let query = (storyId) ? { _story: storyId } : ((pageId) ? { _page: pageId } : { _post: postId });
           const comments = await Comment.find(query)
             //  sorting them on ID will make the more recent ones be fetched first
             .sort('-_id')
@@ -242,9 +255,9 @@ const fs = require('fs');
        * Function to get first 5 comments on a post
        * @param { postId }
        */
-      getComments = async (postId, storyId) => {
+      getComments = async (postId, storyId, pageId) => {
         try {
-          let query = (storyId) ? { _story: storyId } : { _post: postId };
+          let query = (storyId) ? { _story: storyId } : ((pageId) ? { _page: pageId } : { _post: postId });
           const comments = await Comment.find(query)
             //  sorting them on ID will make the more recent ones be fetched first
             .sort('-_id')
@@ -264,15 +277,29 @@ const fs = require('fs');
        * Function to get next 5 comments on a post
        * @param { postId, commentId }
        */
-      getNextComments = async (postId, commentId) => {
+      getNextComments = async (postId, storyId, pageId, commentId) => {
         try {
-      
-          const comments = await Comment.find({
-            $and: [
-              { _post: postId },
-              { _id: { $lt: commentId } }
-            ]
-          })
+          let query = (storyId) 
+            ? {
+              $and: [
+                { _story: storyId },
+                { _id: { $lt: commentId } }
+              ]
+            }
+              : ((pageId) 
+                ? {
+                    $and: [
+                      { _page: pageId },
+                      { _id: { $lt: commentId } }
+                    ]
+                  }
+                  : {
+                      $and: [
+                        { _post: postId },
+                        { _id: { $lt: commentId } }
+                      ]
+                    });
+          const comments = await Comment.find(query)
             .sort('-_id')
             .limit(5)
             .populate('_commented_by', 'first_name last_name profile_pic')
@@ -334,12 +361,29 @@ const fs = require('fs');
             //gather source file
             function deleteFiles(files, callback) {
               var i = files.length;
-              files.forEach(function (filepath) {
-                const finalpath = `${process.env.FILE_UPLOAD_FOLDER}${filepath.modified_name}`
-                fs.unlink(finalpath, function (err) {
+              files.forEach(async function (filepath) {
+                // const finalpath = `${process.env.FILE_UPLOAD_FOLDER}${filepath.modified_name}`
+                const finalpath = `${filepath.modified_name}`
+                // fs.unlink(finalpath, function (err) {
+                //   i--;
+                //   if (err) {
+                //     callback(err);
+                //     return;
+                //   } else if (i <= 0) {
+                //     callback(null);
+                //   }
+                // });
+                var minioClient = new minio.Client({
+                  endPoint: process.env.MINIO_DOMAIN,
+                  port: +(process.env.MINIO_API_PORT),
+                  useSSL: process.env.MINIO_PROTOCOL == 'https',
+                  accessKey: process.env.MINIO_ACCESS_KEY,
+                  secretKey: process.env.MINIO_SECRET_KEY
+                });
+                await minioClient.removeObject(user._workspace, finalpath, (error) => {
                   i--;
-                  if (err) {
-                    callback(err);
+                  if (error) {
+                    callback(error);
                     return;
                   } else if (i <= 0) {
                     callback(null);
@@ -357,19 +401,30 @@ const fs = require('fs');
           if (post) {
             // TODO - not sure if the files are being deleted. Wrong name
             //chec/delete document files that were exported
-            const filepath = `${process.env.FILE_UPLOAD_FOLDER}${post._id + post._group + 'export' + '.docx'}`;
+            // const filepath = `${process.env.FILE_UPLOAD_FOLDER}${post._id + post._group + 'export' + '.docx'}`;
+            const filepath = `${post._id + post._group + 'export' + '.docx'}`;
             //check if file exists
-            fs.access(filepath, fs.F_OK, error => {
-              //if error there was no file
-              if (!error) {
-                //the file was there now unlink it
-                fs.unlink(filepath, (err) => {
-                  //handle error when file was not deleted properly
-                  if (err) { throw (err); }
-                  //deleted document
-                })
-              }
-            })
+            // fs.access(filepath, fs.F_OK, error => {
+            //   //if error there was no file
+            //   if (!error) {
+            //     //the file was there now unlink it
+            //     fs.unlink(filepath, (err) => {
+            //       //handle error when file was not deleted properly
+            //       if (err) { throw (err); }
+            //       //deleted document
+            //     })
+            //   }
+            // })
+            var minioClient = new minio.Client({
+              endPoint: process.env.MINIO_DOMAIN,
+              port: +(process.env.MINIO_API_PORT),
+              useSSL: process.env.MINIO_PROTOCOL == 'https',
+              accessKey: process.env.MINIO_ACCESS_KEY,
+              secretKey: process.env.MINIO_SECRET_KEY
+            });
+            await minioClient.removeObject(user._workspace, filepath, (error) => {
+              if (error) { throw (error); }
+            });
 
             // Update post: remove new comment id, decrease post count
             await Post.findOneAndUpdate({
@@ -394,19 +449,30 @@ const fs = require('fs');
           } else if (story) {
             // TODO - not sure if the files are being deleted. Wrong name
             //chec/delete document files that were exported
-            const filepath = `${process.env.FILE_UPLOAD_FOLDER}${story._id + 'export' + '.docx'}`;
+            // const filepath = `${process.env.FILE_UPLOAD_FOLDER}${story._id + 'export' + '.docx'}`;
+            const filepath = `${story._id + 'export' + '.docx'}`;
             //check if file exists
-            fs.access(filepath, fs.F_OK, error => {
-              //if error there was no file
-              if (!error) {
-                //the file was there now unlink it
-                fs.unlink(filepath, (err) => {
-                  //handle error when file was not deleted properly
-                  if (err) { throw (err); }
-                  //deleted document
-                })
-              }
-            })
+            // fs.access(filepath, fs.F_OK, error => {
+            //   //if error there was no file
+            //   if (!error) {
+            //     //the file was there now unlink it
+            //     fs.unlink(filepath, (err) => {
+            //       //handle error when file was not deleted properly
+            //       if (err) { throw (err); }
+            //       //deleted document
+            //     })
+            //   }
+            // })
+            var minioClient = new minio.Client({
+              endPoint: process.env.MINIO_DOMAIN,
+              port: +(process.env.MINIO_API_PORT),
+              useSSL: process.env.MINIO_PROTOCOL == 'https',
+              accessKey: process.env.MINIO_ACCESS_KEY,
+              secretKey: process.env.MINIO_SECRET_KEY
+            });
+            await minioClient.removeObject(user._workspace, filepath, (error) => {
+              if (error) { throw (error); }
+            });
                     
             // Update story: remove new comment id
             await Story.findOneAndUpdate({

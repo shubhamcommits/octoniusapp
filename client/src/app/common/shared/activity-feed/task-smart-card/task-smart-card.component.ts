@@ -1,8 +1,8 @@
-import {  Component, OnDestroy, OnInit } from '@angular/core';
+import {  Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { SubSink } from 'subsink';
-import { ChildActivationEnd, Router } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
   selector: 'app-task-smart-card',
@@ -29,17 +29,26 @@ export class TaskSmartCardComponent implements OnInit, OnDestroy {
   doughnutChartColors;
   doughnutChartPlugins;
 
+  userData;
+
+  // Public Functions
+  public publicFunctions = new PublicFunctions(this.injector)
+
   constructor(
     private userService: UserService,
     private utilityService: UtilityService,
-    private _router: Router
+    private injector: Injector
   ) { }
 
   async ngOnInit() {
+
+    this.userData = await this.publicFunctions.getCurrentUser();
     
-    this.todayTasks = await this.getUserTodayTasks();
-    this.overdueTasks = await this.getUserOverdueTasks();
+    this.todayTasks = await this.publicFunctions.filterRAGTasks(await this.getUserTodayTasks(), this.userData);
+    this.overdueTasks = await this.publicFunctions.filterRAGTasks(await this.getUserOverdueTasks(), this.userData);
+
     this.markOverdueTasks();
+
     for (let task of this.todayTasks){
       if (task.task.status=='to do') this.to_do_task_count++;
       else if (task.task.status=='in progress') this.in_progress_task_count++;
@@ -125,5 +134,4 @@ export class TaskSmartCardComponent implements OnInit, OnDestroy {
   async changeState(state:string){
     this.utilityService.handleActiveStateTopNavBar().emit(state);
   }
-
 }

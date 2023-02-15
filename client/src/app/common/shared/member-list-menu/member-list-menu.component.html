@@ -6,6 +6,7 @@
     <app-secured-image *ngIf="filterfor==='users'"
       [imgURL]="picsUrl"
       [service]="'user'"
+      [workspaceId]="workspaceId"
       [styleClass]="'feed-avatar'"></app-secured-image>
 </button>
 <button mat-menu-item [matMenuTriggerFor]="cloneTaskSearchMenu" *ngIf="menuFor==='Task'">
@@ -22,7 +23,7 @@
             </div>
             <ul class="assignee-list">
                 <li appHighlight class="assignee-list-item" *ngFor="let member of groupMembers | appFilter: searchText"
-                    (click)="getMemberDetails(member._id)" [searchedWord]="searchText" [content]="member">
+                    (click)="getMemberDetails(member._id)" [searchedWord]="searchText" [content]="member" [workspaceId]="workspaceData?._id">
                     {{ member.first_name }} {{ member.last_name }}
                 </li>
             </ul>

@@ -30,13 +30,11 @@ export class FileVersionsComponent implements OnInit {
   fileVersions;
 
   groupData;
+  workspaceData;
 
   authToken: string;
 
   shareDBSocket;
-
-  // Base Url of the users uploads
-  userBaseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   // Base Url of the files uploads
   filesBaseUrl = environment.UTILITIES_FILES_UPLOADS;
@@ -57,6 +55,7 @@ export class FileVersionsComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     if (!this.currentGroupId) {
       this.groupData = await this.publicFunctions.getCurrentGroupDetails();
       this.currentGroupId = this.groupData?._id;
@@ -108,16 +107,16 @@ export class FileVersionsComponent implements OnInit {
     // Start the loading spinner
     this.utilityService.updateIsLoadingSpinnerSource(true);
 
-    window.open(await this.getLibreOfficeURL(fileId), "_blank");
+    window.open(await this.getLibreOfficeURL(fileId, this.groupData?._workspace?._id), "_blank");
 
     this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 
-  async getLibreOfficeURL(fileId: string) {
+  async getLibreOfficeURL(fileId: string, workspaceId: string) {
     // wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
     let wopiClientURL = '';
     await this.libreofficeService.getLibreofficeUrl().then(res => {
-        wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}?authToken=${this.authToken}`;
+        wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}/${workspaceId}?access_token=${this.authToken}`;
       }).catch(error => {
         this.utilityService.errorNotification($localize`:@@fileVersions.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
       });
@@ -128,14 +127,14 @@ export class FileVersionsComponent implements OnInit {
    * Call function to delete file or a folder
    * @param itemId
    */
-  deleteItem(itemId: string, type: string, fileName?: string) {
+  deleteItem(itemId: string, type: string, fileName: string) {
     // Ask User to remove this file or not
     this.utilityService.getConfirmDialogAlert()
       .then((result) => {
         if (result.value) {
           // Remove the file
           this.utilityService.asyncNotification($localize`:@@fileVersions.pleaseWaitDeleting:Please wait, we are deleting...`, new Promise((resolve, reject) => {
-            this.filesService.deleteFile(itemId, fileName, type == 'flamingo')
+            this.filesService.deleteFile(itemId, fileName, this.groupData?._workspace?._id, type == 'flamingo')
               .then((res) => {
 
                 // Remove the file from the list
@@ -184,7 +183,7 @@ export class FileVersionsComponent implements OnInit {
       // Call the HTTP Request Asynschronously
       this.utilityService.asyncNotification($localize`:@@fileVersions.pleaseWaitUploadingFile:Please wait we are uploading your new version...`,
         new Promise((resolve, reject) => {
-          this.filesService.addFile(fileData, file)
+          this.filesService.addFile(fileData, this.workspaceData?._id, this.currentGroupId, null, file)
             .then((res) => {
               if (!this.fileVersions) {
                 this.fileVersions = [];

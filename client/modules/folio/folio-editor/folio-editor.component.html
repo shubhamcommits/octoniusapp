@@ -96,6 +96,7 @@
           <div class="profile">
               <app-secured-image *ngIf="meta.profile_pic"
                 [imgURL]="meta.profile_pic" [service]="'user'"
+                [workspaceId]="workspaceData?._id"
                 [inlineStyle]='"cursor: default; height:30px; width:30px"'
                 [styleClass]="'feed-avatar'"></app-secured-image>
             <h6>{{meta.user_name}}</h6>

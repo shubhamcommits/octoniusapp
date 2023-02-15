@@ -1,5 +1,4 @@
 import { Component, OnInit, Injector, OnDestroy } from '@angular/core';
-import { environment } from 'src/environments/environment';
 import { SubSink } from 'subsink';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
@@ -35,9 +34,6 @@ export class UserHeaderComponent implements OnInit, OnDestroy {
   public userData: any;
 
   public workspaceData: any;
-
-  // BASE URL OF THE APPLICATION
-  BASE_URL = environment.UTILITIES_USERS_UPLOADS;
 
   // Is current user variable
   public isCurrentUser: any = false;

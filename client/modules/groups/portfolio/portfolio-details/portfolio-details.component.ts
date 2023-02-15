@@ -17,6 +17,8 @@ export class PortfolioDetailsComponent implements OnInit {
   userData;
   workspaceData;
 
+  numPortfolioGroupsMembers = 0;
+
   userGroups: any = [];
 
   groupsLabel = $localize`:@@portfolioDetails.general:Groups`;
@@ -38,9 +40,6 @@ export class PortfolioDetailsComponent implements OnInit {
      value: $localize`:@@portfolioDetails.lastYear:Last year`
     }
   ];
-
-  // Base Url
-  baseUrl = environment.UTILITIES_GROUPS_UPLOADS;
 
   // IsLoading behaviou subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
@@ -82,6 +81,13 @@ export class PortfolioDetailsComponent implements OnInit {
     }
 
     this.period = (this.portfolioData?.dashboard_period) ? this.portfolioData?.dashboard_period : 7;
+
+    let portfolioGroupsMembers = [];
+    this.portfolioData?._groups?.forEach(async group => {
+      portfolioGroupsMembers = portfolioGroupsMembers.concat(group?._members).concat(group?._admins);
+      portfolioGroupsMembers = [...new Set(portfolioGroupsMembers)];
+    });
+    this.numPortfolioGroupsMembers = portfolioGroupsMembers?.length;
 
     // Fetches the user groups from the server
     this.userGroups = await this.publicFunctions.getUserGroups(this.workspaceData?._id, this.userData?._id)

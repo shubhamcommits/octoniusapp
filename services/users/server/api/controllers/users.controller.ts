@@ -641,23 +641,23 @@ export class UsersControllers {
                 groupsUpdate = await Group.updateMany({
                     _admins: userId
                 }, {
-                $pull: {
-                    _admins: userId
-                },
-                $push: {
-                    _members: userId
-                },
+                    $pull: {
+                        _admins: userId
+                    },
+                    $push: {
+                        _members: userId
+                    },
                 });
             } else {
                 groupsUpdate = await Group.updateMany({
                     _members: userId
                 }, {
-                $pull: {
-                    _members: userId
-                },
-                $push: {
-                    _admins: userId
-                },
+                    $pull: {
+                        _members: userId
+                    },
+                    $push: {
+                        _admins: userId
+                    },
                 });
             }
             // Send status 200 response
@@ -683,15 +683,16 @@ export class UsersControllers {
 
             // find the user
             let user: any = await User.findOne({
-                $and: [
-                    { _id: memberId },
-                    { active: true }
-                ]
-            }, {
-                hr_role: hr_role
-            }, {
-                new: true
-            }).select('first_name last_name profile_pic role _workspace _account integrations hr_role');
+                    $and: [
+                        { _id: memberId },
+                        { active: true }
+                    ]
+                }, 
+                { 
+                    $set: { hr_role: hr_role }
+                }, {
+                    new: true
+                }).select('first_name last_name profile_pic role _workspace _account integrations hr_role');
 
             // Error updating the user
             if (!user) {

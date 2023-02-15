@@ -1,5 +1,6 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { Component, OnInit, Input, Injector } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
   selector: 'app-global-north-star-stats',
@@ -7,13 +8,20 @@ import { CurrencyPipe } from '@angular/common';
   styleUrls: ['./global-north-star-stats.component.scss'],
   providers:[CurrencyPipe]
 })
-export class GlobalNorthStarStatsComponent implements OnChanges {
+export class GlobalNorthStarStatsComponent implements OnInit {
 
   @Input() northStarValues = [];
 
-  constructor() { }
+  workspaceData: any;
 
-  ngOnChanges() {
+  // Public Functions class object
+  publicFunctions = new PublicFunctions(this.injector);
+
+  constructor(
+    private injector: Injector) { }
+
+  async ngOnInit() {
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
   }
 
   getNSStatusClass(status) {

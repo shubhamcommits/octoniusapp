@@ -1,6 +1,6 @@
 import express from 'express';
 import { PortfolioController } from '../controllers';
-import { Auths, portfolioUploadFileHandler } from '../../utils';
+import { Auths, portfolioUploadFileUpload } from '../../utils';
 
 const routes = express.Router();
 const portfolio = new PortfolioController();
@@ -47,7 +47,7 @@ routes.put('/:portfolioId/remove-manager', portfolio.removeManager);
 routes.delete('/:portfolioId', portfolio.remove);
 
 // PUT - Change the Group Image
-routes.put('/:portfolioId/image', portfolioUploadFileHandler, portfolio.updateImage);
+routes.put('/:portfolioId/image/:workspaceId', portfolioUploadFileUpload, portfolio.updateImage);
 
 // GET - Get members of all groups of the portfolio based on the portfolioId
 routes.get('/:portfolioId/groups-members', portfolio.getAllGroupsMembers);

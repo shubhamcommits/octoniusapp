@@ -1,6 +1,6 @@
 import express from 'express';
 import { GroupFunctions } from '../controllers';
-import { Auths, groupUploadFileHandler } from '../../utils';
+import { Auths, groupUploadFileUpload } from '../../utils';
 
 const routes = express.Router();
 const group = new GroupFunctions();
@@ -56,7 +56,7 @@ routes.delete('/:groupId', group.remove);
 routes.put('/:groupId/archive', group.archive);
 
 // PUT - Change the Group Image
-routes.put('/:groupId/image', groupUploadFileHandler, group.updateImage);
+routes.put('/:groupId/image/:workspaceId', groupUploadFileUpload, group.updateImage);
 
 // GET - Get list of first 10 groups of which a user is a part of
 routes.get('/', group.getUserGroups);

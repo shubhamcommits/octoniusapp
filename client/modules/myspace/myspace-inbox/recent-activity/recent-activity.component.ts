@@ -34,8 +34,6 @@ export class RecentActivityComponent implements OnInit {
 
   selectedTab = 0;
 
-  groupBaseUrl = environment.UTILITIES_GROUPS_UPLOADS;
-
   // IsLoading behaviou subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
 

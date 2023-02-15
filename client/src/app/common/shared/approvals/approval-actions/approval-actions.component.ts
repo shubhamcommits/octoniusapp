@@ -31,6 +31,7 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
   groupMembers = [];
 
   groupData;
+  workspaceData;
 
   showApproveCode: boolean = false;
   showDescription: boolean = false;
@@ -43,8 +44,6 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
   flowCompleted: boolean = false;
 
   today = moment().startOf('day').format('YYYY-MM-DD');
-
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
@@ -90,6 +89,8 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
   async ngOnInit() {
     this.codePlaceholder = $localize`:@@approvalActions.code:Code`;
     this.descriptionPlaceholder = $localize`:@@approvalActions.description:Description`;
+
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
   }
 
   ngOnDestroy(): void {

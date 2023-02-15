@@ -1,6 +1,6 @@
 import express from 'express';
 import { FilesControllers } from '../controllers/files.controllers';
-import { groupFileUploader, groupFileDelete } from '../../utils/filehandlers';
+import { groupFileUploader, groupFileDelete, minioFileHandler } from '../../utils/filehandlers';
 import { Auths } from '../../utils/auths';
 
 // Files Class Object
@@ -18,7 +18,7 @@ routes.use(authsHelper.verifyToken);
 routes.use(authsHelper.isLoggedIn);
 
 // POST - Handles the adding files inside a group
-routes.post('/groups', groupFileUploader, files.add);
+routes.post('/groups/:workspaceId/:groupId/:folderId', groupFileUploader, files.add);
 
 // GET - Fetches the files list
 routes.get('/groups', files.get);
@@ -62,6 +62,10 @@ routes.put('/:fileId/move-to-folder', files.moveToFolder);
 // -| CUSTOM FIELDS |-
 // PUT - Change custom field value
 routes.put('/:fileId/customField', files.saveCustomField);
+
+// -| MINIO FILES |-
+// GET - Get details of a file on the basis of fileId
+routes.get('/:fileId/minio', minioFileHandler);
 
 /*  ===================
  *  -- EXPORT ROUTES --

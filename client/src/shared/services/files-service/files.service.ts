@@ -16,19 +16,23 @@ export class FilesService {
    * This function is responsible for uploding a file to the group
    * @param fileData
    */
-  addFile(fileData: any, fileToUpload?: File) {
+  addFile(fileData: any, workspaceId: string, groupId: string, folderId: string, fileToUpload?: File) {
+    try{
+      // PREPARING FORM DATA
+      let formData = new FormData();
+      // Adding File Data
+      formData.append('fileData', JSON.stringify(fileData));
 
-    // PREPARING FORM DATA
-    let formData = new FormData();
-
-    // Adding File Data
-    formData.append('fileData', JSON.stringify(fileData));
-
-    // Appending file
-    if(fileToUpload)
+      // Appending file
+      if(fileToUpload) {
         formData.append('file', fileToUpload, fileToUpload['name']);
+      }
 
-    return this._http.post(this.baseURL + `/files/groups`, formData).toPromise();
+      return this._http.post(this.baseURL + `/files/groups/${workspaceId}/${groupId}/${folderId}`, formData).toPromise();
+    } catch(error) {
+      console.log(error);
+      throw error;
+    }
   }
 
   /**
@@ -128,11 +132,12 @@ export class FilesService {
    * @param fileId
    * @param fileName
    */
-  deleteFile(fileId: string, fileName: any, flamingoType?: boolean) {
+  deleteFile(fileId: string, fileName: any, workspaceId: string, flamingoType?: boolean) {
     return this._http.request('delete', this.baseURL + `/files/${fileId}`, {
       body: {
         fileName: fileName,
-        flamingoType: flamingoType
+        flamingoType: flamingoType,
+        workspaceId: workspaceId
       }
     }).toPromise();
   }
@@ -231,5 +236,15 @@ export class FilesService {
 
   getPathToFile(fileId: string) {
     return this._http.get(this.baseURL + `/files/${fileId}/fullPathString`, {}).toPromise();
+  }
+
+  getMinioFile(fileId: string, modified_name: string, workspaceId: string, token: string) {
+    return this._http.get(this.baseURL + `/files/${fileId}/minio`, {
+      params: {
+        token: token,
+        modified_name: modified_name,
+        workspaceId: workspaceId
+      }
+    }).toPromise();
   }
 }

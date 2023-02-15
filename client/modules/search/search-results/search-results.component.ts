@@ -1,5 +1,5 @@
 import { Component, OnChanges, Input, SimpleChanges, Injector, LOCALE_ID, Inject, Output, EventEmitter } from '@angular/core';
-import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
+
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
@@ -16,6 +16,7 @@ export class SearchResultsComponent implements OnChanges {
 
   @Input() data: any;
   @Input() type: string;
+  @Input() workspaceId: string;
 
   @Output() closeSearchEvent = new EventEmitter();
 
@@ -94,20 +95,45 @@ export class SearchResultsComponent implements OnChanges {
     let cfg = {};
     let converter;
     let html;
+    let contentOps;
     if (this.type == 'post' && this.data && this.data.content && this.data.content != "") {
       // Initiate the converter
-      converter = new QuillDeltaToHtmlConverter(JSON.parse(this.data.content)['ops'], cfg);
+      // converter = new QuillDeltaToHtmlConverter(JSON.parse(this.data.content)['ops'], cfg);
+      contentOps = JSON.parse(this.data.content)['ops'];
     }
 
     if (this.type == 'file' && this.data && this.data.description && this.data.description != "") {
       // Initiate the converter
-      converter = new QuillDeltaToHtmlConverter(JSON.parse(this.data.description)['ops'], cfg);
+      // converter = new QuillDeltaToHtmlConverter(JSON.parse(this.data.description)['ops'], cfg);
+      contentOps = JSON.parse(this.data.description)['ops'];
     }
 
-    if (converter) {
-      // Convert into html
-      html = converter.convert();
-    }
+    // if (converter) {
+    //   converter.renderCustomWith((customOp) => {
+    //     // Conditionally renders blot of mention type
+    //     if(customOp.insert.type === 'mention'){
+    //       // Get Mention Blot Data
+    //       const mention = customOp.insert.value;
+
+    //       // Template Return Data
+    //       return (
+    //         `<span
+    //           class="mention"
+    //           data-index="${mention.index}"
+    //           data-denotation-char="${mention.denotationChar}"
+    //           data-link="${mention.link}"
+    //           data-value='${mention.value}'>
+    //           <span contenteditable="false">
+    //             ${mention.value}
+    //           </span>
+    //         </span>`
+    //       )
+    //     }
+    //   });
+    //   // Convert into html
+    //   html = converter.convert();
+    // }
+    html = await this.publicFunctions.convertQuillToHTMLContent(contentOps);
 
     if (html) {
       this.data.html = html
@@ -140,7 +166,7 @@ export class SearchResultsComponent implements OnChanges {
   }
 
   generateFileURL() {
-    return environment.UTILITIES_FILES_UPLOADS + '/' + this.data.modified_name + '?authToken=Bearer ' + this.storageService.getLocalData('authToken')['token'];
+    return environment.UTILITIES_FILES_UPLOADS + '/' + this.workspaceId + '/' + this.data.modified_name + '?authToken=Bearer ' + this.storageService.getLocalData('authToken')['token'];
   }
 
   getFileExtension(fileName: string) {
@@ -159,15 +185,22 @@ export class SearchResultsComponent implements OnChanges {
   }
 
   async openOfficeDoc(fileId: string) {
-    window.open(await this.getLibreOfficeURL(fileId), "_blank");
+    let workspaceId = '';
+    if (this.data._workspace && this.data._workspace._id) {
+      workspaceId = this.data._workspace._id;
+    } else {
+      const workspace: any = await this.publicFunctions.getCurrentWorkspace();
+      workspaceId = workspace._id;
+    }
+    window.open(await this.getLibreOfficeURL(fileId, workspaceId), "_blank");
   }
 
-  async getLibreOfficeURL(fileId: string) {
+  async getLibreOfficeURL(fileId: string, workspaceId: string) {
     // wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
     let wopiClientURL = '';
     await this.libreofficeService.getLibreofficeUrl().then(res => {
         const authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`;
-        wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}?authToken=${authToken}`;
+        wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}/${workspaceId}?access_token=${authToken}`;
       }).catch(error => {
         this.utilityService.errorNotification($localize`:@@groupFiles.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
       });

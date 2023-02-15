@@ -33,6 +33,8 @@ pipelines:
           - export INTEGRATIONS_IMAGE_NAME=octoniusapp/octonius-prod:integrations-server
           - export FLAMINGO_IMAGE_NAME=octoniusapp/octonius-prod:flamingo-server
           - export NGINX_IMAGE_NAME=octoniusapp/octonius-prod:nginx
+          - export MINIO_IMAGE_NAME=octoniusapp/octonius-prod:minio
+          - export MINIO_BALANCER_IMAGE_NAME=octoniusapp/octonius-prod:minio
 
           # build the Docker image (this will use the Dockerfile in the root of the repo)
           - docker build -t $CLIENT_IMAGE_NAME --compress=true --force-rm=true ./client
@@ -50,6 +52,8 @@ pipelines:
           - docker build -t $INTEGRATIONS_IMAGE_NAME --compress=true --force-rm=true ./services/integrations/server
           - docker build -t $FLAMINGO_IMAGE_NAME --compress=true --force-rm=true ./services/flamingo/server
           - docker build -t $NGINX_IMAGE_NAME --compress=true --force-rm=true ./nginx
+          - docker build -t $MINIO_IMAGE_NAME --compress=true --force-rm=true ./services/minio
+          - docker build -t $MINIO_BALANCER_IMAGE_NAME --compress=true --force-rm=true -f ./services/minio/Dockerfile.balancer .
 
           # Clear unnecessary Image build
           - docker image prune -f 
@@ -73,6 +77,8 @@ pipelines:
           - docker push $INTEGRATIONS_IMAGE_NAME
           - docker push $FLAMINGO_IMAGE_NAME
           - docker push $NGINX_IMAGE_NAME
+          - docker push $MINIO_IMAGE_NAME
+          - docker push $MINIO_BALANCER_IMAGE_NAME
 
     - step:
        name: Deploy to production server
@@ -111,6 +117,8 @@ pipelines:
           - export INTEGRATIONS_IMAGE_NAME=octoniusapp/octonius:integrations-server
           - export FLAMINGO_IMAGE_NAME=octoniusapp/octonius:flamingo-server
           - export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
+          - export MINIO_IMAGE_NAME=octoniusapp/octonius:minio
+          - export MINIO_BALANCER_IMAGE_NAME=octoniusapp/octonius:minio
 
           # build the Docker image (this will use the Dockerfile in the root of the repo)
           - docker build -t $CLIENT_IMAGE_NAME --compress=true --force-rm=true ./client
@@ -128,6 +136,9 @@ pipelines:
           - docker build -t $INTEGRATIONS_IMAGE_NAME --compress=true --force-rm=true ./services/integrations/server
           - docker build -t $FLAMINGO_IMAGE_NAME --compress=true --force-rm=true ./services/flamingo/server
           - docker build -t $NGINX_IMAGE_NAME --compress=true --force-rm=true ./nginx
+          - docker build -t $MINIO_IMAGE_NAME --compress=true --force-rm=true ./services/minio
+          - docker build -t $MINIO_BALANCER_IMAGE_NAME --compress=true --force-rm=true -f ./services/minio/Dockerfile.balancer .
+
 
           # Clear unnecessary Image build
           - docker image prune -f 
@@ -151,6 +162,8 @@ pipelines:
           - docker push $INTEGRATIONS_IMAGE_NAME
           - docker push $FLAMINGO_IMAGE_NAME
           - docker push $NGINX_IMAGE_NAME
+          - docker push $MINIO_IMAGE_NAME
+          - docker push $MINIO_BALANCER_IMAGE_NAME
 
     - step:
        name: Deploy to stating server

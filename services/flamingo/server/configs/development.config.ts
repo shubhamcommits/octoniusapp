@@ -25,7 +25,7 @@ function devConfigInit() {
   process.env.REDIS_PORT = process.env.REDIS_PORT || '6379'
 
   // Files Uploads Folder
-  process.env.FILE_UPLOAD_FOLDER = process.env.FILE_UPLOAD_FOLDER || path.join(__dirname, '../uploads/');
+  process.env.FILE_UPLOAD_FOLDER = process.env.FILE_UPLOAD_FOLDER || '/';
 
   // External Key
   process.env.HEADER_EXTERNAL_KEY = process.env.HEADER_EXTERNAL_KEY || 'HEADERIDSHAREDFOROCTONIUS'
@@ -79,6 +79,13 @@ function devConfigInit() {
   // Client Server
   process.env.CLIENT_PORT = process.env.CLIENT_PORT || '4200';
   process.env.CLIENT_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.CLIENT_PORT}`
+
+  process.env.MINIO_API_PORT = process.env.MINIO_API_PORT || '19000'
+  process.env.MINIO_DOMAIN = process.env.MINIO_DOMAIN || process.env.DOMAIN
+  process.env.MINIO_ACCESS_KEY = process.env.MINIO_ACCESS_KEY || '7UbsSPpbmzERsFFN'
+  process.env.MINIO_SECRET_KEY = process.env.MINIO_SECRET_KEY || '0IOHSeS1tULlsRks3CUYIohIXHCOQaNg'
+  process.env.MINIO_PORT = process.env.MINIO_PORT || '9090'
+  process.env.MINIO_PROTOCOL = process.env.MINIO_PROTOCOL || 'http'
   
 };
 

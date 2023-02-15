@@ -2,6 +2,9 @@
 
 # Octonius development server
 
+export NODE_OPTIONS=--max_old_space_size=4096 #this was added to help build on linux and avoid memory allocation heaps error
+
+
 echo -e "\n \t ============================ |- Welcome to Octonius Development Server -| ========================== \n"
 echo -e "\t Kindly choose the package manager below to start the application locally(type the option number)..."
 echo "  1) npm"

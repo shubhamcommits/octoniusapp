@@ -10,7 +10,7 @@
     <div class="col-md-12" style="padding: 20px;">
       <span class="badge to-do-task"> {{ portfolioGroupsMembers?.length }} </span>
       &nbsp;
-      <span i18n="@@portfolioPortfolioMembersWorkloadCard.membersCount">Members shared across 4 groups</span>
+      <span i18n="@@portfolioPortfolioMembersWorkloadCard.membersCount">Members shared across {{ portfolioData?._groups?.length }} groups</span>
     </div>
   </div>
 
@@ -57,6 +57,7 @@
                   <app-secured-image
                     [imgURL]="member?.profile_pic"
                     [service]="'user'"
+                    [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
                     [styleClass]="'ml-2 feed-avatar-small'"></app-secured-image>
                 </div>
                 <div class="name">

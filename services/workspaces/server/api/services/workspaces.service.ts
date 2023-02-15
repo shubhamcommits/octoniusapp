@@ -74,7 +74,7 @@ export class WorkspaceService {
         // Delete the groups
         const groups = await Group.find({ _workspace: workspaceId });
         groups.forEach(async group => {
-            await commonService.removeGroup(group._id);
+            await commonService.removeGroup(group._id, workspaceId);
         });
 
         // Delete the lounges related

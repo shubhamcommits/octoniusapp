@@ -37,7 +37,7 @@
                     <br/>
                     <!-- question image remove start-->
                     <app-secured-image *ngIf="i==activeQuestionIndex && question?.image_url"
-                        [imgURL]="question?.image_url"
+                        [imgURL]="question?.image_url" [workspaceId]="workspaceId"
                         [service]="'flamingo'" [inlineStyle]="'width: 30px;height: 30px;'"></app-secured-image>
                     <button *ngIf="i==activeQuestionIndex && question?.image_url && !flamingo?.publish" class="btn removeImageBtn" style="width: 30px;height: 30px;margin: 0px !important;"
                         (click)="removeImage(i)">
@@ -320,7 +320,7 @@
               style="background-color: {{activeQuestion?.background_color}}; color: {{ activeQuestion?.text_color || '#000000' }}" class="preview-container">
 
                 <app-secured-image *ngIf="activeQuestion?.image_url"
-                  [imgURL]="activeQuestion?.image_url"
+                  [imgURL]="activeQuestion?.image_url" [workspaceId]="workspaceId"
                   [service]="'flamingo'" [styleClass]="'welcome-img'"></app-secured-image>
 
                 <h2 style="color: {{ activeQuestion?.text_color || '#000000' }}">{{activeQuestion?.text}}</h2>
@@ -341,7 +341,7 @@
             <!-- all other questions except welcome and thanks div start -->
             <!-- Background image div -->
             <div *ngIf="activeQuestion?.type !=='Welcome' && activeQuestion?.type!=='Thanks'"
-                style="background-color: {{activeQuestion?.background_color}}; background-image: url({{FLAMINGO_UPLOADS}}/{{activeQuestion?.image_url}}?noAuth=true); color: {{ activeQuestion?.text_color || '#000000' }}"
+                style="background-color: {{activeQuestion?.background_color}}; background-image: url({{FLAMINGO_UPLOADS}}/{{ workspaceId }}/{{activeQuestion?.image_url}}?noAuth=true); color: {{ activeQuestion?.text_color || '#000000' }}"
                 class="image-wrapper-container">
 
                 <div *ngIf="activeQuestion?.type !=='Welcome' && activeQuestion?.type!=='Thanks'"

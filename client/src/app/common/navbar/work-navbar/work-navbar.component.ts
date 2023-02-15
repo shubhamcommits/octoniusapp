@@ -1,6 +1,5 @@
-import { Component, OnInit, Injector, AfterContentChecked, SimpleChanges, OnChanges, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Injector, AfterContentChecked, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
 import { SubSink } from 'subsink';
 import { BehaviorSubject } from 'rxjs';
@@ -33,9 +32,6 @@ export class WorkNavbarComponent implements OnInit, AfterContentChecked, OnDestr
   loungeData: any;
   storyData: any;
   storyOriginalName = '';
-
-  // BASE URL OF THE APPLICATION
-  baseUrl = environment.UTILITIES_WORKSPACES_UPLOADS;
 
   // SUBSINK
   private subSink = new SubSink();

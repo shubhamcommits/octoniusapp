@@ -32,7 +32,8 @@
           <li appHighlight class="assignee-list-item" *ngFor="let member of groupMembers | appFilter: searchText"
               (click)="getMemberDetails(member)"
               [searchedWord]="searchText"
-              [content]="member">
+              [content]="member"
+              [workspaceId]="workspaceData?._id">
             {{ member.first_name }} {{ member.last_name }}
           </li>
         </ul>
@@ -48,6 +49,7 @@
           <app-secured-image
             [imgURL]="approval?._assigned_to?.profile_pic"
             [service]="'user'"
+            [workspaceId]="workspaceData?._id"
             [alt]="approval?._assigned_to?.first_name + ' ' + approval?._assigned_to?.last_name"
             [styleClass]="'feed-avatar-small'"
             [inlineStyle]="'cursor: auto !important;'"

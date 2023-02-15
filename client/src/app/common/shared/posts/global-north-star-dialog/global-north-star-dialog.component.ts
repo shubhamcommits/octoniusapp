@@ -1,13 +1,12 @@
 import { Component, OnInit, EventEmitter, Output, Inject, Injector } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
-import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
 import { NewNorthStarDialogComponent } from 'modules/work/north-star-page/new-north-start-dialog/new-north-start-dialog.component';
-import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
+;
 import { ColorPickerDialogComponent } from '../../color-picker-dialog/color-picker-dialog.component';
 import { SearchTaskDialogComponent } from 'modules/work/north-star-page/search-task-dialog/search-task-dialog.component';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
@@ -69,8 +68,6 @@ export class GlobalNorthStarDialogComponent implements OnInit {
   }];
   chartPlugins = [];
 
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
-
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
 
@@ -121,11 +118,33 @@ export class GlobalNorthStarDialogComponent implements OnInit {
     this.title = this.postData?.title;
 
     if (this.postData?.content){
-      let converter = new QuillDeltaToHtmlConverter(JSON.parse(this.postData?.content)['ops'], {});
-      if (converter) {
-        // Convert into html
-        this.htmlContent = converter.convert();
-      }
+      // let converter = new QuillDeltaToHtmlConverter(JSON.parse(this.postData?.content)['ops'], {});
+      // if (converter) {
+      //   converter.renderCustomWith((customOp) => {
+      //     // Conditionally renders blot of mention type
+      //     if(customOp.insert.type === 'mention'){
+      //       // Get Mention Blot Data
+      //       const mention = customOp.insert.value;
+
+      //       // Template Return Data
+      //       return (
+      //         `<span
+      //           class="mention"
+      //           data-index="${mention.index}"
+      //           data-denotation-char="${mention.denotationChar}"
+      //           data-link="${mention.link}"
+      //           data-value='${mention.value}'>
+      //           <span contenteditable="false">
+      //             ${mention.value}
+      //           </span>
+      //         </span>`
+      //       )
+      //     }
+      //   });
+      //   // Convert into html
+      //   this.htmlContent = converter.convert();
+      // }
+      this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.postData?.content)['ops']);
     }
 
     await this.postService.getSubTasks(this.postData?._id).then((res) => {
@@ -266,7 +285,7 @@ export class GlobalNorthStarDialogComponent implements OnInit {
    */
   async editPost(postId: any, formData: FormData) {
     await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.postService.edit(postId, formData)
+      this.postService.edit(postId, this.userData?._workspace?._id || this.userData?._workspace, formData)
         .then((res) => {
           this.postData = res['post'];
           this.contentChanged = false;

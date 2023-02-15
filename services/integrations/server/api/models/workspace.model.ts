@@ -183,6 +183,16 @@ const workspaceSchema = new Schema({
         },
         onedrive_tenant_id: {
             type: String
+        },
+        is_atlassia_connected: {
+            type: Boolean,
+            default: false
+        },
+        atlassia_url: {
+            type: String
+        },
+        atlassia_token: {
+            type: String
         }
     }
 });

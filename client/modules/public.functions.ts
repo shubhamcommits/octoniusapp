@@ -21,6 +21,7 @@ import { environment } from 'src/environments/environment';
 import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
 import { ChatService } from 'src/shared/services/chat-service/chat.service';
 import { PortfolioService } from 'src/shared/services/portfolio-service/portfolio.service';
+import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,7 @@ export class PublicFunctions {
     private subSink = new SubSink();
 
     constructor(
-        private injector: Injector
+      private injector: Injector
     ) { }
 
     /**
@@ -1099,14 +1100,14 @@ export class PublicFunctions {
      * @param postId
      * @param postData
      */
-    onEditPost(postId: string, postData: FormData) {
+    onEditPost(postId: string, workspaceId: string, postData: FormData) {
 
         // Create Post Service Instance
         let postService = this.injector.get(PostService)
 
         // Asynchronously call the utility service
         return new Promise((resolve, reject) => {
-            postService.edit(postId, postData)
+            postService.edit(postId, workspaceId, postData)
                 .then((res) => {
 
                     // Resolve with success
@@ -2171,7 +2172,7 @@ export class PublicFunctions {
             ? `<a href="/document/${file._id}?readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
             : (file.type == "flamingo")
               ? `<a href="/document/flamingo/${file._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
-              : `<a href="${environment.UTILITIES_FILES_UPLOADS}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
+              : `<a href="${environment.UTILITIES_FILES_UPLOADS}/${workspaceData._id}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
       }));
 
       let googleFilesList: any = [];
@@ -2267,4 +2268,70 @@ export class PublicFunctions {
           });
       });
     }
+
+
+
+  async filterRAGTasks(tasks: any, userData: any) {
+    const utilityService = this.injector.get(UtilityService);
+    let tasksTmp = [];
+
+    if (tasks) {
+      tasks = await tasks.filter(task => utilityService.objectExists(task?._group));
+      // Filtering other tasks
+      tasks.forEach(async task => {
+        // if (utilityService.objectExists(task?._group)) {
+          if (task?.permissions && task?.permissions?.length > 0) {
+            const groupData = await this.getGroupDetails(task?._group?._id || task?._group);
+            const canEdit = await utilityService.canUserDoTaskAction(task, groupData, userData, 'edit');
+            let canView = false;
+            if (!canEdit) {
+              const hide = await utilityService.canUserDoTaskAction(task, groupData, userData, 'hide');
+              canView = await utilityService.canUserDoTaskAction(task, groupData, userData, 'view') || !hide;
+            }
+
+            if (canEdit || canView) {
+              task.canView = true;
+              tasksTmp.push(task);
+            }
+          } else {
+            task.canView = true;
+            tasksTmp.push(task);
+          }
+        // }
+      });
+    }
+
+    return tasksTmp;
+  }
+
+  convertQuillToHTMLContent(contentOps) {
+    let converter = new QuillDeltaToHtmlConverter(contentOps, {});
+    if (converter) {
+      converter.renderCustomWith((customOp) => {
+        // Conditionally renders blot of mention type
+        if(customOp.insert.type === 'mention'){
+          // Get Mention Blot Data
+          const mention = customOp.insert.value;
+
+          // Template Return Data
+          return (
+            `<span
+              class="mention"
+              data-index="${mention.index}"
+              data-denotation-char="${mention.denotationChar}"
+              data-link="${mention.link}"
+              data-value='${mention.value}'>
+              <span contenteditable="false">
+                ${mention.value}
+              </span>
+            </span>`
+          )
+        }
+      });
+      // Convert into html
+      return converter.convert();
+    }
+
+    return '';
+  }
 }

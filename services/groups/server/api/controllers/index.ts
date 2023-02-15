@@ -4,6 +4,7 @@ import { PulseController } from './pulse.controller';
 import { ColumnsController } from './columns.controller';
 import { FlowController } from './flow.controller';
 import { PortfolioController } from './portfolio.controller';
+import { LibraryController } from './library.controller';
 
 /*  =======================
  *  -- FUNCTION EXPORTS --
@@ -26,5 +27,7 @@ export {
     // PULSE
     PulseController as PulseFunctions,
 
-    PortfolioController as PortfolioController
+    PortfolioController as PortfolioController,
+
+    LibraryController as LibraryController
 }

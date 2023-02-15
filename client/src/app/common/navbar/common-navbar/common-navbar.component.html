@@ -9,6 +9,7 @@
           [tooltip]="'Change workplace avatar'"
           [placement]="'right'"
           [styleClass]="'mr-3 feed-avatar'"
+          [workspaceId]="workspaceData?._id"
           (click)="openDetails(workspaceContent)"></app-secured-image>
         <!-- Octonius Avatar ends -->
 
@@ -48,6 +49,6 @@
 </nav>
 
 <ng-template #workspaceContent let-modal>
-   <app-workspace-details [userData]="userData" [workspaceData]="workspaceData" [baseUrl]="baseUrl">
+   <app-workspace-details [userData]="userData" [workspaceData]="workspaceData">
    </app-workspace-details>
 </ng-template>

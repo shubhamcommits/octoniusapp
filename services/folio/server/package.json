@@ -27,10 +27,11 @@
     "ejs": "^3.0.1",
     "express": "^4.17.1",
     "express-fileupload": "^1.1.6",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "luxon": "^3.1.0",
+    "minio": "^7.0.32",
     "moment": "^2.24.0",
-    "mongoose": "^5.8.7",
+    "mongoose": "~5.8.7",
     "morgan": "^1.9.1",
     "rich-text": "^4.1.0",
     "sharedb": "^1.9.1",
@@ -46,6 +47,7 @@
   "devDependencies": {
     "@types/compression": "^1.0.1",
     "@types/ejs": "^3.0.1",
+    "@types/minio": "^7.0.15",
     "gzipper": "^3.4.2"
   }
 }

@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Injector, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
-import { environment } from 'src/environments/environment';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
@@ -29,8 +28,6 @@ export class PostDatesComponent implements OnInit, OnChanges {
   };
 
   canEditDates: boolean = false;
-
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);

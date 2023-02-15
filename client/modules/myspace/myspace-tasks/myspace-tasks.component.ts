@@ -46,58 +46,21 @@ export class MyspaceTasksComponent implements OnInit, OnDestroy {
     // Send Updates to router state
     this.publicFunctions.sendUpdatesToRouterState({
       state: 'home'
-    })
+    });
   }
 
   ngOnDestroy() {
-    this.utilityService.closeAllModals()
+    this.utilityService.closeAllModals();
   }
 
   async loadTasks() {
-    this.todayTasks = this.filterRAGTasks(await this.getUserTodayTasks());
-    this.thisWeekTasks = this.filterRAGTasks(await this.getUserThisWeekTasks());
-    this.overdueTasks = this.filterRAGTasks(await this.getUserOverdueTasks());
-    this.nextWeekTasks = this.filterRAGTasks(await this.getUserNextWeekTasks());
-    this.futureTasks = this.filterRAGTasks(await this.getUserFutureTasks());
+    this.todayTasks = await this.publicFunctions.filterRAGTasks(await this.getUserTodayTasks(), this.userData);
+    this.thisWeekTasks = await this.publicFunctions.filterRAGTasks(await this.getUserThisWeekTasks(), this.userData);
+    this.overdueTasks = await this.publicFunctions.filterRAGTasks(await this.getUserOverdueTasks(), this.userData);
+    this.nextWeekTasks = await this.publicFunctions.filterRAGTasks(await this.getUserNextWeekTasks(), this.userData);
+    this.futureTasks = await this.publicFunctions.filterRAGTasks(await this.getUserFutureTasks(), this.userData);
 
     this.markOverdueTasks();
-  }
-
-  filterRAGTasks(tasks) {
-    let tasksTmp = [];
-
-    if (tasks) {
-      // Filtering other tasks
-      tasks.forEach(async task => {
-        if (task?.permissions && task?.permissions?.length > 0) {
-          const canEdit = await this.utilityService.canUserDoTaskAction(task, this.userData?._private_group, this.userData, 'edit');
-          let canView = false;
-          if (!canEdit) {
-            const hide = await this.utilityService.canUserDoTaskAction(task, this.userData?._private_group, this.userData, 'hide');
-            canView = await this.utilityService.canUserDoTaskAction(task, this.userData?._private_group, this.userData, 'view') || !hide;
-          }
-
-          if (canEdit || canView) {
-            task.canView = true;
-            tasksTmp.push(task);
-          }
-        } else {
-          task.canView = true;
-          tasksTmp.push(task);
-        }
-      });
-    }
-
-    return tasksTmp;
-  }
-
-  formateDate(date) {
-    return (date) ? moment.utc(date).format("MMM D, YYYY") : '';
-  }
-
-  // Check if the data provided is not empty{}
-  checkDataExist(object: Object) {
-    return !(JSON.stringify(object) === JSON.stringify({}))
   }
 
   async getUserTodayTasks() {
@@ -276,5 +239,14 @@ export class MyspaceTasksComponent implements OnInit, OnDestroy {
           ? -1 : ((!t1?.task?.custom_fields && t2?.task?.custom_fields))
             ? 1 : 0);
     });
+  }
+
+  formateDate(date) {
+    return (date) ? moment.utc(date).format("MMM D, YYYY") : '';
+  }
+
+  // Check if the data provided is not empty{}
+  checkDataExist(object: Object) {
+    return !(JSON.stringify(object) === JSON.stringify({}))
   }
 }

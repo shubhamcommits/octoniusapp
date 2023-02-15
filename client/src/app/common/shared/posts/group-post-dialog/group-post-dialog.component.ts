@@ -1,6 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Inject, Injector } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -101,8 +100,6 @@ export class GroupPostDialogComponent implements OnInit {
   newComment;
 
   myWorkplace = false;
-
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
@@ -378,7 +375,7 @@ export class GroupPostDialogComponent implements OnInit {
 
     // Set the current files variable to the output of the module
     this.files = files;
-
+console.log(this.files);
     this.updateDetails('attach_file');
   }
 
@@ -612,9 +609,10 @@ export class GroupPostDialogComponent implements OnInit {
    */
   async editPost(postId: any, formData: FormData) {
     await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.postService.edit(postId, formData)
+      this.postService.edit(postId, this.userData?._workspace?._id || this.userData?._workspace, formData)
         .then((res) => {
           this.postData = res['post'];
+
           this.contentChanged = false;
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));

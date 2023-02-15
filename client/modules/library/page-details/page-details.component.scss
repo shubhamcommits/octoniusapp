@@ -1,0 +1,46 @@
+.container-fluid {
+  margin: 0 10px;
+}
+
+.page-navbar {
+  width: 20%;
+  min-width: 250px;
+  display: flex;
+  margin-right: 32px;
+  font-family: 'Nunito' !important;
+
+
+  input {
+    display: none;
+  }
+}
+
+.page {
+  margin: 10px;
+  width: 100%;
+  display: flex;
+}
+
+  .page-content {
+   width: 80%;
+
+   .editbar{
+    width: 100%;
+    text-align: right;
+   }
+
+    .page-body {
+      background: #FFFFFF;
+      box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14);
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    .comments {
+      margin: 0 auto;
+      width: 100%;
+      padding-top: 10px;
+    }
+  }
+
+  

@@ -15,11 +15,10 @@ export class TopSocialCardComponent implements OnChanges {
   @Input() period;
   @Input() parentId; // groupId or workspaceId depending where is the widget used
 
-  // Base URL
-  baseUrl = environment.UTILITIES_GROUPS_UPLOADS;
-
   // Members
   public members: any = [];
+
+  userData: any;
 
   // Public functions
   public publicFunctions = new PublicFunctions(this.injector);
@@ -30,6 +29,10 @@ export class TopSocialCardComponent implements OnChanges {
   constructor(
     private injector: Injector
   ) { }
+
+  async ngOnInit() {
+    this.userData = await this.publicFunctions.getCurrentUser();
+  }
 
   ngOnChanges() {
     // Starts the spinner

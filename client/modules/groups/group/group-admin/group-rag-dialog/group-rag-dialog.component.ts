@@ -15,8 +15,6 @@ import { PublicFunctions } from 'modules/public.functions';
 
     @Output() closeEvent = new EventEmitter();
 
-      // Base Url of the users uploads
-    userBaseUrl = environment.UTILITIES_USERS_UPLOADS;
     tag: string;
     ragList: any = [];
     subSink = new SubSink();

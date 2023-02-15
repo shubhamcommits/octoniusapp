@@ -11,7 +11,7 @@
     <div class="form-group">
         <app-secured-image
           [imgURL]="groupData?.group_avatar"
-          [service]="'group'"></app-secured-image>
+          [service]="'group'" [workspaceId]="(groupData?._workspace?._id || groupData?._workspace)"></app-secured-image>
         <app-crop-image class="container" [resizeToWidth]="300" [cropperMinWidth]="300" (outputImage)="getCroppedImage($event)"></app-crop-image>
     </div>
 </div>

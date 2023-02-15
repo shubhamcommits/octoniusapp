@@ -23,6 +23,7 @@
         <app-secured-image  *ngIf="member.active || type == 'group'"
             [imgURL]="member?.profile_pic"
             [service]="'user'"
+            [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
             [styleClass]="'feed-avatar'"
             (click)="openFullscreenModal(member._id)"></app-secured-image>
         <!-- Avatar Image of the member -->
@@ -136,6 +137,7 @@
                 <app-secured-image *ngIf="!member.active"
                     [imgURL]="member?.profile_pic"
                     [service]="'user'"
+                    [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
                     [styleClass]="'inactive-person feed-avatar'"
                     (click)="openFullscreenModal(member._id)"></app-secured-image>
                 <!-- Avatar Image of the member -->

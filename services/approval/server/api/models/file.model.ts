@@ -12,6 +12,12 @@ const FileSchema = new Schema({
         type: String,
         default: 'New Folio'
     },
+    minio_etag:  {
+        type: String
+    },
+    minio_versionId:  {
+        type: String
+    },
     type: {
         type: String,
         default: 'folio',
@@ -39,6 +45,14 @@ const FileSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Group',
         required: true
+    },
+    _page: {
+        type: Schema.Types.ObjectId,
+        ref: 'Page'
+    },
+    _collection: {
+        type: Schema.Types.ObjectId,
+        ref: 'Collection'
     },
     _folder : {
         type: Schema.Types.ObjectId,

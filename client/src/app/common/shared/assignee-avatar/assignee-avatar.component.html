@@ -1,6 +1,7 @@
 <app-secured-image
   [imgURL]="profilePic"
   [service]="'user'"
+  [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
   [styleClass]="'assignee-avatar'"
   [tooltip]="assigneeTooltip"></app-secured-image>
 

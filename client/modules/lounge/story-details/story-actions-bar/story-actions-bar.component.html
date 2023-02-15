@@ -4,6 +4,7 @@
       <app-secured-image
         [imgURL]="storyData?._posted_by?.profile_pic"
         [service]="'user'"
+        [workspaceId]="workspaceData?._id"
         [styleClass]="'feed-avatar-small'"
         style="float: left; cursor: auto;"></app-secured-image>
 

@@ -2,7 +2,6 @@ import { Component, OnInit, Injector } from '@angular/core';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { environment } from 'src/environments/environment';
 import { NewNorthStarDialogComponent } from './new-north-start-dialog/new-north-start-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { GlobalNorthStarDialogComponent } from 'src/app/common/shared/posts/global-north-star-dialog/global-north-star-dialog.component';
@@ -65,9 +64,6 @@ export class NorthStarPageComponent implements OnInit {
   }];
   generalChartLabels = [$localize`:@@northStarPage.onTrack:ON TRACK`, $localize`:@@northStarPage.inDanger:IN DANGER`, $localize`:@@northStarPage.notStarted:NOT STARTED`, $localize`:@@northStarPage.achieved:ACHIEVED`];
   generalChartData = [0];
-
-  // Base URL of the uploads
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);

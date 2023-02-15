@@ -1,6 +1,5 @@
 import { Component, Injector, Input, OnChanges } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-assignee-avatar',
@@ -11,9 +10,6 @@ export class AssigneeAvatarComponent implements OnChanges {
 
   @Input() post;
   @Input() userData;
-
-  // Base URL of the uploads
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   assignee;
   numberAssignees = '';

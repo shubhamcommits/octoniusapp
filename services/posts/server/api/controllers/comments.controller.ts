@@ -87,9 +87,9 @@ export class CommentsController{
      */
     async getAllComments(req: Request, res: Response, next: NextFunction){
         try {
-            const { postId, storyId } = req.query;
+            const { postId, storyId, pageId } = req.query;
             // Service function to get all comments
-            const comments = await commentsService.getAllComments(postId, storyId);
+            const comments = await commentsService.getAllComments(postId, storyId, pageId);
 
             // Status 200 response
             return res.status(200).json({
@@ -110,9 +110,9 @@ export class CommentsController{
      */
     async getComments(req: Request, res: Response, next: NextFunction){
         try {
-            const { postId, storyId } = req.query;
+            const { postId, storyId, pageId } = req.query;
             // Service function to get top 5 comments
-            const comments = await commentsService.getComments(postId, storyId);
+            const comments = await commentsService.getComments(postId, storyId, pageId);
 
             // Status 200 response
             return res.status(200).json({
@@ -133,9 +133,9 @@ export class CommentsController{
      */
     async getNextComments(req: Request, res: Response, next: NextFunction){
         try {
-            const { postId, commentId } = req.query;
+            const { postId, storyId, pageId, commentId } = req.query;
             // Service function to get next comments
-            const comments = await commentsService.getNextComments(postId, commentId);
+            const comments = await commentsService.getNextComments(postId, storyId, pageId, commentId);
 
             // Status 200 response
             return res.status(200).json({

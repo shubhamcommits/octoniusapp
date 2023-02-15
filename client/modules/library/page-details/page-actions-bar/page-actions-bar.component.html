@@ -1,0 +1,65 @@
+<div *ngIf="pageData" class="story-actions">
+  <div class="story-actions-left">
+
+    <app-secured-image
+      [imgURL]="pageData?._created_by?.profile_pic"
+      [service]="'user'"
+      [workspaceId]="workspaceData?._id"
+      [styleClass]="'feed-avatar-small'"
+      style="float: left; cursor: auto;"></app-secured-image>
+
+    <div style="padding-top: 10px;" class="ml-1 mr-1">
+      {{ pageData?._created_by?.first_name }}
+      {{ pageData?._created_by?.last_name }}
+    </div>
+
+
+    <div class="muted" style="padding-top: 10px;">
+      <span i18n="@@storyActionsBar.on">on</span>
+      {{ formateDate(pageData?.created_date) }}
+    </div>
+  </div>
+
+  <div class="story-actions-right">
+    <!-- COMMENT action starts -->
+    <span *ngIf="userData && pageData">
+      <button class="btn btn-link">
+        <i matTooltipPosition="above" matTooltip="Write a comment"
+            [ngClass]="(pageData?._comments && pageData?._comments?.length>0) ? 'material-icons text-primary' : 'material-icons-outlined muted'"
+            (click)="showCommentsAction()">
+          comment
+        </i>
+      </button>
+      <span class="metrics"> {{ pageData?._comments?.length || 0 }}</span>
+    </span>
+    <!-- COMMENT action ends-->
+
+    <!-- LIKE action starts -->
+    <app-like-page
+      [userData]="userData"
+      [pageData]="pageData"
+      (storyLiked)="editPage($event)"
+      (storyUnLiked)="editPage($event)"></app-like-page>
+    <!-- LIKE action ends -->
+   
+    <!-- EDIT action starts -->
+   
+
+    <!-- Menu Starts -->
+    <!-- <ul class="dropdown-menu">
+      <li class="dropdown-item" (click)="canEditAction()">
+        
+        <span *ngIf="!canEditPage" i18n="@@storyActionsBar.edit"><i class="material-icons">create</i>Edit</span>
+ 
+      </li>
+     
+      <li class="dropdown-item">
+        <span (click)="deletePage(pageData?._id)" i18n="@@storyActionsBar.delete">
+          <i class="material-icons">delete</i> Delete</span>
+        
+      </li>
+    </ul> -->
+    <!-- Menu Ends -->
+    <!-- EDIT action ends -->
+  </div>
+</div>

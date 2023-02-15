@@ -25,7 +25,7 @@ function prodConfigInit() {
   process.env.REDIS_PORT = process.env.REDIS_PORT
 
   // Files Uploads Folder
-  process.env.FILE_UPLOAD_FOLDER = process.env.FILE_UPLOAD_FOLDER || path.join(__dirname, '../uploads/');
+  process.env.FILE_UPLOAD_FOLDER = process.env.FILE_UPLOAD_FOLDER || '/';
 
   // Slack Keys
   process.env.SLACK_BOT_ACCESS_TOKEN = process.env.SLACK_BOT_ACCESS_TOKEN
@@ -79,6 +79,13 @@ function prodConfigInit() {
 
   // Image Process URL for Notification
   process.env.IMAGE_PROCESS_URL = `${process.env.PROTOCOL}://${process.env.DOMAIN}/users/uploads`
+
+  process.env.MINIO_API_PORT = process.env.MINIO_API_PORT
+  process.env.MINIO_DOMAIN = process.env.MINIO_DOMAIN
+  process.env.MINIO_ACCESS_KEY = process.env.MINIO_ACCESS_KEY
+  process.env.MINIO_SECRET_KEY = process.env.MINIO_SECRET_KEY
+  process.env.MINIO_PORT = process.env.MINIO_PORT
+  process.env.MINIO_PROTOCOL = process.env.MINIO_PROTOCOL
 };
 
 export { prodConfigInit as productionConfig } 

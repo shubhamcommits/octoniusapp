@@ -81,13 +81,14 @@
           <app-secured-image
             [imgURL]="member?.profile_pic"
             [service]="'user'"
+            [workspaceId]="workplaceData?._id"
             [tooltip]="member?.first_name + ' ' + member?.last_name"
             [styleClass]="'feed-avatar'"
             (click)="removeMemberSearch(member._id)"></app-secured-image>
         </div>
         <app-component-search-input-box class="ml-2" *ngIf="workplaceData"
             [placeholder]="'Member'" [ragMemberList]="advancedFilters?.owners"
-            [workspaceData]="workplaceData?._id" [workspaceData]="workplaceData" [type]="'workspaceMembers'"
+            [workspaceId]="workplaceData?._id" [workspaceData]="workplaceData" [type]="'workspaceMembers'"
             (member)="addNewMember($event)">
         </app-component-search-input-box>
       </div>
@@ -209,7 +210,9 @@
     </div>
 
     <div class="col-md-8">
-      <app-search-results (closeSearchEvent)="closeSearch()" *ngIf="selected" [data]="selected" [type]='selectedType'></app-search-results>
+      <app-search-results *ngIf="selected"
+        [data]="selected" [type]='selectedType' [workspaceId]="workplaceData?._id"
+        (closeSearchEvent)="closeSearch()"></app-search-results>
     </div>
   </div>
 

@@ -41,12 +41,6 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector);
 
-  // Users Base Url
-  userBaseUrl = environment.UTILITIES_USERS_UPLOADS;
-
-  // Group Base Url
-  groupBaseUrl = environment.UTILITIES_GROUPS_UPLOADS;
-
   // UNSUBSCRIBE THE DATA
   private subSink = new SubSink();
 
@@ -218,6 +212,12 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
             if (res['blocked'] ) {
               workspaceBlocked = res['blocked'];
             }
+          }).catch((err) => {
+            this.authService.signout().subscribe(async (res) => {
+              this.clearUserData();
+              this.socketService.disconnectSocket();
+              this.router.navigate(['/home']);
+            });
           });
 
           if (workspaceBlocked) {

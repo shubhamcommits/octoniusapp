@@ -1,6 +1,6 @@
 import express from 'express';
 import { CalendarController, FilesControllers, PostController } from '../controllers';
-import { Auths, postFileHandler } from '../utils';
+import { Auths, postFileUploader } from '../utils';
 
 const routes = express.Router();
 
@@ -36,7 +36,7 @@ routes.use(auths.isLoggedIn);
 // -| MAIN |-
 
 // This route is used to add a post
-routes.post('/', postFileHandler, postController.add.bind(postController));
+routes.post('/:workspaceId', postFileUploader, postController.add.bind(postController));
 
 /**
  * GET - This route fetches the list of posts present in a group
@@ -72,7 +72,7 @@ routes.get('/user-northstar', postController.getNorthStarStats);
 routes.get('/global-northstar', postController.getGlobalNorthStarStats);
 
 // This route is used to edit a post
-routes.put('/:postId', postFileHandler, postController.edit);
+routes.put('/:postId/edit/:workspaceId', postFileUploader, postController.edit);
 
 // This route is used to edit a post
 routes.put('/:postId/title', postController.editPostTitle);
@@ -81,7 +81,7 @@ routes.put('/:postId/title', postController.editPostTitle);
 routes.put('/:postId/content', postController.editPostContent);
 
 // This route is used to edit a post
-routes.put('/:postId/attach-files', postFileHandler, postController.attachFiles);
+routes.put('/:postId/attach-files/:workspaceId', postFileUploader, postController.attachFiles);
 
 // This route is used to edit a post tags
 routes.put('/:postId/editTags', postController.editTags);

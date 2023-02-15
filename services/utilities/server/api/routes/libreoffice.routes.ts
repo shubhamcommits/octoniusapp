@@ -11,19 +11,19 @@ const routes = express.Router();
 const authsHelper = new Auths();
 
 // Verify the token
-routes.use(authsHelper.verifyToken);
+routes.use(authsHelper.verifyLOOLToken);
 
 // Checks whether the current user is loggedIn or not
 //routes.use(authsHelper.isLoggedIn);
 
 routes.get('/libreofficeUrl', libreofficeController.libreofficeUrl);
 
-routes.get('/wopi/files/:fileId', libreofficeController.checkFileInfo);
+routes.get('/wopi/files/:fileId/:workspaceId', libreofficeController.checkFileInfo);
 
-routes.get('/wopi/files/:fileId/contents', libreofficeController.getFile);
+routes.get('/wopi/files/:fileId/:workspaceId/contents', libreofficeController.getFile);
 
-routes.post('/wopi/files/:fileId/contents', libreofficeController.putFile);
-//routes.put('/wopi/files/:fileId/contents', libreofficeController.putFile);
+routes.post('/wopi/files/:fileId/:workspaceId/contents', libreofficeController.putFile);
+//routes.put('/wopi/files/:fileId/:workspaceId/contents', libreofficeController.putFile);
 
 
 /*  ===================

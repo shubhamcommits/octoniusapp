@@ -2,7 +2,6 @@ import { Component, Injector, Input, OnChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import { PortfolioService } from 'src/shared/services/portfolio-service/portfolio.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -29,9 +28,6 @@ export class PortfolioMembersWorkloadCardComponent implements OnChanges {
 
   // IsLoading behavior subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
-
-  // Base URL
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   public publicFunctions = new PublicFunctions(this.injector);
 

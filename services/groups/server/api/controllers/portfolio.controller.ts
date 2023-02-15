@@ -412,6 +412,11 @@ export class PortfolioController {
                 });
             }
 
+            // Remove the users´ favorite portfolios
+            await User.updateMany({}, {
+                $pull: { 'stats.favorite_portfolios': portfolioId }
+            });
+
             // Find the portfolio and remove it from the database
             await Portfolio.findByIdAndDelete(portfolioId);
 

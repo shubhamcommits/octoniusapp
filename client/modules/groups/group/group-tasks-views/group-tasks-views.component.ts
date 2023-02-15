@@ -31,7 +31,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
   sortingBit:String = 'none';
   sortingData: any;
 
-  currentWorkspace: any;
+  workspaceData: any;
   isIdeaModuleAvailable = false;
   isShuttleTasksModuleAvailable = false;
 
@@ -115,9 +115,9 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
 
     this.isAdmin = this.isAdminUser();
 
-    this.currentWorkspace = await this.publicFunctions.getCurrentWorkspace();
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
-    this.isIdeaModuleAvailable = await this.publicFunctions.checkIdeaStatus(this.currentWorkspace?._id, this.currentWorkspace?.management_private_api_key);
+    this.isIdeaModuleAvailable = await this.publicFunctions.checkIdeaStatus(this.workspaceData?._id, this.workspaceData?.management_private_api_key);
     this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
 
     // Set the initial view

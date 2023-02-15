@@ -26,6 +26,8 @@ export class OfficeEditorComponent implements OnInit {
 
   fileId = this._activatedRoute.snapshot.paramMap.get("id");
 
+  workspaceId = '';
+
   fileData: any;
   readOnly: boolean = false;
 
@@ -49,12 +51,15 @@ export class OfficeEditorComponent implements OnInit {
 
     this.fileData = await this.publicFunctions.getFile(this.fileId);
 
+    const workspaceData: any = await this.publicFunctions.getCurrentWorkspace();
+    this.workspaceId = workspaceData._id;
+
     this.getWopiClientUrl();
   }
 
   getWopiClientUrl() {
     // this.wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
-    let wopiSrc =  `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${this.fileId}?authToken=${this.authToken}`;
+    let wopiSrc =  `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${this.fileId}/${this.workspaceId}?access_token=${this.authToken}`;
     this.libreofficeService.getLibreofficeUrl().then(res => {
       this.wopiClientURL = res['url'] + 'WOPISrc=' + wopiSrc;
       this.accessToken = this.authToken;
