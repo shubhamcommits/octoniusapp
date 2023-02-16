@@ -997,7 +997,7 @@ export class PostService {
 
       if (post.type == 'task') {
         // Remove dependencies
-        await Post.update({
+        await Post.updateMany({
           'task._dependency_task': postId
         }, {
           'task._dependency_task': undefined
