@@ -11,7 +11,7 @@
                     <!-- Create new Page starts -->
                     <button class="btn btn-light mt-2 mb-2" type="button" (click)="createPage()">
                         <i class="material-icons-outlined">add</i>
-                        <span i18n="@@collectionDetails.newPage">New Page</span>
+                        <span i18n="@@pageDetails.newPage">New Page</span>
                     </button>
                     <!-- Create new Page ends -->
                 </div>
@@ -47,7 +47,7 @@
                     <ul class="dropdown-menu">
                         <li class="dropdown-item btn btn-link" (click)="removeFile(file?._id)">
                             <span class="material-icons-outlined">delete</span>
-                            <span i18n="@@storyActionsBar.delete">Delete</span>
+                            <span i18n="@@pageDetails.delete">Delete</span>
                         </li>
                     </ul>
                     <!-- Menu Ends -->
@@ -89,12 +89,12 @@
                     <ul class="dropdown-menu">
                         <!--
                         <li class="dropdown-item" (click)="canEditAction()">
-                            <span *ngIf="!canEditPage" i18n="@@storyActionsBar.edit"><i class="material-icons">create</i>Edit</span>
+                            <span *ngIf="!canEditPage" i18n="@@pageDetails.edit"><i class="material-icons">create</i>Edit</span>
                         </li>
                         -->
                         <li class="dropdown-item">
-                            <span (click)="deletePage(pageData?._id)" i18n="@@storyActionsBar.delete">
-                                <i class="material-icons">delete</i> Delete</span>
+                            <i class="material-icons">delete</i>
+                            <span (click)="deletePage(pageData?._id)" i18n="@@pageDetails.delete">Delete</span>
                         </li>
                     </ul>
                 </div>
@@ -109,7 +109,7 @@
                     [contents]="pageData?.content" (content)="getQuillData($event)">
                 </app-quill-editor>
                 <div style="width: 100%; text-align: right;">
-                    <button *ngIf="canEditPage" i18n="@@storyActionsBar.edit" class="btn btn-danger mr-2" (click)="canEditAction()">Cancel</button>
+                    <button *ngIf="canEditPage" i18n="@@pageDetails.edit" class="btn btn-danger mr-2" (click)="canEditAction()">Cancel</button>
                     <button type="button" *ngIf="canEditPage" class="btn btn-primary"
                         (click)="savePage()" i18n="@@pageDetails.save">
                         Save

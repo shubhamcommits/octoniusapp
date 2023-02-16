@@ -997,7 +997,7 @@ export class PostService {
 
       if (post.type == 'task') {
         // Remove dependencies
-        await Post.update({
+        await Post.updateMany({
           'task._dependency_task': postId
         }, {
           'task._dependency_task': undefined
@@ -1014,10 +1014,11 @@ export class PostService {
 
       //delete files, this catches both document insertion as well as multiple file attachment deletes
       if (post.files?.length > 0) {
+
         //gather source file
         function deleteFiles(files, callback) {
           var i = files.length;
-          files.forEach(async function (filepath) {
+          files.forEach(async (file) => {
             // const finalpath = `${process.env.FILE_UPLOAD_FOLDER}${filepath.modified_name}`
             // fs.unlink(finalpath, function (err) {
             //   i--;
@@ -1035,7 +1036,8 @@ export class PostService {
               accessKey: process.env.MINIO_ACCESS_KEY,
               secretKey: process.env.MINIO_SECRET_KEY
             });
-            await minioClient.removeObject(user._workspace, filepath.modified_name, (error) => {
+
+            await minioClient.removeObject((user._workspace+'').toLocaleLowerCase(), file?.modified_name, (error) => {
               i--;
               if (error) {
                 callback(error);
@@ -1046,11 +1048,13 @@ export class PostService {
             });
           });
         }
-        deleteFiles(post.files, function (err) {
+
+        deleteFiles(post.files, (err) => {
           if (err) { throw (err); }
           //all files removed);
         });
       }
+
       //chec/delete document files that were exported
       // const filepath = `${process.env.FILE_UPLOAD_FOLDER}${postId + post._group + 'export' + '.docx'}`;
       const filepath = `${postId + post._group + 'export' + '.docx'}`;
@@ -1073,8 +1077,15 @@ export class PostService {
         accessKey: process.env.MINIO_ACCESS_KEY,
         secretKey: process.env.MINIO_SECRET_KEY
       });
-      await minioClient.removeObject(user._workspace, filepath, (error) => {
-        if (error) { throw (error); }
+
+      minioClient.statObject((user._workspace+'').toLocaleLowerCase(), filepath, async (err, stat) => {
+        if (err) {
+          throw (err);
+        }
+
+        await minioClient.removeObject((user._workspace+'').toLocaleLowerCase(), filepath, (error) => {
+          if (error) { throw (error); }
+        });
       });
 
       // Delete the notifications
@@ -3430,7 +3441,7 @@ export class PostService {
         //gather source file
         function deleteFiles(files, callback) {
           var i = files.length;
-          files.forEach(async function (filepath) {
+          files.forEach(async (file) => {
             // const finalpath = `${process.env.FILE_UPLOAD_FOLDER}${filepath.modified_name}`
             // fs.unlink(finalpath, function (err) {
             //   i--;
@@ -3448,7 +3459,8 @@ export class PostService {
               accessKey: process.env.MINIO_ACCESS_KEY,
               secretKey: process.env.MINIO_SECRET_KEY
             });
-            await minioClient.removeObject((user._workspace).toLowerCase(), filepath.modified_name, (error) => {
+
+            await minioClient.removeObject((user._workspace+'').toLocaleLowerCase(), file?.modified_name, (error) => {
               i--;
               if (error) {
                 callback(error);
@@ -3487,8 +3499,15 @@ export class PostService {
         accessKey: process.env.MINIO_ACCESS_KEY,
         secretKey: process.env.MINIO_SECRET_KEY
       });
-      await minioClient.removeObject((user._workspace).toLowerCase(), filepath, (error) => {
-        if (error) { throw (error); }
+
+      minioClient.statObject((user._workspace+'').toLocaleLowerCase(), filepath, async (err, stat) => {
+        if (err) {
+          throw (err);
+        }
+
+        await minioClient.removeObject((user._workspace+'').toLocaleLowerCase(), filepath, (error) => {
+          if (error) { throw (error); }
+        }); 
       });
 
       if (template.files) {
@@ -3525,25 +3544,25 @@ export class PostService {
           var conds = new minio.CopyConditions();
           // conds.setMatchETag('bd891862ea3e22c93ed53a098218791d');
 
-          await minioClient.bucketExists((user._workspace).toLowerCase(), async (error, exists) => {
+          await minioClient.bucketExists(user?._workspace?.toLowerCase(), async (error, exists) => {
             if (error) {
               throw (error);
             }
 
             if (!exists) {
               // Make a bucket.
-              await minioClient.makeBucket((user._workspace).toLowerCase(), async (error) => {
+              await minioClient.makeBucket(user?._workspace?.toLowerCase(), async (error) => {
                 if (error) {
                   throw (error);
                 }
 
                 const encryption = { algorithm: "AES256" };
-                await minioClient.setBucketEncryption((user._workspace).toLowerCase(), encryption)
+                await minioClient.setBucketEncryption(user?._workspace?.toLowerCase(), encryption)
                   .then(() => console.log("Encryption enabled"))
                   .catch((error) => console.error(error));
 
                 // Using fPutObject API upload your file to the bucket.
-                minioClient.copyObject((user._workspace).toLowerCase(), fileName, currentFile.modified_name, conds, (e, data) => {
+                minioClient.copyObject(user?._workspace?.toLowerCase(), fileName, currentFile.modified_name, conds, (e, data) => {
                   if (e) {
                     throw (e);
                   }
@@ -3551,7 +3570,7 @@ export class PostService {
               });
             } else {
               // Using fPutObject API upload your file to the bucket.
-              minioClient.copyObject((user._workspace).toLowerCase(), fileName, currentFile.modified_name, conds, (e, data) => {
+              minioClient.copyObject(user?._workspace?.toLowerCase(), fileName, currentFile.modified_name, conds, (e, data) => {
                 if (error) {
                   throw (error);
                 }
