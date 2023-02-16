@@ -375,7 +375,6 @@ export class GroupPostDialogComponent implements OnInit {
 
     // Set the current files variable to the output of the module
     this.files = files;
-console.log(this.files);
     this.updateDetails('attach_file');
   }
 

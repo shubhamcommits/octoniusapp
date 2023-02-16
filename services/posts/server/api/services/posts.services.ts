@@ -1018,7 +1018,7 @@ export class PostService {
         //gather source file
         function deleteFiles(files, callback) {
           var i = files.length;
-          files.forEach(async (filepath) => {
+          files.forEach(async (file) => {
             // const finalpath = `${process.env.FILE_UPLOAD_FOLDER}${filepath.modified_name}`
             // fs.unlink(finalpath, function (err) {
             //   i--;
@@ -1037,7 +1037,7 @@ export class PostService {
               secretKey: process.env.MINIO_SECRET_KEY
             });
 
-            await minioClient.removeObject(user._workspace, filepath.modified_name, (error) => {
+            await minioClient.removeObject((user._workspace+'').toLocaleLowerCase(), file?.modified_name, (error) => {
               i--;
               if (error) {
                 callback(error);
@@ -1078,11 +1078,15 @@ export class PostService {
         secretKey: process.env.MINIO_SECRET_KEY
       });
 
-      if (await this.isObjectExist(user._workspace, filepath)){
-        await minioClient.removeObject(user._workspace, filepath, (error) => {
+      minioClient.statObject((user._workspace+'').toLocaleLowerCase(), filepath, async (err, stat) => {
+        if (err) {
+          throw (err);
+        }
+
+        await minioClient.removeObject((user._workspace+'').toLocaleLowerCase(), filepath, (error) => {
           if (error) { throw (error); }
         });
-      }
+      });
 
       // Delete the notifications
       await Notification.deleteMany({ _origin_post: postId });
@@ -3437,7 +3441,7 @@ export class PostService {
         //gather source file
         function deleteFiles(files, callback) {
           var i = files.length;
-          files.forEach(async function (filepath) {
+          files.forEach(async (file) => {
             // const finalpath = `${process.env.FILE_UPLOAD_FOLDER}${filepath.modified_name}`
             // fs.unlink(finalpath, function (err) {
             //   i--;
@@ -3455,7 +3459,8 @@ export class PostService {
               accessKey: process.env.MINIO_ACCESS_KEY,
               secretKey: process.env.MINIO_SECRET_KEY
             });
-            await minioClient.removeObject(user._workspace.toLowerCase(), filepath.modified_name, (error) => {
+
+            await minioClient.removeObject((user._workspace+'').toLocaleLowerCase(), file?.modified_name, (error) => {
               i--;
               if (error) {
                 callback(error);
@@ -3495,11 +3500,15 @@ export class PostService {
         secretKey: process.env.MINIO_SECRET_KEY
       });
 
-      if (await this.isObjectExist(user._workspace, filepath)){
-        await minioClient.removeObject(user._workspace, filepath, (error) => {
+      minioClient.statObject((user._workspace+'').toLocaleLowerCase(), filepath, async (err, stat) => {
+        if (err) {
+          throw (err);
+        }
+
+        await minioClient.removeObject((user._workspace+'').toLocaleLowerCase(), filepath, (error) => {
           if (error) { throw (error); }
-        });
-      }
+        }); 
+      });
 
       if (template.files) {
         // Start adding the files from the template
@@ -3934,25 +3943,5 @@ export class PostService {
           console.log(`\n⛔️ Error:\n ${err}`);
         });
       return this.populatePostProperties(post);
-  }
-
-  async isObjectExist(bucketName: string, name: string) {
-    try {
-      var minioClient = new minio.Client({
-        endPoint: process.env.MINIO_DOMAIN,
-        port: +(process.env.MINIO_API_PORT),
-        useSSL: process.env.MINIO_PROTOCOL == 'https',
-        accessKey: process.env.MINIO_ACCESS_KEY,
-        secretKey: process.env.MINIO_SECRET_KEY
-      });
-      minioClient.statObject(bucketName, name, (err, stat) => {
-        if (err) {
-          return false;
-        }
-        return true;
-      });
-    } catch (error) {
-      return false;
-    }
   }
 }
