@@ -122,7 +122,7 @@ export class CommentSectionComponent implements OnInit {
               reject(this.utilityService.rejectAsyncPromise($localize`:@@commentSection.unableToSubmitComment:Unable to submit the comment, please try again!`));
             });
         } else {
-          this.commentService.newCommentPage(formData, this.pageId)
+          this.commentService.new(formData, this.pageId)
             .then((res) => {
               // Emit the Comment to the other compoentns
               this.comment.emit(res['comment']);
