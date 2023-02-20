@@ -34,11 +34,11 @@ export class TopSocialCardComponent implements OnChanges {
     this.userData = await this.publicFunctions.getCurrentUser();
   }
 
-  ngOnChanges() {
+  async ngOnChanges() {
     // Starts the spinner
     this.isLoading$.next(true);
 
-    this.initView();
+    await this.initView();
   }
 
   async initView() {

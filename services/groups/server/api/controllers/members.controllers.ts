@@ -181,7 +181,28 @@ export class MembersControllers {
             //     .sort('_id')
             //     .select('first_name last_name email role profile_pic active integrations current_position')
             //     .lean() || [];
-            const group = await Group.findById({ _id: groupId }).select('_members _admins').lean();
+            const group = await Group.findById({ _id: groupId })
+                .populate({
+                    path: '_members',
+                    select: 'first_name last_name email role profile_pic active integrations current_position',
+                    options: {
+                        limit: 10
+                    },
+                    match: {
+                        active: true
+                    }
+                })
+                .populate({
+                    path: '_admins',
+                    select: 'first_name last_name email role profile_pic active integrations current_position',
+                    options: {
+                        limit: 10
+                    },
+                    match: {
+                        active: true
+                    }
+                })
+                .lean();
             users = group?._members.concat(group?._admins);
 
             const posts = await Post.find({
@@ -202,6 +223,10 @@ export class MembersControllers {
 
             for (let i = 0; i < users.length; i++) {
                 const user = users[i];
+                user.numTasks = 0;
+                user.numPosts = 0;
+                user.numComments = 0;
+                user.numlikes = 0;
 
                 user.numPosts = await Post.find({
                         $and: [
@@ -266,7 +291,7 @@ export class MembersControllers {
             }
 
             retUsers.sort((u1, u2) => (u1.totalCounts > u2.totalCounts) ? -1 : 1);
-
+console.log(await retUsers.slice(0, 5));
             // Send the status 200 response
             return res.status(200).json({
                 message: `The workspace members found!`,
