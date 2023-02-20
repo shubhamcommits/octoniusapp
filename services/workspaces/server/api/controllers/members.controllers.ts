@@ -228,6 +228,15 @@ export class MembersControllers {
                         ]
                     }).countDocuments();
 
+                user.numTasks = await Post.find({
+                        $and: [
+                            { type: { $eq: 'task' } },
+                            { _group: { $in: groups } },
+                            { created_date: { $gte: comparingDate, $lt: today } },
+                            { _posted_by: user?._id }
+                        ]
+                    }).countDocuments();
+
                 user.numComments = await Comment.find({
                         $and: [
                             {

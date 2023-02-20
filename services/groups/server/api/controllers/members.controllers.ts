@@ -195,6 +195,16 @@ export class MembersControllers {
 
                 user.numPosts = await Post.find({
                         $and: [
+                            { type: { $ne: 'task' } },
+                            { _group: groupId },
+                            { created_date: { $gte: comparingDate, $lt: today } },
+                            { _posted_by: user?._id }
+                        ]
+                    }).countDocuments();
+
+                user.numTasks = await Post.find({
+                        $and: [
+                            { type: { $eq: 'task' } },
                             { _group: groupId },
                             { created_date: { $gte: comparingDate, $lt: today } },
                             { _posted_by: user?._id }
