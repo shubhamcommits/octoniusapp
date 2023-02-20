@@ -758,8 +758,6 @@ export class PostController {
         // Call Service function to change the assignee
         let post = await postService.addAssignee(postId, assigneeId, userId);
 
-        post = await postService.populatePostProperties(post);
-
         // Execute Automation Flows
         post = await this.executeAutomationFlows(groupId, post, userId, false, isShuttleTasksModuleAvailable);
 
@@ -1512,7 +1510,7 @@ export class PostController {
                     if (steps && steps.length > 0) {
                         steps.forEach(async step => {
                             const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status'; });
-                            const isChildStatusTrigger = (childStatusTriggerIndex >= 0)
+                            const isChildStatusTrigger = (childStatusTriggerIndex >= 0 && post.task._parent_task)
                                 ? await this.isChildTasksUpdated(step.trigger[childStatusTriggerIndex], (post.task._parent_task._id || post.task._parent_task))
                                 : false;
                             doTrigger = await this.doesTriggersMatch(step.trigger, post, groupId, isCreationTaskTrigger, isChildStatusTrigger);
