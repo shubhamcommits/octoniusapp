@@ -758,6 +758,8 @@ export class PostController {
         // Call Service function to change the assignee
         let post = await postService.addAssignee(postId, assigneeId, userId);
 
+        post = await postService.populatePostProperties(post);
+
         // Execute Automation Flows
         post = await this.executeAutomationFlows(groupId, post, userId, false, isShuttleTasksModuleAvailable);
 
