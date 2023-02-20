@@ -762,7 +762,7 @@ export class PostController {
         post = await this.executeAutomationFlows(groupId, post, userId, false, isShuttleTasksModuleAvailable);
 
         if (post._assigned_to) {
-            const index = post._assigned_to.findIndex(assignee => assignee._id == assigneeId);
+            const index = post._assigned_to.findIndex(assignee => (assignee?._id || assignee) == assigneeId);
             if (index < 0) {
                 post._assigned_to.push(assigneeId);
             }
@@ -806,7 +806,7 @@ export class PostController {
         let post = await postService.changeTaskAssignee(postId, assigneeId, userId);
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows((post._group || post._group._id), post, userId, false, isShuttleTasksModuleAvailable);
+        post = await this.executeAutomationFlows((post._group._id || post._group), post, userId, false, isShuttleTasksModuleAvailable);
 
         post.task._assigned_to = assigneeId;
 
@@ -833,7 +833,7 @@ export class PostController {
                 return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
             });
 
-        post = await this.executeAutomationFlows((post._group || post._group._id), post, userId, false, isShuttleTasksModuleAvailable);
+        post = await this.executeAutomationFlows((post._group._id || post._group), post, userId, false, isShuttleTasksModuleAvailable);
 
         // Send status 200 response
         return res.status(200).json({
@@ -861,7 +861,7 @@ export class PostController {
                         .catch((err) => {
                             return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                         });
-                    post = await this.executeAutomationFlows((post._group || post._group._id), post, userId, false, isShuttleTasksModuleAvailable);
+                    post = await this.executeAutomationFlows((post._group._id || post._group), post, userId, false, isShuttleTasksModuleAvailable);
                     
                 }
                 
@@ -871,7 +871,7 @@ export class PostController {
                             return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                         });
 
-                    post = await this.executeAutomationFlows((post._group || post._group._id), post, userId, false, isShuttleTasksModuleAvailable);
+                    post = await this.executeAutomationFlows((post._group._id || post._group), post, userId, false, isShuttleTasksModuleAvailable);
     
                     if(post?.task?._dependent_child && post?.task?._dependent_child.length>0){
                         
@@ -1511,7 +1511,7 @@ export class PostController {
                         steps.forEach(async step => {
                             const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status'; });
                             const isChildStatusTrigger = (childStatusTriggerIndex >= 0)
-                                ? await this.isChildTasksUpdated(step.trigger[childStatusTriggerIndex], post.task._parent_task._id || post.task._parent_task)
+                                ? await this.isChildTasksUpdated(step.trigger[childStatusTriggerIndex], (post.task._parent_task._id || post.task._parent_task))
                                 : false;
                             doTrigger = await this.doesTriggersMatch(step.trigger, post, groupId, isCreationTaskTrigger, isChildStatusTrigger);
                             const shuttleActionIndex = step.action.findIndex(action => action.name == 'Shuttle task');
@@ -1555,7 +1555,7 @@ export class PostController {
                                 const usersMatch =
                                     trigger._user.filter((triggerUser) => {
                                         return post._assigned_to.findIndex(assignee => {
-                                            return assignee._id.toString() == triggerUser._id.toString()
+                                            return (assignee._id || assignee).toString() == (triggerUser._id || triggerUser).toString()
                                         }) != -1
                                     });
                                 retValue = (usersMatch && usersMatch.length > 0);
