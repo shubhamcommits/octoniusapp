@@ -193,7 +193,10 @@ export class MembersControllers {
 
             let retUsers = [];
             const users = await User.find({
-                    _workspace: workspaceId
+                    $and: [
+                        { _workspace: workspaceId },
+                        { active: true },
+                    ]
                 })
                 .sort('_id')
                 .select('first_name last_name email role profile_pic active integrations current_position')
@@ -281,7 +284,7 @@ export class MembersControllers {
 
                 user.numLikes = postLiked + storiesLiked + commentsLiked;
 
-                user.totalCounts = user.numComments + user.numComments + user.numlikes;
+                user.totalCounts = user.numTasks + user.numPosts + user.numComments + user.numlikes;
 
                 retUsers.push(user);
             }

@@ -171,15 +171,18 @@ export class MembersControllers {
             const today = moment().subtract(1, 'days').endOf('day').format();
 
             let retUsers = [];
-            const users = await User.find({
-                    $and: [
-                        { _groups: groupId },
-                        { active: true }
-                    ]
-                })
-                .sort('_id')
-                .select('first_name last_name email role profile_pic active integrations current_position')
-                .lean() || [];
+            let users = [];
+            // const users = await User.find({
+            //         $and: [
+            //             { _groups: groupId },
+            //             { active: true }
+            //         ]
+            //     })
+            //     .sort('_id')
+            //     .select('first_name last_name email role profile_pic active integrations current_position')
+            //     .lean() || [];
+            const group = await Group.findById({ _id: groupId }).select('_members _admins').lean();
+            users = group?._members.concat(group?._admins);
 
             const posts = await Post.find({
                     $and: [
@@ -239,6 +242,14 @@ export class MembersControllers {
                         ]
                     }).countDocuments();
 
+                const pageLiked = await Page.find({
+                        $and: [
+                            { _group: groupId },
+                            { created_date: { $gte: comparingDate, $lt: today } },
+                            { _liked_by: user?._id }
+                        ]
+                    }).countDocuments();
+
                 const commentsLiked = await Post.find({
                         $and: [
                             { _post: { $in: postsIds }},
@@ -247,9 +258,9 @@ export class MembersControllers {
                         ]
                     }).countDocuments();
 
-                user.numLikes = postLiked + commentsLiked;
+                user.numLikes = postLiked + pageLiked + commentsLiked;
 
-                user.totalCounts = user.numComments + user.numComments + user.numlikes;
+                user.totalCounts = user.numTasks + user.numPosts + user.numComments + user.numlikes;
 
                 retUsers.push(user);
             }
