@@ -1,5 +1,5 @@
 import { axios, sendError } from '../../utils';
-import { User, Group, Workspace, Post, Comment } from '../models';
+import { User, Group, Workspace, Post, Comment, Page } from '../models';
 import { Request, Response, NextFunction } from 'express';
 import http from 'axios';
 import moment from 'moment';
@@ -150,8 +150,8 @@ export class MembersControllers {
      * @param res 
      * @param next 
      */
-    async getWorkspaceMembersSocialStats(req: Request, res: Response, next: NextFunction) {
-console.log(req.query);
+    async getGroupMembersSocialStats(req: Request, res: Response, next: NextFunction) {
+
         // Fetch the variables from request
         let groupId: any = req.query.groupId
         let numDays: any = req.query.numDays
@@ -187,15 +187,32 @@ console.log(req.query);
                         { created_date: { $gte: comparingDate, $lt: today } }
                     ]
                 }).select('_id').lean();
-
             const postsIds = posts.map(post => post._id);
 
-            for (let i = 0; i< users.length; i++) {
+            const pages = await Page.find({
+                    $and: [
+                        { _group: groupId },
+                        { created_date: { $gte: comparingDate, $lt: today } }
+                    ]
+                }).select('_id').lean();
+            const pagesIds = pages.map(page => page._id);
+
+            for (let i = 0; i < users.length; i++) {
                 const user = users[i];
 
                 user.numPosts = await Post.find({
                         $and: [
-                            { _group: { $in: groupId } },
+                            { type: { $ne: 'task' } },
+                            { _group: groupId },
+                            { created_date: { $gte: comparingDate, $lt: today } },
+                            { _posted_by: user?._id }
+                        ]
+                    }).countDocuments();
+
+                user.numTasks = await Post.find({
+                        $and: [
+                            { type: { $eq: 'task' } },
+                            { _group: groupId },
                             { created_date: { $gte: comparingDate, $lt: today } },
                             { _posted_by: user?._id }
                         ]
@@ -203,7 +220,12 @@ console.log(req.query);
 
                 user.numComments = await Comment.find({
                         $and: [
-                            { _post: postsIds },
+                            {
+                                $or: [
+                                    { _post: { $in: postsIds }},
+                                    { _page: { $in: pagesIds }}
+                                ]
+                            },
                             { created_date: { $gte: comparingDate, $lt: today } },
                             { _commented_by: user?._id }
                         ]

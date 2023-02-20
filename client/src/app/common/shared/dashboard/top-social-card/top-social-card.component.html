@@ -6,7 +6,7 @@
     </div>
 
     <div class="social_card">
-      <div *ngFor="let member of members" class="row" style="">
+      <div *ngFor="let member of members" class="row">
         <div class="col-md-6">
           <app-secured-image
               [imgURL]="member?.profile_pic"
@@ -24,10 +24,17 @@
             <span class="badge badge_posts">{{ member?.numPosts }}</span>
             <span i18n="@@topSocialCard.posts">Posts</span>
           </div>
+          
+          <div>
+            <span class="badge badge_posts">{{ member?.numTasks }}</span>
+            <span i18n="@@topSocialCard.posts">Tasks</span>
+          </div>
+
           <div>
             <span class="badge badge_comments">{{ member?.numComments }}</span>
             <span i18n="@@topSocialCard.comments">Comments</span>
           </div>
+          
           <div>
             <span class="badge badge_likes">{{ member?.numLikes }}</span>
             <span i18n="@@topSocialCard.likes">Likes</span>

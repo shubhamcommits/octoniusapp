@@ -45,7 +45,7 @@ export class CommentService {
    * This function is responsible for adding a new comment
    * @param formData
    */
-  new(formData: any, postId: string, storyId?: string ) {
+  newPostComment(formData: any, postId: string, storyId?: string ) {
     if (storyId) {
       return this._http.post(this.baseURL + '/comments/new-comment', formData, {
         params: {
@@ -64,7 +64,19 @@ export class CommentService {
    * This function is responsible for adding a new comment
    * @param formData
    */
-  newCommentPage(formData: any, pageId: string) {
+  newStoryComment(formData: any, storyId?: string ) {
+    return this._http.post(this.baseURL + '/comments/new-comment', formData, {
+        params: {
+          storyId : storyId
+        }
+      }).toPromise();
+  }
+
+  /**
+   * This function is responsible for adding a new comment
+   * @param formData
+   */
+  newPageComment(formData: any, pageId: string) {
     return this._http.post(this.baseURL + '/comments/new-comment', formData, {
       params: {
         pageId : pageId
