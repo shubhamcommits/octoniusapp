@@ -1,5 +1,5 @@
 import { axios, sendError } from '../../utils';
-import { User, Group, Workspace, Post, Comment } from '../models';
+import { User, Group, Workspace, Post, Comment, Page } from '../models';
 import { Request, Response, NextFunction } from 'express';
 import http from 'axios';
 import moment from 'moment';
@@ -187,8 +187,15 @@ export class MembersControllers {
                         { created_date: { $gte: comparingDate, $lt: today } }
                     ]
                 }).select('_id').lean();
-
             const postsIds = posts.map(post => post._id);
+
+            const pages = await Page.find({
+                    $and: [
+                        { _group: groupId },
+                        { created_date: { $gte: comparingDate, $lt: today } }
+                    ]
+                }).select('_id').lean();
+            const pagesIds = pages.map(page => page._id);
 
             for (let i = 0; i < users.length; i++) {
                 const user = users[i];
@@ -213,7 +220,12 @@ export class MembersControllers {
 
                 user.numComments = await Comment.find({
                         $and: [
-                            { _post: postsIds },
+                            {
+                                $or: [
+                                    { _post: { $in: postsIds }},
+                                    { _page: { $in: pagesIds }}
+                                ]
+                            },
                             { created_date: { $gte: comparingDate, $lt: today } },
                             { _commented_by: user?._id }
                         ]
