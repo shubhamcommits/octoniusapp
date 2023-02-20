@@ -291,7 +291,7 @@ export class MembersControllers {
             }
 
             retUsers.sort((u1, u2) => (u1.totalCounts > u2.totalCounts) ? -1 : 1);
-console.log(await retUsers.slice(0, 5));
+
             // Send the status 200 response
             return res.status(200).json({
                 message: `The workspace members found!`,
