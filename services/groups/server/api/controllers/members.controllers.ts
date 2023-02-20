@@ -150,8 +150,8 @@ export class MembersControllers {
      * @param res 
      * @param next 
      */
-    async getWorkspaceMembersSocialStats(req: Request, res: Response, next: NextFunction) {
-console.log(req.query);
+    async getGroupMembersSocialStats(req: Request, res: Response, next: NextFunction) {
+
         // Fetch the variables from request
         let groupId: any = req.query.groupId
         let numDays: any = req.query.numDays
@@ -190,12 +190,12 @@ console.log(req.query);
 
             const postsIds = posts.map(post => post._id);
 
-            for (let i = 0; i< users.length; i++) {
+            for (let i = 0; i < users.length; i++) {
                 const user = users[i];
 
                 user.numPosts = await Post.find({
                         $and: [
-                            { _group: { $in: groupId } },
+                            { _group: groupId },
                             { created_date: { $gte: comparingDate, $lt: today } },
                             { _posted_by: user?._id }
                         ]
