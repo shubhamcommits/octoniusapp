@@ -1156,4 +1156,77 @@ export class LibraryController {
             return sendError(res, err);
         }
     };
+
+    /**
+     * This function is used to search list of the files
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async searchPages(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Fetch the File Name From the request
+            let { query: { groupId, query }, params: { workspaceId } } = req;
+
+            // Files List
+            let pages = [];
+
+            // TODO try to add a join query in the searchFiles method instead of making two calls to the DB
+            let groupsIdArray = [];
+            const groups = await Group.find({
+                    $and: [
+                        { share_files: true },
+                        { _workspace: workspaceId },
+                        { _id: { $ne: groupId } },
+                    ]
+                }).select('_id');
+
+            let groupsIds = [];
+            groups.forEach(group => {
+                groupsIds.push(group._id);
+            });
+
+            groupsIdArray = groupsIds;
+
+            if (groupId) {
+                groupsIdArray.push(groupId.toString());
+            }
+
+            const collections = await Collection.find({ _group: { $in: groupsIdArray } }).select('_id').lean();
+            let collectionsIds = [];
+            collections.forEach(collection => {
+                collectionsIds.push(collection._id);
+            });
+
+            query = query.toString();
+
+            // Fetch pages on the basis of the params
+            pages = await Page.find({
+                    _collection: { "$in": collectionsIds },
+                    $or: [
+                        { content: { $regex: query, $options: 'i' } },
+                        { title: { $regex: query, $options: 'i' } }
+                    ]
+                })
+                .sort('-_id')
+                .select('_id title')
+                .lean();
+
+            pages = pages.map(page => ({
+                _id: page._id,
+                title: page.title,
+                type: 'page'
+            }));
+
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'Pages list fetched!',
+                pages: pages
+            });
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
 }

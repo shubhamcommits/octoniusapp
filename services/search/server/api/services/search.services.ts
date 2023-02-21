@@ -606,13 +606,17 @@ export class SearchService {
       to_date = moment().add(1, 'days').format();
     }
 
-    const collections = await Collection.find({ _group: { $in: userGroups } }).lean();
+    const collections = await Collection.find({ _group: { $in: userGroups } }).select('_id').lean();
+    let collectionsIds = [];
+    collections.forEach(collection => {
+        collectionsIds.push(collection._id);
+    });
 
     let query: any = {};
     if (advancedFilters.owners && advancedFilters.owners.length > 0) {
       query = {
         $and: [
-          { _collection: { $in: collections } },
+          { _collection: { $in: collectionsIds } },
           {
             $or: [
               { content: { $regex: queryText, $options: 'i' } },
@@ -626,7 +630,7 @@ export class SearchService {
     } else {
       query = {
         $and: [
-          { _collection: { $in: collections } },
+          { _collection: { $in: collectionsIds } },
           {
             $or: [
               { content: { $regex: queryText, $options: 'i' } },

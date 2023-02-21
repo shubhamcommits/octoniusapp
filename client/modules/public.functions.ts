@@ -22,6 +22,7 @@ import { IntegrationsService } from 'src/shared/services/integrations-service/in
 import { ChatService } from 'src/shared/services/chat-service/chat.service';
 import { PortfolioService } from 'src/shared/services/portfolio-service/portfolio.service';
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
+import { LibraryService } from 'src/shared/services/library-service/library.service';
 
 @Injectable({
   providedIn: 'root'
@@ -1096,6 +1097,19 @@ export class PublicFunctions {
     }
 
     /**
+     * This function is responsible for fetching the files from the server
+     * @param query
+     */
+    searchPages(groupId: string, query: any, workspaceId: string) {
+        return new Promise((resolve) => {
+            let libraryService = this.injector.get(LibraryService)
+            libraryService.searchPages(groupId, query, workspaceId)
+                .then((res) => resolve(res['pages']))
+                .catch(() => resolve([]))
+        })
+    }
+
+    /**
      * This function is responsible for editing a post
      * @param postId
      * @param postData
@@ -2164,15 +2178,19 @@ export class PublicFunctions {
         filesList = await this.searchFiles(null, searchTerm, 'true', workspaceData._id);
       }
 
+      filesList = filesList.concat(await this.searchPages(groupId, searchTerm, workspaceData._id))
+
       // Map the users list
       filesList = filesList.map((file: any) => ({
         id: file._id,
         value:
-          (file.type == 'folio')
-            ? `<a href="/document/${file._id}?readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
-            : (file.type == "flamingo")
-              ? `<a href="/document/flamingo/${file._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
-              : `<a href="${environment.UTILITIES_FILES_UPLOADS}/${workspaceData._id}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
+          (file.type == 'page')
+            ? `<a href="/dashboard/work/groups/library/collection/page?page=${file._id}" style="color: inherit" target="_blank">${file.title}</a>`
+            : (file.type == 'folio')
+              ? `<a href="/document/${file._id}?readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
+              : (file.type == "flamingo")
+                ? `<a href="/document/flamingo/${file._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
+                : `<a href="${environment.UTILITIES_FILES_UPLOADS}/${workspaceData._id}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
       }));
 
       let googleFilesList: any = [];
@@ -2224,7 +2242,15 @@ export class PublicFunctions {
         }
       }
 
-      return Array.from(new Set([...filesList, ...googleFilesList, ...boxFilesList]));
+      let pagesList: any = await this.searchPages(groupId, searchTerm, workspaceData._id);
+
+      // Map the users list
+      pagesList = pagesList.map((file: any) => ({
+        id: file._id,
+        value: `<a href="/dashboard/work/groups/library/collection/page?page=${file._id}" style="color: inherit" target="_blank">${file.title}</a>`
+      }));
+
+      return Array.from(new Set([...filesList, ...googleFilesList, ...boxFilesList, ...pagesList]));
     }
 
     /**

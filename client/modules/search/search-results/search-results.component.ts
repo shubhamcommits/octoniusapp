@@ -162,7 +162,6 @@ export class SearchResultsComponent implements OnChanges {
       url += '/' + this.locale;
     }
 
-    //https://app.octonius.com/en/dashboard/work/groups/library/collection/page?page=63ecb0973353f3003e85493a
     return url + '/dashboard/work/groups/library/collection/page?page=' + this.data?._id;
   }
 
