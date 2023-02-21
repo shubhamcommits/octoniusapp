@@ -9,40 +9,24 @@ import { Column } from './column.model';
 import { Group } from "./group.model";
 import { Workspace } from "./workspace.model";
 import { Story } from "./story.model";
+import { Page } from "./page.model";
+import { Collection } from "./collection.model";
 
 /*  =====================
  *  -- EXPORTS MODELS --
  *  =====================
  * */
 export {
-
-    // Account
     Account as Account,
-
-    // POST
     Post as Post,
-
-    // USER
     User as User,
-
-    // File
     File as File,
-
-    // COMMENT
     Comment as Comment,
-
-    // COLUMN
     Column as Column,
-
-    // AUTH
     Auth as Auth,
-
-    // Group
     Group as Group,
-
-    // Workspace
     Workspace as Workspace,
-
-    // Story
-    Story as Story
+    Story as Story,
+    Collection as Collection,
+    Page as Page
 };

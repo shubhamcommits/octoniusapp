@@ -22,6 +22,7 @@ import { IntegrationsService } from 'src/shared/services/integrations-service/in
 import { ChatService } from 'src/shared/services/chat-service/chat.service';
 import { PortfolioService } from 'src/shared/services/portfolio-service/portfolio.service';
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
+import { LibraryService } from 'src/shared/services/library-service/library.service';
 
 @Injectable({
   providedIn: 'root'
@@ -1091,6 +1092,19 @@ export class PublicFunctions {
             let filesService = this.injector.get(FilesService)
             filesService.searchFiles(groupId, query, groupRef, workspaceId)
                 .then((res) => resolve(res['files']))
+                .catch(() => resolve([]))
+        })
+    }
+
+    /**
+     * This function is responsible for fetching the files from the server
+     * @param query
+     */
+    searchPages(groupId: string, query: any, workspaceId: string) {
+        return new Promise((resolve) => {
+            let libraryService = this.injector.get(LibraryService)
+            libraryService.searchPages(groupId, query, workspaceId)
+                .then((res) => resolve(res['pages']))
                 .catch(() => resolve([]))
         })
     }
@@ -2224,7 +2238,15 @@ export class PublicFunctions {
         }
       }
 
-      return Array.from(new Set([...filesList, ...googleFilesList, ...boxFilesList]));
+      let pagesList: any = await this.searchPages(groupId, searchTerm, workspaceData._id);
+
+      // Map the users list
+      pagesList = pagesList.map((file: any) => ({
+        id: file._id,
+        value: `<a href="/dashboard/work/groups/library/collection/page?page=${file._id}" style="color: inherit" target="_blank">${file.title}</a>`
+      }));
+
+      return Array.from(new Set([...filesList, ...googleFilesList, ...boxFilesList, ...pagesList]));
     }
 
     /**

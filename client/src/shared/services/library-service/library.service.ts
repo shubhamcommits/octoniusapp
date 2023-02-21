@@ -184,4 +184,19 @@ export class LibraryService {
     formData.append('spacesToExport', spacesToExport);
     return this._http.post(this.baseUrl + `/library/collection/${workspaceId}/export-spaces/${groupId}`, formData).toPromise();
   }
+
+  /**
+   * This function is responsible searching pages
+   * @param groupId
+   * @param query
+   * @param workspaceId
+   */
+  searchPages(groupId: string, query: any, workspaceId: string) {
+    return this._http.get(this.baseUrl + `/library/page/${workspaceId}/search`, {
+      params: {
+        groupId: groupId,
+        query: query
+      }
+    }).toPromise();
+  }
 }
