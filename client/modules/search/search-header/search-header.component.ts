@@ -3,6 +3,7 @@ import { SearchService } from 'src/shared/services/search-service/search.service
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { MatDialogRef } from '@angular/material/dialog';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-search-header',
@@ -12,11 +13,11 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class SearchHeaderComponent implements OnInit {
 
 
-  searchedPosts = [];
-  searchedTasks = [];
-  searchedUsers = [];
-  searchedFiles = [];
-  searchedPages = [];
+  searchedPosts: any = [];
+  searchedTasks: any = [];
+  searchedUsers: any = [];
+  searchedFiles: any = [];
+  searchedPages: any = [];
 
   selected: any;
 
@@ -52,6 +53,7 @@ export class SearchHeaderComponent implements OnInit {
 
   constructor(
     private searchService: SearchService,
+    private utilityService: UtilityService,
     private injector: Injector,
     private mdDialogRef: MatDialogRef<SearchHeaderComponent>
   ) { }
@@ -112,12 +114,14 @@ export class SearchHeaderComponent implements OnInit {
    */
   async searchPosts(postQuery){
     try {
-      await this.searchService.getSearchResults(postQuery, 'posts', this.advancedFilters).then((res: any) => {
+      await this.searchService.getSearchResults(postQuery, 'posts', this.advancedFilters).then(async (res: any) => {
         if (res.results.length > 0) {
           const result = res.results.filter((restult) => this.searchedPosts.every((post) => post._id !== restult._id));
           result.forEach(post => {
             this.searchedPosts.push(post);
           });
+
+          this.searchedPosts = await this.utilityService.removeDuplicates(this.searchedPosts, '_id');
         }
       });
     } catch (error) {
@@ -133,12 +137,14 @@ export class SearchHeaderComponent implements OnInit {
    */
   async searchTask(postQuery){
     try {
-      await this.searchService.getSearchResults(postQuery, 'tasks', this.advancedFilters).then((res: any) => {
+      await this.searchService.getSearchResults(postQuery, 'tasks', this.advancedFilters).then(async (res: any) => {
         if (res.results.length > 0) {
           const result = res.results.filter((restult) => this.searchedTasks.every((post) => post._id !== restult._id));
           result.forEach(post => {
             this.searchedTasks.push(post);
           });
+
+          this.searchedTasks = await this.utilityService.removeDuplicates(this.searchedTasks, '_id');
         }
       });
     } catch (error) {
@@ -152,14 +158,16 @@ export class SearchHeaderComponent implements OnInit {
   /**
    * Page Query Starts
    */
-  async searchPages(postQuery){
+  async searchPages(pageQuery){
     try {
-      await this.searchService.getSearchResults(postQuery, 'pages', this.advancedFilters).then((res: any) => {
+      await this.searchService.getSearchResults(pageQuery, 'pages', this.advancedFilters).then(async (res: any) => {
         if (res.results.length > 0) {
-          const result = res.results.filter((restult) => this.searchedTasks.every((post) => post._id !== restult._id));
+          const result = res.results.filter((restult) => this.searchedTasks.every((page) => page._id !== restult._id));
           result.forEach(page => {
             this.searchedPages.push(page);
           });
+
+          this.searchedPages = await this.utilityService.removeDuplicates(this.searchedPages, '_id');
         }
       });
     } catch (error) {
@@ -175,12 +183,14 @@ export class SearchHeaderComponent implements OnInit {
    */
   searchUsers(userQuery){
     try {
-      this.searchService.getSearchResults(userQuery, 'users', this.advancedFilters).then((res: any) => {
+      this.searchService.getSearchResults(userQuery, 'users', this.advancedFilters).then(async (res: any) => {
         if (res.results.length > 0) {
           const result = res.results.filter((restult) => this.searchedUsers.every((user) => user._id !== restult._id));
           result.forEach(user => {
             this.searchedUsers.push(user);
           });
+
+          this.searchedUsers = await this.utilityService.removeDuplicates(this.searchedUsers, '_id');
         }
       })
     } catch (error) {
@@ -196,12 +206,14 @@ export class SearchHeaderComponent implements OnInit {
    */
   searchFiles(fileQuery){
     try {
-      this.searchService.getSearchResults(fileQuery, 'files', this.advancedFilters).then((res: any)=>{
+      this.searchService.getSearchResults(fileQuery, 'files', this.advancedFilters).then(async (res: any)=>{
         if (res.results.length > 0){
           const result = res.results.filter((restult) => this.searchedFiles.every((file) => file._id !== restult._id));
           result.forEach(file => {
             this.searchedFiles.push(file);
           });
+
+          this.searchedFiles = await this.utilityService.removeDuplicates(this.searchedFiles, '_id');
         }
       });
     } catch (error) {
