@@ -144,7 +144,6 @@ export class SearchResultsComponent implements OnChanges {
   }
 
   generatePostURL() {
-    const group = (this.data._group._id) ? this.data._group._id : this.data._group;
     let url = environment.clientUrl;
     if (environment.production) {
       url += '/' + this.locale;
@@ -155,6 +154,16 @@ export class SearchResultsComponent implements OnChanges {
     } else {
       return url + '/dashboard/work/groups/activity?postId=' + this.data._id;
     }
+  }
+
+  generatePageURL() {
+    let url = environment.clientUrl;
+    if (environment.production) {
+      url += '/' + this.locale;
+    }
+
+    //https://app.octonius.com/en/dashboard/work/groups/library/collection/page?page=63ecb0973353f3003e85493a
+    return url + '/dashboard/work/groups/library/collection/page?page=' + this.data?._id;
   }
 
   generateUserURL(userId) {

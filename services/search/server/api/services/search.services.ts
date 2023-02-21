@@ -1,4 +1,4 @@
-import { Post, User, File, Comment } from '../models';
+import { Post, User, File, Comment, Collection, Page } from '../models';
 import { sendErr } from '../utils/sendError';
 import moment from 'moment';
 
@@ -21,6 +21,8 @@ export class SearchService {
       }
 
       switch (req.params.filter) {
+        case 'pages':
+          return this.createPageQuery(user['_groups'], query, JSON.parse(req.query.advancedFilters));
         case 'posts':
           return this.createPostQuery(user['_groups'], query, JSON.parse(req.query.advancedFilters));
         case 'tasks':
@@ -580,6 +582,72 @@ export class SearchService {
     }
 
     return files;
+  }
+
+  async createPageQuery(userGroups, queryText, advancedFilters) {
+
+    if (advancedFilters.owners.length > 0) {
+      advancedFilters.owners = advancedFilters.owners.map(member => {
+        return member._id;
+      });
+    }
+
+    let from_date;
+    let to_date;
+    if (advancedFilters.from_date) {
+      from_date = moment(advancedFilters.from_date).startOf('day').format();
+    } else {
+      from_date = moment().subtract(40, 'years').format();
+    }
+
+    if (advancedFilters.to_date) {
+      to_date = moment(advancedFilters.to_date).startOf('day').format();
+    } else {
+      to_date = moment().add(1, 'days').format();
+    }
+
+    const collections = await Collection.find({ _group: { $in: userGroups } }).lean();
+
+    let query: any = {};
+    if (advancedFilters.owners && advancedFilters.owners.length > 0) {
+      query = {
+        $and: [
+          { _collection: { $in: collections } },
+          {
+            $or: [
+              { content: { $regex: queryText, $options: 'i' } },
+              { title: { $regex: queryText, $options: 'i' } }
+            ]
+          },
+          { _posted_by: { $in: advancedFilters.owners } },
+          { created_date: { $gte: from_date, $lte: to_date } }
+        ]
+      };
+    } else {
+      query = {
+        $and: [
+          { _collection: { $in: collections } },
+          {
+            $or: [
+              { content: { $regex: queryText, $options: 'i' } },
+              { title: { $regex: queryText, $options: 'i' } }
+            ]
+          },
+          { created_date: { $gte: from_date, $lte: to_date } }
+        ]
+      };
+    }
+
+    let pages = await Page.find(query)
+      .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+      .sort({ created_date: -1 })
+      .lean();
+    
+    if (advancedFilters.group) {
+      pages = pages.filter(post => post?._group && post?._group?._id == advancedFilters?.group);
+    }
+
+    return pages;
   }
 
   async searchTasksForNS(userId: string, textQuery: any, groupId: any) {

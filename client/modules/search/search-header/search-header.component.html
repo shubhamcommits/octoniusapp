@@ -23,6 +23,7 @@
           <mat-option value="file" i18n="@@searchHeader.file">File</mat-option>
           <mat-option value="post" i18n="@@searchHeader.post">Post</mat-option>
           <mat-option value="task" i18n="@@searchHeader.task">Task</mat-option>
+          <mat-option value="page" i18n="@@searchHeader.page">Page</mat-option>
           <mat-option value="user" i18n="@@searchHeader.user">User</mat-option>
         </mat-select>
       </div>
@@ -74,7 +75,7 @@
       </div>
     </div>
 
-    <div class="advanced-filters" *ngIf="advancedFilters.type == 'file' || advancedFilters.type == 'post' || advancedFilters.type == 'task'">
+    <div class="advanced-filters" *ngIf="advancedFilters.type == 'file' || advancedFilters.type == 'post' || advancedFilters.type == 'task' || advancedFilters.type == 'page'">
       <div class="filter-label" i18n="@@searchHeader.owner">Owner</div>
       <div class="filter-cell">
         <div class="useravatar" *ngFor="let member of advancedFilters.owners">
@@ -94,7 +95,7 @@
       </div>
     </div>
 
-    <div class="advanced-filters" *ngIf="advancedFilters.type == 'file' || advancedFilters.type == 'post' || advancedFilters.type == 'task'">
+    <div class="advanced-filters" *ngIf="advancedFilters.type == 'file' || advancedFilters.type == 'post' || advancedFilters.type == 'task' || advancedFilters.type == 'page'">
       <div class="filter-label" i18n="@@searchHeader.date">Date</div>
       <div class="filter-cell">
           <span i18n="@@searchHeader.from">From</span>:
@@ -135,7 +136,7 @@
       </div>
     </div>
 
-    <div class="advanced-filters" *ngIf="advancedFilters.type == 'file' || advancedFilters.type == 'post' || advancedFilters.type == 'task'">
+    <div class="advanced-filters" *ngIf="advancedFilters.type == 'file' || advancedFilters.type == 'post' || advancedFilters.type == 'task' || advancedFilters.type == 'page'">
       <div class="filter-label" i18n="@@searchHeader.userGroup">User's Group</div>
       <div class="filter-cell">
         <mat-select [(value)]="advancedFilters.group" (selectionChange)="selectGroup($event)" appearance="fill" style="width: 20%;">
@@ -200,6 +201,13 @@
       </p>
       <a *ngFor="let task of searchedTasks"
         (click)="selected=task; selectedType='task'" class="octo-search-results">{{ task.title }}</a>
+
+      <p *ngIf="searchedTasks.length > 0" class="octo-search-category">
+        <span class="material-icons">task</span>
+        <span i18n="@@searchHeader.pages">PAGES</span>
+      </p>
+      <a *ngFor="let page of searchedPages"
+        (click)="selected=page; selectedType='page'" class="octo-search-results">{{ page.title }}</a>
 
       <p *ngIf="searchedUsers.length > 0" class="octo-search-category">
         <span class="material-icons">supervisor_account</span>
