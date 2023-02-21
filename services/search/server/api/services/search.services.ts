@@ -586,7 +586,7 @@ export class SearchService {
 
   async createPageQuery(userGroups, queryText, advancedFilters) {
 
-    if (advancedFilters.owners.length > 0) {
+    if (advancedFilters.owners && advancedFilters.owners.length > 0) {
       advancedFilters.owners = advancedFilters.owners.map(member => {
         return member._id;
       });
@@ -606,7 +606,13 @@ export class SearchService {
       to_date = moment().add(1, 'days').format();
     }
 
-    const collections = await Collection.find({ _group: { $in: userGroups } }).select('_id').lean();
+    let collections = [];
+    if (advancedFilters?.group) {
+      collections = await Collection.find({ _group: advancedFilters.group }).select('_id').lean();
+    } else {
+      collections = await Collection.find({ _group: { $in: userGroups } }).select('_id').lean();
+    }
+
     let collectionsIds = [];
     collections.forEach(collection => {
         collectionsIds.push(collection._id);
@@ -646,10 +652,6 @@ export class SearchService {
       .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
       .sort({ created_date: -1 })
       .lean();
-    
-    if (advancedFilters.group) {
-      pages = pages.filter(post => post?._group && post?._group?._id == advancedFilters?.group);
-    }
 
     return pages;
   }
