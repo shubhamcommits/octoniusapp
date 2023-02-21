@@ -2178,19 +2178,15 @@ export class PublicFunctions {
         filesList = await this.searchFiles(null, searchTerm, 'true', workspaceData._id);
       }
 
-      filesList = filesList.concat(await this.searchPages(groupId, searchTerm, workspaceData._id))
-
       // Map the users list
       filesList = filesList.map((file: any) => ({
         id: file._id,
         value:
-          (file.type == 'page')
-            ? `<a href="/dashboard/work/groups/library/collection/page?page=${file._id}" style="color: inherit" target="_blank">${file.title}</a>`
-            : (file.type == 'folio')
-              ? `<a href="/document/${file._id}?readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
-              : (file.type == "flamingo")
-                ? `<a href="/document/flamingo/${file._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
-                : `<a href="${environment.UTILITIES_FILES_UPLOADS}/${workspaceData._id}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
+          (file.type == 'folio')
+            ? `<a href="/document/${file._id}?readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
+            : (file.type == "flamingo")
+              ? `<a href="/document/flamingo/${file._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
+              : `<a href="${environment.UTILITIES_FILES_UPLOADS}/${workspaceData._id}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
       }));
 
       let googleFilesList: any = [];
