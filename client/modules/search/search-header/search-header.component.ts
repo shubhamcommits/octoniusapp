@@ -332,6 +332,7 @@ export class SearchHeaderComponent implements OnInit {
     this.searchedPages = [];
     this.customFields = [];
     this.selectedCustomField = null;
+    this.selected = null;
   }
 
   /**

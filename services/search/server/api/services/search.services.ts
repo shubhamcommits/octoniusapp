@@ -1,6 +1,6 @@
 import { Post, User, File, Comment, Collection, Page } from '../models';
 import { sendErr } from '../utils/sendError';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 
 /*  ===============================
  *  -- SEARCH Service --
@@ -106,15 +106,15 @@ export class SearchService {
     let from_date;
     let to_date;
     if (advancedFilters.from_date) {
-      from_date = moment(advancedFilters.from_date).startOf('day').format();
+      from_date = DateTime.fromISO(advancedFilters.from_date).startOf('day').toISODate();
     } else {
-      from_date = moment().subtract(40, 'years').format();
+      from_date = DateTime.now().plus({ years: -40 }).toISODate();
     }
 
     if (advancedFilters.to_date) {
-      to_date = moment(advancedFilters.to_date).startOf('day').format();
+      to_date = DateTime.fromISO(advancedFilters.to_date).plus({ days: 1 }).startOf('day').toISODate();
     } else {
-      to_date = moment().add(1, 'days').format();
+      to_date = DateTime.now().plus({ days: 1 }).toISODate();
     }
 
     let query: any = {};
@@ -250,15 +250,15 @@ export class SearchService {
     let from_date;
     let to_date;
     if (advancedFilters.from_date) {
-      from_date = moment(advancedFilters.from_date).startOf('day').format();
+      from_date = DateTime.fromISO(advancedFilters.from_date).startOf('day').toISODate();
     } else {
-      from_date = moment().subtract(40, 'years').format();
+      from_date = DateTime.now().plus({ years: -40 }).toISODate();
     }
 
     if (advancedFilters.to_date) {
-      to_date = moment(advancedFilters.to_date).startOf('day').format();
+      to_date = DateTime.fromISO(advancedFilters.to_date).plus({ days: 1 }).startOf('day').toISODate();
     } else {
-      to_date = moment().add(1, 'days').format();
+      to_date = DateTime.now().plus({ days: 1 }).toISODate();
     }
 
     let query: any = {};
@@ -395,15 +395,15 @@ export class SearchService {
     let from_date;
     let to_date;
     if (advancedFilters.from_date) {
-      from_date = moment(advancedFilters.from_date).format();
+      from_date = DateTime.fromISO(advancedFilters.from_date).startOf('day').toISODate();
     } else {
-      from_date = moment().subtract(40, 'years').format();
+      from_date = DateTime.now().plus({ years: -40 }).toISODate();
     }
 
     if (advancedFilters.to_date) {
-      to_date = moment(advancedFilters.to_date).add(1, 'days').format();
+      to_date = DateTime.fromISO(advancedFilters.to_date).plus({ days: 1 }).startOf('day').toISODate();
     } else {
-      to_date = moment().add(1, 'days').format();
+      to_date = DateTime.now().plus({ days: 1 }).toISODate();
     }
 
     let query: any = {};
@@ -595,15 +595,15 @@ export class SearchService {
     let from_date;
     let to_date;
     if (advancedFilters.from_date) {
-      from_date = moment(advancedFilters.from_date).startOf('day').format();
+      from_date = DateTime.fromISO(advancedFilters.from_date).startOf('day').toISODate();
     } else {
-      from_date = moment().subtract(40, 'years').format();
+      from_date = DateTime.now().plus({ years: -40 }).toISODate();
     }
 
     if (advancedFilters.to_date) {
-      to_date = moment(advancedFilters.to_date).startOf('day').format();
+      to_date = DateTime.fromISO(advancedFilters.to_date).plus({ days: 1 }).startOf('day').toISODate();
     } else {
-      to_date = moment().add(1, 'days').format();
+      to_date = DateTime.now().plus({ days: 1 }).toISODate();
     }
 
     let collections = [];
@@ -629,7 +629,7 @@ export class SearchService {
               { title: { $regex: queryText, $options: 'i' } }
             ]
           },
-          { _posted_by: { $in: advancedFilters.owners } },
+          { _created_by: { $in: advancedFilters.owners } },
           { created_date: { $gte: from_date, $lte: to_date } }
         ]
       };
