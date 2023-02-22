@@ -652,7 +652,7 @@ export class SearchService {
       .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
       .sort({ created_date: -1 })
       .lean();
-console.log(pages);
+
     return pages;
   }
 
