@@ -1,5 +1,4 @@
 import { Response, Request, NextFunction } from "express";
-import { User } from '../models';
 import { sendErr } from '../utils/sendError';
 import { SearchService } from "../services/search.services";
 
