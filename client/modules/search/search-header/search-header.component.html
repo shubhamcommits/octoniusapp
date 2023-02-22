@@ -202,7 +202,7 @@
       <a *ngFor="let task of searchedTasks"
         (click)="selected=task; selectedType='task'" class="octo-search-results">{{ task.title }}</a>
 
-      <p *ngIf="searchedTasks.length > 0" class="octo-search-category">
+      <p *ngIf="searchedPages.length > 0" class="octo-search-category">
         <span class="material-icons">task</span>
         <span i18n="@@searchHeader.pages">PAGES</span>
       </p>
