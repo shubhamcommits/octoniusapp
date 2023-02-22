@@ -112,7 +112,7 @@ export class SearchService {
     }
 
     if (advancedFilters.to_date) {
-      to_date = DateTime.fromISO(advancedFilters.to_date).plus({ days: 1 }).startOf('day').toISODate();
+      to_date = DateTime.fromISO(advancedFilters.to_date).plus({ days: 1 }).endOf('day').toISODate();
     } else {
       to_date = DateTime.now().plus({ days: 1 }).toISODate();
     }
@@ -256,7 +256,7 @@ export class SearchService {
     }
 
     if (advancedFilters.to_date) {
-      to_date = DateTime.fromISO(advancedFilters.to_date).plus({ days: 1 }).startOf('day').toISODate();
+      to_date = DateTime.fromISO(advancedFilters.to_date).plus({ days: 1 }).endOf('day').toISODate();
     } else {
       to_date = DateTime.now().plus({ days: 1 }).toISODate();
     }
@@ -401,7 +401,7 @@ export class SearchService {
     }
 
     if (advancedFilters.to_date) {
-      to_date = DateTime.fromISO(advancedFilters.to_date).plus({ days: 1 }).startOf('day').toISODate();
+      to_date = DateTime.fromISO(advancedFilters.to_date).plus({ days: 1 }).endOf('day').toISODate();
     } else {
       to_date = DateTime.now().plus({ days: 1 }).toISODate();
     }
@@ -601,7 +601,7 @@ export class SearchService {
     }
 
     if (advancedFilters.to_date) {
-      to_date = DateTime.fromISO(advancedFilters.to_date).plus({ days: 1 }).startOf('day').toISODate();
+      to_date = DateTime.fromISO(advancedFilters.to_date).plus({ days: 1 }).endOf('day').toISODate();
     } else {
       to_date = DateTime.now().plus({ days: 1 }).toISODate();
     }
