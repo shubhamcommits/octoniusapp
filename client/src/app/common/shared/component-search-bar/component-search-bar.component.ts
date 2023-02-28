@@ -1,12 +1,10 @@
-import { Component, OnInit, Input, Injector, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Injector, OnDestroy } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { Subject } from 'rxjs/internal/Subject';
-import { debounceTime } from 'rxjs/internal/operators/debounceTime';
-import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
 import { SubSink } from 'subsink';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
@@ -19,7 +17,7 @@ import { Router } from '@angular/router';
   templateUrl: './component-search-bar.component.html',
   styleUrls: ['./component-search-bar.component.scss']
 })
-export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ComponentSearchBarComponent implements OnInit, OnDestroy {
 
   // Placeholder for the input bar
   @Input('placeholder') placeholder: string = '';
@@ -62,8 +60,8 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
   // Query value variable mapped with search field
   query: string = "";
 
-  ActiveMembers:any=[];
-  DisabledMembers:any=[];
+  activeMembers:any=[];
+  disabledMembers:any=[];
 
   // This observable is mapped with query field to recieve updates on change value
   queryChanged: Subject<any> = new Subject<any>();
@@ -77,91 +75,32 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
     public utilityService: UtilityService,
     public dialog: MatDialog) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    if (!this.utilityService.objectExists(this.userData)) {
+      this.userData = await this.publicFunctions.getCurrentUser();
+    }
+
     // Calculate the lastUserId
     this.lastUserId = this.members[this.members.length - 1]['_id'];
-    this.separateDisabled(this.members);
-  }
-
-  /**
-   * This function handles of sending the notification to the user about the email validation
-   * Uses Debounce time and subscribe to the emailChanged Observable
-   */
-  ngAfterViewInit(): void {
-    // Adding the service function to the subsink(), so that we can unsubscribe the observable when the component gets destroyed
-    this.subSink.add(this.queryChanged
-      .pipe(debounceTime(500), distinctUntilChanged())
-      .subscribe(async () => {
-
-        // Results array which stores the members list
-        let results: any = []
-
-        if (this.type === 'workspace' || this.type === 'group' || this.type === 'bar') {
-
-          // If value is null then update the array back to normal
-          if (this.query == "") {
-
-            // Intialise the members back to normal
-            if (this.type === 'workspace') {
-              this.members = this.workspaceData.members;
-            }
-            // Intialise the members back to normal
-            if (this.type === 'group') {
-
-              // Merge the Admin and Members array
-              Array.prototype.push.apply(this.groupData._members, this.groupData._admins);
-
-              // Set the value of members and remove the duplicates
-              this.members = Array.from(new Set(this.groupData._members));
-            }
-
-
-            // Set the moreload to true
-            this.moreToLoad = true
-
-            // Calculate the lastUserId
-            this.lastUserId = this.members[this.members.length - 1]['_id'];
-
-          } else {
-
-            // Fetch the results from the helper function
-            if (this.type === 'workspace') {
-              results = await this.publicFunctions.searchWorkspaceMembers(this.workspaceId, this.query) || []
-            }
-
-            // Fetch the results from the helper function
-            if (this.type === 'group' || this.type === 'bar') {
-              results = await this.publicFunctions.searchGroupMembers(this.groupId, this.query) || []
-            }
-
-            // Update the members array
-            this.members = results['users'];
-          }
-        }
-
-        this.separateDisabled(this.members);
-
-        // Set the loading state to be false
-        this.isLoading$.next(false);
-      }));
+    await this.separateDisabled(this.members);
   }
 
   /**
    * Unsubscribe all the observables on destroying the component
    */
   ngOnDestroy() {
-    this.subSink.unsubscribe()
-    this.isLoading$.complete()
+    this.subSink.unsubscribe();
+    this.isLoading$.complete();
   }
 
   async separateDisabled(members){
-    this.ActiveMembers=[];
-    this.DisabledMembers=[];
+    this.activeMembers=[];
+    this.disabledMembers=[];
     members.forEach((member) => {
       if(member.active) {
-          this.ActiveMembers.push(member);
+        this.activeMembers.push(member);
       } else {
-        this.DisabledMembers.push(member);
+        this.disabledMembers.push(member);
       }
     });
   }
@@ -170,8 +109,54 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
    * This method is binded to keyup event of query input field
    * @param $event
    */
-  queryChange($event: Event) {
+  async queryChange($event: Event) {
     this.queryChanged.next($event);
+
+    // Results array which stores the members list
+    let results: any = []
+
+    if (this.type === 'workspace' || this.type === 'group' || this.type === 'bar') {
+
+      // If value is null then update the array back to normal
+      if (this.query == "") {
+        // Intialise the members back to normal
+        if (this.type === 'workspace') {
+          this.members = this.workspaceData.members;
+        }
+        // Intialise the members back to normal
+        if (this.type === 'group') {
+          // Merge the Admin and Members array
+          Array.prototype.push.apply(this.groupData._members, this.groupData._admins);
+
+          // Set the value of members and remove the duplicates
+          this.members = Array.from(new Set(this.groupData._members));
+        }
+
+        // Set the moreload to true
+        this.moreToLoad = true
+
+        // Calculate the lastUserId
+        this.lastUserId = this.members[this.members.length - 1]['_id'];
+      } else {
+        // Fetch the results from the helper function
+        if (this.type === 'workspace') {
+          results = await this.publicFunctions.searchWorkspaceMembers(this.workspaceId, this.query) || []
+        }
+
+        // Fetch the results from the helper function
+        if (this.type === 'group' || this.type === 'bar') {
+          results = await this.publicFunctions.searchGroupMembers(this.groupId, this.query) || []
+        }
+
+        // Update the members array
+        this.members = results['users'];
+      }
+    }
+
+    await this.separateDisabled(this.members);
+
+    // Set the loading state to be false
+    this.isLoading$.next(false);
   }
 
   /**
@@ -200,8 +185,8 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
                   // Update the GroupData
                   this.groupData._members.splice(this.groupData._members.findIndex((user: any) => user._id === member._id), 1);
                   this.groupData._admins.splice(this.groupData._admins.findIndex((user: any) => user._id === member._id), 1);
-                  this.ActiveMembers.splice(this.ActiveMembers.findIndex((user: any) => user._id === member._id), 1);
-                  this.DisabledMembers.splice(this.ActiveMembers.findIndex((user: any) => user._id === member._id), 1)
+                  this.activeMembers.splice(this.activeMembers.findIndex((user: any) => user._id === member._id), 1);
+                  this.disabledMembers.splice(this.activeMembers.findIndex((user: any) => user._id === member._id), 1)
 
                   // Update UI via removing from array
                   if (index >- 1) {
@@ -368,8 +353,6 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
 
       // Set the next state change of Subject
       this.queryChange(query)
-
-
     } catch (err) {
       this.publicFunctions.sendError(err);
     }
@@ -399,7 +382,7 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
             const index = this.members.findIndex((user: any) => user._id == userId);
             // Update the current member role
             this.members[index].role = role;
-            this.ActiveMembers[this.ActiveMembers.findIndex((user: any) => user._id == userId)].role = role;
+            this.activeMembers[this.activeMembers.findIndex((user: any) => user._id == userId)].role = role;
 
             // Update the current workspace data with updated list of members
             this.workspaceData.members = this.members;
@@ -447,7 +430,7 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
 
             // Update the current member role
             this.members[index].hr_role = hr_role;
-            this.ActiveMembers[this.ActiveMembers.findIndex((user: any) => user._id == memberId)].hr_role = hr_role;
+            this.activeMembers[this.activeMembers.findIndex((user: any) => user._id == memberId)].hr_role = hr_role;
 
             // Update the current workspace data with updated list of members
             this.workspaceData.members = this.members;
