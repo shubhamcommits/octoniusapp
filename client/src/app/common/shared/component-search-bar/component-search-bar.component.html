@@ -16,9 +16,7 @@
 
 <!-- Members array template starts -->
 <app-infinite-scroll (scrolled)="onScroll()">
-    <div class="media card-tile user-list"
-        *ngFor="let member of ActiveMembers">
-
+    <div *ngFor="let member of activeMembers" class="media card-tile user-list">
         <!-- Avatar Image of the member -->
         <app-secured-image  *ngIf="member.active || type == 'group'"
             [imgURL]="member?.profile_pic"
@@ -120,7 +118,7 @@
         </div>
     </div>
 
-    <mat-accordion *ngIf="type == 'workspace' && DisabledMembers && DisabledMembers?.length > 0">
+    <mat-accordion *ngIf="type == 'workspace' && disabledMembers && disabledMembers?.length > 0">
         <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
                 <mat-panel-title>
@@ -131,7 +129,7 @@
             </mat-expansion-panel-header>
 
             <div class="media card-tile user-list"
-                *ngFor="let member of DisabledMembers">
+                *ngFor="let member of disabledMembers">
 
                 <!-- Avatar Image of the member -->
                 <app-secured-image *ngIf="!member.active"

@@ -10,6 +10,19 @@
 </span>
 
 <ng-template #locaImg>
+  <!--
+  <div *ngIf="isLoading" class="lds-roller">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+  -->
+
   <img [src]="onErrorUrl"
     class="{{ styleClass }}"
     onerror="this.src=this.onErrorUrl"
