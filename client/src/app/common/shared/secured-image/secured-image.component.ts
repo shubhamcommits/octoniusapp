@@ -48,6 +48,13 @@ export class SecuredImageComponent implements OnChanges  {
     private domSanitizer: DomSanitizer) {
   }
 
+  async ngOnInit() {
+    if (!this.workspaceId) {
+      const workplaceData: any = await this.publicFunctions.getCurrentWorkspace();
+      this.workspaceId = workplaceData?._id;
+    }
+  }
+
   ngOnChanges(): void {
     this.isLocalImg = this.imgURL && this.imgURL.indexOf('assets/images') != -1;
 
