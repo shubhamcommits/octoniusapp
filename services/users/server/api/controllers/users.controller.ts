@@ -575,10 +575,6 @@ export class UsersControllers {
                     { _id: userId },
                     { active: true }
                 ]
-            }, {
-                role: role
-            }, {
-                new: true
             }).select('first_name last_name profile_pic role _workspace _account integrations hr_role');
 
             if (user.role == 'guest') {
