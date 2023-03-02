@@ -2748,6 +2748,18 @@ export class PostService {
         newPost.task._column = columnId;
       }
 
+      // this if is added to fix old NS tasks with old currency properties
+      if (newPost.task.northStar.type == 'Currency $' || newPost.task.northStar.type == 'Currency €') {
+        if (newPost.task.northStar.type == 'Currency $') {
+          newPost.task.northStar.currency = 'USD';
+        }
+        if (newPost.task.northStar.type == 'Currency €') {
+          newPost.task.northStar.currency = 'EUR';
+        }
+
+        newPost.task.northStar.type = 'Currency';
+      }
+
       if (newPost.files) {
         let files = newPost.files;
         newPost.files = [];
