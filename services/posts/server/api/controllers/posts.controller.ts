@@ -1367,7 +1367,7 @@ export class PostController {
         const postData = await postService.copyToGroup(postId, groupId, columnId, oldGroupId, userId)
             .catch((err) => {
                 return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-            })
+            });
 
         // Send Status 200 response
         return res.status(200).json({

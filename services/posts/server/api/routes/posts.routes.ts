@@ -201,7 +201,7 @@ routes.get('/test/recents/groups', postController.getRecentGroups);
 routes.put('/:postId/customField', postController.saveCustomField.bind(postController));
 
 // POST - Used to copy the post to another group
-routes.post('/copy-to-group', postController.copyToGroup);
+routes.post('/:postId/copy-to-group', postController.copyToGroup);
 
 // PUT - Used to move the post to another group
 routes.put('/:postId/move-to-group', postController.moveToGroup);

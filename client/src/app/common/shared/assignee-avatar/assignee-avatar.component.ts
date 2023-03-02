@@ -1,5 +1,6 @@
 import { Component, Injector, Input, OnChanges } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-assignee-avatar',
@@ -20,10 +21,14 @@ export class AssigneeAvatarComponent implements OnChanges {
   publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
-      private injector: Injector
+      private injector: Injector,
+      private utilityService: UtilityService
     ) { }
 
-  ngOnChanges() {
+  async ngOnChanges() {
+    if (!this.utilityService.objectExists(this.userData)) {
+      this.userData = await this.publicFunctions.getCurrentUser();
+    }
     if (this.post && this.post._assigned_to) {
       this.numberAssignees = '+' + (this.post._assigned_to.length - 1);
 

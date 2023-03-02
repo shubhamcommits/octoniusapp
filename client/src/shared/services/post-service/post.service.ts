@@ -484,7 +484,7 @@ export class PostService {
 
   transferToGroup(postId: string, groupId: string, columnId: string, oldGroupId: string, userId: string, isCopy: boolean) {
     if (isCopy) {
-      return this._http.post(this.baseURL + '/copy-to-group', { postId: postId, groupId: groupId, columnId: columnId, oldGroupId: oldGroupId, userId: userId }).toPromise();
+      return this._http.post(this.baseURL + `/${postId}/copy-to-group`, { postId: postId, groupId: groupId, columnId: columnId, oldGroupId: oldGroupId, userId: userId }).toPromise();
     }
     return this._http.put(this.baseURL + `/${postId}/move-to-group`, { groupId: groupId, columnId: columnId || '', oldGroupId: oldGroupId, userId: userId }).toPromise();
   }
