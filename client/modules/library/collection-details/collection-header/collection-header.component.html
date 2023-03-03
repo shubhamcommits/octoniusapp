@@ -23,7 +23,7 @@
 
         <!-- Collection Content starts -->
         <app-quill-editor *ngIf="editContent" class="collection-content" [editorId]="'global-ns-editor'" [toolbar]="true"
-            [readOnly]="false" [contents]="collectionData?.content" (content)="quillContentChanged($event)">
+            [readOnly]="false" [mentionAll]="false" [contents]="collectionData?.content" (content)="quillContentChanged($event)">
         </app-quill-editor>
         <!-- Collection Content ends -->
 
