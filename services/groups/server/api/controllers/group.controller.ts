@@ -1,6 +1,6 @@
 import { Column, Flow, Group, Post, User, Notification, Workspace } from '../models';
 import { Response, Request, NextFunction } from 'express';
-import { sendError, hasProperty, axios } from '../../utils';
+import { sendError, axios } from '../../utils';
 import http from 'axios';
 import moment from 'moment';
 

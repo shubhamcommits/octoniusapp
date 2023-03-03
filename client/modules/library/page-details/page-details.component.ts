@@ -215,8 +215,8 @@ export class PageDetailsComponent implements OnInit {
     }
 
     // If content mentions has 'all' then only pass 'all' inside the array
-    if (this._content_mentions.includes('all'))
-      this._content_mentions = ['all']
+    // if (this._content_mentions.includes('all'))
+    //   this._content_mentions = ['all']
 
     // Set the values of the array
     this._content_mentions = Array.from(new Set(this._content_mentions))

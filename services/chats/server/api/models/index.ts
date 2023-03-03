@@ -10,6 +10,7 @@ import { Column } from './column.model';
 import { Story } from "./story.model";
 import { Chat } from "./chat.model";
 import { Message } from "./messages.model";
+import { Page } from "./page.model";
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -48,5 +49,6 @@ export {
     Story as Story,
 
     Chat as Chat,
-    Message as Message
+    Message as Message,
+    Page as Page
 };

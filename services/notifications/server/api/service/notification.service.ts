@@ -1,4 +1,4 @@
-import { Notification, User, File, Workspace, Group, Post, Story } from "../models";
+import { Notification, User, File, Workspace, Group, Post, Story, Page, Collection } from "../models";
 import { Readable } from 'stream';
 import { helperFunctions, axios, firebaseNotifications } from '../../utils';
 import moment from "moment";
@@ -31,6 +31,8 @@ export class NotificationsService {
                 .populate('_origin_group', 'group_name group_avatar')
                 .populate('_shuttle_group', 'group_name group_avatar')
                 .populate('_origin_folio')
+                .populate('_collection', 'name')
+                .populate('_page', 'title')
                 .populate({ path: '_origin_folio', populate: { path: '_group' } })
                 .lean();
 
@@ -65,6 +67,8 @@ export class NotificationsService {
                     .populate('_origin_group', 'group_name group_avatar')
                     .populate('_shuttle_group', 'group_name group_avatar')
                     .populate('_origin_folio')
+                    .populate('_collection', 'name')
+                    .populate('_page', 'title')
                     .populate({ path: '_origin_folio', populate: { path: '_group' } })
                     .lean();
             } else {
@@ -83,6 +87,8 @@ export class NotificationsService {
                     .populate('_origin_group', 'group_name group_avatar')
                     .populate('_shuttle_group', 'group_name group_avatar')
                     .populate('_origin_folio')
+                    .populate('_collection', 'name')
+                    .populate('_page', 'title')
                     .populate({ path: '_origin_folio', populate: { path: '_group' } })
                     .lean();
             }
@@ -118,6 +124,8 @@ export class NotificationsService {
                     .populate('_origin_group', 'group_name group_avatar')
                     .populate('_shuttle_group', 'group_name group_avatar')
                     .populate('_origin_folio')
+                    .populate('_collection', 'name')
+                    .populate('_page', 'title')
                     .populate({ path: '_origin_folio', populate: { path: '_group' } })
                     .lean();
             } else {
@@ -136,6 +144,8 @@ export class NotificationsService {
                     .populate('_origin_group', 'group_name group_avatar')
                     .populate('_shuttle_group', 'group_name group_avatar')
                     .populate('_origin_folio')
+                    .populate('_collection', 'name')
+                    .populate('_page', 'title')
                     .populate({ path: '_origin_folio', populate: { path: '_group' } })
                     .lean();
             }
@@ -171,6 +181,8 @@ export class NotificationsService {
                     .populate('_origin_group', 'group_name group_avatar')
                     .populate('_shuttle_group', 'group_name group_avatar')
                     .populate('_origin_folio')
+                    .populate('_collection', 'name')
+                    .populate('_page', 'title')
                     .populate({ path: '_origin_folio', populate: { path: '_group' } })
                     .lean();
             } else {
@@ -189,6 +201,8 @@ export class NotificationsService {
                     .populate('_origin_group', 'group_name group_avatar')
                     .populate('_shuttle_group', 'group_name group_avatar')
                     .populate('_origin_folio')
+                    .populate('_collection', 'name')
+                    .populate('_page', 'title')
                     .populate({ path: '_origin_folio', populate: { path: '_group' } })
                     .lean();
             }
@@ -231,7 +245,7 @@ export class NotificationsService {
                     _owner: user,
                     _origin_comment: comment._id,
                     _origin_post: comment._post,
-                    message: 'mentioned you on',
+                    message: ' mentioned you on',
                     type: 'mention',
                     created_date: moment().format()
                 });
@@ -242,7 +256,7 @@ export class NotificationsService {
                     const actor = await User.findById({ _id: comment?._commented_by }).select('first_name last_name').lean();
 
                     if (owner.integrations.firebase_token) {
-                        firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Mention in Comment', actor?.first_name + ' ' + actor?.last_name + 'mentioned you on a comment.');
+                        firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Mention in Comment', actor?.first_name + ' ' + actor?.last_name + ' mentioned you on a comment.');
                     }
                 }
             });
@@ -278,7 +292,7 @@ export class NotificationsService {
                     _actor: posted_by,
                     _owner: user._id,
                     _origin_post: postId,
-                    message: 'assigned you on',
+                    message: ' assigned you on',
                     type: 'assignment',
                     created_date: moment().format()
                 });
@@ -289,7 +303,7 @@ export class NotificationsService {
                     const actor = await User.findById({ _id: (posted_by._id || posted_by) }).select('first_name last_name').lean();
 
                     if (owner.integrations.firebase_token) {
-                        firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Assignment', actor?.first_name + ' ' + actor?.last_name + 'assigned you a event.');
+                        firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Assignment', actor?.first_name + ' ' + actor?.last_name + ' assigned you a event.');
                     }
                 }
             });
@@ -325,7 +339,7 @@ export class NotificationsService {
                     _actor: posted_by,
                     _owner: user,
                     _origin_post: postId,
-                    message: 'mentioned you on',
+                    message: ' mentioned you on',
                     type: 'mention',
                     created_date: moment().format()
                 });
@@ -336,7 +350,7 @@ export class NotificationsService {
                     const actor = await User.findById({ _id: (posted_by._id || posted_by) }).select('first_name last_name').lean();
 
                     if (owner.integrations.firebase_token) {
-                        firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Mention', actor?.first_name + ' ' + actor?.last_name + 'mentioned you on a post.');
+                        firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Mention', actor?.first_name + ' ' + actor?.last_name + ' mentioned you on a post.');
                     }
                 }
             })
@@ -377,7 +391,7 @@ export class NotificationsService {
                     _actor: actorId,
                     _owner: user,
                     _origin_folio: file,
-                    message: 'mentioned you on',
+                    message: ' mentioned you on',
                     type: 'mention_folio',
                     created_date: moment().format()
                 });
@@ -387,7 +401,7 @@ export class NotificationsService {
 
                     if (user.integrations.firebase_token) {
                         // Send the notification to firebase for mobile notify
-                        firebaseNotifications.sendFirebaseNotification(user._workspace._id || user._workspace, user.integrations.firebase_token, 'Octonius - New Mention', actor?.first_name + ' ' + actor?.last_name + 'mentioned you on a folio.');
+                        firebaseNotifications.sendFirebaseNotification(user._workspace._id || user._workspace, user.integrations.firebase_token, 'Octonius - New Mention', actor?.first_name + ' ' + actor?.last_name + ' mentioned you on a folio.');
                     }
                 }
             });
@@ -424,7 +438,7 @@ export class NotificationsService {
                         _actor: (posted_by._id || posted_by),
                         _owner: (user._id || user),
                         _origin_post: postId,
-                        message: 'assigned you on',
+                        message: ' assigned you on',
                         type: 'assignment',
                         created_date: moment().format()
                     });
@@ -435,7 +449,7 @@ export class NotificationsService {
 
                         if (owner.integrations.firebase_token) {
                             // Send the notification to firebase for mobile notify
-                            firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Assignment', actor?.first_name + ' ' + actor?.last_name + 'assigned you a task.');
+                            firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Assignment', actor?.first_name + ' ' + actor?.last_name + ' assigned you a task.');
                         }
                     }
                 }
@@ -456,7 +470,7 @@ export class NotificationsService {
                 _actor: posted_by,
                 _owner: assigneeId,
                 _origin_post: postId,
-                message: 'assigned you on',
+                message: ' assigned you on',
                 type: 'assignment',
                 created_date: moment().format()
             });
@@ -467,7 +481,7 @@ export class NotificationsService {
 
                 if (owner.integrations.firebase_token) {
                     // Send the notification to firebase for mobile notify
-                    firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Assignment', actor?.first_name + ' ' + actor?.last_name + 'assigned you a task.');
+                    firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Assignment', actor?.first_name + ' ' + actor?.last_name + ' assigned you a task.');
                 }
             }
         } catch (err) {
@@ -560,7 +574,7 @@ export class NotificationsService {
 
                 if (owner.integrations.firebase_token) {
                     // Send the notification to firebase for mobile notify
-                    firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Comment', actor?.first_name + ' ' + actor?.last_name + 'commented on ');
+                    firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Comment', actor?.first_name + ' ' + actor?.last_name + ' commented on ');
                 }
             }
         } catch (err) {
@@ -993,7 +1007,7 @@ export class NotificationsService {
                     _origin_post: postId,
                     _origin_group: groupId,
                     _shuttle_group: shuttleGroupId,
-                    message: 'assigned to your group',
+                    message: ' assigned to your group',
                     type: 'shuttleTask',
                     created_date: moment().format()
                 });
@@ -1087,4 +1101,103 @@ export class NotificationsService {
             throw err;
         }
     }
+
+    /**
+     * This function is responsible for notifying the user on mention on a Collection
+     */
+    async newCollectionMentions(userId: string, collectionId: string, mentions: any, io: any) {
+        try {
+            // Let usersStream
+            let userStream: any;
+
+            // if (mentions.includes('all')) {
+            //     const collection = await Collection.findOne({ _id: collectionId }).select('_group').lean();
+            //     // Create Readble Stream from the Event Assignee
+            //     userStream = Readable.from(await User.find({
+            //         _groups: collection?._group
+            //     }).select('_workspace first_name email integrations.firebase_token'))
+            // } else {
+
+            // Create Readble Stream from the Event Assignee
+            userStream = Readable.from(await User.find({
+                _id: mentions
+            }).select('_workspace first_name email integrations.firebase_token'));
+
+            // }
+            
+            await userStream.on('data', async (user: any) => {
+                const notification = await Notification.create({
+                    _actor: userId,
+                    _owner: user,
+                    _collection: collectionId,
+                    message: ' mentioned you on',
+                    type: 'mention_collection',
+                    created_date: moment().format()
+                });
+
+                await helperFunctions.sendNotificationsFeedFromService(user._id, io, true);
+
+                if (process.env.DOMAIN == 'app.octonius.com') {
+                    const actor = await User.findById({ _id: userId }).select('first_name last_name').lean();
+
+                    if (user.integrations.firebase_token) {
+                        // Send the notification to firebase for mobile notify
+                        firebaseNotifications.sendFirebaseNotification(user._workspace._id || user._workspace, user.integrations.firebase_token, 'Octonius - New Mention', actor?.first_name + ' ' + actor?.last_name + ' mentioned you on a collection.');
+                    }
+                }
+            });
+        } catch (err) {
+            throw err;
+        }
+    };
+
+    /**
+     * This function is responsible for notifying the user on mention on a Page
+     */
+    async newPageMentions(userId: string, pageId: string, mentions: any, io: any) {
+        try {
+            // Let usersStream
+            let userStream: any;
+
+            // if (mentions.includes('all')) {
+            //     const page = await Page.findOne({ _id: pageId }).select('_collection').lean();
+            //     const collection = await Collection.findOne({ _id: page?._collection }).select('_group').lean();
+            //     // Create Readble Stream from the Event Assignee
+            //     userStream = Readable.from(await User.find({
+            //         _groups: collection?._group
+            //     }).select('_workspace first_name email integrations.firebase_token'))
+            // } else {
+
+            // Create Readble Stream from the Event Assignee
+            userStream = Readable.from(await User.find({
+                _id: mentions
+            }).select('_workspace first_name email integrations.firebase_token'));
+
+            // }
+            
+            await userStream.on('data', async (user: any) => {
+                const notification = await Notification.create({
+                    _actor: userId,
+                    _owner: user,
+                    _page: pageId,
+                    message: ' mentioned you on',
+                    type: 'mention_page',
+                    created_date: moment().format()
+                });
+
+                await helperFunctions.sendNotificationsFeedFromService(user._id, io, true);
+
+                if (process.env.DOMAIN == 'app.octonius.com') {
+                    const actor = await User.findById({ _id: userId }).select('first_name last_name').lean();
+
+                    if (user.integrations.firebase_token) {
+                        // Send the notification to firebase for mobile notify
+                        firebaseNotifications.sendFirebaseNotification(user._workspace._id || user._workspace, user.integrations.firebase_token, 'Octonius - New Mention', actor?.first_name + ' ' + actor?.last_name + ' mentioned you on a page.');
+                    }
+                }
+            });
+        } catch (err) {
+            throw err;
+        }
+    };
 }

@@ -209,6 +209,16 @@ export class RecentActivityComponent implements OnInit {
     this._router.navigate(['/document', notification?._origin_folio?._id]);
   }
 
+  async viewCollectionNotification(notification: any, index: any) {
+    this.markNotificationAsRead(notification?._id, this.userData?._id, index, notification?.type);
+    this._router.navigate(['/dashboard/work/groups/library/collection'], { queryParams: { collection: notification?._collection?._id } });
+  }
+
+  async viewPageNotification(notification: any, index: any) {
+    this.markNotificationAsRead(notification?._id, this.userData?._id, index, notification?.type);
+    this._router.navigate(['/dashboard/work/groups/library/collection/page'], { queryParams: { page: notification?._page?._id } });
+  }
+
   async viewApprovalNotification(notification: any, index: any) {
     this.markNotificationAsRead(notification?._id, this.userData?._id, index, notification?.type)
 

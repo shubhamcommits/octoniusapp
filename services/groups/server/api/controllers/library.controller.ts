@@ -3,6 +3,7 @@ import { Response, Request, NextFunction } from 'express';
 import { axios, sendError } from '../../utils';
 import { LibraryService } from '../services';
 import { DateTime } from 'luxon';
+import http from 'axios';
 
 const libraryService = new LibraryService();
 
@@ -153,6 +154,7 @@ export class LibraryController {
         try {
             const { collectionId } = req.params;
             const { body: { collection } } = req;
+            const userId = req['userId'];
 
             // If collectionId is null or not provided then we throw BAD REQUEST 
             if (!collectionId || !collection) {
@@ -179,6 +181,14 @@ export class LibraryController {
             if (!collectionData) {
                 return sendError(res, new Error('Oops, collection not found!'), 'Collection not found, invalid collectionId!', 404);
             }
+
+            // Send notifications to _content_mentions
+            const mentions = collectionData?._content_mentions?.map(mention => mention._id);
+            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/collection-mentions`, {
+                userId: userId,
+                collectionId: collectionId,
+                mentions: mentions
+            });
 
             return res.status(200).json({
                 message: `${collectionData.collection_name} collection was updated successfully!`,
@@ -502,8 +512,6 @@ export class LibraryController {
             const domain = workspace?.integrations?.atlassia_url;
             const token = workspace?.integrations?.atlassia_token;
             const email = user.email + ':' + token;
-//ATATT3xFfGF0_9HXph47_wu1Q1Yhfa9O1YW2Sodb2k-q_sFWAT3Z-G_7yA3Wv8xMhk7MsBZ-I5Hm3Rp7jh2c7uRPl--f6bmJ1DE22vt_U3yTrrOhJUwzFWMBQM_YcMoA6OrCxH2VhB4gMvRplFgNfSh_d6UMbrzsTxRtw_PPx13XRXiP8JkWAuo=C060CB65
-//juan-octonius.atlassian.net
             await axios.get(`https://${domain}/wiki/rest/api/space`, {
                     headers: {
                             'Authorization': `Basic ${Buffer.from(email).toString('base64')}`,
@@ -802,6 +810,14 @@ export class LibraryController {
             if (!page) {
                 return sendError(res, new Error('Oops, page not found!'), 'Page not found, invalid pageId!', 404);
             }
+
+            // Send notifications to _content_mentions
+            const mentions = page?._content_mentions?.map(mention => mention._id);
+            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/page-mentions`, {
+                userId: userId,
+                pageId: pageId,
+                mentions: mentions
+            });
 
             return res.status(200).json({
                 message: `${page.titlee} page was updated successfully!`,

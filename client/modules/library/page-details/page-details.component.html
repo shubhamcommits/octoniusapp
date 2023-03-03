@@ -101,11 +101,11 @@
         
                  <!-- Menu Ends -->
                 <app-quill-editor style="margin-bottom: 30px;" *ngIf="pageData?.content && !canEditPage" [editorId]="'story_viewer'" [toolbar]="false"
-                    [readOnly]="true" [contents]="pageData?.content">
+                    [readOnly]="true" [contents]="pageData?.content" [mentionAll]="false">
                 </app-quill-editor>
         
                 <app-quill-editor style="margin-bottom: 30px;" *ngIf="canEditPage" [editorId]="'story_editor'" [toolbar]="true"
-                    [readOnly]="false" [workspaceId]="workspaceData?._id"
+                    [readOnly]="false" [workspaceId]="workspaceData?._id" [mentionAll]="false"
                     [contents]="pageData?.content" (content)="getQuillData($event)">
                 </app-quill-editor>
                 <div style="width: 100%; text-align: right;">

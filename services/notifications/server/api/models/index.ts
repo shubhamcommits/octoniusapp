@@ -13,6 +13,8 @@ import { Lounge } from './lounge.model';
 import { ChatNotification } from './chat-notification.model';
 import { Message } from './messages.model';
 import { Chat } from './chat.model';
+import { Collection } from './collection.model';
+import { Page } from './page.model';
 
 /*  =====================
  *  -- MODELS EXPORTS --
@@ -63,5 +65,8 @@ export {
     Message as Message,
 
     // ChatNotification
-    ChatNotification as ChatNotification
+    ChatNotification as ChatNotification,
+
+    Page as Page,
+    Collection as Collection
 }

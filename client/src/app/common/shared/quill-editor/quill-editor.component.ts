@@ -83,6 +83,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
   @Input('groupId') groupId: any;
   @Input() workspaceId: any;
   @Input() theme = 'snow';
+  @Input() mentionAll = true;
 
   // Output the content present in the editor
   @Output('content') content = new EventEmitter();
@@ -274,10 +275,12 @@ export class QuillEditorComponent implements OnInit, OnChanges {
           values = await this.publicFunctions.suggestMembers(searchTerm, this.groupId, this.workspaceData);
 
           // Adding All Object to mention all the members
-          values.unshift({
-            id: 'all',
-            value: 'all'
-          })
+          if (this.mentionAll) {
+            values.unshift({
+              id: 'all',
+              value: 'all'
+            });
+          }
 
           // If User types "#" then trigger the list for files mentioning
         } else if (mentionChar === "#") {
