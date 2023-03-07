@@ -28,4 +28,35 @@ export class SearchService {
         groupId: groupId
       }}).toPromise();
   }
+
+  /**
+   * This function is responsible for fetching workspace groups
+   * @param workspaceId
+   * @param groupId
+   * @param query - optional parameter(which searches for name and email too)
+   */
+  searchAllGroupsList(workspaceId: string, query: any, groupId: string) {
+    return this._http.get(this.localURL + `/groups`, {
+      params: {
+        workspaceId: workspaceId,
+        query: query,
+        groupId: groupId
+      }
+    }).toPromise()
+  }
+
+  /**
+   * This function is responsible for fetching workspace users
+   * @param workspaceId
+   * @param groupId
+   * @param query - optional parameter(which searches for name and email too)
+   */
+  searchAllUsersList(workspaceId: string, query: any) {
+    return this._http.get(this.localURL + `/users`, {
+      params: {
+        workspaceId: workspaceId,
+        query: query
+      }
+    }).toPromise()
+  }
 }

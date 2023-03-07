@@ -40,6 +40,38 @@ const CollectionSchema = new Schema({
         type: Schema.Types.Mixed,
         ref: 'File'
     }],
+    share: {
+        groups: [{
+            _group: {
+               type: Schema.Types.ObjectId,
+                ref: 'Group'
+            },
+            can_edit: {
+                type: Boolean,
+                default: false
+            }
+        }],
+        users: [{
+            _user: {
+               type: Schema.Types.ObjectId,
+                ref: 'User'
+            },
+            can_edit: {
+                type: Boolean,
+                default: false
+            }
+        }],
+        open_link: {
+            status: {
+                type: Boolean,
+                default: false
+            },
+            can_edit: {
+                type: Boolean,
+                default: false
+            }
+        }
+    },
     _created_by: {
         type: Schema.Types.ObjectId,
         ref: 'User',

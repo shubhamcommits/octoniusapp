@@ -23,6 +23,7 @@ import { ChatService } from 'src/shared/services/chat-service/chat.service';
 import { PortfolioService } from 'src/shared/services/portfolio-service/portfolio.service';
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
 import { LibraryService } from 'src/shared/services/library-service/library.service';
+import { SearchService } from 'src/shared/services/search-service/search.service';
 
 @Injectable({
   providedIn: 'root'
@@ -725,6 +726,53 @@ export class PublicFunctions {
               .then((res) => resolve(res['groups']))
               .catch(() => reject([]))
       })
+    }
+
+    /**
+     * This function is responsible for fetching the groups who are not present inside a workspace
+     * @param groupId
+     * @param query
+     */
+    searchAllGroupsList(workspaceId: string, query: string, groupId: string) {
+        try {
+            return new Promise(async (resolve) => {
+
+                // Create workspace service instance
+                let searchService = this.injector.get(SearchService);
+
+                // Fetch the users based on the query and groupId
+                await searchService.searchAllGroupsList(workspaceId, query, groupId).then(res => {
+                  // Resolve with success
+                  resolve(res['groups'])
+                });
+            })
+
+        } catch (err) {
+            this.sendError(err);
+        }
+    }
+
+    /**
+     * This function is responsible for fetching the users who are not present inside a workspace
+     * @param groupId
+     * @param query
+     */
+    searchAllUsersList(workspaceId: string, query: string) {
+      try {
+        return new Promise(async (resolve) => {
+
+          // Create workspace service instance
+          let searchService = this.injector.get(SearchService);
+
+          // Fetch the users based on the query and groupId
+          await searchService.searchAllUsersList(workspaceId, query).then(res => {
+            // Resolve with success
+            resolve(res['users'])
+          });
+        });
+      } catch (err) {
+          this.sendError(err);
+      }
     }
 
     /**

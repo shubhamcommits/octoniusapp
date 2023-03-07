@@ -43,14 +43,21 @@
 
 <div class="clearfix save-content mb-3">
     <button *ngIf="!editContent" class="btn btn-light btn-md float-right" style="margin-right: 20px;"
-        [matMenuTriggerFor]="collectionActions" #trigger="matMenuTrigger" i18n="@@collectionHeader.actions">
+        [matMenuTriggerFor]="collectionActions" #trigger="matMenuTrigger" i18n="@@collectionHeader.editDetails">
         Edit details
+    </button>
+
+    <button *ngIf="editContent" class="btn float-right btn-primary btn-md" style="margin-left: 10px;"
+        (click)="openShareDialog()" i18n="@@collectionHeader.shareCollection">
+        <i class="material-icons-outlined">share</i>
+        Share Collection
     </button>
 
     <button *ngIf="editContent" [disabled]="!contentChanged" class="btn float-right btn-primary btn-md"
         style="margin-left: 10px;" (click)="updateContent()" i18n="@@collectionHeader.save">
         Save
     </button>
+
     <button *ngIf="editContent" class="btn float-right btn-danger btn-md" style="margin-left: 10px;"
         (click)="editContent = !editContent" i18n="@@collectionHeader.cancel">
         Cancel
@@ -59,11 +66,19 @@
     <mat-menu #collectionActions="matMenu">
         <ul style="list-style: none; padding: 0 20px; margin: 0;">
             <li>
+                <a *ngIf="!editContent" (click)="openShareDialog()" class="btn btn-light btn-md" style="margin: 0;">
+                    <i class="material-icons-outlined">share</i>
+                    <span i18n="@@collectionHeader.shareCollection">Share Collection</span>
+                </a>
+            </li>
+
+             <li>
                 <a *ngIf="!editContent" (click)="editContent = !editContent" class="btn btn-light btn-md" style="margin: 0;">
                     <i class="material-icons-outlined">edit</i>
                     <span i18n="@@collectionHeader.edit">Edit details</span>
                 </a>
             </li>
+
             <li style="margin-top: 20px;">
                 <a *ngIf="!editContent" (click)="deleteCollection()" class="btn btn-light btn-md" style="margin: 0;">
                     <i class="material-icons-outlined">delete</i>

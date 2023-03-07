@@ -1,4 +1,4 @@
-import { Post, User, File, Comment, Collection, Page } from '../models';
+import { Post, User, File, Comment, Collection, Page, Group } from '../models';
 import { sendErr } from '../utils/sendError';
 import { DateTime } from 'luxon';
 
@@ -702,6 +702,55 @@ export class SearchService {
         .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
         .populate({ path: 'task._column', select: '_id title' })
         .sort({ created_date: -1 })
+        .lean();
+
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async searchAllGroupsList(workspaceId: any, textQuery: any, groupId: any) {
+    try {
+      return await Group.find({
+          $and: [
+            { group_name: { $regex: textQuery, $options: 'i' } },
+            { group_name: { $ne: 'personal' } },
+            { _id: { $ne: groupId } },
+            { _workspace: { $eq: workspaceId } },
+          ]
+        })
+        .select('_id group_name group_avatar')
+        .sort({ group_name: -1 })
+        .lean();
+
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async searchAllUsersList(workspaceId: any, queryText: any, userId: any) {
+    try {
+      return await User.find({
+          $and: [
+            {
+              $or: [
+                { first_name: { $regex: queryText, $options: 'i' } },
+                { last_name: { $regex: queryText, $options: 'i' } },
+                { email: { $regex: queryText, $options: 'i' } },
+                { skills: { $regex: queryText, $options: 'i' } },
+                { bio: { $regex: queryText, $options: 'i' } },
+                { company_name: { $regex: queryText, $options: 'i' } },
+                { phone_number: { $regex: queryText, $options: 'i' } },
+                { role: { $regex: queryText, $options: 'i' } }
+              ]
+            },
+            { _id: { $ne: userId } },
+            { _workspace: { $eq: workspaceId } },
+          ]
+        })
+        .select('_id first_name last_name profile_pic')
+        .sort({ fist_name: -1, last_name: -1 })
+        .limit(10)
         .lean();
 
     } catch (err) {
