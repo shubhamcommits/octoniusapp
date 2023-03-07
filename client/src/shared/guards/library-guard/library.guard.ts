@@ -89,7 +89,6 @@ export class LibraryGuard implements CanActivateChild  {
     }
 
     const userCanViewCollection = await this.utilityService.canUserDoCollectionAction(collectionData, currentGroup, userData, 'read');
-console.log(userCanViewCollection);
     // if (userCanViewCollection && userData?._private_group != currentGroup?._id) {
     if (userCanViewCollection) {
       return true;
