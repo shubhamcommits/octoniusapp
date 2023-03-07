@@ -1,7 +1,9 @@
 import { Account } from "./account.model";
 import { Auth } from './auth.model';
+import { Collection } from "./collection.model";
 import { Column } from './column.model';
 import { Group } from './group.model';
+import { Page } from "./page.model";
 import { Portfolio } from "./portfolio.model";
 import { Post } from './post.model';
 import { User } from './user.model';
@@ -34,5 +36,7 @@ export {
     // Workspace
     Workspace as Workspace,
 
-    Portfolio as Portfolio
+    Portfolio as Portfolio,
+    Collection as Collection,
+    Page as Page
 };

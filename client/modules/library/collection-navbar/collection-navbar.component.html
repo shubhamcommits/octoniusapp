@@ -5,6 +5,11 @@
     </span>
     <!-- Go Back ends -->
 
+    <h2 *ngIf="collectionData" (click)="saveFavoriteCollection()" class="mr-5" placement="right" ngbTooltip="Add shortcut to sidebar">
+        <i class="material-icons" style="color: #FFAB00; cursor: pointer;" *ngIf="!isFavoriteCollection">star_outline</i>
+        <i class="material-icons" style="color: #FFAB00; cursor: pointer;" *ngIf="isFavoriteCollection">star</i>
+    </h2>
+
     <app-secured-image *ngIf="canEdit" [imgURL]="collectionData?.collection_avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
         [styleClass]="'group-avatar'" (click)="openDetails(content)"></app-secured-image>
 

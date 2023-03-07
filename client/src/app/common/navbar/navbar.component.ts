@@ -49,6 +49,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   userGroups: any = [];
   userPortfolios: any = [];
+  userCollections: any = [];
   
   iconsSidebar = false;
   isDocumentPage = false;
@@ -140,6 +141,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.userData = await this.publicFunctions.getCurrentUser();
     this.userGroups = this.userData['stats']['favorite_groups'];
     this.userPortfolios = this.userData['stats']['favorite_portfolios'];
+    this.userCollections = this.userData['stats']['favorite_collections'];
     this.iconsSidebar = this.userData['stats']['default_icons_sidebar'] || false;
 
     if (this.userData?.integrations?.gdrive?.token) {

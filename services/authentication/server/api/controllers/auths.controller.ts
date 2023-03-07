@@ -578,6 +578,10 @@ export class AuthsController {
                     select: '_id portfolio_name portfolio_avatar'
                 })
                 .populate({
+                    path: 'stats.favorite_collections',
+                    select: '_id name collection_avatar'
+                })
+                .populate({
                     path: '_account',
                     select: '_id email _workspaces first_name last_name created_date'
                 });

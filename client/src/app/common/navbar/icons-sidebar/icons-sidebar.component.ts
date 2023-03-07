@@ -23,6 +23,8 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
   @Input() iconsSidebar = false;
   @Input() userGroups = [];
   @Input() userPortfolios = [];
+  @Input() userCollections: any = [];
+
   @Output() sidebarChange = new EventEmitter();
 
   // CURRENT USER DATA
@@ -71,6 +73,10 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
         this.userPortfolios = to;
       }
 
+      if (propName === 'userCollections') {
+        this.userCollections = to;
+      }
+
       await this.mapGroupsAndPortfolios();
     }
   }
@@ -90,16 +96,17 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
 
     this.userGroups = this.userData['stats']['favorite_groups'];
     this.userPortfolios = this.userData['stats']['favorite_portfolios'];
+    this.userCollections = this.userData['stats']['favorite_collectios'];
   }
 
   async mapGroupsAndPortfolios() {
-    this.userGroupsAndPortfolios = [...this.userGroups, ...this.userPortfolios];
+    this.userGroupsAndPortfolios = [...this.userGroups, ...this.userPortfolios, ...this.userCollections];
     this.userGroupsAndPortfolios = this.userGroupsAndPortfolios?.map(group => {
         return {
           _id: group._id,
-          name: group.group_name || group.portfolio_name,
-          avatar: group.group_avatar || group.portfolio_avatar,
-          type: (group.group_name) ? 'group' : 'portfolio'
+          name: group.group_name || group.portfolio_name || group.name,
+          avatar: group.group_avatar || group.portfolio_avatar || group.collection_avatar,
+          type: (group.group_name) ? 'group' : (group.portfolio_name) ? 'portfolio' : 'collection'
         };
       });
 
@@ -146,7 +153,7 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
     this.sidebarChange.emit();
   }
 
-  async goToGroupOrPortfolio(group: any) {
+  async goToGroupOrPortfolioOrCollection(group: any) {
     if (group?.type == 'group') {
       this.changeState('groups_activity');
       const newGroup = await this.publicFunctions.getGroupDetails(group?._id);
@@ -159,6 +166,8 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
       await this.publicFunctions.sendUpdatesToPortfolioData(newPortfolio);
       await this.publicFunctions.sendUpdatesToGroupData({});
       this.router.navigate(['/dashboard', 'work', 'groups', 'portfolio']);
+    } else if (group?.type == 'collection') {
+      this.router.navigate(['/dashboard', 'work', 'groups', 'library', 'collection'], {queryParams: { collection: group?._id }});
     }
   }
 

@@ -1,8 +1,9 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, EventEmitter, Output } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { LibraryService } from 'src/shared/services/library-service/library.service';
 import { ActivatedRoute } from '@angular/router';
+import { UserService } from 'src/shared/services/user-service/user.service';
 
 @Component({
   selector: 'app-collection-navbar',
@@ -10,6 +11,8 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./collection-navbar.component.scss']
 })
 export class CollectionNavbarComponent implements OnInit {
+
+  @Output() favoriteCollectionSaved = new EventEmitter();
 
   collectionId: string;
 
@@ -23,6 +26,8 @@ export class CollectionNavbarComponent implements OnInit {
 
   canEdit = false;
 
+  isFavoriteCollection: boolean;
+
   // Public functions class member
   publicFunctions = new PublicFunctions(this._Injector);
 
@@ -30,7 +35,8 @@ export class CollectionNavbarComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private _Injector: Injector,
     private utilityService: UtilityService,
-    private libraryService: LibraryService
+    private libraryService: LibraryService,
+    private userService: UserService
   ) {
     this.collectionId = this.activatedRoute.snapshot.queryParams['collection'];
   }
@@ -39,6 +45,7 @@ export class CollectionNavbarComponent implements OnInit {
     // Set the groupData
     this.groupData = await this.publicFunctions.getCurrentGroupDetails();
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    this.userData = await this.publicFunctions.getCurrentUser();
 
     // Send Updates to router state
     this.publicFunctions.sendUpdatesToRouterState({
@@ -50,6 +57,31 @@ export class CollectionNavbarComponent implements OnInit {
     });
 
     this.canEdit = await this.utilityService.canUserDoCollectionAction(this.collectionData, this.groupData, this.userData, 'edit');
+
+    this.isFavoriteCollection = this.checkIsFavoriteCollection();
+  }
+
+  checkIsFavoriteCollection() {
+    const collectionIndex = (this.userData && this.userData.stats && this.userData.stats.favorite_collections) ? this.userData.stats.favorite_collections.findIndex(collection => (collection._id || collection) == this.collectionData?._id) : -1;
+    return collectionIndex >= 0;
+  }
+
+  saveFavoriteCollection() {
+    this.utilityService.asyncNotification($localize`:@@groupNavbar.pleaseWaitWeAreSaving:Please wait we are saving the information...`,
+      new Promise((resolve, reject) => {
+        // Call HTTP Request to change the request
+        this.userService.saveFavoriteCollection(this.collectionData?._id, !this.isFavoriteCollection)
+          .then((res) => {
+            this.isFavoriteCollection = !this.isFavoriteCollection;
+            this.userData = res['user'];
+            this.publicFunctions.sendUpdatesToUserData(this.userData);
+            this.favoriteCollectionSaved.emit(this.userData);
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupNavbar.groupSavedFavorite:Group saved as favorite!`))
+          })
+          .catch(() => {
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@groupNavbar.unableToSaveAsFavorite:Unable to save the group as favorite, please try again!`))
+          });
+      }));
   }
 
   /**

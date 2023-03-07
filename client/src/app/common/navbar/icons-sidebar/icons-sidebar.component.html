@@ -51,7 +51,7 @@
         </li>
 
         <li *ngFor="let group of userGroupsAndPortfolios">
-          <a (click)="goToGroupOrPortfolio(group)">
+          <a (click)="goToGroupOrPortfolioOrCollection(group)">
               <app-secured-image
                   [imgURL]="group?.avatar"
                   [service]="'group'"
