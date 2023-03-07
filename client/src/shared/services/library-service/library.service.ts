@@ -20,6 +20,14 @@ export class LibraryService {
   }
 
   /**
+   * This function is responsible for fetching an specific collection by the page id
+   * @param pageId
+   */
+  getCollectionByPage(pageId: string) {
+    return this._http.get(this.baseUrl + `/library/collection/${pageId}/by-page`).toPromise();
+  }
+
+  /**
    * This function is responsible for fetching all collections by group
    * @param groupId
    */

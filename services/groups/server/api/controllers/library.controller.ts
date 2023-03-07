@@ -41,7 +41,7 @@ export class LibraryController {
                 .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
                 .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
-                .populate({ path: 'share.groups._group', select: 'group_name group_avatar' })
+                .populate({ path: 'share.groups._group', select: 'group_name group_avatar _members _admins' })
                 .populate({ path: 'share.users._user', select: '_id first_name last_name profile_pic' })
                 .lean();
 
@@ -90,7 +90,7 @@ export class LibraryController {
                 .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
                 .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
-                .populate({ path: 'share.groups._group', select: 'group_name group_avatar' })
+                .populate({ path: 'share.groups._group', select: 'group_name group_avatar _members _admins' })
                 .populate({ path: 'share.users._user', select: '_id first_name last_name profile_pic' })
                 .lean();
 
@@ -134,7 +134,7 @@ export class LibraryController {
                 .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
                 .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
-                .populate({ path: 'share.groups._group', select: 'group_name group_avatar' })
+                .populate({ path: 'share.groups._group', select: 'group_name group_avatar _members _admins' })
                 .populate({ path: 'share.users._user', select: '_id first_name last_name profile_pic' })
                 .lean();
 
@@ -182,7 +182,7 @@ export class LibraryController {
                 .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
                 .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
-                .populate({ path: 'share.groups._group', select: 'group_name group_avatar' })
+                .populate({ path: 'share.groups._group', select: 'group_name group_avatar _members _admins' })
                 .populate({ path: 'share.users._user', select: '_id first_name last_name profile_pic' })
                 .lean();
 
@@ -265,7 +265,7 @@ export class LibraryController {
                 .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
                 .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
-                .populate({ path: 'share.groups._group', select: 'group_name group_avatar' })
+                .populate({ path: 'share.groups._group', select: 'group_name group_avatar _members _admins' })
                 .populate({ path: 'share.users._user', select: '_id first_name last_name profile_pic' })
                 .lean();
 
@@ -313,7 +313,7 @@ export class LibraryController {
                 .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
                 .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
-                .populate({ path: 'share.groups._group', select: 'group_name group_avatar' })
+                .populate({ path: 'share.groups._group', select: 'group_name group_avatar _members _admins' })
                 .populate({ path: 'share.users._user', select: '_id first_name last_name profile_pic' })
                 .lean();
 
@@ -385,7 +385,7 @@ export class LibraryController {
                 .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
                 .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
-                .populate({ path: 'share.groups._group', select: 'group_name group_avatar' })
+                .populate({ path: 'share.groups._group', select: 'group_name group_avatar _members _admins' })
                 .populate({ path: 'share.users._user', select: '_id first_name last_name profile_pic' })
                 .lean();
 
@@ -426,7 +426,7 @@ export class LibraryController {
                 .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
                 .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
-                .populate({ path: 'share.groups._group', select: 'group_name group_avatar' })
+                .populate({ path: 'share.groups._group', select: 'group_name group_avatar _members _admins' })
                 .populate({ path: 'share.users._user', select: '_id first_name last_name profile_pic' })
                 .lean();
 
@@ -435,6 +435,57 @@ export class LibraryController {
                 message: `Collection group members found!`,
                 collections: collections
             })
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
+     * This function fetches the collection details corresponding to the @constant collectionId 
+     * @param req - @constant collectionId
+     */
+    async getCollectionByPage(req: Request, res: Response) {
+        try {
+            const { pageId } = req.params;
+
+            // If collectionId is null or not provided then we throw BAD REQUEST 
+            if (!pageId) {
+                return res.status(400).json({
+                    message: 'Please provide pageId!'
+                });
+            }
+
+            // Find the Page based on the pageId
+            const page = await Page.findOne({
+                    _id: pageId
+                }).select('_collection').lean();
+
+            // Find the Collection based on the page
+            const collection = await Collection.findOne({
+                    _id: page?._collection
+                })
+                .populate({ path: '_members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: '_group', select: 'group_name group_avatar _members _admins' })
+                .populate({ path: '_content_mentions', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: '_created_by', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: '_updated_by', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
+                .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: '_files', select: 'original_name modified_name type' })
+                .populate({ path: 'share.groups._group', select: 'group_name group_avatar _members _admins' })
+                .populate({ path: 'share.users._user', select: '_id first_name last_name profile_pic' })
+                .lean();
+console.log(collection);
+            // Check if collection already exist with the same collectionId
+            if (!collection) {
+                return sendError(res, new Error('Oops, collection not found!'), 'Collection not found, Invalid collectionId!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Collection found!',
+                collection: collection
+            });
         } catch (err) {
             return sendError(res, err);
         }
@@ -490,7 +541,7 @@ export class LibraryController {
                 .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
                 .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
-                .populate({ path: 'share.groups._group', select: 'group_name group_avatar' })
+                .populate({ path: 'share.groups._group', select: 'group_name group_avatar _members _admins' })
                 .populate({ path: 'share.users._user', select: '_id first_name last_name profile_pic' })
                 .lean();
 
@@ -1092,8 +1143,8 @@ export class LibraryController {
 
             // Find the Group based on the groupId
             var group = await Group.findOne({
-                _id: collection?._group
-            })
+                    _id: collection?._group
+                })
                 .populate({
                     path: '_members',
                     select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',

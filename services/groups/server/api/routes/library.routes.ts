@@ -22,6 +22,9 @@ routes.get('/collection/:collectionId', library.getCollection);
 // GET - Get all  collections by groups
 routes.get('/collection/:groupId/by-group', library.getCollectionsByGroup);
 
+// GET - Get all  collection by page
+routes.get('/collection/:pageId/by-page', library.getCollectionByPage);
+
 // POST - Create new collection in the group
 routes.post('/create-collection', library.createCollection);
 

@@ -741,6 +741,52 @@ export class UtilityService {
   }
 
   /**
+   * This method is used to identify if the user can edit or read a collection
+   * @param collectionData 
+   * @param groupData
+   * @param userData
+   * @param action edit or read
+   * @returns
+   */
+  async canUserDoCollectionAction(collectionData: any, groupData: any, userData: any, action: string) {
+
+    const isGroupManager = (groupData && groupData._admins) ? (groupData?._admins.findIndex((admin: any) => (admin?._id || admin) == userData?._id) >= 0) : false;
+    const isGroupMember = (groupData && groupData._members) ? (groupData?._members.findIndex((member: any) => (member?._id || member) == userData?._id) >= 0) : false;
+    const isCreatedBy = (collectionData?._created_by ) ? ((collectionData?._created_by?._id || collectionData?._created_by) == userData?._id) : false;
+    if (isGroupManager || isGroupMember || isCreatedBy) {
+      return true;
+    }
+
+    const share = collectionData?.share || {};
+
+    if (share) {
+      if (share?.open_link && share?.open_link?.status && (action == 'read' || (action == 'edit' && share?.open_link?.can_edit))) {
+        return true;
+      }
+
+      if (share?.users && share?.users?.length > 0) {
+        const index = (share?.users) ? share?.users.findIndex((user: any) => (user?._user?._id || user?._user) == userData?._id) : -1;
+        if (index >= 0 && (action == 'read' || (action == 'edit' && share?.users[index]?.can_edit))) {
+          return true;
+        }
+      }
+
+      if (share?.groups && share?.groups?.length > 0) {
+        share?.groups?.forEach(sharedGroup => {
+          const group = sharedGroup._group;
+          const isManager = (group && group._admins) ? (group?._admins.findIndex((admin: any) => (admin?._id || admin) == userData?._id) >= 0) : false;
+          const isMember = (group && group._members) ? (group?._members.findIndex((member: any) => (member?._id || member) == userData?._id) >= 0) : false;
+          if ((isManager || isMember) && (action == 'read' || (action == 'edit' && sharedGroup?.can_edit))) {
+            return true;
+          }
+        });
+      }
+    }
+
+    return false;
+  }
+
+  /**
    * Exports an array into an excel file
    * @param arrayToExport
    * @param fileName
