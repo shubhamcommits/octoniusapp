@@ -5,7 +5,7 @@
     </span>
     <!-- Go Back ends -->
 
-    <app-secured-image [imgURL]="collectionData?.collection_avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
+    <app-secured-image *ngIf="canEdit" [imgURL]="collectionData?.collection_avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
         [styleClass]="'group-avatar'" (click)="openDetails(content)"></app-secured-image>
 
     <ng-template #content let-modal>
@@ -15,7 +15,12 @@
 
     <div class="collapse navbar-collapse">
         <ul class="navbar-nav ml-4">
-            <li class="nav-item active">
+            <li *ngIf="canEdit" class="nav-item active">
+                <span>
+                    {{ collectionData?.name }}
+                </span>
+            </li>
+            <li *ngIf="!canEdit" class="nav-item active">
                 <!-- Folio Static Title starts -->
                 <span *ngIf="!editTitle" (click)="editTitle = !editTitle"
                         matTooltip="Click me to rename"

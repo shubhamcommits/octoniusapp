@@ -16,6 +16,7 @@ export class CollectionPagesComponent implements OnInit, OnChanges {
 	@Input() pageData;
 	@Input() userData;
 	@Input() workspaceId;
+	@Input() canEdit;
 	
 	// Output collection event emitter
 	@Output() subpageDeletedEmitter = new EventEmitter();

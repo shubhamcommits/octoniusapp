@@ -3,11 +3,11 @@
         [ngStyle]="{ 'background-color': collectionData?.background_color || '#FBB732' }">
         <div class="modal-header">
             <!-- Event Collection Header starts -->
-            <h2 *ngIf="!editContent || !editTitle" (click)="editTitle = !editTitle" class="title">
+            <h2 *ngIf="!editContent || !editTitle || canEdit" (click)="editTitle = !editTitle" class="title">
                 <span>{{ title }}</span>
             </h2>
 
-            <h2 class="modal-title" *ngIf="editTitle && editContent">
+            <h2 class="modal-title" *ngIf="editTitle && editContent && canEdit">
                 <span *ngIf="!editTitle">{{ title }}</span>
 
                 <!-- Title starts -->
@@ -19,10 +19,10 @@
         </div>
         <!-- Collection Header Title ends -->
 
-        <div *ngIf="!editContent" [innerHTML]="(htmlContent) | safe: 'html'" class="collection-content"></div>
+        <div *ngIf="!editContent || !canEdit" [innerHTML]="(htmlContent) | safe: 'html'" class="collection-content"></div>
 
         <!-- Collection Content starts -->
-        <app-quill-editor *ngIf="editContent" class="collection-content" [editorId]="'global-ns-editor'" [toolbar]="true"
+        <app-quill-editor *ngIf="editContent && canEdit" class="collection-content" [editorId]="'global-ns-editor'" [toolbar]="true"
             [readOnly]="false" [mentionAll]="false" [contents]="collectionData?.content" (content)="quillContentChanged($event)">
         </app-quill-editor>
         <!-- Collection Content ends -->
@@ -35,13 +35,13 @@
 
         <br class="clearfix" />
 
-        <div *ngIf="editContent" class="change-color">
+        <div *ngIf="editContent && canEdit" class="change-color">
             <span (click)="openColorPicker()" i18n="@@collectionHeader.changeColor">Change color</span>
         </div>
     </div>
 </div>
 
-<div class="clearfix save-content mb-3">
+<div class="clearfix save-content mb-3" *ngIf="canEdit">
     <button *ngIf="!editContent" class="btn btn-light btn-md float-right" style="margin-right: 20px;"
         [matMenuTriggerFor]="collectionActions" #trigger="matMenuTrigger" i18n="@@collectionHeader.editDetails">
         Edit details

@@ -15,7 +15,7 @@
 				(subpageDeletedEmitter)="initSubPages()"></app-collection-pages>
 		</div>
 		
-		<div style="padding-left: 20px;" *ngIf="selectedPage">
+		<div style="padding-left: 20px;" *ngIf="selectedPage && canEdit">
 			<!-- Create new Collection starts -->
 			<button class="btn btn-light mb-3 mt-3" type="button" (click)="createSubPage(pageData?._id)">
 				<i class="material-icons">add</i>
@@ -33,9 +33,9 @@
 		[routerLink]="['/dashboard', 'work', 'groups', 'library', 'collection', 'page']"
 		[queryParams]="{ page: pageData?._id  }" [matTooltip]="pageData?.title">
 		{{ pageData?.title | truncatetext: 20  }}
-</button>
+	</button>
 		
-	<div  *ngIf="selectedPage">
+	<div  *ngIf="selectedPage && canEdit">
 		<!-- Create new Collection starts -->
 		<button class="btn btn-light mb-3 mt-3" type="button" (click)="createSubPage(pageData?._id)">
 			<i class="material-icons">add</i>

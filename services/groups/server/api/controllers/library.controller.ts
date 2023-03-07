@@ -475,7 +475,7 @@ export class LibraryController {
                 .populate({ path: 'share.groups._group', select: 'group_name group_avatar _members _admins' })
                 .populate({ path: 'share.users._user', select: '_id first_name last_name profile_pic' })
                 .lean();
-console.log(collection);
+
             // Check if collection already exist with the same collectionId
             if (!collection) {
                 return sendError(res, new Error('Oops, collection not found!'), 'Collection not found, Invalid collectionId!', 404);

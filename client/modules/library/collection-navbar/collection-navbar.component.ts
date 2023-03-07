@@ -21,6 +21,8 @@ export class CollectionNavbarComponent implements OnInit {
   // Edit Title
   editTitle = false
 
+  canEdit = false;
+
   // Public functions class member
   publicFunctions = new PublicFunctions(this._Injector);
 
@@ -46,6 +48,8 @@ export class CollectionNavbarComponent implements OnInit {
     await this.libraryService.getCollection(this.collectionId).then(res => {
       this.collectionData = res['collection']
     });
+
+    this.canEdit = await this.utilityService.canUserDoCollectionAction(this.collectionData, this.groupData, this.userData, 'edit');
   }
 
   /**

@@ -25,6 +25,7 @@ export class PageDetailsComponent implements OnInit {
   userData: any;
   groupData: any;
   workspaceData: any;
+  collectionData: any;
 
   // Quill Data Object
   quillData: any;
@@ -36,6 +37,8 @@ export class PageDetailsComponent implements OnInit {
   showComments: boolean = false;
 
   canEditPage: boolean = false;
+
+  canEdit = false;
 
   // File Data variable
   fileData: any = {
@@ -110,7 +113,13 @@ export class PageDetailsComponent implements OnInit {
       this.pageData = res['page']
     });
 
+    await this.libraryService.getCollectionByPage(this.pageId).then(res => {
+      this.collectionData = res['collection']
+    });
+
     await this.initPages();
+
+    this.canEdit = await this.utilityService.canUserDoCollectionAction(this.collectionData, this.groupData, this.userData, 'edit');
 
     // Set the File Credentials after view initialization
     this.fileData = {

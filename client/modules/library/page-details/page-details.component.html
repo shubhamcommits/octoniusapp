@@ -7,7 +7,7 @@
                     <span i18n="@@pageDetails.collectionPages">Collection Pages</span>
                 </h4>
 
-                <div>
+                <div *ngIf="canEdit">
                     <!-- Create new Page starts -->
                     <button class="btn btn-light mt-2 mb-2" type="button" (click)="createPage()">
                         <i class="material-icons-outlined">add</i>
@@ -16,7 +16,9 @@
                     <!-- Create new Page ends -->
                 </div>
 
-                <app-collection-pages *ngFor="let page of pages" [pageData]="page" [userData]="userData" [workspaceId]="workspaceData?._id" (subpageDeletedEmitter)="initPages()"></app-collection-pages>
+                <app-collection-pages *ngFor="let page of pages"
+                    [pageData]="page" [userData]="userData" [workspaceId]="workspaceData?._id" [canEdit]="canEdit"
+                    (subpageDeletedEmitter)="initPages()"></app-collection-pages>
 
                 <app-section-separator></app-section-separator>
 
@@ -30,7 +32,7 @@
                     <span i18n="@@pageDetails.attachments">Attachments</span>
                 </div>
 
-                <div class="ropdown-item btn btn-link" (click)="file.click()">
+                <div *ngIf="canEdit" class="ropdown-item btn btn-link" (click)="file.click()">
                     <i class="material-icons-outlined mr-2">upload_file</i>
                     <span i18n="@@groupNewFile.uloadFile">Upload file</span>
                     <input #file type="file" placeholder="File" multiple (change)="fileInput(file.files)" />
@@ -39,7 +41,7 @@
                 <div *ngFor="let file of pageData?._files">
                     <span class="btn" (click)="openDocument(file)">{{ file?.original_name | truncatetext: 20 }}</span>
 
-                    <button class="btn btn-link" data-toggle="dropdown">
+                    <button *ngIf="canEdit" class="btn btn-link" data-toggle="dropdown">
                         <span><i class="material-icons muted">more_vert</i></span>
                     </button>
                     
@@ -81,7 +83,7 @@
                     <p class="muted">Start writing something awesome!</p>
                 </div>
                  <!-- Menu Starts -->
-                <div class="editbar">
+                <div class="editbar" *ngIf="canEdit">
                     <button class="btn btn-link" (click)="canEditAction()"><i class="material-icons">create</i></button>
                     <button class="btn btn-link ml-2" data-toggle="dropdown">
                         <i class="material-icons muted">more_horiz</i>
@@ -101,14 +103,15 @@
         
                  <!-- Menu Ends -->
                 <app-quill-editor style="margin-bottom: 30px;" *ngIf="pageData?.content && !canEditPage" [editorId]="'story_viewer'" [toolbar]="false"
-                    [readOnly]="true" [contents]="pageData?.content" [mentionAll]="false">
+                    [readOnly]="canEdit" [contents]="pageData?.content" [mentionAll]="false">
                 </app-quill-editor>
         
                 <app-quill-editor style="margin-bottom: 30px;" *ngIf="canEditPage" [editorId]="'story_editor'" [toolbar]="true"
-                    [readOnly]="false" [workspaceId]="workspaceData?._id" [mentionAll]="false"
+                    [readOnly]="canEdit" [workspaceId]="workspaceData?._id" [mentionAll]="false"
                     [contents]="pageData?.content" (content)="getQuillData($event)">
                 </app-quill-editor>
-                <div style="width: 100%; text-align: right;">
+
+                <div style="width: 100%; text-align: right;" *ngIf="canEdit">
                     <button *ngIf="canEditPage" i18n="@@pageDetails.edit" class="btn btn-danger mr-2" (click)="canEditAction()">Cancel</button>
                     <button type="button" *ngIf="canEditPage" class="btn btn-primary"
                         (click)="savePage()" i18n="@@pageDetails.save">

@@ -3,24 +3,20 @@
 		[routerLink]="['/dashboard', 'work', 'groups', 'library', 'collection', 'page']"
 		[queryParams]="{ page: pageData?._id  }" class="page-info">
 		<div class="page-title">
-			
-				<i class="material-icons-outlined mr-3" style="color: #005FD5;">library_books</i>
-				{{ pageData?.title }}
-				
-			
+			<i class="material-icons-outlined mr-3" style="color: #005FD5;">library_books</i>
+			{{ pageData?.title }}
 		</div>
+
+		<div class="muted ml-5">
+			<span i18n="@@pageRow.createdBy" class="text-success">Created by</span>
+			<span class="ml-1">{{ pageData?._created_by?.first_name }} {{ pageData?._created_by?.last_name }}</span>
 		
-			<div class="muted ml-5">
-				<span i18n="@@pageRow.createdBy" class="text-success">Created by</span>
-				<span class="ml-1">{{ pageData?._created_by?.first_name }} {{ pageData?._created_by?.last_name }}</span>
-			
-				<span i18n="@@pageRow.updated" class="ml-2 text-warning">Updated</span>
-				<span class="ml-1">{{ formateDate(pageData?.updated_date) }}</span>
-			</div>
-	
+			<span i18n="@@pageRow.updated" class="ml-2 text-warning">Updated</span>
+			<span class="ml-1">{{ formateDate(pageData?.updated_date) }}</span>
+		</div>
 	</div>
 
-	<div class="options">
+	<div class="options" *ngIf="canEdit">
 		<i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
 	
 		<mat-menu #menu="matMenu">

@@ -37,6 +37,8 @@ export class CollectionDetailsComponent implements OnInit {
     type: 'file'
   };
 
+  canEdit = false;
+
   baseAPIUrl = environment.UTILITIES_BASE_API_URL;
 
   // IsLoading behaviou subject maintains the state for loading spinner
@@ -93,6 +95,8 @@ export class CollectionDetailsComponent implements OnInit {
     await this.libraryService.getCollection(this.collectionId).then(res => {
       this.collectionData = res['collection']
     });
+
+    this.canEdit = await this.utilityService.canUserDoCollectionAction(this.collectionData, this.groupData, this.userData, 'edit');
 
     this.initPages();
 

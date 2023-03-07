@@ -17,9 +17,12 @@ export class PageNavbarComponent implements OnInit {
   groupData: any;
   pageData: any;
   workspaceData: any;
+  collectionData: any;
   
   // Edit Title
   editTitle = false
+
+  canEdit = false;
 
   // Public functions class member
   publicFunctions = new PublicFunctions(this._Injector);
@@ -46,6 +49,12 @@ export class PageNavbarComponent implements OnInit {
     await this.libraryService.getPage(this.pageId).then(res => {
       this.pageData = res['page']
     });
+
+    await this.libraryService.getCollectionByPage(this.pageId).then(res => {
+      this.collectionData = res['collection']
+    });
+
+    this.canEdit = await this.utilityService.canUserDoCollectionAction(this.collectionData, this.groupData, this.userData, 'edit');
   }
 
   /**

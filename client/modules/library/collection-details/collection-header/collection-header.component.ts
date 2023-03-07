@@ -18,6 +18,7 @@ export class CollectionHeaderComponent implements OnInit, OnChanges {
   @Input() collectionData;
   @Input() userData;
   @Input() workspaceData;
+  @Input() canEdit;
 
   editTitle = false;
   title: string = '';
