@@ -1,9 +1,11 @@
-import { Component, Inject, Injector, OnInit } from '@angular/core';
+import { Component, Inject, Injector, LOCALE_ID, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/internal/operators/debounceTime';
 import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
+import { environment } from 'src/environments/environment';
 import { LibraryService } from 'src/shared/services/library-service/library.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
@@ -39,7 +41,9 @@ export class ShareCollectionDialogComponent implements OnInit {
   constructor(
     public injector: Injector,
     private mdDialogRef: MatDialogRef<ShareCollectionDialogComponent>,
+    @Inject(LOCALE_ID) public locale: string,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private _router: Router,
     private utilityService: UtilityService,
     private libraryService: LibraryService
     ) {
@@ -260,6 +264,41 @@ export class ShareCollectionDialogComponent implements OnInit {
           .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@shareCollectionDialog.unableToUpdate:Unable to update the collection`)))
       }));
     }
+  }
+
+  async copyCollectionLink() {
+    // Create Selection Box
+    let selBox = document.createElement('textarea');
+
+    // Set the CSS Properties
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+
+    let url = environment.clientUrl;
+    if (environment.production) {
+      url += '/' + this.locale;
+    }
+
+    url += this._router.url;
+    
+    selBox.value = url;
+    // Append the element to the DOM
+    document.body.appendChild(selBox);
+
+    // Set the focus and Child
+    selBox.focus();
+    selBox.select();
+
+    // Execute Copy Command
+    document.execCommand('copy');
+
+    // Once Copied remove the child from the dom
+    document.body.removeChild(selBox);
+
+    // Show Confirmed notification
+    this.utilityService.simpleNotification($localize`:@@flamingoPublish.copiedToClipboard:Copied to Clipboard!`);
   }
 
   cancel() {
