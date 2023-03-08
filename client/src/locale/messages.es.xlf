@@ -8247,10 +8247,6 @@
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
           <context context-type="linenumber">168</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/library/collection-navbar/collection-navbar.component.ts</context>
-          <context context-type="linenumber">74</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.detailsUpdated" datatype="html">
         <source>Details updated!</source>
@@ -8267,10 +8263,6 @@
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
           <context context-type="linenumber">174</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/library/collection-navbar/collection-navbar.component.ts</context>
-          <context context-type="linenumber">78</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.unableToUpdateDetails" datatype="html">
         <source>Unable to update the details, please try again!</source>
@@ -8286,10 +8278,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
           <context context-type="linenumber">177</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/library/collection-navbar/collection-navbar.component.ts</context>
-          <context context-type="linenumber">81</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.pleaseWaitDeleting" datatype="html">
@@ -8474,6 +8462,54 @@
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-navbar/collection-image-details/collection-image-details.component.ts</context>
           <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="collectionNavbar.pleaseWaitWeAreSaving" datatype="html">
+        <source>Please wait we are saving the information...</source>
+        <target state="translated">Por favor espere estamos guardando la información...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/collection-navbar/collection-navbar.component.ts</context>
+          <context context-type="linenumber">68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="collectionNavbar.collectionSavedFavorite" datatype="html">
+        <source>Collection saved as favorite!</source>
+        <target state="translated">¡Colección guardada como favorita!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/collection-navbar/collection-navbar.component.ts</context>
+          <context context-type="linenumber">76</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="collectionNavbar.unableToSaveAsFavorite" datatype="html">
+        <source>Unable to save the collection as favorite, please try again!</source>
+        <target state="translated">No se puede guardar la colección como favorita, ¡inténtalo de nuevo!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/collection-navbar/collection-navbar.component.ts</context>
+          <context context-type="linenumber">79</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="collectionNavbar.plesaeWaitWeAreUpdaing" datatype="html">
+        <source>Please wait we are updating the contents...</source>
+        <target state="translated">Por favor espere estamos actualizando los contenidos...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/collection-navbar/collection-navbar.component.ts</context>
+          <context context-type="linenumber">103</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="collectionNavbar.detailsUpdated" datatype="html">
+        <source>Details updated!</source>
+        <target state="translated">¡Detalles actualizados!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/collection-navbar/collection-navbar.component.ts</context>
+          <context context-type="linenumber">107</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="collectionNavbar.unableToUpdateDetails" datatype="html">
+        <source>Unable to update the details, please try again!</source>
+        <target state="translated">No se pueden actualizar los detalles, inténtalo de nuevo.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/collection-navbar/collection-navbar.component.ts</context>
+          <context context-type="linenumber">110</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionNewElement.new" datatype="html">
@@ -12966,7 +13002,7 @@
         <target state="translated">Espere mientras lo desconectamos de forma segura...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
-          <context context-type="linenumber">120</context>
+          <context context-type="linenumber">124</context>
         </context-group>
       </trans-unit>
       <trans-unit id="iconsSidebar.successfullyLoggedOut" datatype="html">
@@ -12974,7 +13010,7 @@
         <target state="translated">¡Desconectado exitosamente!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
-          <context context-type="linenumber">127</context>
+          <context context-type="linenumber">131</context>
         </context-group>
       </trans-unit>
       <trans-unit id="iconsSidebar.errorLoggingOut" datatype="html">
@@ -12982,11 +13018,11 @@
         <target state="translated">Se produjo un error al cerrar la sesión, ¡inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
-          <context context-type="linenumber">130</context>
+          <context context-type="linenumber">134</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
-          <context context-type="linenumber">135</context>
+          <context context-type="linenumber">139</context>
         </context-group>
       </trans-unit>
       <trans-unit id="iconsSidebar.pleaseWaitSignYouIn" datatype="html">
@@ -12994,7 +13030,7 @@
         <target state="translated">Espere mientras lo registramos ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
-          <context context-type="linenumber">184</context>
+          <context context-type="linenumber">190</context>
         </context-group>
       </trans-unit>
       <trans-unit id="iconsSidebar.unexpectedError" datatype="html">
@@ -13002,7 +13038,7 @@
         <target state="translated">Se produjo un error inesperado. Vuelva a intentarlo más tarde!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
-          <context context-type="linenumber">188</context>
+          <context context-type="linenumber">194</context>
         </context-group>
       </trans-unit>
       <trans-unit id="iconsSidebar.workspaceIsNotAvailable" datatype="html">
@@ -13010,7 +13046,7 @@
         <target state="translated">Su espacio de trabajo no está disponible, comuníquese con su administrador.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
-          <context context-type="linenumber">221</context>
+          <context context-type="linenumber">227</context>
         </context-group>
       </trans-unit>
       <trans-unit id="iconsSidebar.hi" datatype="html">
@@ -13018,11 +13054,11 @@
         <target state="translated">Hi <x id="PH" equiv-text="res['user']['first_name']"/>,  ¡bienvenido de vuelta a tu workplace!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
-          <context context-type="linenumber">236</context>
+          <context context-type="linenumber">242</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">239</context>
+          <context context-type="linenumber">245</context>
         </context-group>
       </trans-unit>
       <trans-unit id="iconsSidebar.oopsErrorSigningIn" datatype="html">
@@ -13030,7 +13066,7 @@
         <target state="translated">Vaya, se ha producido un error al iniciar sesión. Inténtalo de nuevo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
-          <context context-type="linenumber">241</context>
+          <context context-type="linenumber">247</context>
         </context-group>
       </trans-unit>
       <trans-unit id="mobileNavbar.errorFetchingProfile" datatype="html">
@@ -13046,7 +13082,7 @@
         <target state="translated">Se produjo un error al obtener los detalles de su perfil</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/navbar.component.ts</context>
-          <context context-type="linenumber">223</context>
+          <context context-type="linenumber">225</context>
         </context-group>
       </trans-unit>
       <trans-unit id="portfolioImageDetails.updateYourGroupAvatar" datatype="html">
@@ -13194,7 +13230,7 @@
         <target state="translated">Espere mientras lo desconectamos de forma segura ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">122</context>
+          <context context-type="linenumber">126</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.successfullyLogOut" datatype="html">
@@ -13202,7 +13238,7 @@
         <target state="translated">¡Desconectado exitosamente!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">129</context>
+          <context context-type="linenumber">133</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.errorWhileLogOut" datatype="html">
@@ -13210,11 +13246,11 @@
         <target state="translated">¡Ocurrió un error al cerrar la sesión! ¡Inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">132</context>
+          <context context-type="linenumber">136</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">137</context>
+          <context context-type="linenumber">141</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.pleaseWaitSignYouIn" datatype="html">
@@ -13222,7 +13258,7 @@
         <target state="translated">Espere mientras lo registramos ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">170</context>
+          <context context-type="linenumber">176</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.unexpectedError" datatype="html">
@@ -13230,7 +13266,7 @@
         <target state="translated">Se produjo un error inesperado. Vuelva a intentarlo más tarde!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">174</context>
+          <context context-type="linenumber">180</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.workspaceIsNotAvailable" datatype="html">
@@ -13238,7 +13274,7 @@
         <target state="translated">Su espacio de trabajo no está disponible, comuníquese con su administrador.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">224</context>
+          <context context-type="linenumber">230</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.oopsErrorSigningIn" datatype="html">
@@ -13246,7 +13282,7 @@
         <target state="translated">Vaya, se ha producido un error al iniciar sesión. Inténtalo de nuevo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">244</context>
+          <context context-type="linenumber">250</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userAccountNavbar.edit" datatype="html">
