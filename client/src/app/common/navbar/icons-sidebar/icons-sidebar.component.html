@@ -50,7 +50,7 @@
           <i class="material-icons-outlined">star_outline</i>
         </li>
 
-        <li *ngFor="let group of userGroupsAndPortfolios">
+        <li *ngFor="let group of userGroupsAndPortfoliosAndCollections">
           <a (click)="goToGroupOrPortfolioOrCollection(group)">
               <app-secured-image
                   [imgURL]="group?.avatar"

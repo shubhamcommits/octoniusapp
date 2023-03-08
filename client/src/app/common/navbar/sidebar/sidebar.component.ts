@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, Injector,SimpleChanges,Input, EventEmitter, Output, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
-import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
@@ -11,7 +10,6 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import Swal from 'sweetalert2';
-// import { retry } from 'rxjs/internal/operators/retry';
 
 @Component({
   selector: 'app-sidebar',
@@ -24,18 +22,18 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
   @Input() iconsSidebar = false;
   @Input() userGroups: any = [];
   @Input() userPortfolios: any = [];
-  @Input() userCollections: any = [];
   @Input() isMobile = false;
 
   @Output() sidebarChange = new EventEmitter();
 
   // CURRENT USER DATA
   userData: any = {};
-
   accountData: any = {};
   userWorkspaces = [];
 
-  userGroupsAndPortfolios = [];
+  userCollections: any = [];
+
+  userGroupsAndPortfoliosAndCollections = [];
 
   // Workspace data for the current workspace
   public workspaceData: any = {};
@@ -51,12 +49,12 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(
     private injector: Injector,
+    private socketService:SocketService,
+    private router: Router,
     private storageService: StorageService,
     private authService: AuthService,
     private userService: UserService,
-    private managementPortalService: ManagementPortalService,
-    private socketService:SocketService,
-    private router: Router
+    private managementPortalService: ManagementPortalService
   ) { }
 
   async ngOnInit() {
@@ -75,11 +73,7 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
         this.userPortfolios = to;
       }
 
-      if (propName === 'userCollections') {
-        this.userCollections = to;
-      }
-
-      await this.mapGroupsAndPortfolios();
+      await this.mapGroupsAndPortfoliosAndCollections();
     }
   }
 
@@ -94,16 +88,19 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
     this.userData = await this.publicFunctions.getCurrentUser();
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     this.accountData = await this.publicFunctions.getCurrentAccount();
+
     await this.getUserWorkspaces();
 
     this.userGroups = this.userData['stats']['favorite_groups'];
     this.userPortfolios = this.userData['stats']['favorite_portfolios'];
-    this.userCollections = this.userData['stats']['favorite_collectios'];
+    this.userCollections = this.userData['stats']['favorite_collections'];
+
+    await this.mapGroupsAndPortfoliosAndCollections();
   }
 
-  async mapGroupsAndPortfolios() {
-    this.userGroupsAndPortfolios = [...this.userGroups, ...this.userPortfolios, ...this.userCollections];
-    this.userGroupsAndPortfolios = this.userGroupsAndPortfolios?.map(group => {
+  async mapGroupsAndPortfoliosAndCollections() {
+    this.userGroupsAndPortfoliosAndCollections = [...this.userGroups, ...this.userPortfolios, ...this.userCollections];
+    this.userGroupsAndPortfoliosAndCollections = this.userGroupsAndPortfoliosAndCollections?.map(group => {
         return {
           _id: group._id,
           name: group.group_name || group.portfolio_name || group.name,
@@ -112,7 +109,7 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
         };
       });
 
-    this.userGroupsAndPortfolios = this.userGroupsAndPortfolios?.sort((t1, t2) => {
+    this.userGroupsAndPortfoliosAndCollections = this.userGroupsAndPortfoliosAndCollections?.sort((t1, t2) => {
         const name1 = t1?.name.toLowerCase();
         const name2 = t2?.name.toLowerCase();
         if (name1 > name2) { return 1; }
@@ -214,7 +211,7 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
           await this.storeUserData(res);
 
           await this.initProperties();
-          await this.mapGroupsAndPortfolios();
+          await this.mapGroupsAndPortfoliosAndCollections();
 
           let workspaceBlocked = false;
           await this.managementPortalService.getBillingStatus(workspaceId, this.workspaceData?.management_private_api_key).then(res => {

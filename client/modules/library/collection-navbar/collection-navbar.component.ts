@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { LibraryService } from 'src/shared/services/library-service/library.service';
@@ -11,8 +11,6 @@ import { UserService } from 'src/shared/services/user-service/user.service';
   styleUrls: ['./collection-navbar.component.scss']
 })
 export class CollectionNavbarComponent implements OnInit {
-
-  @Output() favoriteCollectionSaved = new EventEmitter();
 
   collectionId: string;
 
@@ -67,7 +65,7 @@ export class CollectionNavbarComponent implements OnInit {
   }
 
   saveFavoriteCollection() {
-    this.utilityService.asyncNotification($localize`:@@groupNavbar.pleaseWaitWeAreSaving:Please wait we are saving the information...`,
+    this.utilityService.asyncNotification($localize`:@@collectionNavbar.pleaseWaitWeAreSaving:Please wait we are saving the information...`,
       new Promise((resolve, reject) => {
         // Call HTTP Request to change the request
         this.userService.saveFavoriteCollection(this.collectionData?._id, !this.isFavoriteCollection)
@@ -75,11 +73,10 @@ export class CollectionNavbarComponent implements OnInit {
             this.isFavoriteCollection = !this.isFavoriteCollection;
             this.userData = res['user'];
             this.publicFunctions.sendUpdatesToUserData(this.userData);
-            this.favoriteCollectionSaved.emit(this.userData);
-            resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupNavbar.groupSavedFavorite:Group saved as favorite!`))
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@collectionNavbar.collectionSavedFavorite:Collection saved as favorite!`));
           })
           .catch(() => {
-            reject(this.utilityService.rejectAsyncPromise($localize`:@@groupNavbar.unableToSaveAsFavorite:Unable to save the group as favorite, please try again!`))
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@collectionNavbar.unableToSaveAsFavorite:Unable to save the collection as favorite, please try again!`))
           });
       }));
   }
@@ -103,14 +100,14 @@ export class CollectionNavbarComponent implements OnInit {
     if (event.keyCode == 13) {
 
       // Set the edit title to false
-      await this.utilityService.asyncNotification($localize`:@@collectionHeader.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+      await this.utilityService.asyncNotification($localize`:@@collectionNavbar.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
         this.libraryService.editCollection(this.collectionData?._id, { 'name': this.collectionData?.name })
           .then((res) => {
             // Resolve with success
-            resolve(this.utilityService.resolveAsyncPromise($localize`:@@collectionHeader.detailsUpdated:Details updated!`));
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@collectionNavbar.detailsUpdated:Details updated!`));
           })
           .catch(() => {
-            reject(this.utilityService.rejectAsyncPromise($localize`:@@collectionHeader.unableToUpdateDetails:Unable to update the details, please try again!`));
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@collectionNavbar.unableToUpdateDetails:Unable to update the details, please try again!`));
           });
       }));
 

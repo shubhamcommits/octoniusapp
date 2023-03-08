@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, Injector, Input, EventEmitter, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
-import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
@@ -23,24 +22,24 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
   @Input() iconsSidebar = false;
   @Input() userGroups = [];
   @Input() userPortfolios = [];
-  @Input() userCollections: any = [];
-
+  
   @Output() sidebarChange = new EventEmitter();
-
+  
   // CURRENT USER DATA
   userData: any;
-
+  
   accountData: any = {};
   userWorkspaces = [];
-
-  userGroupsAndPortfolios = [];
-
+  
+  userGroupsAndPortfoliosAndCollections = [];
+  
   // Workspace data for the current workspace
   public workspaceData: any = {};
-
+  userCollections: any = [];
+  
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector);
-
+  
   // UNSUBSCRIBE THE DATA
   private subSink = new SubSink();
 
@@ -73,11 +72,7 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
         this.userPortfolios = to;
       }
 
-      if (propName === 'userCollections') {
-        this.userCollections = to;
-      }
-
-      await this.mapGroupsAndPortfolios();
+      await this.mapGroupsAndPortfoliosAndCollections();
     }
   }
 
@@ -96,12 +91,14 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
 
     this.userGroups = this.userData['stats']['favorite_groups'];
     this.userPortfolios = this.userData['stats']['favorite_portfolios'];
-    this.userCollections = this.userData['stats']['favorite_collectios'];
+    this.userCollections = this.userData['stats']['favorite_collections'];
+
+    await this.mapGroupsAndPortfoliosAndCollections();
   }
 
-  async mapGroupsAndPortfolios() {
-    this.userGroupsAndPortfolios = [...this.userGroups, ...this.userPortfolios, ...this.userCollections];
-    this.userGroupsAndPortfolios = this.userGroupsAndPortfolios?.map(group => {
+  async mapGroupsAndPortfoliosAndCollections() {
+    this.userGroupsAndPortfoliosAndCollections = [...this.userGroups, ...this.userPortfolios, ...this.userCollections];
+    this.userGroupsAndPortfoliosAndCollections = this.userGroupsAndPortfoliosAndCollections?.map(group => {
         return {
           _id: group._id,
           name: group.group_name || group.portfolio_name || group.name,
@@ -110,7 +107,7 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
         };
       });
 
-    this.userGroupsAndPortfolios = this.userGroupsAndPortfolios?.sort((t1, t2) => {
+    this.userGroupsAndPortfoliosAndCollections = this.userGroupsAndPortfoliosAndCollections?.sort((t1, t2) => {
         const name1 = t1?.name.toLowerCase();
         const name2 = t2?.name.toLowerCase();
         if (name1 > name2) { return 1; }
@@ -211,7 +208,7 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
           await this.storeUserData(res);
 
           await this.initProperties();
-          await this.mapGroupsAndPortfolios();
+          await this.mapGroupsAndPortfoliosAndCollections();
 
           let workspaceBlocked = false;
           await this.managementPortalService.getBillingStatus(workspaceId, this.workspaceData?.management_private_api_key).then(res => {
