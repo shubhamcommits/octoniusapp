@@ -82,9 +82,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         } else if (this.routerState === 'group' || this.routerState === 'home' || this.routerState === 'library' || this.routerState === 'collection') {
           this.nextGroupNavbarState();
 
-          if (this.routerState === 'collection') {
-            this.isCollectionPage = true;
-          }
+          this.isCollectionPage = (this.routerState === 'collection') ? true : false;
         }
         else if (this.routerState === 'work' || this.routerState === 'lounge'
             || this.routerState === 'people-directory' || this.routerState === 'people-directory-chart'

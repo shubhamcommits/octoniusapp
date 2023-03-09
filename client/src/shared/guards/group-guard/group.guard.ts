@@ -31,6 +31,10 @@ export class GroupGuard implements CanActivate  {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ) {
+    if (state.url.includes('/collection')) {
+      return true;
+    }
+
     return this.checkUserGroups() && this.checkGroupAdmins(state);
   }
 

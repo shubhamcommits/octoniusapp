@@ -1,12 +1,20 @@
 <div *ngIf="pageData" class="story-actions">
   <div class="story-actions-left">
 
-    <app-secured-image
+    <app-secured-image *ngIf="isAuth"
       [imgURL]="pageData?._created_by?.profile_pic"
       [service]="'user'"
       [workspaceId]="workspaceData?._id"
       [styleClass]="'feed-avatar-small'"
       style="float: left; cursor: auto;"></app-secured-image>
+
+    <app-secured-image *ngIf="!isAuth"
+      [imgURL]="pageData?._created_by?.profile_pic"
+      [service]="'user'"
+      [workspaceId]="workspaceData?._id"
+      [styleClass]="'feed-avatar-small'"
+      style="float: left; cursor: auto;"
+      [noAuth]="true"></app-secured-image>
 
     <div style="padding-top: 10px;" class="ml-1 mr-1">
       {{ pageData?._created_by?.first_name }}

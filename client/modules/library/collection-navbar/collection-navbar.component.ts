@@ -4,6 +4,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { LibraryService } from 'src/shared/services/library-service/library.service';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/shared/services/user-service/user.service';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
 
 @Component({
   selector: 'app-collection-navbar',
@@ -22,7 +23,8 @@ export class CollectionNavbarComponent implements OnInit {
   // Edit Title
   editTitle = false
 
-  canEdit = false;
+  isAuth;
+  canEdit: boolean = false;
 
   isFavoriteCollection: boolean;
 
@@ -34,16 +36,13 @@ export class CollectionNavbarComponent implements OnInit {
     private _Injector: Injector,
     private utilityService: UtilityService,
     private libraryService: LibraryService,
+    public storageService: StorageService,
     private userService: UserService
   ) {
     this.collectionId = this.activatedRoute.snapshot.queryParams['collection'];
   }
 
   async ngOnInit() {
-    // Set the groupData
-    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
-    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-    this.userData = await this.publicFunctions.getCurrentUser();
 
     // Send Updates to router state
     this.publicFunctions.sendUpdatesToRouterState({
@@ -54,7 +53,22 @@ export class CollectionNavbarComponent implements OnInit {
       this.collectionData = res['collection']
     });
 
-    this.canEdit = await this.utilityService.canUserDoCollectionAction(this.collectionData, this.groupData, this.userData, 'edit');
+    this.isAuth = this.storageService.existData('authToken');
+
+    if (this.isAuth) {
+      // Set the groupData
+      this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+      this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+      this.userData = await this.publicFunctions.getCurrentUser();
+    } else {
+      await this.libraryService.getWorkspaceByCollection(this.collectionId).then(res => {
+        this.workspaceData = res['workspace'];
+      });
+    }
+
+    const isAuth = this.storageService.existData('authToken');
+
+    this.canEdit = await this.utilityService.canUserDoCollectionAction(this.collectionData, this.groupData, 'edit', isAuth, this.userData);
 
     this.isFavoriteCollection = this.checkIsFavoriteCollection();
   }
@@ -86,8 +100,10 @@ export class CollectionNavbarComponent implements OnInit {
     * @param content
     */
   async openDetails(content) {
-    // Open Modal
-    this.utilityService.openModal(content, {});
+    if (this.isAuth) {
+      // Open Modal
+      this.utilityService.openModal(content, {});
+    }
   }
 
   /**

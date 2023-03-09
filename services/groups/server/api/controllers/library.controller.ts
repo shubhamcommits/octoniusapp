@@ -1181,6 +1181,69 @@ export class LibraryController {
      * This function fetches the collection details corresponding to the @constant collectionId 
      * @param req - @constant collectionId
      */
+    async getWorkspaceByCollection(req: Request, res: Response) {
+        try {
+
+            const { collectionId } = req.params;
+
+            // If collectionId is null or not provided then we throw BAD REQUEST 
+            if (!collectionId) {
+                return res.status(400).json({
+                    message: 'Please provide collectionId!'
+                });
+            }
+
+            // Find the Collection based on the collectionId
+            var collection = await Collection.findOne({
+                    _id: collectionId
+                }).lean();
+
+            // Check if collection already exist with the same collectionId
+            if (!collection) {
+                return sendError(res, new Error('Oops, collection not found!'), 'Collection not found, Invalid collectionId!', 404);
+            }
+
+            // Find the Group based on the groupId
+            var group = await Group.findOne({
+                    _id: collection?._group
+                })
+                .select('_workspace')
+                .lean();
+
+            // Check if group already exist with the same groupId
+            if (!group) {
+                return sendError(res, new Error('Oops, group not found!'), 'Group not found, Invalid groupId!', 404);
+            }
+
+            // Find the Group based on the groupId
+            var workspace = await Workspace.findOne({
+                    _id: group?._workspace
+                })
+                .populate({
+                    path: 'members',
+                    select: 'first_name last_name profile_pic current_position role email active',
+                })
+                .lean();
+
+            // Check if group already exist with the same groupId
+            if (!workspace) {
+                return sendError(res, new Error('Oops, workspace not found!'), 'Workspace not found, Invalid workspaceId!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Workspace found!',
+                workspace: workspace
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
+     * This function fetches the collection details corresponding to the @constant collectionId 
+     * @param req - @constant collectionId
+     */
     async getGroupByPage(req: Request, res: Response) {
         try {
 
@@ -1236,6 +1299,72 @@ export class LibraryController {
             return res.status(200).json({
                 message: 'Group found!',
                 group: group
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
+     * This function fetches the collection details corresponding to the @constant collectionId 
+     * @param req - @constant collectionId
+     */
+    async getWorkspaceByPage(req: Request, res: Response) {
+        try {
+
+            const { pageId } = req.params;
+
+            // If collectionId is null or not provided then we throw BAD REQUEST 
+            if (!pageId) {
+                return res.status(400).json({
+                    message: 'Please provide pageId!'
+                });
+            }
+
+            // Find the Collection based on the collectionId
+            var page = await Page.findOne({
+                    _id: pageId
+                })
+                .populate({ path: '_collection', select: '_id _group' })
+                .populate({ path: '_collection._group', select: '_id' })
+                .lean();
+
+            // Check if collection already exist with the same collectionId
+            if (!page) {
+                return sendError(res, new Error('Oops, collection not found!'), 'Collection not found, Invalid collectionId!', 404);
+            }
+
+            // Find the Group based on the groupId
+            var group = await Group.findOne({
+                    _id: page?._collection?._group?._id
+                })
+                .select('_workspace')
+                .lean();
+
+            // Check if group already exist with the same groupId
+            if (!group) {
+                return sendError(res, new Error('Oops, group not found!'), 'Group not found, Invalid groupId!', 404);
+            }
+console.log(group);
+            // Find the Group based on the groupId
+            var workspace = await Workspace.findOne({
+                    _id: group?._workspace
+                })
+                .populate({
+                    path: 'members',
+                    select: 'first_name last_name profile_pic current_position role email active',
+                })
+                .lean();
+console.log(workspace);
+            // Check if group already exist with the same groupId
+            if (!workspace) {
+                return sendError(res, new Error('Oops, workspace not found!'), 'Workspace not found, Invalid workspaceId!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Workspace found!',
+                workspace: workspace
             });
         } catch (err) {
             return sendError(res, err);

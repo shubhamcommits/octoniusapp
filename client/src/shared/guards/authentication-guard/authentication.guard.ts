@@ -38,7 +38,8 @@ export class AuthenticationGuard implements CanActivate, CanActivateChild, CanLo
 
       // If Document type has the readOnly mode to eb true
       if ((next.queryParamMap.get('readOnly') == 'true')
-          || (state.url.includes('/flamingo') && state.url.includes('/answer'))) {
+          || (state.url.includes('/flamingo') && state.url.includes('/answer'))
+          || (state.url.includes('/collection'))) {
         return true;
       }
 

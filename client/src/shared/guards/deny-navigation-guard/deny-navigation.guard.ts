@@ -37,6 +37,10 @@ export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDe
   canActivateChild(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+      if (state.url.includes('/collection')) {
+        return true;
+      }
+
       return this.checkBillingStatus();
   }
 

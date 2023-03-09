@@ -9,6 +9,7 @@ import { FilesService } from 'src/shared/services/files-service/files.service';
 import { LibreofficeService } from 'src/shared/services/libreoffice-service/libreoffice.service';
 import { environment } from 'src/environments/environment';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
+import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 
 @Component({
   selector: 'app-page-details',
@@ -49,7 +50,10 @@ export class PageDetailsComponent implements OnInit {
 
   newPageName = $localize`:@@pageDetails.newPage:New Page`;
 
+  isAuth;
   authToken: string;
+
+  htmlContent = '';
 
   baseAPIUrl = environment.UTILITIES_BASE_API_URL;
 
@@ -62,14 +66,20 @@ export class PageDetailsComponent implements OnInit {
   constructor(
     public injector: Injector,
     private activatedRoute: ActivatedRoute,
+    private router: Router,
     public dialog: MatDialog,
     private _router: Router,
     private utilityService: UtilityService,
     private libraryService: LibraryService,
     private libreofficeService: LibreofficeService,
     public storageService: StorageService,
-    private filesService: FilesService
+    private filesService: FilesService,
+    private workspaceService: WorkspaceService
   ) {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => {
+      return false;
+    };
+
     this.pageId = this.activatedRoute.snapshot.queryParams['page'];
 
     if (!this.pageId) {
@@ -92,23 +102,6 @@ export class PageDetailsComponent implements OnInit {
       state: 'collection'
     });
 
-    // Fetch the current loggedIn user data
-    if (!this.objectExists(this.userData)) {
-      this.userData = await this.publicFunctions.getCurrentUser();
-    }
-
-    this.authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`;
-
-    if (!this.objectExists(this.groupData)) {
-      // Fetch the current group data
-      this.groupData = await this.publicFunctions.getCurrentGroupDetails();
-    }
-
-    if (!this.objectExists(this.workspaceData)) {
-      // Fetch the current workspace data
-      this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-    }
-
     await this.libraryService.getPage(this.pageId).then(res => {
       this.pageData = res['page']
     });
@@ -117,16 +110,49 @@ export class PageDetailsComponent implements OnInit {
       this.collectionData = res['collection']
     });
 
+    this.isAuth = this.storageService.existData('authToken');
+
+    this.authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`;
+
+    // Fetch the current loggedIn user data
+    if (!this.objectExists(this.userData) && this.isAuth) {
+      this.userData = await this.publicFunctions.getCurrentUser();
+    }
+
+    if (!this.objectExists(this.groupData) && this.isAuth) {
+      // Fetch the current group data
+      this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+    } else if (!this.objectExists(this.groupData)) {
+      await this.libraryService.getGroupByPage(this.pageId).then(res => {
+        this.groupData = res['group'];
+      });
+    }
+
+    if (!this.objectExists(this.workspaceData) && this.isAuth) {
+      // Fetch the current workspace data
+      this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    } else if (!this.objectExists(this.workspaceData)) {
+      await this.libraryService.getWorkspaceByPage(this.pageId).then(res => {
+        this.workspaceData = res['workspace'];
+      });
+    }
+
+    if (!this.isAuth) {
+      this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.pageData?.content)['ops']);
+    }
+
     await this.initPages();
 
-    this.canEdit = await this.utilityService.canUserDoCollectionAction(this.collectionData, this.groupData, this.userData, 'edit');
+    this.canEdit = await this.utilityService.canUserDoCollectionAction(this.collectionData, this.groupData, 'edit', this.isAuth, this.userData);
 
-    // Set the File Credentials after view initialization
-    this.fileData = {
-      _group: this.groupData?._id,
-      _page: this.pageData?._id,
-      type: 'file',
-      _workspace: this.workspaceData?._id
+    if (this.objectExists(this.workspaceData) && this.objectExists(this.groupData)) {
+      // Set the File Credentials after view initialization
+      this.fileData = {
+        _group: this.groupData?._id,
+        _page: this.pageData?._id,
+        type: 'file',
+        _workspace: this.workspaceData?._id
+      }
     }
 
     // Stops the spinner and return the value with ngOnInit

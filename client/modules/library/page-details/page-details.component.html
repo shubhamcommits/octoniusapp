@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" [ngStyle]="{'margin-top': (isAuth) ? '' : '90px'}">
     <div *ngIf="pageData" class="page">
         <div class="page-navbar" *ngIf="!canEditPage">
             <div class="col">
@@ -61,11 +61,19 @@
                 </div>
 
                 <div *ngFor="let author of pageData?._updated_by">
-                    <app-secured-image
+                    <app-secured-image *ngIf="isAuth"
                         [imgURL]="author?.profile_pic"
                         [service]="'user'"
                         [workspaceId]="workspaceData?._id"
                         [styleClass]="'feed-avatar-small'"
+                        style="float: left; cursor: auto;"></app-secured-image>
+
+                    <app-secured-image *ngIf="!isAuth"
+                        [imgURL]="author?.profile_pic"
+                        [service]="'user'"
+                        [workspaceId]="workspaceData?._id"
+                        [styleClass]="'feed-avatar-small'"
+                        [noAuth]="true"
                         style="float: left; cursor: auto;"></app-secured-image>
 
                     <div style="padding-top: 10px;" class="ml-1 mr-1">
@@ -83,9 +91,12 @@
                     <p class="muted">Start writing something awesome!</p>
                 </div>
                  <!-- Menu Starts -->
-                <div class="editbar" *ngIf="canEdit">
-                    <button class="btn btn-link" (click)="canEditAction()"><i class="material-icons">create</i></button>
-                    <button class="btn btn-link ml-2" data-toggle="dropdown">
+                <div class="editbar">
+                    <button *ngIf="canEdit" class="btn btn-link" (click)="canEditAction()">
+                        <i class="material-icons">create</i>
+                    </button>
+
+                    <button *ngIf="canEdit" class="btn btn-link ml-2" data-toggle="dropdown">
                         <i class="material-icons muted">more_horiz</i>
                     </button>
                     <ul class="dropdown-menu">
@@ -102,14 +113,16 @@
                 </div>
         
                  <!-- Menu Ends -->
-                <app-quill-editor style="margin-bottom: 30px;" *ngIf="pageData?.content && !canEditPage" [editorId]="'story_viewer'" [toolbar]="false"
+                <app-quill-editor style="margin-bottom: 30px;" *ngIf="pageData?.content && !canEditPage && isAuth" [editorId]="'story_viewer'" [toolbar]="false"
                     [readOnly]="canEdit" [contents]="pageData?.content" [mentionAll]="false">
                 </app-quill-editor>
         
-                <app-quill-editor style="margin-bottom: 30px;" *ngIf="canEditPage" [editorId]="'story_editor'" [toolbar]="true"
+                <app-quill-editor style="margin-bottom: 30px;" *ngIf="canEditPage && isAuth" [editorId]="'story_editor'" [toolbar]="true"
                     [readOnly]="canEdit" [workspaceId]="workspaceData?._id" [mentionAll]="false"
                     [contents]="pageData?.content" (content)="getQuillData($event)">
                 </app-quill-editor>
+
+                <div *ngIf="!isAuth" [innerHTML]="(htmlContent) | safe: 'html'" style="margin: 30px 0;"></div>
 
                 <div style="width: 100%; text-align: right;" *ngIf="canEdit">
                     <button *ngIf="canEditPage" i18n="@@pageDetails.edit" class="btn btn-danger mr-2" (click)="canEditAction()">Cancel</button>
@@ -127,6 +140,7 @@
                 [userData]="userData"
                 [canEditStory]="canEditPage"
                 [showComments]="showComments"
+                [isAuth]="isAuth"
                 (onEditActionEvent)="canEditAction()"
                 (onShowCommentsActionEvent)="showCommentsAction($event)"></app-page-actions-bar>
 

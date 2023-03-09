@@ -8,6 +8,33 @@ const library = new LibraryController();
 // Auths Helper Function
 const authsHelper = new Auths();
 
+// GET - Get collection based on the collectionId
+routes.get('/collection/:collectionId', library.getCollection);
+
+// GET - Get group by collection
+routes.get('/collection/:collectionId/group-by-collection', library.getGroupByCollection);
+
+// GET - Get group by collection
+routes.get('/collection/:collectionId/workspace-by-collection', library.getWorkspaceByCollection);
+
+// GET - Get all  collections by groups
+routes.get('/page/:collectionId/by-collection', library.getPagesByCollection);
+
+// GET - Get all  collections by groups
+routes.get('/page/:pageId', library.getPage);
+
+// GET - Get all  collection by page
+routes.get('/collection/:pageId/by-page', library.getCollectionByPage);
+
+// GET - Get group by page
+routes.get('/page/:pageId/group-by-page', library.getGroupByPage);
+
+// GET - Get all  collections by groups
+routes.get('/page/:pageId/by-page', library.getPagesByParent);
+
+// GET - Get group by page
+routes.get('/page/:pageId/workspace-by-page', library.getWorkspaceByPage);
+
 // -| Authentication |-
 
 // Verify the token
@@ -16,14 +43,8 @@ routes.use(authsHelper.verifyToken);
 // Checks whether the current user is loggedIn or not
 routes.use(authsHelper.isLoggedIn);
 
-// GET - Get collection based on the collectionId
-routes.get('/collection/:collectionId', library.getCollection);
-
 // GET - Get all  collections by groups
 routes.get('/collection/:groupId/by-group', library.getCollectionsByGroup);
-
-// GET - Get all  collection by page
-routes.get('/collection/:pageId/by-page', library.getCollectionByPage);
 
 // POST - Create new collection in the group
 routes.post('/create-collection', library.createCollection);
@@ -55,17 +76,8 @@ routes.post('/collection/:workspaceId/export-spaces/:groupId', library.exportCon
 // POST - Create new page in the collection
 routes.post('/page/:collectionId', library.createPage);
 
-// GET - Get all  collections by groups
-routes.get('/page/:pageId', library.getPage);
-
 // DELETE - Removes the collection from the database
 routes.delete('/page/:pageId/:workspaceId', library.deletePage);
-
-// GET - Get all  collections by groups
-routes.get('/page/:collectionId/by-collection', library.getPagesByCollection);
-
-// GET - Get all  collections by groups
-routes.get('/page/:pageId/by-page', library.getPagesByParent);
 
 // PUT - Removes a group to the collection
 routes.put('/page/:pageId/', library.editPage);
@@ -81,12 +93,6 @@ routes.post('/page/:pageId/files/:workspaceId/:collectionId', pageFileUploader, 
 
 // PUT - Delete a file from a page
 routes.put('/page/:fileId/remove-file/:workspaceId', library.removePageFile);
-
-// GET - Get group by collection
-routes.get('/collection/:collectionId/group-by-collection', library.getGroupByCollection);
-
-// GET - Get group by page
-routes.get('/page/:pageId/group-by-page', library.getGroupByPage);
 
 // GET - Search the pages to be refered from quill
 routes.get('/page/:pageId/search', library.searchPages);

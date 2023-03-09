@@ -104,4 +104,8 @@ export class CollectionPagesComponent implements OnInit, OnChanges {
 	objectExists(object: any) {
 		return this.utilityService.objectExists(object);
 	}
+
+	goToPage() {
+console.log("11111");
+	}
 }

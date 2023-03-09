@@ -8,6 +8,7 @@ import {
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { LibraryService } from 'src/shared/services/library-service/library.service';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,7 @@ export class LibraryGuard implements CanActivateChild  {
   constructor(
     private utilityService: UtilityService,
     private libraryService: LibraryService,
+    public storageService: StorageService,
     private router: Router,
     private injector: Injector
   ) {
@@ -79,8 +81,6 @@ export class LibraryGuard implements CanActivateChild  {
       return false;
     }
 
-    let userData: any = await this.publicFunctions.getCurrentUser();
-
     if (currentGroup?.archived_group) {
       this.utilityService.warningNotification($localize`:@@libraryGuard.oopsGroupDoesNotExist:Oops seems like the group don\'t exist!`);
       await this.publicFunctions.sendUpdatesToGroupData({});
@@ -88,8 +88,8 @@ export class LibraryGuard implements CanActivateChild  {
       return false;
     }
 
-    const userCanViewCollection = await this.utilityService.canUserDoCollectionAction(collectionData, currentGroup, userData, 'read');
-    // if (userCanViewCollection && userData?._private_group != currentGroup?._id) {
+    const isAuth = this.storageService.existData('authToken');
+    const userCanViewCollection = await this.utilityService.canUserDoCollectionAction(collectionData, currentGroup, 'read', isAuth);
     if (userCanViewCollection) {
       return true;
     } else {

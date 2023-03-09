@@ -18,6 +18,7 @@ export class PageActionsBarComponent implements OnInit, OnChanges {
   @Input() userData: any = {};
   @Input() canEditPage: boolean = false;
   @Input() showComments: boolean = false;
+  @Input() isAuth: any;
 
   @Output() onEditActionEvent = new EventEmitter();
   @Output() onShowCommentsActionEvent = new EventEmitter();
@@ -34,7 +35,6 @@ export class PageActionsBarComponent implements OnInit, OnChanges {
   ) { }
 
   async ngOnInit() {
-
   }
 
   async ngOnChanges() {

@@ -179,8 +179,16 @@ export class LibraryService {
     return this._http.get(this.baseUrl + `/library/collection/${collectionId}/group-by-collection`).toPromise();
   }
 
+  getWorkspaceByCollection(collectionId: string) {
+    return this._http.get(this.baseUrl + `/library/collection/${collectionId}/workspace-by-collection`).toPromise();
+  }
+
   getGroupByPage(pageId: string) {
     return this._http.get(this.baseUrl + `/library/page/${pageId}/group-by-page`).toPromise();
+  }
+
+  getWorkspaceByPage(pageId: string) {
+    return this._http.get(this.baseUrl + `/library/page/${pageId}/workspace-by-page`).toPromise();
   }
 
   getUserConfluenceSpaces(workspaceId: string) {
