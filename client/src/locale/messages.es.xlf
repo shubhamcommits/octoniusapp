@@ -16086,16 +16086,18 @@
         </context-group>
       </trans-unit>
       <trans-unit id="passwordStrength.lowerCase" datatype="html">
-        <source>Must include a lower case letter</source>
-        <target state="translated">Debe incluir una letra minúscula</target>
+        <source>Must include 1 lower case letter</source>
+        <target state="translated">Debe incluir 1 letra minúscula</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/password-strength/password-strength.component.html</context>
           <context context-type="linenumber">18</context>
         </context-group>
       </trans-unit>
       <trans-unit id="passwordStrength.upperCase" datatype="html">
-        <source>Must include a upper case letter</source>
-        <target state="translated">Debe incluir una letra mayúscula</target>
+        <source>Must include 1 capital letter</source>
+        <target state="translated">Debe incluir 1 letra mayúscula</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/password-strength/password-strength.component.html</context>
           <context context-type="linenumber">25</context>
@@ -16110,8 +16112,9 @@
         </context-group>
       </trans-unit>
       <trans-unit id="passwordStrength.symbol" datatype="html">
-        <source>Must include a symbol</source>
-        <target state="translated">Debe incluir un símbolo</target>
+        <source>Must include 1 symbol</source>
+        <target state="translated">Debe incluir 1 símbolo</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/password-strength/password-strength.component.html</context>
           <context context-type="linenumber">39</context>

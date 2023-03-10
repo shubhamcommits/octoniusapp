@@ -16086,7 +16086,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="passwordStrength.lowerCase" datatype="html">
-        <source>Must include a lower case letter</source>
+        <source>Must include 1 lower case letter</source>
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/password-strength/password-strength.component.html</context>
@@ -16094,7 +16094,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="passwordStrength.upperCase" datatype="html">
-        <source>Must include a upper case letter</source>
+        <source>Must include 1 capital letter</source>
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/password-strength/password-strength.component.html</context>
@@ -16110,7 +16110,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="passwordStrength.symbol" datatype="html">
-        <source>Must include a symbol</source>
+        <source>Must include 1 symbol</source>
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/password-strength/password-strength.component.html</context>
