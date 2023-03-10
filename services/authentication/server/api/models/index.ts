@@ -5,6 +5,8 @@ import { User } from './user.model';
 import { Account } from './account.model';
 import { Workspace } from './workspace.model';
 import { Portfolio } from './portfolio.model';
+import { Page } from './page.model';
+import { Collection } from './collection.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -17,5 +19,7 @@ export {
     User as User,
     Account as Account,
     Workspace as Workspace,
-    Portfolio as Portfolio
+    Portfolio as Portfolio,
+    Collection as Collection,
+    Page as Page
 };
