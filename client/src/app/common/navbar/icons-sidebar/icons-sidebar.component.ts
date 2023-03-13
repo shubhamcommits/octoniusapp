@@ -98,18 +98,20 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
 
   async mapGroupsAndPortfoliosAndCollections() {
     this.userGroupsAndPortfoliosAndCollections = [...this.userGroups, ...this.userPortfolios, ...this.userCollections];
-    this.userGroupsAndPortfoliosAndCollections = this.userGroupsAndPortfoliosAndCollections?.map(group => {
-        return {
-          _id: group._id,
-          name: group.group_name || group.portfolio_name || group.name,
-          avatar: group.group_avatar || group.portfolio_avatar || group.collection_avatar,
-          type: (group.group_name) ? 'group' : (group.portfolio_name) ? 'portfolio' : 'collection'
-        };
+    this.userGroupsAndPortfoliosAndCollections = this.userGroupsAndPortfoliosAndCollections?.map(element => {
+        if (!!element.group_name || !!element.portfolio_name || !!element.name) {
+          return {
+            _id: element._id,
+            name: element.group_name || element.portfolio_name || element.name,
+            avatar: element.group_avatar || element.portfolio_avatar || element.collection_avatar,
+            type: (element.group_name) ? 'group' : (element.portfolio_name) ? 'portfolio' : 'collection'
+          };
+        }
       });
 
     this.userGroupsAndPortfoliosAndCollections = this.userGroupsAndPortfoliosAndCollections?.sort((t1, t2) => {
-        const name1 = t1?.name?.toLowerCase() || '';
-        const name2 = t2?.name?.toLowerCase() || '';
+        const name1 = t1?.name?.toLowerCase() || t1?.name;
+        const name2 = t2?.name?.toLowerCase() || t2?.name;
         if (name1 > name2) { return 1; }
         if (name1 < name2) { return -1; }
         return 0;
