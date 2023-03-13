@@ -73,7 +73,7 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
         this.userPortfolios = to;
       }
 
-      await this.mapGroupsAndPortfoliosAndCollections();
+      await this.initProperties();
     }
   }
 
