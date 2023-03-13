@@ -110,8 +110,8 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
       });
 
     this.userGroupsAndPortfoliosAndCollections = this.userGroupsAndPortfoliosAndCollections?.sort((t1, t2) => {
-        const name1 = t1?.name.toLowerCase();
-        const name2 = t2?.name.toLowerCase();
+        const name1 = t1?.name?.toLowerCase() || '';
+        const name2 = t2?.name?.toLowerCase() || '';
         if (name1 > name2) { return 1; }
         if (name1 < name2) { return -1; }
         return 0;
