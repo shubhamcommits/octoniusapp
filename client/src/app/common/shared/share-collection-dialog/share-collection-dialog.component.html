@@ -15,7 +15,7 @@
   </h2>
 
   <div class="row">
-    <div class="col-6">
+    <div class="col-9">
       <mat-slide-toggle color="primary" [checked]="collectionData?.share?.open_link?.status" [name]="'enabled_project_type'"
         (change)="changeCollectionOpenLink($event)" [(ngModel)]="collectionData.share.open_link.status">
         <h6><b i18n="@@shareCollectionDialog.enableOpenLink">Enable Open Link for Collection</b></h6>
@@ -23,6 +23,7 @@
       </mat-slide-toggle>
     </div>
 
+    <!--
     <div class="col-4">
       <mat-select [disabled]="!collectionData?.share?.open_link?.status"
         [(value)]="collectionData.share.open_link.can_edit"
@@ -31,8 +32,9 @@
         <mat-option [value]="false" i18n="@@shareCollectionDialog.readOnly">Read-Only</mat-option>
       </mat-select>
     </div>
+    -->
 
-    <div class="col-2">
+    <div class="col-3">
       <button [disabled]="!collectionData?.share?.open_link?.status" class="btn float-right btn-primary btn-md"
           (click)="copyCollectionLink()">
         <i class="material-icons-round">content_copy</i>
