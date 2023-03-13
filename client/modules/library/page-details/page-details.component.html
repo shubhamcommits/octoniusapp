@@ -113,16 +113,25 @@
                 </div>
         
                  <!-- Menu Ends -->
-                <app-quill-editor style="margin-bottom: 30px;" *ngIf="pageData?.content && !canEditPage && isAuth" [editorId]="'story_viewer'" [toolbar]="false"
+                <!--
+                <app-quill-editor style="margin-bottom: 30px;" *ngIf="pageData?.content && !canEditPage && canEdit" [editorId]="'story_viewer'" [toolbar]="false"
                     [readOnly]="canEdit" [contents]="pageData?.content" [mentionAll]="false">
                 </app-quill-editor>
+                -->
+
+                <div *ngIf="!canEditPage || !canEdit" [innerHTML]="(htmlContent) | safe: 'html'" style="margin: 30px 0;"></div>
         
-                <app-quill-editor style="margin-bottom: 30px;" *ngIf="canEditPage && isAuth" [editorId]="'story_editor'" [toolbar]="true"
-                    [readOnly]="canEdit" [workspaceId]="workspaceData?._id" [mentionAll]="false"
-                    [contents]="pageData?.content" (content)="getQuillData($event)">
+                <app-quill-editor style="margin-bottom: 30px;" *ngIf="canEditPage && canEdit" [editorId]="'page_editor'" [toolbar]="true"
+                    [groupId]="groupData?._id" [workspaceId]="workspaceData?._id" [workspaceData]="workspaceData"
+                    [readOnly]="!canEdit" [mentionAll]="false" [contents]="pageData?.content" (content)="getQuillData($event)">
                 </app-quill-editor>
 
-                <div *ngIf="!isAuth" [innerHTML]="(htmlContent) | safe: 'html'" style="margin: 30px 0;"></div>
+                <!--
+                <app-quill-editor *ngIf="canEditPage && canEdit" [groupId]="groupData?._id" [workspaceId]="workspaceData?._id"
+                    [workspaceData]="workspaceData" [editorId]="'collection_content'" [toolbar]="true" [readOnly]="false"
+                    [mentionAll]="false" [contents]="collectionData?.content" (content)="getQuillData($event)">
+                </app-quill-editor>
+                -->
 
                 <div style="width: 100%; text-align: right;" *ngIf="canEdit">
                     <button *ngIf="canEditPage" i18n="@@pageDetails.edit" class="btn btn-danger mr-2" (click)="canEditAction()">Cancel</button>
