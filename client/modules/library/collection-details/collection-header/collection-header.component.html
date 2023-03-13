@@ -44,9 +44,9 @@
 </div>
 
 <div class="clearfix save-content mb-3" *ngIf="canEdit">
-    <button *ngIf="!editContent" class="btn btn-light btn-md float-right" style="margin-right: 20px;"
+    <button *ngIf="!editContent" class="btn btn-outline-secondary btn-md float-right" style="margin-right: 20px;"
         [matMenuTriggerFor]="collectionActions" #trigger="matMenuTrigger">
-        <span i18n="@@collectionHeader.editDetails">Edit details</span>
+        <span i18n="@@collectionHeader.editDetails">Options</span>
     </button>
 
     <button *ngIf="editContent" (click)="openShareDialog()"
@@ -66,25 +66,25 @@
     </button>
 
     <mat-menu #collectionActions="matMenu">
-        <ul style="list-style: none; padding: 0 20px; margin: 0;">
+        <ul style="list-style: none; padding:0px; margin: 0;" class="options">
             <li>
-                <a *ngIf="!editContent" (click)="openShareDialog()" class="btn btn-light btn-md" style="margin: 0;">
+                <a *ngIf="!editContent" (click)="openShareDialog()" class="btn btn-primary btn-block">
                     <i class="material-icons-outlined">share</i>
-                    <span i18n="@@collectionHeader.shareCollection">Share Collection</span>
+                    <span i18n="@@collectionHeader.shareCollection">Share</span>
                 </a>
             </li>
 
              <li>
-                <a *ngIf="!editContent" (click)="editContent = !editContent" class="btn btn-light btn-md" style="margin: 0;">
+                <a *ngIf="!editContent" (click)="editContent = !editContent" class="btn btn-secondary btn-block">
                     <i class="material-icons-outlined">edit</i>
-                    <span i18n="@@collectionHeader.editDetails">Edit details</span>
+                    <span i18n="@@collectionHeader.editDetails">Edit</span>
                 </a>
             </li>
 
-            <li style="margin-top: 20px;">
-                <a *ngIf="!editContent" (click)="deleteCollection()" class="btn btn-light btn-md" style="margin: 0;">
+            <li>
+                <a *ngIf="!editContent" (click)="deleteCollection()" class="btn btn-danger btn-block">
                     <i class="material-icons-outlined">delete</i>
-                    <span i18n="@@collectionHeader.delete">Delete collection</span>
+                    <span i18n="@@collectionHeader.delete">Delete</span>
                 </a>
             </li>
         </ul>
