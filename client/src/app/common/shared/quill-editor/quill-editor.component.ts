@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Output, EventEmitter, Input, Injector } from '@angular/core';
+import { Component, OnInit, OnChanges, Output, EventEmitter, Input, Injector, AfterViewInit } from '@angular/core';
 
 // Highlight.js
 import hljs from 'highlight.js';
@@ -56,16 +56,14 @@ Quill.register('modules/clipboard', QuillClipboard, true)
 
 // Environments
 import { environment } from 'src/environments/environment';
-import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
 
 @Component({
   selector: 'app-quill-editor',
   templateUrl: './quill-editor.component.html',
   styleUrls: ['./quill-editor.component.scss']
 })
-export class QuillEditorComponent implements OnInit, OnChanges {
+export class QuillEditorComponent implements OnInit, OnChanges, AfterViewInit {
 
   // EditorId variable
   @Input('editorId') editorId: any;
@@ -84,6 +82,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
   @Input() workspaceId: any;
   @Input() theme = 'snow';
   @Input() mentionAll = true;
+  @Input() workspaceData: any;
 
   // Output the content present in the editor
   @Output('content') content = new EventEmitter();
@@ -94,8 +93,6 @@ export class QuillEditorComponent implements OnInit, OnChanges {
   // Quill modules variable
   modules: any;
 
-  workspaceData: any;
-
   // Uploads url for Files
   filesBaseUrl = environment.UTILITIES_BASE_API_URL;
 
@@ -103,7 +100,6 @@ export class QuillEditorComponent implements OnInit, OnChanges {
   public publicFunctions = new PublicFunctions(this.Injector);
 
   constructor(
-    private integrationsService: IntegrationsService,
     private utilityService: UtilityService,
     private Injector: Injector
   ) {
@@ -157,10 +153,12 @@ export class QuillEditorComponent implements OnInit, OnChanges {
       this.modules.imageCompress = this.quillImageCompress()
     }
 
-    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-  //}
+    if (!this.utilityService.objectExists(this.workspaceData)) {
+      this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    }
+  }
 
-  //ngAfterViewInit() {
+  ngAfterViewInit() {
 
     // Initialise quill editor
     this.quill = this.quillEditor(this.modules)

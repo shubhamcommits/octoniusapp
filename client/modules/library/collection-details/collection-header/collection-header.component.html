@@ -22,8 +22,10 @@
         <div *ngIf="!editContent || !canEdit" [innerHTML]="(htmlContent) | safe: 'html'" class="collection-content"></div>
 
         <!-- Collection Content starts -->
-        <app-quill-editor *ngIf="editContent && canEdit" class="collection-content" [editorId]="'global-ns-editor'" [toolbar]="true"
-            [readOnly]="false" [mentionAll]="false" [contents]="collectionData?.content" (content)="quillContentChanged($event)">
+        <app-quill-editor *ngIf="editContent && canEdit" [groupId]="groupData?._id"
+            [workspaceId]="workspaceData?._id" [workspaceData]="workspaceData"
+            [editorId]="'collection_content'" [toolbar]="true" [readOnly]="false"
+            [mentionAll]="false" [contents]="collectionData?.content" (content)="quillContentChanged($event)">
         </app-quill-editor>
         <!-- Collection Content ends -->
 

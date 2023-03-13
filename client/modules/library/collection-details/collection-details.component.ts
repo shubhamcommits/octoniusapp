@@ -82,14 +82,15 @@ export class CollectionDetailsComponent implements OnInit {
     });
 
     const isAuth = this.storageService.existData('authToken');
+
     // Fetch the current loggedIn user data
-    if (!this.objectExists(this.userData) && isAuth) {
+    if (!this.objectExists(this.userData) && !!isAuth) {
       this.userData = await this.publicFunctions.getCurrentUser();
     }
 
     this.authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`;
 
-    if (!this.objectExists(this.groupData) && isAuth) {
+    if (!this.objectExists(this.groupData) && !!isAuth) {
       // Fetch the current group data
       this.groupData = await this.publicFunctions.getCurrentGroupDetails();
     } else if (!this.objectExists(this.groupData)) {
@@ -98,16 +99,16 @@ export class CollectionDetailsComponent implements OnInit {
       });
     }
 
-    if (!this.objectExists(this.workspaceData) && isAuth) {
+    if (!this.objectExists(this.workspaceData) && !!isAuth) {
       // Fetch the current workspace data
       this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     } else if (!this.objectExists(this.workspaceData)) {
       await this.libraryService.getWorkspaceByCollection(this.collectionId).then(res => {
-        this.groupData = res['group'];
+        this.workspaceData = res['workspace'];
       });
     }
 
-    this.canEdit = await this.utilityService.canUserDoCollectionAction(this.collectionData, this.groupData, 'edit', isAuth, this.userData);
+    this.canEdit = await this.utilityService.canUserDoCollectionAction(this.collectionData, this.groupData, 'edit', !!isAuth, this.userData);
 
     this.initPages();
 

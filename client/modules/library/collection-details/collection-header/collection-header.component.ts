@@ -1,4 +1,4 @@
-import { Component, Injector, Input, OnInit, OnChanges } from '@angular/core';
+import { Component, Injector, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,6 +18,7 @@ export class CollectionHeaderComponent implements OnInit, OnChanges {
   @Input() collectionData;
   @Input() userData;
   @Input() workspaceData;
+  @Input() groupData;
   @Input() canEdit;
 
   editTitle = false;
@@ -40,16 +41,13 @@ export class CollectionHeaderComponent implements OnInit, OnChanges {
   ) { }
 
   async ngOnInit() {
-    // Fetch the current loggedIn user data
-    if (!this.objectExists(this.userData)) {
-      this.userData = await this.publicFunctions.getCurrentUser();
-    }
   }
 
-  async ngOnChanges() {
+  async ngOnChanges(changes: SimpleChanges) {
     this.title = this.collectionData?.name;
 
     this.updateHTMLContent();
+console.log(changes);
   }
 
   ngOnDestroy() {
