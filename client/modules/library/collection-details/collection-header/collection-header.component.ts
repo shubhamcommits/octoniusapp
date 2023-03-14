@@ -47,7 +47,6 @@ export class CollectionHeaderComponent implements OnInit, OnChanges {
     this.title = this.collectionData?.name;
 
     this.updateHTMLContent();
-console.log(changes);
   }
 
   ngOnDestroy() {

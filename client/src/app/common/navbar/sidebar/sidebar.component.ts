@@ -9,6 +9,9 @@ import { SubSink } from 'subsink';
 import { MatSidenav } from '@angular/material/sidenav';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
+import { GroupService } from 'src/shared/services/group-service/group.service';
+import { PortfolioService } from 'src/shared/services/portfolio-service/portfolio.service';
+import { LibraryService } from 'src/shared/services/library-service/library.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -54,6 +57,9 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
     private storageService: StorageService,
     private authService: AuthService,
     private userService: UserService,
+    private groupService: GroupService,
+    private portfolioService: PortfolioService,
+    private libraryService: LibraryService,
     private managementPortalService: ManagementPortalService
   ) { }
 
@@ -67,13 +73,13 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
       const to = change.currentValue;
       if (propName === 'userGroups') {
         this.userGroups = to;
+        await this.mapGroupsAndPortfoliosAndCollections();
       }
 
       if (propName === 'userPortfolios') {
         this.userPortfolios = to;
+        await this.mapGroupsAndPortfoliosAndCollections();
       }
-
-      await this.initProperties();
     }
   }
 
@@ -99,17 +105,34 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   async mapGroupsAndPortfoliosAndCollections() {
+    // Sometimes the favorites are not populated
+    for (let i = 0; i < this.userGroups.length; i++) {
+      if (!this.userGroups[i]?._id) {
+        await this.groupService.getGroup(this.userGroups[i]).then(res => this.userGroups[i] = res['group']);
+      }
+    }
+    // Sometimes the favorites are not populated
+    for (let i = 0; i < this.userPortfolios.length; i++) {
+      if (!this.userPortfolios[i]?._id) {
+        await this.portfolioService.getPortfolio(this.userPortfolios[i]).then(res => this.userPortfolios[i] = res['portfolio']);
+      }
+    }
+    // Sometimes the favorites are not populated
+    for (let i = 0; i < this.userCollections.length; i++) {
+      if (!this.userCollections[i]?._id) {
+        await this.libraryService.getCollection(this.userCollections[i]).then(res => this.userCollections[i] = res['collection']);
+      }
+    }
+
     this.userGroupsAndPortfoliosAndCollections = [...this.userGroups, ...this.userPortfolios, ...this.userCollections];
-console.log(this.userGroupsAndPortfoliosAndCollections);
+
     this.userGroupsAndPortfoliosAndCollections = this.userGroupsAndPortfoliosAndCollections?.map(element => {
-        if (!!element.group_name || !!element.portfolio_name || !!element.name) {
-          return {
-            _id: element._id,
-            name: element.group_name || element.portfolio_name || element.name,
-            avatar: element.group_avatar || element.portfolio_avatar || element.collection_avatar,
-            type: (element.group_name) ? 'group' : (element.portfolio_name) ? 'portfolio' : 'collection'
-          };
-        }
+        return {
+          _id: element._id,
+          name: element.group_name || element.portfolio_name || element.name,
+          avatar: element.group_avatar || element.portfolio_avatar || element.collection_avatar,
+          type: (element.group_name) ? 'group' : (element.portfolio_name) ? 'portfolio' : 'collection'
+        };
       });
 
     this.userGroupsAndPortfoliosAndCollections = this.userGroupsAndPortfoliosAndCollections?.sort((t1, t2) => {
@@ -214,7 +237,6 @@ console.log(this.userGroupsAndPortfoliosAndCollections);
           await this.storeUserData(res);
 
           await this.initProperties();
-          await this.mapGroupsAndPortfoliosAndCollections();
 
           let workspaceBlocked = false;
           await this.managementPortalService.getBillingStatus(workspaceId, this.workspaceData?.management_private_api_key).then(res => {

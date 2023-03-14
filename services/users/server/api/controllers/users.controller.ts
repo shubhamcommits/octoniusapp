@@ -53,20 +53,6 @@ export class UsersControllers {
                 select: '_id email _workspaces first_name last_name created_date'
             });
 
-            if (user['stats']) {
-                if (user['stats']['favorite_groups']) {
-                    user['stats']['favorite_groups'].sort(function(a, b) {
-                        return b.group_name - a.group_name;
-                    });
-                }
-
-                if (user['stats']['favorite_portfolios']) {
-                    user['stats']['favorite_portfolios'].sort(function(a, b) {
-                        return b.portfolio_name - a.portfolio_name;
-                    });
-                }
-            }
-
             // If user not found
             if (!user) {
                 return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
@@ -195,20 +181,6 @@ export class UsersControllers {
                     select: '_id email _workspaces first_name last_name created_date'
                 });
 
-            if (user['stats']) {
-                if (user['stats']['favorite_groups']) {
-                    user['stats']['favorite_groups'].sort(function(a, b) {
-                        return b.group_name - a.group_name;
-                    });
-                }
-
-                if (user['stats']['favorite_portfolios']) {
-                    user['stats']['favorite_portfolios'].sort(function(a, b) {
-                        return b.portfolio_name - a.portfolio_name;
-                    });
-                }
-            }
-
             // If user not found
             if (!user) {
                 return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
@@ -305,20 +277,6 @@ export class UsersControllers {
             // If user not found
             if (!user) {
                 return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
-            }
-
-            if (user['stats']) {
-                if (user['stats']['favorite_groups']) {
-                    user['stats']['favorite_groups'].sort(function(a, b) {
-                        return b.group_name - a.group_name;
-                    });
-                }
-
-                if (user['stats']['favorite_portfolios']) {
-                    user['stats']['favorite_portfolios'].sort(function(a, b) {
-                        return b.portfolio_name - a.portfolio_name;
-                    });
-                }
             }
     
             if (body.email) {
@@ -997,20 +955,6 @@ export class UsersControllers {
             })
             .lean();
 
-        if (user['stats']) {
-            if (user['stats']['favorite_groups']) {
-                user['stats']['favorite_groups'].sort(function(a, b) {
-                    return b.group_name - a.group_name;
-                });
-            }
-
-            if (user['stats']['favorite_portfolios']) {
-                user['stats']['favorite_portfolios'].sort(function(a, b) {
-                    return b.portfolio_name - a.portfolio_name;
-                });
-            }
-        }
-
         // Send the status 200 response
         return res.status(200).json({
             message: `User found!`,
@@ -1059,20 +1003,6 @@ export class UsersControllers {
                 select: '_id email _workspaces first_name last_name created_date'
             })
             .lean();
-
-        if (user['stats']) {
-            if (user['stats']['favorite_groups']) {
-                user['stats']['favorite_groups'].sort(function(a, b) {
-                    return b.group_name - a.group_name;
-                });
-            }
-
-            if (user['stats']['favorite_portfolios']) {
-                user['stats']['favorite_portfolios'].sort(function(a, b) {
-                    return b.portfolio_name - a.portfolio_name;
-                });
-            }
-        }
 
         // Send the status 200 response
         return res.status(200).json({
@@ -1128,20 +1058,6 @@ export class UsersControllers {
                     path: '_account',
                     select: '_id email _workspaces first_name last_name created_date'
                 });
-
-            if (user['stats']) {
-                if (user['stats']['favorite_groups']) {
-                    user['stats']['favorite_groups'].sort(function(a, b) {
-                        return b.group_name - a.group_name;
-                    });
-                }
-
-                if (user['stats']['favorite_portfolios']) {
-                    user['stats']['favorite_portfolios'].sort(function(a, b) {
-                        return b.portfolio_name - a.portfolio_name;
-                    });
-                }
-            }
 
             // Send status 200 response
             return res.status(200).json({
@@ -1199,20 +1115,6 @@ export class UsersControllers {
                     select: '_id email _workspaces first_name last_name created_date'
                 });
 
-            if (user['stats']) {
-                if (user['stats']['favorite_groups']) {
-                    user['stats']['favorite_groups'].sort(function(a, b) {
-                        return b.group_name - a.group_name;
-                    });
-                }
-
-                if (user['stats']['favorite_portfolios']) {
-                    user['stats']['favorite_portfolios'].sort(function(a, b) {
-                        return b.portfolio_name - a.portfolio_name;
-                    });
-                }
-            }
-
             // Send status 200 response
             return res.status(200).json({
                 message: `User Stats has been updated`,
@@ -1269,26 +1171,6 @@ export class UsersControllers {
                     select: '_id email _workspaces first_name last_name created_date'
                 });
 
-            if (user['stats']) {
-                if (user['stats']['favorite_groups']) {
-                    user['stats']['favorite_groups'].sort((a, b) => {
-                        return b.group_name - a.group_name;
-                    });
-                }
-
-                if (user['stats']['favorite_portfolios']) {
-                    user['stats']['favorite_portfolios'].sort((a, b) => {
-                        return b.portfolio_name - a.portfolio_name;
-                    });
-                }
-
-                if (user['stats']['favorite_collections']) {
-                    user['stats']['favorite_collections'].sort((a, b) => {
-                        return b.name - a.name;
-                    });
-                }
-            }
-console.log(user.stats);
             // Send status 200 response
             return res.status(200).json({
                 message: `User Stats has been updated`,
@@ -1452,20 +1334,6 @@ console.log(user.stats);
                     select: '_id email _workspaces first_name last_name created_date'
                 });
 
-            if (user['stats']) {
-                if (user['stats']['favorite_groups']) {
-                    user['stats']['favorite_groups'].sort(function(a, b) {
-                        return b.group_name - a.group_name;
-                    });
-                }
-
-                if (user['stats']['favorite_portfolios']) {
-                    user['stats']['favorite_portfolios'].sort(function(a, b) {
-                        return b.portfolio_name - a.portfolio_name;
-                    });
-                }
-            }
-
         // Send status 200 response
         return res.status(200).json({
             message: `User Stats has been updated`,
@@ -1580,12 +1448,12 @@ console.log(user.stats);
 
         // Find the post and update the custom field
         user = await User.findByIdAndUpdate({
-            _id: userId
-        }, {
-            $set: { "profile_custom_fields": user['profile_custom_fields'] }
-        }, {
-            new: true
-        });
+                _id: userId
+            }, {
+                $set: { "profile_custom_fields": user['profile_custom_fields'] }
+            }, {
+                new: true
+            });
 
         // user.custom_fields[customFieldName] = customFieldValue;
 
@@ -1729,12 +1597,12 @@ console.log(user.stats);
 
         // Find the post and update the custom field
         user = await User.findByIdAndUpdate({
-            _id: userId
-        }, {
-            $set: { "hr.entity_custom_fields": user.hr.entity_custom_fields }
-        }, {
-            new: true
-        });
+                _id: userId
+            }, {
+                $set: { "hr.entity_custom_fields": user.hr.entity_custom_fields }
+            }, {
+                new: true
+            });
 
         // user.custom_fields[customFieldId] = customFieldValue;
 
