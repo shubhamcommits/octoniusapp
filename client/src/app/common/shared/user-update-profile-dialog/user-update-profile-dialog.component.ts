@@ -19,6 +19,7 @@ export class UserUpdateProfileDialogComponent implements OnInit {
   repeatPassword: string;
   // Is current user component
   isCurrentUser: boolean = false;
+  validPassword: boolean = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -30,6 +31,10 @@ export class UserUpdateProfileDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.userData = this.data.userData;
+  }
+
+  onPasswordStrengthChanged(event: boolean) {
+    this.validPassword = event;
   }
 
   matchUserPassword(event:any) {
@@ -48,6 +53,8 @@ export class UserUpdateProfileDialogComponent implements OnInit {
         new Promise((resolve, reject) => {
           reject(this.utilityService.rejectAsyncPromise($localize`:@@userUpdateProfileDialog.pwdDidNotMatch:Password did not match, please try again!`))
         }))
+    } else if (!this.validPassword) {
+      this.utilityService.warningNotification($localize`:@@userUpdateProfileDialog.invalidPassword:Invalid Password!`);
     } else {
 
       if (!this.userData?._account) {

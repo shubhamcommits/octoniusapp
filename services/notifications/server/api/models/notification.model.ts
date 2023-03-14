@@ -33,6 +33,14 @@ const NotificationSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'File'
     },
+    _collection: {
+        type: Schema.Types.ObjectId,
+        ref: 'Collection'
+    },
+    _page: {
+        type: Schema.Types.ObjectId,
+        ref: 'Page'
+    },
     created_date: {
         type: Date,
         default: moment().format()
@@ -52,7 +60,7 @@ const NotificationSchema = new Schema({
     type: {
         type: String,
         required: true,
-        enum: ['assignment', 'mention', 'mention_folio', 'started', 'completed', 'comment', 'like_comment', 'follow', 'likes', 'new-post', 'join-group', 'leave-group', 'launch-approval-flow', 'approved-item', 'reject-item', 'launch-approval-flow-due-date', 'shuttleTask']
+        enum: ['assignment', 'mention', 'mention_folio', 'started', 'completed', 'comment', 'like_comment', 'follow', 'likes', 'new-post', 'join-group', 'leave-group', 'launch-approval-flow', 'approved-item', 'reject-item', 'launch-approval-flow-due-date', 'shuttleTask', 'mention_collection', 'mention_page']
     }
 });
 

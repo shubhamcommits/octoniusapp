@@ -8,6 +8,7 @@ import {
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { LibraryService } from 'src/shared/services/library-service/library.service';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,7 @@ export class LibraryGuard implements CanActivateChild  {
   constructor(
     private utilityService: UtilityService,
     private libraryService: LibraryService,
+    public storageService: StorageService,
     private router: Router,
     private injector: Injector
   ) {
@@ -32,6 +34,7 @@ export class LibraryGuard implements CanActivateChild  {
     state: RouterStateSnapshot
   ) {
     let currentGroup;
+    let collectionData: any;
     this.collectionId = next.queryParams['collection'];
     this.pageId = next.queryParams['page'];
     if (this.collectionId) {
@@ -41,11 +44,22 @@ export class LibraryGuard implements CanActivateChild  {
         this.router.navigate(['dashboard', 'work', 'groups', 'activity']);
         return false;
       });
+
+      await this.libraryService.getCollection(this.collectionId).then(res => {
+        collectionData = res['collection']
+      });
     }
 
     if (this.pageId) {
       await this.libraryService.getGroupByPage(this.pageId).then(res => {
         currentGroup = res['group'];
+      }).catch(error => {
+        this.router.navigate(['dashboard', 'work', 'groups', 'activity']);
+        return false;
+      });
+
+      await this.libraryService.getCollectionByPage(this.pageId).then(res => {
+        collectionData = res['collection']
       }).catch(error => {
         this.router.navigate(['dashboard', 'work', 'groups', 'activity']);
         return false;
@@ -67,8 +81,6 @@ export class LibraryGuard implements CanActivateChild  {
       return false;
     }
 
-    let userData: any = await this.publicFunctions.getCurrentUser();
-
     if (currentGroup?.archived_group) {
       this.utilityService.warningNotification($localize`:@@libraryGuard.oopsGroupDoesNotExist:Oops seems like the group don\'t exist!`);
       await this.publicFunctions.sendUpdatesToGroupData({});
@@ -76,11 +88,9 @@ export class LibraryGuard implements CanActivateChild  {
       return false;
     }
 
-    const groupMembersIndex = (currentGroup) ? currentGroup?._members.findIndex((member: any) => member._id == userData?._id) : -1;
-    const groupAdminsIndex = (currentGroup) ? currentGroup?._admins.findIndex((admin: any) => admin._id == userData?._id) : -1;
-    const userGroupsIndex = (userData && userData?._groups) ? userData._groups.findIndex((group: any) => group == currentGroup?._id) : -1;
-
-    if ((groupMembersIndex >= 0 || groupAdminsIndex >= 0 || userGroupsIndex >= 0) && userData?._private_group != currentGroup?._id) {
+    const isAuth = this.storageService.existData('authToken');
+    const userCanViewCollection = await this.utilityService.canUserDoCollectionAction(collectionData, currentGroup, 'read', isAuth);
+    if (userCanViewCollection) {
       return true;
     } else {
       this.utilityService.warningNotification($localize`:@@libraryGuard.oopsNoPermissionForGroup:Oops seems like you don\'t have the permission to access the group, kindly contact your superior to provide you the proper access!`);

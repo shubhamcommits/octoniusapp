@@ -25,4 +25,10 @@ router.get('/getSearchResults/:filter', search.getSearchResults);
 // GET -| Main search |-
 router.get('/searchTasksForNS', search.searchTasksForNS);
 
+// GET -| Search Groups |-
+router.get('/groups', search.searchAllGroupsList);
+
+// GET -| Search Users |-
+router.get('/users', search.searchAllUsersList);
+
 export { router as searchRoutes };

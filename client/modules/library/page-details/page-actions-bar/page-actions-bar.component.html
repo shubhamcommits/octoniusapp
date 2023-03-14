@@ -1,12 +1,20 @@
 <div *ngIf="pageData" class="story-actions">
   <div class="story-actions-left">
 
-    <app-secured-image
+    <app-secured-image *ngIf="isAuth"
       [imgURL]="pageData?._created_by?.profile_pic"
       [service]="'user'"
       [workspaceId]="workspaceData?._id"
       [styleClass]="'feed-avatar-small'"
       style="float: left; cursor: auto;"></app-secured-image>
+
+    <app-secured-image *ngIf="!isAuth"
+      [imgURL]="pageData?._created_by?.profile_pic"
+      [service]="'user'"
+      [workspaceId]="workspaceData?._id"
+      [styleClass]="'feed-avatar-small'"
+      style="float: left; cursor: auto;"
+      [noAuth]="true"></app-secured-image>
 
     <div style="padding-top: 10px;" class="ml-1 mr-1">
       {{ pageData?._created_by?.first_name }}
@@ -41,25 +49,5 @@
       (storyLiked)="editPage($event)"
       (storyUnLiked)="editPage($event)"></app-like-page>
     <!-- LIKE action ends -->
-   
-    <!-- EDIT action starts -->
-   
-
-    <!-- Menu Starts -->
-    <!-- <ul class="dropdown-menu">
-      <li class="dropdown-item" (click)="canEditAction()">
-        
-        <span *ngIf="!canEditPage" i18n="@@pageActionsBar.edit"><i class="material-icons">create</i>Edit</span>
- 
-      </li>
-     
-      <li class="dropdown-item">
-        <span (click)="deletePage(pageData?._id)" i18n="@@pageActionsBar.delete">
-          <i class="material-icons">delete</i> Delete</span>
-        
-      </li>
-    </ul> -->
-    <!-- Menu Ends -->
-    <!-- EDIT action ends -->
   </div>
 </div>

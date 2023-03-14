@@ -57,8 +57,8 @@
                 </a>
 
                 <ul class="collapse list-unstyled show" id="pageSubmenu">
-                    <li *ngFor="let group of userGroupsAndPortfolios">
-                        <a (click)="goToGroupOrPortfolio(group)" routerLinkActive="active">
+                    <li *ngFor="let group of userGroupsAndPortfoliosAndCollections">
+                        <a (click)="goToGroupOrPortfolioOrCollection(group)" routerLinkActive="active">
                             <app-secured-image
                               [imgURL]="group?.avatar"
                               [service]="'group'"

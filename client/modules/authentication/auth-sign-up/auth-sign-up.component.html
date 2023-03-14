@@ -29,6 +29,7 @@
             <label for="password" class="muted" i18n="@@authSignUp.password">Password</label>
             <input type="password" class="form-control" name="password"
               [(ngModel)]="account.password" (keyup.enter)="signUp()">
+            <app-password-strength [passwordToCheck]="account.password" (passwordStrength)="onPasswordStrengthChanged($event)"></app-password-strength>
           </div>
 
           <div class="form-group">
@@ -49,7 +50,7 @@
             <input type="text" [(ngModel)]="account.last_name" class="form-control" name="last_name">
           </div>
 
-          <button type="submit" class="btn btn-primary btn-block btn_login" (click)="signUp()" i18n="@@authSignUp.signUp">SIGN UP</button>
+          <button type="submit" [disabled]="!validPassword" class="btn btn-primary btn-block btn_login" (click)="signUp()" i18n="@@authSignUp.signUp">SIGN UP</button>
         </div>
       </div>
    </div>

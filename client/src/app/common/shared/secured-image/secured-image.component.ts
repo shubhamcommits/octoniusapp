@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, Injector, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Injector, Input, OnChanges } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './secured-image.component.html',
   styleUrls: ['./secured-image.component.scss']
 })
-export class SecuredImageComponent implements OnChanges, OnInit  {
+export class SecuredImageComponent implements OnChanges  {
   // This code block just creates an rxjs stream from the src
   // this makes sure that we can handle source changes
   // or even when the component gets destroyed
@@ -48,14 +48,12 @@ export class SecuredImageComponent implements OnChanges, OnInit  {
     private domSanitizer: DomSanitizer) {
   }
 
-  async ngOnInit() {
+  async ngOnChanges(): Promise<void> {
     if (!this.workspaceId) {
       const workplaceData: any = await this.publicFunctions.getCurrentWorkspace();
       this.workspaceId = workplaceData?._id;
     }
-  }
-
-  ngOnChanges(): void {
+    
     this.isLocalImg = this.imgURL && this.imgURL.indexOf('assets/images') != -1;
 
     switch (this.service) {

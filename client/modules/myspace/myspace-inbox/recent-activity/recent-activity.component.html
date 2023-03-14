@@ -57,8 +57,7 @@
             &nbsp;
 
             <span *ngIf="notification?.type === 'assignment'" class="assignment_notification" i18n="@@recentActivity.assignedYou">assigned you</span>
-            <span *ngIf="notification?.type === 'mention'" class="mention_notification" i18n="@@recentActivity.mentionedYou">mentioned you on</span>
-            <span *ngIf="notification?.type === 'mention_folio'" class="mention_notification" i18n="@@recentActivity.mentionedYou">mentioned you on</span>
+            <span *ngIf="notification?.type === 'mention' || notification?.type === 'mention_folio' || notification?.type === 'mention_collection' || notification?.type === 'mention_page'" class="mention_notification" i18n="@@recentActivity.mentionedYou">mentioned you on</span>
             <span *ngIf="notification?.type === 'completed'" class="completed_notification" i18n="@@recentActivity.completed">completed</span>
             <span *ngIf="notification?.type === 'started'" class="started_notification" i18n="@@recentActivity.started">started</span>
             <span *ngIf="notification?.type === 'like_comment'" class="like_notification" i18n="@@recentActivity.likedYourComment">liked your comment on</span>
@@ -75,6 +74,8 @@
 
             <span class="notification_post_title" *ngIf="(notification?.type !== 'mention_folio' && notification?.type !== 'shuttleTask') && notification?._origin_post">{{ notification?._origin_post?.title | truncatetext: 20 }}</span>
             <span class="notification_post_title" *ngIf="notification?.type === 'mention_folio' && notification?._origin_folio">{{ notification?._origin_folio?.original_name | truncatetext: 20 }}</span>
+            <span class="notification_post_title" *ngIf="notification?.type === 'mention_collection' && notification?._collection">{{ notification?._collection?.name | truncatetext: 20 }}</span>
+            <span class="notification_post_title" *ngIf="notification?.type === 'mention_page' && notification?._page">{{ notification?._page?.title | truncatetext: 20 }}</span>
             <span class="notification_post_title" *ngIf="(notification?.type === 'join-group' || notification?.type === 'leave-group') && notification?._origin_group">{{ notification?._origin_group?.group_name | truncatetext: 20 }}</span>
             <span class="notification_post_title" *ngIf="notification?.type === 'shuttleTask' && notification?._shuttle_group">{{ notification?._shuttle_group?.group_name | truncatetext: 20 }}.</span>
             &nbsp;
@@ -111,13 +112,23 @@
           <div class="notification_more">
             <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
             <mat-menu #menu="matMenu">
-              <a mat-menu-item *ngIf="notification?.type !== 'mention_folio' && notification?.type !== 'join-group' && notification?.type !== 'leave-group' && (notification?.type != 'approved-item' && notification?.type != 'reject-item' && notification?.type != 'launch-approval-flow')"
+              <a mat-menu-item *ngIf="notification?.type !== 'mention_folio' && notification?.type !== 'join-group' && notification?.type !== 'leave-group' && (notification?.type != 'approved-item' && notification?.type != 'reject-item' && notification?.type != 'launch-approval-flow' && notification?.type != 'mention_collection' && notification?.type != 'mention_page')"
                 (click)="viewNotification(notification, index)">
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                 <span i18n="@@recentActivity.view">View</span>
               </a>
               <a mat-menu-item *ngIf="notification?.type === 'mention_folio'"
                 (click)="viewFolioNotification(notification, index)">
+                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
+                <span i18n="@@recentActivity.view">View</span>
+              </a>
+              <a mat-menu-item *ngIf="notification?.type === 'mention_collection'"
+                (click)="viewCollectionNotification(notification, index)">
+                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
+                <span i18n="@@recentActivity.view">View</span>
+              </a>
+              <a mat-menu-item *ngIf="notification?.type === 'mention_page'"
+                (click)="viewPageNotification(notification, index)">
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                 <span i18n="@@recentActivity.view">View</span>
               </a>

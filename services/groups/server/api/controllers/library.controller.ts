@@ -3,6 +3,7 @@ import { Response, Request, NextFunction } from 'express';
 import { axios, sendError } from '../../utils';
 import { LibraryService } from '../services';
 import { DateTime } from 'luxon';
+import http from 'axios';
 
 const libraryService = new LibraryService();
 
@@ -40,6 +41,8 @@ export class LibraryController {
                 .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
                 .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
+                .populate({ path: 'share.groups._group', select: 'group_name group_avatar _members _admins' })
+                .populate({ path: 'share.users._user', select: '_id first_name last_name profile_pic' })
                 .lean();
 
             // Check if collection already exist with the same collectionId
@@ -87,6 +90,8 @@ export class LibraryController {
                 .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
                 .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
+                .populate({ path: 'share.groups._group', select: 'group_name group_avatar _members _admins' })
+                .populate({ path: 'share.users._user', select: '_id first_name last_name profile_pic' })
                 .lean();
 
             // Send the status 200 response
@@ -129,6 +134,8 @@ export class LibraryController {
                 .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
                 .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
+                .populate({ path: 'share.groups._group', select: 'group_name group_avatar _members _admins' })
+                .populate({ path: 'share.users._user', select: '_id first_name last_name profile_pic' })
                 .lean();
 
             if (!collection) {
@@ -153,6 +160,7 @@ export class LibraryController {
         try {
             const { collectionId } = req.params;
             const { body: { collection } } = req;
+            const userId = req['userId'];
 
             // If collectionId is null or not provided then we throw BAD REQUEST 
             if (!collectionId || !collection) {
@@ -174,11 +182,21 @@ export class LibraryController {
                 .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
                 .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
+                .populate({ path: 'share.groups._group', select: 'group_name group_avatar _members _admins' })
+                .populate({ path: 'share.users._user', select: '_id first_name last_name profile_pic' })
                 .lean();
 
             if (!collectionData) {
                 return sendError(res, new Error('Oops, collection not found!'), 'Collection not found, invalid collectionId!', 404);
             }
+
+            // Send notifications to _content_mentions
+            const mentions = collectionData?._content_mentions?.map(mention => mention._id);
+            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/collection-mentions`, {
+                userId: userId,
+                collectionId: collectionId,
+                mentions: mentions
+            });
 
             return res.status(200).json({
                 message: `${collectionData.collection_name} collection was updated successfully!`,
@@ -247,6 +265,8 @@ export class LibraryController {
                 .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
                 .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
+                .populate({ path: 'share.groups._group', select: 'group_name group_avatar _members _admins' })
+                .populate({ path: 'share.users._user', select: '_id first_name last_name profile_pic' })
                 .lean();
 
             if (!collection) {
@@ -293,6 +313,8 @@ export class LibraryController {
                 .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
                 .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
+                .populate({ path: 'share.groups._group', select: 'group_name group_avatar _members _admins' })
+                .populate({ path: 'share.users._user', select: '_id first_name last_name profile_pic' })
                 .lean();
 
             if (!collection) {
@@ -363,6 +385,8 @@ export class LibraryController {
                 .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
                 .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
+                .populate({ path: 'share.groups._group', select: 'group_name group_avatar _members _admins' })
+                .populate({ path: 'share.users._user', select: '_id first_name last_name profile_pic' })
                 .lean();
 
             return res.status(200).json({
@@ -402,6 +426,8 @@ export class LibraryController {
                 .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
                 .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
+                .populate({ path: 'share.groups._group', select: 'group_name group_avatar _members _admins' })
+                .populate({ path: 'share.users._user', select: '_id first_name last_name profile_pic' })
                 .lean();
 
             // Send the status 200 response
@@ -409,6 +435,57 @@ export class LibraryController {
                 message: `Collection group members found!`,
                 collections: collections
             })
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
+     * This function fetches the collection details corresponding to the @constant collectionId 
+     * @param req - @constant collectionId
+     */
+    async getCollectionByPage(req: Request, res: Response) {
+        try {
+            const { pageId } = req.params;
+
+            // If collectionId is null or not provided then we throw BAD REQUEST 
+            if (!pageId) {
+                return res.status(400).json({
+                    message: 'Please provide pageId!'
+                });
+            }
+
+            // Find the Page based on the pageId
+            const page = await Page.findOne({
+                    _id: pageId
+                }).select('_collection').lean();
+
+            // Find the Collection based on the page
+            const collection = await Collection.findOne({
+                    _id: page?._collection
+                })
+                .populate({ path: '_members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: '_group', select: 'group_name group_avatar _members _admins' })
+                .populate({ path: '_content_mentions', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: '_created_by', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: '_updated_by', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
+                .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: '_files', select: 'original_name modified_name type' })
+                .populate({ path: 'share.groups._group', select: 'group_name group_avatar _members _admins' })
+                .populate({ path: 'share.users._user', select: '_id first_name last_name profile_pic' })
+                .lean();
+
+            // Check if collection already exist with the same collectionId
+            if (!collection) {
+                return sendError(res, new Error('Oops, collection not found!'), 'Collection not found, Invalid collectionId!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Collection found!',
+                collection: collection
+            });
         } catch (err) {
             return sendError(res, err);
         }
@@ -464,6 +541,8 @@ export class LibraryController {
                 .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
                 .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
+                .populate({ path: 'share.groups._group', select: 'group_name group_avatar _members _admins' })
+                .populate({ path: 'share.users._user', select: '_id first_name last_name profile_pic' })
                 .lean();
 
             // Send Status 200 response
@@ -502,8 +581,6 @@ export class LibraryController {
             const domain = workspace?.integrations?.atlassia_url;
             const token = workspace?.integrations?.atlassia_token;
             const email = user.email + ':' + token;
-//ATATT3xFfGF0_9HXph47_wu1Q1Yhfa9O1YW2Sodb2k-q_sFWAT3Z-G_7yA3Wv8xMhk7MsBZ-I5Hm3Rp7jh2c7uRPl--f6bmJ1DE22vt_U3yTrrOhJUwzFWMBQM_YcMoA6OrCxH2VhB4gMvRplFgNfSh_d6UMbrzsTxRtw_PPx13XRXiP8JkWAuo=C060CB65
-//juan-octonius.atlassian.net
             await axios.get(`https://${domain}/wiki/rest/api/space`, {
                     headers: {
                             'Authorization': `Basic ${Buffer.from(email).toString('base64')}`,
@@ -803,6 +880,14 @@ export class LibraryController {
                 return sendError(res, new Error('Oops, page not found!'), 'Page not found, invalid pageId!', 404);
             }
 
+            // Send notifications to _content_mentions
+            const mentions = page?._content_mentions?.map(mention => mention._id);
+            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/page-mentions`, {
+                userId: userId,
+                pageId: pageId,
+                mentions: mentions
+            });
+
             return res.status(200).json({
                 message: `${page.titlee} page was updated successfully!`,
                 page: page
@@ -1058,8 +1143,8 @@ export class LibraryController {
 
             // Find the Group based on the groupId
             var group = await Group.findOne({
-                _id: collection?._group
-            })
+                    _id: collection?._group
+                })
                 .populate({
                     path: '_members',
                     select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
@@ -1086,6 +1171,69 @@ export class LibraryController {
             return res.status(200).json({
                 message: 'Group found!',
                 group: group
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
+     * This function fetches the collection details corresponding to the @constant collectionId 
+     * @param req - @constant collectionId
+     */
+    async getWorkspaceByCollection(req: Request, res: Response) {
+        try {
+
+            const { collectionId } = req.params;
+
+            // If collectionId is null or not provided then we throw BAD REQUEST 
+            if (!collectionId) {
+                return res.status(400).json({
+                    message: 'Please provide collectionId!'
+                });
+            }
+
+            // Find the Collection based on the collectionId
+            var collection = await Collection.findOne({
+                    _id: collectionId
+                }).lean();
+
+            // Check if collection already exist with the same collectionId
+            if (!collection) {
+                return sendError(res, new Error('Oops, collection not found!'), 'Collection not found, Invalid collectionId!', 404);
+            }
+
+            // Find the Group based on the groupId
+            var group = await Group.findOne({
+                    _id: collection?._group
+                })
+                .select('_workspace')
+                .lean();
+
+            // Check if group already exist with the same groupId
+            if (!group) {
+                return sendError(res, new Error('Oops, group not found!'), 'Group not found, Invalid groupId!', 404);
+            }
+
+            // Find the Group based on the groupId
+            var workspace = await Workspace.findOne({
+                    _id: group?._workspace
+                })
+                .populate({
+                    path: 'members',
+                    select: 'first_name last_name profile_pic current_position role email active',
+                })
+                .lean();
+
+            // Check if group already exist with the same groupId
+            if (!workspace) {
+                return sendError(res, new Error('Oops, workspace not found!'), 'Workspace not found, Invalid workspaceId!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Workspace found!',
+                workspace: workspace
             });
         } catch (err) {
             return sendError(res, err);
@@ -1151,6 +1299,72 @@ export class LibraryController {
             return res.status(200).json({
                 message: 'Group found!',
                 group: group
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
+     * This function fetches the collection details corresponding to the @constant collectionId 
+     * @param req - @constant collectionId
+     */
+    async getWorkspaceByPage(req: Request, res: Response) {
+        try {
+
+            const { pageId } = req.params;
+
+            // If collectionId is null or not provided then we throw BAD REQUEST 
+            if (!pageId) {
+                return res.status(400).json({
+                    message: 'Please provide pageId!'
+                });
+            }
+
+            // Find the Collection based on the collectionId
+            var page = await Page.findOne({
+                    _id: pageId
+                })
+                .populate({ path: '_collection', select: '_id _group' })
+                .populate({ path: '_collection._group', select: '_id' })
+                .lean();
+
+            // Check if collection already exist with the same collectionId
+            if (!page) {
+                return sendError(res, new Error('Oops, collection not found!'), 'Collection not found, Invalid collectionId!', 404);
+            }
+
+            // Find the Group based on the groupId
+            var group = await Group.findOne({
+                    _id: page?._collection?._group?._id
+                })
+                .select('_workspace')
+                .lean();
+
+            // Check if group already exist with the same groupId
+            if (!group) {
+                return sendError(res, new Error('Oops, group not found!'), 'Group not found, Invalid groupId!', 404);
+            }
+console.log(group);
+            // Find the Group based on the groupId
+            var workspace = await Workspace.findOne({
+                    _id: group?._workspace
+                })
+                .populate({
+                    path: 'members',
+                    select: 'first_name last_name profile_pic current_position role email active',
+                })
+                .lean();
+console.log(workspace);
+            // Check if group already exist with the same groupId
+            if (!workspace) {
+                return sendError(res, new Error('Oops, workspace not found!'), 'Workspace not found, Invalid workspaceId!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Workspace found!',
+                workspace: workspace
             });
         } catch (err) {
             return sendError(res, err);

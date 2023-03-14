@@ -16,6 +16,8 @@ export class ResetPasswordComponent implements OnInit {
     repeatPassword: null
   };
 
+  validPassword: boolean = false;
+
   // Reset Password Id
   resetPwdId = this._activatedRoute.snapshot.paramMap.get('resetPwdId');
 
@@ -27,6 +29,10 @@ export class ResetPasswordComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+  }
+
+  onPasswordStrengthChanged(event: boolean) {
+    this.validPassword = event;
   }
 
   matchUserPassword() {
@@ -43,8 +49,11 @@ export class ResetPasswordComponent implements OnInit {
   resetPassword(resetPasswordId: string, password: string, repeatPassword: string) {
     try {
 
-      if (password == repeatPassword) {
-
+      if (password != repeatPassword) {
+        this.utilityService.warningNotification($localize`:@@resetPwd.pwddoesntMatch:Password doesn\'t match!`);
+      } else if (!this.validPassword) {
+        this.utilityService.warningNotification($localize`:@@authSignUp.invalidPassword:Invalid Password!`);
+      } else{
         // Reset password object
         const resetPassObject = {
           resetPwdId: resetPasswordId,
@@ -54,8 +63,6 @@ export class ResetPasswordComponent implements OnInit {
         // Call the service function
         this.utilityService.asyncNotification($localize`:@@resetPwd.pleaseWaitResettingPwd:Please wait while we are resetting your password...`,
           this.resetPasswordServiceFunction(resetPassObject))
-      } else{
-        this.utilityService.warningNotification($localize`:@@resetPwd.pwddoesntMatch:Password doesn\'t match!`);
       }
 
     } catch (err) {

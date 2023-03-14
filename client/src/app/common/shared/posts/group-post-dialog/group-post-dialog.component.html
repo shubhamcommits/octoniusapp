@@ -323,7 +323,7 @@
             <div id="avatar-assignee" style="margin-bottom: 30px;">
               <p class="box-title" style="padding-top: 20px;" i18n="@@groupCreatePostDialog.createdBy">Created by</p>
 
-              <app-secured-image *ngIf="postData"
+              <app-secured-image *ngIf="postData && postData?._posted_by"
                 [imgURL]="postData?._posted_by?.profile_pic"
                 [service]="'user'"
                 [workspaceId]="(userData?._workspace?._id || userData?._workspace)"

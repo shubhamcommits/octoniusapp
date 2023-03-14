@@ -1,0 +1,51 @@
+.sharing{
+  width: 80%;
+  margin: 0 auto;
+}
+
+.input {
+  width: 75%;
+  height: 38px;
+  font-size: 24px;
+  line-height: 33px;
+  border: none;
+  border-bottom: 1px solid #242d3a;
+  background-color: transparent;
+  margin-right: 10px;
+}
+
+input:focus {
+  outline: none;
+  border-bottom: 1px solid royalblue;
+}
+
+.full-name-text {
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.groups-results {
+  width: max-content;
+  padding: 0;
+  position: absolute;
+  z-index: 1000;
+  background: #fff !important;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 6px 9px rgba(0, 0, 0, 0.2);
+}
+
+.group-list:hover {
+  cursor: pointer;
+  background: #c7c7c7 !important;
+}
+
+.group {
+  margin-top: 30px;
+}
+
+.shared-groups {
+  margin-top: 30px;
+
+  .row:hover {
+    background: #d6d3d3 !important;
+  }
+}

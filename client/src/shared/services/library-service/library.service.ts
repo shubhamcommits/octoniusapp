@@ -20,6 +20,14 @@ export class LibraryService {
   }
 
   /**
+   * This function is responsible for fetching an specific collection by the page id
+   * @param pageId
+   */
+  getCollectionByPage(pageId: string) {
+    return this._http.get(this.baseUrl + `/library/collection/${pageId}/by-page`).toPromise();
+  }
+
+  /**
    * This function is responsible for fetching all collections by group
    * @param groupId
    */
@@ -171,8 +179,16 @@ export class LibraryService {
     return this._http.get(this.baseUrl + `/library/collection/${collectionId}/group-by-collection`).toPromise();
   }
 
+  getWorkspaceByCollection(collectionId: string) {
+    return this._http.get(this.baseUrl + `/library/collection/${collectionId}/workspace-by-collection`).toPromise();
+  }
+
   getGroupByPage(pageId: string) {
     return this._http.get(this.baseUrl + `/library/page/${pageId}/group-by-page`).toPromise();
+  }
+
+  getWorkspaceByPage(pageId: string) {
+    return this._http.get(this.baseUrl + `/library/page/${pageId}/workspace-by-page`).toPromise();
   }
 
   getUserConfluenceSpaces(workspaceId: string) {

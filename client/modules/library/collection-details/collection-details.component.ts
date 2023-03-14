@@ -9,6 +9,7 @@ import { LibreofficeService } from 'src/shared/services/libreoffice-service/libr
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { FilesService } from 'src/shared/services/files-service/files.service';
 import { environment } from 'src/environments/environment';
+import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 
 @Component({
   selector: 'app-collection-details',
@@ -37,6 +38,8 @@ export class CollectionDetailsComponent implements OnInit {
     type: 'file'
   };
 
+  canEdit = false;
+
   baseAPIUrl = environment.UTILITIES_BASE_API_URL;
 
   // IsLoading behaviou subject maintains the state for loading spinner
@@ -54,7 +57,8 @@ export class CollectionDetailsComponent implements OnInit {
     public storageService: StorageService,
     private filesService: FilesService,
     private libreofficeService: LibreofficeService,
-    private libraryService: LibraryService
+    private libraryService: LibraryService,
+    private workspaceService: WorkspaceService
   ) {
     this.collectionId = this.activatedRoute.snapshot.queryParams['collection'];
 
@@ -73,35 +77,49 @@ export class CollectionDetailsComponent implements OnInit {
       state: 'collection'
     });
 
+    await this.libraryService.getCollection(this.collectionId).then(res => {
+      this.collectionData = res['collection']
+    });
+
+    const isAuth = this.storageService.existData('authToken');
+
     // Fetch the current loggedIn user data
-    if (!this.objectExists(this.userData)) {
+    if (!this.objectExists(this.userData) && !!isAuth) {
       this.userData = await this.publicFunctions.getCurrentUser();
     }
 
     this.authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`;
 
-    if (!this.objectExists(this.workspaceData)) {
+    if (!this.objectExists(this.groupData) && !!isAuth) {
+      // Fetch the current group data
+      this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+    } else if (!this.objectExists(this.groupData)) {
+      await this.libraryService.getGroupByCollection(this.collectionId).then(res => {
+        this.groupData = res['group'];
+      });
+    }
+
+    if (!this.objectExists(this.workspaceData) && !!isAuth) {
       // Fetch the current workspace data
       this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    } else if (!this.objectExists(this.workspaceData)) {
+      await this.libraryService.getWorkspaceByCollection(this.collectionId).then(res => {
+        this.workspaceData = res['workspace'];
+      });
     }
 
-    if (!this.objectExists(this.groupData)) {
-      // Fetch the current workspace data
-      this.groupData = await this.publicFunctions.getCurrentGroupDetails();
-    }
-
-    await this.libraryService.getCollection(this.collectionId).then(res => {
-      this.collectionData = res['collection']
-    });
+    this.canEdit = await this.utilityService.canUserDoCollectionAction(this.collectionData, this.groupData, 'edit', !!isAuth, this.userData);
 
     this.initPages();
 
-    // Set the File Credentials after view initialization
-    this.fileData = {
-      _group: this.groupData?._id,
-      _collection: this.collectionData?._id,
-      type: 'file',
-      _workspace: this.workspaceData?._id
+    if (this.objectExists(this.workspaceData) && this.objectExists(this.groupData)) {
+      // Set the File Credentials after view initialization
+      this.fileData = {
+        _group: this.groupData?._id,
+        _collection: this.collectionData?._id,
+        type: 'file',
+        _workspace: this.workspaceData?._id
+      }
     }
 
     // Stops the spinner and return the value with ngOnInit
@@ -300,5 +318,17 @@ export class CollectionDetailsComponent implements OnInit {
 
   objectExists(object: any) {
     return this.utilityService.objectExists(object);
+  }
+
+  getWorkspace(workspaceId: string) {
+    return new Promise(async (resolve, reject) => {
+        this.workspaceService.getWorkspace(workspaceId)
+          .subscribe((res) => { resolve(res['workspace']) },
+            (err) => {
+              console.log('Error occurred while fetching the workspace details!', err);
+              this.utilityService.errorNotification($localize`:@@pageDetails.errorOccuredWhileFetchingWorkspaceDetails:Error occurred while fetching the workspace details, please try again!`);
+              reject(err)
+          });
+      });
   }
 }

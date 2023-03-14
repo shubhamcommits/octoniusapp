@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, Injector,SimpleChanges,Input, EventEmitter, Output, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
-import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
@@ -11,7 +10,6 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import Swal from 'sweetalert2';
-// import { retry } from 'rxjs/internal/operators/retry';
 
 @Component({
   selector: 'app-sidebar',
@@ -25,15 +23,17 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
   @Input() userGroups: any = [];
   @Input() userPortfolios: any = [];
   @Input() isMobile = false;
+
   @Output() sidebarChange = new EventEmitter();
 
   // CURRENT USER DATA
   userData: any = {};
-
   accountData: any = {};
   userWorkspaces = [];
 
-  userGroupsAndPortfolios = [];
+  userCollections: any = [];
+
+  userGroupsAndPortfoliosAndCollections = [];
 
   // Workspace data for the current workspace
   public workspaceData: any = {};
@@ -49,12 +49,12 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(
     private injector: Injector,
+    private socketService:SocketService,
+    private router: Router,
     private storageService: StorageService,
     private authService: AuthService,
     private userService: UserService,
-    private managementPortalService: ManagementPortalService,
-    private socketService:SocketService,
-    private router: Router
+    private managementPortalService: ManagementPortalService
   ) { }
 
   async ngOnInit() {
@@ -73,7 +73,7 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
         this.userPortfolios = to;
       }
 
-      await this.mapGroupsAndPortfolios();
+      await this.initProperties();
     }
   }
 
@@ -88,26 +88,33 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
     this.userData = await this.publicFunctions.getCurrentUser();
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     this.accountData = await this.publicFunctions.getCurrentAccount();
+
     await this.getUserWorkspaces();
 
     this.userGroups = this.userData['stats']['favorite_groups'];
     this.userPortfolios = this.userData['stats']['favorite_portfolios'];
+    this.userCollections = this.userData['stats']['favorite_collections'];
+
+    await this.mapGroupsAndPortfoliosAndCollections();
   }
 
-  async mapGroupsAndPortfolios() {
-    this.userGroupsAndPortfolios = [...this.userGroups, ...this.userPortfolios];
-    this.userGroupsAndPortfolios = this.userGroupsAndPortfolios?.map(group => {
-        return {
-          _id: group._id,
-          name: group.group_name || group.portfolio_name,
-          avatar: group.group_avatar || group.portfolio_avatar,
-          type: (group.group_name) ? 'group' : 'portfolio'
-        };
+  async mapGroupsAndPortfoliosAndCollections() {
+    this.userGroupsAndPortfoliosAndCollections = [...this.userGroups, ...this.userPortfolios, ...this.userCollections];
+console.log(this.userGroupsAndPortfoliosAndCollections);
+    this.userGroupsAndPortfoliosAndCollections = this.userGroupsAndPortfoliosAndCollections?.map(element => {
+        if (!!element.group_name || !!element.portfolio_name || !!element.name) {
+          return {
+            _id: element._id,
+            name: element.group_name || element.portfolio_name || element.name,
+            avatar: element.group_avatar || element.portfolio_avatar || element.collection_avatar,
+            type: (element.group_name) ? 'group' : (element.portfolio_name) ? 'portfolio' : 'collection'
+          };
+        }
       });
 
-    this.userGroupsAndPortfolios = this.userGroupsAndPortfolios?.sort((t1, t2) => {
-        const name1 = t1?.name.toLowerCase();
-        const name2 = t2?.name.toLowerCase();
+    this.userGroupsAndPortfoliosAndCollections = this.userGroupsAndPortfoliosAndCollections?.sort((t1, t2) => {
+        const name1 = t1?.name?.toLowerCase() || t1?.name;
+        const name2 = t2?.name?.toLowerCase() || t2?.name;
         if (name1 > name2) { return 1; }
         if (name1 < name2) { return -1; }
         return 0;
@@ -149,7 +156,7 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
     this.sidebarChange.emit();
   }
 
-  async goToGroupOrPortfolio(group: any) {
+  async goToGroupOrPortfolioOrCollection(group: any) {
     if (group?.type == 'group') {
       this.changeState('groups_activity');
       const newGroup = await this.publicFunctions.getGroupDetails(group?._id);
@@ -162,6 +169,8 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
       await this.publicFunctions.sendUpdatesToPortfolioData(newPortfolio);
       await this.publicFunctions.sendUpdatesToGroupData({});
       this.router.navigate(['/dashboard', 'work', 'groups', 'portfolio']);
+    } else if (group?.type == 'collection') {
+      this.router.navigate(['/dashboard', 'work', 'groups', 'library', 'collection'], {queryParams: { collection: group?._id }});
     }
   }
 
@@ -205,7 +214,7 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
           await this.storeUserData(res);
 
           await this.initProperties();
-          await this.mapGroupsAndPortfolios();
+          await this.mapGroupsAndPortfoliosAndCollections();
 
           let workspaceBlocked = false;
           await this.managementPortalService.getBillingStatus(workspaceId, this.workspaceData?.management_private_api_key).then(res => {

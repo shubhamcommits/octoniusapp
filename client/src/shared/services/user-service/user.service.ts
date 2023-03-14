@@ -368,6 +368,17 @@ export class UserService {
     .toPromise();
   }
 
+  /**
+   * Save a collection as favorite for the user
+   */
+  saveFavoriteCollection(collectionId: string, isFavoriteCollection: boolean) {
+    return this._http.put(this.BASE_API_URL + '/add-favorite-collection', {
+      collectionId: collectionId,
+      isFavoriteCollection: isFavoriteCollection
+    })
+    .toPromise();
+  }
+
   saveIconSidebarByDefault(userId: string, iconsSidebar: boolean) {
     return this._http.put(this.BASE_API_URL + '/default-icons-sidebar', {
       iconsSidebar: iconsSidebar,

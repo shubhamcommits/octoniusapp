@@ -1,4 +1,4 @@
-import { Component, Injector, Input, OnInit, OnChanges } from '@angular/core';
+import { Component, Injector, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -6,6 +6,7 @@ import { ColorPickerDialogComponent } from 'src/app/common/shared/color-picker-d
 ;
 import { Router } from '@angular/router';
 import { LibraryService } from 'src/shared/services/library-service/library.service';
+import { ShareCollectionDialogComponent } from 'src/app/common/shared/share-collection-dialog/share-collection-dialog.component';
 
 @Component({
   selector: 'app-collection-header',
@@ -17,6 +18,8 @@ export class CollectionHeaderComponent implements OnInit, OnChanges {
   @Input() collectionData;
   @Input() userData;
   @Input() workspaceData;
+  @Input() groupData;
+  @Input() canEdit;
 
   editTitle = false;
   title: string = '';
@@ -38,16 +41,13 @@ export class CollectionHeaderComponent implements OnInit, OnChanges {
   ) { }
 
   async ngOnInit() {
-    // Fetch the current loggedIn user data
-    if (!this.objectExists(this.userData)) {
-      this.userData = await this.publicFunctions.getCurrentUser();
-    }
   }
 
-  async ngOnChanges() {
+  async ngOnChanges(changes: SimpleChanges) {
     this.title = this.collectionData?.name;
 
     this.updateHTMLContent();
+console.log(changes);
   }
 
   ngOnDestroy() {
@@ -179,6 +179,36 @@ export class CollectionHeaderComponent implements OnInit, OnChanges {
 
     dialogRef.afterClosed().subscribe(result => {
       colorPickedSubs.unsubscribe();
+    });
+  }
+
+  openShareDialog() {
+    const dialogRef = this.dialog.open(ShareCollectionDialogComponent, {
+      width: '60%',
+      height: '75%',
+      disableClose: false,
+      hasBackdrop: true,
+      data: { collectionData: this.collectionData }
+    });
+
+    // const colorPickedSubs = dialogRef.componentInstance.colorPickedEvent.subscribe(async (data) => {
+    //   this.collectionData.background_color = data;
+    //   await this.utilityService.asyncNotification($localize`:@@collectionHeader.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+    //     this.libraryService.editCollection(this.collectionData?._id, {
+    //         'background_color': this.collectionData?.background_color })
+    //       .then((res) => {
+    //         this.collectionData = res['collection'];
+    //         // Resolve with success
+    //         resolve(this.utilityService.resolveAsyncPromise($localize`:@@collectionHeader.detailsUpdated:Details updated!`));
+    //       })
+    //       .catch(() => {
+    //         reject(this.utilityService.rejectAsyncPromise($localize`:@@collectionHeader.unableToUpdateDetails:Unable to update the details, please try again!`));
+    //       });
+    //   }));
+    // });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // colorPickedSubs.unsubscribe();
     });
   }
 

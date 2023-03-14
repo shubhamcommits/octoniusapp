@@ -1,4 +1,5 @@
 import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
+import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
@@ -22,6 +23,8 @@ export class AuthSignUpComponent implements OnInit, OnDestroy {
     first_name: null,
     last_name: null
   };
+
+  validPassword: boolean = false;
 
   publicFunctions = new PublicFunctions(this._Injector);
 
@@ -97,6 +100,8 @@ export class AuthSignUpComponent implements OnInit, OnDestroy {
             || this.account.first_name == null || this.account.first_name == ''
             || this.account.last_name == null || this.account.last_name == '') {
         this.utilityService.warningNotification($localize`:@@authSignUp.insufficientData:Insufficient data, kindly fill up all the fields correctly!`);
+      } else if (!this.validPassword) {
+        this.utilityService.warningNotification($localize`:@@authSignUp.invalidPassword:Invalid Password!`);
       } else {
         // Preparing the user data
         let userData: any = {
@@ -134,12 +139,12 @@ export class AuthSignUpComponent implements OnInit, OnDestroy {
               console.error('Error occurred while signing in the user', err);
               this.utilityService.errorNotification($localize`:@@authSignUp.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`);
               this.storageService.clear();
-              reject(this.utilityService.rejectAsyncPromise($localize`:@@authSignUp.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`))
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@authSignUp.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`));
             });
 
         }, (err) => {
           console.error('Error occurred while signing in the user', err);
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@authSignUp.errorSigningUp:Oops some error occurred while signing you up, please try again!`))
+          reject(this.utilityService.rejectAsyncPromise(err.error.message));
         }));
     });
   }
@@ -162,4 +167,7 @@ export class AuthSignUpComponent implements OnInit, OnDestroy {
     this.publicFunctions.sendUpdatesToAccountData(res['account']);
   }
 
+  onPasswordStrengthChanged(event: boolean) {
+    this.validPassword = event;
+  }
 }

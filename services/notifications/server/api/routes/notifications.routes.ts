@@ -91,4 +91,10 @@ routes.get('/unread-chats', auth.verifyToken, auth.isLoggedIn, chatFunctions.unr
 // POST - mark item as read
 routes.post('/:chatId/chat-mark-read', auth.verifyToken, auth.isLoggedIn, chatFunctions.markAsRead);
 
+//This route is responsible for notifying the user on mention on new Collection
+routes.post('/collection-mentions', notificationFunctions.newCollectionMention);
+
+//This route is responsible for notifying the user on mention on new Folio
+routes.post('/page-mentions', notificationFunctions.newPageMention);
+
 export { routes as notificationRoutes };

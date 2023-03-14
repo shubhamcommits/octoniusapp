@@ -41,6 +41,10 @@ export class UsersControllers {
                 select: '_id portfolio_name portfolio_avatar'
             })
             .populate({
+                path: 'stats.favorite_collections',
+                select: '_id name collection_avatar'
+            })
+            .populate({
                 path: '_groups',
                 select: '_id group_name group_avatar'
             })
@@ -179,6 +183,10 @@ export class UsersControllers {
                     select: '_id portfolio_name portfolio_avatar'
                 })
                 .populate({
+                    path: 'stats.favorite_collections',
+                    select: '_id name collection_avatar'
+                })
+                .populate({
                     path: '_groups',
                     select: '_id group_name group_avatar'
                 })
@@ -280,6 +288,10 @@ export class UsersControllers {
                 .populate({
                     path: 'stats.favorite_portfolios',
                     select: '_id portfolio_name portfolio_avatar'
+                })
+                .populate({
+                    path: 'stats.favorite_collections',
+                    select: '_id name collection_avatar'
                 })
                 .populate({
                     path: '_groups',
@@ -896,6 +908,10 @@ export class UsersControllers {
                     select: '_id portfolio_name portfolio_avatar'
                 })
                 .populate({
+                    path: 'stats.favorite_collections',
+                    select: '_id name collection_avatar'
+                })
+                .populate({
                     path: '_groups',
                     select: '_id group_name group_avatar'
                 })
@@ -917,6 +933,10 @@ export class UsersControllers {
                 .populate({
                     path: 'stats.favorite_portfolios',
                     select: '_id portfolio_name portfolio_avatar'
+                })
+                .populate({
+                    path: 'stats.favorite_collections',
+                    select: '_id name collection_avatar'
                 })
                 .populate({
                     path: '_groups',
@@ -962,6 +982,10 @@ export class UsersControllers {
             .populate({
                 path: 'stats.favorite_portfolios',
                 select: '_id portfolio_name portfolio_avatar'
+            })
+            .populate({
+                path: 'stats.favorite_collections',
+                select: '_id name collection_avatar'
             })
             .populate({
                 path: '_groups',
@@ -1021,6 +1045,10 @@ export class UsersControllers {
             .populate({
                 path: 'stats.favorite_portfolios',
                 select: '_id portfolio_name portfolio_avatar'
+            })
+            .populate({
+                path: 'stats.favorite_collections',
+                select: '_id name collection_avatar'
             })
             .populate({
                 path: '_groups',
@@ -1089,6 +1117,10 @@ export class UsersControllers {
                     select: '_id portfolio_name portfolio_avatar'
                 })
                 .populate({
+                    path: 'stats.favorite_collections',
+                    select: '_id name collection_avatar'
+                })
+                .populate({
                     path: '_groups',
                     select: '_id group_name group_avatar'
                 })
@@ -1123,7 +1155,7 @@ export class UsersControllers {
     }
 
     /**
-     * This function is responsible for adding/removing a group from user´s favorites
+     * This function is responsible for adding/removing a portfolio from user´s favorites
      * @param req 
      * @param res 
      * @param next 
@@ -1155,6 +1187,10 @@ export class UsersControllers {
                     select: '_id portfolio_name portfolio_avatar'
                 })
                 .populate({
+                    path: 'stats.favorite_collections',
+                    select: '_id name collection_avatar'
+                })
+                .populate({
                     path: '_groups',
                     select: '_id group_name group_avatar'
                 })
@@ -1177,6 +1213,82 @@ export class UsersControllers {
                 }
             }
 
+            // Send status 200 response
+            return res.status(200).json({
+                message: `User Stats has been updated`,
+                user: user
+            });
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for adding/removing a collection from user´s favorites
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async addFavoriteCollection(req: Request, res: Response, next: NextFunction) {
+
+        const { collectionId, isFavoriteCollection } = req.body;
+        const userId = req['userId'];
+
+        try {
+            let update = {};
+            if (isFavoriteCollection) {
+                update = { $addToSet: { 'stats.favorite_collections': collectionId}};
+            } else {
+                update = { $pull: { 'stats.favorite_collections': collectionId}};
+            }
+
+            // Find the user and update their respective role
+            let user = await User.findOneAndUpdate({
+                    _id: userId
+                }, update, { new: true })
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr')
+                .populate({
+                    path: 'stats.favorite_groups',
+                    select: '_id group_name group_avatar'
+                })
+                .populate({
+                    path: 'stats.favorite_portfolios',
+                    select: '_id portfolio_name portfolio_avatar'
+                })
+                .populate({
+                    path: 'stats.favorite_collections',
+                    select: '_id name collection_avatar'
+                })
+                .populate({
+                    path: '_groups',
+                    select: '_id group_name group_avatar'
+                })
+                .populate({
+                    path: '_account',
+                    select: '_id email _workspaces first_name last_name created_date'
+                });
+
+            if (user['stats']) {
+                if (user['stats']['favorite_groups']) {
+                    user['stats']['favorite_groups'].sort((a, b) => {
+                        return b.group_name - a.group_name;
+                    });
+                }
+
+                if (user['stats']['favorite_portfolios']) {
+                    user['stats']['favorite_portfolios'].sort((a, b) => {
+                        return b.portfolio_name - a.portfolio_name;
+                    });
+                }
+
+                if (user['stats']['favorite_collections']) {
+                    user['stats']['favorite_collections'].sort((a, b) => {
+                        return b.name - a.name;
+                    });
+                }
+            }
+console.log(user.stats);
             // Send status 200 response
             return res.status(200).json({
                 message: `User Stats has been updated`,
@@ -1326,6 +1438,10 @@ export class UsersControllers {
                 .populate({
                     path: 'stats.favorite_portfolios',
                     select: '_id portfolio_name portfolio_avatar'
+                })
+                .populate({
+                    path: 'stats.favorite_collections',
+                    select: '_id name collection_avatar'
                 })
                 .populate({
                     path: '_groups',
@@ -1566,6 +1682,10 @@ export class UsersControllers {
                 .populate({
                     path: 'stats.favorite_portfolios',
                     select: '_id portfolio_name portfolio_avatar'
+                })
+                .populate({
+                    path: 'stats.favorite_collections',
+                    select: '_id name collection_avatar'
                 })
                 .populate({
                     path: '_groups',

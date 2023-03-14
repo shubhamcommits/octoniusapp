@@ -3,6 +3,7 @@ import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { LibraryService } from 'src/shared/services/library-service/library.service';
 import { ActivatedRoute } from '@angular/router';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
 
 @Component({
   selector: 'app-page-navbar',
@@ -17,9 +18,13 @@ export class PageNavbarComponent implements OnInit {
   groupData: any;
   pageData: any;
   workspaceData: any;
+  collectionData: any;
   
   // Edit Title
   editTitle = false
+
+  isAuth;
+  canEdit = false;
 
   // Public functions class member
   publicFunctions = new PublicFunctions(this._Injector);
@@ -27,6 +32,7 @@ export class PageNavbarComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private _Injector: Injector,
+    public storageService: StorageService,
     private utilityService: UtilityService,
     private libraryService: LibraryService
   ) {
@@ -34,10 +40,7 @@ export class PageNavbarComponent implements OnInit {
   }
 
   async ngOnInit() {
-    // Set the groupData
-    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
-    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-
+    
     // Send Updates to router state
     this.publicFunctions.sendUpdatesToRouterState({
       state: 'collection'
@@ -46,6 +49,19 @@ export class PageNavbarComponent implements OnInit {
     await this.libraryService.getPage(this.pageId).then(res => {
       this.pageData = res['page']
     });
+
+    await this.libraryService.getCollectionByPage(this.pageId).then(res => {
+      this.collectionData = res['collection']
+    });
+
+    this.isAuth = this.storageService.existData('authToken');
+
+    if (this.isAuth) {
+      this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+      this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    }
+
+    this.canEdit = await this.utilityService.canUserDoCollectionAction(this.collectionData, this.groupData, 'edit', this.isAuth, this.userData);
   }
 
   /**

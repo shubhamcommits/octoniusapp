@@ -3,6 +3,8 @@ import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { LibraryService } from 'src/shared/services/library-service/library.service';
 import { ActivatedRoute } from '@angular/router';
+import { UserService } from 'src/shared/services/user-service/user.service';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
 
 @Component({
   selector: 'app-collection-navbar',
@@ -21,6 +23,11 @@ export class CollectionNavbarComponent implements OnInit {
   // Edit Title
   editTitle = false
 
+  isAuth;
+  canEdit: boolean = false;
+
+  isFavoriteCollection: boolean;
+
   // Public functions class member
   publicFunctions = new PublicFunctions(this._Injector);
 
@@ -28,15 +35,14 @@ export class CollectionNavbarComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private _Injector: Injector,
     private utilityService: UtilityService,
-    private libraryService: LibraryService
+    private libraryService: LibraryService,
+    public storageService: StorageService,
+    private userService: UserService
   ) {
     this.collectionId = this.activatedRoute.snapshot.queryParams['collection'];
   }
 
   async ngOnInit() {
-    // Set the groupData
-    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
-    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     // Send Updates to router state
     this.publicFunctions.sendUpdatesToRouterState({
@@ -46,6 +52,47 @@ export class CollectionNavbarComponent implements OnInit {
     await this.libraryService.getCollection(this.collectionId).then(res => {
       this.collectionData = res['collection']
     });
+
+    this.isAuth = this.storageService.existData('authToken');
+
+    if (this.isAuth) {
+      // Set the groupData
+      this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+      this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+      this.userData = await this.publicFunctions.getCurrentUser();
+    } else {
+      await this.libraryService.getWorkspaceByCollection(this.collectionId).then(res => {
+        this.workspaceData = res['workspace'];
+      });
+    }
+
+    const isAuth = this.storageService.existData('authToken');
+
+    this.canEdit = await this.utilityService.canUserDoCollectionAction(this.collectionData, this.groupData, 'edit', isAuth, this.userData);
+
+    this.isFavoriteCollection = this.checkIsFavoriteCollection();
+  }
+
+  checkIsFavoriteCollection() {
+    const collectionIndex = (this.userData && this.userData.stats && this.userData.stats.favorite_collections) ? this.userData.stats.favorite_collections.findIndex(collection => (collection._id || collection) == this.collectionData?._id) : -1;
+    return collectionIndex >= 0;
+  }
+
+  saveFavoriteCollection() {
+    this.utilityService.asyncNotification($localize`:@@collectionNavbar.pleaseWaitWeAreSaving:Please wait we are saving the information...`,
+      new Promise((resolve, reject) => {
+        // Call HTTP Request to change the request
+        this.userService.saveFavoriteCollection(this.collectionData?._id, !this.isFavoriteCollection)
+          .then((res) => {
+            this.isFavoriteCollection = !this.isFavoriteCollection;
+            this.userData = res['user'];
+            this.publicFunctions.sendUpdatesToUserData(this.userData);
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@collectionNavbar.collectionSavedFavorite:Collection saved as favorite!`));
+          })
+          .catch(() => {
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@collectionNavbar.unableToSaveAsFavorite:Unable to save the collection as favorite, please try again!`))
+          });
+      }));
   }
 
   /**
@@ -53,8 +100,10 @@ export class CollectionNavbarComponent implements OnInit {
     * @param content
     */
   async openDetails(content) {
-    // Open Modal
-    this.utilityService.openModal(content, {});
+    if (this.isAuth) {
+      // Open Modal
+      this.utilityService.openModal(content, {});
+    }
   }
 
   /**
@@ -67,14 +116,14 @@ export class CollectionNavbarComponent implements OnInit {
     if (event.keyCode == 13) {
 
       // Set the edit title to false
-      await this.utilityService.asyncNotification($localize`:@@collectionHeader.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+      await this.utilityService.asyncNotification($localize`:@@collectionNavbar.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
         this.libraryService.editCollection(this.collectionData?._id, { 'name': this.collectionData?.name })
           .then((res) => {
             // Resolve with success
-            resolve(this.utilityService.resolveAsyncPromise($localize`:@@collectionHeader.detailsUpdated:Details updated!`));
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@collectionNavbar.detailsUpdated:Details updated!`));
           })
           .catch(() => {
-            reject(this.utilityService.rejectAsyncPromise($localize`:@@collectionHeader.unableToUpdateDetails:Unable to update the details, please try again!`));
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@collectionNavbar.unableToUpdateDetails:Unable to update the details, please try again!`));
           });
       }));
 

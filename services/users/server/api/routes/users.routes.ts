@@ -136,6 +136,8 @@ routes.put('/add-favorite-group', user.addFavoriteGroup);
 
 routes.put('/add-favorite-portfolio', user.addFavoritePortfolio);
 
+routes.put('/add-favorite-collection', user.addFavoriteCollection);
+
 routes.put('/default-icons-sidebar', user.saveIconSidebarByDefault);
 
 // PUT - Save the out of the office days 

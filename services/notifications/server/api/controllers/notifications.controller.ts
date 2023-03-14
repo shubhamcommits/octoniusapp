@@ -864,4 +864,50 @@ export class NotificationsController {
             return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
     }
+
+    /**
+     * This function is responsible for notifying the user on mention on a Collection
+     * @param file
+     * @param user
+     * @param mention
+     */
+    async newCollectionMention(req: Request, res: Response, next: NextFunction) {
+
+        const { mentions, collectionId, userId, io } = req.body;
+
+        try {
+            await notificationService.newCollectionMentions(userId, collectionId, mentions, io);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'New Collection Mention Succeeded!'
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    };
+
+    /**
+     * This function is responsible for notifying the user on mention on a Page
+     * @param file
+     * @param user
+     * @param mention
+     */
+    async newPageMention(req: Request, res: Response, next: NextFunction) {
+
+        const { mentions, pageId, userId, io } = req.body;
+
+        try {
+            await notificationService.newPageMentions(userId, pageId, mentions, io);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'New Page Mention Succeeded!'
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    };
 }
