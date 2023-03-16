@@ -1,13 +1,6 @@
-// @import 'src/assets/scss/_variables.scss';
-
 img{
   cursor: pointer;
-  // transition: transform .2s ease;
 }
-
-// img:hover{
-//   transform: scale(1.1);
-// }
 
 .avatar{
   width: 30px;
@@ -17,7 +10,6 @@ img{
 }
 
 .assignee-avatar {
-  //avatar image for in-feed display
   width: 30px;
   height: 30px;
   object-fit: cover;
@@ -66,28 +58,30 @@ img{
 
 ///////////////////////////////////////
 
+// @import 'src/assets/scss/_variables.scss';
+
 // .lds-roller {
-//   display: inline-block;
-//   position: absolute;
-//   width: 80px;
-//   height: 80px;
-//   left: 50%;
-//   top: 50%;
+//   // display: inline-block;
+//   // position: fixed;
+//   // width: 80px;
+//   // height: 80px;
+//   // left: 50%;
+//   // top: 50%;
 //   -webkit-transform: translate(-50%, -50%);
 //   transform: translate(-50%, -50%);
 // }
 
 // .lds-roller div {
 //   animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-//   transform-origin: 40px 40px;
+//   transform-origin: center;
 // }
 
 // .lds-roller div:after {
 //   content: " ";
 //   display: block;
 //   position: absolute;
-//   width: 7px;
-//   height: 7px;
+//   width: .3em;
+//   height: .3em;
 //   border-radius: 50%;
 //   background: $turquoise;
 //   margin: -4px 0 0 -4px;

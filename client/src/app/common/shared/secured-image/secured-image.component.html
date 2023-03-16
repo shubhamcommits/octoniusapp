@@ -1,31 +1,38 @@
-<span *ngIf="(!isLocalImg && (dataUrl$ | async));else locaImg">
+<!-- 
+<span *ngIf="(!isLocalImg && (dataUrl$ | async))">
   <img *ngIf="dataUrl$ | async as url"
     [src]="url"
+    [style]="inlineStyle"
     class="{{ styleClass }}"
     onerror="this.src=this.onErrorUrl"
     matTooltipPosition="{{ placement }}"
     matTooltip="{{ tooltip }}"
     alt="{{ alt }}"
-    [style]="inlineStyle" />
+    (load)="hideLoader()" (error)="hideLoader()"/>
 </span>
 
 <ng-template #locaImg>
-  <!--
-  <div *ngIf="isLoading" class="lds-roller">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
-  -->
-
   <img [src]="onErrorUrl"
     class="{{ styleClass }}"
     onerror="this.src=this.onErrorUrl"
     alt="{{ alt }}"
     [style]="inlineStyle" />
 </ng-template>
+-->
+
+<span *ngIf="isLoading">
+  <img [src]="onErrorUrl" [ngStyle]="inlineStyle" [style]="inlineStyle" class="{{ styleClass }}" onerror="this.src=this.onErrorUrl" alt="{{ alt }}" />
+</span>
+
+<span [ngStyle]="{'display': (isLoading) ? 'none' : '' }">
+  <img *ngIf="dataUrl$ | async as url"
+    [src]="url"
+    [ngStyle]="inlineStyle"
+    [style]="inlineStyle"
+    class="{{ styleClass }}"
+    matTooltipPosition="{{ placement }}"
+    matTooltip="{{ tooltip }}"
+    alt="{{ alt }}"
+    onerror="this.src=this.onErrorUrl"
+    (load)="hideLoader()" (error)="hideLoader()" />
+</span>
