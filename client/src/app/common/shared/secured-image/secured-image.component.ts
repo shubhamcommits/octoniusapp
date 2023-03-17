@@ -37,7 +37,7 @@ export class SecuredImageComponent implements OnChanges  {
   dataUrl$;
 
   isLocalImg: boolean = false;
-  // isLoading: boolean = false;
+  isLoading: boolean;
 
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
@@ -46,6 +46,7 @@ export class SecuredImageComponent implements OnChanges  {
     private injector: Injector,
     private httpClient: HttpClient,
     private domSanitizer: DomSanitizer) {
+      this.isLoading=true;
   }
 
   async ngOnChanges(): Promise<void> {
@@ -187,5 +188,10 @@ export class SecuredImageComponent implements OnChanges  {
           break;
       }
     }
+  }
+
+  hideLoader() {
+// console.log("11111");
+    this.isLoading=false;
   }
 }
