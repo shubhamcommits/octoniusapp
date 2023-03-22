@@ -41,7 +41,7 @@ export class ApprovalNotificationsController {
 
                 await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
                     item,
-                    userId: assigned,
+                    userid: assigned,
                     posted_by,
                     type: "LAUNCHAPPROVALFLOW"
                 });
