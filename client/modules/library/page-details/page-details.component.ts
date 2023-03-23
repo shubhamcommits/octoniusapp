@@ -137,9 +137,7 @@ export class PageDetailsComponent implements OnInit {
       });
     }
 
-    if (!this.isAuth) {
-      this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.pageData?.content)['ops']);
-    }
+    this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.pageData?.content)['ops']);
 
     await this.initPages();
 
@@ -195,6 +193,8 @@ export class PageDetailsComponent implements OnInit {
         this.libraryService.editPage(this.pageData?._id, { 'content': content, '_content_mentions': this._content_mentions }).then(async res => {
             this.pageData = res['page'];
             this.canEditPage = !this.canEditPage;
+
+            this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.pageData?.content)['ops']);
             resolve(this.utilityService.resolveAsyncPromise($localize`:@@pageDetails.pageUpdated:Page updated`))
           })
           .catch(() => {
