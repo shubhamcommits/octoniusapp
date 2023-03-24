@@ -165,8 +165,8 @@ function validateId(id: any) {
 
 function sortPendingApprovals(notifications: any) {
     return notifications.sort((n1, n2) => {
-        let n1Date = (n1._origin_post) ? n1._origin_post.approval_due_date : (n1._origin_folio) ? n1._origin_folio.approval_due_date : null;
-        let n2Date = (n2._origin_post) ? n2._origin_post.approval_due_date : (n2._origin_folio) ? n2._origin_folio.approval_due_date : null;
+        let n1Date = (n1._origin_post) ? n1._origin_post.approval_due_date : (n1._origin_folio) ? n1._origin_folio.approval_due_date : n1.created_date;
+        let n2Date = (n2._origin_post) ? n2._origin_post.approval_due_date : (n2._origin_folio) ? n2._origin_folio.approval_due_date : n2.created_date;
         return (n1Date && n2Date)
             ? (moment.utc(n1Date).isBefore(n2Date)) ? -1 : 1
             : (n1Date && !n2Date) ? -1 : 1;

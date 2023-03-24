@@ -169,7 +169,7 @@ export class NotificationsService {
                         $and: [
                             { _owner: userId },
                             { read: false },
-                            { type: 'launch-approval-flow-due-date' }
+                            { type: { $in: ["launch-approval-flow", "launch-approval-flow-due-date"] }}
                         ]
                     })
                     .sort('-created_date')
@@ -190,7 +190,7 @@ export class NotificationsService {
                         $and: [
                             { _owner: userId },
                             { read: false },
-                            { type: 'launch-approval-flow-due-date' }
+                            { type: { $in: ["launch-approval-flow", "launch-approval-flow-due-date"] }}
                         ]
                     })
                     .sort('-created_date')
