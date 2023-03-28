@@ -1,13 +1,10 @@
 import { Response, Request, NextFunction } from "express";
 import { sendError } from "../../utils/senderror";
-import { FilesService, FoldersService } from "../services";
-import { File, Folder } from '../models';
+import { FilesService } from "../services";
+import { File, Flamingo, Folder } from '../models';
 import axios from 'axios';
 // Create instance of files service
 let filesService = new FilesService();
-
-// Create instance of folders service
-let foldersService = new FoldersService();
 
 export class FilesControllers {
 
@@ -27,7 +24,7 @@ export class FilesControllers {
             let files: any = [];
 
             // Get files list
-            if (lastFileId == undefined || lastFileId == 'undefined') {
+            if (lastFileId == undefined || lastFileId == 'undefined') {
                 if (folderId == undefined || folderId == 'undefined' || folderId == null || folderId == 'null') {
                     files = await filesService.get(groupId.toString(), null);
                 } else {
@@ -291,21 +288,72 @@ export class FilesControllers {
 
             // Create the file
             fileData = await filesService.add(fileData);
+            let flamingo: any;
 
-            if(fileData && fileData.type == 'flamingo'){
-                await axios.post(`${process.env.FLAMINGO_SERVER_API}/create-flamingo`,
+            if(fileData && fileData.type == 'flamingo') {
+                // await axios.post(`${process.env.FLAMINGO_SERVER_API}/create-flamingo`,
+                //     {
+                //         flamingoData: { _file: fileData._id }
+                //     },
+                //     {
+                //         headers: { Authorization: req.headers.authorization }
+                //     });
+                let { body: { flamingoData } } = req;
+                flamingo = {
+                    _file: fileData?._id,
+                    _questions: flamingoData?._questions || []
+                }
+
+                // Create the new File
+                flamingo = await Flamingo.create(flamingo);
+
+                // Populate File Properties
+                flamingo = await Flamingo.populate(flamingo, [
+                    { path: '_file', select: 'original_name modified_name type created_date' },
                     {
-                        flamingoData: { _file: fileData._id }
+                        path: '_file',
+                        populate: {
+                            path: '_posted_by',
+                            model: 'User',
+                            select: 'first_name last_name profile_pic role email' 
+                        }
                     },
                     {
-                        headers: { Authorization: req.headers.authorization }
-                    });
+                        path: '_file',
+                        populate: {
+                            path: '_group',
+                            model: 'Group',
+                            select: 'group_name group_avatar workspace_name _workspace' 
+                        }
+                    },
+                    {
+                        path: '_file',
+                        populate: {
+                            path: '_group',
+                            populate: {
+                                path: '_workspace',
+                                model: 'Workspace',
+                                select: '_id management_private_api_key'
+                            }
+                        }
+                    },
+                    {
+                        path: '_file',
+                        populate: {
+                            path: '_folder',
+                            model: 'Folder'
+                        }
+                    },
+                    { path: '_questions' },
+                    { path: 'responses.answers._question' }
+                ]);
             }
 
             // Send Status 200 response
             return res.status(200).json({
                 message: 'File has been uploaded!',
-                file: fileData
+                file: fileData,
+                flamingo: flamingo
             });
 
         } catch (err) {
