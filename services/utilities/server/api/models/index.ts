@@ -6,6 +6,7 @@ import { File } from './file.model';
 import { Group } from './group.model';
 import { Flamingo } from "./flamingo.model";
 import { Question } from "./questions.model";
+import { Workspace } from "./workspace.model";
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -34,5 +35,7 @@ export {
     Flamingo as Flamingo,
 
     // Question
-    Question as Questions
+    Question as Questions,
+
+    Workspace as Workspace
 };
