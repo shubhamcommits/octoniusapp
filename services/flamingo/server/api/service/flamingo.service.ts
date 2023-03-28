@@ -121,7 +121,7 @@ export class FlamingoService {
      */
       async get(fileId: string) {
 
-        let flamingo: any = await Flamingo.findOne({_file:fileId})
+        let flamingo: any = await Flamingo.findOne({ _file: fileId })
         flamingo = this.populateFlamingoProperties(flamingo);
         
         return flamingo;

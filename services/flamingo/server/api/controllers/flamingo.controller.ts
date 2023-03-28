@@ -56,7 +56,7 @@ export class FlamingoController {
             let flamingo: any;
             
             flamingo = await flamingoService.get(fileId.toString());  
-            
+
             // Send Status 200 response
             return res.status(200).json({
                 message: 'Flamingos data fetched!',
