@@ -361,7 +361,7 @@
             <span *ngIf="notification?._origin_folio" class="notification_post_title"> {{ notification?._origin_folio?.approval_due_date | date: 'MMM d, y' }}</span>
           </div>
 
-          <div class="notification_more">
+          <div class="notification_more" style="width: 120px;">
             <a mat-menu-item (click)="viewApprovalNotification(notification, index)">
               <i class="material-icons-outlined ml-2 muted" style="margin-right: .7rem;">visibility</i>
               <span i18n="@@recentActivity.view">View</span>
