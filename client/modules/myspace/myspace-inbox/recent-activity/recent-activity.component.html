@@ -18,7 +18,7 @@
       </div>
       <!-- Empty State ends -->
       <div *ngIf="notificationsData.unreadNotifications.length > 0 && !(isLoading$ | async)" >
-        <div class="notification-item">
+        <div class="notification-item" style="flex-direction: row-reverse;">
           <div class="notification_more">
             <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="general_menu" style="cursor: pointer;">more_horiz</i>
             <mat-menu #general_menu="matMenu">
@@ -29,6 +29,7 @@
             </mat-menu>
           </div>
         </div>
+
         <!-- NOTIFICATION ITEM STARTS-->
         <div class="notification-item" *ngFor="let notification of notificationsData?.unreadNotifications; let index = index">
           <div class="notification_actor">
@@ -57,7 +58,7 @@
             &nbsp;
 
             <span *ngIf="notification?.type === 'assignment'" class="assignment_notification" i18n="@@recentActivity.assignedYou">assigned you</span>
-            <span *ngIf="notification?.type === 'mention' || notification?.type === 'mention_folio' || notification?.type === 'mention_collection' || notification?.type === 'mention_page'" class="mention_notification" i18n="@@recentActivity.mentionedYou">mentioned you on</span>
+            <span *ngIf="notification?.type === 'mention' || notification?.type === 'mention_folio' || notification?.type === 'mention_collection' || notification?.type === 'mention_page'" class="mention_notification" i18n="@@recentActivity.mentionedYou">mentioned you on</span>
             <span *ngIf="notification?.type === 'completed'" class="completed_notification" i18n="@@recentActivity.completed">completed</span>
             <span *ngIf="notification?.type === 'started'" class="started_notification" i18n="@@recentActivity.started">started</span>
             <span *ngIf="notification?.type === 'like_comment'" class="like_notification" i18n="@@recentActivity.likedYourComment">liked your comment on</span>
@@ -172,7 +173,7 @@
       </div>
       <!-- Empty State ends -->
       <div *ngIf="notificationsData.unreadPosts.length > 0 && !(isLoading$ | async)" >
-        <div class="notification-item">
+        <div class="notification-item" style="flex-direction: row-reverse;">
           <div class="notification_more">
             <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="general_menu" style="cursor: pointer;">more_horiz</i>
             <mat-menu #general_menu="matMenu">
