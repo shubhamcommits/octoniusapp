@@ -119,6 +119,30 @@ const UserSchema = new Schema({
         entity_variables: {
             type: Map,
             of: String
+        },
+        address_line_1: {
+            type: String,
+            default: null
+        },
+        address_line_2: {
+            type: String,
+            default: null
+        },
+        city: {
+            type: String,
+            default: null
+        },
+        zip_code: {
+            type: String,
+            default: null
+        },
+        state: {
+            type: String,
+            default: null
+        },
+        country: {
+            type: String,
+            default: null
         }
     },
     stats: {
