@@ -489,11 +489,12 @@ export class UsersControllers {
             ]}).countDocuments();
 
             // Count all the users present inside the workspace
-            const guestsCount: number = await User.find({ $and: [
-                { active: true },
-                { _workspace: workspaceId },
-                { role: 'guest'}
-            ] }).countDocuments();
+            const guestsCount: number = await User.find({
+                $and: [
+                    { active: true },
+                    { _workspace: workspaceId },
+                    { role: 'guest'}
+                ]}).countDocuments();
 
             let workspaceMgmt = {
                 _id: workspaceId,
