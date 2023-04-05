@@ -648,7 +648,7 @@ export class UsersControllers {
         try {
 
             // find the user
-            let user: any = await User.findOne({
+            let user: any = await User.findOneAndUpdate({
                     $and: [
                         { _id: memberId },
                         { active: true }

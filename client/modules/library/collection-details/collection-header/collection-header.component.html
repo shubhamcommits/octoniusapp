@@ -46,7 +46,7 @@
 <div class="clearfix save-content mb-3" *ngIf="canEdit">
     <button *ngIf="!editContent" class="btn btn-outline-secondary btn-md float-right" style="margin-right: 20px;"
         [matMenuTriggerFor]="collectionActions" #trigger="matMenuTrigger">
-        <span i18n="@@collectionHeader.editDetails">Options</span>
+        <span i18n="@@collectionHeader.options">Options</span>
     </button>
 
     <button *ngIf="editContent" (click)="openShareDialog()"
@@ -70,14 +70,14 @@
             <li>
                 <a *ngIf="!editContent" (click)="openShareDialog()" class="btn btn-primary btn-block">
                     <i class="material-icons-outlined">share</i>
-                    <span i18n="@@collectionHeader.shareCollection">Share</span>
+                    <span i18n="@@collectionHeader.share">Share</span>
                 </a>
             </li>
 
              <li>
                 <a *ngIf="!editContent" (click)="editContent = !editContent" class="btn btn-secondary btn-block">
                     <i class="material-icons-outlined">edit</i>
-                    <span i18n="@@collectionHeader.editDetails">Edit</span>
+                    <span i18n="@@collectionHeader.edit">Edit</span>
                 </a>
             </li>
 

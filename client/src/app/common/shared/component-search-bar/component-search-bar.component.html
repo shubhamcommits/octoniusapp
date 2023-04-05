@@ -32,10 +32,11 @@
             <div class="float-left" style="text-transform: capitalize;">
                 <p class="mt-0">{{member?.first_name}} {{member?.last_name}}</p>
                 <p>
-                  <span i18n="@@componentSearchBar.role">Role: </span>
-                  <span *ngIf="member?.role == 'manager'" i18n="@@componentSearchBar.work">Work Manager</span>
-                  <span *ngIf="member?.role != 'manager'">{{ member?.role }}</span>
-                  <span *ngIf="isGroupManager(member._id)">, <span i18n="@@componentSearchBar.groupManager">Group Manager</span></span> (<a href="mailto:{{member?.email}}" style="text-transform: lowercase;">{{member?.email}}</a>)
+                    <span i18n="@@componentSearchBar.role">Role: </span>
+                    <span *ngIf="member?.role == 'manager'" i18n="@@componentSearchBar.work">Work Manager</span>
+                    <span *ngIf="member?.role != 'manager'">{{ member?.role }}</span>
+                    <span *ngIf="isGroupManager(member._id)">, <span i18n="@@componentSearchBar.groupManager">Group Manager</span></span> (<a href="mailto:{{member?.email}}" style="text-transform: lowercase;">{{member?.email}}</a>)
+                    <span *ngIf="member.hr_role">, <span i18n="@@componentSearchBar.hrMember">HR Member</span></span>
                 </p>
             </div>
             <!-- Member Details Ends -->
