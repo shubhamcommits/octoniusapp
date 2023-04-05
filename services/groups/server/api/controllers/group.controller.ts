@@ -774,7 +774,7 @@ export class GroupController {
         try {
 
             const group: any = await Group.findOne({ _id: groupId })
-                .select('group_name _workspace')
+                .select('group_name _workspace');
 
             // Find the group and remove it from the database
             const groupDeleted: any = await Group.findByIdAndDelete(groupId);

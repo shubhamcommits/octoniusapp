@@ -59,7 +59,7 @@ routes.post('/:entityId/delete-cf', controller.deleteEntityCF);
 routes.get('/:entityId/entityMembers', controller.getEntityMembers);
 
 // POST - Removes a user from an entity
-routes.post('/:entityId/removeMemberFromentity', controller.removeMemberFromentity);
+routes.post('/:entityId/removeMemberFromentity', controller.removeMemberFromEntity);
 
 // POST - Add a user to an entity
 routes.post('/:entityId/addMemberToEntity', controller.addMemberToEntity);

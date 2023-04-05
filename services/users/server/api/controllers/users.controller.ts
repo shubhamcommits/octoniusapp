@@ -2,6 +2,7 @@ import { Account, Group, User, Workspace } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError,PasswordHelper, axios } from '../../utils';
 import moment from 'moment';
+import http from 'axios';
 
 /*  ===================
  *  -- USER METHODS --
@@ -489,11 +490,12 @@ export class UsersControllers {
             ]}).countDocuments();
 
             // Count all the users present inside the workspace
-            const guestsCount: number = await User.find({ $and: [
-                { active: true },
-                { _workspace: workspaceId },
-                { role: 'guest'}
-            ] }).countDocuments();
+            const guestsCount: number = await User.find({
+                $and: [
+                    { active: true },
+                    { _workspace: workspaceId },
+                    { role: 'guest'}
+                ]}).countDocuments();
 
             let workspaceMgmt = {
                 _id: workspaceId,
@@ -1201,10 +1203,17 @@ export class UsersControllers {
             const user = await User.findByIdAndDelete(userId).select('_account _workspace integrations');
             const workspaceId = user._workspace;
 
-            const usersCount: number = await User.find({ $and: [
-                { active: true },
-                { _workspace: workspaceId }
-            ] }).countDocuments();
+            const userGroups = await Group.find({
+                    $and: [
+                        { type: { $ne: 'agora' } },
+                        {
+                            $or: [
+                                { _admins: userId },
+                                { _members: userId }
+                            ]
+                        }
+                    ]
+                }).select('_members _admins');
 
             // Remove user from groups
             await Group.updateMany({
@@ -1221,6 +1230,13 @@ export class UsersControllers {
                         _admins: userId
                     }
                 });
+
+            // In case the user is the only member, delete the group
+            userGroups.forEach(group => {
+                if ((group._members.length == 0 && group._admins.length == 1) || (group._members.length == 1 && group._admins.length == 0)) {
+                    http.delete(`${process.env.GROUPS_SERVER_API}/${group._id}`);
+                }
+            });
 
             // Remove user from workspaces
             const workspaceUpdated = await Workspace.findByIdAndUpdate(
@@ -1251,6 +1267,11 @@ export class UsersControllers {
                         });
                 }
             }
+
+            const usersCount: number = await User.find({ $and: [
+                { active: true },
+                { _workspace: workspaceId }
+            ] }).countDocuments();
 
             // Send new workspace to the mgmt portal
             // Count all the groups present inside the workspace

@@ -376,7 +376,11 @@ export class HRControllers {
 
             // Find the workspace based on the workspaceId
             const users: any = await User.find({
-                'hr._entity': entityId
+                $and: [
+                    { 'hr._entity': entityId },
+                    { active: true }
+                ]
+                
             }).select('_id first_name last_name email profile_pic hr').lean();
 
             // Check if workspace already exist with the same workspaceId
@@ -394,7 +398,7 @@ export class HRControllers {
         }
     }
 
-    async removeMemberFromentity(req: Request, res: Response, next: NextFunction) {
+    async removeMemberFromEntity(req: Request, res: Response, next: NextFunction) {
         try {
             const { params: { entityId }, body: { memberId } } = req;
 
@@ -468,7 +472,10 @@ export class HRControllers {
             }
 
             const userStream = Readable.from(await User.find({
-                    _workspace: workspaceId
+                    $and: [
+                        { _workspace: workspaceId },
+                        { active: true }
+                    ]
                 }).select('_id'));
 
             await userStream.on('data', async (user: any) => {
