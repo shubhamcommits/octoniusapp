@@ -131,15 +131,14 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
 
   changeCountry(value: any) {
     if (value) {
-      this.userData.hr.country = value;
-      this.saveProperty('hr.country', value);
+      this.saveHRProperty('country', value);
     }
   }
 
-  saveProperty(property_name: string, value: any) {
+  saveHRProperty(property_name: string, value: any) {
 
     if (value != '') {
-      this.userData[property_name] = value;
+      this.userData.hr[property_name] = value;
       
       this.utilityService.asyncNotification($localize`:@@editEntityDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the entity...`, new Promise((resolve, reject) => {
         this.userService.updateUser(this.userData)
