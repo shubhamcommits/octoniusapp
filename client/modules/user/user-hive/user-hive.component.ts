@@ -191,31 +191,6 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
     }));
   }
 
-  // onInputEntityVariableChange(event: Event, variabledId: string) {
-  //   const value = event.target['value'];
-  //   this.savePayrollVariable(variabledId, value);
-  // }
-
-  // savePayrollVariable(variabledId: string, value: any) {
-  //   this.utilityService.asyncNotification($localize`:@@userHive.pleaseWaitWeUpdateContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-  //     this.userService.savePayrollVariable(this.userData._id, variabledId, value)
-  //       .then(async (res) => {
-
-  //         const field = this.hrVariables[this.hrVariables.findIndex(cf => cf._id == variabledId)];
-  //         if (field) {
-  //           this.selectedHRVariablesValues[variabledId] = value;
-  //           this.userData.hr.entity_variables[variabledId] = value;
-  //         }
-
-  //         // Resolve with success
-  //         resolve(this.utilityService.resolveAsyncPromise($localize`:@@userHive.cfUpdated:Field updated!`));
-  //       })
-  //       .catch(() => {
-  //         reject(this.utilityService.rejectAsyncPromise($localize`:@@userHive.unableToUpdateCF:Unable to update field, please try again!`));
-  //       });
-  //   }));
-  // }
-
   formateDate(date) {
     return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
   }
