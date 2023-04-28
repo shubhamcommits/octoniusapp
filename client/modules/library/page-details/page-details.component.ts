@@ -137,7 +137,9 @@ export class PageDetailsComponent implements OnInit {
       });
     }
 
-    this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.pageData?.content)['ops']);
+    if (this.pageData?.content) {
+      this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.pageData?.content)['ops']);
+    }
 
     await this.initPages();
 
