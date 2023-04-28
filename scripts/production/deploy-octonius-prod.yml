@@ -640,7 +640,9 @@ services:
       - minio2
       - minio3 
     deploy:
-      mode: global         
+      mode: global  
+      restart_policy:
+        condition: on-failure
     networks:
       - octonius_production
 
@@ -653,6 +655,8 @@ services:
       placement:
         constraints:
           - node.role==manager
+      restart_policy:
+        condition: on-failure
     networks:
       - octonius_production
 
@@ -665,6 +669,8 @@ services:
       placement:
         constraints:
           - node.role==manager
+      restart_policy:
+        condition: on-failure
     networks:
       - octonius_production
 
@@ -677,6 +683,8 @@ services:
       placement:
         constraints:
           - node.role==manager
+      restart_policy:
+        condition: on-failure
     networks:
       - octonius_production
         
