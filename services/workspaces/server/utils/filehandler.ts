@@ -193,7 +193,7 @@ const loungeImageFileUploader = async (req: Request, res: Response, next: NextFu
         secretKey: process.env.MINIO_SECRET_KEY
     });
 
-    await minioClient.bucketExists((req.body.fileData._workspace).toLowerCase(), async (error, exists) => {
+    await minioClient.bucketExists((workspaceId).toLowerCase(), async (error, exists) => {
       if (error) {
         fileName = null;
         return res.status(500).json({
@@ -205,7 +205,7 @@ const loungeImageFileUploader = async (req: Request, res: Response, next: NextFu
 
       if (!exists) {
         // Make a bucket.
-        await minioClient.makeBucket((req.body.fileData._workspace).toLowerCase(), async (error) => {
+        await minioClient.makeBucket((workspaceId).toLowerCase(), async (error) => {
           if (error) {
             fileName = null;
             return res.status(500).json({
@@ -216,12 +216,12 @@ const loungeImageFileUploader = async (req: Request, res: Response, next: NextFu
           }
 
           const encryption = { algorithm: "AES256" };
-          await minioClient.setBucketEncryption((req.body.fileData._workspace).toLowerCase(), encryption)
+          await minioClient.setBucketEncryption((workspaceId).toLowerCase(), encryption)
             .then(() => console.log("Encryption enabled"))
             .catch((error) => console.error(error));
 
           // Using fPutObject API upload your file to the bucket.
-          minioClient.putObject((req.body.fileData._workspace).toLowerCase(), /*folder + */fileName, file.data, (error, objInfo) => {
+          minioClient.putObject((workspaceId).toLowerCase(), /*folder + */fileName, file.data, (error, objInfo) => {
             if (error) {
               fileName = null;
               return res.status(500).json({
@@ -239,7 +239,7 @@ const loungeImageFileUploader = async (req: Request, res: Response, next: NextFu
         });
       } else {
         // Using fPutObject API upload your file to the bucket.
-        minioClient.putObject((req.body.fileData._workspace).toLowerCase(), /*folder + */fileName, file.data, (error, objInfo) => {
+        minioClient.putObject((workspaceId).toLowerCase(), /*folder + */fileName, file.data, (error, objInfo) => {
           if (error) {
             fileName = null;
             return res.status(500).json({
