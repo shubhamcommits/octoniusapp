@@ -160,7 +160,8 @@
                     [editorId]="'_new_comment'"
                     [pageId]="pageData?._id"
                     [workspaceId]="workspaceData?._id"
-                    (comment)="newCommentReceived($event)">
+                    (comment)="newCommentReceived($event)"
+                    (close)="showComments = !showComments">
                 </comment-section>
 
                 <app-comment-list style="width: 100%;"
