@@ -53,7 +53,7 @@ export class AdminMembersComponent implements OnInit {
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     // Initialize the members
-    this.members = await this.workspaceData.members;
+    this.members = await this.publicFunctions.getWorkspaceMembers();
 
   }
 
