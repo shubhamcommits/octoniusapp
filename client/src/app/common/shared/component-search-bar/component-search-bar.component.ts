@@ -121,7 +121,7 @@ export class ComponentSearchBarComponent implements OnInit, OnDestroy {
       if (this.query == "") {
         // Intialise the members back to normal
         if (this.type === 'workspace') {
-          this.members = this.workspaceData.members;
+          this.members = await this.publicFunctions.getWorkspaceMembers();
         }
         // Intialise the members back to normal
         if (this.type === 'group') {
