@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { ChatService } from 'src/shared/services/chat-service/chat.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-direct-chats-home',
@@ -19,6 +20,7 @@ export class DirectChatsHomeComponent implements OnChanges, OnDestroy {
 
   constructor(
     private chatService: ChatService,
+    private utilityService: UtilityService
   ) {
     
   }
@@ -45,4 +47,19 @@ export class DirectChatsHomeComponent implements OnChanges, OnDestroy {
       this.chatDeletedEvent.emit(chatId);
     });
   }
+
+  // openVideoChatDialog(chatId: string) {
+  //   const dialogRef = this.utilityService.openVideoChatDialog(chatId, this.userData?._id);
+
+  //   if (dialogRef) {
+  //     const closeEventSubs = dialogRef.componentInstance.close.subscribe((data) => {
+  //       // this.closeModal();
+  //       console.log("video chat closed", data);
+  //     });
+      
+  //     dialogRef.afterClosed().subscribe(result => {
+  //       closeEventSubs.unsubscribe();
+  //     });
+  //   }
+  // }
 }

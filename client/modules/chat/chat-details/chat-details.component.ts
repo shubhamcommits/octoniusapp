@@ -341,8 +341,8 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  openVideoChatDialog(chatId: string) {
-    const dialogRef = this.utilityService.openVideoChatDialog(this.userData?._id, chatId);
+  openVideoChatDialog() {
+    const dialogRef = this.utilityService.openVideoChatDialog(this.chatData, this.canEdit);
 
     if (dialogRef) {
       const closeEventSubs = dialogRef.componentInstance.close.subscribe((data) => {

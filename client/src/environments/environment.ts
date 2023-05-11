@@ -104,6 +104,7 @@ export const environment = {
   FOLIO_HTTP_URL: `${url.protocol}://${url.domain}:11000`,
 
   // Chats URLs
+  CHATS_BASE_URL: `${url.protocol}://${url.domain}:16001`,
   CHATS_BASE_API_URL: `${url.protocol}://${url.domain}:16001/api`,
 
   // MANAGEMENT_URL: 'https://management.octonius.com',

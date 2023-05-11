@@ -80,6 +80,7 @@ export const environment = {
   UTILITIES_FLAMINGOS_UPLOADS: 'http://localhost:80/uploads/flamingo',
 
   // Chats URLs
+  CHATS_BASE_URL: `http://localhost:80/chats`,
   CHATS_BASE_API_URL: `http://localhost:80/api/chats`,
 
   // MANAGEMENT_URL: 'https://management.octonius.com',

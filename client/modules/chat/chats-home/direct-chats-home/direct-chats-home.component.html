@@ -36,7 +36,14 @@
 
             <mat-menu #chatOptions="matMenu">
               <ul>
-                <li (click)="deleteChat(chat?._id)">
+                <!--
+                <li (click)="openVideoChatDialog(chat?._id)" style="cursor: pointer;">
+                  <i class="material-icons-outlined">duo</i>
+                  <span i18n="@@directChatsHome.delete">Call</span>
+                </li>
+                -->
+
+                <li (click)="deleteChat(chat?._id)" style="cursor: pointer;">
                   <i class="material-icons-outlined">delete</i>
                   <span i18n="@@directChatsHome.delete">Delete</span>
                 </li>
