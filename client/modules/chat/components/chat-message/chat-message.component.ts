@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { connect } from 'http2';
 import moment from 'moment';
+import { ChatService } from 'src/shared/services/chat-service/chat.service';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 // ;
 
@@ -22,7 +24,10 @@ export class ChatMessageComponent implements OnInit {
 
   avatarURL = '';
 
-  constructor(public utilityService: UtilityService) { }
+  constructor(
+    public utilityService: UtilityService,
+    private chatService: ChatService
+    ) { }
 
   async ngOnInit() {
     // let converter = new QuillDeltaToHtmlConverter(JSON.parse(this.message?.content)['ops'], {});
@@ -42,8 +47,9 @@ export class ChatMessageComponent implements OnInit {
     }
   }
 
-  convertToHTML() {
-    return this.message.content;
+  async convertToHTML() {
+    return await this.chatService.decryptData('new-message', this.message.content)
+    // return this.message.content;
   }
 
   formateDate(date: any) {

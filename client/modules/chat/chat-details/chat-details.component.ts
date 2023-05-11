@@ -193,7 +193,7 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if (messageContent && messageContent.message) {
       let _content_mentions = [];
-      if(messageContent?.memberMentions){
+      if(messageContent?.memberMentions) {
         _content_mentions = messageContent.memberMentions;
       }
 
@@ -315,7 +315,7 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.socket.onAny((eventName, ...args: any) => {
       if (eventName === 'newChatNotification') {
-        if (this.chatData?._id == args[0].chatId){
+        if (this.chatData?._id == args[0].chatId) {
           this.pushMessage(args[0].message);
           this.markAsRead(this.chatData?._id);
         }
@@ -337,6 +337,21 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
           this.websocketService.updateNumTotalUnreadDirectMessages(this.numUnreadDirectMessages);
           this.websocketService.updateNumTotalUnreadMessages(this.numTotalUnreadMessages - numMessagesRead);
         }
+      });
+    }
+  }
+
+  openVideoChatDialog() {
+    const dialogRef = this.utilityService.openVideoChatDialog(this.chatData, this.canEdit);
+
+    if (dialogRef) {
+      const closeEventSubs = dialogRef.componentInstance.close.subscribe((data) => {
+        // this.closeModal();
+        console.log("chat closed", data);
+      });
+      
+      dialogRef.afterClosed().subscribe(result => {
+        closeEventSubs.unsubscribe();
       });
     }
   }

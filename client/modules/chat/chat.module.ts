@@ -14,6 +14,7 @@ import { ChatTitleComponent } from './components/chat-title/chat-title.component
 import { SharedModule } from 'src/app/common/shared/shared.module';
 import { ChatDetailsComponent } from './chat-details/chat-details.component';
 import { FormsModule } from '@angular/forms';
+import { VideoCallDialog } from './components/video-call-dialog/video-call-dialog.component';
 
 
 
@@ -27,7 +28,8 @@ import { FormsModule } from '@angular/forms';
     ChatInputComponent,
     ChatMessageComponent,
     ChatNotificationIconComponent,
-    ChatTitleComponent
+    ChatTitleComponent,
+    VideoCallDialog
   ],
   imports: [
     CommonModule,
@@ -44,7 +46,8 @@ import { FormsModule } from '@angular/forms';
     ChatInputComponent,
     ChatMessageComponent,
     ChatNotificationIconComponent,
-    ChatTitleComponent
+    ChatTitleComponent,
+    VideoCallDialog
   ],
   providers: [ ]
 })

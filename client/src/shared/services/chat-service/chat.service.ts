@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import * as CryptoJS from 'crypto-js';
 
 @Injectable({
   providedIn: 'root'
@@ -117,5 +118,24 @@ export class ChatService {
 
   markAsRead(chatId: string) {
     return this._http.post(this.baseNotificationsURL + `/${chatId}/mark-read`, {}).toPromise();
+  }
+
+  /**
+   * This function encrypts the data which is associated with key
+   * Following CryptoJS Standard functions
+   * @param data
+   */
+  encryptData(key, data: string) {
+    return CryptoJS.AES.encrypt(data, key).toString();
+  }
+
+  /**
+   * This function decrypts the data which is associated with key
+   * Following CryptoJS Standard functions
+   * Returns JSON Data
+   * @param data
+   */
+  decryptData(key, data : string) {
+    return CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
   }
 }

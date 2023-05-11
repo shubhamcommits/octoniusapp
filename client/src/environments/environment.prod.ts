@@ -98,6 +98,7 @@ export const environment = {
   FOLIO_HTTP_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/folio`,
 
   // Chats URLs
+  CHATS_BASE_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/chats`,
   CHATS_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/chats`,
 
   // MANAGEMENT_URL

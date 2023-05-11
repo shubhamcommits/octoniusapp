@@ -15,6 +15,7 @@ import { FilesService } from '../files-service/files.service';
 import { LikedByDialogComponent } from 'src/app/common/shared/liked-by-dialog/liked-by-dialog.component';
 import { GroupPostComponent } from 'src/app/common/shared/activity-feed/group-postbox/group-post/group-post.component';
 import { PublicFunctions } from 'modules/public.functions';
+import { VideoCallDialog } from 'modules/chat/components/video-call-dialog/video-call-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -834,5 +835,20 @@ export class UtilityService {
 
   objectExists(objectData: Object) {
     return (objectData && JSON.stringify(objectData) != JSON.stringify({}) && JSON.stringify(objectData) != JSON.stringify(undefined));
+  }
+
+  openVideoChatDialog(chatData: any, canEdit: any) {
+    const data = {
+      chatData: chatData,
+      canEdit: canEdit
+    };
+
+    return this.dialog.open(VideoCallDialog, {
+      width: '100%',
+      height: '100%',
+      disableClose: true,
+      // panelClass: 'groupCreatePostDialog',
+      data: data
+    });
   }
 }
