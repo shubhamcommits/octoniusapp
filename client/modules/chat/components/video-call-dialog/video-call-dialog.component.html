@@ -9,7 +9,7 @@
 <mat-dialog-content style="max-height: none">
     <div class="dialog-content">
         <div class="content">
-            <div class="container">
+            <div class="container-fluid">
                 <h2 class="title text-center">
                     <i class="material-icons" style="margin-top:-5px">lock</i>
                     <span i18n="@@videoCallDialog.videoCall">Video Call</span>
@@ -17,7 +17,7 @@
                 <div class="row inner-content" style="padding-top: 15px;">
                     
 
-                    <div class="col videoCall">
+                    <div class="col-md-9 videoCall">
 
                         <div class="remoteStreams" #videoChatContainer>
                             <!-- insert remote streams dynamically -->
@@ -38,8 +38,8 @@
                         </div>
 
 
-                        <div class="col">
-                            <div class="chatDetails" *ngIf="chatOn">
+                        <div class="col-md-3 chatDetails">
+                            <div *ngIf="chatOn">
                                 <app-chat-details [userData]="userData" [workspaceData]="workspaceData" [chatData]="chatData" [isVideoCall]="true" (chatClosedEvent)="showHideChat()"></app-chat-details>
                             </div>
                         </div>

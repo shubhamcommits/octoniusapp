@@ -27,8 +27,8 @@
     // position: absolute;
     // top: 0;
     // left: 0;
-       width: 70%;
-       height: 90vh;
+    //    width: 70%;
+       height:  80vh;
     // display: none;
 
 }    
@@ -58,13 +58,14 @@
     }
 
      .chatDetails {
-        width: 100%;
+        // width: 30%;
         height: auto;
     }
 
 
 .remoteStreamContainer {
-    display: inline-block;
+    display: flex;
+    width: auto;
 }
 
 .callAction {
@@ -72,6 +73,9 @@
     left: 45%;
     bottom: 32px;
     list-style: none;
+    padding: 8px;
+    background: #ffab00;
+    border-radius: 30px;
 
     li {
         display: inline;
