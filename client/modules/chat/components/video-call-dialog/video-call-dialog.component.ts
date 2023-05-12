@@ -338,21 +338,30 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
       this.localCaptureStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
 
       //-------------
-      var context = new AudioContext();
-      var sineWave = context.createOscillator();
+      // TESTS FOR ECHO CANCELLATION
 
-      // Declare gain node
-      var gainNode = context.createGain();
+      // const real = new Float32Array(2);
+      // const imag = new Float32Array(2);
+      // const ac = new AudioContext();
+      // const osc = ac.createOscillator();
 
-      // Connect sine wave to gain node
-      sineWave.connect(gainNode);
+      // real[0] = 0;
+      // imag[0] = 0;
+      // real[1] = 1;
+      // imag[1] = 0;
 
-      // Connect gain node to speakers
-      gainNode.connect(context.destination);
+      // const wave = ac.createPeriodicWave(real, imag);
+      // let gainNode = ac.createGain();
+      // osc.setPeriodicWave(wave);
 
-      // Play sine wave
-      sineWave.setPeriodicWave(0);
-      gainNode.gain.value = 0.9;
+      // osc.connect(ac.destination);
+
+      // // osc.start();
+      // // osc.stop(2);
+      // gainNode.connect(ac.destination);
+
+      // gainNode.gain.value = 0.9;
+      //-------------
     } catch(err) {
       console.error(err.message);
     }
