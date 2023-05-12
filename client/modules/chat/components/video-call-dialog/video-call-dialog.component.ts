@@ -1,4 +1,4 @@
-import { /*AfterViewInit, */Component, ElementRef, EventEmitter, Inject, Injector, OnInit, Output, ViewChild } from '@angular/core';
+import { /*AfterViewInit, */Component, ElementRef, EventEmitter, Inject, Injector, LOCALE_ID, OnInit, Output, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -30,7 +30,7 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
   userId: string;
 
   localVideoOn = true;
-  localAudioOn = false;//true;
+  localAudioOn = true;
   chatOn = false;
   membersOn = false;
 
@@ -86,6 +86,7 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(LOCALE_ID) public locale: string,
     private injector: Injector,
     private utilityService: UtilityService,
     private chatService: ChatService,
@@ -187,6 +188,41 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
 
   showMembers() {
     this.membersOn = !this.membersOn;
+  }
+
+  copyLink() {
+    // Create Selection Box
+    let selBox = document.createElement('textarea');
+
+    // Set the CSS Properties
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+
+    let url = environment.clientUrl;
+    if (environment.production) {
+      url += '/' + this.locale;
+    }
+    
+    url += '/videoChat/' + this.chatData?._id;
+    
+    selBox.value = url;
+    // Append the element to the DOM
+    document.body.appendChild(selBox);
+
+    // Set the focus and Child
+    selBox.focus();
+    selBox.select();
+
+    // Execute Copy Command
+    document.execCommand('copy');
+
+    // Once Copied remove the child from the dom
+    document.body.removeChild(selBox);
+
+    // Show Confirmed notification
+    this.utilityService.simpleNotification($localize`:@@videoCallDialog.copiedToClipboard:Copied to Clipboard!`);
   }
 
   leaveMeeting() {

@@ -32,6 +32,9 @@
                             <li (click)="showMembers()">
                                 <i class="material-icons-outlined">groups</i>
                             </li>
+                            <li (click)="copyLink()">
+                                <i class="material-icons-outlined">share</i>
+                            </li>
                         </ul>
 
                         <video [srcObject]="localCaptureStream" #localVideo class="localVideo" *ngIf="localCaptureStream" autoplay playsinline></video>
