@@ -427,7 +427,9 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
       videoREMOTO.srcObject = event.streams[0];
       videoREMOTO.id = 'remotevideo_' + remotePeerId;
       videoREMOTO.setAttribute('autoplay', '');
-      videoREMOTO.style.maxWidth = '300px';
+      videoREMOTO.style.maxWidth = '90%';
+      videoREMOTO.style.minWidth = '250px';
+      videoREMOTO.style.display = 'flex';
       this.videoChatContainer.nativeElement.append(videoREMOTO);
     } 
   }
