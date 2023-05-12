@@ -26,9 +26,6 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
   
   localCaptureStream;
 
-  chatId: string;
-  userId: string;
-
   localVideoOn = true;
   localAudioOn = true;
   chatOn = false;
@@ -95,22 +92,16 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
 
   async ngOnInit(): Promise<void> {
     this.chatData = this.data.chatData;
-    this.chatId = this.chatData._id;
 
     this.canEdit = this.data.canEdit;
 
     this.userData = await this.publicFunctions.getCurrentUser();
-    this.userId = this.userData.userId;
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     await this.initMembers();
 
-    this.joinRoom(this.chatId);
+    this.joinRoom(this.chatData?._id);
   }
-
-  // ngAfterViewInit(): void {
-  //   this.handleCurrentUserMedia();
-  // }
 
   async initMembers() {
     if (!this.objectExists(this.chatData?._group)) {
@@ -128,7 +119,7 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
     }
 
     if (this.chatData && this.chatData?.id) {
-      this.chatService.addMember(this.chatData._id, member._id).catch(error => {
+      this.chatService.addMember(this.chatData?._id, member._id).catch(error => {
         this.utilityService.errorNotification('The member could not be added, please try later!');
         return;
       });
@@ -147,7 +138,7 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
     const memberToRemoveId = event.assigneeId;
 
     if (this.chatData && this.chatData?.id) {
-      this.chatService.removeMember(this.chatData._id, memberToRemoveId).catch(error => {
+      this.chatService.removeMember(this.chatData?._id, memberToRemoveId).catch(error => {
         this.utilityService.errorNotification('The member could not be removed, please try later!');
         return;
       });
@@ -237,7 +228,7 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
 
     this.leaveMeeting();
 
-    this.close.emit(this.chatId);
+    this.close.emit(this.chatData?._id);
     this.mdDialogRef.close();
   }
 
@@ -251,7 +242,7 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
       alert('Please type a room ID')
     } else {
       // this.chatId = room
-      this.socket.emit('join', {room: this.chatId, peerUUID: this.localPeerId})
+      this.socket.emit('join', {room: this.chatData?._id, peerUUID: this.localPeerId})
     }
 
     // SOCKET EVENT CALLBACKS =====================================================
@@ -279,7 +270,7 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
       await this.setLocalStream(this.mediaConstraints)
       console.log(`Emit start_call from peer ${this.localPeerId}`)
       this.socket.emit('start_call', {
-        roomId: this.chatId,
+        roomId: this.chatData?._id,
         senderId: this.localPeerId
       })
     })
@@ -384,7 +375,7 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
     this.socket.emit('webrtc_offer', {
       type: 'webrtc_offer',
       sdp: sessionDescription,
-      chatId: this.chatId,
+      chatId: this.chatData?._id,
       senderId: this.localPeerId,
       receiverId: remotePeerId
     })
@@ -406,7 +397,7 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
     this.socket.emit('webrtc_answer', {
       type: 'webrtc_answer',
       sdp: sessionDescription,
-      chatId: this.chatId,
+      chatId: this.chatData?._id,
       senderId: this.localPeerId,
       receiverId: remotePeerId
     })
@@ -436,7 +427,7 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
       this.socket.emit('webrtc_ice_candidate', {
         senderId: this.localPeerId,
         receiverId: remotePeerId,
-        chatId: this.chatId,
+        chatId: this.chatData?._id,
         label: event.candidate.sdpMLineIndex,
         candidate: event.candidate.candidate,
       })

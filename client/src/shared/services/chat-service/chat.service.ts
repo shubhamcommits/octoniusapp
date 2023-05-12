@@ -44,8 +44,13 @@ export class ChatService {
     return this._http.get(this.baseURL + `/group-chats`, {}).toPromise();
   }
 
-  getChatDetails(chatId: string) {
-    return this._http.get(this.baseURL + `/${chatId}`).toPromise();
+  getChatDetails(chatId: string, invite?: boolean) {
+
+    return this._http.get(this.baseURL + `/${chatId}`, {
+        params: {
+          invite: invite
+        }
+      }).toPromise();
   }
 
   /**

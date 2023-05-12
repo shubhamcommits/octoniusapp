@@ -15,8 +15,8 @@ import { SharedModule } from 'src/app/common/shared/shared.module';
 import { ChatDetailsComponent } from './chat-details/chat-details.component';
 import { FormsModule } from '@angular/forms';
 import { VideoCallDialog } from './components/video-call-dialog/video-call-dialog.component';
-
-
+import { VideoChatComponent } from './video-chat/video-chat.component';
+import { ChatRoutingModule } from './chat-routing.module';
 
 @NgModule({
   declarations: [
@@ -29,13 +29,16 @@ import { VideoCallDialog } from './components/video-call-dialog/video-call-dialo
     ChatMessageComponent,
     ChatNotificationIconComponent,
     ChatTitleComponent,
+    VideoChatComponent,
     VideoCallDialog
   ],
   imports: [
+    ChatRoutingModule,
     CommonModule,
     MaterialModule,
     SharedModule,
-    FormsModule
+    FormsModule,
+    // RouterModule
   ],
   exports: [
     ChatsHomeComponent,
@@ -47,6 +50,7 @@ import { VideoCallDialog } from './components/video-call-dialog/video-call-dialo
     ChatMessageComponent,
     ChatNotificationIconComponent,
     ChatTitleComponent,
+    VideoChatComponent,
     VideoCallDialog
   ],
   providers: [ ]
