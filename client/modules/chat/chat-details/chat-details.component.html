@@ -2,14 +2,14 @@
 	<div>
 		<app-chat-title [chatData]="chatData" [userData]="userData"></app-chat-title>
 
-		<ul style="list-style: none; padding-left: 0;">
+		<ul style="list-style: none; padding-left: 0;" *ngIf="!isVideoCall">
 			<li (click)="openVideoChatDialog()" style="cursor: pointer;">
 				<i class="material-icons-outlined">duo</i>
 			</li>
 		</ul>
 	</div>
 
-	<app-multiple-assignments *ngIf="!objectExists(chatData?._group)" [canEdit]="canEdit" [workspaceData]="workspaceData" [userData]="userData"
+	<app-multiple-assignments *ngIf="!objectExists(chatData?._group) && !isVideoCall" [canEdit]="canEdit" [workspaceData]="workspaceData" [userData]="userData"
 		[assigned_to]="members" [type]="'chat'" (assigneeAddedEmiter)="onAssignedAdded($event)"
 		(assigneeRemovedEmiter)="onAssignedRemoved($event)">
 	</app-multiple-assignments>

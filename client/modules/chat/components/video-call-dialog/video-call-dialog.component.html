@@ -40,7 +40,7 @@
 
                         <div class="col">
                             <div class="chatDetails" *ngIf="chatOn">
-                                <app-chat-details [userData]="userData" [workspaceData]="workspaceData" [chatData]="chatData" (chatClosedEvent)="showHideChat()"></app-chat-details>
+                                <app-chat-details [userData]="userData" [workspaceData]="workspaceData" [chatData]="chatData" [isVideoCall]="true" (chatClosedEvent)="showHideChat()"></app-chat-details>
                             </div>
                         </div>
                     </div>

@@ -16,6 +16,7 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() userData;
   @Input() workspaceData;
   @Input() chatData;
+  @Input() isVideoCall = false;
 
   @ViewChild('chatContent', { static: false }) chatContent: ElementRef;
 
