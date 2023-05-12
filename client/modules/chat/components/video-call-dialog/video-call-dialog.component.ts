@@ -28,7 +28,7 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
   localVideoOn = true;
   localAudioOn = true;
   chatOn = false;
-  membersOn = false;
+  membersOn = true;
 
   canEdit = false;
 
@@ -418,7 +418,7 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
       videoREMOTO.srcObject = event.streams[0];
       videoREMOTO.id = 'remotevideo_' + remotePeerId;
       videoREMOTO.setAttribute('autoplay', '');
-      videoREMOTO.className = "remoteStreamContainer";
+      videoREMOTO.style.maxWidth = '300px';
       this.videoChatContainer.nativeElement.append(videoREMOTO);
     } 
   }
