@@ -23,7 +23,7 @@
                             <!-- insert remote streams dynamically -->
                         </div>
 
-                        <video [srcObject]="localCaptureStream" #localVideo class="localVideo" *ngIf="localCaptureStream" autoplay playsinline muted="true"></video>
+                        <video [srcObject]="localCaptureStream" #localVideo class="localVideo" *ngIf="localCaptureStream" autoplay playsinline muted="muted"></video>
 
                         <div class="members" *ngIf="membersOn">
                             <app-multiple-assignments *ngIf="!objectExists(chatData?._group)" [canEdit]="canEdit" [workspaceData]="workspaceData"

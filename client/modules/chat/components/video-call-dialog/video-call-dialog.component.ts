@@ -57,9 +57,13 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
         max: 720
     }
   };
+  audioConstraints = {
+      echoCancellation: { exact: true }
+    }
+
   mediaConstraints = {
     video: this.videoConstraints,
-    audio: this.localAudioOn
+    audio: this.audioConstraints
   };
 
   offerOptions = {
@@ -336,32 +340,6 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
   private async setLocalStream(mediaConstraints) {
     try {
       this.localCaptureStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
-
-      //-------------
-      // TESTS FOR ECHO CANCELLATION
-
-      // const real = new Float32Array(2);
-      // const imag = new Float32Array(2);
-      // const ac = new AudioContext();
-      // const osc = ac.createOscillator();
-
-      // real[0] = 0;
-      // imag[0] = 0;
-      // real[1] = 1;
-      // imag[1] = 0;
-
-      // const wave = ac.createPeriodicWave(real, imag);
-      // let gainNode = ac.createGain();
-      // osc.setPeriodicWave(wave);
-
-      // osc.connect(ac.destination);
-
-      // // osc.start();
-      // // osc.stop(2);
-      // gainNode.connect(ac.destination);
-
-      // gainNode.gain.value = 0.9;
-      //-------------
     } catch(err) {
       console.error(err.message);
     }
