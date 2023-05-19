@@ -142,13 +142,15 @@ function init(server: any) {
                     socket.join(roomId);
                     socket.emit('room_created', {
                         roomId: roomId,
-                        peerId: socket.id
+                        peerId: socket.id,
+                        user: payload.user
                     });
                 } else {
                     socket.join(roomId);
                     socket.emit('room_joined', {
                         roomId: roomId,
-                        peerId: socket.id
+                        peerId: socket.id,
+                        user: payload.user
                     });
                 } 
             });
@@ -157,23 +159,28 @@ function init(server: any) {
             socket.on('start_call', (event) => {
                 console.log(`Broadcasting start_call event to peers in room ${event.roomId} from peer ${event.senderId}`)
                 socket.broadcast.to(event.roomId).emit('start_call', {
-                senderId: event.senderId
-            })});
+                    senderId: event.senderId,
+                    user: event.user
+                });
+            });
 
             //Events emitted to only one peer
             socket.on('webrtc_offer', (event) => {
                 console.log(`Sending webrtc_offer event to peers in room ${event.roomId} from peer ${event.senderId} to peer ${event.receiverId}`)
                 socket.broadcast.to(event.receiverId).emit('webrtc_offer', {
-                sdp: event.sdp,
-                senderId: event.senderId
-            })});
+                    sdp: event.sdp,
+                    senderId: event.senderId,
+                    user: event.user
+                });
+            });
 
             socket.on('webrtc_answer', (event) => {
                 console.log(`Sending webrtc_answer event to peers in room ${event.roomId} from peer ${event.senderId} to peer ${event.receiverId}`)
                 socket.broadcast.to(event.receiverId).emit('webrtc_answer', {
-                sdp: event.sdp,
-                senderId: event.senderId
-            })});
+                    sdp: event.sdp,
+                    senderId: event.senderId
+                });
+            });
 
             socket.on('webrtc_ice_candidate', (event) => {
                 console.log(`Sending webrtc_ice_candidate event to peers in room ${event.roomId} from peer ${event.senderId} to peer ${event.receiverId}`)

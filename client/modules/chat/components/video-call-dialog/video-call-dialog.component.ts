@@ -1,4 +1,4 @@
-import { /*AfterViewInit, */Component, ElementRef, EventEmitter, Inject, Injector, LOCALE_ID, OnInit, Output, ViewChild } from '@angular/core';
+import { /*AfterViewInit, */ChangeDetectorRef, Component, ComponentRef, ElementRef, EventEmitter, Inject, Injector, LOCALE_ID, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -6,6 +6,7 @@ import { io } from 'socket.io-client';
 import { environment } from 'src/environments/environment';
 import { ChatService } from 'src/shared/services/chat-service/chat.service';
 import moment from 'moment';
+import { RemoteVideoComponent } from '../remote-video/remote-video.component';
 
 @Component({
   selector: 'app-video-call-dialog',
@@ -14,10 +15,12 @@ import moment from 'moment';
 })
 export class VideoCallDialog implements OnInit {//, AfterViewInit {
 
-  @ViewChild('videoChatContainer') videoChatContainer: ElementRef;
+  @ViewChild("videoChatContainer", { read: ViewContainerRef }) videoChatContainer: ViewContainerRef;
   @ViewChild('localVideo') localVideo: ElementRef;
   
   @Output() close = new EventEmitter();
+  
+  public remoteVideoComponentRefs: ComponentRef<RemoteVideoComponent>[] = []
 
   userData;
   workspaceData;
@@ -43,7 +46,6 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
     reconnectionDelayMax: 2000,
     randomizationFactor: 0.5,
     autoConnect: true,
-    // transports: ['websocket'],
     upgrade: true
   });
 
@@ -72,14 +74,14 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
   };
 
   /**
-   * Colección con los objetos RTCPeerConnection.
-   * La clave es el ID del socket (de socket.io) del par remoto y el valor es el objeto RTCPeerConnection
-   * de dicho par remoto.
+   * Colection with objets RTCPeerConnection.
+   * The key is the ID of the socket (from socket.io) from the remote peer
+   * and the value is the object RTCPeerConnection of the remote peer
    */
-  peerConnections = {}; 
+  peerConnections = {};
+  onlineUsers = [];
 
-  localPeerId; //ID del socket del cliente
-  // localStream;
+  localPeerId; //ID socket of client
   rtcPeerConnection; // Connection between the local device and the remote peer.
 
   // Servidores ICE usados. Solo servidores STUN en este caso.
@@ -97,6 +99,7 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     @Inject(LOCALE_ID) public locale: string,
+    private changeDetectorRef: ChangeDetectorRef,
     private injector: Injector,
     private utilityService: UtilityService,
     private chatService: ChatService,
@@ -111,8 +114,10 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
     this.userData = await this.publicFunctions.getCurrentUser();
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
-    await this.initMembers();
+    this.onlineUsers = [{ _id: this.userData?._id, name: this.userData?.first_name + ' ' + this.userData?.last_name }];
 
+    await this.initMembers();
+    
     this.joinRoom(this.chatData?._id);
   }
 
@@ -124,6 +129,10 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
       this.members = await this.chatData?._group?._admins?.concat(this.chatData?._group?._members);
       this.members = await this.members?.filter((member, index) => (this.members?.findIndex(m => m._id == member._id) == index));
     }
+  }
+
+  setOnlineMembers() {
+    this.members.forEach(member => member.isOnline = (((this.onlineUsers) ? this.onlineUsers.findIndex(user => user._id == member._user._id) : -1) != -1));
   }
 
   onAssignedAdded(member: any) {
@@ -252,75 +261,90 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
     await this.setLocalStream(this.mediaConstraints);
     
     if (room === '') {
-      alert('Please type a room ID');
+      // alert('Please type a room ID');
     } else {
-      // this.chatId = room
-      this.socket.emit('join', {room: this.chatData?._id, peerUUID: this.localPeerId});
+      this.socket.emit('join', {
+        room: this.chatData?._id,
+        peerUUID: this.localPeerId,
+        user: {
+          _id: this.userData?._id,
+          name: this.userData?.first_name + ' ' + this.userData?.last_name,
+          profile_pic: this.userData?.profile_pic,
+          workspaceId: this.workspaceData?._id
+        }
+      });
     }
 
     // SOCKET EVENT CALLBACKS =====================================================
 
     /**
-     * Mensaje room_created recibido al unirse a una sala vacía
+     * Message room_created received when joining to an empty room
      */
     this.socket.on('room_created', async (event) => {
       this.localPeerId = event.peerId;
-      await this.setLocalStream(this.mediaConstraints);
+      await this.setLocalStream(this.mediaConstraints, event.user);
     })
 
     /**
-     * Mensaje room_joined al unirse a una sala con pares conectados. Comienza la llamada enviando
-     * start_call
+     * Message room_joined when joining to a room with connected peers.
+     * Starts the call sending start_call
      */
     this.socket.on('room_joined', async (event) => {
       this.localPeerId = event.peerId;
       await this.setLocalStream(this.mediaConstraints);
       this.socket.emit('start_call', {
         roomId: this.chatData?._id,
-        senderId: this.localPeerId
+        senderId: this.localPeerId,
+        user: {
+          _id: this.userData?._id,
+          name: this.userData?.first_name + ' ' + this.userData?.last_name,
+          profile_pic: this.userData?.profile_pic,
+          workspaceId: this.workspaceData?._id
+        }
       });
     });
 
     /**
-     * Mensaje start_call recibido y crea el objeto RTCPeerConnection para enviar la oferta al otro par
+     * Message start_call received and create another object RTCPeerConnection to send the offer to other peer
      */
     this.socket.on('start_call', async (event) => {
       const remotePeerId = event.senderId;
+      const user = event.user;
 
       this.peerConnections[remotePeerId] = new RTCPeerConnection(this.iceServers);
       this.addLocalTracks(this.peerConnections[remotePeerId]);
-      this.peerConnections[remotePeerId].ontrack = (event) => this.setRemoteStream(event, remotePeerId);
-      this.peerConnections[remotePeerId].oniceconnectionstatechange = (event) => this.checkPeerDisconnect(event, remotePeerId);
+      this.peerConnections[remotePeerId].ontrack = (event) => this.setRemoteStream(event, user, remotePeerId);
+      this.peerConnections[remotePeerId].oniceconnectionstatechange = (event) => this.checkPeerDisconnect(event, user, remotePeerId);
       this.peerConnections[remotePeerId].onicecandidate = (event) => this.sendIceCandidate(event, remotePeerId);
       await this.createOffer(this.peerConnections[remotePeerId], remotePeerId);
     });
 
     /**
-     * Mensaje webrtc_offer recibido con la oferta y envía la respuesta al otro par
+     * Message webrtc_offer received with offer and sends the response to other peer
      */
     this.socket.on('webrtc_offer', async (event) => {
       const remotePeerId = event.senderId;
+      const user = event.user;
 
       this.peerConnections[remotePeerId] = new RTCPeerConnection(this.iceServers);
       this.peerConnections[remotePeerId].setRemoteDescription(new RTCSessionDescription(event.sdp));
       this.addLocalTracks(this.peerConnections[remotePeerId]);
 
-      this.peerConnections[remotePeerId].ontrack = (event) => this.setRemoteStream(event, remotePeerId);
-      this.peerConnections[remotePeerId].oniceconnectionstatechange = (event) => this.checkPeerDisconnect(event, remotePeerId);
+      this.peerConnections[remotePeerId].ontrack = (event) => this.setRemoteStream(event, user, remotePeerId);
+      this.peerConnections[remotePeerId].oniceconnectionstatechange = (event) => this.checkPeerDisconnect(event, user, remotePeerId);
       this.peerConnections[remotePeerId].onicecandidate = (event) => this.sendIceCandidate(event, remotePeerId);
       await this.createAnswer(this.peerConnections[remotePeerId], remotePeerId);
     });
 
     /**
-     * Mensaje webrtc_answer recibido y termina el proceso offer/answer.
+     * Message webrtc_answer received and ends the proccess offer/answer.
      */
     this.socket.on('webrtc_answer', async (event) => {
       this.peerConnections[event.senderId].setRemoteDescription(new RTCSessionDescription(event.sdp));
-      //addLocalTracks(peerConnections[event.senderId]);
     });
 
     /**
-     * Mensaje webrtc_ice_candidate. Candidato ICE recibido de otro par
+     * Message webrtc_ice_candidate. Candidate ICE received from other peer
      */
     this.socket.on('webrtc_ice_candidate', (event) => {
       const senderPeerId = event.senderId;
@@ -335,18 +359,27 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
   }
 
   /**
-   * Recoge el stream local multimedia usando API getUserMedia
+   * Multimedia local Stream using API getUserMedia
    */
-  private async setLocalStream(mediaConstraints) {
+  private async setLocalStream(mediaConstraints, user?: any) {
     try {
       this.localCaptureStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
+
+      if (user) {
+        this.onlineUsers.push(user);
+        this.utilityService.removeDuplicates(this.onlineUsers, '_id').then((users) => {
+          this.onlineUsers = users;
+        });
+
+        this.setOnlineMembers();
+      }
     } catch(err) {
       console.error(err.message);
     }
   }
 
   /**
-   * Añade un stream multimedia al objeto RTCPeerConnection recibido
+   * Add a multimedia stream to object RTCPeerConnection received
    */
   private addLocalTracks(rtcPeerConnection) {
     this.localCaptureStream.getTracks().forEach((track) => {
@@ -355,7 +388,7 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
   }
 
   /**
-   * Crea la oferta con la información SDP y la envía con el mensaje webrtc_offer
+   * Create the offer with the information SDP and sends it with the message webrtc_offer
    */
   private async createOffer(rtcPeerConnection, remotePeerId) {
     let sessionDescription;
@@ -370,13 +403,19 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
       type: 'webrtc_offer',
       sdp: sessionDescription,
       chatId: this.chatData?._id,
+      user: {
+        _id: this.userData?._id,
+        name: this.userData?.first_name + ' ' + this.userData?.last_name,
+        profile_pic: this.userData?.profile_pic,
+        workspaceId: this.workspaceData?._id
+      },
       senderId: this.localPeerId,
       receiverId: remotePeerId
     })
   }
 
   /**
-   * Crea la respuesta con la información SDP y la envía con el mensaje webrtc_answer
+   * Create a response with the information SDP and send it with the message webrtc_answer
    */
   private async createAnswer(rtcPeerConnection, remotePeerId) {
     let sessionDescription;
@@ -397,23 +436,31 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
   }
 
   /**
-   * Callback cuando se recibe el stream multimedia del par remoto
+   * Callback when a multimedia stream is received from remote peer
    */
-  private setRemoteStream(event, remotePeerId) {
+  private async setRemoteStream(event, user, remotePeerId) {
     if(event.track.kind == "video") {
-      const videoREMOTO = document.createElement('video');
-      videoREMOTO.srcObject = event.streams[0];
-      videoREMOTO.id = 'remotevideo_' + remotePeerId;
-      videoREMOTO.setAttribute('autoplay', '');
-      videoREMOTO.style.maxWidth = '90%';
-      videoREMOTO.style.minWidth = '250px';
-      videoREMOTO.style.display = 'flex';
-      this.videoChatContainer.nativeElement.append(videoREMOTO);
-    } 
+      let componentRef = this.videoChatContainer.createComponent<RemoteVideoComponent>(RemoteVideoComponent);
+      componentRef.instance.remoteUser = user;
+      componentRef.instance.stream = event.streams[0];
+      componentRef.instance.id = 'remotevideo_' + remotePeerId;
+      // componentRef.instance.isCameraOn = this.localVideoOn;
+      this.remoteVideoComponentRefs.push(componentRef);
+      this.changeDetectorRef.detectChanges()
+    }
+
+    if (user) {
+      this.onlineUsers.push(user);
+      this.utilityService.removeDuplicates(this.onlineUsers, '_id').then((users) => {
+        this.onlineUsers = users;
+      });
+
+      this.setOnlineMembers();
+    }
   }
 
   /**
-   * Envía el candidato ICE recibido del cuando se recibe el evento onicecandidate del objeto RTCPeerConnection
+   * Send the candidate ICE received when the event onicecandidate is received from object  RTCPeerConnection
    */
   private sendIceCandidate(event, remotePeerId) {
     if (event.candidate) {
@@ -428,14 +475,16 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
   }
 
   /**
-   * Comprueba si el par se ha desconectado cuando recibe el evento onicestatechange del objeto RTCPeerConnection
+   * Check if the peer has disconected when receive the event onicestatechange from object RTCPeerConnection
    */
-  private checkPeerDisconnect(event, remotePeerId) {
+  private checkPeerDisconnect(event, user, remotePeerId) {
     var state = this.peerConnections[remotePeerId].iceConnectionState;
     if (state === "failed" || state === "closed" || state === "disconnected") {
-      //Se eliminar el elemento de vídeo del DOM si se ha desconectado el par
-      const videoDisconnected = document.getElementById('remotevideo_' + remotePeerId);
+      const videoDisconnected = document.getElementById('remotevideo_' + remotePeerId).parentElement;
       videoDisconnected.remove();
+      const index = (this.onlineUsers) ? this.onlineUsers.findIndex(u => u._id == user._id) : -1;
+      this.onlineUsers.splice(index, 1);
+      this.setOnlineMembers();
     }
   }
 

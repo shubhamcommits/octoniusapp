@@ -1,0 +1,16 @@
+.video-box {
+	display: flex;
+	flex-direction: column;
+}
+
+.user-name {
+	margin-top: auto;
+	align-self: flex-start;
+	margin-left: 20px;
+}
+
+.remote-video {
+	max-width: 90%;
+	min-width: 250px;
+	display: flex;
+}

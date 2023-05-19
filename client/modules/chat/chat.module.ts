@@ -17,6 +17,7 @@ import { FormsModule } from '@angular/forms';
 import { VideoCallDialog } from './components/video-call-dialog/video-call-dialog.component';
 import { VideoChatComponent } from './video-chat/video-chat.component';
 import { ChatRoutingModule } from './chat-routing.module';
+import { RemoteVideoComponent } from './components/remote-video/remote-video.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { ChatRoutingModule } from './chat-routing.module';
     ChatNotificationIconComponent,
     ChatTitleComponent,
     VideoChatComponent,
-    VideoCallDialog
+    VideoCallDialog,
+    RemoteVideoComponent
   ],
   imports: [
     ChatRoutingModule,
@@ -51,7 +53,8 @@ import { ChatRoutingModule } from './chat-routing.module';
     ChatNotificationIconComponent,
     ChatTitleComponent,
     VideoChatComponent,
-    VideoCallDialog
+    VideoCallDialog,
+    RemoteVideoComponent
   ],
   providers: [ ]
 })

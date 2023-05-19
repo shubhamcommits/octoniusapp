@@ -11,14 +11,20 @@
       (click)="unassign(assignee._id)"></app-secured-image>
   </div>
 
-  <div *ngIf="type == 'chat'" style="overflow: auto; overflow-y: hidden; float: left;">
-    <app-secured-image *ngFor="let assignee of assigned_to" style="width: 24px; height: 24px; margin: 0 10px;"
-      [imgURL]="(assignee?._user?.profile_pic || assignee?.profile_pic)" [service]="'user'"
-      [workspaceId]="workspaceData?._id"
-      [alt]="(assignee?._user?.first_name || assignee?.first_name) + ' ' + (assignee?._user?.last_name || assignee?.last_name)"
-      [styleClass]="'feed-avatar-small'" [inlineStyle]="'margin: 0px;'"
-      [tooltip]="(assignee?._user?.first_name || assignee?.first_name) + ' ' + (assignee?._user?.last_name || assignee?.last_name)"
-      (click)="unassign(assignee?._user._id)"></app-secured-image>
+  <div *ngIf="type == 'chat'" style="overflow: auto; overflow-y: hidden; float: left; min-height: 35px;">
+    <span *ngFor="let assignee of assigned_to">
+      <app-secured-image style="width: 24px; height: 24px; margin: 0 10px;"
+        [imgURL]="(assignee?._user?.profile_pic || assignee?.profile_pic)" [service]="'user'"
+        [workspaceId]="workspaceData?._id"
+        [alt]="(assignee?._user?.first_name || assignee?.first_name) + ' ' + (assignee?._user?.last_name || assignee?.last_name)"
+        [styleClass]="'feed-avatar-small'" [inlineStyle]="'margin: 0px;'"
+        [tooltip]="(assignee?._user?.first_name || assignee?.first_name) + ' ' + (assignee?._user?.last_name || assignee?.last_name)"
+        (click)="unassign(assignee?._user._id)"></app-secured-image>
+      <span *ngIf="assignee?.isOnline" style="margin-left: -10px;"
+        matBadge="&#8288;" matBadgeColor="warn"
+        matBadgeSize="small" matBadgePosition="below before">
+      </span>
+    </span>
   </div>
   
 
