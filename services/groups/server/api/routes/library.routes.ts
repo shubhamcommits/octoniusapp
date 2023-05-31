@@ -58,7 +58,13 @@ routes.delete('/collection/:workspaceId/:collectionId', library.removeCollection
 // PUT - Updates the collection property
 routes.put('/collection/:collectionId/content', library.updateCollectionContent);
 
-// // PUT - Change the Collection Image
+// PUT - This route is used to like a post
+routes.put('/collection/:collectionId/addEditor', library.addEditor);
+
+// PUT - This route is used to unlike a post
+routes.put('/collection/:collectionId/removeEditor', library.removeEditor);
+
+// PUT - Change the Collection Image
 routes.put('/collection/:collectionId/updateCollectionImage/:workspaceId', collectionUploadFileUpload, library.updateCollectionImage);
 
 // POST - Create new page in the collection

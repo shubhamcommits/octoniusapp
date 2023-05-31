@@ -49,6 +49,22 @@
         <span i18n="@@collectionHeader.options">Options</span>
     </button>
 
+    <div *ngIf="(!canEdit || !editContent) && objectExists(collectionData)">
+        <app-secured-image *ngFor="let assignee of collectionData?._members"
+        [imgURL]="assignee?.profile_pic"
+        [service]="'user'"
+        [workspaceId]="workspaceData?._id"
+        [alt]="assignee?.first_name + ' ' + assignee?.last_name"
+        [styleClass]="'feed-avatar-small'"
+        [tooltip]="assignee?.first_name + ' ' + assignee?.last_name"></app-secured-image>
+    </div>
+
+    <app-multiple-assignments *ngIf="canEdit && editContent && objectExists(collectionData)" [canEdit]="canEdit" [type]="'collection'"
+        [collection]="collectionData" [assigned_to]="collectionData?._members"
+        [groupId]="groupData?._id" [userData]="userData"
+        (assigneeAddedEmiter)="onEditorAdded($event)" (assigneeRemovedEmiter)="onEditorRemoved($event)">
+    </app-multiple-assignments>
+
     <button *ngIf="editContent" (click)="openShareDialog()"
         class="btn float-right btn-primary btn-md" style="margin-left: 10px;">
         <i class="material-icons-outlined">share</i>

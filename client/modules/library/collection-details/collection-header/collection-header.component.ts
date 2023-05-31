@@ -230,6 +230,34 @@ export class CollectionHeaderComponent implements OnInit, OnChanges {
       });
   }
 
+  async onEditorAdded(data: any) {
+    await this.utilityService.asyncNotification($localize`:@@collectionHeader.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+        this.libraryService.addEditor(this.collectionData?._id, data.assignee)
+          .then((res) => {
+            this.collectionData = res['collection'];
+            // Resolve with success
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@collectionHeader.detailsUpdated:Details updated!`));
+          })
+          .catch(() => {
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@collectionHeader.unableToUpdateDetails:Unable to update the details, please try again!`));
+          });
+      }));
+  }
+
+  async onEditorRemoved(data: any) {
+    await this.utilityService.asyncNotification($localize`:@@collectionHeader.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+        this.libraryService.removeEditor(this.collectionData?._id, data.assignee)
+          .then((res) => {
+            this.collectionData = res['collection'];
+            // Resolve with success
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@collectionHeader.detailsUpdated:Details updated!`));
+          })
+          .catch(() => {
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@collectionHeader.unableToUpdateDetails:Unable to update the details, please try again!`));
+          });
+      }));
+  }
+
   objectExists(object: any) {
     return this.utilityService.objectExists(object);
   }

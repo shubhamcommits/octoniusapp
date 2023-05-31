@@ -53,6 +53,24 @@ export class LibraryService {
   }
 
   /**
+   * This function is responsible to adding a editor to a collection
+   * @param collectionId
+   * @param newName
+   */
+  addEditor(collectionId: string, assignee: string) {
+    return this._http.put(this.baseUrl + `/library/collection/${collectionId}/addEditor`, { assignee }).toPromise();
+  }
+
+  /**
+   * This function is responsible to removing a editor to a collection
+   * @param collectionId
+   * @param newName
+   */
+  removeEditor(collectionId: string, assignee: string) {
+    return this._http.put(this.baseUrl + `/library/collection/${collectionId}/removeEditor`, { assignee }).toPromise();
+  }
+
+  /**
    * This function is responsible for deleting a collection
    * @param collectionId
    */

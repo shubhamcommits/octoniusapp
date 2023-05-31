@@ -28,15 +28,16 @@
   </div>
   
 
-  <span *ngIf="(!assigned_to || assigned_to.length === 0) && type != 'filter' && type != 'chat'"
+  <span *ngIf="(!assigned_to || assigned_to.length === 0) && type != 'filter' && type != 'chat' && type != 'collection'"
     i18n="@@multipleAssignments.unassigned">
       Unassigned
   </span>
 
   <button *ngIf="((!post?.task?.allocation || post?.task?.allocation == 0) || (assigned_to?.length < 1)) && type != 'chat' && canEdit"
     mat-button [matMenuTriggerFor]="assigneeSearch" #trigger="matMenuTrigger" class="btn tagslabel">
-      <span *ngIf="type != 'filter'"i18n="@@multipleAssignments.addAssignee">add assignee</span>
+      <span *ngIf="type != 'filter' && type != 'collection'"i18n="@@multipleAssignments.addAssignee">add assignee</span>
       <span *ngIf="type == 'filter'"i18n="@@multipleAssignments.addUser">add user</span>
+      <span *ngIf="type == 'collection'" i18n="@@multipleAssignments.addEditor">add editor</span>
   </button>
 
   <i *ngIf="type == 'chat' && canEdit" class="material-icons-outlined btn" [matMenuTriggerFor]="assigneeSearch" #trigger="matMenuTrigger">add_circle</i>
@@ -45,7 +46,7 @@
     <div>
       <div class="users-card">
         <div class="form-group">
-          <label for="search-text" *ngIf="type != 'filter'"i18n="@@multipleAssignments.assignee">Assignee</label>
+          <label for="search-text" *ngIf="type != 'filter' && type != 'collection'"i18n="@@multipleAssignments.assignee">Assignee</label>
           <input type="email" class="form-control" id="search-text" aria-describedby="search-text" [(ngModel)]="searchText"
             placeholder="Search group member" autofocus
             (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">

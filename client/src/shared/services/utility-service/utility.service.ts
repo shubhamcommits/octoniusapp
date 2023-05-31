@@ -771,7 +771,12 @@ export class UtilityService {
     const isGroupManager = (groupData && groupData._admins) ? (groupData?._admins.findIndex((admin: any) => (admin?._id || admin) == userData?._id) >= 0) : false;
     const isGroupMember = (groupData && groupData._members) ? (groupData?._members.findIndex((member: any) => (member?._id || member) == userData?._id) >= 0) : false;
     const isCreatedBy = (collectionData?._created_by ) ? ((collectionData?._created_by?._id || collectionData?._created_by) == userData?._id) : false;
-    if (isGroupManager || isGroupMember || isCreatedBy) {
+    if (((isGroupManager || isGroupMember) && action != 'edit') || isCreatedBy) {
+      return true;
+    }
+
+    const isCollectionEditor = (collectionData && collectionData._members) ? (collectionData?._members.findIndex((member: any) => (member?._id || member) == userData?._id) >= 0) : false;
+    if (action == 'edit' && (isCreatedBy || isCollectionEditor)) {
       return true;
     }
 
