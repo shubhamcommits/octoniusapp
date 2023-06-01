@@ -14,7 +14,9 @@ export const environment = {
   GOOGLE_SCOPE: [
     'https://www.googleapis.com/auth/drive',
     'https://www.googleapis.com/auth/calendar',
-    'https://www.googleapis.com/auth/calendar.events'
+    'https://www.googleapis.com/auth/calendar.events',
+    'https://www.googleapis.com/auth/admin.directory.userschema.readonly',
+    'https://www.googleapis.com/auth/admin.directory.group.readonly'
   ].join(' '),
   GOOGLE_LOGIN_SCOPE: [
     'profile',
