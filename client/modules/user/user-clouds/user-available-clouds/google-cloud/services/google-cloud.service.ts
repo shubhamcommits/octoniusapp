@@ -185,6 +185,17 @@ export class GoogleCloudService {
   }
 
   /**
+   * This function is used to fetch the needed user´s information from Google
+   */
+  googleUserInfoProperties(email: string, accessToken: string) {
+    return this._http.get(`https://admin.googleapis.com/admin/directory/v1/customer/${email}/schemas`, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    }).toPromise();
+  }
+
+  /**
    * Used to emit the next value of observable so that where this is subscribed, will get the updated value
    * @param googleUserData
    */

@@ -5,6 +5,8 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { WorkplaceIntegrationsDialogComponent } from './workplace-integrations-dialog/workplace-integrations-dialog.component';
 import { WorkplaceLdapFieldsMapperDialogComponent } from './workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component';
+import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
 
 @Component({
   selector: 'app-workplace-integrations',
@@ -28,6 +30,8 @@ export class WorkplaceIntegrationsComponent implements OnInit {
 
   constructor(
     private workspaceService: WorkspaceService,
+    private integrationsService: IntegrationsService,
+    private storageService: StorageService,
     private utilityService: UtilityService,
     public dialog: MatDialog,
     private injector: Injector
@@ -56,7 +60,7 @@ export class WorkplaceIntegrationsComponent implements OnInit {
     });
   }
 
-  async getUserInformation() {
+  async getLDAPUserInformation() {
     this.utilityService.updateIsLoadingSpinnerSource(true);
 
     const accountData = await this.publicFunctions.getCurrentAccount();
@@ -90,5 +94,40 @@ export class WorkplaceIntegrationsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(async result => {
       closeEventSubs.unsubscribe();
     });
+  }
+
+  async getGoogleUserInformation() {
+    this.utilityService.updateIsLoadingSpinnerSource(true);
+    const accountData = await this.publicFunctions.getCurrentAccount();
+    const userData = await this.publicFunctions.getCurrentUser();
+    let googleUser: any = this.storageService.getLocalData('googleUser');
+    if (!this.utilityService.objectExists(googleUser)) {
+      googleUser = await this.signInToGoogle();
+    }
+console.log(googleUser);
+    if (this.utilityService.objectExists(googleUser)) {
+console.log("9");
+      // Fetch the access token from the storage
+      let accessToken = googleUser['accessToken']
+console.log("10");
+      this.integrationsService.googleUserInfoProperties(accountData?.email, accessToken).then(res => {
+console.log("11");
+        // this.openLDAPFieldsMapDialog(res['googlePropertiesNames']);
+        this.utilityService.updateIsLoadingSpinnerSource(false);
+      }).catch(error => {
+        this.utilityService.updateIsLoadingSpinnerSource(false);
+      });
+    } 
+  }
+
+  async signInToGoogle() {
+
+    // Open up the SignIn Window in order to authorize the google user
+    let googleSignInResult: any = await this.integrationsService.authorizeGoogleSignIn(this.workspaceData?.integrations);
+
+    if (googleSignInResult != null) {
+      // Call the handle google signin function
+      return await this.integrationsService.handleGoogleSignIn(googleSignInResult)
+    }
   }
 }

@@ -16,11 +16,21 @@
 
     <div class="card-block" style="margin-top: 20px;" *ngIf="workspaceData?.integrations?.is_ldap_connected">
       <p>
-        <b i18n="@@workspaceAddDomain.fetchInfo">Fetch Information from LDAP </b>
+        <b i18n="@@workspaceAddDomain.fetchLDAPInfo">Fetch Information from LDAP </b>
       </p>
 
       <div style="margin-top: 10px;">
-        <button class="btn btn-primary" (click)="getUserInformation()" i18n="@@workspaceAddDomain.syncLDAP">Sync LDAP</button>
+        <button class="btn btn-primary" (click)="getLDAPUserInformation()" i18n="@@workspaceAddDomain.syncLDAP">Sync LDAP</button>
+      </div>
+    </div>
+
+    <div class="card-block" style="margin-top: 20px;" *ngIf="workspaceData?.integrations?.is_google_connected">
+      <p>
+        <b i18n="@@workspaceAddDomain.fetchGoogleInfo">Fetch Information from Google Workspace</b>
+      </p>
+
+      <div style="margin-top: 10px;">
+        <button class="btn btn-primary" (click)="getGoogleUserInformation()" i18n="@@workspaceAddDomain.syncGoogle">Sync Google</button>
       </div>
     </div>
   </div>
