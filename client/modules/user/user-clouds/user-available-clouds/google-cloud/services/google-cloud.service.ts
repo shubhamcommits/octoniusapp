@@ -188,7 +188,7 @@ export class GoogleCloudService {
    * This function is used to fetch the needed user´s information from Google
    */
   googleUserInfoProperties(email: string, accessToken: string) {
-    return this._http.get(`https://admin.googleapis.com/admin/directory/v1/customer/${email}/schemas`, {
+    return this._httpBackend.get(`https://admin.googleapis.com/admin/directory/v1/customer/${email}/schemas`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }

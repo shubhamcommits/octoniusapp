@@ -270,15 +270,15 @@ export class IntegrationsService {
      * GOOGLE DIRECTORY INTEGRATIONS STARTS
      */
     googleUserInfoProperties(email: string, accessToken: string) {
-        return new Promise((resolve) => {
-            let googleService = this.injector.get(GoogleCloudService)
-            googleService.googleUserInfoProperties(email, accessToken)
-                .then((res) => {
+      return new Promise((resolve) => {
+        let googleService = this.injector.get(GoogleCloudService)
+        googleService.googleUserInfoProperties(email, accessToken)
+          .then((res) => {
 console.log(res);
-                  resolve(res['data'])
-                })
-                .catch(() => resolve([]))
-        })
+            resolve(res['data'])
+          })
+          .catch(() => resolve([]))
+      })
     }
     /**
      * GOOGLE DIRECTORY INTEGRATIONS ENDS

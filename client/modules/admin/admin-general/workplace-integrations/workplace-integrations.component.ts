@@ -106,12 +106,9 @@ export class WorkplaceIntegrationsComponent implements OnInit {
     }
 console.log(googleUser);
     if (this.utilityService.objectExists(googleUser)) {
-console.log("9");
       // Fetch the access token from the storage
-      let accessToken = googleUser['accessToken']
-console.log("10");
-      this.integrationsService.googleUserInfoProperties(accountData?.email, accessToken).then(res => {
-console.log("11");
+      this.integrationsService.googleUserInfoProperties(accountData?.email, googleUser['accessToken']).then(res => {
+console.log(res);
         // this.openLDAPFieldsMapDialog(res['googlePropertiesNames']);
         this.utilityService.updateIsLoadingSpinnerSource(false);
       }).catch(error => {
