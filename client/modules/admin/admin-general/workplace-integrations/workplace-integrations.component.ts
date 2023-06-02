@@ -109,8 +109,11 @@ console.log(googleUser);
       // Fetch the access token from the storage
       this.integrationsService.googleUserInfoProperties(accountData?.email, googleUser['accessToken']).then(res => {
 console.log(res);
-        // this.openLDAPFieldsMapDialog(res['googlePropertiesNames']);
-        this.utilityService.updateIsLoadingSpinnerSource(false);
+        this.integrationsService.googleDirectoryInfoProperties(accountData?.email, googleUser['accessToken']).then(res2 => {
+console.log(res2);
+          // this.openLDAPFieldsMapDialog(res['googlePropertiesNames']);
+          this.utilityService.updateIsLoadingSpinnerSource(false);
+        });
       }).catch(error => {
         this.utilityService.updateIsLoadingSpinnerSource(false);
       });

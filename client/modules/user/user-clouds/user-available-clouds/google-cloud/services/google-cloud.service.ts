@@ -185,10 +185,23 @@ export class GoogleCloudService {
   }
 
   /**
-   * This function is used to fetch the needed user´s information from Google
+   * This function is responsible for fetching the google user details from the google server
+   * @param accessToken
    */
   googleUserInfoProperties(email: string, accessToken: string) {
-    return this._httpBackend.get(`https://admin.googleapis.com/admin/directory/v1/customer/${email}/schemas`, {
+    return this._httpBackend.get(`https://admin.googleapis.com/admin/directory/v1/users/${email}`, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    })
+      .toPromise()
+  }
+
+  /**
+   * This function is used to fetch the needed user´s directory information from Google
+   */
+  googleDirectoryInfoProperties(customerId: string, accessToken: string) {
+    return this._httpBackend.get(`https://admin.googleapis.com/admin/directory/v1/customer/${customerId}/schemas`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }
