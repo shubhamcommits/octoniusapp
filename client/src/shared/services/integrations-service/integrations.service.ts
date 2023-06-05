@@ -39,20 +39,20 @@ export class IntegrationsService {
     /**
      * This function opens up the window to signin to google and connect the account
      */
-     async authorizeGoogleSignIn(integrations: any) {
-      return new Promise(async (resolve) => {
-          await gapi.auth.authorize({
-              'client_id': integrations.google_client_id,
-              'scope': environment.GOOGLE_SCOPE,
-              'immediate': false,
-              'access_type': 'offline',
-              'approval_prompt': 'force',
-              'response_type': 'token code',
-              'grant_type': 'authorization_code'
-            })
-              .then((res: any) => resolve(res))
-              .catch(() => resolve(null))
-      })
+  async authorizeGoogleSignIn(integrations: any) {
+    return new Promise(async (resolve) => {
+      await gapi.auth.authorize({
+          'client_id': integrations.google_client_id,
+          'scope': environment.GOOGLE_SCOPE,
+          'immediate': false,
+          'access_type': 'offline',
+          'approval_prompt': 'force',
+          'response_type': 'token code',
+          'grant_type': 'authorization_code'
+        })
+        .then((res: any) => resolve(res))
+        .catch(() => resolve(null));
+    });
   }
 
   /**

@@ -103,33 +103,48 @@ export class WorkplaceIntegrationsComponent implements OnInit {
     this.utilityService.updateIsLoadingSpinnerSource(true);
     const accountData = await this.publicFunctions.getCurrentAccount();
     
-    let googleUser = await this.signInToGoogle();
-console.log(googleUser);
-    if (this.utilityService.objectExists(googleUser)) {
-      // Fetch the access token from the storage
-      this.integrationsService.googleUserInfoProperties(accountData?.email, googleUser['accessToken']).then(res => {
+    const access_token = await this.signInToGoogle();
+    // Fetch the access token from the storage
+    this.integrationsService.googleUserInfoProperties(accountData?.email, access_token).then(res => {
 console.log(res);
-        this.integrationsService.googleDirectoryInfoProperties(res['customerId'], res['accessToken']).then(res2 => {
+      this.integrationsService.googleDirectoryInfoProperties(res['customerId'], access_token).then(res2 => {
 console.log(res2);
-          // this.openLDAPFieldsMapDialog(res['googlePropertiesNames']);
-          this.utilityService.updateIsLoadingSpinnerSource(false);
-        }).catch(error => {
-          this.utilityService.updateIsLoadingSpinnerSource(false);
-        });
+        // this.openLDAPFieldsMapDialog(res['googlePropertiesNames']);
+        this.utilityService.updateIsLoadingSpinnerSource(false);
       }).catch(error => {
         this.utilityService.updateIsLoadingSpinnerSource(false);
       });
-    }
+    }).catch(error => {
+      this.utilityService.updateIsLoadingSpinnerSource(false);
+    });
   }
 
   async signInToGoogle() {
-
     // Open up the SignIn Window in order to authorize the google user
-    let googleSignInResult: any = await this.integrationsService.authorizeGoogleSignIn(this.workspaceData?.integrations);
+    let googleSignInResult: any = await this.integrationsService.authorizeGoogleSignIn(this.workspaceData?.integrations?.google_client_id);
 console.log({googleSignInResult});
-    if (!!googleSignInResult) {
-      // Call the handle google signin function
-      return await this.integrationsService.handleGoogleSignIn(googleSignInResult)
-    }
+    // Call the handle google signin function
+    return googleSignInResult.access_token
+  }
+
+  async authorizeGoogleSignIn(google_client_id: string) {
+    return new Promise(async (resolve) => {
+        await gapi.auth.authorize({
+            'client_id': google_client_id,
+            'scope': [
+              'https://www.googleapis.com/auth/admin.directory.userschema.readonly',
+              'https://www.googleapis.com/auth/admin.directory.user.readonly',
+              'https://www.googleapis.com/auth/admin.directory.group.readonly',
+              'https://www.googleapis.com/auth/admin.directory.orgunit.readonly',
+            ],
+            'immediate': false,
+            'access_type': 'offline',
+            'approval_prompt': 'force',
+            'response_type': 'token code',
+            'grant_type': 'authorization_code'
+          })
+            .then((res: any) => resolve(res))
+            .catch(() => resolve(null))
+    })
   }
 }
