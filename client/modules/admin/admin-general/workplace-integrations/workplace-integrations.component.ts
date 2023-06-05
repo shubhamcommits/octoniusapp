@@ -103,11 +103,7 @@ export class WorkplaceIntegrationsComponent implements OnInit {
     this.utilityService.updateIsLoadingSpinnerSource(true);
     const accountData = await this.publicFunctions.getCurrentAccount();
     
-    const userData = await this.publicFunctions.getCurrentUser();
-    let googleUser: any = this.storageService.getLocalData('googleUser');
-    if (!this.utilityService.objectExists(googleUser)) {
-      googleUser = await this.signInToGoogle();
-    }
+    let googleUser = await this.signInToGoogle();
 console.log(googleUser);
     if (this.utilityService.objectExists(googleUser)) {
       // Fetch the access token from the storage
