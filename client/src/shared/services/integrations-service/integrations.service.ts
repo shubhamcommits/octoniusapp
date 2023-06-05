@@ -91,13 +91,13 @@ export class IntegrationsService {
           access_token = tokenResults.access_token
 
       }
-
+console.log({googleSignInResult});
       // Check for default state
       if (googleSignInResult && !googleSignInResult.error && googleSignInResult.access_token) {
 
           // Fetch the Google Drive Token Object
           let tokenResults: any = await this.getGoogleDriveTokenFromAuthResult(googleSignInResult.code, googleSignInResult.access_token, workspaceData?.integrations)
-console.log(tokenResults);
+console.log({tokenResults});
           // Set the access_token
           access_token = tokenResults.access_token
 
@@ -275,16 +275,16 @@ console.log(tokenResults);
         googleService.googleUserInfoProperties(email, accessToken)
           .then((res) => {
 console.log(res);
-            resolve(res['data'])
+            resolve(res)
           })
           .catch(() => resolve([]))
       })
     }
 
-    googleDirectoryInfoProperties(email: string, accessToken: string) {
+    googleDirectoryInfoProperties(customerId: string, accessToken: string) {
       return new Promise((resolve) => {
         let googleService = this.injector.get(GoogleCloudService)
-        googleService.googleDirectoryInfoProperties(email, accessToken)
+        googleService.googleDirectoryInfoProperties(customerId, accessToken)
           .then((res) => {
 console.log(res);
             resolve(res['data'])
