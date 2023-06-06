@@ -14,10 +14,8 @@ import { WorkplaceLdapFieldsMapperDialogComponent } from './workplace-ldap-field
 })
 export class WorkplaceIntegrationsComponent implements OnInit {
 
-  // Workspace Data Object
   @Input('workspaceData') workspaceData: any = {};
-
-  // Router State Object - can have either 'billing' or 'general'
+  @Input('userData') userData: any = {};
   @Input('routerState') routerState: string = '';
 
   @Output() workspaceUpdatedEvent = new EventEmitter();
