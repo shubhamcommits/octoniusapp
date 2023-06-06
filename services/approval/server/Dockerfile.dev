@@ -7,7 +7,7 @@ FROM node:14-slim
 WORKDIR /usr/app
 
 # Copy package.json to the WORKDIR
-COPY package*.json ./
+COPY package*.json yarn.lock ./
 
 # Install dependencies
 RUN npm install
