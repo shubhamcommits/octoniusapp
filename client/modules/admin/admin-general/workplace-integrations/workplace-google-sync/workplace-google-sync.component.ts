@@ -104,7 +104,7 @@ console.log({ gapi });
     let response;
     try {
       const request = {
-        'customer': 'my_customer',
+        // 'customer': 'my_customer',
         'maxResults': 10,
         'orderBy': 'email',
       };
