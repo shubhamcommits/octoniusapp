@@ -105,6 +105,8 @@ export class WorkplaceIntegrationsComponent implements OnInit {
   }
 
   async getGoogleUserInformation() {
+    await this.gapiLoaded();
+    await this.gisLoaded();
     this.handleAuthClick();
 //     this.utilityService.updateIsLoadingSpinnerSource(true);
 //     const accountData = await this.publicFunctions.getCurrentAccount();
