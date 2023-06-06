@@ -104,28 +104,25 @@ console.log({ gapi });
     let response;
     try {
       const request = {
-        // 'customer': 'my_customer',
+        'customer': 'my_customer',
         'maxResults': 10,
         'orderBy': 'email',
       };
+
       response = await gapi.client.directory.users.list(request);
+console.log({ response });
     } catch (err) {
-      // document.getElementById('content').innerText = err.message;
+console.log(err);
       return;
     }
 
     const users = response.result.users;
     if (!users || users.length == 0) {
-      // document.getElementById('content').innerText = 'No users found.';
+console.log('NO USERS!!!');
       return;
     }
 
 console.log(users);
-    // // Flatten to string to display
-    // const output = users.reduce(
-    //     (str, user) => `${str}${user.primaryEmail} (${user.name.fullName})\n`,
-    //     'Users:\n');
-    // document.getElementById('content').innerText = output;
   }
 //////////////////////
   async gapiInit() {
@@ -159,7 +156,7 @@ console.log(users);
 
     //gapi method formats: gapi.client.api.collection.method
     gapi.client.directory.users.list({
-        // 'customer': 'my_customer',
+        'customer': 'my_customer',
         'maxResults': 10,
         'orderBy': 'email',
       }).then((response: any) => {
