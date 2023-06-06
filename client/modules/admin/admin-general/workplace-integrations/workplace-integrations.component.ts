@@ -165,7 +165,7 @@ export class WorkplaceIntegrationsComponent implements OnInit {
    */
   gisLoaded() {
     // @ts-ignore
-    this.tokenClient = google.accounts.oauth2.initTokenClient({
+    this.googleTokenClient = google.accounts.oauth2.initTokenClient({
       client_id: this.workspaceData?.integrations?.google_client_id,
       scope: environment.GOOGLE_SCOPE,
       callback: '', // defined later
