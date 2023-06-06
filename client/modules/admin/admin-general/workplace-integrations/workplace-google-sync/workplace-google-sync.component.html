@@ -1,0 +1,10 @@
+<div class="card-block" style="margin-top: 20px;" *ngIf="workspaceData?.integrations?.is_google_connected">
+  <p>
+    <b i18n="@@workspaceGoogleSync.fetchGoogleInfo">Fetch Information from Google Workspace</b>
+  </p>
+
+  <div style="margin-top: 10px;">
+    <button class="btn btn-primary" (click)="getGoogleUserInformation()" i18n="@@workspaceGoogleSync.syncGoogle">Sync Google</button>
+    <button class="btn btn-primary" (click)="initClient()" i18n="@@workspaceGoogleSync.syncGoogle">Sync Google 2</button>
+  </div>
+</div>

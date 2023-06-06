@@ -24,14 +24,6 @@
       </div>
     </div>
 
-    <div class="card-block" style="margin-top: 20px;" *ngIf="workspaceData?.integrations?.is_google_connected">
-      <p>
-        <b i18n="@@workspaceAddDomain.fetchGoogleInfo">Fetch Information from Google Workspace</b>
-      </p>
-
-      <div style="margin-top: 10px;">
-        <button class="btn btn-primary" (click)="getGoogleUserInformation()" i18n="@@workspaceAddDomain.syncGoogle">Sync Google</button>
-      </div>
-    </div>
+    <app-workplace-google-sync [workspaceData]="workspaceData"></app-workplace-google-sync>
   </div>
 </div>
