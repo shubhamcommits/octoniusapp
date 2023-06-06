@@ -1,0 +1,5 @@
+# First the new stack needs to be deployed
+# after the stack the folder where the uploaded data resides needs to be loaded in a docker container that has access to the database  and run the command bellow in migrate folder 
+# once in the direcotry the file should be run with `ruby migrate.rb`
+
+docker run -it --rm -v $(pwd):/migrate -v /mnt/volume_fra1_01/data/uploads:/data  --env-file /root/octonius-production/.env --network host --name migrate ruby bash
