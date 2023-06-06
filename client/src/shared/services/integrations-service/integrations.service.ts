@@ -91,13 +91,13 @@ export class IntegrationsService {
           access_token = tokenResults.access_token
 
       }
-console.log({googleSignInResult});
+
       // Check for default state
       if (googleSignInResult && !googleSignInResult.error && googleSignInResult.access_token) {
 
           // Fetch the Google Drive Token Object
           let tokenResults: any = await this.getGoogleDriveTokenFromAuthResult(googleSignInResult.code, googleSignInResult.access_token, workspaceData?.integrations)
-console.log({tokenResults});
+
           // Set the access_token
           access_token = tokenResults.access_token
 
