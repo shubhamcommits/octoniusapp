@@ -7,7 +7,8 @@ FROM node:18.13 as builder
 WORKDIR /usr/app
 
 # Copy package.json to the WORKDIR
-COPY ./package.json ./yarn.lock ./
+COPY ./package.json ./
+COPY ./yarn.lock ./
 
 # Install dependencies
 RUN yarn install
