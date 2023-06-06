@@ -155,8 +155,10 @@ export class WorkplaceIntegrationsComponent implements OnInit {
     const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/admin/directory_v1/rest';
 
     await gapi.client.init({
-      apiKey: this.workspaceData?.integrations?.google_client_id,
+      apiKey: 'AIzaSyBUmo2t-Xi7rKN-EK-d2M8_ovLuQtIz5KI',
+      clientId: this.workspaceData?.integrations?.google_client_id,
       discoveryDocs: [DISCOVERY_DOC],
+      scope: environment.GOOGLE_SCOPE
     });
   }
 
@@ -184,7 +186,7 @@ export class WorkplaceIntegrationsComponent implements OnInit {
       document.getElementById('authorize_button').innerText = 'Refresh';
       await this.listUsers();
     };
-
+console.log({ gapi });
     if (gapi.client.getToken() === null) {
       // Prompt the user to select a Google Account and ask for consent to share their data
       // when establishing a new session.
