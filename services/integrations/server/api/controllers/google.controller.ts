@@ -103,11 +103,12 @@ export class GoogleController {
                     select: 'first_name last_name profile_pic role email active'
                 })
                 .lean();
-console.log(mapSelectedProperties);
+console.log({ workspace });
+console.log({ mapSelectedProperties });
             if (mapSelectedProperties) {
                 const user = await User.findById(req['userId']).select('email').lean();
                 // const googleUsers = await this.listGoogleUsers(user.email, workspace?.integrations?.google_client_secret_key);
-                const googleUsers = await this.listGoogleUsers(workspace?.integrations?.google_api_id);
+                const googleUsers = await this.listGoogleUsers(workspace?.integrations?.google_api_key);
 console.log({googleUsers});
                 const googleUserStream = Readable.from(googleUsers);
                 await googleUserStream.on('data', async (googleUser: any) => {
