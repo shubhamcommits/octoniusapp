@@ -121,7 +121,9 @@ console.log({googleUsers});
                 for (var entry of workspace?.googlePropertiesMap.entries()) {
                     var octoProperty = entry[0];
                     var googleProperty = entry[1]; // [SCHEMA, FIELD]
-                    octoUser['profile_custom_fields'].set(mapSelectedProperties[octoProperty], googleUser?.customSchemas[googleProperty[0]][googleProperty[1]]);
+                    if (googleUser?.customSchemas && googleUser?.customSchemas[googleProperty[0]] && googleUser?.customSchemas[googleProperty[0]][googleProperty[1]]) {
+                        octoUser['profile_custom_fields'].set(mapSelectedProperties[octoProperty], googleUser?.customSchemas[googleProperty[0]][googleProperty[1]]);
+                    }
                 }
 
                 await User.findOneAndUpdate({
