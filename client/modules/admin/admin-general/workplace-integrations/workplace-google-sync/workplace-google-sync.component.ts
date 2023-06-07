@@ -52,8 +52,8 @@ export class WorkplaceGoogleSyncComponent implements OnInit {
 
       const user = await this.getLoggedInUser();
 console.log(user);
-      const schema = await this.getUserSchema(user.customerId);
-console.log(schema);
+      const schemas = await this.getUserSchema(user.customerId);
+console.log(schemas);
     };
 
     if (!gapi.client || gapi.client.getToken() === null) {
@@ -110,8 +110,8 @@ console.log(schema);
       'userKey': this.userData?.email
     };
 
-    return await gapi.client.directory.users.get(request);
-//     const user = response.result.users;
+    const response = await gapi.client.directory.users.get(request);
+    return response.result;
 //     if (!user) {
 // console.log('NO USERS!!!');
 //       return;
@@ -127,7 +127,8 @@ console.log(schema);
       // 'maxResults': 1,
       'customerId': customerId
     };
-    return await gapi.client.directory.schemas.list(request);
+    const response = await gapi.client.directory.schemas.list(request);
+    return response.result;
   }
 ////////////////////////
 //   async gapiInit() {
