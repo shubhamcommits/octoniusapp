@@ -3,9 +3,8 @@ import { User, Workspace } from '../models'
 import { sendError } from '../../utils';
 import { Readable } from 'stream';
 
-import { JWT } from 'google-auth-library';
 const { google } = require('googleapis');
-
+const { GoogleAuth, grpc } = require('google-gax');
 
 /*  ===============================
  *  -- LDAP CONTROLLERS --
@@ -107,8 +106,8 @@ export class GoogleController {
 console.log(mapSelectedProperties);
             if (mapSelectedProperties) {
                 const user = await User.findById(req['userId']).select('email').lean();
-                const googleUsers = await this.listGoogleUsers(user.email, workspace?.integrations?.google_client_secret_key);
-                // const googleUsers = await this.listGoogleUsers(workspace?.integrations?.google_api_id);
+                // const googleUsers = await this.listGoogleUsers(user.email, workspace?.integrations?.google_client_secret_key);
+                const googleUsers = await this.listGoogleUsers(workspace?.integrations?.google_api_id);
 console.log({googleUsers});
                 const googleUserStream = Readable.from(googleUsers);
                 await googleUserStream.on('data', async (googleUser: any) => {
@@ -153,8 +152,8 @@ console.log({googleUsers});
         }
     }
 
-    // private async listGoogleUsers(apiKey: string) {
-    private async listGoogleUsers(client_email: string, private_key: string) {
+    private async listGoogleUsers(apiKey: string) {
+    // private async listGoogleUsers(client_email: string, private_key: string) {
         
         // const client = new Compute({
         //     // Specifying the service account email is optional.
@@ -174,22 +173,33 @@ console.log({googleUsers});
         // );
         // Create the Directory service.
         // const service = google.admin({version: 'directory_v1', auth: jwtClient});
-console.log({ client_email });
-console.log({ private_key });
-        const client = new JWT(
-            client_email,
-            undefined,
-            private_key.split(String.raw`\n`).join('\n'),
-            ['https://www.googleapis.com/auth/admin.directory.user'],
-            client_email
+// console.log({ client_email });
+// console.log({ private_key });
+console.log({ apiKey });
+        // const client = new JWT(
+        //     client_email,
+        //     undefined,
+        //     private_key.split(String.raw`\n`).join('\n'),
+        //     ['https://www.googleapis.com/auth/admin.directory.user'],
+        //     client_email
+        // );
+        // await client.authorize();
+        // const service = google.admin('directory_v1');
+
+        const sslCreds = grpc.credentials.createSsl();
+        const googleAuth = new GoogleAuth();
+        const authClient = googleAuth.fromAPIKey(apiKey);
+        const credentials = grpc.credentials.combineChannelCredentials(
+            sslCreds,
+            grpc.credentials.createFromGoogleCredential(authClient)
         );
-        await client.authorize();
-        const service = google.admin('directory_v1');
+        //   return credentials;
+        const service = google.admin({ version: 'directory_v1', auth: credentials });
 
         const res = await service.users.list({
             // domain: myDomain,
-            customer: 'my_customer',
-            auth: client
+            // auth: client,
+            customer: 'my_customer'
         });
 
         // const service = google.admin({ version: 'directory_v1', auth: apiKey });

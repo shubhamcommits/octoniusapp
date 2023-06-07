@@ -25,6 +25,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "google-auth-library": "^8.8.0",
+    "google-gax": "^3.6.0",
     "googleapis": "^118.0.0",
     "jsonwebtoken": "^9.0.0",
     "ldapjs": "2.3.2",
