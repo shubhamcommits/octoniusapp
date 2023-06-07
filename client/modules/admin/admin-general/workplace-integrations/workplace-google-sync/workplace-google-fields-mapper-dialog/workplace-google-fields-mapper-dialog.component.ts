@@ -37,7 +37,7 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.workplaceData = await this.publicFunctions.getCurrentWorkspace();
     this.userData = await this.publicFunctions.getCurrentUser();
-console.log(this.data);
+
     this.googleSchemas = this.data.googleSchemas;
 
     this.profileCustomFields = this.workplaceData?.profile_custom_fields;

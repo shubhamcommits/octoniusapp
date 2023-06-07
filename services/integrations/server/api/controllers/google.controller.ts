@@ -96,47 +96,52 @@ export class GoogleController {
                     $set: {
                         googlePropertiesMap: mapSelectedProperties
                     }
+                }, {
+                    new: true
                 })
                 .populate({
                     path: 'members',
                     select: 'first_name last_name profile_pic role email active'
                 })
                 .lean();
-console.log(workspace?.googlePropertiesMap);
-            const googleUsers = await this.listGoogleUsers(workspace?.integrations?.google_api_id)
+console.log(mapSelectedProperties);
+            if (mapSelectedProperties) {
+                const user = await User.findById(req['userId']).select('email').lean();
+                const googleUsers = await this.listGoogleUsers(user.email, workspace?.integrations?.google_client_secret_key/*workspace?.integrations?.google_api_id*/);
 console.log({googleUsers});
-            const googleUserStream = Readable.from(googleUsers);
-            await googleUserStream.on('data', async (googleUser: any) => {
-                let octoUser = await User.findOneAndUpdate({
+                const googleUserStream = Readable.from(googleUsers);
+                await googleUserStream.on('data', async (googleUser: any) => {
+                    let octoUser = await User.findOneAndUpdate({
+                            $and: [
+                                { email: googleUser.primaryEmail },
+                                { _workspace: workspaceId }
+                            ]
+                        }).lean();
+                    
+                    if (!octoUser['profile_custom_fields']) {
+                        octoUser['profile_custom_fields'] = new Map();
+                    }
+
+                    for (var entry of mapSelectedProperties.entries()) {
+                        var octoProperty = entry[0];
+                        var googleProperty = entry[1]; // [SCHEMA, FIELD]
+                        if (googleUser?.customSchemas && googleUser?.customSchemas[googleProperty[0]] && googleUser?.customSchemas[googleProperty[0]][googleProperty[1]]) {
+                            octoUser['profile_custom_fields'].set(mapSelectedProperties[octoProperty], googleUser?.customSchemas[googleProperty[0]][googleProperty[1]]);
+                        }
+                    }
+
+                    await User.findOneAndUpdate({
                         $and: [
-                            { email: googleUser.primaryEmail },
-                            { _workspace: workspaceId }
+                        { email: googleUser.primaryEmail },
+                        { _workspace: workspaceId }
                         ]
-                    }).lean();
-                
-                if (!octoUser['profile_custom_fields']) {
-                    octoUser['profile_custom_fields'] = new Map();
-                }
-
-                for (var entry of workspace?.googlePropertiesMap.entries()) {
-                    var octoProperty = entry[0];
-                    var googleProperty = entry[1]; // [SCHEMA, FIELD]
-                    if (googleUser?.customSchemas && googleUser?.customSchemas[googleProperty[0]] && googleUser?.customSchemas[googleProperty[0]][googleProperty[1]]) {
-                        octoUser['profile_custom_fields'].set(mapSelectedProperties[octoProperty], googleUser?.customSchemas[googleProperty[0]][googleProperty[1]]);
-                    }
-                }
-
-                await User.findOneAndUpdate({
-                    $and: [
-                      { email: googleUser.primaryEmail },
-                      { _workspace: workspaceId }
-                    ]
-                  }, {
-                    $set: {
-                      profile_custom_fields: octoUser['profile_custom_fields']
-                    }
-                  });
-            });
+                    }, {
+                        $set: {
+                        profile_custom_fields: octoUser['profile_custom_fields']
+                        }
+                    });
+                });
+            }
 
             res.status(200).json({
                 message: "Properties to Map Saved",
@@ -147,8 +152,18 @@ console.log({googleUsers});
         }
     }
 
-    private async listGoogleUsers(apiKey: string) {
-        const service = google.admin({ version: 'directory_v1', auth: apiKey });
+    private async listGoogleUsers(client_email: string, private_key: string/*apiKey: string*/) {
+        const jwtClient = new google.auth.JWT(
+            client_email,
+            null,
+            private_key,
+            ['https://www.googleapis.com/auth/admin.directory.user'],
+            "admin@domain" // Please change this accordingly
+        );
+
+        // Create the Directory service.
+        const service = google.admin({version: 'directory_v1', auth: jwtClient});
+        // const service = google.admin({ version: 'directory_v1', auth: apiKey });
         const res = await service.users.list({
             customer: 'my_customer'
         });
