@@ -57,6 +57,10 @@ const workspaceSchema = new Schema({
         type: Map,
         of: String
     },
+    googlePropertiesMap: {
+        type: Map,
+        of: String
+    },
     
     profile_custom_fields: {
         type: [{
@@ -133,6 +137,9 @@ const workspaceSchema = new Schema({
             type: String
         },
         google_client_secret_key: {
+            type: String
+        },
+        google_api_key: {
             type: String
         },
         is_slack_connected: {
