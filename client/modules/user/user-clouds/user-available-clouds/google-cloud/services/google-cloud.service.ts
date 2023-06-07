@@ -185,30 +185,6 @@ export class GoogleCloudService {
   }
 
   /**
-   * This function is responsible for fetching the google user details from the google server
-   * @param accessToken
-   */
-  googleUserInfoProperties(email: string, accessToken: string) {
-    return this._httpBackend.get(`https://admin.googleapis.com/admin/directory/v1/users/${email}`, {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`
-      }
-    })
-      .toPromise()
-  }
-
-  /**
-   * This function is used to fetch the needed user´s directory information from Google
-   */
-  googleDirectoryInfoProperties(customerId: string, accessToken: string) {
-    return this._httpBackend.get(`https://admin.googleapis.com/admin/directory/v1/customer/${customerId}/schemas`, {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`
-      }
-    }).toPromise();
-  }
-
-  /**
    * Used to emit the next value of observable so that where this is subscribed, will get the updated value
    * @param googleUserData
    */

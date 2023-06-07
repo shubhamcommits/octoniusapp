@@ -14,16 +14,9 @@
       </div>
     </div>
 
-    <div class="card-block" style="margin-top: 20px;" *ngIf="workspaceData?.integrations?.is_ldap_connected">
-      <p>
-        <b i18n="@@workspaceAddDomain.fetchLDAPInfo">Fetch Information from LDAP </b>
-      </p>
+    <app-workplace-ldap-sync *ngIf="workspaceData?.integrations?.is_ldap_connected" [workspaceData]="workspaceData"></app-workplace-ldap-sync>
 
-      <div style="margin-top: 10px;">
-        <button class="btn btn-primary" (click)="getLDAPUserInformation()" i18n="@@workspaceAddDomain.syncLDAP">Sync LDAP</button>
-      </div>
-    </div>
-
-    <app-workplace-google-sync [workspaceData]="workspaceData" [userData]="userData"></app-workplace-google-sync>
+    <app-workplace-google-sync *ngIf="workspaceData?.integrations?.is_google_connected && workspaceData?.integrations?.google_client_id && workspaceData?.integrations?.google_client_secret_key && workspaceData?.integrations?.google_api_key"
+      [workspaceData]="workspaceData" [userData]="userData"></app-workplace-google-sync>
   </div>
 </div>

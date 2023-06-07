@@ -360,6 +360,31 @@ export class WorkspaceService {
     }).toPromise();
   }
 
+  /**
+   * This function is used to fetch the needed user´s information from Google
+   */
+  // googleUserInfoProperties(workspaceId: string, email: string) {
+  //   return this._http.get(this.INTEGRATIONS_API_URL + `/google/${workspaceId}/googleUserInfoProperties`, {
+  //     params: {
+  //       email: email
+  //     }
+  //   }).toPromise();
+  // }
+
+  /**
+   * This function is used to fetch the needed user´s information from Google
+   */
+   googleWorkspaceUsersInfo(workspaceId: string, mapSelectedProperties: any) {
+    return this._http.put(this.INTEGRATIONS_API_URL + `/google/${workspaceId}/googleWorkspaceUsersInfo`, {
+      // workspaceId: workspaceId,
+      // email: email,
+      // ldapPropertiesToMap: ldapPropertiesToMap,
+      mapSelectedProperties: mapSelectedProperties,
+      // userProperties: userProperties,
+      // global: global
+    }).toPromise();
+  }
+
   getOrganizationChartFirstLevel(workspaceId: string) {
     return this._http.get(this.BASE_API_URL + `/${workspaceId}/organizationChartFirstLevel`, {}).toPromise();
   }

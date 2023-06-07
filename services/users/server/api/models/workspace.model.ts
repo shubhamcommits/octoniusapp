@@ -59,7 +59,7 @@ const workspaceSchema = new Schema({
     },
     googlePropertiesMap: {
         type: Map,
-        of: String
+        of: [String]
     },
     
     profile_custom_fields: {

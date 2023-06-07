@@ -41,6 +41,8 @@ export class WorkplaceGoogleSyncComponent implements OnInit {
   }
 
   async getGoogleUserInformation() {
+    this.utilityService.updateIsLoadingSpinnerSource(true);
+
     if (!this.googleTokenClient) {
       await this.gisLoaded();
     }
@@ -54,6 +56,7 @@ export class WorkplaceGoogleSyncComponent implements OnInit {
 console.log(user);
       const schemas = await this.getUserSchema(user.customerId);
 console.log(schemas);
+      this.utilityService.updateIsLoadingSpinnerSource(false);
     };
 
     if (!gapi.client || gapi.client.getToken() === null) {
@@ -105,96 +108,18 @@ console.log(schemas);
    */
   async getLoggedInUser() {
     const request = {
-      // 'customer': 'my_customer',
-      // 'maxResults': 1,
       'userKey': this.userData?.email
     };
 
     const response = await gapi.client.directory.users.get(request);
     return response.result;
-//     if (!user) {
-// console.log('NO USERS!!!');
-//       return;
-//     }
-
-// console.log(user);
-//     return user;
   }
 
   async getUserSchema(customerId: string) {
     const request = {
-      // 'customer': 'my_customer',
-      // 'maxResults': 1,
       'customerId': customerId
     };
     const response = await gapi.client.directory.schemas.list(request);
     return response.result;
   }
-////////////////////////
-//   async gapiInit() {
-//     gapi.load('client:auth2', this.initClient.bind(this));
-//   }
-
-//   initClient() {
-//     const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/admin/directory_v1/rest';
-//     gapi.client.init({
-//       // Client ID and API key from the Developer Console                  
-//       apiKey: this.workspaceData?.integrations?.google_api_id, //'AIzaSyBUmo2t-Xi7rKN-EK-d2M8_ovLuQtIz5KI',
-//       clientId: this.workspaceData?.integrations?.google_client_id,
-//       discoveryDocs: [DISCOVERY_DOC],
-//       scope: environment.GOOGLE_SCOPE
-//     }).then(() => {
-//       try {
-//         console.log('loaded client');
-//         gapi.auth2.getAuthInstance().isSignedIn.listen(this.updateSigninStatus.bind(this));
-//         this.signIn();
-//       } catch (e) {
-//         console.log(e);
-//       }
-//     });
-//   }
-
-//   listUsers2() { 
-//     if (!gapi.auth2.getAuthInstance().isSignedIn.get()) { 
-//       this.signIn();
-//       return;
-//     }
-
-//     //gapi method formats: gapi.client.api.collection.method
-//     gapi.client.directory.users.list({
-//         'customer': 'my_customer',
-//         'maxResults': 10,
-//         'orderBy': 'email',
-//       }).then((response: any) => {
-//         const users = response.result.users;         
-//         if (users) {
-// console.log(users);
-//         } else {
-// console.log('no users');
-//         }
-//       });
-//   }
-
-//   async updateSigninStatus(isLoggedIn:boolean){
-//     if(isLoggedIn){
-//       //* you can disable the sign-in button(if any) because the user has //already logged in.
-//       //* you can access your api library from here because the user has //logged in 
-//       console.log('logged in');
-//       await this.listUsers2();
-//     }
-//     else{
-//       //you can disable the sign-out button here because the user already //clicked sign-out
-//     }
-//   }
-
-//   private async signIn() {
-//     if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
-//       return;
-//     }
-
-//     gapi.auth2.getAuthInstance().signIn()
-//       .then(() => {
-//         console.log('signed in');
-//       });
-//   }
 }

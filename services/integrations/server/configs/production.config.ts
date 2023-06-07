@@ -86,6 +86,8 @@ function prodConfigInit() {
   process.env.MINIO_SECRET_KEY = process.env.MINIO_SECRET_KEY
   process.env.MINIO_PORT = process.env.MINIO_PORT
   process.env.MINIO_PROTOCOL = process.env.MINIO_PROTOCOL
+
+  process.env.clientURL = `${process.env.PROTOCOL}://${process.env.DOMAIN}`
 };
 
 export { prodConfigInit as productionConfig } 

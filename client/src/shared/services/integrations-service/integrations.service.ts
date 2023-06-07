@@ -267,37 +267,6 @@ export class IntegrationsService {
      */
 
     /**
-     * GOOGLE DIRECTORY INTEGRATIONS STARTS
-     */
-    googleUserInfoProperties(email: string, accessToken: string) {
-      return new Promise((resolve) => {
-        let googleService = this.injector.get(GoogleCloudService)
-        googleService.googleUserInfoProperties(email, accessToken)
-          .then((res) => {
-console.log(res);
-            resolve(res)
-          })
-          .catch(() => resolve([]))
-      })
-    }
-
-    googleDirectoryInfoProperties(customerId: string, accessToken: string) {
-      return new Promise((resolve) => {
-        let googleService = this.injector.get(GoogleCloudService)
-        googleService.googleDirectoryInfoProperties(customerId, accessToken)
-          .then((res) => {
-console.log(res);
-            resolve(res['data'])
-          })
-          .catch(() => resolve([]))
-      })
-    }
-    /**
-     * GOOGLE DIRECTORY INTEGRATIONS ENDS
-     */
-
-
-    /**
      * BOX INTEGRATION STARTS
      */
 
