@@ -174,11 +174,12 @@ console.log({googleUsers});
         // );
         // Create the Directory service.
         // const service = google.admin({version: 'directory_v1', auth: jwtClient});
-
+console.log({ client_email });
+console.log({ private_key });
         const client = new JWT(
             client_email,
             undefined,
-            private_key,
+            private_key.split(String.raw`\n`).join('\n'),
             ['https://www.googleapis.com/auth/admin.directory.user'],
             client_email
         );
