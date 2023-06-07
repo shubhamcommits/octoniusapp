@@ -81,7 +81,7 @@ console.log(schemas);
     const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/admin/directory_v1/rest';
 
     await gapi.client.init({
-      apiKey: 'AIzaSyBUmo2t-Xi7rKN-EK-d2M8_ovLuQtIz5KI',
+      apiKey: this.workspaceData?.integrations?.google_api_id,
       clientId: this.workspaceData?.integrations?.google_client_id,
       discoveryDocs: [DISCOVERY_DOC],
       scope: environment.GOOGLE_SCOPE
@@ -139,7 +139,7 @@ console.log(schemas);
 //     const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/admin/directory_v1/rest';
 //     gapi.client.init({
 //       // Client ID and API key from the Developer Console                  
-//       apiKey: 'AIzaSyBUmo2t-Xi7rKN-EK-d2M8_ovLuQtIz5KI',
+//       apiKey: this.workspaceData?.integrations?.google_api_id, //'AIzaSyBUmo2t-Xi7rKN-EK-d2M8_ovLuQtIz5KI',
 //       clientId: this.workspaceData?.integrations?.google_client_id,
 //       discoveryDocs: [DISCOVERY_DOC],
 //       scope: environment.GOOGLE_SCOPE
