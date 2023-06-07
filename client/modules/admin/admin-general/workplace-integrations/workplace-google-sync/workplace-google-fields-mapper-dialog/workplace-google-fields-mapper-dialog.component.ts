@@ -51,7 +51,8 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
   }
 
   getOctoniusProperty(property) {
-    return this.mapSelectedProperties.get(property);
+    let retPoperty = this.mapSelectedProperties.get(property);
+    return (retPoperty && retPoperty.length > 1) ? retPoperty[1] : ((retPoperty) ? retPoperty : '');
   }
 
   selectProperty(property: string) {
