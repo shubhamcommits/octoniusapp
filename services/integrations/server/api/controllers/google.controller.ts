@@ -109,15 +109,15 @@ console.log({googleUsers});
             await googleUserStream.on('data', async (googleUser: any) => {
                 let octoUser = await User.findOneAndUpdate({
                         $and: [
-                        { email: googleUser.primaryEmail },
-                        { _workspace: workspaceId }
+                            { email: googleUser.primaryEmail },
+                            { _workspace: workspaceId }
                         ]
                     }).lean();
                 
                 if (!octoUser['profile_custom_fields']) {
                     octoUser['profile_custom_fields'] = new Map();
                 }
-                
+
                 for (var entry of workspace?.googlePropertiesMap.entries()) {
                     var octoProperty = entry[0];
                     var googleProperty = entry[1]; // [SCHEMA, FIELD]

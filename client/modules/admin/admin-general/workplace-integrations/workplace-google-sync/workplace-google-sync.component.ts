@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { WorkplaceGoogleFieldsMapperDialogComponent } from './workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component';
 
 // Google API Variable
 declare var gapi: any;
@@ -52,11 +53,17 @@ export class WorkplaceGoogleSyncComponent implements OnInit {
         throw (resp);
       }
 
-      const user = await this.getLoggedInUser();
-console.log(user);
-      const schemas = await this.getUserSchema(user.customerId);
+      const googleUser: any = await this.getLoggedInUser();
+console.log(googleUser);
+      const schemas: any = await this.getUserSchema(googleUser.customerId);
 console.log(schemas);
       this.utilityService.updateIsLoadingSpinnerSource(false);
+
+      if (schemas) {
+        this.openGoogleFieldsMapDialog(schemas.schemas);
+      } else {
+        this.utilityService.infoNotification($localize`:@@workplaceGoogleSyncComponent.noSchemas:There are no Schemas in your Google profile to synchronize with Octonius properties.`)
+      }
     };
 
     if (!gapi.client || gapi.client.getToken() === null) {
@@ -121,5 +128,26 @@ console.log(schemas);
     };
     const response = await gapi.client.directory.schemas.list(request);
     return response.result;
+  }
+
+  openGoogleFieldsMapDialog(googleSchemas: any) {
+    const data = {
+      googleSchemas: googleSchemas
+    }
+    const dialogRef = this.dialog.open(WorkplaceGoogleFieldsMapperDialogComponent, {
+      width: '65%',
+      height: '85%',
+      disableClose: true,
+      hasBackdrop: true,
+      data: data
+    });
+
+    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe(async (data) => {
+      this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    });
+
+    dialogRef.afterClosed().subscribe(async result => {
+      closeEventSubs.unsubscribe();
+    });
   }
 }
