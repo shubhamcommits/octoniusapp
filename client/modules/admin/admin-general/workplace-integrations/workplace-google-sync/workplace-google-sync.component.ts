@@ -131,7 +131,7 @@ export class WorkplaceGoogleSyncComponent implements OnInit {
   openGoogleFieldsMapDialog(userGoogleData: any, googleSchemas: any) {
     const data = {
       googleSchemas: googleSchemas,
-      isGlobal: false,
+      isGlobal: true,
       userGoogleData: userGoogleData
     }
     const dialogRef = this.dialog.open(WorkplaceGoogleFieldsMapperDialogComponent, {
