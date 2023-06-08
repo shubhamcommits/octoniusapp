@@ -159,6 +159,11 @@ console.log({ googleUsers });
 
     // private async listGoogleUsers(apiKey: string) {
     private async listGoogleUsers(service_client_email: string, private_key: string, userEmail: string) {
+
+        // generate a url that asks permissions for Blogger and Google Calendar scopes
+        const scopes = [
+            'https://www.googleapis.com/auth/admin.directory.user'
+        ];
         
         // const client = new Compute({
         //     // Specifying the service account email is optional.
@@ -173,35 +178,34 @@ console.log({ googleUsers });
         //     client_email,
         //     null,
         //     private_key,
-        //     ['https://www.googleapis.com/auth/admin.directory.user'],
+        //     scopes,
         //     "admin@domain" // Please change this accordingly
         // );
         // Create the Directory service.
         // const service = google.admin({version: 'directory_v1', auth: jwtClient});
-// console.log({ client_email });
-// console.log({ private_key });
+        // const client = new JWT(
+            //     service_client_email,
+            //     undefined,
+            //     private_key.split(String.raw`\n`).join('\n'),
+            //     scopes,
+            //     userEmail
+            // );
+            // await client.authorize();
+            // const service = google.admin('directory_v1');
+console.log("11111");
+console.log({ service_client_email });
+console.log({ private_key });
+console.log({ userEmail });
 // console.log({ apiKey });
-        const client = new JWT(
-            service_client_email,
-            undefined,
-            private_key.split(String.raw`\n`).join('\n'),
-            ['https://www.googleapis.com/auth/admin.directory.user'],
-            userEmail
-        );
-        await client.authorize();
-        const service = google.admin('directory_v1');
-
-        // const oauth2Client = new google.auth.OAuth2(
-        //     YOUR_CLIENT_ID,
-        //     YOUR_CLIENT_SECRET,
-        //     YOUR_REDIRECT_URL
-        // );
-
-        // // generate a url that asks permissions for Blogger and Google Calendar scopes
-        // const scopes = [
-        //     'https://www.googleapis.com/auth/admin.directory.user'
-        // ];
-
+        const auth = new google.auth.JWT({
+            email: service_client_email,
+            key: private_key,
+            scopes: scopes,
+            subject: userEmail
+        });
+console.log("22222");
+        const service = google.admin({ version: 'v3', auth });
+console.log("33333");
         // const url = oauth2Client.generateAuthUrl({
         //     // 'online' (default) or 'offline' (gets refresh_token)
         //     access_type: 'offline',
@@ -226,7 +230,7 @@ console.log({ googleUsers });
         // const auth = new google.auth.GoogleAuth({
         //     keyFile: keyFile,
         //     // keyFilename: 'PATH_TO_SERVICE_ACCOUNT_KEY.json',
-        //     scopes: ['https://www.googleapis.com/auth/admin.directory.user']
+        //     scopes: scopes
         // });
         // const authClient = await auth.getClient();
 
