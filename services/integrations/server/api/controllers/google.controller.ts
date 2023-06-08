@@ -204,7 +204,7 @@ console.log({ userEmail });
             subject: userEmail
         });
 console.log("22222");
-        const service = google.admin({ version: 'v3', auth });
+        const service = google.admin({ version: 'directory_v1', auth });
 console.log("33333");
         // const url = oauth2Client.generateAuthUrl({
         //     // 'online' (default) or 'offline' (gets refresh_token)
