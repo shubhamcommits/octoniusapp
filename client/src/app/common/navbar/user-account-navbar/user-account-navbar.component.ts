@@ -261,7 +261,8 @@ export class UserAccountNavbarComponent implements OnInit, OnDestroy {
    */
   async getGoogleLoggedInUser() {
     const request = {
-      'userKey': this.userData?.email
+      'userKey': this.userData?.email,
+      'projection': 'FULL'
     };
 
     const response = await gapi.client.directory.users.get(request);
