@@ -154,7 +154,7 @@ routes.put('/:userId/saveSelectedWidgets', user.saveSelectedWidgets);
 routes.put('/:userId/customField', user.saveCustomField);
 
 // PUT - Change custom field value
-routes.put('/:userId/saveCustomFieldsFromLDAP', user.saveCustomFieldsFromLDAP);
+routes.put('/:userId/saveCustomFieldsFrom3rdPartySync', user.saveCustomFieldsFrom3rdPartySync);
 
 // PUT - Change custom field value
 routes.put('/locale', user.saveLocale);

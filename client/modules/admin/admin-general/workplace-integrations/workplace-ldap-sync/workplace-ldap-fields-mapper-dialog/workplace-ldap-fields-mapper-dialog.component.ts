@@ -127,7 +127,7 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 
                 this.utilityService.asyncNotification($localize`:@@workplaceLdapFieldsMapperDialog.pleaseWaitSavingProperties:Please wait we are saving the properties...`,
                   new Promise((resolve, reject) => {
-                      this.userService.saveCustomFieldsFromLDAP(this.userData?._id, this.workplaceData?._id, this.userData.profile_custom_fields).then(res => {
+                      this.userService.saveCustomFieldsFrom3rdPartySync(this.userData?._id, this.workplaceData?._id, this.userData.profile_custom_fields).then(res => {
                         this.userData = res['user'];
                         this.publicFunctions.sendUpdatesToUserData(this.userData);
                         this.utilityService.updateIsLoadingSpinnerSource(false);

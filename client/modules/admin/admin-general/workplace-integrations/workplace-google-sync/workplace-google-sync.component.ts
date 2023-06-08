@@ -53,10 +53,8 @@ export class WorkplaceGoogleSyncComponent implements OnInit {
         throw (resp);
       }
 
-      const googleUser: any = await this.getLoggedInUser();
-console.log(googleUser);
+      const googleUser: any = await this.getGoogleLoggedInUser();
       const schemas: any = await this.getUserSchema(googleUser.customerId);
-console.log(schemas);
       this.utilityService.updateIsLoadingSpinnerSource(false);
 
       if (schemas) {
@@ -113,7 +111,7 @@ console.log(schemas);
   /**
    * Print the first 10 users in the domain.
    */
-  async getLoggedInUser() {
+  async getGoogleLoggedInUser() {
     const request = {
       'userKey': this.userData?.email
     };

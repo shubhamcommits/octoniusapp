@@ -18,6 +18,8 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
   userData;
 
   googleSchemas;
+  isGlobal;
+  userGoogleData;
 
   propertiesToMap = [];
   profileCustomFields;
@@ -30,6 +32,7 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
       private injector: Injector,
       private utilityService: UtilityService,
       private workspaceService: WorkspaceService,
+      private userService: UserService,
       @Inject(MAT_DIALOG_DATA) public data: any,
       private mdDialogRef: MatDialogRef<WorkplaceGoogleFieldsMapperDialogComponent>
       ) { }
@@ -39,13 +42,15 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
     this.userData = await this.publicFunctions.getCurrentUser();
 
     this.googleSchemas = this.data.googleSchemas;
+    this.isGlobal = this.data.isGlobal;
+    this.userGoogleData = this.data.userGoogleData;
 
     this.profileCustomFields = this.workplaceData?.profile_custom_fields;
     const googlePropertiesMap = this.workplaceData?.googlePropertiesMap;
     if (googlePropertiesMap) {
       Object.keys(googlePropertiesMap).forEach(property => {
         this.propertiesToMap.push(property);
-        this.mapSelectedProperties.set(property, googlePropertiesMap[property]);
+        this.mapSelectedProperties.set(property, googlePropertiesMap[property][1]);
       });
     }
   }
@@ -78,28 +83,61 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
   }
 
   mapProperties() {
-    if (this.propertiesToMap && this.propertiesToMap.length > 0) {
-      this.utilityService.getConfirmDialogAlert($localize`:@@workplaceGoogleFieldsMapperDialog.areYouSure:Are you sure?`,
-        $localize`:@@workplaceGoogleFieldsMapperDialog.byDoingGoogleFields:By doing this, you will select the fields to map, and users' information will be synchronized with Google!`)
-        .then(async (resp) => {
-          if (resp.value) {
-            this.utilityService.updateIsLoadingSpinnerSource(true);
+    let text = '';
+    if (!this.isGlobal) {
+      text = $localize`:@@workplaceGoogleFieldsMapperDialog.byDoingGoogleSync:By doing this, user's information will be synchronized with Google!`
+    } else {
+      text = $localize`:@@workplaceGoogleFieldsMapperDialog.byDoingGoogleFields:By doing this, you will select the fields to map with Google!`//, and users' information will be synchronized with Google!`
+    }
+    
+    if (!this.isGlobal) {
+      for (let i = 0; i < this.propertiesToMap.length; i++) {
+        const property = this.propertiesToMap[i];
+        if (!this.userData.profile_custom_fields) {
+          this.userData.profile_custom_fields = new Map<string, string>();
+        }
 
-            this.utilityService.asyncNotification($localize`:@@workplaceGoogleFieldsMapperDialog.pleaseWaitMappingProperties:Please wait we are mapping the new properties...`,
-              new Promise((resolve, reject) => {
-                this.workspaceService.googleWorkspaceUsersInfo(this.workplaceData?._id, this.mapSelectedProperties).then(res => {
-                  this.workplaceData = res['workspace'];
-                  this.publicFunctions.sendUpdatesToWorkspaceData(this.workplaceData);
-                  this.utilityService.updateIsLoadingSpinnerSource(false);
-                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@workplaceGoogleFieldsMapperDialog.propertiesSaved:Properties to Map Saved!`));
-                  this.onCloseDialog();
-                }).catch(err => {
-                  this.utilityService.updateIsLoadingSpinnerSource(false);
-                  reject(this.utilityService.rejectAsyncPromise($localize`:@@workplaceGoogleFieldsMapperDialog.unableToSave:Unable to save the settings, please try again!`));
-                });
-            }));
-          }
-      });
+        if (this.isNotEmptyProperty(property) && this.isNotEmptyProperty(this.userGoogleData[property]) && this.isNotEmptyProperty(this.getOctoniusProperty(property))) {
+          this.userData.profile_custom_fields[this.getOctoniusProperty(property)] = this.userGoogleData[property];
+        }
+      }
+
+      this.utilityService.asyncNotification($localize`:@@workplaceLdapFieldsMapperDialog.pleaseWaitSavingProperties:Please wait we are saving the properties...`,
+        new Promise((resolve, reject) => {
+          this.userService.saveCustomFieldsFrom3rdPartySync(this.userData?._id, this.workplaceData?._id, this.userData.profile_custom_fields).then(res => {
+            this.userData = res['user'];
+            this.publicFunctions.sendUpdatesToUserData(this.userData);
+            this.utilityService.updateIsLoadingSpinnerSource(false);
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@workplaceLdapFieldsMapperDialog.userSaved:User Saved!`));
+            this.onCloseDialog();
+          }).catch(err => {
+            this.utilityService.updateIsLoadingSpinnerSource(false);
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@workplaceLdapFieldsMapperDialog.unableToSave:Unable to save the settings, please try again!`));
+          });
+      }));
+    } else {
+      if (this.propertiesToMap && this.propertiesToMap.length > 0) {
+        this.utilityService.getConfirmDialogAlert($localize`:@@workplaceGoogleFieldsMapperDialog.areYouSure:Are you sure?`, text)
+          .then(async (resp) => {
+            if (resp.value) {
+              this.utilityService.updateIsLoadingSpinnerSource(true);
+
+              this.utilityService.asyncNotification($localize`:@@workplaceGoogleFieldsMapperDialog.pleaseWaitMappingProperties:Please wait we are mapping the new properties...`,
+                new Promise((resolve, reject) => {
+                  this.workspaceService.googleWorkspaceUsersInfo(this.workplaceData?._id, this.mapSelectedProperties).then(res => {
+                    this.workplaceData = res['workspace'];
+                    this.publicFunctions.sendUpdatesToWorkspaceData(this.workplaceData);
+                    this.utilityService.updateIsLoadingSpinnerSource(false);
+                    resolve(this.utilityService.resolveAsyncPromise($localize`:@@workplaceGoogleFieldsMapperDialog.propertiesSaved:Properties to Map Saved!`));
+                    this.onCloseDialog();
+                  }).catch(err => {
+                    this.utilityService.updateIsLoadingSpinnerSource(false);
+                    reject(this.utilityService.rejectAsyncPromise($localize`:@@workplaceGoogleFieldsMapperDialog.unableToSave:Unable to save the settings, please try again!`));
+                  });
+              }));
+            }
+        });
+      }
     }
   }
 

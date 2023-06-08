@@ -36,7 +36,7 @@
               <span class="muted">{{ getOctoniusProperty(field.fieldName) }}</span>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-4" *ngIf="isGlobal">
               <mat-select ngDefaultControl
                   [(value)]="mapSelectedProperties[field.fieldName]"
                   (selectionChange)="changePropertyValue($event, schema.schemaName, field.fieldName)"
@@ -44,13 +44,26 @@
                 <mat-option *ngFor="let profileCF of profileCustomFields" [value]="profileCF.name">{{ profileCF.title }}</mat-option>
               </mat-select>
             </div>
+
+            <div class="col-md-4" *ngIf="!isGlobal && userGoogleData">
+              <span>{{ userGoogleData[field.fieldName] | truncatetext: 30 }}</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <div style="margin-top: 20px; text-align: center;">
-      <button class="col-md-4 btn btn-primary" [disabled]="!googleSchemas || propertiesToMap.length <= 0" (click)="mapProperties()" i18n="@@workplaceGoogleFieldsMapperDialog.saveMapping">
+      <button *ngIf="!isGlobal" class="col-md-4 btn btn-primary"
+        [disabled]="!googleSchemas || propertiesToMap.length <= 0"
+        (click)="mapProperties()"
+        i18n="@@workplaceLdapFieldsMapperDialog.map">
+        Map
+      </button>
+      <button *ngIf="isGlobal" class="col-md-4 btn btn-primary"
+        [disabled]="!googleSchemas || propertiesToMap.length <= 0"
+        (click)="mapProperties()"
+        i18n="@@workplaceGoogleFieldsMapperDialog.saveMapping">
         Save Mapping
       </button>
     </div>

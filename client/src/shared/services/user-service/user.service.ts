@@ -433,9 +433,9 @@ export class UserService {
     }).toPromise();
   }
 
-  saveCustomFieldsFromLDAP(userId: string, workspaceId: string, customFieldsMap: any) {
+  saveCustomFieldsFrom3rdPartySync(userId: string, workspaceId: string, customFieldsMap: any) {
     // Call the HTTP Request
-    return this._http.put(this.BASE_API_URL + `/${userId}/saveCustomFieldsFromLDAP`, {
+    return this._http.put(this.BASE_API_URL + `/${userId}/saveCustomFieldsFrom3rdPartySync`, {
       workspaceId: workspaceId,
       customFieldsMap: customFieldsMap
     }).toPromise();
