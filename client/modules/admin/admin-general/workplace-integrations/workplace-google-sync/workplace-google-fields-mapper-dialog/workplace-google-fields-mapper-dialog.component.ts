@@ -98,8 +98,8 @@ console.log(this.googleSchemas);
           this.userData.profile_custom_fields = new Map<string, string>();
         }
 
-        if (this.isNotEmptyProperty(property) && this.isNotEmptyProperty(this.userGoogleData[property]) && this.isNotEmptyProperty(this.getOctoniusProperty(property))) {
-          this.userData.profile_custom_fields[this.getOctoniusProperty(property)] = this.userGoogleData[property];
+        if (this.isNotEmptyProperty(property) && this.isNotEmptyProperty(this.userGoogleData['customSchemas'][property]) && this.isNotEmptyProperty(this.getOctoniusProperty(property))) {
+          this.userData.profile_custom_fields[this.getOctoniusProperty(property)] = this.userGoogleData['customSchemas'][property];
         }
       }
 
