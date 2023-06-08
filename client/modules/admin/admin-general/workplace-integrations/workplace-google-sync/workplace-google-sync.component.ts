@@ -58,7 +58,7 @@ export class WorkplaceGoogleSyncComponent implements OnInit {
       this.utilityService.updateIsLoadingSpinnerSource(false);
 
       if (schemas) {
-        this.openGoogleFieldsMapDialog(schemas.schemas);
+        this.openGoogleFieldsMapDialog(googleUser, schemas.schemas);
       } else {
         this.utilityService.infoNotification($localize`:@@workplaceGoogleSyncComponent.noSchemas:There are no Schemas in your Google profile to synchronize with Octonius properties.`)
       }
@@ -128,9 +128,11 @@ export class WorkplaceGoogleSyncComponent implements OnInit {
     return response.result;
   }
 
-  openGoogleFieldsMapDialog(googleSchemas: any) {
+  openGoogleFieldsMapDialog(userGoogleData: any, googleSchemas: any) {
     const data = {
-      googleSchemas: googleSchemas
+      googleSchemas: googleSchemas,
+      isGlobal: false,
+      userGoogleData: userGoogleData
     }
     const dialogRef = this.dialog.open(WorkplaceGoogleFieldsMapperDialogComponent, {
       width: '65%',

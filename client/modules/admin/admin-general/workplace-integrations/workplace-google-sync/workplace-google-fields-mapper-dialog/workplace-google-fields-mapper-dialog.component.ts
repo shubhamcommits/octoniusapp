@@ -44,7 +44,8 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
     this.googleSchemas = this.data.googleSchemas;
     this.isGlobal = this.data.isGlobal;
     this.userGoogleData = this.data.userGoogleData;
-
+console.log(this.userGoogleData);
+console.log(this.googleSchemas);
     this.profileCustomFields = this.workplaceData?.profile_custom_fields;
     const googlePropertiesMap = this.workplaceData?.googlePropertiesMap;
     if (googlePropertiesMap) {

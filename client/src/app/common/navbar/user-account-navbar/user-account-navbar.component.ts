@@ -183,7 +183,7 @@ export class UserAccountNavbarComponent implements OnInit, OnDestroy {
       this.utilityService.updateIsLoadingSpinnerSource(false);
 
       if (schemas) {
-        this.openGoogleFieldsMapDialog(schemas.schemas);
+        this.openGoogleFieldsMapDialog(googleUser, schemas.schemas);
       } else {
         this.utilityService.infoNotification($localize`:@@workplaceGoogleSyncComponent.noSchemas:There are no Schemas in your Google profile to synchronize with Octonius properties.`)
       }
@@ -199,11 +199,11 @@ export class UserAccountNavbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  openGoogleFieldsMapDialog(userGoogleData: any) {
+  openGoogleFieldsMapDialog(userGoogleData: any, googleSchemas: any) {
     const data = {
-      ldapPropertiesNames: Object.keys(userGoogleData),
+      googleSchemas: googleSchemas,
       isGlobal: false,
-      userLdapData: userGoogleData
+      userGoogleData: userGoogleData
     }
     const dialogRef = this.dialog.open(WorkplaceGoogleFieldsMapperDialogComponent, {
       width: '65%',
