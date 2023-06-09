@@ -46,21 +46,21 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
     this.userGoogleData = this.data.userGoogleData;
 
     this.profileCustomFields = this.workplaceData?.profile_custom_fields;
-    const googlePropertiesMap = this.workplaceData?.googlePropertiesMap;
-    if (googlePropertiesMap) {
-      this.selectedProperties = googlePropertiesMap;
+    if (this.workplaceData?.googlePropertiesMap) {
+      this.selectedProperties = this.workplaceData?.googlePropertiesMap;
     }
 console.log(this.googleSchemas);
 console.log(this.userGoogleData);
 console.log(this.userData);
 console.log(this.workplaceData);
-console.log(googlePropertiesMap);
 console.log(this.selectedProperties);
   }
 
   async getOctoniusProperty(googleSchemaName: string, googlePropertyName: string) {
     const selectedIndex = await this.getSelectedIndex(googlePropertyName, googleSchemaName);
-    return (selectedIndex >= 0) ? this.selectedProperties[selectedIndex].octonius_property : '';
+    return (selectedIndex >= 0 && this.selectedProperties[selectedIndex] && this.selectedProperties[selectedIndex].octonius_property)
+      ? this.selectedProperties[selectedIndex].octonius_property
+      : '';
   }
 
   selectProperty(property: string) {
