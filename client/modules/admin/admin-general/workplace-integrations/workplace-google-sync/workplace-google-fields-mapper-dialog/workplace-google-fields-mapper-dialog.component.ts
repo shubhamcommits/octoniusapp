@@ -44,8 +44,7 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
     this.googleSchemas = this.data.googleSchemas;
     this.isGlobal = this.data.isGlobal;
     this.userGoogleData = this.data.userGoogleData;
-console.log(this.userGoogleData);
-console.log(this.googleSchemas);
+
     this.profileCustomFields = this.workplaceData?.profile_custom_fields;
     const googlePropertiesMap = this.workplaceData?.googlePropertiesMap;
     if (googlePropertiesMap) {
@@ -54,11 +53,15 @@ console.log(this.googleSchemas);
         this.mapSelectedProperties.set(property, googlePropertiesMap[property][1]);
       });
     }
+console.log(this.userGoogleData);
+console.log(this.googleSchemas);
+console.log(this.mapSelectedProperties);
   }
 
   getOctoniusProperty(property) {
-    let retPoperty = this.mapSelectedProperties.get(property);
-    return (retPoperty && retPoperty.length > 1) ? retPoperty[1] : ((retPoperty) ? retPoperty : '');
+    let retProperty = this.mapSelectedProperties.get(property);
+    return retProperty;
+    // return (retProperty && retProperty.length > 1) ? retProperty[1] : ((retProperty) ? retProperty : '');
   }
 
   selectProperty(property: string) {
@@ -98,8 +101,10 @@ console.log(this.googleSchemas);
           this.userData.profile_custom_fields = new Map<string, string>();
         }
 
-        if (this.isNotEmptyProperty(property) && this.isNotEmptyProperty(this.userGoogleData['customSchemas'][property]) && this.isNotEmptyProperty(this.getOctoniusProperty(property))) {
-          this.userData.profile_custom_fields[this.getOctoniusProperty(property)] = this.userGoogleData['customSchemas'][property];
+        const schema = property[0];
+        const field = property[1];
+        if (this.isNotEmptyProperty(field) && this.isNotEmptyProperty(this.userGoogleData['customSchemas'][schema][field]) && this.isNotEmptyProperty(this.getOctoniusProperty(property))) {
+          this.userData.profile_custom_fields[this.getOctoniusProperty(property)] = this.userGoogleData['customSchemas'][schema][field];
         }
       }
 

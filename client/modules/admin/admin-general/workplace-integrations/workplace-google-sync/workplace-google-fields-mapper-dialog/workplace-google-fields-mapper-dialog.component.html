@@ -45,8 +45,8 @@
               </mat-select>
             </div>
 
-            <div class="col-md-4" *ngIf="!isGlobal && userGoogleData && userGoogleData['customSchemas']">
-              <span>{{ userGoogleData['customSchemas'][field.fieldName] | truncatetext: 30 }}</span>
+            <div class="col-md-4" *ngIf="!isGlobal && userGoogleData && userGoogleData['customSchemas'] && userGoogleData['customSchemas'][schema.displayName]">
+              <span>{{ userGoogleData['customSchemas'][schema.displayName][field.fieldName] | truncatetext: 30 }}</span>
             </div>
           </div>
         </div>
