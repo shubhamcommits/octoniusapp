@@ -134,6 +134,7 @@ console.log(this.mapSelectedProperties);
 
               this.utilityService.asyncNotification($localize`:@@workplaceGoogleFieldsMapperDialog.pleaseWaitMappingProperties:Please wait we are mapping the new properties...`,
                 new Promise((resolve, reject) => {
+console.log(this.mapSelectedProperties);
                   this.workspaceService.googleWorkspaceUsersInfo(this.workplaceData?._id, this.mapSelectedProperties).then(res => {
                     this.workplaceData = res['workspace'];
                     this.publicFunctions.sendUpdatesToWorkspaceData(this.workplaceData);

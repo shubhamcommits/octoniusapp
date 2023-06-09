@@ -375,13 +375,9 @@ export class WorkspaceService {
    * This function is used to fetch the needed user´s information from Google
    */
    googleWorkspaceUsersInfo(workspaceId: string, mapSelectedProperties: any) {
+console.log(mapSelectedProperties);
     return this._http.put(this.INTEGRATIONS_API_URL + `/google/${workspaceId}/googleWorkspaceUsersInfo`, {
-      // workspaceId: workspaceId,
-      // email: email,
-      // ldapPropertiesToMap: ldapPropertiesToMap,
-      mapSelectedProperties: mapSelectedProperties,
-      // userProperties: userProperties,
-      // global: global
+      mapSelectedProperties: mapSelectedProperties
     }).toPromise();
   }
 
