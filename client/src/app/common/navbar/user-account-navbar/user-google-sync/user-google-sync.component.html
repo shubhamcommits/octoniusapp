@@ -1,5 +1,4 @@
-<button mat-menu-item (click)="getGoogleUserInformation()"
-  *ngIf="isCurrentUser && workspaceData?.integrations?.is_google_connected && workspaceData?.googlePropertiesMap">
+<button mat-menu-item (click)="getGoogleUserInformation()">
   <i class="material-icons ml-2">cable</i>
   <span i18n="@@userAccountNavbar.syncGoogle">Sync Google</span>
 </button>

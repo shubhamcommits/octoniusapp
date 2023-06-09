@@ -33,8 +33,8 @@
           <span i18n="@@userAccountNavbar.syncLDAP">Sync LDAP</span>
         </button>
 
-        <!-- <app-user-google-sync *ngIf="workspaceData?.integrations?.is_google_connected && workspaceData?.googlePropertiesMap && workspaceData?.integrations?.google_client_id && workspaceData?.integrations?.google_client_secret_key && workspaceData?.integrations?.google_api_key"
-      [workspaceData]="workspaceData" [userData]="userData"></app-user-google-sync> -->
+        <!-- <app-user-google-sync *ngIf="isCurrentUser && workspaceData?.integrations?.is_google_connected && workspaceData?.googlePropertiesMap"
+          [workspaceData]="workspaceData" [userData]="userData"></app-user-google-sync> -->
 
         <button mat-menu-item *ngIf="isCurrentUser" (click)="openUpdatePasswordModal()">
             <i class="material-icons ml-2">lock</i>
