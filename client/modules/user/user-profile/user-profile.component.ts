@@ -3,11 +3,11 @@ import { PublicFunctions } from 'modules/public.functions';
 import { MatDialog } from '@angular/material/dialog';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
-import { WorkplaceLdapFieldsMapperDialogComponent } from 'modules/admin/admin-general/workplace-integrations/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { GroupsService } from 'src/shared/services/groups-service/groups.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
+import { WorkplaceLdapFieldsMapperDialogComponent } from 'modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component';
 
 @Component({
   selector: 'app-user-profile',
@@ -109,47 +109,6 @@ export class UserProfileComponent implements OnInit, AfterContentChecked, OnDest
 
   onUpdateUserEmitter(updatedUserData) {
     this.userData = updatedUserData;
-  }
-
-  async getUserInformation() {
-    this.utilityService.updateIsLoadingSpinnerSource(true);
-
-    const accountData = await this.publicFunctions.getCurrentAccount();
-    this.workspaceService.ldapUserInfoProperties(this.workspaceData._id, accountData?.email, false).then(res => {
-      if (this.utilityService.objectExists(res['userLdapData'])) {
-        this.openLDAPFieldsMapDialog(res['userLdapData']);
-      } else {
-        this.utilityService.errorNotification($localize`:@@userProfile.userNoExists:Your user doesn't exists in LDAP!`);
-      }
-      //setTimeout(() => {
-      this.utilityService.updateIsLoadingSpinnerSource(false);
-      //}, 10000);
-    }).catch(error => {
-      this.utilityService.updateIsLoadingSpinnerSource(false);
-    });
-  }
-
-  openLDAPFieldsMapDialog(userLdapData: any) {
-    const data = {
-      ldapPropertiesNames: Object.keys(userLdapData),
-      isGlobal: false,
-      userLdapData: userLdapData
-    }
-    const dialogRef = this.dialog.open(WorkplaceLdapFieldsMapperDialogComponent, {
-      width: '65%',
-      height: '85%',
-      disableClose: true,
-      hasBackdrop: true,
-      data: data
-    });
-
-    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe(async (data) => {
-      this.userData = await this.publicFunctions.getCurrentUser();
-    });
-
-    dialogRef.afterClosed().subscribe(async result => {
-      closeEventSubs.unsubscribe();
-    });
   }
 
   onCustomFieldChange(event: Event, customFieldName: string) {

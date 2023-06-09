@@ -109,52 +109,52 @@ import { UserService } from 'src/shared/services/user-service/user.service';
           text = $localize`:@@workplaceLdapFieldsMapperDialog.byDoingLDAPFields:By doing this, you will select the fields to map with LDAP!`
         }
         this.utilityService.getConfirmDialogAlert($localize`:@@workplaceLdapFieldsMapperDialog.areYouSure:Are you sure?`, text)
-        .then(async (resp) => {
-          if (resp.value) {
-            this.utilityService.updateIsLoadingSpinnerSource(true);
+          .then(async (resp) => {
+            if (resp.value) {
+              this.utilityService.updateIsLoadingSpinnerSource(true);
 
-            if (!this.isGlobal) {
-              for (let i = 0; i < this.ldapPropertiesToMap.length; i++) {
-                const property = this.ldapPropertiesToMap[i];
-                if (!this.userData.profile_custom_fields) {
-                  this.userData.profile_custom_fields = new Map<string, string>();
+              if (!this.isGlobal) {
+                for (let i = 0; i < this.ldapPropertiesToMap.length; i++) {
+                  const property = this.ldapPropertiesToMap[i];
+                  if (!this.userData.profile_custom_fields) {
+                    this.userData.profile_custom_fields = new Map<string, string>();
+                  }
+
+                  if (this.isNotEmptyProperty(property) && this.isNotEmptyProperty(this.userLdapData[property]) && this.isNotEmptyProperty(this.getOctoniusProperty(property))) {
+                    this.userData.profile_custom_fields[this.getOctoniusProperty(property)] = this.userLdapData[property];
+                  }
                 }
 
-                if (this.isNotEmptyProperty(property) && this.isNotEmptyProperty(this.userLdapData[property]) && this.isNotEmptyProperty(this.getOctoniusProperty(property))) {
-                  this.userData.profile_custom_fields[this.getOctoniusProperty(property)] = this.userLdapData[property];
-                }
+                this.utilityService.asyncNotification($localize`:@@workplaceLdapFieldsMapperDialog.pleaseWaitSavingProperties:Please wait we are saving the properties...`,
+                  new Promise((resolve, reject) => {
+                      this.userService.saveCustomFieldsFrom3rdPartySync(this.userData?._id, this.workplaceData?._id, this.userData.profile_custom_fields).then(res => {
+                        this.userData = res['user'];
+                        this.publicFunctions.sendUpdatesToUserData(this.userData);
+                        this.utilityService.updateIsLoadingSpinnerSource(false);
+                        resolve(this.utilityService.resolveAsyncPromise($localize`:@@workplaceLdapFieldsMapperDialog.userSaved:User Saved!`));
+                        this.onCloseDialog();
+                      }).catch(err => {
+                        this.utilityService.updateIsLoadingSpinnerSource(false);
+                        reject(this.utilityService.rejectAsyncPromise($localize`:@@workplaceLdapFieldsMapperDialog.unableToSave:Unable to save the settings, please try again!`));
+                      });
+                }));
+              } else {
+                this.utilityService.asyncNotification($localize`:@@workplaceLdapFieldsMapperDialog.pleaseWaitMappingProperties:Please wait we are mapping the new properties...`,
+                  new Promise((resolve, reject) => {
+                      this.workspaceService.ldapWorkspaceUsersInfo(this.workplaceData?._id, this.mapSelectedProperties/*, this.userData?.email, this.ldapPropertiesToMap, this.workplaceData?.ldap_user_properties_cf, this.isGlobal*/).then(res => {
+                        this.workplaceData = res['workspace'];
+                        this.publicFunctions.sendUpdatesToWorkspaceData(this.workplaceData);
+                        this.utilityService.updateIsLoadingSpinnerSource(false);
+                        resolve(this.utilityService.resolveAsyncPromise($localize`:@@workplaceLdapFieldsMapperDialog.propertiesSaved:Properties to Map Saved!`));
+                        this.onCloseDialog();
+                      }).catch(err => {
+                        this.utilityService.updateIsLoadingSpinnerSource(false);
+                        reject(this.utilityService.rejectAsyncPromise($localize`:@@workplaceLdapFieldsMapperDialog.unableToSave:Unable to save the settings, please try again!`));
+                      });
+                }));
               }
-
-              this.utilityService.asyncNotification($localize`:@@workplaceLdapFieldsMapperDialog.pleaseWaitSavingProperties:Please wait we are saving the properties...`,
-                new Promise((resolve, reject) => {
-                    this.userService.saveCustomFieldsFromLDAP(this.userData?._id, this.workplaceData?._id, this.userData.profile_custom_fields).then(res => {
-                      this.userData = res['user'];
-                      this.publicFunctions.sendUpdatesToUserData(this.userData);
-                      this.utilityService.updateIsLoadingSpinnerSource(false);
-                      resolve(this.utilityService.resolveAsyncPromise($localize`:@@workplaceLdapFieldsMapperDialog.userSaved:User Saved!`));
-                      this.onCloseDialog();
-                    }).catch(err => {
-                      this.utilityService.updateIsLoadingSpinnerSource(false);
-                      reject(this.utilityService.rejectAsyncPromise($localize`:@@workplaceLdapFieldsMapperDialog.unableToSave:Unable to save the settings, please try again!`));
-                    });
-              }));
-            } else {
-              this.utilityService.asyncNotification($localize`:@@workplaceLdapFieldsMapperDialog.pleaseWaitMappingProperties:Please wait we are mapping the new properties...`,
-                new Promise((resolve, reject) => {
-                    this.workspaceService.ldapWorkspaceUsersInfo(this.workplaceData?._id, this.mapSelectedProperties/*, this.userData?.email, this.ldapPropertiesToMap, this.workplaceData?.ldap_user_properties_cf, this.isGlobal*/).then(res => {
-                      this.workplaceData = res['workspace'];
-                      this.publicFunctions.sendUpdatesToWorkspaceData(this.workplaceData);
-                      this.utilityService.updateIsLoadingSpinnerSource(false);
-                      resolve(this.utilityService.resolveAsyncPromise($localize`:@@workplaceLdapFieldsMapperDialog.propertiesSaved:Properties to Map Saved!`));
-                      this.onCloseDialog();
-                    }).catch(err => {
-                      this.utilityService.updateIsLoadingSpinnerSource(false);
-                      reject(this.utilityService.rejectAsyncPromise($localize`:@@workplaceLdapFieldsMapperDialog.unableToSave:Unable to save the settings, please try again!`));
-                    });
-              }));
             }
-          }
-      });
+        });
     }
   }
 

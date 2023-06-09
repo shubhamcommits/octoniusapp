@@ -99,6 +99,8 @@ function devConfigInit() {
   process.env.MINIO_SECRET_KEY = process.env.MINIO_SECRET_KEY || '0IOHSeS1tULlsRks3CUYIohIXHCOQaNg'
   process.env.MINIO_PORT = process.env.MINIO_PORT || '9090'
   process.env.MINIO_PROTOCOL = process.env.MINIO_PROTOCOL || 'http'
+
+  process.env.clientURL = process.env.clientURL || 'http://localhost:4200'
 };
 
 export { devConfigInit as developmentConfig }

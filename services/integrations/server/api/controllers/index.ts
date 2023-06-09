@@ -4,6 +4,7 @@ import { SlackController } from "./slack.controller";
 import { TeamsController } from "./teams.controller";
 import { ZapierController } from './zapier.controller';
 import { BoxControllers } from './box.controller';
+import { GoogleController } from "./google.controller";
 
 /*  ==========================
  *  -- CONTROLLERS EXPORTS --
@@ -15,5 +16,6 @@ export {
     TeamsController as TeamsController,
     ZapierController as ZapierController,
     LdapController as LdapController,
+    GoogleController as GoogleController,
     BoxControllers as BoxControllers
 }

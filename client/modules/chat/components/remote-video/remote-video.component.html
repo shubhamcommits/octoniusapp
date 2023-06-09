@@ -1,0 +1,11 @@
+<div class="video-box">
+	<video [id]="id" [srcObject]="stream" class="remote-video" autoplay></video>
+	<!-- <div *ngIf="!isCameraOn">
+		<app-secured-image [imgURL]="remoteUser?.profile_pic" [service]="'user'"
+			[workspaceId]="remoteUser?.workspaceId"
+			[alt]="remoteUser?.name"
+			[tooltip]="remoteUser?.name">
+		</app-secured-image>
+	</div> -->
+	<span *ngIf="remoteUser" class="user-name"> {{ remoteUser?.name | truncatetext: 50 }}</span>
+</div>

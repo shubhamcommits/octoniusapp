@@ -1,0 +1,10 @@
+<div class="card-block" style="margin-top: 20px;" *ngIf="workspaceData?.integrations?.is_ldap_connected">
+  <p>
+    <b i18n="@@workspaceAddDomain.fetchLDAPInfo">Fetch Information from LDAP </b>
+  </p>
+
+  <div style="margin-top: 10px;">
+    <button class="btn btn-primary" (click)="getLDAPUserInformation()" i18n="@@workspaceAddDomain.syncLDAP">Sync
+      LDAP</button>
+  </div>
+</div>

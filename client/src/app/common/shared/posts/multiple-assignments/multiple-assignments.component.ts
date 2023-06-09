@@ -19,8 +19,9 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
   @Input() userData;
   @Input() post;
   @Input() portfolio;
+  @Input() collection;
   @Input() assigned_to = [];
-  @Input() type; // post/flow/filter/chat/portfolio
+  @Input() type; // post/flow/filter/chat/portfolio/collection
   @Input() canEdit = true;
 
   @Output() assigneeAddedEmiter = new EventEmitter();
@@ -56,7 +57,11 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
       this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     }
       
-    if (this.type != 'chat' && this.groupId) {
+    if (this.type == 'collection' && this.groupId) {
+        this.groupService.getAllGroupMembers(this.groupId).then(res => {
+          this.members = res['users'];
+        });
+    } else if (this.type != 'chat' && this.groupId) {
         this.groupService.getAllGroupMembers(this.groupId).then(res => {
           this.members = res['users'];
 
@@ -87,6 +92,10 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
 
     if (this.type == 'portfolio' && this.portfolio) {
       this.assigned_to = this.portfolio?._members;
+    }
+
+    if (this.type == 'collection' && this.collection) {
+      this.assigned_to = this.collection?._members;
     }
 
     if (!this.assigned_to) {
@@ -124,7 +133,7 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
         }));
       } else if (this.type == 'flow') {
         this.assigneeRemovedEmiter.emit({ assigneeId: assigneeId });
-      } else if (this.type == 'portfolio') {
+      } else if (this.type == 'portfolio' || this.type == 'collection') {
         const index = this.assigned_to.findIndex((assignee) => assignee._id == assigneeId);
         this.assigned_to.splice(index, 1);
         this.assigneeRemovedEmiter.emit({ assignee: assigneeId });
@@ -178,7 +187,7 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
         } else if (this.type == 'filter' || this.type == 'chat') {
           this.assigned_to.push(member);
           this.assigneeAddedEmiter.emit(member);
-        } else if (this.type == 'portfolio') {
+        } else if (this.type == 'portfolio'|| this.type == 'collection') {
           this.assigned_to.push(member);
           this.assigneeAddedEmiter.emit({ assignee: member?._id });
         }

@@ -32,7 +32,12 @@ export const environment = {
   GOOGLE_SCOPE: [
     'https://www.googleapis.com/auth/drive',
     'https://www.googleapis.com/auth/calendar',
-    'https://www.googleapis.com/auth/calendar.events'
+    'https://www.googleapis.com/auth/calendar.events',
+    'https://www.googleapis.com/auth/admin.directory.userschema',
+    'https://www.googleapis.com/auth/admin.directory.userschema.readonly',
+    'https://www.googleapis.com/auth/admin.directory.user.readonly',
+    'https://www.googleapis.com/auth/admin.directory.group.readonly',
+    'https://www.googleapis.com/auth/admin.directory.orgunit.readonly'
   ].join(` `),
   GOOGLE_LOGIN_SCOPE: [
     'profile',
@@ -105,6 +110,7 @@ export const environment = {
   FOLIO_HTTP_URL: `${url["protocol"]}://${url["domain"]}/folio`,
 
   // Chats URLs
+  CHATS_BASE_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/chats`,
   CHATS_BASE_API_URL: `${url["protocol"]}://${url["domain"]}/api/chats`,
 
   // MANAGEMENT_URL

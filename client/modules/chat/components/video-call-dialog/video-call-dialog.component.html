@@ -1,0 +1,68 @@
+<mat-dialog-actions align="end">
+    <div class="action-box">
+        <a (click)="closeModal()" mat-dialog-close>
+            <i class="material-icons" style="cursor: pointer">close</i>
+        </a>
+    </div>
+</mat-dialog-actions>
+
+<mat-dialog-content style="max-height: none">
+    <div class="dialog-content">
+        <div class="content">
+            <div class="container-fluid">
+                <h2 class="title text-center">
+                    <i class="material-icons" style="margin-top:-5px">lock</i>
+                    <span i18n="@@videoCallDialog.videoCall">Video Call</span>
+                </h2>
+                <div class="row inner-content" style="padding-top: 15px;">
+                    
+
+                    <div class="col-md-9 videoCall">
+
+                        <div class="remoteStreams" #videoChatContainer>
+                            <!-- insert remote streams dynamically -->
+                        </div>
+
+                        <video [srcObject]="localCaptureStream" #localVideo class="localVideo" *ngIf="localCaptureStream" autoplay playsinline muted="muted"></video>
+
+                        <div class="members" *ngIf="membersOn">
+                            <app-multiple-assignments *ngIf="!objectExists(chatData?._group)" [canEdit]="canEdit" [workspaceData]="workspaceData"
+                                [userData]="userData" [assigned_to]="members" [type]="'chat'"
+                                (assigneeAddedEmiter)="onAssignedAdded($event)"
+                                (assigneeRemovedEmiter)="onAssignedRemoved($event)">
+                            </app-multiple-assignments>
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-3 chatDetails">
+                        <div *ngIf="chatOn">
+                            <app-chat-details [userData]="userData" [workspaceData]="workspaceData" [chatData]="chatData" [isVideoCall]="true" (chatClosedEvent)="showHideChat()"></app-chat-details>
+                        </div>
+                    </div>
+                </div>
+                <ul class="callAction">
+                    <li (click)="muteVideo()">
+                        <i class="material-icons-outlined" style="color: red;" *ngIf="!localVideoOn">videocam_off</i>
+                        <i class="material-icons-outlined" *ngIf="localVideoOn">videocam</i>
+                    </li>
+                    <li (click)="muteAudio()">
+                        <i class="material-icons-outlined" style="color: red;" *ngIf="!localAudioOn">mic_off</i>
+                        <i class="material-icons-outlined" *ngIf="localAudioOn">mic</i>
+                    </li>
+                    <li (click)="showHideChat()">
+                        <i class="material-icons-outlined">chat</i>
+                    </li>
+                    <li (click)="showMembers()">
+                        <i class="material-icons-outlined">groups</i>
+                    </li>
+                    <li (click)="copyLink()">
+                        <i class="material-icons-outlined">share</i>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</mat-dialog-content>

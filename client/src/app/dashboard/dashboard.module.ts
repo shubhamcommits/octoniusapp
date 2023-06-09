@@ -23,6 +23,7 @@ import { IconsSidebarComponent } from '../common/navbar/icons-sidebar/icons-side
 import { UserAccountNavbarComponent } from '../common/navbar/user-account-navbar/user-account-navbar.component';
 import { PortfolioNavbarComponent } from '../common/navbar/portfolio-navbar/portfolio-navbar.component';
 import { PortfolioImageDetailsComponent } from '../common/navbar/portfolio-navbar/portfolio-image-details/portfolio-image-details.component';
+import { UserGoogleSyncComponent } from '../common/navbar/user-account-navbar/user-google-sync/user-google-sync.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { PortfolioImageDetailsComponent } from '../common/navbar/portfolio-navba
     SidebarComponent,
     IconsSidebarComponent,
     WorkspaceDetailsComponent,
-    UserImageDetailsComponent
+    UserImageDetailsComponent,
+    UserGoogleSyncComponent
   ],
   imports: [
     CommonModule,

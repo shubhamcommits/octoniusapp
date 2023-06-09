@@ -236,13 +236,13 @@ export class LibraryController {
     /**
      * This function is responsible for updating the collection data to the corresponding @constant collectionId
      */
-    async addManager(req: Request, res: Response) {
+    async addEditor(req: Request, res: Response) {
         try {
             const { collectionId } = req.params;
-            const { assigneeId } = req.body;
+            const { assignee } = req.body;
 
             // If collectionId is null or not provided then we throw BAD REQUEST 
-            if (!collectionId || !assigneeId) {
+            if (!collectionId || !assignee) {
                 return res.status(400).json({
                     message: 'Please provide collectionId and assigneeId!'
                 });
@@ -252,7 +252,7 @@ export class LibraryController {
                     { _id: collectionId },
                     { 
                         $addToSet: {
-                            _members: assigneeId
+                            _members: assignee
                         }
                     },
                     { new: true }
@@ -274,7 +274,7 @@ export class LibraryController {
             }
 
             return res.status(200).json({
-                message: `Manager added to collection successfully!`,
+                message: `Editor added to collection successfully!`,
                 collection: collection
             });
 
@@ -286,13 +286,13 @@ export class LibraryController {
     /**
      * This function is responsible for updating the collection data to the corresponding @constant collectionId
      */
-    async removeManager(req: Request, res: Response) {
+    async removeEditor(req: Request, res: Response) {
         try {
             const { collectionId } = req.params;
-            const { assigneeId } = req.body;
+            const { assignee } = req.body;
 
             // If collectionId is null or not provided then we throw BAD REQUEST 
-            if (!collectionId || !assigneeId) {
+            if (!collectionId || !assignee) {
                 return res.status(400).json({
                     message: 'Please provide collectionId and assigneeId!'
                 });
@@ -301,7 +301,7 @@ export class LibraryController {
             const collection: any = await Collection.findOneAndUpdate(
                     { _id: collectionId },
                     { 
-                        $pull: { _members: assigneeId }
+                        $pull: { _members: assignee }
                     },
                     { new: true }
                 )
@@ -322,7 +322,7 @@ export class LibraryController {
             }
 
             return res.status(200).json({
-                message: `Manager removed from collection successfully!`,
+                message: `Editor removed from collection successfully!`,
                 collection: collection
             });
 

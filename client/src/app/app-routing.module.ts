@@ -74,6 +74,14 @@ const routes: Routes = [
   },
   */
 
+  // 'chat'
+  {
+    path: 'videoChat',
+    loadChildren: () => import('modules/chat/chat.module')
+      .then((module) => module.ChatModule),
+      canActivate: [AuthenticationGuard]
+  },
+
   // NOT FOUND ROUTE
   {
     path: '**',

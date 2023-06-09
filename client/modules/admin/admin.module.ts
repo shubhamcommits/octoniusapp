@@ -27,7 +27,10 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { WorkspaceRolesInformationDialogComponent } from './admin-general/workspace-roles-information-dialog/workspace-roles-information-dialog.component';
 import { WorkplaceIntegrationsComponent } from './admin-general/workplace-integrations/workplace-integrations.component';
 import { WorkplaceIntegrationsDialogComponent } from './admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component';
-import { WorkplaceLdapFieldsMapperDialogComponent } from './admin-general/workplace-integrations/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component';
+import { WorkplaceGoogleSyncComponent } from './admin-general/workplace-integrations/workplace-google-sync/workplace-google-sync.component';
+import { WorkplaceLDAPSyncComponent } from './admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-sync.component';
+import { WorkplaceLdapFieldsMapperDialogComponent } from './admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component';
+import { WorkplaceGoogleFieldsMapperDialogComponent } from './admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component';
 
 
 @NgModule({
@@ -48,7 +51,10 @@ import { WorkplaceLdapFieldsMapperDialogComponent } from './admin-general/workpl
         WorkspaceRolesInformationDialogComponent,
         WorkplaceIntegrationsComponent,
         WorkplaceIntegrationsDialogComponent,
-        WorkplaceLdapFieldsMapperDialogComponent
+        WorkplaceLDAPSyncComponent,
+        WorkplaceLdapFieldsMapperDialogComponent,
+        WorkplaceGoogleSyncComponent,
+        WorkplaceGoogleFieldsMapperDialogComponent
     ],
     imports: [
         CommonModule,

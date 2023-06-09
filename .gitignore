@@ -6,7 +6,7 @@ data/
 
 # Package lock files
 package-lock.json
-yarn.lock
+# yarn.lock
 
 
 # Octonius uploaded files on development

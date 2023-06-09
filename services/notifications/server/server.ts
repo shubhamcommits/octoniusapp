@@ -1,5 +1,4 @@
 import { server } from './api/app';
-import { Request, Response, NextFunction } from 'express';
 import cluster from 'cluster';
 
 if (cluster.isMaster) {
@@ -46,12 +45,11 @@ if (cluster.isMaster) {
   // Exposing the server to the desired port
   server.listen(port, host, () => {
     console.log(`
-    
-  ⚙️  Octonius Sockets server running at: \n\t http://${host}:${port}
-  
-  🌏 Environment: \n\t ${env}
+      ⚙️  Octonius Sockets server running at: \n\t http://${host}:${port}
+      
+      🌏 Environment: \n\t ${env}
 
-  💻 Process: \n\t ${process.pid} is listening to all incoming requests
-  `);
+      💻 Process: \n\t ${process.pid} is listening to all incoming requests
+    `);
   });
 }

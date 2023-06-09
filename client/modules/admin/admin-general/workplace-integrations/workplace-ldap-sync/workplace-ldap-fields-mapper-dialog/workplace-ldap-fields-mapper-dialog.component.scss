@@ -1,0 +1,21 @@
+.integrationsDialog {
+    // text-align: center;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.text-descr{
+    display: flex;
+}
+
+.description{
+    display: flex;
+    flex-direction: column;
+    width: 320px;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.integration-properties{
+    margin-top: 24px;
+}

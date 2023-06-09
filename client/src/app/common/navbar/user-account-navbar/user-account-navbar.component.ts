@@ -1,7 +1,6 @@
-import { Component, Injector, OnInit, OnDestroy, Input} from '@angular/core';
+import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { WorkplaceLdapFieldsMapperDialogComponent } from 'modules/admin/admin-general/workplace-integrations/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component';
 import { PublicFunctions } from 'modules/public.functions';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { RouteStateService } from 'src/shared/services/router-service/route-state.service';
@@ -12,6 +11,7 @@ import { WorkspaceService } from 'src/shared/services/workspace-service/workspac
 import { SubSink } from 'subsink';
 import { UserUpdateProfileDialogComponent } from '../../shared/user-update-profile-dialog/user-update-profile-dialog.component';
 import { UserUpdateUserPersonalInformationDialogComponent } from '../../shared/user-update-user-personal-information-dialog/user-update-user-personal-information-dialog.component';
+import { WorkplaceLdapFieldsMapperDialogComponent } from 'modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component';
 
 @Component({
   selector: 'app-user-account-navbar',
@@ -34,6 +34,8 @@ export class UserAccountNavbarComponent implements OnInit, OnDestroy {
   isCurrentUser: boolean = true;
 
   isOrganizationModuleAvailable = false;
+
+  googleTokenClient;
 
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector)
@@ -91,7 +93,7 @@ export class UserAccountNavbarComponent implements OnInit, OnDestroy {
    * This functions unsubscribes all the observables subscription to avoid memory leak
    */
   ngOnDestroy(): void {
-    this.subSink.unsubscribe()
+    this.subSink.unsubscribe();
   }
 
   /**
@@ -118,7 +120,7 @@ export class UserAccountNavbarComponent implements OnInit, OnDestroy {
     });
   }
 
-  async getUserInformation() {
+  async getLDAPUserInformation() {
     this.utilityService.updateIsLoadingSpinnerSource(true);
 
     const accountData = await this.publicFunctions.getCurrentAccount();
@@ -162,7 +164,7 @@ export class UserAccountNavbarComponent implements OnInit, OnDestroy {
   /**
    * This function is responsible for opening a dialog to update User password.
    */
-  openUpdatePasswordModal(){
+  openUpdatePasswordModal() {
     const data = {
       userData: this.userData,
     };

@@ -1,6 +1,8 @@
 import { Component, OnInit, Output, EventEmitter, Injector, Input, ViewChild } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { cleanText } from 'pdf-lib';
+import { ChatService } from 'src/shared/services/chat-service/chat.service';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 
@@ -28,6 +30,7 @@ export class ChatInputComponent implements OnInit {
 
   constructor(
     public utilityService: UtilityService,
+    private chatService: ChatService,
     private Injector: Injector
     ) { }
 
@@ -38,7 +41,8 @@ export class ChatInputComponent implements OnInit {
   async sendMessage() {
     if (this.newMessage) {
       await this.cleanMentions();
-      this.newMessageEmitter.emit({message: this.newMessage, memberMentions: this.memberMentions});
+      const encryptedMessage = this.chatService.encryptData('new-message', this.newMessage);
+      this.newMessageEmitter.emit({message: encryptedMessage, memberMentions: this.memberMentions});
 
       this.newMessage = '';
     }

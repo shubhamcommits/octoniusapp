@@ -1485,7 +1485,7 @@ export class UsersControllers {
         });
     }
 
-    async saveCustomFieldsFromLDAP(req: Request, res: Response, next: NextFunction) {
+    async saveCustomFieldsFrom3rdPartySync(req: Request, res: Response, next: NextFunction) {
 
         // Fetch the groupId
         const { userId } = req.params;

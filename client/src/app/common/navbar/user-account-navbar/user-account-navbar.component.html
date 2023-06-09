@@ -28,10 +28,13 @@
           <span i18n="@@userAccountNavbar.edit">Edit</span>
         </button>
 
-        <button mat-menu-item (click)="getUserInformation()" *ngIf="isCurrentUser && workspaceData?.integrations?.is_ldap_connected && workspaceData?.ldapPropertiesMap">
+        <button mat-menu-item (click)="getLDAPUserInformation()" *ngIf="isCurrentUser && workspaceData?.integrations?.is_ldap_connected && workspaceData?.ldapPropertiesMap">
           <i class="material-icons ml-2">cable</i>
           <span i18n="@@userAccountNavbar.syncLDAP">Sync LDAP</span>
         </button>
+
+        <!-- <app-user-google-sync *ngIf="isCurrentUser && workspaceData?.integrations?.is_google_connected && workspaceData?.googlePropertiesMap"
+          [workspaceData]="workspaceData" [userData]="userData"></app-user-google-sync> -->
 
         <button mat-menu-item *ngIf="isCurrentUser" (click)="openUpdatePasswordModal()">
             <i class="material-icons ml-2">lock</i>

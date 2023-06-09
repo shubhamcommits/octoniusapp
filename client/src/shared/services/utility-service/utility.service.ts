@@ -15,6 +15,7 @@ import { FilesService } from '../files-service/files.service';
 import { LikedByDialogComponent } from 'src/app/common/shared/liked-by-dialog/liked-by-dialog.component';
 import { GroupPostComponent } from 'src/app/common/shared/activity-feed/group-postbox/group-post/group-post.component';
 import { PublicFunctions } from 'modules/public.functions';
+import { VideoCallDialog } from 'modules/chat/components/video-call-dialog/video-call-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -770,7 +771,12 @@ export class UtilityService {
     const isGroupManager = (groupData && groupData._admins) ? (groupData?._admins.findIndex((admin: any) => (admin?._id || admin) == userData?._id) >= 0) : false;
     const isGroupMember = (groupData && groupData._members) ? (groupData?._members.findIndex((member: any) => (member?._id || member) == userData?._id) >= 0) : false;
     const isCreatedBy = (collectionData?._created_by ) ? ((collectionData?._created_by?._id || collectionData?._created_by) == userData?._id) : false;
-    if (isGroupManager || isGroupMember || isCreatedBy) {
+    if (((isGroupManager || isGroupMember) && action != 'edit') || isCreatedBy) {
+      return true;
+    }
+
+    const isCollectionEditor = (collectionData && collectionData._members) ? (collectionData?._members.findIndex((member: any) => (member?._id || member) == userData?._id) >= 0) : false;
+    if (action == 'edit' && (isCreatedBy || isCollectionEditor)) {
       return true;
     }
 
@@ -834,5 +840,20 @@ export class UtilityService {
 
   objectExists(objectData: Object) {
     return (objectData && JSON.stringify(objectData) != JSON.stringify({}) && JSON.stringify(objectData) != JSON.stringify(undefined));
+  }
+
+  openVideoChatDialog(chatData: any, canEdit: any) {
+    const data = {
+      chatData: chatData,
+      canEdit: canEdit
+    };
+
+    return this.dialog.open(VideoCallDialog, {
+      width: '100%',
+      height: '100%',
+      disableClose: true,
+      // panelClass: 'groupCreatePostDialog',
+      data: data
+    });
   }
 }

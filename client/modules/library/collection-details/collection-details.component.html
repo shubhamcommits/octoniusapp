@@ -31,11 +31,8 @@
                     <!-- Create new Collection ends -->
                 </div>
 
-                    <div class="row page" *ngFor="let file of collectionData?._files">
+                <div class="row page" *ngFor="let file of collectionData?._files">
 
-                 
-
-                
                     <div class="page-info">
                     
                         <div class="page-title" style="cursor: pointer" (click)="openDocument(file)">
@@ -45,7 +42,7 @@
                         </div>
                     </div>
                     <div class="options" *ngIf="canEdit">
-                           
+                        
                         <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
 
                         <mat-menu #menu="matMenu">
@@ -59,11 +56,9 @@
                                 <span i18n="@@collectionDetails.delete">Delete</span>
                             </a>
                         </mat-menu>
-                  
-                </div>
-
-                </div>
                 
+                    </div>
+                </div>
             <!-- </div> -->
         </mat-tab>
     </mat-tab-group>
