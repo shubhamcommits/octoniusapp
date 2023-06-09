@@ -57,10 +57,17 @@ const workspaceSchema = new Schema({
         type: Map,
         of: String
     },
-    googlePropertiesMap: {
-        type: Map,
-        of: [String]
-    },
+    googlePropertiesMap: [{
+        google_property: {
+            type: String
+        },
+        google_schema: {
+            type: String
+        },
+        octonius_property: {
+            type: String
+        }
+    }],
     
     profile_custom_fields: {
         type: [{
