@@ -16,7 +16,7 @@
 
     <app-workplace-ldap-sync *ngIf="workspaceData?.integrations?.is_ldap_connected" [workspaceData]="workspaceData"></app-workplace-ldap-sync>
 
-    <app-workplace-google-sync *ngIf="workspaceData?.integrations?.is_google_connected && workspaceData?.integrations?.google_client_id && workspaceData?.integrations?.google_client_secret_key && workspaceData?.integrations?.google_api_key"
-      [workspaceData]="workspaceData" [userData]="userData"></app-workplace-google-sync>
+    <!-- <app-workplace-google-sync *ngIf="workspaceData?.integrations?.is_google_connected && workspaceData?.integrations?.google_client_id && workspaceData?.integrations?.google_client_secret_key && workspaceData?.integrations?.google_api_key"
+      [workspaceData]="workspaceData" [userData]="userData"></app-workplace-google-sync> -->
   </div>
 </div>
