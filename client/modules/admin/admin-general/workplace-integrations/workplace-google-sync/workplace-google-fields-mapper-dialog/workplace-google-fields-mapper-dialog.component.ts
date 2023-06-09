@@ -56,11 +56,12 @@ console.log(this.workplaceData);
 console.log(this.selectedProperties);
   }
 
-  async getOctoniusProperty(googleSchemaName: string, googlePropertyName: string) {
-    const selectedIndex = await this.getSelectedIndex(googlePropertyName, googleSchemaName);
-    return (selectedIndex >= 0 && this.selectedProperties[selectedIndex] && this.selectedProperties[selectedIndex].octonius_property)
-      ? this.selectedProperties[selectedIndex].octonius_property
-      : '';
+  getOctoniusProperty(googleSchemaName: string, googlePropertyName: string) {
+    const selectedIndex = (this.selectedProperties) ? this.selectedProperties.findIndex(p => p.google_property == googlePropertyName && p.google_schema == googleSchemaName) : -1;
+    if (selectedIndex >= 0 && this.selectedProperties[selectedIndex]) {
+      return this.selectedProperties[selectedIndex].octonius_property;
+    }
+    return '';
   }
 
   selectProperty(property: string) {

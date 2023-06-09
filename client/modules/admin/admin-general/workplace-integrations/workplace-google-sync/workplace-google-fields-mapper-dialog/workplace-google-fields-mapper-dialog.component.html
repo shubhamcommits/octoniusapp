@@ -38,7 +38,6 @@
 
             <div class="col-md-4" *ngIf="isGlobal">
               <mat-select ngDefaultControl
-                  [(value)]="selectedProperties[getSelectedIndex(schema.schemaName, field.fieldName)].octonius_property"
                   (selectionChange)="changePropertyValue($event, schema.schemaName, field.fieldName)"
                   appearance="fill">
                 <mat-option *ngFor="let profileCF of profileCustomFields" [value]="profileCF.name">{{ profileCF.title }}</mat-option>
