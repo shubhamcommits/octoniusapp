@@ -50,7 +50,7 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
     if (googlePropertiesMap) {
       Object.keys(googlePropertiesMap).forEach(property => {
         this.propertiesToMap.push(property);
-        this.mapSelectedProperties.set(property, googlePropertiesMap[property][1]);
+        this.mapSelectedProperties.set(property, [googlePropertiesMap[property][0], googlePropertiesMap[property][1]]);
       });
     }
 console.log(this.googleSchemas);
@@ -63,8 +63,8 @@ console.log(this.mapSelectedProperties);
 
   getOctoniusProperty(property) {
     let retProperty = this.mapSelectedProperties.get(property);
-    return retProperty;
-    // return (retProperty && retProperty.length > 1) ? retProperty[1] : ((retProperty) ? retProperty : '');
+    // return retProperty;
+    return (retProperty && retProperty.length > 1) ? retProperty[1] : ((retProperty) ? retProperty : '');
   }
 
   selectProperty(property: string) {
@@ -90,6 +90,7 @@ console.log(this.mapSelectedProperties);
   }
 
   mapProperties() {
+console.log(this.mapSelectedProperties);
     let text = '';
     if (!this.isGlobal) {
       text = $localize`:@@workplaceGoogleFieldsMapperDialog.byDoingGoogleSync:By doing this, user's information will be synchronized with Google!`
