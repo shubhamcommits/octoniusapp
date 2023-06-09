@@ -19,6 +19,7 @@ set +o allexport
         docker build -t $FOLIO_IMAGE_NAME --compress=true --force-rm=true ../services/folio/server
         docker build -t $SEARCH_IMAGE_NAME --compress=true --force-rm=true ../services/search/server
         docker build -t $INTEGRATIONS_IMAGE_NAME --compress=true --force-rm=true ../services/integrations/server
+        docker build -t $MINIO_IMAGE_NAME --compress=true --force-rm=true ../services/minio
         docker build -t $CLIENT_IMAGE_NAME --compress=true --force-rm=true ../client
         docker build -t $NGINX_IMAGE_NAME --compress=true --force-rm=true ../nginx
 
@@ -41,4 +42,5 @@ set +o allexport
         docker push $SEARCH_IMAGE_NAME
         docker push $INTEGRATIONS_IMAGE_NAME
         docker push $CLIENT_IMAGE_NAME
+        docker push $MINIO_IMAGE_NAME
         docker push $NGINX_IMAGE_NAME

@@ -59,6 +59,9 @@ FLAMINGO_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:flamingo-server
 # Libreoffice Image Name
 LIBREOFFICE_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:libreoffice-server
 
+# Libreoffice Image Name
+MINIO_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:minio
+
 # Nginx Image Name
 NGINX_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:nginx
 
@@ -81,5 +84,6 @@ MONGO_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:mongodb
           docker pull $INTEGRATIONS_IMAGE_NAME
           docker pull $FLAMINGO_IMAGE_NAME
           docker pull $LIBREOFFICE_IMAGE_NAME
+          docker pull $MINIO_IMAGE_NAME
           docker pull $CLIENT_IMAGE_NAME
           docker pull $NGINX_IMAGE_NAME
