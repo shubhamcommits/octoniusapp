@@ -53,8 +53,11 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
         this.mapSelectedProperties.set(property, googlePropertiesMap[property][1]);
       });
     }
-console.log(this.userGoogleData);
 console.log(this.googleSchemas);
+console.log(this.userGoogleData);
+console.log(this.userData);
+console.log(this.workplaceData);
+console.log(googlePropertiesMap);
 console.log(this.mapSelectedProperties);
   }
 
