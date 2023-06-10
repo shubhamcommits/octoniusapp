@@ -27,7 +27,7 @@
 
           <div class="form-group row" *ngFor="let field of schema.fields">
             <div class="col-md-1">
-              <input [checked]="propertiesToMap.indexOf(field.fieldName)>=0" class="" type="checkbox" (click)="selectProperty(field.fieldName)">
+              <input [checked]="propertiesToMap.indexOf(field.fieldName)>=0" class="" type="checkbox" (click)="selectProperty(schema.displayName, field.fieldName)">
             </div>
 
             <div class="col-md-4">
