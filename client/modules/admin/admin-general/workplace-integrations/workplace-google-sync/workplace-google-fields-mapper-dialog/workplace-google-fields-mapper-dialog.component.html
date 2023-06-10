@@ -20,11 +20,44 @@
     <div class="integration">
       <div *ngIf="googleSchemas" class="integration-properties">
         <div class="form-group" *ngFor="let schema of googleSchemas">
-
           <div class="row">
             <h3>{{ schema.displayName }}</h3>
           </div>
 
+          <table>
+            <tr>
+              <th></th>
+              <th><h4>Google Field</h4></th>
+              <th></th>
+              <th><h4>Octonius Property</h4></th>
+              <th><h4>Google Value</h4></th>
+              <th *ngIf="!isGlobal"></th>
+              <th *ngIf="!isGlobal"><h4>Octonius Value</h4></th>
+            </tr>
+            <tr *ngFor="let field of schema.fields">
+              <td><input [checked]="propertiesToMap.indexOf(field.fieldName)>=0" class="" type="checkbox" (click)="selectProperty(schema.displayName, field.fieldName)"></td>
+              <td><span>{{ field.displayName }}</span></td>
+              <td><span class="material-icons-outlined">sync_alt</span></td>
+              <td><span class="muted">{{ getOctoniusProperty(schema.schemaName, field.fieldName) }}</span></td>
+
+              <td *ngIf="isGlobal">
+                <mat-select ngDefaultControl
+                    (selectionChange)="changePropertyValue($event, schema.schemaName, field.fieldName)"
+                    appearance="fill">
+                  <mat-option *ngFor="let profileCF of profileCustomFields" [value]="profileCF.name">{{ profileCF.title }}</mat-option>
+                </mat-select>
+              </td>
+
+              <td *ngIf="!isGlobal && userGoogleData && userGoogleData['customSchemas'] && userGoogleData['customSchemas'][schema.displayName]">
+                <span>{{ userGoogleData['customSchemas'][schema.displayName][field.fieldName] | truncatetext: 30 }}</span>
+              </td>
+
+              <td *ngIf="!isGlobal"><span class="material-icons-outlined">sync_alt</span></td>
+              <td *ngIf="!isGlobal"><span class="muted" *ngIf="this.userData.profile_custom_fields">{{ this.userData.profile_custom_fields[getOctoniusProperty(schema.schemaName, field.fieldName)] }}</span></td>
+            </tr>
+          </table>
+
+          <!--
           <div class="form-group row" *ngFor="let field of schema.fields">
             <div class="col-md-1">
               <input [checked]="propertiesToMap.indexOf(field.fieldName)>=0" class="" type="checkbox" (click)="selectProperty(schema.displayName, field.fieldName)">
@@ -46,8 +79,11 @@
 
             <div class="col-md-4" *ngIf="!isGlobal && userGoogleData && userGoogleData['customSchemas'] && userGoogleData['customSchemas'][schema.displayName]">
               <span>{{ userGoogleData['customSchemas'][schema.displayName][field.fieldName] | truncatetext: 30 }}</span>
+              &nbsp; <span class="material-icons-outlined">sync_alt</span> &nbsp;
+              <span class="muted" *ngIf="this.userData.profile_custom_fields">{{ this.userData.profile_custom_fields[getOctoniusProperty(schema.schemaName, field.fieldName)] }}</span>
             </div>
           </div>
+          -->
         </div>
       </div>
     </div>
