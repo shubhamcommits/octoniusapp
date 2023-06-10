@@ -1,11 +1,11 @@
 import { Response, Request, NextFunction } from "express";
-import { User, Workspace } from '../models'
+import { Workspace } from '../models'
 import { sendError } from '../../utils';
-import { Readable } from 'stream';
-import { JWT } from "google-auth-library";
+// import { Readable } from 'stream';
+// import { JWT } from "google-auth-library";
 
-const { google } = require('googleapis');
-const { GoogleAuth, grpc } = require('google-gax');
+// const { google } = require('googleapis');
+// const { GoogleAuth, grpc } = require('google-gax');
 
 /*  ===============================
  *  -- LDAP CONTROLLERS --
@@ -90,7 +90,6 @@ export class GoogleController {
         const { workspaceId } = req.params;
 
         const mapSelectedProperties = req.body['mapSelectedProperties'];
-console.log({ mapSelectedProperties });
         try {
             const workspace = await Workspace.findByIdAndUpdate(workspaceId, {
                     $set: {
@@ -104,7 +103,6 @@ console.log({ mapSelectedProperties });
                     select: 'first_name last_name profile_pic role email active'
                 })
                 .lean();
-console.log({ workspace });
 // console.log({ mapSelectedProperties });
 //             if (mapSelectedProperties) {
 //                 const user = await User.findById(req['userId']).select('email').lean();

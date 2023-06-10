@@ -49,11 +49,6 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
     if (this.workplaceData?.googlePropertiesMap) {
       this.selectedProperties = this.workplaceData?.googlePropertiesMap;
     }
-console.log(this.googleSchemas);
-console.log(this.userGoogleData);
-console.log(this.userData);
-console.log(this.workplaceData);
-console.log(this.selectedProperties);
   }
 
   getOctoniusProperty(googleSchemaName: string, googlePropertyName: string) {
@@ -102,7 +97,6 @@ console.log(this.selectedProperties);
   }
 
   async mapProperties() {
-console.log(this.propertiesToMap);
     let text = '';
     if (!this.isGlobal) {
       text = $localize`:@@workplaceGoogleFieldsMapperDialog.byDoingGoogleSync:By doing this, user's information will be synchronized with Google!`
@@ -118,10 +112,6 @@ console.log(this.propertiesToMap);
         }
 
         if (this.isNotEmptyProperty(property.google_property) && this.isNotEmptyProperty(this.userGoogleData['customSchemas'][property.google_schema][property.google_property]) && this.isNotEmptyProperty(await this.getOctoniusProperty(property.google_schema, property.google_property))) {
-console.log(this.userData.profile_custom_fields[await this.getOctoniusProperty(property.google_schema, property.google_property)]);
-console.log(property.google_schema);
-console.log(property.google_property);
-console.log(this.userGoogleData['customSchemas'][property.google_schema][property.google_property]);
           this.userData.profile_custom_fields[await this.getOctoniusProperty(property.google_schema, property.google_property)] = this.userGoogleData['customSchemas'][property.google_schema][property.google_property];
         }
       }
