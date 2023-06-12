@@ -41,9 +41,11 @@
             <br/>
             <label for="google_secret_key" i18n="@@workspaceIntegrationsDialog.secretKey">Secret Key:</label>
             <input type="text" class="form-control" name="google_secret_key" [(ngModel)]="workspaceData.integrations.google_client_secret_key" placeholder="Please provide the Google Secret Key">
+            <!--
             <br/>
             <label for="google_api_key" i18n="@@workspaceIntegrationsDialog.apiKey">API Key:</label>
             <input type="text" class="form-control" name="google_api_key" [(ngModel)]="workspaceData.integrations.google_api_key" placeholder="Please provide the Google API Key">
+             -->
           </div>
         </div>
       </div>
@@ -164,28 +166,28 @@
     </div>
     <!-- BOX INTEGRATION ENDS -->
 
-    <!-- Atlassia INTEGRATION STARTS -->
+    <!-- Atlassian INTEGRATION STARTS -->
     <div class="integration">
       <div class="mt-2 mb-2 pt-3">
         <mat-slide-toggle color="primary" [checked]="workspaceData?.integrations?.is_atlassia_connected"
           [name]="'enabled_azure'" [(ngModel)]="workspaceData.integrations.is_atlassia_connected">
           <h6>
-            <b i18n="@@workspaceIntegrationsDialog.enableAtlassiaIntegrations">Enable Atlassia Integrations</b>
+            <b i18n="@@workspaceIntegrationsDialog.enableAtlassiaIntegrations">Enable Atlassian Integrations</b>
           </h6>
         </mat-slide-toggle>
     
         <br />
         <p class="card-text" i18n="@@workspaceIntegrationsDialog.enableAtlassiaIntegrationsDescription">This will allow the
-          users to synchronize the information in Atlassia account.</p>
+          users to synchronize the information in Atlassian account.</p>
         <br />
     
         <div class="integration-properties" *ngIf="workspaceData?.integrations?.is_atlassia_connected">
           <div class="form-group">
             <label for="atlassia_url"
-              i18n="@@workspaceIntegrationsDialog.atlassiaUrl">Atlassia Domain URL:</label>
+              i18n="@@workspaceIntegrationsDialog.atlassiaUrl">Atlassian Domain URL:</label>
             <input type="text" class="form-control" name="atlassia_url"
               [(ngModel)]="workspaceData.integrations.atlassia_url"
-              placeholder="Please provide the Atlassia Domain URL">
+              placeholder="Please provide the Atlassian Domain URL">
             <br />
             <label for="atlassia_token" i18n="@@workspaceIntegrationsDialog.atlassiaToken">Token:</label>
             <input type="text" class="form-control" name="atlassia_token"
@@ -194,7 +196,7 @@
         </div>
       </div>
     </div>
-    <!-- Atlassia INTEGRATION ENDS -->
+    <!-- Atlassian INTEGRATION ENDS -->
   </div>
 
   <div style="margin-top: 20px; text-align: center;">

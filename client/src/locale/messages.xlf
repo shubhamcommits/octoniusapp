@@ -329,6 +329,177 @@
           <context context-type="linenumber">93</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="workplaceGoogleFieldsMapperDialog.mapFields" datatype="html">
+        <source>Map Fields</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceGoogleFieldsMapperDialog.mapFieldsDescription" datatype="html">
+        <source> Map Google fields with Octonius users&apos; properties. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
+          <context context-type="linenumber">14,16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceGoogleFieldsMapperDialog.googleField" datatype="html">
+        <source>Google Field</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceGoogleFieldsMapperDialog.octoniusProperty" datatype="html">
+        <source>Octonius Property</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceGoogleFieldsMapperDialog.newOctoniusProperty" datatype="html">
+        <source>New Octonius Property</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceGoogleFieldsMapperDialog.googleValue" datatype="html">
+        <source>Google Value</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceGoogleFieldsMapperDialog.octoniusValue" datatype="html">
+        <source>Octonius Value</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceLdapFieldsMapperDialog.map" datatype="html">
+        <source> Map </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
+          <context context-type="linenumber">69,71</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.html</context>
+          <context context-type="linenumber">81,83</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceGoogleFieldsMapperDialog.saveMapping" datatype="html">
+        <source> Save Mapping </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
+          <context context-type="linenumber">75,77</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceGoogleFieldsMapperDialog.byDoingGoogleSync" datatype="html">
+        <source>By doing this, user&apos;s information will be synchronized with Google!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
+          <context context-type="linenumber">102</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceGoogleFieldsMapperDialog.byDoingGoogleFields" datatype="html">
+        <source>By doing this, you will select the fields to map with Google!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
+          <context context-type="linenumber">104</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceLdapFieldsMapperDialog.pleaseWaitSavingProperties" datatype="html">
+        <source>Please wait we are saving the properties...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
+          <context context-type="linenumber">119</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.ts</context>
+          <context context-type="linenumber">128</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceLdapFieldsMapperDialog.userSaved" datatype="html">
+        <source>User Saved!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
+          <context context-type="linenumber">125</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.ts</context>
+          <context context-type="linenumber">134</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceLdapFieldsMapperDialog.unableToSave" datatype="html">
+        <source>Unable to save the settings, please try again!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
+          <context context-type="linenumber">129</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.ts</context>
+          <context context-type="linenumber">138</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.ts</context>
+          <context context-type="linenumber">152</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceGoogleFieldsMapperDialog.areYouSure" datatype="html">
+        <source>Are you sure?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
+          <context context-type="linenumber">134</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceGoogleFieldsMapperDialog.pleaseWaitMappingProperties" datatype="html">
+        <source>Please wait we are mapping the new properties...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
+          <context context-type="linenumber">139</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceGoogleFieldsMapperDialog.propertiesSaved" datatype="html">
+        <source>Properties to Map Saved!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
+          <context context-type="linenumber">145</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceGoogleFieldsMapperDialog.unableToSave" datatype="html">
+        <source>Unable to save the settings, please try again!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
+          <context context-type="linenumber">149</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workspaceGoogleSync.fetchGoogleInfo" datatype="html">
+        <source>Fetch Information from Google Workspace</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-sync.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workspaceGoogleSync.syncGoogle" datatype="html">
+        <source>Sync Google</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-sync.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceGoogleSyncComponent.noSchemas" datatype="html">
+        <source>There are no Schemas in your Google profile to synchronize with Octonius properties.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-sync.component.ts</context>
+          <context context-type="linenumber">63</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-google-sync/user-google-sync.component.ts</context>
+          <context context-type="linenumber">60</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="workspaceIntegrationsDialog.workplaceIntegrations" datatype="html">
         <source>Workplace Integrations</source>
         <context-group purpose="location">
@@ -365,11 +536,11 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component.html</context>
-          <context context-type="linenumber">126</context>
+          <context context-type="linenumber">131</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component.html</context>
-          <context context-type="linenumber">153</context>
+          <context context-type="linenumber">158</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceIntegrationsDialog.secretKey" datatype="html">
@@ -380,144 +551,144 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component.html</context>
-          <context context-type="linenumber">129</context>
+          <context context-type="linenumber">134</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component.html</context>
-          <context context-type="linenumber">156</context>
+          <context context-type="linenumber">161</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceIntegrationsDialog.enableLDAPIntegrations" datatype="html">
         <source>Enable LDAP Integrations</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component.html</context>
-          <context context-type="linenumber">57</context>
+          <context context-type="linenumber">62</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceIntegrationsDialog.enableLDAPIntegrationsDescription" datatype="html">
         <source>This will allow the users to sign in with the LDAP company account.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component.html</context>
-          <context context-type="linenumber">61</context>
+          <context context-type="linenumber">66</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceIntegrationsDialog.ldapUrl" datatype="html">
         <source>URL:</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component.html</context>
-          <context context-type="linenumber">66</context>
+          <context context-type="linenumber">71</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceIntegrationsDialog.ldapDn" datatype="html">
         <source>Distinguished Name:</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component.html</context>
-          <context context-type="linenumber">69</context>
+          <context context-type="linenumber">74</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceIntegrationsDialog.ldapPassword" datatype="html">
         <source>Password:</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component.html</context>
-          <context context-type="linenumber">72</context>
+          <context context-type="linenumber">77</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceIntegrationsDialog.ldapSearchBase" datatype="html">
         <source>Search Base:</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component.html</context>
-          <context context-type="linenumber">75</context>
+          <context context-type="linenumber">80</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceIntegrationsDialog.enableAzureIntegrations" datatype="html">
         <source>Enable Azure Active Directory Integrations</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component.html</context>
-          <context context-type="linenumber">90</context>
+          <context context-type="linenumber">95</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceIntegrationsDialog.enableAzureIntegrationsDescription" datatype="html">
         <source>This will allow the users to sign in with the Azure Active Directory company account.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component.html</context>
-          <context context-type="linenumber">94</context>
+          <context context-type="linenumber">99</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceIntegrationsDialog.azureADAClientId" datatype="html">
         <source>Client ID:</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component.html</context>
-          <context context-type="linenumber">99</context>
+          <context context-type="linenumber">104</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceIntegrationsDialog.azureADAuthorityCloudUrl" datatype="html">
         <source>Authority Cloud Tenant URL:</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component.html</context>
-          <context context-type="linenumber">102</context>
+          <context context-type="linenumber">107</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceIntegrationsDialog.enableSlackIntegrations" datatype="html">
         <source>Enable Slack Integrations</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component.html</context>
-          <context context-type="linenumber">117</context>
+          <context context-type="linenumber">122</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceIntegrationsDialog.enableSlackIntegrationsDescription" datatype="html">
         <source>This will allow the users to receive notifications in Slack and create task from slack.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component.html</context>
-          <context context-type="linenumber">121</context>
+          <context context-type="linenumber">126</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceIntegrationsDialog.enableBoxIntegrations" datatype="html">
         <source>Enable Box Integrations</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component.html</context>
-          <context context-type="linenumber">144</context>
+          <context context-type="linenumber">149</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceIntegrationsDialog.enableBoxIntegrationsDescription" datatype="html">
         <source>This will allow the users to synchronize with their box drive.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component.html</context>
-          <context context-type="linenumber">148</context>
+          <context context-type="linenumber">153</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceIntegrationsDialog.enableAtlassiaIntegrations" datatype="html">
-        <source>Enable Atlassia Integrations</source>
+        <source>Enable Atlassian Integrations</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component.html</context>
-          <context context-type="linenumber">170</context>
+          <context context-type="linenumber">175</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceIntegrationsDialog.enableAtlassiaIntegrationsDescription" datatype="html">
-        <source>This will allow the users to synchronize the information in Atlassia account.</source>
+        <source>This will allow the users to synchronize the information in Atlassian account.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component.html</context>
-          <context context-type="linenumber">175,176</context>
+          <context context-type="linenumber">180,181</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceIntegrationsDialog.atlassiaUrl" datatype="html">
-        <source>Atlassia Domain URL:</source>
+        <source>Atlassian Domain URL:</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component.html</context>
-          <context context-type="linenumber">182</context>
+          <context context-type="linenumber">187</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceIntegrationsDialog.atlassiaToken" datatype="html">
         <source>Token:</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component.html</context>
-          <context context-type="linenumber">187</context>
+          <context context-type="linenumber">192</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceIntegrationsDialog.save" datatype="html">
         <source> Save </source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component.html</context>
-          <context context-type="linenumber">198,200</context>
+          <context context-type="linenumber">203,205</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceIntegrationsDialog.pleaseWaitsavingSettings" datatype="html">
@@ -562,106 +733,109 @@
           <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workspaceAddDomain.fetchInfo" datatype="html">
-        <source>Fetch Information from LDAP </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations.component.html</context>
-          <context context-type="linenumber">19</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="workspaceAddDomain.syncLDAP" datatype="html">
-        <source>Sync LDAP</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations.component.html</context>
-          <context context-type="linenumber">23</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="workplaceLdapFieldsMapperDialog.mapFields" datatype="html">
         <source>Map Fields</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.html</context>
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.html</context>
           <context context-type="linenumber">10</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceLdapFieldsMapperDialog.mapFieldsDescription" datatype="html">
         <source> Map LDAP fields with Octonius users&apos; properties. </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.html</context>
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.html</context>
           <context context-type="linenumber">14,16</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workplaceLdapFieldsMapperDialog.map" datatype="html">
-        <source> Map </source>
+      <trans-unit id="workplaceLdapFieldsMapperDialog.googleField" datatype="html">
+        <source>LDAP Field</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.html</context>
-          <context context-type="linenumber">54,56</context>
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceLdapFieldsMapperDialog.octoniusProperty" datatype="html">
+        <source>Octonius Property</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceLdapFieldsMapperDialog.newOctoniusProperty" datatype="html">
+        <source>New Octonius Property</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceLdapFieldsMapperDialog.googleValue" datatype="html">
+        <source>LDAP Value</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.html</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceLdapFieldsMapperDialog.octoniusValue" datatype="html">
+        <source>Octonius Value</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.html</context>
+          <context context-type="linenumber">42</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceLdapFieldsMapperDialog.saveMapping" datatype="html">
         <source> Save Mapping </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.html</context>
-          <context context-type="linenumber">57,59</context>
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.html</context>
+          <context context-type="linenumber">84,86</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceLdapFieldsMapperDialog.byDoingLDAPSync" datatype="html">
         <source>By doing this, user&apos;s information will be synchronized with LDAP!</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.ts</context>
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.ts</context>
           <context context-type="linenumber">107</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceLdapFieldsMapperDialog.byDoingLDAPFields" datatype="html">
         <source>By doing this, you will select the fields to map with LDAP!</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.ts</context>
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.ts</context>
           <context context-type="linenumber">109</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceLdapFieldsMapperDialog.areYouSure" datatype="html">
         <source>Are you sure?</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.ts</context>
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.ts</context>
           <context context-type="linenumber">111</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="workplaceLdapFieldsMapperDialog.pleaseWaitSavingProperties" datatype="html">
-        <source>Please wait we are saving the properties...</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.ts</context>
-          <context context-type="linenumber">128</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="workplaceLdapFieldsMapperDialog.userSaved" datatype="html">
-        <source>User Saved!</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.ts</context>
-          <context context-type="linenumber">134</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="workplaceLdapFieldsMapperDialog.unableToSave" datatype="html">
-        <source>Unable to save the settings, please try again!</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.ts</context>
-          <context context-type="linenumber">138</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.ts</context>
-          <context context-type="linenumber">152</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceLdapFieldsMapperDialog.pleaseWaitMappingProperties" datatype="html">
         <source>Please wait we are mapping the new properties...</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.ts</context>
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.ts</context>
           <context context-type="linenumber">142</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceLdapFieldsMapperDialog.propertiesSaved" datatype="html">
         <source>Properties to Map Saved!</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.ts</context>
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.ts</context>
           <context context-type="linenumber">148</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workspaceAddDomain.fetchLDAPInfo" datatype="html">
+        <source>Fetch Information from LDAP </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-sync.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workspaceAddDomain.syncLDAP" datatype="html">
+        <source>Sync LDAP</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-sync.component.html</context>
+          <context context-type="linenumber">7,8</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceInviteUser.inviteUser" datatype="html">
@@ -1876,7 +2050,7 @@
         <source>Delete</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/chat/chats-home/direct-chats-home/direct-chats-home.component.html</context>
-          <context context-type="linenumber">41</context>
+          <context context-type="linenumber">48</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupChatsHome.groupChats" datatype="html">
@@ -1905,6 +2079,20 @@
         <context-group purpose="location">
           <context context-type="sourcefile">modules/chat/components/chat-notification-icon/chat-notification-icon.component.ts</context>
           <context context-type="linenumber">72</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="videoCallDialog.videoCall" datatype="html">
+        <source>Video Call</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/chat/components/video-call-dialog/video-call-dialog.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="videoCallDialog.copiedToClipboard" datatype="html">
+        <source>Copied to Clipboard!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/chat/components/video-call-dialog/video-call-dialog.component.ts</context>
+          <context context-type="linenumber">238</context>
         </context-group>
       </trans-unit>
       <trans-unit id="filesBar.sort" datatype="html">
@@ -2447,7 +2635,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/page-details/page-details.component.ts</context>
-          <context context-type="linenumber">374</context>
+          <context context-type="linenumber">376</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.ts</context>
@@ -7169,14 +7357,14 @@
         <source>Download</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-details.component.html</context>
-          <context context-type="linenumber">50</context>
+          <context context-type="linenumber">51</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionDetails.delete" datatype="html">
         <source>Delete</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-details.component.html</context>
-          <context context-type="linenumber">55</context>
+          <context context-type="linenumber">56</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionDetails.general" datatype="html">
@@ -7222,7 +7410,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/page-details/page-details.component.ts</context>
-          <context context-type="linenumber">295</context>
+          <context context-type="linenumber">297</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageDetails.fileUploaded" datatype="html">
@@ -7233,7 +7421,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/page-details/page-details.component.ts</context>
-          <context context-type="linenumber">303</context>
+          <context context-type="linenumber">305</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageDetails.unexpectedErrorUploading" datatype="html">
@@ -7244,7 +7432,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/page-details/page-details.component.ts</context>
-          <context context-type="linenumber">307</context>
+          <context context-type="linenumber">309</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionDeatils.pleaseWaitDeleting" datatype="html">
@@ -7293,42 +7481,42 @@
         <source>Share Collection</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.html</context>
-          <context context-type="linenumber">55</context>
+          <context context-type="linenumber">71</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.save" datatype="html">
         <source> Save </source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.html</context>
-          <context context-type="linenumber">59,61</context>
+          <context context-type="linenumber">75,77</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.cancel" datatype="html">
         <source> Cancel </source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.html</context>
-          <context context-type="linenumber">64,66</context>
+          <context context-type="linenumber">80,82</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.share" datatype="html">
         <source>Share</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.html</context>
-          <context context-type="linenumber">73</context>
+          <context context-type="linenumber">89</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.edit" datatype="html">
         <source>Edit</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.html</context>
-          <context context-type="linenumber">80</context>
+          <context context-type="linenumber">96</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.delete" datatype="html">
         <source>Delete</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.html</context>
-          <context context-type="linenumber">87</context>
+          <context context-type="linenumber">103</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.plesaeWaitWeAreUpdaing" datatype="html">
@@ -7345,6 +7533,14 @@
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
           <context context-type="linenumber">165</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
+          <context context-type="linenumber">234</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
+          <context context-type="linenumber">248</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.detailsUpdated" datatype="html">
         <source>Details updated!</source>
@@ -7360,6 +7556,14 @@
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
           <context context-type="linenumber">171</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
+          <context context-type="linenumber">239</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
+          <context context-type="linenumber">253</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.unableToUpdateDetails" datatype="html">
         <source>Unable to update the details, please try again!</source>
@@ -7374,6 +7578,14 @@
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
           <context context-type="linenumber">174</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
+          <context context-type="linenumber">242</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
+          <context context-type="linenumber">256</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.pleaseWaitDeleting" datatype="html">
@@ -7705,11 +7917,11 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/page-details/page-details.component.ts</context>
-          <context context-type="linenumber">211</context>
+          <context context-type="linenumber">213</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/page-details/page-details.component.ts</context>
-          <context context-type="linenumber">330</context>
+          <context context-type="linenumber">332</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageDetails.byDoingThisPageWillBeDeleted" datatype="html">
@@ -7720,7 +7932,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/page-details/page-details.component.ts</context>
-          <context context-type="linenumber">211</context>
+          <context context-type="linenumber">213</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageDetails.pleaseWaitWeRemovingPage" datatype="html">
@@ -7731,7 +7943,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/page-details/page-details.component.ts</context>
-          <context context-type="linenumber">216</context>
+          <context context-type="linenumber">218</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageDetails.pageRemoved" datatype="html">
@@ -7742,7 +7954,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/page-details/page-details.component.ts</context>
-          <context context-type="linenumber">220</context>
+          <context context-type="linenumber">222</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageDetails.unableToRemovePage" datatype="html">
@@ -7753,7 +7965,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/page-details/page-details.component.ts</context>
-          <context context-type="linenumber">223</context>
+          <context context-type="linenumber">225</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageDetails.collectionPages" datatype="html">
@@ -7831,70 +8043,70 @@
         <source>Please wait we are updating the contents...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/page-details/page-details.component.ts</context>
-          <context context-type="linenumber">171</context>
+          <context context-type="linenumber">173</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageDetails.pageCreated" datatype="html">
         <source>Page created!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/page-details/page-details.component.ts</context>
-          <context context-type="linenumber">179</context>
+          <context context-type="linenumber">181</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageDetails.unableToCreate" datatype="html">
         <source>Unable to create the page, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/page-details/page-details.component.ts</context>
-          <context context-type="linenumber">182</context>
+          <context context-type="linenumber">184</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageDetails.pleaseWaitWeUpdatePage" datatype="html">
         <source>Please wait we are updating the page...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/page-details/page-details.component.ts</context>
-          <context context-type="linenumber">189</context>
+          <context context-type="linenumber">191</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageDetails.pageUpdated" datatype="html">
         <source>Page updated</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/page-details/page-details.component.ts</context>
-          <context context-type="linenumber">198</context>
+          <context context-type="linenumber">200</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageDetails.unableToUpdate" datatype="html">
         <source>Unable to update the page, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/page-details/page-details.component.ts</context>
-          <context context-type="linenumber">201</context>
+          <context context-type="linenumber">203</context>
         </context-group>
       </trans-unit>
       <trans-unit id="storyDetails.byDoingThisFileWillBeDeleted" datatype="html">
         <source>By doing this the file will be removed!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/page-details/page-details.component.ts</context>
-          <context context-type="linenumber">330</context>
+          <context context-type="linenumber">332</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageDetails.pleaseWaitWeRemovingFile" datatype="html">
         <source>Please wait we are removing your file...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/page-details/page-details.component.ts</context>
-          <context context-type="linenumber">335</context>
+          <context context-type="linenumber">337</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageDetails.fileRemoved" datatype="html">
         <source>File Removed!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/page-details/page-details.component.ts</context>
-          <context context-type="linenumber">339</context>
+          <context context-type="linenumber">341</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageDetails.unableToRemoveFile" datatype="html">
         <source>Unable to remove the file at the moment, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/page-details/page-details.component.ts</context>
-          <context context-type="linenumber">342</context>
+          <context context-type="linenumber">344</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageNavbar.plesaeWaitWeAreUpdaing" datatype="html">
@@ -9191,11 +9403,11 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-hive/user-hive.component.ts</context>
-          <context context-type="linenumber">144</context>
+          <context context-type="linenumber">143</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-profile/user-profile.component.ts</context>
-          <context context-type="linenumber">194</context>
+          <context context-type="linenumber">153</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editEntityDialog.entityUpdated" datatype="html">
@@ -9222,11 +9434,11 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-hive/user-hive.component.ts</context>
-          <context context-type="linenumber">150</context>
+          <context context-type="linenumber">149</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-profile/user-profile.component.ts</context>
-          <context context-type="linenumber">200</context>
+          <context context-type="linenumber">159</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editEntityDialog.unableToUpdateEntity" datatype="html">
@@ -9253,11 +9465,11 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-hive/user-hive.component.ts</context>
-          <context context-type="linenumber">153</context>
+          <context context-type="linenumber">152</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-profile/user-profile.component.ts</context>
-          <context context-type="linenumber">203</context>
+          <context context-type="linenumber">162</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editentitydialog.areYouSure" datatype="html">
@@ -10665,21 +10877,21 @@
         <source>Please wait we are updating the contents...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-hive/user-hive.component.ts</context>
-          <context context-type="linenumber">174</context>
+          <context context-type="linenumber">173</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userHive.cfUpdated" datatype="html">
         <source>Field updated!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-hive/user-hive.component.ts</context>
-          <context context-type="linenumber">186</context>
+          <context context-type="linenumber">185</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userHive.unableToUpdateCF" datatype="html">
         <source>Unable to update field, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-hive/user-hive.component.ts</context>
-          <context context-type="linenumber">189</context>
+          <context context-type="linenumber">188</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userInformation.yourContactInformation" datatype="html">
@@ -10753,7 +10965,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.ts</context>
-          <context context-type="linenumber">189</context>
+          <context context-type="linenumber">191</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userInformation.thisActionWillDeleteAccount" datatype="html">
@@ -10764,7 +10976,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.ts</context>
-          <context context-type="linenumber">190</context>
+          <context context-type="linenumber">192</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userInformation.pleaseWaitWeDeleteUser" datatype="html">
@@ -10775,7 +10987,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.ts</context>
-          <context context-type="linenumber">194</context>
+          <context context-type="linenumber">196</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userInformation.successfullyLoggedOut" datatype="html">
@@ -10786,7 +10998,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.ts</context>
-          <context context-type="linenumber">207</context>
+          <context context-type="linenumber">209</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userInformation.errorOccurredWhileLogginOut" datatype="html">
@@ -10797,7 +11009,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.ts</context>
-          <context context-type="linenumber">210</context>
+          <context context-type="linenumber">212</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userInformation.userDeleted" datatype="html">
@@ -10808,7 +11020,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.ts</context>
-          <context context-type="linenumber">214</context>
+          <context context-type="linenumber">216</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userInformation.unableToRemoveUser" datatype="html">
@@ -10819,7 +11031,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.ts</context>
-          <context context-type="linenumber">216</context>
+          <context context-type="linenumber">218</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userPasswordUpdate.passwordUpdate" datatype="html">
@@ -10886,7 +11098,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-profile/user-profile.component.ts</context>
-          <context context-type="linenumber">166</context>
+          <context context-type="linenumber">125</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userProfileCF.cfUpdated" datatype="html">
@@ -10897,7 +11109,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-profile/user-profile.component.ts</context>
-          <context context-type="linenumber">181</context>
+          <context context-type="linenumber">140</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userProfileCF.unableToUpdateCF" datatype="html">
@@ -10908,7 +11120,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-profile/user-profile.component.ts</context>
-          <context context-type="linenumber">184</context>
+          <context context-type="linenumber">143</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userProfileCF.errorOccurredWhileModifyingMembers" datatype="html">
@@ -10919,7 +11131,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-profile/user-profile.component.ts</context>
-          <context context-type="linenumber">229</context>
+          <context context-type="linenumber">188</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userProfile.personalInformation" datatype="html">
@@ -10997,17 +11209,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-profile/user-profile.component.html</context>
           <context context-type="linenumber">81</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="userProfile.userNoExists" datatype="html">
-        <source>Your user doesn&apos;t exists in LDAP!</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/user/user-profile/user-profile.component.ts</context>
-          <context context-type="linenumber">122</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.ts</context>
-          <context context-type="linenumber">129</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userSkills.yourSkills" datatype="html">
@@ -11827,42 +12028,56 @@
         <source>Change Password</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.html</context>
-          <context context-type="linenumber">38</context>
+          <context context-type="linenumber">41</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userAccountNavbar.deleteAccount" datatype="html">
         <source>Delete Account</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.html</context>
-          <context context-type="linenumber">43</context>
+          <context context-type="linenumber">46</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userAccountNavbar.profile" datatype="html">
         <source>Profile</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.html</context>
-          <context context-type="linenumber">56</context>
+          <context context-type="linenumber">59</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userAccountNavbar.hiveHR" datatype="html">
         <source>Hive HR</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.html</context>
-          <context context-type="linenumber">67</context>
+          <context context-type="linenumber">70</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userAccountNavbar.integrations" datatype="html">
         <source>Integrations</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.html</context>
-          <context context-type="linenumber">78</context>
+          <context context-type="linenumber">81</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userAccountNavbar.timeOff" datatype="html">
         <source>Time off</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.html</context>
-          <context context-type="linenumber">89</context>
+          <context context-type="linenumber">92</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userProfile.userNoExists" datatype="html">
+        <source>Your user doesn&apos;t exists in LDAP!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.ts</context>
+          <context context-type="linenumber">131</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userAccountNavbar.syncGoogle" datatype="html">
+        <source>Sync Google</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-google-sync/user-google-sync.component.html</context>
+          <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workNavbar.work" datatype="html">
@@ -15512,67 +15727,74 @@
         <source> Unassigned </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/multiple-assignments/multiple-assignments.component.html</context>
-          <context context-type="linenumber">26,28</context>
+          <context context-type="linenumber">32,34</context>
         </context-group>
       </trans-unit>
       <trans-unit id="multipleAssignments.addAssignee" datatype="html">
         <source>add assignee</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/multiple-assignments/multiple-assignments.component.html</context>
-          <context context-type="linenumber">32</context>
+          <context context-type="linenumber">38</context>
         </context-group>
       </trans-unit>
       <trans-unit id="multipleAssignments.addUser" datatype="html">
         <source>add user</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/multiple-assignments/multiple-assignments.component.html</context>
-          <context context-type="linenumber">33</context>
+          <context context-type="linenumber">39</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="multipleAssignments.addEditor" datatype="html">
+        <source>add editor</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/multiple-assignments/multiple-assignments.component.html</context>
+          <context context-type="linenumber">40</context>
         </context-group>
       </trans-unit>
       <trans-unit id="multipleAssignments.assignee" datatype="html">
         <source>Assignee</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/multiple-assignments/multiple-assignments.component.html</context>
-          <context context-type="linenumber">42</context>
+          <context context-type="linenumber">49</context>
         </context-group>
       </trans-unit>
       <trans-unit id="multipleAssignments.pleaseWaitWeAreUpdatingContents" datatype="html">
         <source>Please wait we are updating the contents...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/multiple-assignments/multiple-assignments.component.ts</context>
-          <context context-type="linenumber">110</context>
+          <context context-type="linenumber">119</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/multiple-assignments/multiple-assignments.component.ts</context>
-          <context context-type="linenumber">155</context>
+          <context context-type="linenumber">164</context>
         </context-group>
       </trans-unit>
       <trans-unit id="multipleAssignments.assigneeRemoved" datatype="html">
         <source>Assignee removed!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/multiple-assignments/multiple-assignments.component.ts</context>
-          <context context-type="linenumber">119</context>
+          <context context-type="linenumber">128</context>
         </context-group>
       </trans-unit>
       <trans-unit id="multipleAssignments.unableToUpdateDetails" datatype="html">
         <source>Unable to update the details, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/multiple-assignments/multiple-assignments.component.ts</context>
-          <context context-type="linenumber">122</context>
+          <context context-type="linenumber">131</context>
         </context-group>
       </trans-unit>
       <trans-unit id="multipleAssignments.assigneeAdded" datatype="html">
         <source>Assignee added!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/multiple-assignments/multiple-assignments.component.ts</context>
-          <context context-type="linenumber">165</context>
+          <context context-type="linenumber">174</context>
         </context-group>
       </trans-unit>
       <trans-unit id="multipleAssignments.unableToAssignDetails" datatype="html">
         <source>Unable to assign, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/multiple-assignments/multiple-assignments.component.ts</context>
-          <context context-type="linenumber">168</context>
+          <context context-type="linenumber">177</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newTask.newTask" datatype="html">
@@ -19129,42 +19351,42 @@
         <source>Subscription pending</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/utility-service/utility.service.ts</context>
-          <context context-type="linenumber">301</context>
+          <context context-type="linenumber">302</context>
         </context-group>
       </trans-unit>
       <trans-unit id="utilityService.daysTrialLeft" datatype="html">
         <source><x id="PH" equiv-text="timeRemaining"/> days trial left.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/utility-service/utility.service.ts</context>
-          <context context-type="linenumber">302</context>
+          <context context-type="linenumber">303</context>
         </context-group>
       </trans-unit>
       <trans-unit id="utilityService.noRightToOpenPost" datatype="html">
         <source>You does not have rights to access the post. Contact with the Manager!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/utility-service/utility.service.ts</context>
-          <context context-type="linenumber">386</context>
+          <context context-type="linenumber">387</context>
         </context-group>
       </trans-unit>
       <trans-unit id="utilityService.areYouSure" datatype="html">
         <source>Are you sure?</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/utility-service/utility.service.ts</context>
-          <context context-type="linenumber">513</context>
+          <context context-type="linenumber">514</context>
         </context-group>
       </trans-unit>
       <trans-unit id="utilityService.youWontRevert" datatype="html">
         <source>You won&apos;t be able to revert this!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/utility-service/utility.service.ts</context>
-          <context context-type="linenumber">514</context>
+          <context context-type="linenumber">515</context>
         </context-group>
       </trans-unit>
       <trans-unit id="utilityService.yesSure" datatype="html">
         <source>Yes, I am sure!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/utility-service/utility.service.ts</context>
-          <context context-type="linenumber">519</context>
+          <context context-type="linenumber">520</context>
         </context-group>
       </trans-unit>
     </body>
