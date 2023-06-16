@@ -2,7 +2,7 @@
 
 # We label our stage as ‘builder’
 # FROM node:10-alpine as builder
-FROM node:18.13 as builder
+FROM node:18-alpine3.18 as builder
 
 # Create app directory
 WORKDIR /usr/app
