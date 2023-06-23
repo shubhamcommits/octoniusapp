@@ -6,6 +6,7 @@ import FormData from 'form-data';
 import { Auths, sendError } from '../../utils';
 import { helperFunctions } from '../../utils';
 import axios from 'axios'
+import { DateTime } from 'luxon';
 
 // Creating Service class in order to build wrapper class
 const slackService = new SlackService();
@@ -142,7 +143,7 @@ export class IntegrationController {
 
             const postData = {
                 title: post['title'],
-                due: post['task'].due_to,
+                due: DateTime.fromISO(post['task'].due_to).toISODate(),
                 status: post['task'].status,
                 groupName: post['_group'].group_name,
                 workspaceName: post['_group'].workspace_name,
