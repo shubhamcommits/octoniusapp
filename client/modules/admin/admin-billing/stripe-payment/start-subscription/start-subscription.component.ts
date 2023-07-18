@@ -11,72 +11,27 @@ import { ManagementPortalService } from 'src/shared/services/management-portal-s
 })
 export class StartSubscriptionComponent implements OnInit {
 
-  constructor(private injector: Injector) { }
-
+  
   // Workspace Data Object
   @Input('workspaceData') workspaceData: any;
-
+  
   // User Data Object
   @Input('userData') userData: any;
-
+  
   // Public Functions Object
   @Input('publicFunctions') publicFunctions: any;
-
+  
   // Subscription Data Object
   @Input('subscription') subscription: any;
-
+  
   @Output() subscriptionCreated = new EventEmitter();
-
-  // Stripe Payment Handler
-  handler: any;
-
-  PRICING_TABLE_ID = environment.STRIPE_PRICING_TABLE_ID;
-  STRIPE_PK = environment.STRIPE_PK;
-
-  // Workspace object
-  workspaceService = this.injector.get(WorkspaceService);
-
-  // Utility Service Object
-  utilityService = this.injector.get(UtilityService)
-
-  // Management Portal Service Object
-  managementPortalService = this.injector.get(ManagementPortalService)
-
-  amount = 0;
-  priceId;
-
-  // subscription_prices = [];
-  // subscription_products = [];
-
-  stripeSessionId;
+  
+  constructor(private injector: Injector) { }
 
   async ngOnInit() {
-    // await this.getSubscriptionPrices();
-    // await this.getSubscriptionProducts();
   }
 
-  // async getSubscriptionProducts() {
-  //   await this.managementPortalService.getSubscriptionProducts(this.workspaceData.management_private_api_key)
-  //     .then((res: any) => {
-  //       this.subscription_products = res.products.products;
-  //     });
-  // }
-
-  // async getSubscriptionPrices() {
-  //   await this.managementPortalService.getSubscriptionPrices(this.workspaceData.management_private_api_key)
-  //     .then(res => {
-  //       this.subscription_prices = res['prices'].data;
-  //     });
-  // }
-
-  // startStripeCheckoutSession(priceId: string) {
-  //   this.managementPortalService.createStripeCheckoutSession(priceId, this.workspaceData._id, window.location.href, this.workspaceData.management_private_api_key).then(async res => {
-  //     var stripe = await loadStripe(res['pk_stripe']);
-  //     stripe.redirectToCheckout({
-  //       sessionId: res['session'].id
-  //     });
-  //   }).catch((err)=> {
-  //     this.utilityService.errorNotification($localize`:@@startSubscription.errorWithYourSubscription:There is an error with your Subscription, please contact support!`);
-  //   });
-  // }
+  onSubscriptionChanges(subscription) {
+    this.subscriptionCreated.emit(subscription);
+  }
 }

@@ -32,13 +32,13 @@
                 {{ workspaceData?.owner_first_name }} {{ workspaceData?.owner_last_name }}</p>
             <p class="card-text">
               <span i18n="@@workplaceInformation.totalMembers">Total Members</span>:
-                {{ workspaceData?.company_members_count + workspaceData?.guests_count }}</p>
+                {{ (workspaceData?.company_members_count || 0) + (workspaceData?.guests_count || 0) }}</p>
             <p class="card-text">
               <span i18n="@@workplaceInformation.companyMembers">Company Members</span>:
-                {{ workspaceData?.company_members_count }}</p>
+                {{ (workspaceData?.company_members_count || 0) }}</p>
             <p class="card-text">
               <span i18n="@@workplaceInformation.invitedGuests">Invited Guests</span>:
-                {{ workspaceData?.guests_count }}</p>
+                {{ (workspaceData?.guests_count || 0) }}</p>
             <p class="card-text">
               <span i18n="@@workplaceInformation.inviteAccessCode">Invite Access Code</span>:
                 {{ workspaceData?.access_code }}</p>

@@ -1,0 +1,33 @@
+<!-- 
+<div *ngFor="let price of subscription_prices">
+  <h6>
+    <button (click)="startStripeCheckoutSession(price.id)"
+      class="ml-3 btn btn-md btn-primary"
+      i18n="@@startSubscription.purchase">
+        Purchase
+    </button>
+    {{ price.unit_amount/100 | currency: '$': 'symbol': '.2-2' }} / <span i18n="@@startSubscription.seat">seat</span> / {{ price?.recurring?.interval }}
+  </h6>
+</div>
+-->
+
+<div *ngFor="let product of subscription_products">
+  <h6>
+    <button (click)="startStripeCheckoutSession(product.id)" class="ml-3 btn btn-md btn-primary"
+      i18n="@@startSubscription.purchase">
+      Purchase
+    </button>
+
+    <p>{{ product.name }}</p>
+    <p>{{ product.description }}</p>
+    {{ product.price.unit_amount/100 | currency: '$': 'symbol': '.2-2' }} / <span i18n="@@startSubscription.seat">seat</span> /
+    {{ product.price?.recurring?.interval }}
+  </h6>
+</div>
+
+
+
+<stripe-pricing-table
+  [attr.pricing-table-id]="PRICING_TABLE_ID"
+  [attr.publishable-key]="STRIPE_PK"
+  [attr.customer-email]="userData?.email"></stripe-pricing-table>
