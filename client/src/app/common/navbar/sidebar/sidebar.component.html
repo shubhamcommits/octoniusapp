@@ -1,11 +1,5 @@
 <nav id="sidebar">
     <div class="sidebar-header" [ngStyle]="{'top': (isMobile) ? 0 : 'none', 'left': (isMobile) ? 0 : 'none'}">
-        <!--
-        <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active">
-            <img src="assets/images/white_logo.svg" alt="" class="octonius-logo">
-        </a>
-        -->
-
         <!-- MENU BUTTON STARTS -->
         <button *ngIf="!isMobile" type="button" id="sidebarCollapse" class="btn dismiss" (click)="switchSideBar()" >
             <i class="material-icons">menu_open</i>
@@ -47,9 +41,10 @@
                     <span i18n="@@sidebar.mySpace">My Space</span>
               </a>
             </li>
+
             <li> <hr class="divider-line"></li>
 
-            <li>
+            <li *ngIf="!isIndividualSubscription">
                 <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="true">
                     <i class="material-icons-outlined carret">star_outline</i>
                     <span i18n="@@sidebar.favorites">Favorites</span>
@@ -69,7 +64,24 @@
                     </li>
                 </ul>
             </li>
+
+            <li *ngIf="isIndividualSubscription">
+                <ul class="collapse list-unstyled show" id="pageSubmenu">
+                    <li *ngFor="let group of userGroupsAndPortfoliosAndCollections">
+                        <a (click)="goToGroupOrPortfolioOrCollection(group)" routerLinkActive="active">
+                            <app-secured-image
+                                [imgURL]="group?.avatar"
+                                [service]="'group'"
+                                [workspaceId]="workspaceData?._id"
+                                [styleClass]="'avatar'"></app-secured-image>
+                            {{ group?.name | truncatetext: 16 }}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
             <li> <hr class="divider-line"></li>
+
             <li>
               <a routerLinkActive="active"
                   routerLink="/dashboard/work/groups/all"
@@ -80,6 +92,7 @@
             </li>
 
             <li> <hr class="divider-line"></li>
+
             <li *ngIf="this.userData?.role === 'admin' || this.userData?.role === 'owner'">
                 <a (click)="changeState('general')"
                     class="nav-link"

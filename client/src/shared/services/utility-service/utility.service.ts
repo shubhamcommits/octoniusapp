@@ -54,7 +54,6 @@ export class UtilityService {
   private accountDataSource = new BehaviorSubject<any>({});
   currentAccountData = this.accountDataSource.asObservable();
 
-
   /**
   * Both of the variables listed down below are used to share the data through this common service among different components in the app
   * @constant userDataSource

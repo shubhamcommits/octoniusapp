@@ -82,15 +82,14 @@ export class CommonNavbarComponent implements OnInit, OnDestroy {
     });
 
     // Disabling the stripe integration for now, we are handling the payments and blocking the workspace manualy
-    //this.checkCanActivateBilling();
-    this.canActivateBilling = false;
+    this.checkCanActivateBilling();
   }
 
   /**
    * This function unsubscribes the data from the observables
    */
   ngOnDestroy(): void {
-      this.subSink.unsubscribe();
+    this.subSink.unsubscribe();
   }
 
   async changeState(state:string){

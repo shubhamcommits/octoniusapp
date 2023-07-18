@@ -92,16 +92,16 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
 
             let workspaceBlocked = false;
             await this.managementPortalService.getBillingStatus(workspaceId, workspaceData['management_private_api_key']).then(res => {
-              if (res['blocked'] ) {
-                workspaceBlocked = res['blocked'];
-              }
-            }).catch((err) => {
-              this.authService.signout().subscribe(async (res) => {
-                this.clearUserData();
-                this.socketService.disconnectSocket();
-                this.router.navigate(['/home']);
+                if (res['blocked'] ) {
+                  workspaceBlocked = res['blocked'];
+                }
+              }).catch((err) => {
+                this.authService.signout().subscribe(async (res) => {
+                  this.clearUserData();
+                  this.socketService.disconnectSocket();
+                  this.router.navigate(['/home']);
+                });
               });
-            });
 
             if (workspaceBlocked) {
               this.utilityService.workplaceBlockedNotification($localize`:@@selectWorkspace.workspaceIsNotAvailable:Your workspace is not available, please contact your administrator!`).then(res => {
@@ -127,13 +127,13 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
                 } else {
                   this.socketService.serverInit();
                   this.router.navigate(['dashboard', 'myspace', 'inbox'])
-                  .then(() => {
-                    resolve(this.utilityService.resolveAsyncPromise($localize`:@@selectWorkspace.hi:Hi ${res['user']['first_name']}, welcome back to your workplace!`));
-                  })
-                  .catch((err) => {
-                    this.storageService.clear();
-                    reject(this.utilityService.rejectAsyncPromise($localize`:@@selectWorkspace.oopsErrorSigningIn:Oops some error occurred while signing you in, please try again!`))
-                  })
+                    .then(() => {
+                      resolve(this.utilityService.resolveAsyncPromise($localize`:@@selectWorkspace.hi:Hi ${res['user']['first_name']}, welcome back to your workplace!`));
+                    })
+                    .catch((err) => {
+                      this.storageService.clear();
+                      reject(this.utilityService.rejectAsyncPromise($localize`:@@selectWorkspace.oopsErrorSigningIn:Oops some error occurred while signing you in, please try again!`))
+                    });
                 }
               }, 500);
             }

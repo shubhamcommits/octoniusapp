@@ -501,6 +501,55 @@ export class GroupController {
      * This function fetches the group details corresponding to the @constant groupId 
      * @param req - @constant groupId
      */
+    async getGlobalGroup(req: Request, res: Response) {
+        try {
+
+            const userId = req['userId'];
+
+            const user = await User.findById({ _id: userId })
+                .select('_id _workspace').lean();
+
+            // Find the Group based on the groupId
+            var group = await Group.findOne({
+                    _workspace: user._workspace,
+                    group_name: 'Global'
+                })
+                .populate({
+                    path: '_members',
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    match: {
+                        active: true
+                    }
+                })
+                .populate({
+                    path: '_admins',
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    match: {
+                        active: true
+                    }
+                })
+                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+                .lean();
+
+            // Check if group already exist with the same groupId
+            if (!group) {
+                return sendError(res, new Error('Oops, group not found!'), 'Group not found, Invalid groupId!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Group found!',
+                group: group
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
+     * This function fetches the group details corresponding to the @constant groupId 
+     * @param req - @constant groupId
+     */
     async get(req: Request, res: Response) {
         try {
 
@@ -508,8 +557,8 @@ export class GroupController {
 
             // Find the Group based on the groupId
             var group = await Group.findOne({
-                _id: groupId
-            })
+                    _id: groupId
+                })
                 .populate({
                     path: '_members',
                     select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',

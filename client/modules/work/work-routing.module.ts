@@ -4,6 +4,7 @@ import { NorthStarPageComponent } from './north-star-page/north-star-page.compon
 import { DashboardPageComponent } from './dashboard-page/dashboard-page.component';
 import { AdminGuard } from 'src/shared/guards/admin-guard/admin.guard';
 import { OrganizationModuleAvailableGuard } from 'src/shared/guards/organization-module-available-guard/organization-module-available.guard';
+import { LoungeModuleAvailableGuard } from 'src/shared/guards/lounge-module-available-guard/lounge-module-available.guard';
 
 const routes: Routes = [
 
@@ -32,7 +33,8 @@ const routes: Routes = [
     data: {
       preload: false,
       state: 'lounge'
-    }
+    },
+    canActivate: [LoungeModuleAvailableGuard]
   },
 
   // Organization Module

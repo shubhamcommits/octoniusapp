@@ -26,6 +26,7 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
   @Input() userGroups: any = [];
   @Input() userPortfolios: any = [];
   @Input() isMobile = false;
+  @Input() isIndividualSubscription = false;
 
   @Output() sidebarChange = new EventEmitter();
 
@@ -97,11 +98,23 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
 
     await this.getUserWorkspaces();
 
-    this.userGroups = this.userData['stats']['favorite_groups'];
-    this.userPortfolios = this.userData['stats']['favorite_portfolios'];
-    this.userCollections = this.userData['stats']['favorite_collections'];
+    if (!this.isIndividualSubscription) {
+      this.userGroups = this.userData['stats']['favorite_groups'];
+      this.userPortfolios = this.userData['stats']['favorite_portfolios'];
+      this.userCollections = this.userData['stats']['favorite_collections'];
 
-    await this.mapGroupsAndPortfoliosAndCollections();
+      await this.mapGroupsAndPortfoliosAndCollections();
+    } else {
+      this.groupService.getGlobalGroupData().then((res: any) => {
+        const group = res['group'];
+        this.userGroupsAndPortfoliosAndCollections = [{
+          _id: group._id,
+          name: group.group_name,
+          avatar: group.group_avatar,
+          type: 'group'
+        }];
+      });
+    }
   }
 
   async mapGroupsAndPortfoliosAndCollections() {

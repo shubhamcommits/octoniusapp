@@ -46,7 +46,7 @@
   <!-- Dashboard Page Route ends -->
 
   <!-- Lounge Page Route starts -->
-  <li class="nav-item d-none d-md-block">
+  <li class="nav-item d-none d-md-block" *ngIf="isLoungeModuleAvailable">
     <a class="nav-link"
         routerLink="/dashboard/work/lounge"
         routerLinkActive="active">

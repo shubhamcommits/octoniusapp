@@ -7,11 +7,6 @@
     </button>
     <!-- MENU BUTTON ENDS -->
 
-    <!--
-    <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active">
-      <img src="assets/images/white_logo.svg" alt="" class="octonius-logo">
-    </a>
-    -->
     <div *ngIf="userWorkspaces?.length > 0" class="components" style="margin-top: -25px; width: 78%;">
       <a href="#pageWorkspacesSubmenu" data-toggle="collapse" aria-expanded="true" style="padding: 10px 0;" [matTooltip]="workspaceData?.workspace_name">
         <app-secured-image [imgURL]="workspaceData?.workspace_avatar" [service]="'workspace'" [workspaceId]="workspaceData?._id" [styleClass]="'avatar'">
@@ -37,64 +32,67 @@
   </div>
 
   <div class="menu-options">
-      <ul class="list-unstyled components">
-        <li>
-            <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active">
-              <i class="material-icons-outlined">home</i>
-            </a>
-        </li>
-        <li> <hr class="divider-line"></li>
-
-        <li class="static">
-
-          <i class="material-icons-outlined">star_outline</i>
-        </li>
-
-        <li *ngFor="let group of userGroupsAndPortfoliosAndCollections">
-          <a (click)="goToGroupOrPortfolioOrCollection(group)">
-              <app-secured-image
-                  [imgURL]="group?.avatar"
-                  [service]="'group'"
-                  [workspaceId]="workspaceData?._id"
-                  [tooltip]="group?.name"
-                  [styleClass]="'avatar'"></app-secured-image>
+    <ul class="list-unstyled components">
+      <li>
+          <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active">
+            <i class="material-icons-outlined">home</i>
           </a>
-        </li>
+      </li>
 
-        <li> <hr class="divider-line"></li>
-        <li>
-          <a routerLinkActive="active" routerLink="/dashboard/work/groups/all" class="explore-work">
-            <i class="material-icons-outlined carret">groups</i>
+      <li> <hr class="divider-line"></li>
+
+      <li class="static">
+        <i class="material-icons-outlined">star_outline</i>
+      </li>
+
+      <li *ngFor="let group of userGroupsAndPortfoliosAndCollections">
+      <a (click)="goToGroupOrPortfolioOrCollection(group)">
+          <app-secured-image
+            [imgURL]="group?.avatar"
+            [service]="'group'"
+            [workspaceId]="workspaceData?._id"
+            [tooltip]="group?.name"
+            [styleClass]="'avatar'"></app-secured-image>
+        </a>
+      </li>
+
+      <li> <hr class="divider-line"></li>
+
+      <li *ngIf="!isIndividualSubscription">
+        <a routerLinkActive="active" routerLink="/dashboard/work/groups/all" class="explore-work">
+          <i class="material-icons-outlined carret">groups</i>
+        </a>
+      </li>
+
+      <li> <hr class="divider-line"></li>
+      
+      <li *ngIf="userData?.role === 'admin' || userData?.role === 'owner'">
+          <a (click)="changeState('general')" class="nav-link" [routerLink]="['/dashboard', 'admin', 'general']" routerLinkActive="active">
+            <i class="material-icons">settings</i>
           </a>
-        </li>
-        <li> <hr class="divider-line"></li>
-        <li *ngIf="userData?.role === 'admin' || userData?.role === 'owner'">
-            <a (click)="changeState('general')" class="nav-link" [routerLink]="['/dashboard', 'admin', 'general']" routerLinkActive="active">
-              <i class="material-icons">settings</i>
-            </a>
-        </li>
+      </li>
 
-        <li>
-            <!-- USER PROFILE BADGE STARTS -->
-            <a class="nav-link" *ngIf="this.userData"
-                [routerLink]="['/dashboard', 'user', 'profile']"
-                (click)="changeState('profile')">
-                <app-secured-image
-                  [imgURL]="userData?.profile_pic"
-                  [service]="'user'"
-                  [workspaceId]="workspaceData?._id"
-                  [styleClass]="'avatar'"></app-secured-image>
-            </a>
-            <!-- USER PROFILE BADGE ENDS -->
-        </li>
+      <li>
+        <!-- USER PROFILE BADGE STARTS -->
+        <a class="nav-link" *ngIf="this.userData"
+            [routerLink]="['/dashboard', 'user', 'profile']"
+            (click)="changeState('profile')">
+            <app-secured-image
+              [imgURL]="userData?.profile_pic"
+              [service]="'user'"
+              [workspaceId]="workspaceData?._id"
+              [styleClass]="'avatar'"></app-secured-image>
+        </a>
+        <!-- USER PROFILE BADGE ENDS -->
+      </li>
 
-        <li>
-            <!-- LOGOUT FUNCTION STARTS-->
-            <a class="nav-link" [routerLink]="['/']" routerLinkActive="router-link-active" (click)="logout()">
-                <i class="material-icons-outlined carret">logout</i>
-            </a>
-            <!-- LOGOUT FUNCTION ENDS-->
-        </li>
-      </ul>
+      <li>
+        <!-- LOGOUT FUNCTION STARTS-->
+        <a class="nav-link" [routerLink]="['/']" routerLinkActive="router-link-active" (click)="logout()">
+            <i class="material-icons-outlined carret">logout</i>
+        </a>
+        <!-- LOGOUT FUNCTION ENDS-->
+      </li>
+    </ul>
   </div>
 </nav>

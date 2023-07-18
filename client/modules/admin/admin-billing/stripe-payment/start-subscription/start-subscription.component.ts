@@ -1,9 +1,7 @@
 import { Component, OnInit, HostListener, Injector, Input, Output, EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
-import { loadStripe } from '@stripe/stripe-js';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({
@@ -32,11 +30,11 @@ export class StartSubscriptionComponent implements OnInit {
   // Stripe Payment Handler
   handler: any;
 
+  PRICING_TABLE_ID = environment.STRIPE_PRICING_TABLE_ID;
+  STRIPE_PK = environment.STRIPE_PK;
+
   // Workspace object
   workspaceService = this.injector.get(WorkspaceService);
-
-  // Socket Service Object
-  socketService = this.injector.get(SocketService)
 
   // Utility Service Object
   utilityService = this.injector.get(UtilityService)
@@ -47,29 +45,38 @@ export class StartSubscriptionComponent implements OnInit {
   amount = 0;
   priceId;
 
-  subscription_prices = [];
+  // subscription_prices = [];
+  // subscription_products = [];
 
   stripeSessionId;
 
   async ngOnInit() {
-    await this.getSubscriptionPrices();
+    // await this.getSubscriptionPrices();
+    // await this.getSubscriptionProducts();
   }
 
-  async getSubscriptionPrices() {
-    await this.managementPortalService.getSubscriptionPrices(this.workspaceData.management_private_api_key)
-      .then(res => {
-        this.subscription_prices = res['prices'].data;
-      });
-  }
+  // async getSubscriptionProducts() {
+  //   await this.managementPortalService.getSubscriptionProducts(this.workspaceData.management_private_api_key)
+  //     .then((res: any) => {
+  //       this.subscription_products = res.products.products;
+  //     });
+  // }
 
-  startStripeCheckoutSession(priceId: string) {
-    this.managementPortalService.createStripeCheckoutSession(priceId, this.workspaceData._id, window.location.href, this.workspaceData.management_private_api_key).then(async res => {
-      var stripe = await loadStripe(res['pk_stripe']);
-      stripe.redirectToCheckout({
-        sessionId: res['session'].id
-      });
-    }).catch((err)=> {
-      this.utilityService.errorNotification($localize`:@@startSubscription.errorWithYourSubscription:There is an error with your Subscription, please contact support!`);
-    });
-  }
+  // async getSubscriptionPrices() {
+  //   await this.managementPortalService.getSubscriptionPrices(this.workspaceData.management_private_api_key)
+  //     .then(res => {
+  //       this.subscription_prices = res['prices'].data;
+  //     });
+  // }
+
+  // startStripeCheckoutSession(priceId: string) {
+  //   this.managementPortalService.createStripeCheckoutSession(priceId, this.workspaceData._id, window.location.href, this.workspaceData.management_private_api_key).then(async res => {
+  //     var stripe = await loadStripe(res['pk_stripe']);
+  //     stripe.redirectToCheckout({
+  //       sessionId: res['session'].id
+  //     });
+  //   }).catch((err)=> {
+  //     this.utilityService.errorNotification($localize`:@@startSubscription.errorWithYourSubscription:There is an error with your Subscription, please contact support!`);
+  //   });
+  // }
 }

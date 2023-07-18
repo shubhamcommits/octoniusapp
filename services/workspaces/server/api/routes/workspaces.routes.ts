@@ -77,13 +77,19 @@ routes.get('/get-billing-status/:workspaceId', mgmt.getBillingStatus);
 routes.get('/can-activate-billing/:workspaceId', mgmt.canActivateBilling);
 
 // GET - get subscription details
-routes.get('/get-subscription/:workspaceId', mgmt.getSubscription);
+routes.get('/billing/get-subscription', mgmt.getSubscription);
 
 // GET - get customer details
 routes.get('/get-customer/:customerId', mgmt.getStripeCustomer);
 
+// GET - get subscription
+// routes.get('/billing/stripe-subscription', mgmt.getSubscription);
+
+// GET - get subscription products
+// routes.get('/billing/get-subscription-products', mgmt.getSubscriptionProducts);
+
 // GET - get subscription prices
-routes.get('/billing/get-subscription-prices', mgmt.getSubscriptionPrices);
+// routes.get('/billing/get-subscription-prices', mgmt.getSubscriptionPrices);
 
 // GET - 
 routes.get('/:workspaceId/inTryOut', mgmt.isInTryOut);
@@ -108,6 +114,9 @@ routes.get('/:workspaceId/organization', mgmt.isOrganizationModuleAvailable);
 
 // GET - obtain if the chat module is availability in the workspace
 routes.get('/:workspaceId/chat', mgmt.isChatModuleAvailable);
+
+// GET - obtain if the filesVersions module is availability in the workspace
+routes.get('/:workspaceId/lounge', mgmt.isLoungeAvailable);
 
 // GET - obtain the base url of the workspace
 routes.get('/:workspaceId/baseURL', mgmt.getWorkspaceBaseURL);

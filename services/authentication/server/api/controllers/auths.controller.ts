@@ -913,4 +913,24 @@ export class AuthsController {
                 valid: true
             });
     }
+
+    /**
+     * This function fetches the stripe customer details for the currently loggedIn user
+     */
+   async getSubscriptionProducts(req: Request, res: Response, next: NextFunction) {
+        try {
+            let products;
+            await authsService.getSubscriptionProducts()
+                .then(res => {
+                    products = res['data'];
+                });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                products: products
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
 }

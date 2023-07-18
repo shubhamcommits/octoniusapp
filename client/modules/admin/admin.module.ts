@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AdminRoutingModule } from './admin-routing.module';
@@ -64,6 +64,9 @@ import { WorkplaceGoogleFieldsMapperDialogComponent } from './admin-general/work
         MatDialogModule,
         MatTabsModule
     ],
-    providers: [WorkspaceService, AdminService, ActivateBillingGuard]
+    providers: [WorkspaceService, AdminService, ActivateBillingGuard],
+    schemas: [
+        CUSTOM_ELEMENTS_SCHEMA
+    ]
 })
 export class AdminModule { }

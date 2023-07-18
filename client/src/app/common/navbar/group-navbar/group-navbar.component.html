@@ -29,12 +29,11 @@
           </app-group-image-details>
         </ng-template>
 
-        <h2 *ngIf="groupData && !myWorkplace" (click)="saveFavoriteGroup()" placement="right"
+        <h2 *ngIf="groupData && !myWorkplace && !isIndividualSubscription" (click)="saveFavoriteGroup()" placement="right"
           ngbTooltip="Add shortcut to sidebar">
           <i class="material-icons" style="color: #FFAB00; cursor: pointer;" *ngIf="!isFavoriteGroup">star_outline</i>
           <i class="material-icons" style="color: #FFAB00; cursor: pointer;" *ngIf="isFavoriteGroup">star</i>
         </h2>
-
       </li>
 
       <li *ngIf="groupData && !myWorkplace" class="nav-item mr-3">

@@ -11,6 +11,7 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 import { MatDialog } from '@angular/material/dialog';
 import { SearchHeaderComponent } from 'modules/search/search-header/search-header.component';
 import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 
 @Component({
@@ -55,6 +56,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   isDocumentPage = false;
   isCollectionPage = false;
 
+  isIndividualSubscription = false;
+
   // NOTIFICATIONS DATA
   public notificationsData: { readNotifications: [], unreadNotifications: [] } = {
     readNotifications: [],
@@ -67,6 +70,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     private userService: UserService,
     private utilityService: UtilityService,
     private storageService: StorageService,
+    private managementPortalService:  ManagementPortalService,
     public dialog: MatDialog,
     private injector: Injector,
     private _router: Router
@@ -128,6 +132,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       this.publicFunctions.sendUpdatesToUserData(this.userData)
       this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData)
     }
+
+    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
 
     this.subSink.add(this._router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {

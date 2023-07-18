@@ -40,6 +40,9 @@ routes.get('/search/archived', group.getWorkspaceArchivedGroups);
 // GET - Get group based on the groupId
 routes.get('/:groupId', group.get);
 
+// GET - Get global group data
+routes.get('/global-group', group.getGlobalGroup);
+
 // GET - Get group based on the postId
 routes.get('/:postId/byPost', group.getByPost);
 

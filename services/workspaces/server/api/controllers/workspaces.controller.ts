@@ -196,18 +196,20 @@ export class WorkspaceController {
                 secretKey: process.env.MINIO_SECRET_KEY
             });
 
-            await minioClient.bucketExists((workspace._id).toLowerCase(), async (error, exists) => {
+            const workspaceId = workspace._id.toString().toLowerCase();
+
+            await minioClient.bucketExists(workspaceId, async (error, exists) => {
                 if (error) {
                     return res.status(500).json({
-                    status: '500',
-                    message: 'Error checking bucket exists.',
-                    error: error
+                        status: '500',
+                        message: 'Error checking bucket exists.',
+                        error: error
                     });
                 }
 
                 if (!exists) {
                     // Make a bucket.
-                    await minioClient.makeBucket((workspace._id).toLowerCase(), (error) => {
+                    await minioClient.makeBucket(workspaceId, (error) => {
                         if (error) {
                             return res.status(500).json({
                                 status: '500',
@@ -216,7 +218,7 @@ export class WorkspaceController {
                             });
                         }
 
-                        minioClient.setBucketEncryption((workspace._id).toLowerCase(), { algorithm: "AES256" })
+                        minioClient.setBucketEncryption(workspaceId, { algorithm: "AES256" })
                             .then(() => console.log("Encryption enabled"))
                             .catch((error) => console.error(error));
                     });
@@ -379,6 +381,7 @@ export class WorkspaceController {
                     created_date: workspace.created_date,
                     access_code: workspace.access_code,
                     management_private_api_key: workspace.management_private_api_key,
+                    product_id: newWorkspace.product_id
                 }
                 let userMgmt = {
                     _id: user._id,
