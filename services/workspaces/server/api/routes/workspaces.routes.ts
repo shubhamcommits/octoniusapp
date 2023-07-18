@@ -85,9 +85,6 @@ routes.get('/get-customer/:customerId', mgmt.getStripeCustomer);
 // GET - get subscription
 // routes.get('/billing/stripe-subscription', mgmt.getSubscription);
 
-// GET - get subscription products
-// routes.get('/billing/get-subscription-products', mgmt.getSubscriptionProducts);
-
 // GET - get subscription prices
 // routes.get('/billing/get-subscription-prices', mgmt.getSubscriptionPrices);
 

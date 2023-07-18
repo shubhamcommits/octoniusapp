@@ -110,13 +110,6 @@ export class ManagementPortalService {
   }
 
   /**
-   * This function fetches the products for the subscription for the currently loggedIn user
-   */
-  // getSubscriptionProducts() {
-  //   return this._http.get(this.WORKSPACE_BASE_API_URL + `/billing/get-subscription-products`, {}).toPromise()
-  // }
-
-  /**
    * This function fetches the prices for the subscription for the currently loggedIn user
    */
   // getSubscriptionPrices(mgmtApiPrivateKey: string) {

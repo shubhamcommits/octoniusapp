@@ -131,17 +131,6 @@ export class ManagementService {
     /**
      * This function fetches the prices for the subscription for the currently loggedIn user
      */
-    // getSubscriptionProducts() {
-    //     try {
-    //         return axios.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-subscription-products`, {});
-    //     } catch (err) {
-    //         throw (err);
-    //     }
-    // }
-
-    /**
-     * This function fetches the prices for the subscription for the currently loggedIn user
-     */
     // getSubscriptionPrices(mgmtApiPrivateKey: string) {
     //     try {
     //         return axios.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-subscription-prices`, {
