@@ -31,7 +31,6 @@ import { WorkplaceGoogleSyncComponent } from './admin-general/workplace-integrat
 import { WorkplaceLDAPSyncComponent } from './admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-sync.component';
 import { WorkplaceLdapFieldsMapperDialogComponent } from './admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component';
 import { WorkplaceGoogleFieldsMapperDialogComponent } from './admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component';
-import { PricingTableComponent } from './admin-billing/stripe-payment/pricing-table/pricing-table.component';
 import { DeleteWorkspaceComponent } from './admin-general/delete-workspace/delete-workspace.component';
 
 
@@ -48,7 +47,6 @@ import { DeleteWorkspaceComponent } from './admin-general/delete-workspace/delet
         WorkplaceInviteUserComponent,
         StripePaymentComponent,
         StartSubscriptionComponent,
-        PricingTableComponent,
         TransferOwnershipComponent,
         WorkplaceProfileCustomFieldsComponent,
         ProfileCustomFieldsDialogComponent,

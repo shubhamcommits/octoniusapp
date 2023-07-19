@@ -134,6 +134,7 @@ import { GlobalNorthStarStatsComponent } from './posts/global-north-star-dialog/
 import { LikedByDialogComponent } from './liked-by-dialog/liked-by-dialog.component';
 import { ShareCollectionDialogComponent } from './share-collection-dialog/share-collection-dialog.component';
 import { PasswordStrengthComponent } from './password-strength/password-strength.component';
+import { PricingTableComponent } from './pricing-table/pricing-table.component';
 
 @NgModule({
     declarations: [
@@ -244,7 +245,8 @@ import { PasswordStrengthComponent } from './password-strength/password-strength
         UserAvailabilityDayDialogComponent,
         LikedByDialogComponent,
         ShareCollectionDialogComponent,
-        PasswordStrengthComponent
+        PasswordStrengthComponent,
+        PricingTableComponent
     ],
     imports: [
         CommonModule,
@@ -363,7 +365,8 @@ import { PasswordStrengthComponent } from './password-strength/password-strength
         UserAvailabilityDayDialogComponent,
         LikedByDialogComponent,
         ShareCollectionDialogComponent,
-        PasswordStrengthComponent
+        PasswordStrengthComponent,
+        PricingTableComponent
     ],
     providers: [
         { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },

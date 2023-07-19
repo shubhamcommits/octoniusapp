@@ -53,6 +53,8 @@ export class StripePaymentComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.isLoading$.next(true);
+
     const sessionId = this.activatedRoute.snapshot.queryParams.session_id;
     if (sessionId) {
       await this.managementPortalService.getStripeCheckoutSession(sessionId, this.workspaceData._id, this.workspaceData.management_private_api_key)
@@ -84,6 +86,8 @@ export class StripePaymentComponent implements OnInit {
           this.subscriptionActive = true;
         }
       });
+    
+    this.isLoading$.next(false);
   }
 
   isWorkspaceOwner() {

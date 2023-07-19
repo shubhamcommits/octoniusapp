@@ -32,7 +32,7 @@
             <span i18n="@@pricingTable.perMonth">per month</span>
           </div>
 
-          <button class="ml-3 btn btn-md btn-primary"
+          <button *ngIf="canCreateSubscription" class="ml-3 btn btn-md btn-primary"
             (click)="startStripeCheckoutSession(product.monthly_price.id)"
             i18n="@@pricingTable.purchase">
             Purchase
@@ -48,7 +48,7 @@
             <span i18n="@@pricingTable.perYear">per year</span>
           </div>
 
-          <button class="ml-3 btn btn-md btn-primary"
+          <button *ngIf="canCreateSubscription" class="ml-3 btn btn-md btn-primary"
             (click)="startStripeCheckoutSession(product.yearly_price.id)"
             i18n="@@pricingTable.purchase">
             Purchase
@@ -58,3 +58,7 @@
     </div>
   </div>
 </div>
+
+<ng-container *ngIf="isLoading$ | async">
+  <app-loading-spinner></app-loading-spinner>
+</ng-container>

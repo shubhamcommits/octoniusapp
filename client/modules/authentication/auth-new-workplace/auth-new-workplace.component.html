@@ -28,8 +28,17 @@
           </div>
 
           <div class="form-group">
-            <label for="company_name" class="muted" i18n="@@authNewWorkplace.selectSubscription">Select subscription</label>
-            <mat-select ngDefaultControl (selectionChange)="selectStripeProduct($event.value)" appearance="fill">
+            <label for="company_name" class="muted" i18n="@@authNewWorkplace.selectSubscription">
+              Select subscription
+            </label>
+
+            <i class="material-icons" (click)="openPricingDialog()">help</i>
+
+            <ng-template #pricingTableDialog>
+              <app-pricing-table [canCreateSubscription]="false"></app-pricing-table>
+            </ng-template>
+
+            <mat-select ngDefaultControl (selectionChange)="selectStripeProduct($event.value)">
               <mat-option *ngFor="let product of stripeProducts" [value]="product.id">{{ product.name }}</mat-option>
             </mat-select>
           </div>

@@ -1,8 +1,9 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, Injector, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
+import { PricingTableComponent } from 'src/app/common/shared/pricing-table/pricing-table.component';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
-import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
@@ -12,6 +13,8 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
   styleUrls: ['./auth-new-workplace.component.scss']
 })
 export class AuthNewWorkplaceComponent implements OnInit {
+
+  @ViewChild("pricingTableDialog") pricingTableDialog: TemplateRef<any>;
 
   // Defining User Object, which accepts the following properties
   workplace: { name: string, company_name: string, stripe_product_id: string } = {
@@ -32,6 +35,7 @@ export class AuthNewWorkplaceComponent implements OnInit {
     private authenticationService: AuthService,
     private storageService: StorageService,
     public router: Router,
+    public dialog: MatDialog,
     private _Injector: Injector
   ) { }
 
@@ -128,6 +132,17 @@ export class AuthNewWorkplaceComponent implements OnInit {
           reject(this.utilityService.rejectAsyncPromise($localize`:@@authNewWorkplace.oopsErrorOccuredSettingUp:Oops some error occurred while setting you up, please try again!`))
         })
     })
+  }
+
+  async openPricingDialog() {
+    const dialogRef = await this.dialog.open(this.pricingTableDialog, {
+      width: '75%',
+      height: '50%',
+      disableClose: false,
+      hasBackdrop: true
+    });
+
+    dialogRef.afterClosed().subscribe(() => {});
   }
 
   /**

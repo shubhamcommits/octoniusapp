@@ -1,10 +1,11 @@
-import { Component, OnInit, HostListener, Injector, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Injector, Input } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { loadStripe } from '@stripe/stripe-js';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-pricing-table',
@@ -13,11 +14,8 @@ import { AuthService } from 'src/shared/services/auth-service/auth.service';
 })
 export class PricingTableComponent implements OnInit {
   
-  // Workspace Data Object
-  @Input('workspaceData') workspaceData: any;
-  
-  // User Data Object
-  @Input('userData') userData: any;
+  @Input() workspaceData: any;
+  @Input() canCreateSubscription = true;
   
   // Stripe Payment Handler
   handler: any;
@@ -45,10 +43,16 @@ export class PricingTableComponent implements OnInit {
   periodSelected = 'month';
 
   stripeSessionId;
+
+  // isLoading BehaviourSubject
+  isLoading$ = new BehaviorSubject(false);
   
-  constructor(private injector: Injector) { }
+  constructor(
+    private injector: Injector) { }
 
   async ngOnInit() {
+    this.isLoading$.next(true);
+
     // await this.getSubscriptionPrices();
     await this.getSubscriptionProducts();
   }
@@ -58,6 +62,8 @@ export class PricingTableComponent implements OnInit {
       .then((res: any) => {
         this.subscription_products = res.products.products;
       });
+    
+    this.isLoading$.next(false);
   }
 
   startStripeCheckoutSession(priceId: string) {
