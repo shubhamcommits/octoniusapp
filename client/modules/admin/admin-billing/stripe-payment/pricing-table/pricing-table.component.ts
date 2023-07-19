@@ -50,7 +50,8 @@ export class PricingTableComponent implements OnInit {
   
   // subscription_prices = [];
   subscription_products = [];
-  
+  periodSelected = 'month';
+
   stripeSessionId;
   
   constructor(private injector: Injector) { }
@@ -82,7 +83,15 @@ console.log(this.subscription_products);
         sessionId: res['session'].id
       });
     }).catch((err)=> {
-      this.utilityService.errorNotification($localize`:@@startSubscription.errorWithYourSubscription:There is an error with your Subscription, please contact support!`);
+      this.utilityService.errorNotification($localize`:@@pricingTable.errorWithYourSubscription:There is an error with your Subscription, please contact support!`);
     });
+  }
+
+  changePeriod(checked) {
+    if (checked) {
+      this.periodSelected = 'year';
+    } else {
+      this.periodSelected = 'month';
+    }
   }
 }
