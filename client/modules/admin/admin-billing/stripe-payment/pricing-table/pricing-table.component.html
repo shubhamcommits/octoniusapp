@@ -13,7 +13,7 @@
 
 <div *ngFor="let product of subscription_products">
   <h6>
-    <button (click)="startStripeCheckoutSession(product.id)" class="ml-3 btn btn-md btn-primary"
+    <button (click)="startStripeCheckoutSession(product.default_price)" class="ml-3 btn btn-md btn-primary"
       i18n="@@startSubscription.purchase">
       Purchase
     </button>

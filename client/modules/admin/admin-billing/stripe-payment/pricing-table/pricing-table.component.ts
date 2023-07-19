@@ -64,6 +64,7 @@ export class PricingTableComponent implements OnInit {
     await this.authService.getSubscriptionProducts()
       .then((res: any) => {
         this.subscription_products = res.products.products;
+console.log(this.subscription_products);
       });
   }
 
