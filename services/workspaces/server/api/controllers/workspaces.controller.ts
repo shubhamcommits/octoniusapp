@@ -382,7 +382,7 @@ export class WorkspaceController {
                     access_code: workspace.access_code,
                     management_private_api_key: workspace.management_private_api_key,
                     billing: {
-                        product_id: newWorkspace.product_id
+                        product_id: newWorkspace.stripe_product_id
                     }
                 }
                 let userMgmt = {
