@@ -447,7 +447,8 @@ export class ManagementControllers {
             let subscription;
             await managementService.getSubscription(user._workspace._id, user._workspace.management_private_api_key)
                 .then(res => {
-                    subscription = res['data']['subscription'];
+console.log(res);
+                    subscription = res['subscription'];
                 });
 
             // const workspace = await Workspace.findById({ _id: workspaceId })
