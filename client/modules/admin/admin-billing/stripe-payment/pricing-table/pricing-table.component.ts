@@ -19,14 +19,6 @@ export class PricingTableComponent implements OnInit {
   // User Data Object
   @Input('userData') userData: any;
   
-  // Public Functions Object
-  @Input('publicFunctions') publicFunctions: any;
-  
-  // Subscription Data Object
-  @Input('subscription') subscription: any;
-  
-  @Output() subscriptionCreated = new EventEmitter();
-  
   // Stripe Payment Handler
   handler: any;
   
@@ -65,16 +57,8 @@ export class PricingTableComponent implements OnInit {
     await this.authService.getSubscriptionProducts()
       .then((res: any) => {
         this.subscription_products = res.products.products;
-console.log(this.subscription_products);
       });
   }
-
-  // async getSubscriptionPrices() {
-  //   await this.managementPortalService.getSubscriptionPrices(this.workspaceData.management_private_api_key)
-  //     .then(res => {
-  //       this.subscription_prices = res['prices'].data;
-  //     });
-  // }
 
   startStripeCheckoutSession(priceId: string) {
     this.managementPortalService.createStripeCheckoutSession(priceId, this.workspaceData._id, window.location.href, this.workspaceData.management_private_api_key).then(async res => {

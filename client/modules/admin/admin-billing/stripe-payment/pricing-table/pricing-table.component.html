@@ -5,7 +5,7 @@
   [attr.customer-email]="userData?.email"></stripe-pricing-table>
 -->
 
-<div class="media-body">
+<div class="media-body" *ngIf="subscription_products && subscription_products.length > 0">
   <div class="row">
     <span i18n="@@pricingTable.paymentPeriod">Payment period</span>
     <mat-slide-toggle color="primary" [checked]="periodSelected == 'year'" (change)="changePeriod($event.checked)">

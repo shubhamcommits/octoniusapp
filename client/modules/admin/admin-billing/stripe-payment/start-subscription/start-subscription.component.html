@@ -1,6 +1,6 @@
 
-<div class="card-tile">
-  <div class="row" *ngIf="workspaceData && userData">
+<div class="card-tile" *ngIf="workspaceData && userData">
+  <div class="row">
     <div class="col-md-4">
       <app-workplace-information [workspaceData]="workspaceData" [routerState]="'billing'"></app-workplace-information>
     </div>
@@ -23,9 +23,6 @@
 
   <app-pricing-table
     [userData]="userData"
-    [workspaceData]="workspaceData"
-    [publicFunctions]="publicFunctions"
-    [subscription]="subscription"
-    (subscriptionCreated)="onSubscriptionChanges($event)"></app-pricing-table>
-
+    [workspaceData]="workspaceData">
+  </app-pricing-table>
 </div>
