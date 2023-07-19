@@ -381,7 +381,9 @@ export class WorkspaceController {
                     created_date: workspace.created_date,
                     access_code: workspace.access_code,
                     management_private_api_key: workspace.management_private_api_key,
-                    product_id: newWorkspace.product_id
+                    billing: {
+                        product_id: newWorkspace.product_id
+                    }
                 }
                 let userMgmt = {
                     _id: user._id,
