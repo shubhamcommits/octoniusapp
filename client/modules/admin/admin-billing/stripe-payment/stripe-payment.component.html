@@ -1,7 +1,6 @@
 <app-start-subscription *ngIf="!subscriptionActive"
   [userData]="userData"
   [workspaceData]="workspaceData"
-  [publicFunctions]="publicFunctions"
   [subscription]="subscription"
   (subscriptionCreated)="onSubscriptionChanges($event)">
 </app-start-subscription>

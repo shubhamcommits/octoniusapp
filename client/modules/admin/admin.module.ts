@@ -32,6 +32,7 @@ import { WorkplaceLDAPSyncComponent } from './admin-general/workplace-integratio
 import { WorkplaceLdapFieldsMapperDialogComponent } from './admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component';
 import { WorkplaceGoogleFieldsMapperDialogComponent } from './admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component';
 import { PricingTableComponent } from './admin-billing/stripe-payment/pricing-table/pricing-table.component';
+import { DeleteWorkspaceComponent } from './admin-general/delete-workspace/delete-workspace.component';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import { PricingTableComponent } from './admin-billing/stripe-payment/pricing-ta
         AdminGroupsComponent,
         AdminBillingComponent,
         AdminHeaderComponent,
+        DeleteWorkspaceComponent,
         WorkplaceInformationComponent,
         WorkplaceAddDomainComponent,
         WorkplaceInviteUserComponent,

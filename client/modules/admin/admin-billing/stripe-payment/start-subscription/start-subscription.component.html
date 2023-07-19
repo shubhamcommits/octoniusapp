@@ -25,4 +25,9 @@
     [userData]="userData"
     [workspaceData]="workspaceData">
   </app-pricing-table>
+
+  <hr/>
+
+  <app-delete-workspace [workspaceData]="workspaceData"
+    (workspaceDeletedEmiter)="removeWorkspace()"></app-delete-workspace>
 </div>

@@ -14,12 +14,6 @@ import { ManagementPortalService } from 'src/shared/services/management-portal-s
 })
 export class StripePaymentComponent implements OnInit {
 
-  constructor(
-    private injector: Injector,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
-  ) { }
-
   // Workspace Data Object
   @Input('workspaceData') workspaceData: any;
 
@@ -51,6 +45,12 @@ export class StripePaymentComponent implements OnInit {
 
   // isLoading BehaviourSubject
   isLoading$ = new BehaviorSubject(false);
+
+  constructor(
+    private injector: Injector,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) { }
 
   async ngOnInit() {
     const sessionId = this.activatedRoute.snapshot.queryParams.session_id;

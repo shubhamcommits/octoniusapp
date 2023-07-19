@@ -62,28 +62,13 @@ export class AdminGeneralComponent implements OnInit, AfterContentChecked, OnDes
     this.subSink.unsubscribe();
   }
 
-  removeWorkspace(workspaceId) {
-    this.utilityService.getConfirmDialogAlert($localize`:@@adminGeneral.areYouSure:Are you sure?`, $localize`:@@adminGeneral.workspaceCompletelyRemoved:By doing this, the workspace be completely removed!`)
-      .then((res) => {
-        if (res.value) {
-          this.utilityService.asyncNotification($localize`:@@adminGeneral.pleaseWaitDeletingWorkspace:Please wait we are deleting the workspace...`, new Promise((resolve, reject) => {
-            // Remove the step
-            this.workspaceService.removeWorkspace(workspaceId)
-              .then((res) => {
-                this.authService.signout();
+  removeWorkspace() {
+    this.authService.signout();
 
-                this.storageService.clear();
-                this.publicFunctions.sendUpdatesToRouterState({});
-                this.publicFunctions.sendUpdatesToUserData({});
-                this.router.navigate(['/home']);
-
-                resolve(this.utilityService.resolveAsyncPromise($localize`:@@adminGeneral.workspaceDeleted:Workspace deleted!`));
-              }).catch((err) => {
-                reject(this.utilityService.rejectAsyncPromise($localize`:@@adminGeneral.unableDeleteWorkspace:Unable to delete the workspace, please try again!`));
-              });
-          }));
-        }
-      });
+    this.storageService.clear();
+    this.publicFunctions.sendUpdatesToRouterState({});
+    this.publicFunctions.sendUpdatesToUserData({});
+    this.router.navigate(['/home']);
   }
 
   onWorkspaceUpdated(workspace: any) {
