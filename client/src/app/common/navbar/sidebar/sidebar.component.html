@@ -80,9 +80,9 @@
                 </ul>
             </li>
 
-            <li> <hr class="divider-line"></li>
+            <li *ngIf="!isIndividualSubscription"><hr class="divider-line"></li>
 
-            <li>
+            <li *ngIf="!isIndividualSubscription">
               <a routerLinkActive="active"
                   routerLink="/dashboard/work/groups/all"
                   class="explore-work">

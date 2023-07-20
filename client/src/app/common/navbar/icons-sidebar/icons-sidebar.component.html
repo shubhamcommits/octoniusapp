@@ -41,22 +41,22 @@
 
       <li> <hr class="divider-line"></li>
 
-      <li class="static">
+      <li *ngIf="!isIndividualSubscription" class="static">
         <i class="material-icons-outlined">star_outline</i>
       </li>
 
       <li *ngFor="let group of userGroupsAndPortfoliosAndCollections">
-      <a (click)="goToGroupOrPortfolioOrCollection(group)">
-          <app-secured-image
-            [imgURL]="group?.avatar"
-            [service]="'group'"
-            [workspaceId]="workspaceData?._id"
-            [tooltip]="group?.name"
-            [styleClass]="'avatar'"></app-secured-image>
+        <a (click)="goToGroupOrPortfolioOrCollection(group)">
+            <app-secured-image
+              [imgURL]="group?.avatar"
+              [service]="'group'"
+              [workspaceId]="workspaceData?._id"
+              [tooltip]="group?.name"
+              [styleClass]="'avatar'"></app-secured-image>
         </a>
       </li>
 
-      <li> <hr class="divider-line"></li>
+      <li *ngIf="!isIndividualSubscription"> <hr class="divider-line"></li>
 
       <li *ngIf="!isIndividualSubscription">
         <a routerLinkActive="active" routerLink="/dashboard/work/groups/all" class="explore-work">
