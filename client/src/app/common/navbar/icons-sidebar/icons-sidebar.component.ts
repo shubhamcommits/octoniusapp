@@ -243,7 +243,7 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
       this.subSink.add(this.authService.selectWorkspace(accountId, workspaceId)
         .subscribe(async (res) => {
           await this.clearUserData();
-          this.publicFunctions.sendUpdatesToUserData({});
+          
           await this.storeUserData(res);
 
           await this.initProperties();
@@ -300,6 +300,7 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
     this.publicFunctions.sendUpdatesToUserData({});
     this.publicFunctions.sendUpdatesToAccountData({});
     this.publicFunctions.sendUpdatesToWorkspaceData({});
+    this.managementPortalService.sendUpdatesToStripeSubscription({});
   }
 
   /**

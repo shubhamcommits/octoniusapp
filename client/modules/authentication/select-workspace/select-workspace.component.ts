@@ -148,6 +148,7 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
    */
   clearUserData() {
     this.publicFunctions.sendUpdatesToUserData({});
+    this.managementPortalService.sendUpdatesToStripeSubscription({});
   }
 
   /**
