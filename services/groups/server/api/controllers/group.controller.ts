@@ -508,11 +508,15 @@ export class GroupController {
 
             const user = await User.findById({ _id: userId })
                 .select('_id _workspace').lean();
-
+console.log({userId});
+console.log({user});
             // Find the Group based on the groupId
-            var group = await Group.findOne({
-                    _workspace: user._workspace,
-                    group_name: 'Global'
+            const group = await Group.findOne({
+                    $and: [
+                        { group_name: 'Global' },
+                        { _workspace: user._workspace },
+                        { type: 'normal' }
+                    ]
                 })
                 .populate({
                     path: '_members',
@@ -530,7 +534,7 @@ export class GroupController {
                 })
                 .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
                 .lean();
-
+console.log({group});
             // Check if group already exist with the same groupId
             if (!group) {
                 return sendError(res, new Error('Oops, group not found!'), 'Group not found, Invalid groupId!', 404);
