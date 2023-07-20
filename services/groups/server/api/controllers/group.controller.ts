@@ -504,14 +504,13 @@ export class GroupController {
     async getGlobalGroup(req: Request, res: Response) {
         try {
             const userId = req['userId'];
-console.log("111111111");
-console.log({userId});
+
             if (!userId) {
                 return sendError(res, new Error('Please provide a userId!'), 'Please provide a userId!', 404);
             }
             const user = await User.findById({ _id: userId })
                 .select('_id _workspace').lean();
-console.log({user});
+
             if (!user) {
                 return sendError(res, new Error('There is no user for the ID provided!'), 'There is no user for the ID provided!', 404);
             }
@@ -539,7 +538,7 @@ console.log({user});
                 })
                 .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
                 .lean();
-console.log({group});
+
             // Check if group already exist with the same groupId
             if (!group) {
                 return sendError(res, new Error('There is no group for the userId provided!'), 'There is no group for the userId provided!', 404);

@@ -31,7 +31,7 @@ export class GroupService {
   }
 
   getGlobalGroupDataObservale() {
-    return this._http.get(this.baseURL + `/global-group`);
+    return this._http.get(this.baseURL + `/null/global-group`);
   }
 
   getGroupByPostId(postId: string) {
