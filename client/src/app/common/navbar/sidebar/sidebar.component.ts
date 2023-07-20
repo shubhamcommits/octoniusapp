@@ -109,7 +109,7 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
         const group = res['group'];
         this.userGroupsAndPortfoliosAndCollections = [{
           _id: group._id,
-          name: group.group_name,
+          name: $localize`:@@sidebar.workspace:Workspace`,
           avatar: group.group_avatar,
           type: 'group'
         }];
@@ -280,10 +280,12 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
               await this.getUserWorkspaces();
               const navbar = document.getElementById('pageWorkspacesSubmenu');
               navbar?.classList.remove('show');
-              resolve(this.utilityService.resolveAsyncPromise($localize`:@@iconsSidebar.hi:Hi ${res['user']['first_name']}, welcome back to your workplace!`));
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@sidebar.hi:Hi ${res['user']['first_name']}, welcome back to your workplace!`));
               this.router.navigate(['/home']);
             }, 500);
           }
+
+          window.location.reload();
         }, (err) => {
           reject(this.utilityService.rejectAsyncPromise($localize`:@@sidebar.oopsErrorSigningIn:Oops some error occurred while signing you in, please try again!`))
       }));

@@ -282,6 +282,8 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
               this.router.navigate(['/home']);
             }, 500);
           }
+
+          window.location.reload();
         }, (err) => {
           reject(this.utilityService.rejectAsyncPromise($localize`:@@iconsSidebar.oopsErrorSigningIn:Oops some error occurred while signing you in, please try again!`))
       }));
