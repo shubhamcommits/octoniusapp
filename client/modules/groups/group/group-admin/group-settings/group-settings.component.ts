@@ -7,6 +7,7 @@ import { GroupRAGDialogComponent } from '../group-rag-dialog/group-rag-dialog.co
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
 import { ColorPickerDialogComponent } from 'src/app/common/shared/color-picker-dialog/color-picker-dialog.component';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({
   selector: 'app-group-settings',
@@ -30,18 +31,23 @@ export class GroupSettingsComponent implements OnInit {
 
   groupSections: any = [];
 
+  isIndividualSubscription = false;
+
   // Public Functions Instancr
   publicFunctions = this.injector.get(PublicFunctions);
 
   constructor(
     private utilityService: UtilityService,
     private groupService: GroupService,
+    private managementPortalService: ManagementPortalService,
     public dialog: MatDialog,
     private injector: Injector,
     public router: Router
   ) { }
 
   async ngOnInit() {
+
+    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
 
     // Fetch the setting status
     this.enabledRights = this.groupData.enabled_rights;

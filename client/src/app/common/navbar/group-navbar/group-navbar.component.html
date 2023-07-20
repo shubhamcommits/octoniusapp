@@ -87,8 +87,8 @@
         </a>
       </li>
 
-      <li class="nav-item">
-        <a *ngIf="!myWorkplace" [ngClass]="activeState == 'groups_activity'?'nav-link active-nav':'nav-link'"
+      <li class="nav-item" *ngIf="!myWorkplace">
+        <a [ngClass]="activeState == 'groups_activity'?'nav-link active-nav':'nav-link'"
             (click)="changeState('groups_activity')"
             routerLink="/dashboard/work/groups/activity"
             routerLinkActive="active" i18n="@@groupNavbar.activity">
@@ -96,8 +96,8 @@
         </a>
       </li>
 
-      <li class="nav-item">
-          <a *ngIf="!myWorkplace" [ngClass]="activeState == 'groups_tasks'?'nav-link active-nav':'nav-link'"
+      <li class="nav-item" *ngIf="!myWorkplace">
+          <a [ngClass]="activeState == 'groups_tasks'?'nav-link active-nav':'nav-link'"
               (click)="changeState('groups_tasks')"
               routerLink="/dashboard/work/groups/tasks"
               routerLinkActive="active"
@@ -106,8 +106,8 @@
           </a>
       </li>
 
-      <li class="nav-item">
-          <a *ngIf="!myWorkplace" [ngClass]="activeState == 'groups_files'?'nav-link active-nav':'nav-link'"
+      <li class="nav-item" *ngIf="!myWorkplace">
+          <a [ngClass]="activeState == 'groups_files'?'nav-link active-nav':'nav-link'"
               (click)="changeState('groups_files')"
               routerLink="/dashboard/work/groups/files"
               routerLinkActive="active"
@@ -116,15 +116,15 @@
           </a>
       </li>
 
-      <li class="nav-item">
-        <a *ngIf="!myWorkplace" [ngClass]="activeState == 'groups_library'?'nav-link active-nav':'nav-link'"
+      <li class="nav-item" *ngIf="!myWorkplace && !isIndividualSubscription">
+        <a [ngClass]="activeState == 'groups_library'?'nav-link active-nav':'nav-link'"
           (click)="changeState('groups_library')" routerLink="/dashboard/work/groups/library" routerLinkActive="active"
           i18n="@@groupNavbar.library">
           Library
         </a>
       </li>
 
-      <li class="nav-item" *ngIf="!myWorkplace">
+      <li class="nav-item" *ngIf="!myWorkplace && !isIndividualSubscription">
           <a [ngClass]="activeState == 'groups_members'?'nav-link active-nav':'nav-link'"
               (click)="changeState('groups_members')"
               routerLink="/dashboard/work/groups/members"
@@ -145,7 +145,7 @@
       </li>
 
       <!-- Campaign is Enabled -->
-      <li class="nav-item" *ngIf="!myWorkplace && isCampaign">
+      <li class="nav-item" *ngIf="!myWorkplace && isCampaign && !isIndividualSubscription">
         <a [ngClass]="activeState == 'groups_reports'?'nav-link active-nav':'nav-link'"
             (click)="changeState('groups_reports')"
             routerLink="/dashboard/work/groups/reports"

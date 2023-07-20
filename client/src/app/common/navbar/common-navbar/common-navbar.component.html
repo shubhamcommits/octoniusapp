@@ -23,14 +23,14 @@
             <span class="sr-only">(current)</span>
         </a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" *ngIf="!isIndividualSubscription">
           <a class="nav-link" routerLink="/dashboard/admin/members" routerLinkActive="active"
             [ngClass]="activeState == 'members'?'nav-link active-nav':'nav-link'" (click)="changeState('members')">
               <span i18n="@@commonNavbar.members">Members</span>
               <span class="sr-only">(current)</span>
           </a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" *ngIf="!isIndividualSubscription">
           <a class="nav-link" routerLink="/dashboard/admin/groups" routerLinkActive="active"
             [ngClass]="activeState == 'groups'?'nav-link active-nav':'nav-link'" (click)="changeState('groups')">
               <span i18n="@@commonNavbar.groups">Groups</span>

@@ -28,6 +28,8 @@ export class CommonNavbarComponent implements OnInit, OnDestroy {
 
   canActivateBilling: boolean = false;
 
+  isIndividualSubscription = false;
+
   constructor(
     private injector: Injector,
     private router: ActivatedRoute,
@@ -63,6 +65,8 @@ export class CommonNavbarComponent implements OnInit, OnDestroy {
       await this.publicFunctions.getCurrentUser().then(user => this.userData = user);
       this.isCurrentUser = true;
     }
+
+    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
 
     // Subscribe to the change in workspace data from the socket server
     this.subSink.add(this.utilityService.currentWorkplaceData.subscribe((res) => {

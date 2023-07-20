@@ -10,13 +10,13 @@
     </div>
 
     <div class="col-md-8">
-      <app-workplace-add-domain [workspaceData]="workspaceData"></app-workplace-add-domain>
+      <app-workplace-add-domain *ngIf="!isIndividualSubscription" [workspaceData]="workspaceData"></app-workplace-add-domain>
 
       <app-workplace-invite-user [workspaceData]="workspaceData" [userData]="userData"></app-workplace-invite-user>
-      <app-workplace-profile-custom-fields [workspaceData]="workspaceData" [userData]="userData"></app-workplace-profile-custom-fields>
+      <app-workplace-profile-custom-fields *ngIf="!isIndividualSubscription" [workspaceData]="workspaceData" [userData]="userData"></app-workplace-profile-custom-fields>
 
 
-      <div class="card-tile invite-users">
+      <div class="card-tile invite-users" *ngIf="!isIndividualSubscription">
         <h6>
           <mat-slide-toggle color="primary" [checked]="workspaceData['allow_decentralized_roles']"
             [name]="'allow_decentralized_roles'" (change)="saveSettings($event)" [(ngModel)]="allowDecentralizedRoles">
@@ -43,7 +43,7 @@
         </div>
       </div>
 
-      <app-transfer-ownership [workspaceData]="workspaceData" [userData]="userData"></app-transfer-ownership>
+      <app-transfer-ownership *ngIf="!isIndividualSubscription" [workspaceData]="workspaceData" [userData]="userData"></app-transfer-ownership>
 
       <app-delete-workspace [workspaceData]="workspaceData" (workspaceDeletedEmiter)="removeWorkspace()"></app-delete-workspace>
     </div>
