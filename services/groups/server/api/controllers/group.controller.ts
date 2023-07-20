@@ -503,12 +503,10 @@ export class GroupController {
      */
     async getGlobalGroup(req: Request, res: Response) {
         try {
-
             const userId = req['userId'];
-
+console.log({userId});
             const user = await User.findById({ _id: userId })
                 .select('_id _workspace').lean();
-console.log({userId});
 console.log({user});
             // Find the Group based on the groupId
             const group = await Group.findOne({
