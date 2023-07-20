@@ -138,22 +138,22 @@ export class ManagementPortalService {
   }
 
   public async getStripeSubscription() {
-      let userData: any = await this.getStripeSubscriptionFromService();
+      let subscriptionData: any = await this.getStripeSubscriptionFromService();
       const utilityService = this.injector.get(UtilityService);
 
-      if (!utilityService.objectExists(userData)) {
-          userData = await this.getStripeSubscriptionFromStorage();
+      if (!utilityService.objectExists(subscriptionData)) {
+          subscriptionData = await this.getStripeSubscriptionFromStorage();
       }
 
-      if (!utilityService.objectExists(userData)) {
-        userData = await this.getStripeSubscriptionFromHTTP().catch(err => {
-          userData = {};
+      if (!utilityService.objectExists(subscriptionData)) {
+        subscriptionData = await this.getStripeSubscriptionFromHTTP().catch(err => {
+          subscriptionData = {};
         });
       }
 
-      this.sendUpdatesToStripeSubscription(userData);
+      this.sendUpdatesToStripeSubscription(subscriptionData);
 
-      return userData || {};
+      return subscriptionData || {};
   }
 
   async getStripeSubscriptionFromService() {
@@ -174,7 +174,17 @@ export class ManagementPortalService {
     return new Promise((resolve, reject) => {
       this.subSink.add(this.getSubscriptionObservable()
           .pipe(retry(1))
-          .subscribe((res) => resolve(res['subscription']), (err) => reject(err))
+          .subscribe(
+            (res) => {
+              let subscription = res['subscription'];
+              if (!subscription) {
+                subscription = {};
+              }
+              if (!subscription.product) {
+                subscription.product = res['product'];
+              }
+              resolve(subscription);
+            }, (err) => reject(err))
       );
     });
   }

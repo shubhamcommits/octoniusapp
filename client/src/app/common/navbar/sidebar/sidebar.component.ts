@@ -97,7 +97,7 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
     this.accountData = await this.publicFunctions.getCurrentAccount();
 
     await this.getUserWorkspaces();
-
+console.log(this.isIndividualSubscription);
     if (!this.isIndividualSubscription) {
       this.userGroups = this.userData['stats']['favorite_groups'];
       this.userPortfolios = this.userData['stats']['favorite_portfolios'];

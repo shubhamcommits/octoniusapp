@@ -445,10 +445,12 @@ export class ManagementControllers {
                 .populate('_workspace', '_id management_private_api_key').lean();
             
             let subscription;
+            let product;
             await managementService.getSubscription(user._workspace._id, user._workspace.management_private_api_key)
                 .then(res => {
 console.log(res);
                     subscription = res.data.subscription;
+                    product = res.data.product;
                 });
 
             // const workspace = await Workspace.findById({ _id: workspaceId })
@@ -461,7 +463,8 @@ console.log(res);
 
             // Send the status 200 response 
             return res.status(200).json({
-                subscription: subscription
+                subscription: subscription,
+                product: product
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
