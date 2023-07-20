@@ -198,10 +198,6 @@ export class ManagementPortalService {
   async checkIsIndividualSubscription() {
     const subscription = await this.getStripeSubscription();
     const utilityService = this.injector.get(UtilityService);
-console.log(subscription);
-console.log(utilityService.objectExists(subscription));
-console.log(subscription.product);
-console.log(subscription.product == environment.STRIPE_INDIVIDUAL_PRODUCT_ID);
     return (utilityService.objectExists(subscription) && subscription.product && subscription.product == environment.STRIPE_INDIVIDUAL_PRODUCT_ID);
   }
 
