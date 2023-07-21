@@ -806,4 +806,30 @@ console.log(res);
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
+
+    /**
+     * This function is responsible for check if the workspace has organization mofule active
+     * @param workspaceId
+     */
+    async canInviteMoreMembers(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { workspaceId } = req.params;
+
+            let message;
+            let canInvite;
+            await managementService.canInviteMoreMembers(workspaceId)
+                .then(res => {
+                    message = res['data']['message'];
+                    canInvite = res['data']['canInvite'];
+                });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: message,
+                canInvite: canInvite
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
 }

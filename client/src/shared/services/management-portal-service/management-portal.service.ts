@@ -310,4 +310,18 @@ export class ManagementPortalService {
       }
     });
   }
+
+  async canInviteMoreMembers(workspaceId: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.subSink.add(
+        this._http.get(`${this.WORKSPACE_BASE_API_URL}/${workspaceId}/can-invite-more-members`, {})
+          .pipe(retry(1))
+          .subscribe(
+            (res) => {
+              const status = res['canInvite'];
+              resolve(status);
+            }, (err) => reject(err))
+      );
+    });
+  }
 }

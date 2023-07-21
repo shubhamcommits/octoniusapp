@@ -4,7 +4,7 @@
     </h6>
     <hr />
 
-    <div *ngIf="!isIndividualSubscription">
+    <div *ngIf="canInviteMembers">
       <div class="form-group">
           <app-email-input
             [email]="email"
@@ -21,7 +21,7 @@
       </button>
     </div>
 
-    <div *ngIf="isIndividualSubscription">
+    <div *ngIf="!canInviteMembers">
       <p i18n="@@workspaceInviteUser.changeSubscriptionDescription">
         In order to invite other people to join your workspace, you need to upgrade your subscription.
       </p>

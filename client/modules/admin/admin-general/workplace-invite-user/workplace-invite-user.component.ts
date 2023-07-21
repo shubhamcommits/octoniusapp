@@ -19,7 +19,7 @@ export class WorkplaceInviteUserComponent implements OnInit {
 
   isValidEmail = false;
 
-  isIndividualSubscription = false;
+  canInviteMembers = false;
 
   constructor(
     private adminService: AdminService,
@@ -28,7 +28,7 @@ export class WorkplaceInviteUserComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+    this.canInviteMembers = await this.managementPortalService.canInviteMoreMembers(this.workspaceData?._id);
   }
 
   /**

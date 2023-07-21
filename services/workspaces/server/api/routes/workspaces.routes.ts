@@ -79,6 +79,9 @@ routes.get('/can-activate-billing/:workspaceId', mgmt.canActivateBilling);
 // GET - get subscription details
 routes.get('/billing/get-subscription', mgmt.getSubscription);
 
+// GET - check if the user can invite more people to the workspace
+routes.get('/billing/can-invite-more-members', mgmt.canInviteMoreMembers);
+
 // GET - get customer details
 routes.get('/get-customer/:customerId', mgmt.getStripeCustomer);
 

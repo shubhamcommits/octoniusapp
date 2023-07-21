@@ -1,4 +1,5 @@
 import { axios } from '../../utils';
+import { Workspace } from '../models';
 
 /*  ===============================
  *  -- Management Service --
@@ -164,6 +165,36 @@ export class ManagementService {
                         API_KEY: mgmtApiPrivateKey
                     },
                     
+                });
+            }
+        } catch (err) {
+            throw (err);
+        }
+    }
+
+    /**
+     * This function is responsible for check if the workspace has organization module active
+     * @param workspaceId
+     */
+     async canInviteMoreMembers(workspaceId: string) {
+        try {
+            if (process.env.NODE_ENV == 'development') {
+                return new Promise((resolve, reject) => {
+                    resolve({
+                        data: {
+                            message: 'Can invite more members.',
+                            canInvite: true
+                        }
+                    });
+                });
+            } else {
+
+                const workspace = await Workspace.findById({ _id: workspaceId }).select('management_private_api_key').lean()
+            
+                return axios.get(`${this.MANAGEMENT_BASE_API_URL}/billings/can-invite-more-members/${workspaceId}`, {
+                    params: {
+                        API_KEY: workspace.management_private_api_key
+                    }
                 });
             }
         } catch (err) {
