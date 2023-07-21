@@ -21,7 +21,7 @@ export class ActivateInboxGuard implements CanActivate {
 
   async checkUserIndivicualSubscription() {
     const isIndividualSubscription: any = await this.managementPortalService.checkIsIndividualSubscription();
-    if (isIndividualSubscription) {
+    if (!isIndividualSubscription) {
       return true;
     } else {
       this.router.navigate(['dashboard', 'myspace', 'tasks'])
