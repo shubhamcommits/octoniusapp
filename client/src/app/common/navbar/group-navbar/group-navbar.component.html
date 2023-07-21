@@ -40,7 +40,7 @@
        <span class="groupname muted"> {{ groupData.group_name | truncatetext:20 }}</span>
       </li>
 
-      <li class="nav-item" *ngIf="myWorkplace || !groupData" >
+      <li class="nav-item" *ngIf="(myWorkplace || !groupData) && !isIndividualSubscription" >
         <a [ngClass]="activeState == 'myspace_inbox'?'nav-link active-nav':'nav-link'"
             (click)="changeState('myspace_inbox')"
             routerLink="/dashboard/myspace/inbox"

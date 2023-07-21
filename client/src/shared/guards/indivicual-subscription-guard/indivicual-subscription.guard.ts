@@ -19,8 +19,7 @@ export class IndivicualSubscriptionGuard implements CanActivate  {
   constructor(
     private managementPortalService: ManagementPortalService,
     private utilityService: UtilityService,
-    private router: Router,
-    private injector: Injector,
+    private router: Router
   ) {
   }
 
@@ -30,7 +29,6 @@ export class IndivicualSubscriptionGuard implements CanActivate  {
   ) {
     return this.checkUserIndivicualSubscription();
   }
-
 
   async checkUserIndivicualSubscription() {
     const isIndividualSubscription: any = await this.managementPortalService.checkIsIndividualSubscription();

@@ -4,7 +4,9 @@ import { Observable } from 'rxjs';
 import { PublicFunctions } from 'modules/public.functions';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ActivateBillingGuard implements CanActivate {
 
   // PUBLIC FUNCTIONS

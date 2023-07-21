@@ -5,11 +5,10 @@ import { MyspaceInboxComponent } from './myspace-inbox/myspace-inbox.component';
 import { MyspaceTasksComponent } from './myspace-tasks/myspace-tasks.component';
 import { MyspaceAgendaComponent } from './myspace-agenda/myspace-agenda.component';
 import { MyspaceWorkplaceComponent } from './myspace-workplace/myspace-workplace.component';
-//import { MyspaceHeaderComponent } from './myspace-header/myspace-header.component';
+import { ActivateInboxGuard } from 'src/shared/guards/activate-inbox-guard/activate-inbox.guard';
 
 const routes: Routes = [
-  // { path: '', component: MyspaceHeaderComponent },
-  { path: 'inbox', component: MyspaceInboxComponent },
+  { path: 'inbox', component: MyspaceInboxComponent, canActivate: [ActivateInboxGuard] },
   { path: 'tasks', component: MyspaceTasksComponent },
   { path: 'agenda', component: MyspaceAgendaComponent },
   { path: 'workplace', component: MyspaceWorkplaceComponent }
