@@ -7,11 +7,12 @@
 
 <div class="media-body" *ngIf="subscription_products && subscription_products.length > 0">
   <div class="row">
-    <span i18n="@@pricingTable.paymentPeriod">Payment period</span>
-    <mat-slide-toggle color="primary" [checked]="periodSelected == 'year'" (change)="changePeriod($event.checked)">
-      <span *ngIf="periodSelected == 'month'" i18n="@@pricingTable.monthly">Monthly</span>
-      <span *ngIf="periodSelected == 'year'" i18n="@@pricingTable.yearly">Yearly</span>
-    </mat-slide-toggle>
+    <span i18n="@@pricingTable.paymentPeriod">Payment period</span>: &nbsp;
+    <span i18n="@@pricingTable.monthly">Monthly</span>
+    &nbsp;&nbsp;
+    <mat-slide-toggle color="primary" [checked]="periodSelected == 'year'" (change)="changePeriod($event.checked)"></mat-slide-toggle>
+    &nbsp;&nbsp;
+    <span i18n="@@pricingTable.yearly">Yearly</span>
   </div>
 
   <div class="row">
