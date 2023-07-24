@@ -8574,7 +8574,7 @@
       </trans-unit>
       <trans-unit id="pageRow.updated" datatype="html">
         <source>Updated</source>
-        <target state="needs-l10n">به روز شد</target>
+        <target state="translated">بروز شده</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/page-row/page-row.component.html</context>
           <context context-type="linenumber">14</context>
@@ -12811,7 +12811,7 @@
       </trans-unit>
       <trans-unit id="northStarPage.whatIsNS" datatype="html">
         <source> Set and achieve strategic goals.</source>
-        <target state="needs-adaptation">ستاره شمالي چيه؟</target>
+        <target state="translated"> تعیین و دستیابی به اهداف استراتژیک</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/north-star-page/north-star-page.component.html</context>
           <context context-type="linenumber">15</context>
@@ -12819,7 +12819,7 @@
       </trans-unit>
       <trans-unit id="northStarPage.setAndAchieveStrategic" datatype="html">
         <source> Align your organization. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Connect your company goals and the work to support them in one place. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>You can see progress to keep teams on track. And teams can work wisely to get the right things done. </source>
-        <target state="needs-adaptation"> تعیین و رسیدن به اهداف استراتژیک. سازمان خود را همتراز کنید. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> اهداف شرکت خود و کار برای حمایت از آنها را در یک مکان متصل کنید. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>شما می توانید پیشرفت برای نگه داشتن تیم در مسیر را ببینید. و تیم ها می توانند عاقلانه کار کنند تا کارهای درست را انجام دهند. </target>
+        <target state="translated"> تعیین و رسیدن به اهداف استراتژیک. سازمان خود را همتراز کنید. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> اهداف شرکت خود و کار برای حمایت از آنها را در یک مکان متصل کنید. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>شما می توانید پیشرفت برای نگه داشتن تیم در مسیر را ببینید. و تیم ها می توانند عاقلانه کار کنند تا کارهای درست را انجام دهند. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/north-star-page/north-star-page.component.html</context>
           <context context-type="linenumber">17,20</context>
