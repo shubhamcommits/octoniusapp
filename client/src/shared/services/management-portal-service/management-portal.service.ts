@@ -33,7 +33,7 @@ export class ManagementPortalService {
   /* | ======================================= BILLING ========================================== | */
 
   createClientPortalSession(workspaceId: string, return_url: string, mgmtApiPrivateKey: string) {
-    return this._http.post(`${this.WORKSPACE_BASE_API_URL}/create-client-portal-session`, {
+    return this._http.post(`${this.WORKSPACE_BASE_API_URL}/billing/create-client-portal-session`, {
       workspaceId: workspaceId,
       return_url: return_url,
       mgmtApiPrivateKey: mgmtApiPrivateKey
@@ -41,7 +41,7 @@ export class ManagementPortalService {
   }
 
   createStripeCheckoutSession(priceId: string, workspaceId: string, return_url: string, mgmtApiPrivateKey: string) {
-    return this._http.post(`${this.WORKSPACE_BASE_API_URL}/create-checkout-session`, {
+    return this._http.post(`${this.WORKSPACE_BASE_API_URL}/billing/create-checkout-session`, {
       priceId: priceId,
       workspaceId: workspaceId,
       return_url: return_url,
@@ -50,7 +50,7 @@ export class ManagementPortalService {
   }
 
   getStripeCheckoutSession(sessionId: string, workspaceId: string, mgmtApiPrivateKey: string) {
-    return this._http.get(`${this.WORKSPACE_BASE_API_URL}/get-checkout-session/${workspaceId}/${sessionId}`, {
+    return this._http.get(`${this.WORKSPACE_BASE_API_URL}/billing/get-checkout-session/${workspaceId}/${sessionId}`, {
       params: {
         mgmtApiPrivateKey: mgmtApiPrivateKey
       }
@@ -62,7 +62,7 @@ export class ManagementPortalService {
    * @param workspaceId
    */
   getBillingStatus(workspaceId: string, mgmtApiPrivateKey: string) {
-    return this._http.get(this.WORKSPACE_BASE_API_URL + `/get-billing-status/${workspaceId}`, {
+    return this._http.get(this.WORKSPACE_BASE_API_URL + `/billing/get-billing-status/${workspaceId}`, {
       params: {
         mgmtApiPrivateKey: mgmtApiPrivateKey
       }
@@ -76,7 +76,7 @@ export class ManagementPortalService {
    * @param workspaceId
    */
   canActivateBilling(workspaceId: string, mgmtApiPrivateKey: string) {
-    return this._http.get(this.WORKSPACE_BASE_API_URL + `/can-activate-billing/${workspaceId}`, {
+    return this._http.get(this.WORKSPACE_BASE_API_URL + `/billing/can-activate-billing/${workspaceId}`, {
       params: {
         mgmtApiPrivateKey: mgmtApiPrivateKey
       }
@@ -101,7 +101,7 @@ export class ManagementPortalService {
    * This function fetches the stripe customer details for the currently loggedIn user
    */
   getStripeCustomer(customerId: string, mgmtApiPrivateKey: string) {
-    return this._http.get(this.WORKSPACE_BASE_API_URL + `/get-customer/${customerId}`, {
+    return this._http.get(this.WORKSPACE_BASE_API_URL + `/billing/get-customer/${customerId}`, {
       params: {
         mgmtApiPrivateKey: mgmtApiPrivateKey
       }
@@ -314,7 +314,7 @@ export class ManagementPortalService {
   async canInviteMoreMembers(workspaceId: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.subSink.add(
-        this._http.get(`${this.WORKSPACE_BASE_API_URL}/${workspaceId}/can-invite-more-members`, {})
+        this._http.get(`${this.WORKSPACE_BASE_API_URL}/can-invite-more-members/${workspaceId}`, {})
           .pipe(retry(1))
           .subscribe(
             (res) => {
