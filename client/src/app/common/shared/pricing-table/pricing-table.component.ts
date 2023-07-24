@@ -20,8 +20,8 @@ export class PricingTableComponent implements OnInit {
   // Stripe Payment Handler
   handler: any;
   
-  PRICING_TABLE_ID = environment.STRIPE_PRICING_TABLE_ID;
-  STRIPE_PK = environment.STRIPE_PK;
+  // PRICING_TABLE_ID = environment.STRIPE_PRICING_TABLE_ID;
+  // STRIPE_PK = environment.STRIPE_PK;
   
   // Workspace object
   workspaceService = this.injector.get(WorkspaceService);
@@ -48,7 +48,8 @@ export class PricingTableComponent implements OnInit {
   isLoading$ = new BehaviorSubject(false);
   
   constructor(
-    private injector: Injector) { }
+      private injector: Injector
+    ) { }
 
   async ngOnInit() {
     this.isLoading$.next(true);
@@ -60,7 +61,7 @@ export class PricingTableComponent implements OnInit {
   async getSubscriptionProducts() {
     await this.authService.getSubscriptionProducts()
       .then((res: any) => {
-        this.subscription_products = res.products.products;
+        this.subscription_products = res.products.products.filter(product => product && product.id != environment.STRIPE_ONPREMISE_PRODUCT_ID);
       });
     
     this.isLoading$.next(false);
