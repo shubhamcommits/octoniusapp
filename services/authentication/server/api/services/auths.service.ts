@@ -42,4 +42,15 @@ export class AuthsService {
         throw new Error('Unable to create the account, some unexpected error occurred!');
       }
     }
+
+    /**
+     * This function fetches the prices for the subscription for the currently loggedIn user
+     */
+    getSubscriptionProducts() {
+        try {
+            return axios.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-subscription-products`, {});
+        } catch (err) {
+            throw (err);
+        }
+    }
 }

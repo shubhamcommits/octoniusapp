@@ -1,6 +1,8 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, Injector, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
+import { PricingTableComponent } from 'src/app/common/shared/pricing-table/pricing-table.component';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -12,14 +14,19 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 })
 export class AuthNewWorkplaceComponent implements OnInit {
 
+  @ViewChild("pricingTableDialog") pricingTableDialog: TemplateRef<any>;
+
   // Defining User Object, which accepts the following properties
-  workplace: { name: string, company_name: string } = {
+  workplace: { name: string, company_name: string, stripe_product_id: string } = {
     name: null,
-    company_name: null
+    company_name: null,
+    stripe_product_id: null
   };
 
   accountData;
   validWorkspace = false;
+
+  stripeProducts = [];
 
   publicFunctions = new PublicFunctions(this._Injector);
 
@@ -28,6 +35,7 @@ export class AuthNewWorkplaceComponent implements OnInit {
     private authenticationService: AuthService,
     private storageService: StorageService,
     public router: Router,
+    public dialog: MatDialog,
     private _Injector: Injector
   ) { }
 
@@ -36,6 +44,14 @@ export class AuthNewWorkplaceComponent implements OnInit {
     if (!this.accountData || JSON.stringify(this.accountData) == JSON.stringify({})) {
       this.router.navigate(['']);
     }
+    await this.getSubscriptionProducts();
+  }
+
+  async getSubscriptionProducts() {
+    await this.authenticationService.getSubscriptionProducts()
+      .then((res: any) => {
+        this.stripeProducts = res.products.products;
+      });
   }
 
   checkWorkspaceAvailability() {
@@ -57,6 +73,10 @@ export class AuthNewWorkplaceComponent implements OnInit {
     }
   }
 
+  selectStripeProduct(productId: string) {
+    this.workplace.stripe_product_id = productId;
+  }
+
   /**
    * This function is responsible for creating a new workplace
    *
@@ -65,16 +85,19 @@ export class AuthNewWorkplaceComponent implements OnInit {
    */
   createNewWorkplace() {
     try {
-      if (!this.validWorkspace || this.workplace.company_name == null || this.workplace.company_name == '') {
+      if (!this.validWorkspace
+          || this.workplace.company_name == null || this.workplace.company_name == ''
+          || this.workplace.stripe_product_id == null || this.workplace.stripe_product_id == '') {
         this.utilityService.warningNotification($localize`:@@authNewWorkplace.insufficientData:Insufficient or incorrect data, kindly fill up all the fields correctly!`);
       } else {
         // PREPARING THE WORKPLACE DATA
         let workplaceData: Object = {
           workspace_name: this.workplace.name.trim(),
-          company_name: this.workplace.company_name.trim()
+          company_name: this.workplace.company_name.trim(),
+          stripe_product_id: this.workplace.stripe_product_id.trim()
         }
         this.utilityService.asyncNotification($localize`:@@authNewWorkplace.pleaseWaitSettingUp:Please wait while we are setting up your new workplace and account...`,
-          this.newWorkplaceServiceFunction(workplaceData))
+          this.newWorkplaceServiceFunction(workplaceData));
       }
     } catch (err) {
       console.log('There\'s some unexpected error occurred, please try again later!', err);
@@ -109,6 +132,17 @@ export class AuthNewWorkplaceComponent implements OnInit {
           reject(this.utilityService.rejectAsyncPromise($localize`:@@authNewWorkplace.oopsErrorOccuredSettingUp:Oops some error occurred while setting you up, please try again!`))
         })
     })
+  }
+
+  async openPricingDialog() {
+    const dialogRef = await this.dialog.open(this.pricingTableDialog, {
+      width: '75%',
+      height: '50%',
+      disableClose: false,
+      hasBackdrop: true
+    });
+
+    dialogRef.afterClosed().subscribe(() => {});
   }
 
   /**

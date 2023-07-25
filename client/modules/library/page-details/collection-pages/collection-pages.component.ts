@@ -106,6 +106,6 @@ export class CollectionPagesComponent implements OnInit, OnChanges {
 	}
 
 	goToPage() {
-console.log("11111");
+
 	}
 }

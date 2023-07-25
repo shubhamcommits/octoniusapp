@@ -1,4 +1,5 @@
 import { axios } from '../../utils';
+import { Workspace } from '../models';
 
 /*  ===============================
  *  -- Management Service --
@@ -89,8 +90,7 @@ export class ManagementService {
             return axios.get(this.MANAGEMENT_BASE_API_URL + `/billings/can-activate-billing/${workspaceId}`, {
                 params: {
                     API_KEY: mgmtApiPrivateKey
-                },
-                
+                }
             });
         } catch (err) {
             throw (err);
@@ -132,18 +132,18 @@ export class ManagementService {
     /**
      * This function fetches the prices for the subscription for the currently loggedIn user
      */
-    getSubscriptionPrices(mgmtApiPrivateKey: string) {
-        try {
-            return axios.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-subscription-prices`, {
-                params: {
-                    API_KEY: mgmtApiPrivateKey
-                },
+    // getSubscriptionPrices(mgmtApiPrivateKey: string) {
+    //     try {
+    //         return axios.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-subscription-prices`, {
+    //             params: {
+    //                 API_KEY: mgmtApiPrivateKey
+    //             },
                 
-            });
-        } catch (err) {
-            throw (err);
-        }
-    }
+    //         });
+    //     } catch (err) {
+    //         throw (err);
+    //     }
+    // }
 
     isInTryOut(workspaceId: string, mgmtApiPrivateKey: string) {
         try {
@@ -165,6 +165,36 @@ export class ManagementService {
                         API_KEY: mgmtApiPrivateKey
                     },
                     
+                });
+            }
+        } catch (err) {
+            throw (err);
+        }
+    }
+
+    /**
+     * This function is responsible for check if the workspace has organization module active
+     * @param workspaceId
+     */
+     async canInviteMoreMembers(workspaceId: string) {
+        try {
+            if (process.env.NODE_ENV == 'development') {
+                return new Promise((resolve, reject) => {
+                    resolve({
+                        data: {
+                            message: 'Can invite more members.',
+                            canInvite: true
+                        }
+                    });
+                });
+            } else {
+
+                const workspace = await Workspace.findById({ _id: workspaceId }).select('management_private_api_key').lean()
+            
+                return axios.get(`${this.MANAGEMENT_BASE_API_URL}/billings/can-invite-more-members/${workspaceId}`, {
+                    params: {
+                        API_KEY: workspace.management_private_api_key
+                    }
                 });
             }
         } catch (err) {
@@ -355,6 +385,33 @@ export class ManagementService {
                 });
             } else {
                 return axios.get(`${this.MANAGEMENT_BASE_API_URL}/workspace/${workspaceId}/chat`, {
+                    params: {
+                        API_KEY: mgmtApiPrivateKey
+                    }
+                });
+            }
+        } catch (err) {
+            throw (err);
+        }
+    }
+
+    /**
+     * This function is responsible for check if the workspace has chat module active
+     * @param workspaceId
+     */
+     isLoungeAvailable(workspaceId: string, mgmtApiPrivateKey: string) {
+        try {
+            if (process.env.NODE_ENV == 'development') {
+                return new Promise((resolve, reject) => {
+                    resolve({
+                        data: {
+                            message: 'Lounge module availability is true',
+                            status: true
+                        }
+                    });
+                });
+            } else {
+                return axios.get(`${this.MANAGEMENT_BASE_API_URL}/workspace/${workspaceId}/lounge`, {
                     params: {
                         API_KEY: mgmtApiPrivateKey
                     }

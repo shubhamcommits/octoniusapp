@@ -25,6 +25,7 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
   @Input() iconsSidebar = false;
   @Input() userGroups = [];
   @Input() userPortfolios = [];
+  @Input() isIndividualSubscription = false;
   
   @Output() sidebarChange = new EventEmitter();
   
@@ -95,11 +96,23 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
     this.accountData = await this.publicFunctions.getCurrentAccount();
     await this.getUserWorkspaces();
 
-    this.userGroups = this.userData['stats']['favorite_groups'];
-    this.userPortfolios = this.userData['stats']['favorite_portfolios'];
-    this.userCollections = this.userData['stats']['favorite_collections'];
+    if (!this.isIndividualSubscription) {
+      this.userGroups = this.userData['stats']['favorite_groups'];
+      this.userPortfolios = this.userData['stats']['favorite_portfolios'];
+      this.userCollections = this.userData['stats']['favorite_collections'];
 
-    await this.mapGroupsAndPortfoliosAndCollections();
+      await this.mapGroupsAndPortfoliosAndCollections();
+    } else {
+      this.groupService.getGlobalGroupData().then((res: any) => {
+        const group = res['group'];
+        this.userGroupsAndPortfoliosAndCollections = [{
+          _id: group._id,
+          name: group.group_name,
+          avatar: group.group_avatar,
+          type: 'group'
+        }];
+      });
+    }
   }
 
   async mapGroupsAndPortfoliosAndCollections() {
@@ -230,7 +243,7 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
       this.subSink.add(this.authService.selectWorkspace(accountId, workspaceId)
         .subscribe(async (res) => {
           await this.clearUserData();
-          this.publicFunctions.sendUpdatesToUserData({});
+          
           await this.storeUserData(res);
 
           await this.initProperties();
@@ -269,6 +282,8 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
               this.router.navigate(['/home']);
             }, 500);
           }
+
+          window.location.reload();
         }, (err) => {
           reject(this.utilityService.rejectAsyncPromise($localize`:@@iconsSidebar.oopsErrorSigningIn:Oops some error occurred while signing you in, please try again!`))
       }));
@@ -285,6 +300,7 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
     this.publicFunctions.sendUpdatesToUserData({});
     this.publicFunctions.sendUpdatesToAccountData({});
     this.publicFunctions.sendUpdatesToWorkspaceData({});
+    this.managementPortalService.sendUpdatesToStripeSubscription({});
   }
 
   /**

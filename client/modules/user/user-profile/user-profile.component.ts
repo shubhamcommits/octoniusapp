@@ -7,7 +7,7 @@ import { WorkspaceService } from 'src/shared/services/workspace-service/workspac
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { GroupsService } from 'src/shared/services/groups-service/groups.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
-import { WorkplaceLdapFieldsMapperDialogComponent } from 'modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -30,6 +30,8 @@ export class UserProfileComponent implements OnInit, AfterContentChecked, OnDest
 
   isLoading$;
 
+  isIndividualSubscription = false;
+
   // Public functions class member
   publicFunctions = new PublicFunctions(this.injector);
 
@@ -39,6 +41,7 @@ export class UserProfileComponent implements OnInit, AfterContentChecked, OnDest
   constructor(
     private injector: Injector,
     public dialog: MatDialog,
+    private managementPortalService: ManagementPortalService,
     private utilityService: UtilityService,
     private workspaceService: WorkspaceService,
     private userService: UserService,
@@ -58,7 +61,11 @@ export class UserProfileComponent implements OnInit, AfterContentChecked, OnDest
 
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
-    this.initProfileCustomFields();
+    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+
+    if (!this.isIndividualSubscription) {
+      this.initProfileCustomFields();
+    }
   }
 
   ngAfterContentChecked() {

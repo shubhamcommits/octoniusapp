@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AdminService } from 'src/shared/services/admin-service/admin.service';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
@@ -8,11 +9,6 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
   styleUrls: ['./workplace-invite-user.component.scss']
 })
 export class WorkplaceInviteUserComponent implements OnInit {
-
-  constructor(
-    private adminService: AdminService,
-    private utilityService: UtilityService
-  ) { }
 
   @Input('workspaceData') workspaceData: any;
   @Input('userData') userData: any;
@@ -23,7 +19,16 @@ export class WorkplaceInviteUserComponent implements OnInit {
 
   isValidEmail = false;
 
-  ngOnInit() {
+  canInviteMembers = false;
+
+  constructor(
+    private adminService: AdminService,
+    private utilityService: UtilityService,
+    private managementPortalService: ManagementPortalService
+  ) { }
+
+  async ngOnInit() {
+    this.canInviteMembers = await this.managementPortalService.canInviteMoreMembers(this.workspaceData?._id);
   }
 
   /**

@@ -21,6 +21,7 @@ import { GroupsComponent } from './groups.component';
 import { PortfolioGuard } from 'src/shared/guards/portfolio-guard/portfolio.guard';
 import { PortfolioDetailsComponent } from './portfolio/portfolio-details/portfolio-details.component';
 import { LibraryGuard } from 'src/shared/guards/library-guard/library.guard';
+import { IndivicualSubscriptionGuard } from 'src/shared/guards/indivicual-subscription-guard/indivicual-subscription.guard';
 
 
 /**
@@ -29,7 +30,7 @@ import { LibraryGuard } from 'src/shared/guards/library-guard/library.guard';
 const routes: Routes = [
 
   // All Groups List Route
-  { path: 'all', component: GroupsComponent },
+  { path: 'all', component: GroupsComponent, canActivate: [IndivicualSubscriptionGuard] },
   { path: 'portfolio', component: PortfolioDetailsComponent, canActivate: [PortfolioGuard] },
   // Group Specific Route
   {

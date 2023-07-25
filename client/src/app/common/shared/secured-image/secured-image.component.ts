@@ -191,7 +191,6 @@ export class SecuredImageComponent implements OnChanges  {
   }
 
   hideLoader() {
-// console.log("11111");
     this.isLoading=false;
   }
 }

@@ -3,7 +3,6 @@ import { Component, OnInit, Input, Injector } from '@angular/core';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
-import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
@@ -14,12 +13,6 @@ import { ManagementPortalService } from 'src/shared/services/management-portal-s
   styleUrls: ['./stripe-payment.component.scss']
 })
 export class StripePaymentComponent implements OnInit {
-
-  constructor(
-    private injector: Injector,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
-  ) { }
 
   // Workspace Data Object
   @Input('workspaceData') workspaceData: any;
@@ -50,13 +43,18 @@ export class StripePaymentComponent implements OnInit {
   // Utility Service Object
   utilityService = this.injector.get(UtilityService);
 
-  // Socket Service Object
-  socketService = this.injector.get(SocketService);
-
   // isLoading BehaviourSubject
   isLoading$ = new BehaviorSubject(false);
 
+  constructor(
+    private injector: Injector,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) { }
+
   async ngOnInit() {
+    this.isLoading$.next(true);
+
     const sessionId = this.activatedRoute.snapshot.queryParams.session_id;
     if (sessionId) {
       await this.managementPortalService.getStripeCheckoutSession(sessionId, this.workspaceData._id, this.workspaceData.management_private_api_key)
@@ -88,6 +86,8 @@ export class StripePaymentComponent implements OnInit {
           this.subscriptionActive = true;
         }
       });
+    
+    this.isLoading$.next(false);
   }
 
   isWorkspaceOwner() {
@@ -100,7 +100,7 @@ export class StripePaymentComponent implements OnInit {
    */
   async subscriptionExistCheck() {
     if (!this.subscription) {
-      await this.managementPortalService.getSubscription(this.workspaceData._id, this.workspaceData.management_private_api_key)
+      await this.managementPortalService.getSubscription()
         .then((res) => {
           // Initialise the suncription
           this.subscription = res['subscription'];

@@ -1,4 +1,4 @@
-import { Injectable, Injector } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs/internal/Observable';
@@ -17,7 +17,6 @@ export class WorkspaceService {
 
   constructor(
     private _http: HttpClient,
-    private injector: Injector,
     private groupsService: GroupsService,
     private groupService: GroupService,
     private utilityService: UtilityService) { }

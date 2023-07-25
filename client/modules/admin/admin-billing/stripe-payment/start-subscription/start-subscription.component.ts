@@ -1,10 +1,12 @@
 import { Component, OnInit, HostListener, Injector, Input, Output, EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
-import { loadStripe } from '@stripe/stripe-js';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
+import { AuthService } from 'src/shared/services/auth-service/auth.service';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
+import { Router } from '@angular/router';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
   selector: 'app-start-subscription',
@@ -13,63 +15,39 @@ import { ManagementPortalService } from 'src/shared/services/management-portal-s
 })
 export class StartSubscriptionComponent implements OnInit {
 
-  constructor(private injector: Injector) { }
-
+  
   // Workspace Data Object
   @Input('workspaceData') workspaceData: any;
-
+  
   // User Data Object
   @Input('userData') userData: any;
-
-  // Public Functions Object
-  @Input('publicFunctions') publicFunctions: any;
-
+  
   // Subscription Data Object
   @Input('subscription') subscription: any;
-
+  
   @Output() subscriptionCreated = new EventEmitter();
 
-  // Stripe Payment Handler
-  handler: any;
-
-  // Workspace object
-  workspaceService = this.injector.get(WorkspaceService);
-
-  // Socket Service Object
-  socketService = this.injector.get(SocketService)
-
-  // Utility Service Object
-  utilityService = this.injector.get(UtilityService)
-
-  // Management Portal Service Object
-  managementPortalService = this.injector.get(ManagementPortalService)
-
-  amount = 0;
-  priceId;
-
-  subscription_prices = [];
-
-  stripeSessionId;
+  publicFunctions = new PublicFunctions(this.injector);
+  
+  constructor(
+    private injector: Injector,
+    private router: Router,
+    private authService: AuthService,
+    private storageService: StorageService) { }
 
   async ngOnInit() {
-    await this.getSubscriptionPrices();
   }
 
-  async getSubscriptionPrices() {
-    await this.managementPortalService.getSubscriptionPrices(this.workspaceData.management_private_api_key)
-      .then(res => {
-        this.subscription_prices = res['prices'].data;
-      });
+  onSubscriptionChanges(subscription) {
+    this.subscriptionCreated.emit(subscription);
   }
 
-  startStripeCheckoutSession(priceId: string) {
-    this.managementPortalService.createStripeCheckoutSession(priceId, this.workspaceData._id, window.location.href, this.workspaceData.management_private_api_key).then(async res => {
-      var stripe = await loadStripe(res['pk_stripe']);
-      stripe.redirectToCheckout({
-        sessionId: res['session'].id
-      });
-    }).catch((err)=> {
-      this.utilityService.errorNotification($localize`:@@startSubscription.errorWithYourSubscription:There is an error with your Subscription, please contact support!`);
-    });
+  removeWorkspace() {
+    this.authService.signout();
+
+    this.storageService.clear();
+    this.publicFunctions.sendUpdatesToRouterState({});
+    this.publicFunctions.sendUpdatesToUserData({});
+    this.router.navigate(['/home']);
   }
 }

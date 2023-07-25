@@ -6,6 +6,7 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 import { SubSink } from 'subsink';
 import { RouteStateService } from 'src/shared/services/router-service/route-state.service';
 import { Router } from '@angular/router';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({
   selector: 'app-group-navbar',
@@ -36,6 +37,8 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
 
   isFavoriteGroup: boolean;
 
+  isIndividualSubscription = false;
+
   activeState: string;
 
   // UNSUBSCRIBE THE DATA
@@ -55,6 +58,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
   constructor(
     private injector: Injector,
     private utilityService: UtilityService,
+    private managementPortalService: ManagementPortalService,
     private routeStateService: RouteStateService,
     private _router: Router,
   ) {
@@ -126,6 +130,8 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     this.myWorkplace = this.publicFunctions.isPersonalNavigation(this.groupData, this.userData);
 
     this.isFavoriteGroup = this.checkIsFavoriteGroup();
+
+    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
 
     if (this.routerFromEvent && this.routerFromEvent?._urlSegment) {
       const segments = this.routerFromEvent?._urlSegment?.children?.primary?.segments;

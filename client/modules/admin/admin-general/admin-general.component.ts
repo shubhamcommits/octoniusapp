@@ -8,6 +8,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { SubSink } from 'subsink';
 import { WorkspaceRolesInformationDialogComponent } from './workspace-roles-information-dialog/workspace-roles-information-dialog.component';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({
   selector: 'app-admin-general',
@@ -22,6 +23,8 @@ export class AdminGeneralComponent implements OnInit, AfterContentChecked, OnDes
 
   allowDecentralizedRoles = false;
 
+  isIndividualSubscription = false;
+
   publicFunctions = new PublicFunctions(this.injector);
 
   isLoading$;
@@ -34,6 +37,7 @@ export class AdminGeneralComponent implements OnInit, AfterContentChecked, OnDes
     public utilityService: UtilityService,
     private storageService: StorageService,
     private authService: AuthService,
+    private managementPortalService: ManagementPortalService,
     private router: Router,
     private injector: Injector,
     public dialog: MatDialog
@@ -50,6 +54,8 @@ export class AdminGeneralComponent implements OnInit, AfterContentChecked, OnDes
     this.userData = await this.publicFunctions.getCurrentUser();
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     this.allowDecentralizedRoles = this.workspaceData['allow_decentralized_roles'];
+
+    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
   }
 
   ngAfterContentChecked() {
@@ -62,28 +68,13 @@ export class AdminGeneralComponent implements OnInit, AfterContentChecked, OnDes
     this.subSink.unsubscribe();
   }
 
-  removeWorkspace(workspaceId) {
-    this.utilityService.getConfirmDialogAlert($localize`:@@adminGeneral.areYouSure:Are you sure?`, $localize`:@@adminGeneral.workspaceCompletelyRemoved:By doing this, the workspace be completely removed!`)
-      .then((res) => {
-        if (res.value) {
-          this.utilityService.asyncNotification($localize`:@@adminGeneral.pleaseWaitDeletingWorkspace:Please wait we are deleting the workspace...`, new Promise((resolve, reject) => {
-            // Remove the step
-            this.workspaceService.removeWorkspace(workspaceId)
-              .then((res) => {
-                this.authService.signout();
+  removeWorkspace() {
+    this.authService.signout();
 
-                this.storageService.clear();
-                this.publicFunctions.sendUpdatesToRouterState({});
-                this.publicFunctions.sendUpdatesToUserData({});
-                this.router.navigate(['/home']);
-
-                resolve(this.utilityService.resolveAsyncPromise($localize`:@@adminGeneral.workspaceDeleted:Workspace deleted!`));
-              }).catch((err) => {
-                reject(this.utilityService.rejectAsyncPromise($localize`:@@adminGeneral.unableDeleteWorkspace:Unable to delete the workspace, please try again!`));
-              });
-          }));
-        }
-      });
+    this.storageService.clear();
+    this.publicFunctions.sendUpdatesToRouterState({});
+    this.publicFunctions.sendUpdatesToUserData({});
+    this.router.navigate(['/home']);
   }
 
   onWorkspaceUpdated(workspace: any) {

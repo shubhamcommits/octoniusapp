@@ -26,6 +26,13 @@ export class GroupService {
   getGroupObservale(groupId: string) {
     return this._http.get(this.baseURL + `/${groupId}`);
   }
+  getGlobalGroupData() {
+    return this.getGlobalGroupDataObservale().toPromise();
+  }
+
+  getGlobalGroupDataObservale() {
+    return this._http.get(this.baseURL + `/null/global-group`);
+  }
 
   getGroupByPostId(postId: string) {
     return this._http.get(this.baseURL + `/${postId}/byPost`).toPromise();

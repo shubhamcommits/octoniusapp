@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AdminRoutingModule } from './admin-routing.module';
@@ -31,6 +31,7 @@ import { WorkplaceGoogleSyncComponent } from './admin-general/workplace-integrat
 import { WorkplaceLDAPSyncComponent } from './admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-sync.component';
 import { WorkplaceLdapFieldsMapperDialogComponent } from './admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component';
 import { WorkplaceGoogleFieldsMapperDialogComponent } from './admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component';
+import { DeleteWorkspaceComponent } from './admin-general/delete-workspace/delete-workspace.component';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { WorkplaceGoogleFieldsMapperDialogComponent } from './admin-general/work
         AdminGroupsComponent,
         AdminBillingComponent,
         AdminHeaderComponent,
+        DeleteWorkspaceComponent,
         WorkplaceInformationComponent,
         WorkplaceAddDomainComponent,
         WorkplaceInviteUserComponent,
@@ -64,6 +66,9 @@ import { WorkplaceGoogleFieldsMapperDialogComponent } from './admin-general/work
         MatDialogModule,
         MatTabsModule
     ],
-    providers: [WorkspaceService, AdminService, ActivateBillingGuard]
+    providers: [WorkspaceService, AdminService, ActivateBillingGuard],
+    schemas: [
+        CUSTOM_ELEMENTS_SCHEMA
+    ]
 })
 export class AdminModule { }

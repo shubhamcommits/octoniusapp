@@ -437,18 +437,34 @@ export class ManagementControllers {
      */
     async getSubscription(req: Request, res: Response, next: NextFunction) {
         try {
-            const { workspaceId } = req.params;
-            const { mgmtApiPrivateKey } = req.body;
+            // const { workspaceId } = req.params;
+            const userId = req['userId'];
 
+            const user = await User.findById({ _id: userId })
+                .select('_id _workspace')
+                .populate('_workspace', '_id management_private_api_key').lean();
+            
             let subscription;
-            await managementService.getSubscription(workspaceId, mgmtApiPrivateKey)
+            let product;
+            await managementService.getSubscription(user._workspace._id, user._workspace.management_private_api_key)
                 .then(res => {
-                    subscription = res['data']['subscription'];
+console.log(res);
+                    subscription = res.data.subscription;
+                    product = res.data.product;
                 });
+
+            // const workspace = await Workspace.findById({ _id: workspaceId })
+            //     .select('_id management_private_api_key').lean();
+                
+            // await managementService.getSubscription(workspace._id, workspace.management_private_api_key)
+            //     .then(res => {
+            //         subscription = res['data']['subscription'];
+            //     });
 
             // Send the status 200 response 
             return res.status(200).json({
-                subscription: subscription
+                subscription: subscription,
+                product: product
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
@@ -479,26 +495,46 @@ export class ManagementControllers {
     }
 
     /**
+     * This function fetches the products for the subscription for the currently loggedIn user
+     */
+    // async getSubscriptionProducts(req: Request, res: Response, next: NextFunction) {
+    //     try {
+    //         let products;
+    //         await managementService.getSubscriptionProducts()
+    //             .then(res => {
+    //                 products = res['data'];
+    //             });
+
+    //         // Send the status 200 response 
+    //         return res.status(200).json({
+    //             products: products
+    //         });
+    //     } catch (err) {
+    //         return sendError(res, err, 'Internal Server Error!', 500);
+    //     }
+    // }
+
+    /**
      * This function fetches the prices for the subscription for the currently loggedIn user
      */
-    async getSubscriptionPrices(req: Request, res: Response, next: NextFunction) {
-        try {
-            const { mgmtApiPrivateKey } = req.query;
+    // async getSubscriptionPrices(req: Request, res: Response, next: NextFunction) {
+    //     try {
+    //         const { mgmtApiPrivateKey } = req.query;
 
-            let prices;
-            await managementService.getSubscriptionPrices(mgmtApiPrivateKey.toString())
-                .then(res => {
-                    prices = res['data']['prices'];
-                });
+    //         let prices;
+    //         await managementService.getSubscriptionPrices(mgmtApiPrivateKey.toString())
+    //             .then(res => {
+    //                 prices = res['data']['prices'];
+    //             });
 
-            // Send the status 200 response 
-            return res.status(200).json({
-                prices: prices
-            });
-        } catch (err) {
-            return sendError(res, err, 'Internal Server Error!', 500);
-        }
-    }
+    //         // Send the status 200 response 
+    //         return res.status(200).json({
+    //             prices: prices
+    //         });
+    //     } catch (err) {
+    //         return sendError(res, err, 'Internal Server Error!', 500);
+    //     }
+    // }
 
     async isInTryOut(req: Request, res: Response, next: NextFunction) {
         try {
@@ -718,6 +754,33 @@ export class ManagementControllers {
     }
 
     /**
+     * This function is responsible for check if the workspace has files versions mofule active
+     * @param workspaceId
+     */
+    async isLoungeAvailable(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { workspaceId } = req.params;
+            const { mgmtApiPrivateKey } = req.query;
+
+            let message;
+            let status;
+            await managementService.isLoungeAvailable(workspaceId, mgmtApiPrivateKey.toString())
+                .then(res => {
+                    message = res['data']['message'];
+                    status = res['data']['status'];
+                });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: message,
+                status: status
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
      * This function is responsible for check if the workspace has organization mofule active
      * @param workspaceId
      */
@@ -738,6 +801,32 @@ export class ManagementControllers {
             return res.status(200).json({
                 message: message,
                 baseURL: baseURL
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for check if the workspace has organization mofule active
+     * @param workspaceId
+     */
+    async canInviteMoreMembers(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { workspaceId } = req.params;
+
+            let message;
+            let canInvite;
+            await managementService.canInviteMoreMembers(workspaceId)
+                .then(res => {
+                    message = res['data']['message'];
+                    canInvite = res['data']['canInvite'];
+                });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: message,
+                canInvite: canInvite
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);

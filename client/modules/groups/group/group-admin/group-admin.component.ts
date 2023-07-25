@@ -3,6 +3,7 @@ import { PublicFunctions } from 'modules/public.functions';
 import { ActivatedRoute } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({
   selector: 'app-group-admin',
@@ -28,12 +29,15 @@ export class GroupAdminComponent implements OnInit {
   shuttleTasksModuleAvailable: boolean = false;
 
   // Campaign Module Available
-  campaignModuleAvailable: boolean = false
+  campaignModuleAvailable: boolean = false;
+
+  isIndividualSubscription = false;
 
   constructor(
     private injector: Injector,
     private utilityService: UtilityService,
     private groupService: GroupService,
+    private managementPortalService: ManagementPortalService,
     private router: ActivatedRoute) { }
 
   async ngOnInit() {
@@ -46,6 +50,8 @@ export class GroupAdminComponent implements OnInit {
 
     // Fetch Current Workspace
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+
+    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
 
     this.myWorkplace = await this.publicFunctions.isPersonalNavigation(this.groupData, this.userData);
 

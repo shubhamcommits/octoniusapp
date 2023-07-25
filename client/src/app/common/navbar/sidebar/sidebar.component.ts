@@ -26,6 +26,7 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
   @Input() userGroups: any = [];
   @Input() userPortfolios: any = [];
   @Input() isMobile = false;
+  @Input() isIndividualSubscription = false;
 
   @Output() sidebarChange = new EventEmitter();
 
@@ -97,11 +98,23 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
 
     await this.getUserWorkspaces();
 
-    this.userGroups = this.userData['stats']['favorite_groups'];
-    this.userPortfolios = this.userData['stats']['favorite_portfolios'];
-    this.userCollections = this.userData['stats']['favorite_collections'];
+    if (!this.isIndividualSubscription) {
+      this.userGroups = this.userData['stats']['favorite_groups'];
+      this.userPortfolios = this.userData['stats']['favorite_portfolios'];
+      this.userCollections = this.userData['stats']['favorite_collections'];
 
-    await this.mapGroupsAndPortfoliosAndCollections();
+      await this.mapGroupsAndPortfoliosAndCollections();
+    } else {
+      this.groupService.getGlobalGroupData().then((res: any) => {
+        const group = res['group'];
+        this.userGroupsAndPortfoliosAndCollections = [{
+          _id: group._id,
+          name: $localize`:@@sidebar.workspace:Workspace`,
+          avatar: group.group_avatar,
+          type: 'group'
+        }];
+      });
+    }
   }
 
   async mapGroupsAndPortfoliosAndCollections() {
@@ -233,9 +246,7 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
       this.subSink.add(this.authService.selectWorkspace(accountId, workspaceId)
         .subscribe(async (res) => {
           await this.clearUserData();
-          this.publicFunctions.sendUpdatesToUserData({});
           await this.storeUserData(res);
-
           await this.initProperties();
 
           let workspaceBlocked = false;
@@ -267,10 +278,12 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
               await this.getUserWorkspaces();
               const navbar = document.getElementById('pageWorkspacesSubmenu');
               navbar?.classList.remove('show');
-              resolve(this.utilityService.resolveAsyncPromise($localize`:@@iconsSidebar.hi:Hi ${res['user']['first_name']}, welcome back to your workplace!`));
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@sidebar.hi:Hi ${res['user']['first_name']}, welcome back to your workplace!`));
               this.router.navigate(['/home']);
             }, 500);
           }
+
+          window.location.reload();
         }, (err) => {
           reject(this.utilityService.rejectAsyncPromise($localize`:@@sidebar.oopsErrorSigningIn:Oops some error occurred while signing you in, please try again!`))
       }));
@@ -287,6 +300,7 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
     this.publicFunctions.sendUpdatesToUserData({});
     this.publicFunctions.sendUpdatesToAccountData({});
     this.publicFunctions.sendUpdatesToWorkspaceData({});
+    this.managementPortalService.sendUpdatesToStripeSubscription({});
   }
 
   /**

@@ -18,6 +18,7 @@ export class WorkNavbarComponent implements OnInit, AfterContentChecked, OnDestr
   isUserManager: boolean = true;
 
   isOrganizationModuleAvailable: boolean = false;
+  isLoungeModuleAvailable: boolean = false;
 
   // WORKSPACE DATA
   workspaceData: any;
@@ -57,6 +58,7 @@ export class WorkNavbarComponent implements OnInit, AfterContentChecked, OnDestr
     }));
 
     this.isOrganizationModuleAvailable = await this.publicFunctions.isOrganizationModuleAvailable();
+    this.isLoungeModuleAvailable = await this.publicFunctions.isLoungeModuleAvailable();
 
     // FETCH THE USER DETAILS EITHER FROM SHARED SERVICE, STORED LOCAL DATA OR FROM SERVER USING PUBLIC FUNCTIONS
     this.userData = await this.publicFunctions.getCurrentUser();
@@ -132,6 +134,10 @@ export class WorkNavbarComponent implements OnInit, AfterContentChecked, OnDestr
     return (this.existsElement(this.userData) &&
         (this.userData.role == 'owner' || this.userData.role == 'admin' || this.userData.role == 'manager' ||
           (this.workspaceData && this.workspaceData.allow_decentralized_roles)));
+  }
+
+  canSeeLounge() {
+
   }
 
   async goBackLounge() {

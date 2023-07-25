@@ -62,28 +62,34 @@ routes.delete('/:workspaceId', workspaces.remove);
  * MGMT calls
 */
 // POST - Create a customer client portal session
-routes.post('/create-client-portal-session', mgmt.createClientPortalSession);
+routes.post('/billing/create-client-portal-session', mgmt.createClientPortalSession);
 
 // POST - Create a checkout portal session
-routes.post('/create-checkout-session', mgmt.createStripeCheckoutSession);
+routes.post('/billing/create-checkout-session', mgmt.createStripeCheckoutSession);
 
 // GET - 
-routes.get('/get-checkout-session/:workspaceId/:sessionId', mgmt.getStripeCheckoutSession);
+routes.get('/billing/get-checkout-session/:workspaceId/:sessionId', mgmt.getStripeCheckoutSession);
 
 // GET - 
-routes.get('/get-billing-status/:workspaceId', mgmt.getBillingStatus);
+routes.get('/billing/get-billing-status/:workspaceId', mgmt.getBillingStatus);
 
 // GET - To check if the workspace is on-premise or on the cloud
-routes.get('/can-activate-billing/:workspaceId', mgmt.canActivateBilling);
+routes.get('/billing/can-activate-billing/:workspaceId', mgmt.canActivateBilling);
 
 // GET - get subscription details
-routes.get('/get-subscription/:workspaceId', mgmt.getSubscription);
+routes.get('/billing/get-subscription', mgmt.getSubscription);
+
+// GET - check if the user can invite more people to the workspace
+routes.get('/billing/can-invite-more-members/:workspaceId', mgmt.canInviteMoreMembers);
 
 // GET - get customer details
-routes.get('/get-customer/:customerId', mgmt.getStripeCustomer);
+routes.get('/billing/get-customer/:customerId', mgmt.getStripeCustomer);
+
+// GET - get subscription
+// routes.get('/billing/stripe-subscription', mgmt.getSubscription);
 
 // GET - get subscription prices
-routes.get('/billing/get-subscription-prices', mgmt.getSubscriptionPrices);
+// routes.get('/billing/get-subscription-prices', mgmt.getSubscriptionPrices);
 
 // GET - 
 routes.get('/:workspaceId/inTryOut', mgmt.isInTryOut);
@@ -108,6 +114,9 @@ routes.get('/:workspaceId/organization', mgmt.isOrganizationModuleAvailable);
 
 // GET - obtain if the chat module is availability in the workspace
 routes.get('/:workspaceId/chat', mgmt.isChatModuleAvailable);
+
+// GET - obtain if the filesVersions module is availability in the workspace
+routes.get('/:workspaceId/lounge', mgmt.isLoungeAvailable);
 
 // GET - obtain the base url of the workspace
 routes.get('/:workspaceId/baseURL', mgmt.getWorkspaceBaseURL);

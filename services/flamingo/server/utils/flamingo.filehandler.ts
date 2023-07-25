@@ -70,7 +70,7 @@ const flamingoFileUploader = async (req: Request, res: Response, next: NextFunct
         error: error
       });
     }
-
+// minioClient.setBucketQuota((req.body.fileData.workspaceId), 100 * 1024 * 1024);
     if (!exists) {
       // Make a bucket.
       await minioClient.makeBucket((req.body.fileData.workspaceId).toLowerCase(), async (error) => {

@@ -28,6 +28,8 @@ export class CommonNavbarComponent implements OnInit, OnDestroy {
 
   canActivateBilling: boolean = false;
 
+  isIndividualSubscription = false;
+
   constructor(
     private injector: Injector,
     private router: ActivatedRoute,
@@ -64,6 +66,8 @@ export class CommonNavbarComponent implements OnInit, OnDestroy {
       this.isCurrentUser = true;
     }
 
+    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+
     // Subscribe to the change in workspace data from the socket server
     this.subSink.add(this.utilityService.currentWorkplaceData.subscribe((res) => {
       if (JSON.stringify(res) != JSON.stringify({})) {
@@ -82,15 +86,14 @@ export class CommonNavbarComponent implements OnInit, OnDestroy {
     });
 
     // Disabling the stripe integration for now, we are handling the payments and blocking the workspace manualy
-    //this.checkCanActivateBilling();
-    this.canActivateBilling = false;
+    this.checkCanActivateBilling();
   }
 
   /**
    * This function unsubscribes the data from the observables
    */
   ngOnDestroy(): void {
-      this.subSink.unsubscribe();
+    this.subSink.unsubscribe();
   }
 
   async changeState(state:string){

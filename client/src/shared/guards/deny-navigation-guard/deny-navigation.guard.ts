@@ -10,7 +10,9 @@ import { SocketService } from 'src/shared/services/socket-service/socket.service
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDeactivate<AdminBillingComponent> {
 
   workspaceId;

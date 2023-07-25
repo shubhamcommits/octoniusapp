@@ -165,4 +165,11 @@ export class AuthService {
       }
     }).toPromise();
   }
+
+  /**
+   * This function fetches the products for the subscription for the currently loggedIn user
+   */
+  getSubscriptionProducts() {
+    return this.httpClient.get(this.AUTH_BASE_API_URL + `/billing/get-subscription-products`, {}).toPromise()
+  }
 }

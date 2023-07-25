@@ -14,7 +14,7 @@
   </app-group-information>
 
   <!-- Add Users -->
-  <div class="card-tile">
+  <div class="card-tile" *ngIf="!isIndividualSubscription">
     <div class="card-block">
       <img src="assets/images/add-user.svg" alt="Invite a guest" style="float: right; margin-top: -10px; margin-right: 30px; width: 200px"/>
       <div class="form-group">
@@ -39,11 +39,11 @@
 
 
   <!-- Smart admin content -->
-  <app-group-smart-admin *ngIf="groupData?.group_name?.toLowerCase() != 'global'" [group]="groupData">
+  <app-group-smart-admin *ngIf="groupData?.group_name?.toLowerCase() != 'global' && !isIndividualSubscription" [group]="groupData">
   </app-group-smart-admin>
 
    <!-- Invite guest -->
-   <app-invite-user *ngIf="workspaceData && groupData?.group_name?.toLowerCase() != 'global'"
+   <app-invite-user *ngIf="workspaceData && groupData?.group_name?.toLowerCase() != 'global' && !isIndividualSubscription"
     [workspaceData]="workspaceData"
     [groupData]="groupData"
     [userData]="userData">
@@ -57,7 +57,7 @@
     [campaignModuleAvailable]="campaignModuleAvailable"></app-group-settings>
 
   <!-- Delete Group Component starts -->
-  <app-delete-group *ngIf="groupData && groupData?._id && groupData?._members && groupData?._admins"
+  <app-delete-group *ngIf="groupData && groupData?._id && groupData?._members && groupData?._admins && !isIndividualSubscription"
     [groupId]="groupData?._id" [numMembers]="groupData?._members?.length + groupData?._admins?.length">
   </app-delete-group>
   <!-- Delete Group Component ends -->

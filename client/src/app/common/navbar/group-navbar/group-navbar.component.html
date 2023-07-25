@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg">
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="nav">
-      <li class="nav-item d-block d-sm-none text-center">
+      <li *ngIf="!isIndividualSubscription" class="nav-item d-block d-sm-none text-center">
         <h6 class="card-title" *ngIf="!myWorkplace">
           <b>{{groupData?.group_name }}</b>
         </h6>
@@ -29,19 +29,18 @@
           </app-group-image-details>
         </ng-template>
 
-        <h2 *ngIf="groupData && !myWorkplace" (click)="saveFavoriteGroup()" placement="right"
+        <h2 *ngIf="groupData && !myWorkplace && !isIndividualSubscription" (click)="saveFavoriteGroup()" placement="right"
           ngbTooltip="Add shortcut to sidebar">
           <i class="material-icons" style="color: #FFAB00; cursor: pointer;" *ngIf="!isFavoriteGroup">star_outline</i>
           <i class="material-icons" style="color: #FFAB00; cursor: pointer;" *ngIf="isFavoriteGroup">star</i>
         </h2>
-
       </li>
 
       <li *ngIf="groupData && !myWorkplace" class="nav-item mr-3">
        <span class="groupname muted"> {{ groupData.group_name | truncatetext:20 }}</span>
       </li>
 
-      <li class="nav-item" *ngIf="myWorkplace || !groupData" >
+      <li class="nav-item" *ngIf="(myWorkplace || !groupData) && !isIndividualSubscription" >
         <a [ngClass]="activeState == 'myspace_inbox'?'nav-link active-nav':'nav-link'"
             (click)="changeState('myspace_inbox')"
             routerLink="/dashboard/myspace/inbox"
@@ -88,8 +87,8 @@
         </a>
       </li>
 
-      <li class="nav-item">
-        <a *ngIf="!myWorkplace" [ngClass]="activeState == 'groups_activity'?'nav-link active-nav':'nav-link'"
+      <li class="nav-item" *ngIf="!myWorkplace">
+        <a [ngClass]="activeState == 'groups_activity'?'nav-link active-nav':'nav-link'"
             (click)="changeState('groups_activity')"
             routerLink="/dashboard/work/groups/activity"
             routerLinkActive="active" i18n="@@groupNavbar.activity">
@@ -97,8 +96,8 @@
         </a>
       </li>
 
-      <li class="nav-item">
-          <a *ngIf="!myWorkplace" [ngClass]="activeState == 'groups_tasks'?'nav-link active-nav':'nav-link'"
+      <li class="nav-item" *ngIf="!myWorkplace">
+          <a [ngClass]="activeState == 'groups_tasks'?'nav-link active-nav':'nav-link'"
               (click)="changeState('groups_tasks')"
               routerLink="/dashboard/work/groups/tasks"
               routerLinkActive="active"
@@ -107,8 +106,8 @@
           </a>
       </li>
 
-      <li class="nav-item">
-          <a *ngIf="!myWorkplace" [ngClass]="activeState == 'groups_files'?'nav-link active-nav':'nav-link'"
+      <li class="nav-item" *ngIf="!myWorkplace">
+          <a [ngClass]="activeState == 'groups_files'?'nav-link active-nav':'nav-link'"
               (click)="changeState('groups_files')"
               routerLink="/dashboard/work/groups/files"
               routerLinkActive="active"
@@ -117,15 +116,15 @@
           </a>
       </li>
 
-      <li class="nav-item">
-        <a *ngIf="!myWorkplace" [ngClass]="activeState == 'groups_library'?'nav-link active-nav':'nav-link'"
+      <li class="nav-item" *ngIf="!myWorkplace && !isIndividualSubscription">
+        <a [ngClass]="activeState == 'groups_library'?'nav-link active-nav':'nav-link'"
           (click)="changeState('groups_library')" routerLink="/dashboard/work/groups/library" routerLinkActive="active"
           i18n="@@groupNavbar.library">
           Library
         </a>
       </li>
 
-      <li class="nav-item" *ngIf="!myWorkplace">
+      <li class="nav-item" *ngIf="!myWorkplace && !isIndividualSubscription">
           <a [ngClass]="activeState == 'groups_members'?'nav-link active-nav':'nav-link'"
               (click)="changeState('groups_members')"
               routerLink="/dashboard/work/groups/members"
@@ -146,7 +145,7 @@
       </li>
 
       <!-- Campaign is Enabled -->
-      <li class="nav-item" *ngIf="!myWorkplace && isCampaign">
+      <li class="nav-item" *ngIf="!myWorkplace && isCampaign && !isIndividualSubscription">
         <a [ngClass]="activeState == 'groups_reports'?'nav-link active-nav':'nav-link'"
             (click)="changeState('groups_reports')"
             routerLink="/dashboard/work/groups/reports"

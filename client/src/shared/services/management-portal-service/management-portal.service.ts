@@ -1,6 +1,11 @@
 import { Injectable, Injector } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { SubSink } from 'subsink';
+import { BehaviorSubject } from 'rxjs';
+import { UtilityService } from '../utility-service/utility.service';
+import { StorageService } from '../storage-service/storage.service';
+import { retry } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +16,24 @@ export class ManagementPortalService {
   MANAGEMENT_BASE_API_URL = environment.MANAGEMENT_URL + '/api';
   WORKSPACE_BASE_API_URL = environment.WORKSPACE_BASE_API_URL;
 
+  /**
+  * Both of the variables listed down below are used to share the data through this common service among different components in the app
+  * @constant stripeSubscriptionSource
+  * @constant stripeSubscriptionData
+  */
+  private stripeSubscriptionSource = new BehaviorSubject<any>({});
+  stripeSubscriptionData = this.stripeSubscriptionSource.asObservable();
+
+  private subSink = new SubSink();
+
   constructor(
-    private _http: HttpClient) { }
+    private _http: HttpClient,
+    private injector: Injector) { }
 
   /* | ======================================= BILLING ========================================== | */
 
   createClientPortalSession(workspaceId: string, return_url: string, mgmtApiPrivateKey: string) {
-    return this._http.post(`${this.WORKSPACE_BASE_API_URL}/create-client-portal-session`, {
+    return this._http.post(`${this.WORKSPACE_BASE_API_URL}/billing/create-client-portal-session`, {
       workspaceId: workspaceId,
       return_url: return_url,
       mgmtApiPrivateKey: mgmtApiPrivateKey
@@ -25,7 +41,7 @@ export class ManagementPortalService {
   }
 
   createStripeCheckoutSession(priceId: string, workspaceId: string, return_url: string, mgmtApiPrivateKey: string) {
-    return this._http.post(`${this.WORKSPACE_BASE_API_URL}/create-checkout-session`, {
+    return this._http.post(`${this.WORKSPACE_BASE_API_URL}/billing/create-checkout-session`, {
       priceId: priceId,
       workspaceId: workspaceId,
       return_url: return_url,
@@ -34,7 +50,7 @@ export class ManagementPortalService {
   }
 
   getStripeCheckoutSession(sessionId: string, workspaceId: string, mgmtApiPrivateKey: string) {
-    return this._http.get(`${this.WORKSPACE_BASE_API_URL}/get-checkout-session/${workspaceId}/${sessionId}`, {
+    return this._http.get(`${this.WORKSPACE_BASE_API_URL}/billing/get-checkout-session/${workspaceId}/${sessionId}`, {
       params: {
         mgmtApiPrivateKey: mgmtApiPrivateKey
       }
@@ -46,7 +62,7 @@ export class ManagementPortalService {
    * @param workspaceId
    */
   getBillingStatus(workspaceId: string, mgmtApiPrivateKey: string) {
-    return this._http.get(this.WORKSPACE_BASE_API_URL + `/get-billing-status/${workspaceId}`, {
+    return this._http.get(this.WORKSPACE_BASE_API_URL + `/billing/get-billing-status/${workspaceId}`, {
       params: {
         mgmtApiPrivateKey: mgmtApiPrivateKey
       }
@@ -60,7 +76,7 @@ export class ManagementPortalService {
    * @param workspaceId
    */
   canActivateBilling(workspaceId: string, mgmtApiPrivateKey: string) {
-    return this._http.get(this.WORKSPACE_BASE_API_URL + `/can-activate-billing/${workspaceId}`, {
+    return this._http.get(this.WORKSPACE_BASE_API_URL + `/billing/can-activate-billing/${workspaceId}`, {
       params: {
         mgmtApiPrivateKey: mgmtApiPrivateKey
       }
@@ -70,20 +86,22 @@ export class ManagementPortalService {
   /**
    * This function fetches the subscription details for the currently loggedIn user
    */
-  getSubscription(workspaceId: string, mgmtApiPrivateKey: string) {
-    return this._http.get(this.WORKSPACE_BASE_API_URL + `/get-subscription/${workspaceId}`, {
-      params: {
-        mgmtApiPrivateKey: mgmtApiPrivateKey
-      }
-    })
-      .toPromise()
+  getSubscriptionObservable() {
+    return this._http.get(this.WORKSPACE_BASE_API_URL + `/billing/get-subscription`, {});
+  }
+
+  /**
+   * This function fetches the subscription details for the currently loggedIn user
+   */
+  getSubscription() {
+    return this.getSubscriptionObservable().toPromise();
   }
 
   /**
    * This function fetches the stripe customer details for the currently loggedIn user
    */
   getStripeCustomer(customerId: string, mgmtApiPrivateKey: string) {
-    return this._http.get(this.WORKSPACE_BASE_API_URL + `/get-customer/${customerId}`, {
+    return this._http.get(this.WORKSPACE_BASE_API_URL + `/billing/get-customer/${customerId}`, {
       params: {
         mgmtApiPrivateKey: mgmtApiPrivateKey
       }
@@ -94,13 +112,27 @@ export class ManagementPortalService {
   /**
    * This function fetches the prices for the subscription for the currently loggedIn user
    */
-  getSubscriptionPrices(mgmtApiPrivateKey: string) {
-    return this._http.get(this.WORKSPACE_BASE_API_URL + `/billing/get-subscription-prices`, {
-      params: {
-        mgmtApiPrivateKey: mgmtApiPrivateKey
-      }
-    })
-      .toPromise()
+  // getSubscriptionPrices(mgmtApiPrivateKey: string) {
+  //   return this._http.get(this.WORKSPACE_BASE_API_URL + `/billing/get-subscription-prices`, {
+  //     params: {
+  //       mgmtApiPrivateKey: mgmtApiPrivateKey
+  //     }
+  //   })
+  //     .toPromise()
+  // }
+
+  async canInviteMoreMembers(workspaceId: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.subSink.add(
+        this._http.get(`${this.WORKSPACE_BASE_API_URL}/billing/can-invite-more-members/${workspaceId}`, {})
+          .pipe(retry(1))
+          .subscribe(
+            (res) => {
+              const status = res['canInvite'];
+              resolve(status);
+            }, (err) => reject(err))
+      );
+    });
   }
 
   isInTryOut(workspaceId: string, mgmtApiPrivateKey: string) {
@@ -109,6 +141,78 @@ export class ManagementPortalService {
         mgmtApiPrivateKey: mgmtApiPrivateKey
       }
     }).toPromise();
+  }
+
+  /**
+   * Used to emit the next value of observable so that where this is subscribed, will get the updated value
+   * @param stripeSubscription
+   */
+  public updateStripeSubscriptionData(stripeSubscription: any){
+    this.stripeSubscriptionSource.next(stripeSubscription);
+  }
+
+  public async getStripeSubscription() {
+      let subscriptionData: any = await this.getStripeSubscriptionFromService();
+      const utilityService = this.injector.get(UtilityService);
+
+      if (!utilityService.objectExists(subscriptionData)) {
+          subscriptionData = await this.getStripeSubscriptionFromStorage();
+      }
+
+      if (!utilityService.objectExists(subscriptionData)) {
+        subscriptionData = await this.getStripeSubscriptionFromHTTP().catch(err => {
+          subscriptionData = {};
+        });
+      }
+
+      this.sendUpdatesToStripeSubscription(subscriptionData);
+
+      return subscriptionData || {};
+  }
+
+  async getStripeSubscriptionFromService() {
+    return new Promise((resolve) => {
+      const utilityService = this.injector.get(UtilityService);
+      this.subSink.add(this.stripeSubscriptionData.subscribe((res) => {
+        resolve(res)
+      }));
+    })
+  }
+
+  async getStripeSubscriptionFromStorage() {
+    const storageService = this.injector.get(StorageService);
+    return (storageService.existData('stripeSubscription') === null) ? {} : storageService.getLocalData('stripeSubscription');
+  }
+
+  async getStripeSubscriptionFromHTTP() {
+    return new Promise((resolve, reject) => {
+      this.subSink.add(this.getSubscriptionObservable()
+          .pipe(retry(1))
+          .subscribe(
+            (res) => {
+              let subscription = res['subscription'];
+              if (!subscription) {
+                subscription = {};
+              }
+              if (!subscription.product) {
+                subscription.product = res['product'];
+              }
+              resolve(subscription);
+            }, (err) => reject(err))
+      );
+    });
+  }
+
+  async sendUpdatesToStripeSubscription(stripeSubscription: Object) {
+    const storageService = this.injector.get(StorageService);
+    this.updateStripeSubscriptionData(stripeSubscription);
+    storageService.setLocalData('stripeSubscription', JSON.stringify(stripeSubscription))
+  }
+
+  async checkIsIndividualSubscription() {
+    const subscription = await this.getStripeSubscription();
+    const utilityService = this.injector.get(UtilityService);
+    return (utilityService.objectExists(subscription) && subscription.product && subscription.product == environment.STRIPE_INDIVIDUAL_PRODUCT_ID);
   }
 
   /* | ======================================= BILLING ENDS ========================================== | */
@@ -191,6 +295,18 @@ export class ManagementPortalService {
    */
    isChatModuleAvailable(workspaceId: string, mgmtApiPrivateKey: string) {
     return this._http.get(`${this.WORKSPACE_BASE_API_URL}/${workspaceId}/chat`, {
+      params: {
+        mgmtApiPrivateKey: mgmtApiPrivateKey
+      }
+    }).toPromise();
+  }
+
+  /**
+   * This function is responsible for check if the workspace has chat module active
+   * @param workspaceId
+   */
+   isLoungeModuleAvailable(workspaceId: string, mgmtApiPrivateKey: string) {
+    return this._http.get(`${this.WORKSPACE_BASE_API_URL}/${workspaceId}/lounge`, {
       params: {
         mgmtApiPrivateKey: mgmtApiPrivateKey
       }

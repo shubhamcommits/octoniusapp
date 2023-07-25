@@ -4,7 +4,9 @@ import { Observable } from 'rxjs';
 import { PublicFunctions } from 'modules/public.functions';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ActivateBillingGuard implements CanActivate {
 
   // PUBLIC FUNCTIONS
@@ -19,9 +21,9 @@ export class ActivateBillingGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      return false;
+      // return false;
       // Disabling the stripe integration for now, we are handling the payments and blocking the workspace manualy
-      // return this.checkBillingStatus() && this.isAdminUser();
+      return this.checkBillingStatus() && this.isAdminUser();
   }
 
   async checkBillingStatus() {
