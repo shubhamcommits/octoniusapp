@@ -29,7 +29,7 @@ export class WidgetSelectorDialogComponent implements OnInit {
   groupEnableAllocation = false;
   resource_management_allocation = false;
 
-  availableWidgets= [];
+  availableWidgets = [];
 
   groupAvailableWidgets = [
     {
@@ -111,6 +111,8 @@ export class WidgetSelectorDialogComponent implements OnInit {
     }
   ];
 
+  isIndividualSubscription = false;
+
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -131,6 +133,7 @@ export class WidgetSelectorDialogComponent implements OnInit {
     this.resource_management_allocation = this.data.resource_management_allocation || false;
     this.custom_fields = (this.data.custom_fields) ? this.data.custom_fields.filter(cf => cf.input_type) || [] : [];
     this.numGroupMembers = this.data.numGroupMembers || 0;
+    this.isIndividualSubscription = this.data.isIndividualSubscription;
   }
 
   async ngOnInit() {
@@ -148,6 +151,13 @@ export class WidgetSelectorDialogComponent implements OnInit {
 
     if (this.userId) {
       this.availableWidgets = this.globalAvailableWidgets;
+    }
+
+    if (this.isIndividualSubscription) {
+      this.availableWidgets = await this.availableWidgets.filter(w => {
+        const noForIndivicualWidgets = ["CF_TABLE", "RESOURCE_MANAGEMENT", "TOP_SOCIAL"];
+        return !noForIndivicualWidgets.includes(w.code);
+      });
     }
   }
 

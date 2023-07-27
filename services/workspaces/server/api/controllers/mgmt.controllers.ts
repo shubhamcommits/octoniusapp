@@ -448,7 +448,6 @@ export class ManagementControllers {
             let product;
             await managementService.getSubscription(user._workspace._id, user._workspace.management_private_api_key)
                 .then(res => {
-console.log(res);
                     subscription = res.data.subscription;
                     product = res.data.product;
                 });

@@ -42,7 +42,7 @@
       </div>
     </div>
 
-    <div class="content-box" *ngIf="groupId">
+    <div class="content-box" *ngIf="groupId && !isIndividualSubscription">
       <div style="display: flex;" >
         <img [src]="'assets/images/widgets/widget-cf.svg'" alt="" class="widget-img">
         <h4 class="ml-3 mt-4" i18n="@@widgetSelectorDialog.cfStatistics"> CF Statistics</h4>
