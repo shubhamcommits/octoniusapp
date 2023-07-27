@@ -1,12 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter, Injector, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatMenuTrigger } from '@angular/material/menu';
 import { FilesCustomFieldsDialogComponent } from 'modules/groups/group/files-custom-fields-dialog/files-custom-fields-dialog.component';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { GroupService } from 'src/shared/services/group-service/group.service';
-import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { FilesSettingsDialogComponent } from '../files-settings-dialog/files-settings-dialog.component';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({
   selector: 'app-files-bar',
@@ -28,6 +27,8 @@ export class FilesBarComponent implements OnInit {
 
   isAdmin = true;
 
+  isIndividualSubscription = true;
+
   sortby: string = 'none';
   filterfor: string = 'none';
   reverse: boolean = false;
@@ -46,12 +47,13 @@ export class FilesBarComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private injector: Injector,
-    private utilityService: UtilityService,
+    private managementPortalService: ManagementPortalService,
     private groupService: GroupService
   ) { }
 
   async ngOnInit() {
     this.isAdmin = this.isAdminUser();
+    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
 
     this.customFields = [];
     this.groupService.getGroupFilesCustomFields(this.groupData?._id).then((res) => {
