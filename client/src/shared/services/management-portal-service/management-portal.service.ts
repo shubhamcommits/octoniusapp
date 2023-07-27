@@ -212,7 +212,7 @@ export class ManagementPortalService {
   async checkIsIndividualSubscription() {
     const subscription = await this.getStripeSubscription();
     const utilityService = this.injector.get(UtilityService);
-    return (utilityService.objectExists(subscription) && subscription.product && subscription.product == environment.STRIPE_INDIVIDUAL_PRODUCT_ID);
+    return utilityService.objectExists(subscription) && (utilityService.objectExists(subscription.product) && subscription.product != '' && subscription.product == environment.STRIPE_INDIVIDUAL_PRODUCT_ID);
   }
 
   /* | ======================================= BILLING ENDS ========================================== | */

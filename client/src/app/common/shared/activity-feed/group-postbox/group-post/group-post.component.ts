@@ -6,6 +6,7 @@ import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment/moment';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({
   selector: 'app-group-post',
@@ -95,6 +96,7 @@ export class GroupPostComponent implements OnInit {
     private postService: PostService,
     private utilityService: UtilityService,
     private flowService: FlowService,
+    private managementPortalService: ManagementPortalService,
     private injector: Injector,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<GroupPostComponent>
@@ -366,6 +368,7 @@ export class GroupPostComponent implements OnInit {
     }
 
     formData.append('isShuttleTasksModuleAvailable', (await this.publicFunctions.isShuttleTasksModuleAvailable()).toString());
+    formData.append('isIndividualSubscription', (await this.managementPortalService.checkIsIndividualSubscription()).toString());
 
     // Call the Helper Function
     this.onCreatePost(formData)

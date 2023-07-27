@@ -220,12 +220,13 @@ export class PostService {
       toPromise()
   }
 
-  addAssigneeToPost(postId: string, assigneeId: string, groupId: string, isShuttleTasksModuleAvailable: boolean) {
+  addAssigneeToPost(postId: string, assigneeId: string, groupId: string, isShuttleTasksModuleAvailable: boolean, isIndividualSubscription: boolean) {
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/add-assignee`, {
       assigneeId: assigneeId,
       groupId: groupId,
-      isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable
+      isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable,
+      isIndividualSubscription: isIndividualSubscription
     }).toPromise();
   }
 
@@ -234,12 +235,13 @@ export class PostService {
    * @param postId
    * @param assigneeId
    */
-  changeTaskAssignee(postId: string, assigneeId: string, isShuttleTasksModuleAvailable: boolean) {
+  changeTaskAssignee(postId: string, assigneeId: string, isShuttleTasksModuleAvailable: boolean, isIndividualSubscription: boolean) {
 
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/task-assignee`, {
       assigneeId: assigneeId,
-      isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable
+      isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable,
+      isIndividualSubscription: isIndividualSubscription
     }).
       toPromise()
   }
@@ -249,12 +251,13 @@ export class PostService {
    * @param postId
    * @param dateDueTo
    */
-  changeTaskDueDate(postId: string, dateDueTo: string, isShuttleTasksModuleAvailable: boolean) {
+  changeTaskDueDate(postId: string, dateDueTo: string, isShuttleTasksModuleAvailable: boolean, isIndividualSubscription: boolean) {
 
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/task-due-date`, {
       date_due_to: dateDueTo,
-      isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable
+      isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable,
+      isIndividualSubscription: isIndividualSubscription
     }).
       toPromise()
   }
@@ -283,14 +286,15 @@ export class PostService {
    * @param postId
    * @param status
    */
-  changeTaskStatus(postId: string, status: string, userId: string, groupId: string, isShuttleTasksModuleAvailable: boolean) {
+  changeTaskStatus(postId: string, status: string, userId: string, groupId: string, isShuttleTasksModuleAvailable: boolean, isIndividualSubscription: boolean) {
 
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/task-status`, {
       status: status,
       userId: userId,
       groupId: groupId,
-      isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable
+      isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable,
+      isIndividualSubscription: isIndividualSubscription
     }).
       toPromise()
   }
@@ -301,14 +305,15 @@ export class PostService {
    * @param columnId
    * @param userId
    */
-  changeTaskColumn(postId: string, columnId: string, userId: string, groupId: string, isShuttleTasksModuleAvailable: boolean) {
+  changeTaskColumn(postId: string, columnId: string, userId: string, groupId: string, isShuttleTasksModuleAvailable: boolean, isIndividualSubscription: boolean) {
 
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/task-column`, {
       columnId: columnId,
       userId: userId,
       groupId: groupId,
-      isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable
+      isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable,
+      isIndividualSubscription: isIndividualSubscription
     }).
       toPromise()
   }
@@ -343,14 +348,15 @@ export class PostService {
    * This function is used to save a custom field value
    * @param postId
    */
-  saveCustomField(postId: string, customFieldName: string, customFieldTitle: string, customFieldValue: string, groupId: string, isShuttleTasksModuleAvailable: boolean) {
+  saveCustomField(postId: string, customFieldName: string, customFieldTitle: string, customFieldValue: string, groupId: string, isShuttleTasksModuleAvailable: boolean, isIndividualSubscription: boolean) {
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/customField`, {
       customFieldName: customFieldName,
       customFieldTitle: customFieldTitle,
       customFieldValue: customFieldValue,
       groupId: groupId,
-      isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable
+      isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable,
+      isIndividualSubscription: isIndividualSubscription
     }).toPromise();
   }
 
@@ -593,19 +599,21 @@ export class PostService {
       }).toPromise();
   }
 
-  selectShuttleSection(postId: string, groupId: string, shuttleSectionId: string, isShuttleTasksModuleAvailable: boolean) {
+  selectShuttleSection(postId: string, groupId: string, shuttleSectionId: string, isShuttleTasksModuleAvailable: boolean, isIndividualSubscription: boolean) {
     return this._http.put(this.baseURL + `/${postId}/selectShuttleSection`, {
         shuttleSectionId: shuttleSectionId,
         groupId: groupId,
-        isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable
+        isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable,
+        isIndividualSubscription: isIndividualSubscription
       }).toPromise();
   }
 
-  selectShuttleStatus(postId: string, groupId: string, shuttleStatus: string, isShuttleTasksModuleAvailable: boolean) {
+  selectShuttleStatus(postId: string, groupId: string, shuttleStatus: string, isShuttleTasksModuleAvailable: boolean, isIndividualSubscription: boolean) {
     return this._http.put(this.baseURL + `/${postId}/selectShuttleStatus`, {
       shuttleStatus: shuttleStatus,
       groupId: groupId,
-      isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable
+      isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable,
+        isIndividualSubscription: isIndividualSubscription
       }).toPromise();
   }
 

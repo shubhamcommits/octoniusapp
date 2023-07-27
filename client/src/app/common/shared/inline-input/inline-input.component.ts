@@ -19,6 +19,7 @@ import * as _moment from 'moment';
 // tslint:disable-next-line:no-duplicate-imports
 import {default as _rollupMoment} from 'moment';
 import { PublicFunctions } from 'modules/public.functions';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 const moment = _rollupMoment || _moment;
 
@@ -88,6 +89,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges, On
   public onFocusout: any = Function.prototype; // Trascend the onTouch event
 
   isShuttleTasksModuleAvailable = false;
+  isIndividualSubscription = false;
 
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
@@ -109,6 +111,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges, On
     private renderer: Renderer2,
     public utilityService: UtilityService,
     private postService: PostService,
+    private managementPortalService: ManagementPortalService,
     private injector: Injector
     ) {
   }
@@ -130,6 +133,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges, On
 
   async ngOnInit() {
     this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
+    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
   }
 
   // Required for ControlValueAccessor interface
@@ -177,8 +181,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges, On
   async updateDate(date, property) {
     await this.utilityService.asyncNotification($localize`:@@inlineInput.pleaseWaitUpdatingContent:Please wait we are updating the contents...`, new Promise(async (resolve, reject) => {
       if (property === 'due_date') {
-        const isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
-        this.postService.changeTaskDueDate(this.domainObject._id, moment(date).format('YYYY-MM-DD'), isShuttleTasksModuleAvailable)
+        this.postService.changeTaskDueDate(this.domainObject._id, moment(date).format('YYYY-MM-DD'), this.isShuttleTasksModuleAvailable, this.isIndividualSubscription)
           .then((res) => {
             // Emit the post to other components
             this.post.emit({post: res['post']});
@@ -209,7 +212,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges, On
     this.domainObject.task.custom_fields[this.customFieldName] = this.customFieldValue;
 
     this.utilityService.asyncNotification($localize`:@@inlineInput.pleaseWaitUpdatingContent:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.postService.saveCustomField(this.domainObject._id, this.customFieldName, this.customFieldTitle, this.customFieldValue, this.groupId, this.isShuttleTasksModuleAvailable)
+      this.postService.saveCustomField(this.domainObject._id, this.customFieldName, this.customFieldTitle, this.customFieldValue, this.groupId, this.isShuttleTasksModuleAvailable, this.isIndividualSubscription)
         .then((res) => {
           // Emit the post to other components
           this.post.emit({post: res['post'], cfTrigger: {name: this.customFieldName, value: this.customFieldValue}});

@@ -3,6 +3,7 @@ import { FlowService, PostService, TagsService } from '../services';
 import moment from "moment/moment";
 import { sendErr } from '../utils/sendError';
 import { Post } from "../models";
+import http from 'axios';
 
 const ObjectId = require('mongoose').Types.ObjectId;
 
@@ -37,13 +38,13 @@ export class PostController {
     async add(req: Request, res: Response, next: NextFunction) {
         try {
             // Post Object From request
-            const { post, isShuttleTasksModuleAvailable } = req.body;
+            const { post, isShuttleTasksModuleAvailable, isIndividualSubscription } = req.body;
 
             // Fetch userId from the request
             const userId = req['userId'];
 
             // Call servide function for adding the post
-            const postData = await this.callAddPostService(post, userId, isShuttleTasksModuleAvailable == 'true')
+            const postData = await this.callAddPostService(post, userId, isShuttleTasksModuleAvailable == 'true', isIndividualSubscription == 'true')
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
                 })
@@ -59,14 +60,14 @@ export class PostController {
         
     }
 
-    async callAddPostService(post: any, userId: string, isShuttleTasksModuleAvailable: boolean) {
+    async callAddPostService(post: any, userId: string, isShuttleTasksModuleAvailable: boolean, isIndividualSubscription: boolean) {
 
         // Call Service function to change the assignee
         post = await postService.addPost(post, userId);
 
         if (post.type === 'task' && post._group) {
             // Execute Automation Flows
-            post = await this.executeAutomationFlows((post._group._id || post._group), post, userId, true, isShuttleTasksModuleAvailable);
+            post = await this.executeAutomationFlows((post._group._id || post._group), post, userId, true, isShuttleTasksModuleAvailable, isIndividualSubscription);
         }
 
         return post;
@@ -734,12 +735,12 @@ export class PostController {
     async addAssignee(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { params: { postId }, body: { assigneeId, groupId, isShuttleTasksModuleAvailable } } = req;
+        const { params: { postId }, body: { assigneeId, groupId, isShuttleTasksModuleAvailable, isIndividualSubscription } } = req;
 
         // Fetch userId from the request
         const userId = req['userId'];
 
-        const post = await this.callAddAssigneeService(postId, assigneeId, userId, groupId, isShuttleTasksModuleAvailable)
+        const post = await this.callAddAssigneeService(postId, assigneeId, userId, groupId, isShuttleTasksModuleAvailable, isIndividualSubscription)
             .catch((err) => {
                 return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
             })
@@ -753,13 +754,13 @@ export class PostController {
         });
     }
 
-    async callAddAssigneeService(postId: string, assigneeId: string, userId: string, groupId: string, isShuttleTasksModuleAvailable: boolean) {
+    async callAddAssigneeService(postId: string, assigneeId: string, userId: string, groupId: string, isShuttleTasksModuleAvailable: boolean, isIndividualSubscription: boolean) {
 
         // Call Service function to change the assignee
         let post = await postService.addAssignee(postId, assigneeId, userId);
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows(groupId, post, userId, false, isShuttleTasksModuleAvailable);
+        post = await this.executeAutomationFlows(groupId, post, userId, false, isShuttleTasksModuleAvailable, isIndividualSubscription);
 
         if (post._assigned_to) {
             const index = post._assigned_to.findIndex(assignee => (assignee?._id || assignee) == assigneeId);
@@ -784,12 +785,12 @@ export class PostController {
     async changeTaskAssignee(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { params: { postId }, body: { assigneeId, isShuttleTasksModuleAvailable } } = req;
+        const { params: { postId }, body: { assigneeId, isShuttleTasksModuleAvailable, isIndividualSubscription } } = req;
 
         // Fetch userId from the request
         const userId = req['userId'];
 
-        const post = await this.callChangeTaskAssigneeService(postId, assigneeId, userId, isShuttleTasksModuleAvailable)
+        const post = await this.callChangeTaskAssigneeService(postId, assigneeId, userId, isShuttleTasksModuleAvailable, isIndividualSubscription)
             .catch((err) => {
                 return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
             })
@@ -801,12 +802,12 @@ export class PostController {
         });
     }
 
-    async callChangeTaskAssigneeService(postId: string, assigneeId: string, userId: string, isShuttleTasksModuleAvailable: boolean) {
+    async callChangeTaskAssigneeService(postId: string, assigneeId: string, userId: string, isShuttleTasksModuleAvailable: boolean, isIndividualSubscription: boolean) {
         // Call Service function to change the assignee
         let post = await postService.changeTaskAssignee(postId, assigneeId, userId);
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows((post._group._id || post._group), post, userId, false, isShuttleTasksModuleAvailable);
+        post = await this.executeAutomationFlows((post._group._id || post._group), post, userId, false, isShuttleTasksModuleAvailable, isIndividualSubscription);
 
         post.task._assigned_to = assigneeId;
 
@@ -824,7 +825,7 @@ export class PostController {
     async changeTaskDueDate(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { params: { postId }, body: { date_due_to, isShuttleTasksModuleAvailable } } = req;
+        const { params: { postId }, body: { date_due_to, isShuttleTasksModuleAvailable, isIndividualSubscription } } = req;
         const userId = req['userId'];
 
         // Call Service function to change the assignee
@@ -833,7 +834,7 @@ export class PostController {
                 return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
             });
 
-        post = await this.executeAutomationFlows((post._group._id || post._group), post, userId, false, isShuttleTasksModuleAvailable);
+        post = await this.executeAutomationFlows((post._group._id || post._group), post, userId, false, isShuttleTasksModuleAvailable, isIndividualSubscription);
 
         // Send status 200 response
         return res.status(200).json({
@@ -938,11 +939,11 @@ export class PostController {
     async changeTaskStatus(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { params: { postId }, body: { status, groupId, isShuttleTasksModuleAvailable } } = req;
+        const { params: { postId }, body: { status, groupId, isShuttleTasksModuleAvailable, isIndividualSubscription } } = req;
         const userId = req['userId'];
 
         // Call Service function to change the assignee
-        await this.callChangeTaskStatusService(postId, status, userId, groupId, isShuttleTasksModuleAvailable)
+        await this.callChangeTaskStatusService(postId, status, userId, groupId, isShuttleTasksModuleAvailable, isIndividualSubscription)
             .catch((err) => {
                 return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
             });
@@ -953,7 +954,7 @@ export class PostController {
         });
     }
 
-    async callChangeTaskStatusService(postId: string, status: string, userId: string, groupId: string, isShuttleTasksModuleAvailable: boolean) {
+    async callChangeTaskStatusService(postId: string, status: string, userId: string, groupId: string, isShuttleTasksModuleAvailable: boolean, isIndividualSubscription: boolean) {
 
         // Call Service function to change the assignee
         let post = await postService.changeTaskStatus(postId, status, userId)
@@ -964,7 +965,7 @@ export class PostController {
 
         
         // Execute Automation Flows
-        post = await this.executeAutomationFlows(groupId, post, userId, false, isShuttleTasksModuleAvailable);
+        post = await this.executeAutomationFlows(groupId, post, userId, false, isShuttleTasksModuleAvailable, isIndividualSubscription);
         
 
         return post;
@@ -979,14 +980,14 @@ export class PostController {
     async changeTaskColumn(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { params: { postId }, body: { columnId, groupId, isShuttleTasksModuleAvailable } } = req;
+        const { params: { postId }, body: { columnId, groupId, isShuttleTasksModuleAvailable, isIndividualSubscription } } = req;
         const userId = req['userId'];
 
         if (!postId || !columnId || !userId) {
             return sendErr(res, new Error('Please provide the post, title and user as parameters'), 'Please provide the post, title and user as paramaters!', 400);
         }
 
-        const post = this.changeTaskSection(postId, columnId, userId, groupId, isShuttleTasksModuleAvailable)
+        const post = this.changeTaskSection(postId, columnId, userId, groupId, isShuttleTasksModuleAvailable, isIndividualSubscription)
             .catch((err) => {
                 return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
             });
@@ -998,12 +999,12 @@ export class PostController {
         });
     }
 
-    async changeTaskSection(postId: string, columnId: string, userId: string, groupId: string, isShuttleTasksModuleAvailable: boolean) {
+    async changeTaskSection(postId: string, columnId: string, userId: string, groupId: string, isShuttleTasksModuleAvailable: boolean, isIndividualSubscription: boolean) {
         // Call Service function to change the assignee
         let post = await postService.changeTaskColumn(postId, columnId, userId);
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows(groupId, post, userId, false, isShuttleTasksModuleAvailable);
+        post = await this.executeAutomationFlows(groupId, post, userId, false, isShuttleTasksModuleAvailable, isIndividualSubscription);
 
         post.task._column = columnId;
 
@@ -1106,8 +1107,9 @@ export class PostController {
         const customFieldTitle = req.body['customFieldTitle'];
         const groupId = req.body['groupId'];
         const isShuttleTasksModuleAvailable = req.body['isShuttleTasksModuleAvailable'];
+        const isIndividualSubscription = req.body['isIndividualSubscription'];
 
-        const post = await this.callChangeCustomFieldValueService(groupId, postId, customFieldName, customFieldTitle, customFieldValue, userId, isShuttleTasksModuleAvailable)
+        const post = await this.callChangeCustomFieldValueService(groupId, postId, customFieldName, customFieldTitle, customFieldValue, userId, isShuttleTasksModuleAvailable, isIndividualSubscription)
             .catch((err) => {
                 return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
             });
@@ -1119,13 +1121,13 @@ export class PostController {
         });
     }
 
-    async callChangeCustomFieldValueService(groupId: string, postId: string, cfName: string, cfTitle: string, cfValue: string, userId: string, isShuttleTasksModuleAvailable: boolean) {
+    async callChangeCustomFieldValueService(groupId: string, postId: string, cfName: string, cfTitle: string, cfValue: string, userId: string, isShuttleTasksModuleAvailable: boolean, isIndividualSubscription: boolean) {
         let post = await postService.changeCustomFieldValue(postId, userId, cfName, cfTitle, cfValue);
 
         post.task.custom_fields[cfName] = cfValue;
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows(groupId, post, userId, false, isShuttleTasksModuleAvailable);
+        post = await this.executeAutomationFlows(groupId, post, userId, false, isShuttleTasksModuleAvailable, isIndividualSubscription);
 
         return post;
     }
@@ -1499,31 +1501,33 @@ export class PostController {
      * @param userId 
      * @param isCreationTaskTrigger 
      */
-    async executeAutomationFlows(groupId: string, post: any, userId: string, isCreationTaskTrigger: boolean, isShuttleTasksModuleAvailable: boolean) {
+    async executeAutomationFlows(groupId: string, post: any, userId: string, isCreationTaskTrigger: boolean, isShuttleTasksModuleAvailable: boolean, isIndividualSubscription: boolean) {
         try {
-            const flows = await flowService.getAutomationFlows(groupId);
-            if (flows && flows.length > 0) {
-                let doTrigger = true;
-                await flows.forEach(flow => {
-                    const steps = flow['steps'];
+            if (!isIndividualSubscription) {
+                const flows = await flowService.getAutomationFlows(groupId);
+                if (flows && flows.length > 0) {
+                    let doTrigger = true;
+                    await flows.forEach(flow => {
+                        const steps = flow['steps'];
 
-                    if (steps && steps.length > 0) {
-                        steps.forEach(async step => {
-                            const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status'; });
-                            const isChildStatusTrigger = (childStatusTriggerIndex >= 0 && post.task._parent_task)
-                                ? await this.isChildTasksUpdated(step.trigger[childStatusTriggerIndex], (post.task._parent_task._id || post.task._parent_task))
-                                : false;
-                            doTrigger = await this.doesTriggersMatch(step.trigger, post, groupId, isCreationTaskTrigger, isChildStatusTrigger);
-                            const shuttleActionIndex = step.action.findIndex(action => action.name == 'Shuttle task');
-                            doTrigger = doTrigger && ((shuttleActionIndex < 0) || isShuttleTasksModuleAvailable);
-                            if (doTrigger) {
-                                post = await postService.executeActionFlow(step.action, post, userId, groupId, isChildStatusTrigger);
-                            }
-                        });
-                    } else {
-                        doTrigger = false;
-                    }
-                });
+                        if (steps && steps.length > 0) {
+                            steps.forEach(async step => {
+                                const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status'; });
+                                const isChildStatusTrigger = (childStatusTriggerIndex >= 0 && post.task._parent_task)
+                                    ? await this.isChildTasksUpdated(step.trigger[childStatusTriggerIndex], (post.task._parent_task._id || post.task._parent_task))
+                                    : false;
+                                doTrigger = await this.doesTriggersMatch(step.trigger, post, groupId, isCreationTaskTrigger, isChildStatusTrigger);
+                                const shuttleActionIndex = step.action.findIndex(action => action.name == 'Shuttle task');
+                                doTrigger = doTrigger && ((shuttleActionIndex < 0) || isShuttleTasksModuleAvailable);
+                                if (doTrigger) {
+                                    post = await postService.executeActionFlow(step.action, post, userId, groupId, isChildStatusTrigger);
+                                }
+                            });
+                        } else {
+                            doTrigger = false;
+                        }
+                    });
+                }
             }
             return post;
         } catch (error) {
@@ -1892,13 +1896,14 @@ export class PostController {
         const shuttleSectionId = req.body['shuttleSectionId'];
         const groupId = req.body['groupId'];
         const isShuttleTasksModuleAvailable = req.body['isShuttleTasksModuleAvailable'];
+        const isIndividualSubscription = req.body['isIndividualSubscription'];
 
         try {
             // Find the group and update
             let post = await postService.selectShuttleSection(postId, true, shuttleSectionId, groupId);
            
             // Execute Automation Flows
-            post = await this.executeAutomationFlows(groupId, post, userId, true, isShuttleTasksModuleAvailable);
+            post = await this.executeAutomationFlows(groupId, post, userId, true, isShuttleTasksModuleAvailable, isIndividualSubscription);
 
             // Send status 200 response
             return res.status(200).json({
@@ -1921,13 +1926,14 @@ export class PostController {
         const shuttleStatus = req.body['shuttleStatus'];
         const groupId = req.body['groupId'];
         const isShuttleTasksModuleAvailable = req.body['isShuttleTasksModuleAvailable'];
+        const isIndividualSubscription = req.body['isIndividualSubscription'];
 
         try {
             // Find the group and update
             let post = await postService.selectShuttleStatus(postId, groupId, shuttleStatus, userId);
             
             // Execute Automation Flows
-            post = await this.executeAutomationFlows(groupId, post, userId, false, isShuttleTasksModuleAvailable);
+            post = await this.executeAutomationFlows(groupId, post, userId, false, isShuttleTasksModuleAvailable, isIndividualSubscription);
 
             // Send status 200 response
             return res.status(200).json({
@@ -1944,7 +1950,7 @@ export class PostController {
         const { postId } = req.params;
 
         // Fetch userId and isShuttleTasksModuleAvailable
-        const { isShuttleTasksModuleAvailable } = req.body;
+        const { isShuttleTasksModuleAvailable, isIndividualSubscription } = req.body;
         const userId = req['userId'];
 
         try {
@@ -1961,7 +1967,7 @@ export class PostController {
                 .lean();;
 
             // Execute Automation Flows
-            post = await this.executeAutomationFlows(post._group, post, userId, false, isShuttleTasksModuleAvailable);
+            post = await this.executeAutomationFlows(post._group, post, userId, false, isShuttleTasksModuleAvailable, isIndividualSubscription);
 
             // Send status 200 response
             return res.status(200).json({

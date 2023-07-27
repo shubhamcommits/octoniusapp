@@ -2,6 +2,7 @@ import { Component, Input, Output, OnChanges, EventEmitter, ViewChild, ViewEncap
 import { MatMenuTrigger } from '@angular/material/menu';
 import { PublicFunctions } from 'modules/public.functions';
 import { GroupService } from 'src/shared/services/group-service/group.service';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
@@ -37,6 +38,7 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
   groupData;
 
   isShuttleTasksModuleAvailable = false;
+  isIndividualSubscription = false;
 
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
@@ -48,6 +50,7 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
     private utilityService: UtilityService,
     private postService: PostService,
     private groupService: GroupService,
+    private managementPortalService: ManagementPortalService,
     private injector: Injector
   ) { }
 
@@ -105,6 +108,7 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
 
   async ngOnInit() {
     this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
+    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
   }
 
   ngOnDestroy(): void {
@@ -162,7 +166,7 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
         if (this.type == 'post') {
           if (!this.isNewEvent) {
             this.utilityService.asyncNotification($localize`:@@multipleAssignments.pleaseWaitWeAreUpdatingContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-              this.postService.addAssigneeToPost(this.post._id, member._id, this.groupId, this.isShuttleTasksModuleAvailable)
+              this.postService.addAssigneeToPost(this.post._id, member._id, this.groupId, this.isShuttleTasksModuleAvailable, this.isIndividualSubscription)
                 .then((res) => {
                   this.post = res['post'];
                   this.assigned_to.push(member);

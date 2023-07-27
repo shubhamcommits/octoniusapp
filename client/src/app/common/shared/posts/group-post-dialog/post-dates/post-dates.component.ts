@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Injector, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
@@ -35,6 +36,7 @@ export class PostDatesComponent implements OnInit, OnChanges {
   constructor(
     private utilityService: UtilityService,
     private postService: PostService,
+    private managementPortalService: ManagementPortalService,
     private injector: Injector) { }
 
   ngOnInit() {
@@ -128,7 +130,9 @@ export class PostDatesComponent implements OnInit, OnChanges {
     await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise(async (resolve, reject) => {
       if (property === 'due_date') {
         const isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
-        this.postService.changeTaskDueDate(this.postData?._id, date?moment(date).format('YYYY-MM-DD'):null, isShuttleTasksModuleAvailable)
+        const isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+
+        this.postService.changeTaskDueDate(this.postData?._id, date?moment(date).format('YYYY-MM-DD'):null, isShuttleTasksModuleAvailable, isIndividualSubscription)
         .then((res) => {
           this.postData = res['post'];
           this.dueDate = moment(this.postData?.task?.due_to);
