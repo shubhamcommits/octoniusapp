@@ -1465,7 +1465,11 @@ export class PublicFunctions {
         })
     }
 
-    executedAutomationFlowsPropertiesFront(flows: any[], post: any, groupId: string, isCreationTaskTrigger?: boolean, shuttleIndex?: number) {
+    async executedAutomationFlowsPropertiesFront(flows: any[], post: any, groupId: string, isCreationTaskTrigger?: boolean, shuttleIndex?: number) {
+      const managementPortalService = this.injector.get(ManagementPortalService);
+      const isIndividualSubscription = await managementPortalService.checkIsIndividualSubscription();
+
+      if (!isIndividualSubscription) {
         if (flows && flows.length > 0) {
           let doTrigger = true;
             flows.forEach((flow, flowIndex) => {
@@ -1483,7 +1487,8 @@ export class PublicFunctions {
               }
             });
         }
-        return post;
+      }
+      return post;
     }
 
     doesTriggersMatch(triggers: any[], post: any, groupId: string, isCreationTaskTrigger: boolean, shuttleIndex: number) {
