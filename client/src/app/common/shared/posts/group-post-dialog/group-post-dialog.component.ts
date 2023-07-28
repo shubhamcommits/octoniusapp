@@ -41,7 +41,8 @@ export class GroupPostDialogComponent implements OnInit {
   //ragTags = [];
   isIdeaModuleAvailable;
   isShuttleTasksModuleAvailable;
-  isIndividualSubscription;
+  isIndividualSubscription = true;
+  isBusinessSubscription = false;
 
   // Quill Data Object
   quillData: any;
@@ -149,6 +150,7 @@ export class GroupPostDialogComponent implements OnInit {
     this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
     this.isIdeaModuleAvailable = await this.publicFunctions.checkIdeaStatus();
     this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+    this.isBusinessSubscription = await this.managementPortalService.checkIsBusinessSubscription();
 
     this.userData = await this.publicFunctions.getCurrentUser();
 

@@ -36,6 +36,7 @@ export class FileDetailsDialogComponent implements OnInit {
   canEdit: boolean = true;
   canView: boolean = true;
   isIndividualSubscription = true;
+  isBusinessSubscription = false;
 
   // Content Mentions Variables keeps a track of mentioned members
   _content_mentions: any = [];
@@ -100,6 +101,7 @@ export class FileDetailsDialogComponent implements OnInit {
     }
 
     this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+    this.isBusinessSubscription = await this.managementPortalService.checkIsBusinessSubscription();
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);

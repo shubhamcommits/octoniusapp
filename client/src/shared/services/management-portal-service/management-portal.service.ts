@@ -215,6 +215,13 @@ export class ManagementPortalService {
     return utilityService.objectExists(subscription) && (utilityService.objectExists(subscription.product) && subscription.product != '' && subscription.product == environment.STRIPE_INDIVIDUAL_PRODUCT_ID);
   }
 
+  async checkIsBusinessSubscription() {
+    const subscription = await this.getStripeSubscription();
+    const utilityService = this.injector.get(UtilityService);
+    return false;
+    // return utilityService.objectExists(subscription) && (utilityService.objectExists(subscription.product) && subscription.product != '' && subscription.product == environment.STRIPE_BUSINESS_PRODUCT_ID);
+  }
+
   /* | ======================================= BILLING ENDS ========================================== | */
 
   /**
