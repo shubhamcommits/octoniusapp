@@ -3,8 +3,8 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import { ApprovalService } from 'src/shared/services/approval-service/approval.service';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
 
@@ -57,6 +57,7 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
   constructor(
     private approvalService: ApprovalService,
     public utilityService: UtilityService,
+    private managementPortalService: ManagementPortalService,
     private injector: Injector
   ) { }
 
@@ -270,7 +271,9 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
     if (action == 'approved') {
       if (this.confirmationCode && this.confirmationCode != '') {
         const isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
-        this.approvalService.confirmAction(this.itemData._id, this.type, approvalId, this.confirmationCode, this.confirmation, isShuttleTasksModuleAvailable).then(async res => {
+        const isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+
+        this.approvalService.confirmAction(this.itemData._id, this.type, approvalId, this.confirmationCode, this.confirmation, isShuttleTasksModuleAvailable, isIndividualSubscription).then(async res => {
           this.itemData = res['item'];
           this.showApproveCode = false;
           this.showDescription = false;

@@ -77,7 +77,7 @@
             <!-- EVENTS ENDS-->
 
             <!-- APPROVALS STARTS-->
-            <mat-tab label="" *ngIf="fileData?.approval_active && fileData?.approval_history && fileData?.approval_history?.length > 0">
+            <mat-tab label="" *ngIf="fileData?.approval_active && fileData?.approval_history && fileData?.approval_history?.length > 0 && isBusinessSubscription">
               <ng-template mat-tab-label>
                 <!--<i class="material-icons">approval</i>-->
                 <span i18n="@@fileDetailsDialog.approvalsHistory">Approvals History</span>
@@ -149,7 +149,7 @@
           <!-- Post Tags ends -->
       </div>
 
-      <div class="content-box">
+      <div class="content-box" *ngIf="!isIndividualSubscription">
           <p class="box-title" i18n="@@fileDetailsDialog.customFields">Custom fields</p>
 
           <div *ngFor="let cf of customFields" class="d-flex custom-field justify-content-start mb-3 row">
@@ -192,7 +192,7 @@
       </div>
 
       <!-- APPROVAL STARTS -->
-      <div class="content-box">
+      <div class="content-box" *ngIf="isBusinessSubscription">
         <app-approval-actions
           [groupId]="groupData._id"
           [userData]="userData"

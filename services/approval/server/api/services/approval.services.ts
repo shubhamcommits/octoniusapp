@@ -542,7 +542,7 @@ export class ApprovalService {
     }
   };
 
-  async confirmAction(authorization: any, itemId: string, type: string, approvalId: string, code: string, description: string, userId: string, isShuttleTasksModuleAvailable: boolean) {
+  async confirmAction(authorization: any, itemId: string, type: string, approvalId: string, code: string, description: string, userId: string, isShuttleTasksModuleAvailable: boolean, isIndividualSubscription: boolean) {
     try {
       const itemCorrect = await this.confirmItemDidNotChange(itemId, type);
 
@@ -690,7 +690,8 @@ export class ApprovalService {
                 // run automator
                 await http.put(`${process.env.POSTS_SERVER_API}/${itemId}/automator`, {
                   userId: userId,
-                  isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable
+                  isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable,
+                  isIndividualSubscription: isIndividualSubscription
                 }, {
                   headers: {
                     'Authorization': authorization

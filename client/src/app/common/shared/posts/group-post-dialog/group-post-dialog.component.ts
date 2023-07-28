@@ -8,6 +8,7 @@ import moment from 'moment';
 // ShareDB Client
 import { BehaviorSubject } from 'rxjs';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({
   selector: 'app-group-post-dialog',
@@ -40,6 +41,8 @@ export class GroupPostDialogComponent implements OnInit {
   //ragTags = [];
   isIdeaModuleAvailable;
   isShuttleTasksModuleAvailable;
+  isIndividualSubscription = true;
+  isBusinessSubscription = false;
 
   // Quill Data Object
   quillData: any;
@@ -112,6 +115,7 @@ export class GroupPostDialogComponent implements OnInit {
     private groupService: GroupService,
     private utilityService: UtilityService,
     private flowService: FlowService,
+    private managementPortalService: ManagementPortalService,
     private injector: Injector,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<GroupPostDialogComponent>
@@ -145,6 +149,8 @@ export class GroupPostDialogComponent implements OnInit {
 
     this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
     this.isIdeaModuleAvailable = await this.publicFunctions.checkIdeaStatus();
+    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+    this.isBusinessSubscription = await this.managementPortalService.checkIsBusinessSubscription();
 
     this.userData = await this.publicFunctions.getCurrentUser();
 
@@ -401,7 +407,7 @@ export class GroupPostDialogComponent implements OnInit {
 
   saveCustomField(customFieldName: string, customFieldTitle: string, customFieldValue: string) {
     this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.postService.saveCustomField(this.postData?._id, customFieldName, customFieldTitle, customFieldValue, this.groupId, this.isShuttleTasksModuleAvailable)
+      this.postService.saveCustomField(this.postData?._id, customFieldName, customFieldTitle, customFieldValue, this.groupId, this.isShuttleTasksModuleAvailable, this.isIndividualSubscription)
         .then(async (res) => {
           this.selectedCFValues[customFieldName] = customFieldValue;
           this.postData.task.custom_fields[customFieldName] = customFieldValue;

@@ -4,6 +4,7 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 import moment from 'moment';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({
   selector: 'app-new-task',
@@ -38,6 +39,7 @@ export class NewTaskComponent implements OnInit {
 
   constructor(
     private flowService: FlowService,
+    private managementPortalService: ManagementPortalService,
     public injector: Injector
   ) { }
 
@@ -184,6 +186,7 @@ export class NewTaskComponent implements OnInit {
     // Append Post Data
     formData.append('post', JSON.stringify(postData))
     formData.append('isShuttleTasksModuleAvailable', (await this.publicFunctions.isShuttleTasksModuleAvailable()).toString());
+    formData.append('isIndividualSubscription', (await this.managementPortalService.checkIsIndividualSubscription()).toString());
 
     // Call the Helper Function
     this.onCreatePost(formData, this.post)

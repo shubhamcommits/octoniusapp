@@ -6,6 +6,7 @@ import { GroupService } from 'src/shared/services/group-service/group.service';
 import moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
 import { FilesService } from 'src/shared/services/files-service/files.service';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({
   selector: 'app-file-details-dialog',
@@ -34,6 +35,8 @@ export class FileDetailsDialogComponent implements OnInit {
   quillData: any;
   canEdit: boolean = true;
   canView: boolean = true;
+  isIndividualSubscription = true;
+  isBusinessSubscription = false;
 
   // Content Mentions Variables keeps a track of mentioned members
   _content_mentions: any = [];
@@ -67,6 +70,7 @@ export class FileDetailsDialogComponent implements OnInit {
     private filesService: FilesService,
     private groupService: GroupService,
     private utilityService: UtilityService,
+    private managementPortalService: ManagementPortalService,
     private injector: Injector,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<FileDetailsDialogComponent>
@@ -95,6 +99,9 @@ export class FileDetailsDialogComponent implements OnInit {
     } else {
       this.canView = true;
     }
+
+    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+    this.isBusinessSubscription = await this.managementPortalService.checkIsBusinessSubscription();
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);

@@ -5,6 +5,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { AutomationFlowsDialogComponent } from '../../automation-flows-dialog/automation-flows-dialog.component';
 import { CustomFieldsDialogComponent } from '../../custom-fields-dialog/custom-fields-dialog.component';
 import { AdvancedFilterDialogComponent } from './advanced-filter-dialog/advanced-filter-dialog.component';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({
   selector: 'app-board-bar',
@@ -50,8 +51,11 @@ export class BoardBarComponent implements OnInit {
   groupMembers:any = [];
   shuttleGroups:any = [];
 
+  isIndividualSubscription = true;
+
   constructor(
     private utilityService: UtilityService,
+    private managementPortalService: ManagementPortalService,
     public dialog: MatDialog,
     private injector: Injector
   ) { }
@@ -59,6 +63,7 @@ export class BoardBarComponent implements OnInit {
   async ngOnInit() {
     this.groupMembers = await this.publicFunctions.getCurrentGroupMembers();
     this.shuttleGroups = await this.publicFunctions.getShuttleGroups(this.groupData?._workspace, this.groupData?._id);
+    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
   }
 
   changeView(view: string) {

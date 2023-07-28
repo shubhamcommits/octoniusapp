@@ -21,10 +21,10 @@ export class GroupSettingsComponent implements OnInit {
   @Input() shuttleTasksModuleAvailable: any;
   @Input() campaignModuleAvailable: any;
 
-  enabledRights: boolean = false;
-  enabledProjectType: boolean = false;
-  enabledShuttleType: boolean = false;
-  enabledCampaign: boolean;
+  // enabledRights: boolean = false;
+  // enabledProjectType: boolean = false;
+  // enabledShuttleType: boolean = false;
+  // enabledCampaign: boolean;
   switchAgora: boolean = false;
   freezeDates: boolean = false;
   enableAllocation: boolean = false;
@@ -50,10 +50,10 @@ export class GroupSettingsComponent implements OnInit {
     this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
 
     // Fetch the setting status
-    this.enabledRights = this.groupData.enabled_rights;
-    this.enabledProjectType = this.groupData.project_type;
-    this.enabledShuttleType = this.groupData.shuttle_type;
-    this.enabledCampaign = this.groupData.enabled_campaign
+    // this.enabledRights = this.groupData.enabled_rights;
+    // this.enabledProjectType = this.groupData.project_type;
+    // this.enabledShuttleType = this.groupData.shuttle_type;
+    // this.enabledCampaign = this.groupData.enabled_campaign
     this.switchAgora = this.groupData.type == 'agora';
     this.freezeDates = this.groupData.freeze_dates;
 
@@ -149,7 +149,7 @@ export class GroupSettingsComponent implements OnInit {
         if (selected.source.name === 'enabled_rights') {
           this.groupService.saveSettings(this.groupData?._id, {enabled_rights: selected.checked})
             .then(()=> {
-              this.enabledRights = selected.checked;
+              // this.enabledRights = selected.checked;
               this.groupData.enabled_rights = selected.checked;
               this.publicFunctions.sendUpdatesToGroupData(this.groupData);
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
@@ -160,7 +160,7 @@ export class GroupSettingsComponent implements OnInit {
         if (selected.source.name === 'enabled_project_type') {
           this.groupService.saveSettings(this.groupData?._id, {project_type: selected.checked})
             .then(()=> {
-              this.enabledProjectType = selected.checked;
+              // this.enabledProjectType = selected.checked;
               this.groupData.project_type = selected.checked;
               this.publicFunctions.sendUpdatesToGroupData(this.groupData);
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
@@ -171,7 +171,7 @@ export class GroupSettingsComponent implements OnInit {
         if (selected.source.name === 'enabled_shuttle_type') {
           this.groupService.saveSettings(this.groupData?._id, {shuttle_type: selected.checked})
             .then(()=> {
-              this.enabledShuttleType = selected.checked;
+              // this.enabledShuttleType = selected.checked;
               this.groupData.shuttle_type = selected.checked;
               this.publicFunctions.sendUpdatesToGroupData(this.groupData);
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
@@ -193,7 +193,7 @@ export class GroupSettingsComponent implements OnInit {
         if(selected.source.name === 'enabled_campaign'){
           this.groupService.saveSettings(this.groupData?._id, {enabled_campaign: selected.checked})
             .then(()=> {
-              this.enabledCampaign = selected.checked;
+              // this.enabledCampaign = selected.checked;
               this.groupData.enabled_campaign = selected.checked;
               this.publicFunctions.sendUpdatesToGroupData(this.groupData);
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));

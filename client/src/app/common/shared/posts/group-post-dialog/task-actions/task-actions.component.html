@@ -1,7 +1,7 @@
 <div class="content-box">
   <p class="box-title" i18n="@@taskActions.actions">Actions</p>
 
-  <div *ngIf="!postData?.task?._parent_task">
+  <div *ngIf="!postData?.task?._parent_task && !isIndividualSubscription">
     <button *ngIf="postData?._group" mat-menu-item [matMenuTriggerFor]="transferMenu"
       (click)="saveTransferAction('copy')">
         <i  class="material-icons">content_copy</i>
@@ -129,7 +129,7 @@
     </div>
   </div>
 
-  <div *ngIf="groupData && groupData?.project_type && !isChild" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
+  <div *ngIf="groupData && groupData?.project_type && !isChild && !isIndividualSubscription" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
     <span i18n="@@taskActions.makeDependencyOf">MAKE DEPENDENCY OF</span>
 
     <button *ngFor="let task of dependencyTask; let i = index" class="btn dependencylabel" style="margin-right: 1rem;"
@@ -191,7 +191,7 @@
   <!-- Idea Switch ends -->
 
   <!-- Milestone Switch starts -->
-  <div *ngIf="groupData && groupData.project_type" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
+  <div *ngIf="groupData && groupData.project_type && !isIndividualSubscription" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
     <img src="assets/images/Icon/icon_milestone.svg" alt="Flag"/>
     <span i18n="@@taskActions.makeMilestone">MAKE MILESTONE</span>
     <mat-slide-toggle color="primary" style=" margin-left: 15px;"
@@ -205,7 +205,7 @@
 
 
   <!-- Select Shuttle group starts -->
-  <div *ngIf="showShuttle()"
+  <div *ngIf="showShuttle() && !isIndividualSubscription"
       style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8; margin-left: 15px;">
     <img src="assets/images/icon-task-shuttle.svg" style="width: 24px">
 

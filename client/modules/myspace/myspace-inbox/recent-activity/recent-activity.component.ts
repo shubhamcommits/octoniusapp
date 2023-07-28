@@ -6,6 +6,7 @@ import { retry } from 'rxjs/internal/operators/retry';
 import { take } from 'rxjs/internal/operators/take';
 import { environment } from 'src/environments/environment';
 import { LoungeService } from 'src/shared/services/lounge-service/lounge.service';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { SubSink } from 'subsink';
 
@@ -34,6 +35,8 @@ export class RecentActivityComponent implements OnInit {
 
   selectedTab = 0;
 
+  isBusinessSubscription = false;
+
   // IsLoading behaviou subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
 
@@ -47,7 +50,8 @@ export class RecentActivityComponent implements OnInit {
     private _router: Router,
     private injector: Injector,
     private socketService: SocketService,
-    private loungeService: LoungeService
+    private loungeService: LoungeService,
+    private managementPortalService: ManagementPortalService
   ) {
     // Subscribe to the change in notifications data from the server
     this.subSink.add(this.socketService.currentData.subscribe((res) => {
@@ -74,6 +78,8 @@ export class RecentActivityComponent implements OnInit {
     this.loungeService.getAttendingEvents(this.workspaceData?._id).then(res => {
       this.attendingEvents = res['stories'];
     });
+
+    this.isBusinessSubscription = await this.managementPortalService.checkIsBusinessSubscription();
 
     // Return the function via stopping the loader
     this.isLoading$.next(false);

@@ -97,13 +97,14 @@ export class ApprovalService {
   }
 
 
-  confirmAction(itemId: string, type: string, approvalId: string, code: string, description: string, isShuttleTasksModuleAvailable: boolean) {
+  confirmAction(itemId: string, type: string, approvalId: string, code: string, description: string, isShuttleTasksModuleAvailable: boolean, isIndividualSubscription: boolean) {
     const data = {
       type: type,
       code: code,
       approvalId: approvalId,
       description: description,
-      isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable
+      isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable,
+      isIndividualSubscription: isIndividualSubscription
     }
     return this._http.put(this.baseUrl + `/${itemId}/confirmAction`, data).toPromise();
   }

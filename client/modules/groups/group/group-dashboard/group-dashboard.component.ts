@@ -2,6 +2,7 @@ import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { WidgetSelectorDialogComponent } from 'src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
@@ -36,6 +37,8 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
 
   userData: any;
 
+  isIndividualSubscription = true;
+
   // Subsink Object
   subSink = new SubSink()
 
@@ -43,8 +46,9 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
-    private injector: Injector,
     private utilityService: UtilityService,
+    private managementPortalService: ManagementPortalService,
+    private injector: Injector,
     public dialog: MatDialog) { }
 
   async ngOnInit() {
@@ -74,6 +78,8 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
     this.userData = await this.publicFunctions.getCurrentUser();
 
     this.period = (this.userData.stats.group_dashboard_period) ? this.userData.stats.group_dashboard_period : 7;
+
+    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
   }
 
   ngOnDestroy(): void {
@@ -102,7 +108,8 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
       resource_management_allocation: this.groupData.resource_management_allocation,
       groupEnableAllocation: this.groupData.enable_allocation,
       custom_fields: this.groupData.custom_fields,
-      numGroupMembers: ((this.groupData?._admins?.length || 0) + (this.groupData?._members?.length || 0))
+      numGroupMembers: ((this.groupData?._admins?.length || 0) + (this.groupData?._members?.length || 0)),
+      isIndividualSubscription: this.isIndividualSubscription
     }
 
     const dialogRef = this.dialog.open(WidgetSelectorDialogComponent, {

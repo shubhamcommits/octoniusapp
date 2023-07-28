@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
@@ -33,6 +34,7 @@ export class NewNorthStarDialogComponent implements OnInit {
     private postService: PostService,
     private flowService: FlowService,
     private utilityService: UtilityService,
+    private managementPortalService: ManagementPortalService,
     public injector: Injector,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<NewNorthStarDialogComponent>
@@ -99,6 +101,7 @@ export class NewNorthStarDialogComponent implements OnInit {
       // Append Post Data
       formData.append('post', JSON.stringify(postData))
       formData.append('isShuttleTasksModuleAvailable', (await this.publicFunctions.isShuttleTasksModuleAvailable()).toString());
+      formData.append('isIndividualSubscription', (await this.managementPortalService.checkIsIndividualSubscription()).toString());
 
       // Call the Helper Function
       this.utilityService.asyncNotification($localize`:@@newNorthStarDialog.pleaseWaitCreatingPost:Please wait we are creating the task...`, new Promise((resolve, reject) => {

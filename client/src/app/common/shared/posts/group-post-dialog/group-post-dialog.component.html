@@ -154,7 +154,7 @@
             <!-- north-star-stats ENDS-->
 
             <!-- APPROVALS HISTORY STARTS-->
-            <mat-tab label="" *ngIf="postData?.type === 'task' && postData?.approval_active && postData?.approval_history && postData?.approval_history?.length > 0">
+            <mat-tab label="" *ngIf="postData?.type === 'task' && postData?.approval_active && postData?.approval_history && postData?.approval_history?.length > 0&& isBusinessSubscription">
               <ng-template mat-tab-label>
                 <!--<i class="material-icons">approval</i>-->
                 <span i18n="@@groupCreatePostDialog.approvalsHistory">Approvals History</span>
@@ -418,7 +418,7 @@
         </app-task-actions>
 
         <!-- APPROVAL STARTS -->
-        <div class="content-box" *ngIf="postData && postData?.type === 'task'">
+        <div class="content-box" *ngIf="postData && postData?.type === 'task' &&  isBusinessSubscription">
           <app-approval-actions
             [groupId]="groupData?._id"
             [userData]="userData"

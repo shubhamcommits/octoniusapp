@@ -31,7 +31,7 @@
                                   <span class="material-icons-outlined">delete</span>
                                   <span i18n="@@groupDashboard.delete">Delete</span>
                                 </li>
-                                <li *ngIf="(!isShuttleTasksModuleAvailable || column?._id != (groupData?._shuttle_section?._id || groupData?._shuttle_section)) && (userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager())"
+                                <li *ngIf="(!isShuttleTasksModuleAvailable || column?._id != (groupData?._shuttle_section?._id || groupData?._shuttle_section)) && (userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager()) && !isIndividualSubscription"
                                     class="dropdown-item" (click)="archiveColumn(column)">
                                   <span class="material-icons-outlined">archive</span>
                                   <span i18n="@@groupDashboard.archive">Archive</span>
@@ -40,7 +40,7 @@
                                   <img src="assets/images/Icon/icon_launch_project.svg" alt="" >
                                   <span i18n="@@groupDashboard.launchProject">Launch Project</span>
                                 </li>
-                                <li *ngIf="column?.canEdit" class="dropdown-item" (click)="openShowCFDialog(column)">
+                                <li *ngIf="column?.canEdit && !isIndividualSubscription" class="dropdown-item" (click)="openShowCFDialog(column)">
                                   <span class="material-icons-outlined">auto_awesome</span>
                                   <span i18n="@@groupDashboard.showCF">Show CF Data</span>
                                 </li>
@@ -147,7 +147,7 @@
                                   <span class="material-icons-outlined">delete</span>
                                   <span i18n="@@groupDashboard.delete">Delete</span>
                                 </li>
-                                <li *ngIf="(!isShuttleTasksModuleAvailable || column?._id != (groupData?._shuttle_section?._id || groupData?._shuttle_section)) && (userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager())"
+                                <li *ngIf="(!isShuttleTasksModuleAvailable || column?._id != (groupData?._shuttle_section?._id || groupData?._shuttle_section)) && (userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager()) && !isIndividualSubscription"
                                     class="dropdown-item" (click)="archiveColumn(column)">
                                   <span class="material-icons-outlined">archive</span>
                                   <span i18n="@@groupDashboard.archive">Archive</span>
@@ -156,7 +156,7 @@
                                   <img src="assets/images/Icon/icon_launch_project.svg" alt="" >
                                   <span i18n="@@groupDashboard.launchProject">Launch Project</span>
                                 </li>
-                                <li *ngIf="column?.canEdit" class="dropdown-item" (click)="openShowCFDialog(column)">
+                                <li *ngIf="column?.canEdit && !isIndividualSubscription" class="dropdown-item" (click)="openShowCFDialog(column)">
                                   <span class="material-icons-outlined">auto_awesome</span>
                                   <span i18n="@@groupDashboard.showCF">Show CF Data</span>
                                 </li>

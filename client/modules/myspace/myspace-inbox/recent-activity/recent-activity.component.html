@@ -305,7 +305,7 @@
     <!-- EVENTS ENDS-->
 
     <!-- APPROVALS STARTS-->
-    <mat-tab label="">
+    <mat-tab label="" *ngIf="isBusinessSubscription">
       <ng-template mat-tab-label>
         <span *ngIf="notificationsData.pendingApprovals.length > 0"
           [matBadge]="notificationsData.pendingApprovals.length"
