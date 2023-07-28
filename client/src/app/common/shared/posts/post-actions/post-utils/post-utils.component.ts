@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { Router } from '@angular/router';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({
   selector: 'app-post-utils',
@@ -30,15 +31,18 @@ export class PostUtilsComponent implements OnInit {
   // Array of user groups
   public userGroups: any = [];
 
+  isIndividualSubscription = true;
+
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
     @Inject(LOCALE_ID) public locale: string,
-    public utilityService: UtilityService,
     private injector: Injector,
     private _router: Router,
-    private postService: PostService
+    public utilityService: UtilityService,
+    private postService: PostService,
+    private managementPortalService: ManagementPortalService
   ) { }
 
   async ngOnInit() {
@@ -49,6 +53,7 @@ export class PostUtilsComponent implements OnInit {
     this.groupId = (this.post._group) ? ((this.post._group._id) ? this.post._group._id : this.post._group) : null;
 
     this.canDelete = await this.utilityService.canUserDoTaskAction(this.post, this.groupData, this.userData, 'delete');
+    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
 
     if (this.groupId) {
       // Fetches the user groups from the server

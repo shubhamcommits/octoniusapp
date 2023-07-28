@@ -26,6 +26,7 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 import * as ShareDB from "sharedb/lib/client";
 import Quill from 'quill';
 import { LibreofficeService } from 'src/shared/services/libreoffice-service/libreoffice.service';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 @Component({
   selector: 'app-group-files',
   templateUrl: './group-files.component.html',
@@ -93,6 +94,8 @@ export class GroupFilesComponent implements OnInit {
 
   isFilesVersionsModuleAvailable = false;
 
+  isIndividualSubscription = true;
+
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -115,18 +118,16 @@ export class GroupFilesComponent implements OnInit {
     public storageService: StorageService,
     private groupService: GroupService,
     private libreofficeService: LibreofficeService,
+    private managementPortalService: ManagementPortalService,
     private approvalPDFSignaturesService: ApprovalPDFSignaturesService
   ) { }
 
   async ngOnInit() {
-    // Fetch the current user
     this.userData = await this.publicFunctions.getCurrentUser();
-
-    // Fetch the current group
     this.groupData = await this.publicFunctions.getCurrentGroupDetails();
 
     this.isFilesVersionsModuleAvailable = await this.publicFunctions.isFilesVersionsModuleAvailable();
-
+    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
     this.isAdmin = this.isAdminUser();
 
     const folderId = await this.router.snapshot.queryParamMap.has('folder') ? this.router.snapshot.queryParamMap.get('folder') : false

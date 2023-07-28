@@ -1,7 +1,7 @@
 <div class="content-box">
   <p class="box-title" i18n="@@taskActions.actions">Actions</p>
 
-  <div *ngIf="!postData?.task?._parent_task">
+  <div *ngIf="!postData?.task?._parent_task && !isIndividualSubscription">
     <button *ngIf="postData?._group" mat-menu-item [matMenuTriggerFor]="transferMenu"
       (click)="saveTransferAction('copy')">
         <i  class="material-icons">content_copy</i>

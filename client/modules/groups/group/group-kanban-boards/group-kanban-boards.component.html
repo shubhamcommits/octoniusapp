@@ -31,7 +31,7 @@
                                   <span class="material-icons-outlined">delete</span>
                                   <span i18n="@@groupDashboard.delete">Delete</span>
                                 </li>
-                                <li *ngIf="(!isShuttleTasksModuleAvailable || column?._id != (groupData?._shuttle_section?._id || groupData?._shuttle_section)) && (userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager())"
+                                <li *ngIf="(!isShuttleTasksModuleAvailable || column?._id != (groupData?._shuttle_section?._id || groupData?._shuttle_section)) && (userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager()) && !isIndividualSubscription"
                                     class="dropdown-item" (click)="archiveColumn(column)">
                                   <span class="material-icons-outlined">archive</span>
                                   <span i18n="@@groupDashboard.archive">Archive</span>
@@ -147,7 +147,7 @@
                                   <span class="material-icons-outlined">delete</span>
                                   <span i18n="@@groupDashboard.delete">Delete</span>
                                 </li>
-                                <li *ngIf="(!isShuttleTasksModuleAvailable || column?._id != (groupData?._shuttle_section?._id || groupData?._shuttle_section)) && (userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager())"
+                                <li *ngIf="(!isShuttleTasksModuleAvailable || column?._id != (groupData?._shuttle_section?._id || groupData?._shuttle_section)) && (userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager()) && !isIndividualSubscription"
                                     class="dropdown-item" (click)="archiveColumn(column)">
                                   <span class="material-icons-outlined">archive</span>
                                   <span i18n="@@groupDashboard.archive">Archive</span>

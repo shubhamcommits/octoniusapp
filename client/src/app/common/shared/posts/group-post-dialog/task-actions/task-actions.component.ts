@@ -10,6 +10,7 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
 import { GroupPostDialogComponent } from '../group-post-dialog.component';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({
   selector: 'app-task-actions',
@@ -61,6 +62,8 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
 
   allocation = '';
 
+  isIndividualSubscription = true;
+
   // This observable is mapped with item field to recieve updates on change value
   itemValueChanged: Subject<Event> = new Subject<Event>();
 
@@ -74,9 +77,10 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
-    private _router: Router,
     private utilityService: UtilityService,
     private postService: PostService,
+    private managementPortalService: ManagementPortalService,
+    private _router: Router,
     private injector: Injector,
     private mdDialogRef: MatDialogRef<GroupPostDialogComponent>
   ) { }
@@ -156,12 +160,14 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
     this.getDependencyTask();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     if (this.groupData?._id || this.postData?._group) {
       this.postService.getGroupTemplates(this.groupData?._id || this.postData?._group?._id || this.postData?._group).then(res => {
         this.groupTemplates = res['posts'];
       });
     }
+
+    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
   }
 
   ngAfterViewInit() {
