@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 import { CreateProjectColumnDialogComponent } from './create-project-column-dialog/create-project-column-dialog.component';
 import { ShowCustomFieldsColumnDialogComponent } from './show-custom-fields-column-dialog/show-custom-fields-column-dialog.component';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({
   selector: 'app-group-kanban-boards',
@@ -47,11 +48,14 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
 
   canEdit: boolean = true;
 
+  isIndividualSubscription = true;
+
   constructor(
     private router: ActivatedRoute,
     public utilityService: UtilityService,
     private columnService: ColumnService,
     private flowService: FlowService,
+    private managementPortalService: ManagementPortalService,
     private injector: Injector,
     public dialog: MatDialog
   ) { }
@@ -73,6 +77,8 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
         this.canEdit = true;
       }
     });
+
+    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
   }
 
   async ngOnChanges(changes: SimpleChanges) {
