@@ -17,10 +17,10 @@
             [checked]="groupData.enabled_rights"
             [name]="'enabled_rights'"
             (change)="saveSettings($event)"
-            [(ngModel)]="enabledRights">
+            [(ngModel)]="groupData.enabled_rights">
           <h6><b i18n="@@groupSettings.enableRAG">Enable restricted access groups</b></h6>
           <p class="card-text" i18n="@@groupSettings.RAGAllowAdminsToChose">RAG is the option for creating special bulks of users inside a group, in order to give them fine-grained control over something.<br> If you want only a certain group of users to see a task, or to edit a board section, or view/edit/delete a file etc.</p>
-          <button button class="btn btn-primary btn-sm" (click)="openRAGModal()" *ngIf="enabledRights" i18n="@@groupSettings.manageRAG">Manage RAG</button>
+          <button button class="btn btn-primary btn-sm" (click)="openRAGModal()" *ngIf="groupData.enabled_rights" i18n="@@groupSettings.manageRAG">Manage RAG</button>
         </mat-slide-toggle><br>
       </div>
 
@@ -29,7 +29,7 @@
             [checked]="groupData.project_type"
             [name]="'enabled_project_type'"
             (change)="saveSettings($event)"
-            [(ngModel)]="enabledProjectType">
+            [(ngModel)]="groupData.project_type">
           <h6><b i18n="@@groupSettings.enableProjectFeatures">Enable Project Features</b></h6>
           <p class="card-text" i18n="@@groupSettings.enableAdvancedProjectFunctionalities"> This will enable all advanced project related functionalities like: timeline, project planning etc.</p>
         </mat-slide-toggle><br>
@@ -52,7 +52,7 @@
             [checked]="groupData.enabled_campaign"
             [name]="'enabled_campaign'"
             (change)="saveSettings($event)"
-            [(ngModel)]="enabledCampaign">
+            [(ngModel)]="groupData.enabled_campaign">
           <h6><b i18n="@@groupSettings.enableCampaignFeature">Enable Campaign Features?</b></h6>
           <p class="card-text" i18n="@@groupSettings.enableAllCampaign"> This will enable all the campaign related functionalities.</p>
         </mat-slide-toggle><br>
@@ -65,7 +65,7 @@
             [checked]="groupData.shuttle_type"
             [name]="'enabled_shuttle_type'"
             (change)="saveSettings($event)"
-            [(ngModel)]="enabledShuttleType">
+            [(ngModel)]="groupData.shuttle_type">
           <h6><b i18n="@@groupSettings.enableTaskShuttle">Enable Task Shuttle</b></h6>
           <p class="card-text"> <img src="assets/images/icon-task-shuttle.svg" style="width: 32px">
             <span i18n="@@groupSettings.taskShuttleAllowYourGroup">Task Shuttle allows your group to receive tasks from other groups. Select the section that will receive all Shuttle Tasks.</span>
