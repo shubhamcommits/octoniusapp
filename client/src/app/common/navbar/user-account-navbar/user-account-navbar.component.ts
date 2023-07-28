@@ -12,6 +12,7 @@ import { SubSink } from 'subsink';
 import { UserUpdateProfileDialogComponent } from '../../shared/user-update-profile-dialog/user-update-profile-dialog.component';
 import { UserUpdateUserPersonalInformationDialogComponent } from '../../shared/user-update-user-personal-information-dialog/user-update-user-personal-information-dialog.component';
 import { WorkplaceLdapFieldsMapperDialogComponent } from 'modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({
   selector: 'app-user-account-navbar',
@@ -34,6 +35,7 @@ export class UserAccountNavbarComponent implements OnInit, OnDestroy {
   isCurrentUser: boolean = true;
 
   isOrganizationModuleAvailable = false;
+  isBusinessSubscription = false;
 
   googleTokenClient;
 
@@ -52,7 +54,8 @@ export class UserAccountNavbarComponent implements OnInit, OnDestroy {
     private workspaceService: WorkspaceService,
     private userService: UserService,
     private authService: AuthService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private managementPortalService: ManagementPortalService
   ) {
 
     this.subSink.add(this.routeStateService?.pathParams.subscribe(async (res) => {
@@ -67,7 +70,7 @@ export class UserAccountNavbarComponent implements OnInit, OnDestroy {
     await this.publicFunctions.getCurrentUser().then(user => this.userData = user);
 
     this.isOrganizationModuleAvailable = await this.publicFunctions.isOrganizationModuleAvailable();
-
+    this.isBusinessSubscription = await this.managementPortalService.checkIsBusinessSubscription();
     // Subscribe to the change in workspace data from the socket server
     this.subSink.add(this.utilityService.currentWorkplaceData.subscribe((res) => {
       if (JSON.stringify(res) != JSON.stringify({})) {
