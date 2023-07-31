@@ -179,13 +179,12 @@ export class NewTaskComponent implements OnInit {
         }
       }
     }
+    
+    const isShuttleAvailable: boolean = await this.publicFunctions.isShuttleTasksModuleAvailable();
+    const isIndividualSubscription: boolean = await this.managementPortalService.checkIsIndividualSubscription();
 
     // Create FormData Object
     let formData = new FormData();
-
-    const isShuttleAvailable: boolean = await this.publicFunctions.isShuttleTasksModuleAvailable();
-    const isIndividualSubscription: boolean = await this.managementPortalService.checkIsIndividualSubscription();
-console.log({isIndividualSubscription});
     // Append Post Data
     formData.append('post', JSON.stringify(postData))
     formData.append('isShuttleTasksModuleAvailable', isShuttleAvailable.toString() || 'false');

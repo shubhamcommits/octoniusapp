@@ -212,32 +212,10 @@ export class ManagementPortalService {
   async checkIsIndividualSubscription() {
     const subscription = await this.getStripeSubscription();
     const utilityService = this.injector.get(UtilityService);
-console.log(subscription);
-console.log(utilityService.objectExists(subscription));
-console.log(utilityService.objectExists(subscription.product));
-console.log(subscription.product != '');
-console.log(subscription.product == environment.STRIPE_INDIVIDUAL_PRODUCT_ID);
-console.log(utilityService.objectExists(subscription) && utilityService.objectExists(subscription.product) && subscription.product != '' && subscription.product == environment.STRIPE_INDIVIDUAL_PRODUCT_ID);
     return utilityService.objectExists(subscription)
       && utilityService.objectExists(subscription.product)
       && subscription.product != ''
       && subscription.product == environment.STRIPE_INDIVIDUAL_PRODUCT_ID;
-    /*
-    const utilityService = this.injector.get(UtilityService);
-    return await this.getStripeSubscription().then(
-      (res) => {
-        const subscription = res;
-        if (utilityService.objectExists(subscription)
-            && utilityService.objectExists(subscription.product)
-            && subscription.product != ''
-            && subscription.product == environment.STRIPE_INDIVIDUAL_PRODUCT_ID) {
-          return true;
-        }
-        return true;
-      }).catch((err) => {
-        return false;
-      });
-    */
   }
 
   async checkIsBusinessSubscription() {
