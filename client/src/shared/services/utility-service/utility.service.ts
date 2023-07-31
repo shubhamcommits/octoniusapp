@@ -838,7 +838,7 @@ export class UtilityService {
   }
 
   objectExists(objectData: Object) {
-    return (objectData && JSON.stringify(objectData) != JSON.stringify({}) && JSON.stringify(objectData) != JSON.stringify(undefined));
+    return (!!objectData && JSON.stringify(objectData) != JSON.stringify({}) && JSON.stringify(objectData) != JSON.stringify(undefined));
   }
 
   openVideoChatDialog(chatData: any, canEdit: any) {
