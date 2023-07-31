@@ -183,10 +183,13 @@ export class NewTaskComponent implements OnInit {
     // Create FormData Object
     let formData = new FormData();
 
+    const isShuttleAvailable: boolean = await this.publicFunctions.isShuttleTasksModuleAvailable();
+    const isIndividualSubscription: boolean = await this.managementPortalService.checkIsIndividualSubscription();
+console.log({isIndividualSubscription});
     // Append Post Data
     formData.append('post', JSON.stringify(postData))
-    formData.append('isShuttleTasksModuleAvailable', (await this.publicFunctions.isShuttleTasksModuleAvailable()).toString());
-    formData.append('isIndividualSubscription', (await this.managementPortalService.checkIsIndividualSubscription()).toString());
+    formData.append('isShuttleTasksModuleAvailable', isShuttleAvailable.toString() || 'false');
+    formData.append('isIndividualSubscription', isIndividualSubscription.toString() || 'false');
 
     // Call the Helper Function
     this.onCreatePost(formData, this.post)
