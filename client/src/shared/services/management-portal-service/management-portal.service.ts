@@ -154,19 +154,19 @@ export class ManagementPortalService {
   public async getStripeSubscription() {
       let subscriptionData: any = await this.getStripeSubscriptionFromService();
       const utilityService = this.injector.get(UtilityService);
-console.log(subscriptionData);
+
       if (!utilityService.objectExists(subscriptionData)) {
           subscriptionData = await this.getStripeSubscriptionFromStorage();
       }
-console.log(subscriptionData);
+
       if (!utilityService.objectExists(subscriptionData)) {
         subscriptionData = await this.getStripeSubscriptionFromHTTP().catch(err => {
           subscriptionData = {};
         });
       }
-console.log(subscriptionData);
+
       this.sendUpdatesToStripeSubscription(subscriptionData);
-console.log(subscriptionData);
+
       return subscriptionData || {};
   }
 
@@ -211,8 +211,13 @@ console.log(subscriptionData);
 
   async checkIsIndividualSubscription() {
     const subscription = await this.getStripeSubscription();
-console.log(subscription);
     const utilityService = this.injector.get(UtilityService);
+console.log(subscription);
+console.log(utilityService.objectExists(subscription));
+console.log(utilityService.objectExists(subscription.product));
+console.log(subscription.product != '');
+console.log(subscription.product == environment.STRIPE_INDIVIDUAL_PRODUCT_ID);
+console.log(utilityService.objectExists(subscription) && utilityService.objectExists(subscription.product) && subscription.product != '' && subscription.product == environment.STRIPE_INDIVIDUAL_PRODUCT_ID);
     return utilityService.objectExists(subscription)
       && utilityService.objectExists(subscription.product)
       && subscription.product != ''
