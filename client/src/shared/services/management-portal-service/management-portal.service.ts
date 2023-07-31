@@ -154,19 +154,19 @@ export class ManagementPortalService {
   public async getStripeSubscription() {
       let subscriptionData: any = await this.getStripeSubscriptionFromService();
       const utilityService = this.injector.get(UtilityService);
-
+console.log(subscriptionData);
       if (!utilityService.objectExists(subscriptionData)) {
           subscriptionData = await this.getStripeSubscriptionFromStorage();
       }
-
+console.log(subscriptionData);
       if (!utilityService.objectExists(subscriptionData)) {
         subscriptionData = await this.getStripeSubscriptionFromHTTP().catch(err => {
           subscriptionData = {};
         });
       }
-
+console.log(subscriptionData);
       this.sendUpdatesToStripeSubscription(subscriptionData);
-
+console.log(subscriptionData);
       return subscriptionData || {};
   }
 
@@ -211,8 +211,28 @@ export class ManagementPortalService {
 
   async checkIsIndividualSubscription() {
     const subscription = await this.getStripeSubscription();
+console.log(subscription);
     const utilityService = this.injector.get(UtilityService);
-    return utilityService.objectExists(subscription) && (utilityService.objectExists(subscription.product) && subscription.product != '' && subscription.product == environment.STRIPE_INDIVIDUAL_PRODUCT_ID);
+    return utilityService.objectExists(subscription)
+      && utilityService.objectExists(subscription.product)
+      && subscription.product != ''
+      && subscription.product == environment.STRIPE_INDIVIDUAL_PRODUCT_ID;
+    /*
+    const utilityService = this.injector.get(UtilityService);
+    return await this.getStripeSubscription().then(
+      (res) => {
+        const subscription = res;
+        if (utilityService.objectExists(subscription)
+            && utilityService.objectExists(subscription.product)
+            && subscription.product != ''
+            && subscription.product == environment.STRIPE_INDIVIDUAL_PRODUCT_ID) {
+          return true;
+        }
+        return true;
+      }).catch((err) => {
+        return false;
+      });
+    */
   }
 
   async checkIsBusinessSubscription() {
