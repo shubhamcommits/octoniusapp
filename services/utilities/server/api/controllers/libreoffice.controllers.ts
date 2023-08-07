@@ -4,6 +4,7 @@ import { sendError } from "../../utils/senderror";
 import { FilesService } from "../services";
 import { User } from "../models";
 import moment from "moment";
+import { minioClient } from "../../utils/minio-client";
 
 let http = require('http');
 let https = require('https');
@@ -11,7 +12,7 @@ let Dom = require('xmldom').DOMParser;
 let xpath = require('xpath');
 const fs = require('fs');
 const path = require('path');
-const minio = require('minio');
+// const minio = require('minio');
 
 // Create instance of files service
 let filesService = new FilesService();
@@ -170,13 +171,13 @@ export class LibreofficeControllers {
             // const fileBuffer = fs.readFileSync(`${process.env.FILE_UPLOAD_FOLDER}/${file.modified_name}`);
             // res.send(fileBuffer);
 
-            var minioClient = new minio.Client({
-                endPoint: process.env.MINIO_DOMAIN,
-                port: +(process.env.MINIO_API_PORT),
-                useSSL: process.env.MINIO_PROTOCOL == 'https',
-                accessKey: process.env.MINIO_ACCESS_KEY,
-                secretKey: process.env.MINIO_SECRET_KEY
-            });
+            // var minioClient = new minio.Client({
+            //     endPoint: process.env.MINIO_DOMAIN,
+            //     port: +(process.env.MINIO_API_PORT),
+            //     useSSL: process.env.MINIO_PROTOCOL == 'https',
+            //     accessKey: process.env.MINIO_ACCESS_KEY,
+            //     secretKey: process.env.MINIO_SECRET_KEY
+            // });
 
             // return minioClient.getObject(req.params.workspaceId, file.modified_name);
 
@@ -238,13 +239,13 @@ export class LibreofficeControllers {
             // wstream.write(req.body);
             // res.sendStatus(200);
 
-            var minioClient = new minio.Client({
-                endPoint: process.env.MINIO_DOMAIN,
-                port: +(process.env.MINIO_API_PORT),
-                useSSL: process.env.MINIO_PROTOCOL == 'https',
-                accessKey: process.env.MINIO_ACCESS_KEY,
-                secretKey: process.env.MINIO_SECRET_KEY
-            });
+            // var minioClient = new minio.Client({
+            //     endPoint: process.env.MINIO_DOMAIN,
+            //     port: +(process.env.MINIO_API_PORT),
+            //     useSSL: process.env.MINIO_PROTOCOL == 'https',
+            //     accessKey: process.env.MINIO_ACCESS_KEY,
+            //     secretKey: process.env.MINIO_SECRET_KEY
+            // });
             minioClient.putObject(req.params.workspaceId, file.modified_name, req.body, (error) => {
                 if (error) {
                     return res.status(500).json({
