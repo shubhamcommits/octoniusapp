@@ -239,6 +239,10 @@ export class FilesService {
   }
 
   getMinioFile(fileId: string, modified_name: string, workspaceId: string, token: string) {
+console.log('files.service', {fileId});
+console.log('files.service', {token});
+console.log('files.service', {modified_name});
+console.log('files.service', {workspaceId});
     return this._http.get(this.baseURL + `/files/${fileId}/minio`, {
       params: {
         token: token,

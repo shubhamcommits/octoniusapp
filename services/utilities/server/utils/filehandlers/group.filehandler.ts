@@ -2,8 +2,9 @@ import { Response, Request, NextFunction } from "express";
 import { sendError } from "../senderror";
 import { File, Flamingo } from '../../api/models';
 import moment from 'moment';
+import { minioClient } from "../minio-client";
 
-const minio = require('minio');
+// const minio = require('minio');
 
 /**
  * This function is the boiler plate for file handler mechanism for group avatar
@@ -19,13 +20,13 @@ const minio = require('minio');
 
     // Redirect the Response to the Groups Microservice
     // return res.status(301).redirect(`${process.env.GROUPS_SERVER}/uploads/${file}`)
-    var minioClient = new minio.Client({
-      endPoint: process.env.MINIO_DOMAIN,
-      port: +(process.env.MINIO_API_PORT),
-      useSSL: process.env.MINIO_PROTOCOL == 'https',
-      accessKey: process.env.MINIO_ACCESS_KEY,
-      secretKey: process.env.MINIO_SECRET_KEY
-    });
+    // var minioClient = new minio.Client({
+    //   endPoint: process.env.MINIO_DOMAIN,
+    //   port: +(process.env.MINIO_API_PORT),
+    //   useSSL: process.env.MINIO_PROTOCOL == 'https',
+    //   accessKey: process.env.MINIO_ACCESS_KEY,
+    //   secretKey: process.env.MINIO_SECRET_KEY
+    // });
 
     await minioClient.getObject(workspaceId, /*process.env.FILE_UPLOAD_FOLDER + */file, async (error, data) => {
       if (error) {
@@ -57,13 +58,13 @@ const groupsFilesHandler = async (req: Request, res: Response, next: NextFunctio
     // Fetch the File Name From the request
     let { params: { workspaceId, fileId } } = req;
 
-    var minioClient = new minio.Client({
-      endPoint: process.env.MINIO_DOMAIN,
-      port: +(process.env.MINIO_API_PORT),
-      useSSL: process.env.MINIO_PROTOCOL == 'https',
-      accessKey: process.env.MINIO_ACCESS_KEY,
-      secretKey: process.env.MINIO_SECRET_KEY
-    });
+    // var minioClient = new minio.Client({
+    //   endPoint: process.env.MINIO_DOMAIN,
+    //   port: +(process.env.MINIO_API_PORT),
+    //   useSSL: process.env.MINIO_PROTOCOL == 'https',
+    //   accessKey: process.env.MINIO_ACCESS_KEY,
+    //   secretKey: process.env.MINIO_SECRET_KEY
+    // });
 
     let file: any = await File.findById({ _id: fileId });
 
@@ -200,13 +201,13 @@ const groupFileUploader = async (req: Request, res: Response, next: NextFunction
 
     // Instantiate the minio client with the endpoint
     // and access keys as shown below.
-    var minioClient = new minio.Client({
-        endPoint: process.env.MINIO_DOMAIN,
-        port: +(process.env.MINIO_API_PORT),
-        useSSL: process.env.MINIO_PROTOCOL == 'https',
-        accessKey: process.env.MINIO_ACCESS_KEY,
-        secretKey: process.env.MINIO_SECRET_KEY
-    });
+    // var minioClient = new minio.Client({
+    //     endPoint: process.env.MINIO_DOMAIN,
+    //     port: +(process.env.MINIO_API_PORT),
+    //     useSSL: process.env.MINIO_PROTOCOL == 'https',
+    //     accessKey: process.env.MINIO_ACCESS_KEY,
+    //     secretKey: process.env.MINIO_SECRET_KEY
+    // });
 
     await minioClient.bucketExists((workspaceId).toLowerCase(), async (error, exists) => {
       if (error) {
@@ -291,13 +292,13 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
   const { fileId } = req.params;
   let deletedFile: any = await File.findById({ _id: fileId });
 
-  var minioClient = new minio.Client({
-      endPoint: process.env.MINIO_DOMAIN,
-      port: +(process.env.MINIO_API_PORT),
-      useSSL: process.env.MINIO_PROTOCOL == 'https',
-      accessKey: process.env.MINIO_ACCESS_KEY,
-      secretKey: process.env.MINIO_SECRET_KEY
-  });
+  // var minioClient = new minio.Client({
+  //     endPoint: process.env.MINIO_DOMAIN,
+  //     port: +(process.env.MINIO_API_PORT),
+  //     useSSL: process.env.MINIO_PROTOCOL == 'https',
+  //     accessKey: process.env.MINIO_ACCESS_KEY,
+  //     secretKey: process.env.MINIO_SECRET_KEY
+  // });
   
   if (req.body.fileName && req.body.fileName != '' && deletedFile && (deletedFile.type == 'file' || deletedFile.type == 'campaign')) {
     // if (fs.existsSync(process.env.FILE_UPLOAD_FOLDER + req.body.fileName)) {
@@ -413,32 +414,35 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
  */
  const minioFileHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    var minioClient = new minio.Client({
-      endPoint: process.env.MINIO_DOMAIN,
-      port: +(process.env.MINIO_API_PORT),
-      useSSL: process.env.MINIO_PROTOCOL == 'https',
-      accessKey: process.env.MINIO_ACCESS_KEY,
-      secretKey: process.env.MINIO_SECRET_KEY
-    });
-
+    // var minioClient = new minio.Client({
+    //   endPoint: process.env.MINIO_DOMAIN,
+    //   port: +(process.env.MINIO_API_PORT),
+    //   useSSL: process.env.MINIO_PROTOCOL == 'https',
+    //   accessKey: process.env.MINIO_ACCESS_KEY,
+    //   secretKey: process.env.MINIO_SECRET_KEY
+    // });
+console.log("group.file", "1111", req.query);
     let workspaceId = (req.query.workspaceId + '').toLowerCase();
-
+console.log("group.file", "2222");
     await minioClient.getObject(workspaceId, /*process.env.FILE_UPLOAD_FOLDER + */req.query.modified_name, async (error, data) => {
       if (error) {
+console.log("group.file", "3333", error);
         return res.status(500).json({
           message: 'Error getting file.',
           error: error
         });
       }
-
+console.log("group.file", "4444", data);
       // const objectUrl = await minioClient.presignedGetObject(workspaceId, req.query.modified_name);
       const objectUrl = await minioClient.presignedUrl('GET', workspaceId, req.query.modified_name);
+console.log("group.file", "5555", objectUrl);
       return res.status(200).json({
         url: objectUrl,
         message: 'File succesfully obtained.'
       });
     });
   } catch (err) {
+console.log("group.file", "6666", err);
     return sendError(res, err, 'Internal Server Error!', 500);
   }
 }

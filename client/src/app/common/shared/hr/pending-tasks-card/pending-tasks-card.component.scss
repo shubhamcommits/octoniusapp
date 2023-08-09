@@ -23,6 +23,7 @@
 	.card-content {
 		min-height: 300px;
 		padding: 20px;
+		text-align: center;
 	}
 
 	.card-footer {
@@ -37,4 +38,8 @@
 		align-items: center;
 		// cursor: pointer;
 	}
+}
+
+.placeholder-img {
+  width: 65%;
 }
