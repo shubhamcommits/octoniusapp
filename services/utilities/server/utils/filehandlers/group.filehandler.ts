@@ -421,25 +421,28 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
     //   accessKey: process.env.MINIO_ACCESS_KEY,
     //   secretKey: process.env.MINIO_SECRET_KEY
     // });
-
+console.log("group.file", "1111", req.query);
     let workspaceId = (req.query.workspaceId + '').toLowerCase();
-
+console.log("group.file", "2222");
     await minioClient.getObject(workspaceId, /*process.env.FILE_UPLOAD_FOLDER + */req.query.modified_name, async (error, data) => {
       if (error) {
+console.log("group.file", "3333", error);
         return res.status(500).json({
           message: 'Error getting file.',
           error: error
         });
       }
-
+console.log("group.file", "4444", data);
       // const objectUrl = await minioClient.presignedGetObject(workspaceId, req.query.modified_name);
       const objectUrl = await minioClient.presignedUrl('GET', workspaceId, req.query.modified_name);
+console.log("group.file", "5555", objectUrl);
       return res.status(200).json({
         url: objectUrl,
         message: 'File succesfully obtained.'
       });
     });
   } catch (err) {
+console.log("group.file", "6666", err);
     return sendError(res, err, 'Internal Server Error!', 500);
   }
 }
