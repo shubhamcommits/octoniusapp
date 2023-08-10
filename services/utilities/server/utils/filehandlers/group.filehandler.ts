@@ -4,8 +4,6 @@ import { File, Flamingo } from '../../api/models';
 import moment from 'moment';
 import { minioClient } from "../minio-client";
 
-// const minio = require('minio');
-
 /**
  * This function is the boiler plate for file handler mechanism for group avatar
  * @param req 
@@ -18,16 +16,6 @@ import { minioClient } from "../minio-client";
     // Fetch the File Name From the request
     let { params: { workspaceId, file } } = req;
 
-    // Redirect the Response to the Groups Microservice
-    // return res.status(301).redirect(`${process.env.GROUPS_SERVER}/uploads/${file}`)
-    // var minioClient = new minio.Client({
-    //   endPoint: process.env.MINIO_DOMAIN,
-    //   port: +(process.env.MINIO_API_PORT),
-    //   useSSL: process.env.MINIO_PROTOCOL == 'https',
-    //   accessKey: process.env.MINIO_ACCESS_KEY,
-    //   secretKey: process.env.MINIO_SECRET_KEY
-    // });
-
     await minioClient.getObject(workspaceId, /*process.env.FILE_UPLOAD_FOLDER + */file, async (error, data) => {
       if (error) {
         return res.status(500).json({
@@ -36,9 +24,6 @@ import { minioClient } from "../minio-client";
         });
       }
 
-      // const objectUrl = await minioClient.presignedGetObject(req.query.workspaceId, req.query.modified_name);
-      // const objectUrl = await minioClient.presignedUrl('GET', workspaceId, file);
-      // return res.status(301).redirect(objectUrl);
       data.pipe(res);
     });
 
@@ -57,14 +42,6 @@ const groupsFilesHandler = async (req: Request, res: Response, next: NextFunctio
   try {
     // Fetch the File Name From the request
     let { params: { workspaceId, fileId } } = req;
-
-    // var minioClient = new minio.Client({
-    //   endPoint: process.env.MINIO_DOMAIN,
-    //   port: +(process.env.MINIO_API_PORT),
-    //   useSSL: process.env.MINIO_PROTOCOL == 'https',
-    //   accessKey: process.env.MINIO_ACCESS_KEY,
-    //   secretKey: process.env.MINIO_SECRET_KEY
-    // });
 
     let file: any = await File.findById({ _id: fileId });
 
@@ -88,7 +65,6 @@ const groupsFilesHandler = async (req: Request, res: Response, next: NextFunctio
           }
         });
 
-        // return res.status(301).redirect(`${process.env.GROUPS_SERVER}/uploads/${fileVersions[0].modified_name}`)
         await minioClient.getObject(workspaceId, /*process.env.FILE_UPLOAD_FOLDER + */fileVersions[0].modified_name, async (error, data) => {
           if (error) {
             return res.status(500).json({
@@ -97,14 +73,12 @@ const groupsFilesHandler = async (req: Request, res: Response, next: NextFunctio
             });
           }
 
-          // const objectUrl = await minioClient.presignedGetObject(req.query.workspaceId, req.query.modified_name);
           const objectUrl = await minioClient.presignedUrl('GET', workspaceId, /*process.env.FILE_UPLOAD_FOLDER + */fileVersions[0].modified_name);
           return res.status(301).redirect(objectUrl);
         });
       }
     } else {
       // Redirect the Response to the Groups Microservice
-      // return res.status(301).redirect(`${process.env.GROUPS_SERVER}/uploads/${file.modified_name}`)
       await minioClient.getObject(workspaceId, /*process.env.FILE_UPLOAD_FOLDER + */file.modified_name, async (error, data) => {
         if (error) {
           return res.status(500).json({
@@ -113,7 +87,6 @@ const groupsFilesHandler = async (req: Request, res: Response, next: NextFunctio
           });
         }
 
-        // const objectUrl = await minioClient.presignedGetObject(req.query.workspaceId, req.query.modified_name);
         const objectUrl = await minioClient.presignedUrl('GET', workspaceId, /*process.env.FILE_UPLOAD_FOLDER + */file.modified_name);
         return res.status(301).redirect(objectUrl);
       });
@@ -143,9 +116,6 @@ const groupFileUploader = async (req: Request, res: Response, next: NextFunction
     /// Instantiate the fileName variable and add the date object in the name
     let fileName: any = Date.now().toString() + "_" + req['files'].file['name'];
 
-    // if(req.body.fileData.type == 'campaign')
-    //   fileName = req['files'].file['name']
-
     // Get the file from the request
     const file: any = req['files'].file;
 
@@ -162,52 +132,6 @@ const groupFileUploader = async (req: Request, res: Response, next: NextFunction
         }
       }
     }
-
-    // await fs.mkdir(process.env.FILE_UPLOAD_FOLDER + folder, { recursive: true }, function(error) {
-    //   if (error) {
-    //     fileName = null;
-    //     return res.status(500).json({
-    //       status: '500',
-    //       message: 'file upload error',
-    //       error: error
-    //     });
-    //   }
-    // })
-
-    // Modify the file accordingly and handle request
-    // file.mv(process.env.FILE_UPLOAD_FOLDER + folder + fileName, (error) => {
-    //   if (error) {
-    //     fileName = null;
-    //     return res.status(500).json({
-    //       status: '500',
-    //       message: 'file upload error',
-    //       error: error
-    //     });
-    //   }
-
-    //   // Modify the file and serialise the object
-    //   const file = {
-    //     original_name: req['files'].file['name'],
-    //     modified_name: folder + fileName
-    //   };
-
-    //   // Modify the current request to add 
-    //   req.body.fileData.original_name = file.original_name;
-    //   req.body.fileData.modified_name = file.modified_name;
-
-    //   // Pass the middleware// Pass the middleware
-    //   next();
-    // });
-
-    // Instantiate the minio client with the endpoint
-    // and access keys as shown below.
-    // var minioClient = new minio.Client({
-    //     endPoint: process.env.MINIO_DOMAIN,
-    //     port: +(process.env.MINIO_API_PORT),
-    //     useSSL: process.env.MINIO_PROTOCOL == 'https',
-    //     accessKey: process.env.MINIO_ACCESS_KEY,
-    //     secretKey: process.env.MINIO_SECRET_KEY
-    // });
 
     await minioClient.bucketExists((workspaceId).toLowerCase(), async (error, exists) => {
       if (error) {
@@ -292,28 +216,7 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
   const { fileId } = req.params;
   let deletedFile: any = await File.findById({ _id: fileId });
 
-  // var minioClient = new minio.Client({
-  //     endPoint: process.env.MINIO_DOMAIN,
-  //     port: +(process.env.MINIO_API_PORT),
-  //     useSSL: process.env.MINIO_PROTOCOL == 'https',
-  //     accessKey: process.env.MINIO_ACCESS_KEY,
-  //     secretKey: process.env.MINIO_SECRET_KEY
-  // });
-  
   if (req.body.fileName && req.body.fileName != '' && deletedFile && (deletedFile.type == 'file' || deletedFile.type == 'campaign')) {
-    // if (fs.existsSync(process.env.FILE_UPLOAD_FOLDER + req.body.fileName)) {
-    //   // Delete the file accordingly and handle request
-    //   fs.unlink(process.env.FILE_UPLOAD_FOLDER + req.body.fileName, (error) => {
-    //     if (error) {
-    //       req.body.fileName = null;
-    //       return res.status(500).json({
-    //         status: '500',
-    //         message: 'Error deleting file: ' + req.body.fileName,
-    //         error: error
-    //       });
-    //     }
-    //   });
-    // }
     await minioClient.removeObject((req.body.workspaceId).toLowerCase(), /*process.env.FILE_UPLOAD_FOLDER + */req.body.fileName, (error) => {
       if (error) {
         req.body.fileName = null;
@@ -336,18 +239,6 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
     if (flamingo) {
       flamingo._questions.forEach(async question => {
         if (question.image_url && question.image_url != '') {
-          // if (fs.existsSync(process.env.FILE_UPLOAD_FOLDER + question.image_url)) {
-          //   // Delete the file accordingly and handle request
-          //   fs.unlink(process.env.FILE_UPLOAD_FOLDER + question.image_url, (error) => {
-          //     if (error) {
-          //       return res.status(500).json({
-          //         status: '500',
-          //         message: 'Error deleting image of flamingo: ' + question.image_url,
-          //         error: error
-          //       });
-          //     }
-          //   });
-          // }
           await minioClient.removeObject((req.body.workspaceId).toLowerCase(), /*process.env.FILE_UPLOAD_FOLDER + */question.image_url, (error) => {
             if (error) {
               return res.status(500).json({
@@ -375,19 +266,7 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
   if (fileVersions) {
     for (let i = 0; i < fileVersions.length; i++) {
       let file = fileVersions[i];
-    // fileVersions.forEach(async file => {
-      // if (fs.existsSync(process.env.FILE_UPLOAD_FOLDER + file.modified_name)) {
-      //   // Delete the file version accordingly and handle request
-      //   fs.unlink(process.env.FILE_UPLOAD_FOLDER + file.modified_name, (error) => {
-      //     if (error) {
-      //       return res.status(500).json({
-      //         status: '500',
-      //         message: 'Error deleting version of the file: ' + file.modified_name ,
-      //         error: error
-      //       });
-      //     }
-      //   });
-      // }
+    
       await minioClient.removeObject((req.body.workspaceId).toLowerCase(), /*process.env.FILE_UPLOAD_FOLDER + */file.modified_name, (error) => {
         if (error) {
           return res.status(500).json({
@@ -414,35 +293,24 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
  */
  const minioFileHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    // var minioClient = new minio.Client({
-    //   endPoint: process.env.MINIO_DOMAIN,
-    //   port: +(process.env.MINIO_API_PORT),
-    //   useSSL: process.env.MINIO_PROTOCOL == 'https',
-    //   accessKey: process.env.MINIO_ACCESS_KEY,
-    //   secretKey: process.env.MINIO_SECRET_KEY
-    // });
-console.log("group.file", "1111", req.query);
     let workspaceId = (req.query.workspaceId + '').toLowerCase();
-console.log("group.file", "2222");
+
     await minioClient.getObject(workspaceId, /*process.env.FILE_UPLOAD_FOLDER + */req.query.modified_name, async (error, data) => {
       if (error) {
-console.log("group.file", "3333", error);
         return res.status(500).json({
           message: 'Error getting file.',
           error: error
         });
       }
-console.log("group.file", "4444", data);
+
       // const objectUrl = await minioClient.presignedGetObject(workspaceId, req.query.modified_name);
       const objectUrl = await minioClient.presignedUrl('GET', workspaceId, req.query.modified_name);
-console.log("group.file", "5555", objectUrl);
       return res.status(200).json({
         url: objectUrl,
         message: 'File succesfully obtained.'
       });
     });
   } catch (err) {
-console.log("group.file", "6666", err);
     return sendError(res, err, 'Internal Server Error!', 500);
   }
 }
