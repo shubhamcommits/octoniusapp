@@ -1,6 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import { sendError } from ".";
 import { Workspace } from "../api/models";
+import { minioClient } from "./minio-client";
 
 const minio = require('minio');
 
@@ -22,9 +23,6 @@ const workspaceFileUploader = async (req: Request, res: Response, next: NextFunc
 
     // Get the file from the request
     const file: any = req['files'].workspace_avatar;
-
-    // Get the folder link from the environment
-    // let folder = process.env.FILE_UPLOAD_FOLDER;
     
     // Instantiate the fileName variable and add the date object in the name
     let fileName = '';
@@ -33,32 +31,7 @@ const workspaceFileUploader = async (req: Request, res: Response, next: NextFunc
     }
     fileName += Date.now().toString() + req['files'].workspace_avatar['name'];
 
-    // Modify the file accordingly and handle request
-    //   file.mv(folder + fileName, (error: Error) => {
-    //     if (error) {
-    //       fileName = null;
-    //       return res.status(500).json({
-    //         status: '500',
-    //         message: 'file upload error',
-    //         error: error
-    //       });
-    //     }
-
-    //     // Modify the current request to add 
-    //     req.body.workspace_avatar = fileName;
-
-    //     // Pass the middleware
-    //     next();
-    //   });
-    var minioClient = new minio.Client({
-          endPoint: process.env.MINIO_DOMAIN,
-          port: +(process.env.MINIO_API_PORT),
-          useSSL: process.env.MINIO_PROTOCOL == 'https',
-          accessKey: process.env.MINIO_ACCESS_KEY,
-          secretKey: process.env.MINIO_SECRET_KEY
-      });
-
-      await minioClient.bucketExists((req.body.fileData._workspace).toLowerCase(), async (error, exists) => {
+    await minioClient.bucketExists((req.body.fileData._workspace).toLowerCase(), async (error, exists) => {
         if (error) {
           fileName = null;
           return res.status(500).json({
@@ -156,9 +129,6 @@ const loungeImageFileUploader = async (req: Request, res: Response, next: NextFu
     // Get the file from the request
     const file: any = req['files'].image;
     const elementPropertyName = req.body.elementPropertyName.toString();
-
-    // Get the folder link from the environment
-    // let folder = process.env.FILE_UPLOAD_FOLDER;
     
     // Instantiate the fileName variable and add the date object in the name
     let fileName = 'lounges_';
@@ -166,32 +136,6 @@ const loungeImageFileUploader = async (req: Request, res: Response, next: NextFu
       fileName += workspaceId +  '_';
     }
     fileName += elementId + '_' + Date.now().toString() + file.name;
-
-    // Modify the file accordingly and handle request
-    // file.mv(folder + fileName, (error: Error) => {
-    //   if (error) {
-    //     fileName = null;
-    //     return res.status(500).json({
-    //       status: '500',
-    //       message: 'file upload error',
-    //       error: error
-    //     });
-    //   }
-
-    //   // Modify the current request to add 
-    //   req.body[elementPropertyName] = fileName;
-
-    //   // Pass the middleware
-    //   next();
-    // });
-
-    var minioClient = new minio.Client({
-        endPoint: process.env.MINIO_DOMAIN,
-        port: +(process.env.MINIO_API_PORT),
-        useSSL: process.env.MINIO_PROTOCOL == 'https',
-        accessKey: process.env.MINIO_ACCESS_KEY,
-        secretKey: process.env.MINIO_SECRET_KEY
-    });
 
     await minioClient.bucketExists((workspaceId).toLowerCase(), async (error, exists) => {
       if (error) {
@@ -271,16 +215,6 @@ const fileHandler = async (req: Request, res: Response, next: NextFunction) => {
     // Fetch the File Name From the request
     let { params: { workspaceId, file } } = req;
 
-    // Redirect the Response to the Groups Microservice
-    // return res.status(301).redirect(`${process.env.GROUPS_SERVER}/uploads/${file}`)
-    var minioClient = new minio.Client({
-      endPoint: process.env.MINIO_DOMAIN,
-      port: +(process.env.MINIO_API_PORT),
-      useSSL: process.env.MINIO_PROTOCOL == 'https',
-      accessKey: process.env.MINIO_ACCESS_KEY,
-      secretKey: process.env.MINIO_SECRET_KEY
-    });
-
     await minioClient.getObject(workspaceId.toLowerCase(), file, async (error, data) => {
       if (error) {
         return res.status(500).json({
@@ -289,8 +223,6 @@ const fileHandler = async (req: Request, res: Response, next: NextFunction) => {
         });
       }
 
-      // const objectUrl = await minioClient.presignedUrl('GET', workspaceId, file);
-      // return res.status(301).redirect(objectUrl);
       data.pipe(res);
     });
 

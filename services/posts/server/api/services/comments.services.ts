@@ -2,9 +2,9 @@ import { Comment, Post, User, Notification, Story, Page } from '../models';
 import http from 'axios';
 import moment from 'moment';
 import followRedirects from 'follow-redirects';
+import { minioClient } from '../utils/minio-client';
 
 const fs = require('fs');
-const minio = require('minio');
 
 /*  ===============================
  *  -- COMMENTS Service --
@@ -102,31 +102,6 @@ const minio = require('minio');
               }, {
                 new: true
               }).select('title _posted_by _content_mentions _assigned_to _followers');
-            /*
-            followRedirects.maxBodyLength = 60 * 1024 * 1024;
-            // const parsed_newComment = JSON.stringify(newComment);
-            var forward_data_object = {
-              _id: null,
-              _commented_by: '',
-              _post_id: null,
-              _story_id: null
-            };
-
-            forward_data_object._id = newComment._id;
-            forward_data_object._commented_by = newComment._commented_by;
-            
-            if (newComment._story) {
-              forward_data_object._story_id = newComment._story._id;
-            }
-
-            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
-                comment: JSON.stringify(forward_data_object),
-                posted_by: story['_posted_by'],
-                assigned_to: story['_assistants'],
-                followers: story['_followers']
-              }, { maxContentLength: 60 * 1024 * 1024 }
-            );
-            */
           } else if (pageId) {
             // Update post: add new comment id, increase post count
             const page = await Page.findOneAndUpdate({
@@ -362,24 +337,8 @@ const minio = require('minio');
             function deleteFiles(files, callback) {
               var i = files.length;
               files.forEach(async function (filepath) {
-                // const finalpath = `${process.env.FILE_UPLOAD_FOLDER}${filepath.modified_name}`
                 const finalpath = `${filepath.modified_name}`
-                // fs.unlink(finalpath, function (err) {
-                //   i--;
-                //   if (err) {
-                //     callback(err);
-                //     return;
-                //   } else if (i <= 0) {
-                //     callback(null);
-                //   }
-                // });
-                var minioClient = new minio.Client({
-                  endPoint: process.env.MINIO_DOMAIN,
-                  port: +(process.env.MINIO_API_PORT),
-                  useSSL: process.env.MINIO_PROTOCOL == 'https',
-                  accessKey: process.env.MINIO_ACCESS_KEY,
-                  secretKey: process.env.MINIO_SECRET_KEY
-                });
+
                 await minioClient.removeObject(user._workspace, finalpath, (error) => {
                   i--;
                   if (error) {
@@ -401,27 +360,8 @@ const minio = require('minio');
           if (post) {
             // TODO - not sure if the files are being deleted. Wrong name
             //chec/delete document files that were exported
-            // const filepath = `${process.env.FILE_UPLOAD_FOLDER}${post._id + post._group + 'export' + '.docx'}`;
             const filepath = `${post._id + post._group + 'export' + '.docx'}`;
-            //check if file exists
-            // fs.access(filepath, fs.F_OK, error => {
-            //   //if error there was no file
-            //   if (!error) {
-            //     //the file was there now unlink it
-            //     fs.unlink(filepath, (err) => {
-            //       //handle error when file was not deleted properly
-            //       if (err) { throw (err); }
-            //       //deleted document
-            //     })
-            //   }
-            // })
-            var minioClient = new minio.Client({
-              endPoint: process.env.MINIO_DOMAIN,
-              port: +(process.env.MINIO_API_PORT),
-              useSSL: process.env.MINIO_PROTOCOL == 'https',
-              accessKey: process.env.MINIO_ACCESS_KEY,
-              secretKey: process.env.MINIO_SECRET_KEY
-            });
+            
             await minioClient.removeObject(user._workspace, filepath, (error) => {
               if (error) { throw (error); }
             });
@@ -449,27 +389,8 @@ const minio = require('minio');
           } else if (story) {
             // TODO - not sure if the files are being deleted. Wrong name
             //chec/delete document files that were exported
-            // const filepath = `${process.env.FILE_UPLOAD_FOLDER}${story._id + 'export' + '.docx'}`;
             const filepath = `${story._id + 'export' + '.docx'}`;
-            //check if file exists
-            // fs.access(filepath, fs.F_OK, error => {
-            //   //if error there was no file
-            //   if (!error) {
-            //     //the file was there now unlink it
-            //     fs.unlink(filepath, (err) => {
-            //       //handle error when file was not deleted properly
-            //       if (err) { throw (err); }
-            //       //deleted document
-            //     })
-            //   }
-            // })
-            var minioClient = new minio.Client({
-              endPoint: process.env.MINIO_DOMAIN,
-              port: +(process.env.MINIO_API_PORT),
-              useSSL: process.env.MINIO_PROTOCOL == 'https',
-              accessKey: process.env.MINIO_ACCESS_KEY,
-              secretKey: process.env.MINIO_SECRET_KEY
-            });
+
             await minioClient.removeObject(user._workspace, filepath, (error) => {
               if (error) { throw (error); }
             });

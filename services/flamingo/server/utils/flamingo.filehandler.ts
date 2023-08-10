@@ -1,7 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import { sendError } from ".";
-
-const minio = require('minio');
+import { minioClient } from "./minio-client";
 
 /**
  * This function is the boiler plate for file handler mechanism for user profileImage
@@ -34,32 +33,6 @@ const flamingoFileUploader = async (req: Request, res: Response, next: NextFunct
   }
   
   fileName += Date.now().toString() + '_' + req['files'].questionImage['name'].replace(/\s/g, "");
-
-  // Modify the file accordingly and handle request
-  // file.mv(folder + fileName, (error: Error) => {
-  //   if (error) {
-  //     fileName = null;
-  //     return res.status(500).json({
-  //       status: '500',
-  //       message: 'file upload error',
-  //       error: error
-  //     });
-  //   }
-
-  //   // Modify the current request to add fileName
-  //   req['fileName'] = fileName;
-
-  //   // Pass the middleware
-  //   next()
-  // });
-
-  var minioClient = new minio.Client({
-      endPoint: process.env.MINIO_DOMAIN,
-      port: +(process.env.MINIO_API_PORT),
-      useSSL: process.env.MINIO_PROTOCOL == 'https',
-      accessKey: process.env.MINIO_ACCESS_KEY,
-      secretKey: process.env.MINIO_SECRET_KEY
-  });
 
   await minioClient.bucketExists((req.body.fileData.workspaceId).toLowerCase(), async (error, exists) => {
     if (error) {
@@ -138,16 +111,6 @@ const flamingoFileHandler = async (req: Request, res: Response, next: NextFuncti
     // Fetch the File Name From the request
     let { params: { workspaceId, file } } = req;
 
-    // Redirect the Response to the Workspaces Microservice
-    // return res.status(301).redirect(`${process.env.FLAMINGO_SERVER}/uploads/${file}`);
-    var minioClient = new minio.Client({
-      endPoint: process.env.MINIO_DOMAIN,
-      port: +(process.env.MINIO_API_PORT),
-      useSSL: process.env.MINIO_PROTOCOL == 'https',
-      accessKey: process.env.MINIO_ACCESS_KEY,
-      secretKey: process.env.MINIO_SECRET_KEY
-    });
-
     await minioClient.getObject(workspaceId.toLowerCase(), file, async (error, data) => {
       if (error) {
         return res.status(500).json({
@@ -156,9 +119,6 @@ const flamingoFileHandler = async (req: Request, res: Response, next: NextFuncti
         });
       }
 
-      // const objectUrl = await minioClient.presignedGetObject(req.query.workspaceId, req.query.modified_name);
-      // const objectUrl = await minioClient.presignedUrl('GET', workspaceId, file);
-      // return res.status(301).redirect(objectUrl);
       data.pipe(res);
     });
   } catch (err) {
