@@ -4,7 +4,6 @@ import { Request, Response, NextFunction } from 'express';
 import { UsersService, WorkspaceService } from '../services';
 const minio = require('minio');
 import moment from 'moment';
-import { minioClient } from '../../utils/minio-client';
 
 // User Service Instance
 const usersService = new UsersService();
@@ -187,6 +186,15 @@ export class WorkspaceController {
             if (!workspaceUpdate) {
                 return sendError(res, new Error('Unable to update the workspace, some unexpected error occurred!'), 'Unable to update the workspace, some unexpected error occurred!', 500);
             }
+
+            // Create a bucket when the workspace is created
+            var minioClient = new minio.Client({
+                endPoint: process.env.MINIO_DOMAIN,
+                port: +(process.env.MINIO_API_PORT),
+                useSSL: process.env.MINIO_PROTOCOL == 'https',
+                accessKey: process.env.MINIO_ACCESS_KEY,
+                secretKey: process.env.MINIO_SECRET_KEY
+            });
 
             const workspaceId = workspace._id.toString().toLowerCase();
 

@@ -4,14 +4,15 @@ import { Comment, Group, Post, User, Notification } from '../models';
 import { CommentsService } from './comments.services';
 import { GroupsService } from './groups.services';
 import axios from 'axios';
-import { minioClient } from '../utils/minio-client';
 
+const fs = require('fs');
 const minio = require('minio');
 
 /*  ===============================
  *  -- POSTS Service --
  *  ===============================
  */
+
 export class PostService {
 
   // Select User Fields on population
@@ -947,6 +948,7 @@ export class PostService {
     return post
   }
 
+
   /**
    * This function is used to remove a post
    * @param { userId, postId }
@@ -1017,6 +1019,14 @@ export class PostService {
         function deleteFiles(files, callback) {
           var i = files.length;
           files.forEach(async (file) => {
+            var minioClient = new minio.Client({
+              endPoint: process.env.MINIO_DOMAIN,
+              port: +(process.env.MINIO_API_PORT),
+              useSSL: process.env.MINIO_PROTOCOL == 'https',
+              accessKey: process.env.MINIO_ACCESS_KEY,
+              secretKey: process.env.MINIO_SECRET_KEY
+            });
+
             await minioClient.removeObject((user._workspace+'').toLocaleLowerCase(), file?.modified_name, (error) => {
               i--;
               if (error) {
@@ -1037,6 +1047,14 @@ export class PostService {
 
       //chec/delete document files that were exported
       const filepath = `${postId + post._group + 'export' + '.docx'}`;
+      var minioClient = new minio.Client({
+        endPoint: process.env.MINIO_DOMAIN,
+        port: +(process.env.MINIO_API_PORT),
+        useSSL: process.env.MINIO_PROTOCOL == 'https',
+        accessKey: process.env.MINIO_ACCESS_KEY,
+        secretKey: process.env.MINIO_SECRET_KEY
+      });
+
       minioClient.statObject((user._workspace+'').toLocaleLowerCase(), filepath, async (err, stat) => {
         if (err) {
           throw (err);
@@ -2733,6 +2751,13 @@ export class PostService {
 
           // Get the folder link from the environment
           const folder = process.env.FILE_UPLOAD_FOLDER;
+          var minioClient = new minio.Client({
+              endPoint: process.env.MINIO_DOMAIN,
+              port: +(process.env.MINIO_API_PORT),
+              useSSL: process.env.MINIO_PROTOCOL == 'https',
+              accessKey: process.env.MINIO_ACCESS_KEY,
+              secretKey: process.env.MINIO_SECRET_KEY
+          });
 
           var conds = new minio.CopyConditions();
 
@@ -3098,8 +3123,16 @@ export class PostService {
           // Get the folder link from the environment
           const folder = process.env.FILE_UPLOAD_FOLDER;
 
+          var minioClient = new minio.Client({
+              endPoint: process.env.MINIO_DOMAIN,
+              port: +(process.env.MINIO_API_PORT),
+              useSSL: process.env.MINIO_PROTOCOL == 'https',
+              accessKey: process.env.MINIO_ACCESS_KEY,
+              secretKey: process.env.MINIO_SECRET_KEY
+          });
+
           var conds = new minio.CopyConditions();
-          
+
           await minioClient.bucketExists((group._workspace).toLowerCase(), async (error, exists) => {
             if (error) {
               throw (error);
@@ -3247,6 +3280,14 @@ export class PostService {
           // Instantiate the fileName variable and add the date object in the name
           let fileName = Date.now().toString() + currentFile.original_name;
 
+          var minioClient = new minio.Client({
+              endPoint: process.env.MINIO_DOMAIN,
+              port: +(process.env.MINIO_API_PORT),
+              useSSL: process.env.MINIO_PROTOCOL == 'https',
+              accessKey: process.env.MINIO_ACCESS_KEY,
+              secretKey: process.env.MINIO_SECRET_KEY
+          });
+
           var conds = new minio.CopyConditions();
 
           await minioClient.bucketExists((group._workspace).toLowerCase(), async (error, exists) => {
@@ -3356,6 +3397,14 @@ export class PostService {
         function deleteFiles(files, callback) {
           var i = files.length;
           files.forEach(async (file) => {
+            var minioClient = new minio.Client({
+              endPoint: process.env.MINIO_DOMAIN,
+              port: +(process.env.MINIO_API_PORT),
+              useSSL: process.env.MINIO_PROTOCOL == 'https',
+              accessKey: process.env.MINIO_ACCESS_KEY,
+              secretKey: process.env.MINIO_SECRET_KEY
+            });
+
             await minioClient.removeObject((user._workspace+'').toLocaleLowerCase(), file?.modified_name, (error) => {
               i--;
               if (error) {
@@ -3375,6 +3424,14 @@ export class PostService {
 
       //chec/delete document files that were exported
       const filepath = `${newPostId + (newPost._group._id || newPost._group) + 'export' + '.docx'}`;
+      var minioClient = new minio.Client({
+        endPoint: process.env.MINIO_DOMAIN,
+        port: +(process.env.MINIO_API_PORT),
+        useSSL: process.env.MINIO_PROTOCOL == 'https',
+        accessKey: process.env.MINIO_ACCESS_KEY,
+        secretKey: process.env.MINIO_SECRET_KEY
+      });
+
       minioClient.statObject((user._workspace+'').toLocaleLowerCase(), filepath, async (err, stat) => {
         if (err) {
           throw (err);
@@ -3396,8 +3453,16 @@ export class PostService {
           // Instantiate the fileName variable and add the date object in the name
           let fileName = Date.now().toString() + currentFile.original_name;
 
+          var minioClient = new minio.Client({
+              endPoint: process.env.MINIO_DOMAIN,
+              port: +(process.env.MINIO_API_PORT),
+              useSSL: process.env.MINIO_PROTOCOL == 'https',
+              accessKey: process.env.MINIO_ACCESS_KEY,
+              secretKey: process.env.MINIO_SECRET_KEY
+          });
+
           var conds = new minio.CopyConditions();
-          
+
           await minioClient.bucketExists(user?._workspace?.toLowerCase(), async (error, exists) => {
             if (error) {
               throw (error);

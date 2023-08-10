@@ -1,6 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import { sendError } from ".";
-import { minioClient } from "./minio-client";
+
+const minio = require('minio');
 
 /**
  * This function is the boiler plate for file handler mechanism for user profileImage
@@ -13,9 +14,6 @@ const flamingoFileUploader = async (req: Request, res: Response, next: NextFunct
   // Get the file from the request
   const file: any = req['files'].questionImage;
   req.body.fileData = JSON.parse(req.body.fileData);
-
-  // Get the folder link from the environment
-  // let folder = process.env.FILE_UPLOAD_FOLDER;
 
   // Instantiate the fileName variable and add the date object in the name
   let fileName = '';
@@ -34,6 +32,14 @@ const flamingoFileUploader = async (req: Request, res: Response, next: NextFunct
   
   fileName += Date.now().toString() + '_' + req['files'].questionImage['name'].replace(/\s/g, "");
 
+  var minioClient = new minio.Client({
+      endPoint: process.env.MINIO_DOMAIN,
+      port: +(process.env.MINIO_API_PORT),
+      useSSL: process.env.MINIO_PROTOCOL == 'https',
+      accessKey: process.env.MINIO_ACCESS_KEY,
+      secretKey: process.env.MINIO_SECRET_KEY
+  });
+
   await minioClient.bucketExists((req.body.fileData.workspaceId).toLowerCase(), async (error, exists) => {
     if (error) {
       fileName = null;
@@ -43,7 +49,9 @@ const flamingoFileUploader = async (req: Request, res: Response, next: NextFunct
         error: error
       });
     }
-// minioClient.setBucketQuota((req.body.fileData.workspaceId), 100 * 1024 * 1024);
+
+    // minioClient.setBucketQuota((req.body.fileData.workspaceId), 100 * 1024 * 1024);
+
     if (!exists) {
       // Make a bucket.
       await minioClient.makeBucket((req.body.fileData.workspaceId).toLowerCase(), async (error) => {
@@ -110,6 +118,14 @@ const flamingoFileHandler = async (req: Request, res: Response, next: NextFuncti
 
     // Fetch the File Name From the request
     let { params: { workspaceId, file } } = req;
+
+    var minioClient = new minio.Client({
+      endPoint: process.env.MINIO_DOMAIN,
+      port: +(process.env.MINIO_API_PORT),
+      useSSL: process.env.MINIO_PROTOCOL == 'https',
+      accessKey: process.env.MINIO_ACCESS_KEY,
+      secretKey: process.env.MINIO_SECRET_KEY
+    });
 
     await minioClient.getObject(workspaceId.toLowerCase(), file, async (error, data) => {
       if (error) {

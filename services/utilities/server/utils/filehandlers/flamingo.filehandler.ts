@@ -1,6 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import { sendError } from "../senderror";
-import { minioClient } from "../minio-client";
+
+const minio = require('minio');
 
 /**
  * This function is the boiler plate for file handler mechanism for flamingo image
@@ -13,6 +14,14 @@ const flamingoFileHandler = async (req: Request, res: Response, next: NextFuncti
 
     // Fetch the File Name From the request
     let { params: { workspaceId, file } } = req;
+
+    var minioClient = new minio.Client({
+      endPoint: process.env.MINIO_DOMAIN,
+      port: +(process.env.MINIO_API_PORT),
+      useSSL: process.env.MINIO_PROTOCOL == 'https',
+      accessKey: process.env.MINIO_ACCESS_KEY,
+      secretKey: process.env.MINIO_SECRET_KEY
+    });
 
     await minioClient.getObject(workspaceId, /*process.env.FILE_UPLOAD_FOLDER + */file, async (error, data) => {
       if (error) {

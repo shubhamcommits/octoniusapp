@@ -4,7 +4,6 @@ import { sendError } from "../../utils/senderror";
 import { FilesService } from "../services";
 import { User } from "../models";
 import moment from "moment";
-import { minioClient } from "../../utils/minio-client";
 
 let http = require('http');
 let https = require('https');
@@ -12,7 +11,7 @@ let Dom = require('xmldom').DOMParser;
 let xpath = require('xpath');
 const fs = require('fs');
 const path = require('path');
-// const minio = require('minio');
+const minio = require('minio');
 
 // Create instance of files service
 let filesService = new FilesService();
@@ -168,6 +167,14 @@ export class LibreofficeControllers {
         const file = await filesService.getOne(fileId);
 
         if (file) {
+            var minioClient = new minio.Client({
+                endPoint: process.env.MINIO_DOMAIN,
+                port: +(process.env.MINIO_API_PORT),
+                useSSL: process.env.MINIO_PROTOCOL == 'https',
+                accessKey: process.env.MINIO_ACCESS_KEY,
+                secretKey: process.env.MINIO_SECRET_KEY
+            });
+
             minioClient.getObject(req.params.workspaceId, file.modified_name, (error, stream) => {
                 if (error) {
                     return res.status(500).json({
@@ -208,6 +215,13 @@ export class LibreofficeControllers {
         // we log to the console so that is possible
         // to check that saving has triggered this wopi endpoint
         if (req.body) {
+            var minioClient = new minio.Client({
+                endPoint: process.env.MINIO_DOMAIN,
+                port: +(process.env.MINIO_API_PORT),
+                useSSL: process.env.MINIO_PROTOCOL == 'https',
+                accessKey: process.env.MINIO_ACCESS_KEY,
+                secretKey: process.env.MINIO_SECRET_KEY
+            });
             minioClient.putObject(req.params.workspaceId, file.modified_name, req.body, (error) => {
                 if (error) {
                     return res.status(500).json({

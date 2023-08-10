@@ -1,7 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import { sendError } from ".";
 import { Group, Post } from '../models';
-import { minioClient } from "./minio-client";
 
 const minio = require('minio');
 
@@ -65,7 +64,15 @@ const postFileUploader = async (req: Request, res: Response, next: NextFunction)
       }
       fileName += Date.now().toString() + currentFile.name;
 
-      await minioClient.bucketExists(workspaceId.toLowerCase(), async (error, exists) => {
+        var minioClient = new minio.Client({
+            endPoint: process.env.MINIO_DOMAIN,
+            port: +(process.env.MINIO_API_PORT),
+            useSSL: process.env.MINIO_PROTOCOL == 'https',
+            accessKey: process.env.MINIO_ACCESS_KEY,
+            secretKey: process.env.MINIO_SECRET_KEY
+        });
+
+        await minioClient.bucketExists(workspaceId.toLowerCase(), async (error, exists) => {
             if (error) {
               fileName = null;
               return res.status(500).json({
@@ -184,6 +191,14 @@ const postFileUploader = async (req: Request, res: Response, next: NextFunction)
     }
     fileName += Date.now().toString() + req['files'].attachments['name'];
 
+    var minioClient = new minio.Client({
+        endPoint: process.env.MINIO_DOMAIN,
+        port: +(process.env.MINIO_API_PORT),
+        useSSL: process.env.MINIO_PROTOCOL == 'https',
+        accessKey: process.env.MINIO_ACCESS_KEY,
+        secretKey: process.env.MINIO_SECRET_KEY
+    });
+
     await minioClient.bucketExists(workspaceId.toLowerCase(), async (error, exists) => {
         if (error) {
           fileName = null;
@@ -289,6 +304,14 @@ const fileHandler = async (req: Request, res: Response, next: NextFunction) => {
 
     // Fetch the File Name From the request
     let { params: { workspaceId, file } } = req;
+
+    var minioClient = new minio.Client({
+      endPoint: process.env.MINIO_DOMAIN,
+      port: +(process.env.MINIO_API_PORT),
+      useSSL: process.env.MINIO_PROTOCOL == 'https',
+      accessKey: process.env.MINIO_ACCESS_KEY,
+      secretKey: process.env.MINIO_SECRET_KEY
+    });
 
     await minioClient.getObject(workspaceId.toLowerCase(), file, async (error, data) => {
       if (error) {

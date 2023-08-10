@@ -1,7 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import { sendError } from ".";
 import { User } from "../api/models";
-import { minioClient } from "./minio-client";
 
 const minio = require('minio');
 
@@ -19,6 +18,14 @@ const userFileUploader = async (req: Request, res: Response, next: NextFunction)
 
   // Instantiate the fileName variable and add the date object in the name
   let fileName = workspaceId + '_' + req['userId'] + '_' + Date.now().toString() + '_' + req['files'].profileImage['name'];
+
+  var minioClient = new minio.Client({
+      endPoint: process.env.MINIO_DOMAIN,
+      port: +(process.env.MINIO_API_PORT),
+      useSSL: process.env.MINIO_PROTOCOL == 'https',
+      accessKey: process.env.MINIO_ACCESS_KEY,
+      secretKey: process.env.MINIO_SECRET_KEY
+  });
 
   await minioClient.bucketExists(workspaceId.toLowerCase(), async (error, exists) => {
     if (error) {
@@ -110,6 +117,14 @@ const fileHandler = async (req: Request, res: Response, next: NextFunction) => {
     // Fetch the File Name From the request
     let { params: { workspaceId, file } } = req;
 
+    var minioClient = new minio.Client({
+      endPoint: process.env.MINIO_DOMAIN,
+      port: +(process.env.MINIO_API_PORT),
+      useSSL: process.env.MINIO_PROTOCOL == 'https',
+      accessKey: process.env.MINIO_ACCESS_KEY,
+      secretKey: process.env.MINIO_SECRET_KEY
+    });
+
     await minioClient.getObject(workspaceId.toLowerCase(), file, async (error, data) => {
       if (error) {
         return res.status(500).json({
@@ -118,8 +133,6 @@ const fileHandler = async (req: Request, res: Response, next: NextFunction) => {
         });
       }
 
-      // const objectUrl = await minioClient.presignedUrl('GET', workspaceId, file);
-      // return res.status(301).redirect(objectUrl);
       data.pipe(res);
     });
 

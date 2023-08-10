@@ -2,9 +2,9 @@ import { Comment, Post, User, Notification, Story, Page } from '../models';
 import http from 'axios';
 import moment from 'moment';
 import followRedirects from 'follow-redirects';
-import { minioClient } from '../utils/minio-client';
 
 const fs = require('fs');
+const minio = require('minio');
 
 /*  ===============================
  *  -- COMMENTS Service --
@@ -102,6 +102,31 @@ const fs = require('fs');
               }, {
                 new: true
               }).select('title _posted_by _content_mentions _assigned_to _followers');
+            /*
+            followRedirects.maxBodyLength = 60 * 1024 * 1024;
+            // const parsed_newComment = JSON.stringify(newComment);
+            var forward_data_object = {
+              _id: null,
+              _commented_by: '',
+              _post_id: null,
+              _story_id: null
+            };
+
+            forward_data_object._id = newComment._id;
+            forward_data_object._commented_by = newComment._commented_by;
+            
+            if (newComment._story) {
+              forward_data_object._story_id = newComment._story._id;
+            }
+
+            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
+                comment: JSON.stringify(forward_data_object),
+                posted_by: story['_posted_by'],
+                assigned_to: story['_assistants'],
+                followers: story['_followers']
+              }, { maxContentLength: 60 * 1024 * 1024 }
+            );
+            */
           } else if (pageId) {
             // Update post: add new comment id, increase post count
             const page = await Page.findOneAndUpdate({
@@ -327,7 +352,6 @@ const fs = require('fs');
               && !comment._commented_by.equals(userId))
           ) {
             // Deny access!
-            // return sendErr(res, null, 'User not allowed to delete this comment!', 403);
             throw(null);
           }
 
@@ -338,7 +362,13 @@ const fs = require('fs');
               var i = files.length;
               files.forEach(async function (filepath) {
                 const finalpath = `${filepath.modified_name}`
-
+                var minioClient = new minio.Client({
+                  endPoint: process.env.MINIO_DOMAIN,
+                  port: +(process.env.MINIO_API_PORT),
+                  useSSL: process.env.MINIO_PROTOCOL == 'https',
+                  accessKey: process.env.MINIO_ACCESS_KEY,
+                  secretKey: process.env.MINIO_SECRET_KEY
+                });
                 await minioClient.removeObject(user._workspace, finalpath, (error) => {
                   i--;
                   if (error) {
@@ -361,7 +391,14 @@ const fs = require('fs');
             // TODO - not sure if the files are being deleted. Wrong name
             //chec/delete document files that were exported
             const filepath = `${post._id + post._group + 'export' + '.docx'}`;
-            
+
+            var minioClient = new minio.Client({
+              endPoint: process.env.MINIO_DOMAIN,
+              port: +(process.env.MINIO_API_PORT),
+              useSSL: process.env.MINIO_PROTOCOL == 'https',
+              accessKey: process.env.MINIO_ACCESS_KEY,
+              secretKey: process.env.MINIO_SECRET_KEY
+            });
             await minioClient.removeObject(user._workspace, filepath, (error) => {
               if (error) { throw (error); }
             });
@@ -391,6 +428,13 @@ const fs = require('fs');
             //chec/delete document files that were exported
             const filepath = `${story._id + 'export' + '.docx'}`;
 
+            var minioClient = new minio.Client({
+              endPoint: process.env.MINIO_DOMAIN,
+              port: +(process.env.MINIO_API_PORT),
+              useSSL: process.env.MINIO_PROTOCOL == 'https',
+              accessKey: process.env.MINIO_ACCESS_KEY,
+              secretKey: process.env.MINIO_SECRET_KEY
+            });
             await minioClient.removeObject(user._workspace, filepath, (error) => {
               if (error) { throw (error); }
             });

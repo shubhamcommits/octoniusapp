@@ -4,7 +4,6 @@ import { axios } from '../../utils';
 import { DateTime } from 'luxon';
 import moment from "moment";
 import got from "got";
-import { minioClient } from "../../utils/minio-client";
 
 const { convertHtmlToDelta } = require('node-quill-converter');
 
@@ -21,7 +20,14 @@ export class LibraryService {
         { _id: collectionId }
       ).lean();
 
-    const finalpath = `${collection.collection_avatar}`;
+    const finalpath = `${collection.collection_avatar}`
+    var minioClient = new minio.Client({
+      endPoint: process.env.MINIO_DOMAIN,
+      port: +(process.env.MINIO_API_PORT),
+      useSSL: process.env.MINIO_PROTOCOL == 'https',
+      accessKey: process.env.MINIO_ACCESS_KEY,
+      secretKey: process.env.MINIO_SECRET_KEY
+    });
 
     await minioClient.removeObject(workspaceId, finalpath, (error) => {
       if (error) {
@@ -35,8 +41,6 @@ export class LibraryService {
       this.deletePage(page?._id, workspaceId);
     });
 
-    // await Page.deleteMany({ _collection: collectionId });
-
     this.deleteCollectionFiles(workspaceId, collectionId);
   }
 
@@ -45,6 +49,14 @@ export class LibraryService {
     let collection = await Collection.findById({
           _id: collectionId
       }).select('collection_avatar').lean();
+
+    var minioClient = new minio.Client({
+      endPoint: process.env.MINIO_DOMAIN,
+      port: +(process.env.MINIO_API_PORT),
+      useSSL: process.env.MINIO_PROTOCOL == 'https',
+      accessKey: process.env.MINIO_ACCESS_KEY,
+      secretKey: process.env.MINIO_SECRET_KEY
+    });
 
     if (collection && collection.collection_avatar) {
       // Remove previuos image
@@ -73,7 +85,14 @@ export class LibraryService {
   async deleteCollectionFile(fileId: string, workspaceId: string) {
     const file = await File.findOne({ _id: fileId }).lean();
 
-    const finalpath = `${file.modified_name}`;
+    const finalpath = `${file.modified_name}`
+    var minioClient = new minio.Client({
+      endPoint: process.env.MINIO_DOMAIN,
+      port: +(process.env.MINIO_API_PORT),
+      useSSL: process.env.MINIO_PROTOCOL == 'https',
+      accessKey: process.env.MINIO_ACCESS_KEY,
+      secretKey: process.env.MINIO_SECRET_KEY
+    });
 
     await minioClient.removeObject(workspaceId, finalpath, (error) => {
       if (error) {
@@ -115,7 +134,14 @@ export class LibraryService {
     const files = await File.find({ _collection: collectionId }).lean();
 
     files.forEach(async (filepath) => {
-      const finalpath = `${filepath.modified_name}`;
+      const finalpath = `${filepath.modified_name}`
+      var minioClient = new minio.Client({
+        endPoint: process.env.MINIO_DOMAIN,
+        port: +(process.env.MINIO_API_PORT),
+        useSSL: process.env.MINIO_PROTOCOL == 'https',
+        accessKey: process.env.MINIO_ACCESS_KEY,
+        secretKey: process.env.MINIO_SECRET_KEY
+      });
 
       await minioClient.removeObject(workspaceId, finalpath, (error) => {
         if (error) {
@@ -132,7 +158,14 @@ export class LibraryService {
     const files = await File.find({ _page: pageId }).lean();
 
     files.forEach(async (filepath) => {
-      const finalpath = `${filepath.modified_name}`;
+      const finalpath = `${filepath.modified_name}`
+      var minioClient = new minio.Client({
+        endPoint: process.env.MINIO_DOMAIN,
+        port: +(process.env.MINIO_API_PORT),
+        useSSL: process.env.MINIO_PROTOCOL == 'https',
+        accessKey: process.env.MINIO_ACCESS_KEY,
+        secretKey: process.env.MINIO_SECRET_KEY
+      });
 
       await minioClient.removeObject(workspaceId, finalpath, (error) => {
         if (error) {
@@ -147,7 +180,14 @@ export class LibraryService {
   async deletePageFile(fileId: string, workspaceId: string) {
     const file = await File.findOne({ _id: fileId }).lean();
 
-    const finalpath = `${file.modified_name}`;
+    const finalpath = `${file.modified_name}`
+    var minioClient = new minio.Client({
+      endPoint: process.env.MINIO_DOMAIN,
+      port: +(process.env.MINIO_API_PORT),
+      useSSL: process.env.MINIO_PROTOCOL == 'https',
+      accessKey: process.env.MINIO_ACCESS_KEY,
+      secretKey: process.env.MINIO_SECRET_KEY
+    });
 
     await minioClient.removeObject(workspaceId, finalpath, (error) => {
       if (error) {
@@ -181,7 +221,6 @@ export class LibraryService {
         if (response && response.data && response.data.page && response.data.page.results) {
           for (let i = 0; i < response.data.page.results.length; i++) {
             const space = response.data.page.results[i];
-// console.log(space.children.attachment.results);
             const user: any = await User.findOne({
                 $and: [
                   { email: space?.history?.createdBy?.email },
@@ -215,7 +254,6 @@ export class LibraryService {
   }
 
   async exportSpaceConfluencePages(domain: string, spaceId: string, email: string, userId: string, collectionId: string, workspaceId: string, groupId: string) {
-    // let pages = [];
     await axios.get(`https://${domain}/wiki/rest/api/content/${spaceId}/child/page?expand=children.page,children.attachment,body.view,history,history.contributors,history.lastUpdated,version`, {
         headers: {
             'Authorization': `Basic ${Buffer.from(email).toString('base64')}`,
@@ -259,7 +297,6 @@ export class LibraryService {
   }
 
   async exportPageConfluenceComments(domain: string, confluenceSpaceId: string, email: string, pageId: string, workspaceId: string, groupId: string, userId: string) {
-    // let pages = [];
     await axios.get(`https://${domain}/wiki/rest/api/content/${confluenceSpaceId}/child/comment?expand=children.page,children.attachment,body.view,history`, {
         headers: {
             'Authorization': `Basic ${Buffer.from(email).toString('base64')}`,
@@ -295,10 +332,17 @@ export class LibraryService {
         }
       })
       .catch(err => console.error(err));
-    // return pages;
   }
 
   async exportAttachment(elementType: string, file: any, domain: string, email: string, workspaceId: string, groupId: string, parentId: string, userId: string) {
+    var minioClient = new minio.Client({
+      endPoint: process.env.MINIO_DOMAIN,
+      port: +(process.env.MINIO_API_PORT),
+      useSSL: process.env.MINIO_PROTOCOL == 'https',
+      accessKey: process.env.MINIO_ACCESS_KEY,
+      secretKey: process.env.MINIO_SECRET_KEY
+    });
+
     const options = {
       headers: {
         'Authorization': `Basic ${Buffer.from(email).toString('base64')}`,

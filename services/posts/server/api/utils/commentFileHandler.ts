@@ -1,5 +1,4 @@
 import { Response, Request, NextFunction } from "express";
-import { minioClient } from "./minio-client";
 
 const minio = require('minio');
 
@@ -37,6 +36,14 @@ const commentFileUploader = async (req: Request, res: Response, next: NextFuncti
       // Get the modified name from the comment files
       const indexFile = req.body.comment.files.findIndex(file => file.original_name === currentFile.name);
       const modified_name = req.body.comment.files[indexFile].modified_name;
+
+      var minioClient = new minio.Client({
+          endPoint: process.env.MINIO_DOMAIN,
+          port: +(process.env.MINIO_API_PORT),
+          useSSL: process.env.MINIO_PROTOCOL == 'https',
+          accessKey: process.env.MINIO_ACCESS_KEY,
+          secretKey: process.env.MINIO_SECRET_KEY
+      });
 
       await minioClient.bucketExists((req.body.fileData._workspace).toLowerCase(), async (error, exists) => {
         if (error) {
@@ -105,6 +112,14 @@ const commentFileUploader = async (req: Request, res: Response, next: NextFuncti
     // Get the modified name from the comment files
     const index = comment['files'].findIndex(file => file.original_name === currentFile.name);
     const modified_name = comment['files'][index].modified_name;
+
+    var minioClient = new minio.Client({
+        endPoint: process.env.MINIO_DOMAIN,
+        port: +(process.env.MINIO_API_PORT),
+        useSSL: process.env.MINIO_PROTOCOL == 'https',
+        accessKey: process.env.MINIO_ACCESS_KEY,
+        secretKey: process.env.MINIO_SECRET_KEY
+    });
 
     await minioClient.bucketExists((req.body.fileData._workspace).toLowerCase(), async (error, exists) => {
       if (error) {

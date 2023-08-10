@@ -1,4 +1,3 @@
-import { minioClient } from '../../utils/minio-client';
 import { Post, Notification, Column, Flow, Group, Comment } from '../models';
 
 const fs = require('fs');
@@ -81,7 +80,13 @@ export class CommonService {
           var i = files.length;
           files.forEach(async function (filepath) {
             const finalpath = `${filepath.modified_name}`
-
+            var minioClient = new minio.Client({
+              endPoint: process.env.MINIO_DOMAIN,
+              port: +(process.env.MINIO_API_PORT),
+              useSSL: process.env.MINIO_PROTOCOL == 'https',
+              accessKey: process.env.MINIO_ACCESS_KEY,
+              secretKey: process.env.MINIO_SECRET_KEY
+            });
             await minioClient.removeObject(workspaceId, finalpath, (error) => {
               i--;
               if (error) {
@@ -98,8 +103,16 @@ export class CommonService {
           //all files removed);
         });
       }
+
+      //chec/delete document files that were exported
       const filepath = `${postId + post._group + 'export' + '.docx'}`;
-      
+      var minioClient = new minio.Client({
+        endPoint: process.env.MINIO_DOMAIN,
+        port: +(process.env.MINIO_API_PORT),
+        useSSL: process.env.MINIO_PROTOCOL == 'https',
+        accessKey: process.env.MINIO_ACCESS_KEY,
+        secretKey: process.env.MINIO_SECRET_KEY
+      });
       await minioClient.removeObject(workspaceId, filepath, (error) => {
         if (error) { throw (error); }
       });

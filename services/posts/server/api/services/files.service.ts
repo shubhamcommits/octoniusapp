@@ -1,5 +1,4 @@
 import { Group } from "../models";
-import { minioClient } from "../utils/minio-client";
 
 const fs = require('fs');
 const minio = require('minio');
@@ -32,7 +31,14 @@ export class FilesService {
         const group: any = await Group.findById({_id: groupId}).select('_workspace').lean();
 
         const finalpath = `${fileName}`
-        
+
+        var minioClient = new minio.Client({
+            endPoint: process.env.MINIO_DOMAIN,
+            port: +(process.env.MINIO_API_PORT),
+            useSSL: process.env.MINIO_PROTOCOL == 'https',
+            accessKey: process.env.MINIO_ACCESS_KEY,
+            secretKey: process.env.MINIO_SECRET_KEY
+        });
         await minioClient.removeObject(group._workspace, finalpath, (error) => {
             if (error) {
                 callback(error);
