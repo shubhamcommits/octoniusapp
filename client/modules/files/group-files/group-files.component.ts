@@ -1072,13 +1072,11 @@ export class GroupFilesComponent implements OnInit {
         window.open(await this.getLibreOfficeURL(lastFileVersion), "_blank");
       } else {
         this.filesService.getMinioFile(lastFileVersion?._id, lastFileVersion?.modified_name, this.workspaceId, this.authToken).then(res =>{
-console.log('group-files.component', {res});
           window.open(res['url'], "_blank");
         });
       }
     } else {
       this.filesService.getMinioFile(file?._id, file?.modified_name, this.workspaceId, this.authToken).then(res =>{
-console.log('group-files.component', {res});
         window.open(res['url'], "_blank");
       });
     }
