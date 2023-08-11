@@ -63,6 +63,18 @@ export class HRService {
     return this._http.post(this.baseUrl + `/${entityId}/delete-cf`, { cfId }).toPromise();
   }
 
+  createNewBenefit(entityId: string, benefit: any) {
+    return this._http.post(this.baseUrl + `/${entityId}/benefit`, { benefit }).toPromise();
+  }
+
+  editEntityBenefit(entityId: string, benefit: any) {
+    return this._http.post(this.baseUrl + `/${entityId}/edit-benefit`, { benefit }).toPromise();
+  }
+
+  deleteEntityBenefit(entityId: string, benefitId: string) {
+    return this._http.post(this.baseUrl + `/${entityId}/delete-benefit`, { benefitId }).toPromise();
+  }
+
   getEntityMembers(entityId: string) {
     return this._http.get(this.baseUrl + `/${entityId}/entityMembers`).toPromise();
   }

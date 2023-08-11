@@ -45,6 +45,16 @@ export class EditEntityDialogComponent implements OnInit {
     value: 0
   }
 
+  benefitTypes = ['Select', 'Multiselect', 'Number', 'Text', 'Date'];
+  createNewBenefit = false;
+  newBenefit = {
+    _id: '',
+    name: '',
+    type: '',
+    values: []
+  }
+
+
   entityMembers = [];
 
   constructor(
@@ -139,6 +149,9 @@ export class EditEntityDialogComponent implements OnInit {
     }));
   }
 
+  /**
+   * START CF
+   */
   showNewCFForm() {
     this.createNewCF = !this.createNewCF;
   }
@@ -168,11 +181,6 @@ export class EditEntityDialogComponent implements OnInit {
         });
       } else {
         this.hrService.createNewCF(this.entityData?._id, this.newCF).then(res => {
-          // if (!this.entityData.payroll_custom_fields) {
-          //   this.entityData.payroll_custom_fields = [];
-          // }
-
-          // this.entityData.payroll_custom_fields.push(this.newCF);
           this.entityData = res['entity'];
           this.cancelCF();
 
@@ -208,7 +216,7 @@ export class EditEntityDialogComponent implements OnInit {
   }
 
   deleteEntityCF(cfId: string) {
-    this.utilityService.getConfirmDialogAlert($localize`:@@editentitydialog.areYouSure:Are you sure?`, $localize`:@@editentitydialog.completelyRemoved:By doing this, the entity be completely removed!`)
+    this.utilityService.getConfirmDialogAlert($localize`:@@editentitydialog.areYouSure:Are you sure?`, $localize`:@@editentitydialog.completelyRemovedCF:By doing this, the field will be completely removed!`)
       .then((res) => {
         if (res.value) {
           this.utilityService.asyncNotification($localize`:@@editentitydialog.pleaseWaitDeleting:Please wait we are deleting the entity...`, new Promise((resolve, reject) => {
@@ -251,7 +259,13 @@ export class EditEntityDialogComponent implements OnInit {
       cf.values.splice(index, 1);
     }
   }
+  /**
+   * ENDS CF
+   */
 
+  /**
+   * START VARIABLES
+   */
   showNewVariableForm() {
     this.createNewVariable = !this.createNewVariable;
   }
@@ -317,7 +331,7 @@ export class EditEntityDialogComponent implements OnInit {
   }
 
   deleteEntityVariable(variableId: string) {
-    this.utilityService.getConfirmDialogAlert($localize`:@@editentitydialog.areYouSure:Are you sure?`, $localize`:@@editentitydialog.completelyRemoved:By doing this, the entity be completely removed!`)
+    this.utilityService.getConfirmDialogAlert($localize`:@@editentitydialog.areYouSure:Are you sure?`, $localize`:@@editentitydialog.completelyRemovedVariable:By doing this, the variable will be completely removed!`)
       .then((res) => {
         if (res.value) {
           this.utilityService.asyncNotification($localize`:@@editentitydialog.pleaseWaitDeleting:Please wait we are deleting the entity...`, new Promise((resolve, reject) => {
@@ -355,6 +369,123 @@ export class EditEntityDialogComponent implements OnInit {
         }
       });
   }
+  /**
+   * ENDS VARIABLES
+   */
+
+  /**
+   * START BENEFITS
+   */
+  changeBenefitType($event, benefit) {
+    benefit.values = [];
+  }
+
+  saveBenefit() {
+    this.utilityService.asyncNotification($localize`:@@editEntityDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the entity...`, new Promise((resolve, reject) => {
+      if (this.newBenefit?._id && this.newBenefit?._id != '') {
+        this.hrService.editEntityBenefit(this.entityData?._id, this.newBenefit).then(res => {
+          const index = (this.entityData.payroll_benefits) ? this.entityData.payroll_benefits.findIndex(benefitTmp => benefitTmp._id == this.newBenefit._id) : -1;
+          if (index >= 0) {
+            this.entityData.payroll_benefits[index] = this.newBenefit;
+          }
+
+          this.cancelBenefit();
+
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@editEntityDialog.entityUpdated:Entity updated!`));
+        })
+        .catch(() => {
+          this.cancelBenefit();
+
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@editEntityDialog.unableToUpdateEntity:Unable to update the entity, please try again!`));
+        });
+      } else {
+        this.hrService.createNewBenefit(this.entityData?._id, this.newBenefit).then(res => {
+          this.entityData = res['entity'];
+          this.cancelBenefit();
+
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@editEntityDialog.entityUpdated:Entity updated!`));
+        })
+        .catch(() => {
+          this.cancelBenefit();
+
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@editEntityDialog.unableToUpdateEntity:Unable to update the entity, please try again!`));
+        });
+      }
+    }));
+  }
+
+  editEntityBenefit(benefit: any) {
+    this.newBenefit._id = benefit._id;
+    this.newBenefit.name = benefit.name;
+    this.newBenefit.type = benefit.type;
+    this.newBenefit.values = benefit.values;
+
+    this.showNewBenefitForm();
+  }
+
+  showNewBenefitForm() {
+    this.createNewBenefit = !this.createNewBenefit;
+  }
+
+  cancelBenefit() {
+    this.newBenefit = {
+      _id: '',
+      name: '',
+      type: '',
+      values: []
+    }
+    this.createNewBenefit = !this.createNewBenefit;
+  }
+
+  deleteEntityBenefit(benefitId: string) {
+    this.utilityService.getConfirmDialogAlert($localize`:@@editentitydialog.areYouSure:Are you sure?`, $localize`:@@editentitydialog.completelyRemovedBenefit:By doing this, the benefit will be completely removed!`)
+      .then((res) => {
+        if (res.value) {
+          this.utilityService.asyncNotification($localize`:@@editentitydialog.pleaseWaitDeleting:Please wait we are deleting the entity...`, new Promise((resolve, reject) => {
+            this.hrService.deleteEntityBenefit(this.entityData?._id, benefitId).then(res => {
+              const index = (this.entityData.payroll_benefits) ? this.entityData.payroll_benefits.findIndex(benefit => benefit._id == benefitId) : -1;
+              if (index >= 0) {
+                this.entityData.payroll_benefits.splice(index, 1);
+              }
+
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@editentitydialog.deletedBenefit:Benefit deleted!`));
+            }).catch((err) => {
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@editentitydialog.unableDeleteBenefit:Unable to delete the benefit, please try again!`));
+            });
+          }));
+        }
+      });
+  }
+
+  addBenefitValue(benefit, event: Event) {
+    const newValue = event.target['value'];
+
+    if (newValue !== '') {
+      // Find the index of the field to check if the same named field exist or not
+      const index = benefit.values.findIndex((v: string) => v.toLowerCase() === newValue.toLowerCase());
+
+      // If index is found, then throw error notification
+      if (index !== -1) {
+        this.utilityService.warningNotification($localize`:@@editentitydialog.valueAlreadyExists:Value already exists!`);
+      } else {
+        benefit.values.push(newValue);
+
+        event.target['value'] = '';
+      }
+    }
+  }
+
+  removeBenefitValue(benefit, value: string) {
+    const index = (benefit.values) ? benefit.values.findIndex((v: string) => v.toLowerCase() === value.toLowerCase()) : -1;
+    if (index !== -1) {
+      benefit.values.splice(index, 1);
+    }
+  }
+  /**
+   * ENDS BENEFITS
+   */
 
   openAddMembersDialog() {
     const dialogRef = this.dialog.open(EntityAddMembersDialogComponent, {

@@ -55,6 +55,15 @@ routes.post('/:entityId/edit-cf', controller.editEntityCF);
 // POST - Deletes an entity custom field
 routes.post('/:entityId/delete-cf', controller.deleteEntityCF);
 
+// POST - Creates a new entity benefit
+routes.post('/:entityId/benefit', controller.createEntityBenefit);
+
+// POST - Edits an entity benefit
+routes.post('/:entityId/edit-benefit', controller.editEntityBenefit);
+
+// POST - Deletes an entity benefit
+routes.post('/:entityId/delete-benefit', controller.deleteEntityBenefit);
+
 // GET - Returns all the members in an entity
 routes.get('/:entityId/entityMembers', controller.getEntityMembers);
 

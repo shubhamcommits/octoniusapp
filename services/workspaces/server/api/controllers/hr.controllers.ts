@@ -369,6 +369,103 @@ export class HRControllers {
         }
     }
 
+    async createEntityBenefit(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { entityId }, body: { benefit } } = req;
+
+            if (!entityId || !benefit) {
+                return sendError(res, new Error('Please provide the entityId property!'), 'Please provide the entityId property!', 500);
+            }
+
+            const newBenefit = {
+                name: benefit.name,
+                type: benefit.type,
+                values: benefit.values
+            }
+
+            const entity = await Entity.findByIdAndUpdate({
+                    _id: entityId
+                }, {
+                    $addToSet: {
+                        payroll_benefits: newBenefit
+                    }
+                }, {
+                    new: true
+                })
+                .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+                .lean();
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'Benefit created.',
+                entity: entity
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async editEntityBenefit(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { entityId }, body: { benefit } } = req;
+
+            if (!entityId || !benefit) {
+                return sendError(res, new Error('Please provide the entityId property!'), 'Please provide the entityId property!', 500);
+            }
+
+            const entity = await Entity.findByIdAndUpdate({
+                    _id: entityId
+                }, {
+                    $set: {
+                        'payroll_benefits.$[benefit]': benefit
+                    }
+                },
+                {
+                    arrayFilters: [{ "benefit._id": benefit?._id }],
+                    new: true
+                })
+                .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+                .lean();
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'Benefit edited.',
+                entity: entity
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async deleteEntityBenefit(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { entityId }, body: { benefitId } } = req;
+
+            if (!entityId || !benefitId) {
+                return sendError(res, new Error('Please provide the entityId property!'), 'Please provide the entityId property!', 500);
+            }
+
+            const entity = await Entity.findByIdAndUpdate({
+                    _id: entityId
+                }, {
+                    $pull: { payroll_benefits: { _id: benefitId }}
+                },
+                {
+                    new: true
+                })
+                .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+                .lean();
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'Benefit delted.',
+                entity: entity
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
     async getEntityMembers(req: Request, res: Response, next: NextFunction) {
         try {
 
