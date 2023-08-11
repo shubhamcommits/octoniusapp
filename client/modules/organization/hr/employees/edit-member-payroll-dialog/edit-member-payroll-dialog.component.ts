@@ -107,7 +107,6 @@ export class EditMemberPayrollDialogComponent implements OnInit {
               this.memberData.hr.entity_benefits[field._id] = '';
               this.selectedHRBenefitValues[field._id] = '';
             } else {
-
               if (field.type == 'Multiselect') {
                 this.selectedHRBenefitValues[field._id] = this.memberData.hr.entity_benefits[field._id].split(",");
               } else {

@@ -89,12 +89,7 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
             entity_variables: new Map<string, string>()
           };
         }
-console.log(res['entity']['payroll_custom_fields']);
-console.log(this.userData.hr.entity_custom_fields);
-console.log(res['entity']['payroll_variables']);
-console.log(this.userData.hr.entity_variables);
-console.log(res['entity']['payroll_benefits']);
-console.log(this.userData.hr.entity_benefits);
+
         if (res['entity']['payroll_custom_fields']) {
           res['entity']['payroll_custom_fields'].forEach(async field => {
 
@@ -144,7 +139,11 @@ console.log(this.userData.hr.entity_benefits);
                 this.userData.hr.entity_benefits[field._id] = '';
                 this.selectedHRBenefitsValues[field._id] = '';
               } else {
-                this.selectedHRBenefitsValues[field._id] = this.userData.hr.entity_benefits[field._id];
+                if (field.type == 'Multiselect') {
+                  this.selectedHRBenefitsValues[field._id] = this.userData.hr.entity_benefits[field._id].split(",");
+                } else {
+                  this.selectedHRBenefitsValues[field._id] = this.userData.hr.entity_benefits[field._id];
+                }
               }
 
               if (this.isCurrentUser || ['owner', 'admin', 'manager'].includes(this.userData?.role)) {

@@ -64,12 +64,13 @@
           <label [for]="cf._id" class="muted">{{ cf.name }}</label>
 
           <mat-select ngDefaultControl *ngIf="isCurrentUser && cf.type == 'Select'" [(value)]="selectedHRCFValues[cf._id]"
-            (selectionChange)="onSelectEntityCustomFieldChange($event, cf._id)" appearance="fill" [name]="cf._id">
+            (selectionChange)="onSelectEntityCustomFieldChange($event, cf._id)" appearance="fill" [name]="cf._id"
+            [disabled]="!isCurrentUser && cf.type == 'Select'">
             <mat-select-trigger>{{ selectedHRCFValues[cf._id] }}</mat-select-trigger>
             <mat-option *ngFor="let val of cf.values" [value]="val">{{ val }}</mat-option>
           </mat-select>
 
-          <span *ngIf="!isCurrentUser && cf.type == 'Select'">{{ selectedHRCFValues[cf._id] }}</span>
+          <!-- <span *ngIf="!isCurrentUser && cf.type == 'Select'">{{ selectedHRCFValues[cf._id] }}</span> -->
 
           <input type="number" *ngIf="isCurrentUser && cf.type == 'Number'" [name]="cf.name" [(ngModel)]="selectedHRCFValues[cf._id]" [disabled]="!isCurrentUser"
             class="form-control" [value]="selectedHRCFValues[cf._id]"
@@ -133,8 +134,19 @@
       <div class="form-group">
         <div *ngFor="let benefit of hrBenefits">
           <label [for]="benefit._id" class="muted">{{ benefit.name }}</label>
-          <span *ngIf="benefit.type == 'Select' || benefit.type == 'Multiselect'">{{ selectedHRBenefitsValues[benefit._id] }}</span>
+          
+          <mat-select ngDefaultControl *ngIf="benefit.type == 'Select'" [(value)]="selectedHRBenefitsValues[benefit._id]"
+            [disabled]="true" appearance="fill">
+            <mat-select-trigger>{{ selectedHRBenefitsValues[benefit._id] }}</mat-select-trigger>
+            <mat-option *ngFor="let val of benefit.values" [value]="val">{{ val }}</mat-option>
+          </mat-select>
 
+          <mat-select ngDefaultControl *ngIf="benefit.type == 'Multiselect'" [(value)]="selectedHRBenefitsValues[benefit._id]"
+            [disabled]="true" appearance="fill" multiple>
+            <mat-select-trigger>{{ selectedHRBenefitsValues[benefit._id] }}</mat-select-trigger>
+            <mat-option *ngFor="let val of benefit.values" [value]="val">{{ val }}</mat-option>
+          </mat-select>
+          
           <input *ngIf="!(benefit.type == 'Select' || benefit.type == 'Multiselect')" type="number" [name]="benefit.name" [(ngModel)]="selectedHRBenefitsValues[benefit._id]" disabled="true"
             class="form-control" [value]="selectedHRBenefitsValues[benefit._id]"/>
         </div>
