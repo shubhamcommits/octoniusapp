@@ -89,7 +89,12 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
             entity_variables: new Map<string, string>()
           };
         }
-
+console.log(res['entity']['payroll_custom_fields']);
+console.log(this.userData.hr.entity_custom_fields);
+console.log(res['entity']['payroll_variables']);
+console.log(this.userData.hr.entity_variables);
+console.log(res['entity']['payroll_benefits']);
+console.log(this.userData.hr.entity_benefits);
         if (res['entity']['payroll_custom_fields']) {
           res['entity']['payroll_custom_fields'].forEach(async field => {
 
