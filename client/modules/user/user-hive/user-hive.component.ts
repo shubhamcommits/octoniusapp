@@ -29,6 +29,9 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
   hrVariables: any = [];
   selectedHRVariablesValues: any = [];
 
+  hrBenefits: any = [];
+  selectedHRBenefitsValues: any = [];
+
   isLoading$;
 
   // Public functions class member
@@ -77,7 +80,7 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
     this.hrCustomFields = [];
     this.selectedHRCFValues = [];
 
-    this.hrService.getEntityPayrollVariablesAndCustomFields(this.userData?._id).then((res) => {
+    this.hrService.getEntityPayrollInfo(this.userData?._id).then((res) => {
       if (res['entity']) {
 
         if (!this.userData.hr) {
@@ -122,6 +125,25 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
 
               if (this.isCurrentUser || ['owner', 'admin', 'manager'].includes(this.userData?.role)) {
                 this.hrVariables.push(field);
+              }
+            });
+        }
+
+        if (res['entity']['payroll_benefits']) {
+          res['entity']['payroll_benefits'].forEach(async field => {
+              if (!this.userData.hr.entity_benefits) {
+                this.userData.hr.entity_benefits = new Map<string, string>();
+              }
+
+              if (!this.userData.hr.entity_benefits[field._id]) {
+                this.userData.hr.entity_benefits[field._id] = '';
+                this.selectedHRBenefitsValues[field._id] = '';
+              } else {
+                this.selectedHRBenefitsValues[field._id] = this.userData.hr.entity_benefits[field._id];
+              }
+
+              if (this.isCurrentUser || ['owner', 'admin', 'manager'].includes(this.userData?.role)) {
+                this.hrBenefits.push(field);
               }
             });
         }

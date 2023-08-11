@@ -243,7 +243,7 @@ export class HRControllers {
         }
     }
 
-    async getEntityVariablesCF(req: Request, res: Response, next: NextFunction) {
+    async getEntityInfo(req: Request, res: Response, next: NextFunction) {
         try {
 
             const userId = req['userId'];

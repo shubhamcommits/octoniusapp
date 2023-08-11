@@ -45,7 +45,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" *ngIf="hrCustomFields && hrCustomFields.length > 0">
     <div class="col">
       <div class="col-description">
         <h4 i18n="@@userHive.hrFields">HR fields</h4>
@@ -91,7 +91,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" *ngIf="hrVariables && hrVariables.length > 0">
     <div class="col">
       <div class="col-description">
         <h4 i18n="@@userHive.payrollInfo">Payroll info</h4>
@@ -111,6 +111,32 @@
 
           <input type="number" [name]="variable.name" [(ngModel)]="selectedHRVariablesValues[variable._id]" disabled="true"
             class="form-control" [value]="selectedHRVariablesValues[variable._id]"/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="hrBenefits && hrBenefits.length > 0">
+    <div class="col">
+      <div class="col-description">
+        <h4 i18n="@@userHive.benefitsInfo">Benefits info</h4>
+        <p class="block-description" i18n="@@userHive.benefitsInfoDescription">
+          Fields created by the HR team. These fields are mandatory.
+        </p>
+      </div>
+      <div class="color-separator">
+
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="form-group">
+        <div *ngFor="let benefit of hrBenefits">
+          <label [for]="benefit._id" class="muted">{{ benefit.name }}</label>
+          <span *ngIf="benefit.type == 'Select' || benefit.type == 'Multiselect'">{{ selectedHRBenefitsValues[benefit._id] }}</span>
+
+          <input *ngIf="!(benefit.type == 'Select' || benefit.type == 'Multiselect')" type="number" [name]="benefit.name" [(ngModel)]="selectedHRBenefitsValues[benefit._id]" disabled="true"
+            class="form-control" [value]="selectedHRBenefitsValues[benefit._id]"/>
         </div>
       </div>
     </div>

@@ -52,7 +52,7 @@ export class EditMemberPayrollDialogComponent implements OnInit {
   }
 
   initPayrollProperties() {
-    this.hrService.getEntityPayrollVariablesAndCustomFields(this.memberId).then((res) => {
+    this.hrService.getEntityPayrollInfo(this.memberId).then((res) => {
       if (res['entity']) {
         if (!this.memberData.hr) {
           this.memberData.hr = {
@@ -107,7 +107,12 @@ export class EditMemberPayrollDialogComponent implements OnInit {
               this.memberData.hr.entity_benefits[field._id] = '';
               this.selectedHRBenefitValues[field._id] = '';
             } else {
-              this.selectedHRBenefitValues[field._id] = this.memberData.hr.entity_benefits[field._id];
+
+              if (field.type == 'Multiselect') {
+                this.selectedHRBenefitValues[field._id] = this.memberData.hr.entity_benefits[field._id].split(",");
+              } else {
+                this.selectedHRBenefitValues[field._id] = this.memberData.hr.entity_benefits[field._id];
+              }
             }
 
             this.hrBenefits.push(field);
@@ -139,7 +144,7 @@ export class EditMemberPayrollDialogComponent implements OnInit {
       this.userService.savePayrollCustomField(this.memberData._id, customFieldId, customFieldValue)
         .then(async (res) => {
 
-          const field = this.hrCustomFields[this.hrCustomFields.findIndex(cf => cf.name == customFieldId)];
+          const field = this.hrCustomFields[this.hrCustomFields.findIndex(cf => cf._id == customFieldId)];
           if (field) {
             this.selectedHRCFValues[customFieldId] = customFieldValue;
             this.memberData.hr.entity_custom_fields[customFieldId] = customFieldValue;
@@ -160,22 +165,22 @@ export class EditMemberPayrollDialogComponent implements OnInit {
   /**
    * VARIABLES STARTS
    */
-  onInputEntityVariableChange(event: Event, variabledId: string) {
+  onInputEntityVariableChange(event: Event, variableId: string) {
     const value = event.target['value'];
-    this.savePayrollVariable(variabledId, value);
+    this.savePayrollVariable(variableId, value);
   }
 
-  savePayrollVariable(variabledId: string, variableValue: any) {
+  savePayrollVariable(variableId: string, variableValue: any) {
     this.utilityService.asyncNotification($localize`:@@editMemberPayrollDialog.pleaseWaitWeUpdateContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.userService.savePayrollVariable(this.memberData?._id, variabledId, variableValue)
+      this.userService.savePayrollVariable(this.memberData?._id, variableId, variableValue)
         .then(async (res) => {
 
-          const field = this.hrVariables[this.hrVariables.findIndex(variabled => variabled.name == variabledId)];
+          const field = this.hrVariables[this.hrVariables.findIndex(variabled => variabled._id == variableId)];
           if (field && !field.user_type) {
-            this.selectedHRVariablesValues[variabledId] = variableValue;
-            this.memberData.hr.entity_variables[variabledId] = variableValue;
+            this.selectedHRVariablesValues[variableId] = variableValue;
+            this.memberData.hr.entity_variables[variableId] = variableValue;
           }
-
+          
           this.memberEditedEvent.emit(this.memberData);
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@editMemberPayrollDialog.cfUpdated:Field updated!`));
@@ -208,10 +213,13 @@ export class EditMemberPayrollDialogComponent implements OnInit {
 
   savePayrollBenefit(benefitId: string, benefitValue: any) {
     this.utilityService.asyncNotification($localize`:@@editMemberPayrollDialog.pleaseWaitWeUpdateContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.userService.savePayrollBenefit(this.memberData._id, benefitId, benefitValue)
+
+      const field = this.hrBenefits[this.hrBenefits.findIndex(benefit => benefit._id == benefitId)];
+      let value = (field && field.type == 'Multiselect') ? benefitValue.toString() : benefitValue;
+
+      this.userService.savePayrollBenefit(this.memberData._id, benefitId, value)
         .then(async (res) => {
 
-          const field = this.hrBenefits[this.hrBenefits.findIndex(benefit => benefit.name == benefitId)];
           if (field) {
             this.selectedHRBenefitValues[benefitId] = benefitValue;
             this.memberData.hr.entity_benefits[benefitId] = benefitValue;

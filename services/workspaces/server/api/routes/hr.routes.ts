@@ -44,7 +44,7 @@ routes.post('/:entityId/edit-variable', controller.editEntityVariable);
 routes.post('/:entityId/delete-variable', controller.deleteEntityVariable);
 
 // GET - Returns all the entities in a workspace
-routes.get('/:userId/entityVariablesCF', controller.getEntityVariablesCF);
+routes.get('/:userId/entityInfor', controller.getEntityInfo);
 
 // POST - Creates a new entity custom field
 routes.post('/:entityId/cf', controller.createEntityCF);
