@@ -10,9 +10,9 @@ import { WorkspaceService } from 'src/shared/services/workspace-service/workspac
 import { EditMemberPayrollDialogComponent } from './edit-member-payroll-dialog/edit-member-payroll-dialog.component';
 
 @Component({
-  selector: 'app-reports',
-  templateUrl: './reports.component.html',
-  styleUrls: ['./reports.component.scss'],
+  selector: 'app-employees',
+  templateUrl: './employees.component.html',
+  styleUrls: ['./employees.component.scss'],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0', visibility: 'hidden' })),
@@ -21,7 +21,7 @@ import { EditMemberPayrollDialogComponent } from './edit-member-payroll-dialog/e
     ]),
   ],
 })
-export class ReportsComponent implements OnInit {
+export class EmployeesComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -49,7 +49,7 @@ export class ReportsComponent implements OnInit {
   async ngOnInit() {
     // Send Updates to router state
     this.publicFunctions.sendUpdatesToRouterState({
-      state: 'hive-hr-reports'
+      state: 'hive-hr-employees'
     });
 
     this.userData = await this.publicFunctions.getCurrentUser();

@@ -81,7 +81,7 @@ export class WorkNavbarComponent implements OnInit, AfterContentChecked, OnDestr
         }
         else if (this.routerState == 'people-directory' || this.routerState == 'people-directory-chart'
             || this.routerState == 'hive-hr' || this.routerState == 'hive-hr-setup'
-            || this.routerState == 'hive-hr-timeoff' || this.routerState == 'hive-hr-reports') {
+            || this.routerState == 'hive-hr-timeoff' || this.routerState == 'hive-hr-employees') {
           this.nextPeopleDirectoryNavbar();
         }
       }
