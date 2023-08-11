@@ -166,6 +166,9 @@ routes.put('/:userId/payrollCustomField', user.savePayrollCustomField);
 // PUT - Change payroll variable
 routes.put('/:userId/payrollVariable', user.savePayrollVariable);
 
+// PUT - Change payroll variable
+routes.put('/:userId/payrollBenefit', user.savePayrollBenefit);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

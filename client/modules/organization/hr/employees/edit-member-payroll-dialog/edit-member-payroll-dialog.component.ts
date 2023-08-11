@@ -25,6 +25,9 @@ export class EditMemberPayrollDialogComponent implements OnInit {
 
   hrVariables: any = [];
   selectedHRVariablesValues: any = [];
+  
+  hrBenefits: any = [];
+  selectedHRBenefitValues: any = [];
 
   // Public functions class member
   publicFunctions = new PublicFunctions(this.injector);
@@ -92,18 +95,39 @@ export class EditMemberPayrollDialogComponent implements OnInit {
               this.hrVariables.push(field);
             });
         }
+
+        if (res['entity']['payroll_benefits']) {
+          res['entity']['payroll_benefits'].forEach(async field => {
+
+            if (!this.memberData.hr.entity_benefits) {
+              this.memberData.hr.entity_benefits = new Map<string, string>();
+            }
+
+            if (!this.memberData.hr.entity_benefits[field._id]) {
+              this.memberData.hr.entity_benefits[field._id] = '';
+              this.selectedHRBenefitValues[field._id] = '';
+            } else {
+              this.selectedHRBenefitValues[field._id] = this.memberData.hr.entity_benefits[field._id];
+            }
+
+            this.hrBenefits.push(field);
+          });
+        }
       }
     });
   }
 
+  /**
+   * CF STARTS
+   */
   onSelectEntityCustomFieldChange(event: any, customFieldId: string) {
     const customFieldValue = event.value;
     this.savePayrollCustomField(customFieldId, customFieldValue);
   }
 
-  onInputEntityCustomFieldChange(event: Event, variabledId: string) {
+  onInputEntityCustomFieldChange(event: Event, cfId: string) {
     const value = event.target['value'];
-    this.savePayrollCustomField(variabledId, value);
+    this.savePayrollCustomField(cfId, value);
   }
 
   onDateEntityCustomFieldChange(dateObject: any, cfId: string) {
@@ -129,7 +153,13 @@ export class EditMemberPayrollDialogComponent implements OnInit {
         });
     }));
   }
-
+  /**
+   * CF ENDS
+   */
+  
+  /**
+   * VARIABLES STARTS
+   */
   onInputEntityVariableChange(event: Event, variabledId: string) {
     const value = event.target['value'];
     this.savePayrollVariable(variabledId, value);
@@ -155,6 +185,49 @@ export class EditMemberPayrollDialogComponent implements OnInit {
         });
     }));
   }
+  /**
+   * VARIABLES ENDS
+   */
+
+  /**
+   * BENEFITS STARTS
+   */
+  onSelectEntityBenefitChange(event: any, benefitId: string) {
+    const benefitValue = event.value;
+    this.savePayrollBenefit(benefitId, benefitValue);
+  }
+
+  onInputEntityBenefitChange(event: Event, benefitId: string) {
+    const value = event.target['value'];
+    this.savePayrollBenefit(benefitId, value);
+  }
+
+  onDateEntityBenefitChange(dateObject: any, benefitId: string) {
+    this.savePayrollBenefit(benefitId, dateObject.toDate());
+  }
+
+  savePayrollBenefit(benefitId: string, benefitValue: any) {
+    this.utilityService.asyncNotification($localize`:@@editMemberPayrollDialog.pleaseWaitWeUpdateContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+      this.userService.savePayrollBenefit(this.memberData._id, benefitId, benefitValue)
+        .then(async (res) => {
+
+          const field = this.hrBenefits[this.hrBenefits.findIndex(benefit => benefit.name == benefitId)];
+          if (field) {
+            this.selectedHRBenefitValues[benefitId] = benefitValue;
+            this.memberData.hr.entity_benefits[benefitId] = benefitValue;
+          }
+
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@editMemberPayrollDialog.benefitUpdated:Benefit updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@editMemberPayrollDialog.unableToUpdateBenefit:Unable to update benefit, please try again!`));
+        });
+    }));
+  }
+  /**
+   * BENEFITS ENDS
+   */
 
   closeDialog() {
     // Close the modal

@@ -80,4 +80,51 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="col-description">
+                <h4 i18n="@@editMemberPayrollDialog.hrBenefits">Benefits</h4>
+                <p class="block-description" i18n="@@editMemberPayrollDialog.hrBenefitsDescription">
+                    Benefits created by the HR team.
+                </p>
+            </div>
+            <hr />
+        </div>
+    
+        <div class="col">
+            <div class="form-group">
+                <div *ngFor="let benefit of hrBenefits">
+                    <label [for]="benefit._id">{{ benefit.name }}</label>
+    
+                    <mat-select ngDefaultControl *ngIf="benefit.type == 'Select'" [(value)]="selectedHRBenefitValues[benefit._id]"
+                        (selectionChange)="onSelectEntityBenefitChange($event, benefit._id)" appearance="fill">
+                        <mat-select-trigger>{{ selectedHRBenefitValues[benefit._id] }}</mat-select-trigger>
+                        <mat-option *ngFor="let val of benefit.values" [value]="val">{{ val }}</mat-option>
+                    </mat-select>
+    
+                    <mat-select ngDefaultControl *ngIf="benefit.type == 'Multiselect'" [(value)]="selectedHRBenefitValues[benefit._id]"
+                        (selectionChange)="onSelectEntityBenefitChange($event, benefit._id)" appearance="fill" multiple>
+                        <mat-select-trigger>{{ selectedHRBenefitValues[benefit._id] }}</mat-select-trigger>
+                        <mat-option *ngFor="let val of benefit.values" [value]="val">{{ val }}</mat-option>
+                    </mat-select>
+    
+                    <input type="number" *ngIf="benefit.type == 'Number'" [name]="benefit.name"
+                        [(ngModel)]="selectedHRBenefitValues[benefit._id]" class="form-control" [value]="selectedHRBenefitValues[benefit._id]"
+                        (keyup.enter)="onInputEntityBenefitChange($event, benefit._id)"
+                        (blur)="onInputEntityBenefitChange($event, benefit._id)" />
+    
+                    <input type="text" *ngIf="benefit.type == 'Text'" [name]="benefit.name" [(ngModel)]="selectedHRBenefitValues[benefit._id]"
+                        class="form-control" [value]="selectedHRBenefitValues[benefit._id]"
+                        (keyup.enter)="onInputEntityBenefitChange($event, benefit._id)"
+                        (blur)="onInputEntityBenefitChange($event, benefit._id)" />
+    
+                    <app-date-picker *ngIf="benefit.type == 'Date'" class="form-control" [styleClass]="'btn-group input-date'"
+                        [canEdit]="true" [selectedDate]="formateDate(selectedHRBenefitValues[benefit._id])"
+                        (date)="onDateEntityBenefitChange($event, benefit._id)">
+                    </app-date-picker>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

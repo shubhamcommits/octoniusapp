@@ -260,7 +260,7 @@ export class HRControllers {
 
             const entity: any = await Entity.findOne({
                     _id: user?.hr?._entity
-                }).select('payroll_custom_fields payroll_variables').lean();
+                }).select('payroll_custom_fields payroll_variables payroll_benefits').lean();
 
             // Send the status 200 response
             return res.status(200).json({
