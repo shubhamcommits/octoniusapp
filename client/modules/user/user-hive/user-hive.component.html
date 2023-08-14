@@ -60,8 +60,8 @@
 
     <div class="col">
       <div class="form-group">
-        <div *ngFor="let cf of hrCustomFields" class="fieldUI">
-          <label [for]="cf._id" class="muted">{{ cf.name }}</label>
+        <div *ngFor="let cf of hrCustomFields" class="fieldUI mb-3">
+          <label [for]="cf._id" class="cflabel">{{ cf.name }}</label>
 
           <mat-select ngDefaultControl *ngIf="isCurrentUser && cf.type == 'Select'" [(value)]="selectedHRCFValues[cf._id]"
             (selectionChange)="onSelectEntityCustomFieldChange($event, cf._id)" appearance="fill" [name]="cf._id"
@@ -107,8 +107,8 @@
 
     <div class="col">
       <div class="form-group">
-        <div *ngFor="let variable of hrVariables">
-          <label [for]="variable._id" class="muted">{{ variable.name }}</label>
+        <div *ngFor="let variable of hrVariables" class="mb-3">
+          <label [for]="variable._id" class="cflabel">{{ variable.name }}</label>
 
           <input type="number" [name]="variable.name" [(ngModel)]="selectedHRVariablesValues[variable._id]" disabled="true"
             class="form-control" [value]="selectedHRVariablesValues[variable._id]"/>
@@ -132,8 +132,8 @@
 
     <div class="col">
       <div class="form-group">
-        <div *ngFor="let benefit of hrBenefits">
-          <label [for]="benefit._id" class="muted">{{ benefit.name }}</label>
+        <div *ngFor="let benefit of hrBenefits" class="mb-3">
+          <label [for]="benefit._id" class="cflabel">{{ benefit.name }}</label>
           
           <mat-select ngDefaultControl *ngIf="benefit.type == 'Select'" [(value)]="selectedHRBenefitsValues[benefit._id]"
             [disabled]="true" appearance="fill">

@@ -996,3 +996,11 @@ mat-expansion-panel{
 .mat-tab-group, .mat-tab-label{
   font-family: $font-family-base !important;
 }
+
+.form-control{
+  height: auto !important;
+}
+
+.cflabel{
+	font-weight: bold;
+}
