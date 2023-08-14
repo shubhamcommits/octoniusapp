@@ -141,11 +141,16 @@
             <mat-option *ngFor="let val of benefit.values" [value]="val">{{ val }}</mat-option>
           </mat-select>
 
+          <!--
           <mat-select ngDefaultControl *ngIf="benefit.type == 'Multiselect'" [(value)]="selectedHRBenefitsValues[benefit._id]"
             [disabled]="true" appearance="fill" multiple>
             <mat-select-trigger>{{ selectedHRBenefitsValues[benefit._id] }}</mat-select-trigger>
             <mat-option *ngFor="let val of benefit.values" [value]="val">{{ val }}</mat-option>
           </mat-select>
+          -->
+          <ul *ngIf="benefit.type == 'Multiselect'">
+            <li *ngFor="let b of selectedHRBenefitsValues[benefit._id]"> {{ b }}</li>
+          </ul>
           
           <input *ngIf="!(benefit.type == 'Select' || benefit.type == 'Multiselect')" type="number" [name]="benefit.name" [(ngModel)]="selectedHRBenefitsValues[benefit._id]" disabled="true"
             class="form-control" [value]="selectedHRBenefitsValues[benefit._id]"/>
