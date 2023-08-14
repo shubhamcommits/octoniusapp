@@ -4,6 +4,7 @@ import { Comment, Group, Post, User, Notification } from '../models';
 import { CommentsService } from './comments.services';
 import { GroupsService } from './groups.services';
 import axios from 'axios';
+import { DateTime } from 'luxon';
 
 const fs = require('fs');
 const minio = require('minio');
@@ -3765,7 +3766,7 @@ export class PostService {
     if(user && post){
       const postData = {
           title: post.title,
-          due: post?.task?.due_to,
+          due: DateTime.fromISO(post?.task?.due_to).toISODate(),
           status: post?.task?.status,
           groupName: post?._group?.group_name,
           workspaceName: post?._group?.workspace_name,
