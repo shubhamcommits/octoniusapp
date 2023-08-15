@@ -103,11 +103,22 @@
                         <mat-option *ngFor="let val of benefit.values" [value]="val">{{ val }}</mat-option>
                     </mat-select>
     
+                    <!--
                     <mat-select ngDefaultControl *ngIf="benefit.type == 'Multiselect'" [(value)]="selectedHRBenefitValues[benefit._id]"
                         (selectionChange)="onSelectEntityBenefitChange($event, benefit._id)" appearance="fill" multiple>
                         <mat-select-trigger>{{ selectedHRBenefitValues[benefit._id] }}</mat-select-trigger>
                         <mat-option *ngFor="let val of benefit.values" [value]="val">{{ val }}</mat-option>
                     </mat-select>
+                    -->
+
+                    <ul *ngIf="benefit.type == 'Multiselect'">
+                        <li *ngFor="let b of benefit.values">
+                            <mat-checkbox [checked]="isSelected(selectedHRBenefitValues[benefit._id], b)"
+                                (change)="onCheckedEntityBenefitChange(selectedHRBenefitValues[benefit._id], b, benefit._id)">
+                                {{ b }}
+                            </mat-checkbox>
+                        </li>
+                    </ul>
     
                     <input type="number" *ngIf="benefit.type == 'Number'" [name]="benefit.name"
                         [(ngModel)]="selectedHRBenefitValues[benefit._id]" class="form-control" [value]="selectedHRBenefitValues[benefit._id]"

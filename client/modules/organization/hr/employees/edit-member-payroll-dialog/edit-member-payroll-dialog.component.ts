@@ -197,8 +197,20 @@ export class EditMemberPayrollDialogComponent implements OnInit {
    * BENEFITS STARTS
    */
   onSelectEntityBenefitChange(event: any, benefitId: string) {
-    const benefitValue = event.value;
-    this.savePayrollBenefit(benefitId, benefitValue);
+    this.savePayrollBenefit(benefitId, event.value);
+  }
+
+  onCheckedEntityBenefitChange(benefitValues: any, benefitSelectedValue: string, benefitId: string) {
+    const index = benefitValues.findIndex(b => b == benefitSelectedValue);
+    if (index < 0) {
+      benefitValues.push(benefitSelectedValue);
+    }
+
+    this.savePayrollBenefit(benefitId, benefitValues);
+  }
+
+  isSelected(benefitValues, benefitSelected) {
+    return benefitValues.findIndex(b => b == benefitSelected) >= 0;
   }
 
   onInputEntityBenefitChange(event: Event, benefitId: string) {
