@@ -27,7 +27,7 @@
     
         <div class="col">
             <div class="form-group">
-                <div *ngFor="let cf of hrCustomFields" class="mb-3">
+                <div *ngFor="let cf of hrCustomFields" class="mb-4">
                     <label [for]="cf._id" class="cflabel">{{ cf.name }}</label>
                     
                     <mat-select ngDefaultControl *ngIf="cf.type == 'Select'" [(value)]="selectedHRCFValues[cf._id]"
@@ -69,7 +69,7 @@
     
         <div class="col">
             <div class="form-group">
-                <div *ngFor="let variable of hrVariables" class="mb-3">
+                <div *ngFor="let variable of hrVariables" class="mb-4">
                     <label [for]="variable._id" class="cflabel">{{ variable.name }}</label>
     
                     <input type="number" [name]="variable.name" [(ngModel)]="selectedHRVariablesValues[variable._id]"
@@ -111,7 +111,7 @@
                     </mat-select>
                     -->
 
-                    <ul *ngIf="benefit.type == 'Multiselect'">
+                    <ul *ngIf="benefit.type == 'Multiselect'" class="benefitslist">
                         <li *ngFor="let b of benefit.values">
                             <mat-checkbox [checked]="isSelected(selectedHRBenefitValues[benefit._id], b)"
                                 (change)="onCheckedEntityBenefitChange(selectedHRBenefitValues[benefit._id], b, benefit._id)">

@@ -60,7 +60,7 @@
 
     <div class="col">
       <div class="form-group">
-        <div *ngFor="let cf of hrCustomFields" class="fieldUI mb-3">
+        <div *ngFor="let cf of hrCustomFields" class="fieldUI mb-4">
           <label [for]="cf._id" class="cflabel">{{ cf.name }}</label>
 
           <mat-select ngDefaultControl *ngIf="isCurrentUser && cf.type == 'Select'" [(value)]="selectedHRCFValues[cf._id]"
@@ -107,7 +107,7 @@
 
     <div class="col">
       <div class="form-group">
-        <div *ngFor="let variable of hrVariables" class="mb-3">
+        <div *ngFor="let variable of hrVariables" class="mb-4">
           <label [for]="variable._id" class="cflabel">{{ variable.name }}</label>
 
           <input type="number" [name]="variable.name" [(ngModel)]="selectedHRVariablesValues[variable._id]" disabled="true"
@@ -132,7 +132,7 @@
 
     <div class="col">
       <div class="form-group">
-        <div *ngFor="let benefit of hrBenefits" class="mb-3">
+        <div *ngFor="let benefit of hrBenefits" class="mb-4">
           <label [for]="benefit._id" class="cflabel">{{ benefit.name }}</label>
           
           <mat-select ngDefaultControl *ngIf="benefit.type == 'Select'" [(value)]="selectedHRBenefitsValues[benefit._id]"
@@ -148,7 +148,7 @@
             <mat-option *ngFor="let val of benefit.values" [value]="val">{{ val }}</mat-option>
           </mat-select>
           -->
-          <ul *ngIf="benefit.type == 'Multiselect'">
+          <ul *ngIf="benefit.type == 'Multiselect'" class="benefitslist">
             <li *ngFor="let b of selectedHRBenefitsValues[benefit._id]"> {{ b }}</li>
           </ul>
           
