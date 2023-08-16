@@ -275,6 +275,100 @@
                     <button *ngIf="!createNewVariable" (click)="showNewVariableForm()" class="btn btn-primary" i18n="@@newEntity.createNewVariable">Create new variable</button>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="col-description">
+                        <h4 i18n="@@editEntityDialog.payrollBenefits">Benefits</h4>
+                        <p class="block-description" i18n="@@editEntityDialog.payrollBenefitsDescription">
+                            Set up custom benefits that will appear in the employee profile. You will be able to track more
+                            information from your employees.
+                        </p>
+                    </div>
+                    <hr />
+                </div>
+            
+                <div class="col">
+                    <ul>
+                        <li class="titles">
+                            <div class="name title"><span i18n="@@setup.name">Name</span></div>
+                            <div class="type title"><span i18n="@@setup.type">Type</span></div>
+                            <div class="values title" i18n="@@setup.values">Values</div>
+                            <div class="actions title"></div>
+                        </li>
+            
+                        <li *ngFor="let benefit of entityData?.payroll_benefits">
+                            <div class="name"><span>{{ benefit.name }}</span></div>
+                            <div class="type"><span>{{ benefit.type }}</span></div>
+                            <div class="values">
+                                <span class="badge" *ngFor="let value of benefit.values">{{ value }}</span>
+                            </div>
+                            <div class="actions">
+                                <div style="cursor: pointer;" [matMenuTriggerFor]="menuBenefits">
+                                    <i class="material-icons">settings</i>
+                                </div>
+            
+                                <mat-menu #menuBenefits="matMenu">
+                                    <a mat-menu-item (click)="editEntityBenefit(benefit)">
+                                        <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">edit</i>
+                                        <span i18n="@@setup.edit">Edit</span>
+                                    </a>
+            
+                                    <a mat-menu-item (click)="deleteEntityBenefit(benefit?._id)">
+                                        <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
+                                        <span i18n="@@setup.delete">Delete</span>
+                                    </a>
+                                </mat-menu>
+                            </div>
+                        </li>
+                    </ul>
+            
+                    <div class="form-group" *ngIf="createNewBenefit">
+                        <label i18n="@@editEntityDialog.benefitName">Name</label>
+                        <input type="text" class="form-control" [(ngModel)]="newBenefit.name">
+            
+                        <label i18n="@@editEntityDialog.type" style="float: left; width: 100%;">Type</label>
+                        <mat-form-field class="full-width" appearance="outline" style="width: 100%;">
+                            <mat-select [(value)]="newBenefit.type" (selectionChange)="changeBenefitType($event, newBenefit)">
+                                <mat-option [value]="type" *ngFor="let type of benefitTypes">{{ type }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+            
+                        <label *ngIf="newBenefit.type == 'Select' || newBenefit.type == 'Multiselect'" i18n="@@editEntityDialog.values">Values</label>
+                        <div class="values" *ngIf="newBenefit.type == 'Select' || newBenefit.type == 'Multiselect'">
+                            <span class="badge" *ngFor="let value of newBenefit.values">
+                                {{ value }}
+                                <i class="material-icons" (click)="removeBenefitValue(newBenefit, value)"
+                                    style="cursor: pointer;">highlight_off</i>
+                            </span>
+            
+                            <div class="newValue">
+                                <input type="text" autocomplete="off" placeholder="Add value and hit ENTER..." class="newValueInput"
+                                    (keyup.enter)="addBenefitValue(newBenefit, $event)" />
+                            </div>
+                        </div>
+            
+                        <div class="card-footer">
+                            <button (click)="cancelBenefit()" class="btn cancel-button">
+                                <i class="material-icons">close</i>
+                                <span i18n="@@newEntity.cancel">Cancel</span>
+                            </button>
+            
+                            <button *ngIf="!newBenefit?._id || newBenefit?._id == ''" (click)="saveBenefit()" class="btn save-button">
+                                <i class="material-icons">add</i>
+                                <span i18n="@@newEntity.create">Create</span>
+                            </button>
+                            <button *ngIf="newBenefit?._id && newBenefit?._id != ''" (click)="saveBenefit()" class="btn save-button">
+                                <span i18n="@@newEntity.save">Save</span>
+                            </button>
+                        </div>
+                    </div>
+            
+                    <button *ngIf="!createNewBenefit" (click)="showNewBenefitForm()" class="btn btn-primary" i18n="@@newEntity.createNewBenefit">
+                        Create new Benefit
+                    </button>
+                </div>
+            </div>
         </mat-tab>
 
         <mat-tab [label]="membersLabel">

@@ -22,9 +22,6 @@ const groupUploadFileUpload = async (req: Request, res: Response, next: NextFunc
         // Get the file from the request
         const file: any = req['files'].groupAvatar;
 
-        // Get the folder link from the environment
-        // let folder = process.env.FILE_UPLOAD_FOLDER;
-
         // Instantiate the fileName variable and add the date object in the name
         let fileName = workspaceId + '_';
         if (groupId) {
@@ -32,24 +29,6 @@ const groupUploadFileUpload = async (req: Request, res: Response, next: NextFunc
         }
 
         fileName += Date.now().toString() + req['files'].groupAvatar['name'];
-
-        // Modify the file accordingly and handle request
-        // file.mv(folder + fileName, (error) => {
-        //     if (error) {
-        //         fileName = null;
-        //         return res.status(500).json({
-        //             status: '500',
-        //             message: 'file upload error',
-        //             error
-        //         });
-        //     }
-
-        //     // Modify the current request to add 
-        //     req['fileName'] = fileName;
-
-        //     // Pass the middleware// Pass the middleware
-        //     next();
-        // });
 
         var minioClient = new minio.Client({
             endPoint: process.env.MINIO_DOMAIN,
@@ -156,9 +135,6 @@ const portfolioUploadFileUpload = async (req: Request, res: Response, next: Next
         // Get the file from the request
         const file: any = req['files'].portfolioAvatar;
 
-        // Get the folder link from the environment
-        // let folder = process.env.FILE_UPLOAD_FOLDER;
-
         // Instantiate the fileName variable and add the date object in the name
         let fileName = workspaceId +  '_';
     
@@ -166,24 +142,6 @@ const portfolioUploadFileUpload = async (req: Request, res: Response, next: Next
             fileName += portfolioId +  '_';
         }
         fileName += Date.now().toString() + req['files'].portfolioAvatar['name'];
-
-        // Modify the file accordingly and handle request
-        // file.mv(folder + fileName, (error) => {
-        //     if (error) {
-        //         fileName = null;
-        //         return res.status(500).json({
-        //             status: '500',
-        //             message: 'file upload error',
-        //             error
-        //         });
-        //     }
-
-        //     // Modify the current request to add 
-        //     req['fileName'] = fileName;
-
-        //     // Pass the middleware// Pass the middleware
-        //     next();
-        // });
 
         var minioClient = new minio.Client({
             endPoint: process.env.MINIO_DOMAIN,
@@ -285,7 +243,6 @@ const fileHandler = async (req: Request, res: Response, next: NextFunction) => {
     let { params: { workspaceId, file } } = req;
 
     // Redirect the Response to the Groups Microservice
-    // return res.status(301).redirect(`${process.env.GROUPS_SERVER}/uploads/${file}`)
     var minioClient = new minio.Client({
       endPoint: process.env.MINIO_DOMAIN,
       port: +(process.env.MINIO_API_PORT),
@@ -322,9 +279,6 @@ const collectionUploadFileUpload = async (req: Request, res: Response, next: Nex
 
         // Get the file from the request
         const file: any = req['files'].image;
-
-        // Get the folder link from the environment
-        // let folder = process.env.FILE_UPLOAD_FOLDER + 'library/';
 
         // Instantiate the fileName variable and add the date object in the name
         let fileName = '';
@@ -438,9 +392,6 @@ const collectionFileUploader = async (req: Request, res: Response, next: NextFun
         // Get the file from the request
         const file: any = req['files'].file;
 
-        // Get the folder link from the environment
-        // let folder = process.env.FILE_UPLOAD_FOLDER + req.body.fileData._group + '/library/' + collectionId + '/';
-
         // Instantiate the fileName variable and add the date object in the name
         let fileName = '';
         if (workspaceId) {
@@ -550,9 +501,6 @@ const pageFileUploader = async (req: Request, res: Response, next: NextFunction)
 
         // Get the file from the request
         const file: any = req['files'].file;
-
-        // Get the folder link from the environment
-        // let folder = process.env.FILE_UPLOAD_FOLDER + '/' + req.body.fileData._group + '/library/' + collectionId + '/';
 
         // Instantiate the fileName variable and add the date object in the name
         let fileName = '';

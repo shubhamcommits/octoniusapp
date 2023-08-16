@@ -292,7 +292,7 @@ export class QuillEditorComponent implements OnInit, OnChanges, AfterViewInit {
         } else {
           const matches = [];
           for (let i = 0; i < values.length; i++) {
-            if (~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())) {
+            if (values[i] && values[i].value && ~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())) {
               matches.push(values[i]);
             }
           }

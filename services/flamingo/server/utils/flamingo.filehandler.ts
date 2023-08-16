@@ -15,9 +15,6 @@ const flamingoFileUploader = async (req: Request, res: Response, next: NextFunct
   const file: any = req['files'].questionImage;
   req.body.fileData = JSON.parse(req.body.fileData);
 
-  // Get the folder link from the environment
-  // let folder = process.env.FILE_UPLOAD_FOLDER;
-
   // Instantiate the fileName variable and add the date object in the name
   let fileName = '';
   if (req.body.fileData.workspaceId) {
@@ -34,24 +31,6 @@ const flamingoFileUploader = async (req: Request, res: Response, next: NextFunct
   }
   
   fileName += Date.now().toString() + '_' + req['files'].questionImage['name'].replace(/\s/g, "");
-
-  // Modify the file accordingly and handle request
-  // file.mv(folder + fileName, (error: Error) => {
-  //   if (error) {
-  //     fileName = null;
-  //     return res.status(500).json({
-  //       status: '500',
-  //       message: 'file upload error',
-  //       error: error
-  //     });
-  //   }
-
-  //   // Modify the current request to add fileName
-  //   req['fileName'] = fileName;
-
-  //   // Pass the middleware
-  //   next()
-  // });
 
   var minioClient = new minio.Client({
       endPoint: process.env.MINIO_DOMAIN,
@@ -70,7 +49,9 @@ const flamingoFileUploader = async (req: Request, res: Response, next: NextFunct
         error: error
       });
     }
-// minioClient.setBucketQuota((req.body.fileData.workspaceId), 100 * 1024 * 1024);
+
+    // minioClient.setBucketQuota((req.body.fileData.workspaceId), 100 * 1024 * 1024);
+
     if (!exists) {
       // Make a bucket.
       await minioClient.makeBucket((req.body.fileData.workspaceId).toLowerCase(), async (error) => {
@@ -138,8 +119,6 @@ const flamingoFileHandler = async (req: Request, res: Response, next: NextFuncti
     // Fetch the File Name From the request
     let { params: { workspaceId, file } } = req;
 
-    // Redirect the Response to the Workspaces Microservice
-    // return res.status(301).redirect(`${process.env.FLAMINGO_SERVER}/uploads/${file}`);
     var minioClient = new minio.Client({
       endPoint: process.env.MINIO_DOMAIN,
       port: +(process.env.MINIO_API_PORT),
@@ -156,9 +135,6 @@ const flamingoFileHandler = async (req: Request, res: Response, next: NextFuncti
         });
       }
 
-      // const objectUrl = await minioClient.presignedGetObject(req.query.workspaceId, req.query.modified_name);
-      // const objectUrl = await minioClient.presignedUrl('GET', workspaceId, file);
-      // return res.status(301).redirect(objectUrl);
       data.pipe(res);
     });
   } catch (err) {

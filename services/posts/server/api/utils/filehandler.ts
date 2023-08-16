@@ -49,10 +49,6 @@ const postFileUploader = async (req: Request, res: Response, next: NextFunction)
 
     // Fetch the files from the current request
     files.attachments.forEach(async (currentFile: any, index: Number) => {
-
-      // Get the folder link from the environment
-      // const folder = process.env.FILE_UPLOAD_FOLDER;
-
       // Instantiate the fileName variable and add the date object in the name
       let fileName = '';
       if (workspaceId) {
@@ -67,27 +63,6 @@ const postFileUploader = async (req: Request, res: Response, next: NextFunction)
         }
       }
       fileName += Date.now().toString() + currentFile.name;
-
-      // Modify the file accordingly and handle request
-      // currentFile.mv(folder + fileName, (error: Error) => {
-      //   if (error) {
-      //     fileName = null;
-      //     return res.status(500).json({
-      //       status: '500',
-      //       message: 'file upload error',
-      //       error: error
-      //     });
-      //   }
-      // });
-
-      // // Modify the file and serialise the object
-      // const file = {
-      //   original_name: currentFile.name,
-      //   modified_name: fileName
-      // };
-
-      // // Push the file object
-      // req.body.post.files.push(file);
 
         var minioClient = new minio.Client({
             endPoint: process.env.MINIO_DOMAIN,
@@ -201,9 +176,6 @@ const postFileUploader = async (req: Request, res: Response, next: NextFunction)
     // Fetch the file from the current request
     const currentFile: any = req['files'].attachments;
 
-    // Get the folder link from the environment
-    // let folder = process.env.FILE_UPLOAD_FOLDER;
-
     // Instantiate the fileName variable and add the date object in the name
     let fileName = '';
     if (workspaceId) {
@@ -218,27 +190,6 @@ const postFileUploader = async (req: Request, res: Response, next: NextFunction)
       }
     }
     fileName += Date.now().toString() + req['files'].attachments['name'];
-
-    // Modify the file accordingly and handle request
-    // currentFile.mv(folder + fileName, (error: Error) => {
-    //   if (error) {
-    //     fileName = null;
-    //     return res.status(500).json({
-    //       status: '500',
-    //       message: 'file upload error',
-    //       error: error
-    //     });
-    //   }
-    // })
-
-    // // Modify the file and serialise the object
-    // const file = {
-    //   original_name: req['files'].attachments['name'],
-    //   modified_name: fileName
-    // };
-
-    // // Push the file object
-    // req.body.post.files.push(file);
 
     var minioClient = new minio.Client({
         endPoint: process.env.MINIO_DOMAIN,
@@ -354,8 +305,6 @@ const fileHandler = async (req: Request, res: Response, next: NextFunction) => {
     // Fetch the File Name From the request
     let { params: { workspaceId, file } } = req;
 
-    // Redirect the Response to the Groups Microservice
-    // return res.status(301).redirect(`${process.env.GROUPS_SERVER}/uploads/${file}`)
     var minioClient = new minio.Client({
       endPoint: process.env.MINIO_DOMAIN,
       port: +(process.env.MINIO_API_PORT),
@@ -372,8 +321,6 @@ const fileHandler = async (req: Request, res: Response, next: NextFunction) => {
         });
       }
 
-      // const objectUrl = await minioClient.presignedUrl('GET', workspaceId, file);
-      // return res.status(301).redirect(objectUrl);
       data.pipe(res);
     });
 

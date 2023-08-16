@@ -25,6 +25,9 @@ export class EditMemberPayrollDialogComponent implements OnInit {
 
   hrVariables: any = [];
   selectedHRVariablesValues: any = [];
+  
+  hrBenefits: any = [];
+  selectedHRBenefitValues: any = [];
 
   // Public functions class member
   publicFunctions = new PublicFunctions(this.injector);
@@ -49,7 +52,7 @@ export class EditMemberPayrollDialogComponent implements OnInit {
   }
 
   initPayrollProperties() {
-    this.hrService.getEntityPayrollVariablesAndCustomFields(this.memberId).then((res) => {
+    this.hrService.getEntityPayrollInfo(this.memberId).then((res) => {
       if (res['entity']) {
         if (!this.memberData.hr) {
           this.memberData.hr = {
@@ -92,18 +95,43 @@ export class EditMemberPayrollDialogComponent implements OnInit {
               this.hrVariables.push(field);
             });
         }
+
+        if (res['entity']['payroll_benefits']) {
+          res['entity']['payroll_benefits'].forEach(async field => {
+
+            if (!this.memberData.hr.entity_benefits) {
+              this.memberData.hr.entity_benefits = new Map<string, string>();
+            }
+
+            if (!this.memberData.hr.entity_benefits[field._id]) {
+              this.memberData.hr.entity_benefits[field._id] = '';
+              this.selectedHRBenefitValues[field._id] = '';
+            } else {
+              if (field.type == 'Multiselect') {
+                this.selectedHRBenefitValues[field._id] = this.memberData.hr.entity_benefits[field._id].split(",");
+              } else {
+                this.selectedHRBenefitValues[field._id] = this.memberData.hr.entity_benefits[field._id];
+              }
+            }
+
+            this.hrBenefits.push(field);
+          });
+        }
       }
     });
   }
 
+  /**
+   * CF STARTS
+   */
   onSelectEntityCustomFieldChange(event: any, customFieldId: string) {
     const customFieldValue = event.value;
     this.savePayrollCustomField(customFieldId, customFieldValue);
   }
 
-  onInputEntityCustomFieldChange(event: Event, variabledId: string) {
+  onInputEntityCustomFieldChange(event: Event, cfId: string) {
     const value = event.target['value'];
-    this.savePayrollCustomField(variabledId, value);
+    this.savePayrollCustomField(cfId, value);
   }
 
   onDateEntityCustomFieldChange(dateObject: any, cfId: string) {
@@ -115,7 +143,7 @@ export class EditMemberPayrollDialogComponent implements OnInit {
       this.userService.savePayrollCustomField(this.memberData._id, customFieldId, customFieldValue)
         .then(async (res) => {
 
-          const field = this.hrCustomFields[this.hrCustomFields.findIndex(cf => cf.name == customFieldId)];
+          const field = this.hrCustomFields[this.hrCustomFields.findIndex(cf => cf._id == customFieldId)];
           if (field) {
             this.selectedHRCFValues[customFieldId] = customFieldValue;
             this.memberData.hr.entity_custom_fields[customFieldId] = customFieldValue;
@@ -129,23 +157,29 @@ export class EditMemberPayrollDialogComponent implements OnInit {
         });
     }));
   }
-
-  onInputEntityVariableChange(event: Event, variabledId: string) {
+  /**
+   * CF ENDS
+   */
+  
+  /**
+   * VARIABLES STARTS
+   */
+  onInputEntityVariableChange(event: Event, variableId: string) {
     const value = event.target['value'];
-    this.savePayrollVariable(variabledId, value);
+    this.savePayrollVariable(variableId, value);
   }
 
-  savePayrollVariable(variabledId: string, variableValue: any) {
+  savePayrollVariable(variableId: string, variableValue: any) {
     this.utilityService.asyncNotification($localize`:@@editMemberPayrollDialog.pleaseWaitWeUpdateContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.userService.savePayrollVariable(this.memberData?._id, variabledId, variableValue)
+      this.userService.savePayrollVariable(this.memberData?._id, variableId, variableValue)
         .then(async (res) => {
 
-          const field = this.hrVariables[this.hrVariables.findIndex(variabled => variabled.name == variabledId)];
+          const field = this.hrVariables[this.hrVariables.findIndex(variabled => variabled._id == variableId)];
           if (field && !field.user_type) {
-            this.selectedHRVariablesValues[variabledId] = variableValue;
-            this.memberData.hr.entity_variables[variabledId] = variableValue;
+            this.selectedHRVariablesValues[variableId] = variableValue;
+            this.memberData.hr.entity_variables[variableId] = variableValue;
           }
-
+          
           this.memberEditedEvent.emit(this.memberData);
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@editMemberPayrollDialog.cfUpdated:Field updated!`));
@@ -155,6 +189,64 @@ export class EditMemberPayrollDialogComponent implements OnInit {
         });
     }));
   }
+  /**
+   * VARIABLES ENDS
+   */
+
+  /**
+   * BENEFITS STARTS
+   */
+  onSelectEntityBenefitChange(event: any, benefitId: string) {
+    this.savePayrollBenefit(benefitId, event.value);
+  }
+
+  onCheckedEntityBenefitChange(benefitValues: any, benefitSelectedValue: string, benefitId: string) {
+    const index = benefitValues.findIndex(b => b == benefitSelectedValue);
+    if (index < 0) {
+      benefitValues.push(benefitSelectedValue);
+    }
+
+    this.savePayrollBenefit(benefitId, benefitValues);
+  }
+
+  isSelected(benefitValues, benefitSelected) {
+    return benefitValues.findIndex(b => b == benefitSelected) >= 0;
+  }
+
+  onInputEntityBenefitChange(event: Event, benefitId: string) {
+    const value = event.target['value'];
+    this.savePayrollBenefit(benefitId, value);
+  }
+
+  onDateEntityBenefitChange(dateObject: any, benefitId: string) {
+    this.savePayrollBenefit(benefitId, dateObject.toDate());
+  }
+
+  savePayrollBenefit(benefitId: string, benefitValue: any) {
+    this.utilityService.asyncNotification($localize`:@@editMemberPayrollDialog.pleaseWaitWeUpdateContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+
+      const field = this.hrBenefits[this.hrBenefits.findIndex(benefit => benefit._id == benefitId)];
+      let value = (field && field.type == 'Multiselect') ? benefitValue.toString() : benefitValue;
+
+      this.userService.savePayrollBenefit(this.memberData._id, benefitId, value)
+        .then(async (res) => {
+
+          if (field) {
+            this.selectedHRBenefitValues[benefitId] = benefitValue;
+            this.memberData.hr.entity_benefits[benefitId] = benefitValue;
+          }
+
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@editMemberPayrollDialog.benefitUpdated:Benefit updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@editMemberPayrollDialog.unableToUpdateBenefit:Unable to update benefit, please try again!`));
+        });
+    }));
+  }
+  /**
+   * BENEFITS ENDS
+   */
 
   closeDialog() {
     // Close the modal

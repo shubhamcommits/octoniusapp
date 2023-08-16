@@ -374,25 +374,26 @@ export class GroupFilesComponent implements OnInit {
     selBox.style.top = '0';
     selBox.style.opacity = '0';
 
-    let url = this.clientUrl;
-    if (environment.production) {
-      url += '/' + this.locale;
-    }
-    if (file?.type == 'folio') {
-      url += '/document/' + file?._id + '?readOnly=true';
-    } else if (file?.type == 'flamingo') {
-      url += '/document/flamingo/' + file?._id;
-    } else if (file?.type == 'file') {
-      const lastFileVersion: any = await this.utilityService.getFileLastVersion(file?._id);
-      if (this.isOfficeFile(lastFileVersion?.original_name)) {
-        url = await this.getLibreOfficeURL(lastFileVersion);
-      } else {
-        // url = this.filesBaseUrl + '/' + file?.modified_name + '?authToken=' + this.authToken;
-        await this.filesService.getMinioFile(file?._id, file?.modified_name, this.workspaceId, this.authToken).then(async res =>{
-          url = res['url'];
-        });
-      }
-    }
+    let url = await this.publicFunctions.getFileUrl(file, this.workspaceId);
+    // let url = this.clientUrl;
+    // if (environment.production) {
+    //   url += '/' + this.locale;
+    // }
+    // if (file?.type == 'folio') {
+    //   url += '/document/' + file?._id + '?readOnly=true';
+    // } else if (file?.type == 'flamingo') {
+    //   url += '/document/flamingo/' + file?._id;
+    // } else if (file?.type == 'file') {
+    //   const lastFileVersion: any = await this.utilityService.getFileLastVersion(file?._id);
+    //   if (this.isOfficeFile(lastFileVersion?.original_name)) {
+    //     url = await this.getLibreOfficeURL(lastFileVersion);
+    //   } else {
+    //     // url = this.filesBaseUrl + '/' + file?.modified_name + '?authToken=' + this.authToken;
+    //     await this.filesService.getMinioFile(file?._id, file?.modified_name, this.workspaceId, this.authToken).then(async res =>{
+    //       url = res['url'];
+    //     });
+    //   }
+    // }
 
     selBox.value = url;
     // Append the element to the DOM
@@ -1072,13 +1073,11 @@ export class GroupFilesComponent implements OnInit {
         window.open(await this.getLibreOfficeURL(lastFileVersion), "_blank");
       } else {
         this.filesService.getMinioFile(lastFileVersion?._id, lastFileVersion?.modified_name, this.workspaceId, this.authToken).then(res =>{
-console.log('group-files.component', {res});
           window.open(res['url'], "_blank");
         });
       }
     } else {
       this.filesService.getMinioFile(file?._id, file?.modified_name, this.workspaceId, this.authToken).then(res =>{
-console.log('group-files.component', {res});
         window.open(res['url'], "_blank");
       });
     }

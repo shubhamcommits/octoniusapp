@@ -4,6 +4,7 @@ import { Comment, Group, Post, User, Notification } from '../models';
 import { CommentsService } from './comments.services';
 import { GroupsService } from './groups.services';
 import axios from 'axios';
+import { DateTime } from 'luxon';
 
 const fs = require('fs');
 const minio = require('minio');
@@ -1019,16 +1020,6 @@ export class PostService {
         function deleteFiles(files, callback) {
           var i = files.length;
           files.forEach(async (file) => {
-            // const finalpath = `${process.env.FILE_UPLOAD_FOLDER}${filepath.modified_name}`
-            // fs.unlink(finalpath, function (err) {
-            //   i--;
-            //   if (err) {
-            //     callback(err);
-            //     return;
-            //   } else if (i <= 0) {
-            //     callback(null);
-            //   }
-            // });
             var minioClient = new minio.Client({
               endPoint: process.env.MINIO_DOMAIN,
               port: +(process.env.MINIO_API_PORT),
@@ -1056,20 +1047,7 @@ export class PostService {
       }
 
       //chec/delete document files that were exported
-      // const filepath = `${process.env.FILE_UPLOAD_FOLDER}${postId + post._group + 'export' + '.docx'}`;
       const filepath = `${postId + post._group + 'export' + '.docx'}`;
-      //check if file exists
-      // fs.access(filepath, fs.F_OK, error => {
-      //   //if error there was no file
-      //   if (!error) {
-      //     //the file was there now unlink it
-      //     fs.unlink(filepath, (err) => {
-      //       //handle error when file was not deleted properly
-      //       if (err) { throw (err); }
-      //       //deleted document
-      //     })
-      //   }
-      // })
       var minioClient = new minio.Client({
         endPoint: process.env.MINIO_DOMAIN,
         port: +(process.env.MINIO_API_PORT),
@@ -2774,16 +2752,6 @@ export class PostService {
 
           // Get the folder link from the environment
           const folder = process.env.FILE_UPLOAD_FOLDER;
-
-          // Modify the file accordingly and handle request
-          // await fs.copyFile(folder + currentFile.modified_name, folder + fileName, (error: Error) => {
-          //   if (error) {
-          //     fileName = null;
-          //     console.log(`\n⛔️ Error:\n ${error}`);
-          //     throw (error);
-          //   }
-          // });
-
           var minioClient = new minio.Client({
               endPoint: process.env.MINIO_DOMAIN,
               port: +(process.env.MINIO_API_PORT),
@@ -2793,7 +2761,6 @@ export class PostService {
           });
 
           var conds = new minio.CopyConditions();
-          // conds.setMatchETag('bd891862ea3e22c93ed53a098218791d');
 
           await minioClient.bucketExists((group._workspace).toLowerCase(), async (error, exists) => {
             if (error) {
@@ -3157,15 +3124,6 @@ export class PostService {
           // Get the folder link from the environment
           const folder = process.env.FILE_UPLOAD_FOLDER;
 
-          // Modify the file accordingly and handle request
-          // await fs.copyFile(folder + currentFile.modified_name, folder + fileName, (error: Error) => {
-          //   if (error) {
-          //     fileName = null;
-          //     console.log(`\n⛔️ Error:\n ${error}`);
-          //     throw (error);
-          //   }
-          // });
-
           var minioClient = new minio.Client({
               endPoint: process.env.MINIO_DOMAIN,
               port: +(process.env.MINIO_API_PORT),
@@ -3175,7 +3133,6 @@ export class PostService {
           });
 
           var conds = new minio.CopyConditions();
-          // conds.setMatchETag('bd891862ea3e22c93ed53a098218791d');
 
           await minioClient.bucketExists((group._workspace).toLowerCase(), async (error, exists) => {
             if (error) {
@@ -3324,18 +3281,6 @@ export class PostService {
           // Instantiate the fileName variable and add the date object in the name
           let fileName = Date.now().toString() + currentFile.original_name;
 
-          // Get the folder link from the environment
-          // const folder = process.env.FILE_UPLOAD_FOLDER;
-
-          // Modify the file accordingly and handle request
-          // await fs.copyFile(folder + currentFile.modified_name, folder + fileName, (error: Error) => {
-          //   if (error) {
-          //     fileName = null;
-          //     console.log(`\n⛔️ Error:\n ${error}`);
-          //     throw (error);
-          //   }
-          // });
-
           var minioClient = new minio.Client({
               endPoint: process.env.MINIO_DOMAIN,
               port: +(process.env.MINIO_API_PORT),
@@ -3345,7 +3290,6 @@ export class PostService {
           });
 
           var conds = new minio.CopyConditions();
-          // conds.setMatchETag('bd891862ea3e22c93ed53a098218791d');
 
           await minioClient.bucketExists((group._workspace).toLowerCase(), async (error, exists) => {
             if (error) {
@@ -3454,16 +3398,6 @@ export class PostService {
         function deleteFiles(files, callback) {
           var i = files.length;
           files.forEach(async (file) => {
-            // const finalpath = `${process.env.FILE_UPLOAD_FOLDER}${filepath.modified_name}`
-            // fs.unlink(finalpath, function (err) {
-            //   i--;
-            //   if (err) {
-            //     callback(err);
-            //     return;
-            //   } else if (i <= 0) {
-            //     callback(null);
-            //   }
-            // });
             var minioClient = new minio.Client({
               endPoint: process.env.MINIO_DOMAIN,
               port: +(process.env.MINIO_API_PORT),
@@ -3490,20 +3424,7 @@ export class PostService {
       }
 
       //chec/delete document files that were exported
-      // const filepath = `${process.env.FILE_UPLOAD_FOLDER}${newPostId + (newPost._group._id || newPost._group) + 'export' + '.docx'}`;
       const filepath = `${newPostId + (newPost._group._id || newPost._group) + 'export' + '.docx'}`;
-      //check if file exists
-      // fs.access(filepath, fs.F_OK, error => {
-      //   //if error there was no file
-      //   if (!error) {
-      //     //the file was there now unlink it
-      //     fs.unlink(filepath, (err) => {
-      //       //handle error when file was not deleted properly
-      //       if (err) { throw (err); }
-      //       //deleted document
-      //     })
-      //   }
-      // })
       var minioClient = new minio.Client({
         endPoint: process.env.MINIO_DOMAIN,
         port: +(process.env.MINIO_API_PORT),
@@ -3533,18 +3454,6 @@ export class PostService {
           // Instantiate the fileName variable and add the date object in the name
           let fileName = Date.now().toString() + currentFile.original_name;
 
-          // Get the folder link from the environment
-          // const folder = process.env.FILE_UPLOAD_FOLDER;
-
-          // Modify the file accordingly and handle request
-          // await fs.copyFile(folder + currentFile.modified_name, folder + fileName, (error: Error) => {
-          //   if (error) {
-          //     fileName = null;
-          //     console.log(`\n⛔️ Error:\n ${error}`);
-          //     throw (error);
-          //   }
-          // });
-
           var minioClient = new minio.Client({
               endPoint: process.env.MINIO_DOMAIN,
               port: +(process.env.MINIO_API_PORT),
@@ -3554,7 +3463,6 @@ export class PostService {
           });
 
           var conds = new minio.CopyConditions();
-          // conds.setMatchETag('bd891862ea3e22c93ed53a098218791d');
 
           await minioClient.bucketExists(user?._workspace?.toLowerCase(), async (error, exists) => {
             if (error) {
@@ -3858,7 +3766,7 @@ export class PostService {
     if(user && post){
       const postData = {
           title: post.title,
-          due: post?.task?.due_to,
+          due: DateTime.fromISO(post?.task?.due_to).toISODate(),
           status: post?.task?.status,
           groupName: post?._group?.group_name,
           workspaceName: post?._group?.workspace_name,

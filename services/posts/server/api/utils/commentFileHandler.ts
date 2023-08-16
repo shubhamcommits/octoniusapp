@@ -33,24 +33,10 @@ const commentFileUploader = async (req: Request, res: Response, next: NextFuncti
     // Fetch the files from the current request
     files.attachments.forEach(async (currentFile: any, index: Number) => {
 
-      // Get the folder link from the environment
-    //   const folder = process.env.FILE_UPLOAD_FOLDER;
-
       // Get the modified name from the comment files
       const indexFile = req.body.comment.files.findIndex(file => file.original_name === currentFile.name);
       const modified_name = req.body.comment.files[indexFile].modified_name;
 
-      // Modify the file accordingly and handle request
-      // currentFile.mv(folder + modified_name, (error: Error) => {
-      //   if (error) {
-      //     // fileName = null;
-      //     return res.status(500).json({
-      //       status: '500',
-      //       message: 'file upload error',
-      //       error: error
-      //     });
-      //   }
-      // });
       var minioClient = new minio.Client({
           endPoint: process.env.MINIO_DOMAIN,
           port: +(process.env.MINIO_API_PORT),
@@ -123,24 +109,9 @@ const commentFileUploader = async (req: Request, res: Response, next: NextFuncti
     // Fetch the file from the current request
     const currentFile: any = req['files'].attachments;
 
-    // Get the folder link from the environment
-    // const folder = process.env.FILE_UPLOAD_FOLDER;
-
     // Get the modified name from the comment files
     const index = comment['files'].findIndex(file => file.original_name === currentFile.name);
     const modified_name = comment['files'][index].modified_name;
-
-    // Modify the file accordingly and handle request
-    // currentFile.mv(folder + modified_name, (error: Error) => {
-    //   if (error) {
-    //     //fileName = null;
-    //     return res.status(500).json({
-    //       status: '500',
-    //       message: 'file upload error',
-    //       error: error
-    //     });
-    //   }
-    // })
 
     var minioClient = new minio.Client({
         endPoint: process.env.MINIO_DOMAIN,

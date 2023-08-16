@@ -568,7 +568,9 @@ export class UtilityService {
       };
 
     this.dialog.open(MemberDialogComponent, {
-      width: '50%',
+      width: '65%',
+      height: '75%',
+      disableClose: true,
       hasBackdrop: true,
       data: data
     });

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { OrganizationHRComponent } from './organization-hr.component';
-import { ReportsComponent } from './reports/reports.component';
+import { EmployeesComponent } from './employees/employees.component';
 import { SetupComponent } from './setup/setup.component';
 import { TimneOffComponent } from './time-off/time-off.component';
 
@@ -28,10 +28,10 @@ const routes: Routes = [
     }
   },
   {
-    path: 'report', component: ReportsComponent,
+    path: 'employees', component: EmployeesComponent,
     data: {
       preload: false,
-      state: 'hive-hr-reports'
+      state: 'hive-hr-employees'
     }
   }
 ];

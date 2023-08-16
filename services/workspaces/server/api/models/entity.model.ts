@@ -75,6 +75,22 @@ const EntitySchema = new Schema({
             default: []
         }
     }],
+    payroll_benefits: [{
+        name: {
+            type: String,
+            required: true
+        },
+        type: {
+            type: String,
+            default: false,
+            enum: ['Select', 'Multiselect', 'Number', 'Text', 'Date']
+        },
+        values: {
+            type: [String],
+            required: true,
+            default: []
+        }
+    }],
     _workspace: {
         type: Schema.Types.ObjectId,
         required:true,

@@ -1639,9 +1639,8 @@ export class UsersControllers {
         // Fetch the groupId
         const { userId } = req.params;
 
-        // Fetch the newCustomField from fileHandler middleware
-        const customFieldValue = req.body['customFieldValue'];
-        const customFieldId = req.body['customFieldId'];
+        const variableValue = req.body['variableValue'];
+        const variableId = req.body['variableId'];
 
         let user = await User.findById(userId);
 
@@ -1652,7 +1651,7 @@ export class UsersControllers {
         if (!user.hr.entity_variables) {
             user.hr.entity_variables = new Map<string, string>();
         }
-        user.hr.entity_variables.set(customFieldId, customFieldValue);
+        user.hr.entity_variables.set(variableId, variableValue);
 
         // Find the post and update the custom field
         user = await User.findByIdAndUpdate({
@@ -1663,11 +1662,44 @@ export class UsersControllers {
             new: true
         });
 
-        // user.custom_fields[customFieldId] = customFieldValue;
-
         // Send status 200 response
         return res.status(200).json({
             message: 'Payroll Variable updated!',
+            user: user
+        });
+    }
+
+    async savePayrollBenefit(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { userId } = req.params;
+
+        const benefitValue = req.body['benefitValue'];
+        const benefitId = req.body['benefitId'];
+
+        let user = await User.findById(userId);
+
+        if (!user.hr) {
+            user.hr = {};
+        }
+        
+        if (!user.hr.entity_benefits) {
+            user.hr.entity_benefits = new Map<string, string>();
+        }
+        user.hr.entity_benefits.set(benefitId, benefitValue);
+
+        // Find the post and update the custom field
+        user = await User.findByIdAndUpdate({
+            _id: userId
+        }, {
+            $set: { "hr.entity_benefits": user.hr.entity_benefits }
+        }, {
+            new: true
+        });
+
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Payroll Benefits updated!',
             user: user
         });
     }

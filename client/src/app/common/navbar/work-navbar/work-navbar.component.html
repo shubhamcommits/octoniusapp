@@ -148,7 +148,7 @@
   </li>
 
   <li class="nav-item d-none d-md-block"
-      *ngIf="routerState == 'hive-hr-timeoff' || routerState == 'hive-hr-reports' || routerState == 'hive-hr-setup'">
+      *ngIf="routerState == 'hive-hr-timeoff' || routerState == 'hive-hr-employees' || routerState == 'hive-hr-setup'">
     <a class="nav-link"
         routerLink="/dashboard/work/organization/hive"
         routerLinkActive="active">
@@ -164,9 +164,9 @@
     <span *ngIf="routerState == 'hive-hr'" i18n="@@workNavbar.hrAndPayroll">HR & Payroll</span>
   </li>
 
-  <li style="margin-top: 20px;" *ngIf="routerState == 'hive-hr-timeoff' || routerState == 'hive-hr-reports' || routerState == 'hive-hr-setup'">
+  <li style="margin-top: 20px;" *ngIf="routerState == 'hive-hr-timeoff' || routerState == 'hive-hr-employees' || routerState == 'hive-hr-setup'">
     <span *ngIf="routerState == 'hive-hr-timeoff'" i18n="@@workNavbar.timeOff">Time Off</span>
-    <span *ngIf="routerState == 'hive-hr-reports'" i18n="@@workNavbar.hiveReports">Hive Reports</span>
+    <span *ngIf="routerState == 'hive-hr-employees'" i18n="@@workNavbar.manageEmployees">Manage Employees</span>
     <span *ngIf="routerState == 'hive-hr-setup'" i18n="@@workNavbar.payrollSetup">Payroll Setup</span>
   </li>
 </ul>

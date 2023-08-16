@@ -1,4 +1,4 @@
-import { Injectable, Injector } from '@angular/core';
+import { Inject, Injectable, Injector, LOCALE_ID } from '@angular/core';
 import { retry } from 'rxjs/internal/operators/retry';
 import { SubSink } from 'subsink';
 import moment from 'moment/moment';
@@ -24,6 +24,7 @@ import { PortfolioService } from 'src/shared/services/portfolio-service/portfoli
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
 import { LibraryService } from 'src/shared/services/library-service/library.service';
 import { SearchService } from 'src/shared/services/search-service/search.service';
+import { LibreofficeService } from 'src/shared/services/libreoffice-service/libreoffice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,7 @@ export class PublicFunctions {
     private subSink = new SubSink();
 
     constructor(
-      private injector: Injector
+      private injector: Injector,
     ) { }
 
     /**
@@ -2243,16 +2244,34 @@ export class PublicFunctions {
         filesList = await this.searchFiles(null, searchTerm, 'true', workspaceData._id);
       }
 
-      // Map the users list
-      filesList = filesList.map((file: any) => ({
-        id: file._id,
-        value:
-          (file.type == 'folio')
-            ? `<a href="/document/${file._id}?readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
-            : (file.type == "flamingo")
-              ? `<a href="/document/flamingo/${file._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
-              : `<a href="${environment.UTILITIES_FILES_UPLOADS}/${workspaceData._id}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
-      }));
+      // Map the files list
+      let retFileList = [];
+      for (let i = 0; i < filesList.length; i++) {
+        const file = filesList[i];
+        const url = await this.getFileUrl(file, workspaceData?._id);
+
+        retFileList.push({
+          id: file._id,
+          value: `<a href="${url}" style="color: inherit" target="_blank">${file.original_name}</a>`
+            // (file.type == 'folio')
+            //   ? `<a href="/document/${file._id}?readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
+            //   : (file.type == "flamingo")
+            //     ? `<a href="/document/flamingo/${file._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
+            //     : `<a href="${environment.UTILITIES_FILES_UPLOADS}/${workspaceData._id}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
+        })
+      }
+      filesList = retFileList;
+//       filesList = filesList.map((file: any) => {
+//         return {
+//           id: file._id,
+//           value: `<a href="${file.url}" style="color: inherit" target="_blank">${file.original_name}</a>`
+//             // (file.type == 'folio')
+//             //   ? `<a href="/document/${file._id}?readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
+//             //   : (file.type == "flamingo")
+//             //     ? `<a href="/document/flamingo/${file._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
+//             //     : `<a href="${environment.UTILITIES_FILES_UPLOADS}/${workspaceData._id}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
+//         }
+//       });
 
       let googleFilesList: any = [];
 
@@ -2312,6 +2331,67 @@ export class PublicFunctions {
       }));
 
       return Array.from(new Set([...filesList, ...googleFilesList, ...boxFilesList, ...pagesList]));
+    }
+
+    async getFileUrl(file: any, workspaceId: string) {
+      let utilityService = this.injector.get(UtilityService);
+      let filesService = this.injector.get(FilesService);
+      let storageService = this.injector.get(StorageService);
+      let locale = this.injector.get(LOCALE_ID);
+
+      let url = environment.clientUrl;
+      if (environment.production) {
+       url += '/' + locale;
+      }
+      if (file?.type == 'folio') {
+        url += '/document/' + file?._id + '?readOnly=true';
+      } else if (file?.type == 'flamingo') {
+        url += '/document/flamingo/' + file?._id;
+      } else if (file?.type == 'file') {
+        const lastFileVersion: any = await utilityService.getFileLastVersion(file?._id);
+        if (this.isOfficeFile(lastFileVersion?.original_name)) {
+          url = await this.getLibreOfficeURL(lastFileVersion, workspaceId);
+        } else {
+          await filesService.getMinioFile(file?._id, file?.modified_name, workspaceId, storageService.getLocalData("authToken")["token"]).then(async res =>{
+            url = res['url'];
+          });
+        }
+      }
+
+      return url;
+    }
+
+    private async getLibreOfficeURL(file: any, workspaceId: string) {
+      let utilityService = this.injector.get(UtilityService);
+      let libreofficeService = this.injector.get(LibreofficeService);
+      let storageService = this.injector.get(StorageService);
+      // wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
+      let wopiClientURL = '';
+      await libreofficeService.getLibreofficeUrl().then(res => {
+          wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${file?._id}/${workspaceId}?access_token=${storageService.getLocalData("authToken")["token"]}`;
+        }).catch(error => {
+          utilityService.errorNotification($localize`:@@publicFunctions.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
+        });
+      return wopiClientURL;
+    }
+
+    private isOfficeFile(fileName: string) {
+      const officeExtensions = ['ott', 'odm', 'doc', 'docx', 'xls', 'xlsx', 'ods', 'ots', 'odt', 'xst', 'odg', 'otg', 'odp', 'ppt', 'otp', 'pot', 'odf', 'odc', 'odb'];
+      const fileExtension = this.getFileExtension(fileName);
+      return officeExtensions.includes(fileExtension);
+    }
+
+    private getFileExtension(fileName: string) {
+      let fileType = '';
+      if (fileName) {
+        let file = fileName?.split(".");
+        fileType = file[file.length-1].toLowerCase();
+        if (fileType == 'mp4') {
+          fileType = 'mov';
+        }
+      }
+      
+      return fileType;
     }
 
     /**

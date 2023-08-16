@@ -125,6 +125,10 @@ const UserSchema = new Schema({
             type: Map,
             of: String
         },
+        entity_benefits: {
+            type: Map,
+            of: String
+        },
         address_line_1: {
             type: String,
             default: null

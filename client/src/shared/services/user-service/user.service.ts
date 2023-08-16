@@ -459,11 +459,19 @@ export class UserService {
     }).toPromise();
   }
 
-  savePayrollVariable(userId: string, customFieldId: string, customFieldValue: string) {
+  savePayrollVariable(userId: string, variableId: string, variableValue: string) {
     // Call the HTTP Request
     return this._http.put(this.BASE_API_URL + `/${userId}/payrollVariable`, {
-      customFieldId: customFieldId,
-      customFieldValue: customFieldValue
+      variableId: variableId,
+      variableValue: variableValue
+    }).toPromise();
+  }
+
+  savePayrollBenefit(userId: string, benefitId: string, benefitValue: string) {
+    // Call the HTTP Request
+    return this._http.put(this.BASE_API_URL + `/${userId}/payrollBenefit`, {
+      benefitId: benefitId,
+      benefitValue: benefitValue
     }).toPromise();
   }
 }

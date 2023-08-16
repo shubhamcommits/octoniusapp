@@ -45,7 +45,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" *ngIf="hrCustomFields && hrCustomFields.length > 0">
     <div class="col">
       <div class="col-description">
         <h4 i18n="@@userHive.hrFields">HR fields</h4>
@@ -60,16 +60,17 @@
 
     <div class="col">
       <div class="form-group">
-        <div *ngFor="let cf of hrCustomFields" class="fieldUI">
-          <label [for]="cf._id" class="muted">{{ cf.name }}</label>
+        <div *ngFor="let cf of hrCustomFields" class="fieldUI mb-4">
+          <label [for]="cf._id" class="cflabel">{{ cf.name }}</label>
 
           <mat-select ngDefaultControl *ngIf="isCurrentUser && cf.type == 'Select'" [(value)]="selectedHRCFValues[cf._id]"
-            (selectionChange)="onSelectEntityCustomFieldChange($event, cf._id)" appearance="fill" [name]="cf._id">
+            (selectionChange)="onSelectEntityCustomFieldChange($event, cf._id)" appearance="fill" [name]="cf._id"
+            [disabled]="!isCurrentUser && cf.type == 'Select'">
             <mat-select-trigger>{{ selectedHRCFValues[cf._id] }}</mat-select-trigger>
             <mat-option *ngFor="let val of cf.values" [value]="val">{{ val }}</mat-option>
           </mat-select>
 
-          <span *ngIf="!isCurrentUser && cf.type == 'Select'">{{ selectedHRCFValues[cf._id] }}</span>
+          <!-- <span *ngIf="!isCurrentUser && cf.type == 'Select'">{{ selectedHRCFValues[cf._id] }}</span> -->
 
           <input type="number" *ngIf="isCurrentUser && cf.type == 'Number'" [name]="cf.name" [(ngModel)]="selectedHRCFValues[cf._id]" [disabled]="!isCurrentUser"
             class="form-control" [value]="selectedHRCFValues[cf._id]"
@@ -91,7 +92,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" *ngIf="hrVariables && hrVariables.length > 0">
     <div class="col">
       <div class="col-description">
         <h4 i18n="@@userHive.payrollInfo">Payroll info</h4>
@@ -106,11 +107,53 @@
 
     <div class="col">
       <div class="form-group">
-        <div *ngFor="let variable of hrVariables">
-          <label [for]="variable._id" class="muted">{{ variable.name }}</label>
+        <div *ngFor="let variable of hrVariables" class="mb-4">
+          <label [for]="variable._id" class="cflabel">{{ variable.name }}</label>
 
           <input type="number" [name]="variable.name" [(ngModel)]="selectedHRVariablesValues[variable._id]" disabled="true"
             class="form-control" [value]="selectedHRVariablesValues[variable._id]"/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="hrBenefits && hrBenefits.length > 0">
+    <div class="col">
+      <div class="col-description">
+        <h4 i18n="@@userHive.benefitsInfo">Benefits info</h4>
+        <p class="block-description" i18n="@@userHive.benefitsInfoDescription">
+          Fields created by the HR team. These fields are mandatory.
+        </p>
+      </div>
+      <div class="color-separator">
+
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="form-group">
+        <div *ngFor="let benefit of hrBenefits" class="mb-4">
+          <label [for]="benefit._id" class="cflabel">{{ benefit.name }}</label>
+          
+          <mat-select ngDefaultControl *ngIf="benefit.type == 'Select'" [(value)]="selectedHRBenefitsValues[benefit._id]"
+            [disabled]="true" appearance="fill">
+            <mat-select-trigger>{{ selectedHRBenefitsValues[benefit._id] }}</mat-select-trigger>
+            <mat-option *ngFor="let val of benefit.values" [value]="val">{{ val }}</mat-option>
+          </mat-select>
+
+          <!--
+          <mat-select ngDefaultControl *ngIf="benefit.type == 'Multiselect'" [(value)]="selectedHRBenefitsValues[benefit._id]"
+            [disabled]="true" appearance="fill" multiple>
+            <mat-select-trigger>{{ selectedHRBenefitsValues[benefit._id] }}</mat-select-trigger>
+            <mat-option *ngFor="let val of benefit.values" [value]="val">{{ val }}</mat-option>
+          </mat-select>
+          -->
+          <ul *ngIf="benefit.type == 'Multiselect'" class="benefitslist">
+            <li *ngFor="let b of selectedHRBenefitsValues[benefit._id]"> {{ b }}</li>
+          </ul>
+          
+          <input *ngIf="!(benefit.type == 'Select' || benefit.type == 'Multiselect')" type="number" [name]="benefit.name" [(ngModel)]="selectedHRBenefitsValues[benefit._id]" disabled="true"
+            class="form-control" [value]="selectedHRBenefitsValues[benefit._id]"/>
         </div>
       </div>
     </div>

@@ -30,16 +30,8 @@ export class FilesService {
     private async deleteFile(fileName, groupId, callback) {
         const group: any = await Group.findById({_id: groupId}).select('_workspace').lean();
 
-        // const finalpath = `${process.env.FILE_UPLOAD_FOLDER}${fileName}`
         const finalpath = `${fileName}`
-        // fs.unlink(finalpath, function (err) {
-        //     if (err) {
-        //         callback(err);
-        //         return;
-        //     } else {
-        //         callback(null);
-        //     }
-        // });
+
         var minioClient = new minio.Client({
             endPoint: process.env.MINIO_DOMAIN,
             port: +(process.env.MINIO_API_PORT),
