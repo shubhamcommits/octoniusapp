@@ -242,7 +242,7 @@ export class CollectionDetailsComponent implements OnInit {
     this.utilityService.updateIsLoadingSpinnerSource(true);
 
     if (this.isOfficeFile(file?.original_name)) {
-      window.open(await this.getLibreOfficeURL(file), "_blank");
+      window.open(await this.publicFunctions.getLibreOfficeURL(file?._id, this.workspaceData?._id), "_blank");
     } else {
       this.filesService.getMinioFile(file?._id, file?.modified_name, this.workspaceData?._id, this.authToken).then(res =>{
         window.open(res['url'], "_blank");
@@ -303,17 +303,6 @@ export class CollectionDetailsComponent implements OnInit {
     const officeExtensions = ['ott', 'odm', 'doc', 'docx', 'xls', 'xlsx', 'ods', 'ots', 'odt', 'xst', 'odg', 'otg', 'odp', 'ppt', 'otp', 'pot', 'odf', 'odc', 'odb'];
     const fileExtension = this.getFileExtension(fileName);
     return officeExtensions.includes(fileExtension);
-  }
-
-  async getLibreOfficeURL(file: any) {
-    // wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
-    let wopiClientURL = '';
-    await this.libreofficeService.getLibreofficeUrl().then(res => {
-        wopiClientURL = res['url'] + 'WOPISrc=' + `${this.baseAPIUrl}/libreoffice/wopi/files/${file?._id}/${this.workspaceData?._id}?access_token=${this.authToken}`;
-      }).catch(error => {
-        this.utilityService.errorNotification($localize`:@@groupFiles.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
-      });
-    return wopiClientURL;
   }
 
   objectExists(object: any) {

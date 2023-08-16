@@ -200,19 +200,7 @@ export class SearchResultsComponent implements OnChanges {
       const workspace: any = await this.publicFunctions.getCurrentWorkspace();
       workspaceId = workspace._id;
     }
-    window.open(await this.getLibreOfficeURL(fileId, workspaceId), "_blank");
-  }
-
-  async getLibreOfficeURL(fileId: string, workspaceId: string) {
-    // wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
-    let wopiClientURL = '';
-    await this.libreofficeService.getLibreofficeUrl().then(res => {
-        const authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`;
-        wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}/${workspaceId}?access_token=${authToken}`;
-      }).catch(error => {
-        this.utilityService.errorNotification($localize`:@@groupFiles.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
-      });
-    return wopiClientURL;
+    window.open(await this.publicFunctions.getLibreOfficeURL(fileId, workspaceId), "_blank");
   }
 
   openFullscreenModal(userId: string) {
