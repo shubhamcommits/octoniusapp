@@ -316,7 +316,7 @@ export class PageDetailsComponent implements OnInit {
     this.utilityService.updateIsLoadingSpinnerSource(true);
 
     if (this.isOfficeFile(file?.original_name)) {
-      window.open(await this.publicFunctions.getLibreOfficeURL(file, this.workspaceData?._id), "_blank");
+      window.open(await this.publicFunctions.getLibreOfficeURL(file?._id, this.workspaceData?._id), "_blank");
     } else {
       this.filesService.getMinioFile(file?._id, file?.modified_name, this.workspaceData?._id, this.authToken).then(res =>{
         window.open(res['url'], "_blank");

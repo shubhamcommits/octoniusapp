@@ -2361,14 +2361,14 @@ export class PublicFunctions {
       return url;
     }
 
-    async getLibreOfficeURL(file: any, workspaceId: string) {
+    async getLibreOfficeURL(fileId: string, workspaceId: string) {
       let utilityService = this.injector.get(UtilityService);
       let libreofficeService = this.injector.get(LibreofficeService);
       let storageService = this.injector.get(StorageService);
       // wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
       let wopiClientURL = '';
       await libreofficeService.getLibreofficeUrl().then(res => {
-          wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${file?._id}/${workspaceId}?access_token=${storageService.getLocalData("authToken")["token"]}`;
+          wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}/${workspaceId}?access_token=${storageService.getLocalData("authToken")["token"]}`;
         }).catch(error => {
           utilityService.errorNotification($localize`:@@publicFunctions.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
         });

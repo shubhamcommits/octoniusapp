@@ -25,8 +25,8 @@ import { ApprovalPDFSignaturesService } from 'src/shared/services/approval-pdf-s
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import * as ShareDB from "sharedb/lib/client";
 import Quill from 'quill';
-import { LibreofficeService } from 'src/shared/services/libreoffice-service/libreoffice.service';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
+
 @Component({
   selector: 'app-group-files',
   templateUrl: './group-files.component.html',
@@ -117,7 +117,6 @@ export class GroupFilesComponent implements OnInit {
     public dialog: MatDialog,
     public storageService: StorageService,
     private groupService: GroupService,
-    private libreofficeService: LibreofficeService,
     private managementPortalService: ManagementPortalService,
     private approvalPDFSignaturesService: ApprovalPDFSignaturesService
   ) { }
@@ -1034,7 +1033,7 @@ export class GroupFilesComponent implements OnInit {
     if (this.isFilesVersionsModuleAvailable) {
       const lastFileVersion: any = await this.utilityService.getFileLastVersion(file?._id);
       if (this.isOfficeFile(lastFileVersion?.original_name)) {
-        window.open(await this.publicFunctions.getLibreOfficeURL(lastFileVersion, this.workspaceId), "_blank");
+        window.open(await this.publicFunctions.getLibreOfficeURL(lastFileVersion?._id, this.workspaceId), "_blank");
       } else {
         // window.open(this.filesBaseUrl + '/' + lastFileVersion?.modified_name + '?authToken=' + this.authToken, "_blank");
         this.filesService.getMinioFile(lastFileVersion?._id, lastFileVersion?.modified_name, this.workspaceId, this.authToken).then(res =>{
@@ -1059,7 +1058,7 @@ export class GroupFilesComponent implements OnInit {
     if (this.isFilesVersionsModuleAvailable) {
       const lastFileVersion: any = await this.utilityService.getFileLastVersion(file?._id);
       if (this.isOfficeFile(lastFileVersion?.original_name)) {
-        window.open(await this.publicFunctions.getLibreOfficeURL(lastFileVersion, this.workspaceId), "_blank");
+        window.open(await this.publicFunctions.getLibreOfficeURL(lastFileVersion?._id, this.workspaceId), "_blank");
       } else {
         this.filesService.getMinioFile(lastFileVersion?._id, lastFileVersion?.modified_name, this.workspaceId, this.authToken).then(res =>{
           window.open(res['url'], "_blank");
