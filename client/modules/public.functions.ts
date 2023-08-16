@@ -2361,7 +2361,7 @@ export class PublicFunctions {
       return url;
     }
 
-    private async getLibreOfficeURL(file: any, workspaceId: string) {
+    async getLibreOfficeURL(file: any, workspaceId: string) {
       let utilityService = this.injector.get(UtilityService);
       let libreofficeService = this.injector.get(LibreofficeService);
       let storageService = this.injector.get(StorageService);

@@ -1034,7 +1034,7 @@ export class GroupFilesComponent implements OnInit {
     if (this.isFilesVersionsModuleAvailable) {
       const lastFileVersion: any = await this.utilityService.getFileLastVersion(file?._id);
       if (this.isOfficeFile(lastFileVersion?.original_name)) {
-        window.open(await this.getLibreOfficeURL(lastFileVersion), "_blank");
+        window.open(await this.publicFunctions.getLibreOfficeURL(lastFileVersion, this.workspaceId), "_blank");
       } else {
         // window.open(this.filesBaseUrl + '/' + lastFileVersion?.modified_name + '?authToken=' + this.authToken, "_blank");
         this.filesService.getMinioFile(lastFileVersion?._id, lastFileVersion?.modified_name, this.workspaceId, this.authToken).then(res =>{
@@ -1042,21 +1042,10 @@ export class GroupFilesComponent implements OnInit {
         });
       }
     } else {
-      window.open(await this.getLibreOfficeURL(file?._id), "_blank");
+      window.open(await this.publicFunctions.getLibreOfficeURL(file?._id, this.workspaceId), "_blank");
     }
 
     this.isLoading$.next(false);
-  }
-
-  async getLibreOfficeURL(file: any) {
-    // wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
-    let wopiClientURL = '';
-    await this.libreofficeService.getLibreofficeUrl().then(res => {
-        wopiClientURL = res['url'] + 'WOPISrc=' + `${this.baseAPIUrl}/libreoffice/wopi/files/${file?._id}/${this.workspaceId}?access_token=${this.authToken}`;
-      }).catch(error => {
-        this.utilityService.errorNotification($localize`:@@groupFiles.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
-      });
-    return wopiClientURL;
   }
 
   openFullscreenModal(userId: string) {
@@ -1070,7 +1059,7 @@ export class GroupFilesComponent implements OnInit {
     if (this.isFilesVersionsModuleAvailable) {
       const lastFileVersion: any = await this.utilityService.getFileLastVersion(file?._id);
       if (this.isOfficeFile(lastFileVersion?.original_name)) {
-        window.open(await this.getLibreOfficeURL(lastFileVersion), "_blank");
+        window.open(await this.publicFunctions.getLibreOfficeURL(lastFileVersion, this.workspaceId), "_blank");
       } else {
         this.filesService.getMinioFile(lastFileVersion?._id, lastFileVersion?.modified_name, this.workspaceId, this.authToken).then(res =>{
           window.open(res['url'], "_blank");
