@@ -51,13 +51,13 @@ const postFileUploader = async (req: Request, res: Response, next: NextFunction)
     files.attachments.forEach(async (currentFile: any, index: Number) => {
       // Instantiate the fileName variable and add the date object in the name
       let fileName = '';
-      if (workspaceId) {
+      if (!!workspaceId) {
         fileName += workspaceId +  '_';
   
-        if (groupId) {
+        if (!!groupId) {
           fileName += groupId +  '_';
   
-          if (postId) {
+          if (!!postId) {
             fileName += postId + '_';
           }
         }
@@ -178,13 +178,13 @@ const postFileUploader = async (req: Request, res: Response, next: NextFunction)
 
     // Instantiate the fileName variable and add the date object in the name
     let fileName = '';
-    if (workspaceId) {
+    if (!!workspaceId) {
       fileName += workspaceId +  '_';
 
-      if (groupId) {
+      if (!!groupId) {
         fileName += groupId +  '_';
 
-        if (postId) {
+        if (!!postId) {
           fileName += postId + '_';
         }
       }
