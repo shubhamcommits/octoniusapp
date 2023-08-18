@@ -5,14 +5,13 @@
 require 'mongo'
 require 'json'
 
-mport  = '8001' #ENV['MINIO_API_PORT'] 
-mhost  = '127.0.0.1' #ENV['MINIO_DOMAIN'] 
+mport  = ENV['MINIO_API_PORT'] 
+mhost  = ENV['MINIO_DOMAIN'] 
 mpass  = ENV['MINIO_PASSWORD']
 muser  = ENV['MINIO_USER']
 mproto = ENV['MINIO_PROTOCOL']
 
 minio = mproto + "://" + mhost+":" + mport + " " + muser + " " + mpass
-
 mclient = Mongo::Client.new("#{ENV["DB_URL"]}")
 db = mclient.database
 
@@ -35,14 +34,17 @@ mfiles[:groups] = db[:groups].find().map{|x| [x["_workspace"],[x["group_avatar"]
 mfiles[:lounges] = db[:lounges].find().map{|x| [x["_workspace"],[x["header_pic"],x["icon_pic"]]]}
 mfiles[:workspaces] = db[:workspaces].find().map{|x| [x["_id"],[x["workspace_avatar"]]]}
 mfiles[:files] = db[:files].find().map{|x| [group_to_workspace[x["_group"]],[x["modified_name"]]]}
+mfiles[:posts] = db[:posts].find().map{|x| [group_to_workspace[x["_group"]],x["files"]]}
 mfiles[:portfolios] = db[:portfolios].find().map{|x| [group_to_workspace[x["_groups"].first],[x["portfolio_avatar"]]]}
 
 groups_ids.each{|x| `./mc mb minio/#{x} --json`;`./mc rm --recursive --force minio/#{x}/`}
 
 mfiles.keys.each do |k|
     mfiles[k].each do |info|
+        next unless info[1]
         info[1].each do |f|
             next unless f 
+            f = f["modified_name"] if f.is_a?(Hash)
             f = f.to_s if f.class.to_s == "BSON::ObjectId"   
             search_f = f.split("/")[-1]
             file = files.select{|x| x if x.include? search_f}
