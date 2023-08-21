@@ -140,12 +140,6 @@ routes.put('/add-favorite-collection', user.addFavoriteCollection);
 
 routes.put('/default-icons-sidebar', user.saveIconSidebarByDefault);
 
-// PUT - Save the out of the office days 
-routes.put('/:userId/out-of-office-days', user.saveOutOfOfficeDays);
-
-// GET - Get the out of the office days 
-routes.get('/:userId/out-of-office-days', user.getOutOfOfficeDays);
-
 // PUT - Updates the widgets to show in the global dashboard
 routes.put('/:userId/saveSelectedWidgets', user.saveSelectedWidgets);
 
@@ -171,6 +165,12 @@ routes.put('/:userId/payrollBenefit', user.savePayrollBenefit);
 
 // PUT - Change user payroll specific extra days off
 routes.put('/:userId/payrollExtraDaysOff', user.savePayrollExtraDaysOff);
+
+// PUT - Save the out of the office days 
+routes.put('/:userId/out-of-office-days', user.saveOutOfOfficeDays);
+
+// GET - Get the out of the office days 
+routes.get('/:userId/out-of-office-days', user.getOutOfOfficeDays);
 
 /*  ===================
  *  -- EXPORT ROUTES --
