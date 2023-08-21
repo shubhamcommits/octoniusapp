@@ -369,6 +369,92 @@
                     </button>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="col-description">
+                        <h4 i18n="@@editEntityDialog.daysOff">Days Off</h4>
+                        <p class="block-description" i18n="@@editEntityDialog.daysOffDescription">
+                            Set up custom days off that will appear in the employee profile. You will be able to track more
+                            information from your employees.
+                        </p>
+                    </div>
+                    <hr />
+                </div>
+            
+                <div class="col">
+                    <ul>
+                        <li class="titles">
+                            <div class="name title"><span i18n="@@setup.year">Year</span></div>
+                            <div class="type title"><span i18n="@@setup.holidays">Holidays</span></div>
+                            <div class="type title" i18n="@@setup.sick">Sick</div>
+                            <div class="type title" i18n="@@setup.personalDays">Personal days</div>
+                            <div class="actions title"></div>
+                        </li>
+            
+                        <li *ngFor="let daysOff of entityData?.payroll_days_off">
+                            <div class="name"><span>{{ daysOff.year }}</span></div>
+                            <div class="type"><span>{{ daysOff.holidays }}</span></div>
+                            <div class="type"><span>{{ daysOff.sick }}</span></div>
+                            <div class="type"><span>{{ daysOff.personal_days }}</span></div>
+                            
+                            <div class="actions">
+                                <div style="cursor: pointer;" [matMenuTriggerFor]="menuDaysOff">
+                                    <i class="material-icons">settings</i>
+                                </div>
+            
+                                <mat-menu #menuDaysOff="matMenu">
+                                    <a mat-menu-item (click)="editEntityDaysOff(daysOff)">
+                                        <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">edit</i>
+                                        <span i18n="@@setup.edit">Edit</span>
+                                    </a>
+            
+                                    <a mat-menu-item (click)="deleteEntityDaysOff(daysOff?._id)">
+                                        <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
+                                        <span i18n="@@setup.delete">Delete</span>
+                                    </a>
+                                </mat-menu>
+                            </div>
+                        </li>
+                    </ul>
+            
+                    <div class="form-group" *ngIf="createNewDaysOff">
+                        <label i18n="@@editEntityDialog.year">Year</label>
+                        <input type="number" class="form-control" [(ngModel)]="newDayOff.year" [disabled]="!!newDayOff._id">
+            
+                        <label i18n="@@editEntityDialog.holidays" style="float: left; width: 100%;">Holidays</label>
+                        <input type="number" autocomplete="off"  class="form-control" [(ngModel)]="newDayOff.holidays" />
+            
+                        <label i18n="@@editEntityDialog.sick" style="float: left; width: 100%;">Sick</label>
+                        <input type="number" autocomplete="off"  class="form-control" [(ngModel)]="newDayOff.sick" />
+            
+                        <label i18n="@@editEntityDialog.personalDays" style="float: left; width: 100%;">Personal Days</label>
+                        <input type="number" autocomplete="off"  class="form-control" [(ngModel)]="newDayOff.personal_days" />
+            
+                        <div class="card-footer">
+                            <button (click)="cancelDayOff()" class="btn cancel-button">
+                                <i class="material-icons">close</i>
+                                <span i18n="@@newEntity.cancel">Cancel</span>
+                            </button>
+            
+                            <button *ngIf="!newDayOff?._id || newDayOff?._id == ''" (click)="saveDayOff()"
+                                class="btn save-button">
+                                <i class="material-icons">add</i>
+                                <span i18n="@@newEntity.create">Create</span>
+                            </button>
+                            <button *ngIf="newDayOff?._id && newDayOff?._id != ''" (click)="saveDayOff()"
+                                class="btn save-button">
+                                <span i18n="@@newEntity.save">Save</span>
+                            </button>
+                        </div>
+                    </div>
+            
+                    <button *ngIf="!createNewDaysOff" (click)="showNewDaysOffForm()" class="btn btn-primary"
+                        i18n="@@newEntity.createNewDayOff">
+                        Create new Days Off
+                    </button>
+                </div>
+            </div>
         </mat-tab>
 
         <mat-tab [label]="membersLabel">

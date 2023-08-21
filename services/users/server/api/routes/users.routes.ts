@@ -169,6 +169,9 @@ routes.put('/:userId/payrollVariable', user.savePayrollVariable);
 // PUT - Change payroll variable
 routes.put('/:userId/payrollBenefit', user.savePayrollBenefit);
 
+// PUT - Change user payroll specific extra days off
+routes.put('/:userId/payrollExtraDaysOff', user.savePayrollExtraDaysOff);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

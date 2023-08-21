@@ -1623,7 +1623,29 @@ export class UsersControllers {
                 $set: { "hr.entity_custom_fields": user.hr.entity_custom_fields }
             }, {
                 new: true
-            });
+            })
+            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr profile_custom_fields hr')
+            .populate({
+                path: 'stats.favorite_groups',
+                select: '_id group_name group_avatar'
+            })
+            .populate({
+                path: 'stats.favorite_portfolios',
+                select: '_id portfolio_name portfolio_avatar'
+            })
+            .populate({
+                path: 'stats.favorite_collections',
+                select: '_id name collection_avatar'
+            })
+            .populate({
+                path: '_groups',
+                select: '_id group_name group_avatar'
+            })
+            .populate({
+                path: '_account',
+                select: '_id email _workspaces first_name last_name created_date'
+            })
+            .lean();
 
         // user.custom_fields[customFieldId] = customFieldValue;
 
@@ -1655,12 +1677,34 @@ export class UsersControllers {
 
         // Find the post and update the custom field
         user = await User.findByIdAndUpdate({
-            _id: userId
-        }, {
-            $set: { "hr.entity_variables": user.hr.entity_variables }
-        }, {
-            new: true
-        });
+                _id: userId
+            }, {
+                $set: { "hr.entity_variables": user.hr.entity_variables }
+            }, {
+                new: true
+            })
+            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr profile_custom_fields hr')
+            .populate({
+                path: 'stats.favorite_groups',
+                select: '_id group_name group_avatar'
+            })
+            .populate({
+                path: 'stats.favorite_portfolios',
+                select: '_id portfolio_name portfolio_avatar'
+            })
+            .populate({
+                path: 'stats.favorite_collections',
+                select: '_id name collection_avatar'
+            })
+            .populate({
+                path: '_groups',
+                select: '_id group_name group_avatar'
+            })
+            .populate({
+                path: '_account',
+                select: '_id email _workspaces first_name last_name created_date'
+            })
+            .lean();
 
         // Send status 200 response
         return res.status(200).json({
@@ -1690,17 +1734,85 @@ export class UsersControllers {
 
         // Find the post and update the custom field
         user = await User.findByIdAndUpdate({
-            _id: userId
-        }, {
-            $set: { "hr.entity_benefits": user.hr.entity_benefits }
-        }, {
-            new: true
-        });
+                _id: userId
+            }, {
+                $set: { "hr.entity_benefits": user.hr.entity_benefits }
+            }, {
+                new: true
+            })
+            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr profile_custom_fields hr')
+            .populate({
+                path: 'stats.favorite_groups',
+                select: '_id group_name group_avatar'
+            })
+            .populate({
+                path: 'stats.favorite_portfolios',
+                select: '_id portfolio_name portfolio_avatar'
+            })
+            .populate({
+                path: 'stats.favorite_collections',
+                select: '_id name collection_avatar'
+            })
+            .populate({
+                path: '_groups',
+                select: '_id group_name group_avatar'
+            })
+            .populate({
+                path: '_account',
+                select: '_id email _workspaces first_name last_name created_date'
+            })
+            .lean();
 
         // Send status 200 response
         return res.status(200).json({
             message: 'Payroll Benefits updated!',
             user: user
         });
+    }
+
+    async savePayrollExtraDaysOff(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { userId }, body: { propertyToSave } } = req;
+
+            if (!userId || !propertyToSave) {
+                return sendError(res, new Error('Please provide the userId property!'), 'Please provide the entityId property!', 500);
+            }
+
+            const user = await User.findByIdAndUpdate({
+                    _id: userId
+                }, {
+                    $set: propertyToSave
+                })
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr profile_custom_fields hr')
+                .populate({
+                    path: 'stats.favorite_groups',
+                    select: '_id group_name group_avatar'
+                })
+                .populate({
+                    path: 'stats.favorite_portfolios',
+                    select: '_id portfolio_name portfolio_avatar'
+                })
+                .populate({
+                    path: 'stats.favorite_collections',
+                    select: '_id name collection_avatar'
+                })
+                .populate({
+                    path: '_groups',
+                    select: '_id group_name group_avatar'
+                })
+                .populate({
+                    path: '_account',
+                    select: '_id email _workspaces first_name last_name created_date'
+                })
+                .lean();
+    
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'Member edited.',
+                user: user
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
     }
 }

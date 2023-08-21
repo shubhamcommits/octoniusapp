@@ -75,6 +75,18 @@ export class HRService {
     return this._http.post(this.baseUrl + `/${entityId}/delete-benefit`, { benefitId }).toPromise();
   }
 
+  createNewDaysOff(entityId: string, daysOff: any) {
+    return this._http.post(this.baseUrl + `/${entityId}/days-off`, { daysOff }).toPromise();
+  }
+
+  editEntityDaysOff(entityId: string, daysOff: any) {
+    return this._http.post(this.baseUrl + `/${entityId}/edit-days-off`, { daysOff }).toPromise();
+  }
+
+  deleteEntityDaysOff(entityId: string, daysOffId: string) {
+    return this._http.post(this.baseUrl + `/${entityId}/delete-days-off`, { daysOffId }).toPromise();
+  }
+
   getEntityMembers(entityId: string) {
     return this._http.get(this.baseUrl + `/${entityId}/entityMembers`).toPromise();
   }

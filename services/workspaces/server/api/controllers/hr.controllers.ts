@@ -466,6 +466,113 @@ export class HRControllers {
         }
     }
 
+    async createEntityDaysOff(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { entityId }, body: { daysOff } } = req;
+
+            if (!entityId || !daysOff) {
+                return sendError(res, new Error('Please provide the entityId property!'), 'Please provide the entityId property!', 500);
+            }
+
+            let entity = await Entity.findById({
+                    _id: entityId
+                }).select('payroll_days_off').lean();
+            const index = (entity.payroll_days_off) ? entity.payroll_days_off.findIndex(dayOff => dayOff.year == daysOff.year) : -1;
+
+            if (index >= 0) {
+                return sendError(res, new Error('The year added already exists!'), 'The year added already exists!', 500);
+            }
+            
+            const newDaysOff = {
+                year: daysOff.year,
+                holidays: daysOff.holidays,
+                sick: daysOff.sick,
+                personal_days: daysOff.personal_days
+            }
+
+            entity = await Entity.findByIdAndUpdate({
+                    _id: entityId
+                }, {
+                    $addToSet: {
+                        payroll_days_off: newDaysOff
+                    }
+                }, {
+                    new: true
+                })
+                .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+                .lean();
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'Days Off created.',
+                entity: entity
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async editEntityDaysOff(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { entityId }, body: { daysOff } } = req;
+
+            if (!entityId || !daysOff) {
+                return sendError(res, new Error('Please provide the entityId property!'), 'Please provide the entityId property!', 500);
+            }
+
+            const entity = await Entity.findByIdAndUpdate({
+                    _id: entityId
+                }, {
+                    $set: {
+                        'payroll_days_off.$[daysOff]': daysOff
+                    }
+                },
+                {
+                    arrayFilters: [{ "daysOff._id": daysOff?._id }],
+                    new: true
+                })
+                .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+                .lean();
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'Benefit edited.',
+                entity: entity
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async deleteEntityDaysOff(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { entityId }, body: { daysOffId } } = req;
+
+            if (!entityId || !daysOffId) {
+                return sendError(res, new Error('Please provide the entityId property!'), 'Please provide the entityId property!', 500);
+            }
+
+            const entity = await Entity.findByIdAndUpdate({
+                    _id: entityId
+                }, {
+                    $pull: { payroll_days_off: { _id: daysOffId }}
+                },
+                {
+                    new: true
+                })
+                .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+                .lean();
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'Days Off delted.',
+                entity: entity
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
     async getEntityMembers(req: Request, res: Response, next: NextFunction) {
         try {
 

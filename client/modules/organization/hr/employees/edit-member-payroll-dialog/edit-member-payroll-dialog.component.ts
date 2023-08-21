@@ -48,6 +48,18 @@ export class EditMemberPayrollDialogComponent implements OnInit {
     this.memberData = await this.publicFunctions.getOtherUser(this.memberId);
     if (this.memberData) {
       this.initPayrollProperties();
+
+      if (!this.memberData.hr) {
+        this.memberData.hr = {};
+      }
+
+      if (!this.memberData.hr.entity_extra_days_off) {
+        this.memberData.hr.entity_extra_days_off = {
+          holidays: 0,
+          sick: 0,
+          personal_days: 0
+        };
+      }
     }
   }
 
@@ -246,6 +258,27 @@ export class EditMemberPayrollDialogComponent implements OnInit {
   }
   /**
    * BENEFITS ENDS
+   */
+
+  /**
+   * HOLIDAYS STARTS
+   */
+  onDaysOffChange(propertyToSave: any) {
+    this.utilityService.asyncNotification($localize`:@@editMemberPayrollDialog.pleaseWaitWeUpdateContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+
+      this.userService.savePayrollExtraDaysOff(this.memberData._id, propertyToSave)
+        .then(async (res) => {
+
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@editMemberPayrollDialog.daysOffUpdated:Days Off updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@editMemberPayrollDialog.unableToUpdateDaysOff:Unable to update Days Off, please try again!`));
+        });
+    }));
+  }
+  /**
+   * HOLIDAYS ENDS
    */
 
   closeDialog() {

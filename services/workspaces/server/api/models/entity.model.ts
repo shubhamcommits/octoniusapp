@@ -91,6 +91,24 @@ const EntitySchema = new Schema({
             default: []
         }
     }],
+    payroll_days_off: [{
+        year: {
+            type: Number,
+            required: true
+        },
+        holidays: {
+            type: Number,
+            required: false
+        },
+        sick: {
+            type: Number,
+            required: false
+        },
+        personal_days: {
+            type: Number,
+            required: false
+        }
+    }],
     _workspace: {
         type: Schema.Types.ObjectId,
         required:true,

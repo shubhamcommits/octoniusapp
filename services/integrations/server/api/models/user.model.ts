@@ -129,6 +129,20 @@ const UserSchema = new Schema({
             type: Map,
             of: String
         },
+        entity_extra_days_off: {
+            holidays: {
+                type: Number,
+                required: false
+            },
+            sick: {
+                type: Number,
+                required: false
+            },
+            personal_days: {
+                type: Number,
+                required: false
+            }
+        },
         address_line_1: {
             type: String,
             default: null

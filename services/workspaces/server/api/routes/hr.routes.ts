@@ -64,6 +64,15 @@ routes.post('/:entityId/edit-benefit', controller.editEntityBenefit);
 // POST - Deletes an entity benefit
 routes.post('/:entityId/delete-benefit', controller.deleteEntityBenefit);
 
+// POST - Creates a new entity benefit
+routes.post('/:entityId/days-off', controller.createEntityDaysOff);
+
+// POST - Edits an entity benefit
+routes.post('/:entityId/edit-days-off', controller.editEntityDaysOff);
+
+// POST - Deletes an entity benefit
+routes.post('/:entityId/delete-days-off', controller.deleteEntityDaysOff);
+
 // GET - Returns all the members in an entity
 routes.get('/:entityId/entityMembers', controller.getEntityMembers);
 

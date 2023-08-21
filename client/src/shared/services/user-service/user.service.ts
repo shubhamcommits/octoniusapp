@@ -474,4 +474,11 @@ export class UserService {
       benefitValue: benefitValue
     }).toPromise();
   }
+
+  savePayrollExtraDaysOff(userId: string, propertyToSave: any) {
+    // Call the HTTP Request
+    return this._http.put(this.BASE_API_URL + `/${userId}/payrollExtraDaysOff`, {
+      propertyToSave
+    }).toPromise();
+  }
 }
