@@ -213,7 +213,7 @@ export class EditMemberPayrollDialogComponent implements OnInit {
   }
 
   onCheckedEntityBenefitChange(benefitValues: any, benefitSelectedValue: string, benefitId: string) {
-    const index = benefitValues.findIndex(b => b == benefitSelectedValue);
+    const index = (benefitValues) ? benefitValues.findIndex(b => b == benefitSelectedValue) : -1;
     if (index < 0) {
       benefitValues.push(benefitSelectedValue);
     }
@@ -222,7 +222,7 @@ export class EditMemberPayrollDialogComponent implements OnInit {
   }
 
   isSelected(benefitValues, benefitSelected) {
-    return benefitValues.findIndex(b => b == benefitSelected) >= 0;
+    return (benefitValues) ? benefitValues.findIndex(b => b == benefitSelected) >= 0 : -1;
   }
 
   onInputEntityBenefitChange(event: Event, benefitId: string) {
