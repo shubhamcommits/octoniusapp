@@ -1,15 +1,17 @@
-import { Account, Group, User, Workspace } from '../models';
+import { Account, Group, Holiday, User, Workspace } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError,PasswordHelper, axios } from '../../utils';
+import { DateTime } from 'luxon';
 import moment from 'moment';
 import http from 'axios';
+import { HolidayService } from '../services';
 
 /*  ===================
  *  -- USER METHODS --
  *  ===================
  * */
-// Password Helper Class
 const passwordHelper = new PasswordHelper();
+const holidayService = new HolidayService()
 
 export class UsersControllers {
 
@@ -1367,21 +1369,50 @@ export class UsersControllers {
     }
 
     async getOutOfOfficeDays(req: Request, res: Response, next: NextFunction) {
-
-        const userId = req['userId'];
         try {
+            const { from, to } = req.query;
+            const { userId } = req.params;
+            
+            const holidaysInMonth = await Holiday.find({
+                    $and: [
+                        { _user: userId },
+                        {
+                            $or: [
+                                { start_date: { $gte: from }},
+                                { end_date: { $lte: to} }
+                            ]
+                        }
+                    ]
+                })
+                .populate({
+                    path: 'approval_flow._manager',
+                    select: '_id email first_name last_name profile_pic'
+                })
+                .lean() || [];
 
-        let user: any = await User.findOne({
-            _id: userId
-            })
-            .select('_id out_of_office integrations');
 
-        // Send status 200 response
-        return res.status(200).json({
-            message: `User out of the office days`,
-            user: user
-        });
+            const firstDayOfYear = new DateTime(from).startOf('year').toISO();
+            const lastDayOfYear = new DateTime(from).endOf('year').toISO();
 
+            const holidaysInYear = await Holiday.find({
+                    $and: [
+                        { _user: userId },
+                        { end_date: { $gte: firstDayOfYear }},
+                        { start_date: { $lte: lastDayOfYear} }
+                    ]
+                })
+                .populate({
+                    path: 'approval_flow._manager',
+                    select: '_id email first_name last_name profile_pic'
+                })
+                .lean() || [];
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `User out of the office days`,
+                holidaysInMonth: holidaysInMonth,
+                holidaysInYear: holidaysInYear
+            });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
@@ -1396,7 +1427,7 @@ export class UsersControllers {
 
 
             let user: any = await User.findOne({
-            _id: userId
+                _id: userId
             });
 
             if (action == 'add') {
@@ -1415,7 +1446,6 @@ export class UsersControllers {
                     }
                 });
             }
-            
 
             user.save();
             
@@ -1811,6 +1841,78 @@ export class UsersControllers {
                 message: 'Member edited.',
                 user: user
             });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async createHoliday(req: Request, res: Response, next: NextFunction) {
+
+        const { holiday } = req.body;
+        const { userId } = req.params;
+
+        try {
+            delete holiday._id;
+            holiday._user = userId;
+            holiday.num_days = await holidayService.calculateNumDays(userId, holiday.start_date, holiday.end_date);
+
+            const newHoliday = await Holiday.create(holiday);
+            
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Holiday has been created`,
+                holiday: newHoliday
+            });
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async editHoliday(req: Request, res: Response, next: NextFunction) {
+
+        const { holiday } = req.body;
+        const { userId } = req.params;
+
+        try {
+            holiday.num_days = await holidayService.calculateNumDays(userId, holiday.start_date, holiday.end_date);
+
+            const holidayEdited = await Holiday.findByIdAndUpdate({
+                    _id: holiday._id
+                }, {
+                    $set: { holiday }
+                })
+                .populate({
+                    path: 'approval_flow._manager',
+                    select: '_id email first_name last_name profile_pic'
+                })
+                .lean();
+            
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Holiday has been edited`,
+                holiday: holidayEdited
+            });
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async getNumHolidays(req: Request, res: Response, next: NextFunction) {
+
+        const { from, to } = req.query;
+        const { userId } = req.params;
+
+        try {
+            const num_days = await holidayService.calculateNumDays(userId, from, to);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Number of holidays have been calculated`,
+                numDays: num_days
+            });
+
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }

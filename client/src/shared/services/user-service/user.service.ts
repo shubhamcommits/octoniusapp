@@ -470,8 +470,13 @@ export class UserService {
     }).toPromise();
   }
 
-  getOutOfTheOfficeDays(userId: string) {
-    return this._http.get(this.BASE_API_URL + `/${userId}/out-of-office-days`)
+  getOutOfTheOfficeDays(userId: string, from: any, to: any) {
+    return this._http.get(this.BASE_API_URL + `/${userId}/out-of-office-days`, {
+      params: {
+        from: from,
+        to: to
+      }
+    })
       .toPromise();
   }
 
@@ -480,5 +485,27 @@ export class UserService {
       days: days,
       action: action
     }).toPromise();
+  }
+
+  createHoliday(userId: string, holiday: any) {
+    return this._http.post(this.BASE_API_URL + `/${userId}/holiday`, { holiday }).toPromise();
+  }
+
+  editHoliday(userId: string, holiday: any) {
+    return this._http.post(this.BASE_API_URL + `/${userId}/edit-holiday`, { holiday }).toPromise();
+  }
+
+  deleteHoliday(holidayId: string) {
+    return this._http.delete(this.BASE_API_URL + `/${holidayId}/delete-holiday`).toPromise();
+  }
+
+  getNumHolidays(userId: string, from: any, to: any) {
+    return this._http.get(this.BASE_API_URL + `/${userId}/calculate-num-holidays`, {
+      params: {
+        from: from,
+        to: to
+      }
+    })
+      .toPromise();
   }
 }

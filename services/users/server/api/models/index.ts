@@ -3,6 +3,7 @@ import { Auth } from './auth.model';
 import { Collection } from "./collection.model";
 import { Column } from './column.model';
 import { Group } from './group.model';
+import { Holiday } from "./holidays.model";
 import { Page } from "./page.model";
 import { Portfolio } from "./portfolio.model";
 import { Post } from './post.model';
@@ -14,29 +15,15 @@ import { Workspace } from './workspace.model';
  *  =====================
  * */
 export {
-
-    // Account
     Account as Account,
-
-    // AUTH
     Auth as Auth,
-
-    // GROUP
     Group as Group,
-
-    // POST
     Post as Post,
-
-    // USER
     User as User,
-
-    // COLUMN
     Column as Column,
-
-    // Workspace
     Workspace as Workspace,
-
     Portfolio as Portfolio,
     Collection as Collection,
-    Page as Page
+    Page as Page,
+    Holiday as Holiday
 };

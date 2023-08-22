@@ -172,6 +172,15 @@ routes.put('/:userId/out-of-office-days', user.saveOutOfOfficeDays);
 // GET - Get the out of the office days 
 routes.get('/:userId/out-of-office-days', user.getOutOfOfficeDays);
 
+// POST - Create a Holiday period
+routes.post('/:userId/holiday', user.createHoliday);
+
+// POST - Create a Holiday period
+routes.post('/:userId/holiday', user.editHoliday);
+
+// GET - Get the number of days computed in a period
+routes.get('/:userId/calculate-num-holidays', user.getNumHolidays);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================
