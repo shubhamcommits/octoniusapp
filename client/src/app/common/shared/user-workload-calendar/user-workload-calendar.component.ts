@@ -220,7 +220,7 @@ export class UserWorkloadCalendarComponent implements OnInit {
   async initNewHoliday() {
 
     let manager;
-    const index = (!!this.workspaceData?.profile_custom_fields) ? this.workspaceData?.profile_custom_fields.findIndex(cf => cf.name == 'manager') : -1;
+    const index = (!!this.workspaceData?.profile_custom_fields) ? this.workspaceData?.profile_custom_fields.findIndex(cf => (cf.name == 'manager' && cf.user_type)) : -1;
     const managerId = this.userData?.profile_custom_fields['manager'];
     this.userHasManager = (index >= 0) && !!managerId;
 
