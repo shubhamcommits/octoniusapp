@@ -9,6 +9,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 // import { UserAvailabilityDayDialogComponent } from './user-availability-day-dialog/user-availability-day-dialog.component';
 // import moment from 'moment/moment';
 import { DateTime } from 'luxon';
+import { HRService } from 'src/shared/services/hr-service/hr.service';
 
 @Component({
   selector: 'app-user-workload-calendar',
@@ -24,6 +25,7 @@ export class UserWorkloadCalendarComponent implements OnInit {
   userData;
   isCurrentUser = false;
   workspaceData;
+  entityData;
 
   view: CalendarView = CalendarView.Month;
   weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
@@ -49,23 +51,32 @@ export class UserWorkloadCalendarComponent implements OnInit {
   daysToCancel: any = [];
 
   createNewHoliday = false;
-  outOfOfficeReason = ['Holidays', 'Sick', 'Personal day'];
+  outOfOfficeReason = ['Holidays', 'Sick', 'Personal'];
   newHoliday = {
     _id: '',
     start_date: DateTime.now(),
     end_date: DateTime.now(),
-    type: '',
+    type: 'holidays',
     num_days: 0,
     approval_flow: {
       _manager: ''
     }
-  }
+  };
+  errorCode = '';
+
+  totalUsedHolidays = 0;
+  pendingUsedHolidays = 0;
+  totalUsedSickDays = 0;
+  pendingUsedSickDays = 0;
+  totalUsedPersonalDays = 0;
+  pendingUsedPersonalDays = 0;
 
   // Public functions
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
     private userService: UserService,
+    private hrService: HRService,
     private utilityService: UtilityService,
     private injector: Injector,
     public dialog: MatDialog
@@ -75,6 +86,9 @@ export class UserWorkloadCalendarComponent implements OnInit {
     this.userData = await this.publicFunctions.getCurrentUser();
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     this.isCurrentUser = (this.userData._id == this.userId);
+    this.hrService.getEntityDetails((this.userData?.hr?._entity?._id || this.userData?.hr?._entity)).then(res => {
+      this.entityData = res['entity'];
+    });
 
     const today = DateTime.now();
     const firstDay = today.startOf('month');
@@ -130,15 +144,12 @@ export class UserWorkloadCalendarComponent implements OnInit {
 
   async beforeMonthViewRender({ body }: { body: CalendarMonthViewDay[] }): Promise<void> {
     await this.getOutOfOfficeDays(body[0].date, body[body.length - 1].date);
-// console.log(this.bookedDays);
     body.forEach((day) => {
       const index = this.bookedDays.findIndex((bookedDay) => DateTime.fromJSDate(bookedDay.date).equals(DateTime.fromJSDate(day.date)));
       if (index >= 0) {
         const bookedDay = this.bookedDays[index];
-// console.log(bookedDay);
         day.cssClass = this.getDayStyleClass(bookedDay.type);
         day.cssClass += (day.cssClass != '' && bookedDay.approved) ? '-approved' : '';
-// console.log(day);
       }
     });
   }
@@ -157,20 +168,51 @@ export class UserWorkloadCalendarComponent implements OnInit {
       this.holidaysInYear = res['holidaysInYear'];
     });
 
-    this.bookedDays = [];
-    for (let i = 0; i < this.holidaysInMonth.length; i++) {
-      const holiday = this.holidaysInMonth[i];
-      var date = DateTime.fromISO(holiday.start_date).startOf('day');
-      while (date < DateTime.fromISO(holiday.end_date)) {
-        const index = this.bookedDays.findIndex((bookedDay) => DateTime.fromJSDate(bookedDay.date).equals(date))
-        if (index < 0) {
-          this.bookedDays.push({
-            date: date.toJSDate(),
-            type: holiday.type || 'holidays',
-            approved: holiday?.approval_flow?.confirmed || false
-          });
+    if (!!this.holidaysInMonth) {
+      this.bookedDays = [];
+      for (let i = 0; i < this.holidaysInMonth.length; i++) {
+        const holiday = this.holidaysInMonth[i];
+        var date = DateTime.fromISO(holiday.start_date).startOf('day');
+        while (date < DateTime.fromISO(holiday.end_date)) {
+          const index = this.bookedDays.findIndex((bookedDay) => DateTime.fromJSDate(bookedDay.date).equals(date))
+          if (index < 0) {
+            this.bookedDays.push({
+              date: date.toJSDate(),
+              type: holiday.type || 'holidays',
+              approved: holiday?.approval_flow?.confirmed || false
+            });
+          }
+          date = date.plus({ days: 1 });
         }
-        date = date.plus({ days: 1 });
+      }
+    }
+
+    if (!!this.holidaysInYear) {
+      const doIndex = (!!this.entityData && !!this.entityData.payroll_days_off) ? this.entityData.payroll_days_off.findIndex((dayOff: any) => dayOff.year === DateTime.now().year) : -1;
+      let dayOff;
+      if (doIndex >= 0) {
+          dayOff = this.entityData.payroll_days_off[doIndex];
+      }
+
+      if (!dayOff) {
+        dayOff = {
+          holiday: 0,
+          sick: 0,
+          personal_days: 0
+        }
+      }
+      for (let i = 0; i < this.holidaysInYear.length; i++) {
+        const holiday = this.holidaysInMonth[i];
+        if (holiday.type == 'holidays') {
+          this.totalUsedHolidays = holiday.num_days;
+          this.pendingUsedHolidays = (dayOff.holidays + this.userData.hr.entity_extra_days_off.holidays) - this.totalUsedHolidays
+        } else if (holiday.type == 'sick') {
+          this.totalUsedSickDays = holiday.num_days;
+          this.pendingUsedSickDays = (dayOff.sick + this.userData.hr.entity_extra_days_off.sick) - this.totalUsedSickDays
+        } else if (holiday.type == 'personal') {
+          this.totalUsedPersonalDays = holiday.num_days;
+          this.pendingUsedPersonalDays = (dayOff.personal_days + this.userData.hr.entity_extra_days_off.personal_days) - this.totalUsedPersonalDays
+        } 
       }
     }
   }
@@ -247,7 +289,7 @@ export class UserWorkloadCalendarComponent implements OnInit {
       _id: '',
       start_date: DateTime.now(),
       end_date: DateTime.now(),
-      type: '',
+      type: 'holidays',
       num_days: 0,
       approval_flow: {
         _manager: ''
@@ -259,7 +301,9 @@ export class UserWorkloadCalendarComponent implements OnInit {
 
   editHolidays(holiday: any) {
     this.newHoliday._id = holiday._id;
+    // this.newHoliday.start_date = DateTime.fromISO(holiday.start_date);
     this.newHoliday.start_date = holiday.start_date;
+    // this.newHoliday.end_date = DateTime.fromISO(holiday.end_date);
     this.newHoliday.end_date = holiday.end_date;
     this.newHoliday.type = holiday.type;
     this.newHoliday.num_days = holiday.num_days;
@@ -272,31 +316,34 @@ export class UserWorkloadCalendarComponent implements OnInit {
     this.utilityService.asyncNotification($localize`:@@userWorkloadCalendar.plesaeWaitWeAreUpdaing:Please wait we are updating the entity...`, new Promise((resolve, reject) => {
       if (this.newHoliday?._id && this.newHoliday?._id != '') {
         this.userService.editHoliday(this.userData?._id, this.newHoliday).then(res => {
-          const index = (this.holidaysInYear) ? this.holidaysInYear.findIndex(hol => hol._id == this.newHoliday._id) : -1;
-          if (index >= 0) {
-            this.holidaysInYear[index] = this.newHoliday;
-          }
+          // const index = (this.holidaysInYear) ? this.holidaysInYear.findIndex(hol => hol._id == this.newHoliday._id) : -1;
+          // if (index >= 0) {
+          //   this.holidaysInYear[index] = this.newHoliday;
+          // }
 
-          this.cancelHoliday();
+          // this.cancelHoliday();
 
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@userWorkloadCalendar.holidayUpdated:Holiday updated!`));
+          window.location.reload();
         })
-        .catch(() => {
+        .catch((error) => {
           this.cancelHoliday();
-
+          this.errorCode = error.error.message;
           reject(this.utilityService.rejectAsyncPromise($localize`:@@userWorkloadCalendar.unableToUpdateHoliday:Unable to update the holiday, please try again!`));
         });
       } else {
         this.userService.createHoliday(this.userData?._id, this.newHoliday).then(res => {
-          this.holidaysInYear.push(res['holiday']);
-          this.cancelHoliday();
+          // this.holidaysInYear.push(res['holiday']);
+          // this.cancelHoliday();
 
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@userWorkloadCalendar.holidayCreated:Holiday created!`));
+          window.location.reload();
         })
         .catch((error) => {
           this.cancelHoliday();
+          this.errorCode = error.error.message;
           reject(this.utilityService.rejectAsyncPromise(error.error.message));
         });
       }
@@ -309,12 +356,13 @@ export class UserWorkloadCalendarComponent implements OnInit {
         if (res.value) {
           this.utilityService.asyncNotification($localize`:@@userWorkloadCalendar.pleaseWaitDeleting:Please wait we are deleting the holiday...`, new Promise((resolve, reject) => {
             this.userService.deleteHoliday(holidayId).then(res => {
-              const index = (this.holidaysInYear) ? this.holidaysInYear.findIndex(hol => hol._id == this.newHoliday._id) : -1;
-              if (index >= 0) {
-                this.holidaysInYear.splice(index, 1);
-              }
+              // const index = (this.holidaysInYear) ? this.holidaysInYear.findIndex(hol => hol._id == holidayId) : -1;
+              // if (index >= 0) {
+              //   this.holidaysInYear.splice(index, 1);
+              // }
 
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@userWorkloadCalendar.deleted:Holiday deleted!`));
+              window.location.reload();
             }).catch((err) => {
               reject(this.utilityService.rejectAsyncPromise($localize`:@@userWorkloadCalendar.unableDeleteHoliday:Unable to delete the holiday, please try again!`));
             });
@@ -323,10 +371,20 @@ export class UserWorkloadCalendarComponent implements OnInit {
       });
   }
 
-  calculateNumHolidays() {
-    this.userService.getNumHolidays(this.userData?._id, this.newHoliday.start_date, this.newHoliday.end_date).then(res => {
-      this.newHoliday.num_days = res['numDays'];
-    });
+  calculateNumHolidays(property: string, date) {
+    if (property === 'start_date') {
+      this.newHoliday.start_date = DateTime.fromJSDate(date.toDate());
+    }
+    if (property === 'end_date') {
+      this.newHoliday.end_date = DateTime.fromJSDate(date.toDate());
+    }
+
+    if (this.newHoliday.end_date >= this.newHoliday.start_date) {
+      this.userService.getNumHolidays(this.userData?._id, this.newHoliday.start_date, this.newHoliday.end_date, this.newHoliday.type).then(res => {
+        this.newHoliday.num_days = res['numDays'];
+        this.errorCode = res['code'];
+      });
+    }
   }
 
   selectManager(user: any) {
@@ -338,6 +396,7 @@ export class UserWorkloadCalendarComponent implements OnInit {
       && !!this.newHoliday.type
       && !!this.newHoliday.start_date
       && !!this.newHoliday.end_date
+      && !this.errorCode
   }
 
   // clearDates() {
@@ -347,6 +406,9 @@ export class UserWorkloadCalendarComponent implements OnInit {
   // }
 
   formateDate(date: any) {
-    return (date) ? DateTime.fromISO(date).toLocaleString(DateTime.DATE_SHORT) : '';
+    if (!!date && (date instanceof DateTime)) {
+      return date.toLocaleString(DateTime.DATE_SHORT);
+    }
+    return (!!date) ? DateTime.fromISO(date).toLocaleString(DateTime.DATE_SHORT) : '';
   }
 }

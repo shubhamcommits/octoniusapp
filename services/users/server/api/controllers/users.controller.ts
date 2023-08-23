@@ -1854,7 +1854,13 @@ export class UsersControllers {
         try {
             delete holiday._id;
             holiday._user = userId;
-            holiday.num_days = await holidayService.calculateNumDays(userId, holiday.start_date, holiday.end_date);
+            const calculatedDays = await holidayService.calculateNumDays(userId, holiday.start_date, holiday.end_date, holiday.type);
+
+            if (calculatedDays.totalDays == -1) {
+                return sendError(res, new Error(calculatedDays.code), calculatedDays.code, 500);
+            }
+
+            holiday.num_days = calculatedDays.totalDays;
 
             const newHoliday = await Holiday.create(holiday);
             
@@ -1875,7 +1881,13 @@ export class UsersControllers {
         const { userId } = req.params;
 
         try {
-            holiday.num_days = await holidayService.calculateNumDays(userId, holiday.start_date, holiday.end_date);
+            const calculatedDays = await holidayService.calculateNumDays(userId, holiday.start_date, holiday.end_date, holiday.type);
+            
+            if (calculatedDays.totalDays == -1) {
+                return sendError(res, new Error(calculatedDays.code), calculatedDays.code, 500);
+            }
+
+            holiday.num_days = calculatedDays.totalDays;
 
             const holidayEdited = await Holiday.findByIdAndUpdate({
                     _id: holiday._id
@@ -1899,18 +1911,38 @@ export class UsersControllers {
         }
     }
 
+    async deleteHoliday(req: Request, res: Response, next: NextFunction) {
+
+        const { holidayId } = req.params;
+
+        try {
+            await Holiday.findByIdAndDelete({
+                    _id: holidayId
+                });
+            
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Holiday has been deleted`,
+            });
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
     async getNumHolidays(req: Request, res: Response, next: NextFunction) {
 
-        const { from, to } = req.query;
+        const { from, to, type } = req.query;
         const { userId } = req.params;
 
         try {
-            const num_days = await holidayService.calculateNumDays(userId, from, to);
+            const num_days = await holidayService.calculateNumDays(userId, from, to, type.toString());
 
             // Send status 200 response
             return res.status(200).json({
                 message: `Number of holidays have been calculated`,
-                numDays: num_days
+                numDays: num_days.totalDays,
+                code: num_days.code
             });
 
         } catch (err) {

@@ -2,6 +2,7 @@ import { Account } from "./account.model";
 import { Auth } from './auth.model';
 import { Collection } from "./collection.model";
 import { Column } from './column.model';
+import { Entity } from "./entity.model";
 import { Group } from './group.model';
 import { Holiday } from "./holidays.model";
 import { Page } from "./page.model";
@@ -17,6 +18,7 @@ import { Workspace } from './workspace.model';
 export {
     Account as Account,
     Auth as Auth,
+    Entity as Entity,
     Group as Group,
     Post as Post,
     User as User,

@@ -176,7 +176,10 @@ routes.get('/:userId/out-of-office-days', user.getOutOfOfficeDays);
 routes.post('/:userId/holiday', user.createHoliday);
 
 // POST - Create a Holiday period
-routes.post('/:userId/holiday', user.editHoliday);
+routes.post('/:userId/edit-holiday', user.editHoliday);
+
+// POST - Create a Holiday period
+routes.delete('/:holidayId/delete-holiday', user.deleteHoliday);
 
 // GET - Get the number of days computed in a period
 routes.get('/:userId/calculate-num-holidays', user.getNumHolidays);

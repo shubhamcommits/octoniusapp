@@ -499,11 +499,12 @@ export class UserService {
     return this._http.delete(this.BASE_API_URL + `/${holidayId}/delete-holiday`).toPromise();
   }
 
-  getNumHolidays(userId: string, from: any, to: any) {
+  getNumHolidays(userId: string, from: any, to: any, type: string) {
     return this._http.get(this.BASE_API_URL + `/${userId}/calculate-num-holidays`, {
       params: {
         from: from,
-        to: to
+        to: to,
+        type: type
       }
     })
       .toPromise();

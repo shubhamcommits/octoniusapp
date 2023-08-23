@@ -99,32 +99,66 @@
         </tr>
       </table>
 
+      <hr />
+      <div class="row">
+        <div class="col">
+          <span>Used Holiday days: </span> {{ totalUsedHolidays }}
+        </div>
+        <div class="col">
+          <span>Pending Holiday days: </span> {{ pendingUsedHolidays }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <span>Used Sick days: </span> {{ totalUsedSickDays }}
+        </div>
+        <div class="col">
+          <span>Pending Sick days: </span> {{ pendingUsedSickDays }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <span>Used Personal days: </span> {{ totalUsedPersonalDays }}
+        </div>
+        <div class="col">
+          <span>Pending Personal days: </span> {{ pendingUsedPersonalDays }}
+        </div>
+      </div>
+
       <div *ngIf="createNewHoliday">
         <hr />
+
         <div class="row">
           <div class="col">
             <div class="col-description">
               <h4 i18n="@@userWorkloadCalendar.daysOff">
                 <span *ngIf="!!newHoliday?._id">Edit</span>
                 <span *ngIf="!newHoliday?._id">New</span>
-                
+
                 Holiday
               </h4>
             </div>
           </div>
         </div>
-        <label i18n="@@userWorkloadCalendar.starts">Starts</label>: 
-        <!-- <input type="date" autocomplete="off" class="form-control" [(ngModel)]="newHoliday.start_date" (ngModelChange)="calculateNumHolidays()"> -->
-        {{ formateDate(newHoliday.start_date) }}
-        <app-date-picker [selectedDate]="newHoliday.start_date" (date)="calculateNumHolidays()" [styleClass]="'btn-group input-date'">
-        </app-date-picker>
-        
-        <label i18n="@@userWorkloadCalendar.ends">Ends</label>:
-        <!-- <input type="date" autocomplete="off" class="form-control" [(ngModel)]="newHoliday.end_date" (ngModelChange)="calculateNumHolidays()" /> -->
-        {{ formateDate(newHoliday.end_date) }}
-        <app-date-picker [selectedDate]="newHoliday.end_date" (date)="calculateNumHolidays()" [styleClass]="'btn-group input-date'">
-        </app-date-picker>
-        
+
+        <div class="row">
+          <div class="col">
+            <label i18n="@@userWorkloadCalendar.starts">Starts</label>: 
+            <!-- <input type="date" autocomplete="off" class="form-control" [(ngModel)]="newHoliday.start_date" (ngModelChange)="calculateNumHolidays('start_date', $event)"> -->
+            {{ formateDate(newHoliday.start_date) }}
+            <app-date-picker [selectedDate]="newHoliday.start_date" [showInput]="false" (date)="calculateNumHolidays('start_date', $event)" [styleClass]="'btn-group input-date'">
+            </app-date-picker>
+          </div>
+
+          <div class="col">
+            <label i18n="@@userWorkloadCalendar.ends">Ends</label>:
+            <!-- <input type="date" autocomplete="off" class="form-control" [(ngModel)]="newHoliday.end_date" (ngModelChange)="calculateNumHolidays('end_date', $event)" /> -->
+            {{ formateDate(newHoliday.end_date) }}
+            <app-date-picker [selectedDate]="newHoliday.end_date" [showInput]="false" (date)="calculateNumHolidays('end_date', $event)" [styleClass]="'btn-group input-date'">
+            </app-date-picker>
+          </div>
+        </div>
+
         <label i18n="@@userWorkloadCalendar.type" style="float: left; width: 100%;">Type</label>
         <mat-select ngDefaultControl
           [(ngModel)]="newHoliday.type"
@@ -141,6 +175,12 @@
         <app-select-assignee type="workspaceMembers" [userData]="newHoliday.approval_flow._manager"
           [workspaceData]="workspaceData" [showBar]="isCurrentUser" [styleClass]="'feed-avatar-small'"
           (member)="selectManager($event)"></app-select-assignee>
+
+        <div class="card-footer">
+          <p *ngIf="!!errorCode">
+            ❌ {{ errorCode }}
+          </p>
+        </div>
 
         <div class="card-footer">
           <button (click)="cancelHoliday()" class="btn cancel-button">
