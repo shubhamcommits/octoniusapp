@@ -1,22 +1,22 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation, Input, Injector } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { CalendarEvent, CalendarMonthViewDay, CalendarView, DAYS_OF_WEEK } from 'angular-calendar';
-import { WeekViewHourColumn } from 'calendar-utils';
 import { PublicFunctions } from 'modules/public.functions';
-import { Subject } from 'rxjs';
 import { UserService } from 'src/shared/services/user-service/user.service';
+import { HRService } from 'src/shared/services/hr-service/hr.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { DateTime } from 'luxon';
+// import { CalendarEvent, CalendarMonthViewDay, CalendarView, DAYS_OF_WEEK } from 'angular-calendar';
+// import { WeekViewHourColumn } from 'calendar-utils';
+// import { Subject } from 'rxjs';
 // import { UserAvailabilityDayDialogComponent } from './user-availability-day-dialog/user-availability-day-dialog.component';
 // import moment from 'moment/moment';
-import { DateTime } from 'luxon';
-import { HRService } from 'src/shared/services/hr-service/hr.service';
 
 @Component({
   selector: 'app-user-workload-calendar',
   templateUrl: './user-workload-calendar.component.html',
   styleUrls: ['./user-workload-calendar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
+  // changeDetection: ChangeDetectionStrategy.OnPush,
+  // encapsulation: ViewEncapsulation.None
 })
 export class UserWorkloadCalendarComponent implements OnInit {
 
@@ -27,20 +27,14 @@ export class UserWorkloadCalendarComponent implements OnInit {
   workspaceData;
   entityData;
 
-  view: CalendarView = CalendarView.Month;
-  weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
-
-  viewDate: Date = DateTime.now().toJSDate();
-
-  selectedMonthViewDay: CalendarMonthViewDay;
-
-  selectedDayViewDate: Date;
-
-  hourColumns: WeekViewHourColumn[];
-
-  events: CalendarEvent[] = [];
-
-  refresh: Subject<any> = new Subject();
+  // view: CalendarView = CalendarView.Month;
+  // weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
+  // viewDate: Date = DateTime.now().toJSDate();
+  // selectedMonthViewDay: CalendarMonthViewDay;
+  // selectedDayViewDate: Date;
+  // hourColumns: WeekViewHourColumn[];
+  // events: CalendarEvent[] = [];
+  // refresh: Subject<any> = new Subject();
 
   selectedDays: any = [];
   startDate;
@@ -95,7 +89,7 @@ export class UserWorkloadCalendarComponent implements OnInit {
     const lastDay = today.endOf('month');
     await this.getOutOfOfficeDays(firstDay.toISO(), lastDay.toISO());
 
-    this.refresh.next();
+    // this.refresh.next();
   }
 
   // dayClicked(day: CalendarMonthViewDay): void {
@@ -142,79 +136,79 @@ export class UserWorkloadCalendarComponent implements OnInit {
   //   }
   // }
 
-  async beforeMonthViewRender({ body }: { body: CalendarMonthViewDay[] }): Promise<void> {
-    await this.getOutOfOfficeDays(body[0].date, body[body.length - 1].date);
-    body.forEach((day) => {
-      const index = this.bookedDays.findIndex((bookedDay) => DateTime.fromJSDate(bookedDay.date).equals(DateTime.fromJSDate(day.date)));
-      if (index >= 0) {
-        const bookedDay = this.bookedDays[index];
-        day.cssClass = this.getDayStyleClass(bookedDay.type);
-        day.cssClass += (day.cssClass != '' && bookedDay.approved) ? '-approved' : '';
-      }
-    });
-  }
+  // async beforeMonthViewRender({ body }: { body: CalendarMonthViewDay[] }): Promise<void> {
+  //   await this.getOutOfOfficeDays(body[0].date, body[body.length - 1].date);
+  //   body.forEach((day) => {
+  //     const index = this.bookedDays.findIndex((bookedDay) => DateTime.fromJSDate(bookedDay.date).equals(DateTime.fromJSDate(day.date)));
+  //     if (index >= 0) {
+  //       const bookedDay = this.bookedDays[index];
+  //       day.cssClass = this.getDayStyleClass(bookedDay.type);
+  //       day.cssClass += (day.cssClass != '' && bookedDay.approved) ? '-approved' : '';
+  //     }
+  //   });
+  // }
 
-  getDayStyleClass(type: string) {
-    return (type == 'holidays')
-      ? 'cal-day-holidays'
-      : ((type == 'personal')
-        ? 'cal-day-personal'
-        : ((type == 'sick') ? 'cal-day-sick' : ''));
-  }
+  // getDayStyleClass(type: string) {
+  //   return (type == 'holidays')
+  //     ? 'cal-day-holidays'
+  //     : ((type == 'personal')
+  //       ? 'cal-day-personal'
+  //       : ((type == 'sick') ? 'cal-day-sick' : ''));
+  // }
 
   async getOutOfOfficeDays(from: any, to: any) {
     await this.userService.getOutOfTheOfficeDays(this.userId, from, to).then(res => {
       this.holidaysInMonth = res['holidaysInMonth'];
       this.holidaysInYear = res['holidaysInYear'];
-    });
 
-    if (!!this.holidaysInMonth) {
-      this.bookedDays = [];
-      for (let i = 0; i < this.holidaysInMonth.length; i++) {
-        const holiday = this.holidaysInMonth[i];
-        var date = DateTime.fromISO(holiday.start_date).startOf('day');
-        while (date < DateTime.fromISO(holiday.end_date)) {
-          const index = this.bookedDays.findIndex((bookedDay) => DateTime.fromJSDate(bookedDay.date).equals(date))
-          if (index < 0) {
-            this.bookedDays.push({
-              date: date.toJSDate(),
-              type: holiday.type || 'holidays',
-              approved: holiday?.approval_flow?.confirmed || false
-            });
+      if (!!this.holidaysInMonth) {
+        this.bookedDays = [];
+        for (let i = 0; i < this.holidaysInMonth.length; i++) {
+          const holiday = this.holidaysInMonth[i];
+          var date = DateTime.fromISO(holiday.start_date).startOf('day');
+          while (date < DateTime.fromISO(holiday.end_date)) {
+            const index = this.bookedDays.findIndex((bookedDay) => DateTime.fromJSDate(bookedDay.date).equals(date))
+            if (index < 0) {
+              this.bookedDays.push({
+                date: date.toJSDate(),
+                type: holiday.type || 'holidays',
+                approved: holiday?.approval_flow?.confirmed || false
+              });
+            }
+            date = date.plus({ days: 1 });
           }
-          date = date.plus({ days: 1 });
         }
       }
-    }
 
-    if (!!this.holidaysInYear) {
-      const doIndex = (!!this.entityData && !!this.entityData.payroll_days_off) ? this.entityData.payroll_days_off.findIndex((dayOff: any) => dayOff.year === DateTime.now().year) : -1;
-      let dayOff;
-      if (doIndex >= 0) {
-          dayOff = this.entityData.payroll_days_off[doIndex];
-      }
+      if (!!this.holidaysInYear) {
+        const doIndex = (!!this.entityData && !!this.entityData.payroll_days_off) ? this.entityData.payroll_days_off.findIndex((dayOff: any) => dayOff.year === DateTime.now().year) : -1;
+        let dayOff;
+        if (doIndex >= 0) {
+            dayOff = this.entityData.payroll_days_off[doIndex];
+        }
 
-      if (!dayOff) {
-        dayOff = {
-          holiday: 0,
-          sick: 0,
-          personal_days: 0
+        if (!dayOff) {
+          dayOff = {
+            holiday: 0,
+            sick: 0,
+            personal_days: 0
+          }
+        }
+        for (let i = 0; i < this.holidaysInYear.length; i++) {
+          const holiday = this.holidaysInMonth[i];
+          if (holiday.type == 'holidays') {
+            this.totalUsedHolidays = holiday.num_days;
+            this.pendingUsedHolidays = (dayOff.holidays + this.userData.hr.entity_extra_days_off.holidays) - this.totalUsedHolidays
+          } else if (holiday.type == 'sick') {
+            this.totalUsedSickDays = holiday.num_days;
+            this.pendingUsedSickDays = (dayOff.sick + this.userData.hr.entity_extra_days_off.sick) - this.totalUsedSickDays
+          } else if (holiday.type == 'personal') {
+            this.totalUsedPersonalDays = holiday.num_days;
+            this.pendingUsedPersonalDays = (dayOff.personal_days + this.userData.hr.entity_extra_days_off.personal_days) - this.totalUsedPersonalDays
+          } 
         }
       }
-      for (let i = 0; i < this.holidaysInYear.length; i++) {
-        const holiday = this.holidaysInMonth[i];
-        if (holiday.type == 'holidays') {
-          this.totalUsedHolidays = holiday.num_days;
-          this.pendingUsedHolidays = (dayOff.holidays + this.userData.hr.entity_extra_days_off.holidays) - this.totalUsedHolidays
-        } else if (holiday.type == 'sick') {
-          this.totalUsedSickDays = holiday.num_days;
-          this.pendingUsedSickDays = (dayOff.sick + this.userData.hr.entity_extra_days_off.sick) - this.totalUsedSickDays
-        } else if (holiday.type == 'personal') {
-          this.totalUsedPersonalDays = holiday.num_days;
-          this.pendingUsedPersonalDays = (dayOff.personal_days + this.userData.hr.entity_extra_days_off.personal_days) - this.totalUsedPersonalDays
-        } 
-      }
-    }
+    });
   }
 
   // openDialog(action: string) {
@@ -316,16 +310,16 @@ export class UserWorkloadCalendarComponent implements OnInit {
     this.utilityService.asyncNotification($localize`:@@userWorkloadCalendar.plesaeWaitWeAreUpdaing:Please wait we are updating the entity...`, new Promise((resolve, reject) => {
       if (this.newHoliday?._id && this.newHoliday?._id != '') {
         this.userService.editHoliday(this.userData?._id, this.newHoliday).then(res => {
-          // const index = (this.holidaysInYear) ? this.holidaysInYear.findIndex(hol => hol._id == this.newHoliday._id) : -1;
-          // if (index >= 0) {
-          //   this.holidaysInYear[index] = this.newHoliday;
-          // }
+          const index = (this.holidaysInYear) ? this.holidaysInYear.findIndex(hol => hol._id == this.newHoliday._id) : -1;
+          if (index >= 0) {
+            this.holidaysInYear[index] = this.newHoliday;
+          }
 
-          // this.cancelHoliday();
+          this.cancelHoliday();
 
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@userWorkloadCalendar.holidayUpdated:Holiday updated!`));
-          window.location.reload();
+          // window.location.reload();
         })
         .catch((error) => {
           this.cancelHoliday();
@@ -334,12 +328,12 @@ export class UserWorkloadCalendarComponent implements OnInit {
         });
       } else {
         this.userService.createHoliday(this.userData?._id, this.newHoliday).then(res => {
-          // this.holidaysInYear.push(res['holiday']);
-          // this.cancelHoliday();
+          this.holidaysInYear.push(res['holiday']);
+          this.cancelHoliday();
 
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@userWorkloadCalendar.holidayCreated:Holiday created!`));
-          window.location.reload();
+          // window.location.reload();
         })
         .catch((error) => {
           this.cancelHoliday();
@@ -356,13 +350,13 @@ export class UserWorkloadCalendarComponent implements OnInit {
         if (res.value) {
           this.utilityService.asyncNotification($localize`:@@userWorkloadCalendar.pleaseWaitDeleting:Please wait we are deleting the holiday...`, new Promise((resolve, reject) => {
             this.userService.deleteHoliday(holidayId).then(res => {
-              // const index = (this.holidaysInYear) ? this.holidaysInYear.findIndex(hol => hol._id == holidayId) : -1;
-              // if (index >= 0) {
-              //   this.holidaysInYear.splice(index, 1);
-              // }
+              const index = (this.holidaysInYear) ? this.holidaysInYear.findIndex(hol => hol._id == holidayId) : -1;
+              if (index >= 0) {
+                this.holidaysInYear.splice(index, 1);
+              }
 
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@userWorkloadCalendar.deleted:Holiday deleted!`));
-              window.location.reload();
+              // window.location.reload();
             }).catch((err) => {
               reject(this.utilityService.rejectAsyncPromise($localize`:@@userWorkloadCalendar.unableDeleteHoliday:Unable to delete the holiday, please try again!`));
             });
