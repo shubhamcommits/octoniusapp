@@ -87,6 +87,14 @@ export class HRService {
     return this._http.post(this.baseUrl + `/${entityId}/delete-days-off`, { daysOffId }).toPromise();
   }
 
+  addBankHoliday(entityId: string, daysOffId: string, bankHoliday: any) {
+    return this._http.post(this.baseUrl + `/${entityId}/add-bank-holidays`, { daysOffId, bankHoliday }).toPromise();
+  }
+
+  removeBankHoliday(entityId: string, daysOffId: string, bankHoliday: any) {
+    return this._http.post(this.baseUrl + `/${entityId}/remove-bank-holidays`, { daysOffId, bankHoliday }).toPromise();
+  }
+
   getEntityMembers(entityId: string) {
     return this._http.get(this.baseUrl + `/${entityId}/entityMembers`).toPromise();
   }

@@ -415,6 +415,25 @@
                                     </a>
                                 </mat-menu>
                             </div>
+
+                            <br/><br/>
+
+                            <ul>
+                                <li class="titles" i18n="@@setup.bankHolidays">
+                                    Bank Holidays
+                                </li>
+
+                                <li *ngFor="let bh of daysOff.bank_holidays">
+                                    <span>{{ formateDate(bh) }}</span>
+                                    <span (click)="removeBankHolidayDate(daysOff._id, bh)" class="material-icons-outlined" style="cursor: pointer;">delete</span>
+                                </li>
+
+                                <li>
+                                    <app-date-picker [selectedDate]="newBankHoliday" (date)="addBankHolidayDate($event, daysOff?._id)"
+                                        [styleClass]="'btn-group input-date'">
+                                    </app-date-picker>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
             

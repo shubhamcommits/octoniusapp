@@ -107,7 +107,11 @@ const EntitySchema = new Schema({
         personal_days: {
             type: Number,
             required: false
-        }
+        },
+        bank_holidays: [{
+            type: Date,
+            default: moment().format()
+        }]
     }],
     _workspace: {
         type: Schema.Types.ObjectId,

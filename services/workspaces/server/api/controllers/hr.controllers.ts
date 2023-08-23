@@ -573,6 +573,70 @@ export class HRControllers {
         }
     }
 
+    async addBankHoliday(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { entityId }, body: { daysOffId, bankHoliday } } = req;
+
+            if (!entityId || !daysOffId || !bankHoliday) {
+                return sendError(res, new Error('Please provide the entityId property!'), 'Please provide the entityId property!', 500);
+            }
+
+            const entity = await Entity.findByIdAndUpdate({
+                    _id: entityId
+                }, {
+                    $addToSet: {
+                        'payroll_days_off.$[daysOff].bank_holidays': bankHoliday
+                    }
+                },
+                {
+                    arrayFilters: [{ "daysOff._id": daysOffId }],
+                    new: true
+                })
+                .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+                .lean();
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'Bank Holiday added.',
+                entity: entity
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async removeBankHoliday(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { entityId }, body: { daysOffId, bankHoliday } } = req;
+
+            if (!entityId || !daysOffId || !bankHoliday) {
+                return sendError(res, new Error('Please provide the entityId property!'), 'Please provide the entityId property!', 500);
+            }
+
+            const entity = await Entity.findByIdAndUpdate({
+                    _id: entityId
+                }, {
+                    $pull: {
+                        'payroll_days_off.$[daysOff].bank_holidays': bankHoliday
+                    }
+                },
+                {
+                    arrayFilters: [{ "daysOff._id": daysOffId }],
+                    new: true
+                })
+                .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+                .lean();
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'Bank Holiday delted.',
+                entity: entity
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
     async getEntityMembers(req: Request, res: Response, next: NextFunction) {
         try {
 

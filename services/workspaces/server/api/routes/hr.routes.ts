@@ -64,14 +64,20 @@ routes.post('/:entityId/edit-benefit', controller.editEntityBenefit);
 // POST - Deletes an entity benefit
 routes.post('/:entityId/delete-benefit', controller.deleteEntityBenefit);
 
-// POST - Creates a new entity benefit
+// POST - Creates a new entity days off
 routes.post('/:entityId/days-off', controller.createEntityDaysOff);
 
-// POST - Edits an entity benefit
+// POST - Edits an entity days off
 routes.post('/:entityId/edit-days-off', controller.editEntityDaysOff);
 
-// POST - Deletes an entity benefit
+// POST - Deletes an entity days off
 routes.post('/:entityId/delete-days-off', controller.deleteEntityDaysOff);
+
+// POST - Adds a bank holiday to a days off year
+routes.post('/:entityId/add-bank-holidays', controller.addBankHoliday);
+
+// POST - Adds a bank holiday to a days off year
+routes.post('/:entityId/remove-bank-holidays', controller.removeBankHoliday);
 
 // GET - Returns all the members in an entity
 routes.get('/:entityId/entityMembers', controller.getEntityMembers);

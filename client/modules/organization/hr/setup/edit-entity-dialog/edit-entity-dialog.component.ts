@@ -63,6 +63,7 @@ export class EditEntityDialogComponent implements OnInit {
     sick: 0,
     personal_days: 0
   };
+  newBankHoliday = '';
 
   entityMembers = [];
 
@@ -548,13 +549,13 @@ export class EditEntityDialogComponent implements OnInit {
     }));
   }
 
-  deleteEntityDaysOff(benefitId: string) {
+  deleteEntityDaysOff(dayOffId: string) {
     this.utilityService.getConfirmDialogAlert($localize`:@@editentitydialog.areYouSure:Are you sure?`, $localize`:@@editentitydialog.completelyRemovedBenefit:By doing this, the year will be completely removed!`)
       .then((res) => {
         if (res.value) {
           this.utilityService.asyncNotification($localize`:@@editentitydialog.pleaseWaitDeleting:Please wait we are deleting the year...`, new Promise((resolve, reject) => {
-            this.hrService.deleteEntityDaysOff(this.entityData?._id, benefitId).then(res => {
-              const index = (this.entityData.payroll_benefits) ? this.entityData.payroll_benefits.findIndex(benefit => benefit._id == benefitId) : -1;
+            this.hrService.deleteEntityDaysOff(this.entityData?._id, dayOffId).then(res => {
+              const index = (this.entityData.payroll_benefits) ? this.entityData.payroll_benefits.findIndex(benefit => benefit._id == dayOffId) : -1;
               if (index >= 0) {
                 this.entityData.payroll_benefits.splice(index, 1);
               }
@@ -578,6 +579,37 @@ export class EditEntityDialogComponent implements OnInit {
     }
 
     this.createNewDaysOff = !this.createNewDaysOff;
+  }
+
+  addBankHolidayDate(momentDate: any, dayOffId: string) {
+    const doIndex = (this.entityData.payroll_days_off) ? this.entityData.payroll_days_off.findIndex((dayOff: any) => dayOff._id === dayOffId) : -1;
+    if (doIndex >= 0) {
+      if (!this.entityData.payroll_days_off[doIndex].bank_holidays) {
+        this.entityData.payroll_days_off[doIndex].bank_holidays = [];
+      }
+      const bhIndex = this.entityData.payroll_days_off[doIndex].bank_holidays.findIndex((bh: any) => DateTime.fromJSDate(momentDate).equals(DateTime.fromJSDate(bh)));
+      // If index is found, then throw error notification
+      if (bhIndex !== -1) {
+        this.utilityService.warningNotification($localize`:@@editentitydialog.valueAlreadyExists:Value already exists!`);
+      } else {
+        this.hrService.addBankHoliday(this.entityData?._id, dayOffId, momentDate).then(res => {
+          // this.entityData.payroll_days_off[doIndex].bank_holidays.push(momentDate);
+          this.entityData = res['entity'];
+        });
+      }
+    }
+  }
+
+  removeBankHolidayDate(dayOffId: string, bankHoliday: any) {
+    const doIndex = (this.entityData.payroll_days_off) ? this.entityData.payroll_days_off.findIndex((dayOff: any) => dayOff._id === dayOffId) : -1;
+    if (doIndex >= 0) {
+      const bhIndex = (this.entityData.payroll_days_off[doIndex].bank_holidays) ? this.entityData.payroll_days_off[doIndex].bank_holidays.findIndex((bh: any) => DateTime.fromISO(bh).equals(DateTime.fromISO(bankHoliday))) : -1;
+      if (bhIndex !== -1) {
+        this.hrService.removeBankHoliday(this.entityData?._id, dayOffId, bankHoliday).then(res => {
+          this.entityData.payroll_days_off[doIndex].bank_holidays.splice(bhIndex, 1);
+        });
+      }
+    }
   }
   /**
    * ENDS DAYS OFF
@@ -606,5 +638,9 @@ export class EditEntityDialogComponent implements OnInit {
   closeDialog() {
     // Close the modal
     this.mdDialogRef.close();
+  }
+
+  formateDate(date: any) {
+    return (date) ? DateTime.fromISO(date).toLocaleString(DateTime.DATE_SHORT) : '';
   }
 }
