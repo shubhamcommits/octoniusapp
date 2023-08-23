@@ -550,10 +550,10 @@ export class EditEntityDialogComponent implements OnInit {
   }
 
   deleteEntityDaysOff(dayOffId: string) {
-    this.utilityService.getConfirmDialogAlert($localize`:@@editentitydialog.areYouSure:Are you sure?`, $localize`:@@editentitydialog.completelyRemovedBenefit:By doing this, the year will be completely removed!`)
+    this.utilityService.getConfirmDialogAlert($localize`:@@editentitydialog.areYouSure:Are you sure?`, $localize`:@@editentitydialog.completelyRemovedYear:By doing this, the year will be completely removed!`)
       .then((res) => {
         if (res.value) {
-          this.utilityService.asyncNotification($localize`:@@editentitydialog.pleaseWaitDeleting:Please wait we are deleting the year...`, new Promise((resolve, reject) => {
+          this.utilityService.asyncNotification($localize`:@@editentitydialog.pleaseWaitDeletingYear:Please wait we are deleting the year...`, new Promise((resolve, reject) => {
             this.hrService.deleteEntityDaysOff(this.entityData?._id, dayOffId).then(res => {
               const index = (this.entityData.payroll_benefits) ? this.entityData.payroll_benefits.findIndex(benefit => benefit._id == dayOffId) : -1;
               if (index >= 0) {

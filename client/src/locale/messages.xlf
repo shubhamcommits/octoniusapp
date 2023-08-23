@@ -1372,7 +1372,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="authJoinWorkplace.workplacesDomainAllowed" datatype="html">
-        <source>These are the workplace in which the domain of your email is allowed:</source>
+        <source>This is a list of workplaces your email is already allowed to join. Select the one you want to join and make sure you know the access code for it. It is usually found in the invitation email or directly communicated to you by your Administrator.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.html</context>
           <context context-type="linenumber">21</context>
@@ -1818,14 +1818,14 @@
         <source> Create a new workplace </source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.html</context>
-          <context context-type="linenumber">47,49</context>
+          <context context-type="linenumber">50,52</context>
         </context-group>
       </trans-unit>
       <trans-unit id="selectWorkspace.joinAnotherWorkspace" datatype="html">
         <source> Join another workplace </source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.html</context>
-          <context context-type="linenumber">61,63</context>
+          <context context-type="linenumber">65,67</context>
         </context-group>
       </trans-unit>
       <trans-unit id="selectWorkspace.pleaseWaitSignYouIn" datatype="html">
@@ -8966,55 +8966,108 @@
           <context context-type="linenumber">88,90</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="editMemberPayrollDialog.hrDaysOff" datatype="html">
+        <source>Days Off</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component.html</context>
+          <context context-type="linenumber">141</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editMemberPayrollDialog.hrDaysOffDescription" datatype="html">
+        <source> Extra Days Off given to the employee. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component.html</context>
+          <context context-type="linenumber">142,144</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editMemberPayrollDialog.holidays" datatype="html">
+        <source>Holidays</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component.html</context>
+          <context context-type="linenumber">152</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editMemberPayrollDialog.sick" datatype="html">
+        <source>Sick</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component.html</context>
+          <context context-type="linenumber">161</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editMemberPayrollDialog.personalDays" datatype="html">
+        <source>Personal Days</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component.html</context>
+          <context context-type="linenumber">170</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="editMemberPayrollDialog.pleaseWaitWeUpdateContents" datatype="html">
         <source>Please wait we are updating the contents...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component.ts</context>
-          <context context-type="linenumber">142</context>
+          <context context-type="linenumber">154</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component.ts</context>
-          <context context-type="linenumber">173</context>
+          <context context-type="linenumber">185</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component.ts</context>
-          <context context-type="linenumber">226</context>
+          <context context-type="linenumber">238</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component.ts</context>
+          <context context-type="linenumber">267</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editMemberPayrollDialog.cfUpdated" datatype="html">
         <source>Field updated!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component.ts</context>
-          <context context-type="linenumber">153</context>
+          <context context-type="linenumber">165</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component.ts</context>
-          <context context-type="linenumber">185</context>
+          <context context-type="linenumber">197</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editMemberPayrollDialog.unableToUpdateCF" datatype="html">
         <source>Unable to update field, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component.ts</context>
-          <context context-type="linenumber">156</context>
+          <context context-type="linenumber">168</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component.ts</context>
-          <context context-type="linenumber">188</context>
+          <context context-type="linenumber">200</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editMemberPayrollDialog.benefitUpdated" datatype="html">
         <source>Benefit updated!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component.ts</context>
-          <context context-type="linenumber">240</context>
+          <context context-type="linenumber">252</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editMemberPayrollDialog.unableToUpdateBenefit" datatype="html">
         <source>Unable to update benefit, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component.ts</context>
-          <context context-type="linenumber">243</context>
+          <context context-type="linenumber">255</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editMemberPayrollDialog.daysOffUpdated" datatype="html">
+        <source>Days Off updated!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component.ts</context>
+          <context context-type="linenumber">273</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editMemberPayrollDialog.unableToUpdateDaysOff" datatype="html">
+        <source>Unable to update Days Off, please try again!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component.ts</context>
+          <context context-type="linenumber">276</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reports.employees" datatype="html">
@@ -9201,7 +9254,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
-          <context context-type="linenumber">395</context>
+          <context context-type="linenumber">508</context>
         </context-group>
       </trans-unit>
       <trans-unit id="setup.type" datatype="html">
@@ -9244,6 +9297,10 @@
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
           <context context-type="linenumber">314</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">416</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="setup.delete" datatype="html">
         <source>Delete</source>
@@ -9258,6 +9315,10 @@
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
           <context context-type="linenumber">319</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">421</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/setup.component.html</context>
@@ -9311,6 +9372,14 @@
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
           <context context-type="linenumber">354</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">464</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">228</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="newEntity.create" datatype="html">
         <source>Create</source>
@@ -9326,6 +9395,14 @@
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
           <context context-type="linenumber">359</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">470</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">233</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="newEntity.save" datatype="html">
         <source>Save</source>
@@ -9340,6 +9417,14 @@
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
           <context context-type="linenumber">362</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">474</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">236</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newEntity.createNewCF" datatype="html">
@@ -9419,72 +9504,160 @@
           <context context-type="linenumber">367,369</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="editEntityDialog.daysOff" datatype="html">
+        <source>Days Off</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">376</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.daysOffDescription" datatype="html">
+        <source> Set up the amount of days for the current year. You can always edit them later. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">377,381</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="setup.year" datatype="html">
+        <source>Year</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">403</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="setup.holidays" datatype="html">
+        <source>Holidays</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">404</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="setup.sick" datatype="html">
+        <source>Sick</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">405</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="setup.personalDays" datatype="html">
+        <source>Personal days</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">406</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="setup.bankHolidays" datatype="html">
+        <source> Bank Holidays </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">429,431</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.year" datatype="html">
+        <source>Year</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">449</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.holidays" datatype="html">
+        <source>Holidays</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">452</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.sick" datatype="html">
+        <source>Sick</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">455</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editEntityDialog.personalDays" datatype="html">
+        <source>Personal Days</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">458</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newEntity.createNewDayOff" datatype="html">
+        <source> Create new Days Off </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
+          <context context-type="linenumber">480,482</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="editEntityDialog.entityMembers" datatype="html">
         <source>Entity Members</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
-          <context context-type="linenumber">378</context>
+          <context context-type="linenumber">491</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newEntity.addMembers" datatype="html">
         <source>Add members</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
-          <context context-type="linenumber">384</context>
+          <context context-type="linenumber">497</context>
         </context-group>
       </trans-unit>
       <trans-unit id="setup.email" datatype="html">
         <source>E-Mail</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
-          <context context-type="linenumber">396</context>
+          <context context-type="linenumber">509</context>
         </context-group>
       </trans-unit>
       <trans-unit id="setup.remove" datatype="html">
         <source>Remove</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.html</context>
-          <context context-type="linenumber">414</context>
+          <context context-type="linenumber">527</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editEntityDialog.general" datatype="html">
         <source>General</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">22</context>
+          <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editEntityDialog.payroll" datatype="html">
         <source>Payroll</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">23</context>
+          <context context-type="linenumber">24</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editEntityDialog.members" datatype="html">
         <source>Members</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">24</context>
+          <context context-type="linenumber">25</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editEntityDialog.plesaeWaitWeAreUpdaing" datatype="html">
         <source>Please wait we are updating the entity...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">139</context>
+          <context context-type="linenumber">149</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">164</context>
+          <context context-type="linenumber">174</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">274</context>
+          <context context-type="linenumber">284</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">384</context>
+          <context context-type="linenumber">394</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">518</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-hive/user-hive.component.ts</context>
@@ -9499,31 +9672,39 @@
         <source>Entity updated!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">144</context>
+          <context context-type="linenumber">154</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">175</context>
+          <context context-type="linenumber">185</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">188</context>
+          <context context-type="linenumber">198</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">285</context>
+          <context context-type="linenumber">295</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">303</context>
+          <context context-type="linenumber">313</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">395</context>
+          <context context-type="linenumber">405</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">408</context>
+          <context context-type="linenumber">418</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">529</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">542</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-hive/user-hive.component.ts</context>
@@ -9538,31 +9719,35 @@
         <source>Unable to update the entity, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">147</context>
+          <context context-type="linenumber">157</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">180</context>
+          <context context-type="linenumber">190</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">193</context>
+          <context context-type="linenumber">203</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">290</context>
+          <context context-type="linenumber">300</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">308</context>
+          <context context-type="linenumber">318</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">400</context>
+          <context context-type="linenumber">410</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">413</context>
+          <context context-type="linenumber">423</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">534</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-hive/user-hive.component.ts</context>
@@ -9577,19 +9762,23 @@
         <source>Are you sure?</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">219</context>
+          <context context-type="linenumber">229</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">334</context>
+          <context context-type="linenumber">344</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">354</context>
+          <context context-type="linenumber">364</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">443</context>
+          <context context-type="linenumber">453</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">553</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/entity-add-members-dialog/entity-add-members-dialog.component.ts</context>
@@ -9604,111 +9793,143 @@
         <source>By doing this, the field will be completely removed!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">219</context>
+          <context context-type="linenumber">229</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editentitydialog.pleaseWaitDeleting" datatype="html">
         <source>Please wait we are deleting the entity...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">222</context>
+          <context context-type="linenumber">232</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">337</context>
+          <context context-type="linenumber">347</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">446</context>
+          <context context-type="linenumber">456</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editentitydialog.deleted" datatype="html">
         <source>Entity deleted!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">229</context>
+          <context context-type="linenumber">239</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">344</context>
+          <context context-type="linenumber">354</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editentitydialog.unableDelete" datatype="html">
         <source>Unable to delete the entity, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">231</context>
+          <context context-type="linenumber">241</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">346</context>
+          <context context-type="linenumber">356</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editentitydialog.valueAlreadyExists" datatype="html">
         <source>Value already exists!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">247</context>
+          <context context-type="linenumber">257</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">471</context>
+          <context context-type="linenumber">481</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">593</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editentitydialog.completelyRemovedVariable" datatype="html">
         <source>By doing this, the variable will be completely removed!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">334</context>
+          <context context-type="linenumber">344</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editentitydialog.removeFromEntity" datatype="html">
         <source>By doing this, the user will be removed from the entity!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">354</context>
+          <context context-type="linenumber">364</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editentitydialog.pleaseWaitDeletingMember" datatype="html">
         <source>Please wait we are removing the member...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">357</context>
+          <context context-type="linenumber">367</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editentitydialog.remove" datatype="html">
         <source>User removed!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">364</context>
+          <context context-type="linenumber">374</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editentitydialog.unableRemove" datatype="html">
         <source>Unable to remove the user from the entity, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">366</context>
+          <context context-type="linenumber">376</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editentitydialog.completelyRemovedBenefit" datatype="html">
         <source>By doing this, the benefit will be completely removed!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">443</context>
+          <context context-type="linenumber">453</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editentitydialog.deletedBenefit" datatype="html">
         <source>Benefit deleted!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">453</context>
+          <context context-type="linenumber">463</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editentitydialog.unableDeleteBenefit" datatype="html">
         <source>Unable to delete the benefit, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
-          <context context-type="linenumber">455</context>
+          <context context-type="linenumber">465</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editentitydialog.completelyRemovedYear" datatype="html">
+        <source>By doing this, the year will be completely removed!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">553</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editentitydialog.pleaseWaitDeletingYear" datatype="html">
+        <source>Please wait we are deleting the year...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">556</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editentitydialog.deletedYear" datatype="html">
+        <source>Year deleted!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">563</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editentitydialog.unableDeleteYear" datatype="html">
+        <source>Unable to delete the year, please try again!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
+          <context context-type="linenumber">565</context>
         </context-group>
       </trans-unit>
       <trans-unit id="9646abc227d88763fcbfdd02a9a1694ee04dc15f" datatype="html">
@@ -12589,70 +12810,70 @@
         <source>Please wait we are creating the post...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-post/group-post.component.ts</context>
-          <context context-type="linenumber">383</context>
+          <context context-type="linenumber">385</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePost.postCreated" datatype="html">
         <source>Post Created!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-post/group-post.component.ts</context>
-          <context context-type="linenumber">395</context>
+          <context context-type="linenumber">397</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePost.connectionError" datatype="html">
         <source>Sorry, we are having a hard time connecting to the server. You have a poor connection. The post can&apos;t be created.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-post/group-post.component.ts</context>
-          <context context-type="linenumber">401</context>
+          <context context-type="linenumber">403</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePost.unableToCreatePost" datatype="html">
         <source>Unable to create post, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-post/group-post.component.ts</context>
-          <context context-type="linenumber">403</context>
+          <context context-type="linenumber">405</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePost.pleaseWaitWeUpdatingContent" datatype="html">
         <source>Please wait we are updating the contents...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-post/group-post.component.ts</context>
-          <context context-type="linenumber">474</context>
+          <context context-type="linenumber">476</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePost.detailsUpdated" datatype="html">
         <source>Details updated!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-post/group-post.component.ts</context>
-          <context context-type="linenumber">485</context>
+          <context context-type="linenumber">487</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePost.unableToUpdatePost" datatype="html">
         <source>Unable to update the details, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-post/group-post.component.ts</context>
-          <context context-type="linenumber">490</context>
+          <context context-type="linenumber">492</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePost.pleaseWaitWeDeletingPost" datatype="html">
         <source>Please wait we are deleting the post...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-post/group-post.component.ts</context>
-          <context context-type="linenumber">500</context>
+          <context context-type="linenumber">502</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePost.postDeleted" datatype="html">
         <source>Post deleted!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-post/group-post.component.ts</context>
-          <context context-type="linenumber">510</context>
+          <context context-type="linenumber">512</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePost.unableToDeletePost" datatype="html">
         <source>Unable to delete post, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-post/group-post.component.ts</context>
-          <context context-type="linenumber">512</context>
+          <context context-type="linenumber">514</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupPostbox.whatAreYouWorkingOn" datatype="html">
@@ -17071,67 +17292,244 @@
           <context context-type="linenumber">58</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="userWorkloadCalendar.previous" datatype="html">
-        <source> Previous </source>
+      <trans-unit id="userWorkloadCalendar.usedHolidays" datatype="html">
+        <source>Used Holiday days: </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">5,7</context>
+          <context context-type="linenumber">48</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="userWorkloadCalendar.today" datatype="html">
-        <source> Today </source>
+      <trans-unit id="userWorkloadCalendar.pendingHolidays" datatype="html">
+        <source>Pending Holiday days: </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">8,10</context>
+          <context context-type="linenumber">51</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="userWorkloadCalendar.next" datatype="html">
-        <source> Next </source>
+      <trans-unit id="userWorkloadCalendar.usedSick" datatype="html">
+        <source>Used Sick days: </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">11,13</context>
+          <context context-type="linenumber">56</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="userWorkloadCalendar.clean" datatype="html">
-        <source> Clean </source>
+      <trans-unit id="userWorkloadCalendar.pendingSick" datatype="html">
+        <source>Pending Sick days: </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">28,30</context>
+          <context context-type="linenumber">59</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.usedPersonal" datatype="html">
+        <source>Used Personal days: </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.pendingPersonal" datatype="html">
+        <source>Pending Personal days: </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">67</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.starts" datatype="html">
+        <source>Starts</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">82</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">140</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">186</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.ends" datatype="html">
+        <source>Ends</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">83</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">141</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">194</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.type" datatype="html">
+        <source>Type</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">84</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">142</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">202</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.numDays" datatype="html">
+        <source>Number Days</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">85</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">143</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.manager" datatype="html">
+        <source>Manager</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">86</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">144</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">214</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.status" datatype="html">
+        <source>Status</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">87</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">145</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newEntity.requestHolidays" datatype="html">
+        <source> Request Holidays </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">90,92</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.edit" datatype="html">
+        <source>Edit</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">120</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">175</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.remove" datatype="html">
+        <source>Remove</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">125</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.recentActivities" datatype="html">
+        <source>Past Years</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">135</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.new" datatype="html">
+        <source>New</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">176</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.holiday" datatype="html">
+        <source>Holiday</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">178</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.numberOfDays" datatype="html">
+        <source>Number Of Days</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
+          <context context-type="linenumber">211</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.plesaeWaitWeAreUpdaing" datatype="html">
+        <source>Please wait we are updating the entity...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.ts</context>
+          <context context-type="linenumber">330</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.holidayUpdated" datatype="html">
+        <source>Holiday updated!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.ts</context>
+          <context context-type="linenumber">341</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.unableToUpdateHoliday" datatype="html">
+        <source>Unable to update the holiday, please try again!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.ts</context>
+          <context context-type="linenumber">347</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userWorkloadCalendar.holidayCreated" datatype="html">
+        <source>Holiday created!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.ts</context>
+          <context context-type="linenumber">355</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.areYouSure" datatype="html">
         <source>Are you sure?</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.ts</context>
-          <context context-type="linenumber">158</context>
+          <context context-type="linenumber">368</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="userWorkloadCalendar.dayWillBeCAncelled" datatype="html">
-        <source>By doing this the day will be cancelled!</source>
+      <trans-unit id="userWorkloadCalendar.completelyRemoved" datatype="html">
+        <source>By doing this, the year will be completely removed!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.ts</context>
-          <context context-type="linenumber">158</context>
+          <context context-type="linenumber">368</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="userWorkloadCalendar.pleaseWaitWeCancelDay" datatype="html">
-        <source>Please wait we are cancelling the day...</source>
+      <trans-unit id="userWorkloadCalendar.pleaseWaitDeleting" datatype="html">
+        <source>Please wait we are deleting the holiday...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.ts</context>
-          <context context-type="linenumber">161</context>
+          <context context-type="linenumber">371</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="userWorkloadCalendar.dayCancelled" datatype="html">
-        <source>👍 Day/s cancelled!</source>
+      <trans-unit id="userWorkloadCalendar.deleted" datatype="html">
+        <source>Holiday deleted!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.ts</context>
-          <context context-type="linenumber">177</context>
+          <context context-type="linenumber">378</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="userWorkloadCalendar.errorWhileCancellingDay" datatype="html">
-        <source>Error while cancelling the days!</source>
+      <trans-unit id="userWorkloadCalendar.unableDeleteHoliday" datatype="html">
+        <source>Unable to delete the holiday, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.ts</context>
-          <context context-type="linenumber">180</context>
+          <context context-type="linenumber">381</context>
         </context-group>
       </trans-unit>
       <trans-unit id="serverError.connectionError" datatype="html">
