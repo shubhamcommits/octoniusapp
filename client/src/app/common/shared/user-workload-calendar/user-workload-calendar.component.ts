@@ -25,6 +25,7 @@ export class UserWorkloadCalendarComponent implements OnInit {
   userData;
   isCurrentUser = false;
   workspaceData;
+  userHasManager = false;
   entityData;
 
   // view: CalendarView = CalendarView.Month;
@@ -90,6 +91,8 @@ export class UserWorkloadCalendarComponent implements OnInit {
     const firstDay = this.today.startOf('month');
     const lastDay = this.today.endOf('month');
     await this.getOutOfOfficeDays(firstDay.toISO(), lastDay.toISO());
+
+    await this.initNewHoliday();
 
     // this.refresh.next();
   }
@@ -214,6 +217,29 @@ export class UserWorkloadCalendarComponent implements OnInit {
     });
   }
 
+  async initNewHoliday() {
+
+    let manager;
+    const index = (!!this.workspaceData?.profile_custom_fields) ? this.workspaceData?.profile_custom_fields.findIndex(cf => cf.name == 'manager') : -1;
+    const managerId = this.userData?.profile_custom_fields['manager'];
+    this.userHasManager = (index >= 0) && !!managerId;
+
+    if (this.userHasManager) {
+      manager = await this.publicFunctions.getOtherUser(managerId);
+    }
+
+    this.newHoliday = {
+      _id: '',
+      start_date: DateTime.now(),
+      end_date: DateTime.now(),
+      type: 'holidays',
+      num_days: 0,
+      approval_flow: {
+        _manager: manager
+      }
+    };
+  }
+
   // openDialog(action: string) {
   //   if (action == 'add') {
   //     if (this.selectedDays && this.selectedDays.length > 0) {
@@ -282,16 +308,7 @@ export class UserWorkloadCalendarComponent implements OnInit {
   }
 
   cancelHoliday() {
-    this.newHoliday = {
-      _id: '',
-      start_date: DateTime.now(),
-      end_date: DateTime.now(),
-      type: 'holidays',
-      num_days: 0,
-      approval_flow: {
-        _manager: ''
-      }
-    };
+    this.initNewHoliday();
 
     this.createNewHoliday = false;
   }
