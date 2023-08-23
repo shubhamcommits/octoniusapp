@@ -37,10 +37,12 @@ export class UserWorkloadCalendarComponent implements OnInit {
   // refresh: Subject<any> = new Subject();
 
   selectedDays: any = [];
+  today = DateTime.now();
   startDate;
   endDate;
   holidaysInMonth: any = [];
   holidaysInYear: any = [];
+  pastHolidays: any = [];
   bookedDays: any = [];
   daysToCancel: any = [];
 
@@ -84,9 +86,9 @@ export class UserWorkloadCalendarComponent implements OnInit {
       this.entityData = res['entity'];
     });
 
-    const today = DateTime.now();
-    const firstDay = today.startOf('month');
-    const lastDay = today.endOf('month');
+    this.today = DateTime.now();
+    const firstDay = this.today.startOf('month');
+    const lastDay = this.today.endOf('month');
     await this.getOutOfOfficeDays(firstDay.toISO(), lastDay.toISO());
 
     // this.refresh.next();
@@ -160,6 +162,7 @@ export class UserWorkloadCalendarComponent implements OnInit {
     await this.userService.getOutOfTheOfficeDays(this.userId, from, to).then(res => {
       this.holidaysInMonth = res['holidaysInMonth'];
       this.holidaysInYear = res['holidaysInYear'];
+      this.pastHolidays = res['pastHolidays'];
 
       if (!!this.holidaysInMonth) {
         this.bookedDays = [];
