@@ -1407,11 +1407,25 @@ export class UsersControllers {
                 })
                 .lean() || [];
 
+            const pastHolidays = await Holiday.find({
+                    $and: [
+                        { _user: userId },
+                        // { end_date: { $gte: firstDayOfYear }},
+                        { start_date: { $lte: firstDayOfYear} }
+                    ]
+                })
+                .populate({
+                    path: 'approval_flow._manager',
+                    select: '_id email first_name last_name profile_pic'
+                })
+                .lean() || [];
+
             // Send status 200 response
             return res.status(200).json({
                 message: `User out of the office days`,
                 holidaysInMonth: holidaysInMonth,
-                holidaysInYear: holidaysInYear
+                holidaysInYear: holidaysInYear,
+                pastHolidays: pastHolidays
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);

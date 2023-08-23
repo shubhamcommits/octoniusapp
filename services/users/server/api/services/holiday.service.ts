@@ -3,9 +3,9 @@ import { User, Entity, Holiday } from '../models';
 
 export class HolidayService {
 
-    async calculateNumDays(userId: string, startDate: DateTime, endDate: DateTime, type: string) {
-        const start = DateTime.fromISO(startDate);
-        const end = DateTime.fromISO(endDate);
+    async calculateNumDays(userId: string, startDate: any, endDate: any, type: string) {
+        const start = DateTime.fromISO(startDate).startOf('day');
+        const end = DateTime.fromISO(endDate).startOf('day');
 
         // Calculate the total number of days between the two dates
         const naturalDays = end.diff(start, 'days').days + 1; // Adding 1 to include both start and end dates
@@ -66,6 +66,18 @@ export class HolidayService {
             return {
                 totalDays: -1,
                 code: `Exceeded the number of days per year for ${type}.`
+            };
+        }
+console.log({start})
+console.log({end})
+console.log({totalDays})
+console.log({naturalDays})
+console.log({weekends})
+console.log({bankHolidays})
+        if (totalDays % 1 != 0) {
+            return {
+                totalDays: -1,
+                code: `ERROR for ${type}.`
             };
         }
 
