@@ -375,28 +375,35 @@
                     <div class="col-description">
                         <h4 i18n="@@editEntityDialog.daysOff">Days Off</h4>
                         <p class="block-description" i18n="@@editEntityDialog.daysOffDescription">
-                            Set up custom days off that will appear in the employee profile. You will be able to track more
-                            information from your employees.
+                           Set up the amount of days for the current year.
+                           You can always edit them later.
+                           
+                        </p>
+                        <p class="block-description mt-3">
+                            <strong>Holidays</strong> - represent the normal vacation for the employee <br>
+                            <strong>Sick days</strong> - if your company has a specific number of sick days to be paid per employee<br>
+                            <strong>Personal days</strong> - anything else - if the company pays such days<br>
+                            <strong>Bank Holidays</strong> - you can use the calendar to manually add the dates considered as bank holidays for this entity.
                         </p>
                     </div>
                     <hr />
                 </div>
             
                 <div class="col">
-                    <ul>
-                        <li class="titles">
-                            <div class="name title"><span i18n="@@setup.year">Year</span></div>
-                            <div class="type title"><span i18n="@@setup.holidays">Holidays</span></div>
+                   
+                        <!-- <div class="titles">
+                            <div class="name title"><span i18n="@@setup.year">Year</span></div> 
+                            <div class="type title"><span i18n="@@setup.holidays">Holidays</span></div> 
                             <div class="type title" i18n="@@setup.sick">Sick</div>
                             <div class="type title" i18n="@@setup.personalDays">Personal days</div>
                             <div class="actions title"></div>
-                        </li>
+                        </div> -->
             
-                        <li *ngFor="let daysOff of entityData?.payroll_days_off">
-                            <div class="name"><span>{{ daysOff.year }}</span></div>
-                            <div class="type"><span>{{ daysOff.holidays }}</span></div>
-                            <div class="type"><span>{{ daysOff.sick }}</span></div>
-                            <div class="type"><span>{{ daysOff.personal_days }}</span></div>
+                        <div class="row" *ngFor="let daysOff of entityData?.payroll_days_off">
+                            <div class="type"><span i18n="@@setup.year" class="bold">Year</span> <br> <span>{{ daysOff.year }}</span></div>
+                            <div class="type"><span i18n="@@setup.holidays" class="bold">Holidays</span> <br> <span>{{ daysOff.holidays }}</span></div>
+                            <div class="type"><span i18n="@@setup.sick" class="bold">Sick</span> <br><span>{{ daysOff.sick }}</span></div>
+                            <div class="type"><span i18n="@@setup.personalDays" class="bold">Personal days</span><br> <span>{{ daysOff.personal_days }}</span></div>
                             
                             <div class="actions">
                                 <div style="cursor: pointer;" [matMenuTriggerFor]="menuDaysOff">
@@ -416,8 +423,8 @@
                                 </mat-menu>
                             </div>
 
-                            <br/><br/>
-
+                            <div style="clear: both;"></div>
+                            <div class="col mt-4">
                             <ul>
                                 <li class="titles" i18n="@@setup.bankHolidays">
                                     Bank Holidays
@@ -434,8 +441,9 @@
                                     </app-date-picker>
                                 </li>
                             </ul>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
+                    
             
                     <div class="form-group" *ngIf="createNewDaysOff">
                         <label i18n="@@editEntityDialog.year">Year</label>
