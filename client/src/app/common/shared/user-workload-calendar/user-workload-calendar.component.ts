@@ -295,10 +295,10 @@ export class UserWorkloadCalendarComponent implements OnInit {
 
   editHolidays(holiday: any) {
     this.newHoliday._id = holiday._id;
-    // this.newHoliday.start_date = DateTime.fromISO(holiday.start_date);
-    this.newHoliday.start_date = holiday.start_date;
-    // this.newHoliday.end_date = DateTime.fromISO(holiday.end_date);
-    this.newHoliday.end_date = holiday.end_date;
+    this.newHoliday.start_date = DateTime.fromISO(holiday.start_date);
+    // this.newHoliday.start_date = holiday.start_date;
+    this.newHoliday.end_date = DateTime.fromISO(holiday.end_date);
+    // this.newHoliday.end_date = holiday.end_date;
     this.newHoliday.type = holiday.type;
     this.newHoliday.num_days = holiday.num_days;
     this.newHoliday.approval_flow._manager = holiday.approval_flow._manager;
