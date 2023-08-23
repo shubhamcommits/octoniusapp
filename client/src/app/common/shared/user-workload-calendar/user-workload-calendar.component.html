@@ -92,7 +92,7 @@
 
               <a mat-menu-item (click)="removeHolidays(holiday._id)">
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
-                <span i18n="@@setup.remove">Remove</span>
+                <span i18n="@@userWorkloadCalendar.remove">Remove</span>
               </a>
             </mat-menu>
           </td>
@@ -102,26 +102,26 @@
       <hr />
       <div class="row">
         <div class="col">
-          <span>Used Holiday days: </span> {{ totalUsedHolidays }}
+          <span i18n="@@userWorkloadCalendar.usedHolidays">Used Holiday days: </span> {{ totalUsedHolidays }}
         </div>
         <div class="col">
-          <span>Pending Holiday days: </span> {{ pendingUsedHolidays }}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <span>Used Sick days: </span> {{ totalUsedSickDays }}
-        </div>
-        <div class="col">
-          <span>Pending Sick days: </span> {{ pendingUsedSickDays }}
+          <span i18n="@@userWorkloadCalendar.pendingHolidays">Pending Holiday days: </span> {{ pendingUsedHolidays }}
         </div>
       </div>
       <div class="row">
         <div class="col">
-          <span>Used Personal days: </span> {{ totalUsedPersonalDays }}
+          <span i18n="@@userWorkloadCalendar.usedSick">Used Sick days: </span> {{ totalUsedSickDays }}
         </div>
         <div class="col">
-          <span>Pending Personal days: </span> {{ pendingUsedPersonalDays }}
+          <span i18n="@@userWorkloadCalendar.pendingSick">Pending Sick days: </span> {{ pendingUsedSickDays }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <span i18n="@@userWorkloadCalendar.usedPersonal">Used Personal days: </span> {{ totalUsedPersonalDays }}
+        </div>
+        <div class="col">
+          <span i18n="@@userWorkloadCalendar.pendingPersonal">Pending Personal days: </span> {{ pendingUsedPersonalDays }}
         </div>
       </div>
 
@@ -131,11 +131,11 @@
         <div class="row">
           <div class="col">
             <div class="col-description">
-              <h4 i18n="@@userWorkloadCalendar.daysOff">
-                <span *ngIf="!!newHoliday?._id">Edit</span>
-                <span *ngIf="!newHoliday?._id">New</span>
+              <h4>
+                <span *ngIf="!!newHoliday?._id" i18n="@@userWorkloadCalendar.edit">Edit</span>
+                <span *ngIf="!newHoliday?._id" i18n="@@userWorkloadCalendar.new">New</span>
 
-                Holiday
+                <span i18n="@@userWorkloadCalendar.holiday">Holiday</span>
               </h4>
             </div>
           </div>
