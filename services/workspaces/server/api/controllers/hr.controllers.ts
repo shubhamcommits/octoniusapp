@@ -897,9 +897,7 @@ export class HRControllers {
                     select: '_id first_name last_name email profile_pic hr'
                 })
                 .lean() || [];
-console.log({from});
-console.log({to});
-console.log({holidays});
+
             const users = holidays.map(holiday => {
                 holiday._user.start_date = holiday.start_date;
                 holiday._user.end_date = holiday.end_date;
