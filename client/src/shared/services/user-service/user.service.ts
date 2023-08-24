@@ -495,6 +495,10 @@ export class UserService {
     return this._http.post(this.BASE_API_URL + `/${userId}/edit-holiday`, { holiday }).toPromise();
   }
 
+  editHolidayStatus(holidayId: string, status: any, rejection_description?: string) {
+    return this._http.post(this.BASE_API_URL + `/${holidayId}/edit-holiday-status`, { status, rejection_description }).toPromise();
+  }
+
   deleteHoliday(holidayId: string) {
     return this._http.delete(this.BASE_API_URL + `/${holidayId}/delete-holiday`).toPromise();
   }
@@ -508,5 +512,9 @@ export class UserService {
       }
     })
       .toPromise();
+  }
+
+  getPendingApprovalHolidays(userId?: string) {
+    return this._http.get(this.BASE_API_URL + `/${userId}/pending-approval-holidays`).toPromise();
   }
 }

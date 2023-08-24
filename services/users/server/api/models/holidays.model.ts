@@ -41,15 +41,10 @@ const HolidaySchema = new Schema({
         required: true,
         default: 'pending'
     },
-    confirmation_date: {
-        type: Date,
-        default: DateTime.now()
-    },
-    signature_code: {
-        type: String,
-        required: false
-    },
     description: {
+        type: String
+    },
+    rejection_description: {
         type: String
     }
 });

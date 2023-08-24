@@ -16,7 +16,12 @@ export class HolidayService {
         const entity = await Entity.findById({_id: user.hr._entity }).lean();
 
         const doIndex = (entity.payroll_days_off) ? entity.payroll_days_off.findIndex((dayOff: any) => dayOff.year === start.year) : -1;
-        let dayOff;
+        let dayOff = {
+            holidays: 0,
+            sick: 0,
+            personal_days: 0,
+            bank_holidays: []
+        };
         if (doIndex >= 0) {
             dayOff = entity.payroll_days_off[doIndex];
         }
@@ -55,6 +60,14 @@ export class HolidayService {
             const holiday = holidays[i];
             if (holiday.type === type) {
                 usedDays += holiday.num_days;
+            }
+        }
+
+        if (!user.hr.entity_extra_days_off) {
+            user.hr.entity_extra_days_off = {
+                holidays: 0,
+                sick: 0,
+                personal_days: 0
             }
         }
 

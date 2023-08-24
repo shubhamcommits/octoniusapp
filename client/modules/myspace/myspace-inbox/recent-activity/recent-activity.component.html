@@ -373,6 +373,75 @@
       </div>
     </mat-tab>
     <!-- APPROVALS ENDS-->
+
+    <!-- PENDING HOLIDAYS STARTS-->
+    <mat-tab label="" *ngIf="pendingHolidays.length > 0 && isBusinessSubscription">
+      <ng-template mat-tab-label>
+        <span *ngIf="pendingHolidays.length > 0" [matBadge]="pendingHolidays.length"
+          matBadgeOverlap="false" matBadgeColor="warn" i18n="@@recentActivity.pendingApprovals">Pending Holidays</span>
+        <span *ngIf="pendingHolidays.length == 0" i18n="@@recentActivity.pendingApprovals">Pending Holidays</span>
+      </ng-template>
+    
+      <!-- Empty State starts -->
+      <div *ngIf="pendingHolidays.length === 0 && !(isLoading$ | async)"
+        style="text-align: center; margin-top: 30px;">
+        <img src='assets/images/placeholder_newsfeed.png' class="placeholder-img">
+        <p class="muted text-center" i18n="@@recentActivity.noPendingApprovals">No pending approvals.</p>
+      </div>
+      <!-- Empty State ends -->
+    
+      <div *ngIf="pendingHolidays.length > 0 && !(isLoading$ | async)">
+        <!-- NOTIFICATION ITEM STARTS-->
+        <table style="width: 100%; margin-top: 20px;">
+          <tr>
+            <th i18n="@@recentActivity.member">Member</th>
+            <th i18n="@@recentActivity.starts">Starts</th>
+            <th i18n="@@recentActivity.ends">Ends</th>
+            <th i18n="@@recentActivity.type">Type</th>
+            <th i18n="@@recentActivity.numDays">Number Days</th>
+            <th i18n="@@recentActivity.status">Status</th>
+            <th></th>
+          </tr>
+        
+          <tr *ngFor="let holiday of pendingHolidays; let index = index">
+            <td>
+              <app-secured-image [imgURL]="holiday?._approval_manager?.profile_pic" [service]="'user'"
+                [workspaceId]="workspaceData?._id" [styleClass]="'feed-avatar-small'"></app-secured-image>
+              {{ holiday?._approval_manager?.first_name }} {{ holiday?._approval_manager?.last_name }}
+            </td>
+            <td>{{ formateDate(holiday.start_date) }}</td>
+            <td>{{ formateDate(holiday.end_date) }}</td>
+            <td>{{ holiday.type }}</td>
+            <td>{{ holiday.num_days }}</td>
+        
+            <td>
+              <span *ngIf="holiday?.status == 'approved'" class="approved dropdown-toggle" data-toggle="dropdown" i18n="@@recentActivity.approved">APPROVED</span>
+              <span *ngIf="holiday?.status == 'pending'" class="pending dropdown-toggle" data-toggle="dropdown" i18n="@@recentActivity.pending">PENDING</span>
+              
+              <!-- Menu Drawer Starts -->
+              <ul class="dropdown-menu">
+                <li class="dropdown-item" (click)="doHolidayAction('approved', holiday?._id)">
+                  <div class="approved action-button">
+                    <i class="material-icons">check_circle</i>
+                    &nbsp;
+                    <span i18n="@@recentActivity.approve">APPROVE</span>
+                  </div>
+                </li>
+                <li class="dropdown-item" (click)="doHolidayAction('rejected', holiday?._id)">
+                  <div class="rejected action-button">
+                    <i class="material-icons">highlight_off</i>
+                    &nbsp;
+                    <span i18n="@@recentActivity.reject">REJECT</span>
+                  </div>
+                </li>
+              </ul>
+              <!-- Menu Drawer Ends -->
+            </td>
+          </tr>
+        </table>
+      </div>
+    </mat-tab>
+    <!-- PENDING HOLIDAYS ENDS-->
   </mat-tab-group>
 
   <!-- Loading Spinner Starts -->

@@ -135,6 +135,7 @@ import { LikedByDialogComponent } from './liked-by-dialog/liked-by-dialog.compon
 import { ShareCollectionDialogComponent } from './share-collection-dialog/share-collection-dialog.component';
 import { PasswordStrengthComponent } from './password-strength/password-strength.component';
 import { PricingTableComponent } from './pricing-table/pricing-table.component';
+import { HolidayRejectionDialogComponent } from './hr/holiday-rejection-dialog/holiday-rejection-dialog.component';
 
 @NgModule({
     declarations: [
@@ -246,7 +247,8 @@ import { PricingTableComponent } from './pricing-table/pricing-table.component';
         LikedByDialogComponent,
         ShareCollectionDialogComponent,
         PasswordStrengthComponent,
-        PricingTableComponent
+        PricingTableComponent,
+        HolidayRejectionDialogComponent
     ],
     imports: [
         CommonModule,
@@ -366,7 +368,8 @@ import { PricingTableComponent } from './pricing-table/pricing-table.component';
         LikedByDialogComponent,
         ShareCollectionDialogComponent,
         PasswordStrengthComponent,
-        PricingTableComponent
+        PricingTableComponent,
+        HolidayRejectionDialogComponent
     ],
     providers: [
         { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },

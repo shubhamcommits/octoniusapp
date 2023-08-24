@@ -1925,6 +1925,37 @@ export class UsersControllers {
         }
     }
 
+    async editHolidaStatus(req: Request, res: Response, next: NextFunction) {
+
+        const { status, rejection_description } = req.body;
+        const { holidayId } = req.params;
+
+        try {
+            const holidayEdited = await Holiday.findByIdAndUpdate({
+                    _id: holidayId
+                }, {
+                    $set: {
+                        status: status,
+                        rejection_description: rejection_description
+                    }
+                })
+                .populate({
+                    path: '_approval_manager',
+                    select: '_id email first_name last_name profile_pic'
+                })
+                .lean();
+            
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Holiday has been edited`,
+                holiday: holidayEdited
+            });
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
     async deleteHoliday(req: Request, res: Response, next: NextFunction) {
 
         const { holidayId } = req.params;
@@ -1959,6 +1990,32 @@ export class UsersControllers {
                 code: num_days.code
             });
 
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async getPendingApprovalHolidays(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = req['userId'];
+            
+            const holidays = await Holiday.find({
+                    $and: [
+                        { _approval_manager: userId },
+                        { status: 'pending' }
+                    ]
+                })
+                .populate({
+                    path: '_approval_manager',
+                    select: '_id email first_name last_name profile_pic'
+                })
+                .lean() || [];
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `User pending holidays to approve.`,
+                holidays: holidays
+            });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }

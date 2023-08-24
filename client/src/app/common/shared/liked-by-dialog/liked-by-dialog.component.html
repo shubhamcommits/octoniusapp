@@ -1,5 +1,5 @@
 <div class="customFieldsDialog">
-  <h4 class="mb-4">Members who liked the content:</h4>
+  <h4 class="mb-4" i18n="@@likedByDialog.membersWhoLikedContent">Members who liked the content:</h4>
   <div *ngFor="let user of usersList; let i = index;" class="row">
     <div class="col-md-2">
       <app-secured-image [imgURL]="user?.profile_pic" [service]="'user'"
@@ -15,7 +15,7 @@
   </div>
 
   <div style="margin-top: 20px;">
-    <button class="btn btn-secondary" (click)="closeDialog()" i18n="@@permissionDialog.close">
+    <button class="btn btn-secondary" (click)="closeDialog()" i18n="@@likedByDialog.close">
       Close
     </button>
   </div>
