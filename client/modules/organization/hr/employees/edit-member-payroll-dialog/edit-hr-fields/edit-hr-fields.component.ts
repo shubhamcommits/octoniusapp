@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Inject, Injector, Input, OnInit, Output } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
@@ -7,17 +6,18 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
-  selector: 'app-edit-member-payroll-dialog',
-  templateUrl: './edit-member-payroll-dialog.component.html',
-  styleUrls: ['./edit-member-payroll-dialog.component.scss']
+  selector: 'app-edit-hr-fields',
+  templateUrl: './edit-hr-fields.component.html',
+  styleUrls: ['./edit-hr-fields.component.scss']
 })
-export class EditMemberPayrollDialogComponent implements OnInit {
+export class EditHRFieldsComponent implements OnInit {
+
+  @Input() memberId;
 
   @Output() memberEditedEvent = new EventEmitter();
 
   entityId;
 
-  memberId;
   memberData: any;
   
   hrCustomFields: any = [];
@@ -36,12 +36,8 @@ export class EditMemberPayrollDialogComponent implements OnInit {
     private hrService: HRService,
     private utilityService: UtilityService,
     private userService: UserService,
-    private injector: Injector,
-    public dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private mdDialogRef: MatDialogRef<EditMemberPayrollDialogComponent>
+    private injector: Injector
   ) {
-    this.memberId = this.data.memberId;
   }
 
   async ngOnInit() {
@@ -133,6 +129,30 @@ export class EditMemberPayrollDialogComponent implements OnInit {
     });
   }
 
+  changeCountry(value: any) {
+    if (value) {
+      this.saveHRProperty('country', value);
+    }
+  }
+
+  saveHRProperty(property_name: string, value: any) {
+
+    if (value != '') {
+      this.memberData.hr[property_name] = value;
+      
+      this.utilityService.asyncNotification($localize`:@@editHRFields.plesaeWaitWeAreUpdaing:Please wait we are updating the entity...`, new Promise((resolve, reject) => {
+        this.userService.updateUser(this.memberData)
+          .then(async (res) => {
+            // Resolve with success
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@editHRFields.entityUpdated:Entity updated!`));
+          })
+          .catch(() => {
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@editHRFields.unableToUpdateEntity:Unable to update the entity, please try again!`));
+          });
+      }));
+    }
+  }
+
   /**
    * CF STARTS
    */
@@ -151,7 +171,7 @@ export class EditMemberPayrollDialogComponent implements OnInit {
   }
 
   savePayrollCustomField(customFieldId: string, customFieldValue: any) {
-    this.utilityService.asyncNotification($localize`:@@editMemberPayrollDialog.pleaseWaitWeUpdateContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@editHRFields.pleaseWaitWeUpdateContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
       this.userService.savePayrollCustomField(this.memberData._id, customFieldId, customFieldValue)
         .then(async (res) => {
 
@@ -162,10 +182,10 @@ export class EditMemberPayrollDialogComponent implements OnInit {
           }
 
           // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@editMemberPayrollDialog.cfUpdated:Field updated!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@editHRFields.cfUpdated:Field updated!`));
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@editMemberPayrollDialog.unableToUpdateCF:Unable to update field, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@editHRFields.unableToUpdateCF:Unable to update field, please try again!`));
         });
     }));
   }
@@ -182,7 +202,7 @@ export class EditMemberPayrollDialogComponent implements OnInit {
   }
 
   savePayrollVariable(variableId: string, variableValue: any) {
-    this.utilityService.asyncNotification($localize`:@@editMemberPayrollDialog.pleaseWaitWeUpdateContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@editHRFields.pleaseWaitWeUpdateContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
       this.userService.savePayrollVariable(this.memberData?._id, variableId, variableValue)
         .then(async (res) => {
 
@@ -194,17 +214,12 @@ export class EditMemberPayrollDialogComponent implements OnInit {
           
           this.memberEditedEvent.emit(this.memberData);
           // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@editMemberPayrollDialog.cfUpdated:Field updated!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@editHRFields.cfUpdated:Field updated!`));
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@editMemberPayrollDialog.unableToUpdateCF:Unable to update field, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@editHRFields.unableToUpdateCF:Unable to update field, please try again!`));
         });
     }));
-  }
-  
-  emitMemberEdited(memberData: any) {
-    this.memberData= memberData;
-    this.memberEditedEvent.emit(this.memberData);
   }
   /**
    * VARIABLES ENDS
@@ -240,7 +255,7 @@ export class EditMemberPayrollDialogComponent implements OnInit {
   }
 
   savePayrollBenefit(benefitId: string, benefitValue: any) {
-    this.utilityService.asyncNotification($localize`:@@editMemberPayrollDialog.pleaseWaitWeUpdateContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@editHRFields.pleaseWaitWeUpdateContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
 
       const field = this.hrBenefits[this.hrBenefits.findIndex(benefit => benefit._id == benefitId)];
       let value = (field && field.type == 'Multiselect') ? benefitValue.toString() : benefitValue;
@@ -254,10 +269,10 @@ export class EditMemberPayrollDialogComponent implements OnInit {
           }
 
           // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@editMemberPayrollDialog.benefitUpdated:Benefit updated!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@editHRFields.benefitUpdated:Benefit updated!`));
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@editMemberPayrollDialog.unableToUpdateBenefit:Unable to update benefit, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@editHRFields.unableToUpdateBenefit:Unable to update benefit, please try again!`));
         });
     }));
   }
@@ -269,27 +284,22 @@ export class EditMemberPayrollDialogComponent implements OnInit {
    * HOLIDAYS STARTS
    */
   onDaysOffChange(propertyToSave: any) {
-    this.utilityService.asyncNotification($localize`:@@editMemberPayrollDialog.pleaseWaitWeUpdateContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@editHRFields.pleaseWaitWeUpdateContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
 
       this.userService.savePayrollExtraDaysOff(this.memberData._id, propertyToSave)
         .then(async (res) => {
 
           // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@editMemberPayrollDialog.daysOffUpdated:Days Off updated!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@editHRFields.daysOffUpdated:Days Off updated!`));
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@editMemberPayrollDialog.unableToUpdateDaysOff:Unable to update Days Off, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@editHRFields.unableToUpdateDaysOff:Unable to update Days Off, please try again!`));
         });
     }));
   }
   /**
    * HOLIDAYS ENDS
    */
-
-  closeDialog() {
-    // Close the modal
-    this.mdDialogRef.close();
-  }
 
   formateDate(date) {
     return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
