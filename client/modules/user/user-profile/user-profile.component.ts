@@ -125,7 +125,7 @@ export class UserProfileComponent implements OnInit, AfterContentChecked, OnDest
 
   selectUser(customFieldName, user) {
     this.selectedCFValues[customFieldName] = user;
-    this.saveCustomField(customFieldName, user._id);
+    this.saveCustomField(customFieldName, user?._id || user);
   }
 
   saveCustomField(customFieldName: string, customFieldValue: any) {
