@@ -26,6 +26,9 @@ export class TimneOffComponent implements OnInit {
   dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['photo', 'first_name', 'last_name', 'email', 'start_date', 'end_date', 'star'];
 
+  selectedDate = DateTime.now();
+  months = [];
+
   // Public functions
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -46,17 +49,38 @@ export class TimneOffComponent implements OnInit {
 
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
-    this.initUsersTable();
+    this.initMonths();
+
+    this.initUsersTable(DateTime.now());
   }
 
-  initUsersTable() {
+  initMonths() {
     const today = DateTime.now();
-    const from = today.startOf('week');
-    const to = today.endOf('week');
-    const members = (!!this.workspaceData.members) ? this.workspaceData.members.map(member => member._id) : [];
-    this.hrService.getMembersOff(members, from, to).then(res => {
+    this.selectedDate = today;
+    this.months = [
+      today.set({ month: 1 }),
+      today.set({ month: 2 }),
+      today.set({ month: 3 }),
+      today.set({ month: 4 }),
+      today.set({ month: 5 }),
+      today.set({ month: 6 }),
+      today.set({ month: 7 }),
+      today.set({ month: 8 }),
+      today.set({ month: 9 }),
+      today.set({ month: 10 }),
+      today.set({ month: 11 }),
+      today.set({ month: 12 })
+    ]
+  }
+
+  initUsersTable(date: DateTime) {
+    const from = date.startOf('month');
+    const to = date.endOf('month');
+
+    const membersIds = (!!this.workspaceData.members) ? this.workspaceData.members.map(member => member._id) : [];
+    this.hrService.getMembersOff(membersIds, from, to).then(res => {
       this.membersOff = res['members'];
-      
+
       // Assign the data to the data source for the table to render
       this.dataSource = new MatTableDataSource(this.membersOff);
 
@@ -94,10 +118,22 @@ export class TimneOffComponent implements OnInit {
     });
   }
 
+  changeMonth(monthSelected: any) {
+console.log(this.selectedDate);
+    this.initUsersTable(monthSelected);
+  }
+
   formateDate(date: any) {
     if (!!date && (date instanceof DateTime)) {
       return date.toLocaleString(DateTime.DATE_SHORT);
     }
     return (!!date) ? DateTime.fromISO(date).toLocaleString(DateTime.DATE_SHORT) : '';
+  }
+
+  displayMonth(date: any) {
+    if (!!date && (date instanceof DateTime)) {
+      return date.toFormat('LLLL yyyy');
+    }
+    return (!!date) ? DateTime.fromISO(date).toFormat('LLLL yyyy') : '';
   }
 }

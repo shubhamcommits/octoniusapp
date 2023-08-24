@@ -1,7 +1,17 @@
 <div class="container-fluid" style="margin-top: 30px; margin-left: 20px;">
   <div class="container-fluid" style="margin-left: 30px; padding-right: 50px; margin-top: 30px;">
   
-    <h2 i18n="@@timeoff.employeesOff">{{ membersOff?.length || 0 }} EMPLOYEES OFF THIS WEEK</h2>
+    <h2 i18n="@@timeoff.employeesOff">{{ membersOff?.length || 0 }} Employees Off On {{ displayMonth(selectedDate) }}</h2>
+
+    <div>
+      <mat-form-field>
+        <mat-select ngDefaultControl (selectionChange)="changeMonth($event.value)" (click)="$event.stopPropagation()"
+          [(value)]="selectedDate" name="month">
+          <mat-select-trigger>{{ displayMonth(selectedDate) }}</mat-select-trigger>
+          <mat-option *ngFor="let month of months" [value]="month">{{ displayMonth(month) }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
   
     <mat-form-field style="width: 100%;">
       <mat-label i18n="@@timeoff.filter">Filter</mat-label>

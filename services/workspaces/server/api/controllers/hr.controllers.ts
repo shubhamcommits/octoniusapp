@@ -777,29 +777,38 @@ export class HRControllers {
                             $or: [
                                 {
                                     $and: [
-                                        { start_date: { $lte: from }},
-                                        { end_date: { $gte: to} }
+                                        { start_date: { $gte: from }},
+                                        { start_date: { $lte: to }},
+                                        { end_date: { $gte: from }},
+                                        { end_date: { $lte: to }}
                                     ]
                                 }, {
                                     $and: [
                                         { start_date: { $lte: from }},
-                                        { end_date: { $lte: to} }
+                                        { start_date: { $lte: to }},
+                                        { end_date: { $gte: from }},
+                                        { end_date: { $lte: to }}
+                                    ]
+                                }, {
+                                    $and: [
+                                        { start_date: { $lte: from }},
+                                        { start_date: { $lte: to }},
+                                        { end_date: { $gte: from }},
+                                        { end_date: { $gte: to }}
                                     ]
                                 }, {
                                     $and: [
                                         { start_date: { $gte: from }},
-                                        { end_date: { $gte: to} }
-                                    ]
-                                }, {
-                                    $and: [
-                                        { start_date: { $gte: from }},
-                                        { end_date: { $lte: to} }
+                                        { start_date: { $lte: to }},
+                                        { end_date: { $gte: from }},
+                                        { end_date: { $gte: to }}
                                     ]
                                 }
                             ]
                         }
                     ]
                 })
+                .limit(6)
                 .populate({
                     path: '_user',
                     select: '_id first_name last_name email profile_pic hr'
@@ -810,7 +819,11 @@ export class HRControllers {
                 return sendError(res, new Error('Oops, holidays not found!'), 'Holidays not found!', 404);
             }
 
-            const users = holidays.map(holiday => holiday._user);
+            const users = holidays.map(holiday => {
+                holiday._user.start_date = holiday.start_date;
+                holiday._user.end_date = holiday.end_date;
+                return holiday._user
+            });
 
             // Find the workspace based on the workspaceId
             // const users: any = await User.find({
@@ -819,7 +832,7 @@ export class HRControllers {
             //         {'out_of_office.date': { $gte: from_date, $lte: to_date }},
             //         {'out_of_office.approved': true },
             //     ]
-            // }).limit(4).select('_id first_name last_name email profile_pic hr').lean();
+            // }).limit(6).select('_id first_name last_name email profile_pic hr').lean();
 
             // Check if workspace already exist with the same workspaceId
             // if (!users) {
@@ -848,23 +861,31 @@ export class HRControllers {
                             $or: [
                                 {
                                     $and: [
-                                        { start_date: { $lte: from }},
-                                        { end_date: { $gte: to} }
+                                        { start_date: { $gte: from }},
+                                        { start_date: { $lte: to }},
+                                        { end_date: { $gte: from }},
+                                        { end_date: { $lte: to }}
                                     ]
                                 }, {
                                     $and: [
                                         { start_date: { $lte: from }},
-                                        { end_date: { $lte: to} }
+                                        { start_date: { $lte: to }},
+                                        { end_date: { $gte: from }},
+                                        { end_date: { $lte: to }}
+                                    ]
+                                }, {
+                                    $and: [
+                                        { start_date: { $lte: from }},
+                                        { start_date: { $lte: to }},
+                                        { end_date: { $gte: from }},
+                                        { end_date: { $gte: to }}
                                     ]
                                 }, {
                                     $and: [
                                         { start_date: { $gte: from }},
-                                        { end_date: { $gte: to} }
-                                    ]
-                                }, {
-                                    $and: [
-                                        { start_date: { $gte: from }},
-                                        { end_date: { $lte: to} }
+                                        { start_date: { $lte: to }},
+                                        { end_date: { $gte: from }},
+                                        { end_date: { $gte: to }}
                                     ]
                                 }
                             ]
@@ -876,7 +897,9 @@ export class HRControllers {
                     select: '_id first_name last_name email profile_pic hr'
                 })
                 .lean() || [];
-            
+console.log({from});
+console.log({to});
+console.log({holidays});
             const users = holidays.map(holiday => {
                 holiday._user.start_date = holiday.start_date;
                 holiday._user.end_date = holiday.end_date;
