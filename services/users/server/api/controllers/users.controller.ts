@@ -1385,7 +1385,7 @@ export class UsersControllers {
                     ]
                 })
                 .populate({
-                    path: 'approval_flow._manager',
+                    path: '_approval_manager',
                     select: '_id email first_name last_name profile_pic'
                 })
                 .lean() || [];
@@ -1402,7 +1402,7 @@ export class UsersControllers {
                     ]
                 })
                 .populate({
-                    path: 'approval_flow._manager',
+                    path: '_approval_manager',
                     select: '_id email first_name last_name profile_pic'
                 })
                 .lean() || [];
@@ -1415,7 +1415,7 @@ export class UsersControllers {
                     ]
                 })
                 .populate({
-                    path: 'approval_flow._manager',
+                    path: '_approval_manager',
                     select: '_id email first_name last_name profile_pic'
                 })
                 .lean() || [];
@@ -1909,7 +1909,7 @@ export class UsersControllers {
                     $set: { holiday }
                 })
                 .populate({
-                    path: 'approval_flow._manager',
+                    path: '_approval_manager',
                     select: '_id email first_name last_name profile_pic'
                 })
                 .lean();

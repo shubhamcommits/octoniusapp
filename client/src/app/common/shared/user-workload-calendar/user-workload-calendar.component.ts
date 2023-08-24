@@ -41,11 +41,11 @@ export class UserWorkloadCalendarComponent implements OnInit {
   today = DateTime.now();
   startDate;
   endDate;
-  holidaysInMonth: any = [];
+  // holidaysInMonth: any = [];
   holidaysInYear: any = [];
   pastHolidays: any = [];
-  bookedDays: any = [];
-  daysToCancel: any = [];
+  // bookedDays: any = [];
+  // daysToCancel: any = [];
 
   createNewHoliday = false;
   outOfOfficeReason = ['Holidays', 'Sick', 'Personal'];
@@ -55,9 +55,7 @@ export class UserWorkloadCalendarComponent implements OnInit {
     end_date: DateTime.now(),
     type: 'holidays',
     num_days: 0,
-    approval_flow: {
-      _manager: ''
-    }
+    _approval_manager: ''
   };
   errorCode = '';
 
@@ -163,28 +161,28 @@ export class UserWorkloadCalendarComponent implements OnInit {
 
   async getOutOfOfficeDays(from: any, to: any) {
     await this.userService.getOutOfTheOfficeDays(this.userId, from, to).then(res => {
-      this.holidaysInMonth = res['holidaysInMonth'];
+      // this.holidaysInMonth = res['holidaysInMonth'];
       this.holidaysInYear = res['holidaysInYear'];
       this.pastHolidays = res['pastHolidays'];
 
-      if (!!this.holidaysInMonth) {
-        this.bookedDays = [];
-        for (let i = 0; i < this.holidaysInMonth.length; i++) {
-          const holiday = this.holidaysInMonth[i];
-          var date = DateTime.fromISO(holiday.start_date).startOf('day');
-          while (date < DateTime.fromISO(holiday.end_date)) {
-            const index = this.bookedDays.findIndex((bookedDay) => DateTime.fromJSDate(bookedDay.date).equals(date))
-            if (index < 0) {
-              this.bookedDays.push({
-                date: date.toJSDate(),
-                type: holiday.type || 'holidays',
-                approved: holiday?.approval_flow?.confirmed || false
-              });
-            }
-            date = date.plus({ days: 1 });
-          }
-        }
-      }
+      // if (!!this.holidaysInMonth) {
+      //   this.bookedDays = [];
+      //   for (let i = 0; i < this.holidaysInMonth.length; i++) {
+      //     const holiday = this.holidaysInMonth[i];
+      //     var date = DateTime.fromISO(holiday.start_date).startOf('day');
+      //     while (date < DateTime.fromISO(holiday.end_date)) {
+      //       const index = this.bookedDays.findIndex((bookedDay) => DateTime.fromJSDate(bookedDay.date).equals(date))
+      //       if (index < 0) {
+      //         this.bookedDays.push({
+      //           date: date.toJSDate(),
+      //           type: holiday.type || 'holidays',
+      //           approved: holiday?.status || 'pending'
+      //         });
+      //       }
+      //       date = date.plus({ days: 1 });
+      //     }
+      //   }
+      // }
 
       if (!!this.holidaysInYear) {
         const doIndex = (!!this.entityData && !!this.entityData.payroll_days_off) ? this.entityData.payroll_days_off.findIndex((dayOff: any) => dayOff.year === DateTime.now().year) : -1;
@@ -201,7 +199,7 @@ export class UserWorkloadCalendarComponent implements OnInit {
           }
         }
         for (let i = 0; i < this.holidaysInYear.length; i++) {
-          const holiday = this.holidaysInMonth[i];
+          const holiday = this.holidaysInYear[i];
           if (holiday.type == 'holidays') {
             this.totalUsedHolidays = holiday.num_days;
             this.pendingUsedHolidays = (dayOff.holidays + this.userData.hr.entity_extra_days_off.holidays) - this.totalUsedHolidays
@@ -229,7 +227,7 @@ export class UserWorkloadCalendarComponent implements OnInit {
       managerId = this.userData?.profile_custom_fields['manager'];
       this.userHasManager =  (index >= 0) && !!managerId;
     }
-    
+
     if (this.userHasManager) {
       manager = await this.publicFunctions.getOtherUser(managerId);
     }
@@ -240,9 +238,7 @@ export class UserWorkloadCalendarComponent implements OnInit {
       end_date: DateTime.now(),
       type: 'holidays',
       num_days: 0,
-      approval_flow: {
-        _manager: manager
-      }
+      _approval_manager: manager
     };
   }
 
@@ -327,7 +323,7 @@ export class UserWorkloadCalendarComponent implements OnInit {
     // this.newHoliday.end_date = holiday.end_date;
     this.newHoliday.type = holiday.type;
     this.newHoliday.num_days = holiday.num_days;
-    this.newHoliday.approval_flow._manager = holiday.approval_flow._manager;
+    this.newHoliday._approval_manager = holiday._manager;
 
     this.showNewHolidayForm();
   }
@@ -408,11 +404,11 @@ export class UserWorkloadCalendarComponent implements OnInit {
   }
 
   selectManager(user: any) {
-    this.newHoliday.approval_flow._manager = user;
+    this.newHoliday._approval_manager = user;
   }
 
   canCreate() {
-    return !!this.newHoliday.approval_flow._manager
+    return !!this.newHoliday._approval_manager
       && !!this.newHoliday.type
       && !!this.newHoliday.start_date
       && !!this.newHoliday.end_date

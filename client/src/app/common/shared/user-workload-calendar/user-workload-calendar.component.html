@@ -99,14 +99,15 @@
             <td>{{ holiday.type }}</td>
             <td>{{ holiday.num_days }}</td>
             <td>
-              <app-secured-image [imgURL]="holiday?.approval_flow?._manager?.profile_pic" [service]="'user'"
+              <app-secured-image [imgURL]="holiday?._approval_manager?.profile_pic" [service]="'user'"
                 [workspaceId]="workspaceData?._id" [styleClass]="'feed-avatar-small'"></app-secured-image>
-              {{ holiday?.approval_flow?._manager?.first_name }} {{ holiday?.approval_flow?._manager?.last_name }}
+              {{ holiday?._approval_manager?.first_name }} {{ holiday?._approval_manager?.last_name }}
             </td>
         
             <td>
-              <span *ngIf="holiday.approval_flow.confirmed">APROVED</span>
-              <span *ngIf="!holiday.approval_flow.confirmed">PENDING</span>
+              <span *ngIf="holiday?.status == 'approved'" class="approved" i18n="@@userWorkloadCalendar.approved">APPROVED</span>
+              <span *ngIf="holiday?.status == 'pending'" class="pending" i18n="@@userWorkloadCalendar.pending">PENDING</span>
+              <span *ngIf="holiday?.status == 'rejected'" class="rejected" i18n="@@userWorkloadCalendar.rejected">REJECTED</span>
             </td>
         
             <td>
@@ -151,14 +152,15 @@
             <td>{{ holiday.type }}</td>
             <td>{{ holiday.num_days }}</td>
             <td>
-              <app-secured-image [imgURL]="holiday?.approval_flow?._manager?.profile_pic" [service]="'user'"
+              <app-secured-image [imgURL]="holiday?._approval_manager?.profile_pic" [service]="'user'"
                 [workspaceId]="workspaceData?._id" [styleClass]="'feed-avatar-small'"></app-secured-image>
-              {{ holiday?.approval_flow?._manager?.first_name }} {{ holiday?.approval_flow?._manager?.last_name }}
+              {{ holiday?._approval_manager?.first_name }} {{ holiday?._approval_manager?.last_name }}
             </td>
         
             <td>
-              <span *ngIf="holiday.approval_flow.confirmed">APROVED</span>
-              <span *ngIf="!holiday.approval_flow.confirmed">PENDING</span>
+              <span *ngIf="holiday?.status == 'approved'" class="approved" i18n="@@userWorkloadCalendar.approved">APPROVED</span>
+              <span *ngIf="holiday?.status == 'pending'" class="pending" i18n="@@userWorkloadCalendar.pending">PENDING</span>
+              <span *ngIf="holiday?.status == 'rejected'" class="rejected" i18n="@@userWorkloadCalendar.rejected">REJECTED</span>
             </td>
           </tr>
         </table>
@@ -212,7 +214,7 @@
       <input type="number" autocomplete="off" class="form-control" [(ngModel)]="newHoliday.num_days" disabled="true" />
       
       <label i18n="@@userWorkloadCalendar.manager" style="float: left; width: 100%;">Manager</label>
-      <app-select-assignee type="workspaceMembers" [userData]="newHoliday.approval_flow._manager"
+      <app-select-assignee type="workspaceMembers" [userData]="newHoliday._approval_manager"
         [workspaceData]="workspaceData" [showBar]="isCurrentUser && !userHasManager" [styleClass]="'feed-avatar-small'"
         (member)="selectManager($event)"></app-select-assignee>
 

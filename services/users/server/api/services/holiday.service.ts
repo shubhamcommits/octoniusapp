@@ -68,12 +68,7 @@ export class HolidayService {
                 code: `Exceeded the number of days per year for ${type}.`
             };
         }
-console.log({start})
-console.log({end})
-console.log({totalDays})
-console.log({naturalDays})
-console.log({weekends})
-console.log({bankHolidays})
+
         if (totalDays % 1 != 0) {
             return {
                 totalDays: -1,
