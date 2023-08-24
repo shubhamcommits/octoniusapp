@@ -943,6 +943,43 @@ export class HRControllers {
         }
     }
 
+    async getTopHRPendingNotifications(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { workspaceId }} = req;
+
+            const notifications = await Notification.find({
+                    $and: [
+                        { _workspace: workspaceId },
+                        { type: 'hive' },
+                        { read: false }
+                    ]
+                })
+                .limit(6)
+                .populate({
+                    path: '_owner',
+                    select: '_id first_name last_name email profile_pic'
+                })
+                .lean() || [];
+
+            const totalNotificationsCount = await Notification.find({
+                    $and: [
+                        { _workspace: workspaceId },
+                        { type: 'hive' },
+                        { read: false }
+                    ]
+                }).countDocuments();
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Notifications found!',
+                notifications: notifications,
+                totalCount: totalNotificationsCount
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    }
+
     async markNotificationAsDone(req: Request, res: Response, next: NextFunction) {
         try {
             const { params: { notificationId }} = req;

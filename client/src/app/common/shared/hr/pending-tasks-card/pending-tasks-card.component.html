@@ -5,6 +5,9 @@
 		</div>
 
 		<div class="card-content">
+			<div *ngIf="!!pendingTasks && pendingTasks.length > 0" i18n="@@pendingTasksCard.topTasks">
+				Top {{ pendingTasks.length }} tasks of {{ totalPendingNotifications }} total tasks.
+			</div>
 
 			<div *ngFor="let task of pendingTasks">
 				<div>

@@ -100,6 +100,9 @@ routes.get('/:workspaceId/membersOff', controller.getMembersOff);
 // GET - Returns all members which are currently off
 routes.get('/:workspaceId/hr-pending-notifications', controller.getHRPendingNotifications);
 
+// GET - Returns all members which are currently off
+routes.get('/:workspaceId/top-hr-pending-notifications', controller.getTopHRPendingNotifications);
+
 // POST - Mark a Notification as DONE
 routes.post('/:notificationId/mark-notification-as-done', controller.markNotificationAsDone);
 

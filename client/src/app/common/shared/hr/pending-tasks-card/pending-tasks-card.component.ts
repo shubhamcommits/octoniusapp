@@ -18,6 +18,7 @@ export class PendingTasksCardComponent implements OnChanges {
   @Input() workspaceData;
 
   pendingTasks = [];
+  totalPendingNotifications = 0;
 
   // Public functions
   public publicFunctions = new PublicFunctions(this.injector);
@@ -38,8 +39,9 @@ export class PendingTasksCardComponent implements OnChanges {
   }
 
   async initNotifications() {
-    await this.hrService.getHRPendingNotifications(this.workspaceData?._id).then(res => {
+    await this.hrService.getTopHRPendingNotifications(this.workspaceData?._id).then(res => {
       this.pendingTasks = res['notifications'];
+      this.totalPendingNotifications = res['totalCount']
     });
   }
 

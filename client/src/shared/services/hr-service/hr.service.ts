@@ -129,6 +129,10 @@ export class HRService {
     return this._http.get(this.baseUrl + `/${workspaceId}/hr-pending-notifications`).toPromise();
   }
 
+  getTopHRPendingNotifications(workspaceId: string) {
+    return this._http.get(this.baseUrl + `/${workspaceId}/top-hr-pending-notifications`).toPromise();
+  }
+
   markNotificationAsDone(workspaceId: string) {
     return this._http.post(this.baseUrl + `/${workspaceId}/mark-notification-as-done`, {}).toPromise();
   }
