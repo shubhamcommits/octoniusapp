@@ -114,19 +114,32 @@ export class UserWorkloadCalendarComponent implements OnInit {
             personal_days: 0
           }
         }
+
+        if (!this.userData.hr.entity_extra_days_off) {
+          this.userData.hr.entity_extra_days_off = {
+            holidays: 0,
+            sick: 0,
+            personal_days: 0
+          }
+        }
+
         for (let i = 0; i < this.holidaysInYear.length; i++) {
           const holiday = this.holidaysInYear[i];
-          if (holiday.type == 'holidays') {
-            this.totalUsedHolidays = holiday.num_days;
-            this.pendingUsedHolidays = (dayOff.holidays + this.userData.hr.entity_extra_days_off.holidays) - this.totalUsedHolidays
-          } else if (holiday.type == 'sick') {
-            this.totalUsedSickDays = holiday.num_days;
-            this.pendingUsedSickDays = (dayOff.sick + this.userData.hr.entity_extra_days_off.sick) - this.totalUsedSickDays
-          } else if (holiday.type == 'personal') {
-            this.totalUsedPersonalDays = holiday.num_days;
-            this.pendingUsedPersonalDays = (dayOff.personal_days + this.userData.hr.entity_extra_days_off.personal_days) - this.totalUsedPersonalDays
-          } 
+
+          if ((holiday.status == 'approved' || holiday.status == 'pending')) {
+            if (holiday.type == 'holidays') {
+              this.totalUsedHolidays += holiday.num_days;
+            } else if (holiday.type == 'sick') {
+              this.totalUsedSickDays += holiday.num_days;
+            } else if (holiday.type == 'personal') {
+              this.totalUsedPersonalDays += holiday.num_days;
+            }
+          }
         }
+
+        this.pendingUsedHolidays = (dayOff.holidays + this.userData.hr.entity_extra_days_off.holidays) - this.totalUsedHolidays;
+        this.pendingUsedSickDays = (dayOff.sick + this.userData.hr.entity_extra_days_off.sick) - this.totalUsedSickDays;
+        this.pendingUsedPersonalDays = (dayOff.personal_days + this.userData.hr.entity_extra_days_off.personal_days) - this.totalUsedPersonalDays;
       }
     });
   }

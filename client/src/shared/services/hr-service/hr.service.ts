@@ -115,12 +115,8 @@ export class HRService {
     return this._http.get(this.baseUrl + `/${workspaceId}/topMembersOff`).toPromise();
   }
 
-  getMembersOff(workspaceId: string) {
-    return this._http.get(this.baseUrl + `/${workspaceId}/membersOff`).toPromise();
-  }
-
-  getMultipleUsersHolidays(members: any, from: any, to: any, workspaceId?: string) {
-    return this._http.get(this.baseUrl + `/${workspaceId}/multiple-users-holidays`, {
+  getMembersOff(members: any, from: any, to: any, workspaceId?: string) {
+    return this._http.get(this.baseUrl + `/${workspaceId}/membersOff`, {
       params: {
         from: from,
         to: to,

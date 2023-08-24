@@ -97,9 +97,6 @@ routes.get('/:workspaceId/topMembersOff', controller.getTopMembersOff);
 // GET - Returns all members which are currently off
 routes.get('/:workspaceId/membersOff', controller.getMembersOff);
 
-// GET - Returns all members which are currently off
-routes.get('/:workspaceId/multiple-users-holidays', controller.getMembersOff);
-
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

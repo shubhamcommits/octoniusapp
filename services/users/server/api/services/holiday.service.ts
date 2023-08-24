@@ -77,14 +77,14 @@ export class HolidayService {
 
         if ((totalDays + usedDays) > numDaysOff) {
             return {
-                totalDays: -1,
+                totalDays: totalDays,
                 code: `Exceeded the number of days per year for ${type}.`
             };
         }
 
         if (totalDays % 1 != 0) {
             return {
-                totalDays: -1,
+                totalDays: totalDays,
                 code: `ERROR for ${type}.`
             };
         }

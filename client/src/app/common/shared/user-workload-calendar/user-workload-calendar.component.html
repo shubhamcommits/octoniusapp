@@ -45,26 +45,26 @@
   -->
   <div class="row">
     <div class="col">
-      <span i18n="@@userWorkloadCalendar.usedHolidays">Used Holiday days: </span> {{ totalUsedHolidays }}
+      <span i18n="@@userWorkloadCalendar.usedHolidays">Used Holiday days: </span> {{ totalUsedHolidays || 0 }}
     </div>
     <div class="col">
-      <span i18n="@@userWorkloadCalendar.pendingHolidays">Pending Holiday days: </span> {{ pendingUsedHolidays }}
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <span i18n="@@userWorkloadCalendar.usedSick">Used Sick days: </span> {{ totalUsedSickDays }}
-    </div>
-    <div class="col">
-      <span i18n="@@userWorkloadCalendar.pendingSick">Pending Sick days: </span> {{ pendingUsedSickDays }}
+      <span i18n="@@userWorkloadCalendar.pendingHolidays">Pending Holiday days: </span> {{ pendingUsedHolidays || 0 }}
     </div>
   </div>
   <div class="row">
     <div class="col">
-      <span i18n="@@userWorkloadCalendar.usedPersonal">Used Personal days: </span> {{ totalUsedPersonalDays }}
+      <span i18n="@@userWorkloadCalendar.usedSick">Used Sick days: </span> {{ totalUsedSickDays || 0 }}
     </div>
     <div class="col">
-      <span i18n="@@userWorkloadCalendar.pendingPersonal">Pending Personal days: </span> {{ pendingUsedPersonalDays }}
+      <span i18n="@@userWorkloadCalendar.pendingSick">Pending Sick days: </span> {{ pendingUsedSickDays || 0 }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <span i18n="@@userWorkloadCalendar.usedPersonal">Used Personal days: </span> {{ totalUsedPersonalDays || 0 }}
+    </div>
+    <div class="col">
+      <span i18n="@@userWorkloadCalendar.pendingPersonal">Pending Personal days: </span> {{ pendingUsedPersonalDays || 0 }}
     </div>
   </div>
 
@@ -86,7 +86,7 @@
             <th i18n="@@userWorkloadCalendar.manager">Manager</th>
             <th i18n="@@userWorkloadCalendar.status">Status</th>
             <th i18n="@@userWorkloadCalendar.comment">Comment</th>
-            <th>
+            <th *ngIf="isCurrentUser">
               <button (click)="cancelHoliday(); showNewHolidayForm()" class="btn btn-primary"
                 i18n="@@newEntity.requestHolidays">
                 Request Holidays
@@ -113,7 +113,7 @@
 
             <td>{{ holiday.rejection_description }}</td>
         
-            <td>
+            <td *ngIf="isCurrentUser">
               <div style="cursor: pointer;" [matMenuTriggerFor]="holidayActionsMenu">
                 <i class="material-icons">settings</i>
               </div>

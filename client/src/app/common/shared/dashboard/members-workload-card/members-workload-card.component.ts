@@ -72,7 +72,7 @@ export class MembersWorkloadCardComponent implements OnInit {
 
     const membersIds = this.groupMembers.map(member => {return member._id});
     let holidays = [];
-    await this.hrService.getMultipleUsersHolidays(membersIds, this.dates[0], this.dates[this.dates.length - 1]).then(res => {
+    await this.hrService.getMembersOff(membersIds, this.dates[0], this.dates[this.dates.length - 1]).then(res => {
       holidays = res['holidays'];
     });
 

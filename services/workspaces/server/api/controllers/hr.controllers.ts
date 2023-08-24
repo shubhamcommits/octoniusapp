@@ -767,40 +767,12 @@ export class HRControllers {
         try {
             const { params: { workspaceId } } = req;
 
-            const from_date = moment().startOf('week');
-            const to_date = moment().endOf('week');
-
-            // Find the workspace based on the workspaceId
-            const users: any = await User.find({
-                $and: [
-                    { _workspace: workspaceId },
-                    {'out_of_office.date': { $gte: from_date, $lte: to_date }},
-                    {'out_of_office.approved': true },
-                ]
-            }).limit(4).select('_id first_name last_name email profile_pic hr').lean();
-
-            // Check if workspace already exist with the same workspaceId
-            if (!users) {
-                return sendError(res, new Error('Oops, users not found!'), 'Users not found!', 404);
-            }
-
-            // Send the status 200 response
-            return res.status(200).json({
-                message: 'Users found!',
-                members: users
-            });
-        } catch (err) {
-            return sendError(res, err);
-        }
-    }
-
-    async getMembersOff(req: Request, res: Response, next: NextFunction) {
-        try {
-            const { query: { members, from, to }} = req;
+            const from = moment().startOf('week');
+            const to = moment().endOf('week');
 
             const holidays = await Holiday.find({
                     $and: [
-                        { _user: { $in: members }},
+                        { status: 'approved' },
                         {
                             $or: [
                                 {
@@ -828,12 +800,94 @@ export class HRControllers {
                         }
                     ]
                 })
+                .populate({
+                    path: '_user',
+                    select: '_id first_name last_name email profile_pic hr'
+                })
                 .lean() || [];
+
+            if (!holidays) {
+                return sendError(res, new Error('Oops, holidays not found!'), 'Holidays not found!', 404);
+            }
+
+            const users = holidays.map(holiday => holiday._user);
+
+            // Find the workspace based on the workspaceId
+            // const users: any = await User.find({
+            //     $and: [
+            //         { _workspace: workspaceId },
+            //         {'out_of_office.date': { $gte: from_date, $lte: to_date }},
+            //         {'out_of_office.approved': true },
+            //     ]
+            // }).limit(4).select('_id first_name last_name email profile_pic hr').lean();
+
+            // Check if workspace already exist with the same workspaceId
+            // if (!users) {
+            //     return sendError(res, new Error('Oops, users not found!'), 'Users not found!', 404);
+            // }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Users found!',
+                members: users
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    }
+
+    async getMembersOff(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { query: { members, from, to }} = req;
+
+            const holidays = await Holiday.find({
+                    $and: [
+                        { _user: { $in: members }},
+                        { status: 'approved' },
+                        {
+                            $or: [
+                                {
+                                    $and: [
+                                        { start_date: { $lte: from }},
+                                        { end_date: { $gte: to} }
+                                    ]
+                                }, {
+                                    $and: [
+                                        { start_date: { $lte: from }},
+                                        { end_date: { $lte: to} }
+                                    ]
+                                }, {
+                                    $and: [
+                                        { start_date: { $gte: from }},
+                                        { end_date: { $gte: to} }
+                                    ]
+                                }, {
+                                    $and: [
+                                        { start_date: { $gte: from }},
+                                        { end_date: { $lte: to} }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                })
+                .populate({
+                    path: '_user',
+                    select: '_id first_name last_name email profile_pic hr'
+                })
+                .lean() || [];
+            
+            const users = holidays.map(holiday => {
+                holiday._user.start_date = holiday.start_date;
+                holiday._user.end_date = holiday.end_date;
+                return holiday._user
+            });
 
             // Send the status 200 response
             return res.status(200).json({
                 message: 'Holidays found!',
-                holidays: holidays
+                holidays: holidays,
+                members: users
             });
         } catch (err) {
             return sendError(res, err);

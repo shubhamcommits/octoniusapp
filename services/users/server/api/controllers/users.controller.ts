@@ -1870,7 +1870,7 @@ export class UsersControllers {
             holiday._user = userId;
             const calculatedDays = await holidayService.calculateNumDays(userId, holiday.start_date, holiday.end_date, holiday.type);
 
-            if (calculatedDays.totalDays == -1) {
+            if (!!calculatedDays.code) {
                 return sendError(res, new Error(calculatedDays.code), calculatedDays.code, 500);
             }
 
@@ -1897,7 +1897,7 @@ export class UsersControllers {
         try {
             const calculatedDays = await holidayService.calculateNumDays(userId, holiday.start_date, holiday.end_date, holiday.type);
             
-            if (calculatedDays.totalDays == -1) {
+            if (!!calculatedDays.code) {
                 return sendError(res, new Error(calculatedDays.code), calculatedDays.code, 500);
             }
 
