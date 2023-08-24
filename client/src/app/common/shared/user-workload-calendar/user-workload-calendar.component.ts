@@ -1,22 +1,15 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation, Input, Injector } from '@angular/core';
+import { Component, OnInit, Input, Injector } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { DateTime } from 'luxon';
-// import { CalendarEvent, CalendarMonthViewDay, CalendarView, DAYS_OF_WEEK } from 'angular-calendar';
-// import { WeekViewHourColumn } from 'calendar-utils';
-// import { Subject } from 'rxjs';
-// import { UserAvailabilityDayDialogComponent } from './user-availability-day-dialog/user-availability-day-dialog.component';
-// import moment from 'moment/moment';
 
 @Component({
   selector: 'app-user-workload-calendar',
   templateUrl: './user-workload-calendar.component.html',
   styleUrls: ['./user-workload-calendar.component.scss'],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
-  // encapsulation: ViewEncapsulation.None
 })
 export class UserWorkloadCalendarComponent implements OnInit {
 
@@ -28,24 +21,12 @@ export class UserWorkloadCalendarComponent implements OnInit {
   userHasManager = false;
   entityData;
 
-  // view: CalendarView = CalendarView.Month;
-  // weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
-  // viewDate: Date = DateTime.now().toJSDate();
-  // selectedMonthViewDay: CalendarMonthViewDay;
-  // selectedDayViewDate: Date;
-  // hourColumns: WeekViewHourColumn[];
-  // events: CalendarEvent[] = [];
-  // refresh: Subject<any> = new Subject();
-
   selectedDays: any = [];
   today = DateTime.now();
   startDate;
   endDate;
-  // holidaysInMonth: any = [];
   holidaysInYear: any = [];
   pastHolidays: any = [];
-  // bookedDays: any = [];
-  // daysToCancel: any = [];
 
   createNewHoliday = false;
   outOfOfficeReason = ['Holidays', 'Sick', 'Personal'];
@@ -55,7 +36,8 @@ export class UserWorkloadCalendarComponent implements OnInit {
     end_date: DateTime.now(),
     type: 'holidays',
     num_days: 0,
-    _approval_manager: ''
+    _approval_manager: '',
+    description: ''
   };
   errorCode = '';
 
@@ -91,73 +73,7 @@ export class UserWorkloadCalendarComponent implements OnInit {
     await this.getOutOfOfficeDays(firstDay.toISO(), lastDay.toISO());
 
     await this.initNewHoliday();
-
-    // this.refresh.next();
   }
-
-  // dayClicked(day: CalendarMonthViewDay): void {
-
-  //   // check if the day is already booked, so we will remove it from out of offie days
-  //   if (this.isCurrentUser) {
-  //     // this.selectedMonthViewDay = day;
-  //     // if (!this.startDate) {
-  //     //   this.startDate = day.date;
-  //     // } else {
-  //     //   if (day.date >= this.startDate) {
-  //     //     this.endDate = day.date;
-  //     //   } else {
-  //     //     this.endDate = this.startDate;
-  //     //     this.startDate = day.date;
-  //     //   }
-  //     // }
-
-  //     const bookedDayIndex = this.bookedDays.findIndex((bookedDay) => moment(moment.utc(bookedDay.date).format('YYYY-MM-DD')).isSame(moment(moment(day.date).format('YYYY-MM-DD')), 'day'));
-  //     if (bookedDayIndex < 0) {
-  //       this.selectedMonthViewDay = day;
-  //       const dateIndex = this.selectedDays.findIndex((selectedDay) => moment(selectedDay.date).isSame(moment(day.date), 'day'));
-
-  //       if (dateIndex > -1) {
-  //         delete this.selectedMonthViewDay.cssClass;
-  //         this.selectedDays.splice(dateIndex, 1);
-  //       } else {
-  //         this.selectedDays.push(this.selectedMonthViewDay);
-  //         day.cssClass = 'cal-day-selected';
-  //         this.selectedMonthViewDay = day;
-  //       }
-  //     } else {
-  //       this.selectedMonthViewDay = day;
-  //       const dateIndex = this.daysToCancel.findIndex((dayToCancel) => moment(dayToCancel.date).isSame(moment(day.date), 'day'));
-  //       if (dateIndex > -1) {
-  //         this.daysToCancel.splice(dateIndex, 1);
-  //         this.refresh.next();
-  //       } else {
-  //         this.daysToCancel.push(this.selectedMonthViewDay);
-  //         day.cssClass = 'cal-day-cancel-selected';
-  //         this.selectedMonthViewDay = day;
-  //       }
-  //     }
-  //   }
-  // }
-
-  // async beforeMonthViewRender({ body }: { body: CalendarMonthViewDay[] }): Promise<void> {
-  //   await this.getOutOfOfficeDays(body[0].date, body[body.length - 1].date);
-  //   body.forEach((day) => {
-  //     const index = this.bookedDays.findIndex((bookedDay) => DateTime.fromJSDate(bookedDay.date).equals(DateTime.fromJSDate(day.date)));
-  //     if (index >= 0) {
-  //       const bookedDay = this.bookedDays[index];
-  //       day.cssClass = this.getDayStyleClass(bookedDay.type);
-  //       day.cssClass += (day.cssClass != '' && bookedDay.approved) ? '-approved' : '';
-  //     }
-  //   });
-  // }
-
-  // getDayStyleClass(type: string) {
-  //   return (type == 'holidays')
-  //     ? 'cal-day-holidays'
-  //     : ((type == 'personal')
-  //       ? 'cal-day-personal'
-  //       : ((type == 'sick') ? 'cal-day-sick' : ''));
-  // }
 
   async getOutOfOfficeDays(from: any, to: any) {
     await this.userService.getOutOfTheOfficeDays(this.userId, from, to).then(res => {
@@ -238,72 +154,10 @@ export class UserWorkloadCalendarComponent implements OnInit {
       end_date: DateTime.now(),
       type: 'holidays',
       num_days: 0,
-      _approval_manager: manager
+      _approval_manager: manager,
+      description: ''
     };
   }
-
-  // openDialog(action: string) {
-  //   if (action == 'add') {
-  //     if (this.selectedDays && this.selectedDays.length > 0) {
-  //       const data = {
-  //         selectedDays: this.selectedDays,
-  //         startDate: this.startDate,
-  //         endDate: this.endDate,
-  //         userId: this.userId
-  //       }
-  //       const dialogRef = this.dialog.open(UserAvailabilityDayDialogComponent, {
-  //         minWidth: '20%',
-  //         disableClose: true,
-  //         hasBackdrop: true,
-  //         data: data
-  //       });
-
-  //       const datesSavedEventSubs = dialogRef.componentInstance.datesSavedEvent.subscribe((data) => {
-  //         this.selectedDays = [];
-  //         data.forEach(day => {
-  //           day.date = moment(day.date).format('YYYY-MM-DD');
-  //           this.bookedDays.push(day);
-  //         });
-
-  //         this.refresh.next();
-  //       });
-
-  //       dialogRef.afterClosed().subscribe(result => {
-  //         datesSavedEventSubs.unsubscribe();
-  //       });
-  //     }
-  //   } else if (action == 'remove') {
-  //     if (this.daysToCancel && this.daysToCancel.length > 0) {
-  //       this.utilityService.getConfirmDialogAlert($localize`:@@userWorkloadCalendar.areYouSure:Are you sure?`, $localize`:@@userWorkloadCalendar.dayWillBeCAncelled:By doing this the day will be cancelled!`)
-  //         .then(async (res) => {
-  //           if (res.value) {
-  //             await this.utilityService.asyncNotification($localize`:@@userWorkloadCalendar.pleaseWaitWeCancelDay:Please wait we are cancelling the day...`, new Promise((resolve, reject) => {
-  //               for (let index = 0; index < this.daysToCancel.length; index++) {
-  //                 this.daysToCancel[index].date = moment(this.daysToCancel[index].date).format("YYYY-MM-DD");
-  //               }
-  //               this.userService.saveOutOfTheOfficeDays(this.userId, this.daysToCancel, 'remove').then((res) => {
-  //                 this.daysToCancel.forEach(day => {
-  //                   const index = this.bookedDays.findIndex(bookedDay => moment(moment.utc(bookedDay.date).format("YYYY-MM-DD")).isSame(moment(day.date).format("YYYY-MM-DD"), 'day'));
-  //                   if (index >= 0) {
-  //                     this.bookedDays.splice(index, 1);
-  //                   }
-  //                 });
-
-  //                 this.daysToCancel = [];
-  //                 this.refresh.next();
-
-  //                 // Resolve with success
-  //                 resolve(this.utilityService.resolveAsyncPromise($localize`:@@userWorkloadCalendar.dayCancelled:👍 Day/s cancelled!`));
-  //               })
-  //               .catch(() => {
-  //                 reject(this.utilityService.rejectAsyncPromise($localize`:@@userWorkloadCalendar.errorWhileCancellingDay:Error while cancelling the days!`));
-  //               });
-  //             }));
-  //           }
-  //         });
-  //     }
-  //   }
-  // }
 
   showNewHolidayForm() {
     this.createNewHoliday = true;
@@ -318,12 +172,11 @@ export class UserWorkloadCalendarComponent implements OnInit {
   editHolidays(holiday: any) {
     this.newHoliday._id = holiday._id;
     this.newHoliday.start_date = DateTime.fromISO(holiday.start_date);
-    // this.newHoliday.start_date = holiday.start_date;
     this.newHoliday.end_date = DateTime.fromISO(holiday.end_date);
-    // this.newHoliday.end_date = holiday.end_date;
     this.newHoliday.type = holiday.type;
     this.newHoliday.num_days = holiday.num_days;
     this.newHoliday._approval_manager = holiday._manager;
+    this.newHoliday.description = holiday.description;
 
     this.showNewHolidayForm();
   }
@@ -412,6 +265,7 @@ export class UserWorkloadCalendarComponent implements OnInit {
       && !!this.newHoliday.type
       && !!this.newHoliday.start_date
       && !!this.newHoliday.end_date
+      && !!this.newHoliday.description
       && !this.errorCode
   }
 

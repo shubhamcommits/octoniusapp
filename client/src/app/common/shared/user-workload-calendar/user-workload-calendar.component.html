@@ -85,6 +85,7 @@
             <th i18n="@@userWorkloadCalendar.numDays">Number Days</th>
             <th i18n="@@userWorkloadCalendar.manager">Manager</th>
             <th i18n="@@userWorkloadCalendar.status">Status</th>
+            <th i18n="@@userWorkloadCalendar.comment">Comment</th>
             <th>
               <button (click)="cancelHoliday(); showNewHolidayForm()" class="btn btn-primary"
                 i18n="@@newEntity.requestHolidays">
@@ -109,6 +110,8 @@
               <span *ngIf="holiday?.status == 'pending'" class="pending" i18n="@@userWorkloadCalendar.pending">PENDING</span>
               <span *ngIf="holiday?.status == 'rejected'" class="rejected" i18n="@@userWorkloadCalendar.rejected">REJECTED</span>
             </td>
+
+            <td>{{ holiday.rejection_description }}</td>
         
             <td>
               <div style="cursor: pointer;" [matMenuTriggerFor]="holidayActionsMenu">
@@ -116,7 +119,7 @@
               </div>
         
               <mat-menu #holidayActionsMenu="matMenu">
-                <a mat-menu-item (click)="editHolidays(holiday)">
+                <a mat-menu-item (click)="editHolidays(holiday)" *ngIf="holiday?.status == 'pending'">
                   <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">edit</i>
                   <span i18n="@@userWorkloadCalendar.edit">Edit</span>
                 </a>
@@ -144,6 +147,7 @@
             <th i18n="@@userWorkloadCalendar.numDays">Number Days</th>
             <th i18n="@@userWorkloadCalendar.manager">Manager</th>
             <th i18n="@@userWorkloadCalendar.status">Status</th>
+            <th i18n="@@userWorkloadCalendar.comment">Comment</th>
           </tr>
         
           <tr *ngFor="let holiday of pastHolidays">
@@ -162,6 +166,8 @@
               <span *ngIf="holiday?.status == 'pending'" class="pending" i18n="@@userWorkloadCalendar.pending">PENDING</span>
               <span *ngIf="holiday?.status == 'rejected'" class="rejected" i18n="@@userWorkloadCalendar.rejected">REJECTED</span>
             </td>
+
+            <td>{{ holiday.rejection_description }}</td>
           </tr>
         </table>
       </mat-tab>
@@ -208,7 +214,7 @@
         class="col form-control">
         <mat-select-trigger>{{ newHoliday?.type }}</mat-select-trigger>
         <mat-option *ngFor="let val of outOfOfficeReason" [value]="val.toLowerCase()">{{ val }}</mat-option>
-    </mat-select>
+      </mat-select>
       
       <label i18n="@@userWorkloadCalendar.numberOfDays" style="float: left; width: 100%;">Number Of Days</label>
       <input type="number" autocomplete="off" class="form-control" [(ngModel)]="newHoliday.num_days" disabled="true" />
@@ -217,6 +223,9 @@
       <app-select-assignee type="workspaceMembers" [userData]="newHoliday._approval_manager"
         [workspaceData]="workspaceData" [showBar]="isCurrentUser && !userHasManager" [styleClass]="'feed-avatar-small'"
         (member)="selectManager($event)"></app-select-assignee>
+
+      <label i18n="@@userWorkloadCalendar.description" style="float: left; width: 100%;">Description</label>
+      <input type="number" autocomplete="off" class="form-control" [(ngModel)]="newHoliday.description" disabled="true" />
 
       <div class="card-footer">
         <p *ngIf="!!errorCode">

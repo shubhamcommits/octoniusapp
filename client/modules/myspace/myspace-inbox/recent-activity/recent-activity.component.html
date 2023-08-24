@@ -399,6 +399,7 @@
             <th i18n="@@recentActivity.ends">Ends</th>
             <th i18n="@@recentActivity.type">Type</th>
             <th i18n="@@recentActivity.numDays">Number Days</th>
+            <th i18n="@@recentActivity.description">Description</th>
             <th i18n="@@recentActivity.status">Status</th>
             <th></th>
           </tr>
@@ -413,6 +414,7 @@
             <td>{{ formateDate(holiday.end_date) }}</td>
             <td>{{ holiday.type }}</td>
             <td>{{ holiday.num_days }}</td>
+            <td>{{ holiday.description }}</td>
         
             <td>
               <span *ngIf="holiday?.status == 'approved'" class="approved dropdown-toggle" data-toggle="dropdown" i18n="@@recentActivity.approved">APPROVED</span>
