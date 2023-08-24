@@ -53,11 +53,6 @@ export class EditUserProfileFieldsComponent implements OnInit {
 
   async ngOnInit() {
 
-    // Setting Home State
-    this.publicFunctions.sendUpdatesToRouterState({
-      state: 'user-account'
-    });
-
     this.userData = await this.publicFunctions.getCurrentUser();
     this.isCurrentUser = (this.userData?._id == this.userId);
     if (!this.isCurrentUser) {

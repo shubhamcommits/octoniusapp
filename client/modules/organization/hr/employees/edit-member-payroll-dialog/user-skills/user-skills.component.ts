@@ -25,9 +25,6 @@ export class UserSkillsComponent implements OnInit {
   // User Data Object
   @Input('userData') userData: any = {};
 
-  // Is current user variable
-  @Input('currentUser') currentUser: boolean = false;
-
   currentGroupSettings: any = {
     emailDomains: [],
     jobPositions: [],

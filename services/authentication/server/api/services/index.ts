@@ -1,15 +1,13 @@
 import { AuthsService } from "./auths.service";
 import { ManagementService } from "./management.service";
+import { NotificationsService } from "./notifications.service";
 
 /*  =======================
  *  -- EXPORTS SERVICES --
  *  =======================
  * */
 export {
-
-    // Management Service
+    AuthsService as AuthsService,
     ManagementService as ManagementService,
-
-    // Auths Service
-    AuthsService as AuthsService
+    NotificationsService as NotificationsService
 }

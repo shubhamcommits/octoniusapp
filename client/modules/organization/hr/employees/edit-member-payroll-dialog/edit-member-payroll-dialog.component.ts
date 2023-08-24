@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Injector, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Injector, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
@@ -201,7 +201,7 @@ export class EditMemberPayrollDialogComponent implements OnInit {
         });
     }));
   }
-  
+
   emitMemberEdited(memberData: any) {
     this.memberData= memberData;
     this.memberEditedEvent.emit(this.memberData);

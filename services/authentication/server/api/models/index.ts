@@ -7,19 +7,21 @@ import { Workspace } from './workspace.model';
 import { Portfolio } from './portfolio.model';
 import { Page } from './page.model';
 import { Collection } from './collection.model';
+import { Notification } from './notification.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
  *  =====================
  * */
 export {
+    Account as Account,
     Auth as Auth,
+    Collection as Collection,
     Group as Group,
+    Page as Page,
+    Notification as Notification,
+    Portfolio as Portfolio,
     Resetpwd as Resetpwd,
     User as User,
-    Account as Account,
     Workspace as Workspace,
-    Portfolio as Portfolio,
-    Collection as Collection,
-    Page as Page
 };

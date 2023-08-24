@@ -124,4 +124,12 @@ export class HRService {
       }
     }).toPromise();
   }
+
+  getHRPendingNotifications(workspaceId: string) {
+    return this._http.get(this.baseUrl + `/${workspaceId}/hr-pending-notifications`).toPromise();
+  }
+
+  markNotificationAsDone(workspaceId: string) {
+    return this._http.post(this.baseUrl + `/${workspaceId}/mark-notification-as-done`, {}).toPromise();
+  }
 }

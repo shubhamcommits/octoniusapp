@@ -1,8 +1,9 @@
 import { sendError } from '../../utils';
 import { Request, Response, NextFunction } from 'express';
-import { Entity, Holiday, User } from '../models';
+import { Entity, Holiday, User, Notification } from '../models';
 import { Readable } from 'stream';
 import moment from 'moment';
+import { DateTime } from 'luxon';
 
 export class HRControllers {
 
@@ -912,6 +913,60 @@ export class HRControllers {
             });
         } catch (err) {
             return sendError(res, err);
+        }
+    }
+
+    async getHRPendingNotifications(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { workspaceId }} = req;
+
+            const notifications = await Notification.find({
+                    $and: [
+                        { _workspace: workspaceId },
+                        { type: 'hive' },
+                        { read: false }
+                    ]
+                })
+                .populate({
+                    path: '_owner',
+                    select: '_id first_name last_name email profile_pic'
+                })
+                .lean() || [];
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Notifications found!',
+                notifications: notifications
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    }
+
+    async markNotificationAsDone(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { notificationId }} = req;
+
+            if (!notificationId) {
+                return sendError(res, new Error('Please provide the notificationId property!'), 'Please provide the notificationId property!', 500);
+            }
+
+            const notifications = await Notification.findByIdAndUpdate({
+                    _id: notificationId
+                }, {
+                    $set: {
+                        read: true,
+                        read_date: DateTime.now()
+                    }
+                })
+                .lean();
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'Notification DONE.'
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
 }

@@ -1,7 +1,7 @@
 <div class="container-fluid" style="margin-top: 30px; margin-left: 20px;">
   <div class="container-fluid" style="margin-left: 30px; padding-right: 50px; margin-top: 30px;">
   
-    <h2 i18n="@@timeoff.employeesOff">{{ membersOff?.length || 0 }} Employees Off On {{ displayMonth(selectedDate) }}</h2>
+    <h2 i18n=" @@pendingTasksCard.employeesOff">{{ membersOff?.length || 0 }} Employees Off On {{ displayMonth(selectedDate) }}</h2>
 
     <div>
       <mat-form-field>
@@ -14,7 +14,7 @@
     </div>
   
     <mat-form-field style="width: 100%;">
-      <mat-label i18n="@@timeoff.filter">Filter</mat-label>
+      <mat-label i18n=" @@pendingTasksCard.filter">Filter</mat-label>
       <input matInput (keyup)="applyFilter($event)" placeholder="" #input>
     </mat-form-field>
   
@@ -30,31 +30,31 @@
   
       <!-- First name Column -->
       <ng-container matColumnDef="first_name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header i18n="@@timeoff.firstName"> First name </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header i18n=" @@pendingTasksCard.firstName"> First name </th>
         <td mat-cell *matCellDef="let user"> {{user?.first_name}} </td>
       </ng-container>
   
       <!-- Last name Column -->
       <ng-container matColumnDef="last_name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header i18n="@@timeoff.lastName"> Last name </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header i18n=" @@pendingTasksCard.lastName"> Last name </th>
         <td mat-cell *matCellDef="let user"> {{ user?.last_name }} </td>
       </ng-container>
   
       <!-- E-Mail Column -->
       <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header i18n="@@timeoff.email"> E-Mail </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header i18n=" @@pendingTasksCard.email"> E-Mail </th>
         <td mat-cell *matCellDef="let user"> {{user?.email}} </td>
       </ng-container>
   
       <!-- Job Column -->
       <ng-container matColumnDef="start_date">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header i18n="@@timeoff.startDate"> Start Date </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header i18n=" @@pendingTasksCard.startDate"> Start Date </th>
         <td mat-cell *matCellDef="let user"> {{ formateDate(user?.start_date) }} </td>
       </ng-container>
   
       <!-- Department Column -->
       <ng-container matColumnDef="end_date">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header i18n="@@timeoff.endDate"> End Date </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header i18n=" @@pendingTasksCard.endDate"> End Date </th>
         <td mat-cell *matCellDef="let user"> {{ formateDate(user?.end_date) }} </td>
       </ng-container>
   
@@ -69,7 +69,7 @@
           <mat-menu #menu="matMenu">
             <a mat-menu-item (click)="openMemberDialog(user?._id)">
               <i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">edit</i>
-              <span>Edit</span>
+              <span i18n="@@pendingTasksCard.edit">Edit</span>
             </a>
           </mat-menu> -->
         </td>
@@ -80,7 +80,7 @@
   
       <!-- Row shown when there is no matching data. -->
       <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell" colspan="4" i18n="@@timeoff.noDataMatchingFilter">No data matching the filter
+        <td class="mat-cell" colspan="4" i18n=" @@pendingTasksCard.noDataMatchingFilter">No data matching the filter
           "{{input.value}}"</td>
       </tr>
     </table>
