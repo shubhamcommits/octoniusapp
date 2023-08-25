@@ -254,7 +254,7 @@ export class EditHRFieldsComponent implements OnInit {
   }
 
   isSelected(benefitValues, benefitSelected) {
-    return (benefitValues) ? benefitValues.findIndex(b => b == benefitSelected) >= 0 : -1;
+    return (benefitValues) ? benefitValues.findIndex(b => b == benefitSelected) >= 0 : false;
   }
 
   onInputEntityBenefitChange(event: Event, benefitId: string) {
