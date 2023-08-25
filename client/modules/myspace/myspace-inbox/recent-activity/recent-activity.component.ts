@@ -284,6 +284,8 @@ export class RecentActivityComponent implements OnInit {
       this.selectedTab = 3;
     } else if (this.pendingHolidays.length > 0) {
       this.selectedTab = 4;
+    } else if (this.pendingHRTasks.length > 0) {
+      this.selectedTab = 5;
     } else if (this.notificationsData.unreadPosts.length > 0) {
       this.selectedTab = 1;
     } else if (this.attendingEvents.length > 0) {
