@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Injector, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Injector, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
@@ -48,6 +48,18 @@ export class EditMemberPayrollDialogComponent implements OnInit {
     this.memberData = await this.publicFunctions.getOtherUser(this.memberId);
     if (this.memberData) {
       this.initPayrollProperties();
+
+      if (!this.memberData.hr) {
+        this.memberData.hr = {};
+      }
+
+      if (!this.memberData.hr.entity_extra_days_off) {
+        this.memberData.hr.entity_extra_days_off = {
+          holidays: 0,
+          sick: 0,
+          personal_days: 0
+        };
+      }
     }
   }
 
@@ -189,6 +201,11 @@ export class EditMemberPayrollDialogComponent implements OnInit {
         });
     }));
   }
+
+  emitMemberEdited(memberData: any) {
+    this.memberData= memberData;
+    this.memberEditedEvent.emit(this.memberData);
+  }
   /**
    * VARIABLES ENDS
    */
@@ -201,7 +218,7 @@ export class EditMemberPayrollDialogComponent implements OnInit {
   }
 
   onCheckedEntityBenefitChange(benefitValues: any, benefitSelectedValue: string, benefitId: string) {
-    const index = benefitValues.findIndex(b => b == benefitSelectedValue);
+    const index = (benefitValues) ? benefitValues.findIndex(b => b == benefitSelectedValue) : -1;
     if (index < 0) {
       benefitValues.push(benefitSelectedValue);
     }
@@ -210,7 +227,7 @@ export class EditMemberPayrollDialogComponent implements OnInit {
   }
 
   isSelected(benefitValues, benefitSelected) {
-    return benefitValues.findIndex(b => b == benefitSelected) >= 0;
+    return (benefitValues) ? benefitValues.findIndex(b => b == benefitSelected) >= 0 : -1;
   }
 
   onInputEntityBenefitChange(event: Event, benefitId: string) {
@@ -246,6 +263,27 @@ export class EditMemberPayrollDialogComponent implements OnInit {
   }
   /**
    * BENEFITS ENDS
+   */
+
+  /**
+   * HOLIDAYS STARTS
+   */
+  onDaysOffChange(propertyToSave: any) {
+    this.utilityService.asyncNotification($localize`:@@editMemberPayrollDialog.pleaseWaitWeUpdateContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+
+      this.userService.savePayrollExtraDaysOff(this.memberData._id, propertyToSave)
+        .then(async (res) => {
+
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@editMemberPayrollDialog.daysOffUpdated:Days Off updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@editMemberPayrollDialog.unableToUpdateDaysOff:Unable to update Days Off, please try again!`));
+        });
+    }));
+  }
+  /**
+   * HOLIDAYS ENDS
    */
 
   closeDialog() {

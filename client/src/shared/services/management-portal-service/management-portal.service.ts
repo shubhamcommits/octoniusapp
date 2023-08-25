@@ -212,6 +212,11 @@ export class ManagementPortalService {
   async checkIsIndividualSubscription() {
     const subscription = await this.getStripeSubscription();
     const utilityService = this.injector.get(UtilityService);
+
+    if (!subscription.product && subscription.plan) {
+      subscription.product = subscription.plan.product
+    }
+    
     return utilityService.objectExists(subscription)
       && utilityService.objectExists(subscription.product)
       && subscription.product != ''
@@ -221,9 +226,16 @@ export class ManagementPortalService {
   async checkIsBusinessSubscription() {
     const subscription = await this.getStripeSubscription();
     const utilityService = this.injector.get(UtilityService);
-    return utilityService.objectExists(subscription) && (utilityService.objectExists(subscription.product) && subscription.product != '' && subscription.product == environment.STRIPE_BUSINESS_PRODUCT_ID);
-  }
 
+    if (!subscription.product && subscription.plan) {
+      subscription.product = subscription.plan.product
+    }
+
+    return utilityService.objectExists(subscription)
+      && (utilityService.objectExists(subscription.product)
+      && subscription.product != ''
+      && subscription.product == environment.STRIPE_BUSINESS_PRODUCT_ID);
+  }
   /* | ======================================= BILLING ENDS ========================================== | */
 
   /**

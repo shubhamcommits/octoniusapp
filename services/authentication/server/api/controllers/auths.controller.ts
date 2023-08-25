@@ -1,9 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { Auth, User, Workspace, Group, Account } from '../models';
 import { sendError, Auths, PasswordHelper, axios } from '../../utils';
-import { AuthsService, ManagementService } from '../services';
-import http from 'axios';
-import moment from 'moment';
+import { AuthsService, ManagementService, NotificationsService } from '../services';
 import LDAPAuthService from '../services/ldap-auth.service';
 
 // Password Helper Class
@@ -15,6 +13,7 @@ const auths = new Auths();
 const managementService = new ManagementService();
 const authsService = new AuthsService();
 const ldapAuthService = new LDAPAuthService();
+const notificationsService = new NotificationsService();
 
 export class AuthsController {
 
@@ -166,18 +165,18 @@ export class AuthsController {
 
                     // Find if the user already exist in the workplace, but is inactive
                     let user = await User.findOne({
-                        email: accountData.email,
-                        workspace_name: workspace.workspace_name,
-                        active: false
-                    });
+                            email: accountData.email,
+                            workspace_name: workspace.workspace_name,
+                            active: false
+                        });
 
                     if (user) {
                         // As we found that user was disabled, then enable them accordingly.
                         user = await User.findOneAndUpdate(
-                            { email: accountData.email },
-                            { $set: { active: true } },
-                            { new: true }
-                        );
+                                { email: accountData.email },
+                                { $set: { active: true } },
+                                { new: true }
+                            );
                     } else {
 
                         let groups = workspace.invited_users
@@ -203,13 +202,13 @@ export class AuthsController {
                             for (let i = 0; i < groups.length; i++) {
                                 // Add new user to group
                                 const groupUpdate = await Group.findOneAndUpdate({
-                                    _id: groups[i]._id || groups[i]
-                                }, {
-                                    $push: {
-                                        _members: user._id
-                                    },
-                                    $inc: { members_count: 1 }
-                                });
+                                        _id: groups[i]._id || groups[i]
+                                    }, {
+                                        $push: {
+                                            _members: user._id
+                                        },
+                                        $inc: { members_count: 1 }
+                                    });
             
                                 // Error updating the group
                                 if (!groupUpdate) {
@@ -218,12 +217,12 @@ export class AuthsController {
             
                                 // Add group to user's groups
                                 user = await User.findByIdAndUpdate({
-                                    _id: user._id
-                                }, {
-                                    $push: {
-                                        _groups: groups[i]._id || groups[i]
-                                    }
-                                });
+                                        _id: user._id
+                                    }, {
+                                        $push: {
+                                            _groups: groups[i]._id || groups[i]
+                                        }
+                                    });
                             }
                         } else {
                             let userData: Object = {
@@ -250,14 +249,14 @@ export class AuthsController {
                         if (user['role'] != 'guest') {
                             // Add new user to workspace's group
                             const groupUpdate = await Group.findOneAndUpdate({
-                                group_name: 'Global',
-                                _workspace: workspace._id
-                            }, {
-                                $push: {
-                                    _members: user._id
-                                },
-                                $inc: { members_count: 1 }
-                            });
+                                    group_name: 'Global',
+                                    _workspace: workspace._id
+                                }, {
+                                    $push: {
+                                        _members: user._id
+                                    },
+                                    $inc: { members_count: 1 }
+                                });
         
                             // Error updating the group
                             if (!groupUpdate) {
@@ -266,15 +265,15 @@ export class AuthsController {
         
                             // Add group to user's groups
                             user = await User.findByIdAndUpdate({
-                                _id: user._id
-                            }, {
-                                $push: {
-                                    _groups: groupUpdate._id,
-                                    'stats.favorite_groups': groupUpdate._id
-                                }
-                            }, {
-                                new: true
-                            });
+                                    _id: user._id
+                                }, {
+                                    $push: {
+                                        _groups: groupUpdate._id,
+                                        'stats.favorite_groups': groupUpdate._id
+                                    }
+                                }, {
+                                    new: true
+                                });
         
                             // Error updating the user
                             if (!user) {
@@ -292,10 +291,10 @@ export class AuthsController {
     
                         // Check if personal group already exist
                         const personalGroup = await Group.findOne({
-                            group_name: personalGroupData.group_name,
-                            _admins: personalGroupData._admins,
-                            workspace_name: personalGroupData.workspace_name,
-                        });
+                                group_name: personalGroupData.group_name,
+                                _admins: personalGroupData._admins,
+                                workspace_name: personalGroupData.workspace_name,
+                            });
     
                         // Send Error response if 'personal' group already exist
                         if (!!personalGroup) {
@@ -313,49 +312,52 @@ export class AuthsController {
                 
                             // Find the group and update their respective group avatar
                             group = await Group.findByIdAndUpdate({
-                                _id: group._id
-                            }, {
-                                //custom_fields: newCustomField
-                                $push: { "custom_fields": default_CF }
-                            }, {
-                                new: true
-                            });
+                                    _id: group._id
+                                }, {
+                                    //custom_fields: newCustomField
+                                    $push: { "custom_fields": default_CF }
+                                }, {
+                                    new: true
+                                });
     
                             // Add personal group to user's groups
                             user = await User.findByIdAndUpdate({
-                                _id: personalGroupData._admins,
-                                _workspace: personalGroupData._workspace
-                            }, {
-                                $push: {
-                                    _groups: group._id
-                                },
-                                $set: {
-                                    _private_group: group
-                                }
-                            }, {
-                                new: true
-                            });
+                                    _id: personalGroupData._admins,
+                                    _workspace: personalGroupData._workspace
+                                }, {
+                                    $push: {
+                                        _groups: group._id
+                                    },
+                                    $set: {
+                                        _private_group: group
+                                    }
+                                }, {
+                                    new: true
+                                });
                         }
     
                         // Add new user to workspace members and remove user email
                         workspace = await Workspace.findByIdAndUpdate({
-                            _id: workspace._id
-                        }, {
-                            $push: {
-                                members: user._id
-                            }
-                        }, {
-                            new: true
-                        }).populate({
-                            path: 'members',
-                            select: 'first_name last_name profile_pic current_position role email active'
-                        }).lean();
+                                _id: workspace._id
+                            }, {
+                                $push: {
+                                    members: user._id
+                                }
+                            }, {
+                                new: true
+                            }).populate({
+                                path: 'members',
+                                select: 'first_name last_name profile_pic current_position role email active'
+                            }).lean();
     
                         // Error updating the Workspace and removing the user email
                         if (!workspace) {
                             return sendError(res, new Error('Unable to update the workspace, some unexpected error occurred!'), 'Unable to update the workspace, some unexpected error occurred!', 500);
                         }
                     }
+
+                    // CREATE NOTIFICATION FOR HR, TO SET UP THE USER IN THE ENTITY
+                    notificationsService.createNewUserNotificationForHR(user?._id, workspace?._id);
 
                     // Generate new token and logs the auth record
                     let token = await auths.generateToken(user, workspace.workspace_name);
@@ -568,7 +570,7 @@ export class AuthsController {
                     _workspace: workspaceId,
                     active: true
                 })
-                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr')
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr hr_role')
                 .populate({
                     path: 'stats.favorite_groups',
                     select: '_id group_name group_avatar'

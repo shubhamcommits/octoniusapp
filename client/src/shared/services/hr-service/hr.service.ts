@@ -75,6 +75,26 @@ export class HRService {
     return this._http.post(this.baseUrl + `/${entityId}/delete-benefit`, { benefitId }).toPromise();
   }
 
+  createNewDaysOff(entityId: string, daysOff: any) {
+    return this._http.post(this.baseUrl + `/${entityId}/days-off`, { daysOff }).toPromise();
+  }
+
+  editEntityDaysOff(entityId: string, daysOff: any) {
+    return this._http.post(this.baseUrl + `/${entityId}/edit-days-off`, { daysOff }).toPromise();
+  }
+
+  deleteEntityDaysOff(entityId: string, daysOffId: string) {
+    return this._http.post(this.baseUrl + `/${entityId}/delete-days-off`, { daysOffId }).toPromise();
+  }
+
+  addBankHoliday(entityId: string, daysOffId: string, bankHoliday: any) {
+    return this._http.post(this.baseUrl + `/${entityId}/add-bank-holidays`, { daysOffId, bankHoliday }).toPromise();
+  }
+
+  removeBankHoliday(entityId: string, daysOffId: string, bankHoliday: any) {
+    return this._http.post(this.baseUrl + `/${entityId}/remove-bank-holidays`, { daysOffId, bankHoliday }).toPromise();
+  }
+
   getEntityMembers(entityId: string) {
     return this._http.get(this.baseUrl + `/${entityId}/entityMembers`).toPromise();
   }
@@ -95,7 +115,25 @@ export class HRService {
     return this._http.get(this.baseUrl + `/${workspaceId}/topMembersOff`).toPromise();
   }
 
-  getMembersOff(workspaceId: string) {
-    return this._http.get(this.baseUrl + `/${workspaceId}/membersOff`).toPromise();
+  getMembersOff(members: any, from: any, to: any, workspaceId?: string) {
+    return this._http.get(this.baseUrl + `/${workspaceId}/membersOff`, {
+      params: {
+        from: from,
+        to: to,
+        members: members
+      }
+    }).toPromise();
+  }
+
+  getHRPendingNotifications(workspaceId: string) {
+    return this._http.get(this.baseUrl + `/${workspaceId}/hr-pending-notifications`).toPromise();
+  }
+
+  getTopHRPendingNotifications(workspaceId: string) {
+    return this._http.get(this.baseUrl + `/${workspaceId}/top-hr-pending-notifications`).toPromise();
+  }
+
+  markNotificationAsDone(workspaceId: string) {
+    return this._http.post(this.baseUrl + `/${workspaceId}/mark-notification-as-done`, {}).toPromise();
   }
 }

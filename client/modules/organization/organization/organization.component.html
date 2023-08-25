@@ -128,7 +128,7 @@
         </div>
       </div>
 
-      <div class="card">
+      <div class="card" *ngIf="userData?.hr_role || userData?.role?.trim() == 'owner'">
         <div class="img-fluid">
           <div class="card-title">
             <span i18n="@@organization.hiveHR">Hive HR</span>

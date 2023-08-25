@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-time-off-card',
@@ -40,5 +41,12 @@ export class TimeOffCardComponent implements OnInit {
     this.hrService.getTopMembersOff(this.workspaceData?._id).then(res => {
       this.membersOff = res['members'];
     });
+  }
+
+  formateDate(date: any) {
+    if (!!date && (date instanceof DateTime)) {
+      return date.toLocaleString(DateTime.DATE_SHORT);
+    }
+    return (!!date) ? DateTime.fromISO(date).toLocaleString(DateTime.DATE_SHORT) : '';
   }
 }

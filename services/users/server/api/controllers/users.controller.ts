@@ -1,15 +1,17 @@
-import { Account, Group, User, Workspace } from '../models';
+import { Account, Group, Holiday, User, Workspace } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError,PasswordHelper, axios } from '../../utils';
+import { DateTime } from 'luxon';
 import moment from 'moment';
 import http from 'axios';
+import { HolidayService } from '../services';
 
 /*  ===================
  *  -- USER METHODS --
  *  ===================
  * */
-// Password Helper Class
 const passwordHelper = new PasswordHelper();
+const holidayService = new HolidayService()
 
 export class UsersControllers {
 
@@ -32,7 +34,7 @@ export class UsersControllers {
                     { active: true }
                 ]
             })
-            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr')
+            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr hr_role')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
@@ -160,7 +162,7 @@ export class UsersControllers {
                         { active: true }
                     ]
                 })
-                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr profile_custom_fields hr')
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr hr_role')
                 .populate({
                     path: 'stats.favorite_groups',
                     select: '_id group_name group_avatar'
@@ -253,7 +255,7 @@ export class UsersControllers {
                 }, {
                     new: true
                 })
-                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr')
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr hr_role')
                 .populate({
                     path: 'stats.favorite_groups',
                     select: '_id group_name group_avatar'
@@ -858,7 +860,7 @@ export class UsersControllers {
                 'stats.groups._group': {$ne: groupId }
                 }, { $push: { 'stats.groups': { _group: groupId, count: 1 }}}
                 )
-                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr')
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr hr_role')
                 .populate({
                     path: 'stats.favorite_groups',
                     select: '_id group_name group_avatar'
@@ -885,7 +887,7 @@ export class UsersControllers {
                 'stats.groups._group': groupId 
                 }, { $inc: { 'stats.groups.$.count': 1 }
                 })
-                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr')
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr hr_role')
                 .populate({
                     path: 'stats.favorite_groups',
                     select: '_id group_name group_avatar'
@@ -934,7 +936,7 @@ export class UsersControllers {
         }
 
         const user = await User.findOne({_id: userId})
-            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr')
+            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr hr_role')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
@@ -983,7 +985,7 @@ export class UsersControllers {
         }
 
         const user = await User.findOne({_id: userId})
-            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr')
+            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr hr_role')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
@@ -1039,7 +1041,7 @@ export class UsersControllers {
             let user = await User.findOneAndUpdate({
                     _id: userId
                 }, update)
-                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr')
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr hr_role')
                 .populate({
                     path: 'stats.favorite_groups',
                     select: '_id group_name group_avatar'
@@ -1095,7 +1097,7 @@ export class UsersControllers {
             let user = await User.findOneAndUpdate({
                     _id: userId
                 }, update)
-                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr')
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr hr_role')
                 .populate({
                     path: 'stats.favorite_groups',
                     select: '_id group_name group_avatar'
@@ -1151,7 +1153,7 @@ export class UsersControllers {
             let user = await User.findOneAndUpdate({
                     _id: userId
                 }, update, { new: true })
-                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr')
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr hr_role')
                 .populate({
                     path: 'stats.favorite_groups',
                     select: '_id group_name group_avatar'
@@ -1333,7 +1335,7 @@ export class UsersControllers {
             let user: any = await User.findOneAndUpdate({
                 _id: userId
                 }, { $set: { 'stats.default_icons_sidebar': iconsSidebar }})
-                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr')
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr hr_role')
                 .populate({
                     path: 'stats.favorite_groups',
                     select: '_id group_name group_avatar'
@@ -1367,21 +1369,64 @@ export class UsersControllers {
     }
 
     async getOutOfOfficeDays(req: Request, res: Response, next: NextFunction) {
-
-        const userId = req['userId'];
         try {
+            const { from, to } = req.query;
+            const { userId } = req.params;
+            
+            const holidaysInMonth = await Holiday.find({
+                    $and: [
+                        { _user: userId },
+                        {
+                            $or: [
+                                { start_date: { $gte: from }},
+                                { end_date: { $lte: to} }
+                            ]
+                        }
+                    ]
+                })
+                .populate({
+                    path: '_approval_manager',
+                    select: '_id email first_name last_name profile_pic'
+                })
+                .lean() || [];
 
-        let user: any = await User.findOne({
-            _id: userId
-            })
-            .select('_id out_of_office integrations');
 
-        // Send status 200 response
-        return res.status(200).json({
-            message: `User out of the office days`,
-            user: user
-        });
+            const firstDayOfYear = new DateTime(from).startOf('year').toISO();
+            const lastDayOfYear = new DateTime(from).endOf('year').toISO();
 
+            const holidaysInYear = await Holiday.find({
+                    $and: [
+                        { _user: userId },
+                        { end_date: { $gte: firstDayOfYear }},
+                        { start_date: { $lte: lastDayOfYear} }
+                    ]
+                })
+                .populate({
+                    path: '_approval_manager',
+                    select: '_id email first_name last_name profile_pic'
+                })
+                .lean() || [];
+
+            const pastHolidays = await Holiday.find({
+                    $and: [
+                        { _user: userId },
+                        // { end_date: { $gte: firstDayOfYear }},
+                        { start_date: { $lte: firstDayOfYear} }
+                    ]
+                })
+                .populate({
+                    path: '_approval_manager',
+                    select: '_id email first_name last_name profile_pic'
+                })
+                .lean() || [];
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `User out of the office days`,
+                holidaysInMonth: holidaysInMonth,
+                holidaysInYear: holidaysInYear,
+                pastHolidays: pastHolidays
+            });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
@@ -1396,7 +1441,7 @@ export class UsersControllers {
 
 
             let user: any = await User.findOne({
-            _id: userId
+                _id: userId
             });
 
             if (action == 'add') {
@@ -1415,7 +1460,6 @@ export class UsersControllers {
                     }
                 });
             }
-            
 
             user.save();
             
@@ -1563,7 +1607,7 @@ export class UsersControllers {
                 }, {
                     new: true
                 })
-                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr')
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr hr_role')
                 .populate({
                     path: 'stats.favorite_groups',
                     select: '_id group_name group_avatar'
@@ -1623,7 +1667,29 @@ export class UsersControllers {
                 $set: { "hr.entity_custom_fields": user.hr.entity_custom_fields }
             }, {
                 new: true
-            });
+            })
+            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr hr_role')
+            .populate({
+                path: 'stats.favorite_groups',
+                select: '_id group_name group_avatar'
+            })
+            .populate({
+                path: 'stats.favorite_portfolios',
+                select: '_id portfolio_name portfolio_avatar'
+            })
+            .populate({
+                path: 'stats.favorite_collections',
+                select: '_id name collection_avatar'
+            })
+            .populate({
+                path: '_groups',
+                select: '_id group_name group_avatar'
+            })
+            .populate({
+                path: '_account',
+                select: '_id email _workspaces first_name last_name created_date'
+            })
+            .lean();
 
         // user.custom_fields[customFieldId] = customFieldValue;
 
@@ -1655,12 +1721,34 @@ export class UsersControllers {
 
         // Find the post and update the custom field
         user = await User.findByIdAndUpdate({
-            _id: userId
-        }, {
-            $set: { "hr.entity_variables": user.hr.entity_variables }
-        }, {
-            new: true
-        });
+                _id: userId
+            }, {
+                $set: { "hr.entity_variables": user.hr.entity_variables }
+            }, {
+                new: true
+            })
+            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr hr_role')
+            .populate({
+                path: 'stats.favorite_groups',
+                select: '_id group_name group_avatar'
+            })
+            .populate({
+                path: 'stats.favorite_portfolios',
+                select: '_id portfolio_name portfolio_avatar'
+            })
+            .populate({
+                path: 'stats.favorite_collections',
+                select: '_id name collection_avatar'
+            })
+            .populate({
+                path: '_groups',
+                select: '_id group_name group_avatar'
+            })
+            .populate({
+                path: '_account',
+                select: '_id email _workspaces first_name last_name created_date'
+            })
+            .lean();
 
         // Send status 200 response
         return res.status(200).json({
@@ -1690,17 +1778,246 @@ export class UsersControllers {
 
         // Find the post and update the custom field
         user = await User.findByIdAndUpdate({
-            _id: userId
-        }, {
-            $set: { "hr.entity_benefits": user.hr.entity_benefits }
-        }, {
-            new: true
-        });
+                _id: userId
+            }, {
+                $set: { "hr.entity_benefits": user.hr.entity_benefits }
+            }, {
+                new: true
+            })
+            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr hr_role')
+            .populate({
+                path: 'stats.favorite_groups',
+                select: '_id group_name group_avatar'
+            })
+            .populate({
+                path: 'stats.favorite_portfolios',
+                select: '_id portfolio_name portfolio_avatar'
+            })
+            .populate({
+                path: 'stats.favorite_collections',
+                select: '_id name collection_avatar'
+            })
+            .populate({
+                path: '_groups',
+                select: '_id group_name group_avatar'
+            })
+            .populate({
+                path: '_account',
+                select: '_id email _workspaces first_name last_name created_date'
+            })
+            .lean();
 
         // Send status 200 response
         return res.status(200).json({
             message: 'Payroll Benefits updated!',
             user: user
         });
+    }
+
+    async savePayrollExtraDaysOff(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { userId }, body: { propertyToSave } } = req;
+
+            if (!userId || !propertyToSave) {
+                return sendError(res, new Error('Please provide the userId property!'), 'Please provide the entityId property!', 500);
+            }
+
+            const user = await User.findByIdAndUpdate({
+                    _id: userId
+                }, {
+                    $set: propertyToSave
+                })
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr hr_role')
+                .populate({
+                    path: 'stats.favorite_groups',
+                    select: '_id group_name group_avatar'
+                })
+                .populate({
+                    path: 'stats.favorite_portfolios',
+                    select: '_id portfolio_name portfolio_avatar'
+                })
+                .populate({
+                    path: 'stats.favorite_collections',
+                    select: '_id name collection_avatar'
+                })
+                .populate({
+                    path: '_groups',
+                    select: '_id group_name group_avatar'
+                })
+                .populate({
+                    path: '_account',
+                    select: '_id email _workspaces first_name last_name created_date'
+                })
+                .lean();
+    
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'Member edited.',
+                user: user
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async createHoliday(req: Request, res: Response, next: NextFunction) {
+
+        const { holiday } = req.body;
+        const { userId } = req.params;
+
+        try {
+            delete holiday._id;
+            holiday._user = userId;
+            const calculatedDays = await holidayService.calculateNumDays(userId, holiday.start_date, holiday.end_date, holiday.type);
+
+            if (!!calculatedDays.code) {
+                return sendError(res, new Error(calculatedDays.code), calculatedDays.code, 500);
+            }
+
+            holiday.num_days = calculatedDays.totalDays;
+
+            const newHoliday = await Holiday.create(holiday);
+            
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Holiday has been created`,
+                holiday: newHoliday
+            });
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async editHoliday(req: Request, res: Response, next: NextFunction) {
+
+        const { holiday } = req.body;
+        const { userId } = req.params;
+
+        try {
+            const calculatedDays = await holidayService.calculateNumDays(userId, holiday.start_date, holiday.end_date, holiday.type);
+            
+            if (!!calculatedDays.code) {
+                return sendError(res, new Error(calculatedDays.code), calculatedDays.code, 500);
+            }
+
+            holiday.num_days = calculatedDays.totalDays;
+
+            const holidayEdited = await Holiday.findByIdAndUpdate({
+                    _id: holiday._id
+                }, {
+                    $set: { holiday }
+                })
+                .populate({
+                    path: '_approval_manager',
+                    select: '_id email first_name last_name profile_pic'
+                })
+                .lean();
+            
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Holiday has been edited`,
+                holiday: holidayEdited
+            });
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async editHolidaStatus(req: Request, res: Response, next: NextFunction) {
+
+        const { status, rejection_description } = req.body;
+        const { holidayId } = req.params;
+
+        try {
+            const holidayEdited = await Holiday.findByIdAndUpdate({
+                    _id: holidayId
+                }, {
+                    $set: {
+                        status: status,
+                        rejection_description: rejection_description
+                    }
+                })
+                .populate({
+                    path: '_approval_manager',
+                    select: '_id email first_name last_name profile_pic'
+                })
+                .lean();
+            
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Holiday has been edited`,
+                holiday: holidayEdited
+            });
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async deleteHoliday(req: Request, res: Response, next: NextFunction) {
+
+        const { holidayId } = req.params;
+
+        try {
+            await Holiday.findByIdAndDelete({
+                    _id: holidayId
+                });
+            
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Holiday has been deleted`,
+            });
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async getNumHolidays(req: Request, res: Response, next: NextFunction) {
+
+        const { from, to, type } = req.query;
+        const { userId } = req.params;
+
+        try {
+            const num_days = await holidayService.calculateNumDays(userId, from, to, type.toString());
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Number of holidays have been calculated`,
+                numDays: num_days.totalDays,
+                code: num_days.code
+            });
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async getPendingApprovalHolidays(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = req['userId'];
+            
+            const holidays = await Holiday.find({
+                    $and: [
+                        { _approval_manager: userId },
+                        { status: 'pending' }
+                    ]
+                })
+                .populate({
+                    path: '_approval_manager',
+                    select: '_id email first_name last_name profile_pic'
+                })
+                .lean() || [];
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `User pending holidays to approve.`,
+                holidays: holidays
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
     }
 }

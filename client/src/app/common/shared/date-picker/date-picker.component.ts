@@ -83,7 +83,7 @@ export class DatePickerComponent implements OnChanges {
    * This function is binded to the event change of @constant model
    * @param dateObject
    */
-  emitDate(dateObject: any){
+  emitDate(dateObject: any) {
     // Emit the date to the other components
     this.date.emit(dateObject.value)
   }
@@ -93,23 +93,14 @@ export class DatePickerComponent implements OnChanges {
    * @param dateObject
    */
   myDateFilter = (d:Date): boolean => {
-
-      if (moment(this.upperLimit, 'YYYY-MM-DD', true).isValid()) {
-        //checking for the upper bound -> i.e start_date can not greate than due_date.
-        return moment(moment.utc(d,"YYYY-MM-DD")).isBefore(moment.utc(this.upperLimit,"YYYY-MM-DD"))?true:false
-
-      } else if (moment(this.lowerLimit, 'YYYY-MM-DD', true).isValid()) {
-        //checking for the lower bound -> i.e due_date can not smaller than start_date.
-        return moment(moment.utc(d,"YYYY-MM-DD")).isBefore(moment.utc(this.lowerLimit,"YYYY-MM-DD").add(-1,'days'))?false:true
-
-      }
-      else {
-
-        return true;
-
-      }
-
-
+    if (moment(this.upperLimit, 'YYYY-MM-DD', true).isValid()) {
+      //checking for the upper bound -> i.e start_date can not greate than due_date.
+      return moment(moment.utc(d,"YYYY-MM-DD")).isBefore(moment.utc(this.upperLimit,"YYYY-MM-DD"))?true:false
+    } else if (moment(this.lowerLimit, 'YYYY-MM-DD', true).isValid()) {
+      //checking for the lower bound -> i.e due_date can not smaller than start_date.
+      return moment(moment.utc(d,"YYYY-MM-DD")).isBefore(moment.utc(this.lowerLimit,"YYYY-MM-DD").add(-1,'days'))?false:true
+    } else {
+      return true;
+    }
   }
-
 }

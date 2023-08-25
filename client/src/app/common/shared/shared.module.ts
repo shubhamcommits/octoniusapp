@@ -125,7 +125,6 @@ import { PendingTasksCardComponent } from './hr/pending-tasks-card/pending-tasks
 import { TimeOffCardComponent } from './hr/time-off-card/time-off-card.component';
 import { ProgressBarColor } from 'src/shared/pipes/progress-bar-color.directive';
 import { CountrySelectComponent } from './country-select/country-select.component';
-import { UserAvailabilityDayDialogComponent } from './user-workload-calendar/user-availability-day-dialog/user-availability-day-dialog.component';
 import { UserWorkloadCalendarComponent } from './user-workload-calendar/user-workload-calendar.component';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
@@ -135,6 +134,7 @@ import { LikedByDialogComponent } from './liked-by-dialog/liked-by-dialog.compon
 import { ShareCollectionDialogComponent } from './share-collection-dialog/share-collection-dialog.component';
 import { PasswordStrengthComponent } from './password-strength/password-strength.component';
 import { PricingTableComponent } from './pricing-table/pricing-table.component';
+import { HolidayRejectionDialogComponent } from './hr/holiday-rejection-dialog/holiday-rejection-dialog.component';
 
 @NgModule({
     declarations: [
@@ -242,11 +242,11 @@ import { PricingTableComponent } from './pricing-table/pricing-table.component';
         PendingTasksCardComponent,
         TimeOffCardComponent,
         UserWorkloadCalendarComponent,
-        UserAvailabilityDayDialogComponent,
         LikedByDialogComponent,
         ShareCollectionDialogComponent,
         PasswordStrengthComponent,
-        PricingTableComponent
+        PricingTableComponent,
+        HolidayRejectionDialogComponent
     ],
     imports: [
         CommonModule,
@@ -362,11 +362,11 @@ import { PricingTableComponent } from './pricing-table/pricing-table.component';
         PendingTasksCardComponent,
         TimeOffCardComponent,
         UserWorkloadCalendarComponent,
-        UserAvailabilityDayDialogComponent,
         LikedByDialogComponent,
         ShareCollectionDialogComponent,
         PasswordStrengthComponent,
-        PricingTableComponent
+        PricingTableComponent,
+        HolidayRejectionDialogComponent
     ],
     providers: [
         { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },

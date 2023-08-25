@@ -12,6 +12,9 @@ import { NewEntityComponent } from './setup/new-entity/new-entity.component';
 import { EditEntityDialogComponent } from './setup/edit-entity-dialog/edit-entity-dialog.component';
 import { EditMemberPayrollDialogComponent } from './employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component';
 import { UserTimeOffDialogComponent } from './time-off/user-time-off-dialog/user-time-off-dialog.component';
+import { UserSkillsComponent } from './employees/edit-member-payroll-dialog/user-skills/user-skills.component';
+import { EditHRFieldsComponent } from './employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component';
+import { EditUserProfileFieldsComponent } from './employees/edit-member-payroll-dialog/edit-user-profile-fields/edit-user-profile-fields.component';
 
 
 @NgModule({
@@ -23,7 +26,10 @@ import { UserTimeOffDialogComponent } from './time-off/user-time-off-dialog/user
     SetupComponent,
     NewEntityComponent,
     EditEntityDialogComponent,
-    EditMemberPayrollDialogComponent
+    EditMemberPayrollDialogComponent,
+    UserSkillsComponent,
+    EditHRFieldsComponent,
+    EditUserProfileFieldsComponent
   ],
   imports: [
     CommonModule,
@@ -32,6 +38,8 @@ import { UserTimeOffDialogComponent } from './time-off/user-time-off-dialog/user
     SharedModule
   ],
   exports: [
+    EditHRFieldsComponent,
+    EditUserProfileFieldsComponent
   ]
 })
 export class OrganizationHRModule { }

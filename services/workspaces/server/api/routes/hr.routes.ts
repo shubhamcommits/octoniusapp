@@ -64,6 +64,21 @@ routes.post('/:entityId/edit-benefit', controller.editEntityBenefit);
 // POST - Deletes an entity benefit
 routes.post('/:entityId/delete-benefit', controller.deleteEntityBenefit);
 
+// POST - Creates a new entity days off
+routes.post('/:entityId/days-off', controller.createEntityDaysOff);
+
+// POST - Edits an entity days off
+routes.post('/:entityId/edit-days-off', controller.editEntityDaysOff);
+
+// POST - Deletes an entity days off
+routes.post('/:entityId/delete-days-off', controller.deleteEntityDaysOff);
+
+// POST - Adds a bank holiday to a days off year
+routes.post('/:entityId/add-bank-holidays', controller.addBankHoliday);
+
+// POST - Adds a bank holiday to a days off year
+routes.post('/:entityId/remove-bank-holidays', controller.removeBankHoliday);
+
 // GET - Returns all the members in an entity
 routes.get('/:entityId/entityMembers', controller.getEntityMembers);
 
@@ -81,6 +96,15 @@ routes.get('/:workspaceId/topMembersOff', controller.getTopMembersOff);
 
 // GET - Returns all members which are currently off
 routes.get('/:workspaceId/membersOff', controller.getMembersOff);
+
+// GET - Returns all members which are currently off
+routes.get('/:workspaceId/hr-pending-notifications', controller.getHRPendingNotifications);
+
+// GET - Returns all members which are currently off
+routes.get('/:workspaceId/top-hr-pending-notifications', controller.getTopHRPendingNotifications);
+
+// POST - Mark a Notification as DONE
+routes.post('/:notificationId/mark-notification-as-done', controller.markNotificationAsDone);
 
 /*  ===================
  *  -- EXPORT ROUTES --

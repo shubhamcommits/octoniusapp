@@ -7,28 +7,19 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class SelectAssigneeComponent implements OnInit {
 
-  constructor() { }
-
-  // Post as the Input from component
+  
   @Input('post') post: any;
-
-  // User Data Input from component
   @Input('userData') userData: any;
-
-  // Group Id Input
   @Input('groupId') groupId: any;
-
-  // Workspace Id Input
   @Input('workspaceData') workspaceData: any;
-
-  // Type as the input from component 'event' or 'task'
   @Input('type') type: any;
-
-  // Show Input Search Bar
   @Input('showBar') showBar = true
+  @Input('styleClass') styleClass = 'feed-avatar'
+  
+  @Output('member') member = new EventEmitter()
 
   /* Task Variables */
-
+  
   // Task Assignee Variable
   taskAssignee = {
     profile_pic: '',
@@ -37,21 +28,20 @@ export class SelectAssigneeComponent implements OnInit {
     last_name: '',
     email: ''
   }
-
+  
   // Assigned State of Task
   assigned: boolean = false;
-
+  
   /* Task Variables */
-
+  
   /* Event Variables */
-
+  
   // Members Map of Event Asignee
   eventMembersMap: any = new Map()
-
+  
   /* Event Variables */
-
-  // Output the assignee
-  @Output('member') member = new EventEmitter()
+  
+  constructor() { }
 
   ngOnInit() {
     if(this.post){

@@ -1,3 +1,34 @@
 @import "src/assets/scss/variables";
 @import "src/assets/scss/tasks";
 @import "src/assets/scss/group";
+
+.card-footer {
+	height: 50px;
+	line-height: 25px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.cancel-button {
+	background-color: #FFFFFF;
+	color: #5E6268;
+	border: 1px solid #5E6268;
+}
+
+.save-button {
+	background-color: #FBB732;
+	color: #FFFFFF;
+}
+
+.approved {
+	color: #2AA578;
+}
+
+.rejected {
+	color: #EE5D5D;
+}
+
+.pending {
+	color: #FBB732;
+}

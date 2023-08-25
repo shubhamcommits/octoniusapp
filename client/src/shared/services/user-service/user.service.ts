@@ -387,18 +387,6 @@ export class UserService {
     .toPromise();
   }
 
-  getOutOfTheOfficeDays(userId: string) {
-    return this._http.get(this.BASE_API_URL + `/${userId}/out-of-office-days`)
-      .toPromise();
-  }
-
-  saveOutOfTheOfficeDays(userId: string, days: any, action: string) {
-    return this._http.put(this.BASE_API_URL + `/${userId}/out-of-office-days`, {
-      days: days,
-      action: action
-    }).toPromise();
-  }
-
   slackDisconnected(){
     return this.slackDisconnectedEvent;
   }
@@ -473,5 +461,60 @@ export class UserService {
       benefitId: benefitId,
       benefitValue: benefitValue
     }).toPromise();
+  }
+
+  savePayrollExtraDaysOff(userId: string, propertyToSave: any) {
+    // Call the HTTP Request
+    return this._http.put(this.BASE_API_URL + `/${userId}/payrollExtraDaysOff`, {
+      propertyToSave
+    }).toPromise();
+  }
+
+  getOutOfTheOfficeDays(userId: string, from: any, to: any) {
+    return this._http.get(this.BASE_API_URL + `/${userId}/out-of-office-days`, {
+      params: {
+        from: from,
+        to: to
+      }
+    })
+      .toPromise();
+  }
+
+  saveOutOfTheOfficeDays(userId: string, days: any, action: string) {
+    return this._http.put(this.BASE_API_URL + `/${userId}/out-of-office-days`, {
+      days: days,
+      action: action
+    }).toPromise();
+  }
+
+  createHoliday(userId: string, holiday: any) {
+    return this._http.post(this.BASE_API_URL + `/${userId}/holiday`, { holiday }).toPromise();
+  }
+
+  editHoliday(userId: string, holiday: any) {
+    return this._http.post(this.BASE_API_URL + `/${userId}/edit-holiday`, { holiday }).toPromise();
+  }
+
+  editHolidayStatus(holidayId: string, status: any, rejection_description?: string) {
+    return this._http.post(this.BASE_API_URL + `/${holidayId}/edit-holiday-status`, { status, rejection_description }).toPromise();
+  }
+
+  deleteHoliday(holidayId: string) {
+    return this._http.delete(this.BASE_API_URL + `/${holidayId}/delete-holiday`).toPromise();
+  }
+
+  getNumHolidays(userId: string, from: any, to: any, type: string) {
+    return this._http.get(this.BASE_API_URL + `/${userId}/calculate-num-holidays`, {
+      params: {
+        from: from,
+        to: to,
+        type: type
+      }
+    })
+      .toPromise();
+  }
+
+  getPendingApprovalHolidays(userId?: string) {
+    return this._http.get(this.BASE_API_URL + `/${userId}/pending-approval-holidays`).toPromise();
   }
 }

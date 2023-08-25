@@ -3,13 +3,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
-import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { UserTimeOffDialogComponent } from './user-time-off-dialog/user-time-off-dialog.component';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-time-off',
@@ -26,7 +24,10 @@ export class TimneOffComponent implements OnInit {
   membersOff = [];
 
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['photo', 'first_name', 'last_name', 'email', 'job', 'department', 'star'];
+  displayedColumns: string[] = ['photo', 'first_name', 'last_name', 'email', 'start_date', 'end_date', 'star'];
+
+  selectedDate = DateTime.now();
+  months = [];
 
   // Public functions
   public publicFunctions = new PublicFunctions(this.injector);
@@ -48,13 +49,38 @@ export class TimneOffComponent implements OnInit {
 
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
-    this.initUsersTable();
+    this.initMonths();
+
+    this.initUsersTable(DateTime.now());
   }
 
-  initUsersTable() {
-    this.hrService.getMembersOff(this.workspaceData?._id).then(res => {
+  initMonths() {
+    const today = DateTime.now();
+    this.selectedDate = today;
+    this.months = [
+      today.set({ month: 1 }),
+      today.set({ month: 2 }),
+      today.set({ month: 3 }),
+      today.set({ month: 4 }),
+      today.set({ month: 5 }),
+      today.set({ month: 6 }),
+      today.set({ month: 7 }),
+      today.set({ month: 8 }),
+      today.set({ month: 9 }),
+      today.set({ month: 10 }),
+      today.set({ month: 11 }),
+      today.set({ month: 12 })
+    ]
+  }
+
+  initUsersTable(date: DateTime) {
+    const from = date.startOf('month');
+    const to = date.endOf('month');
+
+    const membersIds = (!!this.workspaceData.members) ? this.workspaceData.members.map(member => member._id) : [];
+    this.hrService.getMembersOff(membersIds, from, to).then(res => {
       this.membersOff = res['members'];
-      
+
       // Assign the data to the data source for the table to render
       this.dataSource = new MatTableDataSource(this.membersOff);
 
@@ -77,8 +103,8 @@ export class TimneOffComponent implements OnInit {
       data: {
         userId: userId
       },
-      width: '85%',
-      height: '95%',
+      width: '75%',
+      // height: '95%',
       disableClose: true,
       hasBackdrop: true
     });
@@ -90,5 +116,24 @@ export class TimneOffComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       // memberEditedEventSubs.unsubscribe();
     });
+  }
+
+  changeMonth(monthSelected: any) {
+console.log(this.selectedDate);
+    this.initUsersTable(monthSelected);
+  }
+
+  formateDate(date: any) {
+    if (!!date && (date instanceof DateTime)) {
+      return date.toLocaleString(DateTime.DATE_SHORT);
+    }
+    return (!!date) ? DateTime.fromISO(date).toLocaleString(DateTime.DATE_SHORT) : '';
+  }
+
+  displayMonth(date: any) {
+    if (!!date && (date instanceof DateTime)) {
+      return date.toFormat('LLLL yyyy');
+    }
+    return (!!date) ? DateTime.fromISO(date).toFormat('LLLL yyyy') : '';
   }
 }

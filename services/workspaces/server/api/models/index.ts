@@ -11,6 +11,7 @@ import { Account } from './account.model';
 import { Lounge } from './lounge.model';
 import { Story } from './story.model';
 import { Entity } from './entity.model';
+import { Holiday } from './holidays.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -20,6 +21,8 @@ export {
 
     // AUTH
     Auth as Auth,
+
+    Holiday as Holiday,
 
     // GROUP
     Group as Group,

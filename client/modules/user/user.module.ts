@@ -8,7 +8,6 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserCloudsComponent } from './user-clouds/user-clouds.component';
 import { UserInformationComponent } from './user-information/user-information.component';
 import { UserProfessionalInformationComponent } from './user-profile/user-professional-information/user-professional-information.component';
-import { UserSkillsComponent } from './user-profile/user-skills/user-skills.component';
 import { UserAvailableCloudsComponent } from './user-clouds/user-available-clouds/user-available-clouds.component';
 import { UserConnectedCloudsComponent } from './user-clouds/user-connected-clouds/user-connected-clouds.component';
 
@@ -24,6 +23,8 @@ import { UserPasswordUpdateComponent } from './user-profile/user-password-update
 import { UserProfileCustomFieldsComponent } from './user-profile/user-profile-custom-fields/user-profile-custom-fields.component';
 import { FormsModule } from '@angular/forms';
 import { UserHiveComponent } from './user-hive/user-hive.component';
+import { EditUserProfileFieldsComponent } from 'modules/organization/hr/employees/edit-member-payroll-dialog/edit-user-profile-fields/edit-user-profile-fields.component';
+import { OrganizationHRModule } from 'modules/organization/hr/organization-hr.module';
 
 
 @NgModule({
@@ -34,7 +35,6 @@ import { UserHiveComponent } from './user-hive/user-hive.component';
         UserInformationComponent,
         UserHiveComponent,
         UserProfessionalInformationComponent,
-        UserSkillsComponent,
         UserAvailableCloudsComponent,
         UserConnectedCloudsComponent,
         UserWorkloadComponent,
@@ -51,7 +51,8 @@ import { UserHiveComponent } from './user-hive/user-hive.component';
         TeamModule,
         ZapModule,
         UserRoutingModule,
-        MatSelectModule
+        MatSelectModule,
+        OrganizationHRModule
     ],
     providers: [
         UserService

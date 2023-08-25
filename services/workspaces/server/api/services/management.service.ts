@@ -87,11 +87,22 @@ export class ManagementService {
      */
     canActivateBilling(workspaceId: string, mgmtApiPrivateKey: string) {
         try {
-            return axios.get(this.MANAGEMENT_BASE_API_URL + `/billings/can-activate-billing/${workspaceId}`, {
-                params: {
-                    API_KEY: mgmtApiPrivateKey
-                }
-            });
+            if (process.env.NODE_ENV == 'development') {
+                return new Promise((resolve, reject) => {
+                    resolve({
+                        data: {
+                            message: 'Activate',
+                            status: true
+                        }
+                    });
+                  });
+            } else {
+                return axios.get(this.MANAGEMENT_BASE_API_URL + `/billings/can-activate-billing/${workspaceId}`, {
+                    params: {
+                        API_KEY: mgmtApiPrivateKey
+                    }
+                });
+            }
         } catch (err) {
             throw (err);
         }
@@ -102,12 +113,32 @@ export class ManagementService {
      */
     getSubscription(workspaceId: string, mgmtApiPrivateKey: string) {
         try {
-            return axios.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-subscription/${workspaceId}`, {
-                params: {
-                    API_KEY: mgmtApiPrivateKey
-                },
-                
-            });
+            if (process.env.NODE_ENV == 'development') {
+                return new Promise((resolve, reject) => {
+                    resolve({
+                        data: {
+                            message: 'succesfully retrieved the subscription',
+                            subscription: {
+                                "id": "",
+                                "product": "prod_OHLYDzd3gB29cY",
+                                "plan": {
+                                    "product": "prod_OHLYDzd3gB29cY"
+                                }
+                            },
+                            product: {
+                                "id": "prod_OHLYDzd3gB29cY"
+                            }
+                        }
+                    });
+                  });
+            } else {
+                return axios.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-subscription/${workspaceId}`, {
+                    params: {
+                        API_KEY: mgmtApiPrivateKey
+                    },
+                    
+                });
+            }
         } catch (err) {
             throw (err);
         }   
@@ -118,12 +149,22 @@ export class ManagementService {
      */
     getStripeCustomer(customerId: string, mgmtApiPrivateKey: string) {
         try {
-            return axios.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-customer/${customerId}`, {
-                params: {
-                    API_KEY: mgmtApiPrivateKey
-                },
-                
-            });
+            if (process.env.NODE_ENV == 'development') {
+                return new Promise((resolve, reject) => {
+                    resolve({
+                        data: {
+                            message: 'You have a in a DEVELOPMENT environment',
+                            customer: {}
+                        }
+                    });
+                  });
+            } else {
+                return axios.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-customer/${customerId}`, {
+                    params: {
+                        API_KEY: mgmtApiPrivateKey
+                    },
+                });
+            }
         } catch (err) {
             throw (err);
         }

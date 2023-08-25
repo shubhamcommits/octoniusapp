@@ -1,45 +1,252 @@
 <div class="card-tile">
-    <div class="row text-center">
-        <div class="col-md-4">
-            <div class="btn-group">
-                <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" i18n="@@userWorkloadCalendar.previous">
-                    Previous
-                </div>
-                <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate" i18n="@@userWorkloadCalendar.today">
-                    Today
-                </div>
-                <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" i18n="@@userWorkloadCalendar.next">
-                    Next
-                </div>
+  <!-- 
+  <div class="row text-center">
+    <div class="col-md-4">
+        <div class="btn-group">
+            <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" i18n="@@userWorkloadCalendar.previous">
+                Previous
+            </div>
+            <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate" i18n="@@userWorkloadCalendar.today">
+                Today
+            </div>
+            <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" i18n="@@userWorkloadCalendar.next">
+                Next
             </div>
         </div>
+    </div>
 
-        <div class="col-md-4">
-            <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
-        </div>
+    <div class="col-md-4">
+        <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+    </div>
+    
+    <div class="col-md-3" *ngIf="isCurrentUser">
+      <button class="btn" (click)="openDialog('add')" style="margin:0">
+        <i class="material-icons">add</i>
+      </button>
+      <button class="btn" (click)="openDialog('remove')" style="margin:0">
+        <i class="material-icons">remove</i>
+      </button>
+      <button class="btn btn-outline-warning" (click)="clearDates()" style="margin:0" i18n="@@userWorkloadCalendar.clean">
+        Clean
+      </button>
+    </div>
+  </div>
+  <br />
+  <div [ngSwitch]="view">
+    <mwl-calendar-month-view *ngSwitchCase="'month'"
+      [viewDate]="viewDate"
+      [events]="events"
+      [refresh]="refresh"
+      [weekStartsOn]="weekStartsOn"
+      (beforeViewRender)="beforeMonthViewRender($event)"
+      (dayClicked)="dayClicked($event.day)">
+    </mwl-calendar-month-view>
+  </div>
+  -->
+  <div class="row">
+    <div class="col">
+      <span i18n="@@userWorkloadCalendar.usedHolidays">Used Holiday days: </span> {{ totalUsedHolidays || 0 }}
+    </div>
+    <div class="col">
+      <span i18n="@@userWorkloadCalendar.pendingHolidays">Pending Holiday days: </span> {{ pendingUsedHolidays || 0 }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <span i18n="@@userWorkloadCalendar.usedSick">Used Sick days: </span> {{ totalUsedSickDays || 0 }}
+    </div>
+    <div class="col">
+      <span i18n="@@userWorkloadCalendar.pendingSick">Pending Sick days: </span> {{ pendingUsedSickDays || 0 }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <span i18n="@@userWorkloadCalendar.usedPersonal">Used Personal days: </span> {{ totalUsedPersonalDays || 0 }}
+    </div>
+    <div class="col">
+      <span i18n="@@userWorkloadCalendar.pendingPersonal">Pending Personal days: </span> {{ pendingUsedPersonalDays || 0 }}
+    </div>
+  </div>
+
+  <hr />
+
+  <div style="margin-top: 20px;">
+    <mat-tab-group mat-align-tabs="start" selectedIndex="0">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span>{{ today.year }}</span>
+        </ng-template>
+
+        <table style="width: 100%; margin-top: 20px;">
+          <tr>
+            <th i18n="@@userWorkloadCalendar.starts">Starts</th>
+            <th i18n="@@userWorkloadCalendar.ends">Ends</th>
+            <th i18n="@@userWorkloadCalendar.type">Type</th>
+            <th i18n="@@userWorkloadCalendar.numDays">Number Days</th>
+            <th i18n="@@userWorkloadCalendar.manager">Manager</th>
+            <th i18n="@@userWorkloadCalendar.status">Status</th>
+            <th i18n="@@userWorkloadCalendar.comment">Comment</th>
+            <th *ngIf="isCurrentUser">
+              <button (click)="cancelHoliday(); showNewHolidayForm()" class="btn btn-primary"
+                i18n="@@newEntity.requestHolidays">
+                Request Holidays
+              </button>
+            </th>
+          </tr>
         
-        <div class="col-md-3" *ngIf="isCurrentUser">
-          <button class="btn" (click)="openDialog('add')" style="margin:0">
-            <i class="material-icons">add</i>
-          </button>
-          <button class="btn" (click)="openDialog('remove')" style="margin:0">
-            <i class="material-icons">remove</i>
-          </button>
-          <button class="btn btn-outline-warning" (click)="clearDates()" style="margin:0" i18n="@@userWorkloadCalendar.clean">
-            Clean
-          </button>
+          <tr *ngFor="let holiday of holidaysInYear">
+            <td>{{ formateDate(holiday.start_date) }}</td>
+            <td>{{ formateDate(holiday.end_date) }}</td>
+            <td>{{ holiday.type }}</td>
+            <td>{{ holiday.num_days }}</td>
+            <td>
+              <app-secured-image [imgURL]="holiday?._approval_manager?.profile_pic" [service]="'user'"
+                [workspaceId]="workspaceData?._id" [styleClass]="'feed-avatar-small'"></app-secured-image>
+              {{ holiday?._approval_manager?.first_name }} {{ holiday?._approval_manager?.last_name }}
+            </td>
+        
+            <td>
+              <span *ngIf="holiday?.status == 'approved'" class="approved" i18n="@@userWorkloadCalendar.approved">APPROVED</span>
+              <span *ngIf="holiday?.status == 'pending'" class="pending" i18n="@@userWorkloadCalendar.pending">PENDING</span>
+              <span *ngIf="holiday?.status == 'rejected'" class="rejected" i18n="@@userWorkloadCalendar.rejected">REJECTED</span>
+            </td>
+
+            <td>{{ holiday.rejection_description }}</td>
+        
+            <td *ngIf="isCurrentUser">
+              <div style="cursor: pointer;" [matMenuTriggerFor]="holidayActionsMenu">
+                <i class="material-icons">settings</i>
+              </div>
+        
+              <mat-menu #holidayActionsMenu="matMenu">
+                <a mat-menu-item (click)="editHolidays(holiday)" *ngIf="holiday?.status == 'pending'">
+                  <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">edit</i>
+                  <span i18n="@@userWorkloadCalendar.edit">Edit</span>
+                </a>
+        
+                <a mat-menu-item (click)="removeHolidays(holiday._id)">
+                  <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
+                  <span i18n="@@userWorkloadCalendar.remove">Remove</span>
+                </a>
+              </mat-menu>
+            </td>
+          </tr>
+        </table>
+      </mat-tab>
+
+      <mat-tab *ngIf="!!pastHolidays && pastHolidays.length > 0">
+        <ng-template mat-tab-label>
+          <span i18n="@@userWorkloadCalendar.recentActivities">Past Years</span>
+        </ng-template>
+
+        <table style="width: 100%; margin-top: 20px;">
+          <tr>
+            <th i18n="@@userWorkloadCalendar.starts">Starts</th>
+            <th i18n="@@userWorkloadCalendar.ends">Ends</th>
+            <th i18n="@@userWorkloadCalendar.type">Type</th>
+            <th i18n="@@userWorkloadCalendar.numDays">Number Days</th>
+            <th i18n="@@userWorkloadCalendar.manager">Manager</th>
+            <th i18n="@@userWorkloadCalendar.status">Status</th>
+            <th i18n="@@userWorkloadCalendar.comment">Comment</th>
+          </tr>
+        
+          <tr *ngFor="let holiday of pastHolidays">
+            <td>{{ formateDate(holiday.start_date) }}</td>
+            <td>{{ formateDate(holiday.end_date) }}</td>
+            <td>{{ holiday.type }}</td>
+            <td>{{ holiday.num_days }}</td>
+            <td>
+              <app-secured-image [imgURL]="holiday?._approval_manager?.profile_pic" [service]="'user'"
+                [workspaceId]="workspaceData?._id" [styleClass]="'feed-avatar-small'"></app-secured-image>
+              {{ holiday?._approval_manager?.first_name }} {{ holiday?._approval_manager?.last_name }}
+            </td>
+        
+            <td>
+              <span *ngIf="holiday?.status == 'approved'" class="approved" i18n="@@userWorkloadCalendar.approved">APPROVED</span>
+              <span *ngIf="holiday?.status == 'pending'" class="pending" i18n="@@userWorkloadCalendar.pending">PENDING</span>
+              <span *ngIf="holiday?.status == 'rejected'" class="rejected" i18n="@@userWorkloadCalendar.rejected">REJECTED</span>
+            </td>
+
+            <td>{{ holiday.rejection_description }}</td>
+          </tr>
+        </table>
+      </mat-tab>
+    </mat-tab-group>
+
+    <div *ngIf="createNewHoliday">
+      <hr />
+
+      <div class="row">
+        <div class="col">
+          <div class="col-description">
+            <h4>
+              <span *ngIf="!!newHoliday?._id" i18n="@@userWorkloadCalendar.edit">Edit</span>
+              <span *ngIf="!newHoliday?._id" i18n="@@userWorkloadCalendar.new">New</span>
+
+              <span i18n="@@userWorkloadCalendar.holiday">Holiday</span>
+            </h4>
+          </div>
         </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label i18n="@@userWorkloadCalendar.starts">Starts</label>: 
+          <!-- <input type="date" autocomplete="off" class="form-control" [(ngModel)]="newHoliday.start_date" (ngModelChange)="calculateNumHolidays('start_date', $event)"> -->
+          {{ formateDate(newHoliday.start_date) }}
+          <app-date-picker [selectedDate]="newHoliday.start_date" [showInput]="false" (date)="calculateNumHolidays('start_date', $event)" [styleClass]="'btn-group input-date'">
+          </app-date-picker>
+        </div>
+
+        <div class="col">
+          <label i18n="@@userWorkloadCalendar.ends">Ends</label>:
+          <!-- <input type="date" autocomplete="off" class="form-control" [(ngModel)]="newHoliday.end_date" (ngModelChange)="calculateNumHolidays('end_date', $event)" /> -->
+          {{ formateDate(newHoliday.end_date) }}
+          <app-date-picker [selectedDate]="newHoliday.end_date" [showInput]="false" (date)="calculateNumHolidays('end_date', $event)" [styleClass]="'btn-group input-date'">
+          </app-date-picker>
+        </div>
+      </div>
+
+      <label i18n="@@userWorkloadCalendar.type" style="float: left; width: 100%;">Type</label>
+      <mat-select ngDefaultControl
+        [(ngModel)]="newHoliday.type"
+        appearance="fill"
+        class="col form-control">
+        <mat-select-trigger>{{ newHoliday?.type }}</mat-select-trigger>
+        <mat-option *ngFor="let val of outOfOfficeReason" [value]="val.toLowerCase()">{{ val }}</mat-option>
+      </mat-select>
+      
+      <label i18n="@@userWorkloadCalendar.numberOfDays" style="float: left; width: 100%;">Number Of Days</label>
+      <input type="number" autocomplete="off" class="form-control" [(ngModel)]="newHoliday.num_days" disabled="true" />
+      
+      <label i18n="@@userWorkloadCalendar.manager" style="float: left; width: 100%;">Manager</label>
+      <app-select-assignee type="workspaceMembers" [userData]="newHoliday._approval_manager"
+        [workspaceData]="workspaceData" [showBar]="isCurrentUser && !userHasManager" [styleClass]="'feed-avatar-small'"
+        (member)="selectManager($event)"></app-select-assignee>
+
+      <label i18n="@@userWorkloadCalendar.description" style="float: left; width: 100%;">Description</label>
+      <input type="text" autocomplete="off" class="form-control" [(ngModel)]="newHoliday.description" />
+
+      <div class="card-footer">
+        <p *ngIf="!!errorCode">
+          ❌ {{ errorCode }}
+        </p>
+      </div>
+
+      <div class="card-footer">
+        <button (click)="cancelHoliday()" class="btn cancel-button">
+          <i class="material-icons">close</i>
+          <span i18n="@@newEntity.cancel">Cancel</span>
+        </button>
+      
+        <button *ngIf="!newHoliday?._id || newHoliday?._id == ''" (click)="saveDayOff()" [disabled]="!canCreate()" class="btn save-button">
+          <i class="material-icons">add</i>
+          <span i18n="@@newEntity.create">Create</span>
+        </button>
+        <button *ngIf="newHoliday?._id && newHoliday?._id != ''" (click)="saveDayOff()" [disabled]="!canCreate()" class="btn save-button">
+          <span i18n="@@newEntity.save">Save</span>
+        </button>
+      </div>
     </div>
-    <br />
-    <div [ngSwitch]="view">
-      <mwl-calendar-month-view *ngSwitchCase="'month'"
-        [viewDate]="viewDate"
-        [events]="events"
-        [refresh]="refresh"
-        [weekStartsOn]="weekStartsOn"
-        (beforeViewRender)="beforeMonthViewRender($event)"
-        (dayClicked)="dayClicked($event.day)"
-      >
-      </mwl-calendar-month-view>
-    </div>
+  </div>
 </div>

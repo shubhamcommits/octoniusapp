@@ -1,8 +1,9 @@
 import { sendError } from '../../utils';
 import { Request, Response, NextFunction } from 'express';
-import { Entity, User } from '../models';
+import { Entity, Holiday, User, Notification } from '../models';
 import { Readable } from 'stream';
 import moment from 'moment';
+import { DateTime } from 'luxon';
 
 export class HRControllers {
 
@@ -466,6 +467,177 @@ export class HRControllers {
         }
     }
 
+    async createEntityDaysOff(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { entityId }, body: { daysOff } } = req;
+
+            if (!entityId || !daysOff) {
+                return sendError(res, new Error('Please provide the entityId property!'), 'Please provide the entityId property!', 500);
+            }
+
+            let entity = await Entity.findById({
+                    _id: entityId
+                }).select('payroll_days_off').lean();
+            const index = (entity.payroll_days_off) ? entity.payroll_days_off.findIndex(dayOff => dayOff.year == daysOff.year) : -1;
+
+            if (index >= 0) {
+                return sendError(res, new Error('The year added already exists!'), 'The year added already exists!', 500);
+            }
+            
+            const newDaysOff = {
+                year: daysOff.year,
+                holidays: daysOff.holidays,
+                sick: daysOff.sick,
+                personal_days: daysOff.personal_days
+            }
+
+            entity = await Entity.findByIdAndUpdate({
+                    _id: entityId
+                }, {
+                    $addToSet: {
+                        payroll_days_off: newDaysOff
+                    }
+                }, {
+                    new: true
+                })
+                .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+                .lean();
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'Days Off created.',
+                entity: entity
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async editEntityDaysOff(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { entityId }, body: { daysOff } } = req;
+
+            if (!entityId || !daysOff) {
+                return sendError(res, new Error('Please provide the entityId property!'), 'Please provide the entityId property!', 500);
+            }
+
+            const entity = await Entity.findByIdAndUpdate({
+                    _id: entityId
+                }, {
+                    $set: {
+                        'payroll_days_off.$[daysOff]': daysOff
+                    }
+                },
+                {
+                    arrayFilters: [{ "daysOff._id": daysOff?._id }],
+                    new: true
+                })
+                .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+                .lean();
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'Benefit edited.',
+                entity: entity
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async deleteEntityDaysOff(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { entityId }, body: { daysOffId } } = req;
+
+            if (!entityId || !daysOffId) {
+                return sendError(res, new Error('Please provide the entityId property!'), 'Please provide the entityId property!', 500);
+            }
+
+            const entity = await Entity.findByIdAndUpdate({
+                    _id: entityId
+                }, {
+                    $pull: { payroll_days_off: { _id: daysOffId }}
+                },
+                {
+                    new: true
+                })
+                .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+                .lean();
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'Days Off delted.',
+                entity: entity
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async addBankHoliday(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { entityId }, body: { daysOffId, bankHoliday } } = req;
+
+            if (!entityId || !daysOffId || !bankHoliday) {
+                return sendError(res, new Error('Please provide the entityId property!'), 'Please provide the entityId property!', 500);
+            }
+
+            const entity = await Entity.findByIdAndUpdate({
+                    _id: entityId
+                }, {
+                    $addToSet: {
+                        'payroll_days_off.$[daysOff].bank_holidays': bankHoliday
+                    }
+                },
+                {
+                    arrayFilters: [{ "daysOff._id": daysOffId }],
+                    new: true
+                })
+                .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+                .lean();
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'Bank Holiday added.',
+                entity: entity
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async removeBankHoliday(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { entityId }, body: { daysOffId, bankHoliday } } = req;
+
+            if (!entityId || !daysOffId || !bankHoliday) {
+                return sendError(res, new Error('Please provide the entityId property!'), 'Please provide the entityId property!', 500);
+            }
+
+            const entity = await Entity.findByIdAndUpdate({
+                    _id: entityId
+                }, {
+                    $pull: {
+                        'payroll_days_off.$[daysOff].bank_holidays': bankHoliday
+                    }
+                },
+                {
+                    arrayFilters: [{ "daysOff._id": daysOffId }],
+                    new: true
+                })
+                .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+                .lean();
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'Bank Holiday delted.',
+                entity: entity
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
     async getEntityMembers(req: Request, res: Response, next: NextFunction) {
         try {
 
@@ -596,22 +768,77 @@ export class HRControllers {
         try {
             const { params: { workspaceId } } = req;
 
-            const from_date = moment().startOf('week');
-            const to_date = moment().endOf('week');
+            const from = moment().startOf('week');
+            const to = moment().endOf('week');
+
+            const holidays = await Holiday.find({
+                    $and: [
+                        { status: 'approved' },
+                        {
+                            $or: [
+                                {
+                                    $and: [
+                                        { start_date: { $gte: from }},
+                                        { start_date: { $lte: to }},
+                                        { end_date: { $gte: from }},
+                                        { end_date: { $lte: to }}
+                                    ]
+                                }, {
+                                    $and: [
+                                        { start_date: { $lte: from }},
+                                        { start_date: { $lte: to }},
+                                        { end_date: { $gte: from }},
+                                        { end_date: { $lte: to }}
+                                    ]
+                                }, {
+                                    $and: [
+                                        { start_date: { $lte: from }},
+                                        { start_date: { $lte: to }},
+                                        { end_date: { $gte: from }},
+                                        { end_date: { $gte: to }}
+                                    ]
+                                }, {
+                                    $and: [
+                                        { start_date: { $gte: from }},
+                                        { start_date: { $lte: to }},
+                                        { end_date: { $gte: from }},
+                                        { end_date: { $gte: to }}
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                })
+                .limit(6)
+                .populate({
+                    path: '_user',
+                    select: '_id first_name last_name email profile_pic hr'
+                })
+                .lean() || [];
+
+            if (!holidays) {
+                return sendError(res, new Error('Oops, holidays not found!'), 'Holidays not found!', 404);
+            }
+
+            const users = holidays.map(holiday => {
+                holiday._user.start_date = holiday.start_date;
+                holiday._user.end_date = holiday.end_date;
+                return holiday._user
+            });
 
             // Find the workspace based on the workspaceId
-            const users: any = await User.find({
-                $and: [
-                    { _workspace: workspaceId },
-                    {'out_of_office.date': { $gte: from_date, $lte: to_date }},
-                    {'out_of_office.approved': true },
-                ]
-            }).limit(4).select('_id first_name last_name email profile_pic hr').lean();
+            // const users: any = await User.find({
+            //     $and: [
+            //         { _workspace: workspaceId },
+            //         {'out_of_office.date': { $gte: from_date, $lte: to_date }},
+            //         {'out_of_office.approved': true },
+            //     ]
+            // }).limit(6).select('_id first_name last_name email profile_pic hr').lean();
 
             // Check if workspace already exist with the same workspaceId
-            if (!users) {
-                return sendError(res, new Error('Oops, users not found!'), 'Users not found!', 404);
-            }
+            // if (!users) {
+            //     return sendError(res, new Error('Oops, users not found!'), 'Users not found!', 404);
+            // }
 
             // Send the status 200 response
             return res.status(200).json({
@@ -625,32 +852,158 @@ export class HRControllers {
 
     async getMembersOff(req: Request, res: Response, next: NextFunction) {
         try {
-            const { params: { workspaceId } } = req;
+            const { query: { members, from, to }} = req;
 
-            const from_date = moment().startOf('week');
-            const to_date = moment().endOf('week');
+            const holidays = await Holiday.find({
+                    $and: [
+                        { _user: { $in: members }},
+                        { status: 'approved' },
+                        {
+                            $or: [
+                                {
+                                    $and: [
+                                        { start_date: { $gte: from }},
+                                        { start_date: { $lte: to }},
+                                        { end_date: { $gte: from }},
+                                        { end_date: { $lte: to }}
+                                    ]
+                                }, {
+                                    $and: [
+                                        { start_date: { $lte: from }},
+                                        { start_date: { $lte: to }},
+                                        { end_date: { $gte: from }},
+                                        { end_date: { $lte: to }}
+                                    ]
+                                }, {
+                                    $and: [
+                                        { start_date: { $lte: from }},
+                                        { start_date: { $lte: to }},
+                                        { end_date: { $gte: from }},
+                                        { end_date: { $gte: to }}
+                                    ]
+                                }, {
+                                    $and: [
+                                        { start_date: { $gte: from }},
+                                        { start_date: { $lte: to }},
+                                        { end_date: { $gte: from }},
+                                        { end_date: { $gte: to }}
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                })
+                .populate({
+                    path: '_user',
+                    select: '_id first_name last_name email profile_pic hr'
+                })
+                .lean() || [];
 
-            // Find the workspace based on the workspaceId
-            const users: any = await User.find({
-                $and: [
-                    { _workspace: workspaceId },
-                    {'out_of_office.date': { $gte: from_date, $lte: to_date }},
-                    {'out_of_office.approved': true },
-                ]
-            }).select('_id first_name last_name email profile_pic hr').lean();
-
-            // Check if workspace already exist with the same workspaceId
-            if (!users) {
-                return sendError(res, new Error('Oops, users not found!'), 'Users not found!', 404);
-            }
+            const users = holidays.map(holiday => {
+                holiday._user.start_date = holiday.start_date;
+                holiday._user.end_date = holiday.end_date;
+                return holiday._user
+            });
 
             // Send the status 200 response
             return res.status(200).json({
-                message: 'Users found!',
+                message: 'Holidays found!',
+                holidays: holidays,
                 members: users
             });
         } catch (err) {
             return sendError(res, err);
+        }
+    }
+
+    async getHRPendingNotifications(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { workspaceId }} = req;
+
+            const notifications = await Notification.find({
+                    $and: [
+                        { _workspace: workspaceId },
+                        { type: 'hive' },
+                        { read: false }
+                    ]
+                })
+                .populate({
+                    path: '_owner',
+                    select: '_id first_name last_name email profile_pic'
+                })
+                .lean() || [];
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Notifications found!',
+                notifications: notifications
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    }
+
+    async getTopHRPendingNotifications(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { workspaceId }} = req;
+
+            const notifications = await Notification.find({
+                    $and: [
+                        { _workspace: workspaceId },
+                        { type: 'hive' },
+                        { read: false }
+                    ]
+                })
+                .limit(6)
+                .populate({
+                    path: '_owner',
+                    select: '_id first_name last_name email profile_pic'
+                })
+                .lean() || [];
+
+            const totalNotificationsCount = await Notification.find({
+                    $and: [
+                        { _workspace: workspaceId },
+                        { type: 'hive' },
+                        { read: false }
+                    ]
+                }).countDocuments();
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Notifications found!',
+                notifications: notifications,
+                totalCount: totalNotificationsCount
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    }
+
+    async markNotificationAsDone(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { notificationId }} = req;
+
+            if (!notificationId) {
+                return sendError(res, new Error('Please provide the notificationId property!'), 'Please provide the notificationId property!', 500);
+            }
+
+            const notifications = await Notification.findByIdAndUpdate({
+                    _id: notificationId
+                }, {
+                    $set: {
+                        read: true,
+                        read_date: DateTime.now()
+                    }
+                })
+                .lean();
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'Notification DONE.'
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
 }

@@ -4,6 +4,7 @@ import { CountryCurrencyService } from 'src/shared/services/country-currency/cou
 import { HRService } from 'src/shared/services/hr-service/hr.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { EntityAddMembersDialogComponent } from '../entity-add-members-dialog/entity-add-members-dialog.component';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-edit-entity-dialog',
@@ -54,6 +55,15 @@ export class EditEntityDialogComponent implements OnInit {
     values: []
   }
 
+  createNewDaysOff = false;
+  newDayOff = {
+    _id: '',
+    year: DateTime.now().year,
+    holidays: 0,
+    sick: 0,
+    personal_days: 0
+  };
+  newBankHoliday = '';
 
   entityMembers = [];
 
@@ -487,6 +497,124 @@ export class EditEntityDialogComponent implements OnInit {
    * ENDS BENEFITS
    */
 
+  /**
+   * STARTS DAYS OFF
+   */
+  editEntityDaysOff(dayOff: any) {
+    this.newDayOff._id = dayOff._id;
+    this.newDayOff.year = dayOff.year;
+    this.newDayOff.holidays = dayOff.holidays;
+    this.newDayOff.sick = dayOff.sick;
+    this.newDayOff.personal_days = dayOff.personal_days;
+
+    this.showNewDaysOffForm();
+  }
+
+  showNewDaysOffForm() {
+    this.createNewDaysOff = !this.createNewDaysOff;
+  }
+
+  saveDayOff() {
+    this.utilityService.asyncNotification($localize`:@@editEntityDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the entity...`, new Promise((resolve, reject) => {
+      if (this.newDayOff?._id && this.newDayOff?._id != '') {
+        this.hrService.editEntityDaysOff(this.entityData?._id, this.newDayOff).then(res => {
+          const index = (this.entityData.payroll_days_off) ? this.entityData.payroll_days_off.findIndex(dayOff => dayOff._id == this.newDayOff._id) : -1;
+          if (index >= 0) {
+            this.entityData.payroll_days_off[index] = this.newDayOff;
+          }
+
+          this.cancelDayOff();
+
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@editEntityDialog.entityUpdated:Entity updated!`));
+        })
+        .catch(() => {
+          this.cancelDayOff();
+
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@editEntityDialog.unableToUpdateEntity:Unable to update the entity, please try again!`));
+        });
+      } else {
+        this.hrService.createNewDaysOff(this.entityData?._id, this.newDayOff).then(res => {
+          this.entityData = res['entity'];
+          this.cancelDayOff();
+
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@editEntityDialog.entityUpdated:Entity updated!`));
+        })
+        .catch((error) => {
+          this.cancelDayOff();
+          reject(this.utilityService.rejectAsyncPromise(error.error.message));
+        });
+      }
+    }));
+  }
+
+  deleteEntityDaysOff(dayOffId: string) {
+    this.utilityService.getConfirmDialogAlert($localize`:@@editentitydialog.areYouSure:Are you sure?`, $localize`:@@editentitydialog.completelyRemovedYear:By doing this, the year will be completely removed!`)
+      .then((res) => {
+        if (res.value) {
+          this.utilityService.asyncNotification($localize`:@@editentitydialog.pleaseWaitDeletingYear:Please wait we are deleting the year...`, new Promise((resolve, reject) => {
+            this.hrService.deleteEntityDaysOff(this.entityData?._id, dayOffId).then(res => {
+              const index = (this.entityData.payroll_benefits) ? this.entityData.payroll_benefits.findIndex(benefit => benefit._id == dayOffId) : -1;
+              if (index >= 0) {
+                this.entityData.payroll_benefits.splice(index, 1);
+              }
+
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@editentitydialog.deletedYear:Year deleted!`));
+            }).catch((err) => {
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@editentitydialog.unableDeleteYear:Unable to delete the year, please try again!`));
+            });
+          }));
+        }
+      });
+  }
+
+  cancelDayOff() {
+    this.newDayOff = {
+      _id: '',
+      year: DateTime.now().year,
+      holidays: 0,
+      sick: 0,
+      personal_days: 0
+    }
+
+    this.createNewDaysOff = !this.createNewDaysOff;
+  }
+
+  addBankHolidayDate(momentDate: any, dayOffId: string) {
+    const doIndex = (this.entityData.payroll_days_off) ? this.entityData.payroll_days_off.findIndex((dayOff: any) => dayOff._id === dayOffId) : -1;
+    if (doIndex >= 0) {
+      if (!this.entityData.payroll_days_off[doIndex].bank_holidays) {
+        this.entityData.payroll_days_off[doIndex].bank_holidays = [];
+      }
+      const bhIndex = this.entityData.payroll_days_off[doIndex].bank_holidays.findIndex((bh: any) => DateTime.fromJSDate(momentDate).equals(DateTime.fromJSDate(bh)));
+      // If index is found, then throw error notification
+      if (bhIndex !== -1) {
+        this.utilityService.warningNotification($localize`:@@editentitydialog.valueAlreadyExists:Value already exists!`);
+      } else {
+        this.hrService.addBankHoliday(this.entityData?._id, dayOffId, momentDate).then(res => {
+          // this.entityData.payroll_days_off[doIndex].bank_holidays.push(momentDate);
+          this.entityData = res['entity'];
+        });
+      }
+    }
+  }
+
+  removeBankHolidayDate(dayOffId: string, bankHoliday: any) {
+    const doIndex = (this.entityData.payroll_days_off) ? this.entityData.payroll_days_off.findIndex((dayOff: any) => dayOff._id === dayOffId) : -1;
+    if (doIndex >= 0) {
+      const bhIndex = (this.entityData.payroll_days_off[doIndex].bank_holidays) ? this.entityData.payroll_days_off[doIndex].bank_holidays.findIndex((bh: any) => DateTime.fromISO(bh).equals(DateTime.fromISO(bankHoliday))) : -1;
+      if (bhIndex !== -1) {
+        this.hrService.removeBankHoliday(this.entityData?._id, dayOffId, bankHoliday).then(res => {
+          this.entityData.payroll_days_off[doIndex].bank_holidays.splice(bhIndex, 1);
+        });
+      }
+    }
+  }
+  /**
+   * ENDS DAYS OFF
+   */
+
   openAddMembersDialog() {
     const dialogRef = this.dialog.open(EntityAddMembersDialogComponent, {
       data: {
@@ -510,5 +638,9 @@ export class EditEntityDialogComponent implements OnInit {
   closeDialog() {
     // Close the modal
     this.mdDialogRef.close();
+  }
+
+  formateDate(date: any) {
+    return (date) ? DateTime.fromISO(date).toLocaleString(DateTime.DATE_SHORT) : '';
   }
 }

@@ -9,9 +9,11 @@
 				<div>
 					<app-secured-image [imgURL]="member?.profile_pic" [service]="'user'"
 						[workspaceId]="workspaceData?._id"
-						[styleClass]="'mr-3 feed-avatar'" [inlineStyle]="'cursor: default;'"></app-secured-image>
+						[styleClass]="'mr-3 feed-avatar-small'" [inlineStyle]="'cursor: default;'"></app-secured-image>
 
-					{{ member?.first_name }} {{ member?.last_name }}
+					{{ member?.first_name }} {{ member?.last_name }} - 
+					<span class="strong" i18n="@@timeOffCard.from">From: </span>{{ formateDate(member?.start_date) }}
+					<span class="strong" i18n="@@timeOffCard.to">To: </span>{{ formateDate(member?.end_date) }}
 				</div>
 			</div>
 		</div>

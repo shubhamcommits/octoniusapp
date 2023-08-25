@@ -4,11 +4,17 @@ import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs';
 import { retry } from 'rxjs/internal/operators/retry';
 import { take } from 'rxjs/internal/operators/take';
-import { environment } from 'src/environments/environment';
 import { LoungeService } from 'src/shared/services/lounge-service/lounge.service';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { SubSink } from 'subsink';
+import { DateTime } from 'luxon';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { UserService } from 'src/shared/services/user-service/user.service';
+import { MatDialog } from '@angular/material/dialog';
+import { HolidayRejectionDialogComponent } from 'src/app/common/shared/hr/holiday-rejection-dialog/holiday-rejection-dialog.component';
+import { HRService } from 'src/shared/services/hr-service/hr.service';
+import { EditMemberPayrollDialogComponent } from 'modules/organization/hr/employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component';
 
 @Component({
   selector: 'app-recent-activity',
@@ -33,8 +39,13 @@ export class RecentActivityComponent implements OnInit {
 
   approvals = [];
 
+  pendingHolidays = [];
+
+  pendingHRTasks = [];
+
   selectedTab = 0;
 
+  isOrganizationModuleAvailable = false;
   isBusinessSubscription = false;
 
   // IsLoading behaviou subject maintains the state for loading spinner
@@ -49,9 +60,13 @@ export class RecentActivityComponent implements OnInit {
   constructor(
     private _router: Router,
     private injector: Injector,
+    public dialog: MatDialog,
     private socketService: SocketService,
     private loungeService: LoungeService,
-    private managementPortalService: ManagementPortalService
+    private managementPortalService: ManagementPortalService,
+    private utilityService: UtilityService,
+    private userService: UserService,
+    private hrService: HRService
   ) {
     // Subscribe to the change in notifications data from the server
     this.subSink.add(this.socketService.currentData.subscribe((res) => {
@@ -73,13 +88,26 @@ export class RecentActivityComponent implements OnInit {
     this.userData = await this.publicFunctions.getCurrentUser();
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
+    this.isOrganizationModuleAvailable = await this.publicFunctions.isOrganizationModuleAvailable();
+    this.isBusinessSubscription = await this.managementPortalService.checkIsBusinessSubscription();
+
     await this.initNotifications();
 
     this.loungeService.getAttendingEvents(this.workspaceData?._id).then(res => {
       this.attendingEvents = res['stories'];
     });
 
-    this.isBusinessSubscription = await this.managementPortalService.checkIsBusinessSubscription();
+    if (this.isBusinessSubscription) {
+      await this.userService.getPendingApprovalHolidays().then(res => {
+        this.pendingHolidays = res['holidays'];
+      });
+
+      if (this.isOrganizationModuleAvailable && (this.userData?.hr_role || this.userData?.role == 'owner')) {
+        await this.hrService.getHRPendingNotifications(this.workspaceData?._id).then(res => {
+          this.pendingHRTasks = res['notifications'];
+        });
+      }
+    }
 
     // Return the function via stopping the loader
     this.isLoading$.next(false);
@@ -258,6 +286,10 @@ export class RecentActivityComponent implements OnInit {
       this.selectedTab = 0;
     } else if (this.notificationsData.pendingApprovals.length > 0) {
       this.selectedTab = 3;
+    } else if (this.pendingHolidays.length > 0) {
+      this.selectedTab = 4;
+    } else if (this.pendingHRTasks.length > 0) {
+      this.selectedTab = 5;
     } else if (this.notificationsData.unreadPosts.length > 0) {
       this.selectedTab = 1;
     } else if (this.attendingEvents.length > 0) {
@@ -269,5 +301,86 @@ export class RecentActivityComponent implements OnInit {
 
   isAssistingEvent(participants: any) {
     return participants.findIndex((assist) => (assist._id || assist) == this.userData?._id) >= 0
+  }
+
+  doHolidayAction(action: string, holidayId: string) {
+    this.utilityService.getConfirmDialogAlert($localize`:@@recentActivity.areYouSure:Are you sure?`, $localize`:@@recentActivity.actionConfirmation:By doing this, the item will be ${action}!`)
+      .then((res) => {
+        if (res.value) {
+          if (action == 'approved') {
+            this.userService.editHolidayStatus(holidayId, action).then(res => {
+              const index = (this.pendingHolidays) ? this.pendingHolidays.findIndex(holiday => holiday._id == holidayId) : -1;
+              if (index >= 0) {
+                this.pendingHolidays.splice(index, 1);
+              }
+            }).catch(err => {
+              this.utilityService.errorNotification(err.error.message);
+            });
+          } else if (action == 'rejected') {
+            const dialogRef = this.dialog.open(HolidayRejectionDialogComponent, {
+              disableClose: true,
+              hasBackdrop: true,
+            });
+
+            dialogRef.afterClosed().subscribe(async rejectionDescription => {
+              if (!!rejectionDescription) {
+                this.userService.editHolidayStatus(holidayId, action, rejectionDescription).then(res => {
+                  const index = (this.pendingHolidays) ? this.pendingHolidays.findIndex(holiday => holiday._id == holidayId) : -1;
+                  if (index >= 0) {
+                    this.pendingHolidays.splice(index, 1);
+                  }
+                }).catch(err => {
+                  this.utilityService.errorNotification(err.error.message);
+                });
+              }
+            });
+          }
+        }
+      });
+  }
+
+  openUserProfile(userId: string) {
+    const dialogRef = this.dialog.open(EditMemberPayrollDialogComponent, {
+      data: {
+        memberId: userId
+      },
+      width: '65%',
+      height: '75%',
+      disableClose: true,
+      hasBackdrop: true
+    });
+
+    // const memberEditedEventSubs = dialogRef.componentInstance.memberEditedEvent.subscribe((data) => {
+    //   this.initUsersTable();
+    // });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // memberEditedEventSubs.unsubscribe();
+    });
+  }
+
+  markAsCompleted(notificationId: string) {
+    this.utilityService.getConfirmDialogAlert($localize`:@@recentActivity.areYouSure:Are you sure?`, $localize`:@@recentActivity.completelyRemoved:By doing this, the task will be marked as Done!`)
+      .then((res) => {
+        if (res.value) {
+          this.utilityService.asyncNotification($localize`:@@recentActivity.pleaseWaitDeleting:Please wait we are deleting the holiday...`, new Promise((resolve, reject) => {
+            this.hrService.markNotificationAsDone(notificationId).then(async res => {
+              await this.initNotifications();
+
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@recentActivity.deleted:Holiday deleted!`));
+              // window.location.reload();
+            }).catch((err) => {
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@recentActivity.unableDeleteHoliday:Unable to delete the holiday, please try again!`));
+            });
+          }));
+        }
+      });
+  }
+
+  formateDate(date: any) {
+    if (!!date && (date instanceof DateTime)) {
+      return date.toLocaleString(DateTime.DATE_SHORT);
+    }
+    return (!!date) ? DateTime.fromISO(date).toLocaleString(DateTime.DATE_SHORT) : '';
   }
 }

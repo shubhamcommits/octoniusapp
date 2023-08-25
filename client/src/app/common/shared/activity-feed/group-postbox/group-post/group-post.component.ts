@@ -89,6 +89,7 @@ export class GroupPostComponent implements OnInit {
   }
 
   groupData: any;
+  workspaceData: any;
 
   flows = [];
 
@@ -114,6 +115,7 @@ export class GroupPostComponent implements OnInit {
     }
 
     this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     /*
     this.hotKeyService.add(new Hotkey(['meta+return', 'meta+enter'], (event: KeyboardEvent, combo: string): boolean => {
@@ -381,7 +383,7 @@ export class GroupPostComponent implements OnInit {
    */
   onCreatePost(postData: FormData) {
     this.utilityService.asyncNotification($localize`:@@groupCreatePost.pleaseWaitWeCreatingPost:Please wait we are creating the post...`, new Promise((resolve, reject) => {
-      this.postService.create((this.groupData?._workspace?._id || this.groupData?._workspace), postData)
+      this.postService.create(this.workspaceData?._id, postData)
         .then(async (res) => {
 
           this.postData = res['post'];
@@ -472,7 +474,7 @@ export class GroupPostComponent implements OnInit {
    */
   editPost(postId: any, formData: FormData) {
     this.utilityService.asyncNotification($localize`:@@groupCreatePost.pleaseWaitWeUpdatingContent:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.postService.edit(postId, (this.groupData?._workspace?._id || this.groupData?._workspace), formData)
+      this.postService.edit(postId, this.workspaceData?._id, formData)
         .then((res) => {
 
           // Emit the post to other components

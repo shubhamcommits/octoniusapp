@@ -41,19 +41,64 @@
 
       <li> <hr class="divider-line"></li>
 
-      <li *ngIf="!isIndividualSubscription" class="static">
-        <i class="material-icons-outlined">star_outline</i>
-      </li>
-
-      <li *ngFor="let group of userGroupsAndPortfoliosAndCollections">
-        <a (click)="goToGroupOrPortfolioOrCollection(group)">
-            <app-secured-image
-              [imgURL]="group?.avatar"
-              [service]="'group'"
-              [workspaceId]="workspaceData?._id"
-              [tooltip]="group?.name"
-              [styleClass]="'avatar'"></app-secured-image>
+      <li *ngIf="!isIndividualSubscription && userGroups && userGroups.length > 0">
+        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="true">
+          <i class="material-icons-outlined carret">account_balance</i>
         </a>
+      
+        <ul class="collapse list-unstyled show" id="pageSubmenu">
+          <li *ngFor="let group of userGroups">
+            <a (click)="goToGroup(group)" routerLinkActive="active">
+              <app-secured-image [imgURL]="group?.avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
+                [styleClass]="'avatar'"></app-secured-image>
+            </a>
+          </li>
+        </ul>
+      </li>
+      
+      <li *ngIf="!isIndividualSubscription && userPortfolios && userPortfolios.length > 0"><hr class="divider-line"></li>
+      
+      <li *ngIf="!isIndividualSubscription && userPortfolios && userPortfolios.length > 0">
+        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="true">
+          <i class="material-icons-outlined carret">bookmarks</i>
+        </a>
+      
+        <ul class="collapse list-unstyled show" id="pageSubmenu">
+          <li *ngFor="let group of userPortfolios">
+            <a (click)="goToPortfolio(group)" routerLinkActive="active">
+              <app-secured-image [imgURL]="group?.avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
+                [styleClass]="'avatar'"></app-secured-image>
+            </a>
+          </li>
+        </ul>
+      </li>
+      
+      <li *ngIf="!isIndividualSubscription && userCollections && userCollections.length > 0"><hr class="divider-line"></li>
+      
+      <li *ngIf="!isIndividualSubscription && userCollections && userCollections.length > 0">
+        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="true">
+          <i class="material-icons-outlined carret">book</i>
+        </a>
+      
+        <ul class="collapse list-unstyled show" id="pageSubmenu">
+          <li *ngFor="let group of userCollections">
+            <a (click)="goToCollection(group)" routerLinkActive="active">
+              <app-secured-image [imgURL]="group?.avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
+                [styleClass]="'avatar'"></app-secured-image>
+            </a>
+          </li>
+        </ul>
+      </li>
+      
+      <li *ngIf="isIndividualSubscription">
+        <ul class="collapse list-unstyled show" id="pageSubmenu">
+          <li *ngFor="let group of userGroups">
+            <a (click)="goToGroup(group)" routerLinkActive="active">
+              <app-secured-image [imgURL]="group?.avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
+                [styleClass]="'avatar'"></app-secured-image>
+            </a>
+          </li>
+        </ul>
       </li>
 
       <li *ngIf="!isIndividualSubscription"> <hr class="divider-line"></li>

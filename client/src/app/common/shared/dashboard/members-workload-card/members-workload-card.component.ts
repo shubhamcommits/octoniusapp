@@ -5,6 +5,7 @@ import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { DateTime } from 'luxon';
+import { HRService } from 'src/shared/services/hr-service/hr.service';
 
 @Component({
   selector: 'app-members-workload-card',
@@ -34,7 +35,8 @@ export class MembersWorkloadCardComponent implements OnInit {
     private userService: UserService,
     private injector: Injector,
     private groupService: GroupService,
-    public utilityService: UtilityService
+    public utilityService: UtilityService,
+    private hrService: HRService
   ) { }
 
   async ngOnInit() {
@@ -66,6 +68,12 @@ export class MembersWorkloadCardComponent implements OnInit {
     let tasks = [];
     await this.groupService.getGroupTasksBetweenDays(this.groupData._id, this.dates[0].toISODate(), this.dates[this.dates.length -1].toISODate()).then(res => {
       tasks = res['posts'];
+    });
+
+    const membersIds = this.groupMembers.map(member => {return member._id});
+    let holidays = [];
+    await this.hrService.getMembersOff(membersIds, this.dates[0], this.dates[this.dates.length - 1]).then(res => {
+      holidays = res['holidays'];
     });
 
     this.groupMembers.forEach(async member => {
@@ -124,10 +132,12 @@ export class MembersWorkloadCardComponent implements OnInit {
           workloadDay.inprogress_tasks = 0;
         }
 
-        const index = member?.out_of_office?.findIndex(outOfficeDay => this.isSameDay(DateTime.fromISO(outOfficeDay.date), date));
+        // const index = member?.out_of_office?.findIndex(outOfficeDay => this.isSameDay(DateTime.fromISO(outOfficeDay.date), date));
+        const index = (!!holidays) ? holidays.findIndex(holiday => ((holiday._user == member._id) && (workloadDay.date >= DateTime.fromISO(holiday.start_date)) && (workloadDay.date <= DateTime.fromISO(holiday.end_date)))) : -1;
 
         if (index >= 0) {
-          const outOfficeDay = member?.out_of_office[index];
+          // const outOfficeDay = member?.out_of_office[index];
+          const outOfficeDay = holidays[index];
           workloadDay.outOfTheOfficeClass = (outOfficeDay.type == 'holidays')
             ? 'cal-day-holidays'
             : ((outOfficeDay.type == 'personal')
