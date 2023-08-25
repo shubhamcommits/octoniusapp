@@ -467,12 +467,8 @@
         <!-- NOTIFICATION ITEM STARTS-->
         <div class="notification-item" *ngFor="let task of pendingHRTasks; let index = index">
           <div class="notification_actor">
-            <app-secured-image *ngIf="!task?._owner"
-              [imgURL]="task?._owner?.profile_pic"
-              [service]="'user'"
-              [workspaceId]="workspaceData?._id"
-              [styleClass]="'avatar'"
-              style="margin-right:15px"></app-secured-image>
+            <app-secured-image [imgURL]="task?._owner?.profile_pic" [service]="'user'" [workspaceId]="workspaceData?._id"
+						  [styleClass]="'mr-3 feed-avatar-small'" ></app-secured-image>
           </div>
 
           <div class="notification_title">
