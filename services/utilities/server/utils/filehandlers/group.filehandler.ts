@@ -1,6 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import { sendError } from "../senderror";
 import { File, Flamingo } from '../../api/models';
+import { Readable } from 'stream';
 import moment from 'moment';
 
 const minio = require('minio');
@@ -317,7 +318,95 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
 
   // Pass the middleware// Pass the middleware
   next();
+}
 
+/**
+ * This function is the boiler plate to delete the file for files
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+const folioFileDelete = async (req: Request, res: Response, next: NextFunction) => {
+
+  const { folderId } = req.params;
+
+  var minioClient = new minio.Client({
+      endPoint: process.env.MINIO_DOMAIN,
+      port: +(process.env.MINIO_API_PORT),
+      useSSL: process.env.MINIO_PROTOCOL == 'https',
+      accessKey: process.env.MINIO_ACCESS_KEY,
+      secretKey: process.env.MINIO_SECRET_KEY
+  });
+
+  let filesStream = Readable.from(await File.find({ _folder: folderId }).select('_id'));
+
+  // Delete all the folders present in a folder
+  filesStream.on('data', async (fileToDelete) => {
+      if (fileToDelete.type == 'file' || fileToDelete.type == 'campaign') {
+        await minioClient.removeObject((req.body.workspaceId).toLowerCase(), fileToDelete.modified_name, (error) => {
+          if (error) {
+            req.body.fileName = null;
+            return res.status(500).json({
+              status: '500',
+              message: 'Error deleting file: ' + req.body.fileName,
+              error: error
+            });
+          }
+        });
+      }
+
+      // Delete the imgs from the questions of flamingos
+      if (req.body.flamingoType) {
+        let flamingo = await Flamingo.findOne({ _file:fileToDelete._id });
+        flamingo = await Flamingo.populate(flamingo, [
+          { path: '_questions' }
+        ]);
+
+        if (flamingo) {
+          flamingo._questions.forEach(async question => {
+            if (question.image_url && question.image_url != '') {
+              await minioClient.removeObject((req.body.workspaceId).toLowerCase(), question.image_url, (error) => {
+                if (error) {
+                  return res.status(500).json({
+                    status: '500',
+                    message: 'Error deleting image of flamingo: ' + question.image_url,
+                    error: error
+                  });
+                }
+              });
+            }
+          });
+        }
+      }
+
+      let fileVersions;
+      let countVersions;
+      if (fileToDelete._parent) {
+        countVersions = await File.find({ _parent: fileToDelete._parent }).countDocuments();
+      }
+      
+      if ((countVersions && countVersions <= 1) || !fileToDelete._parent) {
+        fileVersions = await File.find({ _parent: fileToDelete._id });
+      }
+
+      if (fileVersions) {
+        for (let i = 0; i < fileVersions.length; i++) {
+          let file = fileVersions[i];
+          await minioClient.removeObject((req.body.workspaceId).toLowerCase(), file.modified_name, (error) => {
+            if (error) {
+              return res.status(500).json({
+                status: '500',
+                message: 'Error deleting version of the file: ' + file.modified_name ,
+                error: error
+              });
+            }
+          });
+        }
+      }
+  });
+
+  // Pass the middleware// Pass the middleware
+  next();
 }
 
 /**
@@ -357,4 +446,4 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
   }
 }
 
-export { groupFileHandler, groupFileUploader, groupFileDelete, groupsFilesHandler, minioFileHandler }
+export { groupFileHandler, groupFileUploader, groupFileDelete, groupsFilesHandler, folioFileDelete, minioFileHandler }
