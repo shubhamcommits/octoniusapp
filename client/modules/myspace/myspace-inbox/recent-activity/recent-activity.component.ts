@@ -45,6 +45,7 @@ export class RecentActivityComponent implements OnInit {
 
   selectedTab = 0;
 
+  isOrganizationModuleAvailable = false;
   isBusinessSubscription = false;
 
   // IsLoading behaviou subject maintains the state for loading spinner
@@ -86,6 +87,8 @@ export class RecentActivityComponent implements OnInit {
     // Fetch current user details
     this.userData = await this.publicFunctions.getCurrentUser();
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+
+    this.isOrganizationModuleAvailable = await this.publicFunctions.isOrganizationModuleAvailable();
 
     await this.initNotifications();
 
