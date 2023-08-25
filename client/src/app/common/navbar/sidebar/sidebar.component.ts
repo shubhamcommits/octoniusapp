@@ -37,7 +37,7 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
 
   userCollections: any = [];
 
-  userGroupsAndPortfoliosAndCollections = [];
+  // userGroupsAndPortfoliosAndCollections = [];
 
   // Workspace data for the current workspace
   public workspaceData: any = {};
@@ -107,7 +107,7 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
     } else {
       this.groupService.getGlobalGroupData().then((res: any) => {
         const group = res['group'];
-        this.userGroupsAndPortfoliosAndCollections = [{
+        this.userGroups = [{
           _id: group._id,
           name: $localize`:@@sidebar.workspace:Workspace`,
           avatar: group.group_avatar,
@@ -121,34 +121,60 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
     // Sometimes the favorites are not populated
     for (let i = 0; i < this.userGroups.length; i++) {
       if (!this.userGroups[i]?._id) {
-        await this.groupService.getGroup(this.userGroups[i]).then(res => this.userGroups[i] = res['group']);
+        await this.groupService.getGroup(this.userGroups[i]).then(res => {
+          this.userGroups[i] = res['group'];
+        });
       }
     }
     // Sometimes the favorites are not populated
     for (let i = 0; i < this.userPortfolios.length; i++) {
       if (!this.userPortfolios[i]?._id) {
-        await this.portfolioService.getPortfolio(this.userPortfolios[i]).then(res => this.userPortfolios[i] = res['portfolio']);
+        await this.portfolioService.getPortfolio(this.userPortfolios[i]).then(res => {
+          this.userPortfolios[i] = res['portfolio'];
+        });
       }
     }
     // Sometimes the favorites are not populated
     for (let i = 0; i < this.userCollections.length; i++) {
       if (!this.userCollections[i]?._id) {
-        await this.libraryService.getCollection(this.userCollections[i]).then(res => this.userCollections[i] = res['collection']);
+        await this.libraryService.getCollection(this.userCollections[i]).then(res => {
+          this.userCollections[i] = res['collection'];
+        });
       }
     }
 
-    this.userGroupsAndPortfoliosAndCollections = [...this.userGroups, ...this.userPortfolios, ...this.userCollections];
+    // this.userGroupsAndPortfoliosAndCollections = [...this.userGroups, ...this.userPortfolios, ...this.userCollections];
 
-    this.userGroupsAndPortfoliosAndCollections = this.userGroupsAndPortfoliosAndCollections?.map(element => {
-        return {
-          _id: element._id,
-          name: element.group_name || element.portfolio_name || element.name,
-          avatar: element.group_avatar || element.portfolio_avatar || element.collection_avatar,
-          type: (element.group_name) ? 'group' : (element.portfolio_name) ? 'portfolio' : 'collection'
-        };
-      });
+    // this.userGroupsAndPortfoliosAndCollections = this.userGroupsAndPortfoliosAndCollections?.map(element => {
+    //     return {
+    //       _id: element._id,
+    //       name: element.group_name || element.portfolio_name || element.name,
+    //       avatar: element.group_avatar || element.portfolio_avatar || element.collection_avatar,
+    //       type: (element.group_name) ? 'group' : (element.portfolio_name) ? 'portfolio' : 'collection'
+    //     };
+    //   });
 
-    this.userGroupsAndPortfoliosAndCollections = this.userGroupsAndPortfoliosAndCollections?.sort((t1, t2) => {
+    this.sortElements();
+  }
+
+  sortElements() {
+    this.userGroups = this.userGroups?.sort((t1, t2) => {
+      const name1 = t1?.name?.toLowerCase() || t1?.name;
+      const name2 = t2?.name?.toLowerCase() || t2?.name;
+      if (name1 > name2) { return 1; }
+      if (name1 < name2) { return -1; }
+      return 0;
+    });
+
+    this.userPortfolios = this.userPortfolios?.sort((t1, t2) => {
+      const name1 = t1?.name?.toLowerCase() || t1?.name;
+      const name2 = t2?.name?.toLowerCase() || t2?.name;
+      if (name1 > name2) { return 1; }
+      if (name1 < name2) { return -1; }
+      return 0;
+    });
+
+    this.userCollections = this.userCollections?.sort((t1, t2) => {
         const name1 = t1?.name?.toLowerCase() || t1?.name;
         const name2 = t2?.name?.toLowerCase() || t2?.name;
         if (name1 > name2) { return 1; }

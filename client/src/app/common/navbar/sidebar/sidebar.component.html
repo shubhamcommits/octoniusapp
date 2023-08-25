@@ -44,21 +44,61 @@
 
             <li> <hr class="divider-line"></li>
 
-            <li *ngIf="!isIndividualSubscription">
+            <li *ngIf="!isIndividualSubscription && userGroups && userGroups.length > 0">
                 <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="true">
-                    <i class="material-icons-outlined carret">star_outline</i>
-                    <span i18n="@@sidebar.favorites">Favorites</span>
+                    <i class="material-icons-outlined carret">account_balance</i>
+                    <span i18n="@@sidebar.groups">Groups</span>
                     <i class="material-icons-outlined carret">keyboard_arrow_down</i>
                 </a>
 
                 <ul class="collapse list-unstyled show" id="pageSubmenu">
-                    <li *ngFor="let group of userGroupsAndPortfoliosAndCollections">
+                    <li *ngFor="let group of userGroups">
                         <a (click)="goToGroupOrPortfolioOrCollection(group)" routerLinkActive="active">
                             <app-secured-image
                               [imgURL]="group?.avatar"
                               [service]="'group'"
                               [workspaceId]="workspaceData?._id"
                               [styleClass]="'avatar'"></app-secured-image>
+                            {{ group?.group_name | truncatetext: 16 }}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li *ngIf="!isIndividualSubscription && userPortfolios && userPortfolios.length > 0"><hr class="divider-line"></li>
+
+            <li *ngIf="!isIndividualSubscription && userPortfolios && userPortfolios.length > 0">
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="true">
+                    <i class="material-icons-outlined carret">bookmarks</i>
+                    <span i18n="@@sidebar.portfolios">Portfolios</span>
+                    <i class="material-icons-outlined carret">keyboard_arrow_down</i>
+                </a>
+            
+                <ul class="collapse list-unstyled show" id="pageSubmenu">
+                    <li *ngFor="let group of userPortfolios">
+                        <a (click)="goToGroupOrPortfolioOrCollection(group)" routerLinkActive="active">
+                            <app-secured-image [imgURL]="group?.avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
+                                [styleClass]="'avatar'"></app-secured-image>
+                            {{ group?.portfolio_name | truncatetext: 16 }}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li *ngIf="!isIndividualSubscription && userCollections && userCollections.length > 0"><hr class="divider-line"></li>
+
+            <li *ngIf="!isIndividualSubscription && userCollections && userCollections.length > 0">
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="true">
+                    <i class="material-icons-outlined carret">book</i>
+                    <span i18n="@@sidebar.collections">Collections</span>
+                    <i class="material-icons-outlined carret">keyboard_arrow_down</i>
+                </a>
+            
+                <ul class="collapse list-unstyled show" id="pageSubmenu">
+                    <li *ngFor="let group of userCollections">
+                        <a (click)="goToGroupOrPortfolioOrCollection(group)" routerLinkActive="active">
+                            <app-secured-image [imgURL]="group?.avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
+                                [styleClass]="'avatar'"></app-secured-image>
                             {{ group?.name | truncatetext: 16 }}
                         </a>
                     </li>
@@ -67,7 +107,7 @@
 
             <li *ngIf="isIndividualSubscription">
                 <ul class="collapse list-unstyled show" id="pageSubmenu">
-                    <li *ngFor="let group of userGroupsAndPortfoliosAndCollections">
+                    <li *ngFor="let group of userGroups">
                         <a (click)="goToGroupOrPortfolioOrCollection(group)" routerLinkActive="active">
                             <app-secured-image
                                 [imgURL]="group?.avatar"
