@@ -55,7 +55,7 @@
                     <li *ngFor="let group of userGroups">
                         <a (click)="goToGroup(group)" routerLinkActive="active">
                             <app-secured-image
-                              [imgURL]="group?.avatar"
+                              [imgURL]="group?.group_avatar"
                               [service]="'group'"
                               [workspaceId]="workspaceData?._id"
                               [styleClass]="'avatar'"></app-secured-image>
@@ -75,11 +75,11 @@
                 </a>
             
                 <ul class="collapse list-unstyled show" id="pageSubmenu">
-                    <li *ngFor="let group of userPortfolios">
-                        <a (click)="goToPortfolio(group)" routerLinkActive="active">
-                            <app-secured-image [imgURL]="group?.avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
+                    <li *ngFor="let portfolio of userPortfolios">
+                        <a (click)="goToPortfolio(portfolio)" routerLinkActive="active">
+                            <app-secured-image [imgURL]="portfolio?.portfolio_avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
                                 [styleClass]="'avatar'"></app-secured-image>
-                            {{ group?.portfolio_name | truncatetext: 16 }}
+                            {{ portfolio?.portfolio_name | truncatetext: 16 }}
                         </a>
                     </li>
                 </ul>
@@ -95,11 +95,11 @@
                 </a>
             
                 <ul class="collapse list-unstyled show" id="pageSubmenu">
-                    <li *ngFor="let group of userCollections">
-                        <a (click)="goToCollection(group)" routerLinkActive="active">
-                            <app-secured-image [imgURL]="group?.avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
+                    <li *ngFor="let collection of userCollections">
+                        <a (click)="goToCollection(collection)" routerLinkActive="active">
+                            <app-secured-image [imgURL]="collection?.collection_avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
                                 [styleClass]="'avatar'"></app-secured-image>
-                            {{ group?.name | truncatetext: 16 }}
+                            {{ collection?.name | truncatetext: 16 }}
                         </a>
                     </li>
                 </ul>
@@ -110,7 +110,7 @@
                     <li *ngFor="let group of userGroups">
                         <a (click)="goToGroup(group)" routerLinkActive="active">
                             <app-secured-image
-                                [imgURL]="group?.avatar"
+                                [imgURL]="group?.group_avatar"
                                 [service]="'group'"
                                 [workspaceId]="workspaceData?._id"
                                 [styleClass]="'avatar'"></app-secured-image>
