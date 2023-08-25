@@ -1,11 +1,9 @@
 import { Component, Injector, Input, OnChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { EditMemberPayrollDialogComponent } from 'modules/organization/hr/employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component';
 import { PublicFunctions } from 'modules/public.functions';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 
 @Component({
   selector: 'app-pending-tasks-card',
@@ -28,8 +26,6 @@ export class PendingTasksCardComponent implements OnChanges {
 
   constructor(
     private hrService: HRService,
-    private workspaceService: WorkspaceService,
-    private router: Router,
     private injector: Injector,
     public dialog: MatDialog
   ) { }

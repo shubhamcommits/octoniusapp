@@ -13,6 +13,8 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { MatDialog } from '@angular/material/dialog';
 import { HolidayRejectionDialogComponent } from 'src/app/common/shared/hr/holiday-rejection-dialog/holiday-rejection-dialog.component';
+import { HRService } from 'src/shared/services/hr-service/hr.service';
+import { EditMemberPayrollDialogComponent } from 'modules/organization/hr/employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component';
 
 @Component({
   selector: 'app-recent-activity',
@@ -39,6 +41,8 @@ export class RecentActivityComponent implements OnInit {
 
   pendingHolidays = [];
 
+  pendingHRTasks = [];
+
   selectedTab = 0;
 
   isBusinessSubscription = false;
@@ -60,7 +64,8 @@ export class RecentActivityComponent implements OnInit {
     private loungeService: LoungeService,
     private managementPortalService: ManagementPortalService,
     private utilityService: UtilityService,
-    private userService: UserService
+    private userService: UserService,
+    private hrService: HRService
   ) {
     // Subscribe to the change in notifications data from the server
     this.subSink.add(this.socketService.currentData.subscribe((res) => {
@@ -93,6 +98,10 @@ export class RecentActivityComponent implements OnInit {
     if (this.isBusinessSubscription) {
       await this.userService.getPendingApprovalHolidays().then(res => {
         this.pendingHolidays = res['holidays'];
+      });
+
+      await this.hrService.getHRPendingNotifications(this.workspaceData?._id).then(res => {
+        this.pendingHRTasks = res['notifications'];
       });
     }
 
@@ -320,6 +329,44 @@ export class RecentActivityComponent implements OnInit {
               }
             });
           }
+        }
+      });
+  }
+
+  openUserProfile(userId: string) {
+    const dialogRef = this.dialog.open(EditMemberPayrollDialogComponent, {
+      data: {
+        memberId: userId
+      },
+      width: '65%',
+      height: '75%',
+      disableClose: true,
+      hasBackdrop: true
+    });
+
+    // const memberEditedEventSubs = dialogRef.componentInstance.memberEditedEvent.subscribe((data) => {
+    //   this.initUsersTable();
+    // });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // memberEditedEventSubs.unsubscribe();
+    });
+  }
+
+  markAsCompleted(notificationId: string) {
+    this.utilityService.getConfirmDialogAlert($localize`:@@recentActivity.areYouSure:Are you sure?`, $localize`:@@recentActivity.completelyRemoved:By doing this, the task will be marked as Done!`)
+      .then((res) => {
+        if (res.value) {
+          this.utilityService.asyncNotification($localize`:@@recentActivity.pleaseWaitDeleting:Please wait we are deleting the holiday...`, new Promise((resolve, reject) => {
+            this.hrService.markNotificationAsDone(notificationId).then(async res => {
+              await this.initNotifications();
+
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@recentActivity.deleted:Holiday deleted!`));
+              // window.location.reload();
+            }).catch((err) => {
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@recentActivity.unableDeleteHoliday:Unable to delete the holiday, please try again!`));
+            });
+          }));
         }
       });
   }
