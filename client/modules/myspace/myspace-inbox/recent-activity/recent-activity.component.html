@@ -446,7 +446,7 @@
     <!-- PENDING HOLIDAYS ENDS-->
 
     <!-- HR NOTIFICATIONS STARTS-->
-    <mat-tab label="" *ngIf="pendingHRTasks.length > 0 && isOrganizationModuleAvailable">
+    <mat-tab label="" *ngIf="pendingHRTasks.length > 0 && isOrganizationModuleAvailable && userData?.hr_role">
       <ng-template mat-tab-label>
         <span *ngIf="pendingHRTasks.length > 0"
           [matBadge]="pendingHRTasks.length"

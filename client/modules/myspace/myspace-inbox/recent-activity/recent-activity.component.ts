@@ -89,6 +89,7 @@ export class RecentActivityComponent implements OnInit {
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     this.isOrganizationModuleAvailable = await this.publicFunctions.isOrganizationModuleAvailable();
+    this.isBusinessSubscription = await this.managementPortalService.checkIsBusinessSubscription();
 
     await this.initNotifications();
 
@@ -96,16 +97,16 @@ export class RecentActivityComponent implements OnInit {
       this.attendingEvents = res['stories'];
     });
 
-    this.isBusinessSubscription = await this.managementPortalService.checkIsBusinessSubscription();
-
     if (this.isBusinessSubscription) {
       await this.userService.getPendingApprovalHolidays().then(res => {
         this.pendingHolidays = res['holidays'];
       });
 
-      await this.hrService.getHRPendingNotifications(this.workspaceData?._id).then(res => {
-        this.pendingHRTasks = res['notifications'];
-      });
+      if (this.isOrganizationModuleAvailable && this.userData?.hr_role) {
+        await this.hrService.getHRPendingNotifications(this.workspaceData?._id).then(res => {
+          this.pendingHRTasks = res['notifications'];
+        });
+      }
     }
 
     // Return the function via stopping the loader
