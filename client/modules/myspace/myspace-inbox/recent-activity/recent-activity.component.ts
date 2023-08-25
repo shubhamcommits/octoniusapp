@@ -101,8 +101,7 @@ export class RecentActivityComponent implements OnInit {
       await this.userService.getPendingApprovalHolidays().then(res => {
         this.pendingHolidays = res['holidays'];
       });
-console.log(this.isOrganizationModuleAvailable)
-console.log(this.userData)
+
       if (this.isOrganizationModuleAvailable && (this.userData?.hr_role || this.userData?.role == 'owner')) {
         await this.hrService.getHRPendingNotifications(this.workspaceData?._id).then(res => {
           this.pendingHRTasks = res['notifications'];
