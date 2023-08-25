@@ -243,7 +243,7 @@ export class EditHRFieldsComponent implements OnInit {
 
   onCheckedEntityBenefitChange(benefitValues: any, benefitSelectedValue: string, benefitId: string) {
     const index = (benefitValues) ? benefitValues.findIndex(b => b == benefitSelectedValue) : -1;
-    if (benefitValues) {
+    if (!benefitValues) {
       benefitValues = [];
     }
     if (index < 0) {
