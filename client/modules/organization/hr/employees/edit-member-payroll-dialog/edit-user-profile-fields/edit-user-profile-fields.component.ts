@@ -57,6 +57,9 @@ export class EditUserProfileFieldsComponent implements OnInit {
     this.isCurrentUser = (this.userData?._id == this.userId);
     if (!this.isCurrentUser) {
       this.userData = await this.publicFunctions.getOtherUser(this.userId);
+    } else {
+      // force to reload the userData because the getCurrentUser will take the data from storage, and may not have some changes
+      this.userData = await this.publicFunctions.getOtherUser(this.userData?._id);
     }
 
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();

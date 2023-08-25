@@ -56,6 +56,8 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
     });
 
     this.userData = await this.publicFunctions.getCurrentUser();
+    // force to reload the userData because the previous line will take the data from storage, and may not have some changes
+    this.userData = await this.publicFunctions.getOtherUser(this.userData?._id);
     this.isCurrentUser = true;
     if (!this.userData.hr) {
       this.userData.hr = {};
