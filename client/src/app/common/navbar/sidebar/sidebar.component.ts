@@ -159,16 +159,16 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
 
   sortElements() {
     this.userGroups = this.userGroups?.sort((t1, t2) => {
-      const name1 = t1?.name?.toLowerCase() || t1?.name;
-      const name2 = t2?.name?.toLowerCase() || t2?.name;
+      const name1 = t1?.group_name?.toLowerCase() || t1?.group_name;
+      const name2 = t2?.group_name?.toLowerCase() || t2?.group_name;
       if (name1 > name2) { return 1; }
       if (name1 < name2) { return -1; }
       return 0;
     });
 
     this.userPortfolios = this.userPortfolios?.sort((t1, t2) => {
-      const name1 = t1?.name?.toLowerCase() || t1?.name;
-      const name2 = t2?.name?.toLowerCase() || t2?.name;
+      const name1 = t1?.portfolio_name?.toLowerCase() || t1?.portfolio_name;
+      const name2 = t2?.portfolio_name?.toLowerCase() || t2?.portfolio_name;
       if (name1 > name2) { return 1; }
       if (name1 < name2) { return -1; }
       return 0;
@@ -218,22 +218,24 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
     this.sidebarChange.emit();
   }
 
-  async goToGroupOrPortfolioOrCollection(group: any) {
-    if (group?.type == 'group') {
-      this.changeState('groups_activity');
-      const newGroup = await this.publicFunctions.getGroupDetails(group?._id);
-      await this.publicFunctions.sendUpdatesToGroupData(newGroup);
-      await this.publicFunctions.sendUpdatesToPortfolioData({});
-      this.router.navigate(['/dashboard', 'work', 'groups', 'activity']);
-    } else if (group?.type == 'portfolio') {
-      this.changeState('portfolio');
-      const newPortfolio = await this.publicFunctions.getPortfolioDetails(group?._id);
-      await this.publicFunctions.sendUpdatesToPortfolioData(newPortfolio);
-      await this.publicFunctions.sendUpdatesToGroupData({});
-      this.router.navigate(['/dashboard', 'work', 'groups', 'portfolio']);
-    } else if (group?.type == 'collection') {
-      this.router.navigate(['/dashboard', 'work', 'groups', 'library', 'collection'], {queryParams: { collection: group?._id }});
-    }
+  async goToGroup(group: any) {
+    this.changeState('groups_activity');
+    const newGroup = await this.publicFunctions.getGroupDetails(group?._id);
+    await this.publicFunctions.sendUpdatesToGroupData(newGroup);
+    await this.publicFunctions.sendUpdatesToPortfolioData({});
+    this.router.navigate(['/dashboard', 'work', 'groups', 'activity']);
+  }
+
+  async goToPortfolio(group: any) {
+    this.changeState('portfolio');
+    const newPortfolio = await this.publicFunctions.getPortfolioDetails(group?._id);
+    await this.publicFunctions.sendUpdatesToPortfolioData(newPortfolio);
+    await this.publicFunctions.sendUpdatesToGroupData({});
+    this.router.navigate(['/dashboard', 'work', 'groups', 'portfolio']);
+  }
+
+  async goToCollection(group: any) {
+    this.router.navigate(['/dashboard', 'work', 'groups', 'library', 'collection'], {queryParams: { collection: group?._id }});
   }
 
   goToWorkspace(workspaceId: string) {

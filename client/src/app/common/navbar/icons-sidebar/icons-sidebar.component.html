@@ -48,7 +48,7 @@
       
         <ul class="collapse list-unstyled show" id="pageSubmenu">
           <li *ngFor="let group of userGroups">
-            <a (click)="goToGroupOrPortfolioOrCollection(group)" routerLinkActive="active">
+            <a (click)="goToGroup(group)" routerLinkActive="active">
               <app-secured-image [imgURL]="group?.avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
                 [styleClass]="'avatar'"></app-secured-image>
             </a>
@@ -65,7 +65,7 @@
       
         <ul class="collapse list-unstyled show" id="pageSubmenu">
           <li *ngFor="let group of userPortfolios">
-            <a (click)="goToGroupOrPortfolioOrCollection(group)" routerLinkActive="active">
+            <a (click)="goToPortfolio(group)" routerLinkActive="active">
               <app-secured-image [imgURL]="group?.avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
                 [styleClass]="'avatar'"></app-secured-image>
             </a>
@@ -82,7 +82,7 @@
       
         <ul class="collapse list-unstyled show" id="pageSubmenu">
           <li *ngFor="let group of userCollections">
-            <a (click)="goToGroupOrPortfolioOrCollection(group)" routerLinkActive="active">
+            <a (click)="goToCollection(group)" routerLinkActive="active">
               <app-secured-image [imgURL]="group?.avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
                 [styleClass]="'avatar'"></app-secured-image>
             </a>
@@ -93,7 +93,7 @@
       <li *ngIf="isIndividualSubscription">
         <ul class="collapse list-unstyled show" id="pageSubmenu">
           <li *ngFor="let group of userGroups">
-            <a (click)="goToGroupOrPortfolioOrCollection(group)" routerLinkActive="active">
+            <a (click)="goToGroup(group)" routerLinkActive="active">
               <app-secured-image [imgURL]="group?.avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
                 [styleClass]="'avatar'"></app-secured-image>
             </a>
