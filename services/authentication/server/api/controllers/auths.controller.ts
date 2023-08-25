@@ -570,7 +570,7 @@ export class AuthsController {
                     _workspace: workspaceId,
                     active: true
                 })
-                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr')
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr hr_role')
                 .populate({
                     path: 'stats.favorite_groups',
                     select: '_id group_name group_avatar'
