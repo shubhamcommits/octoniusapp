@@ -67,9 +67,9 @@
             <span *ngIf="notification?.type === 'comment'" class="comment_notification" i18n="@@recentActivity.commentedOn">commented on</span>
             <span *ngIf="notification?.type === 'join-group'" class="join_group_notification" i18n="@@recentActivity.addedYou">added you to</span>
             <span *ngIf="notification?.type === 'leave-group'" class="leave_group_notification" i18n="@@recentActivity.removedYou">removed you from</span>
-            <span *ngIf="notification?.type === 'launch-approval-flow'" class="launch_approval_flow_notification" i18n="@@recentActivity.launchApprovalFlow">launched the approval flow for the item</span>
-            <span *ngIf="notification?.type === 'approved-item'" class="approved_item_notification" i18n="@@recentActivity.itemApprovedByAll">all assignees has approved  the item</span>
-            <span *ngIf="notification?.type === 'reject-item'" class="reject_item_notification" i18n="@@recentActivity.rejectedTheItem">rejected the item</span>
+            <span *ngIf="notification?.type === 'launch-approval-flow'" class="launch_approval_flow_notification" i18n="@@recentActivity.launchApprovalFlow">launched the approval flow for </span>
+            <span *ngIf="notification?.type === 'approved-item'" class="approved_item_notification" i18n="@@recentActivity.itemApprovedByAll">everyone approved the document</span>
+            <span *ngIf="notification?.type === 'reject-item'" class="reject_item_notification" i18n="@@recentActivity.rejectedTheItem">rejected the document</span>
             <span *ngIf="notification?.type === 'shuttleTask'" class="assignment_notification" i18n="@@recentActivity.assignedYourGroup">sent a shuttle 🚀 to</span>
             &nbsp;
 
@@ -451,9 +451,9 @@
         <span *ngIf="pendingHRTasks.length > 0"
           [matBadge]="pendingHRTasks.length"
           matBadgeOverlap="false" matBadgeColor="warn"
-          i18n="@@recentActivity.pendingHRTasks">Pending HR Tasks</span>
+          i18n="@@recentActivity.pendingHRTasks">Pending HR tasks</span>
         <span *ngIf="pendingHRTasks.length == 0"
-          i18n="@@recentActivity.pendingHRTasks">Pending HR Tasks</span>
+          i18n="@@recentActivity.pendingHRTasks">Pending HR tasks</span>
       </ng-template>
 
       <!-- Empty State starts -->
@@ -491,7 +491,7 @@
               
               <a mat-menu-item (click)="markAsCompleted(task._id)">
                 <i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">check_circle</i>
-                <span i18n="@@pendingTasksCard.markComplited">Mark As Completed</span>
+                <span i18n="@@pendingTasksCard.markComplited">Mark as completed</span>
               </a>
             </mat-menu>
           </div>
