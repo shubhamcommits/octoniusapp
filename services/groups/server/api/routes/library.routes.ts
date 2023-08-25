@@ -79,6 +79,15 @@ routes.get('/collection/:workspaceId/confluence-spaces', library.getUserConfluen
 // GET - Export selected confluence spaces
 routes.post('/collection/:workspaceId/export-spaces/:groupId', library.exportConfluenceSpaces);
 
+// GET - Get all folders in a collection
+routes.get('/collection/:collectionId/folders', library.getFolders);
+
+// GET - Get a folder details
+routes.get('/collection/folder/:folderId', library.getFolder);
+
+// GET - Get all files of a folder
+routes.get('/collection/:collectionId/files', library.getFiles);
+
 // POST - Create new page in the collection
 routes.post('/page/:collectionId', library.createPage);
 

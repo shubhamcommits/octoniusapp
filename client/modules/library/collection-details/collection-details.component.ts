@@ -5,11 +5,11 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { MatDialog } from '@angular/material/dialog';
 import { LibraryService } from 'src/shared/services/library-service/library.service';
-import { LibreofficeService } from 'src/shared/services/libreoffice-service/libreoffice.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { FilesService } from 'src/shared/services/files-service/files.service';
 import { environment } from 'src/environments/environment';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
+import { FoldersService } from 'src/shared/services/folders-service/folders.service';
 
 @Component({
   selector: 'app-collection-details',
@@ -34,9 +34,18 @@ export class CollectionDetailsComponent implements OnInit {
   // File Data variable
   fileData: any = {
     _group: '',
+    _folder: '',
     _posted_by: '',
     type: 'file'
   };
+
+  files: any = [];
+  folders: any = [];
+  folderId;
+
+  currentFolder = null;
+  folderOriginalName = '';
+  editFolderTitle = false;
 
   canEdit = false;
 
@@ -56,8 +65,8 @@ export class CollectionDetailsComponent implements OnInit {
     private utilityService: UtilityService,
     public storageService: StorageService,
     private filesService: FilesService,
-    private libreofficeService: LibreofficeService,
     private libraryService: LibraryService,
+    private foldersService: FoldersService,
     private workspaceService: WorkspaceService
   ) {
     this.collectionId = this.activatedRoute.snapshot.queryParams['collection'];
@@ -112,11 +121,14 @@ export class CollectionDetailsComponent implements OnInit {
 
     this.initPages();
 
+    await this.initRootFolder();
+
     if (this.objectExists(this.workspaceData) && this.objectExists(this.groupData)) {
       // Set the File Credentials after view initialization
       this.fileData = {
         _group: this.groupData?._id,
         _collection: this.collectionData?._id,
+        _folder: (this.currentFolder) ? this.currentFolder._id : null,
         type: 'file',
         _workspace: this.workspaceData?._id
       }
@@ -201,6 +213,44 @@ export class CollectionDetailsComponent implements OnInit {
     this.isLoading$.next(false);
   }
 
+  createFolder() {
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
+    // Files Service Instance
+    let folderService = this.injector.get(FoldersService);
+
+    // Utility Service Instance
+    let utilityService = this.injector.get(UtilityService);
+
+    const folder: any = {
+      folder_name: $localize`:@@groupNewFile.newFolder:New Folder`,
+      _created_by: this.userData._id,
+      _group: this.groupData?._id,
+      _collection: this.collectionData?._id,
+      _parent: this.folderId
+    };
+
+    // Call the HTTP Request Asynschronously
+    utilityService.asyncNotification(
+      $localize`:@@groupNewFile.pleaseCreatingFolder:Please wait we are creating the folder - ${folder['folder_name']} ...`,
+      new Promise((resolve, reject) => {
+        folderService.add(folder)
+          .then((res) => {
+            this.folders.unshift(folder);
+
+            resolve(utilityService.resolveAsyncPromise($localize`:@@groupNewFile.folderCreated:Folder has been created!`));
+
+          })
+          .catch(() => {
+            reject(utilityService.rejectAsyncPromise($localize`:@@groupNewFile.unexpectedErrorCreatingFolder:Unexpected error occurred while creating the folder, please try again!`))
+          });
+      }));
+
+    // Stop the loading spinner
+    this.isLoading$.next(false);
+  }
+
   /**
    * This function is responsible for uploading a file to the server
    * @param fileData
@@ -253,6 +303,99 @@ export class CollectionDetailsComponent implements OnInit {
     this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 
+
+  /**
+   * Method used to open a selected folder
+   */
+  async openFolder(folderId: string) {
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
+    // Clean the files, folders and current folder content to retreive the new folder content
+    this.folders = [];
+    this.files = [];
+    this.currentFolder = null;
+    this.folderOriginalName = '';
+
+    if (folderId == 'root') {
+      await this.initRootFolder();
+    } else {
+      await this.libraryService.getFolder(folderId)
+        .then(async res => {
+          this.currentFolder = res['folder'];
+          this.folderOriginalName = this.currentFolder.folder_name;
+        });
+
+      // Fetch the uploaded files from the server
+      await this.libraryService.getFolders(this.collectionData?._id, folderId).then(res => {
+        this.folders = res['folders'];
+      });
+
+      this.folders.unshift({
+        _id: this.currentFolder?._parent || 'root',
+        folder_name: '../',
+        type: undefined
+      });
+
+      // Fetch the uploaded files from the server
+      await this.libraryService.getFiles(this.collectionData?._id, folderId).then(res => {
+        this.files = res['files'];
+      });
+    }
+
+    // Stop the loading spinner
+    this.isLoading$.next(false);
+  }
+
+  /**
+   * This method is used to init the root folder in the groups files page
+   */
+  async initRootFolder() {
+    // Fetch the uploaded files from the server
+    await this.libraryService.getFolders(this.collectionData?._id).then(res => {
+      this.folders = res['folders'];
+    });
+
+    // Fetch the uploaded files from the server
+    await this.libraryService.getFiles(this.collectionData?._id).then(res => {
+      this.files = res['files'];
+    });
+
+    this.currentFolder = null;
+  }
+
+  /**
+   * Used to modify the title of the current folder
+   */
+  changeFolderTitle(event: any) {
+    // KeyCode = 13 - User hits enter
+    if (event.keyCode == 13) {
+
+      // Set the edit title to false
+      this.editFolderTitle = false
+
+      this.foldersService.edit(this.currentFolder._id, event.target.value).then((res) => {
+        this.currentFolder.folder_name = event.target.value;
+        this.folderOriginalName = this.currentFolder.folder_name;
+        this.utilityService.resolveAsyncPromise($localize`:@@collectionDeatils.changeFolderTitle:Folder Title Changed!`);
+      })
+      .catch((error) => {
+        this.utilityService.rejectAsyncPromise($localize`:@@collectionDeatils.errorChangingFolderTitle:Error while changing the title of the folder!`);
+      });
+    }
+
+    // KeyCode = 27 - User Hits Escape
+    else if (event.keyCode == 27) {
+
+      // Set the name back to previous state
+      this.currentFolder.folder_name = this.folderOriginalName
+
+      // Only Set the edit title to false
+      this.editFolderTitle = false
+    }
+
+  }
+
   /**
    * Call function to delete file or a folder
    * @param itemId
@@ -266,13 +409,78 @@ export class CollectionDetailsComponent implements OnInit {
           this.utilityService.asyncNotification($localize`:@@collectionDeatils.pleaseWaitDeleting:Please wait, we are deleting...`, new Promise((resolve, reject) => {
             this.libraryService.deleteCollectionFile(fileId, this.workspaceData?._id)
               .then((res) => {
-                // Remove the file from the list
-                this.collectionData = res['collection'];
+                // Remove the folder from the list
+                this.files = this.files.filter(file => file._id !== fileId);
 
                 resolve(this.utilityService.resolveAsyncPromise($localize`:@@collectionDeatils.fileDeleted:File deleted!`));
               }).catch((err) => {
                 reject(this.utilityService.rejectAsyncPromise($localize`:@@collectionDeatils.unableToDeleteFile:Unable to delete file, please try again!`));
               });
+          }));
+        }
+      });
+  }
+
+  /**
+   * Call function to delete a folder
+   * @param folderId
+   */
+  deleteFolder(folderId: string) {
+    // Ask User to remove this file or not
+    this.utilityService.getConfirmDialogAlert()
+      .then((result) => {
+        if (result.value) {
+          // Remove the file
+          this.utilityService.asyncNotification($localize`:@@groupFiles.pleaseWaitDeleting:Please wait, we are deleting...`, new Promise((resolve, reject) => {
+            this.foldersService.deleteFolder(folderId)
+              .then((res) => {
+                // Remove the folder from the list
+                this.folders = this.folders.filter(folder => folder._id !== folderId);
+
+                resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.folderDeleted:Folder deleted!`));
+              }).catch((err) => {
+                reject(this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.unableToDeleteFolder:Unable to delete folder, please try again!`));
+              });
+          }));
+        }
+      });
+  }
+
+  /**
+   * This method move the item to a specific folder
+   *
+   * @param itemId item to move
+   * @param folderId destination folder
+   * @param type type of item to move
+   */
+  moveToFolder(itemId: string, folderId: string, type: string) {
+    // Ask User to remove this file or not
+    this.utilityService.getConfirmDialogAlert()
+      .then((result) => {
+        if (result.value) {
+          // Move the item
+          this.utilityService.asyncNotification($localize`:@@groupFiles.pleaseWaitMovingItem:Please wait, we are moving the item...`, new Promise((resolve, reject) => {
+            if (type == 'file') {
+              this.filesService.moveToFolder(itemId, folderId)
+                .then((res) => {
+                  // Remove the file from the list
+                  this.files = this.files.filter(file => file._id !== itemId);
+
+                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.fileMoved:File moved!`));
+                }).catch((err) => {
+                  reject(this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.unableToMoveFile:Unable to move the file, please try again!`));
+                });
+            } else if (type == 'folder') {
+              this.foldersService.moveToFolder(itemId, folderId)
+                .then((res) => {
+                  // Remove the file from the list
+                  this.folders = this.folders.filter(folder => folder._id !== itemId);
+
+                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.folderMoved:👍 Folder moved!`));
+                }).catch((err) => {
+                  reject(this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.unableToMoveFolder:Unable to move the folder, please try again!`));
+                });
+            }
           }));
         }
       });

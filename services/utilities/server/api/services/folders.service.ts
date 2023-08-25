@@ -45,6 +45,7 @@ export class FoldersService {
         let folder: any = {
             folder_name: folderData.folder_name,
             _group: folderData._group,
+            _collection: folderData._collection,
             _created_by: folderData._created_by,
             _parent: folderData._parent
         }
@@ -121,12 +122,14 @@ export class FoldersService {
         if (folderId) {
             query = {
                 _group: groupId,
-                _parent: folderId
+                _parent: folderId,
+                _collection: { $eq: null }
             };
         } else {
             query = {
                 _group: groupId,
-                _parent: { $eq: null }
+                _parent: { $eq: null },
+                _collection: { $eq: null }
             };   
         }
 

@@ -1,4 +1,4 @@
-import { File, Collection, Page, Group, User, Workspace } from '../models';
+import { File, Collection, Page, Group, User, Workspace, Folder } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { axios, sendError } from '../../utils';
 import { LibraryService } from '../services';
@@ -12,7 +12,6 @@ const libraryService = new LibraryService();
  *  ===================
  * */
 export class LibraryController {
-
     /**
      * This function fetches the collection details corresponding to the @constant collectionId 
      * @param req - @constant collectionId
@@ -514,7 +513,7 @@ export class LibraryController {
                 minio_versionId: fileData.minio_versionId,
                 type: fileData.type,
                 mime_type: fileData.mime_type,
-                _folder: null,
+                _folder: fileData._folder,
                 _posted_by: userId,
                 created_date: DateTime.now()
             });
@@ -1439,6 +1438,115 @@ console.log(workspace);
                 pages: pages
             });
 
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for fetching all folders of a collection
+     * @param collectionId 
+     * @param folderId 
+     */
+    async getFolders(req: Request, res: Response, next: NextFunction) {
+        try{
+            let { query: { folderId }, params: { collectionId } } = req;
+
+            let query = {};
+            if (!!folderId && folderId != 'undefined' && folderId != 'null') {
+                query = {
+                    _parent: folderId,
+                    _collection: collectionId
+                };
+            } else {
+                query = {
+                    _parent: { $eq: null },
+                    _collection: collectionId
+                };
+            }
+
+            const folders = await Folder.find(query)
+                .sort('folder_name')
+                .populate([
+                    { path: '_group', select: 'group_name group_avatar workspace_name' },
+                    { path: '_collection', select: 'name collection_avatar' },
+                    { path: '_created_by', select: 'first_name last_name profile_pic role email' },
+                    { path: 'permissions._members', select: 'first_name last_name profile_pic role email' }
+                ])
+                .lean();
+
+            // Return all the folders with the populated properties
+            return res.status(200).json({
+                message: 'Folders list fetched!',
+                folders: folders
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for fetching a specific folder
+     * @param folderId 
+     */
+    async getFolder(req: Request, res: Response, next: NextFunction) {
+        try {
+            let { params: { folderId }} = req;
+
+            const folder = await Folder.findById({
+                    _id: folderId
+                })
+                .populate([
+                    { path: '_group', select: 'group_name group_avatar workspace_name' },
+                    { path: '_collection', select: 'name collection_avatar' },
+                    { path: '_created_by', select: 'first_name last_name profile_pic role email' },
+                    { path: 'permissions._members', select: 'first_name last_name profile_pic role email' }
+                ])
+                .lean();
+
+            // Return all the folders with the populated properties
+            return res.status(200).json({
+                message: 'Folder details fetched!',
+                folder: folder
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for fetching a specific folder
+     * @param folderId 
+     */
+    async getFiles(req: Request, res: Response, next: NextFunction) {
+        try {
+            let { query: { folderId }, params: { collectionId } } = req;
+
+            let query = {};
+            if (!!folderId && folderId != 'undefined' && folderId != 'null') {
+                query = {
+                    _folder: folderId,
+                    _collection: collectionId
+                };
+            } else {
+                query = {
+                    _folder: { $eq: null },
+                    _collection: collectionId
+                };   
+            }
+
+            const files = await File.find(query)
+                .populate([
+                    { path: '_collection', select: 'name collection_avatar' },
+                    { path: '_folder', select: '_id folder_name _parent' }
+                ])
+                .lean();
+
+            // Return all the folders with the populated properties
+            return res.status(200).json({
+                message: 'Folders list fetched!',
+                files: files
+            });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }

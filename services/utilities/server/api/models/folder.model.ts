@@ -22,6 +22,11 @@ const FolderSchema = new Schema({
         ref: 'Group',
         required: true
     },
+    _collection: {
+        type: Schema.Types.ObjectId,
+        ref: 'Collection',
+        required: false
+    },
     _parent: {
         type: Schema.Types.ObjectId,
         ref: 'Folder',
