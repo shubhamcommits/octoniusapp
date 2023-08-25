@@ -378,8 +378,8 @@
     <mat-tab label="" *ngIf="pendingHolidays.length > 0 && isOrganizationModuleAvailable">
       <ng-template mat-tab-label>
         <span *ngIf="pendingHolidays.length > 0" [matBadge]="pendingHolidays.length"
-          matBadgeOverlap="false" matBadgeColor="warn" i18n="@@recentActivity.pendingApprovals">Pending Holidays</span>
-        <span *ngIf="pendingHolidays.length == 0" i18n="@@recentActivity.pendingApprovals">Pending Holidays</span>
+          matBadgeOverlap="false" matBadgeColor="warn" i18n="@@recentActivity.pendingHolidays">Pending Holidays</span>
+        <span *ngIf="pendingHolidays.length == 0" i18n="@@recentActivity.pendingHolidays">Pending Holidays</span>
       </ng-template>
     
       <!-- Empty State starts -->
@@ -486,12 +486,12 @@
             <mat-menu #menu="matMenu">
               <a mat-menu-item (click)="openUserProfile(task._owner._id)">
                 <i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">account_circle</i>
-                <span i18n="@@pendingTasksCard.openProfile">Open Profile</span>
+                <span i18n="@@recentActivity.openProfile">Open Profile</span>
               </a>
               
               <a mat-menu-item (click)="markAsCompleted(task._id)">
                 <i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">check_circle</i>
-                <span i18n="@@pendingTasksCard.markComplited">Mark as completed</span>
+                <span i18n="@@recentActivity.markComplited">Mark as completed</span>
               </a>
             </mat-menu>
           </div>
