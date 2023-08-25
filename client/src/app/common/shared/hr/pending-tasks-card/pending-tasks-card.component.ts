@@ -35,10 +35,12 @@ export class PendingTasksCardComponent implements OnChanges {
   }
 
   async initNotifications() {
-    await this.hrService.getTopHRPendingNotifications(this.workspaceData?._id).then(res => {
-      this.pendingTasks = res['notifications'];
-      this.totalPendingNotifications = res['totalCount']
-    });
+    if (this.workspaceData && this.workspaceData?._id) {
+      await this.hrService.getTopHRPendingNotifications(this.workspaceData?._id).then(res => {
+        this.pendingTasks = res['notifications'];
+        this.totalPendingNotifications = res['totalCount']
+      });
+    }
   }
 
   openUserProfile(userId: string) {
