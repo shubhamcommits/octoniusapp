@@ -22,19 +22,89 @@
         <mat-tab [label]="filesLabel">
             <!-- <div dragDropFile (fileDropped)="fileDropped($event)"> -->
                 <div class="row" style="padding: 20px;" *ngIf="canEdit">
-                    <!-- Create new Collection starts -->
-                    <button class="btn btn-primary mb-3 mt-3" type="button" (click)="file.click()">
-                        <i class="material-icons-outlined mr-2">upload_file</i>
-                        <span i18n="@@collectionDetails.uloadFile">Upload file</span>
-                        <input #file type="file" placeholder="File" multiple (change)="fileInput(file.files)" />
+                    <button class="btn btn-warning mb-3 mt-3 dropdown-toggle" type="button" data-toggle="dropdown">
+                        <i class="material-icons-outlined">add</i>
+                        <span i18n="@@collectionDetails.new">New</span>
                     </button>
-                    <!-- Create new Collection ends -->
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item" (click)="createFolder()">
+                            <i class="material-icons-outlined mr-2">create_new_folder</i>
+                            <span i18n="@@groupNewFile.folder">Folder</span>
+                        </li>
+
+                        <!-- Create new Collection starts -->
+                        <li class="dropdown-item" (click)="file.click()">
+                            <i class="material-icons-outlined mr-2">upload_file</i>
+                            <span i18n="@@collectionDetails.uloadFile">Upload file</span>
+                            <input #file type="file" placeholder="File" multiple (change)="fileInput(file.files)" />
+                        </li>
+                        <!-- Create new Collection ends -->
+                    </ul>
                 </div>
 
-                <div class="row page" *ngFor="let file of collectionData?._files">
+                <div *ngIf="currentFolder" class="mt-n30">
+                    <!-- Folder Static Title starts -->
+                    <span *ngIf="!canEdit" style="float: left; margin-right: 30px;">
+                        <h5>{{ currentFolder?.folder_name }}</h5>
+                    </span>
+                
+                    <span *ngIf="canEdit && !editFolderTitle" (click)="editFolderTitle = !editFolderTitle"
+                        matTooltip="Click me to rename" matTooltipPosition="below" style="float: left; margin-right: 30px;">
+                        <h5>
+                            {{currentFolder?.folder_name}}
+                            <i class="material-icons muted" style="cursor: pointer; font-size: 14px;">mode</i>
+                        </h5>
+                    </span>
+                    <!-- Folder Static Title ends -->
+
+                    <!-- Folder edit title name starts -->
+                    <input *ngIf="canEdit && editFolderTitle" type="text" autocomplete="off"
+                        [(ngModel)]="currentFolder.folder_name"
+                        (keyup)="changeFolderTitle($event)" (keyup.enter)="changeFolderTitle($event)"
+                        class="form-control" style="display: block;" />
+                    <!-- Folder edit title name ends -->
+                </div>
+
+                <div class="row page" *ngFor="let folder of folders">
+                
+                    <div class="page-info">
+                        <a class="mt-0" style="cursor: pointer" (click)="openFolder(folder?._id)">
+                            <img src="assets/images/add-folder-icon.png" onerror="this.src='assets/images/add-folder-icon.png'"
+                                class="file-type mt-3 mr-1" style="vertical-align: bottom;">
+                            {{folder?.folder_name}}
+                        </a>
+                    </div>
+
+                    <div class="options" *ngIf="canEdit">
+                        <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
+                
+                        <mat-menu #menu="matMenu">
+                            <div *ngIf="folders && folders?.length > 1">
+                                <a mat-menu-item [matMenuTriggerFor]="moveFolderMenu">
+                                    <i class="material-icons">arrow_forward</i>
+                                    <span i18n="@@groupFiles.moveToFolder">Move to Folder</span>
+                                </a>
+                            
+                                <mat-menu #moveFolderMenu="matMenu">
+                                    <ng-container *ngFor="let folderMenu of folders; let index = index">
+                                        <button mat-menu-item *ngIf="folderMenu._id != folderMenu._id"
+                                            (click)="moveToFolder(folder._id, folderMenu?._id, 'folder')">{{ folderMenu?.folder_name }}</button>
+                                    </ng-container>
+                                </mat-menu>
+                            </div>
+
+                            <a mat-menu-item (click)="deleteFolder(folder?._id)">
+                                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
+                                <span i18n="@@collectionDetails.delete">Delete</span>
+                            </a>
+                        </mat-menu>
+                
+                    </div>
+                </div>
+
+                <div class="row page" *ngFor="let file of files">
 
                     <div class="page-info">
-                    
                         <div class="page-title" style="cursor: pointer" (click)="openDocument(file)">
                             <img [src]="getFileIcon(file?.original_name)" onerror="this.src='assets/images/icon_file.svg'"
                                 class="file-type mr-1" style="vertical-align: bottom;">
@@ -50,6 +120,17 @@
                                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">file_download</i>
                                 <span i18n="@@collectionDetails.download">Download</span>
                             </a>
+                            
+                            <a mat-menu-item [matMenuTriggerFor]="moveFolderMenu">
+                                <i class="material-icons">arrow_forward</i>
+                                <span i18n="@@groupFiles.moveToFolder">Move to Folder</span>
+                            </a>
+                            
+                            <mat-menu #moveFolderMenu="matMenu">
+                                <ng-container *ngFor="let folder of folders; let index = index">
+                                    <button mat-menu-item (click)="moveToFolder(file._id, folder?._id, 'file')">{{ folder?.folder_name }}</button>
+                                </ng-container>
+                            </mat-menu>
                         
                             <a mat-menu-item (click)="deleteFile(file?._id)">
                                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>

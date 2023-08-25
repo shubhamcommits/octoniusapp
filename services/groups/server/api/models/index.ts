@@ -12,6 +12,7 @@ import { Portfolio } from './portfolio.model';
 import { Collection } from './collection.model';
 import { File } from './file.model';
 import { Page } from './page.model';
+import { Folder } from './folder.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -44,6 +45,8 @@ export {
 
     // FLOW
     Flow as Flow,
+
+    Folder as Folder,
 
     // NOTIFICATION
     Notification as Notification,

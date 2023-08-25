@@ -1,6 +1,7 @@
 import express from 'express';
 import { Auths } from '../../utils/auths';
 import { FoldersControllers } from '../controllers/folders.controllers';
+import { folioFileDelete } from '../../utils/filehandlers';
 
 // Files Class Object
 let folders = new FoldersControllers()
@@ -29,7 +30,7 @@ routes.get('/:folderId', folders.getOne);
 routes.put('/:folderId', folders.edit);
 
 // DELETE - Delete the folder on the basis of fileId
-routes.delete('/:folderId', folders.delete);
+routes.delete('/:folderId', folioFileDelete, folders.delete);
 
 // PUT - Handles the move of a folder to another folder
 routes.put('/:folderId/move-to-folder', folders.moveToFolder);

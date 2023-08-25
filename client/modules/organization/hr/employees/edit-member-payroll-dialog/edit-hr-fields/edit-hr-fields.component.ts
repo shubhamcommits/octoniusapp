@@ -83,6 +83,9 @@ export class EditHRFieldsComponent implements OnInit {
               this.selectedHRCFValues[field._id] = this.memberData.hr.entity_custom_fields[field._id];
             }
 
+            if (!this.hrCustomFields) {
+              this.hrCustomFields = []
+            }
             this.hrCustomFields.push(field);
           });
         }
@@ -100,6 +103,9 @@ export class EditHRFieldsComponent implements OnInit {
                 this.selectedHRVariablesValues[field._id] = this.memberData.hr.entity_variables[field._id];
               }
 
+              if (!this.hrVariables) {
+                this.hrVariables = []
+              }
               this.hrVariables.push(field);
             });
         }
@@ -122,6 +128,9 @@ export class EditHRFieldsComponent implements OnInit {
               }
             }
 
+            if (!this.hrBenefits) {
+              this.hrBenefits = []
+            }
             this.hrBenefits.push(field);
           });
         }
@@ -234,6 +243,9 @@ export class EditHRFieldsComponent implements OnInit {
 
   onCheckedEntityBenefitChange(benefitValues: any, benefitSelectedValue: string, benefitId: string) {
     const index = (benefitValues) ? benefitValues.findIndex(b => b == benefitSelectedValue) : -1;
+    if (benefitValues) {
+      benefitValues = [];
+    }
     if (index < 0) {
       benefitValues.push(benefitSelectedValue);
     }

@@ -115,6 +115,36 @@ export class LibraryService {
     return this._http.put(this.baseUrl + `/library/collection/${fileId}/remove-file/${workspaceId}`, {}).toPromise();
   }
 
+  /**
+   * This function is responsible for fetching list of folders
+   * @param groupId
+   */
+  getFolders(collectionId: string, folderId?: string) {
+    return this._http.get(this.baseUrl + `/library/collection/${collectionId}/folders`, {
+      params: {
+        folderId: folderId
+      }
+    }).toPromise();
+  }
+
+  /**
+   * This function is responsible for fetching the folder details on the basis of the folderId
+   * @param folderId
+   */
+  getFolder(folderId: string){
+    if(folderId) {
+      return this._http.get(this.baseUrl + `/library/collection/folder/${folderId}`).toPromise()
+    }
+  }
+
+  getFiles(collectionId: string, folderId?: string) {
+    return this._http.get(this.baseUrl + `/library/collection/${collectionId}/files`, {
+      params: {
+        folderId: folderId
+      }
+    }).toPromise();
+  }
+
   createPage(collectionId: string, parentPageId: string, newPageName: string) {
     return this._http.post(this.baseUrl + `/library/page/${collectionId}`, {
       parentPageId: parentPageId,

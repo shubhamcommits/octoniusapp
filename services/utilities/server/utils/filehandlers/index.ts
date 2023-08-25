@@ -1,5 +1,5 @@
 import { flamingoFileHandler } from "./flamingo.filehandler";
-import { groupFileHandler, groupFileUploader, groupFileDelete, groupsFilesHandler, minioFileHandler } from "./group.filehandler";
+import { groupFileHandler, groupFileUploader, groupFileDelete, groupsFilesHandler, minioFileHandler, folioFileDelete } from "./group.filehandler";
 import { postFileHandler } from "./post.filehandler";
 import { userFileHandler } from "./user.filehandler";
 import { utilitiesFileHandler } from "./utilities.filehandler";
@@ -18,6 +18,7 @@ export {
   groupsFilesHandler as groupsFilesHandler,
   groupFileDelete as groupFileDelete,
   groupFileUploader as groupFileUploader,
+  folioFileDelete as folioFileDelete,
   minioFileHandler as minioFileHandler,
   utilitiesFileHandler as utilitiesFileHandler
 }
