@@ -406,9 +406,9 @@
         
           <tr *ngFor="let holiday of pendingHolidays; let index = index">
             <td>
-              <app-secured-image [imgURL]="holiday?._approval_manager?.profile_pic" [service]="'user'"
+              <app-secured-image [imgURL]="holiday?._user?.profile_pic" [service]="'user'"
                 [workspaceId]="workspaceData?._id" [styleClass]="'feed-avatar-small'"></app-secured-image>
-              {{ holiday?._approval_manager?.first_name }} {{ holiday?._approval_manager?.last_name }}
+              {{ holiday?._user?.first_name }} {{ holiday?._user?.last_name }}
             </td>
             <td>{{ formateDate(holiday.start_date) }}</td>
             <td>{{ formateDate(holiday.end_date) }}</td>
@@ -455,13 +455,6 @@
         <span *ngIf="pendingHRTasks.length == 0"
           i18n="@@recentActivity.pendingHRTasks">Pending HR tasks</span>
       </ng-template>
-
-      <!-- Empty State starts -->
-      <div *ngIf="pendingHRTasks.length === 0 && !(isLoading$ | async)" style="text-align: center; margin-top: 30px;">
-        <img src='assets/images/placeholder_newsfeed.png' class="placeholder-img">
-        <p class="muted text-center" i18n="@@recentActivity.noPendingHRTasks">No pending HR tasks.</p>
-      </div>
-      <!-- Empty State ends -->
 
       <div *ngIf="pendingHRTasks.length > 0 && !(isLoading$ | async)" >
         <!-- NOTIFICATION ITEM STARTS-->

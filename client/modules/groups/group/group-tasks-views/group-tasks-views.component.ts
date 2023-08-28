@@ -130,6 +130,18 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
     }
 
     /**
+     * Obtain the custom fields
+     */
+    this.customFields = [];
+    await this.groupService.getGroupCustomFields(this.groupData?._id).then((res) => {
+      if (res['group']['custom_fields']) {
+        res['group']['custom_fields'].forEach(field => {
+          this.customFields.push(field);
+        });
+      }
+    });
+
+    /**
      * Here we fetch all the columns available in a group, and if null we initialise them with the default one
      */
     this.columns = await this.publicFunctions.getAllColumns(this.groupData?._id);
@@ -174,18 +186,6 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
     }
     let unchangedColumns: any = { columns: col };
     this.unchangedColumns = JSON.parse(JSON.stringify(unchangedColumns));
-
-    /**
-     * Obtain the custom fields
-     */
-    this.customFields = [];
-    await this.groupService.getGroupCustomFields(this.groupData?._id).then((res) => {
-      if (res['group']['custom_fields']) {
-        res['group']['custom_fields'].forEach(field => {
-          this.customFields.push(field);
-        });
-      }
-    });
 
     this.utilityService.updateIsLoadingSpinnerSource(false);
   }

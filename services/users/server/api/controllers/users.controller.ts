@@ -1385,6 +1385,10 @@ export class UsersControllers {
                     ]
                 })
                 .populate({
+                    path: '_user',
+                    select: '_id email first_name last_name profile_pic'
+                })
+                .populate({
                     path: '_approval_manager',
                     select: '_id email first_name last_name profile_pic'
                 })
@@ -1402,6 +1406,10 @@ export class UsersControllers {
                     ]
                 })
                 .populate({
+                    path: '_user',
+                    select: '_id email first_name last_name profile_pic'
+                })
+                .populate({
                     path: '_approval_manager',
                     select: '_id email first_name last_name profile_pic'
                 })
@@ -1413,6 +1421,10 @@ export class UsersControllers {
                         // { end_date: { $gte: firstDayOfYear }},
                         { start_date: { $lte: firstDayOfYear} }
                     ]
+                })
+                .populate({
+                    path: '_user',
+                    select: '_id email first_name last_name profile_pic'
                 })
                 .populate({
                     path: '_approval_manager',
@@ -1909,6 +1921,10 @@ export class UsersControllers {
                     $set: { holiday }
                 })
                 .populate({
+                    path: '_user',
+                    select: '_id email first_name last_name profile_pic'
+                })
+                .populate({
                     path: '_approval_manager',
                     select: '_id email first_name last_name profile_pic'
                 })
@@ -1938,6 +1954,10 @@ export class UsersControllers {
                         status: status,
                         rejection_description: rejection_description
                     }
+                })
+                .populate({
+                    path: '_user',
+                    select: '_id email first_name last_name profile_pic'
                 })
                 .populate({
                     path: '_approval_manager',
@@ -2004,6 +2024,10 @@ export class UsersControllers {
                         { _approval_manager: userId },
                         { status: 'pending' }
                     ]
+                })
+                .populate({
+                    path: '_user',
+                    select: '_id email first_name last_name profile_pic'
                 })
                 .populate({
                     path: '_approval_manager',
