@@ -689,16 +689,16 @@ export class ApprovalService {
 
                 // run automator
                 await http.put(`${process.env.POSTS_SERVER_API}/${itemId}/automator`, {
-                  userId: userId,
-                  isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable,
-                  isIndividualSubscription: isIndividualSubscription
-                }, {
-                  headers: {
-                    'Authorization': authorization
-                  }
-                }).then().catch(err => {
-                  console.log(err.response);
-                });
+                    userId: userId,
+                    isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable,
+                    isIndividualSubscription: isIndividualSubscription
+                  }, {
+                    headers: {
+                      'Authorization': authorization
+                    }
+                  }).then().catch(err => {
+                    console.log(err.response);
+                  });
               }
 
               // Mark notification as read if it has a due date

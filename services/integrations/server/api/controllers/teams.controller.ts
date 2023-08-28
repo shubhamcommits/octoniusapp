@@ -184,18 +184,27 @@ export class TeamsController {
         var formData = new FormData();
 
         // Postdata
-        const postdata = {"title": title,"content": description,"type":"task","_posted_by":assigneeId,"_group": groupSelectionId,"_content_mentions":[],"_assigned_to": assigneeSelection,"task":{"status":"to do","_column": columnSelection,"due_to": moment(dueDate).format("YYYY-MM-DD")}};
-
+        const postdata = {
+            "title": title,
+            "content": description,
+            "type": "task",
+            "_posted_by": assigneeId,
+            "_group": groupSelectionId,
+            "_content_mentions":[],
+            "_assigned_to": assigneeSelection,
+            "task": {
+                "status": "to do",
+                "_column": columnSelection,
+                "due_to": moment(dueDate).format("YYYY-MM-DD")
+            }
+        };
 
         formData.append('post',JSON.stringify(postdata));
-
-        
-        
+ 
         try {
-
             //Sending request to post service to create a task.
             const responaxois = await axios({
-                url : process.env.POSTS_SERVER_API,
+                url : `${process.env.POSTS_SERVER_API}/null`,
                 method:'POST',
                 headers:{
                     'Content-Type': formData.getHeaders()['content-type'],
