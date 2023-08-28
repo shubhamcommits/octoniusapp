@@ -219,7 +219,19 @@ export class IntegrationController {
         var formData = new FormData();
         
         // Postdata
-        const postdata = { "title": req.body?.title, "content": req.body?.content, "type": "task", "_posted_by": req['userId'], "_group": req.body?.group, "_content_mentions": [], "_assigned_to": undefined, "task": { "status": "to do", "_column": req.body?.colums } };
+        const postdata = {
+            "title": req.body?.title,
+            "content": req.body?.content,
+            "type": "task",
+            "_posted_by": req['userId'],
+            "_group": req.body?.group,
+            "_content_mentions": [],
+            "_assigned_to": [],
+            "task": {
+                "status": "to do",
+                "_column": req.body?.colums
+            }
+        };
         
         formData.append('post', JSON.stringify(postdata));
         
@@ -227,10 +239,9 @@ export class IntegrationController {
         const token = req.headers.authorization;
 
         try {
-
             //Sending request to post service to create a task.
             const responaxois = await axios({
-                url: process.env.POSTS_SERVER_API,
+                url: `${process.env.POSTS_SERVER_API}/null`,
                 method: 'POST',
                 headers: {
                     'Content-Type': formData.getHeaders()['content-type'],

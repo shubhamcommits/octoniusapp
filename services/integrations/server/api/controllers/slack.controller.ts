@@ -492,7 +492,7 @@ export class SlackController {
                         try {
                         
                             const responaxois = await axios({
-                                url : process.env.POSTS_SERVER_API,
+                                url : `${process.env.POSTS_SERVER_API}/null`,
                                 method:'POST',
                                 headers:{
                                     'Content-Type': formData.getHeaders()['content-type'],
