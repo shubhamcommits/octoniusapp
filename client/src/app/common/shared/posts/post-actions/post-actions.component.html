@@ -45,7 +45,9 @@
 
 </div>
 
-<comment-section *ngIf="showCommentQuillEditor && userData && post" [userData]="userData" [editorId]="post._id" [postId]="post?._id"
+<comment-section *ngIf="showCommentQuillEditor && userData && post"
+    [userData]="userData" [editorId]="post._id"
+    [postId]="post?._id" [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
     [groupId]="post._group || post._group._id" (comment)="newCommentReceived($event)" (close)="hideCommentEditor($event)">
 </comment-section>
 

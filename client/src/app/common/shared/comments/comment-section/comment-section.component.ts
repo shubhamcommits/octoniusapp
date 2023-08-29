@@ -111,7 +111,7 @@ export class CommentSectionComponent implements OnInit {
     if ((content && content !== '') || this.files.length > 0) {
       await this.utilityService.asyncNotification($localize`:@@commentSection.pleaseWaitUpdatingContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
         if (this.pageId) {
-          this.commentService.newPageComment(formData, this.pageId)
+          this.commentService.newPageComment(formData, this.pageId, this.workspaceId)
             .then((res) => {
               // Emit the Comment to the other compoentns
               this.comment.emit(res['comment']);
@@ -122,7 +122,7 @@ export class CommentSectionComponent implements OnInit {
               reject(this.utilityService.rejectAsyncPromise($localize`:@@commentSection.unableToSubmitComment:Unable to submit the comment, please try again!`));
             });
         } else if (this.storyId) {
-          this.commentService.newStoryComment(formData, this.storyId)
+          this.commentService.newStoryComment(formData, this.workspaceId, this.storyId)
             .then((res) => {
               // Emit the Comment to the other compoentns
               this.comment.emit(res['comment']);
@@ -133,7 +133,7 @@ export class CommentSectionComponent implements OnInit {
               reject(this.utilityService.rejectAsyncPromise($localize`:@@commentSection.unableToSubmitComment:Unable to submit the comment, please try again!`));
             });
         } else {
-          this.commentService.newPostComment(formData, this.postId)
+          this.commentService.newPostComment(formData, this.postId, this.workspaceId)
             .then((res) => {
               // Emit the Comment to the other compoentns
               this.comment.emit(res['comment']);
