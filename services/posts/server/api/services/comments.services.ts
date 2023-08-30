@@ -338,11 +338,10 @@ const minio = require('minio');
               _id: comment._story
             }).lean();
           }
-          
-      
+
           // Get user data
           const user:any = await User.findOne({ _id: userId });
-      
+console.log({ user });
           if (
             // If user is not one of group's admins... and...
             !(user.role === 'owner' || user.role === 'admin')
