@@ -338,11 +338,11 @@ const minio = require('minio');
               _id: comment._story
             }).lean();
           }
-          
-      
+
           // Get user data
           const user:any = await User.findOne({ _id: userId });
-      
+          const workspaceId = (user._workspace+'').toLocaleLowerCase();
+
           if (
             // If user is not one of group's admins... and...
             !(user.role === 'owner' || user.role === 'admin')
@@ -369,7 +369,7 @@ const minio = require('minio');
                   accessKey: process.env.MINIO_ACCESS_KEY,
                   secretKey: process.env.MINIO_SECRET_KEY
                 });
-                await minioClient.removeObject(user._workspace, finalpath, (error) => {
+                await minioClient.removeObject(workspaceId, finalpath, (error) => {
                   i--;
                   if (error) {
                     callback(error);
@@ -387,9 +387,9 @@ const minio = require('minio');
           }
 
           let commentRemoved: any;
-          if (post) {
+          if (!!post) {
             // TODO - not sure if the files are being deleted. Wrong name
-            //chec/delete document files that were exported
+            //check/delete document files that were exported
             const filepath = `${post._id + post._group + 'export' + '.docx'}`;
 
             var minioClient = new minio.Client({
@@ -399,7 +399,7 @@ const minio = require('minio');
               accessKey: process.env.MINIO_ACCESS_KEY,
               secretKey: process.env.MINIO_SECRET_KEY
             });
-            await minioClient.removeObject(user._workspace, filepath, (error) => {
+            await minioClient.removeObject(workspaceId, filepath, (error) => {
               if (error) { throw (error); }
             });
 
@@ -423,7 +423,7 @@ const minio = require('minio');
               }, {
                 new: true
               });
-          } else if (story) {
+          } else if (!!story) {
             // TODO - not sure if the files are being deleted. Wrong name
             //chec/delete document files that were exported
             const filepath = `${story._id + 'export' + '.docx'}`;
@@ -435,7 +435,7 @@ const minio = require('minio');
               accessKey: process.env.MINIO_ACCESS_KEY,
               secretKey: process.env.MINIO_SECRET_KEY
             });
-            await minioClient.removeObject(user._workspace, filepath, (error) => {
+            await minioClient.removeObject(workspaceId, filepath, (error) => {
               if (error) { throw (error); }
             });
                     

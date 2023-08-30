@@ -30,7 +30,7 @@ const commentFileUploader = async (req: Request, res: Response, next: NextFuncti
     next();
 
     // If multiple files are attached with comment
-  } else if (files.attachments && files.attachments.length > 1) {
+  } else if (!!files.attachments && files.attachments.length > 1) {
 
     // Fetch the files from the current request
     files.attachments.forEach(async (currentFile: any, index: Number) => {
@@ -105,7 +105,7 @@ const commentFileUploader = async (req: Request, res: Response, next: NextFuncti
     next();
 
     // If only single file is attached with comment
-  } else {
+  } else  if (!!files.attachments) {
     const comment = req.body.comment;
 
     // Fetch the file from the current request
