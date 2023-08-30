@@ -18,7 +18,8 @@ export class FilesControllers {
         try {
 
             // Fetch the fileId from the request
-            let { fileName, postId, groupId } = req.body
+            let { fileName } = req.body
+            const { postId } = req.params;
 
             // If fileId is not found, then throw the error
             if (!fileName)
@@ -27,7 +28,7 @@ export class FilesControllers {
                 })
 
             // Get File on the basis of the fileName
-            let file = await filesService.deleteAttachedFiles(fileName, groupId);
+            await filesService.deleteAttachedFiles(fileName, postId);
 
             if (postId) {
                 await Post.findOneAndUpdate({
