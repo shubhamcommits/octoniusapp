@@ -207,7 +207,7 @@ routes.post('/:postId/copy-to-group', postController.copyToGroup);
 routes.put('/:postId/move-to-group', postController.moveToGroup);
 
 // POST - Delete the attached file
-routes.post('/delete-attached', filesControllers.deleteAttached);
+routes.post('/:postId/delete-attached', filesControllers.deleteAttached);
 
 // GET - This route is used to get 10 tasks which could be a parent of the caller task
 routes.get('/:currentPostId/searchParent', postController.searchPossibleParents);
