@@ -285,6 +285,12 @@ export class CollectionDetailsComponent implements OnInit {
     }
 
     this.collectionData._files.unshift(file);
+    
+    if (!this.files) {
+      this.files = [];
+    }
+
+    this.files.unshift(file);
   }
 
   async openDocument(file: any) {
