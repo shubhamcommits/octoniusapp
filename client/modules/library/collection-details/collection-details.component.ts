@@ -128,7 +128,7 @@ export class CollectionDetailsComponent implements OnInit {
       this.fileData = {
         _group: this.groupData?._id,
         _collection: this.collectionData?._id,
-        _folder: (this.currentFolder) ? this.currentFolder._id : null,
+        _folder: (!!this.currentFolder) ? this.currentFolder._id : null,
         type: 'file',
         _workspace: this.workspaceData?._id
       }
@@ -203,6 +203,8 @@ export class CollectionDetailsComponent implements OnInit {
       if(type){
         this.fileData.type = type
       }
+
+      this.fileData._folder = (!!this.currentFolder) ? this.currentFolder._id : null;
 
       // Call the Upload file service function
       this.uploadFile(this.fileData, file);
