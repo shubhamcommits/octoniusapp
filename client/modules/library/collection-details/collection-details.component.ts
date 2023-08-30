@@ -239,6 +239,7 @@ export class CollectionDetailsComponent implements OnInit {
       new Promise((resolve, reject) => {
         folderService.add(folder)
           .then((res) => {
+            folder._id = res['folder']._id;
             this.folders.unshift(folder);
 
             resolve(utilityService.resolveAsyncPromise($localize`:@@groupNewFile.folderCreated:Folder has been created!`));
