@@ -31,7 +31,7 @@ export class FilesService {
                 accessKey: process.env.MINIO_ACCESS_KEY,
                 secretKey: process.env.MINIO_SECRET_KEY
             });
-            await minioClient.removeObject(((post.group._workspace._id || post.group._workspace)+'').toLocaleLowerCase(), finalpath, (error) => {
+            await minioClient.removeObject(((post._group._workspace._id || post._group._workspace)+'').toLocaleLowerCase(), finalpath, (error) => {
                 if (error) {
                     throw (error);
                 }
