@@ -3,7 +3,8 @@
   <div class="sidebar-header">
     <!-- MENU BUTTON STARTS -->
     <button type="button" id="sidebarCollapse" class="btn dismiss" (click)="switchSideBar()" >
-      <i class="material-icons">menu_open</i>
+      <i class="material-icons">menu</i>
+      <!-- <i class="material-icons">left_panel_open</i> -->
     </button>
     <!-- MENU BUTTON ENDS -->
 
@@ -42,11 +43,11 @@
       <li> <hr class="divider-line"></li>
 
       <li *ngIf="!isIndividualSubscription && userGroups && userGroups.length > 0">
-        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="true">
+        <a href="#pageSubmenuGroups" data-toggle="collapse" aria-expanded="true">
           <i class="material-icons-outlined carret">account_balance</i>
         </a>
       
-        <ul class="collapse list-unstyled show" id="pageSubmenu">
+        <ul class="collapse list-unstyled show" id="pageSubmenuGroups">
           <li *ngFor="let group of userGroups">
             <a (click)="goToGroup(group)" routerLinkActive="active">
               <app-secured-image [imgURL]="group?.group_avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
@@ -59,11 +60,11 @@
       <li *ngIf="!isIndividualSubscription && userPortfolios && userPortfolios.length > 0"><hr class="divider-line"></li>
       
       <li *ngIf="!isIndividualSubscription && userPortfolios && userPortfolios.length > 0">
-        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="true">
+        <a href="#pageSubmenuPortfolios" data-toggle="collapse" aria-expanded="true">
           <i class="material-icons-outlined carret">bookmarks</i>
         </a>
       
-        <ul class="collapse list-unstyled show" id="pageSubmenu">
+        <ul class="collapse list-unstyled show" id="pageSubmenuPortfolios">
           <li *ngFor="let portfolio of userPortfolios">
             <a (click)="goToPortfolio(portfolio)" routerLinkActive="active">
               <app-secured-image [imgURL]="portfolio?.portfolio_avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
@@ -76,11 +77,11 @@
       <li *ngIf="!isIndividualSubscription && userCollections && userCollections.length > 0"><hr class="divider-line"></li>
       
       <li *ngIf="!isIndividualSubscription && userCollections && userCollections.length > 0">
-        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="true">
+        <a href="#pageSubmenuCollections" data-toggle="collapse" aria-expanded="true">
           <i class="material-icons-outlined carret">book</i>
         </a>
       
-        <ul class="collapse list-unstyled show" id="pageSubmenu">
+        <ul class="collapse list-unstyled show" id="pageSubmenuCollections">
           <li *ngFor="let collection of userCollections">
             <a (click)="goToCollection(collection)" routerLinkActive="active">
               <app-secured-image [imgURL]="collection?.collection_avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
@@ -91,7 +92,7 @@
       </li>
       
       <li *ngIf="isIndividualSubscription">
-        <ul class="collapse list-unstyled show" id="pageSubmenu">
+        <ul class="collapse list-unstyled show" id="pageSubmenuGroups">
           <li *ngFor="let group of userGroups">
             <a (click)="goToGroup(group)" routerLinkActive="active">
               <app-secured-image [imgURL]="group?.group_avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
