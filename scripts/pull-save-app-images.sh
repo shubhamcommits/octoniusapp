@@ -60,6 +60,9 @@ FLAMINGO_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:flamingo-server
 LIBREOFFICE_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:libreoffice-server
 
 # Minio Image
+MINIO_BALANCER_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:minio-balancer
+
+# Minio Balancer Image
 MINIO_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:minio
 
 # Nginx Image Name
@@ -86,6 +89,7 @@ MONGO_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:mongodb
           docker pull $LIBREOFFICE_IMAGE_NAME
           docker pull $CLIENT_IMAGE_NAME
           docker pull $MINIO_IMAGE_NAME
+          docker pull $MINIO_BALANCER_IMAGE_NAME
           docker pull $NGINX_IMAGE_NAME
 
 # Save docker images
@@ -125,6 +129,8 @@ echo "Save $LIBREOFFICE_IMAGE_NAME"
 docker save $LIBREOFFICE_IMAGE_NAME | gzip > "docker-images/${DOCKER_REPO}.libreoffice-server.tar.gz"
 echo "Save $MINIO_IMAGE_NAME"
 docker save $MINIO_IMAGE_NAME | gzip > "docker-images/${DOCKER_REPO}.minio.tar.gz"
+echo "Save $MINIO_BALANCER_IMAGE_NAME"
+docker save $MINIO_BALANCER_IMAGE_NAME | gzip > "docker-images/${DOCKER_REPO}.minio-balancer.tar.gz"
 echo "Save $CLIENT_IMAGE_NAME"
 docker save $CLIENT_IMAGE_NAME | gzip > "docker-images/${DOCKER_REPO}.client.tar.gz"
 echo "Save $NGINX_IMAGE_NAME"
