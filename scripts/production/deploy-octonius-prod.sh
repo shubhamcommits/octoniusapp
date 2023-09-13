@@ -52,6 +52,8 @@ docker login
           docker pull $LIBREOFFICE_IMAGE_NAME
           docker pull $CLIENT_IMAGE_NAME
           docker pull $NGINX_IMAGE_NAME
+          docker pull $MINIO_BALANCER_IMAGE_NAME
+          docker pull $MINIO_IMAGE_NAME
 
 # Deploy the Stack
 env $(cat .env | grep ^[A-Z] | xargs) docker stack deploy -c deploy-octonius-prod.yml --with-registry-auth octonius
