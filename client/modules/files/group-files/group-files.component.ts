@@ -1074,6 +1074,24 @@ export class GroupFilesComponent implements OnInit {
     this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 
+  async downloadDocument(file: any) {
+    // Start the loading spinner
+    this.utilityService.updateIsLoadingSpinnerSource(true);
+    let fileVersion = file;
+    if (this.isFilesVersionsModuleAvailable) {
+      fileVersion = await this.utilityService.getFileLastVersion(file?._id);
+    }
+
+    if (!!fileVersion) {
+      this.filesService.getMinioFile(fileVersion?._id, fileVersion?.modified_name, this.workspaceId, this.authToken).then(res =>{
+        window.open(res['url'], "_blank");
+      });
+    }
+
+    // Stop the loading spinner
+    this.utilityService.updateIsLoadingSpinnerSource(false);
+  }
+
   /**
    * This function is responsible for uploading the files to the server
    * @param files
