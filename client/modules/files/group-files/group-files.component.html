@@ -169,7 +169,7 @@
 
                       <mat-menu #menu="matMenu">
                           <a mat-menu-item *ngIf="file?.type == 'file'" style="cursor: pointer"
-                              (click)="openDocument(file)">
+                              (click)="downloadDocument(file)">
                             <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">file_download</i>
                             <span i18n="@@groupFiles.download">Download</span>
                           </a>
