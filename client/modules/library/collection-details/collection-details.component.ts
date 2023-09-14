@@ -312,6 +312,19 @@ export class CollectionDetailsComponent implements OnInit {
     this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 
+  async downloadDocument(file: any) {
+    // Start the loading spinner
+    this.utilityService.updateIsLoadingSpinnerSource(true);
+
+    if (!!file) {
+      this.filesService.getMinioFile(file?._id, file?.modified_name, this.workspaceData?._id, this.authToken).then(res =>{
+        window.open(res['url'], "_blank");
+      });
+    }
+
+    // Stop the loading spinner
+    this.utilityService.updateIsLoadingSpinnerSource(false);
+  }
 
   /**
    * Method used to open a selected folder
