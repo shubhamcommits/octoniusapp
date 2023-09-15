@@ -18,7 +18,7 @@
 
                 <app-collection-pages *ngFor="let page of pages"
                     [pageData]="page" [userData]="userData" [workspaceId]="workspaceData?._id" [canEdit]="canEdit"
-                    (subpageDeletedEmitter)="initPages()"></app-collection-pages>
+                    (subpageDeletedEmitter)="initPages()" (subpageCreatedEmitter)="onSubPageCreated()"></app-collection-pages>
 
                 <app-section-separator></app-section-separator>
 

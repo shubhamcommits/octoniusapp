@@ -229,6 +229,10 @@ export class PageDetailsComponent implements OnInit {
       });
   }
 
+	async onSubPageCreated() {
+    this.initPages();
+	}
+
   async goBack() {
     if (this.pageData && this.pageData._collection) {
       this._router.navigate(

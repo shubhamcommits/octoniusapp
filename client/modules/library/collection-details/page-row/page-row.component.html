@@ -33,6 +33,6 @@
 	</div>
 </div>
 
-<div style="padding-left: 20px;" *ngIf="pageData && pageData?._pages && pageData?._pages?.length > 0">
+<div style="padding-left: 20px;" *ngIf="!!pageData && !!pageData?._pages && pageData?._pages?.length > 0">
 	<app-page-row *ngFor="let page of pageData?._pages" [pageData]="page" [userData]="userData" [workspaceId]="workspaceId" (subpageDeletedEmitter)="initSubPages()"></app-page-row>
 </div>

@@ -19,6 +19,7 @@ export class CollectionPagesComponent implements OnInit, OnChanges {
 	@Input() canEdit;
 	
 	// Output collection event emitter
+	@Output() subpageCreatedEmitter = new EventEmitter();
 	@Output() subpageDeletedEmitter = new EventEmitter();
 
   	selectedPage = false;
@@ -69,7 +70,7 @@ export class CollectionPagesComponent implements OnInit, OnChanges {
 					this.pageData._pages = [];
 				}
 
-				this.pageData._pages.push(res['page']);
+				this.subpageCreatedEmitter.emit();
 
 				// Resolve with success
 				resolve(this.utilityService.resolveAsyncPromise($localize`:@@pageRow.pageCreated:Page created!`));
@@ -80,12 +81,12 @@ export class CollectionPagesComponent implements OnInit, OnChanges {
 		}));
 	}
 
-	async deletePage() {
+	async deletePage(pageId: string) {
 		await this.utilityService.getConfirmDialogAlert().then((result) => {
 			if (result.value) {
 			// Remove the file
 			this.utilityService.asyncNotification($localize`:@@pageRow.pleaseWaitDeleting:Please wait, we are deleting...`, new Promise((resolve, reject) => {
-				this.libraryService.deletePage(this.pageData?._id, this.workspaceId).then((res) => {
+				this.libraryService.deletePage(pageId, this.workspaceId).then((res) => {
 					this.subpageDeletedEmitter.emit();
 
 					resolve(this.utilityService.resolveAsyncPromise($localize`:@@pageRow.pageDeleted:Page deleted!`));
@@ -95,6 +96,14 @@ export class CollectionPagesComponent implements OnInit, OnChanges {
 			}));
 			}
 		});
+	}
+
+	async onSubPageCreated(parentPage: any, parentPageId: string) {
+		const index = (this.pageData._pages) ? this.pageData._pages.findIndex(page => parentPageId == page._id) : -1;
+		if (index >= 0) {
+			this.pageData._pages[index] = parentPage;
+			await this.initSubPages();
+		}
 	}
 
 	formateDate(date) {
