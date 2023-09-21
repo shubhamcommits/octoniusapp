@@ -807,6 +807,45 @@ export class LibraryController {
     };
 
     /**
+     * This function fetches the pages tree by collection
+     */
+    async getPagesTreeByCollection(req: Request, res: Response) {
+        try {
+
+            const { collectionId } = req.params;
+
+            // If collectionId is null or not provided then we throw BAD REQUEST 
+            if (!collectionId) {
+                return res.status(400).json({
+                    message: 'Please provide a collectionId!'
+                });
+            }
+
+            // Find the collections based on the groupId
+            let pages = await Page.find({
+                    $and: [
+                        { _collection: collectionId },
+                        { _parent: { $eq: null }}
+                    ]
+                }).lean();
+
+            for (let i = 0; i < pages.length; i++) {
+                const page = pages[i];
+                const childrenPages = await libraryService.getChildrenPages(page?._id);
+                page._pages = childrenPages;
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `Pages found!`,
+                pages: pages
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
      * This function fetches the pages by collection
      */
     async getPagesByParent(req: Request, res: Response) {

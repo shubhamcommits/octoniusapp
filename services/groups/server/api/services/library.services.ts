@@ -491,6 +491,26 @@ export class LibraryService {
     }
   }
 
+  async getChildrenPages(pageId: string) {
+    const pages = await Page.find({
+            _parent: pageId
+        }).lean();
+
+    for (let i = 0; i < pages.length; i++) {
+        const page = pages[i];
+
+        const pagesCount: number = await await Page.find({
+                _parent: page?._id
+            }).countDocuments();
+
+        if (pagesCount > 0) {
+            page._pages = await this.getChildrenPages(page?._id);
+        }
+    }
+
+    return pages;
+  }
+
   private htmlToDelta(htmlString: any) {
     return JSON.stringify(convertHtmlToDelta(htmlString));
   }

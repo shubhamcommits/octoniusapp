@@ -5,26 +5,65 @@ import { MatDialog } from '@angular/material/dialog';
 import { LibraryService } from 'src/shared/services/library-service/library.service';
 import { DateTime } from 'luxon';
 import { ActivatedRoute } from '@angular/router';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+
+/** Flat node with expandable and level information */
+interface PageFlatNode {	
+	_id: string;
+	expandable: boolean;
+	title: string;
+	level: number;
+}
 
 @Component({
   selector: 'app-collection-pages',
   templateUrl: './collection-pages.component.html',
-  styleUrls: ['./collection-pages.component.scss']
+  styleUrls: ['./collection-pages.component.scss'],
+//   imports: [MatTreeModule, MatButtonModule, MatIconModule],
 })
 export class CollectionPagesComponent implements OnInit, OnChanges {
 
-	@Input() pageData;
+	@Input() pages = [];
+	@Input() collectionId;
 	@Input() userData;
 	@Input() workspaceId;
 	@Input() canEdit;
 	
 	// Output collection event emitter
-	@Output() subpageCreatedEmitter = new EventEmitter();
-	@Output() subpageDeletedEmitter = new EventEmitter();
-
-  	selectedPage = false;
+	@Output() subpageUpdatedEmitter = new EventEmitter();
+	// @Output() subpageCreatedEmitter = new EventEmitter();
+	// @Output() subpageDeletedEmitter = new EventEmitter();
+	
+	currentPageId;
 
 	newPageName = $localize`:@@pageRow.newPage:New Page`;
+
+	private _transformer = (page: any, level: number) => {
+		return {
+			_id: page._id,
+			expandable: !!page._pages && page._pages.length > 0,
+			title: page.title,
+			level: level,
+		};
+	};
+
+	treeControl = new FlatTreeControl<PageFlatNode>(
+		node => node.level,
+		node => node.expandable,
+	);
+
+	treeFlattener = new MatTreeFlattener(
+		this._transformer,
+		page => page.level,
+		page => page.expandable,
+		page => page._pages,
+	);
+
+	dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+
+	hasChild = (_: number, node: PageFlatNode) => node.expandable;
+	getLevel = (node: PageFlatNode) => node.level;
 
 	// Public functions
 	public publicFunctions = new PublicFunctions(this.injector);
@@ -45,32 +84,18 @@ export class CollectionPagesComponent implements OnInit, OnChanges {
 	}
 
 	async ngOnChanges() {
-		await this.initSubPages();
+		this.dataSource.data = this.pages;
 
-		this.selectedPage = this.pageData?._id == this.activatedRoute.snapshot.queryParams['page'];
+		this.currentPageId = this.activatedRoute.snapshot.queryParams['page'];
 	}
 
 	ngOnDestroy() {
 	}
 
-	async initSubPages() {
-		if (!this.pageData._pages) {
-			this.pageData._pages = [];
-		}
-
-		await this.libraryService.getPageByParent(this.pageData?._id).then(res => {
-			this.pageData._pages = res['pages'];
-		});
-	}
-
-	async createSubPage(parentPageId: string) {
+	async createSubPage(parentPageId: string, parentLevel: any) {
 		await this.utilityService.asyncNotification($localize`:@@pageRow.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise(async (resolve, reject) => {
-			this.libraryService.createPage((this.pageData?._collection?._id || this.pageData?._collection), parentPageId, this.newPageName).then(res => {
-				if (!this.pageData._pages) {
-					this.pageData._pages = [];
-				}
-
-				this.subpageCreatedEmitter.emit();
+			this.libraryService.createPage(this.collectionId, parentPageId, this.newPageName).then(async res => {
+				this.subpageUpdatedEmitter.emit();
 
 				// Resolve with success
 				resolve(this.utilityService.resolveAsyncPromise($localize`:@@pageRow.pageCreated:Page created!`));
@@ -81,29 +106,21 @@ export class CollectionPagesComponent implements OnInit, OnChanges {
 		}));
 	}
 
-	async deletePage(pageId: string) {
+	async deletePage(page: any) {
 		await this.utilityService.getConfirmDialogAlert().then((result) => {
 			if (result.value) {
-			// Remove the file
-			this.utilityService.asyncNotification($localize`:@@pageRow.pleaseWaitDeleting:Please wait, we are deleting...`, new Promise((resolve, reject) => {
-				this.libraryService.deletePage(pageId, this.workspaceId).then((res) => {
-					this.subpageDeletedEmitter.emit();
+				// Remove the file
+				this.utilityService.asyncNotification($localize`:@@pageRow.pleaseWaitDeleting:Please wait, we are deleting...`, new Promise((resolve, reject) => {
+					this.libraryService.deletePage(page?._id, this.workspaceId).then(async (res) => {
+						this.subpageUpdatedEmitter.emit();
 
-					resolve(this.utilityService.resolveAsyncPromise($localize`:@@pageRow.pageDeleted:Page deleted!`));
-				}).catch((err) => {
-					reject(this.utilityService.rejectAsyncPromise($localize`:@@pageRow.unableToDelete:Unable to delete the page, please try again!`));
-				});
-			}));
+						resolve(this.utilityService.resolveAsyncPromise($localize`:@@pageRow.pageDeleted:Page deleted!`));
+					}).catch((err) => {
+						reject(this.utilityService.rejectAsyncPromise($localize`:@@pageRow.unableToDelete:Unable to delete the page, please try again!`));
+					});
+				}));
 			}
 		});
-	}
-
-	async onSubPageCreated(parentPage: any, parentPageId: string) {
-		const index = (this.pageData._pages) ? this.pageData._pages.findIndex(page => parentPageId == page._id) : -1;
-		if (index >= 0) {
-			this.pageData._pages[index] = parentPage;
-			await this.initSubPages();
-		}
 	}
 
 	formateDate(date) {
@@ -112,9 +129,5 @@ export class CollectionPagesComponent implements OnInit, OnChanges {
 
 	objectExists(object: any) {
 		return this.utilityService.objectExists(object);
-	}
-
-	goToPage() {
-
 	}
 }

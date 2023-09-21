@@ -168,6 +168,14 @@ export class LibraryService {
     return this._http.get(this.baseUrl + `/library/page/${collectionId}/by-collection`).toPromise();
   }
 
+
+  /**
+   * This function is responsible for fetching all pages by collection
+   * @param collectionId
+   */
+   getPagesTreeByCollection(collectionId: string) {
+    return this._http.get(this.baseUrl + `/library/page/${collectionId}/tree-by-collection`).toPromise();
+  }
   /**
    * This function is responsible for fetching all pages by page
    * @param pageId
