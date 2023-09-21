@@ -86,6 +86,8 @@ export class CollectionPagesComponent implements OnInit, OnChanges {
 	async ngOnChanges() {
 		this.dataSource.data = this.pages;
 
+		this.treeControl.expandAll();
+
 		this.currentPageId = this.activatedRoute.snapshot.queryParams['page'];
 	}
 
