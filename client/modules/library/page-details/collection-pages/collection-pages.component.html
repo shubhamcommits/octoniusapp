@@ -6,9 +6,9 @@
 		
 		<a class="pageitem" style="font-family: 'Nunito';"
 			[routerLink]="['/dashboard', 'work', 'groups', 'library', 'collection', 'page']"
-			[queryParams]="{ page: page?._id  }" [matTooltip]="page?.title" [ngClass]="selectedPage ? 'selected-node' : ''">
+			[queryParams]="{ page: page?._id  }" [matTooltip]="page?.title" [ngClass]="(page._id == currentPageId) ? 'selected-node' : ''">
 			{{ page?.title | truncatetext: 40 }}
-	</a>
+		</a>
 
 		<div style="padding-left: 20px;" *ngIf="canEdit">
 			<i class="muted material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
@@ -37,9 +37,9 @@
 		
 		<a class="pageitem" style="font-family: 'Nunito';"
 			[routerLink]="['/dashboard', 'work', 'groups', 'library', 'collection', 'page']"
-			[queryParams]="{ page: page?._id  }" [matTooltip]="page?.title" [ngClass]="selectedPage ? 'selected-node' : ''">
+			[queryParams]="{ page: page?._id  }" [matTooltip]="page?.title" [ngClass]="(page._id == currentPageId) ? 'selected-node' : ''">
 			{{ page?.title | truncatetext: 40 }}
-	</a>
+		</a>
 		
 		<div style="padding-left: 20px;" *ngIf="canEdit">
 			<i class="muted material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
