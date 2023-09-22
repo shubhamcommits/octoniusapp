@@ -8,15 +8,33 @@
 /*
  * This padding sets alignment of the nested nodes.
  */
-.pages-tree .mat-nested-tree-node div[role=group] {
-    padding-left: 20px;
-}
+// .pages-tree .mat-nested-tree-node div[role=group] {
+//     padding-left: 20px;
+// }
 
 /*
  * Padding for leaf nodes.
  * Leaf nodes need to have padding so as to align with other non-leaf nodes
  * under the same parent.
  */
-.pages-tree div[role=group]>.mat-tree-node {
-    padding-left: 20px;
+// .pages-tree div[role=group]>.mat-tree-node {
+//     padding-left: 20px;
+// }
+
+.mat-tree{
+    background-color: transparent;
 }
+
+.pageitem{
+    text-decoration: none;
+    color: #242d3a;
+    &:hover{
+        color:#005fd5;
+    }
+}
+
+.selected-node{
+    color:#005fd5;
+    font-weight: bold;
+}
+
