@@ -2,33 +2,38 @@
     <div *ngIf="pageData" class="page">
         <div class="page-navbar" *ngIf="!canEditPage">
             <div class="col">
+               <div style="display: flex; justify-content: space-between; align-items: center;">
                 <h4>
-                    <i class="material-icons-outlined">library_books</i>
-                    <span i18n="@@pageDetails.collectionPages">Collection Pages</span>
+                    <i class="material-icons-outlined mr-1">article</i>
+                    <span i18n="@@pageDetails.collectionPages">Pages</span>
+                    
                 </h4>
-
                 <div *ngIf="canEdit">
                     <!-- Create new Page starts -->
-                    <button class="btn btn-light mt-2 mb-2" type="button" (click)="createPage()">
+                    <button class="btn btn-light mb-2" type="button" (click)="createPage()">
                         <i class="material-icons-outlined">add</i>
-                        <span i18n="@@pageDetails.newPage">New Page</span>
+                      
                     </button>
                     <!-- Create new Page ends -->
                 </div>
 
-                <app-collection-pages *ngFor="let page of pages"
-                    [pageData]="page" [userData]="userData" [workspaceId]="workspaceData?._id" [canEdit]="canEdit"
-                    (subpageDeletedEmitter)="initPages()"></app-collection-pages>
+               </div>
+
+                
+
+                <app-collection-pages [pages]="pages" [collectionId]="collectionData?._id" [userData]="userData"
+                    [workspaceId]="workspaceData?._id" [canEdit]="canEdit"
+                    (subpageUpdatedEmitter)="initPages()" (subpageUpdatedEmitter)="initPages()"></app-collection-pages>
 
                 <app-section-separator></app-section-separator>
 
                 <h4 class="mb-3">
-                    <i class="material-icons-outlined">info</i>
+                    <i class="material-icons-outlined mr-1">info</i>
                     <span i18n="@@pageDetails.pageInformation">Page Information</span>
                 </h4>
 
                 <div class="mb-2">
-                    <i class="material-icons-outlined">attach_file</i>
+                    <i class="material-icons-outlined mr-1">attach_file</i>
                     <span i18n="@@pageDetails.attachments">Attachments</span>
                 </div>
 
@@ -56,8 +61,8 @@
                 </div>
 
                 <div class="mb-2 mt-2">
-                    <i class="material-icons-outlined">menu_book</i>
-                    <span i18n="@@pageDetails.authors"> Authors</span>
+                    <i class="material-icons-outlined mr-1">edit</i>
+                    <span i18n="@@pageDetails.authors">Authors</span>
                 </div>
 
                 <div *ngFor="let author of pageData?._updated_by">

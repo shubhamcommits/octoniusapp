@@ -678,8 +678,16 @@ export class LibraryController {
                 .populate({ path: '_content_mentions', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_updated_by', select: 'first_name last_name profile_pic role email' })
-                .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
-                .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: '_files', select: 'original_name modified_name type' })
+                .populate({ path: '_liked_by', select: 'first_name last_name profile_pic role email' })
+                .lean();
+
+            const parentPage = await Page.findOne({
+                    _id: parentPageId
+                })
+                .populate({ path: '_content_mentions', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: '_created_by', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: '_updated_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
                 .populate({ path: '_liked_by', select: 'first_name last_name profile_pic role email' })
                 .lean();
@@ -687,7 +695,8 @@ export class LibraryController {
             // Send the status 200 response
             return res.status(200).json({
                 message: 'Page Created Successfully!',
-                page: pageData
+                newPage: pageData,
+                page: parentPage
             });
         } catch (err) {
             return sendError(res, err);
@@ -743,8 +752,6 @@ export class LibraryController {
                 .populate({ path: '_content_mentions', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_updated_by', select: 'first_name last_name profile_pic role email' })
-                .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
-                .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
                 .populate({ path: '_liked_by', select: 'first_name last_name profile_pic role email' })
                 .lean();
@@ -784,8 +791,6 @@ export class LibraryController {
                 .populate({ path: '_content_mentions', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_updated_by', select: 'first_name last_name profile_pic role email' })
-                .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
-                .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
                 .populate({ path: '_liked_by', select: 'first_name last_name profile_pic role email' })
                 .lean();
@@ -799,6 +804,45 @@ export class LibraryController {
             return sendError(res, err);
         }
 
+    };
+
+    /**
+     * This function fetches the pages tree by collection
+     */
+    async getPagesTreeByCollection(req: Request, res: Response) {
+        try {
+
+            const { collectionId } = req.params;
+
+            // If collectionId is null or not provided then we throw BAD REQUEST 
+            if (!collectionId) {
+                return res.status(400).json({
+                    message: 'Please provide a collectionId!'
+                });
+            }
+
+            // Find the collections based on the groupId
+            let pages = await Page.find({
+                    $and: [
+                        { _collection: collectionId },
+                        { _parent: { $eq: null }}
+                    ]
+                }).lean();
+
+            for (let i = 0; i < pages.length; i++) {
+                const page = pages[i];
+                const childrenPages = await libraryService.getChildrenPages(page?._id);
+                page._pages = childrenPages;
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `Pages found!`,
+                pages: pages
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
     };
 
     /**
@@ -822,8 +866,7 @@ export class LibraryController {
                 .populate({ path: '_content_mentions', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_updated_by', select: 'first_name last_name profile_pic role email' })
-                .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
-                .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: '_parent', select: 'title _parent _created_by created_date updated_date' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
                 .populate({ path: '_liked_by', select: 'first_name last_name profile_pic role email' })
                 .lean();
@@ -870,8 +913,6 @@ export class LibraryController {
                 .populate({ path: '_content_mentions', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_updated_by', select: 'first_name last_name profile_pic role email' })
-                .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
-                .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
                 .lean();
 
@@ -930,8 +971,6 @@ export class LibraryController {
                 .populate({ path: '_content_mentions', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_updated_by', select: 'first_name last_name profile_pic role email' })
-                .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
-                .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
                 .populate({ path: '_liked_by', select: 'first_name last_name profile_pic role email' })
                 .lean();
@@ -979,8 +1018,6 @@ export class LibraryController {
                 .populate({ path: '_content_mentions', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_updated_by', select: 'first_name last_name profile_pic role email' })
-                .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
-                .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
                 .populate({ path: '_liked_by', select: 'first_name last_name profile_pic role email' })
                 .lean();
@@ -1054,8 +1091,6 @@ export class LibraryController {
                 .populate({ path: '_content_mentions', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_updated_by', select: 'first_name last_name profile_pic role email' })
-                .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
-                .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
                 .lean();
 
@@ -1099,8 +1134,6 @@ export class LibraryController {
                 .populate({ path: '_content_mentions', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_updated_by', select: 'first_name last_name profile_pic role email' })
-                .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
-                .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
                 .populate({ path: '_files', select: 'original_name modified_name type' })
                 .lean();
 

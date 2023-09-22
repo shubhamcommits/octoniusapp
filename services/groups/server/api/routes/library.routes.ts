@@ -17,8 +17,11 @@ routes.get('/collection/:collectionId/group-by-collection', library.getGroupByCo
 // GET - Get group by collection
 routes.get('/collection/:collectionId/workspace-by-collection', library.getWorkspaceByCollection);
 
-// GET - Get all  collections by groups
+// GET - Get all pages by collection
 routes.get('/page/:collectionId/by-collection', library.getPagesByCollection);
+
+// GET - Get all pages tree by collection
+routes.get('/page/:collectionId/tree-by-collection', library.getPagesTreeByCollection);
 
 // GET - Get all  collections by groups
 routes.get('/page/:pageId', library.getPage);

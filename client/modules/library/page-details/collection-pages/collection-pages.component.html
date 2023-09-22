@@ -1,46 +1,60 @@
-<mat-accordion *ngIf="pageData && pageData?._pages && pageData?._pages?.length > 0">
-	<mat-expansion-panel [expanded]="true">
-		<mat-expansion-panel-header>
-			<mat-panel-title>
-				<button class="btn btn-light" style="font-family: 'Nunito';" 
-					[routerLink]="['/dashboard', 'work', 'groups', 'library', 'collection', 'page']"
-					[queryParams]="{ page: pageData?._id  }" [matTooltip]="pageData?.title">
-					{{ pageData?.title | truncatetext: 20 }}
-			</button>
-			</mat-panel-title>
-		</mat-expansion-panel-header>
-
-		<div style="padding-left: 20px;">
-			<app-collection-pages *ngFor="let page of pageData?._pages" [pageData]="page" [userData]="userData" [workspaceId]="workspaceId"
-				(subpageDeletedEmitter)="initSubPages()"></app-collection-pages>
-		</div>
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+	<!-- This is the tree node template for leaf nodes -->
+	<mat-tree-node *matTreeNodeDef="let page" matTreeNodePadding>
+		<!-- use a disabled button to provide padding for tree leaf -->
+		<button mat-icon-button disabled><mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="horizontal_rule"></mat-icon></button>
 		
-		<div style="padding-left: 20px;" *ngIf="selectedPage && canEdit">
-			<!-- Create new Collection starts -->
-			<button class="btn btn-light mb-3 mt-3" type="button" (click)="createSubPage(pageData?._id)">
-				<i class="material-icons">add</i>
-				<span i18n="@@collectionPages.newChild" style="font-family: 'Nunito';">New child page</span>
-			</button>
-			<!-- Create new Collection ends -->
-		</div>
-	</mat-expansion-panel>
-</mat-accordion>
+		<a class="pageitem" style="font-family: 'Nunito';"
+			[routerLink]="['/dashboard', 'work', 'groups', 'library', 'collection', 'page']"
+			[queryParams]="{ page: page?._id  }" [matTooltip]="page?.title" [ngClass]="(page._id == currentPageId) ? 'selected-node' : ''">
+			{{ page?.title | truncatetext: 40 }}
+		</a>
 
-
-
-<div *ngIf="pageData && (!pageData?._pages || pageData?._pages?.length == 0)" >
-	<button class="btn btn-light" style="font-family: 'Nunito';"
-		[routerLink]="['/dashboard', 'work', 'groups', 'library', 'collection', 'page']"
-		[queryParams]="{ page: pageData?._id  }" [matTooltip]="pageData?.title" (click)="goToPage()">
-		{{ pageData?.title | truncatetext: 20  }}
-	</button>
+		<div style="padding-left: 20px;" *ngIf="canEdit">
+			<i class="muted material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
 		
-	<div  *ngIf="selectedPage && canEdit">
-		<!-- Create new Collection starts -->
-		<button class="btn btn-light mb-3 mt-3" type="button" (click)="createSubPage(pageData?._id)">
-			<i class="material-icons">add</i>
-			<span i18n="@@collectionPages.newChild" style="font-family: 'Nunito';">New child page</span>
+			<mat-menu #menu="matMenu">
+				<a class="mat-menu-item" type="button" (click)="createSubPage(page?._id, page?.level)">
+					<i class="material-icons">add</i>
+					<span i18n="@@collectionPages.newChild" style="font-family: 'Nunito';">New child page</span>
+				</a>
+		
+				<a class="mat-menu-item" type="button" (click)="deletePage(page)">
+					<i class="material-icons">delete</i>
+					<span i18n="@@collectionPages.newChild" style="font-family: 'Nunito';">Delete Page</span>
+				</a>
+			</mat-menu>
+		</div>
+	</mat-tree-node>
+
+	<!-- This is the tree node template for expandable nodes -->
+	<mat-tree-node *matTreeNodeDef="let page;when: hasChild" matTreeNodePadding>
+		<button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + page.title">
+			<mat-icon class="mat-icon-rtl-mirror">
+				{{ treeControl.isExpanded(page) ? 'expand_more' : 'chevron_right' }}
+			</mat-icon>
 		</button>
-		<!-- Create new Collection ends -->
-	</div>
-</div>
+		
+		<a class="pageitem" style="font-family: 'Nunito';"
+			[routerLink]="['/dashboard', 'work', 'groups', 'library', 'collection', 'page']"
+			[queryParams]="{ page: page?._id  }" [matTooltip]="page?.title" [ngClass]="(page._id == currentPageId) ? 'selected-node' : ''">
+			{{ page?.title | truncatetext: 40 }}
+		</a>
+		
+		<div style="padding-left: 20px;" *ngIf="canEdit">
+			<i class="muted material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
+		
+			<mat-menu #menu="matMenu">
+				<a class="mat-menu-item" type="button" (click)="createSubPage(page?._id, page?.level)">
+					<i class="material-icons">add</i>
+					<span i18n="@@collectionPages.newChild" style="font-family: 'Nunito';">New child page</span>
+				</a>
+		
+				<a class="mat-menu-item" type="button" (click)="deletePage(page)">
+					<i class="material-icons">delete</i>
+					<span i18n="@@collectionPages.newChild" style="font-family: 'Nunito';">Delete Page</span>
+				</a>
+			</mat-menu>
+		</div>
+	</mat-tree-node>
+</mat-tree>

@@ -40,7 +40,7 @@ export class PageRowComponent implements OnInit, OnChanges {
 	}
 
 	async ngOnChanges() {
-		this.initSubPages();
+		await this.initSubPages();
 	}
 
 	ngOnDestroy() {

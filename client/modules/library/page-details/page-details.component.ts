@@ -164,7 +164,7 @@ export class PageDetailsComponent implements OnInit {
   }
 
   async initPages() {
-    await this.libraryService.getPageByCollection((this.pageData?._collection?._id || this.pageData?._collection)).then(res => {
+    await this.libraryService.getPagesTreeByCollection((this.pageData?._collection?._id || this.pageData?._collection)).then(res => {
 			this.pages = res['pages'];
 		});
   }
