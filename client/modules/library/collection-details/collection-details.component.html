@@ -98,7 +98,6 @@
                                 <span i18n="@@collectionDetails.delete">Delete</span>
                             </a>
                         </mat-menu>
-                
                     </div>
                 </div>
 
@@ -111,8 +110,7 @@
                             {{file?.original_name}}
                         </div>
                     </div>
-                    <div class="options" *ngIf="canEdit">
-                        
+                    <div class="options">
                         <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
 
                         <mat-menu #menu="matMenu">
@@ -121,7 +119,7 @@
                                 <span i18n="@@collectionDetails.download">Download</span>
                             </a>
                             
-                            <a mat-menu-item [matMenuTriggerFor]="moveFolderMenu">
+                            <a mat-menu-item [matMenuTriggerFor]="moveFolderMenu" *ngIf="canEdit">
                                 <i class="material-icons">arrow_forward</i>
                                 <span i18n="@@groupFiles.moveToFolder">Move to Folder</span>
                             </a>
@@ -132,7 +130,7 @@
                                 </ng-container>
                             </mat-menu>
                         
-                            <a mat-menu-item (click)="deleteFile(file?._id)">
+                            <a mat-menu-item (click)="deleteFile(file?._id)" *ngIf="canEdit">
                                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
                                 <span i18n="@@collectionDetails.delete">Delete</span>
                             </a>
