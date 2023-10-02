@@ -28,15 +28,26 @@ export class AuthsController {
 
             // Find the user with the given details
             const account = await Account.findOne({
-                email: email
-            });
+                    email: email
+                }).populate('_workspaces', '_id workspace_name workspace_avatar integrations').lean();
 
             // If user is already a member, user must sign in
-            if (account) {
-                reject({
-                    message: 'You are already a member of Octonius, please log in!',
-                    error: 'Account already exist!'
-                })
+            if (!!account) {
+
+                const user = await User.find({
+                        email: email
+                    }).lean();
+
+                if (!!user) {
+                    reject({
+                        message: 'You are already a member of Octonius, please log in!',
+                        error: 'Account already exist!'
+                    });
+                } else {
+                    resolve({
+                        account: account
+                    });
+                }
             }
 
             // Resolve the promise
@@ -91,21 +102,29 @@ export class AuthsController {
         const { userData, ldap } = req.body;
 
         await new AuthsController().checkUserAvailability(userData.email)
-            .then(async () => {
+            .then(async (resCheck) => {
 
-                let account = await authsService.signUp(userData);
-                
-                // Error creating the new account
-                if (!account) {
-                    return sendError(res, new Error('Unable to create the account, some unexpected error occurred!'), 'Unable to create the account, some unexpected error occurred!', 500);
+                if (!!resCheck && !!resCheck['account']) {
+                    // Signup user and return the token
+                    return res.status(200).json({
+                        message: `Welcome back to Octonius!`,
+                        accountAlreadyExists: true,
+                        account: resCheck['account']
+                    });
+                } else {
+                    let account = await authsService.signUp(userData);
+                    
+                    // Error creating the new account
+                    if (!account) {
+                        return sendError(res, new Error('Unable to create the account, some unexpected error occurred!'), 'Unable to create the account, some unexpected error occurred!', 500);
+                    }
+
+                    // Signup user and return the token
+                    return res.status(200).json({
+                        message: `Welcome to Octonius!`,
+                        account: account
+                    });
                 }
-
-                // Signup user and return the token
-                return res.status(200).json({
-                    message: `Welcome to Octonius!`,
-                    // token: token,
-                    account: account
-                });
             })
             .catch((err) => {
                 return sendError(res, err, 'User is already a member of Octonius!', 500);
@@ -131,14 +150,14 @@ export class AuthsController {
                     const accessCode = workspace.access_code;
                     // Check if the workspace exist with particular (workspace_name and allowed_domains) or (workspace_name and invited_users)
                     workspace = await Workspace.findOne({
-                        $or: [{
-                                workspace_name: workspace.workspace_name,
-                                allowed_domains: userEmailDomain
-                            }, {
-                                workspace_name: workspace.workspace_name,
-                                "invited_users.email": accountData.email
-                            }]
-                    });
+                            $or: [{
+                                    workspace_name: workspace.workspace_name,
+                                    allowed_domains: userEmailDomain
+                                }, {
+                                    workspace_name: workspace.workspace_name,
+                                    "invited_users.email": accountData.email
+                                }]
+                        });
 
                     // Workspace not found!
                     if (!workspace) {
@@ -149,14 +168,14 @@ export class AuthsController {
 
                     // Add workspace to user account
                     const accountUpdate: any = await Account.findByIdAndUpdate({
-                        _id: accountData._id
-                    }, {
-                        $push: {
-                            _workspaces: workspace
-                        }
-                    }, {
-                        new: true
-                    });
+                            _id: accountData._id
+                        }, {
+                            $push: {
+                                _workspaces: workspace
+                            }
+                        }, {
+                            new: true
+                        });
 
                     // Error updating the account
                     if (!accountUpdate) {
@@ -170,7 +189,7 @@ export class AuthsController {
                             active: false
                         });
 
-                    if (user) {
+                    if (!!user) {
                         // As we found that user was disabled, then enable them accordingly.
                         user = await User.findOneAndUpdate(
                                 { email: accountData.email },
@@ -178,7 +197,6 @@ export class AuthsController {
                                 { new: true }
                             );
                     } else {
-
                         let groups = workspace.invited_users
                             .filter(invite => (invite.email == accountData.email && invite.type == 'group'))
                             .map(invite => invite._group);
