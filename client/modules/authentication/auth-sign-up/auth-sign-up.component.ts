@@ -141,7 +141,6 @@ export class AuthSignUpComponent implements OnInit, OnDestroy {
               this.storageService.clear();
               reject(this.utilityService.rejectAsyncPromise($localize`:@@authSignUp.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`));
             });
-
         }, (err) => {
           console.error('Error occurred while signing in the user', err);
           reject(this.utilityService.rejectAsyncPromise(err.error.message));
