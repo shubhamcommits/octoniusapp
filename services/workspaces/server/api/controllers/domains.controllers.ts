@@ -198,7 +198,7 @@ export class DomainsControllers {
                         userData: userMgmt
                     });
                 }
-            })
+            });
 
             // Remove users ids from workspace's members & invited users
             const workspaceUpdated: any = await Workspace.findOneAndUpdate({

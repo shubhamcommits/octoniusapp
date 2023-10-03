@@ -1270,51 +1270,51 @@ export class UsersControllers {
                 }
             }
 
-            const usersCount: number = await User.find({ $and: [
-                { active: true },
-                { _workspace: workspaceId }
-            ] }).countDocuments();
+            // const usersCount: number = await User.find({ $and: [
+            //     { active: true },
+            //     { _workspace: workspaceId }
+            // ] }).countDocuments();
 
-            // Send new workspace to the mgmt portal
-            // Count all the groups present inside the workspace
-            const groupsCount: number = await Group.find({ $and: [
-                { group_name: { $ne: 'personal' } },
-                { _workspace: workspaceId }
-            ]}).countDocuments();
+            // // Send new workspace to the mgmt portal
+            // // Count all the groups present inside the workspace
+            // const groupsCount: number = await Group.find({ $and: [
+            //     { group_name: { $ne: 'personal' } },
+            //     { _workspace: workspaceId }
+            // ]}).countDocuments();
 
-            // Count all the users present inside the workspace
-            const guestsCount: number = await User.find({ $and: [
-                { active: true },
-                { _workspace: workspaceId },
-                { role: 'guest'}
-            ] }).countDocuments();
+            // // Count all the users present inside the workspace
+            // const guestsCount: number = await User.find({ $and: [
+            //     { active: true },
+            //     { _workspace: workspaceId },
+            //     { role: 'guest'}
+            // ] }).countDocuments();
 
-            let workspaceMgmt = {
-                _id: workspaceId,
-                company_name: workspaceUpdated.company_name,
-                workspace_name: workspaceUpdated.workspace_name,
-                owner_email: workspaceUpdated.owner_email,
-                owner_first_name: workspaceUpdated.owner_first_name,
-                owner_last_name: workspaceUpdated.owner_last_name,
-                _owner_remote_id: workspaceUpdated._owner,
-                environment: process.env.DOMAIN,
-                num_members: usersCount,
-                num_invited_users: guestsCount,
-                num_groups: groupsCount,
-                created_date: workspaceUpdated.created_date,
-                access_code: workspaceUpdated.access_code,
-                management_private_api_key: workspaceUpdated.management_private_api_key
-            }
+            // let workspaceMgmt = {
+            //     _id: workspaceId,
+            //     company_name: workspaceUpdated.company_name,
+            //     workspace_name: workspaceUpdated.workspace_name,
+            //     owner_email: workspaceUpdated.owner_email,
+            //     owner_first_name: workspaceUpdated.owner_first_name,
+            //     owner_last_name: workspaceUpdated.owner_last_name,
+            //     _owner_remote_id: workspaceUpdated._owner,
+            //     environment: process.env.DOMAIN,
+            //     num_members: usersCount,
+            //     num_invited_users: guestsCount,
+            //     num_groups: groupsCount,
+            //     created_date: workspaceUpdated.created_date,
+            //     access_code: workspaceUpdated.access_code,
+            //     management_private_api_key: workspaceUpdated.management_private_api_key
+            // }
 
-            axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}/update`, {
-                API_KEY: workspaceUpdated.management_private_api_key,
-                workspaceData: workspaceMgmt
-            });
+            // axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}/update`, {
+            //     API_KEY: workspaceUpdated.management_private_api_key,
+            //     workspaceData: workspaceMgmt
+            // });
 
             axios.delete(`${process.env.MANAGEMENT_URL}/api/user/${userId}`, {
                 data: {
                     API_KEY: workspaceUpdated.management_private_api_key,
-                    workspaceId: workspaceId,
+                    // workspaceData: workspaceMgmt
                 }
             });
 

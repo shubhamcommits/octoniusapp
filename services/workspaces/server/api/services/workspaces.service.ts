@@ -46,57 +46,56 @@ export class WorkspaceService {
     async remove(workspaceId: string, callMgmtPortal: boolean) {
         try {
 
-        // Remove the workspace from user´s account
-        let users = await User.find({_workspace: workspaceId}).select('_account').lean();
-        users.forEach(async user => {
-            // Count the number of workspces for the account
-            let accountUpdate = await Account.findById(user._account);
-            const numWorkspaces = accountUpdate._workspaces.length;
+            // Remove the workspace from user´s account
+            let users = await User.find({_workspace: workspaceId}).select('_account').lean();
+            users.forEach(async user => {
+                // Count the number of workspces for the account
+                let accountUpdate = await Account.findById(user._account);
+                const numWorkspaces = accountUpdate._workspaces.length;
 
-            if (numWorkspaces < 2) {
-                // If account only has one workspace, the account is removed
-                accountUpdate = await Account.findByIdAndDelete(user._account);
-            } else {
-                // If account has more than one workspaces, the workspace is removed from the account
-                accountUpdate = await Account.findByIdAndUpdate({
-                        _id: user._account
-                    }, {
-                        $pull: {
-                            _workspaces: workspaceId
-                        }
-                    });
-            }
-        });
-
-        // Delete the users related
-        await User.deleteMany({_workspace: workspaceId});
-
-        // Delete the groups
-        const groups = await Group.find({ _workspace: workspaceId });
-        groups.forEach(async group => {
-            await commonService.removeGroup(group._id, workspaceId);
-        });
-
-        // Delete the lounges related
-        await Lounge.deleteMany({_workspace: workspaceId});
-
-        // Delete stories
-        await Story.deleteMany({_workspace: workspaceId});
-
-        // Delete the workspace
-        const workspace = await Workspace.findByIdAndDelete(workspaceId);
-
-        if (callMgmtPortal) {
-            // Remove the workspace in the mgmt portal
-            axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}`, {
-                data: {
-                    API_KEY: workspace.management_private_api_key
+                if (numWorkspaces < 2) {
+                    // If account only has one workspace, the account is removed
+                    accountUpdate = await Account.findByIdAndDelete(user._account);
+                } else {
+                    // If account has more than one workspaces, the workspace is removed from the account
+                    accountUpdate = await Account.findByIdAndUpdate({
+                            _id: user._account
+                        }, {
+                            $pull: {
+                                _workspaces: workspaceId
+                            }
+                        });
                 }
             });
-        }
 
+            // Delete the users related
+            await User.deleteMany({_workspace: workspaceId});
+
+            // Delete the groups
+            const groups = await Group.find({ _workspace: workspaceId });
+            groups.forEach(async group => {
+                await commonService.removeGroup(group._id, workspaceId);
+            });
+
+            // Delete the lounges related
+            await Lounge.deleteMany({_workspace: workspaceId});
+
+            // Delete stories
+            await Story.deleteMany({_workspace: workspaceId});
+
+            // Delete the workspace
+            const workspace = await Workspace.findByIdAndDelete(workspaceId);
+
+            if (callMgmtPortal) {
+                // Remove the workspace in the mgmt portal
+                axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}`, {
+                    data: {
+                        API_KEY: workspace.management_private_api_key
+                    }
+                });
+            }
         } catch (err) {
-        throw (err);
+            throw (err);
         }
     };
 }
