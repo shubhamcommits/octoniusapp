@@ -35,17 +35,16 @@ export class GroupMembersComponent implements OnInit {
   private publicFunctions = new PublicFunctions(this.injector);
 
   async ngOnInit() {
-
     this.subSink.add(this.utilityService.currentGroupData.subscribe((res) => {
       if (JSON.stringify(res) != JSON.stringify({})) {
 
         // Assign the GroupData
         this.groupData = res;
 
-        this.members = this.groupData._members.concat(this.groupData._admins);
-        this.members = this.members.filter((member, index) => {
-          return (this.members.findIndex(m => m._id == member._id) == index)
-        });
+        // this.members = this.groupData._members.concat(this.groupData._admins);
+        // this.members = this.members.filter((member, index) => {
+        //   return (this.members.findIndex(m => m._id == member._id) == index)
+        // });
       }
     }))
 

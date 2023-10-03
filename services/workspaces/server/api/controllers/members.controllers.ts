@@ -12,22 +12,53 @@ export class MembersControllers {
      * @param groupId 
      */
     async fetchUsers(workspaceId: any, query: any, groupId?: any) {
-        return await User.find({
-            $and: [
-                {
-                    $or: [
-                        { full_name: { $regex: new RegExp(query, 'i') } },
-                        { email: { $regex: new RegExp(query, 'i') } }
+        let mongoQuery = {};
+        if (!!groupId && groupId != 'undefined') {
+            if (!!query && query != 'undefined') {
+                mongoQuery = {
+                        $and: [
+                            {
+                                $or: [
+                                    { full_name: { $regex: new RegExp(query, 'i') } },
+                                    { email: { $regex: new RegExp(query, 'i') } }
+                                ]
+                            },
+                            { _workspace: workspaceId },
+                            { _groups: { $nin: groupId } }
+                        ]
+                    };
+            } else {
+                mongoQuery = {
+                    $and: [
+                        { _workspace: workspaceId },
+                        { _groups: { $nin: groupId } }
                     ]
-                },
-                { _workspace: workspaceId },
-                { _groups: { $nin: groupId } }
-            ]
-        })
+                };
+            }
+            
+        } else {
+            if (!!query && query != 'undefined') {
+                mongoQuery = {
+                        $and: [
+                            {
+                                $or: [
+                                    { full_name: { $regex: new RegExp(query, 'i') } },
+                                    { email: { $regex: new RegExp(query, 'i') } }
+                                ]
+                            },
+                            { _workspace: workspaceId }
+                        ]
+                    };
+            } else {
+                mongoQuery = { _workspace: workspaceId };
+            }
+        }
+
+        return await User.find(mongoQuery)
             .sort('_id')
             //.limit(10)
             .select('first_name last_name email role profile_pic active integrations')
-            .lean() || []
+            .lean() || [];
     }
 
     /**
@@ -79,9 +110,7 @@ export class MembersControllers {
         // Fetch the variables from request
         let workspaceId: any = req.query.workspaceId
         let query: any = req.query.query
-
         try {
-
             // If either workspaceId is null or not provided then we throw BAD REQUEST 
             if (!workspaceId) {
                 return res.status(400).json({
@@ -91,7 +120,7 @@ export class MembersControllers {
 
             // Find the users based on the regex expression matched with either full_name or email property present in the current workspace
             const users = await new MembersControllers().fetchUsers(workspaceId, query)
-
+console.log(users);
             // Send the status 200 response
             return res.status(200).json({
                 message: `The First ${users.length} workspace members found!`,
