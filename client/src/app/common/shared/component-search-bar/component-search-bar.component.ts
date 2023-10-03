@@ -26,22 +26,25 @@ export class ComponentSearchBarComponent implements OnInit, OnDestroy {
   @Input('type') type: string;
 
   // Incase the type is 'group'
-  @Input('groupId') groupId?: string;
-
-  // Group Data Object
-  @Input('groupData') groupData?: any = {};
+  // @Input('groupId') groupId?: string;
 
   // User Data Object
   @Input('userData') userData: any = {};
 
   // Incase the type is 'workspace'
-  @Input('workspaceId') workspaceId?: string;
+  // @Input('workspaceId') workspaceId?: string;
+
+  // Group Data Object
+  // @Input('groupData') groupData?: any = {};
+  groupData?: any = {};
 
   // Workspace Data Object
-  @Input('workspaceData') workspaceData?: any = {};
+  // @Input('workspaceData') workspaceData?: any = {};
+  workspaceData?: any = {};
 
   // Members array
-  @Input('members') members: any = [];
+  // @Input('members') members: any = [];
+  members: any = [];
 
   panelOpenState:any=false;
 
@@ -80,8 +83,29 @@ export class ComponentSearchBarComponent implements OnInit, OnDestroy {
       this.userData = await this.publicFunctions.getCurrentUser();
     }
 
-    // Calculate the lastUserId
-    this.lastUserId = this.members[this.members.length - 1]['_id'];
+    if (!this.utilityService.objectExists(this.workspaceData)) {
+      this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    }
+    
+    if (!this.utilityService.objectExists(this.groupData) && this.type == 'group') {
+      this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+    }
+  
+    if (this.type == 'workspace') {
+      // Initialize the members
+      this.members = await this.publicFunctions.getWorkspaceMembers();
+    } else if (this.type == 'group') {
+        this.members = this.groupData._members.concat(this.groupData._admins);
+        this.members = this.members.filter((member, index) => {
+          return (this.members.findIndex(m => m._id == member._id) == index)
+        });
+    }
+
+    if (!!this.members && this.members[this.members.length - 1]) {
+      // Calculate the lastUserId
+      this.lastUserId = this.members[this.members.length - 1]['_id'];
+    }
+
     await this.separateDisabled(this.members);
   }
 
@@ -140,12 +164,12 @@ export class ComponentSearchBarComponent implements OnInit, OnDestroy {
       } else {
         // Fetch the results from the helper function
         if (this.type === 'workspace') {
-          results = await this.publicFunctions.searchWorkspaceMembers(this.workspaceId, this.query) || []
+          results = await this.publicFunctions.searchWorkspaceMembers(this.workspaceData?._id, this.query) || []
         }
 
         // Fetch the results from the helper function
         if (this.type === 'group' || this.type === 'bar') {
-          results = await this.publicFunctions.searchGroupMembers(this.groupId, this.query) || []
+          results = await this.publicFunctions.searchGroupMembers(this.groupData?._id, this.query) || []
         }
 
         // Update the members array
@@ -533,7 +557,7 @@ export class ComponentSearchBarComponent implements OnInit, OnDestroy {
       }
 
       if (this.type === 'group') {
-        nextUsers = await this.publicFunctions.getNextGroupMembers(this.groupId, this.lastUserId, this.query)
+        nextUsers = await this.publicFunctions.getNextGroupMembers(this.groupData?._id, this.lastUserId, this.query)
       }
 
       if (nextUsers.length > 0) {

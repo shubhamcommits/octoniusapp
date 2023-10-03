@@ -66,7 +66,7 @@
                         <li class="dropdown-divider"></li>
                         <li class="dropdown-item">
                             <button type="button" class="btn btn-danger btn-sm"
-                            (click)="disableUserInWorkplace(member._id, workspaceId)" i18n="@@componentSearchBar.deactivateUser">Deactivate user</button>
+                            (click)="disableUserInWorkplace(member._id, workspaceData?._id)" i18n="@@componentSearchBar.deactivateUser">Deactivate user</button>
                         </li>
                   </ul>
                   <!-- Menu Drawer Ends -->
@@ -94,13 +94,13 @@
                       <li class="dropdown-divider" *ngIf="isGroupManager(userData._id)"></li>
                       -->
                       <li class="dropdown-item" *ngIf="!isGroupManager(member._id)"
-                          (click)="changeGroupRole(member, 'manager', groupId)" i18n="@@componentSearchBar.changeToGroupManager">Change to Group Manager</li>
+                          (click)="changeGroupRole(member, 'manager', groupData?._id)" i18n="@@componentSearchBar.changeToGroupManager">Change to Group Manager</li>
                       <li class="dropdown-item" *ngIf="isGroupManager(member._id)"
-                          (click)="changeGroupRole(member, 'member', groupId)" i18n="@@componentSearchBar.changeToMember">Change to Member</li>
+                          (click)="changeGroupRole(member, 'member', groupData?._id)" i18n="@@componentSearchBar.changeToMember">Change to Member</li>
                       <li class="dropdown-divider"></li>
                       <li class="dropdown-item">
                         <button type="button" class="btn btn-danger btn-sm"
-                          (click)="removeUserFromGroup(groupId, member._id)" i18n="@@componentSearchBar.removeMember">Remove Member</button>
+                          (click)="removeUserFromGroup(groupData?._id, member._id)" i18n="@@componentSearchBar.removeMember">Remove Member</button>
                       </li>
                   </ul>
                   <!-- Menu Drawer Ends -->
@@ -109,7 +109,7 @@
               <div class="dropdown"
                   *ngIf="userData?.role !== 'owner' && !isGroupManager(userData?._id) && userData?._id == member?._id && type == 'group'">
                   <button class="btn btn-danger btn-sm" type="button"
-                    (click)="removeUserFromGroup(groupId, member._id)">
+                    (click)="removeUserFromGroup(groupData?._id, member._id)">
                       <span i18n="@@componentSearchBar.leaveGroup">Leave Group</span>
                       <span class="caret"></span>
                   </button>
@@ -166,7 +166,7 @@
                           <ul class="dropdown-menu" *ngIf="member.role != 'owner'">
                               <li class="dropdown-item">
                                 <button class="btn btn-success btn-sm" type="button"
-                                  (click)="reactivateUserInWorkplace(member._id, workspaceId)"
+                                  (click)="reactivateUserInWorkplace(member._id, workspaceData?._id)"
                                   i18n="@@componentSearchBar.activateUser">
                                     Activate user
                                 </button>

@@ -16,10 +16,7 @@
       <!-- Fetch the current workspace members list starts -->
       <app-component-search-bar *ngIf="groupData && members && searchBarPlaceholder && groupData"
           [type]="'group'"
-          [groupData]="groupData"
-          [groupId]="groupData?._id"
           [placeholder]="searchBarPlaceholder"
-          [members]="members"
           [userData]="userData">
       </app-component-search-bar>
       <!-- Fetch the current workspace members list ends -->

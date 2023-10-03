@@ -386,46 +386,46 @@ export class AuthsController {
                         user: user
                     });
 
-                    // Count all the users present inside the workspace
-                    const usersCount: number = await User.find({ $and: [
-                        { active: true },
-                        { _workspace: workspace._id }
-                    ] }).countDocuments();
+                    // // Count all the users present inside the workspace
+                    // const usersCount: number = await User.find({ $and: [
+                    //     { active: true },
+                    //     { _workspace: workspace._id }
+                    // ] }).countDocuments();
                     
-                    // Send workspace to the mgmt portal
-                    // Count all the groups present inside the workspace
-                    const groupsCount: number = await Group.find({ $and: [
-                        { group_name: { $ne: 'personal' } },
-                        { _workspace: workspace._id }
-                    ]}).countDocuments();
+                    // // Send workspace to the mgmt portal
+                    // // Count all the groups present inside the workspace
+                    // const groupsCount: number = await Group.find({ $and: [
+                    //     { group_name: { $ne: 'personal' } },
+                    //     { _workspace: workspace._id }
+                    // ]}).countDocuments();
 
-                    // Count all the users present inside the workspace
-                    const guestsCount: number = await User.find({ $and: [
-                        { active: true },
-                        { _workspace: workspace._id },
-                        { role: 'guest'}
-                    ] }).countDocuments();
+                    // // Count all the users present inside the workspace
+                    // const guestsCount: number = await User.find({ $and: [
+                    //     { active: true },
+                    //     { _workspace: workspace._id },
+                    //     { role: 'guest'}
+                    // ] }).countDocuments();
 
-                    let workspaceMgmt = {
-                        _id: workspace._id,
-                        company_name: workspace.company_name,
-                        workspace_name: workspace.workspace_name,
-                        owner_email: workspace.owner_email,
-                        owner_first_name: workspace.owner_first_name,
-                        owner_last_name: workspace.owner_last_name,
-                        _owner_remote_id: workspace._owner._id || workspace._owner,
-                        environment: process.env.DOMAIN,
-                        num_members: usersCount,
-                        num_invited_users: guestsCount,
-                        num_groups: groupsCount,
-                        created_date: workspace.created_date,
-                        access_code: workspace.access_code,
-                        management_private_api_key: workspace.management_private_api_key
-                    }
-                    axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
-                        API_KEY: workspace.management_private_api_key,
-                        workspaceData: workspaceMgmt
-                    }).then().catch(err => console.log(err));
+                    // let workspaceMgmt = {
+                    //     _id: workspace._id,
+                    //     company_name: workspace.company_name,
+                    //     workspace_name: workspace.workspace_name,
+                    //     owner_email: workspace.owner_email,
+                    //     owner_first_name: workspace.owner_first_name,
+                    //     owner_last_name: workspace.owner_last_name,
+                    //     _owner_remote_id: workspace._owner._id || workspace._owner,
+                    //     environment: process.env.DOMAIN,
+                    //     num_members: usersCount,
+                    //     num_invited_users: guestsCount,
+                    //     num_groups: groupsCount,
+                    //     created_date: workspace.created_date,
+                    //     access_code: workspace.access_code,
+                    //     management_private_api_key: workspace.management_private_api_key
+                    // }
+                    // axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
+                    //     API_KEY: workspace.management_private_api_key,
+                    //     workspaceData: workspaceMgmt
+                    // }).then().catch(err => console.log(err));
 
                     // Send user to the mgmt portal
                     let userMgmt = {
@@ -444,7 +444,8 @@ export class AuthsController {
                     axios.post(`${process.env.MANAGEMENT_URL}/api/user/add`, {
                         API_KEY: workspace.management_private_api_key,
                         workspaceId: workspace._id,
-                        userData: userMgmt
+                        userData: userMgmt,
+                        // workspaceData: workspaceMgmt
                     }).then().catch(err => console.log(err));
 
                     const mailUser = {

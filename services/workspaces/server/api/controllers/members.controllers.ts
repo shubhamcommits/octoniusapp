@@ -12,22 +12,53 @@ export class MembersControllers {
      * @param groupId 
      */
     async fetchUsers(workspaceId: any, query: any, groupId?: any) {
-        return await User.find({
-            $and: [
-                {
-                    $or: [
-                        { full_name: { $regex: new RegExp(query, 'i') } },
-                        { email: { $regex: new RegExp(query, 'i') } }
+        let mongoQuery = {};
+        if (!!groupId && groupId != 'undefined') {
+            if (!!query && query != 'undefined') {
+                mongoQuery = {
+                        $and: [
+                            {
+                                $or: [
+                                    { full_name: { $regex: new RegExp(query, 'i') } },
+                                    { email: { $regex: new RegExp(query, 'i') } }
+                                ]
+                            },
+                            { _workspace: workspaceId },
+                            { _groups: { $nin: groupId } }
+                        ]
+                    };
+            } else {
+                mongoQuery = {
+                    $and: [
+                        { _workspace: workspaceId },
+                        { _groups: { $nin: groupId } }
                     ]
-                },
-                { _workspace: workspaceId },
-                { _groups: { $nin: groupId } }
-            ]
-        })
+                };
+            }
+            
+        } else {
+            if (!!query && query != 'undefined') {
+                mongoQuery = {
+                        $and: [
+                            {
+                                $or: [
+                                    { full_name: { $regex: new RegExp(query, 'i') } },
+                                    { email: { $regex: new RegExp(query, 'i') } }
+                                ]
+                            },
+                            { _workspace: workspaceId }
+                        ]
+                    };
+            } else {
+                mongoQuery = { _workspace: workspaceId };
+            }
+        }
+
+        return await User.find(mongoQuery)
             .sort('_id')
             //.limit(10)
             .select('first_name last_name email role profile_pic active integrations')
-            .lean() || []
+            .lean() || [];
     }
 
     /**
@@ -79,9 +110,7 @@ export class MembersControllers {
         // Fetch the variables from request
         let workspaceId: any = req.query.workspaceId
         let query: any = req.query.query
-
         try {
-
             // If either workspaceId is null or not provided then we throw BAD REQUEST 
             if (!workspaceId) {
                 return res.status(400).json({
@@ -91,7 +120,7 @@ export class MembersControllers {
 
             // Find the users based on the regex expression matched with either full_name or email property present in the current workspace
             const users = await new MembersControllers().fetchUsers(workspaceId, query)
-
+console.log(users);
             // Send the status 200 response
             return res.status(200).json({
                 message: `The First ${users.length} workspace members found!`,
@@ -365,10 +394,10 @@ export class MembersControllers {
                 access_code: workspace.access_code,
                 management_private_api_key: workspace.management_private_api_key
             }    
-            axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
-                API_KEY: workspace.management_private_api_key,
-                workspaceData: workspaceMgmt
-            }).then().catch(err => console.log(err));
+            // axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
+            //     API_KEY: workspace.management_private_api_key,
+            //     workspaceData: workspaceMgmt
+            // }).then().catch(err => console.log(err));
 
             // Send user to the mgmt portal
             let userMgmt = {
@@ -387,7 +416,8 @@ export class MembersControllers {
             axios.put(`${process.env.MANAGEMENT_URL}/api/user/${user._id}/update`, {
                 API_KEY: workspace.management_private_api_key,
                 workspaceId: workspace._id,
-                userData: userMgmt
+                userData: userMgmt,
+                workspaceData: workspaceMgmt
             }).then().catch(err => console.log(err));
 
             // Send status 200 response
@@ -413,30 +443,30 @@ export class MembersControllers {
         try {
             // Find the user and delete them
             const user: any = await User.findOneAndUpdate({
-                $and: [
-                    { _id: userId },
-                    { active: true },
-                    { _workspace: workspaceId }
-                ]
-            }, {
-                active: false,
-                invited: false
-            }, {
-                new: true
-            }).select('email first_name last_name profile_pic email role integrations')
-            .populate({
-                path: '_account',
-                select: '_id email _workspaces first_name last_name created_date'
-            });
+                    $and: [
+                        { _id: userId },
+                        { active: true },
+                        { _workspace: workspaceId }
+                    ]
+                }, {
+                    active: false,
+                    invited: false
+                }, {
+                    new: true
+                }).select('email first_name last_name profile_pic email role integrations')
+                .populate({
+                    path: '_account',
+                    select: '_id email _workspaces first_name last_name created_date'
+                });
 
             // Remove the workplaces from the accounts with the workplace
             await Account.findByIdAndUpdate({
-                _id: user._account._id
-            }, {
-                $pull: {
-                    _workspaces: workspaceId
-                }
-            });
+                    _id: user._account._id
+                }, {
+                    $pull: {
+                        _workspaces: workspaceId
+                    }
+                });
 
             // User found
             if (user) {
@@ -444,23 +474,23 @@ export class MembersControllers {
 
                 // Count all the users present inside the workspace
                 const usersCount: number = await User.find({ $and: [
-                    { active: true },
-                    { _workspace: workspaceId }
-                ] }).countDocuments();
+                        { active: true },
+                        { _workspace: workspaceId }
+                    ] }).countDocuments();
 
                 // Send workspace to the mgmt portal
                 // Count all the users present inside the workspace
                 const guestsCount: number = await User.find({ $and: [
-                    { active: true },
-                    { _workspace: workspaceId },
-                    { role: 'guest'}
-                ] }).countDocuments();
+                        { active: true },
+                        { _workspace: workspaceId },
+                        { role: 'guest'}
+                    ] }).countDocuments();
 
                 // Count all the groups present inside the workspace
                 const groupsCount: number = await Group.find({ $and: [
-                    { group_name: { $ne: 'personal' } },
-                    { _workspace: workspace._id }
-                ]}).countDocuments();
+                        { group_name: { $ne: 'personal' } },
+                        { _workspace: workspace._id }
+                    ]}).countDocuments();
 
                 let workspaceMgmt = {
                     _id: workspace._id,
@@ -478,10 +508,10 @@ export class MembersControllers {
                     access_code: workspace.access_code,
                     management_private_api_key: workspace.management_private_api_key
                 }
-                axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
-                    API_KEY: workspace.management_private_api_key,
-                    workspaceData: workspaceMgmt
-                }).then().catch(err => console.log(err));
+                // axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
+                //     API_KEY: workspace.management_private_api_key,
+                //     workspaceData: workspaceMgmt
+                // }).then().catch(err => console.log(err));
 
                 // Send user to the mgmt portal
                 let userMgmt = {
@@ -500,7 +530,8 @@ export class MembersControllers {
                 axios.put(`${process.env.MANAGEMENT_URL}/api/user/${user._id}/update`, {
                     API_KEY: workspace.management_private_api_key,
                     workspaceId: workspace._id,
-                    userData: userMgmt
+                    userData: userMgmt,
+                    workspaceData: workspaceMgmt
                 }).then().catch(err => console.log(err));
             } else {
                 return sendError(res, new Error("No Such User"), 'No Such User!', 400);

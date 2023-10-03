@@ -14,8 +14,9 @@
         </div>
 
         <!-- Fetch the current workspace members list starts -->
-        <app-component-search-bar *ngIf="workspaceData && members && searchBarPlaceholder" [type]="'workspace'" [workspaceId]="workspaceData?._id"
-            [placeholder]="searchBarPlaceholder" [workspaceData]="workspaceData" [members]="members">
+        <app-component-search-bar *ngIf="workspaceData && members && searchBarPlaceholder"
+            [type]="'workspace'"
+            [placeholder]="searchBarPlaceholder">
         </app-component-search-bar>
         <!-- Fetch the current workspace members list ends -->
 
