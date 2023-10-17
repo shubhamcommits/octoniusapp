@@ -572,11 +572,12 @@ export class FilesService {
         return groupsIds;
     }
 
-    async findGroupsShareFiles(groupId: string) {
+    async findGroupsShareFiles(groupId: string, workspaceId: string) {
         const groups = await Group.find({
             $and: [
                 { share_files: true },
                 { _id: { $ne: groupId } },
+                { _workspace: workspaceId }
             ]
         }).select('_id');
 
