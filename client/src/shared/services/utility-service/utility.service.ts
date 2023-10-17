@@ -836,6 +836,9 @@ export class UtilityService {
               resolve(res['file']);
             }
           })
+          .catch(error => {
+console.log(error)
+          })
       });
   }
 
