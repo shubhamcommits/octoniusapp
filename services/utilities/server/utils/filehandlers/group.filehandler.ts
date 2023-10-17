@@ -429,6 +429,7 @@ const folioFileDelete = async (req: Request, res: Response, next: NextFunction) 
 
     await minioClient.getObject(workspaceId, /*process.env.FILE_UPLOAD_FOLDER + */req.query.modified_name, async (error, data) => {
       if (error) {
+console.log(error);
         return res.status(500).json({
           message: 'Error getting file.',
           error: error

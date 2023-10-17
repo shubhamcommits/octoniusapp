@@ -2352,9 +2352,13 @@ export class PublicFunctions {
         if (this.isOfficeFile(lastFileVersion?.original_name)) {
           url = await this.getLibreOfficeURL(lastFileVersion, workspaceId);
         } else {
-          await filesService.getMinioFile(file?._id, file?.modified_name, workspaceId, storageService.getLocalData("authToken")["token"]).then(async res =>{
-            url = res['url'];
-          });
+          await filesService.getMinioFile(file?._id, file?.modified_name, workspaceId, storageService.getLocalData("authToken")["token"])
+            .then(async res =>{
+              url = res['url'];
+            })
+            .catch(error => {
+console.log(error);
+            });
         }
       }
 
