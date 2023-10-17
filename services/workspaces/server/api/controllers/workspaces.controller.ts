@@ -157,7 +157,8 @@ export class WorkspaceController {
                 workspace_name: newWorkspace.workspace_name,
                 company_name: newWorkspace.company_name,
                 _workspace: workspace,
-                role: 'owner'
+                role: 'owner',
+                hr_role: true
             };
 
             // Create new user with owner rights
@@ -332,18 +333,18 @@ export class WorkspaceController {
 
                 // Add personal group to user's groups
                 userUpdate = await User.findByIdAndUpdate({
-                    _id: newGroupData._admins,
-                    _workspace: newGroupData._workspace
-                }, {
-                    $push: {
-                        _groups: group
-                    },
-                    $set: {
-                        _private_group: group
-                    }
-                }, {
-                    new: true
-                });
+                        _id: newGroupData._admins,
+                        _workspace: newGroupData._workspace
+                    }, {
+                        $push: {
+                            _groups: group
+                        },
+                        $set: {
+                            _private_group: group
+                        }
+                    }, {
+                        new: true
+                    });
             }
 
             // Create Global stories category for lounges
@@ -355,7 +356,7 @@ export class WorkspaceController {
                 created_date: moment().format()
             });
 
-
+            notificationsService.createNewEntityNotificationForHR(user?._id, workspaceUpdate?._id);
             notificationsService.createNewUserNotificationForHR(user?._id, workspaceUpdate?._id);
 
             // Generate new token and logs the auth record

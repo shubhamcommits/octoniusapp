@@ -923,10 +923,17 @@ export class HRControllers {
             const notifications = await Notification.find({
                     $and: [
                         { _workspace: workspaceId },
-                        { type: 'hive' },
+                        // { type: 'hive' },
+                        {
+                            $or: [
+                                { type: 'hive' },
+                                { type: 'hive_new_entity' }
+                            ]
+                        },
                         { read: false }
                     ]
                 })
+                .sort('created_date')
                 .populate({
                     path: '_owner',
                     select: '_id first_name last_name email profile_pic'
@@ -950,10 +957,17 @@ export class HRControllers {
             const notifications = await Notification.find({
                     $and: [
                         { _workspace: workspaceId },
-                        { type: 'hive' },
+                        // { type: 'hive' },
+                        {
+                            $or: [
+                                { type: 'hive' },
+                                { type: 'hive_new_entity' }
+                            ]
+                        },
                         { read: false }
                     ]
                 })
+                .sort('created_date')
                 .limit(6)
                 .populate({
                     path: '_owner',
@@ -964,7 +978,13 @@ export class HRControllers {
             const totalNotificationsCount = await Notification.find({
                     $and: [
                         { _workspace: workspaceId },
-                        { type: 'hive' },
+                        // { type: 'hive' },
+                        {
+                            $or: [
+                                { type: 'hive' },
+                                { type: 'hive_new_entity' }
+                            ]
+                        },
                         { read: false }
                     ]
                 }).countDocuments();
