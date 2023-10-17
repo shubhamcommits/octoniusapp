@@ -1136,10 +1136,10 @@ export class PublicFunctions {
      * This function is responsible for fetching the files from the server
      * @param query
      */
-    searchFiles(groupId: string, query: any, groupRef?: any, workspaceId?: string) {
+    searchFiles(groupId: string, query: any, workspaceId: string, groupRef?: any) {
         return new Promise((resolve) => {
             let filesService = this.injector.get(FilesService)
-            filesService.searchFiles(groupId, query, groupRef, workspaceId)
+            filesService.searchFiles(groupId, query, workspaceId, groupRef)
                 .then((res) => resolve(res['files']))
                 .catch(() => resolve([]))
         })
@@ -2239,9 +2239,9 @@ export class PublicFunctions {
       // Fetch the users list from the server
       let filesList: any = [];
       if (groupId) {
-        filesList = await this.searchFiles(groupId, searchTerm, 'true');
+        filesList = await this.searchFiles(groupId, searchTerm, workspaceData._id, 'true');
       } else {
-        filesList = await this.searchFiles(null, searchTerm, 'true', workspaceData._id);
+        filesList = await this.searchFiles(null, searchTerm, workspaceData._id, 'true');
       }
 
       // Map the files list
@@ -2249,16 +2249,17 @@ export class PublicFunctions {
       for (let i = 0; i < filesList.length; i++) {
         const file = filesList[i];
         const url = await this.getFileUrl(file, workspaceData?._id);
-
-        retFileList.push({
-          id: file._id,
-          value: `<a href="${url}" style="color: inherit" target="_blank">${file.original_name}</a>`
-            // (file.type == 'folio')
-            //   ? `<a href="/document/${file._id}?readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
-            //   : (file.type == "flamingo")
-            //     ? `<a href="/document/flamingo/${file._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
-            //     : `<a href="${environment.UTILITIES_FILES_UPLOADS}/${workspaceData._id}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
-        })
+        if (!!url) {
+          retFileList.push({
+            id: file._id,
+            value: `<a href="${url}" style="color: inherit" target="_blank">${file.original_name}</a>`
+              // (file.type == 'folio')
+              //   ? `<a href="/document/${file._id}?readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
+              //   : (file.type == "flamingo")
+              //     ? `<a href="/document/flamingo/${file._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
+              //     : `<a href="${environment.UTILITIES_FILES_UPLOADS}/${workspaceData._id}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
+          });
+        }
       }
       filesList = retFileList;
 //       filesList = filesList.map((file: any) => {

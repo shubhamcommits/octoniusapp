@@ -183,8 +183,7 @@ export class GroupFilesComponent implements OnInit {
     this.subSink.add(this.queryChanged
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe(async (res)=>{
-
-        this.files = await this.publicFunctions.searchFiles(this.groupData?._id, res);
+        this.files = await this.publicFunctions.searchFiles(this.groupData?._id, res, this.workspaceId);
         this.files = await this.filterRAGFiles(this.files);
       }));
   }
