@@ -16,4 +16,14 @@ export class NotificationsService {
                 created_date: DateTime.now()
             });
     }
+
+    async createNewEntityNotificationForHR(userId: string, workspaceId: string) {
+        await Notification.create({
+                _owner: userId,
+                _workspace: workspaceId,
+                message: 'Create New Entity',
+                type: 'hive_new_entity',
+                created_date: DateTime.now()
+            });
+    }
 }
