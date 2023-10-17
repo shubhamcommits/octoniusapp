@@ -15,7 +15,7 @@ const postFileUploader = async (req: Request, res: Response, next: NextFunction)
   // Initialize the req['files'] object
   let files: any = req['files']
 
-  let post = JSON.parse(req.body.post);
+  let post = req.body.post;
 
   if (!!post) {
     // Conver the String into the JSON Object
