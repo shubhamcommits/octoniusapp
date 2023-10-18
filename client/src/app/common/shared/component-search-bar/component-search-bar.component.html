@@ -42,79 +42,77 @@
             <!-- Member Details Ends -->
 
             <div class="btn-group mr-3 float-right">
+                <!-- Changing role functionality starts -->
+                <div class="dropdown" *ngIf="member.role != 'owner' && type == 'workspace'">
+                    <button class="btn btn-primary btn-sm dropdown-toggle"
+                        type="button" data-toggle="dropdown">
+                        <span i18n="@@componentSearchBar.manageUser">Manage User</span>
+                        <span class="caret"></span>
+                    </button>
 
-              <!-- Changing role functionality starts -->
-              <div class="dropdown" *ngIf="member.role != 'owner' && type == 'workspace'">
-                  <button class="btn btn-primary btn-sm dropdown-toggle"
-                    type="button" data-toggle="dropdown">
-                      <span i18n="@@componentSearchBar.manageUser">Manage User</span>
-                      <span class="caret"></span>
-                  </button>
+                    <!-- Menu Drawer Starts -->
+                    <ul class="dropdown-menu">
+                            <li class="dropdown-item" *ngIf="member.role != 'admin'"
+                                (click)="changeRole(member._id, 'admin')" i18n="@@componentSearchBar.changeToAdmin">Change to Admin</li>
+                            <li class="dropdown-item" *ngIf="member.role != 'manager'"
+                                (click)="changeRole(member._id, 'manager')" i18n="@@componentSearchBar.changeToManager">Change to Work Manager</li>
+                            <li class="dropdown-item" *ngIf="member.role != 'member'"
+                                (click)="changeRole(member._id, 'member')" i18n="@@componentSearchBar.changeToMember">Change to Member</li>
+                            <li class="dropdown-item" *ngIf="!member.hr_role && member.role != 'guest'" (click)="changeHRRole(member._id, true)"
+                                i18n="@@componentSearchBar.addToHRTeam">Add to HR Team</li>
+                            <li class="dropdown-item" *ngIf="!!member.hr_role && member.role != 'guest'" (click)="changeHRRole(member._id, false)"
+                                i18n="@@componentSearchBar.removeFromHRTeam">Remove from HR Team</li>
+                            <li class="dropdown-divider"></li>
+                            <li class="dropdown-item">
+                                <button type="button" class="btn btn-danger btn-sm"
+                                (click)="disableUserInWorkplace(member._id, workspaceData?._id)" i18n="@@componentSearchBar.deactivateUser">Deactivate user</button>
+                            </li>
+                    </ul>
+                    <!-- Menu Drawer Ends -->
+                </div>
 
-                  <!-- Menu Drawer Starts -->
-                  <ul class="dropdown-menu">
-                        <li class="dropdown-item" *ngIf="member.role != 'admin'"
-                            (click)="changeRole(member._id, 'admin')" i18n="@@componentSearchBar.changeToAdmin">Change to Admin</li>
-                        <li class="dropdown-item" *ngIf="member.role != 'manager'"
-                            (click)="changeRole(member._id, 'manager')" i18n="@@componentSearchBar.changeToManager">Change to Work Manager</li>
-                        <li class="dropdown-item" *ngIf="member.role != 'member'"
-                            (click)="changeRole(member._id, 'member')" i18n="@@componentSearchBar.changeToMember">Change to Member</li>
-                        <li class="dropdown-item" *ngIf="!member.hr_role && member.role != 'guest'" (click)="changeHRRole(member._id, true)"
-                            i18n="@@componentSearchBar.addToHRTeam">Add to HR Team</li>
-                        <li class="dropdown-item" *ngIf="member.hr_role && member.role != 'guest'" (click)="changeHRRole(member._id, false)"
-                            i18n="@@componentSearchBar.removeFromHRTeam">Remove from HR Team</li>
+                <!-- Remove from Group -->
+                <div class="dropdown"
+                    *ngIf="(userData?.role === 'owner' || isGroupManager(userData?._id)) && type == 'group'">
+                    <button class="btn btn-primary btn-sm dropdown-toggle"
+                        type="button" data-toggle="dropdown">
+                        <span i18n="@@componentSearchBar.manageUser">Manage User</span>
+                        <span class="caret"></span>
+                    </button>
+
+                    <!-- Menu Drawer Starts -->
+                    <ul class="dropdown-menu">
+                        <!--
+                        <li class="dropdown-item" *ngIf="isGroupManager(userData._id)"
+                                (click)="openUpdatePasswordModal(member)">
+                            <button type="button" name="button" class="btn btn-warning">
+                                <i class="material-icons">lock</i> Reset Password
+                            </button>
+                        </li>
+                        <li class="dropdown-divider" *ngIf="isGroupManager(userData._id)"></li>
+                        -->
+                        <li class="dropdown-item" *ngIf="!isGroupManager(member._id)"
+                            (click)="changeGroupRole(member, 'manager', groupData?._id)" i18n="@@componentSearchBar.changeToGroupManager">Change to Group Manager</li>
+                        <li class="dropdown-item" *ngIf="isGroupManager(member._id)"
+                            (click)="changeGroupRole(member, 'member', groupData?._id)" i18n="@@componentSearchBar.changeToMember">Change to Member</li>
                         <li class="dropdown-divider"></li>
                         <li class="dropdown-item">
                             <button type="button" class="btn btn-danger btn-sm"
-                            (click)="disableUserInWorkplace(member._id, workspaceData?._id)" i18n="@@componentSearchBar.deactivateUser">Deactivate user</button>
+                            (click)="removeUserFromGroup(groupData?._id, member._id)" i18n="@@componentSearchBar.removeMember">Remove Member</button>
                         </li>
-                  </ul>
-                  <!-- Menu Drawer Ends -->
+                    </ul>
+                    <!-- Menu Drawer Ends -->
 
-              </div>
-
-              <!-- Remove from Group -->
-              <div class="dropdown"
-                  *ngIf="(userData?.role === 'owner' || isGroupManager(userData?._id)) && type == 'group'">
-                  <button class="btn btn-primary btn-sm dropdown-toggle"
-                    type="button" data-toggle="dropdown">
-                      <span i18n="@@componentSearchBar.manageUser">Manage User</span>
-                      <span class="caret"></span>
-                  </button>
-
-                  <!-- Menu Drawer Starts -->
-                  <ul class="dropdown-menu">
-                      <!--
-                      <li class="dropdown-item" *ngIf="isGroupManager(userData._id)"
-                            (click)="openUpdatePasswordModal(member)">
-                          <button type="button" name="button" class="btn btn-warning">
-                              <i class="material-icons">lock</i> Reset Password
-                          </button>
-                      </li>
-                      <li class="dropdown-divider" *ngIf="isGroupManager(userData._id)"></li>
-                      -->
-                      <li class="dropdown-item" *ngIf="!isGroupManager(member._id)"
-                          (click)="changeGroupRole(member, 'manager', groupData?._id)" i18n="@@componentSearchBar.changeToGroupManager">Change to Group Manager</li>
-                      <li class="dropdown-item" *ngIf="isGroupManager(member._id)"
-                          (click)="changeGroupRole(member, 'member', groupData?._id)" i18n="@@componentSearchBar.changeToMember">Change to Member</li>
-                      <li class="dropdown-divider"></li>
-                      <li class="dropdown-item">
-                        <button type="button" class="btn btn-danger btn-sm"
-                          (click)="removeUserFromGroup(groupData?._id, member._id)" i18n="@@componentSearchBar.removeMember">Remove Member</button>
-                      </li>
-                  </ul>
-                  <!-- Menu Drawer Ends -->
-
-              </div>
-              <div class="dropdown"
-                  *ngIf="userData?.role !== 'owner' && !isGroupManager(userData?._id) && userData?._id == member?._id && type == 'group'">
-                  <button class="btn btn-danger btn-sm" type="button"
-                    (click)="removeUserFromGroup(groupData?._id, member._id)">
-                      <span i18n="@@componentSearchBar.leaveGroup">Leave Group</span>
-                      <span class="caret"></span>
-                  </button>
-              </div>
-              <!-- Remove from Group -->
+                </div>
+                <div class="dropdown"
+                    *ngIf="userData?.role !== 'owner' && !isGroupManager(userData?._id) && userData?._id == member?._id && type == 'group'">
+                    <button class="btn btn-danger btn-sm" type="button"
+                        (click)="removeUserFromGroup(groupData?._id, member._id)">
+                        <span i18n="@@componentSearchBar.leaveGroup">Leave Group</span>
+                        <span class="caret"></span>
+                    </button>
+                </div>
+                <!-- Remove from Group -->
             </div>
         </div>
     </div>

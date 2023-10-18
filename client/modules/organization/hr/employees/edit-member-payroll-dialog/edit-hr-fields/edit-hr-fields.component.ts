@@ -29,6 +29,9 @@ export class EditHRFieldsComponent implements OnInit {
   hrBenefits: any = [];
   selectedHRBenefitValues: any = [];
 
+  showError = false;
+  errorMessage = '';
+
   // Public functions class member
   publicFunctions = new PublicFunctions(this.injector);
 
@@ -134,6 +137,9 @@ export class EditHRFieldsComponent implements OnInit {
             this.hrBenefits.push(field);
           });
         }
+      } else {
+        this.showError = true;
+        this.errorMessage = res['message'];
       }
     });
   }

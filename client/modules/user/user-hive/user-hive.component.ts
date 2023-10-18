@@ -32,6 +32,9 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
   hrBenefits: any = [];
   selectedHRBenefitsValues: any = [];
 
+  showError = false;
+  errorMessage = '';
+
   isLoading$;
 
   // Public functions class member
@@ -153,6 +156,9 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
               }
             });
         }
+      } else {
+        this.showError = true;
+        this.errorMessage = res['message'];
       }
     });
   }
