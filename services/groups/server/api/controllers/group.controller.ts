@@ -37,19 +37,19 @@ export class GroupController {
                 .sort('_id')
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     }
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     }
                 })
-                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' })
                 .limit(20)
                 .lean() || [];
 
@@ -118,7 +118,7 @@ export class GroupController {
                         active: true
                     }
                 })
-                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' })
                 .lean() || [];
 
             // Send the status 200 response
@@ -157,19 +157,19 @@ export class GroupController {
                 .sort('_id')
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     }
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     }
                 })
-                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' })
                 .limit(20)
                 .lean() || [];
 
@@ -238,7 +238,7 @@ export class GroupController {
                         active: true
                     }
                 })
-                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' })
                 .lean() || [];
 
             // Send the status 200 response
@@ -295,7 +295,7 @@ export class GroupController {
                         active: true
                     }
                 })
-                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' })
                 .lean() || []
 
             // If there are no groups then we send error response
@@ -353,7 +353,7 @@ export class GroupController {
                         active: true
                     }
                 })
-                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' })
                 .lean() || []
 
             // If there are no groups then we send error response
@@ -416,7 +416,7 @@ export class GroupController {
                         active: true
                     }
                 })
-                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' })
                 .lean() || []
 
             // If there are no groups then we send error response
@@ -484,7 +484,7 @@ export class GroupController {
                         active: true
                     }
                 })
-                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' })
                 .lean() || [];
 
             // Send the status 200 response
@@ -524,19 +524,19 @@ export class GroupController {
                 })
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
                     match: {
                         active: true
                     }
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
                     match: {
                         active: true
                     }
                 })
-                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' })
                 .lean();
 
             // Check if group already exist with the same groupId
@@ -569,19 +569,19 @@ export class GroupController {
                 })
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
                     match: {
                         active: true
                     }
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
                     match: {
                         active: true
                     }
                 })
-                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' })
                 .lean();
 
             // Check if group already exist with the same groupId
@@ -616,19 +616,19 @@ export class GroupController {
             })
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
                     match: {
                         active: true
                     }
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
                     match: {
                         active: true
                     }
                 })
-                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' })
                 .lean();
 
             // Check if group already exist with the same groupId
@@ -784,7 +784,7 @@ export class GroupController {
             )
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     },
@@ -794,7 +794,7 @@ export class GroupController {
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     },
@@ -802,7 +802,7 @@ export class GroupController {
                         active: true
                     }
                 })
-                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' })
                 .lean();
 
             if (!group) {
@@ -1000,7 +1000,7 @@ export class GroupController {
                     active: true
                 }
             })
-            .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+            .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' })
             .lean();
 
             // Send status 200 response
@@ -1179,7 +1179,7 @@ export class GroupController {
                         active: true
                     }
                 })
-                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' })
                 .lean() || []
 
             return res.status(200).json({
@@ -1254,7 +1254,7 @@ export class GroupController {
                         active: true
                     }
                 })
-                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' })
                 .lean();
 
             // Check if group already exist with the same groupId
@@ -1535,7 +1535,7 @@ export class GroupController {
             const group = await Group.findOne({
                 _id: groupId
             })
-                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' })
                 .lean();
 
             // Check if group already exist with the same groupId
@@ -1698,19 +1698,19 @@ export class GroupController {
                 })
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
                     match: {
                         active: true
                     }
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
                     match: {
                         active: true
                     }
                 })
-                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' })
                 .lean();
 
             // Send status 200 response
@@ -1741,19 +1741,19 @@ export class GroupController {
             })
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
                     match: {
                         active: true
                     }
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
                     match: {
                         active: true
                     }
                 })
-                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' })
                 .lean();
 
             // Send status 200 response
@@ -1956,19 +1956,19 @@ export class GroupController {
             group = await Group.findById(groupId)
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     }
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     }
                 })
-                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' })
                 .lean();
 
             return res.status(200).json({
@@ -2117,19 +2117,19 @@ export class GroupController {
             group = await Group.findById(groupId)
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     }
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     }
                 })
-                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' })
                 .lean();
 
             return res.status(200).json({
@@ -2162,13 +2162,13 @@ export class GroupController {
             group = await Group.findById(groupId)
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files'
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files'
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files'
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files'
                 })
-                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' })
                 .lean();
 
             return res.status(200).json({
@@ -2214,7 +2214,7 @@ export class GroupController {
         try {
             const groupId = req.params.groupId;
             const group: any = await Group.findById(groupId)
-            .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' });
+            .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' });
             const rags = group.rags;
             return res.status(200).json({
                 message: 'Fetched Rags!',
@@ -2249,7 +2249,7 @@ export class GroupController {
                 ]
             })
                 .sort('_id')
-                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' })
                 .lean() || [];
 
             // Send the status 200 response
@@ -2373,19 +2373,19 @@ export class GroupController {
             })
             .populate({
                 path: '_members',
-                select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
                 match: {
                     active: true
                 }
             })
             .populate({
                 path: '_admins',
-                select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
                 match: {
                     active: true
                 }
             })
-            .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+            .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' })
             .lean();
 
             return res.status(200).json({
@@ -2415,13 +2415,13 @@ export class GroupController {
                 ]
             })
             .populate({ path: '_group', select: 'group_name group_avatar workspace_name' })
-            .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role email' })
-            .populate({ path: '_assigned_to', select: 'first_name last_name profile_pic role email' })
+            .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role hr_role email' })
+            .populate({ path: '_assigned_to', select: 'first_name last_name profile_pic role hr_role email' })
             .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
-            .populate({ path: '_followers', select: 'first_name last_name profile_pic role email' })
+            .populate({ path: '_followers', select: 'first_name last_name profile_pic role hr_role email' })
             .populate({ path: 'task.shuttles._shuttle_group', select: '_id group_name group_avatar shuttle_type _shuttle_section' })
             .populate({ path: 'task.shuttles._shuttle_section', select: '_id title' })
-            .populate({ path: 'permissions._members', select: 'first_name last_name profile_pic role email' })
+            .populate({ path: 'permissions._members', select: 'first_name last_name profile_pic role hr_role email' })
             .lean() || [];
 
             // Send the status 200 response
@@ -2529,19 +2529,19 @@ export class GroupController {
             })
             .populate({
                 path: '_members',
-                select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
                 match: {
                     active: true
                 }
             })
             .populate({
                 path: '_admins',
-                select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
                 match: {
                     active: true
                 }
             })
-            .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+            .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' })
             .lean();
 
             return res.status(200).json({

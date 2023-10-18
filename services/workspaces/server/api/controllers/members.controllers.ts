@@ -57,7 +57,7 @@ export class MembersControllers {
         return await User.find(mongoQuery)
             .sort('_id')
             //.limit(10)
-            .select('first_name last_name email role profile_pic active integrations')
+            .select('first_name last_name email role profile_pic active integrations hr_role')
             .lean() || [];
     }
 
@@ -120,7 +120,7 @@ export class MembersControllers {
 
             // Find the users based on the regex expression matched with either full_name or email property present in the current workspace
             const users = await new MembersControllers().fetchUsers(workspaceId, query)
-console.log(users);
+
             // Send the status 200 response
             return res.status(200).json({
                 message: `The First ${users.length} workspace members found!`,
@@ -171,7 +171,7 @@ console.log(users);
             })
                 .sort('_id')
                 .limit(5)
-                .select('first_name last_name email role profile_pic active integrations')
+                .select('first_name last_name email role profile_pic active integrations hr_role')
                 .lean() || []
 
             // Send the status 200 response
@@ -228,7 +228,7 @@ console.log(users);
                     ]
                 })
                 .sort('_id')
-                .select('first_name last_name email role profile_pic active integrations current_position')
+                .select('first_name last_name email role profile_pic active integrations hr_role current_position')
                 .lean() || [];
 
             const posts = await Post.find({

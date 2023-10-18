@@ -23,7 +23,7 @@ export class HRGuard implements CanActivate, CanActivateChild, CanLoad {
     state: RouterStateSnapshot) {
       const userData: any = await this.publicFunctions.getCurrentUser();
       const role = (userData?.role) ? userData?.role?.trim() : '';
-      if (userData?.hr_role || role == 'owner') {
+      if (!!userData?.hr_role || role == 'owner') {
         return true;
       } else {
         this.utilityService.warningNotification($localize`:@@hrGuard.oopsNoPermission:Oops seems like you don\'t have the permission to access the HR section, kindly contact your superior to provide you the proper admin rights!`);
