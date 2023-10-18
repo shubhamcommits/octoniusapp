@@ -256,7 +256,10 @@ export class HRControllers {
 
             // Check if workspace already exist with the same workspaceId
             if (!user || ! user.hr || ! user.hr._entity) {
-                return sendError(res, new Error('Oops, user not found or doesn´t have an payroll entity assigned!'), 'User not found or doesn´t have an payroll entity assigned!', 404);
+                // return sendError(res, new Error('Oops, user not found or doesn´t have a payroll entity assigned!'), 'User not found or doesn´t have a payroll entity assigned!', 404);
+                return res.status(200).json({
+                    message: 'User is not assigned to an entity!'
+                });
             }
 
             const entity: any = await Entity.findOne({

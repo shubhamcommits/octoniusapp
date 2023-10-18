@@ -5,6 +5,7 @@ import moment from 'moment';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-edit-member-payroll-dialog',
@@ -28,6 +29,9 @@ export class EditMemberPayrollDialogComponent implements OnInit {
   
   hrBenefits: any = [];
   selectedHRBenefitValues: any = [];
+
+  showError = false;
+  errorMessage = '';
 
   // Public functions class member
   publicFunctions = new PublicFunctions(this.injector);
@@ -129,6 +133,9 @@ export class EditMemberPayrollDialogComponent implements OnInit {
             this.hrBenefits.push(field);
           });
         }
+      } else {
+        this.showError = true;
+        this.errorMessage = res['message'];
       }
     });
   }

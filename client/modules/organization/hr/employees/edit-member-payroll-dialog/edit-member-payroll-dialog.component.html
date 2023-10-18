@@ -13,6 +13,10 @@
     <h2>{{ memberData?.first_name }} {{ memberData?.last_name }}</h2>
 </div>
 
+<div *ngIf="!!showError && !!errorMessage" class="error">
+    <span>❌ {{ errorMessage }}</span>
+</div>
+
 <div class="modal-body">
     <mat-tab-group mat-align-tabs="start" selectedIndex="0">
         <mat-tab>

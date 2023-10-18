@@ -1,4 +1,10 @@
 <div class="container" *ngIf="userData">
+  <div class="row" *ngIf="!!showError && !!errorMessage" class="error">
+    <div class="col">
+      <span>❌ {{ errorMessage }}</span>
+    </div>
+  </div>
+  
   <div class="row">
     <div class="col">
       <div class="col-description">
