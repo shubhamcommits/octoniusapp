@@ -157,13 +157,12 @@ export class EditUserProfileFieldsComponent implements OnInit {
     }));
   }
 
-  saveProperty(property_name: string, value: any) {
+  saveProperty(propertyToSave: any) {
 
-    if (value != '') {
-      this.userData[property_name] = value;
-      
+    // if (value != '') {
+      // this.userData[property_name] = value;
       this.utilityService.asyncNotification($localize`:@@editEntityDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the entity...`, new Promise((resolve, reject) => {
-        this.userService.updateUser(this.userData)
+        this.userService.updateUserProperty(this.userData?._id, propertyToSave)
           .then(async (res) => {
             if (this.isCurrentUser) {
               this.publicFunctions.sendUpdatesToUserData(this.userData);
@@ -176,7 +175,7 @@ export class EditUserProfileFieldsComponent implements OnInit {
             reject(this.utilityService.rejectAsyncPromise($localize`:@@editEntityDialog.unableToUpdateEntity:Unable to update the entity, please try again!`));
           });
       }));
-    }
+    // }
   }
 
   /**

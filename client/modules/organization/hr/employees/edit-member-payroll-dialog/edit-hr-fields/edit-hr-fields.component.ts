@@ -146,26 +146,41 @@ export class EditHRFieldsComponent implements OnInit {
 
   changeCountry(value: any) {
     if (value) {
-      this.saveHRProperty('country', value);
+      this.saveProperty({'country': value});
     }
   }
 
-  saveHRProperty(property_name: string, value: any) {
+  // saveHRProperty(property_name: string, value: any) {
 
-    if (value != '') {
-      this.memberData.hr[property_name] = value;
+  //   if (value != '') {
+  //     this.memberData.hr[property_name] = value;
       
-      this.utilityService.asyncNotification($localize`:@@editHRFields.plesaeWaitWeAreUpdaing:Please wait we are updating the entity...`, new Promise((resolve, reject) => {
-        this.userService.updateUser(this.memberData)
-          .then(async (res) => {
-            // Resolve with success
-            resolve(this.utilityService.resolveAsyncPromise($localize`:@@editHRFields.entityUpdated:Entity updated!`));
-          })
-          .catch(() => {
-            reject(this.utilityService.rejectAsyncPromise($localize`:@@editHRFields.unableToUpdateEntity:Unable to update the entity, please try again!`));
-          });
-      }));
-    }
+  //     this.utilityService.asyncNotification($localize`:@@editHRFields.plesaeWaitWeAreUpdaing:Please wait we are updating the entity...`, new Promise((resolve, reject) => {
+  //       this.userService.updateUser(this.memberData)
+  //         .then(async (res) => {
+  //           // Resolve with success
+  //           resolve(this.utilityService.resolveAsyncPromise($localize`:@@editHRFields.entityUpdated:Entity updated!`));
+  //         })
+  //         .catch(() => {
+  //           reject(this.utilityService.rejectAsyncPromise($localize`:@@editHRFields.unableToUpdateEntity:Unable to update the entity, please try again!`));
+  //         });
+  //     }));
+  //   }
+  // }
+
+  saveProperty(propertyToSave: any) {
+    this.utilityService.asyncNotification($localize`:@@editHRFields.pleaseWaitWeUpdateContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+
+      this.userService.updateUserProperty(this.memberData._id, propertyToSave)
+        .then(async (res) => {
+
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@editHRFields.daysOffUpdated:Days Off updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@editHRFields.unableToUpdateDaysOff:Unable to update Days Off, please try again!`));
+        });
+    }));
   }
 
   /**

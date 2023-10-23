@@ -60,6 +60,17 @@ export class UserService {
   }
 
   /**
+   * This function updates a specific property of a user
+   * @param userId
+   * @param propertyToSave
+   */
+  updateUserProperty(userId: string, propertyToSave: any) {
+    return this._http.put(this.BASE_API_URL + `/${userId}/updateProperty`, {
+      propertyToSave
+    }).toPromise();
+  }
+
+  /**
    * This function is responsible for updating the user data(only profile_pic)
    * @param workspaceId
    * @param workspaceAvatar

@@ -322,6 +322,60 @@ export class UsersControllers {
     };
 
     /**
+     * 
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    
+
+    async editProperty(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { userId }, body: { propertyToSave } } = req;
+
+            if (!userId || !propertyToSave) {
+                return sendError(res, new Error('Please provide the userId and propertyToSave properties!'), 'Please provide the userId and propertyToSave properties!', 500);
+            }
+
+            const user = await User.findByIdAndUpdate({
+                    _id: userId
+                }, {
+                    $set: propertyToSave
+                })
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr hr_role')
+                .populate({
+                    path: 'stats.favorite_groups',
+                    select: '_id group_name group_avatar'
+                })
+                .populate({
+                    path: 'stats.favorite_portfolios',
+                    select: '_id portfolio_name portfolio_avatar'
+                })
+                .populate({
+                    path: 'stats.favorite_collections',
+                    select: '_id name collection_avatar'
+                })
+                .populate({
+                    path: '_groups',
+                    select: '_id group_name group_avatar'
+                })
+                .populate({
+                    path: '_account',
+                    select: '_id email _workspaces first_name last_name created_date'
+                })
+                .lean();
+    
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'User edited.',
+                user: user
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
      * This function is responsible for changing the password of the user
      * @param req 
      * @param res 

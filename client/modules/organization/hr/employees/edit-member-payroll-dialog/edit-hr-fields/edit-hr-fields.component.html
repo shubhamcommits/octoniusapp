@@ -19,27 +19,27 @@
         <div class="form-group">
             <label for="address_line_1" i18n="@@editHRFields.addressLine1" class="muted">Address Line 1</label>
             <input type="text" class="form-control" [(ngModel)]="memberData?.hr.address_line_1" name="address_line_1"
-                (blur)="saveHRProperty('address_line_1', $event.target.value)">
+                (blur)="saveProperty({'hr.address_line_1': $event.target.value})">
 
             <label for="address_line_2" i18n="@@editHRFields.addressLine2" class="muted">Address Line 2</label>
             <input type="text" class="form-control" [(ngModel)]="memberData?.hr.address_line_2" name="address_line_2"
-                (blur)="saveHRProperty('address_line_2', $event.target.value)">
+                (blur)="saveProperty({'hr.address_line_2': $event.target.value})">
 
             <label for="city" i18n="@@editHRFields.city" class="muted">City</label>
             <input type="text" class="form-control" [(ngModel)]="memberData?.hr.city" name="city"
-                (blur)="saveHRProperty('city', $event.target.value)">
+                (blur)="saveProperty({'hr.city': $event.target.value})">
 
             <div class="row" style="margin: 0 !important; padding: 0 !important;">
                 <div class="col" style="margin-left: 0 !important; padding-left: 0 !important;">
                     <label for="zip_code" i18n="@@editHRFields.zip_code" class="muted">Zip Code</label>
                     <input type="text" class="form-control" [(ngModel)]="memberData?.hr.zip_code" name="zip_code"
-                        (blur)="saveHRProperty('zip_code', $event.target.value)">
+                        (blur)="saveProperty({'hr.zip_code': $event.target.value})">
                 </div>
 
                 <div class="col" style="margin-right: 0 !important; padding-right: 0 !important;">
                     <label for="state" i18n="@@editHRFields.state" class="muted">State</label>
                     <input type="text" class="form-control" [(ngModel)]="memberData?.hr.state" name="state"
-                        (blur)="saveHRProperty('state', $event.target.value)">
+                        (blur)="saveProperty({'hr.state': $event.target.value})">
                 </div>
             </div>
 

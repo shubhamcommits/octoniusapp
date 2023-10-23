@@ -93,6 +93,9 @@ routes.get('/:userId', user.getOtherUser);
 // PUT - Updates the user details on the basis of userId
 routes.put('/', user.edit);
 
+// PUT - Updates the user details on the basis of userId
+routes.put('/:userId/updateProperty', user.editProperty);
+
 // PUT - Updates the role of the user on the basis of userId
 routes.put('/update-role', user.updateUserRole);
 
