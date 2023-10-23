@@ -80,7 +80,7 @@ export class PasswordsControllers {
                 .lean();
 
             // Error finding the user
-            if (!users) {
+            if (!users || users.length == 0) {
                 return sendError(res, new Error('We were unable to find an user with this email! Please try again.'), 'We were unable to find an user with this email! Please try again.', 401);
             }
 
