@@ -177,7 +177,14 @@ export class PostCommentComponent implements OnInit {
     if (data == true) {
       this.likedByUsers.push(userTmp);
     } else {
-      const index = this.likedByUsers.findIndex(user => user == userTmp);
+      const index = (!!this.likedByUsers) ? this.likedByUsers.findIndex(user => {
+          if (!!user._id) {
+            return (user.first_name + ' ' + user.last_name).toLocaleLowerCase() === userTmp.toLocaleLowerCase();
+          } else {
+            return user == userTmp;
+          }
+        }) : -1;
+
       if (index >= 0) {
         this.likedByUsers.splice(index, 1);
       }
