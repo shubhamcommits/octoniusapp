@@ -169,9 +169,6 @@ routes.put('/:userId/payrollBenefit', user.savePayrollBenefit);
 // PUT - Change user payroll specific extra days off
 routes.put('/:userId/payrollExtraDaysOff', user.savePayrollExtraDaysOff);
 
-// PUT - Save the out of the office days 
-routes.put('/:userId/out-of-office-days', user.saveOutOfOfficeDays);
-
 // GET - Get the out of the office days 
 routes.get('/:userId/out-of-office-days', user.getOutOfOfficeDays);
 

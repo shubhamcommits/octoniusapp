@@ -1498,48 +1498,6 @@ export class UsersControllers {
         }
     }
 
-    async saveOutOfOfficeDays(req: Request, res: Response, next: NextFunction) {
-
-        const { days, action } = req.body;
-        const userId = req['userId'];
-        
-        try {
-
-
-            let user: any = await User.findOne({
-                _id: userId
-            });
-
-            if (action == 'add') {
-                days.forEach(day => {
-                    const index = user.out_of_office.findIndex(outOfficeDay => moment(outOfficeDay.date,"YYYY-MM-DD").isSame(moment(day.date).format("YYYY-MM-DD"), 'day'));
-                    if (index < 0) {
-                        day.date = moment(day.date).format('YYYY-MM-DD');
-                        user.out_of_office.push(day);
-                    }
-                });
-            } else if (action == 'remove') {
-                days.forEach(day => {
-                    const index = user.out_of_office.findIndex(outOfficeDay => moment(moment.utc(outOfficeDay.date).format('YYYY-MM-DD')).isSame(moment(moment(day.date).format('YYYY-MM-DD')), 'day'));
-                    if (index >= 0) {
-                        user.out_of_office.splice(index, 1);
-                    }
-                });
-            }
-
-            user.save();
-            
-            // Send status 200 response
-            return res.status(200).json({
-                message: `User Stats has been updated`,
-                user: user
-            });
-
-        } catch (err) {
-            return sendError(res, err, 'Internal Server Error!', 500);
-        }
-    }
-
     /**
      * Save the widgets selected for the global dashboard.
      */

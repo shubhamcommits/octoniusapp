@@ -7,6 +7,7 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PortfolioUserWorkloadDialogComponent } from '../../portfolio-user-workload-dialog/portfolio-user-workload-dialog.component';
 import { DateTime } from 'luxon';
+import { HRService } from 'src/shared/services/hr-service/hr.service';
 
 @Component({
   selector: 'app-portfolio-members-workload-card',
@@ -36,7 +37,8 @@ export class PortfolioMembersWorkloadCardComponent implements OnChanges {
     private userService: UserService,
     private injector: Injector,
     public dialog: MatDialog,
-    public utilityService: UtilityService
+    public utilityService: UtilityService,
+    private hrService: HRService
   ) { }
 
   async ngOnChanges() {
@@ -68,6 +70,12 @@ export class PortfolioMembersWorkloadCardComponent implements OnChanges {
     let tasks = [];
     await this.portfolioService.getPortfolioGroupTasksBetweenDays(this.portfolioData?._id, this.dates[0].toISODate(), this.dates[this.dates.length -1].toISODate()).then(res => {
       tasks = res['posts'];
+    });
+
+    let holidays = [];
+    const membersIds = this.portfolioGroupsMembers.map(member => {return member._id});
+    await this.hrService.getMembersOff(membersIds, this.dates[0], this.dates[this.dates.length - 1]).then(res => {
+      holidays = res['holidays'];
     });
 
     this.portfolioGroupsMembers.forEach(async member => {
@@ -127,10 +135,10 @@ export class PortfolioMembersWorkloadCardComponent implements OnChanges {
           workloadDay.inprogress_tasks = 0;
         }
 
-        const index = member?.out_of_office?.findIndex(outOfficeDay => this.isSameDay(DateTime.fromISO(outOfficeDay.date), date));
+        const index = (!!holidays) ? holidays.findIndex(holiday => ((holiday._user == member._id) && (workloadDay.date >= DateTime.fromISO(holiday.start_date)) && (workloadDay.date <= DateTime.fromISO(holiday.end_date)))) : -1;
 
         if (index >= 0) {
-          const outOfficeDay = member?.out_of_office[index];
+          const outOfficeDay = holidays[index];
           workloadDay.outOfTheOfficeClass = (outOfficeDay.type == 'holidays')
             ? 'cal-day-holidays'
             : ((outOfficeDay.type == 'personal')
