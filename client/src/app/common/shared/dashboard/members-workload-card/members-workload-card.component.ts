@@ -132,11 +132,9 @@ export class MembersWorkloadCardComponent implements OnInit {
           workloadDay.inprogress_tasks = 0;
         }
 
-        // const index = member?.out_of_office?.findIndex(outOfficeDay => this.isSameDay(DateTime.fromISO(outOfficeDay.date), date));
         const index = (!!holidays) ? holidays.findIndex(holiday => ((holiday._user == member._id) && (workloadDay.date >= DateTime.fromISO(holiday.start_date)) && (workloadDay.date <= DateTime.fromISO(holiday.end_date)))) : -1;
 
         if (index >= 0) {
-          // const outOfficeDay = member?.out_of_office[index];
           const outOfficeDay = holidays[index];
           workloadDay.outOfTheOfficeClass = (outOfficeDay.type == 'holidays')
             ? 'cal-day-holidays'

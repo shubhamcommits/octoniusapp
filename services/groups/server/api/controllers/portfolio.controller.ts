@@ -512,7 +512,7 @@ export class PortfolioController {
                         { active: true }
                     ]
                 })
-                .select('_id first_name last_name email current_position active role profile_pic out_of_office')
+                .select('_id first_name last_name email current_position active role profile_pic')
                 .lean() || []
 
             users = users.concat(usersTmp);

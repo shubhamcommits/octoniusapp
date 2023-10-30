@@ -83,8 +83,17 @@ export class PostActionsComponent implements OnInit {
   }
 
   onPostUnLikedEmitter(user) {
-    const index = this.likedByUsers.findIndex((username: string) => username.toLowerCase() === (user.first_name + ' ' + user.last_name).toLowerCase())
-    this.likedByUsers.splice(index, 1);
+    const index = (!!this.likedByUsers) ? this.likedByUsers.findIndex((username: any) => {
+        if (!!username._id) {
+          return username._id === user._id;
+        } else {
+          return username.toLowerCase() === (user.first_name + ' ' + user.last_name).toLowerCase();
+        }
+      }) : -1;
+
+    if (index >= 0) {
+      this.likedByUsers.splice(index, 1);
+    }
   }
 
   onPostFollowEmitter(userId) {
