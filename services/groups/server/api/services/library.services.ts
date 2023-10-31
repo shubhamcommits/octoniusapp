@@ -20,6 +20,11 @@ export class LibraryService {
         { _id: collectionId }
       ).lean();
 
+    // Remove the collectionf from users´ favorites
+    await User.updateMany({}, {
+        $pull: { 'stats.favorite_collections': collectionId }
+      });
+
     const finalpath = `${collection.collection_avatar}`
     var minioClient = new minio.Client({
       endPoint: process.env.MINIO_DOMAIN,
@@ -29,6 +34,7 @@ export class LibraryService {
       secretKey: process.env.MINIO_SECRET_KEY
     });
 
+    // Delete avatar file
     await minioClient.removeObject(workspaceId, finalpath, (error) => {
       if (error) {
         throw (error);
