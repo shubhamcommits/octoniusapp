@@ -2,7 +2,6 @@ import { Account, Group, Holiday, User, Workspace } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError,PasswordHelper, axios } from '../../utils';
 import { DateTime } from 'luxon';
-import moment from 'moment';
 import http from 'axios';
 import { HolidayService } from '../services';
 
@@ -1290,7 +1289,12 @@ export class UsersControllers {
             // In case the user is the only member, delete the group
             userGroups.forEach(group => {
                 if ((group._members.length == 0 && group._admins.length == 1) || (group._members.length == 1 && group._admins.length == 0)) {
-                    http.delete(`${process.env.GROUPS_SERVER_API}/${group._id}`);
+                    http.delete(`${process.env.GROUPS_SERVER_API}/${group._id}`, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': req.headers.authorization
+                        }
+                    });
                 }
             });
 
