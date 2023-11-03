@@ -67,7 +67,7 @@
                     [workspaceData]="workspaceData" [showBar]="isCurrentUser"
                     (member)="selectUser(cf.name, $event)"></app-select-assignee>
 
-                <i *ngIf="cf.user_type" (click)="selectUser(cf.name, null)" class="material-icons muted"
+                <i *ngIf="cf.user_type && !!selectedCFValues[cf.name]" (click)="selectUser(cf.name, null)" class="material-icons muted"
                     style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
             </div>
         </div>
