@@ -1,6 +1,7 @@
 import { Column, Flow, Group, Post, User, Notification, Workspace } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError, axios } from '../../utils';
+import { Readable } from 'stream';
 import http from 'axios';
 import moment from 'moment';
 
@@ -842,12 +843,12 @@ export class GroupController {
             });
 
             // Delete Posts and Files too
-            const posts = await Post.find({ _group: groupId });
-            posts.forEach(post => {
+            let postsStream = Readable.from(await Post.find({ _group: groupId }));
+            await postsStream.on('data', async (post: any) => {
                 http.delete(`${process.env.POST_SERVER_API}/${post._id}`)
                     .catch(err => {
                         return sendError(res, err, 'Internal Server Error!', 500);
-                    }); 
+                    });
             });
 
             Notification.deleteMany({ _group: groupId });

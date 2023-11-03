@@ -4,6 +4,7 @@ import { sendError,PasswordHelper, axios } from '../../utils';
 import { DateTime } from 'luxon';
 import http from 'axios';
 import { HolidayService } from '../services';
+import { Readable } from 'stream';
 
 /*  ===================
  *  -- USER METHODS --
@@ -1258,18 +1259,6 @@ export class UsersControllers {
             const user = await User.findByIdAndDelete(userId).select('_account _workspace integrations');
             const workspaceId = user._workspace;
 
-            const userGroups = await Group.find({
-                    $and: [
-                        { type: { $ne: 'agora' } },
-                        {
-                            $or: [
-                                { _admins: userId },
-                                { _members: userId }
-                            ]
-                        }
-                    ]
-                }).select('_members _admins');
-
             // Remove user from groups
             await Group.updateMany({
                     _members: userId
@@ -1287,7 +1276,20 @@ export class UsersControllers {
                 });
 
             // In case the user is the only member, delete the group
-            userGroups.forEach(group => {
+            let groupsStream = Readable.from(
+                await Group.find({
+                    $and: [
+                        { type: { $ne: 'agora' } },
+                        {
+                            $or: [
+                                { _admins: userId },
+                                { _members: userId }
+                            ]
+                        }
+                    ]
+                }).lean()
+            );
+            await groupsStream.on('data', async (group: any) => {
                 if ((group._members.length == 0 && group._admins.length == 1) || (group._members.length == 1 && group._admins.length == 0)) {
                     http.delete(`${process.env.GROUPS_SERVER_API}/${group._id}`, {
                         headers: {
@@ -1297,6 +1299,29 @@ export class UsersControllers {
                     });
                 }
             });
+
+            // const userGroups = await Group.find({
+            //         $and: [
+            //             { type: { $ne: 'agora' } },
+            //             {
+            //                 $or: [
+            //                     { _admins: userId },
+            //                     { _members: userId }
+            //                 ]
+            //             }
+            //         ]
+            //     }).select('_members _admins').lean();
+
+            // userGroups.forEach(group => {
+            //     if ((group._members.length == 0 && group._admins.length == 1) || (group._members.length == 1 && group._admins.length == 0)) {
+            //         http.delete(`${process.env.GROUPS_SERVER_API}/${group._id}`, {
+            //             headers: {
+            //                 'Content-Type': 'application/json',
+            //                 'Authorization': req.headers.authorization
+            //             }
+            //         });
+            //     }
+            // });
 
             // Remove user from workspaces
             const workspaceUpdated = await Workspace.findByIdAndUpdate(
