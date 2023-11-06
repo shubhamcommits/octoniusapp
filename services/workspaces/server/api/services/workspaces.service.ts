@@ -1,7 +1,7 @@
 import { CommonService } from '.';
 import { Account, Group, Lounge, Story, User, Workspace, Notification, Holiday } from '../models';
-import http from "axios";
 import { axios } from '../../utils';
+import { Readable } from 'stream';
 
 const commonService = new CommonService();
 
@@ -47,8 +47,10 @@ export class WorkspaceService {
         try {
 
             // Remove the workspace from user´s account
-            let users = await User.find({_workspace: workspaceId}).select('_account').lean();
-            users.forEach(async user => {
+            let usersStream = Readable.from(
+                await User.find({_workspace: workspaceId}).select('_account').lean()
+            );
+            await usersStream.on('data', async (user: any) => {
                 // Count the number of workspces for the account
                 let accountUpdate = await Account.findById(user._account);
                 const numWorkspaces = accountUpdate._workspaces.length;
@@ -68,14 +70,14 @@ export class WorkspaceService {
                 }
 
                 // Remove the notifications
-                Notification.deleteMany(
+                await Notification.deleteMany(
                     { $or: [
                         { _actor: user._id },
                         { _owner: user._id }
                     ] });
 
                 // Remove the user´s holidays
-                Holiday.deleteMany({ _user: user._id });
+                await Holiday.deleteMany({ _user: user._id });
             });
 
             // Delete the users related
@@ -92,6 +94,9 @@ export class WorkspaceService {
 
             // Delete stories
             await Story.deleteMany({_workspace: workspaceId});
+
+            // Delete Notifications
+            await Notification.deleteMany({_workspace: workspaceId});
 
             // Delete the workspace
             const workspace = await Workspace.findByIdAndDelete(workspaceId);
