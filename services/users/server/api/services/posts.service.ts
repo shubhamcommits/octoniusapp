@@ -1,6 +1,8 @@
-import { Group, Portfolio, Post, User } from "../models";
+import { Comment, Column, Flow, Group, Notification, Portfolio, Post, User } from "../models";
+import { Readable } from 'stream';
 import moment from "moment";
-import { sendError } from "../../utils";
+
+const minio = require('minio');
 
 export class PostsService {
 

@@ -949,7 +949,6 @@ export class PostService {
     return post
   }
 
-
   /**
    * This function is used to remove a post
    * @param { userId, postId }

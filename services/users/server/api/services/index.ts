@@ -1,4 +1,5 @@
 import { HolidayService } from './holiday.service';
+import { CommonService } from './common.service';
 import { PostsService } from './posts.service';
 
 /*  ======================
@@ -6,6 +7,7 @@ import { PostsService } from './posts.service';
  *  ====================== 
  * */
 export {
-    PostsService as PostsService,
-    HolidayService as HolidayService
+    CommonService as CommonService,
+    HolidayService as HolidayService,
+    PostsService as PostsService
 }
