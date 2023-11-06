@@ -45,7 +45,6 @@ export class CommonService {
    */
   async removePost(postId: string, workspaceId: string) {
     try {
-
       // Get post data
       const post: any = await Post.findOne({
         _id: postId

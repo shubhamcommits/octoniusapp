@@ -2,15 +2,17 @@ import { Account, Group, Holiday, User, Workspace } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError,PasswordHelper, axios } from '../../utils';
 import { DateTime } from 'luxon';
-import http from 'axios';
-import { HolidayService } from '../services';
+// import http from 'axios';
+import { HolidayService, CommonService } from '../services';
+import { Readable } from 'stream';
 
 /*  ===================
  *  -- USER METHODS --
  *  ===================
  * */
 const passwordHelper = new PasswordHelper();
-const holidayService = new HolidayService()
+const holidayService = new HolidayService();
+const commonService = new CommonService();
 
 export class UsersControllers {
 
@@ -1258,18 +1260,6 @@ export class UsersControllers {
             const user = await User.findByIdAndDelete(userId).select('_account _workspace integrations');
             const workspaceId = user._workspace;
 
-            const userGroups = await Group.find({
-                    $and: [
-                        { type: { $ne: 'agora' } },
-                        {
-                            $or: [
-                                { _admins: userId },
-                                { _members: userId }
-                            ]
-                        }
-                    ]
-                }).select('_members _admins');
-
             // Remove user from groups
             await Group.updateMany({
                     _members: userId
@@ -1287,16 +1277,53 @@ export class UsersControllers {
                 });
 
             // In case the user is the only member, delete the group
-            userGroups.forEach(group => {
-                if ((group._members.length == 0 && group._admins.length == 1) || (group._members.length == 1 && group._admins.length == 0)) {
-                    http.delete(`${process.env.GROUPS_SERVER_API}/${group._id}`, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': req.headers.authorization
+            let groupsStream = Readable.from(
+                await Group.find({
+                    $and: [
+                        { type: { $ne: 'agora' } },
+                        {
+                            $or: [
+                                { _admins: userId },
+                                { _members: userId }
+                            ]
                         }
-                    });
+                    ]
+                }).lean()
+            );
+            await groupsStream.on('data', async (group: any) => {
+                if ((group._members.length == 0 && group._admins.length == 1) || (group._members.length == 1 && group._admins.length == 0)) {
+                    // http.delete(`${process.env.GROUPS_SERVER_API}/${group._id}`, {
+                    //     headers: {
+                    //         'Content-Type': 'application/json',
+                    //         'Authorization': req.headers.authorization
+                    //     }
+                    // });
+                    await commonService.removeGroup(group._id, userId);
                 }
             });
+
+            // const userGroups = await Group.find({
+            //         $and: [
+            //             { type: { $ne: 'agora' } },
+            //             {
+            //                 $or: [
+            //                     { _admins: userId },
+            //                     { _members: userId }
+            //                 ]
+            //             }
+            //         ]
+            //     }).select('_members _admins').lean();
+
+            // userGroups.forEach(group => {
+            //     if ((group._members.length == 0 && group._admins.length == 1) || (group._members.length == 1 && group._admins.length == 0)) {
+            //         http.delete(`${process.env.GROUPS_SERVER_API}/${group._id}`, {
+            //             headers: {
+            //                 'Content-Type': 'application/json',
+            //                 'Authorization': req.headers.authorization
+            //             }
+            //         });
+            //     }
+            // });
 
             // Remove user from workspaces
             const workspaceUpdated = await Workspace.findByIdAndUpdate(
@@ -1451,7 +1478,6 @@ export class UsersControllers {
                     select: '_id email first_name last_name profile_pic'
                 })
                 .lean() || [];
-
 
             const firstDayOfYear = new DateTime(from).startOf('year').toISO();
             const lastDayOfYear = new DateTime(from).endOf('year').toISO();

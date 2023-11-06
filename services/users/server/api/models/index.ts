@@ -10,6 +10,9 @@ import { Portfolio } from "./portfolio.model";
 import { Post } from './post.model';
 import { User } from './user.model';
 import { Workspace } from './workspace.model';
+import { Notification } from './notification.model';
+import { Flow } from "./flow.model";
+import { Comment } from "./comment.model";
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -18,14 +21,17 @@ import { Workspace } from './workspace.model';
 export {
     Account as Account,
     Auth as Auth,
-    Entity as Entity,
-    Group as Group,
-    Post as Post,
-    User as User,
-    Column as Column,
-    Workspace as Workspace,
-    Portfolio as Portfolio,
     Collection as Collection,
+    Column as Column,
+    Comment as Comment,
+    Entity as Entity,
+    Flow as Flow,
+    Group as Group,
+    Holiday as Holiday,
     Page as Page,
-    Holiday as Holiday
+    Portfolio as Portfolio,
+    Post as Post,
+    Notification as Notification,
+    User as User,
+    Workspace as Workspace,
 };

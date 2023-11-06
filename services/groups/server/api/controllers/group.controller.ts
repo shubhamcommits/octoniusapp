@@ -1,8 +1,12 @@
-import { Column, Flow, Group, Post, User, Notification, Workspace } from '../models';
+import { Column, Flow, Group, Post, User, Workspace } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError, axios } from '../../utils';
+import { Readable } from 'stream';
 import http from 'axios';
 import moment from 'moment';
+import { GroupService } from '../services';
+
+const groupService = new GroupService();
 
 /*  ===================
  *  -- GROUP METHODS --
@@ -827,80 +831,56 @@ export class GroupController {
     async remove(req: Request, res: Response) {
 
         const { groupId } = req.params;
+        const userId: any = req['userId'];
 
         try {
+            const group = await groupService.removeGroup(groupId, userId);
 
-            const group: any = await Group.findOne({ _id: groupId })
-                .select('group_name _workspace');
+            if (!!group) {
+                // Send new workspace to the mgmt portal
+                // Obtain the workspace of the group
+                const workspace = await Workspace.findOne({ _id: group._workspace });
 
-            // Find the group and remove it from the database
-            const groupDeleted: any = await Group.findByIdAndDelete(groupId);
+                // Count all the groups present inside the workspace
+                const groupsCount: number = await Group.find({ $and: [
+                    { group_name: { $ne: 'personal' } },
+                    { _workspace: group._workspace }
+                ]}).countDocuments();
 
-            // Remove the group from users, and users´ favorite groups
-            await User.updateMany({ _groups: groupId }, {
-                $pull: { _groups: groupId, 'stats.favorite_groups': groupId, 'stats.groups': { $elemMatch: { '_group': groupId }}}
-            });
+                // Count all the users present inside the workspace
+                const usersCount: number = await User.find({ $and: [
+                    { active: true },
+                    { _workspace: group._workspace }
+                ] }).countDocuments();
 
-            // Delete Posts and Files too
-            const posts = await Post.find({ _group: groupId });
-            posts.forEach(post => {
-                http.delete(`${process.env.POST_SERVER_API}/${post._id}`)
-                    .catch(err => {
-                        return sendError(res, err, 'Internal Server Error!', 500);
-                    }); 
-            });
+                // Count all the users present inside the workspace
+                const guestsCount: number = await User.find({ $and: [
+                    { active: true },
+                    { _workspace: group._workspace },
+                    { role: 'guest'}
+                ] }).countDocuments();
 
-            Notification.deleteMany({ _group: groupId });
-
-            // Delete the columns of the group
-            Column.deleteMany({ groupId: groupId });
-
-            // Delete the flows
-            Flow.deleteMany({ _group: groupId});
-
-            // Send new workspace to the mgmt portal
-            // Obtain the workspace of the group
-            const workspace = await Workspace.findOne({ _id: group._workspace });
-
-            // Count all the groups present inside the workspace
-            const groupsCount: number = await Group.find({ $and: [
-                { group_name: { $ne: 'personal' } },
-                { _workspace: group._workspace }
-            ]}).countDocuments();
-
-            // Count all the users present inside the workspace
-            const usersCount: number = await User.find({ $and: [
-                { active: true },
-                { _workspace: group._workspace }
-            ] }).countDocuments();
-
-            // Count all the users present inside the workspace
-            const guestsCount: number = await User.find({ $and: [
-                { active: true },
-                { _workspace: group._workspace },
-                { role: 'guest'}
-            ] }).countDocuments();
-
-            let workspaceMgmt = {
-                _id: group._workspace,
-                company_name: workspace.company_name,
-                workspace_name: workspace.workspace_name,
-                owner_email: workspace.owner_email,
-                owner_first_name: workspace.owner_first_name,
-                owner_last_name: workspace.owner_last_name,
-                _owner_remote_id: workspace._owner._id || workspace._owner,
-                environment: process.env.DOMAIN,
-                num_members: usersCount,
-                num_invited_users: guestsCount,
-                num_groups: groupsCount,
-                created_date: workspace.created_date,
-                access_code: workspace.access_code,
-                management_private_api_key: workspace.management_private_api_key
+                let workspaceMgmt = {
+                    _id: group._workspace,
+                    company_name: workspace.company_name,
+                    workspace_name: workspace.workspace_name,
+                    owner_email: workspace.owner_email,
+                    owner_first_name: workspace.owner_first_name,
+                    owner_last_name: workspace.owner_last_name,
+                    _owner_remote_id: workspace._owner._id || workspace._owner,
+                    environment: process.env.DOMAIN,
+                    num_members: usersCount,
+                    num_invited_users: guestsCount,
+                    num_groups: groupsCount,
+                    created_date: workspace.created_date,
+                    access_code: workspace.access_code,
+                    management_private_api_key: workspace.management_private_api_key
+                }
+                axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
+                    API_KEY: workspace.management_private_api_key,
+                    workspaceData: workspaceMgmt
+                }).then().catch(err => console.log(err));
             }
-            axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
-                API_KEY: workspace.management_private_api_key,
-                workspaceData: workspaceMgmt
-            }).then().catch(err => console.log(err));
 
             // Send the status 200 response
             return res.status(200).json({

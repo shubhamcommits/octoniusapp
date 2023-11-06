@@ -1,3 +1,4 @@
+import { GroupService } from './group.services';
 import { LibraryService } from './library.services';
 
 /*  ==========================
@@ -5,5 +6,6 @@ import { LibraryService } from './library.services';
  *  ==========================
  * */
 export { 
+    GroupService as GroupService,
     LibraryService as LibraryService
 };
