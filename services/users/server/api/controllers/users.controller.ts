@@ -1,4 +1,4 @@
-import { Account, Group, Holiday, User, Workspace } from '../models';
+import { Account, Group, Holiday, User, Workspace, Notification } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError,PasswordHelper, axios } from '../../utils';
 import { DateTime } from 'luxon';
@@ -1301,6 +1301,14 @@ export class UsersControllers {
                     await commonService.removeGroup(group._id, userId);
                 }
             });
+
+            Notification.deleteMany(
+                { $or: [
+                    { _actor: userId },
+                    { _owner: userId }
+                ] });
+
+            Holiday.deleteMany({ _user: userId });
 
             // const userGroups = await Group.find({
             //         $and: [
