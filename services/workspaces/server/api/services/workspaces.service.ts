@@ -1,5 +1,5 @@
 import { CommonService } from '.';
-import { Account, Group, Lounge, Story, User, Workspace } from '../models';
+import { Account, Group, Lounge, Story, User, Workspace, Notification, Holiday } from '../models';
 import http from "axios";
 import { axios } from '../../utils';
 
@@ -66,6 +66,16 @@ export class WorkspaceService {
                             }
                         });
                 }
+
+                // Remove the notifications
+                Notification.deleteMany(
+                    { $or: [
+                        { _actor: user._id },
+                        { _owner: user._id }
+                    ] });
+
+                // Remove the user´s holidays
+                Holiday.deleteMany({ _user: user._id });
             });
 
             // Delete the users related
