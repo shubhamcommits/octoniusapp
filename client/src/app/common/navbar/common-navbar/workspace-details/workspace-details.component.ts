@@ -73,6 +73,8 @@ export class WorkspaceDetailsComponent implements OnInit {
               this.subSink.add(this.emitWorkspaceData(this.socketService, this.workspaceData))
 
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@workspaceDetails.workspaceAvatarUpdated:Workspace avatar updated!`));
+
+              this.close();
             }, (err) => {
               console.log('Error occurred, while updating the workspace avatar', err);
               reject(this.utilityService.rejectAsyncPromise($localize`:@@workspaceDetails.oopsAnErrorOccured:Oops, an error occurred while updating the workspace avatar, please try again!`))
@@ -91,5 +93,9 @@ export class WorkspaceDetailsComponent implements OnInit {
    */
   emitWorkspaceData(socketService: SocketService, workspaceData: any){
     return socketService.onEmit('workspaceData', workspaceData).pipe(retry(Infinity)).subscribe()
+  }
+
+  close() {
+    this.utilityService.closeAllModals();
   }
 }
