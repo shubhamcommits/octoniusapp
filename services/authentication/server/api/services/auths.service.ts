@@ -48,7 +48,35 @@ export class AuthsService {
      */
     getSubscriptionProducts() {
         try {
-            return axios.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-subscription-products`, {});
+            if (process.env.NODE_ENV == 'development') {
+              return new Promise((resolve, reject) => {
+                resolve({
+                  data: {
+                    message: 'You have a in a DEVELOPMENT environment',
+                    products: [
+                      {
+                        id: process.env.STRIPE_TEAM_PRODUCT_ID,
+                        name: 'Team Product',
+                        monthly_price: 10,
+                        yearly_price: 100
+                      }
+                      , {
+                        id: process.env.STRIPE_BUSINESS_PRODUCT_ID,
+                        name: 'Business Product',
+                        monthly_price: 15,
+                        yearly_price: 150
+                      }
+                      // , {
+                      //   id: process.env.STRIPE_ONPREMISE_PRODUCT_ID,
+                      //   name: 'On-Premise'
+                      // }
+                    ]
+                  }
+                });
+              });
+            } else {
+              return axios.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-subscription-products`, {});
+            }
         } catch (err) {
             throw (err);
         }

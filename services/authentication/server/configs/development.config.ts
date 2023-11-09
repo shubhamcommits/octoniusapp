@@ -102,6 +102,10 @@ function devConfigInit() {
   process.env.MINIO_SECRET_KEY = process.env.MINIO_SECRET_KEY || '0IOHSeS1tULlsRks3CUYIohIXHCOQaNg'
   process.env.MINIO_PORT = process.env.MINIO_PORT || '9090'
   process.env.MINIO_PROTOCOL = process.env.MINIO_PROTOCOL || 'http'
+
+  process.env.STRIPE_TEAM_PRODUCT_ID = process.env.STRIPE_TEAM_PRODUCT_ID || 'prod_OHLYSPKkuKtKT5'
+  process.env.STRIPE_BUSINESS_PRODUCT_ID = process.env.STRIPE_BUSINESS_PRODUCT_ID || 'prod_OHLYDzd3gB29cY'
+  process.env.STRIPE_BUSINESS_PRODUCT_ID = process.env.STRIPE_ONPREMISE_PRODUCT_ID || 'prod_OHNN4xSuwUbN2z'
 };
 
 export { devConfigInit as developmentConfig }
