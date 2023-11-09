@@ -74,6 +74,7 @@ export class UserImageDetailsComponent implements OnInit {
               this.publicFunctions.sendUpdatesToUserData(this.userData);
 
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@userImageDetails.avatarUpdated:Avatar updated!`));
+              this.close();
             }, (err) => {
               console.log('Error occurred, while updating the avatar', err);
               reject(this.utilityService.rejectAsyncPromise($localize`:@@userImageDetails.oopsAnErrorOccured:Oops, an error occurred while updating the avatar, please try again!`));

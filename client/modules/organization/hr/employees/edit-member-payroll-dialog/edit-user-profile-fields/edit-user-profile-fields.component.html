@@ -20,7 +20,7 @@
                 (blur)="saveProperty({'last_name': $event.target.value})">
 
             <label for="email" i18n="@@userProfile.email" class="muted">E-Mail</label>
-            <input type="text" class="form-control" [(ngModel)]="userData.email" name="email"
+            <input type="text" disabled="true" class="form-control" [(ngModel)]="userData.email" name="email"
                 (blur)="saveProperty({'email': $event.target.value})">
 
             <label for="phone_number" i18n="@@userProfile.phoneNumber" class="muted">Phone number</label>

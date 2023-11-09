@@ -24,19 +24,26 @@ export class WorkspaceController {
 
             let { workspace_name } = req.query;
 
-            // Find the workspace on the basis of workspace_name
-            const workspace: any = await Workspace.findOne({ workspace_name: workspace_name })
+            // // Find the workspace on the basis of workspace_name
+            // const workspace: any = await Workspace.findOne({ workspace_name: workspace_name })
 
-            // Workspace name already exists
-            if (workspace) {
-                return sendError(res, new Error('This Workspace name has already been taken, please pick another name!'), 'This Workspace name has already been taken, please pick another name!', 409);
-            } else {
-                // Send the status 200 response 
-                return res.status(200).json({
-                    message: 'This Workspace name is available!',
-                    workspace: workspace_name
-                });
-            }
+            // // Workspace name already exists
+            // if (workspace) {
+            //     return sendError(res, new Error('This Workspace name has already been taken, please pick another name!'), 'This Workspace name has already been taken, please pick another name!', 409);
+            // } else {
+            //     // Send the status 200 response 
+            //     return res.status(200).json({
+            //         message: 'This Workspace name is available!',
+            //         workspace: workspace_name
+            //     });
+            // }
+
+            // It used to block the creation of two workspaces with the same name, because the product was initially design to be deployed on-premise
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'This Workspace name is available!',
+                workspace: workspace_name
+            });
 
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);

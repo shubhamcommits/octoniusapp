@@ -59,17 +59,20 @@ export class AuthNewWorkplaceComponent implements OnInit {
       this.utilityService.warningNotification($localize`:@@authNewWorkplace.nameCannotBeEmpty:Workplace name can\'t be empty!`);
       this.validWorkspace = false;
     } else {
-      this.authenticationService.checkWorkspaceName({
-          workspace_name: this.workplace.name
-        })
-        .then(() => {
-          this.validWorkspace = true;
-          this.utilityService.successNotification($localize`:@@authNewWorkplace.nameAvailable:This workplace name is available.`);
-        })
-        .catch(() => {
-          this.validWorkspace = false;
-          this.utilityService.errorNotification($localize`:@@authNewWorkplace.nameTaken:This workplace name is taken, kindly come up with another one!`);
-        });
+      // this.authenticationService.checkWorkspaceName({
+      //     workspace_name: this.workplace.name
+      //   })
+      //   .then(() => {
+      //     this.validWorkspace = true;
+      //     this.utilityService.successNotification($localize`:@@authNewWorkplace.nameAvailable:This workplace name is available.`);
+      //   })
+      //   .catch(() => {
+      //     this.validWorkspace = false;
+      //     this.utilityService.errorNotification($localize`:@@authNewWorkplace.nameTaken:This workplace name is taken, kindly come up with another one!`);
+      //   });
+      
+      // It used to block the creation of two workspaces with the same name, because the product was initially design to be deployed on-premise
+      this.validWorkspace = true;
     }
   }
 

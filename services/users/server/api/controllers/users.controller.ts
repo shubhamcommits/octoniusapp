@@ -365,7 +365,13 @@ export class UsersControllers {
                     select: '_id email _workspaces first_name last_name created_date'
                 })
                 .lean();
-    
+// console.log(propertyToSave);
+//             const propertiesNames = Object.keys(propertyToSave);
+// console.log(propertiesNames.includes('email'));
+//             if (propertiesNames.includes('email')) {
+
+//             }
+
             // Send the status 200 response 
             return res.status(200).json({
                 message: 'User edited.',

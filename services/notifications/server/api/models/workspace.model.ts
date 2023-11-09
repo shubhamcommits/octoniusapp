@@ -10,7 +10,6 @@ const workspaceSchema = new Schema({
     },
     workspace_name: {
         type: String,
-        unique: true,
         required: true
     },
     access_code: {
