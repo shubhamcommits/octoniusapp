@@ -376,7 +376,7 @@ export class PostController {
      * @param next 
      */
     async getGlobalNorthStarTasks(req: Request, res: Response, next: NextFunction) {
-       await postService.getGlobalNorthStarTasks()
+        await postService.getGlobalNorthStarTasks(req['userId'])
             .then((posts) => {
                 // If lastPostId is there then, send status 200 response
                 return res.status(200).json({
