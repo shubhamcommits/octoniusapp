@@ -17,7 +17,7 @@ const minio = require('minio');
 export class PostService {
 
   // Select User Fields on population
-  userFields: any = 'first_name last_name profile_pic role email';
+  userFields: any = 'first_name last_name profile_pic role email _workspace';
 
   // Select Group Fileds on population
   groupFields: any = 'group_name group_avatar workspace_name enabled_rights';
@@ -2043,9 +2043,10 @@ export class PostService {
     }
   }
 
-  async getGlobalNorthStarTasks() {
+  async getGlobalNorthStarTasks(userId: string) {
     try {
-      const posts = await Post.find({
+      const userData = await User.findById(userId).select('_workspace').lean();
+      let posts = await Post.find({
           $and: [
             { '_group': { $eq: null }},
             { 'task.isNorthStar': true },
@@ -2057,43 +2058,46 @@ export class PostService {
         .populate({ path: '_assigned_to', select: this.userFields })
         .lean();
 
+      posts = posts.filter(tmpPost => tmpPost._posted_by._workspace == userData._workspace);
       for (let i = 0; i < posts.length; i++) {
         let post = posts[i];
 
-        const subtasks = await Post.find({
-            $and: [
-              { type: 'task' },
-              { 'task._parent_task': post?._id },
-            ]
-          }).select('task.status task.isNorthStar task.northStar').lean();
+        if (post._posted_by._workspace == userData._workspace) {
+          const subtasks = await Post.find({
+              $and: [
+                { type: 'task' },
+                { 'task._parent_task': post?._id },
+              ]
+            }).select('task.status task.isNorthStar task.northStar').lean();
 
-        if (subtasks && subtasks.length > 0) {
-          let northStarValues = [];
-          subtasks.forEach(st => {
-            let nsValues:any = {};
-            if (st?.task?.isNorthStar) {
-              const value = st?.task?.northStar?.values[st?.task?.northStar?.values?.length-1];
-              nsValues = {
-                  // currency: st?.task?.northStar?.currency,
-                  type: st?.task?.northStar?.type,
-                  value: value?.value,
-                  status: value?.status,
+          if (subtasks && subtasks.length > 0) {
+            let northStarValues = [];
+            subtasks.forEach(st => {
+              let nsValues:any = {};
+              if (st?.task?.isNorthStar) {
+                const value = st?.task?.northStar?.values[st?.task?.northStar?.values?.length-1];
+                nsValues = {
+                    // currency: st?.task?.northStar?.currency,
+                    type: st?.task?.northStar?.type,
+                    value: value?.value,
+                    status: value?.status,
+                  };
+              } else {
+                nsValues = {
+                  type: '',
+                  value: 0,
+                  status: st?.task?.status
                 };
-            } else {
-              nsValues = {
-                type: '',
-                value: 0,
-                status: st?.task?.status
-              };
-            }
+              }
 
-            northStarValues = northStarValues.concat(nsValues);
-          });
+              northStarValues = northStarValues.concat(nsValues);
+            });
 
-          post.northStarValues = northStarValues;
+            post.northStarValues = northStarValues;
+          }
+
+          posts[i] = post;
         }
-
-        posts[i] = post;
       }
 
       return posts;
