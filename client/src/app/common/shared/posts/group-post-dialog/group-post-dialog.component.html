@@ -129,13 +129,14 @@
                 <!--<i class="material-icons">approval</i>-->
                 <span i18n="@@groupCreatePostDialog.comments">Comments</span>
               </ng-template>
-
-              <app-comment-list
-                [postId]="postData?._id"
-                [userData]="userData"
-                [groupId]="postData?._group?._id || postData?._group"
-                [length]="postData?.comments_count"
-                [newComment]="newComment"></app-comment-list>
+              <ng-template matTabContent>
+                <app-comment-list
+                  [postId]="postData?._id"
+                  [userData]="userData"
+                  [groupId]="postData?._group?._id || postData?._group"
+                  [length]="postData?.comments_count"
+                  [newComment]="newComment"></app-comment-list>
+              </ng-template>
             </mat-tab>
             <!-- comment-list ENDS-->
 
