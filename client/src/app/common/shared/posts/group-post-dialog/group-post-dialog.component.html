@@ -105,30 +105,33 @@
             || (postData?.comments_count > 0) || (postData?.task?.isNorthStar) || (postData?.logs && postData?.logs?.length > 0)
             || (postData?.type === 'task' && postData?.approval_active && postData?.approval_history && postData?.approval_history?.length > 0)">
           <!-- TABS STARTS -->
-          <mat-tab-group mat-align-tabs="start">
+          <mat-tab-group mat-align-tabs="start" [selectedIndex]="selectedTab">
             <!-- subtasks STARTS-->
-            <mat-tab label="" *ngIf="showSubtasks && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id)">
+            <mat-tab *ngIf="showSubtasks && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id)">
               <ng-template mat-tab-label>
                 <!--<i class="material-icons">manage_history</i>-->
                 <span i18n="@@groupCreatePostDialog.subtasks">Subtasks</span>
               </ng-template>
 
-              <app-subtasks
-                [subtasks]="subtasks"
-                [groupData]="groupData"
-                [userData]="userData"
-                [parentId]="postData?._id"
-                [parentNS]="postData?.task?.isNorthStar"
-                (openSubtaskEmitter)="onOpenSubtask($event)"></app-subtasks>
+              <ng-template matTabContent>
+                <app-subtasks
+                  [subtasks]="subtasks"
+                  [groupData]="groupData"
+                  [userData]="userData"
+                  [parentId]="postData?._id"
+                  [parentNS]="postData?.task?.isNorthStar"
+                  (openSubtaskEmitter)="onOpenSubtask($event)"></app-subtasks>
+              </ng-template>
             </mat-tab>
             <!-- subtasks ENDS-->
 
             <!-- comment-list STARTS-->
-            <mat-tab label="" *ngIf="postData?.comments_count > 0">
+            <mat-tab *ngIf="postData?.comments_count > 0">
               <ng-template mat-tab-label>
                 <!--<i class="material-icons">approval</i>-->
                 <span i18n="@@groupCreatePostDialog.comments">Comments</span>
               </ng-template>
+
               <ng-template matTabContent>
                 <app-comment-list
                   [postId]="postData?._id"
@@ -141,42 +144,48 @@
             <!-- comment-list ENDS-->
 
             <!-- north-star-stats STARTS-->
-            <mat-tab label="" *ngIf="postData?.task?.isNorthStar">
+            <mat-tab *ngIf="postData?.task?.isNorthStar">
               <ng-template mat-tab-label>
                 <!--<i class="material-icons">approval</i>-->
                 <span i18n="@@groupCreatePostDialog.northStarStats">North Star Stats</span>
               </ng-template>
 
-              <app-north-star-stats
-                [isNorthStar]="(postData?.task?.isNorthStar) ? true : false"
-                [northStar]="postData?.task?.northStar">
-              </app-north-star-stats>
+              <ng-template matTabContent>
+                <app-north-star-stats
+                  [isNorthStar]="(postData?.task?.isNorthStar) ? true : false"
+                  [northStar]="postData?.task?.northStar">
+                </app-north-star-stats>
+              </ng-template>
             </mat-tab>
             <!-- north-star-stats ENDS-->
 
             <!-- APPROVALS HISTORY STARTS-->
-            <mat-tab label="" *ngIf="postData?.type === 'task' && postData?.approval_active && postData?.approval_history && postData?.approval_history?.length > 0&& isBusinessSubscription">
+            <mat-tab *ngIf="postData?.type === 'task' && postData?.approval_active && postData?.approval_history && postData?.approval_history?.length > 0&& isBusinessSubscription">
               <ng-template mat-tab-label>
                 <!--<i class="material-icons">approval</i>-->
                 <span i18n="@@groupCreatePostDialog.approvalsHistory">Approvals History</span>
               </ng-template>
 
-              <app-approvals-history
-                [groupId]="groupData?._id"
-                [userData]="userData"
-                [itemData]="postData"
-                [type]="'post'"></app-approvals-history>
+              <ng-template matTabContent>
+                <app-approvals-history
+                  [groupId]="groupData?._id"
+                  [userData]="userData"
+                  [itemData]="postData"
+                  [type]="'post'"></app-approvals-history>
+              </ng-template>
             </mat-tab>
             <!-- APPROVALS HISTORY ENDS-->
 
             <!-- TASK CHANGES HISTORY STARTS-->
-            <mat-tab label="" *ngIf="postData?.logs && postData?.logs?.length > 0">
+            <mat-tab *ngIf="postData?.logs && postData?.logs?.length > 0">
               <ng-template mat-tab-label>
                 <!--<i class="material-icons">approval</i>-->
                 <span i18n="@@groupCreatePostDialog.changeLog">Change Log</span>
               </ng-template>
 
-              <app-post-logs [logs]="postData?.logs"></app-post-logs>
+              <ng-template matTabContent>
+                <app-post-logs [logs]="postData?.logs"></app-post-logs>
+              </ng-template>
             </mat-tab>
             <!-- TASK CHANGES HISTORY ENDS-->
           </mat-tab-group>

@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, Inject, Injector } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Inject, Injector, AfterViewInit, AfterViewChecked } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { PostService } from 'src/shared/services/post-service/post.service';
@@ -15,7 +15,7 @@ import { ManagementPortalService } from 'src/shared/services/management-portal-s
   templateUrl: './group-post-dialog.component.html',
   styleUrls: ['./group-post-dialog.component.scss']
 })
-export class GroupPostDialogComponent implements OnInit {
+export class GroupPostDialogComponent implements OnInit, AfterViewChecked {
 
   // Close Event Emitter - Emits when closing dialog
   @Output() closeEvent = new EventEmitter();
@@ -102,6 +102,8 @@ export class GroupPostDialogComponent implements OnInit {
 
   newComment;
 
+  selectedTab = 0;
+
   myWorkplace = false;
 
   // Public Functions class object
@@ -155,6 +157,10 @@ export class GroupPostDialogComponent implements OnInit {
     this.userData = await this.publicFunctions.getCurrentUser();
 
     await this.initPostData();
+  }
+
+  ngAfterViewChecked() {
+    this.selectedDefaultTab();
   }
 
   async initPostData() {
@@ -273,6 +279,22 @@ export class GroupPostDialogComponent implements OnInit {
           this.selectedCFValues[field.name] = this.postData?.task.custom_fields[field.name];
         }
       });
+    }
+  }
+
+  selectedDefaultTab() {
+    if (this.showSubtasks && (!this.postData?.task?.shuttle_type || this.groupData?._id == this.postData?._group?._id)) {
+      this.selectedTab = 0;
+    } else if (this.postData?.comments_count > 0) {
+      this.selectedTab = 1;
+    } else if (this.postData?.task?.isNorthStar) {
+      this.selectedTab = 2;
+    } else if (this.postData?.type === 'task' && this.postData?.approval_active && this.postData?.approval_history && this.postData?.approval_history?.length > 0 && this.isBusinessSubscription) {
+      this.selectedTab = 3;
+    } else if (this.postData?.logs && this.postData?.logs?.length > 0) {
+      this.selectedTab = 4;
+    } else {
+      this.selectedTab = 0;
     }
   }
 
