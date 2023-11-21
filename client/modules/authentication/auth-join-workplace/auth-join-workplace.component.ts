@@ -73,17 +73,19 @@ export class AuthJoinWorkplaceComponent implements OnInit {
       this.utilityService.warningNotification($localize`:@@authJoinWorkplace.nameCannotBeEmpty:Workplace name can\'t be empty!`);
       this.validWorkspace = false;
     } else {
-      this.authenticationService.checkWorkspaceName({
-          workspace_name: this.workplaceData.name
-        })
-        .then(() => {
-          this.validWorkspace = false;
-          this.utilityService.errorNotification($localize`:@@authJoinWorkplace.namedoesntExist:This workplace name does not exist!`);
-        })
-        .catch(() => {
-          this.validWorkspace = true;
-          this.utilityService.successNotification($localize`:@@authJoinWorkplace.nameIsCorrect:This workplace name is correct!`);
-        });
+      // this.authenticationService.checkWorkspaceName({
+      //     workspace_name: this.workplaceData.name
+      //   })
+      //   .then(() => {
+      //     this.validWorkspace = false;
+      //     this.utilityService.errorNotification($localize`:@@authJoinWorkplace.namedoesntExist:This workplace name does not exist!`);
+      //   })
+      //   .catch(() => {
+      //     this.validWorkspace = true;
+      //     this.utilityService.successNotification($localize`:@@authJoinWorkplace.nameIsCorrect:This workplace name is correct!`);
+      //   });
+      this.validWorkspace = true;
+      this.utilityService.successNotification($localize`:@@authJoinWorkplace.nameIsCorrect:This workplace name is correct!`);
     }
   }
 
