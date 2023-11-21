@@ -47,8 +47,8 @@
             </div>
 
             <button type="submit" class="btn btn-primary btn-block btn_login"
-                [disabled]="!validWorkspace" (click)="joinWorkplace()"
-                i18n="@@authJoinWorkplace.join">
+                [disabled]="!validWorkspace || workplaceData.access_code == null || workplaceData.access_code == ''"
+                (click)="joinWorkplace()" i18n="@@authJoinWorkplace.join">
                   Join
             </button>
           </div>
