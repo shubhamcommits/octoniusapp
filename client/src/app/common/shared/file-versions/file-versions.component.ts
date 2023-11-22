@@ -98,7 +98,7 @@ export class FileVersionsComponent implements OnInit {
   }
 
   isOfficeFile(fileName: string) {
-    const officeExtensions = ['ott', 'odm', 'doc', 'docx', 'xls', 'xlsx', 'ods', 'ots', 'odt', 'xst', 'odg', 'otg', 'odp', 'ppt', 'otp', 'pot', 'odf', 'odc', 'odb'];
+    const officeExtensions = ['ott', 'odm', 'doc', 'docx', 'xls', 'xlsx', 'ods', 'ots', 'odt', 'xst', 'odg', 'otg', 'odp', 'ppt', 'pptx', 'otp', 'pot', 'odf', 'odc', 'odb'];
     const fileExtension = this.getFileExtension(fileName);
     return officeExtensions.includes(fileExtension);
   }
