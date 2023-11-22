@@ -131,7 +131,7 @@
                   {{ getProgressPercent(task?.task?.northStar) | percent: '.2-2'}}
 
                   <mat-progress-bar mode="determinate"
-                    [appProgressBarColor]="getNSStatusColor(task?.task?.northStar?.values[task?.task?.northStar?.values?.length - 1].status)"
+                    [appProgressBarColor]="getNSStatusColor(task?.task?.northStar?.values[0].status)"
                     [value]="getProgressPercent(task?.task?.northStar) * 100" style="height: 10px; border-radius: 20px;">
                   </mat-progress-bar>
                 </div>

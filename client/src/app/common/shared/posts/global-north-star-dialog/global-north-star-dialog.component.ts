@@ -153,6 +153,7 @@ export class GlobalNorthStarDialogComponent implements OnInit {
       if (this.subtasks && this.subtasks.length > 0) {
         this.subtasks.forEach(st => {
           if (st.task.isNorthStar) {
+            st.task.northStar.values = st?.task?.northStar?.values?.sort((v1, v2) => (moment.utc(v1.date).isBefore(moment.utc(v2.date))) ? 1 : -1)
             const nsValues = this.mapNSValues(st);
             this.northStarValues = this.northStarValues.concat(nsValues);
           } else {
@@ -499,10 +500,10 @@ export class GlobalNorthStarDialogComponent implements OnInit {
     }
 
     if (northStar.type !== 'Percent') {
-      return (northStar.values[northStar.values.length - 1].value)/northStar.target_value;
+      return (northStar.values[0].value)/northStar.target_value;
     }
 
-    return northStar.values[northStar.values.length - 1].value / 100;
+    return northStar.values[0].value / 100;
   }
 
   getNSStatusColor(status: string) {

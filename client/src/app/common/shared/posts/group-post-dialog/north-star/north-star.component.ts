@@ -1,14 +1,15 @@
-import { Component, OnInit, Input, EventEmitter, Output, ChangeDetectionStrategy, Injector } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, Injector } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { PublicFunctions } from 'modules/public.functions';
 import { CountryCurrencyService } from 'src/shared/services/country-currency/country-currency.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-north-star',
   templateUrl: './north-star.component.html',
   styleUrls: ['./north-star.component.scss'],
   providers:[CurrencyPipe],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NorthStarComponent implements OnInit {
 
@@ -46,10 +47,10 @@ export class NorthStarComponent implements OnInit {
 
   async ngOnInit() {
 
-    await this.publicFunctions.getCurrentUser().then(user => this.currentUser = user);
+    this.currentUser = await this.publicFunctions.getCurrentUser();
 
     this.currencies = await this.countryCurrencyService.getCurrencies();
-
+    
     if (this.northStar.type == 'Currency $' || this.northStar.type == 'Currency €') {
       if (this.northStar.type == 'Currency $') {
         this.northStar.currency = 'USD';
@@ -62,13 +63,13 @@ export class NorthStarComponent implements OnInit {
     }
 
     if (this.isNorthStar) {
-
       if (this.northStar.target_value === 0) {
         this.updatingInitialValues = true;
       }
-      if (this.northStar.values[this.northStar.values.length - 1]) {
-        this.initialValue = this.northStar.values[this.northStar.values.length - 1].value;
-        this.setStatusClass(this.northStar.values[this.northStar.values.length - 1].status);
+
+      if (!!this.northStar.values[0]) {
+        this.initialValue = this.northStar.values[0].value;
+        this.setStatusClass(this.northStar.values[0].status);
       } else {
         this.initialValue = 0;
         this.setStatusClass('NOT STARTED');
@@ -92,8 +93,8 @@ export class NorthStarComponent implements OnInit {
     this.updateProgress = !this.updateProgress;
     this.newValue = {
       date: Date.now(),
-      value: this.northStar.values[this.northStar.values.length - 1].value,
-      status: this.northStar.values[this.northStar.values.length - 1].status,
+      value: this.northStar.values[0].value,
+      status: this.northStar.values[0].status,
       _user: this.currentUser._id
     };
   }
@@ -124,7 +125,8 @@ export class NorthStarComponent implements OnInit {
   addUpdateProgress() {
     this.updateProgress = false;
     this.newValue._user = this.currentUser?._id;
-    this.northStar.values.push(this.newValue);
+    // this.northStar.values.push(this.newValue);
+    this.northStar.values.unshift(this.newValue);
     this.addProgressNorthStarEmitter.emit(this.northStar);
   }
 }
