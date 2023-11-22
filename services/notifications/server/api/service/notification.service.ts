@@ -55,7 +55,7 @@ export class NotificationsService {
                         $and: [
                             { _owner: userId },
                             { read: false },
-                            { type: { $nin: ["new-post", "launch-approval-flow-due-date"] }}
+                            { type: { $nin: ["new-post", "launch-approval-flow-due-date", "hive", "hive_new_entity"] }}
                         ]
                     })
                     .sort('-created_date')
@@ -76,7 +76,7 @@ export class NotificationsService {
                         $and: [
                             { _owner: userId },
                             { read: false },
-                            { type: { $nin: ["new-post", "launch-approval-flow-due-date"] }}
+                            { type: { $nin: ["new-post", "launch-approval-flow-due-date", "hive", "hive_new_entity"] }}
                         ]
                     })
                     .sort('-created_date')
@@ -220,12 +220,12 @@ export class NotificationsService {
     async markRead(topListId: string) {
         try {
             const markRead = await Notification.findOneAndUpdate({
-                _id: topListId
-            }, {
-                $set: {
-                    read: true
-                }
-            });
+                    _id: topListId
+                }, {
+                    $set: {
+                        read: true
+                    }
+                });
 
             return true;
         } catch (err) {
@@ -271,7 +271,6 @@ export class NotificationsService {
      */
     async newEventAssignments(postId, assigned_to, groupId, posted_by) {
         try {
-
             // Let usersStream
             let userStream: any;
 
