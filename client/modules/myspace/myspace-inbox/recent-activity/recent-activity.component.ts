@@ -360,17 +360,20 @@ export class RecentActivityComponent implements OnInit {
   }
 
   markAsCompleted(notificationId: string) {
-    this.utilityService.getConfirmDialogAlert($localize`:@@recentActivity.areYouSure:Are you sure?`, $localize`:@@recentActivity.completelyRemoved:By doing this, the task will be marked as Done!`)
+    this.utilityService.getConfirmDialogAlert($localize`:@@recentActivity.areYouSure:Are you sure?`, $localize`:@@recentActivity.completelyRemoved:By doing this, the task will be marked as DONE!`)
       .then((res) => {
         if (res.value) {
-          this.utilityService.asyncNotification($localize`:@@recentActivity.pleaseWaitDeleting:Please wait we are deleting the holiday...`, new Promise((resolve, reject) => {
+          this.utilityService.asyncNotification($localize`:@@recentActivity.pleaseWaitDeleting:Please wait we are update the notification...`, new Promise((resolve, reject) => {
             this.hrService.markNotificationAsDone(notificationId).then(async res => {
-              await this.initNotifications();
+              const index = (this.pendingHRTasks) ? this.pendingHRTasks.findIndex(task => task._id == notificationId) : -1;
+              if (index >= 0) {
+                this.pendingHRTasks.splice(index, 1);
+              }
 
-              resolve(this.utilityService.resolveAsyncPromise($localize`:@@recentActivity.deleted:Holiday deleted!`));
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@recentActivity.notificationUpdated:Notification marked as DONE!`));
               // window.location.reload();
             }).catch((err) => {
-              reject(this.utilityService.rejectAsyncPromise($localize`:@@recentActivity.unableDeleteHoliday:Unable to delete the holiday, please try again!`));
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@recentActivity.unableUpdateNotifiaction:Unable to mark the notification as DONE, please try again!`));
             });
           }));
         }
