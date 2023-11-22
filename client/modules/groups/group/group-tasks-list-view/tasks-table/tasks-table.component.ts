@@ -98,8 +98,18 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
     this.tasks = [...this.tasks];
     await this.sorting();
 
+    await this.sortNSValues();
+
     this.dataSource = new MatTableDataSource(this.tasks);
     this.dataSource.sort = this.sort;
+  }
+
+  sortNSValues() {
+    this.tasks.forEach(post => {
+      if (!!post?.task?.northStar?.values) {
+        post.task.northStar.values = post?.task?.northStar?.values?.sort((v1, v2) => (moment.utc(v1.date).isBefore(moment.utc(v2.date))) ? 1 : -1)
+      }
+    });
   }
 
   async sorting() {
@@ -217,16 +227,17 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   }
 
   getProgressPercent(northStar) {
+    northStar.values = northStar?.values?.sort((v1, v2) => (moment.utc(v1.date).isBefore(moment.utc(v2.date))) ? 1 : -1)
     if (northStar.type !== 'Percent') {
-      return (northStar.values[northStar.values.length - 1].value) / northStar.target_value;
+      return (northStar.values[0].value) / northStar.target_value;
     }
 
-    return northStar.values[northStar.values.length - 1].value / 100;
+    return northStar.values[0].value / 100;
   }
 
   getNSStatusClass(northStar) {
     let retClass = "percentlabel";
-    const status = northStar.values[northStar.values.length - 1].status;
+    const status = northStar.values[0].status;
     if (status === 'NOT STARTED') {
       retClass += ' not_started';
     } else if (status === 'ON TRACK') {

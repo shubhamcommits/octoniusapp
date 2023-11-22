@@ -210,6 +210,8 @@ export class GroupPostDialogComponent implements OnInit, AfterViewChecked {
           this.showSubtasks = true;
         }
       });
+
+      await this.sortNSValues();
     }
 
     // If post type is event, set the dueTime
@@ -279,6 +281,12 @@ export class GroupPostDialogComponent implements OnInit, AfterViewChecked {
           this.selectedCFValues[field.name] = this.postData?.task.custom_fields[field.name];
         }
       });
+    }
+  }
+
+  sortNSValues() {
+    if (!!this.postData?.task?.northStar?.values) {
+      this.postData.task.northStar.values = this.postData?.task?.northStar?.values?.sort((v1, v2) => (moment.utc(v1.date).isBefore(moment.utc(v2.date))) ? 1 : -1)
     }
   }
 
@@ -639,6 +647,8 @@ export class GroupPostDialogComponent implements OnInit, AfterViewChecked {
       this.postService.edit(postId, this.userData?._workspace?._id || this.userData?._workspace, formData)
         .then((res) => {
           this.postData = res['post'];
+
+          this.initPostData();
 
           this.contentChanged = false;
           // Resolve with success

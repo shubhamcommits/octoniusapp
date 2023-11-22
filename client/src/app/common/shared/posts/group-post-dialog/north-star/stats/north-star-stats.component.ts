@@ -1,6 +1,5 @@
-import { Component, OnInit, Input, EventEmitter, Output, Injector } from '@angular/core';
+import { Component, OnInit, Input, Injector, OnChanges } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
-import moment from 'moment';
 import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
@@ -9,7 +8,7 @@ import { PublicFunctions } from 'modules/public.functions';
   styleUrls: ['./north-star-stats.component.scss'],
   providers:[CurrencyPipe]
 })
-export class NorthStarStatsComponent implements OnInit {
+export class NorthStarStatsComponent implements OnInit, OnChanges {
 
   @Input() isNorthStar = false;
   @Input() northStar;
@@ -26,7 +25,15 @@ export class NorthStarStatsComponent implements OnInit {
   async ngOnInit() {
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
-    this.northStar.values = this.northStar?.values?.sort((v1, v2) => (moment.utc(v1.date).isBefore(v2.date)) ? 1 : -1);
+    await this.initNS();
+  }
+
+  async ngOnChanges() {
+    await this.initNS();
+  }
+
+  initNS() {
+    // this.northStar.values = this.northStar?.values?.sort((v1, v2) => (moment.utc(v1.date).isBefore(v2.date)) ? 1 : -1);
     
     this.northStar?.values?.forEach(async (v, index) => {
       if (v?._user && !v?._user?._id) {
