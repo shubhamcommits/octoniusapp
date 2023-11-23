@@ -19,7 +19,19 @@
 }
 
 input {
-  display: none;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.add-page{
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn:hover {
+  color: #fff;
+  background: #4a90e2;
 }
 
 .page {

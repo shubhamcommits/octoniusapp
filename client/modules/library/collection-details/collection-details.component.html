@@ -5,10 +5,24 @@
         <mat-tab [label]="pagesLabel">
             <div class="row" style="padding: 20px;" *ngIf="canEdit">
                 <!-- Create new Collection starts -->
-                <button class="btn btn-primary mb-3 mt-3" type="button" (click)="createPage()">
+                <!-- <button class="btn btn-primary mb-3 mt-3" type="button" (click)="createPage()">
                     <i class="material-icons-outlined">add</i>
                     <span i18n="@@collectionDetails.newPage">New Page</span>
-                </button>
+                </button> -->
+                
+                <div>
+                  <div class="add-page" *ngIf="canEditTitle">
+                    <input autofocus class="form-control" type="text" placeholder="Enter page title" [(ngModel)]="postTitle" (keyup.enter)="createPage()" (blur)="canEditTitle=false">
+                  </div>
+
+                  <div *ngIf="!canEditTitle">
+                    <button class="btn btn-block task muted" 
+                      (click)="canEditTitle=true">
+                      <i class="material-icons-outlined" >add</i> 
+                      <span i18n="@@newTask.newTask" >New Page</span>
+                    </button>
+                  </div>
+                </div>
                 <!-- Create new Collection ends -->
             </div>
             
