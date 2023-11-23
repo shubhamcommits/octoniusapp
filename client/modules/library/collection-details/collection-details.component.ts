@@ -24,6 +24,8 @@ export class CollectionDetailsComponent implements OnInit {
   userData: any;
   groupData: any;
   workspaceData: any;
+  canEditTitle: boolean;
+  postTitle: any;
 
   authToken: string;
 
@@ -149,13 +151,15 @@ export class CollectionDetailsComponent implements OnInit {
   }
 
   async createPage(parentPageId?: string) {
+    this.newPageName = this.postTitle;
+
     await this.utilityService.asyncNotification($localize`:@@collectionDetails.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise(async (resolve, reject) => {
 
       this.libraryService.createPage(this.collectionData?._id, parentPageId, this.newPageName).then(res => {
         if (!this.collectionData._pages) {
           this.collectionData._pages = [];
         }
-        this.collectionData._pages.push(res['page']);
+        this.collectionData._pages.push(res['newPage']);
 
         // Resolve with success
         resolve(this.utilityService.resolveAsyncPromise($localize`:@@collectionDetails.pageCreated:Page created!`));
@@ -164,6 +168,9 @@ export class CollectionDetailsComponent implements OnInit {
         reject(this.utilityService.rejectAsyncPromise($localize`:@@collectionDetails.unableToCreate:Unable to create the page, please try again!`));
       });
     }));
+
+    // Clear the postTitle
+    this.postTitle = undefined;
   }
   
   // fileDropped(files: FileList) {
