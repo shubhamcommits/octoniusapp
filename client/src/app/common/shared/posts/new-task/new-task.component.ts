@@ -92,8 +92,8 @@ export class NewTaskComponent implements OnInit {
         created_date: today,
         _group: this.groupData?._id || this.groupData,
         _content_mentions: [],
+        _assigned_to: null,
         task: {
-          _assigned_to: null,
           status: 'to do',
           _column: null,
           custom_fields: [],
@@ -125,8 +125,8 @@ export class NewTaskComponent implements OnInit {
           created_date: today,
           _group: this.groupData._id,
           _content_mentions: [],
+          _assigned_to: this.userData._id,
           task: {
-            _assigned_to: this.userData._id,
             status: 'to do',
             custom_fields: [],
             _column: this.column._id,
@@ -147,7 +147,7 @@ export class NewTaskComponent implements OnInit {
           }
         }
       }
-      else{
+      else {
         postData = {
           title: this.postTitle,
           content: '',
@@ -156,8 +156,8 @@ export class NewTaskComponent implements OnInit {
           created_date: today,
           _group: this.groupData._id,
           _content_mentions: [],
+          _assigned_to: null,
           task: {
-            _assigned_to: null,
             status: 'to do',
             custom_fields: [],
             _column: this.column._id,
@@ -197,7 +197,6 @@ export class NewTaskComponent implements OnInit {
     this.postTitle = undefined;
     this.saveAsNorthStar = false;
     this.saveAsIdea = false;
-
   }
 
   /**
