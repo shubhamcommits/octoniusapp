@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, Injector, AfterContentChecked } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
 import { PublicFunctions } from 'modules/public.functions';
@@ -7,8 +6,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import moment from 'moment';
-import * as XLSX from 'xlsx';
-import * as fileSaver from 'file-saver';
 
 @Component({
   selector: 'app-group-tasks-views',
@@ -134,7 +131,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
      */
     this.customFields = [];
     await this.groupService.getGroupCustomFields(this.groupData?._id).then((res) => {
-      if (res['group']['custom_fields']) {
+      if (!!res['group']['custom_fields']) {
         res['group']['custom_fields'].forEach(field => {
           this.customFields.push(field);
         });
@@ -228,6 +225,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
 
   async onCustomFieldEmitter(customFields) {
     this.customFields = [...customFields];
+    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
   }
 
   isAdminUser() {
