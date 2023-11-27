@@ -61,11 +61,14 @@ routes.delete('/collection/:workspaceId/:collectionId', library.removeCollection
 // PUT - Updates the collection property
 routes.put('/collection/:collectionId/content', library.updateCollectionContent);
 
-// PUT - This route is used to like a post
+// PUT - This route is used to add an editor
 routes.put('/collection/:collectionId/addEditor', library.addEditor);
 
-// PUT - This route is used to unlike a post
+// PUT - This route is used to remove an editor
 routes.put('/collection/:collectionId/removeEditor', library.removeEditor);
+
+// PUT - This route is used to move a collection to other group
+routes.put('/collection/:collectionId/moveToGroup/:groupId', library.moveToGroup);
 
 // PUT - Change the Collection Image
 routes.put('/collection/:collectionId/updateCollectionImage/:workspaceId', collectionUploadFileUpload, library.updateCollectionImage);

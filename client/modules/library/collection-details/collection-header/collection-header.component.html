@@ -65,6 +65,18 @@
         (assigneeAddedEmiter)="onEditorAdded($event)" (assigneeRemovedEmiter)="onEditorRemoved($event)">
     </app-multiple-assignments>
 
+    <button *ngIf="editContent" [matMenuTriggerFor]="moveMenu"
+        class="btn float-right btn-warning btn-md" style="margin-left: 10px;" i18n="@@collectionHeader.moveToGroup">
+        Move To Group
+    </button>
+    
+    <mat-menu #moveMenu="matMenu">
+        <ng-container *ngFor="let group of userGroups; let index = index">
+            <button mat-menu-item (click)="moveToGroup(userGroups[index]?._id)">{{
+                group.group_name }}</button>
+        </ng-container>
+    </mat-menu>
+
     <button *ngIf="editContent" (click)="openShareDialog()"
         class="btn float-right btn-primary btn-md" style="margin-left: 10px;">
         <i class="material-icons-outlined">share</i>
@@ -89,6 +101,19 @@
                     <span i18n="@@collectionHeader.share">Share</span>
                 </a>
             </li>
+
+            <li>
+                <a *ngIf="!editContent" mat-menu-item [matMenuTriggerFor]="moveMenu2" class="btn btn-warning btn-block">
+                    <span i18n="@@collectionHeader.moveToGroup">Move To Group</span>
+                </a>
+            </li>
+    
+            <mat-menu #moveMenu2="matMenu">
+                <ng-container *ngFor="let group of userGroups; let index = index">
+                    <button mat-menu-item (click)="moveToGroup(userGroups[index]?._id)">{{
+                        group.group_name }}</button>
+                </ng-container>
+            </mat-menu>
 
              <li>
                 <a *ngIf="!editContent" (click)="editContent = !editContent" class="btn btn-secondary btn-block">

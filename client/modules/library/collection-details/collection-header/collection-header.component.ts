@@ -29,6 +29,8 @@ export class CollectionHeaderComponent implements OnInit, OnChanges {
   quillData: any;
   contentChanged = false;
 
+  userGroups = [];
+
   // Public functions
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -41,6 +43,22 @@ export class CollectionHeaderComponent implements OnInit, OnChanges {
   ) { }
 
   async ngOnInit() {
+    await this.publicFunctions.getAllUserGroups(this.workspaceData?._id)
+      .then((groups: any) => {
+
+        groups.splice(groups.findIndex(group => group._id == this.groupData?._id), 1);
+
+        this.userGroups = groups;
+
+        this.userGroups.sort((g1, g2) => (g1.group_name > g2.group_name) ? 1 : -1);
+        this.utilityService.removeDuplicates(this.userGroups, '_id').then((groups)=>{
+          this.userGroups = groups;
+        });
+      })
+      .catch(() => {
+        // If the function breaks, then catch the error and console to the application
+        this.publicFunctions.sendError(new Error($localize`:@@collectionHeader.unableToConnectToServer:Unable to connect to the server, please try again later!`));
+      });
   }
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -256,6 +274,28 @@ export class CollectionHeaderComponent implements OnInit, OnChanges {
             reject(this.utilityService.rejectAsyncPromise($localize`:@@collectionHeader.unableToUpdateDetails:Unable to update the details, please try again!`));
           });
       }));
+  }
+
+  moveToGroup(groupId: string) {
+    // Open the Confirm Dialog to ask for permission
+    this.utilityService.getConfirmDialogAlert($localize`:@@collectionHeader.areYouSure:Are you sure?`, $localize`:@@collectionHeader.doingThisItemWillBeMoved:By doing this the item will be moved to the selected group!`)
+      .then(async (res) => {
+        if (res.value) {
+          await this.utilityService.asyncNotification($localize`:@@collectionHeader.pleaseWaitMoving:Please wait we are moving the item...`, new Promise((resolve, reject) => {
+            this.libraryService.moveCollectionToGroup(this.collectionData._id, groupId)
+              .then(async (res) => {
+                const newGroup = await this.publicFunctions.getGroupDetails(groupId);
+                await this.publicFunctions.sendUpdatesToGroupData(newGroup);
+                // Redirect to the new group files page
+                this.router.navigate(['/dashboard', 'work', 'groups', 'library']);
+                resolve(this.utilityService.resolveAsyncPromise($localize`:@@collectionHeader.collectionMoved:👍 Collection Moved!`));
+              })
+              .catch((error) => {
+                reject(this.utilityService.rejectAsyncPromise($localize`:@@collectionHeader.errorMoving:Error while moving the collection!`));
+              });
+          }));
+        }
+      });
   }
 
   objectExists(object: any) {
