@@ -20,7 +20,9 @@ export class PageRowComponent implements OnInit, OnChanges {
 	// Output collection event emitter
 	@Output() subpageDeletedEmitter = new EventEmitter();
 
-  	newPageName = $localize`:@@pageRow.newPage:New Page`;
+  newPageName = $localize`:@@pageRow.newPage:New Page`;
+  canEditTitle = false;
+  postSubTitle = undefined;
 
 	// Public functions
 	public publicFunctions = new PublicFunctions(this.injector);
@@ -57,13 +59,16 @@ export class PageRowComponent implements OnInit, OnChanges {
 	}
 
 	async createSubPage() {
+    this.newPageName = this.postSubTitle;
 		await this.utilityService.asyncNotification($localize`:@@pageRow.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise(async (resolve, reject) => {
 			this.libraryService.createPage((this.pageData?._collection?._id || this.pageData?._collection), this.pageData?._id, this.newPageName).then(res => {
 				if (!this.pageData._pages) {
 					this.pageData._pages = [];
 				}
 
-				this.pageData._pages.push(res['page']);
+        // this.pageData._pages.push(res['page']);
+        this.canEditTitle = false;
+        this.initSubPages();
 
 				// Resolve with success
 				resolve(this.utilityService.resolveAsyncPromise($localize`:@@pageRow.pageCreated:Page created!`));
@@ -71,7 +76,10 @@ export class PageRowComponent implements OnInit, OnChanges {
 			.catch(() => {
 				reject(this.utilityService.rejectAsyncPromise($localize`:@@pageRow.unableToCreatePage:Unable to create the page, please try again!`));
 			});
-		}));
+    }));
+    
+    // Clear the postSubTitle
+    this.postSubTitle = undefined;
 	}
 
 	async deletePage() {

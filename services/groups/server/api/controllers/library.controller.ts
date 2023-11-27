@@ -331,6 +331,60 @@ export class LibraryController {
     };
 
     /**
+     * This function is responsible for moving the editor to another group
+     */
+    async moveToGroup(req: Request, res: Response) {
+        try {
+            const { collectionId, groupId } = req.params;
+
+            // If collectionId is null or not provided then we throw BAD REQUEST 
+            if (!collectionId || !groupId) {
+                return res.status(400).json({
+                    message: 'Please provide collectionId and groupId!'
+                });
+            }
+
+            const group = await Group.findById({ _id: groupId });
+            if (!group) {
+                return res.status(400).json({
+                    message: 'The provided group does not exists!'
+                });
+            }
+
+            const collection: any = await Collection.findOneAndUpdate(
+                    { _id: collectionId },
+                    { 
+                        $set: { _group: groupId }
+                    },
+                    { new: true }
+                )
+                .populate({ path: '_members', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: '_group', select: 'group_name group_avatar _members _admins' })
+                .populate({ path: '_content_mentions', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: '_created_by', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: '_updated_by', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: '_pages', select: 'title _parent _created_by created_date updated_date' })
+                .populate({ path: '_pages._created_by', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: '_files', select: 'original_name modified_name type' })
+                .populate({ path: 'share.groups._group', select: 'group_name group_avatar _members _admins' })
+                .populate({ path: 'share.users._user', select: '_id first_name last_name profile_pic' })
+                .lean();
+
+            if (!collection) {
+                return sendError(res, new Error('Oops, collection not found!'), 'Collection not found, invalid collectionId!', 404);
+            }
+
+            return res.status(200).json({
+                message: `Editor removed from collection successfully!`,
+                collection: collection
+            });
+
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
      * This function is responsible for updating the image for the particular group
      * @param { userId, fileName }req 
      * @param res 

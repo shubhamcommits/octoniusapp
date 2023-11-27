@@ -71,6 +71,15 @@ export class LibraryService {
   }
 
   /**
+   * This function is responsible to removing a editor to a collection
+   * @param collectionId
+   * @param newName
+   */
+  moveCollectionToGroup(collectionId: string, groupId: string) {
+    return this._http.put(this.baseUrl + `/library/collection/${collectionId}/moveToGroup/${groupId}`, {}).toPromise();
+  }
+
+  /**
    * This function is responsible for deleting a collection
    * @param collectionId
    */

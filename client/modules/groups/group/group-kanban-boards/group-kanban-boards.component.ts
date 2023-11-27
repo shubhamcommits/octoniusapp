@@ -2,9 +2,7 @@ import { Component, OnInit, Injector, Input, OnChanges, AfterViewInit, SimpleCha
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
-import { ActivatedRoute } from '@angular/router';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
-import { environment } from 'src/environments/environment';
 import moment from 'moment/moment';
 import { MatDialog } from '@angular/material/dialog';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
@@ -51,7 +49,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   isIndividualSubscription = true;
 
   constructor(
-    private router: ActivatedRoute,
     public utilityService: UtilityService,
     private columnService: ColumnService,
     private flowService: FlowService,
@@ -99,7 +96,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
 
   ngAfterViewInit() {
     this.publicFunctions.isMobileDevice().then(res => this.isMobile = res);
-
   }
 
   formateDate(date: any, format: string) {
@@ -720,7 +716,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
       }
     });
 
-
     dialogRef.afterClosed().subscribe(result => {
       closeEventSubs.unsubscribe();
     });
@@ -729,20 +724,20 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   openShowCFDialog(column) {
     const data = {
       column: column,
-      customFields: this.groupData?.custom_fields
+      // customFields: this.groupData?.custom_fields.filter(cf => !!cf.input_type)
     }
 
     const dialogRef = this.dialog.open(ShowCustomFieldsColumnDialogComponent, {
       data: data,
       hasBackdrop: true
     });
+
     const customFieldsUpdatedEventSubs = dialogRef.componentInstance.customFieldsUpdatedEvent.subscribe((data) => {
       const index = (this.columns) ? this.columns.findIndex(col => col._id == data._id) : -1;
       if (index >= 0) {
         this.columns[index] = data;
       }
     });
-
 
     dialogRef.afterClosed().subscribe(result => {
       customFieldsUpdatedEventSubs.unsubscribe();

@@ -296,7 +296,7 @@ export class GroupPostDialogComponent implements OnInit, AfterViewChecked {
     } else if (this.postData?.comments_count > 0) {
       this.selectedTab = 1;
     } else if (this.postData?.task?.isNorthStar) {
-      this.selectedTab = 2;
+      this.selectedTab = 0;
     } else if (this.postData?.type === 'task' && this.postData?.approval_active && this.postData?.approval_history && this.postData?.approval_history?.length > 0 && this.isBusinessSubscription) {
       this.selectedTab = 3;
     } else if (this.postData?.logs && this.postData?.logs?.length > 0) {
