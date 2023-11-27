@@ -8472,12 +8472,20 @@
           <context context-type="linenumber">49</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="collectionHeader.moveToGroup" datatype="html">
+        <source> Move To Group </source>
+        <target state="translated">Mover A Grupo</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.html</context>
+          <context context-type="linenumber">69,71</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="collectionHeader.shareCollection" datatype="html">
         <source>Share Collection</source>
         <target state="translated">Compartir Colección</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.html</context>
-          <context context-type="linenumber">71</context>
+          <context context-type="linenumber">83</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.save" datatype="html">
@@ -8485,7 +8493,7 @@
         <target state="translated">Guardar</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.html</context>
-          <context context-type="linenumber">75,77</context>
+          <context context-type="linenumber">87,89</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.cancel" datatype="html">
@@ -8493,7 +8501,7 @@
         <target state="translated">Cancelar</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.html</context>
-          <context context-type="linenumber">80,82</context>
+          <context context-type="linenumber">92,94</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.share" datatype="html">
@@ -8501,7 +8509,15 @@
         <target state="translated">Compartir</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.html</context>
-          <context context-type="linenumber">89</context>
+          <context context-type="linenumber">101</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="collectionHeader.moveToGroupLink" datatype="html">
+        <source>Move To Group</source>
+        <target state="translated">Mover A Grupo</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.html</context>
+          <context context-type="linenumber">107</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.edit" datatype="html">
@@ -8509,7 +8525,7 @@
         <target state="translated">Editar</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.html</context>
-          <context context-type="linenumber">96</context>
+          <context context-type="linenumber">121</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.delete" datatype="html">
@@ -8517,7 +8533,15 @@
         <target state="translated">Eliminar</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.html</context>
-          <context context-type="linenumber">103</context>
+          <context context-type="linenumber">128</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="collectionHeader.unableToConnectToServer" datatype="html">
+        <source>Unable to connect to the server, please try again later!</source>
+        <target state="translated">No se puede conectar con el servidor, inténtelo de nuevo más tarde.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
+          <context context-type="linenumber">60</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.plesaeWaitWeAreUpdaing" datatype="html">
@@ -8525,23 +8549,23 @@
         <target state="translated">Espere, estamos actualizando el contenido ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
-          <context context-type="linenumber">64</context>
+          <context context-type="linenumber">82</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
-          <context context-type="linenumber">135</context>
+          <context context-type="linenumber">153</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
-          <context context-type="linenumber">165</context>
+          <context context-type="linenumber">183</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
-          <context context-type="linenumber">234</context>
+          <context context-type="linenumber">252</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
-          <context context-type="linenumber">248</context>
+          <context context-type="linenumber">266</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.detailsUpdated" datatype="html">
@@ -8549,23 +8573,23 @@
         <target state="translated">¡Detalles actualizados!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
-          <context context-type="linenumber">69</context>
+          <context context-type="linenumber">87</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
-          <context context-type="linenumber">146</context>
+          <context context-type="linenumber">164</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
-          <context context-type="linenumber">171</context>
+          <context context-type="linenumber">189</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
-          <context context-type="linenumber">239</context>
+          <context context-type="linenumber">257</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
-          <context context-type="linenumber">253</context>
+          <context context-type="linenumber">271</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.unableToUpdateDetails" datatype="html">
@@ -8573,23 +8597,23 @@
         <target state="translated">No se pueden actualizar los detalles. Vuelve a intentarlo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
-          <context context-type="linenumber">72</context>
+          <context context-type="linenumber">90</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
-          <context context-type="linenumber">149</context>
+          <context context-type="linenumber">167</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
-          <context context-type="linenumber">174</context>
+          <context context-type="linenumber">192</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
-          <context context-type="linenumber">242</context>
+          <context context-type="linenumber">260</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
-          <context context-type="linenumber">256</context>
+          <context context-type="linenumber">274</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.pleaseWaitDeleting" datatype="html">
@@ -8597,7 +8621,7 @@
         <target state="translated">Espere, estamos eliminando la colección...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
-          <context context-type="linenumber">219</context>
+          <context context-type="linenumber">237</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.deleted" datatype="html">
@@ -8605,7 +8629,7 @@
         <target state="translated">¡Colección eliminada!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
-          <context context-type="linenumber">224</context>
+          <context context-type="linenumber">242</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.unableDelete" datatype="html">
@@ -8613,7 +8637,47 @@
         <target state="translated">No se puede eliminar la colección, inténtalo de nuevo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
-          <context context-type="linenumber">226</context>
+          <context context-type="linenumber">244</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="collectionHeader.areYouSure" datatype="html">
+        <source>Are you sure?</source>
+        <target state="translated">¿Está seguro?</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
+          <context context-type="linenumber">281</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="collectionHeader.doingThisItemWillBeMoved" datatype="html">
+        <source>By doing this the item will be moved to the selected group!</source>
+        <target state="translated">Al hacer esto, el elemento se moverá al grupo seleccionado.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
+          <context context-type="linenumber">281</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="collectionHeader.pleaseWaitMoving" datatype="html">
+        <source>Please wait we are moving the item...</source>
+        <target state="translated">Espere, estamos moviendo el artículo ...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
+          <context context-type="linenumber">284</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="collectionHeader.collectionMoved" datatype="html">
+        <source>👍 Collection Moved!</source>
+        <target state="translated">👍 ¡Colección movida!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
+          <context context-type="linenumber">291</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="collectionHeader.errorMoving" datatype="html">
+        <source>Error while moving the collection!</source>
+        <target state="translated">¡Error al mover la colección!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.ts</context>
+          <context context-type="linenumber">294</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageRow.createdBy" datatype="html">
