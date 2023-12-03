@@ -10,8 +10,29 @@
   font-family: 'Nunito' !important;
 
 
-  input {
+  .file-input {
     display: none;
+  }
+
+  input {
+    // display: none;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .add-page{
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .btn-block {
+    width: 70%;
+  }
+
+  .btn-block:hover {
+    color: #fff;
+    background: #4a90e2;
   }
 }
 
