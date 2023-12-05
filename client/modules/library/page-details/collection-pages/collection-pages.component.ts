@@ -35,9 +35,13 @@ export class CollectionPagesComponent implements OnInit, OnChanges {
 	// @Output() subpageCreatedEmitter = new EventEmitter();
 	// @Output() subpageDeletedEmitter = new EventEmitter();
 	
-	currentPageId;
+  currentPageId;
+  selectedNodeId;
+  menuDisplayed = true; 
+  postTitle: any;
+  canEditSubTitle: boolean;
 
-	newPageName = $localize`:@@pageRow.newPage:New Page`;
+  newPageName = $localize`:@@pageRow.newPage:New Page`;
 
 	private _transformer = (page: any, level: number) => {
 		return {
@@ -94,9 +98,15 @@ export class CollectionPagesComponent implements OnInit, OnChanges {
 	ngOnDestroy() {
 	}
 
-	async createSubPage(parentPageId: string, parentLevel: any) {
+  async createSubPage(parentPageId: string, parentLevel: any) {
+    this.newPageName = this.postTitle;
+
 		await this.utilityService.asyncNotification($localize`:@@pageRow.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise(async (resolve, reject) => {
-			this.libraryService.createPage(this.collectionId, parentPageId, this.newPageName).then(async res => {
+      this.libraryService.createPage(this.collectionId, parentPageId, this.newPageName).then(async res => {
+        if (!this.pages) {
+          this.pages = [];
+        }
+        this.pages.push(res['page']);
 				this.subpageUpdatedEmitter.emit();
 
 				// Resolve with success
@@ -105,7 +115,11 @@ export class CollectionPagesComponent implements OnInit, OnChanges {
 			.catch(() => {
 				reject(this.utilityService.rejectAsyncPromise($localize`:@@pageRow.unableToCreatePage:Unable to create the page, please try again!`));
 			});
-		}));
+    }));
+
+    // Clear the postTitle and reset input field
+    this.postTitle = undefined;
+    this.toggleInputField();
 	}
 
 	async deletePage(page: any) {
@@ -123,7 +137,14 @@ export class CollectionPagesComponent implements OnInit, OnChanges {
 				}));
 			}
 		});
-	}
+  }
+  
+  toggleInputField(id?) {
+    this.menuDisplayed = !this.menuDisplayed;
+    this.canEditSubTitle = !this.canEditSubTitle;
+    this.postTitle = undefined;
+    this.selectedNodeId = id;
+  }
 
 	formateDate(date) {
 		return (date) ? DateTime.fromISO(date).toLocaleString(DateTime.DATE_MED) : '';
