@@ -42,6 +42,7 @@ export class CollectionPagesComponent implements OnInit, OnChanges {
   canEditSubTitle: boolean;
 
   newPageName = $localize`:@@pageRow.newPage:New Page`;
+  reachedMaxNestedPage = $localize`:@@collectionDetails.reachedMaxNestedPage:Reached max nested page`;
 
 	private _transformer = (page: any, level: number) => {
 		return {
