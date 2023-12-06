@@ -32,7 +32,7 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
   hrBenefits: any = [];
   selectedHRBenefitsValues: any = [];
 
-  joinDate;
+  // joinDate;
 
   showError = false;
   errorMessage = '';
@@ -64,7 +64,7 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
     // force to reload the userData because the previous line will take the data from storage, and may not have some changes
     this.userData = await this.publicFunctions.getOtherUser(this.userData?._id);
 
-    this.joinDate = moment(this.userData?.company_join_date).format("YYYY-MM-DD");
+    // this.joinDate = moment(this.userData?.company_join_date).format("YYYY-MM-DD");
 
     this.isCurrentUser = true;
     if (!this.userData.hr) {
