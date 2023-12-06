@@ -3,7 +3,10 @@ import { sendErr } from "./sendError";
 var admin = require("firebase-admin");
 const serviceAccount = require("./octonius-mobile-firebase-adminsdk.json");
 admin.initializeApp({
+    // credential: admin.credential.applicationDefault()
+    // Legacy
     credential: admin.credential.cert(serviceAccount)
+    
     // credential: cert({
     //     projectId: 'octonius-mobile',
     //     clientEmail: "firebase-adminsdk-h61te@octonius-mobile.iam.gserviceaccount.com",
@@ -46,6 +49,26 @@ async function sendFirebaseNotification(workspaceId: string, registrationToken: 
             });
     }
 };
+
+// function getAccessToken() {
+//   return new Promise(function(resolve, reject) {
+//     const key = require('./octonius-mobile-firebase-adminsdk.json');
+//     const jwtClient = new google.auth.JWT(
+//       key.client_email,
+//       null,
+//       key.private_key,
+//       SCOPES,
+//       null
+//     );
+//     jwtClient.authorize(function(err, tokens) {
+//       if (err) {
+//         reject(err);
+//         return;
+//       }
+//       resolve(tokens.access_token);
+//     });
+//   });
+// }
 
 
 
