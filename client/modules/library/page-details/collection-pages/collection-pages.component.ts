@@ -41,8 +41,8 @@ export class CollectionPagesComponent implements OnInit, OnChanges {
   postTitle: any;
   canEditSubTitle: boolean;
 
-  newPageName = $localize`:@@pageRow.newPage:New Page`;
-  reachedMaxNestedPage = $localize`:@@collectionDetails.reachedMaxNestedPage:Reached max nested page`;
+  newPageName = $localize`:@@collectionPages.newPage:New Page`;
+  reachedMaxNestedPage = $localize`:@@collectionPages.reachedMaxNestedPage:Reached max nested page`;
 
 	private _transformer = (page: any, level: number) => {
 		return {
@@ -102,7 +102,7 @@ export class CollectionPagesComponent implements OnInit, OnChanges {
   async createSubPage(parentPageId: string, parentLevel: any) {
     this.newPageName = this.postTitle;
 
-		await this.utilityService.asyncNotification($localize`:@@pageRow.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise(async (resolve, reject) => {
+		await this.utilityService.asyncNotification($localize`:@@collectionPages.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise(async (resolve, reject) => {
       this.libraryService.createPage(this.collectionId, parentPageId, this.newPageName).then(async res => {
         if (!this.pages) {
           this.pages = [];
@@ -111,10 +111,10 @@ export class CollectionPagesComponent implements OnInit, OnChanges {
 				this.subpageUpdatedEmitter.emit();
 
 				// Resolve with success
-				resolve(this.utilityService.resolveAsyncPromise($localize`:@@pageRow.pageCreated:Page created!`));
+				resolve(this.utilityService.resolveAsyncPromise($localize`:@@collectionPages.pageCreated:Page created!`));
 			})
 			.catch(() => {
-				reject(this.utilityService.rejectAsyncPromise($localize`:@@pageRow.unableToCreatePage:Unable to create the page, please try again!`));
+				reject(this.utilityService.rejectAsyncPromise($localize`:@@collectionPages.unableToCreatePage:Unable to create the page, please try again!`));
 			});
     }));
 
@@ -127,13 +127,13 @@ export class CollectionPagesComponent implements OnInit, OnChanges {
 		await this.utilityService.getConfirmDialogAlert().then((result) => {
 			if (result.value) {
 				// Remove the file
-				this.utilityService.asyncNotification($localize`:@@pageRow.pleaseWaitDeleting:Please wait, we are deleting...`, new Promise((resolve, reject) => {
+				this.utilityService.asyncNotification($localize`:@@collectionPages.pleaseWaitDeleting:Please wait, we are deleting...`, new Promise((resolve, reject) => {
 					this.libraryService.deletePage(page?._id, this.workspaceId).then(async (res) => {
 						this.subpageUpdatedEmitter.emit();
 
-						resolve(this.utilityService.resolveAsyncPromise($localize`:@@pageRow.pageDeleted:Page deleted!`));
+						resolve(this.utilityService.resolveAsyncPromise($localize`:@@collectionPages.pageDeleted:Page deleted!`));
 					}).catch((err) => {
-						reject(this.utilityService.rejectAsyncPromise($localize`:@@pageRow.unableToDelete:Unable to delete the page, please try again!`));
+						reject(this.utilityService.rejectAsyncPromise($localize`:@@collectionPages.unableToDelete:Unable to delete the page, please try again!`));
 					});
 				}));
 			}

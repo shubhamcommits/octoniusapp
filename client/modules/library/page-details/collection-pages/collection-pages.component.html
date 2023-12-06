@@ -31,7 +31,7 @@
     <!-- This is the input field to capture sub page title -->
     <div class="add-page" *ngIf="canEditSubTitle">
       <input autofocus *ngIf="selectedNodeId == page._id && page.level < 3" class="form-control" type="text" placeholder="Enter child page title" [(ngModel)]="postTitle" (keyup.enter)="createSubPage(page?._id, page?.level)" (blur)="toggleInputField()">
-      <span *ngIf="selectedNodeId == page._id && page.level >= 3" (click)="toggleInputField()" i18n="@@collectionDetails.reachedMaxNestedPage" style="font-family: 'Nunito';">Reached max nested page</span>
+      <span *ngIf="selectedNodeId == page._id && page.level >= 3" (click)="toggleInputField()" i18n="@@collectionPages.reachedMaxNestedPage" style="font-family: 'Nunito';">Reached max nested page</span>
     </div>
 	</mat-tree-node>
 

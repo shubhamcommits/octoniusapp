@@ -8723,10 +8723,6 @@
           <context context-type="sourcefile">modules/library/collection-details/page-row/page-row.component.ts</context>
           <context context-type="linenumber">23</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/library/page-details/collection-pages/collection-pages.component.ts</context>
-          <context context-type="linenumber">44</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="pageRow.plesaeWaitWeAreUpdaing" datatype="html">
         <source>Please wait we are updating the contents...</source>
@@ -8734,10 +8730,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/page-row/page-row.component.ts</context>
           <context context-type="linenumber">63</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/library/page-details/collection-pages/collection-pages.component.ts</context>
-          <context context-type="linenumber">105</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageRow.pageCreated" datatype="html">
@@ -8747,10 +8739,6 @@
           <context context-type="sourcefile">modules/library/collection-details/page-row/page-row.component.ts</context>
           <context context-type="linenumber">74</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/library/page-details/collection-pages/collection-pages.component.ts</context>
-          <context context-type="linenumber">114</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="pageRow.unableToCreatePage" datatype="html">
         <source>Unable to create the page, please try again!</source>
@@ -8758,10 +8746,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/page-row/page-row.component.ts</context>
           <context context-type="linenumber">77</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/library/page-details/collection-pages/collection-pages.component.ts</context>
-          <context context-type="linenumber">117</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageRow.pleaseWaitDeleting" datatype="html">
@@ -8771,10 +8755,6 @@
           <context context-type="sourcefile">modules/library/collection-details/page-row/page-row.component.ts</context>
           <context context-type="linenumber">89</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/library/page-details/collection-pages/collection-pages.component.ts</context>
-          <context context-type="linenumber">130</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="pageRow.pageDeleted" datatype="html">
         <source>Page deleted!</source>
@@ -8783,10 +8763,6 @@
           <context context-type="sourcefile">modules/library/collection-details/page-row/page-row.component.ts</context>
           <context context-type="linenumber">93</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/library/page-details/collection-pages/collection-pages.component.ts</context>
-          <context context-type="linenumber">134</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="pageRow.unableToDelete" datatype="html">
         <source>Unable to delete the page, please try again!</source>
@@ -8794,10 +8770,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/page-row/page-row.component.ts</context>
           <context context-type="linenumber">95</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/library/page-details/collection-pages/collection-pages.component.ts</context>
-          <context context-type="linenumber">136</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionImageDetails.updateYourCollectionAvatar" datatype="html">
@@ -9020,7 +8992,7 @@
           <context context-type="linenumber">64</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="collectionDetails.reachedMaxNestedPage" datatype="html">
+      <trans-unit id="collectionPages.reachedMaxNestedPage" datatype="html">
         <source>Reached max nested page</source>
         <target state="needs-translation"/>
         <context-group purpose="location">
@@ -9030,6 +9002,62 @@
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/page-details/collection-pages/collection-pages.component.ts</context>
           <context context-type="linenumber">45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="collectionPages.newPage" datatype="html">
+        <source>New Page</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/page-details/collection-pages/collection-pages.component.ts</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="collectionPages.plesaeWaitWeAreUpdaing" datatype="html">
+        <source>Please wait we are updating the contents...</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/page-details/collection-pages/collection-pages.component.ts</context>
+          <context context-type="linenumber">105</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="collectionPages.pageCreated" datatype="html">
+        <source>Page created!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/page-details/collection-pages/collection-pages.component.ts</context>
+          <context context-type="linenumber">114</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="collectionPages.unableToCreatePage" datatype="html">
+        <source>Unable to create the page, please try again!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/page-details/collection-pages/collection-pages.component.ts</context>
+          <context context-type="linenumber">117</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="collectionPages.pleaseWaitDeleting" datatype="html">
+        <source>Please wait, we are deleting...</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/page-details/collection-pages/collection-pages.component.ts</context>
+          <context context-type="linenumber">130</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="collectionPages.pageDeleted" datatype="html">
+        <source>Page deleted!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/page-details/collection-pages/collection-pages.component.ts</context>
+          <context context-type="linenumber">134</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="collectionPages.unableToDelete" datatype="html">
+        <source>Unable to delete the page, please try again!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/library/page-details/collection-pages/collection-pages.component.ts</context>
+          <context context-type="linenumber">136</context>
         </context-group>
       </trans-unit>
       <trans-unit id="storyActionsBar.on" datatype="html">
