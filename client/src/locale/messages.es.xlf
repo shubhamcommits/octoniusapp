@@ -10492,12 +10492,28 @@
           <context context-type="linenumber">56,58</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="editHRFields.position" datatype="html">
+        <source>Position</source>
+        <target state="translated">Posición</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.html</context>
+          <context context-type="linenumber">66</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editHRFields.joinedOn" datatype="html">
+        <source>Joined on:</source>
+        <target state="translated">Se unión en:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.html</context>
+          <context context-type="linenumber">73</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="editHRFields.payrollInfo" datatype="html">
         <source>Payroll info</source>
         <target state="translated">Información de nómina</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.html</context>
-          <context context-type="linenumber">97</context>
+          <context context-type="linenumber">111</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.payrollInfoDescription" datatype="html">
@@ -10505,7 +10521,7 @@
         <target state="translated">Campos creados por el equipo de RRHH.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.html</context>
-          <context context-type="linenumber">98,100</context>
+          <context context-type="linenumber">112,114</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.hrBenefits" datatype="html">
@@ -10513,7 +10529,7 @@
         <target state="translated">Beneficios</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.html</context>
-          <context context-type="linenumber">122</context>
+          <context context-type="linenumber">136</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.hrBenefitsDescription" datatype="html">
@@ -10521,7 +10537,7 @@
         <target state="translated">Beneficios creados por el equipo de RRHH.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.html</context>
-          <context context-type="linenumber">123,125</context>
+          <context context-type="linenumber">137,139</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.hrDaysOff" datatype="html">
@@ -10529,7 +10545,7 @@
         <target state="translated">Días Libres</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.html</context>
-          <context context-type="linenumber">176</context>
+          <context context-type="linenumber">190</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.hrDaysOffDescription" datatype="html">
@@ -10537,7 +10553,7 @@
         <target state="translated">Días libres adicionales otorgados al empleado.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.html</context>
-          <context context-type="linenumber">177,179</context>
+          <context context-type="linenumber">191,193</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.holidays" datatype="html">
@@ -10545,7 +10561,7 @@
         <target state="translated">Vacaciones</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.html</context>
-          <context context-type="linenumber">187</context>
+          <context context-type="linenumber">201</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.sick" datatype="html">
@@ -10553,7 +10569,7 @@
         <target state="translated">Enfermedad</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.html</context>
-          <context context-type="linenumber">196</context>
+          <context context-type="linenumber">210</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.personalDays" datatype="html">
@@ -10561,7 +10577,7 @@
         <target state="translated">Días Personales</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.html</context>
-          <context context-type="linenumber">205</context>
+          <context context-type="linenumber">219</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.pleaseWaitWeUpdateContents" datatype="html">
@@ -10569,64 +10585,44 @@
         <target state="translated">Espere, estamos actualizando el contenido...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">172</context>
+          <context context-type="linenumber">176</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">204</context>
+          <context context-type="linenumber">207</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">235</context>
+          <context context-type="linenumber">238</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">291</context>
+          <context context-type="linenumber">294</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">320</context>
+          <context context-type="linenumber">323</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="editHRFields.daysOffUpdated" datatype="html">
-        <source>Days Off updated!</source>
-        <target state="translated">¡Días libres actualizados!</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">178</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">326</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="editHRFields.unableToUpdateDaysOff" datatype="html">
-        <source>Unable to update Days Off, please try again!</source>
-        <target state="translated">No se puede actualizar Days Off, ¡inténtalo de nuevo!</target>
+      <trans-unit id="editHRFields.updated" datatype="html">
+        <source>User HR field updated!</source>
+        <target state="translated">¡Campo de HR del usuario actualizado!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
           <context context-type="linenumber">181</context>
         </context-group>
+      </trans-unit>
+      <trans-unit id="editHRFields.unableToUpdate" datatype="html">
+        <source>Unable to update HR field, please try again!</source>
+        <target state="translated">No se puede actualizar el campo de HR. ¡Inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">329</context>
+          <context context-type="linenumber">184</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.cfUpdated" datatype="html">
         <source>Field updated!</source>
         <target state="translated">¡Campo Actualizado!</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">215</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">247</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="editHRFields.unableToUpdateCF" datatype="html">
-        <source>Unable to update field, please try again!</source>
-        <target state="translated">No se puede actualizar el campo. ¡Inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
           <context context-type="linenumber">218</context>
@@ -10636,12 +10632,24 @@
           <context context-type="linenumber">250</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="editHRFields.unableToUpdateCF" datatype="html">
+        <source>Unable to update field, please try again!</source>
+        <target state="translated">No se puede actualizar el campo. ¡Inténtelo de nuevo!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
+          <context context-type="linenumber">221</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
+          <context context-type="linenumber">253</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="editHRFields.benefitUpdated" datatype="html">
         <source>Benefit updated!</source>
         <target state="translated">¡Beneficio actualizado!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">305</context>
+          <context context-type="linenumber">308</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.unableToUpdateBenefit" datatype="html">
@@ -10649,7 +10657,23 @@
         <target state="translated">No se puede actualizar el beneficio. ¡Inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">308</context>
+          <context context-type="linenumber">311</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editHRFields.daysOffUpdated" datatype="html">
+        <source>Days Off updated!</source>
+        <target state="translated">¡Días libres actualizados!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
+          <context context-type="linenumber">329</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editHRFields.unableToUpdateDaysOff" datatype="html">
+        <source>Unable to update Days Off, please try again!</source>
+        <target state="translated">No se puede actualizar Days Off, ¡inténtalo de nuevo!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
+          <context context-type="linenumber">332</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editMemberPayrollDialog.profileFields" datatype="html">
@@ -10829,7 +10853,7 @@
         <target state="translated">Habilidades</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-user-profile-fields/edit-user-profile-fields.component.html</context>
-          <context context-type="linenumber">80</context>
+          <context context-type="linenumber">82</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userProfileCF.pleaseWaitWeUpdateContents" datatype="html">
@@ -10895,10 +10919,6 @@
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
           <context context-type="linenumber">518</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/user/user-hive/user-hive.component.ts</context>
-          <context context-type="linenumber">177</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="editEntityDialog.entityUpdated" datatype="html">
         <source>Entity updated!</source>
@@ -10943,10 +10963,6 @@
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
           <context context-type="linenumber">542</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/user/user-hive/user-hive.component.ts</context>
-          <context context-type="linenumber">183</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="editEntityDialog.unableToUpdateEntity" datatype="html">
         <source>Unable to update the entity, please try again!</source>
@@ -10986,10 +11002,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/edit-entity-dialog/edit-entity-dialog.component.ts</context>
           <context context-type="linenumber">534</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/user/user-hive/user-hive.component.ts</context>
-          <context context-type="linenumber">186</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userProfileCF.errorOccurredWhileModifyingMembers" datatype="html">
@@ -13357,12 +13369,28 @@
           <context context-type="linenumber">58,60</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="userHive.position" datatype="html">
+        <source>Position</source>
+        <target state="translated">Posición</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-hive/user-hive.component.html</context>
+          <context context-type="linenumber">70</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userHive.joinedOn" datatype="html">
+        <source>Joined on:</source>
+        <target state="translated">Se unión en:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-hive/user-hive.component.html</context>
+          <context context-type="linenumber">77</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="userHive.payrollInfo" datatype="html">
         <source>Payroll info</source>
         <target state="translated">Información de nómina</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-hive/user-hive.component.html</context>
-          <context context-type="linenumber">104</context>
+          <context context-type="linenumber">118</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userHive.payrollInfoDescription" datatype="html">
@@ -13370,7 +13398,7 @@
         <target state="translated">Campos creados por el equipo de RRHH. Estos campos son obligatorios.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-hive/user-hive.component.html</context>
-          <context context-type="linenumber">105,107</context>
+          <context context-type="linenumber">119,121</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userHive.benefitsInfo" datatype="html">
@@ -13378,7 +13406,7 @@
         <target state="translated">Información de beneficios</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-hive/user-hive.component.html</context>
-          <context context-type="linenumber">129</context>
+          <context context-type="linenumber">143</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userHive.benefitsInfoDescription" datatype="html">
@@ -13386,7 +13414,7 @@
         <target state="translated">Campos creados por el equipo de RRHH. Estos campos son obligatorios.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-hive/user-hive.component.html</context>
-          <context context-type="linenumber">130,132</context>
+          <context context-type="linenumber">144,146</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userHive.pleaseWaitWeUpdateContents" datatype="html">
@@ -13394,7 +13422,51 @@
         <target state="translated">Espere, estamos actualizando el contenido ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-hive/user-hive.component.ts</context>
-          <context context-type="linenumber">207</context>
+          <context context-type="linenumber">178</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-hive/user-hive.component.ts</context>
+          <context context-type="linenumber">226</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userHive.updated" datatype="html">
+        <source>User HR field updated!</source>
+        <target state="translated">¡Campo de HR del usuario actualizado!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-hive/user-hive.component.ts</context>
+          <context context-type="linenumber">183</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userHive.unableToUpdate" datatype="html">
+        <source>Unable to update HR field, please try again!</source>
+        <target state="translated">No se puede actualizar el campo de HR. ¡Inténtelo de nuevo!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-hive/user-hive.component.ts</context>
+          <context context-type="linenumber">186</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userHive.plesaeWaitWeAreUpdaing" datatype="html">
+        <source>Please wait we are updating the entity...</source>
+        <target state="translated">Espere, estamos actualizando la entidad.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-hive/user-hive.component.ts</context>
+          <context context-type="linenumber">196</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userHive.entityUpdated" datatype="html">
+        <source>Entity updated!</source>
+        <target state="translated">¡Entidad actualizada!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-hive/user-hive.component.ts</context>
+          <context context-type="linenumber">202</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userHive.unableToUpdateEntity" datatype="html">
+        <source>Unable to update the entity, please try again!</source>
+        <target state="translated">No se puede actualizar la entidad, inténtalo de nuevo.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-hive/user-hive.component.ts</context>
+          <context context-type="linenumber">205</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userHive.cfUpdated" datatype="html">
@@ -13402,7 +13474,7 @@
         <target state="translated">¡Campo Actualizado!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-hive/user-hive.component.ts</context>
-          <context context-type="linenumber">219</context>
+          <context context-type="linenumber">238</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userHive.unableToUpdateCF" datatype="html">
@@ -13410,7 +13482,7 @@
         <target state="translated">No se pudo actualizar el campo, inténtelo de nuevo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-hive/user-hive.component.ts</context>
-          <context context-type="linenumber">222</context>
+          <context context-type="linenumber">241</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userInformation.yourContactInformation" datatype="html">
