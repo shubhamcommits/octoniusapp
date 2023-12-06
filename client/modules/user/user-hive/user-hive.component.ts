@@ -175,15 +175,15 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
   }
 
   saveProperty(propertyToSave: any) {
-    this.utilityService.asyncNotification($localize`:@@editHRFields.pleaseWaitWeUpdateContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@userHive.pleaseWaitWeUpdateContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
 
       this.userService.updateUserProperty(this.userData?._id, propertyToSave)
         .then(async (res) => {
           // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@editHRFields.updated:User HR field updated!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@userHive.updated:User HR field updated!`));
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@editHRFields.unableToUpdate:Unable to update HR field, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@userHive.unableToUpdate:Unable to update HR field, please try again!`));
         });
     }));
   }
@@ -193,16 +193,16 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
     if (value != '') {
       this.userData.hr[property_name] = value;
       
-      this.utilityService.asyncNotification($localize`:@@editEntityDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the entity...`, new Promise((resolve, reject) => {
+      this.utilityService.asyncNotification($localize`:@@userHive.plesaeWaitWeAreUpdaing:Please wait we are updating the entity...`, new Promise((resolve, reject) => {
         this.userService.updateUser(this.userData)
           .then(async (res) => {
             this.publicFunctions.sendUpdatesToUserData(this.userData);
 
             // Resolve with success
-            resolve(this.utilityService.resolveAsyncPromise($localize`:@@editEntityDialog.entityUpdated:Entity updated!`));
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@userHive.entityUpdated:Entity updated!`));
           })
           .catch(() => {
-            reject(this.utilityService.rejectAsyncPromise($localize`:@@editEntityDialog.unableToUpdateEntity:Unable to update the entity, please try again!`));
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@userHive.unableToUpdateEntity:Unable to update the entity, please try again!`));
           });
       }));
     }
