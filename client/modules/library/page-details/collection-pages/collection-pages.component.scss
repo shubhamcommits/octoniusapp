@@ -23,6 +23,20 @@
 
 .mat-tree{
     background-color: transparent;
+
+    .form-control {
+      max-width: max-content;
+      font-size: small;
+    }
+
+    .pageTitle-menu{
+      display:flex;
+      align-items:center;
+    }
+
+    .mat-tree-node {
+      display:grid;
+    }
 }
 
 .pageitem{

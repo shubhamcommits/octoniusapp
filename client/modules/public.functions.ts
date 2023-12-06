@@ -2153,7 +2153,7 @@ export class PublicFunctions {
 
       const allWorkspacesIntegratinos: any = await this.getAllWorkspaces();
       let possibleIntegrations = {
-        is_on_premise_environment: !(environment.clientUrl == 'app.octonius.com' || environment.clientUrl == 'workspace.octonius.com' || environment.clientUrl.includes('localhost')),
+        is_on_premise_environment: !(environment.clientUrl == 'app.octonius.com' || environment.clientUrl == 'workplace.octonius.com' || environment.clientUrl.includes('localhost')),
         is_google_connected: false,
         google_client_id: '',
         google_client_secret_key: '',
