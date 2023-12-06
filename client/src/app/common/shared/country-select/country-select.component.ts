@@ -11,6 +11,7 @@ import { CountryCurrencyService } from 'src/shared/services/country-currency/cou
 export class CountrySelectComponent implements OnInit {
 
   @Input() countryCode: string = '';
+  @Input() canEdit: boolean = true;
 
   @ViewChildren('countryFilter') countryFilter;
 

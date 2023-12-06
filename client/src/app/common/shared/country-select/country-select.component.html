@@ -1,7 +1,8 @@
 <label for="country" i18n="@@countrySelect.country" style="float: left; width: 100%;" class="muted">Country</label>
 
 <mat-form-field class="full-width" appearance="outline" style="width: 100%;">
-  <mat-select [(value)]="countryCode" (openedChange)="onOpened()" (valueChange)="changeCountry($event)" name="country">
+  <mat-select [(value)]="countryCode" [disabled]="!canEdit"
+    (openedChange)="onOpened()" (valueChange)="changeCountry($event)" name="country">
     <input #countryFilter type="text" class="form-control" (keyup)="onCountrySearch($event.target.value)"
       placeholder="Search country..."
       style="margin: 5px; width: 95%; position: -webkit-sticky; position: sticky; top: 0;">

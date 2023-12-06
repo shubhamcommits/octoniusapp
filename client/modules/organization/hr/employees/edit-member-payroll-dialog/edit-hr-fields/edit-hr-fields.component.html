@@ -61,7 +61,7 @@
     </div>
 
     <div class="col">
-        <div class="form-group">
+        <div class="form-group" *ngIf="!!memberData">
             <div class="mb-4">
                 <label for="position" class="cflabel" i18n="@@editHRFields.position">Position</label>
             
@@ -72,8 +72,11 @@
             <div class="mb-4">
                 <label for="joinDate" class="cflabel" i18n="@@editHRFields.joinedOn">Joined on:</label>
             
-                <input type="date" [(ngModel)]="joinDate" class="form-control" name="joinDate"
-                    (blur)="saveProperty({'company_join_date': $event.target.value})">
+                <app-date-picker class="form-control" style="height: 50px" [styleClass]="'btn-group input-date'"
+                    [selectedDate]="formateDate(memberData.company_join_date)"
+                    (date)="saveProperty({'company_join_date': $event.target.value})"
+                    [canEdit]="true">
+                </app-date-picker>
             </div>
 
             <div *ngFor="let cf of hrCustomFields" class="mb-4">

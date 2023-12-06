@@ -22,31 +22,32 @@
       <div class="form-group">
         <label for="address_line_1" i18n="@@userHive.addressLine1" class="muted">Address Line 1</label>
         <input type="text" class="form-control" [(ngModel)]="userData.hr.address_line_1" name="address_line_1"
-          (blur)="saveHRProperty('address_line_1', $event.target.value)">
+          (blur)="saveHRProperty('address_line_1', $event.target.value)" disabled="true">
 
         <label for="address_line_2" i18n="@@userHive.addressLine2" class="muted">Address Line 2</label>
         <input type="text" class="form-control" [(ngModel)]="userData.hr.address_line_2" name="address_line_2"
-          (blur)="saveHRProperty('address_line_2', $event.target.value)">
+          (blur)="saveHRProperty('address_line_2', $event.target.value)" disabled="true">
 
         <label for="city" i18n="@@userHive.city" class="muted">City</label>
         <input type="text" class="form-control" [(ngModel)]="userData.hr.city" name="city"
-          (blur)="saveHRProperty('city', $event.target.value)">
+          (blur)="saveHRProperty('city', $event.target.value)" disabled="true">
 
         <div class="row" style="margin: 0 !important; padding: 0 !important;">
           <div class="col" style="margin-left: 0 !important; padding-left: 0 !important;">
             <label for="zip_code" i18n="@@userHive.zip_code" class="muted">Zip Code</label>
             <input type="text" class="form-control" [(ngModel)]="userData.hr.zip_code" name="zip_code"
-              (blur)="saveHRProperty('zip_code', $event.target.value)">
+              (blur)="saveHRProperty('zip_code', $event.target.value)" disabled="true">
           </div>
 
           <div class="col" style="margin-right: 0 !important; padding-right: 0 !important;">
             <label for="state" i18n="@@userHive.state" class="muted">State</label>
             <input type="text" class="form-control" [(ngModel)]="userData.hr.state" name="state"
-              (blur)="saveHRProperty('state', $event.target.value)">
+              (blur)="saveHRProperty('state', $event.target.value)" disabled="true">
           </div>
         </div>
 
-        <app-country-select [countryCode]="userData?.hr?.country" (countrySelected)="changeCountry($event)"></app-country-select>
+        <app-country-select [countryCode]="userData?.hr?.country" [canEdit]="false"
+          (countrySelected)="changeCountry($event)"></app-country-select>
       </div>
     </div>
   </div>
@@ -65,6 +66,7 @@
     </div>
 
     <div class="col">
+      <!--
       <div class="form-group">
         <div class="fieldUI mb-4">
           <label for="position" class="cflabel" i18n="@@userHive.position">Position</label>
@@ -90,8 +92,6 @@
             <mat-option *ngFor="let val of cf.values" [value]="val">{{ val }}</mat-option>
           </mat-select>
 
-          <!-- <span *ngIf="!isCurrentUser && cf.type == 'Select'">{{ selectedHRCFValues[cf._id] }}</span> -->
-
           <input type="number" *ngIf="isCurrentUser && cf.type == 'Number'" [name]="cf.name" [(ngModel)]="selectedHRCFValues[cf._id]" [disabled]="!isCurrentUser"
             class="form-control" [value]="selectedHRCFValues[cf._id]"
             (keyup.enter)="onInputEntityCustomFieldChange($event, cf._id)"
@@ -106,6 +106,46 @@
             [styleClass]="'btn-group input-date'" [canEdit]="isCurrentUser"
             [selectedDate]="formateDate(selectedHRCFValues[cf._id])"
             (date)="onDateEntityCustomFieldChange($event, cf._id)">
+          </app-date-picker>
+        </div>
+      </div>
+      -->
+      <div class="form-group">
+        <div class="fieldUI mb-4">
+          <label for="position" class="cflabel" i18n="@@userHive.position">Position</label>
+      
+          <input type="text" [(ngModel)]="userData.current_position" class="form-control" name="position" disabled="true">
+        </div>
+      
+        <div class="fieldUI mb-4">
+          <label for="joinDate" class="cflabel" i18n="@@userHive.joinedOn">Joined on:</label>
+      
+          <app-date-picker class="form-control" style="height: 50px" [styleClass]="'btn-group input-date'"
+            [selectedDate]="formateDate(userData.company_join_date)" [canEdit]="false">
+          </app-date-picker>
+        </div>
+      
+        <div *ngFor="let cf of hrCustomFields" class="fieldUI mb-4">
+          <label [for]="cf._id" class="cflabel">{{ cf.name }}</label>
+      
+          <mat-select ngDefaultControl *ngIf="isCurrentUser && cf.type == 'Select'" [(value)]="selectedHRCFValues[cf._id]"
+            (selectionChange)="onSelectEntityCustomFieldChange($event, cf._id)" appearance="fill" [name]="cf._id"
+            disabled="true">
+            <mat-select-trigger>{{ selectedHRCFValues[cf._id] }}</mat-select-trigger>
+            <mat-option *ngFor="let val of cf.values" [value]="val">{{ val }}</mat-option>
+          </mat-select>
+      
+          <input type="number" *ngIf="isCurrentUser && cf.type == 'Number'" [name]="cf.name"
+            [(ngModel)]="selectedHRCFValues[cf._id]" class="form-control" [value]="selectedHRCFValues[cf._id]"
+            disabled="true" />
+      
+          <input type="text" *ngIf="isCurrentUser && cf.type == 'Text'" [name]="cf.name"
+            [(ngModel)]="selectedHRCFValues[cf._id]" class="form-control" [value]="selectedHRCFValues[cf._id]"
+            disabled="true" />
+      
+          <app-date-picker *ngIf="isCurrentUser && cf.type == 'Date'" class="form-control" style="height: 50px"
+            [styleClass]="'btn-group input-date'" [canEdit]="isCurrentUser"
+            [selectedDate]="formateDate(selectedHRCFValues[cf._id])" [canEdit]="false">
           </app-date-picker>
         </div>
       </div>
