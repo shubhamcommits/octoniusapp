@@ -40,6 +40,8 @@ export class PageDetailsComponent implements OnInit {
   canEditPage: boolean = false;
 
   canEdit = false;
+  canEditTitle: boolean;
+  postTitle: any;
 
   // File Data variable
   fileData: any = {
@@ -170,6 +172,8 @@ export class PageDetailsComponent implements OnInit {
   }
 
   async createPage() {
+    this.newPageName = this.postTitle;
+
     await this.utilityService.asyncNotification($localize`:@@pageDetails.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise(async (resolve, reject) => {
       this.libraryService.createPage(this.pageData?._collection, null, this.newPageName).then(res => {
         if (!this.pages) {
@@ -184,6 +188,9 @@ export class PageDetailsComponent implements OnInit {
         reject(this.utilityService.rejectAsyncPromise($localize`:@@pageDetails.unableToCreate:Unable to create the page, please try again!`));
       });
     }));
+
+    // Clear the postTitle
+    this.postTitle = undefined;
   }
 
   savePage() {
