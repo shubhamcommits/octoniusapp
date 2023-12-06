@@ -52,6 +52,7 @@
     <div class="col">
         <div class="form-group">
             <div *ngFor="let cf of customFields" class="fieldUI">
+                <mat-form-field>
                 <label [for]="cf.name" class="muted">{{ cf.title }}</label>
 
                 <mat-select ngDefaultControl *ngIf="!cf.user_type && isCurrentUser"
@@ -61,14 +62,15 @@
                     <mat-option *ngFor="let val of cf.values" [value]="val">{{ val }}</mat-option>
                 </mat-select>
 
-                <span *ngIf="!cf.user_type && !isCurrentUser">{{ selectedCFValues[cf.name] }}</span>
+                <span *ngIf="!cf.user_type && !isCurrentUser" class="ml-4">{{ selectedCFValues[cf.name] }}</span>
 
                 <app-select-assignee *ngIf="cf.user_type" type="workspaceMembers" [userData]="selectedCFValues[cf.name]"
                     [workspaceData]="workspaceData" [showBar]="isCurrentUser"
                     (member)="selectUser(cf.name, $event)"></app-select-assignee>
 
-                <i *ngIf="cf.user_type && !!selectedCFValues[cf.name]" (click)="selectUser(cf.name, null)" class="material-icons muted"
+                <i *ngIf="cf.user_type && !!selectedCFValues[cf.name]" (click)="selectUser(cf.name, null)" class="material-icons text-danger"
                     style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+                </mat-form-field>
             </div>
         </div>
     </div>
