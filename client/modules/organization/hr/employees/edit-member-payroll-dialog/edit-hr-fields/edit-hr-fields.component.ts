@@ -146,7 +146,7 @@ export class EditHRFieldsComponent implements OnInit {
 
   changeCountry(value: any) {
     if (value) {
-      this.saveProperty({'country': value});
+      this.saveProperty({'hr.country': value});
     }
   }
 
@@ -173,12 +173,11 @@ export class EditHRFieldsComponent implements OnInit {
 
       this.userService.updateUserProperty(this.memberData._id, propertyToSave)
         .then(async (res) => {
-
           // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@editHRFields.daysOffUpdated:Days Off updated!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@editHRFields.updated:User HR field updated!`));
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@editHRFields.unableToUpdateDaysOff:Unable to update Days Off, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@editHRFields.unableToUpdate:Unable to update HR field, please try again!`));
         });
     }));
   }
