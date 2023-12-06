@@ -70,7 +70,7 @@
             </div>
 
             <div class="mb-4">
-                <label for="joinDate" class="cflabel" i18n="@@editHRFields.joinDate">Join Date</label>
+                <label for="joinDate" class="cflabel" i18n="@@editHRFields.joinedOn">Joined on:</label>
             
                 <input type="date" [(ngModel)]="joinDate" class="form-control" name="joinDate"
                     (blur)="saveProperty({'company_join_date': $event.target.value})">
