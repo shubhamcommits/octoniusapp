@@ -29,6 +29,8 @@ export class EditHRFieldsComponent implements OnInit {
   hrBenefits: any = [];
   selectedHRBenefitValues: any = [];
 
+  joinDate;
+
   showError = false;
   errorMessage = '';
 
@@ -46,6 +48,8 @@ export class EditHRFieldsComponent implements OnInit {
   async ngOnInit() {
     this.memberData = await this.publicFunctions.getOtherUser(this.memberId);
     if (this.memberData) {
+      this.joinDate = moment(this.memberData?.company_join_date).format("YYYY-MM-DD");
+
       this.initPayrollProperties();
 
       if (!this.memberData.hr) {

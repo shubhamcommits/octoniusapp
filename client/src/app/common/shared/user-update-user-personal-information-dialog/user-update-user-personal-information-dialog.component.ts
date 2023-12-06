@@ -17,8 +17,8 @@ export class UserUpdateUserPersonalInformationDialogComponent implements OnInit 
   @Output() closeEvent = new EventEmitter();
   publicFunctions = new PublicFunctions(this.injector);
   userData: any;
-  postion: string;
-  joinDate: string;
+  // postion: string;
+  // joinDate: string;
   bio:string;
   // Is current user component
   isCurrentUser: boolean = false;
@@ -33,19 +33,19 @@ export class UserUpdateUserPersonalInformationDialogComponent implements OnInit 
 
   ngOnInit(): void {
     this.userData = this.data.userData;
-    this.postion = this.userData?.current_position || '';
-    this.joinDate = moment(this.userData?.company_join_date).format("YYYY-MM-DD");
+    // this.postion = this.userData?.current_position || '';
+    // this.joinDate = moment(this.userData?.company_join_date).format("YYYY-MM-DD");
     this.bio = this.userData?.bio || '';
   }
 
   updateInfo() {
     const data ={
-      current_position: this.postion,
-      company_join_date: this.joinDate,
+      // current_position: this.postion,
+      // company_join_date: this.joinDate,
       bio: this.bio
     }
     this.utilityService.asyncNotification($localize`:@@userUpdateUserPersonalInformationDialog.pleseWaitUpdatingInformation:Please wait we are updating your information...`, new Promise((resolve, reject) => {
-      this.publicFunctions.userDetailsServiceFunction(this.userService,data)
+      this.publicFunctions.userDetailsServiceFunction(this.userService, data)
         .then((res) => {
 
           this.closeEvent.emit(res);

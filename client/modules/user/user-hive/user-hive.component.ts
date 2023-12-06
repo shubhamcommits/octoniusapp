@@ -32,6 +32,8 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
   hrBenefits: any = [];
   selectedHRBenefitsValues: any = [];
 
+  joinDate;
+
   showError = false;
   errorMessage = '';
 
@@ -61,6 +63,9 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
     this.userData = await this.publicFunctions.getCurrentUser();
     // force to reload the userData because the previous line will take the data from storage, and may not have some changes
     this.userData = await this.publicFunctions.getOtherUser(this.userData?._id);
+
+    this.joinDate = moment(this.userData?.company_join_date).format("YYYY-MM-DD");
+
     this.isCurrentUser = true;
     if (!this.userData.hr) {
       this.userData.hr = {};
@@ -167,6 +172,20 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
     if (value) {
       this.saveHRProperty('country', value);
     }
+  }
+
+  saveProperty(propertyToSave: any) {
+    this.utilityService.asyncNotification($localize`:@@editHRFields.pleaseWaitWeUpdateContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+
+      this.userService.updateUserProperty(this.userData?._id, propertyToSave)
+        .then(async (res) => {
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@editHRFields.updated:User HR field updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@editHRFields.unableToUpdate:Unable to update HR field, please try again!`));
+        });
+    }));
   }
 
   saveHRProperty(property_name: string, value: any) {
