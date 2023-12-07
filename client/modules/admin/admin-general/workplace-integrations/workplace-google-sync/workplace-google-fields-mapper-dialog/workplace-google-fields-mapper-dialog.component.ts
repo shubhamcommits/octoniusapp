@@ -38,6 +38,7 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
       ) { }
 
   async ngOnInit(): Promise<void> {
+console.log(this.data);
     this.workplaceData = await this.publicFunctions.getCurrentWorkspace();
     this.userData = await this.publicFunctions.getCurrentUser();
 
@@ -97,7 +98,7 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
     if (index < 0) {
       await this.selectProperty(schemaName, propertyName);
     }
-    
+
     const selectedIndex = await this.getSelectedIndex(schemaName, propertyName);
     if (selectedIndex >= 0) {
       this.selectedProperties[selectedIndex].octonius_property = $event.value

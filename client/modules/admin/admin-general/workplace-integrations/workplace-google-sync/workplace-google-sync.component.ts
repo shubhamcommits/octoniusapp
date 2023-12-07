@@ -49,15 +49,15 @@ export class WorkplaceGoogleSyncComponent implements OnInit {
     }
 
     this.googleTokenClient.callback = async (resp) => {
-console.log(resp);
+console.log({resp});
       if (resp.error !== undefined) {
         throw (resp);
       }
 
       const googleUser: any = await this.getGoogleLoggedInUser();
-console.log(googleUser);
+console.log({googleUser});
       const schemas: any = await this.getUserSchema(googleUser.customerId);
-console.log(schemas);
+console.log({schemas});
       this.utilityService.updateIsLoadingSpinnerSource(false);
 
       if (schemas) {
