@@ -47,7 +47,7 @@ export class WorkplaceGoogleSyncComponent implements OnInit {
     if (!this.googleTokenClient) {
       await this.gisLoaded();
     }
-
+console.log(this.googleTokenClient);
     this.googleTokenClient.callback = async (resp) => {
 console.log({resp});
       if (resp.error !== undefined) {
@@ -60,7 +60,7 @@ console.log({googleUser});
 console.log({schemas});
       this.utilityService.updateIsLoadingSpinnerSource(false);
 
-      if (schemas) {
+      if (!!schemas) {
         this.openGoogleFieldsMapDialog(googleUser, schemas.schemas);
       } else {
         this.utilityService.infoNotification($localize`:@@workplaceGoogleSyncComponent.noSchemas:There are no Schemas in your Google profile to synchronize with Octonius properties.`)
