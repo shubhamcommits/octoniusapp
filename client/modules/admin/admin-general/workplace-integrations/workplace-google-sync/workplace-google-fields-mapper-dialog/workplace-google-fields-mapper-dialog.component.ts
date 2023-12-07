@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Injector, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Inject, Injector, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
@@ -29,13 +29,14 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
-      private injector: Injector,
-      private utilityService: UtilityService,
-      private workspaceService: WorkspaceService,
-      private userService: UserService,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      private mdDialogRef: MatDialogRef<WorkplaceGoogleFieldsMapperDialogComponent>
-      ) { }
+    private injector: Injector,
+    private utilityService: UtilityService,
+    private workspaceService: WorkspaceService,
+    private userService: UserService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private changeDetectorRef: ChangeDetectorRef,
+    private mdDialogRef: MatDialogRef<WorkplaceGoogleFieldsMapperDialogComponent>
+  ) { }
 
   async ngOnInit(): Promise<void> {
 console.log(this.data);
@@ -78,6 +79,8 @@ console.log(this.data);
         google_property: fieldName
       });
     }
+
+    this.changeDetectorRef.detectChanges();
   }
 
   getPropertiesToMapIndex(googleSchemaName: string, googlePropertyName: string) {
