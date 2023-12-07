@@ -37,13 +37,13 @@
               <th *ngIf="!isGlobal"><h4 i18n="@@workplaceGoogleFieldsMapperDialog.octoniusValue">Octonius Value</h4></th>
             </tr>
             <tr *ngFor="let field of schema.fields">
-              <td><input [checked]="propertiesToMap.indexOf(field.fieldName)>=0" class="" type="checkbox" (click)="selectProperty(schema.displayName, field.fieldName)"></td>
+              <td><input [checked]="isPropertySelected(schema.schemaName, field.fieldName)" class="" type="checkbox" (click)="selectProperty(schema.displayName, field.fieldName)"></td>
               <td><span>{{ field.displayName }}</span></td>
               <td><span class="material-icons-outlined">sync_alt</span></td>
               <td><span class="muted">{{ getOctoniusProperty(schema.schemaName, field.fieldName) }}</span></td>
               <td></td>
               <td *ngIf="isGlobal">
-                <mat-select ngDefaultControl
+                <mat-select ngDefaultControl [disabled]="!isPropertySelected(schema.schemaName, field.fieldName)"
                     (selectionChange)="changePropertyValue($event, schema.schemaName, field.fieldName)"
                     appearance="fill">
                   <mat-option *ngFor="let profileCF of profileCustomFields" [value]="profileCF.name">{{ profileCF.title }}</mat-option>
