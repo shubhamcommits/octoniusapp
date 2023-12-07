@@ -49,6 +49,14 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
     if (this.workplaceData?.googlePropertiesMap) {
       this.selectedProperties = this.workplaceData?.googlePropertiesMap;
     }
+
+    if (!this.propertiesToMap) {
+      this.propertiesToMap = [];
+    }
+    this.selectedProperties.forEach(prop => this.propertiesToMap.push({
+      google_schema: prop.google_schema,
+      google_property: prop.google_property
+    }));
   }
 
   getOctoniusProperty(googleSchemaName: string, googlePropertyName: string) {
@@ -59,8 +67,8 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
     return '';
   }
 
-  selectProperty(schemaName: string, fieldName: string) {
-    let index = this.propertiesToMap.findIndex(prop => prop.google_schema == schemaName && prop.google_property == fieldName)
+  async selectProperty(schemaName: string, fieldName: string) {
+    let index = await this.getPropertiesToMapIndex(schemaName, fieldName);
     if (index >= 0) {
       this.propertiesToMap.splice(index, 1);
     } else {
@@ -71,23 +79,34 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
     }
   }
 
+  getPropertiesToMapIndex(googleSchemaName: string, googlePropertyName: string) {
+    return (this.propertiesToMap) ? this.propertiesToMap.findIndex(p => p.google_property == googlePropertyName && p.google_schema == googleSchemaName) : -1;
+  }
+
+  async isPropertySelected(googleSchemaName: string, googlePropertyName: string) {
+    const index = await this.getPropertiesToMapIndex(googleSchemaName, googlePropertyName);
+    return index >= 0;
+  }
+
   getSelectedIndex(googleSchemaName: string, googlePropertyName: string) {
     return (this.selectedProperties) ? this.selectedProperties.findIndex(p => p.google_property == googlePropertyName && p.google_schema == googleSchemaName) : -1;
   }
 
   async changePropertyValue($event, schemaName: string, propertyName: string) {
-    let index = this.propertiesToMap.findIndex(prop => prop.google_schema == schemaName && prop.google_property == propertyName)
-    if (index >= 0) {
-      const selectedIndex = await this.getSelectedIndex(schemaName, propertyName);
-      if (selectedIndex >= 0) {
-        this.selectedProperties[index].octonius_property = $event.value
-      } else {
-        this.selectedProperties.push({
-          google_property: propertyName,
-          google_schema: schemaName,
-          octonius_property: $event.value
-        });
-      }
+    let index = await this.getPropertiesToMapIndex(schemaName, propertyName);
+    if (index < 0) {
+      await this.selectProperty(schemaName, propertyName);
+    }
+    
+    const selectedIndex = await this.getSelectedIndex(schemaName, propertyName);
+    if (selectedIndex >= 0) {
+      this.selectedProperties[selectedIndex].octonius_property = $event.value
+    } else {
+      this.selectedProperties.push({
+        google_property: propertyName,
+        google_schema: schemaName,
+        octonius_property: $event.value
+      });
     }
   }
 
