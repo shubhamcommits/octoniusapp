@@ -172,6 +172,11 @@ export class EditHRFieldsComponent implements OnInit {
   //   }
   // }
 
+  saveJoinDate(valueToSave: any) {
+    this.memberData.company_join_date = valueToSave;
+    this.saveProperty({ 'company_join_date': valueToSave });
+  }
+
   saveProperty(propertyToSave: any) {
     this.utilityService.asyncNotification($localize`:@@editHRFields.pleaseWaitWeUpdateContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
 
