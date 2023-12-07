@@ -74,7 +74,7 @@
             
                 <app-date-picker class="form-control" style="height: 50px" [styleClass]="'btn-group input-date'"
                     [selectedDate]="formateDate(memberData.company_join_date)"
-                    (date)="saveProperty({'company_join_date': $event.target.value})"
+                    (date)="saveJoinDate($event)"
                     [canEdit]="true">
                 </app-date-picker>
             </div>
