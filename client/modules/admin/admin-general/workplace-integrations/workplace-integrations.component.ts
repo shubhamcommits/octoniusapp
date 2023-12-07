@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, Injector, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, Injector, EventEmitter, Output, ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { WorkplaceIntegrationsDialogComponent } from './workplace-integrations-dialog/workplace-integrations-dialog.component';
@@ -23,7 +23,8 @@ export class WorkplaceIntegrationsComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-    private injector: Injector
+    private injector: Injector,
+    private changeDetectorRef: ChangeDetectorRef
     ) { }
 
   ngOnInit() {
@@ -46,6 +47,7 @@ export class WorkplaceIntegrationsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(async result => {
       datesSavedEventSubs.unsubscribe();
+      this.changeDetectorRef.detectChanges();
     });
   }
 }
