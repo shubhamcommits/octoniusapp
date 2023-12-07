@@ -43,9 +43,8 @@
               <td><span class="muted">{{ getOctoniusProperty(schema.schemaName, field.fieldName) }}</span></td>
               <td></td>
               <td *ngIf="isGlobal">
-                <mat-select ngDefaultControl [disabled]="!isPropertySelected(schema.schemaName, field.fieldName)"
-                    (selectionChange)="changePropertyValue($event, schema.schemaName, field.fieldName)"
-                    appearance="fill">
+                <mat-select ngDefaultControl appearance="fill"
+                    (selectionChange)="changePropertyValue($event, schema.schemaName, field.fieldName)">
                   <mat-option *ngFor="let profileCF of profileCustomFields" [value]="profileCF.name">{{ profileCF.title }}</mat-option>
                 </mat-select>
               </td>
