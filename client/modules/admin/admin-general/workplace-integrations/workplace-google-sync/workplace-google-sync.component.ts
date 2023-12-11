@@ -56,7 +56,8 @@ export class WorkplaceGoogleSyncComponent implements OnInit {
 
       const googleUser: any = await this.getGoogleLoggedInUser();
       const schemas: any = await this.getUserSchema(googleUser.customerId);
-
+console.log({schemas});
+console.log({googleUser});
       this.utilityService.updateIsLoadingSpinnerSource(false);
 
       if (!!schemas) {
