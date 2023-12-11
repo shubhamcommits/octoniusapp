@@ -60,7 +60,6 @@
               <td></td>
               <td *ngIf="isUserCF(schema.schemaName, field.fieldName)">
                 <span class="material-icons-outlined">warning</span>
-                <span i18n="@@workplaceLdapFieldsMapperDialog.userFieldWaring">The map of this field will only be effective if the Google field is an email of an existing user in Octonius.</span>
               </td>
             </tr>
           </table>
@@ -81,5 +80,10 @@
         i18n="@@workplaceGoogleFieldsMapperDialog.saveMapping">
         Save Mapping
       </button>
+    </div>
+
+    <div style="margin-top: 20px; text-align: center;">
+      <span class="material-icons-outlined">warning</span>
+      <span i18n="@@workplaceLdapFieldsMapperDialog.userFieldWaring">The map of this field will only be effective if the Google Value is an email of an existing user in Octonius.</span>
     </div>
 </div>
