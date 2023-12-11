@@ -61,6 +61,9 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
       google_schema: prop.google_schema,
       google_property: prop.google_property
     }));
+console.log(this.googleSchemas);
+console.log(this.userGoogleData);
+console.log(this.propertiesToMap);
   }
 
   isUserCF(googleSchemaName: string, googlePropertyName: string) {

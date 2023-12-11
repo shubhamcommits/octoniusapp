@@ -50,12 +50,12 @@
                 </mat-select>
               </td>
 
-              <td *ngIf="!isGlobal && userGoogleData && userGoogleData['customSchemas'] && userGoogleData['customSchemas'][schema.displayName]">
+              <td *ngIf="!isGlobal && userGoogleData && userGoogleData['customSchemas'] && userGoogleData['customSchemas'][schema.schemaName]">
                 <span>{{ userGoogleData['customSchemas'][schema.schemaName][field.fieldName] | truncatetext: 30 }}</span>
               </td>
 
               <td *ngIf="!isGlobal"><span class="material-icons-outlined">sync_alt</span></td>
-              <td *ngIf="!isGlobal"><span class="muted" *ngIf="this.userData.profile_custom_fields">{{ this.userData.profile_custom_fields[getOctoniusProperty(schema.schemaName, field.fieldName)] }}</span></td>
+              <td *ngIf="!isGlobal"><span class="muted" *ngIf="userData?.profile_custom_fields">{{ userData?.profile_custom_fields[getOctoniusProperty(schema?.schemaName, field?.fieldName)] }}</span></td>
               <td *ngIf="!isGlobal && isUserCF(schema.schemaName, field.fieldName)">
                 <span class="material-icons-outlined">warning</span>
                 <span i18n="@@workplaceLdapFieldsMapperDialog.userFieldWaring">The map of this field will only be effective if the Google field is an email of an existing user in Octonius.</span>
