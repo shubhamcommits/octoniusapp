@@ -24,18 +24,20 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
   propertiesToMap = [];
   profileCustomFields;
   selectedProperties = [];
+  userExistingValues = new Map<string, any>();
 
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
-      private injector: Injector,
-      private utilityService: UtilityService,
-      private workspaceService: WorkspaceService,
-      private userService: UserService,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      private mdDialogRef: MatDialogRef<WorkplaceGoogleFieldsMapperDialogComponent>
-      ) { }
+    private injector: Injector,
+    private utilityService: UtilityService,
+    private workspaceService: WorkspaceService,
+    private userService: UserService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    // private changeDetectorRef: ChangeDetectorRef,
+    private mdDialogRef: MatDialogRef<WorkplaceGoogleFieldsMapperDialogComponent>
+  ) {}
 
   async ngOnInit(): Promise<void> {
     this.workplaceData = await this.publicFunctions.getCurrentWorkspace();
@@ -48,15 +50,61 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
     this.profileCustomFields = this.workplaceData?.profile_custom_fields;
     if (this.workplaceData?.googlePropertiesMap) {
       this.selectedProperties = this.workplaceData?.googlePropertiesMap;
+    } else {
+      this.selectedProperties = [];
     }
 
     if (!this.propertiesToMap) {
       this.propertiesToMap = [];
     }
-    this.selectedProperties.forEach(prop => this.propertiesToMap.push({
-      google_schema: prop.google_schema,
-      google_property: prop.google_property
-    }));
+
+    this.selectedProperties.forEach(prop => 
+      this.propertiesToMap.push({
+        google_schema: prop.google_schema,
+        google_property: prop.google_property
+      })
+    );
+
+    // this.userData?.profile_custom_fields?.forEach(async (value: any, key: string) => {
+    Object.keys(this.userData?.profile_custom_fields).forEach(async (key) => {
+      const value = this.userData?.profile_custom_fields[key];
+      const selectedIndex = (this.selectedProperties) ? this.selectedProperties.findIndex(p => p.octonius_property == key) : -1;
+      let pcf;
+
+      if (selectedIndex >= 0 && this.selectedProperties[selectedIndex]) {
+        const pcfName = this.selectedProperties[selectedIndex].octonius_property;
+        const index = (!!this.profileCustomFields) ? this.profileCustomFields.findIndex(cf => cf.name == pcfName) : -1;
+
+        if (index >= 0) {
+          pcf = this.profileCustomFields[index];
+        }
+      }
+
+      if (!!pcf && pcf.user_type) {
+        const userCF: any = await this.publicFunctions.getOtherUser(value);
+        if (!!userCF) {
+          this.userExistingValues.set(key, userCF.email);
+        } else {
+          this.userExistingValues.set(key, value);
+        }
+      } else {
+        this.userExistingValues.set(key, value);
+      }
+    });
+  }
+
+  isUserCF(googleSchemaName: string, googlePropertyName: string) {
+    const pcf = this.getOctoniusProfileCustomField(googleSchemaName, googlePropertyName);
+    return (!!pcf && pcf.user_type);
+  }
+
+  getOctoniusProfileCustomField(googleSchemaName: string, googlePropertyName: string) {
+    const octoPropertyName = this.getOctoniusProperty(googleSchemaName, googlePropertyName);
+    const index = (!!this.profileCustomFields) ? this.profileCustomFields.findIndex(cf => cf.name == octoPropertyName) : -1;
+    if (index >= 0) {
+      return this.profileCustomFields[index];
+    }
+    return null;
   }
 
   getOctoniusProperty(googleSchemaName: string, googlePropertyName: string) {
@@ -65,6 +113,11 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
       return this.selectedProperties[selectedIndex].octonius_property;
     }
     return '';
+  }
+
+  getUserExistingValue(googleSchemaName: string, googlePropertyName: string) {
+    const octoProperty = this.getOctoniusProperty(googleSchemaName, googlePropertyName);
+    return (!!octoProperty && !!this.userExistingValues) ? this.userExistingValues.get(octoProperty) : '';
   }
 
   async selectProperty(schemaName: string, fieldName: string) {
@@ -77,14 +130,16 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
         google_property: fieldName
       });
     }
+
+    // this.changeDetectorRef.detectChanges();
   }
 
   getPropertiesToMapIndex(googleSchemaName: string, googlePropertyName: string) {
     return (this.propertiesToMap) ? this.propertiesToMap.findIndex(p => p.google_property == googlePropertyName && p.google_schema == googleSchemaName) : -1;
   }
 
-  async isPropertySelected(googleSchemaName: string, googlePropertyName: string) {
-    const index = await this.getPropertiesToMapIndex(googleSchemaName, googlePropertyName);
+  isPropertySelected(googleSchemaName: string, googlePropertyName: string) {
+    const index = this.getPropertiesToMapIndex(googleSchemaName, googlePropertyName);
     return index >= 0;
   }
 
@@ -92,13 +147,13 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
     return (this.selectedProperties) ? this.selectedProperties.findIndex(p => p.google_property == googlePropertyName && p.google_schema == googleSchemaName) : -1;
   }
 
-  async changePropertyValue($event, schemaName: string, propertyName: string) {
-    let index = await this.getPropertiesToMapIndex(schemaName, propertyName);
+  changePropertyValue($event, schemaName: string, propertyName: string) {
+    let index = this.getPropertiesToMapIndex(schemaName, propertyName);
     if (index < 0) {
-      await this.selectProperty(schemaName, propertyName);
+      this.selectProperty(schemaName, propertyName);
     }
-    
-    const selectedIndex = await this.getSelectedIndex(schemaName, propertyName);
+
+    const selectedIndex = this.getSelectedIndex(schemaName, propertyName);
     if (selectedIndex >= 0) {
       this.selectedProperties[selectedIndex].octonius_property = $event.value
     } else {
@@ -131,7 +186,16 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
         }
 
         if (this.isNotEmptyProperty(property.google_property) && this.isNotEmptyProperty(this.userGoogleData['customSchemas'][property.google_schema][property.google_property]) && this.isNotEmptyProperty(await this.getOctoniusProperty(property.google_schema, property.google_property))) {
-          this.userData.profile_custom_fields[await this.getOctoniusProperty(property.google_schema, property.google_property)] = this.userGoogleData['customSchemas'][property.google_schema][property.google_property];
+          const octoPropertyTitle = await this.getOctoniusProperty(property.google_schema, property.google_property);
+          // Test if the user CF is an email, if it is not it will be saved as null
+          if (this.isUserCF(property.google_schema, property.google_property)) {
+            const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            if (re.test(String(this.userGoogleData['customSchemas'][property.google_schema][property.google_property]).toLowerCase())) {
+              this.userData.profile_custom_fields[octoPropertyTitle] = this.userGoogleData['customSchemas'][property.google_schema][property.google_property];
+            }
+          } else {
+            this.userData.profile_custom_fields[octoPropertyTitle] = this.userGoogleData['customSchemas'][property.google_schema][property.google_property];
+          }
         }
       }
 

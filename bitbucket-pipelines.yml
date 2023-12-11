@@ -165,14 +165,14 @@ pipelines:
           - docker push $MINIO_IMAGE_NAME
           - docker push $MINIO_BALANCER_IMAGE_NAME
 
-    - step:
-       name: Deploy to stating server
-       script:
-         - pipe: atlassian/ssh-run:0.2.2
-           variables:
-             SSH_USER: 'ubuntu'
-             SERVER: $HOST_ADDRESS
-             COMMAND: 'cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S ./stop-octonius-acc.sh && sudo -S ./deploy-octonius-acc.sh'  
+    #- step:
+       #name: Deploy to stating server
+       #script:
+         #- pipe: atlassian/ssh-run:0.2.2
+           #variables:
+             #SSH_USER: 'ubuntu'
+             #SERVER: $HOST_ADDRESS
+             #COMMAND: 'cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S ./stop-octonius-acc.sh && sudo -S ./deploy-octonius-acc.sh'  
 
   custom:
     build_libre_office_server:

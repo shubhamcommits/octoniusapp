@@ -42,6 +42,107 @@ export class WorkplaceGoogleSyncComponent implements OnInit {
   }
 
   async getGoogleUserInformation() {
+//     const googleUser = {
+//     "kind": "admin#directory#user",
+//     "id": "105531802128927507850",
+//     "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/T-sFxxhc7hCvGy-5P711KvFaKdM\"",
+//     "primaryEmail": "juan@octonius.com",
+//     "name": {
+//         "givenName": "Juan",
+//         "familyName": "Alvarez",
+//         "fullName": "Juan Alvarez"
+//     },
+//     "isAdmin": true,
+//     "isDelegatedAdmin": false,
+//     "lastLoginTime": "2023-12-11T13:15:30.000Z",
+//     "creationTime": "2022-04-09T17:03:25.000Z",
+//     "agreedToTerms": true,
+//     "suspended": false,
+//     "archived": false,
+//     "changePasswordAtNextLogin": false,
+//     "ipWhitelisted": false,
+//     "emails": [
+//         {
+//             "address": "juan@octonius.com",
+//             "primary": true
+//         },
+//         {
+//             "address": "juan@octonius.com.test-google-a.com"
+//         }
+//     ],
+//     "externalIds": [
+//         {
+//             "value": "OCT002",
+//             "type": "organization"
+//         }
+//     ],
+//     "organizations": [
+//         {
+//             "title": "CTO",
+//             "primary": true,
+//             "customType": "",
+//             "department": "Operations",
+//             "description": "founder"
+//         }
+//     ],
+//     "languages": [
+//         {
+//             "languageCode": "en",
+//             "preference": "preferred"
+//         }
+//     ],
+//     "nonEditableAliases": [
+//         "juan@octonius.com.test-google-a.com"
+//     ],
+//     "customerId": "C03tj4ou2",
+//     "orgUnitPath": "/",
+//     "isMailboxSetup": true,
+//     "isEnrolledIn2Sv": true,
+//     "isEnforcedIn2Sv": false,
+//     "includeInGlobalAddressList": true,
+//     "thumbnailPhotoUrl": "https://lh3.googleusercontent.com/a-/ALV-UjUSfgXBWzwFVDzCDVa05aR1_syZiKZJWlnVDvvoT1C9icg=s96-c",
+//     "thumbnailPhotoEtag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/N1PyGgsBk3THNCCW1wWzejBUlzc\"",
+//     "customSchemas": {
+//         "JOB": {
+//             "Direct_reporter": "Cosmin",
+//             "Location": "Gijon"
+//         }
+//     },
+//     "recoveryEmail": "juanalvarezmartinez@gmail.com",
+//     "recoveryPhone": "+34661221789"
+// };
+//     const schemas = [
+//     {
+//         "kind": "admin#directory#schema",
+//         "schemaId": "9zBNHlLuRvuWSna0MXmhiA==",
+//         "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/BaPouDWueMMJ57zuqUQaoSnC2cI\"",
+//         "schemaName": "JOB",
+//         "displayName": "Workplace",
+//         "fields": [
+//             {
+//                 "kind": "admin#directory#schema#fieldspec",
+//                 "fieldId": "qHlRl-y1TeizPnzTb0zmOg==",
+//                 "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/A8kmiI83kagGJnG7Ms9kbgywU7Q\"",
+//                 "fieldType": "STRING",
+//                 "fieldName": "Direct_reporter",
+//                 "displayName": "Direct reporter",
+//                 "multiValued": false,
+//                 "readAccessType": "ALL_DOMAIN_USERS"
+//             },
+//             {
+//                 "kind": "admin#directory#schema#fieldspec",
+//                 "fieldId": "IKyaWdzfSbGZeu7uhreDDg==",
+//                 "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/OYi3warobQH44lh7M3AzfmWnFac\"",
+//                 "fieldType": "STRING",
+//                 "fieldName": "Location",
+//                 "displayName": "Location",
+//                 "multiValued": false,
+//                 "readAccessType": "ALL_DOMAIN_USERS"
+//             }
+//         ]
+//     }
+// ];
+//     this.openGoogleFieldsMapDialog(googleUser, schemas);
     this.utilityService.updateIsLoadingSpinnerSource(true);
 
     if (!this.googleTokenClient) {
@@ -49,15 +150,17 @@ export class WorkplaceGoogleSyncComponent implements OnInit {
     }
 
     this.googleTokenClient.callback = async (resp) => {
+
       if (resp.error !== undefined) {
         throw (resp);
       }
 
       const googleUser: any = await this.getGoogleLoggedInUser();
       const schemas: any = await this.getUserSchema(googleUser.customerId);
+
       this.utilityService.updateIsLoadingSpinnerSource(false);
 
-      if (schemas) {
+      if (!!schemas) {
         this.openGoogleFieldsMapDialog(googleUser, schemas.schemas);
       } else {
         this.utilityService.infoNotification($localize`:@@workplaceGoogleSyncComponent.noSchemas:There are no Schemas in your Google profile to synchronize with Octonius properties.`)
@@ -135,8 +238,9 @@ export class WorkplaceGoogleSyncComponent implements OnInit {
       isGlobal: true,
       userGoogleData: userGoogleData
     }
+
     const dialogRef = this.dialog.open(WorkplaceGoogleFieldsMapperDialogComponent, {
-      width: '65%',
+      width: '75%',
       height: '85%',
       disableClose: true,
       hasBackdrop: true,

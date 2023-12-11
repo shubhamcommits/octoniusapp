@@ -350,8 +350,8 @@
           <context context-type="linenumber">35</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workplaceGoogleFieldsMapperDialog.octoniusValue" datatype="html">
-        <source>Octonius Value</source>
+      <trans-unit id="workplaceGoogleFieldsMapperDialog.currentOctoniusValue" datatype="html">
+        <source>Current Octonius Value</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
           <context context-type="linenumber">37</context>
@@ -361,7 +361,7 @@
         <source> Map </source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
-          <context context-type="linenumber">69,71</context>
+          <context context-type="linenumber">74,76</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.html</context>
@@ -372,28 +372,35 @@
         <source> Save Mapping </source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
-          <context context-type="linenumber">75,77</context>
+          <context context-type="linenumber">80,82</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceLdapFieldsMapperDialog.userFieldWaring" datatype="html">
+        <source>The map of this field will only be effective if the Google Value is an email of an existing user in Octonius.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
+          <context context-type="linenumber">87</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceGoogleFieldsMapperDialog.byDoingGoogleSync" datatype="html">
         <source>By doing this, user&apos;s information will be synchronized with Google!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
-          <context context-type="linenumber">102</context>
+          <context context-type="linenumber">176</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceGoogleFieldsMapperDialog.byDoingGoogleFields" datatype="html">
         <source>By doing this, you will select the fields to map with Google!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
-          <context context-type="linenumber">104</context>
+          <context context-type="linenumber">178</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceLdapFieldsMapperDialog.pleaseWaitSavingProperties" datatype="html">
         <source>Please wait we are saving the properties...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
-          <context context-type="linenumber">119</context>
+          <context context-type="linenumber">202</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.ts</context>
@@ -404,7 +411,7 @@
         <source>User Saved!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
-          <context context-type="linenumber">125</context>
+          <context context-type="linenumber">208</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.ts</context>
@@ -415,7 +422,7 @@
         <source>Unable to save the settings, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
-          <context context-type="linenumber">129</context>
+          <context context-type="linenumber">212</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.ts</context>
@@ -430,28 +437,28 @@
         <source>Are you sure?</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
-          <context context-type="linenumber">134</context>
+          <context context-type="linenumber">217</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceGoogleFieldsMapperDialog.pleaseWaitMappingProperties" datatype="html">
         <source>Please wait we are mapping the new properties...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
-          <context context-type="linenumber">139</context>
+          <context context-type="linenumber">222</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceGoogleFieldsMapperDialog.propertiesSaved" datatype="html">
         <source>Properties to Map Saved!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
-          <context context-type="linenumber">145</context>
+          <context context-type="linenumber">228</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceGoogleFieldsMapperDialog.unableToSave" datatype="html">
         <source>Unable to save the settings, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
-          <context context-type="linenumber">149</context>
+          <context context-type="linenumber">232</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceGoogleSync.fetchGoogleInfo" datatype="html">
@@ -472,7 +479,7 @@
         <source>There are no Schemas in your Google profile to synchronize with Octonius properties.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-sync.component.ts</context>
-          <context context-type="linenumber">63</context>
+          <context context-type="linenumber">166</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-google-sync/user-google-sync.component.ts</context>
@@ -9268,7 +9275,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.addressDescription" datatype="html">
-        <source> Fill in the legal address Where do you live currently? </source>
+        <source> Fill in the legal address of the employee. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.html</context>
           <context context-type="linenumber">11,13</context>
@@ -9341,150 +9348,150 @@
         <source>Payroll info</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.html</context>
-          <context context-type="linenumber">111</context>
+          <context context-type="linenumber">114</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.payrollInfoDescription" datatype="html">
         <source> Fields created by the HR team. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.html</context>
-          <context context-type="linenumber">112,114</context>
+          <context context-type="linenumber">115,117</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.hrBenefits" datatype="html">
         <source>Benefits</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.html</context>
-          <context context-type="linenumber">136</context>
+          <context context-type="linenumber">139</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.hrBenefitsDescription" datatype="html">
         <source> Benefits created by the HR team. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.html</context>
-          <context context-type="linenumber">137,139</context>
+          <context context-type="linenumber">140,142</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.hrDaysOff" datatype="html">
         <source>Days Off</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.html</context>
-          <context context-type="linenumber">190</context>
+          <context context-type="linenumber">193</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.hrDaysOffDescription" datatype="html">
         <source> Extra Days Off given to the employee. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.html</context>
-          <context context-type="linenumber">191,193</context>
+          <context context-type="linenumber">194,196</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.holidays" datatype="html">
         <source>Holidays</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.html</context>
-          <context context-type="linenumber">201</context>
+          <context context-type="linenumber">204</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.sick" datatype="html">
         <source>Sick</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.html</context>
-          <context context-type="linenumber">210</context>
+          <context context-type="linenumber">213</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.personalDays" datatype="html">
         <source>Personal Days</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.html</context>
-          <context context-type="linenumber">219</context>
+          <context context-type="linenumber">222</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.pleaseWaitWeUpdateContents" datatype="html">
         <source>Please wait we are updating the contents...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">176</context>
+          <context context-type="linenumber">181</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">207</context>
+          <context context-type="linenumber">212</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">238</context>
+          <context context-type="linenumber">243</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">294</context>
+          <context context-type="linenumber">299</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">323</context>
+          <context context-type="linenumber">328</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.updated" datatype="html">
         <source>User HR field updated!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">181</context>
+          <context context-type="linenumber">186</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.unableToUpdate" datatype="html">
         <source>Unable to update HR field, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">184</context>
+          <context context-type="linenumber">189</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.cfUpdated" datatype="html">
         <source>Field updated!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">218</context>
+          <context context-type="linenumber">223</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">250</context>
+          <context context-type="linenumber">255</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.unableToUpdateCF" datatype="html">
         <source>Unable to update field, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">221</context>
+          <context context-type="linenumber">226</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">253</context>
+          <context context-type="linenumber">258</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.benefitUpdated" datatype="html">
         <source>Benefit updated!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">308</context>
+          <context context-type="linenumber">313</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.unableToUpdateBenefit" datatype="html">
         <source>Unable to update benefit, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">311</context>
+          <context context-type="linenumber">316</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.daysOffUpdated" datatype="html">
         <source>Days Off updated!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">329</context>
+          <context context-type="linenumber">334</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.unableToUpdateDaysOff" datatype="html">
         <source>Unable to update Days Off, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-hr-fields/edit-hr-fields.component.ts</context>
-          <context context-type="linenumber">332</context>
+          <context context-type="linenumber">337</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editMemberPayrollDialog.profileFields" datatype="html">
@@ -9588,63 +9595,63 @@
         <source>First name</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-user-profile-fields/edit-user-profile-fields.component.html</context>
-          <context context-type="linenumber">14</context>
+          <context context-type="linenumber">15</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userProfile.lastName" datatype="html">
         <source>Last name</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-user-profile-fields/edit-user-profile-fields.component.html</context>
-          <context context-type="linenumber">18</context>
+          <context context-type="linenumber">19</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userProfile.email" datatype="html">
         <source>E-Mail</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-user-profile-fields/edit-user-profile-fields.component.html</context>
-          <context context-type="linenumber">22</context>
+          <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userProfile.phoneNumber" datatype="html">
         <source>Phone number</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-user-profile-fields/edit-user-profile-fields.component.html</context>
-          <context context-type="linenumber">26</context>
+          <context context-type="linenumber">27</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userProfile.cellNumber" datatype="html">
         <source>Cell number</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-user-profile-fields/edit-user-profile-fields.component.html</context>
-          <context context-type="linenumber">30</context>
+          <context context-type="linenumber">31</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userProfile.language" datatype="html">
         <source>Language</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-user-profile-fields/edit-user-profile-fields.component.html</context>
-          <context context-type="linenumber">34</context>
+          <context context-type="linenumber">35</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userProfile.profileFields" datatype="html">
         <source>Profile fields</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-user-profile-fields/edit-user-profile-fields.component.html</context>
-          <context context-type="linenumber">43</context>
+          <context context-type="linenumber">45</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userProfile.profileFieldsDescription" datatype="html">
         <source> Fields created by the workplace admin. These fields are mandatory in order to customize your experience and access to resources. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-user-profile-fields/edit-user-profile-fields.component.html</context>
-          <context context-type="linenumber">44,47</context>
+          <context context-type="linenumber">46,49</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userProfile.skills" datatype="html">
         <source>Skills</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/edit-member-payroll-dialog/edit-user-profile-fields/edit-user-profile-fields.component.html</context>
-          <context context-type="linenumber">82</context>
+          <context context-type="linenumber">86</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userProfileCF.pleaseWaitWeUpdateContents" datatype="html">
@@ -10157,7 +10164,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">239</context>
+          <context context-type="linenumber">248</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newEntity.create" datatype="html">
@@ -10180,7 +10187,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">244</context>
+          <context context-type="linenumber">253</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newEntity.save" datatype="html">
@@ -10203,7 +10210,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">247</context>
+          <context context-type="linenumber">256</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newEntity.createNewCF" datatype="html">
@@ -11827,7 +11834,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="userHive.addressDescription" datatype="html">
-        <source> Fill in the legal address Where do you live currently? </source>
+        <source> The provided legal address. Only HR can edit this part. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-hive/user-hive.component.html</context>
           <context context-type="linenumber">12,14</context>
@@ -11872,56 +11879,56 @@
         <source>HR fields</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-hive/user-hive.component.html</context>
-          <context context-type="linenumber">57</context>
+          <context context-type="linenumber">58</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userHive.hrFieldsDescription" datatype="html">
         <source> Fields created by the HR team. These fields are mandatory. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-hive/user-hive.component.html</context>
-          <context context-type="linenumber">58,60</context>
+          <context context-type="linenumber">59,61</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userHive.position" datatype="html">
         <source>Position</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-hive/user-hive.component.html</context>
-          <context context-type="linenumber">70</context>
+          <context context-type="linenumber">115</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userHive.joinedOn" datatype="html">
         <source>Joined on:</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-hive/user-hive.component.html</context>
-          <context context-type="linenumber">77</context>
+          <context context-type="linenumber">121</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userHive.payrollInfo" datatype="html">
         <source>Payroll info</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-hive/user-hive.component.html</context>
-          <context context-type="linenumber">118</context>
+          <context context-type="linenumber">158</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userHive.payrollInfoDescription" datatype="html">
         <source> Fields created by the HR team. These fields are mandatory. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-hive/user-hive.component.html</context>
-          <context context-type="linenumber">119,121</context>
+          <context context-type="linenumber">159,161</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userHive.benefitsInfo" datatype="html">
         <source>Benefits info</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-hive/user-hive.component.html</context>
-          <context context-type="linenumber">143</context>
+          <context context-type="linenumber">183</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userHive.benefitsInfoDescription" datatype="html">
         <source> Fields created by the HR team. These fields are mandatory. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-hive/user-hive.component.html</context>
-          <context context-type="linenumber">144,146</context>
+          <context context-type="linenumber">184,186</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userHive.pleaseWaitWeUpdateContents" datatype="html">
@@ -17925,228 +17932,228 @@
         <source>Used Holiday days: </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">48</context>
+          <context context-type="linenumber">57</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.pendingHolidays" datatype="html">
         <source>Pending Holiday days: </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">51</context>
+          <context context-type="linenumber">60</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.usedSick" datatype="html">
         <source>Used Sick days: </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">56</context>
+          <context context-type="linenumber">65</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.pendingSick" datatype="html">
         <source>Pending Sick days: </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">59</context>
+          <context context-type="linenumber">68</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.usedPersonal" datatype="html">
         <source>Used Personal days: </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">64</context>
+          <context context-type="linenumber">73</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.pendingPersonal" datatype="html">
         <source>Pending Personal days: </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">67</context>
+          <context context-type="linenumber">76</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.starts" datatype="html">
         <source>Starts</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">82</context>
+          <context context-type="linenumber">91</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">144</context>
+          <context context-type="linenumber">153</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">194</context>
+          <context context-type="linenumber">203</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.ends" datatype="html">
         <source>Ends</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">83</context>
+          <context context-type="linenumber">92</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">145</context>
+          <context context-type="linenumber">154</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">202</context>
+          <context context-type="linenumber">211</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.type" datatype="html">
         <source>Type</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">84</context>
+          <context context-type="linenumber">93</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">146</context>
+          <context context-type="linenumber">155</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">210</context>
+          <context context-type="linenumber">219</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.numDays" datatype="html">
         <source>Number Days</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">85</context>
+          <context context-type="linenumber">94</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">147</context>
+          <context context-type="linenumber">156</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.manager" datatype="html">
         <source>Manager</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">86</context>
+          <context context-type="linenumber">95</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">148</context>
+          <context context-type="linenumber">157</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">222</context>
+          <context context-type="linenumber">231</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.status" datatype="html">
         <source>Status</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">87</context>
+          <context context-type="linenumber">96</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">149</context>
+          <context context-type="linenumber">158</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.comment" datatype="html">
         <source>Comment</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">88</context>
+          <context context-type="linenumber">97</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">150</context>
+          <context context-type="linenumber">159</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newEntity.requestHolidays" datatype="html">
-        <source> Request Holidays </source>
+        <source> New Leave Request </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">91,93</context>
+          <context context-type="linenumber">100,102</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.approved" datatype="html">
         <source>APPROVED</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">109</context>
+          <context context-type="linenumber">118</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">165</context>
+          <context context-type="linenumber">174</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.pending" datatype="html">
         <source>PENDING</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">110</context>
+          <context context-type="linenumber">119</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">166</context>
+          <context context-type="linenumber">175</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.rejected" datatype="html">
         <source>REJECTED</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">111</context>
+          <context context-type="linenumber">120</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">167</context>
+          <context context-type="linenumber">176</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.edit" datatype="html">
         <source>Edit</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">124</context>
+          <context context-type="linenumber">133</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">183</context>
+          <context context-type="linenumber">192</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.remove" datatype="html">
         <source>Remove</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">129</context>
+          <context context-type="linenumber">138</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.recentActivities" datatype="html">
         <source>Past Years</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">139</context>
+          <context context-type="linenumber">148</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.new" datatype="html">
         <source>New</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">184</context>
+          <context context-type="linenumber">193</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.holiday" datatype="html">
         <source>Holiday</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">186</context>
+          <context context-type="linenumber">195</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.numberOfDays" datatype="html">
         <source>Number Of Days</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">219</context>
+          <context context-type="linenumber">228</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.description" datatype="html">
         <source>Description</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-workload-calendar/user-workload-calendar.component.html</context>
-          <context context-type="linenumber">227</context>
+          <context context-type="linenumber">236</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.plesaeWaitWeAreUpdaing" datatype="html">

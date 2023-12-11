@@ -78,7 +78,7 @@ export class UserGoogleSyncComponent implements OnInit {
       userGoogleData: userGoogleData
     }
     const dialogRef = this.dialog.open(WorkplaceGoogleFieldsMapperDialogComponent, {
-      width: '65%',
+      width: '75%',
       height: '85%',
       disableClose: true,
       hasBackdrop: true,

@@ -1633,8 +1633,7 @@ export class UsersControllers {
                             { email: customFieldsMap[property] }
                         ]}).select('_id').lean();
 
-                    if (userOctonius) {
-
+                    if (!!userOctonius) {
                         if (!user['profile_custom_fields']) {
                             user['profile_custom_fields'] = new Map<string, string>();
                         }
