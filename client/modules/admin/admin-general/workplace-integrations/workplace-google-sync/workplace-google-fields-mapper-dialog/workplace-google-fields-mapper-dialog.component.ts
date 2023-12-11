@@ -192,8 +192,6 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
             const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             if (re.test(String(this.userGoogleData['customSchemas'][property.google_schema][property.google_property]).toLowerCase())) {
               this.userData.profile_custom_fields[octoPropertyTitle] = this.userGoogleData['customSchemas'][property.google_schema][property.google_property];
-            } else {
-              this.userData.profile_custom_fields[octoPropertyTitle] = null;
             }
           } else {
             this.userData.profile_custom_fields[octoPropertyTitle] = this.userGoogleData['customSchemas'][property.google_schema][property.google_property];
