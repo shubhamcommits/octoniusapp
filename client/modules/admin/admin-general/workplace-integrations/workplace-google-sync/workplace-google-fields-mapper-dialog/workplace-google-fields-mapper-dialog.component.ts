@@ -68,13 +68,13 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
     // this.userData?.profile_custom_fields?.forEach(async (value: any, key: string) => {
     Object.keys(this.userData?.profile_custom_fields).forEach(async (key) => {
       const value = this.userData?.profile_custom_fields[key];
-console.log(key);
-console.log(value);
-      const selectedIndex = (this.selectedProperties) ? this.selectedProperties.findIndex(p => p.google_property == key) : -1;
+      const selectedIndex = (this.selectedProperties) ? this.selectedProperties.findIndex(p => p.octonius_property == key) : -1;
       let pcf;
+
       if (selectedIndex >= 0 && this.selectedProperties[selectedIndex]) {
-        const pcfTitle = this.selectedProperties[selectedIndex].octonius_property;
-        const index = (!!this.profileCustomFields) ? this.profileCustomFields.findIndex(cf => cf.title == pcfTitle) : -1;
+        const pcfName = this.selectedProperties[selectedIndex].octonius_property;
+        const index = (!!this.profileCustomFields) ? this.profileCustomFields.findIndex(cf => cf.name == pcfName) : -1;
+
         if (index >= 0) {
           pcf = this.profileCustomFields[index];
         }
@@ -91,11 +91,6 @@ console.log(value);
         this.userExistingValues.set(key, value);
       }
     });
-console.log(this.googleSchemas);
-console.log(this.userGoogleData);
-console.log(this.propertiesToMap);
-console.log(this.selectedProperties);
-console.log(this.userExistingValues);
   }
 
   isUserCF(googleSchemaName: string, googlePropertyName: string) {
@@ -105,7 +100,7 @@ console.log(this.userExistingValues);
 
   getOctoniusProfileCustomField(googleSchemaName: string, googlePropertyName: string) {
     const octoPropertyName = this.getOctoniusProperty(googleSchemaName, googlePropertyName);
-    const index = (!!this.profileCustomFields) ? this.profileCustomFields.findIndex(cf => cf.title == octoPropertyName) : -1;
+    const index = (!!this.profileCustomFields) ? this.profileCustomFields.findIndex(cf => cf.name == octoPropertyName) : -1;
     if (index >= 0) {
       return this.profileCustomFields[index];
     }
@@ -118,6 +113,11 @@ console.log(this.userExistingValues);
       return this.selectedProperties[selectedIndex].octonius_property;
     }
     return '';
+  }
+
+  getUserExistingValue(googleSchemaName: string, googlePropertyName: string) {
+    const octoProperty = this.getOctoniusProperty(googleSchemaName, googlePropertyName);
+    return (!!octoProperty && !!this.userExistingValues) ? this.userExistingValues.get(octoProperty) : '';
   }
 
   async selectProperty(schemaName: string, fieldName: string) {
@@ -187,7 +187,17 @@ console.log(this.userExistingValues);
 
         if (this.isNotEmptyProperty(property.google_property) && this.isNotEmptyProperty(this.userGoogleData['customSchemas'][property.google_schema][property.google_property]) && this.isNotEmptyProperty(await this.getOctoniusProperty(property.google_schema, property.google_property))) {
           const octoPropertyTitle = await this.getOctoniusProperty(property.google_schema, property.google_property);
-          this.userData.profile_custom_fields[octoPropertyTitle] = this.userGoogleData['customSchemas'][property.google_schema][property.google_property];
+          // Test if the user CF is an email, if it is not it will be saved as null
+          if (this.isUserCF(property.google_schema, property.google_property)) {
+            const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            if (re.test(String(this.userGoogleData['customSchemas'][property.google_schema][property.google_property]).toLowerCase())) {
+              this.userData.profile_custom_fields[octoPropertyTitle] = this.userGoogleData['customSchemas'][property.google_schema][property.google_property];
+            } else {
+              this.userData.profile_custom_fields[octoPropertyTitle] = null;
+            }
+          } else {
+            this.userData.profile_custom_fields[octoPropertyTitle] = this.userGoogleData['customSchemas'][property.google_schema][property.google_property];
+          }
         }
       }
 
