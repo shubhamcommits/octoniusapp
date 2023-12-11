@@ -65,7 +65,11 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
       })
     );
 
-    this.userData?.profile_custom_fields.forEach(async (value: any, key: string) => {
+    // this.userData?.profile_custom_fields?.forEach(async (value: any, key: string) => {
+    Object.keys(this.userData?.profile_custom_fields).forEach(async (key) => {
+console.log(key);
+console.log(this.userData?.profile_custom_fields[key]);
+      const value = this.userData?.profile_custom_fields[key];
 console.log(key, value);
       const selectedIndex = (this.selectedProperties) ? this.selectedProperties.findIndex(p => p.google_property == key) : -1;
       let pcf;
