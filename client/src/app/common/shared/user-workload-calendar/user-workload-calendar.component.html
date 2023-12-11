@@ -1,4 +1,13 @@
 <div class="card-tile">
+
+  <div style="display: flex; align-items: center;" class="mb-4">
+    <img src="assets/images/timeoff.svg" alt="" style="width: 200px">
+    <div>
+    <h4>Manage your leave requests faster.</h4>
+    <p>Just click the New Leave Request button to get started.</p>
+  </div>
+    
+  </div>
   <!-- 
   <div class="row text-center">
     <div class="col-md-4">
@@ -87,9 +96,9 @@
             <th i18n="@@userWorkloadCalendar.status">Status</th>
             <th i18n="@@userWorkloadCalendar.comment">Comment</th>
             <th *ngIf="isCurrentUser">
-              <button (click)="cancelHoliday(); showNewHolidayForm()" class="btn btn-primary"
+              <button (click)="cancelHoliday(); showNewHolidayForm()" class="btn btn-outline-primary"
                 i18n="@@newEntity.requestHolidays">
-                Request Holidays
+                New Leave Request
               </button>
             </th>
           </tr>
