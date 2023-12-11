@@ -61,8 +61,20 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
       google_schema: prop.google_schema,
       google_property: prop.google_property
     }));
-console.log(this.googleSchemas);
-console.log(this.userGoogleData);
+  }
+
+  isUserCF(googleSchemaName: string, googlePropertyName: string) {
+    const pcf = this.getOctoniusProfileCustomField(googleSchemaName, googlePropertyName);
+    return (!!pcf && pcf.user_type);
+  }
+
+  getOctoniusProfileCustomField(googleSchemaName: string, googlePropertyName: string) {
+    const octoPropertyTitle = this.getOctoniusProperty(googleSchemaName, googlePropertyName);
+    const index = (!!this.profileCustomFields) ? this.profileCustomFields.findIndex(cf => cf.title == octoPropertyTitle) : -1;
+    if (index >= 0) {
+      return this.profileCustomFields[index];
+    }
+    return null;
   }
 
   getOctoniusProperty(googleSchemaName: string, googlePropertyName: string) {
@@ -139,7 +151,8 @@ console.log(this.userGoogleData);
         }
 
         if (this.isNotEmptyProperty(property.google_property) && this.isNotEmptyProperty(this.userGoogleData['customSchemas'][property.google_schema][property.google_property]) && this.isNotEmptyProperty(await this.getOctoniusProperty(property.google_schema, property.google_property))) {
-          this.userData.profile_custom_fields[await this.getOctoniusProperty(property.google_schema, property.google_property)] = this.userGoogleData['customSchemas'][property.google_schema][property.google_property];
+          const octoPropertyTitle = await this.getOctoniusProperty(property.google_schema, property.google_property);
+          this.userData.profile_custom_fields[octoPropertyTitle] = this.userGoogleData['customSchemas'][property.google_schema][property.google_property];
         }
       }
 

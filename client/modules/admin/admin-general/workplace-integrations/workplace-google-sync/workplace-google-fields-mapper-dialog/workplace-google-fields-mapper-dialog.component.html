@@ -35,6 +35,7 @@
               <th *ngIf="!isGlobal"><h4 i18n="@@workplaceGoogleFieldsMapperDialog.googleValue">Google Value</h4></th>
               <th *ngIf="!isGlobal"></th>
               <th *ngIf="!isGlobal"><h4 i18n="@@workplaceGoogleFieldsMapperDialog.octoniusValue">Octonius Value</h4></th>
+              <th *ngIf="!isGlobal"></th>
             </tr>
             <tr *ngFor="let field of schema.fields">
               <td><input [checked]="isPropertySelected(schema.schemaName, field.fieldName)" class="" type="checkbox" (click)="selectProperty(schema.displayName, field.fieldName)"></td>
@@ -50,11 +51,15 @@
               </td>
 
               <td *ngIf="!isGlobal && userGoogleData && userGoogleData['customSchemas'] && userGoogleData['customSchemas'][schema.displayName]">
-                <span>{{ userGoogleData['customSchemas'][schema.displayName][field.fieldName] | truncatetext: 30 }}</span>
+                <span>{{ userGoogleData['customSchemas'][schema.schemaName][field.fieldName] | truncatetext: 30 }}</span>
               </td>
 
               <td *ngIf="!isGlobal"><span class="material-icons-outlined">sync_alt</span></td>
               <td *ngIf="!isGlobal"><span class="muted" *ngIf="this.userData.profile_custom_fields">{{ this.userData.profile_custom_fields[getOctoniusProperty(schema.schemaName, field.fieldName)] }}</span></td>
+              <td *ngIf="!isGlobal && isUserCF(schema.schemaName, field.fieldName)">
+                <span class="material-icons-outlined">warning</span>
+                <span i18n="@@workplaceLdapFieldsMapperDialog.userFieldWaring">The map of this field will only be effective if the Google field is an email of an existing user in Octonius.</span>
+              </td>
             </tr>
           </table>
         </div>
