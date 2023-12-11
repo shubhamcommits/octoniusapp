@@ -50,11 +50,14 @@ console.log(this.data);
     this.profileCustomFields = this.workplaceData?.profile_custom_fields;
     if (this.workplaceData?.googlePropertiesMap) {
       this.selectedProperties = this.workplaceData?.googlePropertiesMap;
+    } else {
+      this.selectedProperties = [];
     }
 
     if (!this.propertiesToMap) {
       this.propertiesToMap = [];
     }
+
     this.selectedProperties.forEach(prop => this.propertiesToMap.push({
       google_schema: prop.google_schema,
       google_property: prop.google_property
@@ -88,8 +91,8 @@ console.log("AAAAA");
     return (this.propertiesToMap) ? this.propertiesToMap.findIndex(p => p.google_property == googlePropertyName && p.google_schema == googleSchemaName) : -1;
   }
 
-  async isPropertySelected(googleSchemaName: string, googlePropertyName: string) {
-    const index = await this.getPropertiesToMapIndex(googleSchemaName, googlePropertyName);
+  isPropertySelected(googleSchemaName: string, googlePropertyName: string) {
+    const index = this.getPropertiesToMapIndex(googleSchemaName, googlePropertyName);
     return index >= 0;
   }
 
@@ -97,13 +100,13 @@ console.log("AAAAA");
     return (this.selectedProperties) ? this.selectedProperties.findIndex(p => p.google_property == googlePropertyName && p.google_schema == googleSchemaName) : -1;
   }
 
-  async changePropertyValue($event, schemaName: string, propertyName: string) {
-    let index = await this.getPropertiesToMapIndex(schemaName, propertyName);
+  changePropertyValue($event, schemaName: string, propertyName: string) {
+    let index = this.getPropertiesToMapIndex(schemaName, propertyName);
     if (index < 0) {
-      await this.selectProperty(schemaName, propertyName);
+      this.selectProperty(schemaName, propertyName);
     }
 
-    const selectedIndex = await this.getSelectedIndex(schemaName, propertyName);
+    const selectedIndex = this.getSelectedIndex(schemaName, propertyName);
     if (selectedIndex >= 0) {
       this.selectedProperties[selectedIndex].octonius_property = $event.value
     } else {
