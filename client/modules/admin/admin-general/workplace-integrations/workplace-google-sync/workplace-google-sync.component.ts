@@ -56,11 +56,12 @@ export class WorkplaceGoogleSyncComponent implements OnInit {
 
       const googleUser: any = await this.getGoogleLoggedInUser();
       const schemas: any = await this.getUserSchema(googleUser.customerId);
-console.log({schemas});
-console.log({googleUser});
+
       this.utilityService.updateIsLoadingSpinnerSource(false);
 
       if (!!schemas) {
+console.log({schemas});
+console.log({googleUser});
         this.openGoogleFieldsMapDialog(googleUser, schemas.schemas);
       } else {
         this.utilityService.infoNotification($localize`:@@workplaceGoogleSyncComponent.noSchemas:There are no Schemas in your Google profile to synchronize with Octonius properties.`)

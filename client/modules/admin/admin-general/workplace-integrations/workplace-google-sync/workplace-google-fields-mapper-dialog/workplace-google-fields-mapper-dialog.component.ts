@@ -24,6 +24,7 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
   propertiesToMap = [];
   profileCustomFields;
   selectedProperties = [];
+  userExistingValues = new Map<string, any>();
 
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
@@ -57,13 +58,41 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
       this.propertiesToMap = [];
     }
 
-    this.selectedProperties.forEach(prop => this.propertiesToMap.push({
-      google_schema: prop.google_schema,
-      google_property: prop.google_property
-    }));
+    this.selectedProperties.forEach(prop => 
+      this.propertiesToMap.push({
+        google_schema: prop.google_schema,
+        google_property: prop.google_property
+      })
+    );
+
+    this.userData?.profile_custom_fields.forEach(async (value: any, key: string) => {
+console.log(key, value);
+      const selectedIndex = (this.selectedProperties) ? this.selectedProperties.findIndex(p => p.google_property == key) : -1;
+      let pcf;
+      if (selectedIndex >= 0 && this.selectedProperties[selectedIndex]) {
+        const pcfTitle = this.selectedProperties[selectedIndex].octonius_property;
+        const index = (!!this.profileCustomFields) ? this.profileCustomFields.findIndex(cf => cf.title == pcfTitle) : -1;
+        if (index >= 0) {
+          pcf = this.profileCustomFields[index];
+        }
+      }
+
+      if (!!pcf && pcf.user_type) {
+        const userCF: any = await this.publicFunctions.getOtherUser(value);
+        if (!!userCF) {
+          this.userExistingValues.set(key, userCF.email);
+        } else {
+          this.userExistingValues.set(key, value);
+        }
+      } else {
+        this.userExistingValues.set(key, value);
+      }
+    });
 console.log(this.googleSchemas);
 console.log(this.userGoogleData);
 console.log(this.propertiesToMap);
+console.log(this.selectedProperties);
+console.log(this.userExistingValues);
   }
 
   isUserCF(googleSchemaName: string, googlePropertyName: string) {
@@ -72,8 +101,8 @@ console.log(this.propertiesToMap);
   }
 
   getOctoniusProfileCustomField(googleSchemaName: string, googlePropertyName: string) {
-    const octoPropertyTitle = this.getOctoniusProperty(googleSchemaName, googlePropertyName);
-    const index = (!!this.profileCustomFields) ? this.profileCustomFields.findIndex(cf => cf.title == octoPropertyTitle) : -1;
+    const octoPropertyName = this.getOctoniusProperty(googleSchemaName, googlePropertyName);
+    const index = (!!this.profileCustomFields) ? this.profileCustomFields.findIndex(cf => cf.title == octoPropertyName) : -1;
     if (index >= 0) {
       return this.profileCustomFields[index];
     }
