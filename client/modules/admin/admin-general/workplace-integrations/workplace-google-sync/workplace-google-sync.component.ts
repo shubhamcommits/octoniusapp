@@ -59,12 +59,14 @@ console.log({googleUser});
       const schemas: any = await this.getUserSchema(googleUser.customerId);
 console.log({schemas});
       this.utilityService.updateIsLoadingSpinnerSource(false);
-
+console.log("00000");
       if (!!schemas) {
+console.log("11111");
         this.openGoogleFieldsMapDialog(googleUser, schemas.schemas);
       } else {
         this.utilityService.infoNotification($localize`:@@workplaceGoogleSyncComponent.noSchemas:There are no Schemas in your Google profile to synchronize with Octonius properties.`)
       }
+console.log("33333");
     };
 
     if (!gapi.client || gapi.client.getToken() === null) {
@@ -75,6 +77,7 @@ console.log({schemas});
       // Skip display of account chooser and consent dialog for an existing session.
       this.googleTokenClient.requestAccessToken({prompt: ''});
     }
+console.log("44444");
   }
 
   /**
@@ -138,6 +141,7 @@ console.log({schemas});
       isGlobal: true,
       userGoogleData: userGoogleData
     }
+console.log({data});
     const dialogRef = this.dialog.open(WorkplaceGoogleFieldsMapperDialogComponent, {
       width: '65%',
       height: '85%',
@@ -145,7 +149,7 @@ console.log({schemas});
       hasBackdrop: true,
       data: data
     });
-
+console.log("22222");
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe(async (data) => {
       this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     });

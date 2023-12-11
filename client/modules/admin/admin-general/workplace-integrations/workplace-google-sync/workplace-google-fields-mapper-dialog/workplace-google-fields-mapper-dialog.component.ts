@@ -36,9 +36,7 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     // private changeDetectorRef: ChangeDetectorRef,
     private mdDialogRef: MatDialogRef<WorkplaceGoogleFieldsMapperDialogComponent>
-  ) {
-console.log(this.data);
-  }
+  ) {}
 
   async ngOnInit(): Promise<void> {
 console.log(this.data);
@@ -61,6 +59,7 @@ console.log(this.data);
       google_schema: prop.google_schema,
       google_property: prop.google_property
     }));
+console.log("AAAAA");
   }
 
   getOctoniusProperty(googleSchemaName: string, googlePropertyName: string) {
