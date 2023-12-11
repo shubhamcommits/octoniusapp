@@ -39,7 +39,6 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-console.log(this.data);
     this.workplaceData = await this.publicFunctions.getCurrentWorkspace();
     this.userData = await this.publicFunctions.getCurrentUser();
 
@@ -62,7 +61,8 @@ console.log(this.data);
       google_schema: prop.google_schema,
       google_property: prop.google_property
     }));
-console.log("AAAAA");
+console.log(this.googleSchemas);
+console.log(this.userGoogleData);
   }
 
   getOctoniusProperty(googleSchemaName: string, googlePropertyName: string) {
