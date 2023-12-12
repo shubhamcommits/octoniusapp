@@ -373,6 +373,10 @@
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
           <context context-type="linenumber">30</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
+          <context context-type="linenumber">79</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="workplaceGoogleFieldsMapperDialog.octoniusProperty" datatype="html">
         <source>Octonius Property</source>
@@ -380,6 +384,10 @@
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
           <context context-type="linenumber">32</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
+          <context context-type="linenumber">83</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceGoogleFieldsMapperDialog.newOctoniusProperty" datatype="html">
@@ -389,6 +397,10 @@
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
           <context context-type="linenumber">34</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
+          <context context-type="linenumber">87</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="workplaceGoogleFieldsMapperDialog.googleValue" datatype="html">
         <source>Google Value</source>
@@ -396,6 +408,10 @@
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
           <context context-type="linenumber">35</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
+          <context context-type="linenumber">90</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceGoogleFieldsMapperDialog.currentOctoniusValue" datatype="html">
@@ -405,13 +421,25 @@
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
           <context context-type="linenumber">37</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
+          <context context-type="linenumber">94</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceGoogleFieldsMapperDialog.genericProperties" datatype="html">
+        <source>Generic Properties</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
+          <context context-type="linenumber">72</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="workplaceLdapFieldsMapperDialog.map" datatype="html">
         <source> Map </source>
         <target state="translated"> Landkarte </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
-          <context context-type="linenumber">74,76</context>
+          <context context-type="linenumber">129,131</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.html</context>
@@ -423,7 +451,7 @@
         <target state="translated"> Mapping speichern </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
-          <context context-type="linenumber">80,82</context>
+          <context context-type="linenumber">135,137</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceLdapFieldsMapperDialog.userFieldWaring" datatype="html">
@@ -431,7 +459,47 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.html</context>
-          <context context-type="linenumber">87</context>
+          <context context-type="linenumber">142</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceGoogleFieldsMapperDialog.currentPosition" datatype="html">
+        <source>Current Position</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceGoogleFieldsMapperDialog.joinDate" datatype="html">
+        <source>Join Date</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceGoogleFieldsMapperDialog.phoneNumber" datatype="html">
+        <source>Phone Number</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceGoogleFieldsMapperDialog.mobileNumber" datatype="html">
+        <source>Mobile Number</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceGoogleFieldsMapperDialog.address" datatype="html">
+        <source>Address</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
+          <context context-type="linenumber">34</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceGoogleFieldsMapperDialog.byDoingGoogleSync" datatype="html">
@@ -439,7 +507,7 @@
         <target state="translated">Auf diese Weise werden die Informationen des Nutzers mit Google synchronisiert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
-          <context context-type="linenumber">176</context>
+          <context context-type="linenumber">314</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceGoogleFieldsMapperDialog.byDoingGoogleFields" datatype="html">
@@ -447,7 +515,7 @@
         <target state="translated">Auf diese Weise wählen Sie die Felder aus, die mit Google zugeordnet werden sollen!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
-          <context context-type="linenumber">178</context>
+          <context context-type="linenumber">316</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceLdapFieldsMapperDialog.pleaseWaitSavingProperties" datatype="html">
@@ -455,7 +523,7 @@
         <target state="translated">Bitte warten Sie, wir speichern die Eigenschaften...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
-          <context context-type="linenumber">202</context>
+          <context context-type="linenumber">372</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.ts</context>
@@ -467,7 +535,7 @@
         <target state="translated">Benutzer gespart!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
-          <context context-type="linenumber">208</context>
+          <context context-type="linenumber">379</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.ts</context>
@@ -479,7 +547,7 @@
         <target state="translated">Die Einstellungen können nicht gespeichert werden, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
-          <context context-type="linenumber">212</context>
+          <context context-type="linenumber">383</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-ldap-sync/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component.ts</context>
@@ -495,7 +563,7 @@
         <target state="translated">Sind Sie sicher?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
-          <context context-type="linenumber">217</context>
+          <context context-type="linenumber">388</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceGoogleFieldsMapperDialog.pleaseWaitMappingProperties" datatype="html">
@@ -503,7 +571,7 @@
         <target state="translated">Bitte warten Sie, wir kartieren die neuen Eigenschaften...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
-          <context context-type="linenumber">222</context>
+          <context context-type="linenumber">393</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceGoogleFieldsMapperDialog.propertiesSaved" datatype="html">
@@ -511,7 +579,7 @@
         <target state="translated">Zu mappende Eigenschaften gespeichert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
-          <context context-type="linenumber">228</context>
+          <context context-type="linenumber">399</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceGoogleFieldsMapperDialog.unableToSave" datatype="html">
@@ -519,7 +587,7 @@
         <target state="translated">Die Einstellungen können nicht gespeichert werden, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component.ts</context>
-          <context context-type="linenumber">232</context>
+          <context context-type="linenumber">403</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceGoogleSync.fetchGoogleInfo" datatype="html">
@@ -543,7 +611,7 @@
         <target state="translated">Es gibt keine Schemas in Ihrem Google-Profil, die mit Octonius-Eigenschaften synchronisiert werden können.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-sync.component.ts</context>
-          <context context-type="linenumber">166</context>
+          <context context-type="linenumber">65</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-google-sync/user-google-sync.component.ts</context>
