@@ -67,6 +67,17 @@ const workspaceSchema = new Schema({
             type: String
         }
     }],
+    googleGenericPropertiesMap: [{
+        google_property: {
+            type: String
+        },
+        google_schema: {
+            type: String
+        },
+        octonius_property: {
+            type: String
+        }
+    }],
     
     profile_custom_fields: {
         type: [{

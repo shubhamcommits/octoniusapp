@@ -432,11 +432,12 @@ export class UserService {
     }).toPromise();
   }
 
-  saveCustomFieldsFrom3rdPartySync(userId: string, workspaceId: string, customFieldsMap: any) {
+  saveCustomFieldsFrom3rdPartySync(userId: string, workspaceId: string, customFieldsMap: any, genericProperties?: any) {
     // Call the HTTP Request
     return this._http.put(this.BASE_API_URL + `/${userId}/saveCustomFieldsFrom3rdPartySync`, {
       workspaceId: workspaceId,
-      customFieldsMap: customFieldsMap
+      customFieldsMap: customFieldsMap,
+      genericProperties: genericProperties
     }).toPromise();
   }
 
