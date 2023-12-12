@@ -108,7 +108,7 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row" *ngIf="!!hrVariables">
     <div class="col">
         <div class="col-description">
             <h4 i18n="@@editHRFields.payrollInfo">Payroll info</h4>
@@ -133,7 +133,7 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row" *ngIf="!!hrBenefits">
     <div class="col">
         <div class="col-description">
             <h4 i18n="@@editHRFields.hrBenefits">Benefits</h4>
