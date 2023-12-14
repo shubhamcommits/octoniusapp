@@ -237,29 +237,27 @@ export class NotificationsService {
      * This function is responsible for notifying the user on mention on new comment
      * @param { _id, _content_mentions, _commented_by, _post } comment 
      */
-    async newCommentMentions(comment: any) {
+    async newCommentMentions(actorId: string, ownerId: string, commentId: string, postId: string) {
         try {
-            await comment._content_mentions.forEach(async (user: any) => {
-                const notification = await Notification.create({
-                    _actor: comment._commented_by,
-                    _owner: user,
-                    _origin_comment: comment._id,
-                    _origin_post: comment._post,
-                    message: ' mentioned you on',
-                    type: 'mention',
-                    created_date: moment().format()
-                });
-
-                // Send the notification to firebase for mobile notify
-                if (process.env.DOMAIN == 'app.octonius.com') {
-                    const owner = await User.findById({ _id: user }).select('_workspace integrations.firebase_token').lean();
-                    const actor = await User.findById({ _id: comment?._commented_by }).select('first_name last_name').lean();
-
-                    if (owner.integrations.firebase_token) {
-                        firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Mention in Comment', actor?.first_name + ' ' + actor?.last_name + ' mentioned you on a comment.');
-                    }
-                }
+            const notification = await Notification.create({
+                _actor: actorId,
+                _owner: ownerId,
+                _origin_comment: commentId,
+                _origin_post: postId,
+                message: ' mentioned you on',
+                type: 'mention',
+                created_date: moment().format()
             });
+
+            // Send the notification to firebase for mobile notify
+            if (process.env.DOMAIN == 'app.octonius.com') {
+                const owner = await User.findById({ _id: ownerId }).select('_workspace integrations.firebase_token').lean();
+                const actor = await User.findById({ _id: actorId }).select('first_name last_name').lean();
+
+                if (owner.integrations.firebase_token) {
+                    firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Mention in Comment', actor?.first_name + ' ' + actor?.last_name + ' mentioned you on a comment.');
+                }
+            }
         } catch (err) {
             throw err;
         }
@@ -287,22 +285,24 @@ export class NotificationsService {
             }
 
             await userStream.on('data', async (user: any) => {
-                const notification = await Notification.create({
-                    _actor: posted_by,
-                    _owner: user._id,
-                    _origin_post: postId,
-                    message: ' assigned you on',
-                    type: 'assignment',
-                    created_date: moment().format()
-                });
+                if (posted_by != user._id) {
+                    const notification = await Notification.create({
+                        _actor: posted_by,
+                        _owner: user._id,
+                        _origin_post: postId,
+                        message: ' assigned you on',
+                        type: 'assignment',
+                        created_date: moment().format()
+                    });
 
-                // Send the notification to firebase for mobile notify
-                if (process.env.DOMAIN == 'app.octonius.com') {
-                    const owner = await User.findById({ _id: user._id }).select('_workspace integrations.firebase_token').lean();
-                    const actor = await User.findById({ _id: (posted_by._id || posted_by) }).select('first_name last_name').lean();
+                    // Send the notification to firebase for mobile notify
+                    if (process.env.DOMAIN == 'app.octonius.com') {
+                        const owner = await User.findById({ _id: user._id }).select('_workspace integrations.firebase_token').lean();
+                        const actor = await User.findById({ _id: (posted_by._id || posted_by) }).select('first_name last_name').lean();
 
-                    if (owner.integrations.firebase_token) {
-                        firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Assignment', actor?.first_name + ' ' + actor?.last_name + ' assigned you a event.');
+                        if (owner.integrations.firebase_token) {
+                            firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Assignment', actor?.first_name + ' ' + actor?.last_name + ' assigned you a event.');
+                        }
                     }
                 }
             });
@@ -315,44 +315,26 @@ export class NotificationsService {
      * This function is responsible for notifying the user on mention on new post
      * @param { _id, _posted_by, _content_mentions } post 
      */
-    async newPostMentions(postId, content_mentions, groupId, posted_by) {
+    async newPostMentions(actorId: string, ownerId: string, postId: string) {
         try {
+            const notification = await Notification.create({
+                _actor: actorId,
+                _owner: ownerId,
+                _origin_post: postId,
+                message: ' mentioned you on',
+                type: 'mention',
+                created_date: moment().format()
+            });
 
-            let userStream: any;
+            // Send the notification to firebase for mobile notify
+            if (process.env.DOMAIN == 'app.octonius.com') {
+                const owner = await User.findById({ _id: ownerId }).select('_workspace integrations.firebase_token').lean();
+                const actor = await User.findById({ _id: actorId }).select('first_name last_name').lean();
 
-            if (content_mentions.includes('all')) {
-
-                // Create Readble Stream from the Post Contents
-                userStream = Readable.from(await User.find({
-                    _groups: groupId
-                }).distinct('_id'))
-
-            } else {
-
-                // User Stream from the post contents
-                userStream = Readable.from(content_mentions)
-            }
-
-            userStream.on('data', async (user: any) => {
-                const notification = await Notification.create({
-                    _actor: posted_by,
-                    _owner: user,
-                    _origin_post: postId,
-                    message: ' mentioned you on',
-                    type: 'mention',
-                    created_date: moment().format()
-                });
-
-                // Send the notification to firebase for mobile notify
-                if (process.env.DOMAIN == 'app.octonius.com') {
-                    const owner = await User.findById({ _id: user._id }).select('_workspace integrations.firebase_token').lean();
-                    const actor = await User.findById({ _id: (posted_by._id || posted_by) }).select('first_name last_name').lean();
-
-                    if (owner.integrations.firebase_token) {
-                        firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Mention', actor?.first_name + ' ' + actor?.last_name + ' mentioned you on a post.');
-                    }
+                if (owner.integrations.firebase_token) {
+                    firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Mention', actor?.first_name + ' ' + actor?.last_name + ' mentioned you on a post.');
                 }
-            })
+            }
         } catch (err) {
             throw err;
         }
@@ -386,21 +368,23 @@ export class NotificationsService {
             }
 
             await userStream.on('data', async (user: any) => {
-                const notification = await Notification.create({
-                    _actor: actorId,
-                    _owner: user,
-                    _origin_folio: file,
-                    message: ' mentioned you on',
-                    type: 'mention_folio',
-                    created_date: moment().format()
-                });
+                if (actorId != ownerId) {
+                    const notification = await Notification.create({
+                        _actor: actorId,
+                        _owner: user,
+                        _origin_folio: file,
+                        message: ' mentioned you on',
+                        type: 'mention_folio',
+                        created_date: moment().format()
+                    });
 
-                if (process.env.DOMAIN == 'app.octonius.com') {
-                    const actor = await User.findById({ _id: actorId }).select('first_name last_name').lean();
+                    if (process.env.DOMAIN == 'app.octonius.com') {
+                        const actor = await User.findById({ _id: actorId }).select('first_name last_name').lean();
 
-                    if (user.integrations.firebase_token) {
-                        // Send the notification to firebase for mobile notify
-                        firebaseNotifications.sendFirebaseNotification(user._workspace._id || user._workspace, user.integrations.firebase_token, 'Octonius - New Mention', actor?.first_name + ' ' + actor?.last_name + ' mentioned you on a folio.');
+                        if (user.integrations.firebase_token) {
+                            // Send the notification to firebase for mobile notify
+                            firebaseNotifications.sendFirebaseNotification(user._workspace._id || user._workspace, user.integrations.firebase_token, 'Octonius - New Mention', actor?.first_name + ' ' + actor?.last_name + ' mentioned you on a folio.');
+                        }
                     }
                 }
             });
@@ -413,46 +397,27 @@ export class NotificationsService {
      * This function is responsible to notifying all the user on assigning of a new task to them
      * @param { postId, assigned_to, groupId, posted_by } post 
      */
-    async newTaskAssignment(postId: string, assigned_to: any, groupId: string, posted_by: any) {
+    async newTaskAssignment(postId: string, ownerId: string, actorId: string) {
 
         try {
-            // Let usersStream
-            let userStream: any;
-
-            // If all members are selected
-            if (assigned_to.includes('all')) {
-
-                // Create Readble Stream from the Event Assignee
-                userStream = Readable.from(await User.find({
-                    _groups: groupId
-                }).select('_workspace first_name email integrations.firebase_token'))
-            } else {
-                // Create Readble Stream from the Event Assignee
-                userStream = Readable.from(assigned_to);
-            }
-
-            await userStream.on('data', async (user: any) => {
-                if ((user._id || user) !== (posted_by._id || posted_by)) {
-                    const notification = await Notification.create({
-                        _actor: (posted_by._id || posted_by),
-                        _owner: (user._id || user),
-                        _origin_post: postId,
-                        message: ' assigned you on',
-                        type: 'assignment',
-                        created_date: moment().format()
-                    });
-
-                    if (process.env.DOMAIN == 'app.octonius.com') {
-                        const owner = await User.findById({ _id: user._id }).select('_workspace integrations.firebase_token').lean();
-                        const actor = await User.findById({ _id: (posted_by._id || posted_by) }).select('first_name last_name').lean();
-
-                        if (owner.integrations.firebase_token) {
-                            // Send the notification to firebase for mobile notify
-                            firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Assignment', actor?.first_name + ' ' + actor?.last_name + ' assigned you a task.');
-                        }
-                    }
-                }
+            const notification = await Notification.create({
+                _actor: actorId,
+                _owner: ownerId,
+                _origin_post: postId,
+                message: ' assigned you on',
+                type: 'assignment',
+                created_date: moment().format()
             });
+
+            if (process.env.DOMAIN == 'app.octonius.com') {
+                const owner = await User.findById({ _id: ownerId }).select('_workspace integrations.firebase_token').lean();
+                const actor = await User.findById({ _id: actorId }).select('first_name last_name').lean();
+
+                if (owner.integrations.firebase_token) {
+                    // Send the notification to firebase for mobile notify
+                    firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Assignment', actor?.first_name + ' ' + actor?.last_name + ' assigned you a task.');
+                }
+            }
         } catch (err) {
             throw err;
         }
@@ -493,7 +458,7 @@ export class NotificationsService {
      * @param { _id, _assigned_to, _posted_by } post
      * @param status
      */
-    async taskStatusChanged(postId: String, status: string, actorId: string, assigned_to, ownerId?: string, io?: any) {
+    async taskStatusChanged(postId: String, status: string, actorId: string, ownerId: string, io: any) {
         try {
             if (ownerId) {
                 const notification = await Notification.create({
@@ -517,34 +482,34 @@ export class NotificationsService {
                 }
 
                 await helperFunctions.sendNotificationsFeedFromService(ownerId, io);
-            } else {
+            // } else {
 
-                // Create Readble Stream from the Event Assignee
-                const assignedStream = Readable.from(assigned_to);
+            //     // Create Readble Stream from the Event Assignee
+            //     const assignedStream = Readable.from(assigned_to);
 
-                await assignedStream.on('data', async (assignee: any) => {
-                    const notification = await Notification.create({
-                        _actor: actorId,
-                        _owner: assignee._id || assignee,
-                        _origin_post: postId,
-                        message: status,
-                        type: status,
-                        created_date: moment().format()
-                    });
+            //     await assignedStream.on('data', async (assignee: any) => {
+            //         const notification = await Notification.create({
+            //             _actor: actorId,
+            //             _owner: assignee._id || assignee,
+            //             _origin_post: postId,
+            //             message: status,
+            //             type: status,
+            //             created_date: moment().format()
+            //         });
 
-                    if (process.env.DOMAIN == 'app.octonius.com') {
-                        const owner = await User.findById({ _id: (assignee._id || assignee) }).select('_workspace integrations.firebase_token').lean();
-                        const actor = await User.findById({ _id: actorId }).select('first_name last_name').lean();
-                        const task = await Post.findById({ _id: postId }).select('title').lean();
+            //         if (process.env.DOMAIN == 'app.octonius.com') {
+            //             const owner = await User.findById({ _id: (assignee._id || assignee) }).select('_workspace integrations.firebase_token').lean();
+            //             const actor = await User.findById({ _id: actorId }).select('first_name last_name').lean();
+            //             const task = await Post.findById({ _id: postId }).select('title').lean();
 
-                        if (owner.integrations.firebase_token) {
-                            // Send the notification to firebase for mobile notify
-                            firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - Task Status Changed', actor?.first_name + ' ' + actor?.last_name + ' changed the task ' + task?.title + ' to ' + status);
-                        }
-                    }
+            //             if (owner.integrations.firebase_token) {
+            //                 // Send the notification to firebase for mobile notify
+            //                 firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - Task Status Changed', actor?.first_name + ' ' + actor?.last_name + ' changed the task ' + task?.title + ' to ' + status);
+            //             }
+            //         }
                     
-                    await helperFunctions.sendNotificationsFeedFromService((assignee?._id || assignee), io);
-                });
+            //         await helperFunctions.sendNotificationsFeedFromService((assignee?._id || assignee), io);
+            //     });
             }
         } catch (err) {
             throw err;
@@ -555,12 +520,12 @@ export class NotificationsService {
     * This function is responsible for notifying the user getting a new comment
     * @param { _id, _commented_by, _post, _posted_by } comment 
     */
-    async newComment(comment: any, postId: string, ownerId: string) {
+    async newComment(commentId: string, postId: string, actorId: string, ownerId: string) {
         try {
             const notification = await Notification.create({
-                _actor: comment._commented_by,
+                _actor: actorId,
                 _owner: ownerId,
-                _origin_comment: comment._id,
+                _origin_comment: commentId,
                 _origin_post: postId,
                 message: 'commented on',
                 type: 'comment',
@@ -569,7 +534,7 @@ export class NotificationsService {
 
             if (process.env.DOMAIN == 'app.octonius.com') {
                 const owner = await User.findById({ _id: ownerId }).select('_workspace integrations.firebase_token').lean();
-                const actor = await User.findById({ _id: comment._commented_by._id || comment._commented_by }).select('first_name last_name').lean();
+                const actor = await User.findById({ _id: actorId }).select('first_name last_name').lean();
 
                 if (owner.integrations.firebase_token) {
                     // Send the notification to firebase for mobile notify
@@ -614,11 +579,11 @@ export class NotificationsService {
     /**
      * This function is responsible to notifying all the user on a new follower
      */
-    async followPost(postId, posted_by, follower: string) {
+    async followPost(postId: string, ownerId: string, actorId: string) {
         try {
             const notification = await Notification.create({
-                _actor: follower,
-                _owner: posted_by,
+                _actor: actorId,
+                _owner: ownerId,
                 _origin_post: postId,
                 message: 'follows',
                 type: 'follow',
@@ -626,8 +591,8 @@ export class NotificationsService {
             });
 
             if (process.env.DOMAIN == 'app.octonius.com') {
-                const owner = await User.findById({ _id: (posted_by._id || posted_by) }).select('_workspace integrations.firebase_token').lean();
-                const actor = await User.findById({ _id: follower }).select('first_name last_name').lean();
+                const owner = await User.findById({ _id: ownerId }).select('_workspace integrations.firebase_token').lean();
+                const actor = await User.findById({ _id: actorId }).select('first_name last_name').lean();
                 const post = await Post.findById({ _id: postId }).select('title').lean();
 
                 if (owner.integrations.firebase_token) {
@@ -1157,15 +1122,6 @@ export class NotificationsService {
         try {
             // Let usersStream
             let userStream: any;
-
-            // if (mentions.includes('all')) {
-            //     const page = await Page.findOne({ _id: pageId }).select('_collection').lean();
-            //     const collection = await Collection.findOne({ _id: page?._collection }).select('_group').lean();
-            //     // Create Readble Stream from the Event Assignee
-            //     userStream = Readable.from(await User.find({
-            //         _groups: collection?._group
-            //     }).select('_workspace first_name email integrations.firebase_token'))
-            // } else {
 
             // Create Readble Stream from the Event Assignee
             userStream = Readable.from(await User.find({
