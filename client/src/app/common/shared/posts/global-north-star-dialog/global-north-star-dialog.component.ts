@@ -124,15 +124,30 @@ export class GlobalNorthStarDialogComponent implements OnInit {
       this.subtasks = res['subtasks'];
 
       if (this.subtasks && this.subtasks.length > 0) {
+        let northStarValues = [];
         this.subtasks.forEach(st => {
+          let lastNSValues: any = {};
           if (st.task.isNorthStar) {
             st.task.northStar.values = st?.task?.northStar?.values?.sort((v1, v2) => (moment.utc(v1.date).isBefore(moment.utc(v2.date))) ? 1 : -1)
             const nsValues = this.mapNSValues(st);
             this.northStarValues = this.northStarValues.concat(nsValues);
+
+            const lastValue = st?.task?.northStar?.values[0];
+            lastNSValues = {
+                value: lastValue?.value,
+                status: lastValue?.status,
+              };
           } else {
             const taskLogs = this.mapTaskLogs(st);
             this.northStarValues = this.northStarValues.concat(taskLogs);
+
+            lastNSValues = {
+              value: 0,
+              status: st?.task?.status,
+            };
           }
+
+          northStarValues = northStarValues.concat(lastNSValues);
 
           if (st?.task?._column) {
             this.columService.getSection(st?.task?._column).then(res2 => {
@@ -140,6 +155,8 @@ export class GlobalNorthStarDialogComponent implements OnInit {
             });
           }
         });
+
+        this.postData.northStarValues = northStarValues;
 
         this.northStarValues = this.northStarValues.sort((v1, v2) => (moment.utc(v1.date).isBefore(v2.date)) ? 1 : -1);
         this.showSubtasks = true;
@@ -154,26 +171,6 @@ export class GlobalNorthStarDialogComponent implements OnInit {
 
   async initGraph() {
     if (this.subtasks && this.subtasks.length > 0) {
-      let northStarValues = [];
-      this.subtasks.forEach(st => {
-        let nsValues: any = {};
-        if (st?.task?.isNorthStar) {
-          const value = st?.task?.northStar?.values[st?.task?.northStar?.values?.length-1];
-          nsValues = {
-              value: value?.value,
-              status: value?.status,
-            };
-        } else {
-          nsValues = {
-              value: 0,
-              status: st?.task?.status,
-            };
-        }
-          
-        northStarValues = northStarValues.concat(nsValues);
-      });
-      this.postData.northStarValues = northStarValues;
-
       const completed = await this.subtasks?.filter(st => {
         return (!!st?.task?.isNorthStar && !!st?.task?.northStar && !!st?.task?.northStar?.values
             && !!st?.task?.northStar?.values[0] && st?.task?.northStar?.values[0].status == 'ACHIEVED')
@@ -325,6 +322,8 @@ export class GlobalNorthStarDialogComponent implements OnInit {
       const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
         this.initPostData();
         // this.updateSubTask(data);
+        
+        this.changeDetectorRef.detectChanges();
       });
       
       dialogRef.afterClosed().subscribe(result => {
