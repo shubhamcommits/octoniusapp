@@ -424,6 +424,8 @@ export class MembersControllers {
                     userId: _member,
                     groupId: groupId,
                     added_by: adminId
+                }).catch(error => {
+                    console.log(`\n⛔️ Error:\n ${error}`);
                 });
 
             /*
@@ -491,10 +493,12 @@ export class MembersControllers {
 
             // Send Notification
             await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/leave-group`, {
-                userId: userId,
-                groupId: groupId,
-                removed_by: req['userId']
-            });
+                    userId: userId,
+                    groupId: groupId,
+                    removed_by: req['userId']
+                }).catch(error => {
+                    console.log(`\n⛔️ Error:\n ${error}`);
+                });
 
             // Send status 200 response
             return res.status(200).json({

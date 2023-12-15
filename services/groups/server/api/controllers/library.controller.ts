@@ -192,10 +192,12 @@ export class LibraryController {
             // Send notifications to _content_mentions
             const mentions = collectionData?._content_mentions?.map(mention => mention._id);
             await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/collection-mentions`, {
-                userId: userId,
-                collectionId: collectionId,
-                mentions: mentions
-            });
+                    userId: userId,
+                    collectionId: collectionId,
+                    mentions: mentions
+                }).catch(error => {
+                    console.log(`\n⛔️ Error:\n ${error}`);
+                });
 
             return res.status(200).json({
                 message: `${collectionData.collection_name} collection was updated successfully!`,
@@ -977,10 +979,12 @@ export class LibraryController {
             // Send notifications to _content_mentions
             const mentions = page?._content_mentions?.map(mention => mention._id);
             await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/page-mentions`, {
-                userId: userId,
-                pageId: pageId,
-                mentions: mentions
-            });
+                    userId: userId,
+                    pageId: pageId,
+                    mentions: mentions
+                }).catch(error => {
+                    console.log(`\n⛔️ Error:\n ${error}`);
+                });
 
             return res.status(200).json({
                 message: `${page.titlee} page was updated successfully!`,

@@ -1105,8 +1105,6 @@ export class NotificationsService {
             userStream = Readable.from(await User.find({
                 _id: mentions
             }).select('_workspace first_name email integrations.firebase_token'));
-
-            // }
             
             await userStream.on('data', async (user: any) => {
                 if (user._id != actorId) {

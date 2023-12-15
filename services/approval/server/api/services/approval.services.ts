@@ -231,10 +231,12 @@ export class ApprovalService {
 
         // SEND NOTIFICATION TO ALL USERS IN THE FLOW TO INFORM THEY NEED TO REVIEW THE ITEM
         await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/launch-approval-flow`, {
-            item: JSON.stringify(file),
-            posted_by: userId,
-          }, { maxContentLength: 60 * 1024 * 1024 }
-        );
+              item: JSON.stringify(file),
+              posted_by: userId,
+            }, { maxContentLength: 60 * 1024 * 1024 }
+          ).catch(error => {
+            console.log(`\n⛔️ Error:\n ${error}`);
+          });
 
         return file;
       } else if (type == 'post') {
@@ -242,10 +244,12 @@ export class ApprovalService {
 
         // SEND NOTIFICATION TO ALL USERS IN THE FLOW TO INFORM THEY NEED TO REVIEW THE ITEM
         await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/launch-approval-flow`, {
-            item: JSON.stringify(post),
-            posted_by: userId,
-          }, { maxContentLength: 60 * 1024 * 1024 }
-        );
+              item: JSON.stringify(post),
+              posted_by: userId,
+            }, { maxContentLength: 60 * 1024 * 1024 }
+          ).catch(error => {
+            console.log(`\n⛔️ Error:\n ${error}`);
+          });
 
         return post;
       }
@@ -472,10 +476,12 @@ export class ApprovalService {
 
         // SEND NOTIFICATION TO ALL USERS IN THE FLOW (INCLUDING CREATOR) TO INFORM THE ITEM WAS REJECTED
         await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/reject-item`, {
-            item: JSON.stringify(file),
-            rejected_by: userId,
-          }, { maxContentLength: 60 * 1024 * 1024 }
-        );
+              item: JSON.stringify(file),
+              rejected_by: userId,
+            }, { maxContentLength: 60 * 1024 * 1024 }
+          ).catch(error => {
+            console.log(`\n⛔️ Error:\n ${error}`);
+          });
 
         return file;
       } else if (type == 'post') {
@@ -530,10 +536,12 @@ export class ApprovalService {
 
         // SEND NOTIFICATION TO ALL USERS IN THE FLOW (INCLUDING CREATOR) TO INFORM THE ITEM WAS REJECTED
         await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/reject-item`, {
-            item: JSON.stringify(post),
-            rejected_by: userId,
-          }, { maxContentLength: 60 * 1024 * 1024 }
-        );
+              item: JSON.stringify(post),
+              rejected_by: userId,
+            }, { maxContentLength: 60 * 1024 * 1024 }
+          ).catch(error => {
+            console.log(`\n⛔️ Error:\n ${error}`);
+          });
 
         return post;
       }
@@ -603,7 +611,9 @@ export class ApprovalService {
                 await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/item-approved`, {
                     item: JSON.stringify(file)
                   }, { maxContentLength: 60 * 1024 * 1024 }
-                );
+                ).catch(error => {
+                  console.log(`\n⛔️ Error:\n ${error}`);
+                });
               }
 
               // Mark notification as read if it has a due date
@@ -685,7 +695,9 @@ export class ApprovalService {
                 await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/item-approved`, {
                     item: JSON.stringify(post)
                   }, { maxContentLength: 60 * 1024 * 1024 }
-                );
+                ).catch(error => {
+                  console.log(`\n⛔️ Error:\n ${error}`);
+                });
 
                 // run automator
                 await http.put(`${process.env.POSTS_SERVER_API}/${itemId}/automator`, {

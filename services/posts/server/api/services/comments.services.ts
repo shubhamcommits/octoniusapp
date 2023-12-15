@@ -2,6 +2,8 @@ import { Comment, Post, User, Notification, Story, Page } from '../models';
 import http from 'axios';
 import moment from 'moment';
 import followRedirects from 'follow-redirects';
+import { sendErr } from '../utils/sendError';
+import { sendError } from '../utils';
 
 const fs = require('fs');
 const minio = require('minio');
@@ -85,13 +87,15 @@ const minio = require('minio');
             }
 
             await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
-                comment: JSON.stringify(forward_data_object),
-                userId: userId,
-                posted_by: post['_posted_by'],
-                assigned_to: post['_assigned_to'],
-                followers: post['_followers']
-              }, { maxContentLength: 60 * 1024 * 1024 }
-            );
+                  comment: JSON.stringify(forward_data_object),
+                  userId: userId,
+                  posted_by: post['_posted_by'],
+                  assigned_to: post['_assigned_to'],
+                  followers: post['_followers']
+                }, { maxContentLength: 60 * 1024 * 1024 }
+              ).catch(error => {
+                console.log(`\n⛔️ Error:\n ${error}`);
+              });
           } else if (storyId) {
             // Update post: add new comment id, increase post count
             const story = await Story.findOneAndUpdate({
@@ -119,9 +123,11 @@ const minio = require('minio');
           if (newComment._content_mentions.length !== 0) {
             // Create Notification for mentions on comments
             await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment-mention`, {
-              userId: userId,
-              comment: JSON.stringify(newComment)
-            });
+                userId: userId,
+                comment: JSON.stringify(newComment)
+              }).catch(error => {
+                console.log(`\n⛔️ Error:\n ${error}`);
+              });
           }
       
           return newComment;
@@ -177,7 +183,9 @@ const minio = require('minio');
             await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment-mention`, {
                 comment: JSON.stringify(updatedComment),
                 userId: userId
-            });
+              }).catch(error => {
+                console.log(`\n⛔️ Error:\n ${error}`);
+              });
           }
       
           return updatedComment;
@@ -492,9 +500,11 @@ const minio = require('minio');
       
           if (comment._post) {
             await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-like-comment`, {
-              comment: comment,
-              user: userId
-            });
+                comment: comment,
+                user: userId
+              }).catch(error => {
+                console.log(`\n⛔️ Error:\n ${error}`);
+              });
           }
           return {
               comment: comment,

@@ -39,7 +39,7 @@ export class NotificationsController {
                 notifyTo = notifyTo.concat(comment._content_mentions);
             }
 
-            let stream = Readable.from(await this.removeDuplicates(notifyTo, '_id'));
+            let stream = Readable.from(await helperFunctions.removeDuplicates(notifyTo, '_id'));
             await stream.on('data', async (nt: any) => {
                 if (nt._id != userId) {
                     await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
@@ -109,7 +109,7 @@ export class NotificationsController {
                 notifyTo = notifyTo.concat(content_mentions);
             }
 
-            let stream = Readable.from(await this.removeDuplicates(notifyTo, '_id'));
+            let stream = Readable.from(await helperFunctions.removeDuplicates(notifyTo, '_id'));
             await stream.on('data', async (nt: any) => {
                 if ((nt._id || nt) != userId) {
                     await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
@@ -259,7 +259,7 @@ export class NotificationsController {
                 notifyTo = notifyTo.concat(assigned_to);
             }
 
-            let stream = Readable.from(await this.removeDuplicates(notifyTo, '_id'));
+            let stream = Readable.from(await helperFunctions.removeDuplicates(notifyTo, '_id'));
             await stream.on('data', async (nt: any) => {
                 if ((nt._id || nt) != userId) {
                     await notificationService.taskStatusChanged(postId, status, userId, (nt._id || nt), req.body.io);
@@ -302,7 +302,7 @@ export class NotificationsController {
                 notifyTo = notifyTo.concat(followers);
             }
 
-            let stream = Readable.from(await this.removeDuplicates(notifyTo, '_id'));
+            let stream = Readable.from(await helperFunctions.removeDuplicates(notifyTo, '_id'));
             await stream.on('data', async (nt: any) => {
                 if (nt._id != commented_by) {
                     await notificationService.newComment(comment, postId, userId, (nt._id || nt));
@@ -347,7 +347,7 @@ export class NotificationsController {
                 notifyTo = notifyTo.concat(mentions);
             }
 
-            let stream = Readable.from(await this.removeDuplicates(notifyTo, '_id'));
+            let stream = Readable.from(await helperFunctions.removeDuplicates(notifyTo, '_id'));
             await stream.on('data', async (nt: any) => {
                 if ((nt._id || nt) != userId) {
                     await notificationService.followPost(postId, (nt._id || nt), userId);
@@ -397,7 +397,7 @@ export class NotificationsController {
                 notifyTo = notifyTo.concat(mentions);
             }
 
-            let stream = Readable.from(await this.removeDuplicates(notifyTo, '_id'));
+            let stream = Readable.from(await helperFunctions.removeDuplicates(notifyTo, '_id'));
             await stream.on('data', async (nt: any) => {
                 if ((nt._id || nt) != user) {
                     await notificationService.likePost(postId, (nt._id || nt), user);
@@ -439,7 +439,7 @@ export class NotificationsController {
                 notifyTo = notifyTo.concat(comment._post._assigned_to);
             }
 
-            let stream = Readable.from(await this.removeDuplicates(notifyTo, '_id'));
+            let stream = Readable.from(await helperFunctions.removeDuplicates(notifyTo, '_id'));
             await stream.on('data', async (nt: any) => {
                 if ((nt._id || nt) != user) {
                     await notificationService.likeComment(comment, (nt._id || nt), user);
@@ -758,11 +758,5 @@ export class NotificationsController {
             return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
     };
-
-    private async removeDuplicates(array: Array<any>, property: string) {
-        return array.filter((obj, pos, arr) => {
-            return arr.map(mapObj => (mapObj[property] || mapObj)).indexOf((obj[property] || obj)) === pos;
-        });
-    }
 
 }

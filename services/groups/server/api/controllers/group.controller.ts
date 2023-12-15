@@ -1098,6 +1098,8 @@ export class GroupController {
                 userId: userId,
                 groupId: group._id,
                 added_by: userId
+            }).catch(error => {
+                console.log(`\n⛔️ Error:\n ${error}`);
             });
             */
 
@@ -1828,10 +1830,12 @@ export class GroupController {
                         });
 
                         await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/leave-group`, {
-                            userId: user._id,
-                            groupId: group._id,
-                            removed_by: req['userId']
-                        });
+                                userId: user._id,
+                                groupId: group._id,
+                                removed_by: req['userId']
+                            }).catch(error => {
+                                console.log(`\n⛔️ Error:\n ${error}`);
+                            });
                     }
                 });
 
@@ -1855,10 +1859,12 @@ export class GroupController {
                         });
 
                         await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/leave-group`, {
-                            userId: user._id,
-                            groupId: group._id,
-                            removed_by: req['userId']
-                        });
+                                userId: user._id,
+                                groupId: group._id,
+                                removed_by: req['userId']
+                            }).catch(error => {
+                                console.log(`\n⛔️ Error:\n ${error}`);
+                            });
                     }
                 });
 
@@ -1881,10 +1887,12 @@ export class GroupController {
                         });
 
                         await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/leave-group`, {
-                            userId: user._id,
-                            groupId: group._id,
-                            removed_by: req['userId']
-                        });
+                                userId: user._id,
+                                groupId: group._id,
+                                removed_by: req['userId']
+                            }).catch(error => {
+                                console.log(`\n⛔️ Error:\n ${error}`);
+                            });
                     }
                 });
 
@@ -1909,10 +1917,12 @@ export class GroupController {
                         });
 
                         await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/leave-group`, {
-                            userId: user._id,
-                            groupId: group._id,
-                            removed_by: req['userId']
-                        });
+                                userId: user._id,
+                                groupId: group._id,
+                                removed_by: req['userId']
+                            }).catch(error => {
+                                console.log(`\n⛔️ Error:\n ${error}`);
+                            });
                     }
                 });
 
@@ -2071,10 +2081,12 @@ export class GroupController {
                                 || !groupDoc._members.includes(user._id)
                                 || !groupDoc._admins.includes(user._id)) {
                             await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/join-group`, {
-                                userId: user._id,
-                                groupId: group._id,
-                                added_by: req['userId']
-                            });
+                                    userId: user._id,
+                                    groupId: group._id,
+                                    added_by: req['userId']
+                                }).catch(error => {
+                                    console.log(`\n⛔️ Error:\n ${error}`);
+                                });
                         }
                         */
 
