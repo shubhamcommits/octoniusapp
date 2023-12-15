@@ -1,4 +1,4 @@
-import { User } from "../models";
+import { Post, User } from "../models";
 import { Response, Request, NextFunction } from "express";
 import { sendError } from "../../utils";
 import { NotificationsService } from "../service";
@@ -495,8 +495,46 @@ export class NotificationsController {
 
         const { postId, groupId, userId, io } = req.body;
         try {
-            // Call Service Function for newEventAssignments
-            await notificationService.postEdited(postId, groupId, userId, io);
+            const post = await Post.findById(postId).select('type _posted_by').lean();
+            let notifyTo;
+            if (!!post && post.type == 'post') {
+                // Let usersStream
+                notifyTo = Readable.from(await User.find({
+                    _groups: groupId
+                }).select('_workspace first_name email integrations.firebase_token'))
+            } else if (!!post && post.type == 'task') {
+                notifyTo.push(post._posted_by);
+
+                if (!!post._assigned_to) {
+                    notifyTo = notifyTo.concat(post._assigned_to);
+                }
+
+                if (!!post._followers) {
+                    notifyTo = notifyTo.concat(post._followers);
+                }
+
+                if (!!post._content_mentions) {
+                    if (post._content_mentions.includes('all')) {
+                        const userlist = await User.find({
+                            _groups: groupId
+                        }).distinct('_id');
+
+                        notifyTo = notifyTo.concat(userlist);
+
+                    } else {
+                        notifyTo = notifyTo.concat(post._content_mentions);
+                    }
+                }
+
+                notifyTo = Readable.from(await helperFunctions.removeDuplicates(notifyTo, '_id'));
+            }
+
+            await notifyTo.on('data', async (nt: any) => {
+                if ((nt._id || nt) != userId) {
+                    // Call Service Function for newEventAssignments
+                    await notificationService.postEdited(postId, groupId, userId, (nt._id || nt), io);
+                }
+            });
 
             // Send status 200 response
             return res.status(200).json({
