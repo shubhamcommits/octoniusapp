@@ -71,6 +71,7 @@
             <span *ngIf="notification?.type === 'approved-item'" class="approved_item_notification" i18n="@@recentActivity.itemApprovedByAll">everyone approved the document</span>
             <span *ngIf="notification?.type === 'reject-item'" class="reject_item_notification" i18n="@@recentActivity.rejectedTheItem">rejected the document</span>
             <span *ngIf="notification?.type === 'shuttleTask'" class="assignment_notification" i18n="@@recentActivity.assignedYourGroup">sent a shuttle 🚀 to</span>
+            <span *ngIf="notification?.type === 'post-edited'" class="assignment_notification" i18n="@@recentActivity.edited">edited</span>
             &nbsp;
 
             <span class="notification_post_title" *ngIf="(notification?.type !== 'mention_folio' && notification?.type !== 'shuttleTask') && notification?._origin_post">{{ notification?._origin_post?.title | truncatetext: 20 }}</span>
@@ -79,6 +80,9 @@
             <span class="notification_post_title" *ngIf="notification?.type === 'mention_page' && notification?._page">{{ notification?._page?.title | truncatetext: 20 }}</span>
             <span class="notification_post_title" *ngIf="(notification?.type === 'join-group' || notification?.type === 'leave-group') && notification?._origin_group">{{ notification?._origin_group?.group_name | truncatetext: 20 }}</span>
             <span class="notification_post_title" *ngIf="notification?.type === 'shuttleTask' && notification?._shuttle_group">{{ notification?._shuttle_group?.group_name | truncatetext: 20 }}.</span>
+            &nbsp;
+
+            <span *ngIf="notification?.type === 'post-edited'" class="assignment_notification" i18n="@@recentActivity.in">in</span>
             &nbsp;
 
             <span *ngIf="notification?.type === 'shuttleTask'" class="assignment_notification" i18n="@@recentActivity.theTask">The task: </span>
@@ -90,7 +94,7 @@
             <span *ngIf="notification?.type === 'shuttleTask'" class="assignment_notification" i18n="@@recentActivity.fromGroup">was sent from</span>
             &nbsp;
 
-            <span class="notification_post_title" *ngIf="notification?.type === 'shuttleTask' && notification?._origin_group">{{ notification?._origin_group?.group_name | truncatetext: 20 }}</span>
+            <span class="notification_post_title" *ngIf="(notification?.type === 'shuttleTask' || notification?.type === 'post-edited') && notification?._origin_group">{{ notification?._origin_group?.group_name | truncatetext: 20 }}</span>
           </div>
 
           <div class="notification_date_time">

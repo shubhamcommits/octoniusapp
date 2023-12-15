@@ -78,7 +78,7 @@ routes.put('/:postId/edit/:workspaceId', postFileUploader, postController.edit);
 routes.put('/:postId/title', postController.editPostTitle);
 
 // This route is used to edit a post
-routes.put('/:postId/content', postController.editPostContent);
+// routes.put('/:postId/content', postController.editPostContent);
 
 // This route is used to edit a post
 routes.put('/:postId/attach-files/:workspaceId', postFileUploader, postController.attachFiles);

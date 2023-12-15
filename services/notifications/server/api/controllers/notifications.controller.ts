@@ -472,10 +472,31 @@ export class NotificationsController {
      */
     async newPost(req: Request, res: Response, next: NextFunction) {
 
-        const { postId, groupId, posted_by, userId, io } = req.body;
+        const { postId, groupId, userId, io } = req.body;
         try {
             // Call Service Function for newEventAssignments
-            await notificationService.newPost(postId, groupId, posted_by, userId, io);
+            await notificationService.newPost(postId, groupId, userId, io);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Event Assignments Succeeded!`,
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    };
+
+    /**
+     * This route is responsible for notifying the user a post was edited
+     * @param { postId, groupId, posted_by, io } post 
+     */
+    async postEdited(req: Request, res: Response, next: NextFunction) {
+
+        const { postId, groupId, userId, io } = req.body;
+        try {
+            // Call Service Function for newEventAssignments
+            await notificationService.postEdited(postId, groupId, userId, io);
 
             // Send status 200 response
             return res.status(200).json({
