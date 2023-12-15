@@ -449,14 +449,15 @@ export class PostService {
    * This function is responsible for sending the related real time notifications to the user(s)
    * @param post
    */
-  async sendNotifications(post: any) {
+  async sendNotifications(post: any, userId: string) {
     if (post._content_mentions.length !== 0) {
       // Create Real time Notification for all the mentions on post content
       return http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-mention`, {
         postId: post._id,
         content_mentions: post._content_mentions,
         groupId: post._group._id || post._group,
-        posted_by: post._posted_by
+        posted_by: post._posted_by,
+        userId: userId
       }).catch(err => {
         console.log(`\n⛔️ Error:\n ${err}`);
       });
@@ -472,7 +473,8 @@ export class PostService {
             postId: post?._id,
             assigned_to: post?._assigned_to,
             groupId: post?._group?._id || post?._group,
-            posted_by: post?._posted_by
+            posted_by: post?._posted_by,
+            userId: userId
           }).catch(err => {
             console.log(`\n⛔️ Error:\n ${err}`);
           });
@@ -486,7 +488,8 @@ export class PostService {
             postId: post._id,
             assigned_to: post._assigned_to,
             grouId: (post._group._id || post._group),
-            posted_by: post._posted_by
+            posted_by: post._posted_by,
+            userId: userId
           }).catch(err => {
             console.log(`\n⛔️ Error:\n ${err}`);
           });
@@ -503,11 +506,12 @@ export class PostService {
    * This function is responsible for sending the related real time notifications to the user(s)
    * @param post
    */
-  async sendNewPostNotification(post: any) {
+  async sendNewPostNotification(post: any, userId: string) {
     return http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-post`, {
         postId: post._id,
         groupId: post._group._id || post._group,
-        posted_by: post._posted_by
+        posted_by: post._posted_by,
+        userId: userId
       }).catch(err => {
         console.log(`\n⛔️ Error:\n ${err}`);
       });
@@ -543,10 +547,10 @@ export class PostService {
       post = await this.populatePostProperties(post);
 
       // Send all the required notifications
-      this.sendNotifications(post)
+      this.sendNotifications(post, userId)
 
       if (post.type == 'normal') {
-        this.sendNewPostNotification(post);
+        this.sendNewPostNotification(post, userId);
       }
 
       // Return Post Object
@@ -596,7 +600,7 @@ export class PostService {
       post = await this.populatePostProperties(post);
 
       // Send all the required notifications
-      this.sendNotifications(post);
+      this.sendNotifications(post, userId);
 
       // Return the post
       return post;
@@ -649,7 +653,7 @@ export class PostService {
       post = await this.populatePostProperties(post);
 
       // Send all the required notifications
-      this.sendNotifications(post);
+      this.sendNotifications(post, userId);
 
       // Return the post
       return post;
@@ -708,7 +712,7 @@ export class PostService {
       post = await this.populatePostProperties(post);
 
       // Send all the required notifications
-      this.sendNotifications(post);
+      this.sendNotifications(post, userId);
 
       // Return the post
       return post;
@@ -851,7 +855,7 @@ export class PostService {
       post = await this.populatePostProperties(post);
 
       // Send all the required notifications
-      this.sendNotifications(post);
+      this.sendNotifications(post, userId);
 
       // Return the post
 
@@ -903,7 +907,7 @@ export class PostService {
       post = await this.populatePostProperties(post);
 
       // Send all the required notifications
-      this.sendNotifications(post);
+      this.sendNotifications(post, userId);
 
       // Return the post
       return post;
@@ -1182,11 +1186,11 @@ export class PostService {
 
     http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-follow-post`, {
         postId: post._id,
+        userId: userId,
         posted_by: post['_posted_by'],
         assigned_to:post['_assigned_to'],
         mentions:post['_content_mentions'],
-        groupId:post['_group'],
-        follower: userId
+        groupId:post['_group']
       }).catch(err => {
         console.log(`\n⛔️ Error:\n ${err}`);
       });

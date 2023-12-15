@@ -18,6 +18,17 @@ function hasProperty(object: any, property: any) {
 }
 
 /**
+ * This function is resposible for removing the duplicated objects in an array
+ * @param array 
+ * @param property 
+ */
+function removeDuplicates(array: Array<any>, property: string) {
+    return array.filter((obj, pos, arr) => {
+        return arr.map(mapObj => (mapObj[property] || mapObj)).indexOf((obj[property] || obj)) === pos;
+    });
+}
+
+/**
  * This function is responsible for generating the notifications feed
  * @param userId 
  * @param io 
@@ -180,23 +191,13 @@ function sortPendingApprovals(notifications: any) {
  * */
 export {
 
-    // HAS PROPERTY
     hasProperty,
-
-    // GENERATE FEED
+    removeDuplicates,
     generateFeed,
-
-    // SEND NOTIFICATIONS FEED
     sendNotificationsFeed,
     sendNotificationsFeedFromService,
-
-    // APP NOTIFICATIONS
     sendNewMessageNotification,
     // sendNewMessage,
-
-    // NOTIFY RELATED USERS
     notifyRelatedUsers,
-
-    // Validate ObjectId
     validateId
 }
