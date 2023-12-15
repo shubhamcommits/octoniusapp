@@ -28,7 +28,6 @@ export class NotificationsController {
             let notifyTo = [];
 
             if (comment._content_mentions.includes('all')) {
-
                 const userlist = await User.find({
                     _groups: comment._post._group._id
                 }).distinct('_id');
@@ -222,7 +221,6 @@ export class NotificationsController {
         // Fetch Data from request
         const { postId, assigneeId, _assigned_from, io } = req.body;
         try {
-
             if (_assigned_from != assigneeId) {
                 // Call Service function for newTaskReassignment
                 await notificationService.newTaskReassignment(postId, assigneeId, _assigned_from, io);
@@ -252,18 +250,14 @@ export class NotificationsController {
         let { postId, userId, assigned_to, status, followers, posted_by, io } = req.body;
         // let userId = req['userId'];
         try {
-            let notifyTo = [];
-
             status = (status == 'in progress') ? 'started' : 'completed';
+
+            let notifyTo = [];
+            notifyTo.push(posted_by);
+            notifyTo = notifyTo.concat(followers);
             if (assigned_to && assigned_to?.length > 0) {
                 notifyTo = notifyTo.concat(assigned_to);
             }
-
-            if (posted_by._id !== userId) {
-                notifyTo.push(posted_by);
-            }
-
-            notifyTo = notifyTo.concat(followers);
 
             let stream = Readable.from(await this.removeDuplicates(notifyTo, '_id'));
             await stream.on('data', async (nt: any) => {
@@ -298,10 +292,7 @@ export class NotificationsController {
             const postId = comment._post_id;
 
             let notifyTo = [];
-
-            if (posted_by != commented_by) {
-                notifyTo.push(posted_by);
-            }
+            notifyTo.push(posted_by);
 
             if (!!assigned_to) {
                 notifyTo = notifyTo.concat(assigned_to);
@@ -342,10 +333,7 @@ export class NotificationsController {
         try {
             // Call Service Function for followPost
             let notifyTo = [];
-
-            if (posted_by !== follower) {
-                notifyTo.push(follower);
-            }
+            notifyTo.push(follower);
 
             if (!!assigned_to) {
                 notifyTo = notifyTo.concat(assigned_to);
@@ -391,10 +379,7 @@ export class NotificationsController {
         try {
             // Call Service Function for likePost
             let notifyTo = [];
-
-            if (posted_by !== user) {
-                notifyTo.push(posted_by);
-            }
+            notifyTo.push(posted_by);
 
             if (!!followers) {
                 notifyTo = notifyTo.concat(assigned_to);
@@ -444,10 +429,7 @@ export class NotificationsController {
             // Call Service Function for likeComment
 
             let notifyTo = [];
-
-            if (comment._commented_by !== user) {
-                notifyTo.push(comment._commented_by);
-            }
+            notifyTo.push(comment._commented_by);
 
             if (!!comment._post?._followers) {
                 notifyTo = notifyTo.concat(comment._post?._followers);

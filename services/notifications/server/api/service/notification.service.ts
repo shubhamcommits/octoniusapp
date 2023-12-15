@@ -482,34 +482,6 @@ export class NotificationsService {
                 }
 
                 await helperFunctions.sendNotificationsFeedFromService(ownerId, io);
-            // } else {
-
-            //     // Create Readble Stream from the Event Assignee
-            //     const assignedStream = Readable.from(assigned_to);
-
-            //     await assignedStream.on('data', async (assignee: any) => {
-            //         const notification = await Notification.create({
-            //             _actor: actorId,
-            //             _owner: assignee._id || assignee,
-            //             _origin_post: postId,
-            //             message: status,
-            //             type: status,
-            //             created_date: moment().format()
-            //         });
-
-            //         if (process.env.DOMAIN == 'app.octonius.com') {
-            //             const owner = await User.findById({ _id: (assignee._id || assignee) }).select('_workspace integrations.firebase_token').lean();
-            //             const actor = await User.findById({ _id: actorId }).select('first_name last_name').lean();
-            //             const task = await Post.findById({ _id: postId }).select('title').lean();
-
-            //             if (owner.integrations.firebase_token) {
-            //                 // Send the notification to firebase for mobile notify
-            //                 firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - Task Status Changed', actor?.first_name + ' ' + actor?.last_name + ' changed the task ' + task?.title + ' to ' + status);
-            //             }
-            //         }
-                    
-            //         await helperFunctions.sendNotificationsFeedFromService((assignee?._id || assignee), io);
-            //     });
             }
         } catch (err) {
             throw err;
