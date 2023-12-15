@@ -86,6 +86,7 @@ const minio = require('minio');
 
             await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
                 comment: JSON.stringify(forward_data_object),
+                userId: userId,
                 posted_by: post['_posted_by'],
                 assigned_to: post['_assigned_to'],
                 followers: post['_followers']
@@ -102,31 +103,6 @@ const minio = require('minio');
               }, {
                 new: true
               }).select('title _posted_by _content_mentions _assigned_to _followers');
-            /*
-            followRedirects.maxBodyLength = 60 * 1024 * 1024;
-            // const parsed_newComment = JSON.stringify(newComment);
-            var forward_data_object = {
-              _id: null,
-              _commented_by: '',
-              _post_id: null,
-              _story_id: null
-            };
-
-            forward_data_object._id = newComment._id;
-            forward_data_object._commented_by = newComment._commented_by;
-            
-            if (newComment._story) {
-              forward_data_object._story_id = newComment._story._id;
-            }
-
-            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
-                comment: JSON.stringify(forward_data_object),
-                posted_by: story['_posted_by'],
-                assigned_to: story['_assistants'],
-                followers: story['_followers']
-              }, { maxContentLength: 60 * 1024 * 1024 }
-            );
-            */
           } else if (pageId) {
             // Update post: add new comment id, increase post count
             const page = await Page.findOneAndUpdate({
@@ -143,7 +119,8 @@ const minio = require('minio');
           if (newComment._content_mentions.length !== 0) {
             // Create Notification for mentions on comments
             await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment-mention`, {
-                comment: JSON.stringify(newComment)
+              userId: userId,
+              comment: JSON.stringify(newComment)
             });
           }
       
@@ -198,7 +175,8 @@ const minio = require('minio');
           if (comment._content_mentions && comment._content_mentions.length !== 0) {
             // notifications.newCommentMentions(comment);
             await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment-mention`, {
-                comment: JSON.stringify(updatedComment)
+                comment: JSON.stringify(updatedComment),
+                userId: userId
             });
           }
       

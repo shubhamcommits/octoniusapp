@@ -24,6 +24,7 @@ export class NotificationsController {
     async newCommentMentions(req: Request, res: Response, next: NextFunction) {
 
         const comment = JSON.parse(req.body.comment);
+        const userId = req.body.userId;
         try {
             let notifyTo = [];
 
@@ -40,7 +41,7 @@ export class NotificationsController {
 
             let stream = Readable.from(await this.removeDuplicates(notifyTo, '_id'));
             await stream.on('data', async (nt: any) => {
-                if (nt._id != comment?._commented_by) {
+                if (nt._id != userId) {
                     await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
                             userid: (nt._id || nt),
                             comment,
@@ -49,7 +50,7 @@ export class NotificationsController {
 
                     await helperFunctions.sendNotificationsFeedFromService((nt._id || nt), req.body.io, true);
                     
-                    await notificationService.newCommentMentions(comment?._commented_by, (nt._id || nt), comment._id, comment._post).then(() => {
+                    await notificationService.newCommentMentions(userId, (nt._id || nt), comment._id, comment._post).then(() => {
                         return res.status(200).json({
                             message: `Comment Mentions Succeeded!`,
                         });
@@ -71,10 +72,10 @@ export class NotificationsController {
      */
     async newEventAssignments(req: Request, res: Response, next: NextFunction) {
 
-        const { postId, assigned_to, groupId, posted_by, io } = req.body;
+        const { postId, assigned_to, groupId, posted_by, userId, io } = req.body;
         try {
             // Call Service Function for newEventAssignments
-            await notificationService.newEventAssignments(postId, assigned_to, groupId, posted_by);
+            await notificationService.newEventAssignments(postId, assigned_to, groupId, posted_by, userId);
 
             await helperFunctions.sendNotificationsFeedFromService(assigned_to, io, true);
             // Send status 200 response
@@ -93,7 +94,7 @@ export class NotificationsController {
      */
     async newPostMentions(req: Request, res: Response, next: NextFunction) {
 
-        const { postId, content_mentions, groupId, posted_by } = req.body;
+        const { postId, content_mentions, groupId, posted_by, userId } = req.body;
         try {
 
             let notifyTo = [];
@@ -110,7 +111,7 @@ export class NotificationsController {
 
             let stream = Readable.from(await this.removeDuplicates(notifyTo, '_id'));
             await stream.on('data', async (nt: any) => {
-                if ((nt._id || nt) != posted_by._id) {
+                if ((nt._id || nt) != userId) {
                     await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
                             postId,
                             posted_by,
@@ -120,7 +121,7 @@ export class NotificationsController {
                         });
 
                     // Call Service function for newPostMentions
-                    await notificationService.newPostMentions(posted_by, (nt._id || nt), postId);
+                    await notificationService.newPostMentions(userId, (nt._id || nt), postId);
                 }
             });
 
@@ -166,7 +167,7 @@ export class NotificationsController {
      */
     async newTaskAssignment(req: Request, res: Response, next: NextFunction) {
 
-        const { postId, assigned_to, groupId, posted_by, io } = req.body;
+        const { postId, assigned_to, groupId, posted_by, userId, io } = req.body;
         try {
             // Let usersStream
             let notyfyTo: any;
@@ -183,9 +184,9 @@ export class NotificationsController {
             }
 
             await notyfyTo.on('data', async (nt: any) => {
-                if ((nt._id || nt) !== (posted_by._id || posted_by)) {
+                if ((nt._id || nt) !== userId) {
                     // Call Service Function for newTaskAssignments
-                    await notificationService.newTaskAssignment(postId, (nt._id || nt), (posted_by._id || posted_by));
+                    await notificationService.newTaskAssignment(postId, (nt._id || nt), userId);
 
                     if (assigned_to && assigned_to?.length > 0) {
                         await helperFunctions.sendNotificationsFeedFromService((nt._id || nt), io, true);
@@ -195,9 +196,8 @@ export class NotificationsController {
                         userid: (nt._id || nt),
                         postId,
                         assigneeId: (nt._id || nt),
-                        _assigned_from: (posted_by._id || posted_by),
+                        _assigned_from: userId,
                         type: "TASKASSIGNED"
-
                     });
                 }
             });
@@ -261,8 +261,8 @@ export class NotificationsController {
 
             let stream = Readable.from(await this.removeDuplicates(notifyTo, '_id'));
             await stream.on('data', async (nt: any) => {
-                if (nt._id != userId) {
-                    await notificationService.taskStatusChanged(postId, status, userId, nt._id, req.body.io);
+                if ((nt._id || nt) != userId) {
+                    await notificationService.taskStatusChanged(postId, status, userId, (nt._id || nt), req.body.io);
                     await helperFunctions.sendNotificationsFeedFromService(nt, io, true);
                     await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
                         userid: userId,
@@ -284,7 +284,7 @@ export class NotificationsController {
     }
 
     async newComment(req: Request, res: Response, next: NextFunction) {
-        const { posted_by, assigned_to, followers, io } = req.body;
+        const { posted_by, assigned_to, followers, userId, io } = req.body;
         try {
             const comment = JSON.parse(req.body.comment);
             // Call Service Function for newComment
@@ -305,7 +305,7 @@ export class NotificationsController {
             let stream = Readable.from(await this.removeDuplicates(notifyTo, '_id'));
             await stream.on('data', async (nt: any) => {
                 if (nt._id != commented_by) {
-                    await notificationService.newComment(comment, postId, commented_by, (nt._id || nt));
+                    await notificationService.newComment(comment, postId, userId, (nt._id || nt));
                     await helperFunctions.sendNotificationsFeedFromService(nt, io, true);
                     await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
                         postId,
@@ -328,12 +328,12 @@ export class NotificationsController {
     }
 
     async followPost(req: Request, res: Response, next: NextFunction) {
-        const { postId, posted_by, assigned_to, groupId, mentions, follower, io } = req.body;
+        const { postId, posted_by, assigned_to, groupId, mentions, userId, io } = req.body;
 
         try {
             // Call Service Function for followPost
             let notifyTo = [];
-            notifyTo.push(follower);
+            notifyTo.push(userId);
 
             if (!!assigned_to) {
                 notifyTo = notifyTo.concat(assigned_to);
@@ -349,14 +349,14 @@ export class NotificationsController {
 
             let stream = Readable.from(await this.removeDuplicates(notifyTo, '_id'));
             await stream.on('data', async (nt: any) => {
-                if (nt._id != posted_by) {
-                    await notificationService.followPost(postId, (nt._id || nt), follower);
+                if ((nt._id || nt) != userId) {
+                    await notificationService.followPost(postId, (nt._id || nt), userId);
                     await helperFunctions.sendNotificationsFeedFromService(posted_by, io, true);
                     await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
                         userid: posted_by,
                         postId,
                         posted_by,
-                        follower,
+                        userId,
                         type: "FOLLOW"
                     });
                 }
@@ -399,7 +399,7 @@ export class NotificationsController {
 
             let stream = Readable.from(await this.removeDuplicates(notifyTo, '_id'));
             await stream.on('data', async (nt: any) => {
-                if (nt._id != user) {
+                if ((nt._id || nt) != user) {
                     await notificationService.likePost(postId, (nt._id || nt), user);
                     await helperFunctions.sendNotificationsFeedFromService((nt._id || nt), io, true);
                     await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
@@ -442,7 +442,7 @@ export class NotificationsController {
             let stream = Readable.from(await this.removeDuplicates(notifyTo, '_id'));
             await stream.on('data', async (nt: any) => {
                 if ((nt._id || nt) != user) {
-                    await notificationService.likeComment(comment, (nt._id || nt), comment._commented_by);
+                    await notificationService.likeComment(comment, (nt._id || nt), user);
 
                     await helperFunctions.sendNotificationsFeedFromService(comment._commented_by, io, true);
 
@@ -472,10 +472,10 @@ export class NotificationsController {
      */
     async newPost(req: Request, res: Response, next: NextFunction) {
 
-        const { postId, groupId, posted_by, io } = req.body;
+        const { postId, groupId, posted_by, userId, io } = req.body;
         try {
             // Call Service Function for newEventAssignments
-            await notificationService.newPost(postId, groupId, posted_by, io);
+            await notificationService.newPost(postId, groupId, posted_by, userId, io);
 
             // Send status 200 response
             return res.status(200).json({
