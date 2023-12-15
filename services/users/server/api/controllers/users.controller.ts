@@ -1604,6 +1604,7 @@ export class UsersControllers {
 
         // Fetch the customFieldsMap & workspaceId from fileHandler middleware
         const customFieldsMap = req.body['customFieldsMap'];
+        const genericProperties = req.body['genericProperties'];
         const workspaceId = req.body['workspaceId'];
 
         try {
@@ -1648,6 +1649,27 @@ export class UsersControllers {
                             }).lean();
                     }
                 }
+            }
+
+            if (!!genericProperties) {
+                const genericPropertiesNames = Object.keys(genericProperties);
+                if (genericPropertiesNames.includes('address_line_1')) {
+                    user = await User.findByIdAndUpdate({
+                            _id: userId
+                        }, {
+                            $set: { 'hr.address_line_1': genericProperties['address_line_1'] }
+                        }, {
+                            new: true
+                        }).lean();
+                }
+
+                user = await User.findByIdAndUpdate({
+                        _id: userId
+                    }, {
+                        $set: genericProperties
+                    }, {
+                        new: true
+                    }).lean();
             }
 
             // Send status 200 response

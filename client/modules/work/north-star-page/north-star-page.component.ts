@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, ChangeDetectorRef } from '@angular/core';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -73,6 +73,7 @@ export class NorthStarPageComponent implements OnInit {
     private utilityService: UtilityService,
     private injector: Injector,
     private _router: Router,
+    private changeDetectorRef: ChangeDetectorRef,
     public dialog: MatDialog) { }
 
   async ngOnInit() {
@@ -159,16 +160,19 @@ export class NorthStarPageComponent implements OnInit {
     return (northStarValues.filter(ns => (ns?.status == 'ACHIEVED' || ns?.status?.toUpperCase() == 'DONE')).length || 0) / northStarValues.length;
   }
 
-  getNSStatusColor(status: string) {
-    if (status === 'ON TRACK') {
-      return '#26A69A';
-    } else if (status === 'IN DANGER') {
-      return '#EB5757';
-    } else if (status === 'ACHIEVED') {
+  getNSStatusColor(northStarValues: any) {
+    const progressPercentage = this.getProgressPercent(northStarValues);
+
+    if (progressPercentage == 1) {
       return '#4A90E2';
     } else {
-      return '#FFAB00';
+      if (northStarValues?.findIndex(val => val.status == 'IN DANGER') >= 1) {
+        return '#EB5757';
+      } else if (northStarValues?.findIndex(val => val.status == 'ON TRACK') >= 1) {
+        return '#26A69A';
+      }
     }
+    return '#FFAB00';
   }
 
   /**
@@ -192,11 +196,15 @@ export class NorthStarPageComponent implements OnInit {
     if (dialogRef) {
       const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
         this.updateTask(data);
+        
+        this.changeDetectorRef.detectChanges();
       });
 
       dialogRef.afterClosed().subscribe(result => {
         closeEventSubs.unsubscribe();
         deleteEventSubs.unsubscribe();
+        
+        this.changeDetectorRef.detectChanges();
       });
     }
   }
@@ -210,6 +218,7 @@ export class NorthStarPageComponent implements OnInit {
   }
 
   updateTask(task) {
+console.log(task);
     const indexTask = this.globalNorthStarTasks.findIndex((t: any) => t._id === task._id);
     if (indexTask !== -1) {
       this.globalNorthStarTasks[indexTask] = task;

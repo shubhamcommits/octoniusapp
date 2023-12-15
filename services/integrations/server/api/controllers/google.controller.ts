@@ -90,10 +90,12 @@ export class GoogleController {
         const { workspaceId } = req.params;
 
         const mapSelectedProperties = req.body['mapSelectedProperties'];
+        const mapSelectedGenericProperties = req.body['mapSelectedGenericProperties'];
         try {
             const workspace = await Workspace.findByIdAndUpdate(workspaceId, {
                     $set: {
-                        googlePropertiesMap: mapSelectedProperties
+                        googlePropertiesMap: mapSelectedProperties,
+                        googleGenericPropertiesMap: mapSelectedGenericProperties
                     }
                 }, {
                     new: true

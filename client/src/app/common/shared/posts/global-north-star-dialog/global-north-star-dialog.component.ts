@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, Inject, Injector } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Inject, Injector, ChangeDetectorRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { PostService } from 'src/shared/services/post-service/post.service';
@@ -80,6 +80,7 @@ export class GlobalNorthStarDialogComponent implements OnInit {
     private columService: ColumnService,
     private injector: Injector,
     public dialog: MatDialog,
+    private changeDetectorRef: ChangeDetectorRef,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<GlobalNorthStarDialogComponent>
     ) {}
@@ -102,8 +103,6 @@ export class GlobalNorthStarDialogComponent implements OnInit {
 
     await this.initPostData();
 
-    this.initGraph();
-
     this.canEdit = await this.utilityService.canUserDoTaskAction(this.postData, null, this.userData, 'edit');
     if (!this.canEdit) {
       const hide = await this.utilityService.canUserDoTaskAction(this.postData, null, this.userData, 'hide');
@@ -118,32 +117,6 @@ export class GlobalNorthStarDialogComponent implements OnInit {
     this.title = this.postData?.title;
 
     if (this.postData?.content){
-      // let converter = new QuillDeltaToHtmlConverter(JSON.parse(this.postData?.content)['ops'], {});
-      // if (converter) {
-      //   converter.renderCustomWith((customOp) => {
-      //     // Conditionally renders blot of mention type
-      //     if(customOp.insert.type === 'mention'){
-      //       // Get Mention Blot Data
-      //       const mention = customOp.insert.value;
-
-      //       // Template Return Data
-      //       return (
-      //         `<span
-      //           class="mention"
-      //           data-index="${mention.index}"
-      //           data-denotation-char="${mention.denotationChar}"
-      //           data-link="${mention.link}"
-      //           data-value='${mention.value}'>
-      //           <span contenteditable="false">
-      //             ${mention.value}
-      //           </span>
-      //         </span>`
-      //       )
-      //     }
-      //   });
-      //   // Convert into html
-      //   this.htmlContent = converter.convert();
-      // }
       this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.postData?.content)['ops']);
     }
 
@@ -151,15 +124,30 @@ export class GlobalNorthStarDialogComponent implements OnInit {
       this.subtasks = res['subtasks'];
 
       if (this.subtasks && this.subtasks.length > 0) {
+        let northStarValues = [];
         this.subtasks.forEach(st => {
+          let lastNSValues: any = {};
           if (st.task.isNorthStar) {
             st.task.northStar.values = st?.task?.northStar?.values?.sort((v1, v2) => (moment.utc(v1.date).isBefore(moment.utc(v2.date))) ? 1 : -1)
             const nsValues = this.mapNSValues(st);
             this.northStarValues = this.northStarValues.concat(nsValues);
+
+            const lastValue = st?.task?.northStar?.values[0];
+            lastNSValues = {
+                value: lastValue?.value,
+                status: lastValue?.status,
+              };
           } else {
             const taskLogs = this.mapTaskLogs(st);
             this.northStarValues = this.northStarValues.concat(taskLogs);
+
+            lastNSValues = {
+              value: 0,
+              status: st?.task?.status,
+            };
           }
+
+          northStarValues = northStarValues.concat(lastNSValues);
 
           if (st?.task?._column) {
             this.columService.getSection(st?.task?._column).then(res2 => {
@@ -168,10 +156,14 @@ export class GlobalNorthStarDialogComponent implements OnInit {
           }
         });
 
+        this.postData.northStarValues = northStarValues;
+
         this.northStarValues = this.northStarValues.sort((v1, v2) => (moment.utc(v1.date).isBefore(v2.date)) ? 1 : -1);
         this.showSubtasks = true;
       }
     });
+
+    this.initGraph();
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
@@ -179,30 +171,13 @@ export class GlobalNorthStarDialogComponent implements OnInit {
 
   async initGraph() {
     if (this.subtasks && this.subtasks.length > 0) {
-      let northStarValues = [];
-      this.subtasks.forEach(st => {
-        let nsValues: any = {};
-        if (st?.task?.isNorthStar) {
-          const value = st?.task?.northStar?.values[st?.task?.northStar?.values?.length-1];
-          nsValues = {
-              value: value?.value,
-              status: value?.status,
-            };
-        } else {
-          nsValues = {
-              value: 0,
-              status: st?.task?.status,
-            };
-        }
-          
-        northStarValues = northStarValues.concat(nsValues);
+      const completed = await this.subtasks?.filter(st => {
+        return (!!st?.task?.isNorthStar && !!st?.task?.northStar && !!st?.task?.northStar?.values
+            && !!st?.task?.northStar?.values[0] && st?.task?.northStar?.values[0].status == 'ACHIEVED')
+          || (!st?.task?.isNorthStar && st?.task?.status?.toUpperCase() == 'DONE')
       });
-      this.postData.northStarValues = northStarValues;
-
-      const completed = await this.postData.northStarValues?.filter(value => (value?.status == 'ACHIEVED' || value?.status?.toUpperCase() == 'DONE'));
-      const numCompleted = (completed) ? this.postData.northStarValues.length - completed.length : 0;
-      this.chartData = [this.postData.northStarValues.length - numCompleted, numCompleted];
-
+      const numCompleted = (!!completed) ? completed.length : 0;
+      this.chartData = [numCompleted, this.subtasks.length - numCompleted];
       this.chartReady = true;
     }
   }
@@ -347,11 +322,15 @@ export class GlobalNorthStarDialogComponent implements OnInit {
       const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
         this.initPostData();
         // this.updateSubTask(data);
+        
+        this.changeDetectorRef.detectChanges();
       });
       
       dialogRef.afterClosed().subscribe(result => {
         closeEventSubs.unsubscribe();
         deleteEventSubs.unsubscribe();
+        
+        this.changeDetectorRef.detectChanges();
       });
     }
   }

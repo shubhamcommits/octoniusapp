@@ -2074,9 +2074,10 @@ export class PostService {
         if (subtasks && subtasks.length > 0) {
           let northStarValues = [];
           subtasks.forEach(st => {
+            st.task.northStar.values = st?.task?.northStar?.values?.sort((v1, v2) => (moment.utc(v1.date).isBefore(moment.utc(v2.date))) ? 1 : -1)
             let nsValues:any = {};
             if (st?.task?.isNorthStar) {
-              const value = st?.task?.northStar?.values[st?.task?.northStar?.values?.length-1];
+              const value = st?.task?.northStar?.values[0];
               nsValues = {
                   // currency: st?.task?.northStar?.currency,
                   type: st?.task?.northStar?.type,
