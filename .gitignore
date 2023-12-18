@@ -55,3 +55,7 @@ target/
 ### VS Code ###
 .vscode/
 .DS_Store
+
+
+# K8s stuff #
+.terraform/
