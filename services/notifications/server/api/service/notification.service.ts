@@ -608,7 +608,7 @@ export class NotificationsService {
     * This function is responsible for notifying the user getting a new post in one of his/her groups
     * @param { postId, groupId, posted_by } comment 
     */
-    async newPost(postId: any, groupId: any, posted_by: any, actorId: string, io: any) {
+    async newPost(postId: any, groupId: any, actorId: string, io: any) {
         try {
             // Let usersStream
             let userStream = Readable.from(await User.find({
@@ -618,7 +618,7 @@ export class NotificationsService {
             await userStream.on('data', async (user: any) => {
                 if (user._id != actorId) {
                     const notification = await Notification.create({
-                        _actor: posted_by,
+                        _actor: actorId,
                         _owner: user._id,
                         _origin_post: postId,
                         _origin_group: groupId,
@@ -628,7 +628,7 @@ export class NotificationsService {
                     });
 
                     if (process.env.DOMAIN == 'app.octonius.com') {
-                        const actor = await User.findById({ _id: (posted_by._id || posted_by) }).select('_workspace first_name last_name').lean();
+                        const actor = await User.findById({ _id: actorId }).select('_workspace first_name last_name').lean();
                         const post = await Post.findById({ _id: postId }).select('title').lean();
 
                         if (user.integrations.firebase_token) {
@@ -640,6 +640,41 @@ export class NotificationsService {
                     await helperFunctions.sendNotificationsFeedFromService(user, io, true);
                 }
             });
+
+        } catch (err) {
+            throw err;
+        }
+    };
+
+
+    /**
+    * This function is responsible for notifying the user getting a new post in one of his/her groups
+    * @param { postId, groupId, actorId } comment 
+    */
+    async postEdited(postId: any, groupId: any, actorId: string, ownerId: string, io: any) {
+        try {
+            const notification = await Notification.create({
+                _actor: actorId,
+                _owner: ownerId,
+                _origin_post: postId,
+                _origin_group: groupId,
+                message: 'edited',
+                type: 'post-edited',
+                created_date: moment().format()
+            });
+
+            if (process.env.DOMAIN == 'app.octonius.com') {
+                const actor = await User.findById({ _id: actorId }).select('_workspace first_name last_name').lean();
+                const owner = await User.findById({ _id: ownerId }).select('_workspace integrations.firebase_token').lean();
+                const post = await Post.findById({ _id: postId }).select('title').lean();
+
+                if (owner.integrations.firebase_token) {
+                    // Send the notification to firebase for mobile notify
+                    firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Post', actor?.first_name + ' ' + actor?.last_name + ' posted ' + post.title);
+                }
+            }
+
+            await helperFunctions.sendNotificationsFeedFromService(ownerId, io, true);
 
         } catch (err) {
             throw err;

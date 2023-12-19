@@ -449,18 +449,30 @@ export class PostService {
    * This function is responsible for sending the related real time notifications to the user(s)
    * @param post
    */
-  async sendNotifications(post: any, userId: string) {
-    if (post._content_mentions.length !== 0) {
-      // Create Real time Notification for all the mentions on post content
-      return http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-mention`, {
+  async sendNotifications(post: any, userId: string, logAction?: string) {
+
+    if (!!logAction && logAction == 'change_content') {
+      return http.post(`${process.env.NOTIFICATIONS_SERVER_API}/post-edited`, {
         postId: post._id,
-        content_mentions: post._content_mentions,
         groupId: post._group._id || post._group,
         posted_by: post._posted_by,
         userId: userId
       }).catch(err => {
         console.log(`\n⛔️ Error:\n ${err}`);
       });
+    }
+
+    if (post._content_mentions.length !== 0) {
+      // Create Real time Notification for all the mentions on post content
+      return http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-mention`, {
+          postId: post._id,
+          content_mentions: post._content_mentions,
+          groupId: post._group._id || post._group,
+          posted_by: post._posted_by,
+          userId: userId
+        }).catch(err => {
+          console.log(`\n⛔️ Error:\n ${err}`);
+        });
     }
 
     // Send notification after post creation
@@ -600,7 +612,7 @@ export class PostService {
       post = await this.populatePostProperties(post);
 
       // Send all the required notifications
-      this.sendNotifications(post, userId);
+      this.sendNotifications(post, userId, 'change_content');
 
       // Return the post
       return post;
@@ -617,52 +629,52 @@ export class PostService {
    * @param post
    * @param postId
    */
-  async editPostContent(post: any, postId: string, userId: string) {
-    try {
+  // async editPostContent(post: any, postId: string, userId: string) {
+  //   try {
 
-      // Parse the String to JSON Object
-      post = JSON.parse(post)
+  //     // Parse the String to JSON Object
+  //     post = JSON.parse(post)
 
-      // Update the post
-      var post = await Post.findOneAndUpdate({
-          _id: postId
-        }, {
-          $set: {
-            content: post.content,
-            _content_mentions: post._content_mentions
-          }
-        }, {
-          new: true
-        });
+  //     // Update the post
+  //     var post = await Post.findOneAndUpdate({
+  //         _id: postId
+  //       }, {
+  //         $set: {
+  //           content: post.content,
+  //           _content_mentions: post._content_mentions
+  //         }
+  //       }, {
+  //         new: true
+  //       });
 
-        post = await Post.findOneAndUpdate({
-            _id: postId
-          }, {
-            $push: {
-              "logs": {
-                action: 'change_content',
-                action_date: moment().format(),
-                _actor: userId
-              }
-            }
-          }, {
-            new: true
-          });
+  //       post = await Post.findOneAndUpdate({
+  //           _id: postId
+  //         }, {
+  //           $push: {
+  //             "logs": {
+  //               action: 'change_content',
+  //               action_date: moment().format(),
+  //               _actor: userId
+  //             }
+  //           }
+  //         }, {
+  //           new: true
+  //         });
 
-      // populate the assigned_to property of this document
-      post = await this.populatePostProperties(post);
+  //     // populate the assigned_to property of this document
+  //     post = await this.populatePostProperties(post);
 
-      // Send all the required notifications
-      this.sendNotifications(post, userId);
+  //     // Send all the required notifications
+  //     this.sendNotifications(post, userId);
 
-      // Return the post
-      return post;
+  //     // Return the post
+  //     return post;
 
-    } catch (err) {
-      // Return with error
-      throw (err);
-    }
-  };
+  //   } catch (err) {
+  //     // Return with error
+  //     throw (err);
+  //   }
+  // };
 
 
   /**
@@ -731,9 +743,7 @@ export class PostService {
    */
   async editPost(post: any, postId: string, userId: string, logAction: string) {
     try {
-
       // Parse the String to JSON Object
-
       post = JSON.parse(post)
       const files = post.files;
 
@@ -835,7 +845,7 @@ export class PostService {
           });
       }
 
-      if (logAction && logAction != '') {
+      if (!!logAction) {
         post = await Post.findOneAndUpdate({
             _id: postId
           }, {
@@ -855,7 +865,7 @@ export class PostService {
       post = await this.populatePostProperties(post);
 
       // Send all the required notifications
-      this.sendNotifications(post, userId);
+      this.sendNotifications(post, userId, logAction);
 
       // Return the post
 

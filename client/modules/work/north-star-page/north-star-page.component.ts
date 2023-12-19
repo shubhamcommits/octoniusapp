@@ -161,18 +161,19 @@ export class NorthStarPageComponent implements OnInit {
   }
 
   getNSStatusColor(northStarValues: any) {
-    const progressPercentage = this.getProgressPercent(northStarValues);
+    if (!!northStarValues) {
+      const progressPercentage = this.getProgressPercent(northStarValues);
 
-    if (progressPercentage == 1) {
-      return '#4A90E2';
-    } else {
-      if (northStarValues?.findIndex(val => val.status == 'IN DANGER') >= 1) {
+      if (progressPercentage == 1) {
+        return '#4A90E2';
+      } else if (northStarValues?.findIndex(val => val.status == 'IN DANGER') >= 0) {
         return '#EB5757';
-      } else if (northStarValues?.findIndex(val => val.status == 'ON TRACK') >= 1) {
+      } else if (northStarValues?.findIndex(val => val.status == 'ON TRACK') >= 0) {
         return '#26A69A';
+      } else {
+        return '#FFAB00';      
       }
     }
-    return '#FFAB00';
   }
 
   /**

@@ -39,7 +39,7 @@
     </div>
 </div>
 
-<div class="row" *ngIf="!isIndividualSubscription">
+<div class="row" *ngIf="!isIndividualSubscription && !!customFields && customFields.length > 0">
     <div class="col">
         <div class="col-description">
             <h4 i18n="@@userProfile.profileFields">Profile fields</h4>

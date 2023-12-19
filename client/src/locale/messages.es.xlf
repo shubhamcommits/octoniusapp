@@ -6987,7 +6987,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/global-north-star-dialog/global-north-star-dialog.component.ts</context>
-          <context context-type="linenumber">294</context>
+          <context context-type="linenumber">269</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
@@ -6996,10 +6996,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
           <context context-type="linenumber">448</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
-          <context context-type="linenumber">485</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
@@ -7019,7 +7015,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/global-north-star-dialog/global-north-star-dialog.component.ts</context>
-          <context context-type="linenumber">297</context>
+          <context context-type="linenumber">272</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
@@ -7028,10 +7024,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
           <context context-type="linenumber">451</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
-          <context context-type="linenumber">488</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
@@ -10029,7 +10021,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">182</context>
+          <context context-type="linenumber">186</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.assignedYou" datatype="html">
@@ -10144,12 +10136,28 @@
           <context context-type="linenumber">73</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="recentActivity.edited" datatype="html">
+        <source>edited</source>
+        <target state="translated">editó</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
+          <context context-type="linenumber">74</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="recentActivity.in" datatype="html">
+        <source>in</source>
+        <target state="translated">en</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
+          <context context-type="linenumber">85</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="recentActivity.theTask" datatype="html">
         <source>The task: </source>
         <target state="translated">La Tarea: </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">84</context>
+          <context context-type="linenumber">88</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.fromGroup" datatype="html">
@@ -10157,7 +10165,7 @@
         <target state="translated">fue enviada desde</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">90</context>
+          <context context-type="linenumber">94</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.view" datatype="html">
@@ -10165,44 +10173,24 @@
         <target state="translated">Ver</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">119</context>
+          <context context-type="linenumber">123</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">124</context>
+          <context context-type="linenumber">128</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">129</context>
+          <context context-type="linenumber">133</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">134</context>
+          <context context-type="linenumber">138</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">139</context>
+          <context context-type="linenumber">143</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">144</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">222</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">297</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">368</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="recentActivity.markAsRead" datatype="html">
-        <source>Mark As Read</source>
-        <target state="translated">Marcar Como Leído</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
           <context context-type="linenumber">148</context>
@@ -10211,17 +10199,37 @@
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
           <context context-type="linenumber">226</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
+          <context context-type="linenumber">301</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
+          <context context-type="linenumber">372</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="recentActivity.markAsRead" datatype="html">
+        <source>Mark As Read</source>
+        <target state="translated">Marcar Como Leído</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
+          <context context-type="linenumber">152</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
+          <context context-type="linenumber">230</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.newsFeed" datatype="html">
         <source>News feed</source>
         <target state="translated">Noticias</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">164</context>
+          <context context-type="linenumber">168</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">166</context>
+          <context context-type="linenumber">170</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.everyoneIsSilent" datatype="html">
@@ -10229,7 +10237,7 @@
         <target state="translated">Todos guardan silencio.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">172</context>
+          <context context-type="linenumber">176</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.posted" datatype="html">
@@ -10237,7 +10245,7 @@
         <target state="translated">publicó</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">201</context>
+          <context context-type="linenumber">205</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.events" datatype="html">
@@ -10245,11 +10253,11 @@
         <target state="translated">Eventos</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">242</context>
+          <context context-type="linenumber">246</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">244</context>
+          <context context-type="linenumber">248</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.noEvents" datatype="html">
@@ -10257,7 +10265,7 @@
         <target state="translated">Sin Eventos. Involucrese.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">250</context>
+          <context context-type="linenumber">254</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.pendingApprovals" datatype="html">
@@ -10265,11 +10273,11 @@
         <target state="translated">Aprobaciones pendientes</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">313</context>
+          <context context-type="linenumber">317</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">315</context>
+          <context context-type="linenumber">319</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.noPendingApprovals" datatype="html">
@@ -10277,11 +10285,11 @@
         <target state="translated">No hay aprobaciones pendientes.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">321</context>
+          <context context-type="linenumber">325</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">389</context>
+          <context context-type="linenumber">393</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.requestYoToReviewItem" datatype="html">
@@ -10289,7 +10297,7 @@
         <target state="translated">te pidió que revises el elemento:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">353</context>
+          <context context-type="linenumber">357</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.bofore" datatype="html">
@@ -10297,7 +10305,7 @@
         <target state="translated">antes</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">360</context>
+          <context context-type="linenumber">364</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.pendingHolidays" datatype="html">
@@ -10305,11 +10313,11 @@
         <target state="translated">Vacaciones Pendientes</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">381</context>
+          <context context-type="linenumber">385</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">382</context>
+          <context context-type="linenumber">386</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.member" datatype="html">
@@ -10317,7 +10325,7 @@
         <target state="translated">Miembro</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">397</context>
+          <context context-type="linenumber">401</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.starts" datatype="html">
@@ -10325,7 +10333,7 @@
         <target state="translated">Comienza</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">398</context>
+          <context context-type="linenumber">402</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.ends" datatype="html">
@@ -10333,7 +10341,7 @@
         <target state="translated">Acaba</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">399</context>
+          <context context-type="linenumber">403</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.type" datatype="html">
@@ -10341,7 +10349,7 @@
         <target state="translated">Tipo</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">400</context>
+          <context context-type="linenumber">404</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.numDays" datatype="html">
@@ -10349,7 +10357,7 @@
         <target state="translated">Número de Días</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">401</context>
+          <context context-type="linenumber">405</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.description" datatype="html">
@@ -10357,7 +10365,7 @@
         <target state="translated">Descripción</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">402</context>
+          <context context-type="linenumber">406</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.status" datatype="html">
@@ -10365,7 +10373,7 @@
         <target state="translated">Estado</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">403</context>
+          <context context-type="linenumber">407</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.approved" datatype="html">
@@ -10373,7 +10381,7 @@
         <target state="translated">APROBADAS</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">420</context>
+          <context context-type="linenumber">424</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.pending" datatype="html">
@@ -10381,7 +10389,7 @@
         <target state="translated">PENDIENTES</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">421</context>
+          <context context-type="linenumber">425</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.approve" datatype="html">
@@ -10389,7 +10397,7 @@
         <target state="translated">APROBAR</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">429</context>
+          <context context-type="linenumber">433</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.reject" datatype="html">
@@ -10397,7 +10405,7 @@
         <target state="translated">RECHAZAR</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">436</context>
+          <context context-type="linenumber">440</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.pendingHRTasks" datatype="html">
@@ -10405,11 +10413,11 @@
         <target state="translated">Tareas de RRHH Pendientes</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">454</context>
+          <context context-type="linenumber">458</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">456</context>
+          <context context-type="linenumber">460</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.openProfile" datatype="html">
@@ -10417,7 +10425,7 @@
         <target state="translated">Abrir Perfil</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">482</context>
+          <context context-type="linenumber">486</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.markComplited" datatype="html">
@@ -10425,7 +10433,7 @@
         <target state="translated">Marcar como completada</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">487</context>
+          <context context-type="linenumber">491</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.areYouSure" datatype="html">
@@ -17054,7 +17062,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">229</context>
+          <context context-type="linenumber">233</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileDetailsDialog.detailsUpdated" datatype="html">
@@ -17062,11 +17070,11 @@
         <target state="translated">¡Detalles actualizados!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">207</context>
+          <context context-type="linenumber">210</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">235</context>
+          <context context-type="linenumber">239</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileDetailsDialog.unableToUpdateDetails" datatype="html">
@@ -17074,11 +17082,11 @@
         <target state="translated">No se pueden actualizar los detalles. Vuelve a intentarlo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">210</context>
+          <context context-type="linenumber">214</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">238</context>
+          <context context-type="linenumber">242</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileDetailsDialog.pleaseWaitWeAreDeleting" datatype="html">
@@ -17086,7 +17094,7 @@
         <target state="translated">Espere, estamos eliminando el fichero...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">248</context>
+          <context context-type="linenumber">252</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileDetailsDialog.fileDeleted" datatype="html">
@@ -17094,7 +17102,7 @@
         <target state="translated">¡Fichero eliminado!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">256</context>
+          <context context-type="linenumber">260</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileDetailsDialog.unableToDeleteFile" datatype="html">
@@ -17102,7 +17110,7 @@
         <target state="translated">No se puede eliminar el archivo, inténtelo de nuevo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">258</context>
+          <context context-type="linenumber">262</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileVersions.newVersion" datatype="html">
@@ -17718,7 +17726,7 @@
         <target state="translated">Espere, estamos actualizando el contenido ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/global-north-star-dialog/global-north-star-dialog.component.ts</context>
-          <context context-type="linenumber">288</context>
+          <context context-type="linenumber">263</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
@@ -17727,10 +17735,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
           <context context-type="linenumber">439</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
-          <context context-type="linenumber">479</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
@@ -17750,7 +17754,7 @@
         <target state="translated">Espere, estamos eliminando la publicación ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/global-north-star-dialog/global-north-star-dialog.component.ts</context>
-          <context context-type="linenumber">307</context>
+          <context context-type="linenumber">282</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
@@ -17762,7 +17766,7 @@
         <target state="translated">¡Publicación borrada!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/global-north-star-dialog/global-north-star-dialog.component.ts</context>
-          <context context-type="linenumber">315</context>
+          <context context-type="linenumber">290</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
@@ -17774,7 +17778,7 @@
         <target state="translated">No se puede eliminar la publicación, inténtalo de nuevo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/global-north-star-dialog/global-north-star-dialog.component.ts</context>
-          <context context-type="linenumber">317</context>
+          <context context-type="linenumber">292</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>

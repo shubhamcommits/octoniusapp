@@ -64,7 +64,7 @@ const NotificationSchema = new Schema({
     type: {
         type: String,
         required: true,
-        enum: ['assignment', 'mention', 'mention_folio', 'started', 'completed', 'comment', 'like_comment', 'follow', 'likes', 'new-post', 'join-group', 'leave-group', 'launch-approval-flow', 'approved-item', 'reject-item', 'launch-approval-flow-due-date', 'shuttleTask', 'mention_collection', 'mention_page', 'hive', 'hive_new_entity']
+        enum: ['assignment', 'mention', 'mention_folio', 'started', 'completed', 'comment', 'like_comment', 'follow', 'likes', 'new-post', 'join-group', 'leave-group', 'launch-approval-flow', 'approved-item', 'reject-item', 'launch-approval-flow-due-date', 'shuttleTask', 'mention_collection', 'mention_page', 'hive', 'hive_new_entity', 'post-edited']
     }
 });
 

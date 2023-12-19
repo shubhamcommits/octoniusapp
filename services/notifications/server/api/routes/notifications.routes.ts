@@ -19,6 +19,9 @@ routes.post('/new-event', notificationFunctions.newEventAssignments);
 // This route is responsible for notifying the user of a new post in on of his/her groups
 routes.post('/new-post', notificationFunctions.newPost);
 
+// This route is responsible for notifying the user when a post is edited in on of his/her groups
+routes.post('/post-edited', notificationFunctions.postEdited);
+
 //This route is responsible for notifying the user on mention on new Folio
 routes.post('/new-folio-mention', notificationFunctions.newFolioMention);
 
