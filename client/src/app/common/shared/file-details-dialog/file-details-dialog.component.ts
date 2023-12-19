@@ -201,7 +201,10 @@ export class FileDetailsDialogComponent implements OnInit {
       this.filesService.saveCustomField(this.fileData._id, customFieldName, customFieldValue)
         .then(async (res) => {
           this.selectedCFValues[customFieldName] = customFieldValue;
-          this.fileData.custom_fields[customFieldName] = customFieldValue;
+          if (!this.fileData.custom_fields) {
+            this.fileData.custom_fields = new Map<string, string>();
+          }
+          this.fileData.custom_fields.set(customFieldName, customFieldValue);
 
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@fileDetailsDialog.detailsUpdated:Details updated!`));

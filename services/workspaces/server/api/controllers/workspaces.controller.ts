@@ -235,14 +235,14 @@ export class WorkspaceController {
 
             // Add workspace to user account
             const accountUpdate: any = await Account.findByIdAndUpdate({
-                _id: accountData._id
-            }, {
-                $push: {
-                    _workspaces: workspace
-                }
-            }, {
-                new: true
-            })
+                    _id: accountData._id
+                }, {
+                    $push: {
+                        _workspaces: workspace
+                    }
+                }, {
+                    new: true
+                });
 
             // Error updating the account
             if (!accountUpdate) {
