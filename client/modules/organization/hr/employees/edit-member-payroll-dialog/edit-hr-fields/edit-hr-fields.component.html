@@ -49,7 +49,7 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row" *ngIf="!!memberData">
     <div class="col">
         <div class="col-description">
             <h4 i18n="@@editHRFields.hrFields">HR Fields</h4>
@@ -61,7 +61,7 @@
     </div>
 
     <div class="col">
-        <div class="form-group" *ngIf="!!memberData">
+        <div class="form-group">
             <div class="mb-4">
                 <label for="position" class="cflabel" i18n="@@editHRFields.position">Position</label>
             
@@ -108,7 +108,7 @@
     </div>
 </div>
 
-<div class="row" *ngIf="!!hrVariables">
+<div class="row" *ngIf="!!hrVariables && hrVariables.length > 0">
     <div class="col">
         <div class="col-description">
             <h4 i18n="@@editHRFields.payrollInfo">Payroll info</h4>
@@ -133,7 +133,7 @@
     </div>
 </div>
 
-<div class="row" *ngIf="!!hrBenefits">
+<div class="row" *ngIf="!!hrBenefits && hrBenefits.length > 0">
     <div class="col">
         <div class="col-description">
             <h4 i18n="@@editHRFields.hrBenefits">Benefits</h4>
@@ -187,7 +187,7 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row" *ngIf="memberData && memberData?.hr && memberData?.hr.entity_extra_days_off">
     <div class="col">
         <div class="col-description">
             <h4 i18n="@@editHRFields.hrDaysOff">Days Off</h4>
@@ -198,7 +198,7 @@
         <hr />
     </div>
 
-    <div class="col" *ngIf="memberData && memberData?.hr && memberData?.hr.entity_extra_days_off">
+    <div class="col">
         <div class="form-group">
             <div class="mb-3">
                 <label class="cflabel" i18n="@@editHRFields.holidays">Holidays</label>
