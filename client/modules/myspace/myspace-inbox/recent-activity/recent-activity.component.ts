@@ -380,10 +380,11 @@ export class RecentActivityComponent implements OnInit {
       });
   }
 
-  formateDate(date: any) {
+  formateDate(date: any, withTime: boolean = false) {
+    const format = (withTime) ? DateTime.DATETIME_MED : DateTime.DATE_SHORT;
     if (!!date && (date instanceof DateTime)) {
-      return date.toLocaleString(DateTime.DATE_SHORT);
+      return date.toLocaleString(format);
     }
-    return (!!date) ? DateTime.fromISO(date).toLocaleString(DateTime.DATE_SHORT) : '';
+    return (!!date) ? DateTime.fromISO(date).toLocaleString(format) : '';
   }
 }
