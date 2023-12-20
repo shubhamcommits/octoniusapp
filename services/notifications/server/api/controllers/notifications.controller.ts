@@ -495,7 +495,11 @@ export class NotificationsController {
 
         const { postId, groupId, userId, io } = req.body;
         try {
+console.log(postId);
+console.log(groupId);
+console.log(userId);
             const post = await Post.findById(postId).select('type _posted_by').lean();
+console.log(post);
             let notifyTo = [];
             if (!!post && post.type == 'post') {
                 // Let usersStream
@@ -528,8 +532,9 @@ export class NotificationsController {
 
                 notifyTo = await helperFunctions.removeDuplicates(notifyTo, '_id');
             }
-
+console.log(notifyTo);
             if (!!notifyTo) {
+console.log(notifyTo);
                 let stream = Readable.from(await helperFunctions.removeDuplicates(notifyTo, '_id'));
                 await stream.on('data', async (nt: any) => {
                     if ((nt._id || nt) != userId) {
