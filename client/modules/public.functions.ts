@@ -25,7 +25,6 @@ import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
 import { LibraryService } from 'src/shared/services/library-service/library.service';
 import { SearchService } from 'src/shared/services/search-service/search.service';
 import { LibreofficeService } from 'src/shared/services/libreoffice-service/libreoffice.service';
-import { workerData } from 'worker_threads';
 
 @Injectable({
   providedIn: 'root'

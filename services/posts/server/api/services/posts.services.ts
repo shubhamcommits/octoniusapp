@@ -453,16 +453,17 @@ export class PostService {
 console.log("A: ", logAction);
       if (!!logAction && logAction == 'change_content') {
 console.log("B: ", logAction);
-      return http.post(`${process.env.NOTIFICATIONS_SERVER_API}/post-edited`, {
-        postId: post._id,
-        groupId: post._group._id || post._group,
-        posted_by: post._posted_by,
-        userId: userId
-      }).catch(err => {
+        return http.post(`${process.env.NOTIFICATIONS_SERVER_API}/post-edited`, {
+            postId: post._id,
+            groupId: post._group._id || post._group,
+            posted_by: post._posted_by,
+            userId: userId
+          }).catch(err => {
 console.log(err);
-        console.log(`\n⛔️ Error:\n ${err}`);
-      });
-    } else {
+            console.log(`\n⛔️ Error:\n ${err}`);
+          });
+      }
+
       if (post._content_mentions.length !== 0) {
         // Create Real time Notification for all the mentions on post content
         return http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-mention`, {
@@ -512,7 +513,6 @@ console.log(err);
         default:
           break;
       }
-    }
   }
 
   /**
