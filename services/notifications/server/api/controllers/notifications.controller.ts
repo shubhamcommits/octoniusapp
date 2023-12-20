@@ -499,9 +499,9 @@ export class NotificationsController {
             let notifyTo;
             if (!!post && post.type == 'post') {
                 // Let usersStream
-                notifyTo = Readable.from(await User.find({
+                notifyTo = await User.find({
                     _groups: groupId
-                }).select('_workspace first_name email integrations.firebase_token'))
+                }).select('_workspace first_name email integrations.firebase_token');
             } else if (!!post && post.type == 'task') {
                 notifyTo.push(post._posted_by);
 
@@ -529,12 +529,15 @@ export class NotificationsController {
                 notifyTo = Readable.from(await helperFunctions.removeDuplicates(notifyTo, '_id'));
             }
 
-            await notifyTo.on('data', async (nt: any) => {
-                if ((nt._id || nt) != userId) {
-                    // Call Service Function for newEventAssignments
-                    await notificationService.postEdited(postId, groupId, userId, (nt._id || nt), io);
-                }
-            });
+            if (!!notifyTo) {
+                let stream = Readable.from(await helperFunctions.removeDuplicates(notifyTo, '_id'));
+                await stream.on('data', async (nt: any) => {
+                    if ((nt._id || nt) != userId) {
+                        // Call Service Function for newEventAssignments
+                        await notificationService.postEdited(postId, groupId, userId, (nt._id || nt), io);
+                    }
+                });
+            }
 
             // Send status 200 response
             return res.status(200).json({
