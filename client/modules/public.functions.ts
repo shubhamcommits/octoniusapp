@@ -25,6 +25,7 @@ import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
 import { LibraryService } from 'src/shared/services/library-service/library.service';
 import { SearchService } from 'src/shared/services/search-service/search.service';
 import { LibreofficeService } from 'src/shared/services/libreoffice-service/libreoffice.service';
+import { workerData } from 'worker_threads';
 
 @Injectable({
   providedIn: 'root'
@@ -164,22 +165,28 @@ export class PublicFunctions {
         storageService.setLocalData('accountData', JSON.stringify(accountData))
     }
 
-    public async getCurrentWorkspace() {
-        let worspaceData = await this.getWorkspaceDetailsFromService();
+    public async getCurrentWorkspace(force?: boolean) {
+        let workspaceData;
+        
+        if (!force) {
+          workspaceData = await this.getWorkspaceDetailsFromService();
 
-        const utilityService = this.injector.get(UtilityService);
+          const utilityService = this.injector.get(UtilityService);
 
-        if (!utilityService.objectExists(worspaceData)) {
-            worspaceData = await this.getWorkspaceDetailsFromStorage();
+          if (!utilityService.objectExists(workspaceData)) {
+              workspaceData = await this.getWorkspaceDetailsFromStorage();
+          }
+
+          if (!utilityService.objectExists(workspaceData)) {
+              workspaceData = await this.getWorkspaceDetailsFromHTTP();
+          }
+        } else {
+          workspaceData = await this.getWorkspaceDetailsFromHTTP();
         }
 
-        if (!utilityService.objectExists(worspaceData)) {
-            worspaceData = await this.getWorkspaceDetailsFromHTTP();
-        }
+        this.sendUpdatesToWorkspaceData(workspaceData);
 
-        this.sendUpdatesToWorkspaceData(worspaceData);
-
-        return worspaceData || {};
+        return workspaceData || {};
     }
 
     async getWorkspaceDetailsFromService() {
