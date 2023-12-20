@@ -450,16 +450,13 @@ export class PostService {
    * @param post
    */
   async sendNotifications(post: any, userId: string, logAction?: string) {
-console.log("A: ", logAction);
       if (!!logAction && logAction == 'change_content') {
-console.log("B: ", logAction);
         return http.post(`${process.env.NOTIFICATIONS_SERVER_API}/post-edited`, {
             postId: post._id,
             groupId: post._group._id || post._group,
             posted_by: post._posted_by,
             userId: userId
           }).catch(err => {
-console.log(err);
             console.log(`\n⛔️ Error:\n ${err}`);
           });
       }
