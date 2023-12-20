@@ -210,7 +210,6 @@ export class FileDetailsDialogComponent implements OnInit {
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@fileDetailsDialog.detailsUpdated:Details updated!`));
         })
         .catch((error) => {
-console.log(error);
           reject(this.utilityService.rejectAsyncPromise($localize`:@@fileDetailsDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
         });
     }));

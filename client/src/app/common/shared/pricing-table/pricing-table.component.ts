@@ -6,6 +6,7 @@ import { ManagementPortalService } from 'src/shared/services/management-portal-s
 import { loadStripe } from '@stripe/stripe-js';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { BehaviorSubject } from 'rxjs';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
   selector: 'app-pricing-table',
@@ -46,6 +47,8 @@ export class PricingTableComponent implements OnInit {
 
   // isLoading BehaviourSubject
   isLoading$ = new BehaviorSubject(false);
+
+  publicFunctions = new PublicFunctions(this.injector);
   
   constructor(
       private injector: Injector
@@ -72,6 +75,13 @@ export class PricingTableComponent implements OnInit {
       var stripe = await loadStripe(res['pk_stripe']);
       stripe.redirectToCheckout({
         sessionId: res['session'].id
+      }).then(async (result) => {
+        if (result.error) {
+          // alert(result.error.message);
+          this.utilityService.errorNotification(result.error.message);
+        }
+
+        this.workspaceData = await this.publicFunctions.getCurrentWorkspace(true)
       });
     }).catch((err)=> {
       this.utilityService.errorNotification($localize`:@@pricingTable.errorWithYourSubscription:There is an error with your Subscription, please contact support!`);
