@@ -57,7 +57,7 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
   async ngOnChanges() {
 
     if (!this.workspaceData) {
-      this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+      this.workspaceData = await this.publicFunctions.getCurrentWorkspace(true);
     }
       
     if (this.type == 'collection' && this.groupId) {
@@ -73,12 +73,12 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
     } else if (this.type != 'portfolio') {
       this.members = await this.workspaceData?.members;
       this.members = await this.members?.filter((member) => {
-        return ['owner', 'admin', 'manager'].includes(member?.role);
+        return ['owner', 'admin', 'manager'].includes(member?.role) && member.active;
       });
     } else {
       this.members = await this.workspaceData?.members;
       this.members = await this.members?.filter((member, index) => {
-          return (this.members?.findIndex(m => m._id == member._id) == index)
+          return (this.members?.findIndex(m => m._id == member._id) == index) && member.active
       });
     }
 
