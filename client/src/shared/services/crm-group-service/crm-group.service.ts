@@ -98,4 +98,32 @@ export class CRMGroupService {
   createCRMCompany(companyData: any){
     return this._http.post(this.baseURL + `/createCompany`, { companyData }).toPromise()
   }
+
+  saveNewCRMCustomField(newCustomField: { name: string; title: string; values: any[]; }, groupId: any) {
+    return this._http.put(this.baseURL + `/${groupId}/crmCustomFields`, { newCustomField }).toPromise();
+  }
+
+  getCRMGroupCustomFields(groupId: string) {
+    return this._http.get(this.baseURL + `/${groupId}/crmCustomFields`).toPromise();
+  }
+
+  removeCRMCustomField(fieldId: string, groupId: string) {
+    return this._http.delete(this.baseURL + `/${groupId}/crmCustomFields/${fieldId}`).toPromise();
+  }
+
+  addCRMCustomFieldNewValue(value: string, fieldId: string, groupId: string) {
+    return this._http.put(this.baseURL + `/${groupId}/crmCustomFields/addValue`, { fieldId, value }).toPromise();
+  }
+
+  setCRMCustomFieldDisplayKanbanCard(display_in_kanban_card: boolean, fieldId: string, groupId: string) {
+    return this._http.put(this.baseURL + `/${groupId}/crmCustomFields/displayInKanbanCard`, { fieldId, display_in_kanban_card }).toPromise();
+  }
+
+  setCRMCustomFieldColor(color: string, fieldId: string, groupId: string) {
+    return this._http.put(this.baseURL + `/${groupId}/crmCustomFields/color`, { fieldId, color }).toPromise();
+  }
+
+  removeCRMCustomFieldValue(value: string, fieldId: string, groupId: string) {
+    return this._http.put(this.baseURL + `/${groupId}/crmCustomFields/removeValue`, { fieldId, value }).toPromise();
+  }
 }

@@ -46,6 +46,29 @@ routes.post('/createCompany', crm.createCRMCompany);
 // DELETE - Delete an automation flow
 routes.delete('/:companyId/company', crm.removeCRMCompany);
 
+// CUSTOM FIELDS
+
+// PUT - Save custom field
+routes.put('/:groupId/crmCustomFields', crm.addCRMCustomField);
+
+// GET - Get all the crm custom fields in a group
+routes.get('/:groupId/crmCustomFields', crm.getCRMGroupCustomFields);
+
+// DELETE - Delete custom field
+routes.delete('/:groupId/crmCustomFields/:fieldId', crm.removeCRMCustomField);
+
+// PUT - Add new value to a custom field
+routes.put('/:groupId/crmCustomFields/addValue', crm.addCRMCustomFieldValue);
+
+// PUT - Set the CF to be displayed in the kanban card
+routes.put('/:groupId/crmCustomFields/displayInKanbanCard', crm.setCRMCustomFieldDisplayKanbanCard);
+
+// PUT - Set the CF color to be displayed
+routes.put('/:groupId/crmCustomFields/color', crm.setCRMCustomFieldColor);
+
+// PUT - Remove custom field value
+routes.put('/:groupId/crmCustomFields/removeValue', crm.removeCRMCustomFieldValue);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

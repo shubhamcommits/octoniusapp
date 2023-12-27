@@ -1,22 +1,25 @@
 import { Component, OnInit, Input, Injector, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
-import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { NewCRMContactDialogComponent } from '../new-crm-contact-dialog/new-crm-contact-dialog.component';
 import { NewCRMCompanyDialogComponent } from '../new-crm-company-dialog/new-crm-company-dialog.component';
+import { CRMCustomFieldsDialogComponent } from '../crm-custom-fields-dialog/crm-custom-fields-dialog.component';
 
 @Component({
-  selector: 'app-contacts-board-bar',
-  templateUrl: './contacts-board-bar.component.html',
-  styleUrls: ['./contacts-board-bar.component.scss']
+  selector: 'app-crm-setup-board-bar',
+  templateUrl: './crm-setup-board-bar.component.html',
+  styleUrls: ['./crm-setup-board-bar.component.scss']
 })
-export class ContactsBoardBarComponent implements OnInit {
+export class CRMSetupBoardBarComponent implements OnInit {
+
+  @Input() groupData;
+  @Input() isAdmin = false;
 
   @Output() contactCreated = new EventEmitter();
   @Output() contactEdited = new EventEmitter();
   @Output() companyCreated = new EventEmitter();
   @Output() companyEdited = new EventEmitter();
+  @Output() customFieldEmitter = new EventEmitter();
 
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -68,6 +71,26 @@ export class ContactsBoardBarComponent implements OnInit {
     dialogRef.afterClosed().subscribe(async result => {
       companyEditedSubs.unsubscribe();
       companyCreatedSubs.unsubscribe();
+    });
+  }
+
+  openCustomFieldsDialog() {
+    const dialogRef = this.dialog.open(CRMCustomFieldsDialogComponent, {
+      width: '100%',
+      height: '100%',
+      disableClose: true,
+      data: {
+        groupData: this.groupData,
+        workspaceId: (this.groupData._workspace._id || this.groupData._workspace)
+      }
+    });
+
+    const sub = dialogRef.componentInstance.customFieldsEvent.subscribe((data) => {
+      this.customFieldEmitter.emit(data);
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      sub.unsubscribe();
     });
   }
 }

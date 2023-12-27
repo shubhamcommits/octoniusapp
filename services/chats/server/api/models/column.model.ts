@@ -77,6 +77,10 @@ const ColumnSchema = new Schema({
         type: String,
         required: false
     }],
+    crm_custom_fields_to_show_kanban: [{
+        type: String,
+        required: false
+    }],
     archived: {
         type: Boolean,
         default: false

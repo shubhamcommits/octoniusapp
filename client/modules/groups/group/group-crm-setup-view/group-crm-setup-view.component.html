@@ -1,8 +1,9 @@
 <div class="root">
-  <app-contacts-board-bar class="board-bar"
+  <app-crm-setup-board-bar class="board-bar"
+    [isAdmin]="isAdmin" [groupData]="groupData"
     (companyCreated)="onCompanyCreated($event)" (companyEdited)="onCompanyEdited($event)"
     (contactCreated)="onContactCreated($event)" (contactEdited)="onContactEdited($event)">
-  </app-contacts-board-bar>
+  </app-crm-setup-board-bar>
   
   
   <mat-tab-group mat-align-tabs="start">

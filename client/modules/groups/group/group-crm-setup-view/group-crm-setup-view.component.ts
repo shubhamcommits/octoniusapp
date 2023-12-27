@@ -5,11 +5,11 @@ import { PublicFunctions } from 'modules/public.functions';
 import { CRMGroupService } from 'src/shared/services/crm-group-service/crm-group.service';
 
 @Component({
-  selector: 'app-group-contacts-view',
-  templateUrl: './group-contacts-view.component.html',
-  styleUrls: ['./group-contacts-view.component.scss']
+  selector: 'app-group-crm-setup-view',
+  templateUrl: './group-crm-setup-view.component.html',
+  styleUrls: ['./group-crm-setup-view.component.scss']
 })
-export class GroupContactsViewComponent implements OnInit, OnDestroy, AfterContentChecked {
+export class GroupCRMSetupViewComponent implements OnInit, OnDestroy, AfterContentChecked {
 
   contacts = [];
   companies = [];

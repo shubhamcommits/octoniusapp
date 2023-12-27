@@ -246,6 +246,48 @@ const GroupSchema = new Schema({
             }
         }]
     },
+    crm_custom_fields: {
+        type: [{
+            name: {
+                type: String,
+                required: true
+            },
+            title: {
+                type: String,
+                required: true
+            },
+            input_type: {
+                type: Boolean,
+                default: false
+            },
+            input_type_number: {
+                type: Boolean,
+                default: false
+            },
+            input_type_text: {
+                type: Boolean,
+                default: false
+            },
+            input_type_date: {
+                type: Boolean,
+                default: false
+            },
+            values: {
+                type: [String],
+                required: true,
+                default: []
+            },
+            display_in_kanban_card: {
+                type: Boolean,
+                default: false
+            },
+            badge_color: {
+                type: String,
+                required: true,
+                default: '#e4edf8'
+            }
+        }]
+    },
     records: {
         pulses: [{
             date: {
