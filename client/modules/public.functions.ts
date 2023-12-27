@@ -2236,7 +2236,7 @@ export class PublicFunctions {
      * @param groupId: string
      * @param workspaceData: any
      */
-    async suggestFiles(searchTerm: string, groupId: string, workspaceData: any) {
+    async suggestFiles(searchVal: string, groupId: string, workspaceData: any) {
       // Storage Service Instance
       let storageService = this.injector.get(StorageService);
       let utilityService = this.injector.get(UtilityService);
@@ -2245,9 +2245,9 @@ export class PublicFunctions {
       // Fetch the users list from the server
       let filesList: any = [];
       if (groupId) {
-        filesList = await this.searchFiles(groupId, searchTerm, workspaceData._id, 'true');
+        filesList = await this.searchFiles(groupId, searchVal, workspaceData._id, 'true');
       } else {
-        filesList = await this.searchFiles(null, searchTerm, workspaceData._id, 'true');
+        filesList = await this.searchFiles(null, searchVal, workspaceData._id, 'true');
       }
 
       // Map the files list
@@ -2292,7 +2292,7 @@ export class PublicFunctions {
           let accessToken = googleUser['accessToken']
 
           // Get Google file list
-          googleFilesList = await integrationsService.searchGoogleFiles(searchTerm, accessToken) || []
+          googleFilesList = await integrationsService.searchGoogleFiles(searchVal, accessToken) || []
 
           // Google File List
           if (googleFilesList.length > 0) {
@@ -2315,7 +2315,7 @@ export class PublicFunctions {
           let boxAccessToken = boxUser['accessToken'];
 
           // Get Box file list
-          boxFilesList = await integrationsService.searchBoxFiles(searchTerm, boxAccessToken, workspaceData?.integrations) || []
+          boxFilesList = await integrationsService.searchBoxFiles(searchVal, boxAccessToken, workspaceData?.integrations) || []
 
           // Box File List
           if (boxFilesList.length > 0) {
@@ -2329,17 +2329,73 @@ export class PublicFunctions {
         }
       }
 
-      let pagesList: any = await this.searchPages(groupId, searchTerm, workspaceData._id);
+      return Array.from(new Set([...filesList, ...googleFilesList, ...boxFilesList]));
+  }
+  
+    /**
+     * This function is responsible for fetching the collection pages list
+     * @param groupId: string
+     */
+    async suggestCollectionPages(searchVal: string, groupId: string, workspaceData: any) {
+      // Storage Service Instance
+      let storageService = this.injector.get(StorageService);
+      let utilityService = this.injector.get(UtilityService);
+      let integrationsService = this.injector.get(IntegrationsService);
 
+      let pagesList: any = await this.searchPages(groupId, searchVal, workspaceData._id);
+      
       // Map the users list
       pagesList = pagesList.map((file: any) => ({
         id: file._id,
         value: `<a href="/dashboard/work/groups/library/collection/page?page=${file._id}" style="color: inherit" target="_blank">${file.title}</a>`
       }));
 
-      return Array.from(new Set([...filesList, ...googleFilesList, ...boxFilesList, ...pagesList]));
-    }
+      return Array.from(new Set([...pagesList]));
+  }
 
+    /**
+     * This function is responsible for fetching the collections list
+     * @param groupId: string
+     */
+  async suggestCollection(groupId: string, searchVal: string) {
+      let libraryService = this.injector.get(LibraryService)
+      let collectionList = await libraryService.getCollectionsByGroup(groupId)
+        .then((res) => res['collections'])
+        .catch(()=> [])
+
+      // Map the collections list
+      if (searchVal.length > 0) {
+        collectionList = collectionList
+          .filter((collection: any) => collection.name.toLowerCase().includes(searchVal.toLowerCase()))
+          .map((collection: any) => ({
+          value: `<a href="/dashboard/work/groups/library/collection?collection=${collection._id}" style="color: inherit" target="_blank">${collection.name}</a>`
+        }))
+      } else {
+        collectionList = collectionList.map((collection: any) => ({
+        value: `<a href="/dashboard/work/groups/library/collection?collection=${collection._id}" style="color: inherit" target="_blank">${collection.name}</a>`
+      }))
+      }
+
+      return Array.from(new Set([...collectionList]))
+    }
+  
+    /**
+     * This function is responsible for fetching the posts list
+     * @param groupId: string
+     */
+    async suggestPosts(searchVal:string, groupId: string) {
+      let postList:any = await this.getPosts(groupId, 'normal')
+
+      // Map the post list
+      postList = postList
+        .filter((post: any) => post.title.toLowerCase().includes(searchVal.toLowerCase()))
+        .map((post: any) => ({
+        value: `<a href="/dashboard/work/groups/activity?postId=${post._id}" style="color: inherit" target="_blank">${post.title? `${post.title} - ${post._posted_by.first_name} ${post._posted_by.last_name.slice(0,1)}.` : `untitled - ${post._posted_by.first_name} ${post._posted_by.last_name.slice(0,1)}.`}</a>`
+      }))
+
+      return Array.from(new Set([...postList]))
+    }
+  
     async getFileUrl(file: any, workspaceId: string) {
       let utilityService = this.injector.get(UtilityService);
       let filesService = this.injector.get(FilesService);
