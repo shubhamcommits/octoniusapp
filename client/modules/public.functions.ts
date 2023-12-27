@@ -2364,7 +2364,7 @@ export class PublicFunctions {
         .catch(()=> [])
 
       // Map the collections list
-      if (searchVal.length > 0) {
+      if (searchVal) {
         collectionList = collectionList
           .filter((collection: any) => collection.name.toLowerCase().includes(searchVal.toLowerCase()))
           .map((collection: any) => ({
