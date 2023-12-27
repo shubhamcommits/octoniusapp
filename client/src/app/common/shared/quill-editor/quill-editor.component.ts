@@ -266,6 +266,7 @@ export class QuillEditorComponent implements OnInit, OnChanges, AfterViewInit {
 
         // Value of the mention list
         let values: any;
+        let searchVal: any;
 
         // If User types "@" then trigger the list for user mentioning
         if (mentionChar === "@") {
@@ -280,23 +281,51 @@ export class QuillEditorComponent implements OnInit, OnChanges, AfterViewInit {
             });
           }
 
-          // If User types "#" then trigger the list for files mentioning
+        // If User types "#" then trigger the list for files mentioning
         } else if (mentionChar === "#") {
+          // Initialise values with list of collection pages
+          if (searchTerm.slice(0, 8) === 'colpage ') {
+            searchVal = searchTerm.split(' ')[1];
+            values = await this.publicFunctions.suggestCollectionPages(searchVal, this.groupId, this.workspaceData);  
+
+          // Initialise values with list of collections
+          } else if (searchTerm.slice(0, 4) === 'col ') {
+            searchVal = searchTerm.replace('col ', '');
+            values = await this.publicFunctions.suggestCollection(this.groupId, searchVal);
+
           // Initialise values with list of files
-          values = await this.publicFunctions.suggestFiles(searchTerm, this.groupId, this.workspaceData);
+          } else if (searchTerm.slice(0, 5) === 'file ') {
+            searchVal = searchTerm.replace('file ', '');
+            values = await this.publicFunctions.suggestFiles(searchVal, this.groupId, this.workspaceData);
+
+          // Initialise values with list of posts
+          } else if (searchTerm.slice(0, 5) === 'post ') {
+            searchVal = searchTerm.replace('post ', '');
+            values = await this.publicFunctions.suggestPosts(searchVal, this.groupId);
+
+          // If none of the filters are used, initialise values with all entities
+          } else {
+            searchVal = searchTerm;
+            const collections = await this.publicFunctions.suggestCollection(this.groupId, searchVal);
+            const collectionPages = await this.publicFunctions.suggestCollectionPages(searchVal, this.groupId, this.workspaceData);  
+            const files = await this.publicFunctions.suggestFiles(searchTerm, this.groupId, this.workspaceData);
+            const posts = await this.publicFunctions.suggestPosts(searchVal, this.groupId);
+            
+            values = [...collections, ...collectionPages, ...files, ...posts]
+          }
         }
 
-        // If searchTerm length is 0, then show the full list
-        if (searchTerm.length === 0) {
+        // If searchVal is undefined, then show the full list
+        if (searchVal === undefined) {
           renderList(values, searchTerm);
         } else {
           const matches = [];
-          for (let i = 0; i < values.length; i++) {
-            if (values[i] && values[i].value && ~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())) {
+          for (let i = 0; i < values?.length; i++) {
+            if (values[i] && values[i].value && ~values[i].value.toLowerCase().indexOf(searchVal?.toLowerCase())) {
               matches.push(values[i]);
             }
           }
-          renderList(matches, searchTerm);
+          renderList(matches, searchVal);
         }
       }
     }
