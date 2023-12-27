@@ -105,7 +105,7 @@ const GroupSchema = new Schema({
     },
     type: {
         type: String,
-        default: 'normal'
+        default: ['normal', 'agora', 'crm', 'accounting', 'resource']
     },
     conditions: {
         email_domains: {

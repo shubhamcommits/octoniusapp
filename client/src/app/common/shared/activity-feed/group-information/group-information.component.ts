@@ -28,7 +28,10 @@ export class GroupInformationComponent implements OnInit {
   // PUBLIC FUNCTIONS
   private publicFunctions = new PublicFunctions(this.injector);
 
-  ngOnInit() {
+  async ngOnInit() {
+    if (!this.utilityService.objectExists(this.groupData)) {
+      this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+    }
   }
 
   /**
@@ -39,6 +42,8 @@ export class GroupInformationComponent implements OnInit {
     // Open Model Function, which opens up the modal
     const { value: value } = await openModal;
     if (value) {
+      value.type = (!value.type || value.type == '') ? this.groupData.type : value.type;
+
       this.utilityService.asyncNotification($localize`:@@groupInformation.pleaseWaitWeUpdateGroupInformation:Please wait we are updating the group\'s information...`,
         new Promise((resolve, reject) => {
           this.groupService.updateGroup(this.groupData._id, value)
@@ -46,7 +51,8 @@ export class GroupInformationComponent implements OnInit {
 
               // Update the Data
               this.groupData.description = value.description;
-              this.groupData.group_name = value.group_name
+              this.groupData.group_name = value.group_name;
+              this.groupData.type = value.type;
 
               // Send Updates to the group data service
               this.publicFunctions.sendUpdatesToGroupData(this.groupData);
@@ -71,15 +77,31 @@ export class GroupInformationComponent implements OnInit {
    */
   openModal(title: string, imageUrl: string) {
 
+    const groupNamePlaceholder = $localize`:@@groupInformation.groupName:Group Name!`;
+    const groupDescriptionPlaceholder = $localize`:@@groupInformation.groupDescription:Group Description!`;
+    const groupTypePlaceholder = $localize`:@@groupInformation.groupType:Group Type!`;
+    const groupTypeNormal = $localize`:@@groupInformation.groupTypeNormal:Normal`;
+    const groupTypeAgora = $localize`:@@groupInformation.groupTypeAgora:Agora`;
+    const groupTypeCRM = $localize`:@@groupInformation.groupTypeCRM:CRM`;
+    const groupTypeAccounting = $localize`:@@groupInformation.groupTypeAccounting:Accounting`;
+    const groupTypeResource = $localize`:@@groupInformation.groupTypeResource:Resource`;
+
     // Swal modal for update details
     return this.utilityService.getSwalModal({
       title: title,
       html:
-        `<input id="phone-number" type="text" placeholder="Group Name"
-    value="${this.groupData.group_name || 'Your Group Name here...'}" class="swal2-input">` +
-
-        `<input id="mobile-number" type="text" placeholder="Group Description"
-    value="${this.groupData.description || ''}" class="swal2-input">`,
+        `<input id="phone-number" type="text" placeholder="${groupNamePlaceholder}"
+          value="${this.groupData.group_name || 'Your Group Name here...'}" class="swal2-input">` +
+        `<input id="mobile-number" type="text" placeholder="${groupDescriptionPlaceholder}"
+          value="${this.groupData.description || ''}" class="swal2-input">` +
+        `<select id="group-type" value="${this.groupData.type}" placeholder="${groupTypePlaceholder}" class="swal2-input">
+            <option value="" selected disabled hidden>Choose an option</option>
+            <option value="normal">${groupTypeNormal}</option>
+            <option value="agora">${groupTypeAgora}</option>
+            <option value="crm">${groupTypeCRM}</option>
+            <option value="accounting">${groupTypeAccounting}</option>
+            <option value="resource">${groupTypeResource} Management</option>
+          </select>`,
 
       focusConfirm: false,
       preConfirm: () => {
@@ -88,6 +110,7 @@ export class GroupInformationComponent implements OnInit {
         return {
           group_name: document.getElementById('phone-number')['value'],
           description: document.getElementById('mobile-number')['value'],
+          type: document.getElementById('group-type')['value'],
         }
       },
       confirmButtonText: $localize`:@@groupInformation.updateInformation:Update Information!`,

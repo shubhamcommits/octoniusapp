@@ -1,0 +1,90 @@
+<div class="block">
+    <div class="row">
+        <div class="col-md-4">
+            <span i18n="@@crmContactInformation.name">Name</span>
+        </div>
+    
+        <div class="col-md-8">
+            <input type="text" class="form-control" [(ngModel)]="newName" (blur)="fieldEdited('name')" name="name">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <span i18n="@@crmContactInformation.description">Description</span>
+        </div>
+    
+        <div class="col-md-8">
+            <textarea rows="5" [(ngModel)]="newDescription" class="form-control" (blur)="fieldEdited('description')" name="description"></textarea>
+        </div>
+    </div>
+</div>
+
+<div class="block">
+    <div class="row">
+        <div class="col-md-4">
+            <span i18n="@@crmContactInformation.phones">Phones</span>
+        </div>
+    
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-11">
+                    <input type="text" class="form-control" [(ngModel)]="newPhone" name="phone" (keyup.enter)="addPhone()">
+                </div>
+                <div class="col-md-1">
+                    <i class="material-icons-outlined" (click)="addPhone()" style="cursor: pointer;">add</i>
+                </div>
+            </div>
+    
+            <div class="row" *ngIf="!!contactData && !!contactData.phones">
+                <div class="col-md-12" *ngFor="let phone of contactData.phones">{{ phone }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="block">
+    <div class="row">
+        <div class="col-md-4">
+            <span i18n="@@crmContactInformation.emails">E-Mails</span>
+        </div>
+    
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-11">
+                    <input type="text" class="form-control" [(ngModel)]="newEmail" name="email" (keyup.enter)="addEmail()">
+                </div>
+                <div class="col-md-1">
+                    <i class="material-icons-outlined" (click)="addEmail()" style="cursor: pointer;">add</i>
+                </div>
+            </div>
+    
+            <div class="row" *ngIf="!!contactData && !!contactData.emails">
+                <div class="col-md-12" *ngFor="let email of contactData.emails">{{ email }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="block">
+    <div class="row">
+        <div class="col-md-4">
+            <span i18n="@@crmContactInformation.links">Links</span>
+        </div>
+    
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-11">
+                    <input type="text" class="form-control" [(ngModel)]="newLink" name="link" (keyup.enter)="addLink()">
+                </div>
+                <div class="col-md-1">
+                    <i class="material-icons-outlined" (click)="addLink()" style="cursor: pointer;">add</i>
+                </div>
+            </div>
+    
+            <div class="row" *ngIf="!!contactData && !!contactData.links">
+                <div class="col-md-12" *ngFor="let link of contactData.links">{{ link }}</div>
+            </div>
+        </div>
+    </div>
+</div>

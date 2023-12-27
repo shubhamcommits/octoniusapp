@@ -23,7 +23,7 @@
 
           <!-- SELECT A WORKPLACE -->
           <div class="form-group" *ngIf="!!accountData && !!accountData?._workspaces">
-            <p>This is a list of workplaces(organizations) you already joined.</p>
+            <p i18n="@@selectWorkspace.listWorkspaces">This is a list of workplaces(organizations) you already joined.</p>
             <div *ngFor="let workspace of accountData?._workspaces"
                 class="workplace-cells" (click)="selectWorkspace(workspace._id)">
               <div class="btn-select-workplace">

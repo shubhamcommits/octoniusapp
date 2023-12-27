@@ -1,0 +1,53 @@
+import express from 'express';
+import { CRMController } from '../controllers';
+import { Auths } from '../../utils';
+
+const routes = express.Router();
+const crm = new CRMController();
+
+// Auths Helper Function
+const authsHelper = new Auths();
+
+// -| Authentication |-
+
+// Verify the token
+routes.use(authsHelper.verifyToken);
+
+// Checks whether the current user is loggedIn or not
+routes.use(authsHelper.isLoggedIn);
+
+// GET - Get all the crm contacts in a group
+routes.get('/:groupId/contacts', crm.getGroupCRMContacts);
+
+// GET - Get a crm contact details
+routes.get('/:contactId/contact', crm.getCRMContact);
+
+// DELETE - Delete an automation flow
+routes.delete('/:contactId/contact', crm.removeCRMContact);
+
+// PUT - Update the flow name
+routes.put('/:contactId/updateContact', crm.updateCRMContact);
+
+// POST - Add new automation flow
+routes.post('/createContact', crm.createCRMContact);
+
+// GET - Get a crm company details
+routes.get('/:companyId/company', crm.getCRMCompany);
+
+// GET - Get all the crm companies in a group
+routes.get('/:groupId/companies', crm.getGroupCRMCompanies);
+
+// PUT - Update the flow name
+routes.put('/:companyId/updateCompany', crm.updateCRMCompany);
+
+// POST - Add new automation flow
+routes.post('/createCompany', crm.createCRMCompany);
+
+// DELETE - Delete an automation flow
+routes.delete('/:companyId/company', crm.removeCRMCompany);
+
+/*  ===================
+ *  -- EXPORT ROUTES --
+ *  ===================
+ * */
+export { routes as crmRoutes }

@@ -11,7 +11,6 @@
 
     <div class="col">
         <div class="form-group">
-           
             <label for="first_name" i18n="@@userProfile.firstName" class="muted">First name</label>
             <input type="text" class="form-control" [(ngModel)]="userData.first_name" name="first_name"
                 (blur)="saveProperty({'first_name': $event.target.value})">
@@ -34,7 +33,6 @@
 
             <label i18n="@@userProfile.language" class="muted">Language</label>
             <app-select-language [userData]="userData"></app-select-language>
-       
         </div>
     </div>
 </div>
