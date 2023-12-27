@@ -302,11 +302,21 @@ export class QuillEditorComponent implements OnInit, OnChanges, AfterViewInit {
           } else if (searchTerm.slice(0, 5) === 'post ') {
             searchVal = searchTerm.replace('post ', '');
             values = await this.publicFunctions.suggestPosts(searchVal, this.groupId);
+
+          // If none of the filters are used, initialise values with all entities
+          } else {
+            searchVal = searchTerm;
+            const collections = await this.publicFunctions.suggestCollection(this.groupId, searchVal);
+            const collectionPages = await this.publicFunctions.suggestCollectionPages(searchVal, this.groupId, this.workspaceData);  
+            const files = await this.publicFunctions.suggestFiles(searchTerm, this.groupId, this.workspaceData);
+            const posts = await this.publicFunctions.suggestPosts(searchVal, this.groupId);
+            
+            values = [...collections, ...collectionPages, ...files, ...posts]
           }
         }
 
-        // If searchVal length is 0, then show the full list
-        if (searchVal?.length === 0) {
+        // If searchVal is undefined, then show the full list
+        if (searchVal === undefined) {
           renderList(values, searchTerm);
         } else {
           const matches = [];
