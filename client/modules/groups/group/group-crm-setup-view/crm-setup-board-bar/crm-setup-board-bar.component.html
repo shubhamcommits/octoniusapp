@@ -1,20 +1,8 @@
 <nav class="navbar d-none d-sm-block">
   <div class="rightside">
-    <button class="btn badge-automator" (click)="openNewContactDialog()">
-      <i class="material-icons-outlined">add</i>
-      <span i18n="@@crmSetupBoardBar.newContact">New Contact</span>
-    </button>
+    <!-- <span class="separator"></span> -->
 
-    <span class="separator"></span>
-    
-    <button class="btn badge-automator" (click)="openNewCompanyDialog()">
-      <i class="material-icons-outlined">add</i>
-      <span i18n="@@crmSetupBoardBar.newCompany">New Company</span>
-    </button>
-
-    <span *ngIf="isAdmin" class="separator"></span>
-
-    <button class="btn badge-cf" *ngIf="isAdmin"
+    <button class="btn badge-cf"
       (click)="openCustomFieldsDialog()">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" class="badge-cf">
         <path

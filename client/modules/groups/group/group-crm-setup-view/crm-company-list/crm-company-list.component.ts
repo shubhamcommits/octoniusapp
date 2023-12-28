@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Injector, Input, OnChanges, Output } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { NewCRMCompanyDialogComponent } from '../new-crm-company-dialog/new-crm-company-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,12 +11,9 @@ import { Sort } from '@angular/material/sort';
   templateUrl: './crm-company-list.component.html',
   styleUrls: ['./crm-company-list.component.scss']
 })
-export class CRMCompanyListComponent implements OnInit {
+export class CRMCompanyListComponent implements OnChanges {
 
 	@Input() companies = [];
-
-  	@Output() companyEdited = new EventEmitter();
-  	@Output() companyDeleted = new EventEmitter();
 
 	sortedData;
 	displayedColumns: string[] = ['image', 'name', 'description', 'star'];
@@ -32,7 +29,7 @@ export class CRMCompanyListComponent implements OnInit {
 		private injector: Injector
 	) { }
 
-	async ngOnInit(): Promise<void> {
+	async ngOnChanges(): Promise<void> {
 		this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
 		await this.initTable();
@@ -67,7 +64,7 @@ export class CRMCompanyListComponent implements OnInit {
 		return (a < b ? -1 : 1) * isAsc;
 	}
 
-	openEditCompanyDialog(companyId: string) {
+	openEditCompanyDialog(companyId?: string) {
 		const dialogRef = this.dialog.open(NewCRMCompanyDialogComponent, {
 			disableClose: true,
 			hasBackdrop: true,
@@ -84,12 +81,21 @@ export class CRMCompanyListComponent implements OnInit {
 			}
 			
 			await this.initTable();
+		});
 
-			this.companyEdited.emit(data);
+		const companyCreatedSubs = dialogRef.componentInstance.companyCreated.subscribe(async (data) => {
+			if (!this.companies) {
+				this.companies = []
+			}
+
+			this.companies.unshift(data);
+
+			await this.initTable();
 		});
 
 		dialogRef.afterClosed().subscribe(async result => {
 			companyEditedSubs.unsubscribe();
+			companyCreatedSubs.unsubscribe();
 		});
 	}
 
@@ -97,8 +103,13 @@ export class CRMCompanyListComponent implements OnInit {
 		this.utilityService.getConfirmDialogAlert($localize`:@@crmCompanyList.areYouSure:Are you sure?`, $localize`:@@crmCompanyList.removeCompany:By doing this, you will delete the selected company!`)
 			.then((res) => {
 				if (res.value) {
-					this.crmGroupService.removeCRMCompany(companyId).then(res => {
-						this.companyDeleted.emit(companyId);
+					this.crmGroupService.removeCRMCompany(companyId).then(async res => {
+						const index = (this.companies) ? this.companies.findIndex(c => c._id == companyId) : -1;
+						if (index >= 0) {
+							this.companies.splice(index, 1);
+
+							await this.initTable();
+						}
 					})
 				}
 			});

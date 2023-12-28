@@ -72,63 +72,63 @@ export class GroupCRMSetupViewComponent implements OnInit, OnDestroy, AfterConte
     this.subSink.unsubscribe();
   }
 
-  onCompanyCreated(company: any) {
-    if (!this.companies) {
-      this.companies = []
-    }
+  // onCompanyCreated(company: any) {
+  //   if (!this.companies) {
+  //     this.companies = []
+  //   }
 
-    this.companies.unshift(company);
+  //   this.companies.unshift(company);
 
-    this.changeDetectorRef.detectChanges()
-  }
+  //   this.changeDetectorRef.detectChanges()
+  // }
 
-  onCompanyEdited(company: any) {
-    if (!this.companies) {
-      this.companies = []
-    }
+  // onCompanyEdited(company: any) {
+  //   if (!this.companies) {
+  //     this.companies = []
+  //   }
 
-    const index = (this.companies) ? this.companies.findIndex(c => c._id == company._id) : -1;
-    this.companies[index] = company;
+  //   const index = (this.companies) ? this.companies.findIndex(c => c._id == company._id) : -1;
+  //   this.companies[index] = company;
 
-    this.changeDetectorRef.detectChanges()
-  }
+  //   this.changeDetectorRef.detectChanges()
+  // }
   
-  onCompanyDeleted(companyId: string) {
-    const index = (this.companies) ? this.companies.findIndex(c => c._id == companyId) : -1;
-    if (index >= 0) {
-      this.companies.splice(index, 1);
-    }
+  // onCompanyDeleted(companyId: string) {
+  //   const index = (this.companies) ? this.companies.findIndex(c => c._id == companyId) : -1;
+  //   if (index >= 0) {
+  //     this.companies.splice(index, 1);
+  //   }
 
-    this.changeDetectorRef.detectChanges()
-  }
+  //   this.changeDetectorRef.detectChanges()
+  // }
 
-  onContactCreated(contact: any) {
-    if (!this.contacts) {
-      this.contacts = []
-    }
+  // onContactCreated(contact: any) {
+  //   if (!this.contacts) {
+  //     this.contacts = []
+  //   }
 
-    this.contacts.unshift(contact);
+  //   this.contacts.unshift(contact);
 
-    this.changeDetectorRef.detectChanges()
-  }
+  //   this.changeDetectorRef.detectChanges()
+  // }
 
-  onContactEdited(contact: any) {
-    const index = (this.contacts) ? this.contacts.findIndex(c => c._id == contact._id) : -1;
-    if (index >= 0) {
-      this.contacts[index] = contact;
-    }
+  // onContactEdited(contact: any) {
+  //   const index = (this.contacts) ? this.contacts.findIndex(c => c._id == contact._id) : -1;
+  //   if (index >= 0) {
+  //     this.contacts[index] = contact;
+  //   }
 
-    this.changeDetectorRef.detectChanges();
-  }
+  //   this.changeDetectorRef.detectChanges();
+  // }
   
-  onContactDeleted(contactId: string) {
-    const index = (this.contacts) ? this.contacts.findIndex(c => c._id == contactId) : -1;
-    if (index >= 0) {
-      this.contacts.splice(index, 1);
-    }
+  // onContactDeleted(contactId: string) {
+  //   const index = (this.contacts) ? this.contacts.findIndex(c => c._id == contactId) : -1;
+  //   if (index >= 0) {
+  //     this.contacts.splice(index, 1);
+  //   }
 
-    this.changeDetectorRef.detectChanges();
-  }
+  //   this.changeDetectorRef.detectChanges();
+  // }
 
   isAdminUser() {
     const index = this.groupData._admins.findIndex((admin: any) => admin._id === this.userData._id);

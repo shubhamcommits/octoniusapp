@@ -17,9 +17,6 @@ export class CRMContactListComponent implements OnChanges, AfterViewInit {
   	@Input() isAdmin = [];
 	@Input() groupData;
 
-	@Output() contactEdited = new EventEmitter();
-	@Output() contactDeleted = new EventEmitter();
-
 	sortedData;
 	displayedColumns: string[] = ['name', 'company', 'phone', 'email', 'link', 'star'];
 	crmCustomFieldsToShow = [];
@@ -155,38 +152,17 @@ export class CRMContactListComponent implements OnChanges, AfterViewInit {
 			switch (property) {
 				case 'company':
 					return this.compare(a?.company_history[0]?._company.name, b?.company_history[0]?._company.name, directionValue);
-					// if (a?.company_history[0]?._company.name < b?.company_history[0]?._company.name){
-					// 	return -1 * directionValue;
-					// } else if ( a?.company_history[0]?._company.name > b?.company_history[0]?._company.name){
-					// 	return 1 * directionValue;
-					// } else {
-					// 	return 0;
-					// }
 				
 				case 'phone':
 				case 'email':
 				case 'link':
 					property += 's';
 					return this.compare(a[property][0], b[property][0], directionValue);
-					// if (a[property][0] < b[property][0]){
-					// 	return -1 * directionValue;
-					// } else if ( a[property][0] > b[property][0]){
-					// 	return 1 * directionValue;
-					// } else {
-					// 	return 0;
-					// }
 				default:
 					const index = (this.crmCustomFields) ? this.crmCustomFields.findIndex((f: any) => f.name === property) : -1;
 					return (index < 0) ? 
 						this.compare(a[property], b[property], directionValue) :
 						this.compare(a.crm_custom_fields[property], b.crm_custom_fields[property], directionValue);
-					// if (a[property] < b[property]) {
-					// 	return -1 * directionValue;
-					// } else if ( a[property] > b[property]){
-					// 	return 1 * directionValue;
-					// } else {
-					// 	return 0;
-					// }
 			}
 		});
 	}
@@ -195,7 +171,7 @@ export class CRMContactListComponent implements OnChanges, AfterViewInit {
 		return (a < b ? -1 : 1) * isAsc;
 	}
 
-	openNewContactDialog(contactId: string) {
+	openNewContactDialog(contactId?: string) {
 		const dialogRef = this.dialog.open(NewCRMContactDialogComponent, {
 		disableClose: true,
 		hasBackdrop: true,
@@ -213,12 +189,21 @@ export class CRMContactListComponent implements OnChanges, AfterViewInit {
 			}
 			
 			await this.initTable();
+		});
 
-			this.contactEdited.emit(data);
+		const contactCreatedSubs = dialogRef.componentInstance.contactCreated.subscribe(async (data) => {
+			if (!this.contacts) {
+				this.contacts = []
+			}
+
+			this.contacts.unshift(data);
+
+			await this.initTable();
 		});
 
 		dialogRef.afterClosed().subscribe(async result => {
 			contactEditedSubs.unsubscribe();
+			contactCreatedSubs.unsubscribe();
 		});
   	}
 
@@ -226,8 +211,13 @@ export class CRMContactListComponent implements OnChanges, AfterViewInit {
 		this.utilityService.getConfirmDialogAlert($localize`:@@crmContactList.areYouSure:Are you sure?`, $localize`:@@crmContactList.removeContact:By doing this, you will delete the selected contact!`)
 			.then((res) => {
 				if (res.value) {
-					this.crmGroupService.removeCRMContact(contactId).then(res => {
-						this.contactDeleted.emit(contactId);
+					this.crmGroupService.removeCRMContact(contactId).then(async res => {
+						const index = (this.contacts) ? this.contacts.findIndex(c => c._id == contactId) : -1;
+						if (index >= 0) {
+							this.contacts.splice(index, 1);
+
+							await this.initTable();
+						}
 					});
 				}
 			});

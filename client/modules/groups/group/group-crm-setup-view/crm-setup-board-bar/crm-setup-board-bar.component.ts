@@ -31,48 +31,48 @@ export class CRMSetupBoardBarComponent implements OnInit {
   async ngOnInit() {
   }
 
-  openNewContactDialog() {
-    const dialogRef = this.dialog.open(NewCRMContactDialogComponent, {
-      disableClose: true,
-      hasBackdrop: true,
-      width: '75%',
-      height: '85%'
-    });
+  // openNewContactDialog() {
+  //   const dialogRef = this.dialog.open(NewCRMContactDialogComponent, {
+  //     disableClose: true,
+  //     hasBackdrop: true,
+  //     width: '75%',
+  //     height: '85%'
+  //   });
 
-    const contactEditedSubs = dialogRef.componentInstance.contactEdited.subscribe(async (data) => {
-      this.contactEdited.emit(data);
-    });
+  //   const contactEditedSubs = dialogRef.componentInstance.contactEdited.subscribe(async (data) => {
+  //     this.contactEdited.emit(data);
+  //   });
 
-    const contactCreatedSubs = dialogRef.componentInstance.contactCreated.subscribe(async (data) => {
-      this.contactCreated.emit(data);
-    });
+  //   const contactCreatedSubs = dialogRef.componentInstance.contactCreated.subscribe(async (data) => {
+  //     this.contactCreated.emit(data);
+  //   });
 
-    dialogRef.afterClosed().subscribe(async result => {
-      contactEditedSubs.unsubscribe();
-      contactCreatedSubs.unsubscribe();
-    });
-  }
+  //   dialogRef.afterClosed().subscribe(async result => {
+  //     contactEditedSubs.unsubscribe();
+  //     contactCreatedSubs.unsubscribe();
+  //   });
+  // }
 
-  openNewCompanyDialog() {
-    const dialogRef = this.dialog.open(NewCRMCompanyDialogComponent, {
-      disableClose: true,
-      hasBackdrop: true,
-      width: '50%'
-    });
+  // openNewCompanyDialog() {
+  //   const dialogRef = this.dialog.open(NewCRMCompanyDialogComponent, {
+  //     disableClose: true,
+  //     hasBackdrop: true,
+  //     width: '50%'
+  //   });
 
-    const companyEditedSubs = dialogRef.componentInstance.companyEdited.subscribe(async (data) => {
-      this.companyEdited.emit(data);
-    });
+  //   const companyEditedSubs = dialogRef.componentInstance.companyEdited.subscribe(async (data) => {
+  //     this.companyEdited.emit(data);
+  //   });
 
-    const companyCreatedSubs = dialogRef.componentInstance.companyCreated.subscribe(async (data) => {
-      this.companyCreated.emit(data);
-    });
+  //   const companyCreatedSubs = dialogRef.componentInstance.companyCreated.subscribe(async (data) => {
+  //     this.companyCreated.emit(data);
+  //   });
 
-    dialogRef.afterClosed().subscribe(async result => {
-      companyEditedSubs.unsubscribe();
-      companyCreatedSubs.unsubscribe();
-    });
-  }
+  //   dialogRef.afterClosed().subscribe(async result => {
+  //     companyEditedSubs.unsubscribe();
+  //     companyCreatedSubs.unsubscribe();
+  //   });
+  // }
 
   openCustomFieldsDialog() {
     const dialogRef = this.dialog.open(CRMCustomFieldsDialogComponent, {

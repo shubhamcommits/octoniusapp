@@ -1,4 +1,11 @@
 <div class="block">
+    <div class="row">
+        <button class="btn btn-warning" (click)="openEditCompanyDialog()">
+            <i class="material-icons-outlined">add</i>
+            <span i18n="@@crmSetupBoardBar.newCompany">New Company</span>
+        </button>
+    </div>
+
     <table mat-table matSort [dataSource]="sortedData" (matSortChange)="sortData($event)" class="">
         <ng-container matColumnDef="image">
             <th mat-header-cell *matHeaderCellDef></th>

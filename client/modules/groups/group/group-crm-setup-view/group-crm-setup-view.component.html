@@ -1,8 +1,5 @@
 <div class="root">
-  <app-crm-setup-board-bar class="board-bar"
-    [isAdmin]="isAdmin" [groupData]="groupData"
-    (companyCreated)="onCompanyCreated($event)" (companyEdited)="onCompanyEdited($event)"
-    (contactCreated)="onContactCreated($event)" (contactEdited)="onContactEdited($event)">
+  <app-crm-setup-board-bar class="board-bar" *ngIf="isAdmin" [groupData]="groupData">
   </app-crm-setup-board-bar>
   
   
@@ -14,8 +11,7 @@
       </ng-template>
   
       <ng-template matTabContent>
-        <app-crm-contact-list [contacts]="contacts" [isAdmin]="isAdmin" [groupData]="groupData"
-          (contactEdited)="onContactEdited($event)" (contactDeleted)="onContactDeleted($event)"></app-crm-contact-list>
+        <app-crm-contact-list [contacts]="contacts" [isAdmin]="isAdmin" [groupData]="groupData"></app-crm-contact-list>
       </ng-template>
     </mat-tab>
   
@@ -25,7 +21,7 @@
       </ng-template>
   
       <ng-template matTabContent>
-        <app-crm-company-list [companies]="companies" (companyEdited)="onCompanyEdited($event)" (companyDeleted)="onCompanyDeleted($event)"></app-crm-company-list>
+        <app-crm-company-list [companies]="companies"></app-crm-company-list>
       </ng-template>
     </mat-tab>
   </mat-tab-group>
