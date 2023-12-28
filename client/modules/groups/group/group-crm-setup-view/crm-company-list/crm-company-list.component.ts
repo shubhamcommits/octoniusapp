@@ -4,6 +4,7 @@ import { NewCRMCompanyDialogComponent } from '../new-crm-company-dialog/new-crm-
 import { MatDialog } from '@angular/material/dialog';
 import { CRMGroupService } from 'src/shared/services/crm-group-service/crm-group.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-crm-company-list',
@@ -17,9 +18,8 @@ export class CRMCompanyListComponent implements OnInit {
   	@Output() companyEdited = new EventEmitter();
   	@Output() companyDeleted = new EventEmitter();
 
-	isDesc: boolean = false;
-	column: string = '';
-	direction: number;
+	sortedData;
+	displayedColumns: string[] = ['image', 'name', 'description', 'star'];
 
 	workspaceData: any;
 
@@ -34,24 +34,37 @@ export class CRMCompanyListComponent implements OnInit {
 
 	async ngOnInit(): Promise<void> {
 		this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+
+		await this.initTable();
 	}
 
-	sort(property: string) {
-		this.isDesc = !this.isDesc; //change the direction    
-		this.column = property;
-		let direction = this.isDesc ? 1 : -1;
+	async initTable() {
+		this.companies = [...this.companies];
 
-		this.companies.sort((a, b) => {
-			if(a[property] < b[property]){
-				return -1 * direction;
-			}
-			else if( a[property] > b[property]){
-				return 1 * direction;
-			}
-			else{
-				return 0;
+		this.sortedData = this.companies.slice();
+	}
+
+	sortData(sort: Sort) {
+		const direction = sort.direction;
+		let property = sort.active;
+		let directionValue = (direction == 'asc') ? 1 : -1;
+
+		const data = this.companies.slice();
+		if (!property || direction === '') {
+			this.sortedData = data;
+			return;
+		}
+
+		this.sortedData = data.sort((a, b) => {
+			switch (property) {
+				default:
+					return this.compare(a[property], b[property], directionValue);
 			}
 		});
+	}
+	
+	private compare(a: number | string, b: number | string, isAsc: number) {
+		return (a < b ? -1 : 1) * isAsc;
 	}
 
 	openEditCompanyDialog(companyId: string) {
@@ -65,6 +78,13 @@ export class CRMCompanyListComponent implements OnInit {
 		});
 
 		const companyEditedSubs = dialogRef.componentInstance.companyEdited.subscribe(async (data) => {
+			const index = (this.companies) ? this.companies.findIndex(c => c._id == data._id) : -1;
+			if (index >= 0) {
+				this.companies[index] = data;
+			}
+			
+			await this.initTable();
+
 			this.companyEdited.emit(data);
 		});
 

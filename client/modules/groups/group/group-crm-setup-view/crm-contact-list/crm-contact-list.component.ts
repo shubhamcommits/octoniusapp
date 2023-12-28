@@ -4,6 +4,7 @@ import { NewCRMContactDialogComponent } from '../new-crm-contact-dialog/new-crm-
 import { MatDialog } from '@angular/material/dialog';
 import { CRMGroupService } from 'src/shared/services/crm-group-service/crm-group.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-crm-contact-list',
@@ -19,19 +20,12 @@ export class CRMContactListComponent implements OnChanges, AfterViewInit {
 	@Output() contactEdited = new EventEmitter();
 	@Output() contactDeleted = new EventEmitter();
 
-
-
-	///////////////
-	displayedColumns: string[] = ['name', 'description', 'phone', 'email', 'link', 'star'];
+	sortedData;
+	displayedColumns: string[] = ['name', 'company', 'phone', 'email', 'link', 'star'];
 	crmCustomFieldsToShow = [];
 
 	newColumnSelected;
 	crmCustomFields = [];
-	///////////////
-
-  	isDesc: boolean = false;
-  	column: string = '';
-	direction: number;
 
 	workspaceData: any;
 
@@ -55,19 +49,23 @@ export class CRMContactListComponent implements OnChanges, AfterViewInit {
 			this.crmCustomFields = res['crm_custom_fields'];
 		});
 
-		await this.loadCustomFieldsToShow();
+		await this.initTable();
   	}
 
 	async ngAfterViewInit() {
 		if (!this.utilityService.objectExists(this.groupData)) {
 			this.groupData = await this.publicFunctions.getCurrentGroupDetails();
 		}
-		
-		
 	}
 
+	async initTable() {
+		await this.loadCustomFieldsToShow();
 
-	///////////////
+		this.contacts = [...this.contacts];
+
+		this.sortedData = this.contacts.slice();
+	}
+
 	addNewColumn($event: Event) {
 		// Find the index of the column to check if the same named column exist or not
 		const index = this.crmCustomFieldsToShow.findIndex((f: any) => f.name.toLowerCase() === this.newColumnSelected.name.toLowerCase());
@@ -114,8 +112,8 @@ export class CRMContactListComponent implements OnChanges, AfterViewInit {
 	}
 
 	getCustomField(fieldName: string) {
-		const index = this.crmCustomFields.findIndex((f: any) => f.name === fieldName);
-		return this.crmCustomFields[index];
+		const index = (this.crmCustomFields) ? this.crmCustomFields.findIndex((f: any) => f.name === fieldName) : -1;
+		return (index >= 0) ? this.crmCustomFields[index] : null;
 	}
 
 	loadCustomFieldsToShow() {
@@ -141,44 +139,60 @@ export class CRMContactListComponent implements OnChanges, AfterViewInit {
 			});
 		}
 	}
-	///////////////
 
-	sort(property: string) {
-		this.isDesc = !this.isDesc; //change the direction    
-		this.column = property;
-		let direction = this.isDesc ? 1 : -1;
+	sortData(sort: Sort) {
+		const direction = sort.direction;
+		let property = sort.active;
+		let directionValue = (direction == 'asc') ? 1 : -1;
 
-		this.contacts.sort((a, b) => {
+		const data = this.contacts.slice();
+		if (!property || direction === '') {
+			this.sortedData = data;
+			return;
+		}
+
+		this.sortedData = data.sort((a, b) => {
 			switch (property) {
 				case 'company':
-					if (a?.company_history[0]?._company.name < b?.company_history[0]?._company.name){
-						return -1 * direction;
-					} else if ( a?.company_history[0]?._company.name > b?.company_history[0]?._company.name){
-						return 1 * direction;
-					} else {
-						return 0;
-					}
+					return this.compare(a?.company_history[0]?._company.name, b?.company_history[0]?._company.name, directionValue);
+					// if (a?.company_history[0]?._company.name < b?.company_history[0]?._company.name){
+					// 	return -1 * directionValue;
+					// } else if ( a?.company_history[0]?._company.name > b?.company_history[0]?._company.name){
+					// 	return 1 * directionValue;
+					// } else {
+					// 	return 0;
+					// }
 				
-				case 'phones':
-				case 'emails':
-				case 'links':
-					if (a[property][0] < b[property][0]){
-						return -1 * direction;
-					} else if ( a[property][0] > b[property][0]){
-						return 1 * direction;
-					} else {
-						return 0;
-					}
+				case 'phone':
+				case 'email':
+				case 'link':
+					property += 's';
+					return this.compare(a[property][0], b[property][0], directionValue);
+					// if (a[property][0] < b[property][0]){
+					// 	return -1 * directionValue;
+					// } else if ( a[property][0] > b[property][0]){
+					// 	return 1 * directionValue;
+					// } else {
+					// 	return 0;
+					// }
 				default:
-					if (a[property] < b[property]){
-						return -1 * direction;
-					} else if ( a[property] > b[property]){
-						return 1 * direction;
-					} else {
-						return 0;
-					}
+					const index = (this.crmCustomFields) ? this.crmCustomFields.findIndex((f: any) => f.name === property) : -1;
+					return (index < 0) ? 
+						this.compare(a[property], b[property], directionValue) :
+						this.compare(a.crm_custom_fields[property], b.crm_custom_fields[property], directionValue);
+					// if (a[property] < b[property]) {
+					// 	return -1 * directionValue;
+					// } else if ( a[property] > b[property]){
+					// 	return 1 * directionValue;
+					// } else {
+					// 	return 0;
+					// }
 			}
 		});
+	}
+
+	private compare(a: number | string, b: number | string, isAsc: number) {
+		return (a < b ? -1 : 1) * isAsc;
 	}
 
 	openNewContactDialog(contactId: string) {
@@ -193,11 +207,18 @@ export class CRMContactListComponent implements OnChanges, AfterViewInit {
 		});
 
 		const contactEditedSubs = dialogRef.componentInstance.contactEdited.subscribe(async (data) => {
-		this.contactEdited.emit(data);
+			const index = (this.contacts) ? this.contacts.findIndex(c => c._id == data._id) : -1;
+			if (index >= 0) {
+				this.contacts[index] = data;
+			}
+			
+			await this.initTable();
+
+			this.contactEdited.emit(data);
 		});
 
 		dialogRef.afterClosed().subscribe(async result => {
-		contactEditedSubs.unsubscribe();
+			contactEditedSubs.unsubscribe();
 		});
   	}
 

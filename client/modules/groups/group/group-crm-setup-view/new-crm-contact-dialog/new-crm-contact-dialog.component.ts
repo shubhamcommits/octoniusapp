@@ -57,6 +57,10 @@ export class NewCRMContactDialogComponent implements OnInit {
     this.contactData = newContactDetails;
   }
 
+  onContactCFEdited(newContactDetails: any) {
+    this.contactData = newContactDetails;
+  }
+
   saveContact() {
     if (!!this.contactData._id) {
       this.crmGroupService.updateCRMContact(this.contactData).then(res => {

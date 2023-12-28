@@ -99,7 +99,8 @@ export class CRMController {
                         phones: contactData?.phones,
                         emails: contactData?.emails,
                         links: contactData?.links,
-                        company_history: contactData?.company_history
+                        company_history: contactData?.company_history,
+                        crm_custom_fields: contactData?.crm_custom_fields
                     }
                 }, {
                     new: true

@@ -113,14 +113,12 @@ export class GroupCRMSetupViewComponent implements OnInit, OnDestroy, AfterConte
   }
 
   onContactEdited(contact: any) {
-    if (!this.contacts) {
-      this.contacts = []
+    const index = (this.contacts) ? this.contacts.findIndex(c => c._id == contact._id) : -1;
+    if (index >= 0) {
+      this.contacts[index] = contact;
     }
 
-    const index = (this.contacts) ? this.contacts.findIndex(c => c._id == contact._id) : -1;
-    this.contacts[index] = contact;
-
-    this.changeDetectorRef.detectChanges()
+    this.changeDetectorRef.detectChanges();
   }
   
   onContactDeleted(contactId: string) {
@@ -129,7 +127,7 @@ export class GroupCRMSetupViewComponent implements OnInit, OnDestroy, AfterConte
       this.contacts.splice(index, 1);
     }
 
-    this.changeDetectorRef.detectChanges()
+    this.changeDetectorRef.detectChanges();
   }
 
   isAdminUser() {
