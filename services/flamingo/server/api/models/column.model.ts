@@ -18,11 +18,6 @@ const ColumnSchema = new Schema({
         required: true,
         default: ['priority']
     }],
-    crm_custom_fields_to_show: [{
-        type: String,
-        required: true,
-        default: ['priority']
-    }],
     project_type: {
         type: Boolean,
         required: true,

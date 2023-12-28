@@ -47,7 +47,12 @@ const ContactSchema = new Schema({
         position: {
             type: String
         }
-    }]
+    }],
+    // Custom Fields
+    crm_custom_fields: {
+        type: Map,
+        of: String
+    }
 });
 
 const Contact = mongoose.model('Contact', ContactSchema);

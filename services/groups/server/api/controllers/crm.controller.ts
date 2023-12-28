@@ -566,4 +566,37 @@ export class CRMController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     };
+
+    /**
+     * This function is responsible for updating the custom fields to show in the list view for the particular group
+     * @param { column } req 
+     * @param res 
+     */
+    async updateCRMCustomFieldsToShow(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the fileName from fileHandler middleware
+        const customFieldsData = req.body;
+        const { groupId } = req.params;
+
+        try {
+            // Find the group and update their respective group avatar
+            const group = await Group.updateOne({
+                    _id: groupId
+                }, {
+                    "$set": {
+                        "crm_custom_fields_to_show": customFieldsData.crmCustomFieldsToShow
+                    }
+                }, {
+                    new: true
+                }).select('crm_custom_fields_to_show');
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group crm custom fields to show updated!',
+                group: group
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
 }

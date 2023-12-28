@@ -69,6 +69,9 @@ routes.put('/:groupId/crmCustomFields/color', crm.setCRMCustomFieldColor);
 // PUT - Remove custom field value
 routes.put('/:groupId/crmCustomFields/removeValue', crm.removeCRMCustomFieldValue);
 
+// PUT - Save crm custom field to show
+routes.put('/:groupId/crmCustomFieldsToShow', crm.updateCRMCustomFieldsToShow);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

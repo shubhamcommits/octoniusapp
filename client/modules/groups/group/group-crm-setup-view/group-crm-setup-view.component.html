@@ -14,7 +14,8 @@
       </ng-template>
   
       <ng-template matTabContent>
-        <app-crm-contact-list [contacts]="contacts" (contactEdited)="onContactEdited($event)" (contactDeleted)="onContactDeleted($event)"></app-crm-contact-list>
+        <app-crm-contact-list [contacts]="contacts" [isAdmin]="isAdmin" [groupData]="groupData"
+          (contactEdited)="onContactEdited($event)" (contactDeleted)="onContactDeleted($event)"></app-crm-contact-list>
       </ng-template>
     </mat-tab>
   

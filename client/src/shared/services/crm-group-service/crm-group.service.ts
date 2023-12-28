@@ -126,4 +126,12 @@ export class CRMGroupService {
   removeCRMCustomFieldValue(value: string, fieldId: string, groupId: string) {
     return this._http.put(this.baseURL + `/${groupId}/crmCustomFields/removeValue`, { fieldId, value }).toPromise();
   }
+
+  saveCRMCustomFieldsToShow(groupId: string, crmCustomFieldsToShow: any[]) {
+    const customFieldsData = {
+      crmCustomFieldsToShow: crmCustomFieldsToShow
+    };
+
+    return this._http.put(this.baseURL + `/${groupId}/crmCustomFieldsToShow`, customFieldsData).toPromise();
+  }
 }
