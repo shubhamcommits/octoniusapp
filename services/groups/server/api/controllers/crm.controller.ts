@@ -205,6 +205,35 @@ export class CRMController {
     };
 
     /**
+     * This function fetches all the crm contacts of a group corresponding to the @constant groupId 
+     * @param req - @constant groupId
+     */
+    async searchGroupCRMCompanies(req: Request, res: Response) {
+        try {
+            const companies = await Company.find({
+                    $and: [
+                        { _group: req.params.groupId },
+                        { name: { $regex: req.query.companySearchText, $options: 'i' } }
+                    ]
+                })
+                .sort('name')
+                .lean();
+
+            if (!companies) {
+                return sendError(res, new Error('Oops, companies not found!'), 'Companies not found, Invalid groupId!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Companies found!',
+                companies: companies
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
      * This function updates a crm company
      * @param req - @constant companyData
      */

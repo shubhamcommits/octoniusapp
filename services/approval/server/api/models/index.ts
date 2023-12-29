@@ -9,6 +9,8 @@ import { Group } from "./group.model";
 import { Workspace } from "./workspace.model";
 import { Story } from "./story.model";
 import { Notification } from "./notification.model";
+import { Contact } from "./contact.model";
+import { Company } from "./company.model";
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -30,6 +32,9 @@ export {
 
     // COMMENT
     Comment as Comment,
+
+    Company as Company,
+    Contact as Contact,
 
     // COLUMN
     Column as Column,

@@ -11,6 +11,8 @@ import { Workspace } from "./workspace.model";
 import { Story } from "./story.model";
 import { Page } from "./page.model";
 import { Collection } from "./collection.model";
+import { Contact } from "./contact.model";
+import { Company } from "./company.model";
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -18,15 +20,17 @@ import { Collection } from "./collection.model";
  * */
 export {
     Account as Account,
-    Post as Post,
-    User as User,
-    File as File,
-    Comment as Comment,
-    Column as Column,
     Auth as Auth,
-    Group as Group,
-    Workspace as Workspace,
-    Story as Story,
     Collection as Collection,
-    Page as Page
+    Column as Column,
+    Comment as Comment,
+    Company as Company,
+    Contact as Contact,
+    File as File,
+    Group as Group,
+    Page as Page,
+    Post as Post,
+    Story as Story,
+    User as User,
+    Workspace as Workspace,
 };

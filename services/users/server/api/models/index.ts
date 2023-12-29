@@ -13,6 +13,8 @@ import { Workspace } from './workspace.model';
 import { Notification } from './notification.model';
 import { Flow } from "./flow.model";
 import { Comment } from "./comment.model";
+import { Contact } from "./contact.model";
+import { Company } from "./company.model";
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -24,6 +26,8 @@ export {
     Collection as Collection,
     Column as Column,
     Comment as Comment,
+    Company as Company,
+    Contact as Contact,
     Entity as Entity,
     Flow as Flow,
     Group as Group,
