@@ -2413,7 +2413,7 @@ export class PublicFunctions {
       } else if (file?.type == 'file') {
         const lastFileVersion: any = await utilityService.getFileLastVersion(file?._id);
         if (this.isOfficeFile(lastFileVersion?.original_name)) {
-          url = await this.getLibreOfficeURL(lastFileVersion, workspaceId);
+          url = await this.getLibreOfficeURL(lastFileVersion?._id, workspaceId);
         } else {
           await filesService.getMinioFile(file?._id, file?.modified_name, workspaceId, storageService.getLocalData("authToken")["token"])
             .then(async res =>{
