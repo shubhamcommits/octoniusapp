@@ -19,6 +19,9 @@ routes.use(authsHelper.isLoggedIn);
 // GET - Get all the crm contacts in a group
 routes.get('/:groupId/contacts', crm.getGroupCRMContacts);
 
+// GET - Search for companies in a group
+routes.get('/:groupId/searchContacts/:companyId', crm.searchGroupCRMContacts);
+
 // GET - Get a crm contact details
 routes.get('/:contactId/contact', crm.getCRMContact);
 
@@ -36,6 +39,9 @@ routes.get('/:companyId/company', crm.getCRMCompany);
 
 // GET - Get all the crm companies in a group
 routes.get('/:groupId/companies', crm.getGroupCRMCompanies);
+
+// GET - Search for companies in a group
+routes.get('/:groupId/searchCompanies', crm.searchGroupCRMCompanies);
 
 // PUT - Update the flow name
 routes.put('/:companyId/updateCompany', crm.updateCRMCompany);

@@ -99,10 +99,10 @@ export class GroupInformationComponent implements OnInit {
             <option value="normal">${groupTypeNormal}</option>
             <option value="agora">${groupTypeAgora}</option>
             <option value="crm">${groupTypeCRM}</option>
-            <option value="accounting">${groupTypeAccounting}</option>
-            <option value="resource">${groupTypeResource} Management</option>
           </select>`,
-
+            // <option value="accounting">${groupTypeAccounting}</option>
+            // <option value="resource">${groupTypeResource} Management</option>
+            
       focusConfirm: false,
       preConfirm: () => {
 

@@ -28,6 +28,14 @@ export class CRMGroupService {
   }
 
   /**
+   * This function is responsible for searching for companies in a group
+   * @param groupId
+   */
+  searchCRMContacts(groupId: string, companyId: string, companySearchText: string) {
+    return this._http.get(this.baseURL + `/${groupId}/searchContacts/${companyId}`, { params: {companySearchText} }).toPromise();
+  }
+
+  /**
    * This function is responsible for fetching a group crm contact
    * @param contactId
    */
@@ -81,6 +89,14 @@ export class CRMGroupService {
    */
   getCRMCompanies(groupId: string) {
     return this._http.get(this.baseURL + `/${groupId}/companies`).toPromise();
+  }
+
+  /**
+   * This function is responsible for searching for companies in a group
+   * @param groupId
+   */
+  searchCRMCompanies(groupId: string, companySearchText: string) {
+    return this._http.get(this.baseURL + `/${groupId}/searchCompanies`, { params: {companySearchText} }).toPromise();
   }
 
   /**

@@ -657,4 +657,8 @@ export class PostService {
    * ITEM = post/section/file/folder
    *
    */
+
+  saveCRMInfo(postId: string, crm_info: any) {
+    return this._http.put(this.baseURL + `/${postId}/saveCRMInfo`, { crm_info }).toPromise();
+  }
 }

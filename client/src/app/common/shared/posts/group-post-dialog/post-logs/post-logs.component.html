@@ -23,6 +23,8 @@
       <span *ngIf="log?.action === 'update_ns'" class="approval-deleted ml-2" i18n="@@postLogs.updateNS">Updated the North Star value</span>
       <span *ngIf="log?.action === 'make_idea'" class="approval-deleted ml-2" i18n="@@postLogs.makeIdea">Transformed into an Idea</span>
       <span *ngIf="log?.action === 'make_no_idea'" class="approval-deleted ml-2" i18n="@@postLogs.makeNoIdea">Transformed into a normal task</span>
+      <span *ngIf="log?.action === 'make_crm_task'" class="approval-deleted ml-2" i18n="@@postLogs.makeCRMTask">Transformed into a CRM Lead</span>
+      <span *ngIf="log?.action === 'make_no_crm_task'" class="approval-deleted ml-2" i18n="@@postLogs.makeNoCRMTask">Transformed into a normal task</span>
       <span *ngIf="log?.action === 'make_milestone'" class="approval-deleted ml-2" i18n="@@postLogs.makeMilestone">Transformed into a Milestone</span>
       <span *ngIf="log?.action === 'make_no_milestone'" class="approval-deleted ml-2" i18n="@@postLogs.makeNoMilestone">Removed the Milestone</span>
       <span *ngIf="log?.action === 'change_status'" class="approval-deleted ml-2" i18n="@@postLogs.changedStatus">Changed the Status to </span> <span *ngIf="log?.action === 'change_status' && log?.new_status">{{ log?.new_status }}</span>
@@ -45,6 +47,7 @@
       <span *ngIf="log?.action === 'updated_tags'" class="approval-deleted ml-2" i18n="@@postLogs.saveTags">Updated the tags</span>
       <span *ngIf="log?.action === 'attach_file'" class="approval-deleted ml-2" i18n="@@postLogs.attachFile">Attached a file</span>
       <span *ngIf="log?.action === 'attach_file_cloud'" class="approval-deleted ml-2" i18n="@@postLogs.attachFileCloud">Attached a file from a connected cloud</span>
+      <span *ngIf="log?.action === 'update_crm_info'" class="approval-deleted ml-2" i18n="@@postLogs.updateCRMInfo">Updated the CRM Information</span>
       &nbsp;
       <span i18n="@@postLogs.on">on</span>
       &nbsp;

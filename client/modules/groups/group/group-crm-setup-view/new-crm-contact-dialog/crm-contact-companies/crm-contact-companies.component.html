@@ -4,23 +4,16 @@
             <div class="form-group">
                 <div class="row">
                     <label for="company" i18n="@@crmContactCompanies.company" class="muted">Company</label>
-                    <!-- <input type="text" class="form-control" [(ngModel)]="companyHistoryData.name" name="company"> -->
+
                     <input *ngIf="!companyHistoryData._company" type="email" class="form-control" id="search-text" aria-describedby="search-text" [(ngModel)]="companySearchText"
                         placeholder="Search company" autofocus (click)="$event.stopPropagation()"
-                        (keydown)="$event.stopPropagation()">
-                    <!-- <button class="btn" (click)="openCreateCompanyDialog()">
-                        <i class="material-icons-outlined">add</i>
-                    </button> -->
+                        (keydown)="$event.stopPropagation()" (keyup)="searchCompany()">
+
                     <ul *ngIf="!companyHistoryData._company && !!companySearchResults && !!companySearchText" class="company-list">
-                        <li appHighlight class="company-list-item" *ngFor="let company of companySearchResults | appFilter: companySearchText"
-                            (click)="selectCompany(company)" [searchedWord]="companySearchText" [content]="company" [type]="'companies'">
+                        <li class="company-list-item" *ngFor="let company of companySearchResults" (click)="selectCompany(company)">
                             <app-secured-image
                                 [imgURL]="company.company_pic" [service]="'group'" [workspaceId]="workspaceData?._id"
                                 [styleClass]="'group-avatar'"></app-secured-image>
-                            <!-- <img *ngIf="!companyHistoryData._company && !!companySearchResults && !!companySearchText"
-                                src="${this.baseUrl}/${this.workspaceId}/${companyHistoryData._company.company_pic}?noAuth=true"
-                                onerror="this.src='assets/images/icon-new-group.svg'" style="width:30px !important;height:30px !important;"
-                                class="feed-avatar"> -->
                             {{ company.name }}
                         </li>
                     </ul>
@@ -29,9 +22,6 @@
                         <app-secured-image
                             [imgURL]="companyHistoryData._company.company_pic" [service]="'group'" [workspaceId]="workspaceData?._id"
                             [styleClass]="'group-avatar'"></app-secured-image>
-                        <!-- <img src="${this.baseUrl}/${this.workspaceId}/${companyHistoryData._company.company_pic}?noAuth=true"
-                            onerror="this.src='assets/images/icon-new-group.svg'" style="width:30px !important;height:30px !important;"
-                            class="feed-avatar"> -->
                         <span>{{ companyHistoryData._company.name }}</span>
 
                         <!-- Clean field starts -->

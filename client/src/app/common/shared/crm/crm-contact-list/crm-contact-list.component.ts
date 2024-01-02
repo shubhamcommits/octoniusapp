@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Injector, Input, OnChanges, AfterViewInit, Output } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import { NewCRMContactDialogComponent } from '../new-crm-contact-dialog/new-crm-contact-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CRMGroupService } from 'src/shared/services/crm-group-service/crm-group.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { Sort } from '@angular/material/sort';
+import { NewCRMContactDialogComponent } from 'modules/groups/group/group-crm-setup-view/new-crm-contact-dialog/new-crm-contact-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-crm-contact-list',
@@ -26,14 +27,19 @@ export class CRMContactListComponent implements OnChanges, AfterViewInit {
 
 	workspaceData: any;
 
+	isCRMSetupPage = false;
+
   	public publicFunctions = new PublicFunctions(this.injector);
 
   	constructor(
 		private crmGroupService: CRMGroupService,
 		private utilityService: UtilityService,
     	public dialog: MatDialog,
+		private router: Router,
     	private injector: Injector
-  	) { }
+  	) {
+		this.isCRMSetupPage = this.router.url.includes('work/groups/crm');
+	}
 
   	async ngOnChanges(): Promise<void> {
 		this.workspaceData = await this.publicFunctions.getCurrentWorkspace();

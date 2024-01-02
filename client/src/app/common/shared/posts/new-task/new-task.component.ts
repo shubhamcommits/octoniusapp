@@ -33,6 +33,7 @@ export class NewTaskComponent implements OnInit {
 
   saveAsNorthStar = false;
   saveAsIdea = false;
+  saveAsCRMLead = false;
 
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
@@ -69,9 +70,10 @@ export class NewTaskComponent implements OnInit {
     }
   }
 
-  changeTaskType(isNorthStar: boolean, isIdea: boolean) {
+  changeTaskType(isNorthStar: boolean, isIdea: boolean, isCRMLead: boolean) {
     this.saveAsNorthStar = isNorthStar;
     this.saveAsIdea = isIdea;
+    this.saveAsCRMLead = isCRMLead;
   }
 
   /**
@@ -111,7 +113,8 @@ export class NewTaskComponent implements OnInit {
               currency: 'USD'
             } : null,
           is_milestone: false,
-          is_idea: false
+          is_idea: false,
+          is_crm_task: false
         }
       }
     } else {
@@ -143,7 +146,8 @@ export class NewTaskComponent implements OnInit {
                 currency: 'USD'
               } : null,
             is_milestone: false,
-            is_idea: this.saveAsIdea
+            is_idea: this.saveAsIdea,
+            is_crm_task: this.saveAsCRMLead
           }
         }
       }
@@ -174,7 +178,8 @@ export class NewTaskComponent implements OnInit {
                 currency: 'USD'
               } : null,
             is_milestone: false,
-            is_idea: this.saveAsIdea
+            is_idea: this.saveAsIdea,
+            is_crm_task: this.saveAsCRMLead
           }
         }
       }
@@ -197,6 +202,7 @@ export class NewTaskComponent implements OnInit {
     this.postTitle = undefined;
     this.saveAsNorthStar = false;
     this.saveAsIdea = false;
+    this.saveAsCRMLead = false;
   }
 
   /**

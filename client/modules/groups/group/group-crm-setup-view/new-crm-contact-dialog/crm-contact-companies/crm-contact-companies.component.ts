@@ -40,12 +40,6 @@ export class CRMContactCompaniesComponent implements OnChanges {
   async ngOnChanges(): Promise<void> {
 
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-
-    if (!!this.contactData._group) {
-      this.crmGroupService.getCRMCompanies((this.contactData._group._id || this.contactData._group)).then(res => {
-        this.companySearchResults = res['companies'];
-      });
-    }
   }
 
   fieldEdited(propertyName: string, dateObject?: any) {
@@ -100,6 +94,12 @@ export class CRMContactCompaniesComponent implements OnChanges {
     if (index >= 0) {
       this.contactData.company_history.splice(index, 1);
     }
+  }
+
+  searchCompany() {
+    this.crmGroupService.searchCRMCompanies((this.contactData._group._id || this.contactData._group), this.companySearchText).then(res => {
+        this.companySearchResults = res['companies'];
+      });
   }
 
   formateDate(date: any) {

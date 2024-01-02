@@ -93,8 +93,8 @@ import { CRMContactInformationComponent } from './group/group-crm-setup-view/new
 import { CRMContactCompaniesComponent } from './group/group-crm-setup-view/new-crm-contact-dialog/crm-contact-companies/crm-contact-companies.component';
 import { NewCRMCompanyDialogComponent } from './group/group-crm-setup-view/new-crm-company-dialog/new-crm-company-dialog.component';
 import { CRMCompanyInformationComponent } from './group/group-crm-setup-view/new-crm-company-dialog/crm-company-information/crm-company-information.component';
-import { CRMContactListComponent } from './group/group-crm-setup-view/crm-contact-list/crm-contact-list.component';
-import { CRMCompanyListComponent } from './group/group-crm-setup-view/crm-company-list/crm-company-list.component';
+// import { CRMContactListComponent } from './group/group-crm-setup-view/crm-contact-list/crm-contact-list.component';
+// import { CRMCompanyListComponent } from './group/group-crm-setup-view/crm-company-list/crm-company-list.component';
 import { CRMCustomFieldsDialogComponent } from './group/group-crm-setup-view/crm-custom-fields-dialog/crm-custom-fields-dialog.component';
 import { CRMContactCustomFieldsComponent } from './group/group-crm-setup-view/new-crm-contact-dialog/crm-contact-custom-fields/crm-contact-custom-fields.component';
 
@@ -162,8 +162,8 @@ import { CRMContactCustomFieldsComponent } from './group/group-crm-setup-view/ne
         CRMContactCompaniesComponent,
         NewCRMCompanyDialogComponent,
         CRMCompanyInformationComponent,
-        CRMContactListComponent,
-        CRMCompanyListComponent
+        // CRMContactListComponent,
+        // CRMCompanyListComponent
     ],
     imports: [
         CommonModule,

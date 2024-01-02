@@ -35,6 +35,68 @@ export class CRMController {
             return sendError(res, err);
         }
     };
+
+    /**
+     * This function fetches all the crm contacts of a group corresponding to the @constant groupId 
+     * @param req - @constant groupId
+     */
+    async searchGroupCRMContacts(req: Request, res: Response) {
+        try {
+            const { groupId, companyId } = req.params;
+
+            let contacts;
+            if (!!companyId && companyId != 'undefined') {
+                contacts = await Contact.find({
+                        $and: [
+                            { _group: groupId },
+                            { name: { $regex: req.query.companySearchText, $options: 'i' } },
+                            { company_history : { $elemMatch: { _company: companyId }}}
+                        ]
+                    })
+                    .sort('name')
+                    .populate('company_history._company', '_id name description company_pic')
+                    .lean();
+
+                // await User.updateMany({ _groups: groupId }, {
+                //         $pull: { 'stats.favorite_groups': groupId, 'stats.groups': { $elemMatch: { '_group': groupId }}}
+                //     });
+                // const cursor = db.collection('inventory').find({
+                    //     instock: { $elemMatch: { qty: 5, warehouse: 'A' } }
+                    // });
+
+                // const group = await Group.findByIdAndUpdate({
+                //         _id: groupId
+                //     }, {
+                //         $pull: { "crm_custom_fields.$[field].values": value }
+                //     }, {
+                //         arrayFilters: [{ "field._id": fieldId }],
+                //         new: true
+                //     }).select('crm_custom_fields');
+            } else {
+                contacts = await Contact.find({
+                        $and: [
+                            { _group: groupId },
+                            { name: { $regex: req.query.companySearchText, $options: 'i' } }
+                        ]
+                    })
+                    .sort('name')
+                    .populate('company_history._company', '_id name description company_pic')
+                    .lean();
+            }
+
+            if (!contacts) {
+                return sendError(res, new Error('Oops, contacts not found!'), 'Contacts not found, Invalid groupId!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Contacts found!',
+                contacts: contacts
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
     
     /**
      * This function fetches a crm contact corresponding to the @constant contactId 
