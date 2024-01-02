@@ -44,6 +44,7 @@
                     <label for="startDate" i18n="@@crmContactCompanies.startDate" class="muted">Start Date</label>
                     <app-date-picker class="form-control" name="startDate" [styleClass]="'btn-group input-date'"
                         [selectedDate]="formateDate(companyHistoryData.start_date)" [canEdit]="true"
+                        [upperLimit]="formateDate(companyHistoryData?.end_date)"
                         (date)="fieldEdited('start_date', $event)">
                     </app-date-picker>
                 </div>
@@ -52,6 +53,7 @@
                     <label for="endDate" i18n="@@crmContactCompanies.endDate" class="muted">End Date</label>
                     <app-date-picker class="form-control" name="endDate" [styleClass]="'btn-group input-date'"
                         [selectedDate]="formateDate(companyHistoryData.end_date)" [canEdit]="true"
+                        [lowerLimit]="formateDate(companyHistoryData?.start_date)"
                         (date)="fieldEdited('end_date', $event)">
                     </app-date-picker>
                 </div>
@@ -100,8 +102,8 @@
             </td>
             <td>{{ companyHistory?._company?.name }}</td>
             <td>{{ companyHistory?.position }}</td>
-            <td>{{ formateDate(companyHistory?.start_date) }}</td>
-            <td>{{ formateDate(companyHistory?.end_date) }}</td>
+            <td>{{ formateStrDate(companyHistory?.start_date) }}</td>
+            <td>{{ formateStrDate(companyHistory?.end_date) }}</td>
             <td>
                 <i class="material-icons-outlined ml-2 muted pointer" [matMenuTriggerFor]="menu">more_horiz</i>
                 <mat-menu #menu="matMenu">

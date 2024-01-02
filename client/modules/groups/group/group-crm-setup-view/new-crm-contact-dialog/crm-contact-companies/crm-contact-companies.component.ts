@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Injector, Input, OnChanges, Output } from '@angular/core';
-import moment from 'moment';
+import moment, { isMoment } from 'moment';
 import { CRMGroupService } from 'src/shared/services/crm-group-service/crm-group.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -20,8 +20,8 @@ export class CRMContactCompaniesComponent implements OnChanges {
   companyHistoryData = {
     _company: null,
     position: '',
-    start_date: null,
-    end_date: null
+    start_date: moment(),
+    end_date: moment()
   };
 
   companySearchResults = [];
@@ -49,12 +49,12 @@ export class CRMContactCompaniesComponent implements OnChanges {
       //   break;
       case 'start_date':
         if (!!dateObject) {
-          this.companyHistoryData[propertyName] = dateObject.toDate();
+          this.companyHistoryData[propertyName] = dateObject;
         }
         break;
       case 'end_date':
         if (!!dateObject) {
-          this.companyHistoryData[propertyName] = dateObject.toDate();
+          this.companyHistoryData[propertyName] = dateObject;
         }
         break;
     }
@@ -84,8 +84,8 @@ export class CRMContactCompaniesComponent implements OnChanges {
     this.companyHistoryData = {
       _company: null,
       position: '',
-      start_date: null,
-      end_date: null
+      start_date: moment(),
+      end_date: moment()
     };
   }
 
@@ -103,6 +103,10 @@ export class CRMContactCompaniesComponent implements OnChanges {
   }
 
   formateDate(date: any) {
-    return (date) ? moment(moment.utc(date)).format("MMM D, YYYY") : '';
+    return (date) ? moment(moment.utc(date), "MMM D, YYYY").toDate() : '';
+  }
+
+  formateStrDate(date: any) {
+    return (date) ? moment.utc(date).format("MMM D, YYYY") : '';
   }
 }
