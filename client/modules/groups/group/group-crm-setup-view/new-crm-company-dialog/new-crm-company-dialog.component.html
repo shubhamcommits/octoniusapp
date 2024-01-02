@@ -4,7 +4,7 @@
     </mat-dialog-actions>
 
     <h2 mat-dialog-title style="margin: -50px 0 0 0 !important;">
-        <span i18n="@@newCRMCompanyDialog.newContact" *ngIf="!!companyData._id && !!companyData.name">{{ companyData?.name }}</span>
+        <span *ngIf="!!companyData._id && !!companyData.name">{{ companyData?.name }}</span>
         <span i18n="@@newCRMCompanyDialog.newContact" *ngIf="!companyData._id">New Company</span>
     </h2>
 
