@@ -282,7 +282,6 @@ export class FilesControllers {
      */
     async add(req: Request, res: Response, next: NextFunction) {
         try {
-
             // Fetch the File Name From the request
             let { body: { fileData } } = req;
 
@@ -298,10 +297,10 @@ export class FilesControllers {
                 //     {
                 //         headers: { Authorization: req.headers.authorization }
                 //     });
-                let { body: { flamingoData } } = req;
+                // let { body: { flamingoData } } = req;
                 flamingo = {
                     _file: fileData?._id,
-                    _questions: flamingoData?._questions || []
+                    _questions: fileData?._questions || []
                 }
 
                 // Create the new File
@@ -326,17 +325,17 @@ export class FilesControllers {
                             select: 'group_name group_avatar workspace_name _workspace' 
                         }
                     },
-                    {
-                        path: '_file',
-                        populate: {
-                            path: '_group',
-                            populate: {
-                                path: '_workspace',
-                                model: 'Workspace',
-                                select: '_id management_private_api_key'
-                            }
-                        }
-                    },
+                    // {
+                    //     path: '_file',
+                    //     populate: {
+                    //         path: '_group',
+                    //         populate: {
+                    //             path: '_workspace',
+                    //             model: 'Workspace',
+                    //             select: '_id management_private_api_key'
+                    //         }
+                    //     }
+                    // },
                     {
                         path: '_file',
                         populate: {
