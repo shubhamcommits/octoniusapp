@@ -1,0 +1,17 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: hidden;
+    // overflow-x: hidden;
+
+    .board-bar {
+        margin: 10px 10px 60px 10px;
+    }
+}
+
+.block {
+    padding: 10px;
+    margin: 10px;
+    border: 1px dashed #E4EDF8;
+}

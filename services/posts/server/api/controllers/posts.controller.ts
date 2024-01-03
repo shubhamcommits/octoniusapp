@@ -73,7 +73,6 @@ export class PostController {
         return post;
     }
 
-
     /**
      * This function is responsible for editing a post
      * @param { post } req
@@ -1978,4 +1977,32 @@ export class PostController {
             return sendErr(res, err, 'Internal Server Error!', 500);
         }
     };
+
+    /**
+     * This function is responsible for editing a post
+     * @param { post } req
+     * @param res 
+     * @param next 
+     */
+    async saveCRMInfo(req: Request, res: Response, next: NextFunction) {
+
+        // Post Object From request
+        const { body: { crm_info }, params: { postId } } = req;
+        const userId = req['userId'];
+
+        // Call service function to edit
+        const updatedPost = await postService.saveCRMInfo(postId, crm_info, userId)
+            .catch((err) => {
+                if (err == null) {
+                    return sendErr(res, null, 'User not allowed to edit this post!', 403);
+                }
+                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
+            })
+
+        // Send Status 200 response
+        return res.status(200).json({
+            message: 'Post Edited Successfully!',
+            post: updatedPost
+        });
+    }
 }

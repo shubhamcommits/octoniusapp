@@ -11,6 +11,8 @@ import { Story } from "./story.model";
 import { Chat } from "./chat.model";
 import { Message } from "./messages.model";
 import { Page } from "./page.model";
+import { Contact } from "./contact.model";
+import { Company } from "./company.model";
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -35,6 +37,9 @@ export {
 
     // COMMENT
     Comment as Comment,
+
+    Company as Company,
+    Contact as Contact,
 
     // FLOW
     Flow as Flow,

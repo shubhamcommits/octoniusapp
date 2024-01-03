@@ -162,6 +162,14 @@ const GroupSchema = new Schema({
             type: [String]
         }
     },
+    crm_custom_fields_table_widget: {
+        selectTypeCFs: {
+            type: [String]
+        },
+        inputTypeCFs: {
+            type: [String]
+        }
+    },
     custom_fields: {
         type: [{
             name: {

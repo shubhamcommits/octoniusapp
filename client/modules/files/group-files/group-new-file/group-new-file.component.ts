@@ -288,7 +288,29 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
       mime_type: 'flamingo'
     }
 
-    this.uploadFile(flamingoData);
+    // Files Service Instance
+    let flamingoService = this.Injector.get(FlamingoService)
+
+    // Utility Service Instance
+    let utilityService = this.Injector.get(UtilityService)
+
+    // this.uploadFile(flamingoData);
+    utilityService.asyncNotification(
+      $localize`:@@groupNewFile.pleaseWaitCreatingFlamingo:Please wait while we are creating a new Flamingo`,
+      new Promise((resolve, reject) => {
+        flamingoService.createFlamingo(flamingoData)
+          .then((res) => {
+
+            // Output the created file to the top components
+            this.fileEmitter.emit(res['file']);
+
+            resolve(utilityService.resolveAsyncPromise($localize`:@@groupNewFile.newFlamingoCreated:New flamingo has been created!`))
+
+          })
+          .catch(() => {
+            reject(utilityService.rejectAsyncPromise($localize`:@@groupNewFile.unexpectedErrorCreatingFlamingo:Unexpected error occurred while creating a Flamingo, please try again!`))
+          })
+      }))
 
     // Stop the loading spinner
     this.isLoading$.next(false);

@@ -506,6 +506,7 @@ export class GroupPostDialogComponent implements OnInit, AfterViewChecked {
       _read_by: this.postData?._read_by,
       isNorthStar: this.postData?.task.isNorthStar,
       is_idea: this.postData?.task.is_idea,
+      is_crm_task: this.postData?.task.is_crm_task,
       is_milestone: this.postData?.task?.is_milestone || false,
       northStar: this.postData?.task.northStar,
       assigned_to: this.postData?._assigned_to
@@ -680,17 +681,23 @@ export class GroupPostDialogComponent implements OnInit, AfterViewChecked {
     }));
   }
 
-  transformToMileStone(data:any){
+  transformToMileStone(data:any) {
 
     this.postData.task.is_milestone = data;
     const makeMilestoneLogAction = (this.postData.task.is_milestone) ? 'make_milestone' : 'make_no_milestone';
     this.updateDetails(makeMilestoneLogAction);
   }
 
-  transformToIdea(data:any){
+  transformToIdea(data:any) {
     this.postData.task.is_idea = data;
     const makeIdeaLogAction = (this.postData.task.is_idea) ? 'make_idea' : 'make_no_idea';
     this.updateDetails(makeIdeaLogAction);
+  }
+
+  transformToCRMLead(data:any) {
+    this.postData.task.is_crm_task = data;
+    const makeCRMLeadLogAction = (this.postData.task.is_crm_task) ? 'make_crm_task' : 'make_no_crm_task';
+    this.updateDetails(makeCRMLeadLogAction);
   }
 
   async setShuttleGroup(data: any) {

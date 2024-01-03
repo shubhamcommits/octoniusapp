@@ -27,6 +27,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   @Input() isMilestone = false;
   @Input() isIdea = false;
   @Input() isIdeaModuleAvailable = false;
+  @Input() isCRMLead = false;
   @Input() isShuttleTasksModuleAvailable = false;
 
   @Output() parentTaskSelectedEmitter = new EventEmitter();
@@ -37,6 +38,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   @Output() transformIntoNorthStarEmitter = new EventEmitter();
   @Output() transformIntoMilestoneEmitter = new EventEmitter();
   @Output() transformIntoIdeaEmitter = new EventEmitter();
+  @Output() transformIntoCRMLeadEmitter = new EventEmitter();
   @Output() shuttleGroupEmitter = new EventEmitter();
 
   userGroups = [];
@@ -564,6 +566,11 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   transformToIdea() {
     this.isIdea = !this.isIdea;
     this.transformIntoIdeaEmitter.emit(this.isIdea);
+  }
+
+  transformToCRMLead() {
+    this.isCRMLead = !this.isCRMLead;
+    this.transformIntoCRMLeadEmitter.emit(this.isCRMLead);
   }
 
   transformToMilestone() {

@@ -1,4 +1,4 @@
-import { Company, Contact } from '../models';
+import { Column, Company, Contact, Flow, Group } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError } from '../../utils';
 
@@ -21,6 +21,68 @@ export class CRMController {
                 .sort('name')
                 .populate('company_history._company', '_id name description company_pic')
                 .lean();
+
+            if (!contacts) {
+                return sendError(res, new Error('Oops, contacts not found!'), 'Contacts not found, Invalid groupId!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Contacts found!',
+                contacts: contacts
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
+     * This function fetches all the crm contacts of a group corresponding to the @constant groupId 
+     * @param req - @constant groupId
+     */
+    async searchGroupCRMContacts(req: Request, res: Response) {
+        try {
+            const { groupId, companyId } = req.params;
+
+            let contacts;
+            if (!!companyId && companyId != 'undefined') {
+                contacts = await Contact.find({
+                        $and: [
+                            { _group: groupId },
+                            { name: { $regex: req.query.companySearchText, $options: 'i' } },
+                            { company_history : { $elemMatch: { _company: companyId }}}
+                        ]
+                    })
+                    .sort('name')
+                    .populate('company_history._company', '_id name description company_pic')
+                    .lean();
+
+                // await User.updateMany({ _groups: groupId }, {
+                //         $pull: { 'stats.favorite_groups': groupId, 'stats.groups': { $elemMatch: { '_group': groupId }}}
+                //     });
+                // const cursor = db.collection('inventory').find({
+                    //     instock: { $elemMatch: { qty: 5, warehouse: 'A' } }
+                    // });
+
+                // const group = await Group.findByIdAndUpdate({
+                //         _id: groupId
+                //     }, {
+                //         $pull: { "crm_custom_fields.$[field].values": value }
+                //     }, {
+                //         arrayFilters: [{ "field._id": fieldId }],
+                //         new: true
+                //     }).select('crm_custom_fields');
+            } else {
+                contacts = await Contact.find({
+                        $and: [
+                            { _group: groupId },
+                            { name: { $regex: req.query.companySearchText, $options: 'i' } }
+                        ]
+                    })
+                    .sort('name')
+                    .populate('company_history._company', '_id name description company_pic')
+                    .lean();
+            }
 
             if (!contacts) {
                 return sendError(res, new Error('Oops, contacts not found!'), 'Contacts not found, Invalid groupId!', 404);
@@ -99,7 +161,8 @@ export class CRMController {
                         phones: contactData?.phones,
                         emails: contactData?.emails,
                         links: contactData?.links,
-                        company_history: contactData?.company_history
+                        company_history: contactData?.company_history,
+                        crm_custom_fields: contactData?.crm_custom_fields
                     }
                 }, {
                     new: true
@@ -204,6 +267,35 @@ export class CRMController {
     };
 
     /**
+     * This function fetches all the crm contacts of a group corresponding to the @constant groupId 
+     * @param req - @constant groupId
+     */
+    async searchGroupCRMCompanies(req: Request, res: Response) {
+        try {
+            const companies = await Company.find({
+                    $and: [
+                        { _group: req.params.groupId },
+                        { name: { $regex: req.query.companySearchText, $options: 'i' } }
+                    ]
+                })
+                .sort('name')
+                .lean();
+
+            if (!companies) {
+                return sendError(res, new Error('Oops, companies not found!'), 'Companies not found, Invalid groupId!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Companies found!',
+                companies: companies
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
      * This function updates a crm company
      * @param req - @constant companyData
      */
@@ -287,4 +379,316 @@ export class CRMController {
             return sendError(res, error, 'Internal Server Error!', 500);
         }
     }
+
+    /**
+     * This function is responsible for adding a new crm custom field for the particular group
+     * @param { customFiel } req 
+     * @param res 
+     */
+    async addCRMCustomField(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { groupId } = req.params;
+
+        // Fetch the newCustomField from fileHandler middleware
+        const newCustomField = req.body['newCustomField'];
+
+        try {
+
+            // Find the group and update their respective group avatar
+            const group = await Group.findByIdAndUpdate({
+                    _id: groupId
+                }, {
+                    //custom_fields: newCustomField
+                    $push: { "crm_custom_fields": newCustomField }
+                }, {
+                    new: true
+                }).select('crm_custom_fields');
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group crm custom fields added!',
+                crm_custom_fields: group.crm_custom_fields
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    /**
+     * This function fetches all the crm contacts of a group corresponding to the @constant groupId 
+     * @param req - @constant groupId
+     */
+    async getCRMGroupCustomFields(req: Request, res: Response) {
+        try {
+            const { groupId } = req.params;
+
+            // Find the Group based on the groupId
+            const group = await Group.findOne({
+                    _id: groupId
+                }).select('crm_custom_fields').lean();
+
+            // Check if group already exist with the same groupId
+            if (!group) {
+                return sendError(res, new Error('Oops, group not found!'), 'Group not found, Invalid groupId!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Group found!',
+                crm_custom_fields: group.crm_custom_fields
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    async removeCRMCustomField(req: Request, res: Response, next: NextFunction) {
+        // Fetch the groupId & fieldId
+        const { groupId, fieldId } = req.params;
+
+        try {
+
+            let group = await Group.findById({
+                    _id: groupId
+                }).select('crm_custom_fields').lean();
+
+            const cfIndex = group.crm_custom_fields.findIndex(cf => cf._id == fieldId);
+            const cf = (group && group.crm_custom_fields) ? group.crm_custom_fields[cfIndex] : null;
+
+            if (cf) {
+                // remove the CF from the table widget
+                group = await Group.findByIdAndUpdate({
+                        _id: groupId
+                    },
+                    {
+                        $pull: {
+                            'crm_custom_fields_table_widget.selectTypeCFs': cf.name,
+                            'crm_custom_fields_table_widget.inputTypeCFs': cf.name
+                        }
+                    }).lean();
+                
+                // remove the CF from the Columns where it is displayed
+                await Column.updateMany({
+                        _group: groupId
+                    }, {
+                        $pull: {
+                            'crm_custom_fields_to_show': cf.name,
+                            'crm_custom_fields_to_show_kanban': cf.name
+                        }
+                    }).lean();
+
+                // remove the CF from the Flows where it is used
+                const flows = await Flow.find({
+                        _group: groupId
+                    }).select('_id steps._id steps.trigger steps.action').lean();
+
+                if (flows) {
+                    flows.forEach(flow => {
+                        if (flow.steps) {
+                            flow.steps.forEach(async step => {
+                                const triggerIndex = (step && step.trigger) ? step.trigger.findIndex(trigger => trigger.name == 'CRM Custom Field' && trigger.crm_custom_field.name == cf.name) : -1;
+                                const actionIndex = (step && step.action) ? step.action.findIndex(action => action.name == 'CRM Custom Field' && action.crm_custom_field.name == cf.name) : -1;
+                                if (triggerIndex >= 0 || actionIndex >= 0) {
+                                    await Flow.findByIdAndUpdate({
+                                            _id: flow._id
+                                        }, {
+                                            $pull: {
+                                                steps: {_id: step._id}
+                                            }
+                                        });
+                                }
+                            });
+                        }
+                    });
+                }
+                
+                /* TODO
+                // remove the CF from the Posts where it is used
+                await Post.updateMany({
+                        _group: groupId
+                    }, {
+                        $unset: { cf.name: 1 }
+                    });
+                */
+            }
+
+            // Find the group and update their respective group avatar
+            group = await Group.findByIdAndUpdate({
+                    _id: groupId
+                }, {
+                    $pull: {
+                        crm_custom_fields: {
+                            _id: fieldId
+                        }
+                    }
+                }).lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group crm custom fields updated!',
+                group: group
+            });
+        } catch (err) {
+            console.log(err);
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async addCRMCustomFieldValue(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { groupId } = req.params;
+
+        // Fetch the field and value from fileHandler middleware
+        const fieldId = req.body['fieldId'];
+        const value = req.body['value'];
+
+        try {
+            // Find the custom field in a group and add the value
+            const group = await Group.findByIdAndUpdate({
+                    _id: groupId
+                }, {
+                    $push: { "crm_custom_fields.$[field].values": value }
+                }, {
+                    arrayFilters: [{ "field._id": fieldId }],
+                    new: true
+                }).select('crm_custom_fields')
+                .lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group custom fields updated!',
+                group: group
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async setCRMCustomFieldDisplayKanbanCard(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { groupId } = req.params;
+
+        // Fetch the field and value from fileHandler middleware
+        const fieldId = req.body['fieldId'];
+        const display_in_kanban_card = req.body['display_in_kanban_card'];
+
+        try {
+            // Find the custom field in a group and add the value
+            const group = await Group.findByIdAndUpdate({
+                    _id: groupId
+                }, {
+                    $set: { "crm_custom_fields.$[field].display_in_kanban_card": display_in_kanban_card }
+                }, {
+                    arrayFilters: [{ "field._id": fieldId }],
+                    new: true
+                }).select('crm_custom_fields')
+                .lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group crm custom fields updated!',
+                group: group
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async setCRMCustomFieldColor(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { groupId } = req.params;
+
+        // Fetch the field and value from fileHandler middleware
+        const fieldId = req.body['fieldId'];
+        const color = req.body['color'];
+
+        try {
+            // Find the custom field in a group and add the value
+            const group = await Group.findByIdAndUpdate({
+                    _id: groupId
+                }, {
+                    $set: { "crm_custom_fields.$[field].badge_color": color }
+                }, {
+                    arrayFilters: [{ "field._id": fieldId }],
+                    new: true
+                }).select('crm_custom_fields')
+                .lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group crm custom fields updated!',
+                group: group
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async removeCRMCustomFieldValue(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { groupId } = req.params;
+
+        // Find the custom field in a group and remove the value
+        const fieldId = req.body['fieldId'];
+        const value = req.body['value'];
+
+        try {
+            // Find the group and update their respective group avatar
+            const group = await Group.findByIdAndUpdate({
+                    _id: groupId
+                }, {
+                    $pull: { "crm_custom_fields.$[field].values": value }
+                }, {
+                    arrayFilters: [{ "field._id": fieldId }],
+                    new: true
+                }).select('crm_custom_fields');
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group crm custom fields updated!',
+                group: group
+            });
+        } catch (err) {
+            console.log(err);
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    /**
+     * This function is responsible for updating the custom fields to show in the list view for the particular group
+     * @param { column } req 
+     * @param res 
+     */
+    async updateCRMCustomFieldsToShow(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the fileName from fileHandler middleware
+        const customFieldsData = req.body;
+        const { groupId } = req.params;
+
+        try {
+            // Find the group and update their respective group avatar
+            const group = await Group.updateOne({
+                    _id: groupId
+                }, {
+                    "$set": {
+                        "crm_custom_fields_to_show": customFieldsData.crmCustomFieldsToShow
+                    }
+                }, {
+                    new: true
+                }).select('crm_custom_fields_to_show');
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group crm custom fields to show updated!',
+                group: group
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
 }

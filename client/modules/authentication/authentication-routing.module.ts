@@ -8,6 +8,7 @@ import { AuthNewWorkplaceComponent } from './auth-new-workplace/auth-new-workpla
 import { AuthSignUpComponent } from './auth-sign-up/auth-sign-up.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { SelectWorkspaceComponent } from './select-workspace/select-workspace.component';
+import { CanCreateNewWorkspaceGuard } from 'src/shared/guards/can-create-new-workspace/can-create-new-workspace.guard';
 
 const routes: Routes = [
   // 'select-workspace' ROUTE
@@ -25,7 +26,8 @@ const routes: Routes = [
   // 'new-workplace' ROUTE
   {
     path: 'new-workplace',
-    component: AuthNewWorkplaceComponent
+    component: AuthNewWorkplaceComponent,
+    canActivate: [CanCreateNewWorkspaceGuard]
   },
 
   // 'join-workplace' ROUTE

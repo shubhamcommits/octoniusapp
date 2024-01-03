@@ -17,7 +17,7 @@
         (click)="openCreateGroupModal('crm')">
         <span i18n="@@createGroup.crm">CRM</span>
     </li>
-    <li *ngIf="(userData?.role== 'admin' || userData?.role== 'owner' || userData?.role== 'manager' || workspaceData?.allow_decentralized_roles)"
+    <!-- <li *ngIf="(userData?.role== 'admin' || userData?.role== 'owner' || userData?.role== 'manager' || workspaceData?.allow_decentralized_roles)"
         class="dropdown-item"
         (click)="openCreateGroupModal('accounting')">
         <span i18n="@@createGroup.accounting">Accounting</span>
@@ -26,7 +26,7 @@
         class="dropdown-item"
         (click)="openCreateGroupModal('resource')">
         <span i18n="@@createGroup.resourceManagement">Resource Management</span>
-    </li>
+    </li> -->
     <li
         class="dropdown-item"
         (click)="openCreateAgoraModal()">

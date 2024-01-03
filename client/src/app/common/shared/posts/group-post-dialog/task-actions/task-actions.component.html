@@ -1,7 +1,7 @@
 <div class="content-box">
   <p class="box-title" i18n="@@taskActions.actions">Actions</p>
 
-  <div *ngIf="!postData?.task?._parent_task && !isIndividualSubscription">
+  <div *ngIf="!postData?.task?._parent_task && !isIndividualSubscription && !postData?.task?.is_crm_task">
     <button *ngIf="postData?._group" mat-menu-item [matMenuTriggerFor]="transferMenu"
       (click)="saveTransferAction('copy')">
         <i  class="material-icons">content_copy</i>
@@ -23,7 +23,7 @@
     </mat-menu>
   </div>
 
-  <div>
+  <div *ngIf="!postData?.task?.is_crm_task">
     <app-member-list-menu *ngIf="postData?._group"
       [groupMembers]="groupMembers"
       [menuLable]="menuLable"
@@ -34,7 +34,7 @@
   </div>
 
 
-  <div *ngIf="!postData?.task?._parent_task && postData?._group">
+  <div *ngIf="!postData?.task?._parent_task && postData?._group && !postData?.task?.is_crm_task">
     <button mat-menu-item [matMenuTriggerFor]="templateTaskMenu">
         <i class="material-icons-outlined">playlist_add</i>
         <span i18n="@@taskActions.templates">TEMPLATES</span>
@@ -91,7 +91,7 @@
     </mat-menu>
   </div>
 
-  <div *ngIf="postData?._assigned_to?.length < 2 && groupData?.enable_allocation" class="set-parent">
+  <div *ngIf="postData?._assigned_to?.length < 2 && groupData?.enable_allocation && !postData?.task?.is_crm_task" class="set-parent">
       <i class="material-icons">hourglass_top</i>
       <span i18n="@@taskActions.allocation">ALLOCATION</span>
 
@@ -100,7 +100,7 @@
       <!-- INPUT ENDS -->
   </div>
 
-  <div *ngIf="!parentTask && !isDependent && !isMilestone && (groupData?.shuttle_type && (!postData?.task?._shuttle_group || (postData?.task?._shuttle_group?._id || postData?.task?._shuttle_group) != groupData?._id))" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
+  <div *ngIf="!parentTask && !isDependent && !isMilestone && (groupData?.shuttle_type && (!postData?.task?._shuttle_group || (postData?.task?._shuttle_group?._id || postData?.task?._shuttle_group) != groupData?._id)) && !postData?.task?.is_crm_task" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
    <span i18n="@@taskActions.makeSubtaskOf">MAKE SUBTASK OF</span>
 
     <!-- INPUT STARTS -->
@@ -129,7 +129,7 @@
     </div>
   </div>
 
-  <div *ngIf="groupData && groupData?.project_type && !isChild && !isIndividualSubscription" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
+  <div *ngIf="groupData && groupData?.project_type && !isChild && !isIndividualSubscription && !postData?.task?.is_crm_task" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
     <span i18n="@@taskActions.makeDependencyOf">MAKE DEPENDENCY OF</span>
 
     <button *ngFor="let task of dependencyTask; let i = index" class="btn dependencylabel" style="margin-right: 1rem;"
@@ -162,7 +162,7 @@
   </div>
 
   <!-- North Start Switch starts -->
-  <div class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
+  <div *ngIf="!postData?.task?.is_crm_task" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
     <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;"> explore </i>
     <span i18n="@@taskActions.makeNorthStar">CONVERT TO TARGET</span>
 
@@ -178,7 +178,7 @@
   <!-- North Start Switch ends -->
 
   <!-- Idea Switch starts -->
-  <div *ngIf="isIdeaModuleAvailable" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
+  <div *ngIf="isIdeaModuleAvailable && !postData?.task?.is_crm_task" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
     <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;">emoji_objects</i>
     <span i18n="@@taskActions.idea">Idea</span>
 
@@ -190,8 +190,21 @@
   </div>
   <!-- Idea Switch ends -->
 
+  <!-- CRM Lead Switch starts -->
+  <div *ngIf="groupData.type == 'crm'" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
+    <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;">emoji_objects</i>
+    <span i18n="@@taskActions.crmLead">CRM Lead</span>
+
+    <mat-slide-toggle color="primary" style=" margin-left: 15px;"
+      [checked]="isCRMLead"
+      [name]="'crmLead'"
+      (change)="transformToCRMLead()">
+    </mat-slide-toggle>
+  </div>
+  <!-- CRM Lead Switch ends -->
+
   <!-- Milestone Switch starts -->
-  <div *ngIf="groupData && groupData.project_type && !isIndividualSubscription" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
+  <div *ngIf="groupData && groupData.project_type && !isIndividualSubscription && !postData?.task?.is_crm_task" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
     <img src="assets/images/Icon/icon_milestone.svg" alt="Flag"/>
     <span i18n="@@taskActions.makeMilestone">MAKE MILESTONE</span>
     <mat-slide-toggle color="primary" style=" margin-left: 15px;"
@@ -205,7 +218,7 @@
 
 
   <!-- Select Shuttle group starts -->
-  <div *ngIf="showShuttle() && !isIndividualSubscription"
+  <div *ngIf="showShuttle() && !isIndividualSubscription && !postData?.task?.is_crm_task"
       style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8; margin-left: 15px;">
     <img src="assets/images/icon-task-shuttle.svg" style="width: 24px">
 

@@ -12,6 +12,8 @@ import { Lounge } from './lounge.model';
 import { Story } from './story.model';
 import { Entity } from './entity.model';
 import { Holiday } from './holidays.model';
+import { Contact } from './contact.model';
+import { Company } from './company.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -41,6 +43,9 @@ export {
 
     // Comment
     Comment as Comment,
+
+    Company as Company,
+    Contact as Contact,
 
     // FLOW
     Flow as Flow,

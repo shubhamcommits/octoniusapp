@@ -1,0 +1,38 @@
+<div class="root">
+  <app-crm-setup-board-bar class="board-bar" *ngIf="isAdmin" [groupData]="groupData">
+  </app-crm-setup-board-bar>
+  
+  
+  <mat-tab-group mat-align-tabs="start">
+    <!-- subtasks STARTS-->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span i18n="@@groupContactsView.contacts">Contacts</span>
+      </ng-template>
+  
+      <ng-template matTabContent>
+        <div class="block">
+          <app-crm-contact-list [contacts]="contacts" [isAdmin]="isAdmin" [groupData]="groupData"></app-crm-contact-list>
+        </div>
+      </ng-template>
+    </mat-tab>
+  
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span i18n="@@groupContactsView.companies">Companies</span>
+      </ng-template>
+  
+      <ng-template matTabContent>
+        <div class="block">
+          <app-crm-company-list [companies]="companies"></app-crm-company-list>
+        </div>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+
+<!-- Loading Spinner Starts -->
+<ng-container *ngIf="isLoading$">
+    <app-loading-spinner class="media"></app-loading-spinner>
+</ng-container>
+<!-- Loading Spinner Ends -->

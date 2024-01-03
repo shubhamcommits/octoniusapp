@@ -264,4 +264,7 @@ routes.put('/:postId/selectShuttleStatus', postController.selectShuttleStatus.bi
 // PUT - Run automator
 routes.put('/:postId/automator', postController.runAutomator.bind(postController));
 
+// PUT - This route is used to edit the post crm information
+routes.put('/:postId/saveCRMInfo', postController.saveCRMInfo);
+
 export { routes as postRoutes };

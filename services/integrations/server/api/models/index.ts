@@ -9,6 +9,8 @@ import { Workspace } from './workspace.model';
 import { Comment } from './comment.model';
 import { Notification } from './notification.model';
 import { Story } from "./story.model";
+import { Contact } from './contact.model';
+import { Company } from './company.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -40,12 +42,15 @@ export {
     // FLOW
     Flow as Flow,
 
-     // COMMENT
-     Comment as Comment,
+    // COMMENT
+    Comment as Comment,
 
-     // NOTIFICATION 
-     Notification as Notification,
+    Company as Company,
+    Contact as Contact,
 
-     // Story
-     Story as Story
+    // NOTIFICATION 
+    Notification as Notification,
+
+    // Story
+    Story as Story
 };

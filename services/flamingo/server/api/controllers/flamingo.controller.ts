@@ -27,12 +27,13 @@ export class FlamingoController {
             let { body: { flamingoData } } = req;
 
             // Create the file
-            flamingoData = await flamingoService.createFlamingo(flamingoData);
-
+            const flamingoCreationData = await flamingoService.createFlamingo(flamingoData);
+console.log(flamingoCreationData);
             // Send Status 200 response
             return res.status(200).json({
                 message: 'Flamingo has been Created!',
-                flamingo: flamingoData
+                flamingo: flamingoCreationData.flamingo,
+                file: flamingoCreationData.file
             });
 
         } catch (err) {

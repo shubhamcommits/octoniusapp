@@ -1,0 +1,111 @@
+<div class="customFieldsDialog">
+
+    <mat-dialog-actions align="end">
+        <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
+    </mat-dialog-actions>
+
+    <h2 mat-dialog-title>
+        <span class="badge badge-cf">
+            <i class="material-icons">label</i>
+        </span>
+        <span i18n="@@crmCustomFieldDialog.customFields">Custom Fields</span>
+    </h2>
+
+    <mat-dialog-content>
+        <div class="description">
+            <img src="assets/images/placeholder_cf.svg" alt="" style="width: 200px; margin-bottom: 24px">
+            <p i18n="@@crmCustomFieldDialog.createCustomFields">Create custom fields to improve how you organize your workflows in task boards.</p>
+        </div>
+
+        <div class="customFieldsList" *ngIf="customFields.length <= 0">
+            <h3 class="text-center muted" i18n="@@crmCustomFieldDialog.thereAreNoCustomFields">🌵 There are no custom fields...</h3>
+        </div>
+
+
+        <div class="customFieldsList" *ngIf="customFields.length > 0">
+            <div class="customFieldsBody">
+                <div class="field" *ngFor="let field of customFields">
+                    <div class="title">
+                        <i class="material-icons" style="color: #005FD5">label</i>
+                        {{ field.title }}
+                        <i class="material-icons" *ngIf="field.name != 'priority'"
+                            (click)="removeCustomField(field)"
+                            style="color: red; cursor: pointer; margin-left: 20px;">highlight_off</i>
+                    </div>
+
+                    <div class="values" *ngIf="!field.input_type">
+                        <span class="badge" *ngFor="let value of field.values">
+                            {{ value }}
+                            <i class="material-icons" *ngIf="field.name != 'priority'"
+                                (click)="removeValue(field, value)"
+                                style="cursor: pointer;">highlight_off</i>
+                        </span>
+                        <div class="newValue" *ngIf="field.name != 'priority'">
+                            <input type="text" autocomplete="off" placeholder="Add value and hit ENTER..."
+                                class="newValueInput"
+                                (keyup.enter)="addValue(field, $event)"/>
+                        </div>
+                    </div>
+
+                    <div class="values" *ngIf="field.input_type" i18n="@@crmCustomFieldDialog.isAnInputCF">
+                      Is a <span *ngIf="field.input_type_text">text</span><span *ngIf="field.input_type_number">number</span> Input Custom Field
+                    </div>
+
+                    <div class="displayKanbanCard" *ngIf="field.name != 'priority'">
+                      <input class="" type="checkbox" (click)="setDisplayInKanbanCard(field)" [(ngModel)]="field.display_in_kanban_card">
+                      <label class="onoffswitch-label" style="margin-left: 9px;" i18n="@@crmCustomFieldDialog.displayinKanbanCard">Display in Kanban Card</label>
+                    </div>
+
+                    <div *ngIf="field.name != 'priority'" style="display: flex;">
+                      <div [ngStyle]="{'width': '30px', 'height': '30px', 'background-color': field?.badge_color }">
+                        <button *ngIf="field?.badge_color"
+                          class="btn removeImageBtn"
+                          style="margin-left: -9px; margin-top: -5px;"
+                          (click)="removeBadgeColor(field)">
+                      <i class="material-icons">close</i>
+                    </button>
+                      </div>
+
+                      <i class="material-icons muted" style="cursor: pointer;" (click)="openColorPicker(field)">color_lens</i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="newCustomFieldForm" style="padding: 10px; margin-top: 30px">
+            <button class="btn badge-cf" (click)="showNewCustomField = !showNewCustomField">
+                <i class="material-icons">label</i>
+                <span i18n="@@crmCustomFieldDialog.addCustomField">ADD CUSTOM FIELD</span>
+             </button>
+
+             <div class="add-field" *ngIf="showNewCustomField">
+                <input class="form-control" type="text" placeholder="Enter field name" [(ngModel)]="newCustomFieldTitle" (keyup.enter)="createCustomField()">
+
+                <br/>
+
+                <input type="checkbox" name="inputType" [(ngModel)]="newCustomFieldInputType">
+                <label class="onoffswitch-label" style="margin-left: 10px; margin-right: 10px;" for="inputType" i18n="@@crmCustomFieldDialog.inputValue">Input Value</label>
+
+                <mat-form-field appearance="fill" *ngIf="newCustomFieldInputType">
+                  <mat-select
+                      (selectionChange)="selectInputType($event.value)"
+                      [(value)]="newCustomFieldInputSelectType">
+                    <mat-option value="number">Number</mat-option>
+                    <mat-option value="text">Text</mat-option>
+                    <mat-option value="date">Date</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <div class="actions">
+                    <button class="col-md-4 btn btn-primary" (click)="createCustomField()" i18n="@@crmCustomFieldDialog.save">
+                      Save
+                    </button>
+                    <button class="col-md-4 btn btn-danger" (click)="showNewCustomField = false; this.newCustomFieldTitle = ''"
+                        i18n="@@crmCustomFieldDialog.cancel">
+                      Cancel
+                    </button>
+                </div>
+             </div>
+        </div>
+    </mat-dialog-content>
+</div>

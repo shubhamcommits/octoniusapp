@@ -1,8 +1,8 @@
 <div class="content-box" *ngIf="postData && postData?.type === 'task' || postData?.type === 'event'">
-  <p *ngIf="groupData && groupData.project_type && !postData?.task?.is_milestone"
+  <p *ngIf="groupData && groupData.project_type && !postData?.task?.is_milestone && !postData?.task?.is_crm_task"
     class="box-title" i18n="@@groupCreatePostDialog.startDate">Start date</p>
 
-  <div *ngIf="groupData && postData && postData?.type === 'task' && groupData.project_type && !postData?.task?.is_milestone">
+  <div *ngIf="groupData && groupData.project_type && !postData?.task?.is_milestone && !postData?.task?.is_crm_task">
     <!-- Date Picker starts -->
     <app-date-picker (date)="getDate($event, 'start_date')"
       [selectedDate]="formateDate(postData?.task.start_date)"
