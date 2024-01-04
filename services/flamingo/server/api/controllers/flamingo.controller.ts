@@ -28,7 +28,7 @@ export class FlamingoController {
 
             // Create the file
             const flamingoCreationData = await flamingoService.createFlamingo(flamingoData);
-console.log(flamingoCreationData);
+
             // Send Status 200 response
             return res.status(200).json({
                 message: 'Flamingo has been Created!',

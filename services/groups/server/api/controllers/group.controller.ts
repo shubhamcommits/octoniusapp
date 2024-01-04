@@ -706,7 +706,7 @@ export class GroupController {
             })
 
             // Find the user and update the _groups array in the corresponding user document 
-            const user = await User.findByIdAndUpdate({
+            await User.findByIdAndUpdate({
                 _id: groupData._admins,
                 _workspace: groupData._workspace
             }, {

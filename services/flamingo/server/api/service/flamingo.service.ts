@@ -50,17 +50,17 @@ export class FlamingoService {
                     select: this.groupFields 
                 }
             },
-            // {
-            //     path: '_file',
-            //     populate: {
-            //         path: '_group',
-            //         populate: {
-            //             path: '_workspace',
-            //             model: 'Workspace',
-            //             select: '_id management_private_api_key'
-            //         }
-            //     }
-            // },
+            {
+                path: '_file',
+                populate: {
+                    path: '_group',
+                    populate: {
+                        path: '_workspace',
+                        model: 'Workspace',
+                        select: '_id management_private_api_key'
+                    }
+                }
+            },
             {
                 path: '_file',
                 populate: {
