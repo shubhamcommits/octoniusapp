@@ -325,17 +325,17 @@ export class FilesControllers {
                             select: 'group_name group_avatar workspace_name _workspace' 
                         }
                     },
-                    // {
-                    //     path: '_file',
-                    //     populate: {
-                    //         path: '_group',
-                    //         populate: {
-                    //             path: '_workspace',
-                    //             model: 'Workspace',
-                    //             select: '_id management_private_api_key'
-                    //         }
-                    //     }
-                    // },
+                    {
+                        path: '_file',
+                        populate: {
+                            path: '_group',
+                            populate: {
+                                path: '_workspace',
+                                model: 'Workspace',
+                                select: '_id management_private_api_key'
+                            }
+                        }
+                    },
                     {
                         path: '_file',
                         populate: {

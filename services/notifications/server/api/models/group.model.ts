@@ -105,7 +105,7 @@ const GroupSchema = new Schema({
     },
     type: {
         type: String,
-        default: ['normal', 'agora', 'crm', 'accounting', 'resource']
+        enum: ['normal', 'agora', 'crm', 'accounting', 'resource']
     },
     conditions: {
         email_domains: {
@@ -141,7 +141,7 @@ const GroupSchema = new Schema({
     },
     selected_widgets: {
         type: [String],
-        default: ['WORK_STATISTICS', 'WORKLOAD', 'VELOCITY', 'ENGAGEMENT', 'KPI_PERFORMANCE', 'RESOURCE_MANAGEMENT', 'CF_TABLE', 'TOP_SOCIAL']
+        enum: ['WORK_STATISTICS', 'WORKLOAD', 'VELOCITY', 'ENGAGEMENT', 'KPI_PERFORMANCE', 'RESOURCE_MANAGEMENT', 'CF_TABLE', 'TOP_SOCIAL']
     },
     resource_management_allocation: {
         type: Boolean,
