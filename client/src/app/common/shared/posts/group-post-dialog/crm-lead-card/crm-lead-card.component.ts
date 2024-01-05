@@ -87,7 +87,7 @@ export class CRMLeadCardComponent implements OnChanges, OnInit {
     }
 
     if (!this.postData.crm._company) {
-      this.postData.crm._company = contact.company_history[0]._company;
+      this.postData.crm._company = contact._company;
     }
 
     this.postData.crm._contacts.push(contact);

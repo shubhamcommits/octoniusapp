@@ -5,18 +5,18 @@ import { CRMGroupService } from 'src/shared/services/crm-group-service/crm-group
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
-  selector: 'app-crm-contact-custom-fields',
-  templateUrl: './crm-contact-custom-fields.component.html',
-  styleUrls: ['./crm-contact-custom-fields.component.scss']
+  selector: 'app-crm-company-custom-fields',
+  templateUrl: './crm-company-custom-fields.component.html',
+  styleUrls: ['./crm-company-custom-fields.component.scss']
 })
-export class CRMContactCustomFieldsComponent implements OnChanges {
+export class CRMCompanyCustomFieldsComponent implements OnChanges {
 
-  @Input() contactData;
+  @Input() companyData;
   @Input() groupData;
 
-  @Output() contactCFEdited = new EventEmitter();
+  @Output() companyCFEdited = new EventEmitter();
 
-  crmContactCustomFields;
+  crmCompanyCustomFields;
   selectedCFValues = [];
   canEdit = true;
 
@@ -29,7 +29,7 @@ export class CRMContactCustomFieldsComponent implements OnChanges {
   ) { }
 
   async ngOnChanges(): Promise<void> {
-    if (!!this.contactData) {
+    if (!!this.companyData) {
       
     }
 
@@ -52,21 +52,21 @@ export class CRMContactCustomFieldsComponent implements OnChanges {
     }
 
     if (customFieldsTmnp) {
-      this.crmContactCustomFields = [];
+      this.crmCompanyCustomFields = [];
       
       customFieldsTmnp.forEach(field => {
-        if (!field?.company_type) {
-          this.crmContactCustomFields.push(field);
+        if (field.company_type) {
+          this.crmCompanyCustomFields.push(field);
 
-          if (!this.contactData?.crm_custom_fields) {
-            this.contactData.crm_custom_fields = new Map<string, string>();
+          if (!this.companyData?.crm_custom_fields) {
+            this.companyData.crm_custom_fields = new Map<string, string>();
           }
 
-          if (!this.contactData?.crm_custom_fields[field.name]) {
-            this.contactData.crm_custom_fields[field.name] = '';
+          if (!this.companyData?.crm_custom_fields[field.name]) {
+            this.companyData.crm_custom_fields[field.name] = '';
             this.selectedCFValues[field.name] = '';
           } else {
-            this.selectedCFValues[field.name] = this.contactData?.crm_custom_fields[field.name];
+            this.selectedCFValues[field.name] = this.companyData?.crm_custom_fields[field.name];
           }
         }
       });
@@ -76,14 +76,14 @@ export class CRMContactCustomFieldsComponent implements OnChanges {
   fieldEdited(propertyName: string) {
     // switch (propertyName) {
     //   case 'name':
-    //     this.contactData[propertyName] = this.newName;
+    //     this.companyData[propertyName] = this.newName;
     //     break;
     //   case 'description':
-    //     this.contactData[propertyName] = this.newDescription;
+    //     this.companyData[propertyName] = this.newDescription;
     //     break;
     // }
 
-    this.contactCFEdited.emit(this.contactData);
+    this.companyCFEdited.emit(this.companyData);
   }
 
   onCustomFieldChange(event: Event, customFieldName: string, customFieldTitle: string) {
@@ -106,9 +106,9 @@ export class CRMContactCustomFieldsComponent implements OnChanges {
 
   saveCustomField(customFieldName: string, customFieldTitle: string, customFieldValue: string) {
     this.selectedCFValues[customFieldName] = customFieldValue;
-    this.contactData.crm_custom_fields[customFieldName] = customFieldValue;
+    this.companyData.crm_custom_fields[customFieldName] = customFieldValue;
 
-    this.contactCFEdited.emit(this.contactData);
+    this.companyCFEdited.emit(this.companyData);
   }
 
   formateDate(date) {

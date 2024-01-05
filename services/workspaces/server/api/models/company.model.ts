@@ -27,7 +27,12 @@ const CompanySchema = new Schema({
     //     type: Schema.Types.ObjectId,
     //     ref: 'Workspace',
     //     required: true
-    // }
+    // },
+    // Custom Fields
+    crm_custom_fields: {
+        type: Map,
+        of: String
+    }
 });
 
 const Company = mongoose.model('Company', CompanySchema);

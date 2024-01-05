@@ -10,14 +10,29 @@
 
     <div mat-dialog-content>
         <mat-tab-group mat-align-tabs="start">
-            <!-- subtasks STARTS-->
             <mat-tab>
                 <ng-template mat-tab-label>
                     <span i18n="@@newCRMCompanyDialog.contactInformation">Company Information</span>
                 </ng-template>
         
                 <ng-template matTabContent>
-                    <app-crm-company-information [companyData]="companyData" (companyInfoEdited)="onCompanyInfoEdited($event)"></app-crm-company-information>
+                    <app-crm-company-information
+                        [companyData]="companyData" [workspaceId]="groupData?._workspace?._id || groupData?._workspace" [groupId]="groupData?._id"
+                        (companyInfoEdited)="onCompanyInfoEdited($event)"
+                        ></app-crm-company-information>
+                        <!-- (companyImageEdited)="onCompanyImageEdited($event)" -->
+                </ng-template>
+            </mat-tab>
+
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <span i18n="@@newCRMCompanyDialog.customFields">Custom Fields</span>
+                </ng-template>
+            
+                <ng-template matTabContent>
+                    <app-crm-company-custom-fields [companyData]="companyData"
+                        [workspaceId]="groupData?._workspace?._id || groupData?._workspace" [groupId]="groupData?._id"
+                        (companyCFEdited)="onCompanyInfoEdited($event)"></app-crm-company-custom-fields>
                 </ng-template>
             </mat-tab>
         </mat-tab-group>
