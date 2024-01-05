@@ -1,15 +1,17 @@
 .step {
     text-align: center;
-    width: 25px;
-    height: 25px;
+    width: 32px;
+    height: 32px;
     color: #000000;
     background-color: #FBB732;
-    font-size: 20px;
+    font-size: 22px;
     margin-right: 10px;
+    border-radius: 4px;
 }
 
 .row {
-    margin-bottom: 50px;
+    margin-bottom:100px;
+    align-items: baseline;
 }
 
 .group-types {
