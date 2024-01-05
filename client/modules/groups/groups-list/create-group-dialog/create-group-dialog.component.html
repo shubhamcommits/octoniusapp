@@ -25,25 +25,31 @@
         </div>
 
         <div class="row">
-            <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="groupType">
-                <mat-radio-button class="example-radio-button" [value]="'normal'">
-                    <h3 class="col-4" i18n="@@newCRMCompanyDialog.workGroup">Work GROUP</h3>
-                    <div class="col-8" i18n="@@newCRMCompanyDialog.workGroupDescription">
-                        Default Work group with the main functionalities to get your team connected and aligned. This group is Private (visible only to invited members)
+            <mat-radio-group [(ngModel)]="groupType">
+                <mat-radio-button [value]="'normal'">
+                    <div class="group-types">
+                        <h3 class="col-4" i18n="@@newCRMCompanyDialog.workGroup">Work GROUP</h3>
+                        <div class="col-8" i18n="@@newCRMCompanyDialog.workGroupDescription">
+                            Default Work group with the main functionalities to get your team connected and aligned. This group is Private (visible only to invited members)
+                        </div>
                     </div>
                 </mat-radio-button>
                 <br />
-                <mat-radio-button class="example-radio-button" [value]="'agora'">
-                    <h3 class="col-4" i18n="@@newCRMCompanyDialog.agora">Agora</h3>
-                    <div class="col-8" i18n="@@newCRMCompanyDialog.agoraDescription">
-                        Public group, visible to anyone in the organization. They can click to JOIN, it does not require invitation.
+                <mat-radio-button [value]="'agora'">
+                    <div class="group-types">
+                        <h3 class="col-4" i18n="@@newCRMCompanyDialog.agora">Agora</h3>
+                        <div class="col-8" i18n="@@newCRMCompanyDialog.agoraDescription">
+                            Public group, visible to anyone in the organization. They can click to JOIN, it does not require invitation.
+                        </div>
                     </div>
                 </mat-radio-button>
                 <br />
-                <mat-radio-button class="example-radio-button" [value]="'crm'">
-                    <h3 class="col-4" i18n="@@newCRMCompanyDialog.crm">CRM</h3>
-                    <div class="col-8" i18n="@@newCRMCompanyDialog.crmDescription">
-                        Work group focused on CRM activities. This is group is Private.
+                <mat-radio-button [value]="'crm'">
+                    <div class="group-types">
+                        <h3 class="col-4" i18n="@@newCRMCompanyDialog.crm">CRM</h3>
+                        <div class="col-8" i18n="@@newCRMCompanyDialog.crmDescription">
+                            Work group focused on CRM activities. This is group is Private.
+                        </div>
                     </div>
                 </mat-radio-button>
             </mat-radio-group>
