@@ -11,7 +11,7 @@
         <span i18n="@@crmCustomFieldDialog.customFields">Custom Fields</span>
     </h2>
 
-    <mat-dialog-content>
+    <div mat-dialog-content>
         <div class="description">
             <img src="assets/images/placeholder_cf.svg" alt="" style="width: 200px; margin-bottom: 24px">
             <p i18n="@@crmCustomFieldDialog.createCustomFields">Create custom fields to improve how you organize your workflows in task boards.</p>
@@ -20,7 +20,6 @@
         <div class="customFieldsList" *ngIf="customFields.length <= 0">
             <h3 class="text-center muted" i18n="@@crmCustomFieldDialog.thereAreNoCustomFields">🌵 There are no custom fields...</h3>
         </div>
-
 
         <div class="customFieldsList" *ngIf="customFields.length > 0">
             <div class="customFieldsBody">
@@ -51,12 +50,20 @@
                       Is a <span *ngIf="field.input_type_text">text</span><span *ngIf="field.input_type_number">number</span> Input Custom Field
                     </div>
 
-                    <div class="displayKanbanCard" *ngIf="field.name != 'priority'">
+                    <div class="values">
+                      <label class="onoffswitch-label" style="margin-left: 9px;" i18n="@@crmCustomFieldDialog.type">Type:</label>
+                      <mat-radio-group [(ngModel)]="field.company_type" (change)="setCFType(field.company_type, field._id)">
+                        <mat-radio-button [value]="false" style="margin-right: 10px;" i18n="@@crmCustomFieldDialog.contact">Contact</mat-radio-button>
+                        <mat-radio-button [value]="true" i18n="@@crmCustomFieldDialog.company">Company</mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+
+                    <div class="displayKanbanCard">
                       <input class="" type="checkbox" (click)="setDisplayInKanbanCard(field)" [(ngModel)]="field.display_in_kanban_card">
                       <label class="onoffswitch-label" style="margin-left: 9px;" i18n="@@crmCustomFieldDialog.displayinKanbanCard">Display in Kanban Card</label>
                     </div>
 
-                    <div *ngIf="field.name != 'priority'" style="display: flex;">
+                    <div style="display: flex;">
                       <div [ngStyle]="{'width': '30px', 'height': '30px', 'background-color': field?.badge_color }">
                         <button *ngIf="field?.badge_color"
                           class="btn removeImageBtn"
@@ -79,12 +86,24 @@
              </button>
 
              <div class="add-field" *ngIf="showNewCustomField">
-                <input class="form-control" type="text" placeholder="Enter field name" [(ngModel)]="newCustomFieldTitle" (keyup.enter)="createCustomField()">
+                <input class="form-control" type="text" placeholder="Enter field name" [(ngModel)]="newCustomFieldTitle"
+                  (keyup.enter)="createCustomField()">
 
-                <br/>
+                <br />
+
+                <label class="onoffswitch-label" style="margin-left: 10px; margin-right: 10px;" for="company_type" i18n="@@crmCustomFieldDialog.type">Type: </label>
+                <mat-radio-group [(ngModel)]="isCompanyType" name="company_type">
+                  <mat-radio-button [value]="false" style="margin-right: 10px;" i18n="@@crmCustomFieldDialog.contact">Contact</mat-radio-button>
+                  <mat-radio-button [value]="true" i18n="@@crmCustomFieldDialog.company">Company</mat-radio-button>
+                </mat-radio-group>
+
+                <br />
 
                 <input type="checkbox" name="inputType" [(ngModel)]="newCustomFieldInputType">
-                <label class="onoffswitch-label" style="margin-left: 10px; margin-right: 10px;" for="inputType" i18n="@@crmCustomFieldDialog.inputValue">Input Value</label>
+                <label class="onoffswitch-label" style="margin-left: 10px; margin-right: 10px;" for="inputType"
+                  i18n="@@crmCustomFieldDialog.inputValue">Input Value</label>
+
+                <br />
 
                 <mat-form-field appearance="fill" *ngIf="newCustomFieldInputType">
                   <mat-select
@@ -107,5 +126,9 @@
                 </div>
              </div>
         </div>
-    </mat-dialog-content>
+    </div>
+
+    <div>
+      
+    </div>
 </div>

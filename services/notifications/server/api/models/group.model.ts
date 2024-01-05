@@ -279,6 +279,10 @@ const GroupSchema = new Schema({
                 type: Boolean,
                 default: false
             },
+            company_type: {
+                type: Boolean,
+                default: false
+            },
             values: {
                 type: [String],
                 required: true,

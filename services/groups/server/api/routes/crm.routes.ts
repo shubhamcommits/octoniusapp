@@ -69,6 +69,9 @@ routes.put('/:groupId/crmCustomFields/addValue', crm.addCRMCustomFieldValue);
 // PUT - Set the CF to be displayed in the kanban card
 routes.put('/:groupId/crmCustomFields/displayInKanbanCard', crm.setCRMCustomFieldDisplayKanbanCard);
 
+// PUT - Set the CF to be for company or contact
+routes.put('/:groupId/crmCustomFields/setCRMCustomFieldType', crm.setCRMCustomFieldType);
+
 // PUT - Set the CF color to be displayed
 routes.put('/:groupId/crmCustomFields/color', crm.setCRMCustomFieldColor);
 
