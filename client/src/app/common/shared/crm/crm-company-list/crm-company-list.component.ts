@@ -1,4 +1,4 @@
-import { Component, Injector, Input, OnChanges } from '@angular/core';
+import { Component, Injector, Input, OnChanges, AfterViewInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { MatDialog } from '@angular/material/dialog';
 import { CRMGroupService } from 'src/shared/services/crm-group-service/crm-group.service';
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   templateUrl: './crm-company-list.component.html',
   styleUrls: ['./crm-company-list.component.scss']
 })
-export class CRMCompanyListComponent implements OnChanges {
+export class CRMCompanyListComponent implements OnChanges, AfterViewInit {
 
 	@Input() companies = [];
   	@Input() isAdmin = [];
@@ -44,18 +44,109 @@ export class CRMCompanyListComponent implements OnChanges {
 	async ngOnChanges(): Promise<void> {
 		this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
-		await this.initTable();
-	}
-
-	async initTable() {
+		if (!this.utilityService.objectExists(this.groupData)) {
+			this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+		}
 
 		await this.crmGroupService.getCRMGroupCustomFields(this.groupData?._id).then(res => {
 			this.crmCompanyCustomFields = res['crm_custom_fields'].filter(cf => cf.company_type);
 		});
 
+		await this.initTable();
+	}
+
+	async ngAfterViewInit() {
+		if (!this.utilityService.objectExists(this.groupData)) {
+			this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+		}
+	}
+
+	async initTable() {
+		await this.loadCustomFieldsToShow();
+
 		this.companies = [...this.companies];
 
 		this.sortedData = this.companies.slice();
+	}
+
+	addNewColumn($event: Event) {
+		// Find the index of the column to check if the same named column exist or not
+		const index = this.crmCustomFieldsToShow.findIndex((f: any) => f.name.toLowerCase() === this.newColumnSelected.name.toLowerCase());
+
+		// If index is found, then throw error notification
+		if (index !== -1) {
+			this.utilityService.warningNotification($localize`:@@crmCompanyList.sectionAlreadyExists:Section already exists!`);
+		} else {
+			// If not found, then push the element
+			// Create the group
+			if (!this.groupData.crm_custom_fields_to_show) {
+				this.groupData.crm_custom_fields_to_show = [];
+			}
+
+			this.groupData.crm_custom_fields_to_show.push(this.newColumnSelected.name);
+			this.crmCustomFieldsToShow.push(this.getCustomField(this.newColumnSelected.name));
+			if (this.displayedColumns.length - 1 >= 0) {
+				this.displayedColumns.splice(this.displayedColumns.length - 1, 0, this.newColumnSelected.name);
+			}
+
+			this.newColumnSelected = null;
+
+			this.crmGroupService.saveCRMCustomFieldsToShow(this.groupData._id, this.groupData.crm_custom_fields_to_show)
+				.then(res => {
+					this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+				});
+		}
+	}
+
+	removeColumn(field: any) {
+		let index: number = this.crmCustomFieldsToShow.findIndex(cf => cf.name === field);
+		if (index !== -1) {
+			this.crmCustomFieldsToShow.splice(index, 1);
+		}
+
+		index = this.displayedColumns.indexOf(field.name);
+		if (index !== -1) {
+			this.displayedColumns.splice(index, 1);
+		}
+
+		index = this.groupData.crm_custom_fields_to_show.indexOf(field.name);
+		if (index !== -1) {
+			this.groupData.crm_custom_fields_to_show.splice(index, 1);
+		}
+
+		this.crmGroupService.saveCRMCustomFieldsToShow(this.groupData._id, this.groupData.crm_custom_fields_to_show)
+			.then(res => {
+				this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+			});
+	}
+
+	getCustomField(fieldName: string) {
+		const index = (this.crmCompanyCustomFields) ? this.crmCompanyCustomFields.findIndex((f: any) => f.name === fieldName) : -1;
+		return (index >= 0) ? this.crmCompanyCustomFields[index] : null;
+	}
+
+	loadCustomFieldsToShow() {
+		if (!!this.groupData && !!this.groupData.crm_custom_fields_to_show) {
+			if (!this.crmCustomFieldsToShow) {
+				this.crmCustomFieldsToShow = [];
+			}
+			
+			this.groupData.crm_custom_fields_to_show.forEach(field => {
+				const cf = this.getCustomField(field);
+				const indexCRMCFToShow = (!!this.crmCustomFieldsToShow) ? this.crmCustomFieldsToShow.findIndex(cf => cf.name === field) : -1;
+				// Push the Column
+				if (cf && indexCRMCFToShow < 0 && cf.company_type) {
+					this.crmCustomFieldsToShow.push(cf);
+			
+					if (this.displayedColumns.length - 1 >= 0) {
+						const indexDisplayedColumns = (!!this.displayedColumns) ? this.displayedColumns.findIndex(col => col === field.name) : -1;
+						if (indexDisplayedColumns < 0) {
+							this.displayedColumns.splice(this.displayedColumns.length - 1, 0, field);
+						}
+					}
+				}
+			});
+		}
 	}
 
 	sortData(sort: Sort) {
@@ -136,55 +227,5 @@ export class CRMCompanyListComponent implements OnChanges {
 					})
 				}
 			});
-	}
-
-	addNewColumn($event: Event) {
-		// Find the index of the column to check if the same named column exist or not
-		const index = this.crmCustomFieldsToShow.findIndex((f: any) => f.name.toLowerCase() === this.newColumnSelected.name.toLowerCase());
-
-		// If index is found, then throw error notification
-		if (index !== -1) {
-			this.utilityService.warningNotification($localize`:@@crmCompanyList.sectionAlreadyExists:Section already exists!`);
-		} else {
-			// If not found, then push the element
-			// Create the group
-			if (!this.groupData.crm_custom_fields_to_show) {
-				this.groupData.crm_custom_fields_to_show = [];
-			}
-
-			this.groupData.crm_custom_fields_to_show.push(this.newColumnSelected.name);
-			this.crmCustomFieldsToShow.push(this.getCustomField(this.newColumnSelected.name));
-			if (this.displayedColumns.length - 1 >= 0) {
-				this.displayedColumns.splice(this.displayedColumns.length - 1, 0, this.newColumnSelected.name);
-			}
-
-			this.newColumnSelected = null;
-
-			this.crmGroupService.saveCRMCustomFieldsToShow(this.groupData._id, this.groupData.crm_custom_fields_to_show);
-		}
-	}
-
-	removeColumn(field: any) {
-		let index: number = this.crmCustomFieldsToShow.findIndex(cf => cf.name === field);
-		if (index !== -1) {
-			this.crmCustomFieldsToShow.splice(index, 1);
-		}
-
-		index = this.displayedColumns.indexOf(field.name);
-		if (index !== -1) {
-			this.displayedColumns.splice(index, 1);
-		}
-
-		index = this.groupData.crm_custom_fields_to_show.indexOf(field.name);
-		if (index !== -1) {
-			this.groupData.crm_custom_fields_to_show.splice(index, 1);
-		}
-
-		this.crmGroupService.saveCRMCustomFieldsToShow(this.groupData._id, this.groupData.crm_custom_fields_to_show);
-	}
-
-	getCustomField(fieldName: string) {
-		const index = (this.crmCompanyCustomFields) ? this.crmCompanyCustomFields.findIndex((f: any) => f.name === fieldName) : -1;
-		return (index >= 0) ? this.crmCompanyCustomFields[index] : null;
 	}
 }

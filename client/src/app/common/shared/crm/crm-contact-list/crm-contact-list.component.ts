@@ -91,7 +91,10 @@ export class CRMContactListComponent implements OnChanges, AfterViewInit {
 
 			this.newColumnSelected = null;
 
-			this.crmGroupService.saveCRMCustomFieldsToShow(this.groupData._id, this.groupData.crm_custom_fields_to_show);
+			this.crmGroupService.saveCRMCustomFieldsToShow(this.groupData._id, this.groupData.crm_custom_fields_to_show)
+				.then(res => {
+					this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+				});
 		}
 	}
 
@@ -111,7 +114,10 @@ export class CRMContactListComponent implements OnChanges, AfterViewInit {
 			this.groupData.crm_custom_fields_to_show.splice(index, 1);
 		}
 
-		this.crmGroupService.saveCRMCustomFieldsToShow(this.groupData._id, this.groupData.crm_custom_fields_to_show);
+		this.crmGroupService.saveCRMCustomFieldsToShow(this.groupData._id, this.groupData.crm_custom_fields_to_show)
+			.then(res => {
+				this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+			});
 	}
 
 	getCustomField(fieldName: string) {
@@ -129,7 +135,7 @@ export class CRMContactListComponent implements OnChanges, AfterViewInit {
 				const cf = this.getCustomField(field);
 				const indexCRMCFToShow = (!!this.crmCustomFieldsToShow) ? this.crmCustomFieldsToShow.findIndex(cf => cf.name === field) : -1;
 				// Push the Column
-				if (cf && indexCRMCFToShow < 0) {
+				if (cf && indexCRMCFToShow < 0 && !cf.company_type) {
 					this.crmCustomFieldsToShow.push(cf);
 			
 					if (this.displayedColumns.length - 1 >= 0) {
