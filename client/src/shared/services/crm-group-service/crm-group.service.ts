@@ -1,8 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { Observable } from 'rxjs/internal/Observable';
-import { UtilityService } from '../utility-service/utility.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +8,7 @@ import { UtilityService } from '../utility-service/utility.service';
 export class CRMGroupService {
 
   constructor(
-    private _http: HttpClient,
-    private utilityService: UtilityService) { }
+    private _http: HttpClient) { }
 
   baseURL = environment.GROUPS_BASE_API_URL + '/crm';
 
@@ -103,16 +100,18 @@ export class CRMGroupService {
    * This function is responsible for updating the crm company details
    * @param companyData
    */
-  updateCRMCompany(companyData: any){
-    return this._http.put(this.baseURL + `/${companyData._id}/updateCompany`, { companyData }).toPromise()
+  updateCRMCompany(companyData: any, fileToUpload: File, workspaceId: string, groupId: string) {
+    let formData = new FormData();
+    formData.append('companyImage', fileToUpload);
+    return this._http.put(this.baseURL + `/${companyData._id}/updateCompany/${workspaceId}/${groupId}`, { formData, companyData }).toPromise()
   }
 
   /**
    * This function is responsible for creating a crm company
    * @param groupId
    */
-  createCRMCompany(companyData: any){
-    return this._http.post(this.baseURL + `/createCompany`, { companyData }).toPromise()
+  createCRMCompany(companyData: any) {
+    return this._http.post(this.baseURL + `/createCompany`, { companyData }).toPromise();
   }
 
   saveNewCRMCustomField(newCustomField: { name: string; title: string; values: any[]; }, groupId: any) {
@@ -133,6 +132,10 @@ export class CRMGroupService {
 
   setCRMCustomFieldDisplayKanbanCard(display_in_kanban_card: boolean, fieldId: string, groupId: string) {
     return this._http.put(this.baseURL + `/${groupId}/crmCustomFields/displayInKanbanCard`, { fieldId, display_in_kanban_card }).toPromise();
+  }
+
+  setCRMCustomFieldType(company_type: boolean, fieldId: string, groupId: string) {
+    return this._http.put(this.baseURL + `/${groupId}/crmCustomFields/setCRMCustomFieldType`, { fieldId, company_type }).toPromise();
   }
 
   setCRMCustomFieldColor(color: string, fieldId: string, groupId: string) {

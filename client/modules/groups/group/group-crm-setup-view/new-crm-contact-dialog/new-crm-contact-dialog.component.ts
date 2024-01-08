@@ -20,7 +20,8 @@ export class NewCRMContactDialogComponent implements OnInit {
     phones: [],
     emails: [],
     links: [],
-    company_history: []
+    _company: '',
+    position: ''
   };
 
   groupData: any;
@@ -50,10 +51,6 @@ export class NewCRMContactDialogComponent implements OnInit {
   }
 
   onContactInfoEdited(newContactDetails: any) {
-    this.contactData = newContactDetails;
-  }
-
-  onContactCompanyEdited(newContactDetails: any) {
     this.contactData = newContactDetails;
   }
 

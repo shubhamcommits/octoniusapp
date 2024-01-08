@@ -1,6 +1,6 @@
 import express from 'express';
 import { CRMController } from '../controllers';
-import { Auths } from '../../utils';
+import { Auths, companyFileUploader } from '../../utils';
 
 const routes = express.Router();
 const crm = new CRMController();
@@ -44,7 +44,7 @@ routes.get('/:groupId/companies', crm.getGroupCRMCompanies);
 routes.get('/:groupId/searchCompanies', crm.searchGroupCRMCompanies);
 
 // PUT - Update the flow name
-routes.put('/:companyId/updateCompany', crm.updateCRMCompany);
+routes.put('/:companyId/updateCompany/:workspaceId/:groupId', companyFileUploader, crm.updateCRMCompany);
 
 // POST - Add new automation flow
 routes.post('/createCompany', crm.createCRMCompany);
@@ -68,6 +68,9 @@ routes.put('/:groupId/crmCustomFields/addValue', crm.addCRMCustomFieldValue);
 
 // PUT - Set the CF to be displayed in the kanban card
 routes.put('/:groupId/crmCustomFields/displayInKanbanCard', crm.setCRMCustomFieldDisplayKanbanCard);
+
+// PUT - Set the CF to be for company or contact
+routes.put('/:groupId/crmCustomFields/setCRMCustomFieldType', crm.setCRMCustomFieldType);
 
 // PUT - Set the CF color to be displayed
 routes.put('/:groupId/crmCustomFields/color', crm.setCRMCustomFieldColor);

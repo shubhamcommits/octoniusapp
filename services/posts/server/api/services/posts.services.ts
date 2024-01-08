@@ -378,8 +378,8 @@ export class PostService {
         { path: 'logs._group', select: this.groupFields },
         { path: 'logs._task', select: '_id title' },
         { path: 'crm._company', select: '_id name description company_pic' },
-        { path: 'crm._contacts', select: '_id name description phones emails links company_history crm_custom_fields' },
-        { path: 'crm._contacts.company_history._company', select: '_id name description company_pic' },
+        { path: 'crm._contacts', select: '_id name description phones emails links _company position crm_custom_fields' },
+        { path: 'crm._contacts._company', select: '_id name description company_pic' },
       ]);
 
     } else if (post.type === 'performance_task') {
@@ -953,8 +953,8 @@ export class PostService {
       .populate({ path: 'performance_task._assigned_to', select: this.userFields })
       .populate({ path: 'permissions._members', select: this.userFields })
       .populate({ path: 'crm._company', select: '_id name description company_pic' })
-      .populate({ path: 'crm._contacts', select: '_id name description phones emails links company_history crm_custom_fields' })
-      .populate({ path: 'crm._contacts.company_history._company', select: '_id name description company_pic' })
+      .populate({ path: 'crm._contacts', select: '_id name description phones emails links _company position crm_custom_fields' })
+      .populate({ path: 'crm._contacts._company', select: '_id name description company_pic' })
       .populate({ path: 'logs._actor', select: this.userFields })
       .populate({ path: 'logs._new_section', select: '_id title' })
       .populate({ path: 'logs._assignee', select: this.userFields })

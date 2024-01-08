@@ -19,7 +19,7 @@ export class CRMController {
                     _group: req.params.groupId
                 })
                 .sort('name')
-                .populate('company_history._company', '_id name description company_pic')
+                .populate('_company', '_id name description company_pic')
                 .lean();
 
             if (!contacts) {
@@ -50,11 +50,12 @@ export class CRMController {
                         $and: [
                             { _group: groupId },
                             { name: { $regex: req.query.companySearchText, $options: 'i' } },
-                            { company_history : { $elemMatch: { _company: companyId }}}
+                            { _company: companyId }
+                            // { company_history : { $elemMatch: { _company: companyId }}}
                         ]
                     })
                     .sort('name')
-                    .populate('company_history._company', '_id name description company_pic')
+                    .populate('_company', '_id name description company_pic')
                     .lean();
 
                 // await User.updateMany({ _groups: groupId }, {
@@ -80,7 +81,7 @@ export class CRMController {
                         ]
                     })
                     .sort('name')
-                    .populate('company_history._company', '_id name description company_pic')
+                    .populate('_company', '_id name description company_pic')
                     .lean();
             }
 
@@ -107,7 +108,7 @@ export class CRMController {
             const contact = await Contact.findOne({
                     _id: req.params.contactId
                 })
-                .populate('company_history._company', '_id name description company_pic')
+                .populate('_company', '_id name description company_pic')
                 .lean();
 
             if (!contact) {
@@ -161,14 +162,15 @@ export class CRMController {
                         phones: contactData?.phones,
                         emails: contactData?.emails,
                         links: contactData?.links,
-                        company_history: contactData?.company_history,
+                        _company: contactData?._company,
+                        position: contactData?.position,
                         crm_custom_fields: contactData?.crm_custom_fields
                     }
                 }, {
                     new: true
                 })
                 .sort('name')
-                .populate('company_history._company', '_id name description company_pic')
+                .populate('_company', '_id name description company_pic')
                 .lean();
 
             if (!contact) {
@@ -202,7 +204,7 @@ export class CRMController {
             contact = await Contact.findOne({
                     _id: contact._id
                 })
-                .populate('company_history._company', '_id name description company_pic')
+                .populate('_company', '_id name description company_pic')
                 .lean();
 
             // Send the status 200 response
@@ -309,7 +311,8 @@ export class CRMController {
                 }, {
                     $set : { 
                         name: companyData?.name,
-                        description: companyData?.description
+                        description: companyData?.description,
+                        crm_custom_fields: companyData?.crm_custom_fields,
                     }
                 }, {
                     new: true
@@ -581,6 +584,37 @@ export class CRMController {
                     _id: groupId
                 }, {
                     $set: { "crm_custom_fields.$[field].display_in_kanban_card": display_in_kanban_card }
+                }, {
+                    arrayFilters: [{ "field._id": fieldId }],
+                    new: true
+                }).select('crm_custom_fields')
+                .lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group crm custom fields updated!',
+                group: group
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async setCRMCustomFieldType(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { groupId } = req.params;
+
+        // Fetch the field and value from fileHandler middleware
+        const fieldId = req.body['fieldId'];
+        const company_type = req.body['company_type'];
+
+        try {
+            // Find the custom field in a group and add the value
+            const group = await Group.findByIdAndUpdate({
+                    _id: groupId
+                }, {
+                    $set: { "crm_custom_fields.$[field].company_type": company_type }
                 }, {
                     arrayFilters: [{ "field._id": fieldId }],
                     new: true

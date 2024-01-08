@@ -24,6 +24,8 @@ export class CRMCustomFieldsDialogComponent implements OnInit {
 
   groupData;
 
+  isCompanyType = false;
+
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -70,6 +72,7 @@ export class CRMCustomFieldsDialogComponent implements OnInit {
           input_type_number: (this.newCustomFieldInputType && this.newCustomFieldInputSelectType == 'number') ? true : false,
           input_type_text: (this.newCustomFieldInputType && this.newCustomFieldInputSelectType == 'text') ? true : false,
           input_type_date: (this.newCustomFieldInputType && this.newCustomFieldInputSelectType == 'date') ? true : false,
+          company_type: this.isCompanyType,
           values: []
         };
 
@@ -90,6 +93,7 @@ export class CRMCustomFieldsDialogComponent implements OnInit {
         this.showNewCustomField = false;
         this.newCustomFieldTitle = '';
         this.newCustomFieldInputType = false;
+        this.isCompanyType = false;
       }
     }
   }
@@ -114,9 +118,9 @@ export class CRMCustomFieldsDialogComponent implements OnInit {
                   // Remove the field from the list
                   this.customFields.splice(index, 1);
 
-                  this.groupData.custom_fields = res['group'].custom_fields;
-                  this.groupData.custom_fields_table_widget.selectTypeCFs = res['group'].custom_fields_table_widget.selectTypeCFs;
-                  this.groupData.custom_fields_table_widget.inputTypeCFs = res['group'].custom_fields_table_widget.inputTypeCFs;
+                  this.groupData.crm_custom_fields = res['group'].crm_custom_fields;
+                  // this.groupData.custom_fields_table_widget.selectTypeCFs = res['group'].custom_fields_table_widget.selectTypeCFs;
+                  // this.groupData.custom_fields_table_widget.inputTypeCFs = res['group'].custom_fields_table_widget.inputTypeCFs;
                   this.publicFunctions.sendUpdatesToGroupData(this.groupData);
 
                   resolve(this.utilityService.resolveAsyncPromise($localize`:@@crmCustomFieldDialog.fieldDeleted:Field deleted!`));
@@ -144,7 +148,7 @@ export class CRMCustomFieldsDialogComponent implements OnInit {
 
         // Save the new value
         this.crmGroupService.addCRMCustomFieldNewValue(newValue, field._id, this.groupData._id).then(res => {
-          this.groupData.custom_fields = res['group'].custom_fields;
+          this.groupData.crm_custom_fields = res['group'].crm_custom_fields;
           this.publicFunctions.sendUpdatesToGroupData(this.groupData);
         });
 
@@ -156,7 +160,20 @@ export class CRMCustomFieldsDialogComponent implements OnInit {
   setDisplayInKanbanCard(field) {
     this.utilityService.asyncNotification($localize`:@@crmCustomFieldDialog.pleaseWaitUpdatingCF:Please wait we are updating the custom field...`, new Promise((resolve, reject) => {
       this.crmGroupService.setCRMCustomFieldDisplayKanbanCard(!field.display_in_kanban_card, field._id, this.groupData._id).then(res => {
-        this.groupData.custom_fields = res['group'].custom_fields;
+        this.groupData.crm_custom_fields = res['group'].crm_custom_fields;
+        this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+
+        resolve(this.utilityService.resolveAsyncPromise($localize`:@@crmCustomFieldDialog.fieldUpdated:Field updated!`));
+      }).catch((err) => {
+        reject(this.utilityService.rejectAsyncPromise($localize`:@@crmCustomFieldDialog.unableToUpdateField:Unable to update field, please try again!`));
+      });
+    }));
+  }
+
+  setCFType(isCompanyType: boolean, fieldId: string) {
+    this.utilityService.asyncNotification($localize`:@@crmCustomFieldDialog.pleaseWaitUpdatingCF:Please wait we are updating the custom field...`, new Promise((resolve, reject) => {
+      this.crmGroupService.setCRMCustomFieldType(isCompanyType, fieldId, this.groupData._id).then(res => {
+        this.groupData.crm_custom_fields = res['group'].crm_custom_fields;
         this.publicFunctions.sendUpdatesToGroupData(this.groupData);
 
         resolve(this.utilityService.resolveAsyncPromise($localize`:@@crmCustomFieldDialog.fieldUpdated:Field updated!`));
@@ -175,7 +192,7 @@ export class CRMCustomFieldsDialogComponent implements OnInit {
         .then((res) => {
           field.values.splice(index, 1);
 
-          this.groupData.custom_fields = res['group'].custom_fields;
+          this.groupData.crm_custom_fields = res['group'].crm_custom_fields;
           this.publicFunctions.sendUpdatesToGroupData(this.groupData);
         });
     }
@@ -207,7 +224,7 @@ export class CRMCustomFieldsDialogComponent implements OnInit {
         this.crmGroupService.setCRMCustomFieldColor(data, field._id, this.groupData._id).then(res => {
 
           this.customFields[index].badge_color = data;
-          this.groupData.custom_fields = res['group'].custom_fields;
+          this.groupData.crm_custom_fields = res['group'].crm_custom_fields;
 
           this.publicFunctions.sendUpdatesToGroupData(this.groupData);
 
@@ -228,7 +245,7 @@ export class CRMCustomFieldsDialogComponent implements OnInit {
 
     this.utilityService.asyncNotification($localize`:@@crmCustomFieldDialog.pleaseWaitUpdatingCF:Please wait we are updating the custom field...`, new Promise((resolve, reject) => {
       this.crmGroupService.setCRMCustomFieldColor('', field._id, this.groupData._id).then(res => {
-        this.groupData.custom_fields = res['group'].custom_fields;
+        this.groupData.crm_custom_fields = res['group'].crm_custom_fields;
 
         this.customFields[index].badge_color = '';
         this.publicFunctions.sendUpdatesToGroupData(this.groupData);

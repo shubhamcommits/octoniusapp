@@ -16,7 +16,7 @@ export class CRMContactCustomFieldsComponent implements OnChanges {
 
   @Output() contactCFEdited = new EventEmitter();
 
-  crmCustomFields;
+  crmContactCustomFields;
   selectedCFValues = [];
   canEdit = true;
 
@@ -52,20 +52,22 @@ export class CRMContactCustomFieldsComponent implements OnChanges {
     }
 
     if (customFieldsTmnp) {
-      this.crmCustomFields = [];
+      this.crmContactCustomFields = [];
       
       customFieldsTmnp.forEach(field => {
-        this.crmCustomFields.push(field);
+        if (!field?.company_type) {
+          this.crmContactCustomFields.push(field);
 
-        if (!this.contactData?.crm_custom_fields) {
-          this.contactData.crm_custom_fields = new Map<string, string>();
-        }
+          if (!this.contactData?.crm_custom_fields) {
+            this.contactData.crm_custom_fields = new Map<string, string>();
+          }
 
-        if (!this.contactData?.crm_custom_fields[field.name]) {
-          this.contactData.crm_custom_fields[field.name] = '';
-          this.selectedCFValues[field.name] = '';
-        } else {
-          this.selectedCFValues[field.name] = this.contactData?.crm_custom_fields[field.name];
+          if (!this.contactData?.crm_custom_fields[field.name]) {
+            this.contactData.crm_custom_fields[field.name] = '';
+            this.selectedCFValues[field.name] = '';
+          } else {
+            this.selectedCFValues[field.name] = this.contactData?.crm_custom_fields[field.name];
+          }
         }
       });
     }

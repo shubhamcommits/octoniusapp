@@ -31,23 +31,13 @@ const ContactSchema = new Schema({
     links: [{
         type: String,
     }],
-    company_history: [{
-        _company: {
-            type: Schema.Types.ObjectId,
-            ref: 'Company'
-        },
-        start_date: {
-            type: Date,
-            default: moment().format()
-        },
-        end_date: {
-            type: Date,
-            default: moment().format()
-        },
-        position: {
-            type: String
-        }
-    }],
+    _company: {
+        type: Schema.Types.ObjectId,
+        ref: 'Company'
+    },
+    position: {
+        type: String
+    },
     // Custom Fields
     crm_custom_fields: {
         type: Map,

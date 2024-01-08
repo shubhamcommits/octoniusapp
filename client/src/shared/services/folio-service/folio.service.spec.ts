@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { FolioService } from './folio.service';
 
-describe('GroupService', () => {
+describe('FolioService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {

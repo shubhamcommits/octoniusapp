@@ -19,11 +19,11 @@ export class CRMContactListComponent implements OnChanges, AfterViewInit {
 	@Input() groupData;
 
 	sortedData;
-	displayedColumns: string[] = ['name', 'company', 'phone', 'email', 'link', 'star'];
+	displayedColumns: string[] = ['name', 'company', 'position', 'phone', 'email', 'link', 'star'];
 	crmCustomFieldsToShow = [];
 
 	newColumnSelected;
-	crmCustomFields = [];
+	crmContactCustomFields = [];
 
 	workspaceData: any;
 
@@ -49,7 +49,7 @@ export class CRMContactListComponent implements OnChanges, AfterViewInit {
 		}
 
 		await this.crmGroupService.getCRMGroupCustomFields(this.groupData?._id).then(res => {
-			this.crmCustomFields = res['crm_custom_fields'];
+			this.crmContactCustomFields = res['crm_custom_fields'].filter(cf => !cf.company_type);
 		});
 
 		await this.initTable();
@@ -91,7 +91,10 @@ export class CRMContactListComponent implements OnChanges, AfterViewInit {
 
 			this.newColumnSelected = null;
 
-			this.crmGroupService.saveCRMCustomFieldsToShow(this.groupData._id, this.groupData.crm_custom_fields_to_show);
+			this.crmGroupService.saveCRMCustomFieldsToShow(this.groupData._id, this.groupData.crm_custom_fields_to_show)
+				.then(res => {
+					this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+				});
 		}
 	}
 
@@ -111,12 +114,15 @@ export class CRMContactListComponent implements OnChanges, AfterViewInit {
 			this.groupData.crm_custom_fields_to_show.splice(index, 1);
 		}
 
-		this.crmGroupService.saveCRMCustomFieldsToShow(this.groupData._id, this.groupData.crm_custom_fields_to_show);
+		this.crmGroupService.saveCRMCustomFieldsToShow(this.groupData._id, this.groupData.crm_custom_fields_to_show)
+			.then(res => {
+				this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+			});
 	}
 
 	getCustomField(fieldName: string) {
-		const index = (this.crmCustomFields) ? this.crmCustomFields.findIndex((f: any) => f.name === fieldName) : -1;
-		return (index >= 0) ? this.crmCustomFields[index] : null;
+		const index = (this.crmContactCustomFields) ? this.crmContactCustomFields.findIndex((f: any) => f.name === fieldName) : -1;
+		return (index >= 0) ? this.crmContactCustomFields[index] : null;
 	}
 
 	loadCustomFieldsToShow() {
@@ -129,7 +135,7 @@ export class CRMContactListComponent implements OnChanges, AfterViewInit {
 				const cf = this.getCustomField(field);
 				const indexCRMCFToShow = (!!this.crmCustomFieldsToShow) ? this.crmCustomFieldsToShow.findIndex(cf => cf.name === field) : -1;
 				// Push the Column
-				if (cf && indexCRMCFToShow < 0) {
+				if (cf && indexCRMCFToShow < 0 && !cf.company_type) {
 					this.crmCustomFieldsToShow.push(cf);
 			
 					if (this.displayedColumns.length - 1 >= 0) {
@@ -157,7 +163,7 @@ export class CRMContactListComponent implements OnChanges, AfterViewInit {
 		this.sortedData = data.sort((a, b) => {
 			switch (property) {
 				case 'company':
-					return this.compare(a?.company_history[0]?._company.name, b?.company_history[0]?._company.name, directionValue);
+					return this.compare(a?._company.name, b?._company.name, directionValue);
 				
 				case 'phone':
 				case 'email':
@@ -165,7 +171,7 @@ export class CRMContactListComponent implements OnChanges, AfterViewInit {
 					property += 's';
 					return this.compare(a[property][0], b[property][0], directionValue);
 				default:
-					const index = (this.crmCustomFields) ? this.crmCustomFields.findIndex((f: any) => f.name === property) : -1;
+					const index = (this.crmContactCustomFields) ? this.crmContactCustomFields.findIndex((f: any) => f.name === property) : -1;
 					return (index < 0) ? 
 						this.compare(a[property], b[property], directionValue) :
 						this.compare(a.crm_custom_fields[property], b.crm_custom_fields[property], directionValue);

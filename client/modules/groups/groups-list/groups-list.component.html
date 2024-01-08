@@ -2,9 +2,16 @@
 
     <div class="row">
         <ng-container *ngIf="userData && workspaceData && userData?.role != 'guest'">
-            <app-create-group class="col-md-3" [userData]="userData" [workspaceData]="workspaceData"
+            <!-- <app-create-group class="col-md-3" [userData]="userData" [workspaceData]="workspaceData"
                 (group)="receiveGroupUpdates($event)">
-            </app-create-group>
+            </app-create-group> -->
+
+            <!-- Select Group Type starts -->
+            <button class="btn btn-warning mb-3 mt-3" type="button" (click)="openNewGroupDialog()">
+                <i class="material-icons-outlined">add</i>
+                <span i18n="@@groupList.new">New</span>
+            </button>
+            <!-- Select Group Type ends -->
         </ng-container>
     </div>
 
