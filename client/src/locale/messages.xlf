@@ -5205,7 +5205,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="crmCompanyImageDetails.updateCompanyImage" datatype="html">
-        <source>Update copany image</source>
+        <source>Update company image</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/new-crm-company-dialog/crm-company-image-details/crm-company-image-details.component.html</context>
           <context context-type="linenumber">5</context>
