@@ -14,10 +14,8 @@
             <div *ngIf="cf.input_type && !cf.input_type_date" class="col" style="display: flex; float: left; width: 125px;">
                 <input type="text" [name]="cf.name" [(ngModel)]="selectedCFValues[cf.name]" [disabled]="!canEdit" class="col"
                     style="width: 94px;" [value]="selectedCFValues[cf.name]"
+                    (blur)="saveCustomField(cf.name, cf.title, selectedCFValues[cf.name]);"
                     (keyup.enter)="saveInputCustomField($event, cf.name, cf.title)" />
-                <i *ngIf="canEdit" (click)="saveCustomField(cf.name, cf.title, selectedCFValues[cf.name]);"
-                    class="material-icons muted mr-5"
-                    style="cursor: pointer; font-size: 14px; margin-left: 10px;color: #0bc6a0;">save</i>
             </div>
             
             <div *ngIf="cf.input_type && cf.input_type_date">
@@ -30,8 +28,8 @@
             </div>
             
             <!-- Clean field starts -->
-            <i *ngIf="canEdit" (click)="saveCustomField(cf.name, cf.title, null);" class="material-icons muted mr-5"
-                style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
+            <!-- <i *ngIf="canEdit" (click)="saveCustomField(cf.name, cf.title, null);" class="material-icons muted mr-5"
+                style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i> -->
             <!-- Clean field ends -->
         </div>
     </div>
