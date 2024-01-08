@@ -342,7 +342,7 @@ export class CRMController {
     async createCRMCompany(req: Request, res: Response) {
         try {
             const { companyData } = req.body;
-console.log(companyData);
+
             let company = await Company.create(companyData);
 
             if (!company) {

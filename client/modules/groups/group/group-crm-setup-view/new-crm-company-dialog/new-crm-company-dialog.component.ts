@@ -20,6 +20,8 @@ export class NewCRMCompanyDialogComponent implements OnInit {
     _group: null
   };
 
+  imageToUpload: File;
+
   groupData: any;
 
   publicFunctions = new PublicFunctions(this.injector);
@@ -50,9 +52,13 @@ export class NewCRMCompanyDialogComponent implements OnInit {
     this.companyData = newCompanyDetails;
   }
 
+  onCompanyImageEdited(newCompanyImage: any) {
+    this.imageToUpload = newCompanyImage;
+  }
+
   saveCompany() {
-    if (!!this.companyData._id) {
-      this.crmGroupService.updateCRMCompany(this.companyData).then(res => {
+    if (!!this.companyData?._id) {
+      this.crmGroupService.updateCRMCompany(this.companyData, this.imageToUpload, (this.groupData?._workspace?._id || this.groupData?._workspace), this.groupData?._id).then(res => {
         this.companyData = res['company'];
         this.companyEdited.emit(this.companyData);
       });
@@ -64,6 +70,14 @@ export class NewCRMCompanyDialogComponent implements OnInit {
     }
 
     this.mdDialogRef.close();
+  }
+
+  /**
+    * This function opens up the content in a new modal, and takes #content in the ng-template inside HTML layout
+    * @param content
+    */
+  async openUploadImageDetails(content) {
+   this.utilityService.openModal(content, {});
   }
 
   closeDialog() {

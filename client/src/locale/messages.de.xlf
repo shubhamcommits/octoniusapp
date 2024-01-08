@@ -5870,48 +5870,44 @@
           <context context-type="linenumber">22</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="crmCompanyImageDetails.updateCompanyImage" datatype="html">
+      <trans-unit id="crmCompanyImageDialog.updateCompanyImage" datatype="html">
         <source>Update company image</source>
         <target state="needs-translation"/>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/new-crm-company-dialog/crm-company-image-details/crm-company-image-details.component.html</context>
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/new-crm-company-dialog/crm-company-image-dialog/crm-company-image-dialog.component.html</context>
           <context context-type="linenumber">5</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="crmCompanyImageDetails.updateYourImage" datatype="html">
-        <source>Update your Image!</source>
+      <trans-unit id="crmCompanyImageDialog.updateImage" datatype="html">
+        <source>Update Image!</source>
         <target state="needs-translation"/>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/new-crm-company-dialog/crm-company-image-details/crm-company-image-details.component.html</context>
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/new-crm-company-dialog/crm-company-image-dialog/crm-company-image-dialog.component.html</context>
           <context context-type="linenumber">22</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="groupImageDetails.pleaseWaitWhileWeUpdate" datatype="html">
-        <source>Please wait while we are updating the group avatar...</source>
-        <target state="translated">Bitte warten Sie, während wir den Gruppenavatar aktualisieren...</target>
+      <trans-unit id="crmCompanyImageDialog.pleaseWaitWhileWeUpdate" datatype="html">
+        <source>Please wait while we are updating the company image...</source>
+        <target state="needs-translation"/>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/new-crm-company-dialog/crm-company-image-details/crm-company-image-details.component.ts</context>
-          <context context-type="linenumber">50</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-image-details/group-image-details.component.ts</context>
-          <context context-type="linenumber">43</context>
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/new-crm-company-dialog/crm-company-image-dialog/crm-company-image-dialog.component.ts</context>
+          <context context-type="linenumber">47</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="groupImageDetails.companyImageUpdated" datatype="html">
+      <trans-unit id="crmCompanyImageDialog.companyImageUpdated" datatype="html">
         <source>Company Image Updated!</source>
         <target state="needs-translation"/>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/new-crm-company-dialog/crm-company-image-details/crm-company-image-details.component.ts</context>
-          <context context-type="linenumber">56</context>
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/new-crm-company-dialog/crm-company-image-dialog/crm-company-image-dialog.component.ts</context>
+          <context context-type="linenumber">64</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="groupImageDetails.unableToUpdateImage" datatype="html">
+      <trans-unit id="crmCompanyImageDialog.unableToUpdateImage" datatype="html">
         <source>Unable to update the company image!</source>
         <target state="needs-translation"/>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/new-crm-company-dialog/crm-company-image-details/crm-company-image-details.component.ts</context>
-          <context context-type="linenumber">60</context>
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/new-crm-company-dialog/crm-company-image-dialog/crm-company-image-dialog.component.ts</context>
+          <context context-type="linenumber">68</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmCompanyInformation.name" datatype="html">
@@ -5935,7 +5931,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/new-crm-company-dialog/new-crm-company-dialog.component.html</context>
-          <context context-type="linenumber">18</context>
+          <context context-type="linenumber">19</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newCRMCompanyDialog.contactInformation" datatype="html">
@@ -5943,7 +5939,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/new-crm-company-dialog/new-crm-company-dialog.component.html</context>
-          <context context-type="linenumber">25</context>
+          <context context-type="linenumber">26</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newCRMCompanyDialog.customFields" datatype="html">
@@ -5951,7 +5947,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/new-crm-company-dialog/new-crm-company-dialog.component.html</context>
-          <context context-type="linenumber">39</context>
+          <context context-type="linenumber">40</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newCRMCompanyDialog.cancel" datatype="html">
@@ -5959,7 +5955,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/new-crm-company-dialog/new-crm-company-dialog.component.html</context>
-          <context context-type="linenumber">53,55</context>
+          <context context-type="linenumber">54,56</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/groups-list/create-group-dialog/create-group-dialog.component.html</context>
@@ -5971,7 +5967,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/new-crm-company-dialog/new-crm-company-dialog.component.html</context>
-          <context context-type="linenumber">57,59</context>
+          <context context-type="linenumber">58,60</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newCRMCompanyDialog.areYouSure" datatype="html">
@@ -5979,7 +5975,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/new-crm-company-dialog/new-crm-company-dialog.component.ts</context>
-          <context context-type="linenumber">85</context>
+          <context context-type="linenumber">84</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newCRMCompanyDialog.loseData" datatype="html">
@@ -5987,7 +5983,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/new-crm-company-dialog/new-crm-company-dialog.component.ts</context>
-          <context context-type="linenumber">85</context>
+          <context context-type="linenumber">84</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmContactCompanies.company" datatype="html">
@@ -14935,6 +14931,14 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-image-details/group-image-details.component.html</context>
           <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupImageDetails.pleaseWaitWhileWeUpdate" datatype="html">
+        <source>Please wait while we are updating the group avatar...</source>
+        <target state="translated">Bitte warten Sie, während wir den Gruppenavatar aktualisieren...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-image-details/group-image-details.component.ts</context>
+          <context context-type="linenumber">43</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupImageDetails.groupAvatarUpdated" datatype="html">

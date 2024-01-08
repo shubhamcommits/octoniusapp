@@ -1,8 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { Observable } from 'rxjs/internal/Observable';
-import { UtilityService } from '../utility-service/utility.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +8,7 @@ import { UtilityService } from '../utility-service/utility.service';
 export class CRMGroupService {
 
   constructor(
-    private _http: HttpClient,
-    private utilityService: UtilityService) { }
+    private _http: HttpClient) { }
 
   baseURL = environment.GROUPS_BASE_API_URL + '/crm';
 
@@ -103,8 +100,10 @@ export class CRMGroupService {
    * This function is responsible for updating the crm company details
    * @param companyData
    */
-  updateCRMCompany(companyData: any) {
-    return this._http.put(this.baseURL + `/${companyData._id}/updateCompany`, { companyData }).toPromise()
+  updateCRMCompany(companyData: any, fileToUpload: File, workspaceId: string, groupId: string) {
+    let formData = new FormData();
+    formData.append('companyImage', fileToUpload);
+    return this._http.put(this.baseURL + `/${companyData._id}/updateCompany/${workspaceId}/${groupId}`, { formData, companyData }).toPromise()
   }
 
   /**

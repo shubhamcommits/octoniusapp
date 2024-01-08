@@ -4,6 +4,17 @@
     </mat-dialog-actions>
 
     <h2 mat-dialog-title style="margin: -50px 0 0 0 !important;">
+        <!--
+        <app-secured-image *ngIf="!!companyData?._id" [imgURL]="companyData?.company_pic" [service]="'group'" [workspaceId]="(this.groupData?._workspace?._id || this.groupData?._workspace)"
+            [styleClass]="'group-avatar'" (click)="openUploadImageDetails(content)"></app-secured-image>
+
+        <ng-template #content let-modal>
+            <app-crm-company-image-dialog
+                [groupData]="groupData" [companyData]="companyData"
+                (companyImage)="onCompanyImageEdited($event)">
+            </app-crm-company-image-dialog>
+        </ng-template>
+        -->
         <span *ngIf="!!companyData._id && !!companyData.name">{{ companyData?.name }}</span>
         <span i18n="@@newCRMCompanyDialog.newContact" *ngIf="!companyData._id">New Company</span>
     </h2>
