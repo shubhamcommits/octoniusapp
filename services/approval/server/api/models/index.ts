@@ -11,6 +11,7 @@ import { Story } from "./story.model";
 import { Notification } from "./notification.model";
 import { Contact } from "./contact.model";
 import { Company } from "./company.model";
+import { TimeTrackingEntity } from "./time_tracking_entity.model";
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -50,6 +51,7 @@ export {
 
     // Story
     Story as Story,
+    TimeTrackingEntity as TimeTrackingEntity,
 
     // Notification
     Notification as Notification

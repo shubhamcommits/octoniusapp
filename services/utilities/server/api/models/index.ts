@@ -7,6 +7,7 @@ import { Group } from './group.model';
 import { Flamingo } from "./flamingo.model";
 import { Question } from "./questions.model";
 import { Workspace } from "./workspace.model";
+import { TimeTrackingEntity } from "./time_tracking_entity.model";
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -37,5 +38,6 @@ export {
     // Question
     Question as Questions,
 
-    Workspace as Workspace
+    Workspace as Workspace,
+    TimeTrackingEntity as TimeTrackingEntity,
 };

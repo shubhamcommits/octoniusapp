@@ -1,5 +1,6 @@
 import { Auth } from './auth.model';
 import { File } from './file.model';
+import { TimeTrackingEntity } from './time_tracking_entity.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -11,5 +12,7 @@ export {
     File as File,
 
     // Auth
-    Auth as Auth
+    Auth as Auth,
+
+    TimeTrackingEntity as TimeTrackingEntity,
 };
