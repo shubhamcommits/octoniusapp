@@ -85,13 +85,11 @@ export class TaskTimeTrackingComponent implements OnChanges {
   }
 
   onAssignedAdded(res: any) {
-console.log(res.assignee);
     this.entryUserArray = [res?.assignee];
     this.entryUserId = (res?.assignee?._id || res?.assignee);
   }
 
   onAssignedRemoved(userId: string) {
-console.log(userId);
     this.entryUserArray = [];
     this.entryUserId = '';
   }

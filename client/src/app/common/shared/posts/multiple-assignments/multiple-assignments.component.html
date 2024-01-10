@@ -1,6 +1,6 @@
 <!-- Assignee section for tasks starts -->
 <section>
-  <div *ngIf="type != 'chat'">
+  <div *ngIf="type != 'chat' && type != 'time-tracking'">
     <app-secured-image *ngFor="let assignee of assigned_to"
       [imgURL]="assignee?.profile_pic"
       [service]="'user'"
@@ -9,8 +9,15 @@
       [styleClass]="'feed-avatar-small'"
       [tooltip]="assignee?.first_name + ' ' + assignee?.last_name"
       (click)="unassign(assignee._id)"></app-secured-image>
+  </div>
 
-      <span *ngIf="type == 'time-tracking' && !!assigned_to && !!assigned_to[0]">{{ assigned_to[0]?.first_name + ' ' + assigned_to[0]?.last_name }}</span>
+  <div *ngIf="type == 'time-tracking' && !!assigned_to && !!assigned_to[0]" (click)="unassign(assigned_to[0]._id)" style="cursor: pointer;">
+    <app-secured-image [imgURL]="assigned_to[0]?.profile_pic" [service]="'user'"
+      [workspaceId]="workspaceData?._id" [alt]="assigned_to[0]?.first_name + ' ' + assigned_to[0]?.last_name"
+      [styleClass]="'feed-avatar-small'" [tooltip]="assigned_to[0]?.first_name + ' ' + assigned_to[0]?.last_name"
+      (click)="unassign(assigned_to[0]._id)"></app-secured-image>
+  
+    <span>{{ assigned_to[0]?.first_name + ' ' + assigned_to[0]?.last_name }}</span>
   </div>
 
   <div *ngIf="type == 'chat'" style="overflow: auto; overflow-y: hidden; float: left; min-height: 35px;">
