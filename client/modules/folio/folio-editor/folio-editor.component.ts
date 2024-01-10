@@ -1,4 +1,4 @@
-import { Injector, AfterViewInit, Component, ElementRef, ViewChild, LOCALE_ID, Inject } from '@angular/core';
+import { Injector, Input, AfterViewInit, Component, ElementRef, ViewChild, LOCALE_ID, Inject } from '@angular/core';
 import { PublicFunctions } from "modules/public.functions";
 import { ActivatedRoute } from "@angular/router";
 import { SubSink } from "subsink";
@@ -59,6 +59,8 @@ export class FolioEditorComponent implements AfterViewInit {
   @ViewChild('editable', { static: true }) editRef!: ElementRef;
 
   @ViewChild('editable2', { static: true }) editRef2!: ElementRef;
+
+  @Input() mentionAll = true;
 
   // Quill instance variable
   quill: any;
@@ -140,6 +142,11 @@ export class FolioEditorComponent implements AfterViewInit {
 
   // Public functions class member
   publicFunctions = new PublicFunctions(this._Injector);
+
+  findAFileToTag = $localize`:@@folioEditor.findAFileToTag:find a file to tag`;
+  findAPostToTag = $localize`:@@folioEditor.findAPostToTag:find a post to tag`;
+  findACollectionToTag = $localize`:@@folioEditor.findACollectionToTag:find a collection to tag`;
+  findAPageFromACollectionToTag = $localize`:@@folioEditor.findAPageFromACollectionToTag:find a page from a collection to tag`;
 
   constructor(
     @Inject(LOCALE_ID) public locale: string,
@@ -661,12 +668,46 @@ export class FolioEditorComponent implements AfterViewInit {
   }
 
   metionModule() {
+    // Available commands - the order needs to match the index of cmdSuggestions
+    enum Command { file, post, col, colpage }
+
     return {
       allowedChars: /^[A-Za-z\sÅÄÖåäö0123456789]*$/,
       mentionDenotationChars: ["@", "#"],
+      selectKeys: ['Enter'], 
+      //This function is called when a mention has been selected
+      onSelect: (item, insertItem) => {
+        // If the item value is a span, User has selected a command
+        if (item.value.split(' ')[0] === '<span') {
+          let selection = this.quill.getSelection(true)
+          let index = selection.index;
+          
+          // Insert the text for the command into the quill
+          if (item.index == Command.file) {
+            this.quill.insertText(index, 'file')
+          } else if (item.index == Command.post) {
+            this.quill.insertText(index, 'post')
+          } else if (item.index == Command.col) {
+            this.quill.insertText(index, 'col')
+          } else if (item.index == Command.colpage) {
+            this.quill.insertText(index, 'colpage')
+          }
+          
+          // Set the cursor to where the text has been inserted
+          index += Command[item.index].length
+          this.quill.setSelection(index)
+          this.quill.focus();
+
+        // If it is not a command, insert the selected mention item
+        } else {
+          insertItem(item)
+        }
+      },
       source: async (searchTerm, renderList, mentionChar) => {
+
         // Value of the mention list
         let values: any;
+        let searchVal: any;
 
         // If User types "@" then trigger the list for user mentioning
         if (mentionChar === "@") {
@@ -674,30 +715,74 @@ export class FolioEditorComponent implements AfterViewInit {
           values = await this.publicFunctions.suggestMembers(searchTerm, this.groupData?._id, this.workspaceData);
 
           // Adding All Object to mention all the members
-          values.unshift({
-            id: "all",
-            value: "all",
-          });
-          // If User types "#" then trigger the list for files mentioning
-        } else if (mentionChar === "#") {
-          // Initialise values with list of files
-          values = await this.publicFunctions.suggestFiles(searchTerm, this.groupData?._id, this.workspaceData);
-        }
+          if (this.mentionAll) {
+            values.unshift({
+              id: 'all',
+              value: 'all'
+            });
+          }
 
-        // If searchTerm length is 0, then show the full list
-        if (searchTerm.length === 0) {
-          renderList(values, searchTerm);
+        // If User types "#" then trigger the list for files mentioning
+        } else if (mentionChar === "#") {
+          // Initialise values with list of collection pages
+          if (searchTerm.slice(0, 8) === 'colpage ') {
+            searchVal = searchTerm.split(' ')[1];
+            values = await this.publicFunctions.suggestCollectionPages(searchVal, this.groupData?._id, this.workspaceData);  
+
+          // Initialise values with list of collections
+          } else if (searchTerm.slice(0, 4) === 'col ') {
+            searchVal = searchTerm.replace('col ', '');
+            values = await this.publicFunctions.suggestCollection(this.groupData?._id, searchVal);
+
+          // Initialise values with list of files
+          } else if (searchTerm.slice(0, 5) === 'file ') {
+            searchVal = searchTerm.replace('file ', '');
+            values = await this.publicFunctions.suggestFiles(searchVal, this.groupData?._id, this.workspaceData);
+  
+          // Initialise values with list of posts
+          } else if (searchTerm.slice(0, 5) === 'post ') {
+            searchVal = searchTerm.replace('post ', '');
+            values = await this.publicFunctions.suggestPosts(searchVal, this.groupData?._id);
+            
+            // If none of the filters are used, initialise values with all entities
+          } else if (searchTerm.length === 0) {
+            
+          /**
+           * The following code triggers a list to display all the assets when no filter has been provided
+           *
+            searchVal = searchTerm;
+            const collections = await this.publicFunctions.suggestCollection(this.groupData?._id, searchVal);
+            const collectionPages = await this.publicFunctions.suggestCollectionPages(searchVal, this.groupData?._id, this.workspaceData);
+            const files = await this.publicFunctions.suggestFiles(searchTerm, this.groupData?._id, this.workspaceData);
+            const posts = await this.publicFunctions.suggestPosts(searchVal, this.groupData?._id);
+            values = [...collections, ...collectionPages, ...files, ...posts]
+          */
+            
+          // This is the list of command suggestions that displays when User types "#"
+            let cmdSuggestions = [
+              { value: '<span >#file <em>filename</em> <p style="color: #9D9D9D" i18n="@@folioEditor.findAFileToTag"> find a file to tag</p> </span>' },
+              { value: '<span >#post <em>posttitle</em> <p style="color: #9D9D9D" i18n="@@folioEditor.findAPostToTag"> find a post to tag </p> </span>' },
+              { value: '<span >#col <em>collectionname</em> <p style="color: #9D9D9D" i18n="@@folioEditor.findACollectionToTag"> find a collection to tag </p> </span>' },
+              { value: '<span >#colpage <em>collectionpage</em> <p style="color: #9D9D9D" i18n="@@folioEditor.findAPageFromACollectionToTag"> find a page from a collection to tag </p> </span>' },                
+            ]
+            values = cmdSuggestions  
+          }
+      }
+      
+      // If searchVal is undefined, then display the list of command suggestions
+          if (searchVal === undefined) {
+          renderList(values);
         } else {
-          let matches = [];
-          for (let i = 0; i < values.length; i++) {
-            if (~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())) {
+          const matches = [];
+          for (let i = 0; i < values?.length; i++) {
+            if (values[i] && values[i].value && ~values[i].value.toLowerCase().indexOf(searchVal?.toLowerCase())) {
               matches.push(values[i]);
             }
           }
-          renderList(matches, searchTerm);
+          renderList(matches, searchVal);
         }
-      },
-    };
+      }
+    }
   }
 
   /**
