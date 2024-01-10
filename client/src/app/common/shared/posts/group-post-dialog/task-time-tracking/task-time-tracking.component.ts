@@ -14,13 +14,16 @@ export class TaskTimeTrackingComponent implements OnChanges {
 
   @Input() userData: any;
   @Input() groupData: any;
+  @Input() workspaceData: any;
   @Input() taskId: any;
   
   // @Output() openSubtaskEmitter = new EventEmitter();
 
-  addTime = false;
+  showAddTimeForm = false;
 
   entryId;
+  entryUserId;
+  entryUserArray = [];
   entryDate;
   entryTime;
   entryTimeHours;
@@ -34,6 +37,8 @@ export class TaskTimeTrackingComponent implements OnChanges {
 
   timeTrackingEntities = [];
 
+  members = [];
+
   // sortedData;
 	// displayedColumns: string[] = ['image', 'name', 'time', 'comment', 'date', 'category', 'star'];
 
@@ -41,7 +46,6 @@ export class TaskTimeTrackingComponent implements OnChanges {
 
   constructor(
     private groupService: GroupService,
-    private utilityService: UtilityService,
     private injector: Injector
   ) { }
 
@@ -49,9 +53,13 @@ export class TaskTimeTrackingComponent implements OnChanges {
     if (!this.userData) {
       this.userData = await this.publicFunctions.getCurrentUser();
     }
-
+    
     if (!this.groupData) {
       this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+    }
+
+    if (!this.workspaceData) {
+      this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     }
 
     this.groupService.getTimeTrackingCategories(this.groupData._id).then(res => {
@@ -61,6 +69,8 @@ export class TaskTimeTrackingComponent implements OnChanges {
     await this.groupService.getTimeTrackingEntities(this.taskId).then(res => {
       this.timeTrackingEntities = res['timeTrackingEntities'];
     });
+
+    this.members = await this.publicFunctions.getCurrentGroupMembers();
     
     await this.initTable();
   }
@@ -70,38 +80,25 @@ export class TaskTimeTrackingComponent implements OnChanges {
 		// this.sortedData = this.timeTrackingEntities.slice();
 	}
 
-  // sortData(sort: Sort) {
-	// 	const direction = sort.direction;
-	// 	let property = sort.active;
-	// 	let directionValue = (direction == 'asc') ? 1 : -1;
-
-	// 	const data = this.timeTrackingEntities.slice();
-	// 	if (!property || direction === '') {
-	// 		this.sortedData = data;
-	// 		return;
-	// 	}
-
-	// 	this.sortedData = data.sort((a, b) => {
-	// 		switch (property) {
-  //       case 'time':
-  //         return this.compare(a['hours']+':'+a['minutes'], b['hours']+':'+a['minutes'], directionValue);
-	// 			default:
-	// 				return this.compare(a[property], b[property], directionValue);
-	// 		}
-	// 	});
-	// }
-
-  // private compare(a: number | string, b: number | string, isAsc: number) {
-	// 	return (a < b ? -1 : 1) * isAsc;
-	// }
-
   isValidEntry() {
-    return !this.addTime || (!!this.entryDate && !!this.entryTime && this.entryTimeHours && !!this.entryTimeMinutes && !!this.entryCategory);
+    return !this.showAddTimeForm || (!!this.entryDate && !!this.entryTime && this.entryTimeHours && !!this.entryTimeMinutes && !!this.entryCategory);
+  }
+
+  onAssignedAdded(res: any) {
+console.log(res.assignee);
+    this.entryUserArray = [res?.assignee];
+    this.entryUserId = (res?.assignee?._id || res?.assignee);
+  }
+
+  onAssignedRemoved(userId: string) {
+console.log(userId);
+    this.entryUserArray = [];
+    this.entryUserId = '';
   }
 
   addNewEntry() {
-    if (!this.addTime) {
-      this.addTime = !this.addTime
+    if (!this.showAddTimeForm) {
+      this.showAddTimeForm = !this.showAddTimeForm
     } else if (!this.entryId) {
       const newEntity = {
         date: this.entryDate,
@@ -109,7 +106,7 @@ export class TaskTimeTrackingComponent implements OnChanges {
         minutes: this.entryTimeMinutes,
         _category: this.entryCategory,
         comment: this.entryComment,
-        _user: this.userData?._id,
+        _user: (!!this.entryUserId) ? this.entryUserId : this.userData?._id,
         _task: this.taskId
       }
 
@@ -118,7 +115,10 @@ export class TaskTimeTrackingComponent implements OnChanges {
 
         await this.initTable();
         
-        this.addTime = false;
+        this.showAddTimeForm = false;
+
+        this.entryUserArray = [];
+        this.entryUserId = '';
         this.entryDate = '';
         this.entryTime = '';
         this.entryTimeHours = '';
@@ -134,7 +134,7 @@ export class TaskTimeTrackingComponent implements OnChanges {
         minutes: this.entryTimeMinutes,
         _category: this.entryCategory,
         comment: this.entryComment,
-        _user: this.userData?._id,
+        _user: (!!this.entryUserId) ? this.entryUserId : this.userData?._id,
         _task: this.taskId
       }
 
@@ -146,8 +146,10 @@ export class TaskTimeTrackingComponent implements OnChanges {
 
           await this.initTable();
         }
-        this.addTime = false;
+        this.showAddTimeForm = false;
 
+        this.entryUserArray = [];
+        this.entryUserId = '';
         this.entryId = '';
         this.entryDate = '';
         this.entryTime = '';
@@ -160,11 +162,13 @@ export class TaskTimeTrackingComponent implements OnChanges {
   }
 
   cancelNewEntry() {
-    this.addTime = !this.addTime;
+    this.showAddTimeForm = !this.showAddTimeForm;
   }
 
   onEditEntryEvent(timeTrackingEntity) {
     this.entryId = timeTrackingEntity._id;
+    this.entryUserId = timeTrackingEntity?._user?._id || timeTrackingEntity?._user;
+    this.entryUserArray = [timeTrackingEntity?._user];
     this.entryDate = timeTrackingEntity.date;
     this.entryTimeHours = timeTrackingEntity.hours;
     this.entryTimeMinutes = timeTrackingEntity.minutes;
@@ -172,24 +176,8 @@ export class TaskTimeTrackingComponent implements OnChanges {
     this.entryCategory = timeTrackingEntity._category;
     this.entryComment = timeTrackingEntity.comment;
 
-    this.addTime = true;
+    this.showAddTimeForm = true;
   }
-
-  // deleteEntry(timeTrackingEntityId: string) {
-  //   this.utilityService.getConfirmDialogAlert($localize`:@@taskTimeTracking.areYouSure:Are you sure?`, $localize`:@@taskTimeTracking.removeCompany:By doing this, you will delete the selected time record!`)
-	// 		.then((res) => {
-	// 			if (res.value) {
-	// 				this.groupService.removeTimeTrackingEntity(timeTrackingEntityId).then(async res => {
-	// 					const index = (this.timeTrackingEntities) ? this.timeTrackingEntities.findIndex(tte => tte._id == timeTrackingEntityId) : -1;
-	// 					if (index >= 0) {
-	// 						this.timeTrackingEntities.splice(index, 1);
-
-	// 						// await this.initTable();
-	// 					}
-	// 				})
-	// 			}
-	// 		});
-  // }
 
   /**
    * This function is responsible for receiving the date from @module <app-date-picker></app-date-picker>
@@ -213,8 +201,4 @@ export class TaskTimeTrackingComponent implements OnChanges {
 //   changeEntryCategory() {
 // console.log(this.entryCategory);
 //   }
-
-  // formateDate(date) {
-  //   return (date) ? DateTime.fromISO(date).toLocaleString(DateTime.DATE_MED) : '';
-  // }
 }

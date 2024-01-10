@@ -1,11 +1,12 @@
 <div class="new-record-form">
-  <div *ngIf="addTime">
+  <div *ngIf="showAddTimeForm">
     <div class="row">
       <div class="col-md-4">
         <app-date-picker class="form-control" name="entryDate" [styleClass]="'input-date'"
           (date)="getDate($event)" [selectedDate]="entryDate">
         </app-date-picker>
       </div>
+
       <div class="col-md-2">
         <div class="form-control">
           <i class="material-icons-outlined muted">timer</i>
@@ -21,10 +22,18 @@
           <mat-option *ngFor="let category of categories" [value]="category.name">{{ category.name }}</mat-option>
         </mat-select>
       </div>
+
+      <div class="col-md-3" *ngIf="userData?.role == 'manager' || userData?.role == 'owner'">
+        <div class="form-control">      
+          <app-multiple-assignments [workspaceData]="workspaceData" [assigned_to]="entryUserArray" [type]="'time-tracking'"
+            (assigneeAddedEmiter)="onAssignedAdded($event)" (assigneeRemovedEmiter)="onAssignedRemoved($event)">
+          </app-multiple-assignments>
+        </div>
+      </div>
     </div>
 
     <div class="row">
-      <div class="col-md-10 form-control" style="width: 400px;">
+      <div class="col-md-12 form-control" style="width: 400px;">
         <textarea rows="4" [(ngModel)]="entryComment" [placeholder]="commentPlaceholder" style="border: none;"></textarea>
       </div>
     </div>
@@ -37,7 +46,7 @@
       <span i18n="@@taskTimeTracking.editEntry" *ngIf="!!entryId">Edit entry</span>
     </button>
 
-    <button class="btn btn-outline-danger btn-md float-left" style="margin-left: 30px;" (click)="cancelNewEntry()" *ngIf="addTime">
+    <button class="btn btn-outline-danger btn-md float-left" style="margin-left: 30px;" (click)="cancelNewEntry()" *ngIf="showAddTimeForm">
       <span i18n="@@taskTimeTracking.cancel">X Cancel</span>
     </button>
   </div>
