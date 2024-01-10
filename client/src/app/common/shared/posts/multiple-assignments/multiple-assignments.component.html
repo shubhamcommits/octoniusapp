@@ -9,6 +9,8 @@
       [styleClass]="'feed-avatar-small'"
       [tooltip]="assignee?.first_name + ' ' + assignee?.last_name"
       (click)="unassign(assignee._id)"></app-secured-image>
+
+      <span *ngIf="type == 'time-tracking' && !!assigned_to && !!assigned_to[0]">{{ assigned_to[0]?.first_name + ' ' + assigned_to[0]?.last_name }}</span>
   </div>
 
   <div *ngIf="type == 'chat'" style="overflow: auto; overflow-y: hidden; float: left; min-height: 35px;">
@@ -28,16 +30,21 @@
   </div>
   
 
-  <span *ngIf="(!assigned_to || assigned_to.length === 0) && type != 'filter' && type != 'chat' && type != 'collection'"
+  <span *ngIf="(!assigned_to || assigned_to.length === 0) && type != 'filter' && type != 'chat' && type != 'collection' && type != 'time-tracking'"
     i18n="@@multipleAssignments.unassigned">
       Unassigned
   </span>
 
-  <button *ngIf="((!post?.task?.allocation || post?.task?.allocation == 0) || (assigned_to?.length < 1)) && type != 'chat' && canEdit"
+  <button *ngIf="((!post?.task?.allocation || post?.task?.allocation == 0) || (assigned_to?.length < 1)) && type != 'chat' && canEdit && type != 'time-tracking'"
     mat-button [matMenuTriggerFor]="assigneeSearch" #trigger="matMenuTrigger" class="btn tagslabel">
       <span *ngIf="type != 'filter' && type != 'collection'"i18n="@@multipleAssignments.addAssignee">add assignee</span>
       <span *ngIf="type == 'filter'"i18n="@@multipleAssignments.addUser">add user</span>
       <span *ngIf="type == 'collection'" i18n="@@multipleAssignments.addEditor">add editor</span>
+  </button>
+
+  <button *ngIf="type == 'time-tracking' && assigned_to?.length < 1 && canEdit"
+    mat-button [matMenuTriggerFor]="assigneeSearch" #trigger="matMenuTrigger" class="btn tagslabel">
+      <span i18n="@@multipleAssignments.addUser">add user</span>
   </button>
 
   <i *ngIf="type == 'chat' && canEdit" class="material-icons-outlined btn" [matMenuTriggerFor]="assigneeSearch" #trigger="matMenuTrigger">add_circle</i>

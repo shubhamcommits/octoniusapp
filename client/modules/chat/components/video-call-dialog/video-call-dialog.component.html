@@ -27,7 +27,7 @@
 
                         <div class="members" *ngIf="membersOn">
                             <app-multiple-assignments *ngIf="!objectExists(chatData?._group)" [canEdit]="canEdit" [workspaceData]="workspaceData"
-                                [userData]="userData" [assigned_to]="members" [type]="'chat'"
+                                [assigned_to]="members" [type]="'chat'"
                                 (assigneeAddedEmiter)="onAssignedAdded($event)"
                                 (assigneeRemovedEmiter)="onAssignedRemoved($event)">
                             </app-multiple-assignments>
