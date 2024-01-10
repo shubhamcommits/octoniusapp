@@ -291,7 +291,7 @@ export class GroupPostDialogComponent implements OnInit, AfterViewChecked {
   }
 
   selectedDefaultTab() {
-    let tabsLength = 0;
+    let tabsLength = 1;
     if (this.showSubtasks && (!this.postData?.task?.shuttle_type || this.groupData?._id == this.postData?._group?._id)) {
       tabsLength++;
     }

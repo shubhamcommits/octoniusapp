@@ -98,6 +98,7 @@ import { CRMContactCustomFieldsComponent } from './group/group-crm-setup-view/ne
 import { CreateGroupDialogComponent } from './groups-list/create-group-dialog/create-group-dialog.component';
 import { CRMCompanyCustomFieldsComponent } from './group/group-crm-setup-view/new-crm-company-dialog/crm-company-custom-fields/crm-company-custom-fields.component';
 import { CRMCompanyImageDialogComponent } from './group/group-crm-setup-view/new-crm-company-dialog/crm-company-image-dialog/crm-company-image-dialog.component';
+import { GroupTimeTrackingCategoriesDialogComponent } from './group/time-tracking-categories-dialog/time-tracking-categories-dialog.component';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -142,6 +143,7 @@ import { CRMCompanyImageDialogComponent } from './group/group-crm-setup-view/new
         CustomFieldsDialogComponent,
         CRMCustomFieldsDialogComponent,
         FilesCustomFieldsDialogComponent,
+        GroupTimeTrackingCategoriesDialogComponent,
         AdvancedFilterDialogComponent,
         DoneTasksListViewComponent,
         DoneTasksKanbanViewComponent,

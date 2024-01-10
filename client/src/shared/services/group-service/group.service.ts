@@ -373,4 +373,32 @@ export class GroupService {
       this.utilityService.saveAsExcelFile(sections, name);
     }
   }
+
+  saveTimeTrackingEntry(groupId: string, newTimeTrackingEntity) {
+    return this._http.put(this.baseURL + `/${groupId}/timeTrackingEntry`, { newTimeTrackingEntity }).toPromise();
+  }
+
+  editTimeTrackingEntry(editTimeTrackingEntity) {
+    return this._http.post(this.baseURL + `/${editTimeTrackingEntity._id}/timeTrackingEntry`, { editTimeTrackingEntity }).toPromise();
+  }
+
+  removeTimeTrackingEntity(timeTrackingEntityId: string) {
+    return this._http.delete(this.baseURL + `/${timeTrackingEntityId}/removeTimeTrackingEntity`).toPromise();
+  }
+
+  getTimeTrackingEntities(postId: string) {
+    return this._http.get(this.baseURL + `/${postId}/timeTrackingEntities`).toPromise();
+  }
+
+  getTimeTrackingCategories(groupId: string) {
+    return this._http.get(this.baseURL + `/${groupId}/timeTrackingCategories`).toPromise();
+  }
+
+  saveNewTimeTrackingCategory(newCategory: any, groupId) {
+    return this._http.put(this.baseURL + `/${groupId}/newTimeTrackingCategory`, { newCategory }).toPromise();
+  }
+
+  removeTimeTrackingCategory(categoryId, groupId) {
+    return this._http.delete(this.baseURL + `/${groupId}/removeTimeTrackingCategory/${categoryId}`).toPromise();
+  }
 }

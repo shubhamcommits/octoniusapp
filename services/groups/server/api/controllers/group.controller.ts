@@ -1,4 +1,4 @@
-import { Column, Flow, Group, Post, User, Workspace } from '../models';
+import { Column, Flow, Group, Post, TimeTrackingEntity, User, Workspace } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError, axios } from '../../utils';
 import http from 'axios';
@@ -2543,4 +2543,223 @@ export class GroupController {
             return sendError(res, error, 'Internal Server Error!', 500);
         }
     };
+
+    /**
+     * This function is responsible for adding a new time tracking entity
+     * @param { timeTrackingEntity } req 
+     * @param res 
+     */
+    async saveTimeTrackingEntry(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { groupId } = req.params;
+
+        // Fetch the newTimeTrackingEntity from fileHandler middleware
+        let newTimeTrackingEntity = req.body['newTimeTrackingEntity'];
+        newTimeTrackingEntity._created_by = req['userId'];
+
+        try {
+            let timeTrackingEntity = await TimeTrackingEntity.create(newTimeTrackingEntity);
+
+            timeTrackingEntity = await TimeTrackingEntity.findById({
+                    _id: timeTrackingEntity._id
+                })
+                .populate('_user', 'first_name last_name profile_pic email')
+                .populate('_created_by', 'first_name last_name profile_pic email')
+                .lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Time Tracking entity created!',
+                timeTrackingEntity: timeTrackingEntity
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    /**
+     * This function is responsible for adding a new time tracking entity
+     * @param { timeTrackingEntity } req 
+     * @param res 
+     */
+    async editTimeTrackingEntry(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the editTimeTrackingEntityId
+        const { editTimeTrackingEntityId } = req.params;
+
+        // Fetch the newTimeTrackEntity from fileHandler middleware
+        let editTimeTrackingEntity = req.body['editTimeTrackingEntity'];
+
+        try {
+            let timeTrackingEntity = await TimeTrackingEntity.findByIdAndUpdate({
+                    _id: editTimeTrackingEntityId
+                }, {
+                    $set: {
+                        date: editTimeTrackingEntity.date,
+                        hours: editTimeTrackingEntity.hours,
+                        minutes: editTimeTrackingEntity.minutes,
+                        _category: editTimeTrackingEntity._category,
+                        comment: editTimeTrackingEntity.comment,
+                        _user: editTimeTrackingEntity._user,
+                        _task: editTimeTrackingEntity._task
+                    }
+                })
+                .populate('_user', 'first_name last_name profile_pic email')
+                .populate('_created_by', 'first_name last_name profile_pic email')
+                .lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Time Tracking entity created!',
+                timeTrackingEntity: timeTrackingEntity
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async removeTimeTrackingEntity(req: Request, res: Response, next: NextFunction) {
+        // Fetch the groupId & fieldId
+        const { timeTrackingEntityId } = req.params;
+
+        try {
+
+            await TimeTrackingEntity.findByIdAndDelete({
+                _id: timeTrackingEntityId
+            });
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Time tracking Entity deleted!'
+            });
+        } catch (err) {
+            console.log(err);
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for adding a new time tracking entity
+     * @param { timeTrackingEntity } req 
+     * @param res 
+     */
+    async getTimeTrackingEntities(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { postId } = req.params;
+
+        try {
+            let timeTrackingEntities = await TimeTrackingEntity.find({
+                    _task: postId
+                })
+                .populate('_user', 'first_name last_name profile_pic email')
+                .populate('_created_by', 'first_name last_name profile_pic email')
+                .lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Time Tracking entities found!',
+                timeTrackingEntities: timeTrackingEntities
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    /**
+     * This function fetches the posts of the group with specific dates
+     * @param req
+     */
+    async getTimeTrackingCategories(req: Request, res: Response) {
+        try {
+
+            const { groupId } = req.params;
+
+            // Find the Group based on the groupId
+            const group = await Group.findById({
+                _id: groupId
+            })
+            .select('time_tracking_categories')
+            .lean() || [];
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Categories found!',
+                categories: group.time_tracking_categories || []
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
+     * This function is responsible for adding a new custom field for the particular group
+     * @param { customFiel } req 
+     * @param res 
+     */
+    async saveNewTimeTrackingCategory(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { groupId } = req.params;
+
+        // Fetch the newCustomField from fileHandler middleware
+        const newCategory = req.body['newCategory'];
+
+        try {
+
+            // Find the group and update their respective group avatar
+            const group = await Group.findByIdAndUpdate({
+                _id: groupId
+            }, {
+                //custom_fields: newCustomField
+                $push: { "time_tracking_categories": newCategory }
+            }, {
+                new: true
+            }).select('time_tracking_categories');
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group time tracking categories updated!',
+                categories: group.time_tracking_categories
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async removeTimeTrackingCategory(req: Request, res: Response, next: NextFunction) {
+        // Fetch the groupId & fieldId
+        const { groupId, categoryId } = req.params;
+
+        try {
+
+            let group = await Group.findById({
+                _id: groupId
+            }).select('time_tracking_categories').lean();
+
+            const catIndex = group.time_tracking_categories.findIndex(cat => cat._id == categoryId);
+            const cat = (group && group.time_tracking_categories) ? group.time_tracking_categories[catIndex] : null;
+
+            // Find the group and update their respective group avatar
+            group = await Group.findByIdAndUpdate({
+                    _id: groupId
+                }, {
+                    $pull: {
+                        time_tracking_categories: {
+                            _id: categoryId
+                        }
+                    }
+                }).lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group time tracking categories updated!',
+                group: group
+            });
+        } catch (err) {
+            console.log(err);
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
 }
