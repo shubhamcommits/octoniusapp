@@ -768,6 +768,7 @@ export class PostService {
             custom_fields: post.task.custom_fields,
             isNorthStar: post.task.isNorthStar,
             is_idea: post.task.is_idea,
+            is_crm_task: post.task.is_crm_task,
             northStar: post.task.northStar,
             is_milestone: post?.task?.is_milestone || false,
             _parent_task: post.task._parent_task
