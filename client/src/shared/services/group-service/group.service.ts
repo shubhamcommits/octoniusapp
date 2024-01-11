@@ -382,8 +382,8 @@ export class GroupService {
     return this._http.post(this.baseURL + `/${editTimeTrackingEntity._id}/timeTrackingEntry`, { editTimeTrackingEntity }).toPromise();
   }
 
-  removeTimeTrackingEntity(timeTrackingEntityId: string) {
-    return this._http.delete(this.baseURL + `/${timeTrackingEntityId}/removeTimeTrackingEntity`).toPromise();
+  removeTimeTrackingEntity(timeTrackingEntityId: string, timeId: string) {
+    return this._http.delete(this.baseURL + `/${timeTrackingEntityId}/removeTimeTrackingEntity/${timeId}`).toPromise();
   }
 
   getTimeTrackingEntities(postId: string) {

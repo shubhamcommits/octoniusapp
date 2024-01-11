@@ -56,10 +56,10 @@
       <i class="material-icons-outlined ml-2 muted pointer"
         [matMenuTriggerFor]="menu">more_horiz</i>
       <mat-menu #menu="matMenu">
-        <a mat-menu-item (click)="openEditEntry(timeTrackingEntities)">
+        <!-- <a mat-menu-item (click)="openEditEntry(timeTrackingEntities)">
           <span i18n="@@taskTimeTrackingList.edit">Edit</span>
-        </a>
-        <a mat-menu-item (click)="deleteEntry(timeTrackingEntities?._id)">
+        </a> -->
+        <a mat-menu-item (click)="deleteEntry(timeTrackingEntities?._id, timeTrackingEntities?.timeId)">
           <span i18n="@@taskTimeTrackingList.delete">Delete</span>
         </a>
       </mat-menu>

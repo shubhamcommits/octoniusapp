@@ -1,7 +1,8 @@
 import { Component, Injector, Input, OnChanges } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { PublicFunctions } from 'modules/public.functions';
-import { DateTime } from 'luxon';
+import moment from 'moment';
+// import { DateTime } from 'luxon';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
@@ -20,10 +21,12 @@ export class TaskTimeTrackingComponent implements OnChanges {
   // @Output() openSubtaskEmitter = new EventEmitter();
 
   showAddTimeForm = false;
+  entryAlreadyExists = false;
 
   entryId;
   entryUserId;
   entryUserArray = [];
+  entryTimeId;
   entryDate;
   entryTime;
   entryTimeHours;
@@ -36,11 +39,9 @@ export class TaskTimeTrackingComponent implements OnChanges {
   commentPlaceholder = $localize`:@@taskTimeTracking.commentPlaceHolder:Comment`;
 
   timeTrackingEntities = [];
+  timeTrackingEntitiesMapped = [];
 
   members = [];
-
-  // sortedData;
-	// displayedColumns: string[] = ['image', 'name', 'time', 'comment', 'date', 'category', 'star'];
 
   publicFunctions = new PublicFunctions(this.injector);
 
@@ -71,17 +72,46 @@ export class TaskTimeTrackingComponent implements OnChanges {
     });
 
     this.members = await this.publicFunctions.getCurrentGroupMembers();
+
+    this.entryUserArray = [this.userData];
+    this.entryUserId = this.userData?._id;
     
     await this.initTable();
   }
   
 	async initTable() {
-    this.timeTrackingEntities = [...this.timeTrackingEntities];
-		// this.sortedData = this.timeTrackingEntities.slice();
+    this.timeTrackingEntitiesMapped = [];
+
+    this.timeTrackingEntities.forEach(tte => {
+      tte?.times?.forEach(time => {
+        let tteMapped = {
+          _id: tte._id,
+          _user: tte._user,
+          _task: tte._task,
+          _category: tte._category,
+          timeId: time._id,
+          date: time.date,
+          hours: time.hours,
+          minutes: time.minutes,
+          comment: tte.comment,
+        };
+        this.timeTrackingEntitiesMapped.push(tteMapped);
+      });
+    });
+    this.timeTrackingEntitiesMapped = [...this.timeTrackingEntitiesMapped];
+    // this.timeTrackingEntities = [...this.timeTrackingEntities];
 	}
 
   isValidEntry() {
-    return !this.showAddTimeForm || (!!this.entryDate && !!this.entryTime && this.entryTimeHours && !!this.entryTimeMinutes && !!this.entryCategory);
+    const index = (!!this.timeTrackingEntitiesMapped)
+      ? this.timeTrackingEntitiesMapped.findIndex(tte => (tte._user._id || tte._user) == this.entryUserId && (tte._task._id || tte._task) == this.taskId && tte._category == this.entryCategory && (!!(tte.date) && !!(this.entryDate) && this.isSameDay(tte.date, this.entryDate)))
+      : -1;
+    if (!!this.entryId) {
+      this.entryAlreadyExists = false;
+    } else {
+      this.entryAlreadyExists = (index >= 0);
+    }
+    return !this.showAddTimeForm || (!!this.entryDate && !!this.entryTime && this.entryTimeHours && !!this.entryTimeMinutes && !!this.entryCategory && !this.entryAlreadyExists);
   }
 
   onAssignedAdded(res: any) {
@@ -94,19 +124,21 @@ export class TaskTimeTrackingComponent implements OnChanges {
     this.entryUserId = '';
   }
 
-  addNewEntry() {
+  saveEntry() {
     if (!this.showAddTimeForm) {
       this.showAddTimeForm = !this.showAddTimeForm
     } else if (!this.entryId) {
       const newEntity = {
-        date: this.entryDate,
-        hours: this.entryTimeHours,
-        minutes: this.entryTimeMinutes,
-        _category: this.entryCategory,
-        comment: this.entryComment,
         _user: (!!this.entryUserId) ? this.entryUserId : this.userData?._id,
-        _task: this.taskId
-      }
+        _task: this.taskId,
+        _category: this.entryCategory,
+        times: [{
+          date: this.entryDate,
+          hours: this.entryTimeHours,
+          minutes: this.entryTimeMinutes
+        }],
+        comment: this.entryComment,
+      };
 
       this.groupService.saveTimeTrackingEntry(this.groupData._id, newEntity).then(async (res: any) => {
         this.timeTrackingEntities.push(res.timeTrackingEntity);
@@ -115,8 +147,9 @@ export class TaskTimeTrackingComponent implements OnChanges {
         
         this.showAddTimeForm = false;
 
-        this.entryUserArray = [];
-        this.entryUserId = '';
+        this.entryUserArray = [this.userData];
+        this.entryUserId = this.userData?._id;
+        this.entryTimeId = '';
         this.entryDate = '';
         this.entryTime = '';
         this.entryTimeHours = '';
@@ -127,13 +160,14 @@ export class TaskTimeTrackingComponent implements OnChanges {
     } else {
       let editedEntity = {
         _id: this.entryId,
+        _user: (!!this.entryUserId) ? this.entryUserId : this.userData?._id,
+        _task: this.taskId,
+        _category: this.entryCategory,
+        timeId: this.entryTimeId,
         date: this.entryDate,
         hours: this.entryTimeHours,
         minutes: this.entryTimeMinutes,
-        _category: this.entryCategory,
         comment: this.entryComment,
-        _user: (!!this.entryUserId) ? this.entryUserId : this.userData?._id,
-        _task: this.taskId
       }
 
       this.groupService.editTimeTrackingEntry(editedEntity).then(async (res: any) => {
@@ -146,9 +180,10 @@ export class TaskTimeTrackingComponent implements OnChanges {
         }
         this.showAddTimeForm = false;
 
-        this.entryUserArray = [];
-        this.entryUserId = '';
+        this.entryUserArray = [this.userData];
+        this.entryUserId = this.userData?._id;
         this.entryId = '';
+        this.entryTimeId = '';
         this.entryDate = '';
         this.entryTime = '';
         this.entryTimeHours = '';
@@ -161,12 +196,25 @@ export class TaskTimeTrackingComponent implements OnChanges {
 
   cancelNewEntry() {
     this.showAddTimeForm = !this.showAddTimeForm;
+    this.entryUserArray = [this.userData];
+    this.entryUserId = this.userData?._id;
+    this.entryId = '';
+    this.entryTimeId = '';
+    this.entryDate = '';
+    this.entryTime = '';
+    this.entryTimeHours = '';
+    this.entryTimeMinutes = '';
+    this.entryCategory = '';
+    this.entryComment = '';
+    this.entryAlreadyExists = false;
   }
 
-  onEditEntryEvent(timeTrackingEntity) {
+  onEditEntryEvent(timeTrackingEntity: any) {
+console.log(timeTrackingEntity);
     this.entryId = timeTrackingEntity._id;
     this.entryUserId = timeTrackingEntity?._user?._id || timeTrackingEntity?._user;
     this.entryUserArray = [timeTrackingEntity?._user];
+    this.entryTimeId = timeTrackingEntity.timeId;
     this.entryDate = timeTrackingEntity.date;
     this.entryTimeHours = timeTrackingEntity.hours;
     this.entryTimeMinutes = timeTrackingEntity.minutes;
@@ -182,7 +230,7 @@ export class TaskTimeTrackingComponent implements OnChanges {
    * @param dateObject
    */
   getDate(dateObject: any) {
-    this.entryDate = dateObject.toDate() || null;
+    this.entryDate = dateObject.toISOString() || null;
   }
 
   getTime(timeObject: any) {
@@ -199,4 +247,17 @@ export class TaskTimeTrackingComponent implements OnChanges {
 //   changeEntryCategory() {
 // console.log(this.entryCategory);
 //   }
+
+  isSameDay(day1: any, day2: any) {
+    if (!day1 && !day2) {
+      return true;
+    } else if ((!!day1 && !day2) || (!!day2 && !day1)) {
+      return true;
+    }
+    return moment.utc(day1).isSame(moment.utc(day2), 'day');
+  }
+
+  formateDate(date) {
+    return (date) ? moment.utc(date).add('1', 'day').format("MMM D, YYYY") : '';
+  }
 }

@@ -175,7 +175,7 @@ routes.put('/:groupId/timeTrackingEntry', group.saveTimeTrackingEntry);
 routes.post('/:editTimeTrackingEntityId/timeTrackingEntry', group.editTimeTrackingEntry);
 
 // DELETE - Delete time tracking entity
-routes.delete('/:timeTrackingEntityId/removeTimeTrackingEntity', group.removeTimeTrackingEntity);
+routes.delete('/:timeTrackingEntityId/removeTimeTrackingEntity/:timeId', group.removeTimeTrackingEntity);
 
 // GET - Get task time tracking entities
 routes.get('/:postId/timeTrackingEntities', group.getTimeTrackingEntities);

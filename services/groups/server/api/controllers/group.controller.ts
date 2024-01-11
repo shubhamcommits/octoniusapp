@@ -2596,14 +2596,17 @@ export class GroupController {
                     _id: editTimeTrackingEntityId
                 }, {
                     $set: {
-                        date: editTimeTrackingEntity.date,
-                        hours: editTimeTrackingEntity.hours,
-                        minutes: editTimeTrackingEntity.minutes,
                         _category: editTimeTrackingEntity._category,
                         comment: editTimeTrackingEntity.comment,
                         _user: editTimeTrackingEntity._user,
-                        _task: editTimeTrackingEntity._task
+                        _task: editTimeTrackingEntity._task,
+                        'times.$[time].hours': editTimeTrackingEntity.hours,
+                        'times.$[time].minutes': editTimeTrackingEntity.minutes,
                     }
+                },
+                {
+                    arrayFilters: [{ "time._id": editTimeTrackingEntity.timeId }],
+                    new: true
                 })
                 .populate('_user', 'first_name last_name profile_pic email')
                 .populate('_created_by', 'first_name last_name profile_pic email')
@@ -2621,13 +2624,25 @@ export class GroupController {
 
     async removeTimeTrackingEntity(req: Request, res: Response, next: NextFunction) {
         // Fetch the groupId & fieldId
-        const { timeTrackingEntityId } = req.params;
+        const { timeTrackingEntityId, timeId } = req.params;
 
         try {
 
-            await TimeTrackingEntity.findByIdAndDelete({
-                _id: timeTrackingEntityId
-            });
+            const tte = await TimeTrackingEntity.findByIdAndUpdate({
+                    _id: timeTrackingEntityId
+                }, {
+                    $pull: {
+                        times: {
+                            _id: timeId
+                        }
+                    }
+                }).select('times').lean();
+
+            if (!tte.times || tte.times.length == 0) {
+                await TimeTrackingEntity.findByIdAndDelete({
+                        _id: timeTrackingEntityId
+                    });
+            }
 
             // Send status 200 response
             return res.status(200).json({
@@ -2678,10 +2693,10 @@ export class GroupController {
 
             // Find the Group based on the groupId
             const group = await Group.findById({
-                _id: groupId
-            })
-            .select('time_tracking_categories')
-            .lean() || [];
+                    _id: groupId
+                })
+                .select('time_tracking_categories')
+                .lean() || [];
 
             // Send the status 200 response
             return res.status(200).json({
@@ -2710,13 +2725,13 @@ export class GroupController {
 
             // Find the group and update their respective group avatar
             const group = await Group.findByIdAndUpdate({
-                _id: groupId
-            }, {
-                //custom_fields: newCustomField
-                $push: { "time_tracking_categories": newCategory }
-            }, {
-                new: true
-            }).select('time_tracking_categories');
+                    _id: groupId
+                }, {
+                    //custom_fields: newCustomField
+                    $push: { "time_tracking_categories": newCategory }
+                }, {
+                    new: true
+                }).select('time_tracking_categories');
 
             // Send status 200 response
             return res.status(200).json({
@@ -2735,11 +2750,11 @@ export class GroupController {
         try {
 
             let group = await Group.findById({
-                _id: groupId
-            }).select('time_tracking_categories').lean();
+                    _id: groupId
+                }).select('time_tracking_categories').lean();
 
-            const catIndex = group.time_tracking_categories.findIndex(cat => cat._id == categoryId);
-            const cat = (group && group.time_tracking_categories) ? group.time_tracking_categories[catIndex] : null;
+            // const catIndex = group.time_tracking_categories.findIndex(cat => cat._id == categoryId);
+            // const cat = (group && group.time_tracking_categories) ? group.time_tracking_categories[catIndex] : null;
 
             // Find the group and update their respective group avatar
             group = await Group.findByIdAndUpdate({

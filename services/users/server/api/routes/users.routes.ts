@@ -190,6 +190,9 @@ routes.get('/:userId/calculate-num-holidays', user.getNumHolidays);
 // GET - Get the out of the office days 
 routes.get('/:userId/pending-approval-holidays', user.getPendingApprovalHolidays);
 
+// GET - Get the time tracking entities of a user for a week 
+routes.get('/:userId/time-tracking-entities', user.getUserTimeTrackingEntites);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

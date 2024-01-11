@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-4">
         <app-date-picker class="form-control" name="entryDate" [styleClass]="'input-date'"
-          (date)="getDate($event)" [selectedDate]="entryDate">
+          (date)="getDate($event)" [selectedDate]="entryDate" [canEdit]="!entryId">
         </app-date-picker>
       </div>
 
@@ -40,7 +40,7 @@
   </div>
 
   <div class="actions">
-    <button class="btn btn-primary btn-md float-left" (click)="addNewEntry()" [disabled]="!isValidEntry()">
+    <button class="btn btn-primary btn-md float-left" (click)="saveEntry()" [disabled]="!isValidEntry()">
       <i class="material-icons-outlined">add</i>
       <span i18n="@@taskTimeTracking.addEntry" *ngIf="!entryId">Add entry</span>
       <span i18n="@@taskTimeTracking.editEntry" *ngIf="!!entryId">Edit entry</span>
@@ -49,6 +49,12 @@
     <button class="btn btn-outline-danger btn-md float-left" style="margin-left: 30px;" (click)="cancelNewEntry()" *ngIf="showAddTimeForm">
       <span i18n="@@taskTimeTracking.cancel">X Cancel</span>
     </button>
+
+    <div *ngIf="entryAlreadyExists">
+      <span>❌</span>
+      &nbsp;
+      <span i18n="@@taskTimeTracking.lowerCase">You already registered time for this task on {{ formateDate(entryDate) }} for the category {{ entryCategory }}</span>
+    </div>
   </div>
 </div>
 
@@ -56,7 +62,7 @@
 
 <div class="list-records">
   <app-task-time-tracking-list
-    [timeTrackingEntities]="timeTrackingEntities" [userData]="userData"
+    [timeTrackingEntities]="timeTrackingEntitiesMapped" [userData]="userData"
     (editTimeTrackingEntitEmitter)="onEditEntryEvent($event)"></app-task-time-tracking-list>
 </div>
 

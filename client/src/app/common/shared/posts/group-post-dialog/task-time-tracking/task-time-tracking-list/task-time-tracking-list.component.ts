@@ -83,11 +83,11 @@ export class TaskTimeTrackingListComponent implements OnChanges {
    this.editTimeTrackingEntitEmitter.emit(timeTrackingEntity);
   }
 
-  deleteEntry(timeTrackingEntityId: string) {
+  deleteEntry(timeTrackingEntityId: string, timeId: string,) {
     this.utilityService.getConfirmDialogAlert($localize`:@@taskTimeTrackingList.areYouSure:Are you sure?`, $localize`:@@taskTimeTrackingList.removeCompany:By doing this, you will delete the selected time record!`)
 			.then((res) => {
 				if (res.value) {
-					this.groupService.removeTimeTrackingEntity(timeTrackingEntityId).then(async res => {
+					this.groupService.removeTimeTrackingEntity(timeTrackingEntityId, timeId).then(async res => {
 						const index = (this.timeTrackingEntities) ? this.timeTrackingEntities.findIndex(tte => tte._id == timeTrackingEntityId) : -1;
 						if (index >= 0) {
 							this.timeTrackingEntities.splice(index, 1);

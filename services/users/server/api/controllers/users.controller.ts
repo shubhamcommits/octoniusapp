@@ -1,4 +1,4 @@
-import { Account, Group, Holiday, User, Workspace, Notification } from '../models';
+import { Account, Group, Holiday, User, Workspace, Notification, TimeTrackingEntity } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError,PasswordHelper, axios } from '../../utils';
 import { DateTime } from 'luxon';
@@ -2121,4 +2121,45 @@ export class UsersControllers {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
+
+    /**
+     * This function fetches the time tracking entities of a user with a date between specific dates
+     * @param req
+     */
+    async getUserTimeTrackingEntites(req: Request, res: Response) {
+        try {
+
+            const { userId } = req.params;
+            const { query: { startDate, endDate } } = req;
+
+            let timeTrackingEntities = await TimeTrackingEntity.find({
+                    $and: [
+                        { _user: userId },
+                        { 'times.date': { $gte: startDate, $lte: endDate} }
+                    ]
+                });
+
+            timeTrackingEntities = await TimeTrackingEntity.populate(timeTrackingEntities, [
+                    {
+                        path: '_task',
+                        select: 'title _group',
+                        populate: {
+                            path: '_group',
+                            model: 'Group',
+                            select: 'group_name group_avatar'
+                        }
+                    },
+                    { path: '_user', select: 'first_name last_name profile_pic email' },
+                    { path: '_created_by', select: 'first_name last_name profile_pic email' }
+                ]);
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Time Tracking Entities found!',
+                timeTrackingEntities: timeTrackingEntities
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
 }
