@@ -3,13 +3,13 @@
     <label for="company" i18n="@@crmLeadCard.company" class="muted">Company</label>
   </div>
 
-  <div class="row">
+  <div class="dropdown">
     <div *ngIf="!postData?.crm?._company">
       <input type="email" class="form-control" id="search-text"
         aria-describedby="search-text" [(ngModel)]="companySearchText" placeholder="Search company" autofocus
         (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()" (keyup)="searchCompany()">
-
-      <ul *ngIf="!!companySearchResults && !!companySearchText" class="company-list">
+        
+      <ul *ngIf="!!companySearchResults && !!companySearchText" class="company-list dropdown-menu">
         <li class="company-list-item pointer" *ngFor="let company of companySearchResults" (click)="selectCompany(company)">
           <app-secured-image [imgURL]="company.company_pic" [service]="'group'" [workspaceId]="this.userData?._workspace?._id || this.userData?._workspace"
             [styleClass]="'group-avatar'"></app-secured-image>
@@ -34,12 +34,12 @@
     <label for="contact" i18n="@@crmLeadCard.contacts" class="muted">Contacts</label>
   </div>
 
-  <div class="row">
-    <input type="email" class="form-control" id="search-text" aria-describedby="search-text"
+  <div class="dropdown">
+    <input type="email" class="form-control " id="search-text" aria-describedby="search-text"
       [(ngModel)]="contactSearchText" placeholder="Search contact to add" autofocus (click)="$event.stopPropagation()"
       (keydown)="$event.stopPropagation()" (keyup)="searchContact()">
   
-    <ul *ngIf="!!contactSearchResults && !!contactSearchText" class="company-list">
+    <ul *ngIf="!!contactSearchResults && !!contactSearchText" class="company-list dropdown-menu">
       <li class="company-list-item pointer" *ngFor="let contact of contactSearchResults" (click)="selectContact(contact)">
         {{ contact.name }} - {{ contact.emails[0] }}
       </li>
