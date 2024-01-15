@@ -66,14 +66,14 @@ export class GroupService {
    * This function is responsible for updating the group avatar
    * @param groupId
    */
-  updateGroupImage(groupId: any, fileToUpload: File, workspaceId: string, isBackbroundImage: boolean = false) {
+  updateGroupImage(groupId: any, fileToUpload: File, workspaceId: string, isBackgroundImage: boolean = false) {
 
     // PREPARING FORM DATA
     let formData = new FormData();
     formData.append('groupAvatar', fileToUpload);
 
     const fileData = {
-      isBackbroundImage: isBackbroundImage
+      isBackgroundImage: isBackgroundImage
     }
     formData.append('fileData', JSON.stringify(fileData));
     return this._http.put(this.baseURL + `/${groupId}/image/${workspaceId}`, formData).toPromise()

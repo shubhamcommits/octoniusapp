@@ -17,6 +17,7 @@ const groupUploadFileUpload = async (req: Request, res: Response, next: NextFunc
         const groupId = req.params.groupId;
         const workspaceId = req.params.workspaceId;
         req.body.fileData = JSON.parse(req.body.fileData);
+        const isBackgroundImage = req.body.fileData.isBackgroundImage
 
         // Get the file from the request
         const file: any = req['files'].groupAvatar;
@@ -82,9 +83,21 @@ const groupUploadFileUpload = async (req: Request, res: Response, next: NextFunc
                     });
                 });
             } else {
-                const group = await Group.findById(groupId).select('group_avatar').lean();
-                if (group && group?.group_avatar && !group?.group_avatar?.includes('assets/images/icon-new-group.svg')) {
+                const group = await Group.findById(groupId).select('group_avatar background_image').lean();
+                if (!!group && isBackgroundImage && group?.group_avatar && !group?.group_avatar?.includes('assets/images/icon-new-group.svg')) {
                     await minioClient.removeObject(workspaceId.toLowerCase(), group?.group_avatar, (error) => {
+                        if (error) {
+                            return res.status(500).json({
+                                status: '500',
+                                message: 'Error removing previous group avatar.',
+                                error: error
+                            });
+                        }
+                    });
+                }
+
+                if (!!group && !isBackgroundImage && group?.background_image && !group?.background_image?.includes('assets/images/icon-new-group.svg')) {
+                    await minioClient.removeObject(workspaceId.toLowerCase(), group?.background_image, (error) => {
                         if (error) {
                             return res.status(500).json({
                                 status: '500',
