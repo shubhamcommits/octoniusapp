@@ -5023,6 +5023,83 @@
           <context context-type="linenumber">262</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="crmContactDialog.newContact" datatype="html">
+        <source>New Contact</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-contact-dialog/crm-contact-dialog.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmContactDialog.contactInformation" datatype="html">
+        <source>Contact Information</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-contact-dialog/crm-contact-dialog.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmContactDialog.name" datatype="html">
+        <source>Name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-contact-dialog/crm-contact-dialog.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmContactDialog.description" datatype="html">
+        <source>Description</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-contact-dialog/crm-contact-dialog.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmContactDialog.job" datatype="html">
+        <source>Job</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-contact-dialog/crm-contact-dialog.component.html</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmContactDialog.company" datatype="html">
+        <source>Company</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-contact-dialog/crm-contact-dialog.component.html</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmContactDialog.position" datatype="html">
+        <source>Position</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-contact-dialog/crm-contact-dialog.component.html</context>
+          <context context-type="linenumber">61</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmContactDialog.phones" datatype="html">
+        <source>Phones</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-contact-dialog/crm-contact-dialog.component.html</context>
+          <context context-type="linenumber">72</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmContactDialog.emails" datatype="html">
+        <source>E-Mails</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-contact-dialog/crm-contact-dialog.component.html</context>
+          <context context-type="linenumber">86</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmContactDialog.links" datatype="html">
+        <source>Links</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-contact-dialog/crm-contact-dialog.component.html</context>
+          <context context-type="linenumber">100</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmContactDialog.customFields" datatype="html">
+        <source>Custom Fields</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-contact-dialog/crm-contact-dialog.component.html</context>
+          <context context-type="linenumber">115</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="crmCustomFieldDialog.customFields" datatype="html">
         <source>Custom Fields</source>
         <context-group purpose="location">
@@ -5225,11 +5302,201 @@
           <context context-type="linenumber">10</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="crmSetupBoardBar.newContact" datatype="html">
+        <source>New Contact</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/group-crm-setup-view.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmContactList.name" datatype="html">
+        <source> Name </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/group-crm-setup-view.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/crm-lead-card/crm-lead-card.component.html</context>
+          <context context-type="linenumber">53</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmContactList.company" datatype="html">
+        <source> Company </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/group-crm-setup-view.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmContactList.position" datatype="html">
+        <source> Position </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/group-crm-setup-view.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/crm-lead-card/crm-lead-card.component.html</context>
+          <context context-type="linenumber">61</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmContactList.phone" datatype="html">
+        <source> Phone </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/group-crm-setup-view.component.html</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/crm-lead-card/crm-lead-card.component.html</context>
+          <context context-type="linenumber">69</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmContactList.email" datatype="html">
+        <source> E-Mail </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/group-crm-setup-view.component.html</context>
+          <context context-type="linenumber">56</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/crm-lead-card/crm-lead-card.component.html</context>
+          <context context-type="linenumber">77</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmContactList.link" datatype="html">
+        <source> Link </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/group-crm-setup-view.component.html</context>
+          <context context-type="linenumber">64</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/crm-lead-card/crm-lead-card.component.html</context>
+          <context context-type="linenumber">85</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="asksTableView.addCF" datatype="html">
+        <source>Add custom field</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/group-crm-setup-view.component.html</context>
+          <context context-type="linenumber">96</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/group-crm-setup-view.component.html</context>
+          <context context-type="linenumber">194</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/tasks-table/tasks-table.component.html</context>
+          <context context-type="linenumber">122</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="asksTableView.selectOption" datatype="html">
+        <source>Select an option</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/group-crm-setup-view.component.html</context>
+          <context context-type="linenumber">98</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/group-crm-setup-view.component.html</context>
+          <context context-type="linenumber">196</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/tasks-table/tasks-table.component.html</context>
+          <context context-type="linenumber">124</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmContactList.edit" datatype="html">
+        <source>Edit</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/group-crm-setup-view.component.html</context>
+          <context context-type="linenumber">113</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmContactList.delete" datatype="html">
+        <source>Delete</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/group-crm-setup-view.component.html</context>
+          <context context-type="linenumber">116</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="groupContactsView.companies" datatype="html">
         <source>Companies</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/group-crm-setup-view.component.html</context>
-          <context context-type="linenumber">22</context>
+          <context context-type="linenumber">131</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmSetupBoardBar.newCompany" datatype="html">
+        <source>New Company</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/group-crm-setup-view.component.html</context>
+          <context context-type="linenumber">139</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmCompanyList.name" datatype="html">
+        <source> Name </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/group-crm-setup-view.component.html</context>
+          <context context-type="linenumber">154</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmCompanyList.description" datatype="html">
+        <source> Description </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/group-crm-setup-view.component.html</context>
+          <context context-type="linenumber">162</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmCompanyList.edit" datatype="html">
+        <source>Edit</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/group-crm-setup-view.component.html</context>
+          <context context-type="linenumber">211</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmCompanyList.delete" datatype="html">
+        <source>Delete</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/group-crm-setup-view.component.html</context>
+          <context context-type="linenumber">214</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmContactList.sectionAlreadyExists" datatype="html">
+        <source>Section already exists!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/group-crm-setup-view.component.ts</context>
+          <context context-type="linenumber">275</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmCompanyList.sectionAlreadyExists" datatype="html">
+        <source>Section already exists!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/group-crm-setup-view.component.ts</context>
+          <context context-type="linenumber">326</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmContactList.areYouSure" datatype="html">
+        <source>Are you sure?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/group-crm-setup-view.component.ts</context>
+          <context context-type="linenumber">372</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmContactList.removeContact" datatype="html">
+        <source>By doing this, you will delete the selected contact!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/group-crm-setup-view.component.ts</context>
+          <context context-type="linenumber">372</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmCompanyList.areYouSure" datatype="html">
+        <source>Are you sure?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/group-crm-setup-view.component.ts</context>
+          <context context-type="linenumber">423</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmCompanyList.removeCompany" datatype="html">
+        <source>By doing this, you will delete the selected company!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/group-crm-setup-view.component.ts</context>
+          <context context-type="linenumber">423</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmCompanyImageDialog.updateCompanyImage" datatype="html">
@@ -6564,36 +6831,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/tasks-table/tasks-table.component.html</context>
           <context context-type="linenumber">65</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="asksTableView.addCF" datatype="html">
-        <source>Add custom field</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/tasks-table/tasks-table.component.html</context>
-          <context context-type="linenumber">122</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/crm/crm-company-list/crm-company-list.component.html</context>
-          <context context-type="linenumber">60</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/crm/crm-contact-list/crm-contact-list.component.html</context>
-          <context context-type="linenumber">92</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="asksTableView.selectOption" datatype="html">
-        <source>Select an option</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/tasks-table/tasks-table.component.html</context>
-          <context context-type="linenumber">124</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/crm/crm-company-list/crm-company-list.component.html</context>
-          <context context-type="linenumber">62</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/crm/crm-contact-list/crm-contact-list.component.html</context>
-          <context context-type="linenumber">94</context>
         </context-group>
       </trans-unit>
       <trans-unit id="asksTableView.view" datatype="html">
@@ -15168,146 +15405,6 @@
           <context context-type="linenumber">1</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="crmSetupBoardBar.newCompany" datatype="html">
-        <source>New Company</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/crm/crm-company-list/crm-company-list.component.html</context>
-          <context context-type="linenumber">5</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="crmCompanyList.name" datatype="html">
-        <source> Name </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/crm/crm-company-list/crm-company-list.component.html</context>
-          <context context-type="linenumber">20</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="crmCompanyList.description" datatype="html">
-        <source> Description </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/crm/crm-company-list/crm-company-list.component.html</context>
-          <context context-type="linenumber">28</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="crmCompanyList.edit" datatype="html">
-        <source>Edit</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/crm/crm-company-list/crm-company-list.component.html</context>
-          <context context-type="linenumber">76</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="crmCompanyList.delete" datatype="html">
-        <source>Delete</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/crm/crm-company-list/crm-company-list.component.html</context>
-          <context context-type="linenumber">79</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="crmCompanyList.sectionAlreadyExists" datatype="html">
-        <source>Section already exists!</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/crm/crm-company-list/crm-company-list.component.ts</context>
-          <context context-type="linenumber">78</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="crmCompanyList.areYouSure" datatype="html">
-        <source>Are you sure?</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/crm/crm-company-list/crm-company-list.component.ts</context>
-          <context context-type="linenumber">217</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="crmCompanyList.removeCompany" datatype="html">
-        <source>By doing this, you will delete the selected company!</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/crm/crm-company-list/crm-company-list.component.ts</context>
-          <context context-type="linenumber">217</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="crmSetupBoardBar.newContact" datatype="html">
-        <source>New Contact</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/crm/crm-contact-list/crm-contact-list.component.html</context>
-          <context context-type="linenumber">4</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="crmContactList.name" datatype="html">
-        <source> Name </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/crm/crm-contact-list/crm-contact-list.component.html</context>
-          <context context-type="linenumber">10</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="crmContactList.company" datatype="html">
-        <source> Company </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/crm/crm-contact-list/crm-contact-list.component.html</context>
-          <context context-type="linenumber">28</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="crmContactList.position" datatype="html">
-        <source> Position </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/crm/crm-contact-list/crm-contact-list.component.html</context>
-          <context context-type="linenumber">36</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="crmContactList.phone" datatype="html">
-        <source> Phone </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/crm/crm-contact-list/crm-contact-list.component.html</context>
-          <context context-type="linenumber">44</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="crmContactList.email" datatype="html">
-        <source> E-Mail </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/crm/crm-contact-list/crm-contact-list.component.html</context>
-          <context context-type="linenumber">52</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="crmContactList.link" datatype="html">
-        <source> Link </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/crm/crm-contact-list/crm-contact-list.component.html</context>
-          <context context-type="linenumber">60</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="crmContactList.edit" datatype="html">
-        <source>Edit</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/crm/crm-contact-list/crm-contact-list.component.html</context>
-          <context context-type="linenumber">108</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="crmContactList.delete" datatype="html">
-        <source>Delete</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/crm/crm-contact-list/crm-contact-list.component.html</context>
-          <context context-type="linenumber">111</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="crmContactList.sectionAlreadyExists" datatype="html">
-        <source>Section already exists!</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/crm/crm-contact-list/crm-contact-list.component.ts</context>
-          <context context-type="linenumber">78</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="crmContactList.areYouSure" datatype="html">
-        <source>Are you sure?</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/crm/crm-contact-list/crm-contact-list.component.ts</context>
-          <context context-type="linenumber">223</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="crmContactList.removeContact" datatype="html">
-        <source>By doing this, you will delete the selected contact!</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/crm/crm-contact-list/crm-contact-list.component.ts</context>
-          <context context-type="linenumber">223</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="cropImage.chooseFile" datatype="html">
         <source>Choose file</source>
         <context-group purpose="location">
@@ -16732,33 +16829,21 @@
         <source>Please wait we are updating the contents...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/crm-lead-card/crm-lead-card.component.ts</context>
-          <context context-type="linenumber">68</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/crm-lead-card/crm-lead-card.component.ts</context>
-          <context context-type="linenumber">96</context>
+          <context context-type="linenumber">189</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmLeadCard.detailsUpdated" datatype="html">
         <source>Details updated!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/crm-lead-card/crm-lead-card.component.ts</context>
-          <context context-type="linenumber">72</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/crm-lead-card/crm-lead-card.component.ts</context>
-          <context context-type="linenumber">100</context>
+          <context context-type="linenumber">195</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmLeadCard.unableToUpdateDetails" datatype="html">
         <source>Unable to update the details, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/crm-lead-card/crm-lead-card.component.ts</context>
-          <context context-type="linenumber">75</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/crm-lead-card/crm-lead-card.component.ts</context>
-          <context context-type="linenumber">103</context>
+          <context context-type="linenumber">198</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.save" datatype="html">
