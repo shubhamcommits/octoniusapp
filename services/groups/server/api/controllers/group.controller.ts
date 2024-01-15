@@ -2590,9 +2590,21 @@ export class GroupController {
 
         // Fetch the newTimeTrackEntity from fileHandler middleware
         let editTimeTrackingEntity = req.body['editTimeTrackingEntity'];
-
+        let propertiesEdited = req.body['propertiesEdited'];
+        
         try {
-            let timeTrackingEntity = await TimeTrackingEntity.findByIdAndUpdate({
+            const timeId = editTimeTrackingEntity.timeId;
+
+            let dbTimeTrackingEntity = await TimeTrackingEntity.find({
+                    _id: editTimeTrackingEntityId,
+                    'times._id': timeId
+                }).lean();
+
+            if (propertiesEdited.includes('category')) {
+
+            }
+
+            let editedTimeTrackingEntity = await TimeTrackingEntity.findByIdAndUpdate({
                     _id: editTimeTrackingEntityId
                 }, {
                     $set: {
@@ -2605,7 +2617,7 @@ export class GroupController {
                     }
                 },
                 {
-                    arrayFilters: [{ "time._id": editTimeTrackingEntity.timeId }],
+                    arrayFilters: [{ "time._id": timeId }],
                     new: true
                 })
                 .populate('_user', 'first_name last_name profile_pic email')
@@ -2615,7 +2627,7 @@ export class GroupController {
             // Send status 200 response
             return res.status(200).json({
                 message: 'Time Tracking entity created!',
-                timeTrackingEntity: timeTrackingEntity
+                timeTrackingEntity: editedTimeTrackingEntity
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);

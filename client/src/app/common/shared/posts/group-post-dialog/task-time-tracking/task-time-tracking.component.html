@@ -18,7 +18,7 @@
       </div>
 
       <div class="col-md-3">
-        <mat-select ngDefaultControl appearance="fill" class="form-control" [(ngModel)]="entryCategory">
+        <mat-select ngDefaultControl appearance="fill" class="form-control" [(ngModel)]="entryCategory" (selectionChange)="changeEntryCategory($event)">
           <mat-option *ngFor="let category of categories" [value]="category.name">{{ category.name }}</mat-option>
         </mat-select>
       </div>
