@@ -136,7 +136,6 @@ import { PasswordStrengthComponent } from './password-strength/password-strength
 import { PricingTableComponent } from './pricing-table/pricing-table.component';
 import { HolidayRejectionDialogComponent } from './hr/holiday-rejection-dialog/holiday-rejection-dialog.component';
 import { CRMLeadCardComponent } from './posts/group-post-dialog/crm-lead-card/crm-lead-card.component';
-import { CRMCompanyListComponent } from './crm/crm-company-list/crm-company-list.component';
 
 @NgModule({
     declarations: [
@@ -250,7 +249,6 @@ import { CRMCompanyListComponent } from './crm/crm-company-list/crm-company-list
         PasswordStrengthComponent,
         PricingTableComponent,
         HolidayRejectionDialogComponent,
-        CRMCompanyListComponent
     ],
     imports: [
         CommonModule,
@@ -372,7 +370,6 @@ import { CRMCompanyListComponent } from './crm/crm-company-list/crm-company-list
         PasswordStrengthComponent,
         PricingTableComponent,
         HolidayRejectionDialogComponent,
-        CRMCompanyListComponent
     ],
     providers: [
         { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
