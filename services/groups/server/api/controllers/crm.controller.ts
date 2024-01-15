@@ -13,6 +13,43 @@ export class CRMController {
      * This function fetches all the crm contacts of a group corresponding to the @constant groupId 
      * @param req - @constant groupId
      */
+    async getGroupCRMInfo(req: Request, res: Response) {
+        try {
+            const { groupId } = req.params;
+
+            const contacts = await Contact.find({
+                    _group: groupId
+                })
+                .sort('name')
+                .populate('_company', '_id name description company_pic')
+                .lean();
+
+            const group = await Group.findOne({
+                    _id: groupId
+                }).select('crm_custom_fields').lean();
+
+            const companies = await Company.find({
+                    _group: req.params.groupId
+                })
+                .sort('name')
+                .lean();
+            
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Contacts found!',
+                contacts: contacts,
+                companies: companies,
+                crm_custom_fields: group.crm_custom_fields
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
+     * This function fetches all the crm contacts of a group corresponding to the @constant groupId 
+     * @param req - @constant groupId
+     */
     async getGroupCRMContacts(req: Request, res: Response) {
         try {
             const contacts = await Contact.find({
