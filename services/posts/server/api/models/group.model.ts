@@ -106,7 +106,7 @@ const GroupSchema = new Schema({
     },
     type: {
         type: String,
-        default: 'normal'
+        enum: ['normal', 'agora', 'crm', 'accounting', 'resource']
     },
     conditions: {
         email_domains: {
@@ -142,7 +142,7 @@ const GroupSchema = new Schema({
     },
     selected_widgets: {
         type: [String],
-        default: ['WORK_STATISTICS', 'WORKLOAD', 'VELOCITY', 'ENGAGEMENT', 'KPI_PERFORMANCE', 'RESOURCE_MANAGEMENT', 'CF_TABLE', 'TOP_SOCIAL']
+        enum: ['WORK_STATISTICS', 'WORKLOAD', 'VELOCITY', 'ENGAGEMENT', 'KPI_PERFORMANCE', 'RESOURCE_MANAGEMENT', 'CF_TABLE', 'TOP_SOCIAL']
     },
     resource_management_allocation: {
         type: Boolean,
@@ -246,6 +246,57 @@ const GroupSchema = new Schema({
             }
         }]
     },
+    crm_custom_fields: {
+        type: [{
+            name: {
+                type: String,
+                required: true
+            },
+            title: {
+                type: String,
+                required: true
+            },
+            input_type: {
+                type: Boolean,
+                default: false
+            },
+            input_type_number: {
+                type: Boolean,
+                default: false
+            },
+            input_type_text: {
+                type: Boolean,
+                default: false
+            },
+            input_type_date: {
+                type: Boolean,
+                default: false
+            },
+            company_type: {
+                type: Boolean,
+                default: false
+            },
+            values: {
+                type: [String],
+                required: true,
+                default: []
+            },
+            display_in_kanban_card: {
+                type: Boolean,
+                default: false
+            },
+            badge_color: {
+                type: String,
+                required: true,
+                default: '#e4edf8'
+            }
+        }]
+    },
+    crm_custom_fields_to_show: [{
+        type: String,
+        required: true,
+        default: []
+    }],
     records: {
         pulses: [{
             date: {

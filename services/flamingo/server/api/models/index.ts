@@ -14,6 +14,8 @@ import { Question } from './questions.model';
 import { File } from './file.model';
 import { Folder } from './folder.model';
 import { Story } from "./story.model";
+import { Contact } from './contact.model';
+import { Company } from './company.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -51,17 +53,20 @@ export {
     // FLOW
     Flow as Flow,
 
-     // COMMENT
-     Comment as Comment,
+    // COMMENT
+    Comment as Comment,
 
-     // NOTIFICATION 
-     Notification as Notification,
+    Company as Company,
+    Contact as Contact,
 
-     //FLAMINGO
-     Flamingo as Flamingo,
+    // NOTIFICATION 
+    Notification as Notification,
 
-     //ANSWER
-     Answer as Answer,
+    //FLAMINGO
+    Flamingo as Flamingo,
+
+    //ANSWER
+    Answer as Answer,
 
     //QUESTION
     Question as Question,

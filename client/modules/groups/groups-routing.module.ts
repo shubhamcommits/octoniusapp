@@ -22,6 +22,8 @@ import { PortfolioGuard } from 'src/shared/guards/portfolio-guard/portfolio.guar
 import { PortfolioDetailsComponent } from './portfolio/portfolio-details/portfolio-details.component';
 import { LibraryGuard } from 'src/shared/guards/library-guard/library.guard';
 import { IndivicualSubscriptionGuard } from 'src/shared/guards/indivicual-subscription-guard/indivicual-subscription.guard';
+import { CRMGuard } from 'src/shared/guards/crm-guard/crm.guard';
+import { GroupCRMSetupViewComponent } from './group/group-crm-setup-view/group-crm-setup-view.component';
 
 
 /**
@@ -39,8 +41,15 @@ const routes: Routes = [
       // Group Activity
       { path: 'activity', component: GroupActivityComponent },
 
-      // Group Kanban/tasks
+      // Group tasks
       { path: 'tasks', component: GroupTasksViewsComponent },
+
+      // Group CRM Contacts
+      {
+        path: 'crm', 
+        component: GroupCRMSetupViewComponent,
+        canActivate: [CRMGuard]
+      },
 
       // Group Files
       {

@@ -5,6 +5,8 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { CreateGroupDialogComponent } from './create-group-dialog/create-group-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-groups-list',
@@ -45,6 +47,7 @@ export class GroupsListComponent implements OnInit {
   constructor(
     public injector: Injector,
     private router: Router,
+    public dialog: MatDialog,
     private utilityService: UtilityService
   ) { }
 
@@ -173,8 +176,11 @@ export class GroupsListComponent implements OnInit {
     this.isLoadingAgora$.next(false);
   }
 
-  receiveGroupUpdates($event: Event) {
-    this.userGroups.push($event);
+  receiveGroupUpdates(group: any) {
+    if (!this.userGroups) {
+      this.userGroups = [];
+    }
+    this.userGroups.push(group);
   }
 
   async joinGroup(groupId: any) {
@@ -211,4 +217,25 @@ export class GroupsListComponent implements OnInit {
     await this.publicFunctions.sendUpdatesToGroupData(newGroup);
     this.router.navigate(['/dashboard', 'work', 'groups', 'activity']);
   }
+
+  openNewGroupDialog() {
+		const dialogRef = this.dialog.open(CreateGroupDialogComponent, {
+			disableClose: true,
+			hasBackdrop: true,
+			width: '100%',
+			height: '100%',
+			data: {
+				userData: this.userData,
+				workspaceData: this.workspaceData
+			}
+		});
+
+		const groupEmitterSubs = dialogRef.componentInstance.groupEmitter.subscribe(async (data) => {
+			this.receiveGroupUpdates(data);
+		});
+
+		dialogRef.afterClosed().subscribe(async result => {
+			groupEmitterSubs.unsubscribe();
+		});
+	}
 }

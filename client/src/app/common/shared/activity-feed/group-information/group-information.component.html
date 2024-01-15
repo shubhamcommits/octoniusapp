@@ -27,6 +27,14 @@
 
             <!-- Group Information details starts -->
             <!-- <p class="card-text" *ngIf="!myWorkplace"><strong>Name: </strong>{{groupData?.group_name }}</p> -->
+            <p class="card-text" *ngIf="!myWorkplace && groupData.group_name.toLowerCase() != 'global'">
+              <strong i18n="@@groupInformation.type">Type: </strong>
+              <span *ngIf="groupData?.type == 'normal'" i18n="@@groupInformation.normal">Normal</span>
+              <span *ngIf="groupData?.type == 'agora'" i18n="@@groupInformation.agora">Agora</span>
+              <span *ngIf="groupData?.type == 'crm'" i18n="@@groupInformation.crm">CRM</span>
+              <!-- <span *ngIf="groupData?.type == 'accounting'" i18n="@@groupInformation.accounting">Accounting</span>
+              <span *ngIf="groupData?.type == 'resource'" i18n="@@groupInformation.resource">Resource Management</span> -->
+            </p>
             <p class="card-text" *ngIf="!myWorkplace">
               <strong i18n="@@groupInformation.members">Members:</strong>{{ groupData?._members.length + groupData?._admins.length || 0 }}</p>
             <p class="card-text" *ngIf="!myWorkplace && groupData.group_name.toLowerCase() != 'global'">

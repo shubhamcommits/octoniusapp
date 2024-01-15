@@ -219,7 +219,6 @@ export class NorthStarPageComponent implements OnInit {
   }
 
   updateTask(task) {
-console.log(task);
     const indexTask = this.globalNorthStarTasks.findIndex((t: any) => t._id === task._id);
     if (indexTask !== -1) {
       this.globalNorthStarTasks[indexTask] = task;

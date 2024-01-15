@@ -282,7 +282,6 @@ export class FilesControllers {
      */
     async add(req: Request, res: Response, next: NextFunction) {
         try {
-
             // Fetch the File Name From the request
             let { body: { fileData } } = req;
 
@@ -298,10 +297,10 @@ export class FilesControllers {
                 //     {
                 //         headers: { Authorization: req.headers.authorization }
                 //     });
-                let { body: { flamingoData } } = req;
+                // let { body: { flamingoData } } = req;
                 flamingo = {
                     _file: fileData?._id,
-                    _questions: flamingoData?._questions || []
+                    _questions: fileData?._questions || []
                 }
 
                 // Create the new File

@@ -22,7 +22,7 @@ const FlowSchema = new Schema({
         trigger: [{
             name: {
                 type: String,
-                enum: ['Assigned to', 'Custom Field', 'Section is', 'Status is', 'Task is CREATED', 'Subtasks Status', 'Approval Flow is Completed', 'Due date is']
+                enum: ['Assigned to', 'Custom Field', 'CRM Custom Field', 'Section is', 'Status is', 'Task is CREATED', 'Subtasks Status', 'Approval Flow is Completed', 'Due date is']
             },
             _user: [{
                 type: Schema.Types.ObjectId,
@@ -50,6 +50,16 @@ const FlowSchema = new Schema({
                     default: ''
                 }
             },
+            crm_custom_field: {
+                name:{
+                    type: String,
+                    default: ''
+                },
+                value:{
+                    type: String,
+                    default: ''
+                }
+            },
             due_date_value: {
                 type: String,
                 enum: ['tomorrow', 'today', 'overdue']
@@ -58,7 +68,7 @@ const FlowSchema = new Schema({
         action: [{
             name: {
                 type: String,
-                enum: ['Assign to', 'Change Status to', 'Custom Field', 'Move to', 'Shuttle task', 'Set Due date', 'Set Time Allocation to']
+                enum: ['Assign to', 'Change Status to', 'Custom Field', 'CRM Custom Field', 'Move to', 'Shuttle task', 'Set Due date', 'Set Time Allocation to']
             },
             _user: [{
                 type: Schema.Types.ObjectId,
@@ -73,6 +83,16 @@ const FlowSchema = new Schema({
                 default: ''
             },
             custom_field: {
+                name:{
+                    type: String,
+                    default: ''
+                },
+                value:{
+                    type: String,
+                    default: ''
+                }
+            },
+            crm_custom_field: {
                 name:{
                     type: String,
                     default: ''

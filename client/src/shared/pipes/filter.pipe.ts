@@ -19,9 +19,15 @@ export class FilterPipe implements PipeTransform {
     searchText = searchText.toLocaleLowerCase();
 
     return items.filter(it => {
-      return it.first_name.toLocaleLowerCase().includes(searchText)
-        || it.last_name.toLocaleLowerCase().includes(searchText)
-        || ((it.first_name + ' ' + it.last_name).toLocaleLowerCase().includes(searchText));
+      if (!!it.first_name || !!it.last_name) {
+        // searching on user entity
+        return it.first_name.toLocaleLowerCase().includes(searchText)
+          || it.last_name.toLocaleLowerCase().includes(searchText)
+          || ((it.first_name + ' ' + it.last_name).toLocaleLowerCase().includes(searchText));
+      } else if (!!it.name) {
+        // searching on company entity
+        return it.name.toLocaleLowerCase().includes(searchText);
+      }
     });
   }
 }

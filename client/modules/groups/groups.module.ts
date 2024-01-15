@@ -85,6 +85,20 @@ import { PortfolioProjectStatisticsComponent } from './portfolio/dashboard/portf
 import { PortfolioProjectBudgetComponent } from './portfolio/dashboard/portfolio-projects-performance-card/portfolio-project-budget/portfolio-project-budget.component';
 import { PortfolioHeaderComponent } from './portfolio/portfolio-header/portfolio-header.component';
 import { PortfolioUserWorkloadDialogComponent } from './portfolio/portfolio-user-workload-dialog/portfolio-user-workload-dialog.component';
+import { CRMGroupService } from 'src/shared/services/crm-group-service/crm-group.service';
+import { CRMSetupBoardBarComponent } from './group/group-crm-setup-view/crm-setup-board-bar/crm-setup-board-bar.component';
+import { GroupCRMSetupViewComponent } from './group/group-crm-setup-view/group-crm-setup-view.component';
+import { NewCRMContactDialogComponent } from './group/group-crm-setup-view/new-crm-contact-dialog/new-crm-contact-dialog.component';
+import { CRMContactInformationComponent } from './group/group-crm-setup-view/new-crm-contact-dialog/crm-contact-information/crm-contact-information.component';
+import { CRMContactCompaniesComponent } from './group/group-crm-setup-view/new-crm-contact-dialog/crm-contact-companies/crm-contact-companies.component';
+import { NewCRMCompanyDialogComponent } from './group/group-crm-setup-view/new-crm-company-dialog/new-crm-company-dialog.component';
+import { CRMCompanyInformationComponent } from './group/group-crm-setup-view/new-crm-company-dialog/crm-company-information/crm-company-information.component';
+import { CRMCustomFieldsDialogComponent } from './group/group-crm-setup-view/crm-custom-fields-dialog/crm-custom-fields-dialog.component';
+import { CRMContactCustomFieldsComponent } from './group/group-crm-setup-view/new-crm-contact-dialog/crm-contact-custom-fields/crm-contact-custom-fields.component';
+import { CreateGroupDialogComponent } from './groups-list/create-group-dialog/create-group-dialog.component';
+import { CRMCompanyCustomFieldsComponent } from './group/group-crm-setup-view/new-crm-company-dialog/crm-company-custom-fields/crm-company-custom-fields.component';
+import { CRMCompanyImageDialogComponent } from './group/group-crm-setup-view/new-crm-company-dialog/crm-company-image-dialog/crm-company-image-dialog.component';
+import { CRMContactDialogComponent } from './group/group-crm-setup-view/crm-contact-dialog/crm-contact-dialog.component';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -96,6 +110,7 @@ import { PortfolioUserWorkloadDialogComponent } from './portfolio/portfolio-user
         GroupsComponent,
         GroupsListComponent,
         CreateGroupComponent,
+        CreateGroupDialogComponent,
         PortfolioComponent,
         PortfolioDetailsComponent,
         PortfolioHeaderComponent,
@@ -120,10 +135,13 @@ import { PortfolioUserWorkloadDialogComponent } from './portfolio/portfolio-user
         CreateColumnComponent,
         CreateSectionComponent,
         BoardBarComponent,
+        CRMSetupBoardBarComponent,
         EditColumnComponent,
         InviteUserComponent,
         GroupTasksViewsComponent,
+        GroupCRMSetupViewComponent,
         CustomFieldsDialogComponent,
+        CRMCustomFieldsDialogComponent,
         FilesCustomFieldsDialogComponent,
         AdvancedFilterDialogComponent,
         DoneTasksListViewComponent,
@@ -140,20 +158,25 @@ import { PortfolioUserWorkloadDialogComponent } from './portfolio/portfolio-user
         GroupReportsComponent,
         PermissionDialogComponent,
         GroupSettingsComponent,
-        GroupBackgroundImageDetailsComponent
+        GroupBackgroundImageDetailsComponent,
+        NewCRMContactDialogComponent,
+        CRMContactDialogComponent,
+        CRMContactInformationComponent,
+        CRMContactCustomFieldsComponent,
+        CRMCompanyCustomFieldsComponent,
+        CRMContactCompaniesComponent,
+        NewCRMCompanyDialogComponent,
+        CRMCompanyInformationComponent,
+        CRMCompanyImageDialogComponent,
     ],
     imports: [
         CommonModule,
         GroupsRoutingModule,
         SharedModule,
-        // FORMS MODULE
         FormsModule,
         DragDropModule,
-        // Angular Material Buttons
         MatButtonModule,
-        // Angular Material Menu Module
         MatMenuModule,
-        // MomentModule
         MatChipsModule,
         MatDialogModule,
         MatSelectModule,
@@ -171,6 +194,7 @@ import { PortfolioUserWorkloadDialogComponent } from './portfolio/portfolio-user
     providers: [
         GroupsService,
         GroupService,
+        CRMGroupService,
         PostService,
         CommentService,
         FlowService,

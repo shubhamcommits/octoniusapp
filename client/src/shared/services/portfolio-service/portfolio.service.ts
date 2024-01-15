@@ -105,7 +105,7 @@ export class PortfolioService {
    * @param fileToUpload
    * @param workspaceId
    */
-  updatePortfolioImage(portfolioId: any, fileToUpload: File, workspaceId: string, isBackbroundImage: boolean = false) {
+  updatePortfolioImage(portfolioId: any, fileToUpload: File, workspaceId: string, isBackgroundImage: boolean = false) {
 
     // PREPARING FORM DATA
     let formData = new FormData();
@@ -113,7 +113,7 @@ export class PortfolioService {
 
     const fileData = {
       _workspace: workspaceId,
-      isBackbroundImage: isBackbroundImage
+      isBackgroundImage: isBackgroundImage
     }
     formData.append('fileData', JSON.stringify(fileData));
     return this._http.put(this.baseURL + `/${portfolioId}/image/${workspaceId}`, formData).toPromise();

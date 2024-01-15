@@ -1,0 +1,48 @@
+.block {
+    padding: 10px;
+    margin: 10px;
+    border: 1px dashed #E4EDF8;
+
+    .block-title {
+        display: flex;
+        margin-bottom: 20px;
+    }
+}
+
+.row {
+    margin: 10px;
+}
+
+.company-list {
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding-left: 0;
+    margin-bottom: 0;
+    max-height: 300px;
+    overflow: scroll;
+    white-space: nowrap;
+    width: 100%;
+    text-align: left;
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    .company-list-item {
+        position: relative;
+        display: block;
+        padding: 10px 10px;
+        background-color: #fff;
+        // border: 1px solid rgba(0, 0, 0, 0.125);
+        cursor: pointer;
+
+        &:hover {
+            background-color: #005fd5;
+
+        }
+    }
+}
+
+.pointer {
+    cursor: pointer;
+}

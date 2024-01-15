@@ -438,7 +438,7 @@ export class PortfolioController {
 
         // Fetch the groupId
         const { portfolioId } = req.params;
-        const isBackbroundImage = req.body.fileData.isBackbroundImage
+        const isBackgroundImage = req.body.fileData.isBackgroundImage
 
         // Fetch the fileName from fileHandler middleware
         const fileName = req['fileName'];
@@ -446,7 +446,7 @@ export class PortfolioController {
         try {
 
             let update = {};
-            if (isBackbroundImage) {
+            if (isBackgroundImage) {
                 update = {
                     background_image: fileName
                 };

@@ -1,0 +1,117 @@
+<div class="block">
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <div class="row">
+                    <label for="company" i18n="@@crmContactCompanies.company" class="muted">Company</label>
+
+                    <input *ngIf="!companyHistoryData._company" type="email" class="form-control" id="search-text" aria-describedby="search-text" [(ngModel)]="companySearchText"
+                        placeholder="Search company" autofocus (click)="$event.stopPropagation()"
+                        (keydown)="$event.stopPropagation()" (keyup)="searchCompany()">
+
+                    <ul *ngIf="!companyHistoryData._company && !!companySearchResults && !!companySearchText" class="company-list">
+                        <li class="company-list-item" *ngFor="let company of companySearchResults" (click)="selectCompany(company)">
+                            <app-secured-image
+                                [imgURL]="company.company_pic" [service]="'group'" [workspaceId]="workspaceData?._id"
+                                [styleClass]="'group-avatar'"></app-secured-image>
+                            {{ company.name }}
+                        </li>
+                    </ul>
+
+                    <div *ngIf="!!companyHistoryData._company" class="form-control" style="text-align: left;">
+                        <app-secured-image
+                            [imgURL]="companyHistoryData._company.company_pic" [service]="'group'" [workspaceId]="workspaceData?._id"
+                            [styleClass]="'group-avatar'"></app-secured-image>
+                        <span>{{ companyHistoryData._company.name }}</span>
+
+                        <!-- Clean field starts -->
+                        <i (click)="selectCompany(null)" class="material-icons muted mr-5"
+                            style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
+                        <!-- Clean field ends -->
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label for="position" i18n="@@crmContactCompanies.position" class="muted">Position</label>
+                    <input type="text" class="form-control" [(ngModel)]="companyHistoryData.position" name="position">
+                </div>
+            </div>
+        </div>
+    
+        <div class="col">
+            <div class="form-group">
+                <div class="row">
+                    <label for="startDate" i18n="@@crmContactCompanies.startDate" class="muted">Start Date</label>
+                    <app-date-picker class="form-control" name="startDate" [styleClass]="'btn-group input-date'"
+                        [selectedDate]="formateDate(companyHistoryData.start_date)" [canEdit]="true"
+                        [upperLimit]="formateDate(companyHistoryData?.end_date)"
+                        (date)="fieldEdited('start_date', $event)">
+                    </app-date-picker>
+                </div>
+
+                <div class="row">
+                    <label for="endDate" i18n="@@crmContactCompanies.endDate" class="muted">End Date</label>
+                    <app-date-picker class="form-control" name="endDate" [styleClass]="'btn-group input-date'"
+                        [selectedDate]="formateDate(companyHistoryData.end_date)" [canEdit]="true"
+                        [lowerLimit]="formateDate(companyHistoryData?.start_date)"
+                        (date)="fieldEdited('end_date', $event)">
+                    </app-date-picker>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div style="margin-top: 20px;">
+            <button class="btn btn-secondary" (click)="cleanCompanyHistory()" i18n="@@newCRMContactDialog.clean" style="margin: 0 10px">
+                Clean
+            </button>
+
+            <button class="btn btn-warning" (click)="addCompanyHistory()" i18n="@@newCRMContactDialog.add" style="margin: 0 10px">
+                Add
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="block">
+    <table class="table table-hover">
+        <tr>
+            <th></th>
+            <th>
+                <span i18n="@@newCRMContactDialog.name">Name</span>
+            </th>
+            <th>
+                <span i18n="@@newCRMContactDialog.position">Position</span>
+            </th>
+            <th>
+                <span i18n="@@newCRMContactDialog.startDate">Start Date</span>
+            </th>
+            <th>
+                <span i18n="@@newCRMContactDialog.endDate">End Date</span>
+            </th>
+            <th></th>
+        </tr>
+    
+        <tr *ngFor="let companyHistory of contactData?.company_history">
+            <td>
+                <app-secured-image
+                    [imgURL]="companyHistory?._company?.company_pic" [service]="'group'" [workspaceId]="workspaceData?._id"
+                    [styleClass]="'group-avatar'"></app-secured-image>
+            </td>
+            <td>{{ companyHistory?._company?.name }}</td>
+            <td>{{ companyHistory?.position }}</td>
+            <td>{{ formateStrDate(companyHistory?.start_date) }}</td>
+            <td>{{ formateStrDate(companyHistory?.end_date) }}</td>
+            <td>
+                <i class="material-icons-outlined ml-2 muted pointer" [matMenuTriggerFor]="menu">more_horiz</i>
+                <mat-menu #menu="matMenu">
+                    <a mat-menu-item (click)="deleteCompanyFromHistory(companyHistory?._id)">
+                        <span i18n="@@newCRMContactDialog.delete">Delete</span>
+                    </a>
+                </mat-menu>
+            </td>
+        </tr>
+    </table>
+</div>

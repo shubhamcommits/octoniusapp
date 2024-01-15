@@ -15,6 +15,8 @@ import { Message } from './messages.model';
 import { Chat } from './chat.model';
 import { Collection } from './collection.model';
 import { Page } from './page.model';
+import { Contact } from './contact.model';
+import { Company } from './company.model';
 
 /*  =====================
  *  -- MODELS EXPORTS --
@@ -68,5 +70,8 @@ export {
     ChatNotification as ChatNotification,
 
     Page as Page,
-    Collection as Collection
+    Collection as Collection,
+
+    Company as Company,
+    Contact as Contact
 }

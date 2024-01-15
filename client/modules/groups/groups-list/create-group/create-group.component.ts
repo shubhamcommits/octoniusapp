@@ -53,11 +53,11 @@ export class CreateGroupComponent implements OnInit {
   /**
    * This function creates the new normal group
    */
-  async openCreateGroupModal() {
+  async openCreateGroupModal(type: string) {
     const { value: value } = await this.openModal($localize`:@@createGroup.createGroup:Create Group`, 'assets/images/create-group.svg');
     if (value) {
       this.utilityService.asyncNotification($localize`:@@createGroup.pleaseWaitWeCreateGroup:Please wait, while we are creating group for you...`, new Promise((resolve, reject) => {
-        this.createGroup(value, this.workspaceData['workspace_name'], this.workspaceData['_id'], this.userData['_id'], 'normal')
+        this.createGroup(value, this.workspaceData['workspace_name'], this.workspaceData['_id'], this.userData['_id'], type)
           .then((group) => {
 
             // Emit the group object to the other components

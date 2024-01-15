@@ -1,0 +1,36 @@
+<div class="block">
+    <div class="row" *ngFor="let cf of crmContactCustomFields">
+        <div class="col-md-4">
+            <span>{{ cf.title }}</span>
+        </div>
+    
+        <div class="col-md-8">
+            <mat-select ngDefaultControl *ngIf="!cf.input_type" [(value)]="selectedCFValues[cf.name]" [disabled]="!canEdit"
+                (selectionChange)="onCustomFieldChange($event, cf.name, cf.title)" appearance="fill" class="col">
+                <mat-select-trigger>{{ selectedCFValues[cf.name] }}</mat-select-trigger>
+                <mat-option *ngFor="let val of cf.values" [value]="val">{{ val }}</mat-option>
+            </mat-select>
+            
+            <div *ngIf="cf.input_type && !cf.input_type_date" class="col" style="display: flex; float: left; width: 125px;">
+                <input type="text" [name]="cf.name" [(ngModel)]="selectedCFValues[cf.name]" [disabled]="!canEdit" class="col"
+                    style="width: 94px;" [value]="selectedCFValues[cf.name]"
+                    (blur)="saveCustomField(cf.name, cf.title, selectedCFValues[cf.name]);"
+                    (keyup.enter)="saveInputCustomField($event, cf.name, cf.title)" />
+            </div>
+            
+            <div *ngIf="cf.input_type && cf.input_type_date">
+                <!-- Date Picker starts -->
+                <app-date-picker (date)="getCFDate($event, cf.name, cf.title)"
+                    [selectedDate]="formateDate(selectedCFValues[cf.name])" [styleClass]="'btn-group input-date'"
+                    [canEdit]="canEdit">
+                </app-date-picker>
+                <!--Date Picker ends -->
+            </div>
+            
+            <!-- Clean field starts -->
+            <!-- <i *ngIf="canEdit" (click)="saveCustomField(cf.name, cf.title, null);" class="material-icons muted mr-5"
+                style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i> -->
+            <!-- Clean field ends -->
+        </div>
+    </div>
+</div>

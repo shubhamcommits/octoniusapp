@@ -1,0 +1,63 @@
+<div class="container">
+    <mat-dialog-actions class="d-flex justify-content-end" align="end">
+        <i class="material-icons" (click)="closeDialog()" style="cursor: pointer">close</i>
+    </mat-dialog-actions>
+
+    <h2 mat-dialog-title style="margin: -50px 0 0 0 !important;">
+        <!--
+        <app-secured-image *ngIf="!!companyData?._id" [imgURL]="companyData?.company_pic" [service]="'group'" [workspaceId]="(this.groupData?._workspace?._id || this.groupData?._workspace)"
+            [styleClass]="'group-avatar'" (click)="openUploadImageDetails(content)"></app-secured-image>
+
+        <ng-template #content let-modal>
+            <app-crm-company-image-dialog
+                [groupData]="groupData" [companyData]="companyData"
+                (companyImage)="onCompanyImageEdited($event)">
+            </app-crm-company-image-dialog>
+        </ng-template>
+        -->
+        <span *ngIf="!!companyData._id && !!companyData.name">{{ companyData?.name }}</span>
+        <span i18n="@@newCRMCompanyDialog.newContact" *ngIf="!companyData._id">New Company</span>
+    </h2>
+
+    <div mat-dialog-content>
+        <mat-tab-group mat-align-tabs="start">
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <span i18n="@@newCRMCompanyDialog.contactInformation">Company Information</span>
+                </ng-template>
+        
+                <ng-template matTabContent>
+                    <app-crm-company-information
+                        [companyData]="companyData" [workspaceId]="groupData?._workspace?._id || groupData?._workspace" [groupId]="groupData?._id"
+                        (companyInfoEdited)="onCompanyInfoEdited($event)"
+                        ></app-crm-company-information>
+                        <!-- (companyImageEdited)="onCompanyImageEdited($event)" -->
+                </ng-template>
+            </mat-tab>
+
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <span i18n="@@newCRMCompanyDialog.customFields">Custom Fields</span>
+                </ng-template>
+            
+                <ng-template matTabContent>
+                    <app-crm-company-custom-fields [companyData]="companyData"
+                        [workspaceId]="groupData?._workspace?._id || groupData?._workspace" [groupId]="groupData?._id"
+                        (companyCFEdited)="onCompanyInfoEdited($event)"></app-crm-company-custom-fields>
+                </ng-template>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+
+    <div>
+        <div style="margin-top: 20px;">
+            <button class="btn btn-danger" (click)="closeDialog()" i18n="@@newCRMCompanyDialog.cancel" style="margin: 0 10px">
+                Cancel
+            </button>
+
+            <button class="btn btn-primary" (click)="saveCompany()" i18n="@@newCRMCompanyDialog.save" style="margin: 0 10px">
+                Save
+            </button>
+        </div>
+    </div>
+</div>

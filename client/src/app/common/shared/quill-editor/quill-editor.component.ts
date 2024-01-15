@@ -96,6 +96,11 @@ export class QuillEditorComponent implements OnInit, OnChanges, AfterViewInit {
   // Uploads url for Files
   filesBaseUrl = environment.UTILITIES_BASE_API_URL;
 
+  findAFileToTag = $localize`:@@quillEditor.findAFileToTag:find a file to tag`;
+  findAPostToTag = $localize`:@@quillEditor.findAPostToTag:find a post to tag`;
+  findACollectionToTag = $localize`:@@quillEditor.findACollectionToTag:find a collection to tag`;
+  findAPageFromACollectionToTag = $localize`:@@quillEditor.findAPageFromACollectionToTag:find a page from a collection to tag`;
+  
   // Public Functions class
   public publicFunctions = new PublicFunctions(this.Injector);
 
@@ -259,13 +264,45 @@ export class QuillEditorComponent implements OnInit, OnChanges, AfterViewInit {
       this.workspaceId = this.workspaceId._id;
     }
 
+    // Available commands - the order needs to match the index of cmdSuggestions
+    enum Command { file, post, col, colpage }
+
     return {
       allowedChars: /^[A-Za-z\sÅÄÖåäö0123456789]*$/,
       mentionDenotationChars: ["@", "#"],
+      //This function is called when a mention has been selected
+      onSelect: (item, insertItem) => {
+        // If the item value is a span, User has selected a command
+        if (item.value.split(' ')[0] === '<span') {
+          let selection = this.quill.getSelection(true)
+          let index = selection.index;
+          
+          // Insert the text for the command into the quill
+          if (item.index == Command.file) {
+            this.quill.insertText(index, 'file')
+          } else if (item.index == Command.post) {
+            this.quill.insertText(index, 'post')
+          } else if (item.index == Command.col) {
+            this.quill.insertText(index, 'col')
+          } else if (item.index == Command.colpage) {
+            this.quill.insertText(index, 'colpage')
+          }
+          
+          // Set the cursor to where the text has been inserted
+          index += Command[item.index].length
+          this.quill.setSelection(index)
+          this.quill.focus();
+
+        // If it is not a command, insert the selected mention item
+        } else {
+          insertItem(item)
+        }
+      },
       source: async (searchTerm, renderList, mentionChar) => {
 
         // Value of the mention list
         let values: any;
+        let searchVal: any;
 
         // If User types "@" then trigger the list for user mentioning
         if (mentionChar === "@") {
@@ -280,23 +317,64 @@ export class QuillEditorComponent implements OnInit, OnChanges, AfterViewInit {
             });
           }
 
-          // If User types "#" then trigger the list for files mentioning
+        // If User types "#" then trigger the list for files mentioning
         } else if (mentionChar === "#") {
-          // Initialise values with list of files
-          values = await this.publicFunctions.suggestFiles(searchTerm, this.groupId, this.workspaceData);
-        }
+          // Initialise values with list of collection pages
+          if (searchTerm.slice(0, 8) === 'colpage ') {
+            searchVal = searchTerm.split(' ')[1];
+            values = await this.publicFunctions.suggestCollectionPages(searchVal, this.groupId, this.workspaceData);  
 
-        // If searchTerm length is 0, then show the full list
-        if (searchTerm.length === 0) {
-          renderList(values, searchTerm);
+          // Initialise values with list of collections
+          } else if (searchTerm.slice(0, 4) === 'col ') {
+            searchVal = searchTerm.replace('col ', '');
+            values = await this.publicFunctions.suggestCollection(this.groupId, searchVal);
+
+          // Initialise values with list of files
+          } else if (searchTerm.slice(0, 5) === 'file ') {
+            searchVal = searchTerm.replace('file ', '');
+            values = await this.publicFunctions.suggestFiles(searchVal, this.groupId, this.workspaceData);
+  
+          // Initialise values with list of posts
+          } else if (searchTerm.slice(0, 5) === 'post ') {
+            searchVal = searchTerm.replace('post ', '');
+            values = await this.publicFunctions.suggestPosts(searchVal, this.groupId);
+            
+            // If none of the filters are used, initialise values with all entities
+          } else if (searchTerm.length === 0) {
+
+          /**
+           * The following code triggers a list to display all the assets when no filter has been provided
+           *
+            searchVal = searchTerm;
+            const collections = await this.publicFunctions.suggestCollection(this.groupId, searchVal);
+            const collectionPages = await this.publicFunctions.suggestCollectionPages(searchVal, this.groupId, this.workspaceData);
+            const files = await this.publicFunctions.suggestFiles(searchTerm, this.groupId, this.workspaceData);
+            const posts = await this.publicFunctions.suggestPosts(searchVal, this.groupId);
+            values = [...collections, ...collectionPages, ...files, ...posts]
+          */
+            
+          // This is the list of command suggestions that displays when User types "#"
+            let cmdSuggestions = [
+              { value: '<span >#file <em>filename</em> <p style="color: #9D9D9D" i18n="@@quillEditor.findAFileToTag"> find a file to tag</p> </span>' },
+              { value: '<span >#post <em>posttitle</em> <p style="color: #9D9D9D" i18n="@@quillEditor.findAPostToTag"> find a post to tag </p> </span>' },
+              { value: '<span >#col <em>collectionname</em> <p style="color: #9D9D9D" i18n="@@quillEditor.findACollectionToTag"> find a collection to tag </p> </span>' },
+              { value: '<span >#colpage <em>collectionpage</em> <p style="color: #9D9D9D" i18n="@@quillEditor.findAPageFromACollectionToTag"> find a page from a collection to tag </p> </span>' },              
+            ]
+            values = cmdSuggestions  
+          }
+      }
+      
+      // If searchVal is undefined, then display the list of command suggestions
+          if (searchVal === undefined) {
+          renderList(values);
         } else {
           const matches = [];
-          for (let i = 0; i < values.length; i++) {
-            if (values[i] && values[i].value && ~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())) {
+          for (let i = 0; i < values?.length; i++) {
+            if (values[i] && values[i].value && ~values[i].value.toLowerCase().indexOf(searchVal?.toLowerCase())) {
               matches.push(values[i]);
             }
           }
-          renderList(matches, searchTerm);
+          renderList(matches, searchVal);
         }
       }
     }

@@ -376,7 +376,10 @@ export class PostService {
         { path: 'logs._new_section', select: '_id title' },
         { path: 'logs._assignee', select: this.userFields },
         { path: 'logs._group', select: this.groupFields },
-        { path: 'logs._task', select: '_id title' }
+        { path: 'logs._task', select: '_id title' },
+        { path: 'crm._company', select: '_id name description company_pic' },
+        { path: 'crm._contacts', select: '_id name description phones emails links _company position crm_custom_fields' },
+        { path: 'crm._contacts._company', select: '_id name description company_pic' },
       ]);
 
     } else if (post.type === 'performance_task') {
@@ -572,7 +575,6 @@ export class PostService {
     }
   }
 
-
   /**
    * This function is responsible for editing a post
    * @param post
@@ -764,10 +766,11 @@ export class PostService {
             status: post.status,
             _column: post._column,
             custom_fields: post.task.custom_fields,
-            isNorthStar: post.task.isNorthStar,
-            is_idea: post.task.is_idea,
-            northStar: post.task.northStar,
+            isNorthStar: post.task.isNorthStar || false,
+            is_idea: post.task.is_idea || false,
+            is_crm_task: post.task.is_crm_task || false,
             is_milestone: post?.task?.is_milestone || false,
+            northStar: post.task.northStar,
             _parent_task: post.task._parent_task
           }
 
@@ -950,6 +953,9 @@ export class PostService {
       .populate({ path: 'task.shuttles._shuttle_section',select:'_id title' })
       .populate({ path: 'performance_task._assigned_to', select: this.userFields })
       .populate({ path: 'permissions._members', select: this.userFields })
+      .populate({ path: 'crm._company', select: '_id name description company_pic' })
+      .populate({ path: 'crm._contacts', select: '_id name description phones emails links _company position crm_custom_fields' })
+      .populate({ path: 'crm._contacts._company', select: '_id name description company_pic' })
       .populate({ path: 'logs._actor', select: this.userFields })
       .populate({ path: 'logs._new_section', select: '_id title' })
       .populate({ path: 'logs._assignee', select: this.userFields })
@@ -3880,4 +3886,53 @@ export class PostService {
         });
       return this.populatePostProperties(post);
   }
+
+
+  /**
+   * This function is responsible for editing a post crm information
+   * @param post
+   * @param postId
+   */
+  async saveCRMInfo(postId: string, crmInfo: any, userId: string) {
+    try {
+
+      // Update the post
+      var post = await Post.findOneAndUpdate({
+          _id: postId
+        }, {
+          $set: {
+            crm: crmInfo
+          }
+        }, {
+          new: true
+        });
+
+      post = await Post.findOneAndUpdate({
+          _id: postId
+        }, {
+          $push: {
+            "logs": {
+              action: 'update_crm_info',
+              action_date: moment().format(),
+              _actor: userId
+            }
+          }
+        }, {
+          new: true
+        });
+
+      // populate the assigned_to property of this document
+      post = await this.populatePostProperties(post);
+
+      // Send all the required notifications
+      this.sendNotifications(post, userId, 'change_content');
+
+      // Return the post
+      return post;
+
+    } catch (err) {
+      // Return with error
+      throw (err);
+    }
+  };
 }

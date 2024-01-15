@@ -13,47 +13,29 @@ import { Collection } from './collection.model';
 import { File } from './file.model';
 import { Page } from './page.model';
 import { Folder } from './folder.model';
+import { Contact } from './contact.model';
+import { Company } from './company.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
  *  =====================
  * */
 export {
-
-    // AUTH
     Auth as Auth,
-
-    // Account
     Account as Account,
-
-    // COLUMN
     Column as Column,
-
-    // GROUP
     Group as Group,
-
     Portfolio as Portfolio,
-
-    // POST
     Post as Post,
-
-    // USER
     User as User,
-
-    // WORKSPACE
     Workspace as Workspace,
-
-    // FLOW
     Flow as Flow,
-
     Folder as Folder,
-
-    // NOTIFICATION
     Notification as Notification,
-
     Comment as Comment,
-
     Collection as Collection,
     File as File,
-    Page as Page
+    Page as Page,
+    Contact as Contact,
+    Company as Company
 };

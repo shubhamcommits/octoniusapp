@@ -389,6 +389,12 @@ p {
   }
 }
 
+.ql-mention-list-item {
+  line-height: 20px !important;
+  padding: 5px !important;
+  height: fit-content !important;
+}
+
 .mention {
   background: transparent;
   color: $brand-primary;

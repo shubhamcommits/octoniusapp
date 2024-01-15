@@ -135,6 +135,7 @@ import { ShareCollectionDialogComponent } from './share-collection-dialog/share-
 import { PasswordStrengthComponent } from './password-strength/password-strength.component';
 import { PricingTableComponent } from './pricing-table/pricing-table.component';
 import { HolidayRejectionDialogComponent } from './hr/holiday-rejection-dialog/holiday-rejection-dialog.component';
+import { CRMLeadCardComponent } from './posts/group-post-dialog/crm-lead-card/crm-lead-card.component';
 
 @NgModule({
     declarations: [
@@ -237,6 +238,7 @@ import { HolidayRejectionDialogComponent } from './hr/holiday-rejection-dialog/h
         PostDatesComponent,
         FileVersionsComponent,
         PostLogsComponent,
+        CRMLeadCardComponent,
         HiveReportsCardComponent,
         PayrollSetupCardComponent,
         PendingTasksCardComponent,
@@ -246,7 +248,7 @@ import { HolidayRejectionDialogComponent } from './hr/holiday-rejection-dialog/h
         ShareCollectionDialogComponent,
         PasswordStrengthComponent,
         PricingTableComponent,
-        HolidayRejectionDialogComponent
+        HolidayRejectionDialogComponent,
     ],
     imports: [
         CommonModule,
@@ -357,6 +359,7 @@ import { HolidayRejectionDialogComponent } from './hr/holiday-rejection-dialog/h
         PostDatesComponent,
         FileVersionsComponent,
         PostLogsComponent,
+        CRMLeadCardComponent,
         HiveReportsCardComponent,
         PayrollSetupCardComponent,
         PendingTasksCardComponent,
@@ -366,7 +369,7 @@ import { HolidayRejectionDialogComponent } from './hr/holiday-rejection-dialog/h
         ShareCollectionDialogComponent,
         PasswordStrengthComponent,
         PricingTableComponent,
-        HolidayRejectionDialogComponent
+        HolidayRejectionDialogComponent,
     ],
     providers: [
         { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },

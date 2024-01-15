@@ -1,7 +1,6 @@
 import { Column, Flow, Group, Post, User, Workspace } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError, axios } from '../../utils';
-import { Readable } from 'stream';
 import http from 'axios';
 import moment from 'moment';
 import { GroupService } from '../services';
@@ -707,7 +706,7 @@ export class GroupController {
             })
 
             // Find the user and update the _groups array in the corresponding user document 
-            const user = await User.findByIdAndUpdate({
+            await User.findByIdAndUpdate({
                 _id: groupData._admins,
                 _workspace: groupData._workspace
             }, {
@@ -937,7 +936,7 @@ export class GroupController {
 
         // Fetch the groupId
         const { groupId } = req.params;
-        const isBackbroundImage = req.body.fileData.isBackbroundImage
+        const isBackgroundImage = req.body.fileData.isBackgroundImage
 
         // Fetch the fileName from fileHandler middleware
         const fileName = req['fileName'];
@@ -945,7 +944,7 @@ export class GroupController {
         try {
 
             let update = {};
-            if (isBackbroundImage) {
+            if (isBackgroundImage) {
                 update = {
                     background_image: fileName
                 };

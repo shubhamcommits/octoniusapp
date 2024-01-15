@@ -106,6 +106,16 @@
           </a>
       </li>
 
+      <li class="nav-item" *ngIf="!myWorkplace && groupData?.type == 'crm'">
+          <a [ngClass]="activeState == 'groups_crm'?'nav-link active-nav':'nav-link'"
+              (click)="changeState('groups_crm')"
+              routerLink="/dashboard/work/groups/crm"
+              routerLinkActive="active"
+              i18n="@@groupNavbar.crmSetup">
+                CRM Setup
+          </a>
+      </li>
+
       <li class="nav-item" *ngIf="!myWorkplace">
           <a [ngClass]="activeState == 'groups_files'?'nav-link active-nav':'nav-link'"
               (click)="changeState('groups_files')"

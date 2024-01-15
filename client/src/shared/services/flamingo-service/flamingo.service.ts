@@ -45,12 +45,21 @@ export class FlamingoService {
   }
 
   /**
+   * This function is responsible to create a flamingo
+   * @param questionData
+   */
+   createFlamingo(flamingoData: any){
+    return this._http.post(this.baseURL + `/create-flamingo`,{flamingoData}).toPromise();
+  }
+
+  /**
    * This function is responsible to create questiona and add it to flamingo
    * @param questionData
    */
    createQuestion(flamingoId: string, questionData:any){
-    if(flamingoId)
+    if (flamingoId) {
       return this._http.post(this.baseURL + `/create-add-question/?flamingoId=${flamingoId}`,{questionData}).toPromise();
+    }
   }
 
 

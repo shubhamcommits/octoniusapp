@@ -2,6 +2,7 @@ import moment from 'moment';
 import { File } from '../models';
 import { Flamingo } from '../models';
 import { Question } from '../models';
+import { DateTime } from 'luxon';
 
 /*  ===============================
  *  -- Flamingo Service --
@@ -96,11 +97,22 @@ export class FlamingoService {
      * This function is responsible to create new flamingo form
      * @param data 
      */
-    async createFlamingo(flamingoData:any){
+    async createFlamingo(flamingoData:any) {
+
+        const file = await File.create({
+            _group: flamingoData._group,
+            original_name: flamingoData.original_name,
+            modified_name: flamingoData.modified_name,
+            type: flamingoData.type,
+            mime_type: flamingoData.mime_type,
+            _folder: (flamingoData._folder && flamingoData._folder != '') ? flamingoData._folder : null,
+            _posted_by: flamingoData._posted_by,
+            created_date: DateTime.now()
+        });
 
         // Preparing File Data
         let flamingo: any = {
-            _file: flamingoData._file,
+            _file: file._id,
             _questions: flamingoData._questions || []
         }
 
@@ -108,10 +120,10 @@ export class FlamingoService {
         flamingo = await Flamingo.create(flamingo);
 
         // Populate File Properties
-        flamingo = this.populateFlamingoProperties(flamingo);
+        flamingo = await this.populateFlamingoProperties(flamingo);
 
         // Return file
-        return flamingo
+        return { flamingo, file };
     }
 
      /**
@@ -122,7 +134,7 @@ export class FlamingoService {
       async get(fileId: string) {
 
         let flamingo: any = await Flamingo.findOne({ _file: fileId })
-        flamingo = this.populateFlamingoProperties(flamingo);
+        flamingo = await this.populateFlamingoProperties(flamingo);
         
         return flamingo;
     }
@@ -138,7 +150,7 @@ export class FlamingoService {
 
         let flamigoupdated: any = await Flamingo.findByIdAndUpdate(query,data,{new:true});
 
-        flamigoupdated = this.populateFlamingoProperties(flamigoupdated);
+        flamigoupdated = await this.populateFlamingoProperties(flamigoupdated);
 
         return flamigoupdated;
     }
@@ -162,7 +174,7 @@ export class FlamingoService {
 
         let flamigoupdated: any = await Flamingo.findByIdAndUpdate(query,data,{new:true});
 
-        flamigoupdated = this.populateFlamingoProperties(flamigoupdated);
+        flamigoupdated = await this.populateFlamingoProperties(flamigoupdated);
 
         return flamigoupdated;
     }
@@ -186,7 +198,7 @@ export class FlamingoService {
             query,
             data,
             { new : true });
-        return this.populateFlamingoProperties(flamingoUpdated);
+        return await this.populateFlamingoProperties(flamingoUpdated);
     }
 
     /** 
@@ -201,7 +213,7 @@ export class FlamingoService {
            { $set: {publish: publish }},
            { new: true}).lean();
 
-        return this.populateFlamingoProperties(flamingoUpdated);
+        return await this.populateFlamingoProperties(flamingoUpdated);
     }
 
     /** 
