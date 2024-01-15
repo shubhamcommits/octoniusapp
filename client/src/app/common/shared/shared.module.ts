@@ -136,7 +136,6 @@ import { PasswordStrengthComponent } from './password-strength/password-strength
 import { PricingTableComponent } from './pricing-table/pricing-table.component';
 import { HolidayRejectionDialogComponent } from './hr/holiday-rejection-dialog/holiday-rejection-dialog.component';
 import { CRMLeadCardComponent } from './posts/group-post-dialog/crm-lead-card/crm-lead-card.component';
-import { CRMContactListComponent } from './crm/crm-contact-list/crm-contact-list.component';
 import { CRMCompanyListComponent } from './crm/crm-company-list/crm-company-list.component';
 
 @NgModule({
@@ -251,7 +250,6 @@ import { CRMCompanyListComponent } from './crm/crm-company-list/crm-company-list
         PasswordStrengthComponent,
         PricingTableComponent,
         HolidayRejectionDialogComponent,
-        CRMContactListComponent,
         CRMCompanyListComponent
     ],
     imports: [
@@ -374,7 +372,6 @@ import { CRMCompanyListComponent } from './crm/crm-company-list/crm-company-list
         PasswordStrengthComponent,
         PricingTableComponent,
         HolidayRejectionDialogComponent,
-        CRMContactListComponent,
         CRMCompanyListComponent
     ],
     providers: [
