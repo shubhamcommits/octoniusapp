@@ -13,6 +13,14 @@ export class CRMGroupService {
   baseURL = environment.GROUPS_BASE_API_URL + '/crm';
 
   /**
+   * This function is responsible for fetching all the group crm information
+   * @param groupId
+   */
+  getGroupCRMInformation(groupId: string) {
+    return this._http.get(this.baseURL + `/${groupId}/crm_info`).toPromise();
+  }
+
+  /**
    * This function is responsible for fetching all the group crm contacts
    * @param groupId
    */

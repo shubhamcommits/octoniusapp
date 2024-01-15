@@ -16,6 +16,9 @@ routes.use(authsHelper.verifyToken);
 // Checks whether the current user is loggedIn or not
 routes.use(authsHelper.isLoggedIn);
 
+// GET - Get all the crm information in a group
+routes.get('/:groupId/crm_info', crm.getGroupCRMInfo);
+
 // GET - Get all the crm contacts in a group
 routes.get('/:groupId/contacts', crm.getGroupCRMContacts);
 

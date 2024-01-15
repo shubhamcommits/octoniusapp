@@ -12,7 +12,7 @@
 
       <div class="block">
         <div class="row">
-          <button class="btn btn-warning" (click)="openNewContactDialog()">
+          <button class="btn btn-warning" (click)="openContactDialog()">
             <i class="material-icons-outlined">add</i>
             <span i18n="@@crmSetupBoardBar.newContact">New Contact</span>
           </button>
@@ -108,7 +108,7 @@
               <i class="material-icons-outlined ml-2 muted pointer"
                 [matMenuTriggerFor]="menu">more_horiz</i>
               <mat-menu #menu="matMenu">
-                <a mat-menu-item (click)="openNewContactDialog(contact?._id)">
+                <a mat-menu-item (click)="openContactDialog(contact?._id)">
                   <span i18n="@@crmContactList.edit">Edit</span>
                 </a>
                 <a mat-menu-item (click)="deleteContact(contact?._id)">
@@ -131,7 +131,7 @@
   
       <div class="block">
         <div class="row">
-          <button class="btn btn-warning" (click)="openEditCompanyDialog()">
+          <button class="btn btn-warning" (click)="openCompanyDialog()">
             <i class="material-icons-outlined">add</i>
             <span i18n="@@crmSetupBoardBar.newCompany">New Company</span>
           </button>
@@ -204,7 +204,7 @@
               <i class="material-icons-outlined ml-2 muted pointer"
                 [matMenuTriggerFor]="menu">more_horiz</i>
               <mat-menu #menu="matMenu">
-                <a mat-menu-item (click)="openEditCompanyDialog(company?._id)">
+                <a mat-menu-item (click)="openCompanyDialog(company?._id)">
                   <span i18n="@@crmCompanyList.edit">Edit</span>
                 </a>
                 <a mat-menu-item (click)="deleteCompany(company?._id)">

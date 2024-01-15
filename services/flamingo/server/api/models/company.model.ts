@@ -12,7 +12,7 @@ const CompanySchema = new Schema({
     },
     description: {
         type: String,
-        required: true
+        required: false
     },
     company_pic: {
         type: String,
