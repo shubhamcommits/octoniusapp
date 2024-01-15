@@ -98,6 +98,7 @@ import { CRMContactCustomFieldsComponent } from './group/group-crm-setup-view/ne
 import { CreateGroupDialogComponent } from './groups-list/create-group-dialog/create-group-dialog.component';
 import { CRMCompanyCustomFieldsComponent } from './group/group-crm-setup-view/new-crm-company-dialog/crm-company-custom-fields/crm-company-custom-fields.component';
 import { CRMCompanyImageDialogComponent } from './group/group-crm-setup-view/new-crm-company-dialog/crm-company-image-dialog/crm-company-image-dialog.component';
+import { CRMContactDialogComponent } from './group/group-crm-setup-view/crm-contact-dialog/crm-contact-dialog.component';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -159,6 +160,7 @@ import { CRMCompanyImageDialogComponent } from './group/group-crm-setup-view/new
         GroupSettingsComponent,
         GroupBackgroundImageDetailsComponent,
         NewCRMContactDialogComponent,
+        CRMContactDialogComponent,
         CRMContactInformationComponent,
         CRMContactCustomFieldsComponent,
         CRMCompanyCustomFieldsComponent,

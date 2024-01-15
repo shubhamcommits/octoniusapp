@@ -1,7 +1,8 @@
-import { Component, Input, OnChanges, ViewEncapsulation, Injector, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, ViewEncapsulation, Injector } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
+import { CRMContactDialogComponent } from 'modules/groups/group/group-crm-setup-view/crm-contact-dialog/crm-contact-dialog.component';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
 import { CRMGroupService } from 'src/shared/services/crm-group-service/crm-group.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -42,6 +43,7 @@ export class CRMLeadCardComponent implements OnChanges {
     private crmGroupService: CRMGroupService,
     private postService: PostService,
     public utilityService: UtilityService,
+    public dialog: MatDialog,
     private injector: Injector
   ) { }
 
@@ -196,5 +198,17 @@ export class CRMLeadCardComponent implements OnChanges {
           reject(this.utilityService.rejectAsyncPromise($localize`:@@crmLeadCard.unableToUpdateDetails:Unable to update the details, please try again!`));
         });
     }));
+  }
+
+  openContactDialog(contactId?: string) {
+		const dialogRef = this.dialog.open(CRMContactDialogComponent, {
+      disableClose: true,
+      hasBackdrop: true,
+      width: '40%',
+      height: '50%',
+      data: {
+        contactId: contactId
+      }
+		});
   }
 }
