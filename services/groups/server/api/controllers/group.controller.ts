@@ -2590,39 +2590,30 @@ export class GroupController {
 
         // Fetch the newTimeTrackEntity from fileHandler middleware
         let editTimeTrackingEntity = req.body['editTimeTrackingEntity'];
-        let propertiesEdited = req.body['propertiesEdited'];
+        let propertyEdited = req.body['propertyEdited'];
         
         try {
             const timeId = editTimeTrackingEntity.timeId;
 
-            let dbTimeTrackingEntity = await TimeTrackingEntity.find({
-                    _id: editTimeTrackingEntityId,
-                    'times._id': timeId
-                }).lean();
+            let editedTimeTrackingEntity;
 
-            if (propertiesEdited.includes('category')) {
-
+            switch (propertyEdited) {
+                case 'user':
+                    editedTimeTrackingEntity = await groupService.editUserTimeTrackingEntity(editTimeTrackingEntityId, timeId, editTimeTrackingEntity?._user);
+                    break;
+                case 'category':
+                    editedTimeTrackingEntity = await groupService.editCategoryTimeTrackingEntity(editTimeTrackingEntityId, timeId, editTimeTrackingEntity?._category);
+                    break;
+                case 'time':
+                    editedTimeTrackingEntity = await groupService.editTimeTimeTrackingEntity(editTimeTrackingEntityId, timeId, editTimeTrackingEntity?.hours, editTimeTrackingEntity?.minutes);
+                    break;
+                case 'date':
+                    editedTimeTrackingEntity = await groupService.editDateTimeTrackingEntity(editTimeTrackingEntityId, timeId, editTimeTrackingEntity?.date);
+                    break;
+                case 'comment':
+                    editedTimeTrackingEntity = await groupService.editCommentTimeTrackingEntity(editTimeTrackingEntityId, timeId, editTimeTrackingEntity?.comment);
+                    break;
             }
-
-            let editedTimeTrackingEntity = await TimeTrackingEntity.findByIdAndUpdate({
-                    _id: editTimeTrackingEntityId
-                }, {
-                    $set: {
-                        _category: editTimeTrackingEntity._category,
-                        comment: editTimeTrackingEntity.comment,
-                        _user: editTimeTrackingEntity._user,
-                        _task: editTimeTrackingEntity._task,
-                        'times.$[time].hours': editTimeTrackingEntity.hours,
-                        'times.$[time].minutes': editTimeTrackingEntity.minutes,
-                    }
-                },
-                {
-                    arrayFilters: [{ "time._id": timeId }],
-                    new: true
-                })
-                .populate('_user', 'first_name last_name profile_pic email')
-                .populate('_created_by', 'first_name last_name profile_pic email')
-                .lean();
 
             // Send status 200 response
             return res.status(200).json({

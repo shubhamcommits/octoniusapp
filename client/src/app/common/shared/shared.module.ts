@@ -136,8 +136,8 @@ import { PasswordStrengthComponent } from './password-strength/password-strength
 import { PricingTableComponent } from './pricing-table/pricing-table.component';
 import { HolidayRejectionDialogComponent } from './hr/holiday-rejection-dialog/holiday-rejection-dialog.component';
 import { CRMLeadCardComponent } from './posts/group-post-dialog/crm-lead-card/crm-lead-card.component';
-import { CRMContactListComponent } from './crm/crm-contact-list/crm-contact-list.component';
-import { CRMCompanyListComponent } from './crm/crm-company-list/crm-company-list.component';
+import { TaskTimeTrackingComponent } from './posts/group-post-dialog/task-time-tracking/task-time-tracking.component';
+import { TaskTimeTrackingListComponent } from './posts/group-post-dialog/task-time-tracking/task-time-tracking-list/task-time-tracking-list.component';
 
 @NgModule({
     declarations: [

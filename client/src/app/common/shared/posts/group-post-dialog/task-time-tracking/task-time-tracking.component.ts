@@ -33,7 +33,6 @@ export class TaskTimeTrackingComponent implements OnChanges {
   entryComment;
 
   categories = [];
-  propertiesEdited = [];
 
   commentPlaceholder = $localize`:@@taskTimeTracking.commentPlaceHolder:Comment`;
 
@@ -94,7 +93,7 @@ export class TaskTimeTrackingComponent implements OnChanges {
           date: time.date,
           hours: time.hours,
           minutes: time.minutes,
-          comment: tte.comment,
+          comment: time.comment,
         };
         this.timeTrackingEntitiesMapped.push(tteMapped);
       });
@@ -118,10 +117,7 @@ export class TaskTimeTrackingComponent implements OnChanges {
   onAssignedAdded(res: any) {
     this.entryUserArray = [res?.assignee];
     this.entryUserId = (res?.assignee?._id || res?.assignee);
-    if (!this.propertiesEdited) {
-      this.propertiesEdited = [];
-    }
-    this.propertiesEdited.push('user');
+    this.saveEntry('user');
   }
 
   onAssignedRemoved(userId: string) {
@@ -129,7 +125,7 @@ export class TaskTimeTrackingComponent implements OnChanges {
     this.entryUserId = '';
   }
 
-  saveEntry() {
+  saveEntry(propertyEdited?: string) {
     if (!this.showAddTimeForm) {
       this.showAddTimeForm = !this.showAddTimeForm
     } else if (!this.entryId) {
@@ -140,9 +136,9 @@ export class TaskTimeTrackingComponent implements OnChanges {
         times: [{
           date: this.entryDate,
           hours: this.entryTimeHours,
-          minutes: this.entryTimeMinutes
+          minutes: this.entryTimeMinutes,
+          comment: this.entryComment,
         }],
-        comment: this.entryComment,
       };
 
       this.groupService.saveTimeTrackingEntry(this.groupData._id, newEntity).then(async (res: any) => {
@@ -167,7 +163,7 @@ export class TaskTimeTrackingComponent implements OnChanges {
         comment: this.entryComment,
       }
 
-      this.groupService.editTimeTrackingEntry(editedEntity, this.propertiesEdited).then(async (res: any) => {
+      this.groupService.editTimeTrackingEntry(editedEntity, propertyEdited).then(async (res: any) => {
         const index = (this.timeTrackingEntities) ? this.timeTrackingEntities.findIndex(tte => tte._id == this.entryId) : -1;
         if (index >= 0) {
           editedEntity._user = this.userData;
@@ -187,7 +183,6 @@ export class TaskTimeTrackingComponent implements OnChanges {
   }
 
   onEditEntryEvent(timeTrackingEntity: any) {
-    this.propertiesEdited = [];
     this.entryId = timeTrackingEntity._id;
     this.entryUserId = timeTrackingEntity?._user?._id || timeTrackingEntity?._user;
     this.entryUserArray = [timeTrackingEntity?._user];
@@ -208,11 +203,7 @@ export class TaskTimeTrackingComponent implements OnChanges {
    */
   getDate(dateObject: any) {
     this.entryDate = dateObject.toISOString() || null;
-
-    if (!this.propertiesEdited) {
-      this.propertiesEdited = [];
-    }
-    this.propertiesEdited.push('date');
+    this.saveEntry('date');
   }
 
   getTime(timeObject: any) {
@@ -225,17 +216,11 @@ export class TaskTimeTrackingComponent implements OnChanges {
       this.entryTimeMinutes = '0';
     }
 
-    if (!this.propertiesEdited) {
-      this.propertiesEdited = [];
-    }
-    this.propertiesEdited.push('time');
+    this.saveEntry('time');
   }
 
   changeEntryCategory($event: any) {
-    if (!this.propertiesEdited) {
-      this.propertiesEdited = [];
-    }
-    this.propertiesEdited.push('category');
+    this.saveEntry('category');
   }
 
   initProperties() {
@@ -249,7 +234,6 @@ export class TaskTimeTrackingComponent implements OnChanges {
     this.entryTimeMinutes = '';
     this.entryCategory = '';
     this.entryComment = '';
-    this.propertiesEdited = [];
     this.entryAlreadyExists = false;
   }
 

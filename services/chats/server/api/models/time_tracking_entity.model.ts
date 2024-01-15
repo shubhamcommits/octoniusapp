@@ -30,12 +30,12 @@ const TimeTrackingEntitySchema = new Schema({
         minutes: {
             type: String,
             default: null
+        },
+        comment: {
+            type: String,
+            default: null
         }
     }],
-    comment: {
-        type: String,
-        default: null
-    },
     created_date: {
         type: Date,
         default: moment().format(),

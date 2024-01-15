@@ -1,4 +1,4 @@
-import { Comment, User, Post, Group, Notification, Flow, Column } from "../models";
+import { Comment, User, Post, Group, Notification, Flow, Column, TimeTrackingEntity } from "../models";
 import { Readable } from 'stream';
 
 const minio = require('minio');
@@ -173,4 +173,84 @@ export class GroupService {
       throw (err);
     }
   };
+
+  async editUserTimeTrackingEntity(editTimeTrackingEntityId: string, timeId: string, userId: string) {
+    let dbTimeTrackingEntity = await TimeTrackingEntity.find({
+            _id: editTimeTrackingEntityId,
+            'times._id': timeId
+        }).lean();
+
+    // encontrar el entit anterior para eliminarle el timpo
+    // añadir el tiempo al entity si no existe
+  };
+
+  async editCategoryTimeTrackingEntity(editTimeTrackingEntityId: string, timeId: string, category: string) {
+    let dbTimeTrackingEntity = await TimeTrackingEntity.find({
+            _id: editTimeTrackingEntityId,
+            'times._id': timeId
+        }).lean();
+  };
+
+  async editTimeTimeTrackingEntity(editTimeTrackingEntityId: string, timeId: string, hours: string, minutes: string) {
+    return await TimeTrackingEntity.findByIdAndUpdate({
+        _id: editTimeTrackingEntityId
+      }, {
+          $set: {
+            'times.$[time].hours': hours,
+            'times.$[time].minutes': minutes,
+          }
+      },
+      {
+          arrayFilters: [{ "time._id": timeId }],
+          new: true
+      })
+      .populate('_user', 'first_name last_name profile_pic email')
+      .populate('_created_by', 'first_name last_name profile_pic email')
+      .lean();
+  };
+
+  async editDateTimeTrackingEntity(editTimeTrackingEntityId: string, timeId: string, date: any) {
+    let dbTimeTrackingEntity = await TimeTrackingEntity.find({
+            _id: editTimeTrackingEntityId,
+            'times._id': timeId
+        }).lean();
+  };
+
+  async editCommentTimeTrackingEntity(editTimeTrackingEntityId: string, timeId: string, comment: string) {
+    return await TimeTrackingEntity.findByIdAndUpdate({
+        _id: editTimeTrackingEntityId
+      }, {
+          $set: {
+            'times.$[time].comment': comment,
+          }
+      },
+      {
+          arrayFilters: [{ "time._id": timeId }],
+          new: true
+      })
+      .populate('_user', 'first_name last_name profile_pic email')
+      .populate('_created_by', 'first_name last_name profile_pic email')
+      .lean();
+  };
+  /*
+  await TimeTrackingEntity.findByIdAndUpdate({
+      _id: editTimeTrackingEntityId
+    }, {
+      $set: {
+        _category: editTimeTrackingEntity._category,
+        _user: editTimeTrackingEntity._user,
+        _task: editTimeTrackingEntity._task,
+        'times.$[time].hours': editTimeTrackingEntity.hours,
+        'times.$[time].minutes': editTimeTrackingEntity.minutes,
+        'times.$[time].comment': editTimeTrackingEntity.comment,
+      }
+    },
+    {
+      arrayFilters: [{ "time._id": timeId }],
+      new: true
+    })
+    .populate('_user', 'first_name last_name profile_pic email')
+    .populate('_created_by', 'first_name last_name profile_pic email')
+    .lean();
+  */
 }
