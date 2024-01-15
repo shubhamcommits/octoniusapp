@@ -521,11 +521,11 @@ export class GroupPostDialogComponent implements OnInit, AfterViewChecked {
       _content_mentions: this._content_mentions,
       tags: this.tags,
       _read_by: this.postData?._read_by,
-      isNorthStar: this.postData?.task.isNorthStar,
-      is_idea: this.postData?.task.is_idea,
-      is_crm_task: this.postData?.task.is_crm_task,
+      isNorthStar: this.postData?.task?.isNorthStar || false,
+      is_idea: this.postData?.task?.is_idea || false,
+      is_crm_task: this.postData?.task?.is_crm_task || false,
       is_milestone: this.postData?.task?.is_milestone || false,
-      northStar: this.postData?.task.northStar,
+      northStar: this.postData?.task?.northStar || false,
       assigned_to: this.postData?._assigned_to
     };
 
@@ -663,10 +663,10 @@ export class GroupPostDialogComponent implements OnInit, AfterViewChecked {
   async editPost(postId: any, formData: FormData) {
     await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
       this.postService.edit(postId, this.userData?._workspace?._id || this.userData?._workspace, formData)
-        .then((res) => {
+        .then(async (res) => {
           this.postData = res['post'];
 
-          this.initPostData();
+          await this.initPostData();
 
           this.contentChanged = false;
           // Resolve with success

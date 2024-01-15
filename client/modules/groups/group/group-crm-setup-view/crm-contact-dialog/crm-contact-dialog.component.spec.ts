@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CRMContactListComponent } from './crm-contact-list.component';
+import { CRMContactDialogComponent } from './crm-contact-dialog.component';
 
-describe('CRMContactListComponent', () => {
-  let component: CRMContactListComponent;
-  let fixture: ComponentFixture<CRMContactListComponent>;
+describe('CRMContactDialogComponent', () => {
+  let component: CRMContactDialogComponent;
+  let fixture: ComponentFixture<CRMContactDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CRMContactListComponent ]
+      declarations: [ CRMContactDialogComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CRMContactListComponent);
+    fixture = TestBed.createComponent(CRMContactDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
