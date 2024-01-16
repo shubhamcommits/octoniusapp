@@ -15,9 +15,13 @@ export class TaskTimeTrackingComponent implements OnChanges {
   @Input() userData: any;
   @Input() groupData: any;
   @Input() workspaceData: any;
-  @Input() taskId: any;
+  @Input() postData: any;
   
   // @Output() openSubtaskEmitter = new EventEmitter();
+  
+  taskId: any;
+
+  isAssignedToUser = false;
 
   showAddTimeForm = false;
   entryAlreadyExists = false;
@@ -62,6 +66,11 @@ export class TaskTimeTrackingComponent implements OnChanges {
     if (!this.workspaceData) {
       this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     }
+
+    this.taskId = this.postData?._id;
+
+    const index = this.postData?._assigned_to?.findIndex(a => (a._id || a) == this.userData?._id);
+    this.isAssignedToUser = (index >=0);
 
     this.groupService.getTimeTrackingCategories(this.groupData._id).then(res => {
       this.categories = res['categories'];

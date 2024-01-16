@@ -41,10 +41,9 @@
   </div>
 
   <div class="actions">
-    <button class="btn btn-primary btn-md float-left" *ngIf="!entryId" (click)="saveEntry()" [disabled]="!isValidEntry()">
+    <button class="btn btn-primary btn-md float-left" *ngIf="!entryId && (isAssignedToUser || userData?.role == 'manager' || userData?.role == 'owner')" (click)="saveEntry()" [disabled]="!isValidEntry()">
       <i class="material-icons-outlined">add</i>
       <span i18n="@@taskTimeTracking.addEntry">Add entry</span>
-      <!-- <span i18n="@@taskTimeTracking.editEntry" *ngIf="!!entryId">Edit entry</span> -->
     </button>
 
     <button class="btn btn-outline-danger btn-md float-left" style="margin-left: 30px;" (click)="cancelNewEntry()" *ngIf="showAddTimeForm">
