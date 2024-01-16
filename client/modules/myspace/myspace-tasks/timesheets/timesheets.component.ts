@@ -95,7 +95,7 @@ export class TimesheetsComponent implements OnInit, OnDestroy {
             }
 
             tte.times.push({
-              _id: 'octonius_random_' + date.toMillis(),
+              _id: 'octonius_random_' + tte._id + '_' + date.toMillis(),
               date: date,
               hours: '00',
               minutes: '00'
