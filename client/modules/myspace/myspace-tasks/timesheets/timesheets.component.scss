@@ -8,3 +8,8 @@
 table {
   width: 100%;
 }
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+	background: none;
+	display: none;
+}
