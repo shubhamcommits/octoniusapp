@@ -2595,31 +2595,38 @@ export class GroupController {
         try {
             const timeId = editTimeTrackingEntity.timeId;
 
-            let editedTimeTrackingEntity;
+            let retObj: any = {};
 
             switch (propertyEdited) {
                 case 'user':
-                    editedTimeTrackingEntity = await groupService.editUserTimeTrackingEntity(editTimeTrackingEntityId, timeId, editTimeTrackingEntity?._user);
+                    retObj = await groupService.editUserTimeTrackingEntity(editTimeTrackingEntityId, timeId, editTimeTrackingEntity?._user);
                     break;
                 case 'category':
-                    editedTimeTrackingEntity = await groupService.editCategoryTimeTrackingEntity(editTimeTrackingEntityId, timeId, editTimeTrackingEntity?._category);
+                    retObj = await groupService.editCategoryTimeTrackingEntity(editTimeTrackingEntityId, timeId, editTimeTrackingEntity?._category);
                     break;
                 case 'time':
-                    editedTimeTrackingEntity = await groupService.editTimeTimeTrackingEntity(editTimeTrackingEntityId, timeId, editTimeTrackingEntity?.hours, editTimeTrackingEntity?.minutes);
+                    retObj = await groupService.editTimeTimeTrackingEntity(editTimeTrackingEntityId, timeId, editTimeTrackingEntity?.hours, editTimeTrackingEntity?.minutes);
                     break;
                 case 'date':
-                    editedTimeTrackingEntity = await groupService.editDateTimeTrackingEntity(editTimeTrackingEntityId, timeId, editTimeTrackingEntity?.date);
+                    retObj = await groupService.editDateTimeTrackingEntity(editTimeTrackingEntityId, timeId, editTimeTrackingEntity?.date);
                     break;
                 case 'comment':
-                    editedTimeTrackingEntity = await groupService.editCommentTimeTrackingEntity(editTimeTrackingEntityId, timeId, editTimeTrackingEntity?.comment);
+                    retObj = await groupService.editCommentTimeTrackingEntity(editTimeTrackingEntityId, timeId, editTimeTrackingEntity?.comment);
                     break;
             }
 
+            if (!retObj.error) {
+                let timeTrackingEntities = await TimeTrackingEntity.find({
+                        _task: (retObj.timeTrackingEntity._task._id || retObj.timeTrackingEntity._task)
+                    })
+                    .populate('_user', 'first_name last_name profile_pic email')
+                    .populate('_created_by', 'first_name last_name profile_pic email')
+                    .lean();
+                
+                retObj.timeTrackingEntities = timeTrackingEntities;
+            }
             // Send status 200 response
-            return res.status(200).json({
-                message: 'Time Tracking entity created!',
-                timeTrackingEntity: editedTimeTrackingEntity
-            });
+            return res.status(200).json(retObj);
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }

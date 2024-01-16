@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-4">
         <app-date-picker class="form-control" name="entryDate" [styleClass]="'input-date'"
-          (date)="getDate($event)" [selectedDate]="entryDate" [canEdit]="!entryId">
+          (date)="getDate($event)" [selectedDate]="entryDate">
         </app-date-picker>
       </div>
 
@@ -35,26 +35,27 @@
     <div class="row">
       <div class="col-md-12 form-control" style="width: 400px;">
         <textarea rows="4" [(ngModel)]="entryComment" [placeholder]="commentPlaceholder"
-          (blur)="saveEntry('comment')" style="border: none;"></textarea>
+          (blur)="onEditComment()" style="border: none;"></textarea>
       </div>
     </div>
   </div>
 
   <div class="actions">
-    <button class="btn btn-primary btn-md float-left" (click)="saveEntry()" [disabled]="!isValidEntry()">
+    <button class="btn btn-primary btn-md float-left" *ngIf="!entryId" (click)="saveEntry()" [disabled]="!isValidEntry()">
       <i class="material-icons-outlined">add</i>
-      <span i18n="@@taskTimeTracking.addEntry" *ngIf="!entryId">Add entry</span>
-      <span i18n="@@taskTimeTracking.editEntry" *ngIf="!!entryId">Edit entry</span>
+      <span i18n="@@taskTimeTracking.addEntry">Add entry</span>
+      <!-- <span i18n="@@taskTimeTracking.editEntry" *ngIf="!!entryId">Edit entry</span> -->
     </button>
 
     <button class="btn btn-outline-danger btn-md float-left" style="margin-left: 30px;" (click)="cancelNewEntry()" *ngIf="showAddTimeForm">
-      <span i18n="@@taskTimeTracking.cancel">X Cancel</span>
+      <span i18n="@@taskTimeTracking.cancel" *ngIf="!entryId">X Cancel</span>
+      <span i18n="@@taskTimeTracking.close" *ngIf="!!entryId">X Close</span>
     </button>
 
     <div *ngIf="entryAlreadyExists">
       <span>❌</span>
       &nbsp;
-      <span i18n="@@taskTimeTracking.lowerCase">You already registered time for this task on {{ formateDate(entryDate) }} for the category {{ entryCategory }}</span>
+      <span i18n="@@taskTimeTracking.alreadyHasTTE">The user already has time for this task on {{ formateDate(entryDate) }} for the category you selected.</span>
     </div>
   </div>
 </div>

@@ -3,6 +3,7 @@ import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 // import { DateTime } from 'luxon';
 import { GroupService } from 'src/shared/services/group-service/group.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-task-time-tracking',
@@ -45,6 +46,7 @@ export class TaskTimeTrackingComponent implements OnChanges {
 
   constructor(
     private groupService: GroupService,
+    private utilityService: UtilityService,
     private injector: Injector
   ) { }
 
@@ -104,20 +106,26 @@ export class TaskTimeTrackingComponent implements OnChanges {
 
   isValidEntry() {
     const index = (!!this.timeTrackingEntitiesMapped)
-      ? this.timeTrackingEntitiesMapped.findIndex(tte => (tte._user._id || tte._user) == this.entryUserId && (tte._task._id || tte._task) == this.taskId && tte._category == this.entryCategory && (!!(tte.date) && !!(this.entryDate) && this.isSameDay(tte.date, this.entryDate)))
+      ? this.timeTrackingEntitiesMapped.findIndex(tte => ((tte._user._id || tte._user) == this.entryUserId) && ((tte._task._id || tte._task) == this.taskId) && (tte._category == this.entryCategory) && (!!(tte.date) && !!(this.entryDate) && this.isSameDay(tte.date, this.entryDate)))
       : -1;
     if (!!this.entryId) {
       this.entryAlreadyExists = false;
     } else {
       this.entryAlreadyExists = (index >= 0);
     }
+
     return !this.showAddTimeForm || (!!this.entryDate && !!this.entryTime && this.entryTimeHours && !!this.entryTimeMinutes && !!this.entryCategory && !this.entryAlreadyExists);
   }
 
   onAssignedAdded(res: any) {
-    this.entryUserArray = [res?.assignee];
-    this.entryUserId = (res?.assignee?._id || res?.assignee);
-    this.saveEntry('user');
+    if (this.entryUserId != (res?.assignee?._id || res?.assignee)) {
+      this.entryUserArray = [res?.assignee];
+      this.entryUserId = (res?.assignee?._id || res?.assignee);
+
+      if (!!this.entryId && this.isValidEntry()) {
+        this.saveEntry('user');
+      }
+    }
   }
 
   onAssignedRemoved(userId: string) {
@@ -163,23 +171,55 @@ export class TaskTimeTrackingComponent implements OnChanges {
         comment: this.entryComment,
       }
 
-      this.groupService.editTimeTrackingEntry(editedEntity, propertyEdited).then(async (res: any) => {
-        const index = (this.timeTrackingEntities) ? this.timeTrackingEntities.findIndex(tte => tte._id == this.entryId) : -1;
-        if (index >= 0) {
-          editedEntity._user = this.userData;
-          this.timeTrackingEntities[index] = editedEntity;
+      let entryToEdit;
+      const index = (this.timeTrackingEntities) ? this.timeTrackingEntities.findIndex(tte => tte._id == this.entryId) : -1;
+      if (index >= 0) {
+        entryToEdit = this.timeTrackingEntities[index];
+      }
 
-          await this.initTable();
-        }
-        this.showAddTimeForm = false;
-        this.initProperties();
-      });
+      this.utilityService.asyncNotification($localize`:@@taskTimeTracking.pleaseWait:Please wait we are updating the time...`, new Promise((resolve, reject) => {
+        this.groupService.editTimeTrackingEntry(editedEntity, propertyEdited)
+          .then(async (res: any) => {
+            if (!res.error) {
+              this.timeTrackingEntities = res.timeTrackingEntities;
+
+              await this.initTable();
+
+              if (!this.entryId) {
+                this.showAddTimeForm = false;
+                this.initProperties();
+              }
+
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskTimeTracking.timeEdited:Time Edited!`));
+            } else {
+              this.entryAlreadyExists = true;
+
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@taskTimeTracking.unableToEdited:Unable to edit Time!`));
+            }
+
+            this.resetEntityToEdit(editedEntity._id);
+          });
+      }))
     }
   }
 
   cancelNewEntry() {
     this.showAddTimeForm = !this.showAddTimeForm;
     this.initProperties();
+  }
+
+  resetEntityToEdit(editedEntityId: string) {
+    const date = this.entryDate;
+    const hours = this.entryTimeHours;
+    const minutes = this.entryTimeMinutes;
+    const comment = this.entryComment;
+
+    const mappedIndex = (this.timeTrackingEntitiesMapped)
+      ? this.timeTrackingEntitiesMapped.findIndex(tte => tte._id == editedEntityId && this.isSameDay(tte.date, date) && tte.hours == hours && tte.minutes == minutes && tte.comment == comment)
+      : -1;
+    if (mappedIndex >= 0) {
+      this.onEditEntryEvent(this.timeTrackingEntitiesMapped[mappedIndex]);
+    }
   }
 
   onEditEntryEvent(timeTrackingEntity: any) {
@@ -202,8 +242,11 @@ export class TaskTimeTrackingComponent implements OnChanges {
    * @param dateObject
    */
   getDate(dateObject: any) {
+    const oldDate = this.entryDate;
     this.entryDate = dateObject.toISOString() || null;
-    this.saveEntry('date');
+    if (!!this.entryId && this.isValidEntry() && !this.isSameDay(this.entryDate, oldDate)) {
+      this.saveEntry('date');
+    }
   }
 
   getTime(timeObject: any) {
@@ -216,11 +259,21 @@ export class TaskTimeTrackingComponent implements OnChanges {
       this.entryTimeMinutes = '0';
     }
 
-    this.saveEntry('time');
+    if (!!this.entryId && this.isValidEntry()) {
+      this.saveEntry('time');
+    }
   }
 
   changeEntryCategory($event: any) {
-    this.saveEntry('category');
+    if (!!this.entryId && this.isValidEntry()) {
+      this.saveEntry('category');
+    }
+  }
+
+  onEditComment() {
+    if (!!this.entryId && this.isValidEntry()) {
+      this.saveEntry('comment')
+    }
   }
 
   initProperties() {
@@ -236,6 +289,19 @@ export class TaskTimeTrackingComponent implements OnChanges {
     this.entryComment = '';
     this.entryAlreadyExists = false;
   }
+
+  // resetProperties(oldEntity: any) {
+  //   this.entryId = oldEntity._id;
+  //   this.entryUserId = oldEntity?._user?._id || oldEntity?._user;
+  //   this.entryUserArray = [oldEntity?._user];
+  //   this.entryTimeId = oldEntity.timeId;
+  //   this.entryDate = oldEntity.date;
+  //   this.entryTimeHours = oldEntity.hours;
+  //   this.entryTimeMinutes = oldEntity.minutes;
+  //   this.entryTime = this.entryTimeHours + ':' + this.entryTimeMinutes;
+  //   this.entryCategory = oldEntity._category;
+  //   this.entryComment = oldEntity.comment;
+  // }
 
   isSameDay(day1: any, day2: any) {
     if (!day1 && !day2) {
