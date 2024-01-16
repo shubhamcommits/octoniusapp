@@ -31,7 +31,7 @@ export class TaskTimeTrackingComponent implements OnChanges {
   entryUserArray = [];
   entryTimeId;
   entryDate;
-  entryTime;
+  entryTime = '00:00';
   entryTimeHours;
   entryTimeMinutes;
   entryCategory;
@@ -124,22 +124,6 @@ export class TaskTimeTrackingComponent implements OnChanges {
     }
 
     return !this.showAddTimeForm || (!!this.entryDate && !!this.entryTime && this.entryTimeHours && !!this.entryTimeMinutes && !!this.entryCategory && !this.entryAlreadyExists);
-  }
-
-  onAssignedAdded(res: any) {
-    if (this.entryUserId != (res?.assignee?._id || res?.assignee)) {
-      this.entryUserArray = [res?.assignee];
-      this.entryUserId = (res?.assignee?._id || res?.assignee);
-
-      if (!!this.entryId && this.isValidEntry()) {
-        this.saveEntry('user');
-      }
-    }
-  }
-
-  onAssignedRemoved(userId: string) {
-    this.entryUserArray = [];
-    this.entryUserId = '';
   }
 
   saveEntry(propertyEdited?: string) {
@@ -246,6 +230,22 @@ export class TaskTimeTrackingComponent implements OnChanges {
     this.showAddTimeForm = true;
   }
 
+  onAssignedAdded(res: any) {
+    if (this.entryUserId != (res?.assignee?._id || res?.assignee)) {
+      this.entryUserArray = [res?.assignee];
+      this.entryUserId = (res?.assignee?._id || res?.assignee);
+
+      if (!!this.entryId && this.isValidEntry()) {
+        this.saveEntry('user');
+      }
+    }
+  }
+
+  onAssignedRemoved(userId: string) {
+    this.entryUserArray = [];
+    this.entryUserId = '';
+  }
+
   /**
    * This function is responsible for receiving the date from @module <app-date-picker></app-date-picker>
    * @param dateObject
@@ -291,7 +291,7 @@ export class TaskTimeTrackingComponent implements OnChanges {
     this.entryId = '';
     this.entryTimeId = '';
     this.entryDate = '';
-    this.entryTime = '';
+    this.entryTime = '00:00';
     this.entryTimeHours = '';
     this.entryTimeMinutes = '';
     this.entryCategory = '';

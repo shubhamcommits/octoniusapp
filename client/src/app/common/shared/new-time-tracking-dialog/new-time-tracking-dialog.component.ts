@@ -28,7 +28,7 @@ export class NewTimeTrackingDialogComponent implements OnInit {
   // entryUserArray = [];
   entryTimeId;
   entryDate;
-  entryTime;
+  entryTime = '00:00';
   entryTimeHours;
   entryTimeMinutes;
   entryCategory;
@@ -196,7 +196,7 @@ export class NewTimeTrackingDialogComponent implements OnInit {
     this.entryId = '';
     this.entryTimeId = '';
     this.entryDate = '';
-    this.entryTime = '';
+    this.entryTime = '00:00';
     this.entryTimeHours = '';
     this.entryTimeMinutes = '';
     this.entryCategory = '';
