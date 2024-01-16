@@ -2132,12 +2132,13 @@ export class UsersControllers {
             const { userId } = req.params;
             const { query: { startDate, endDate } } = req;
 
-            let timeTrackingEntities = await TimeTrackingEntity.find({
-                    $and: [
-                        { _user: userId },
-                        { 'times.date': { $gte: startDate, $lte: endDate} }
-                    ]
-                });
+            let timeTrackingEntities = await TimeTrackingEntity.find(
+                { _user: userId },
+                { 'times.date': {
+                        $elemMatch: { $gte: startDate, $lte: endDate }
+                    }
+                }
+            );
 
             timeTrackingEntities = await TimeTrackingEntity.populate(timeTrackingEntities, [
                     {
@@ -2152,6 +2153,8 @@ export class UsersControllers {
                     { path: '_user', select: 'first_name last_name profile_pic email' },
                     { path: '_created_by', select: 'first_name last_name profile_pic email' }
                 ]);
+
+            // timeTrackingEntities = timeTrackingEntities.filter(tte => !!tte.times && tte.times.length > 0);
 
             // Send the status 200 response
             return res.status(200).json({

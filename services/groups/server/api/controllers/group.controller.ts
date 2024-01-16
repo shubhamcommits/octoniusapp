@@ -2605,7 +2605,7 @@ export class GroupController {
                     retObj = await groupService.editCategoryTimeTrackingEntity(editTimeTrackingEntityId, timeId, editTimeTrackingEntity?._category);
                     break;
                 case 'time':
-                    retObj = await groupService.editTimeTimeTrackingEntity(editTimeTrackingEntityId, timeId, editTimeTrackingEntity?.hours, editTimeTrackingEntity?.minutes);
+                    retObj = await groupService.editTimeTimeTrackingEntity(editTimeTrackingEntityId, timeId, editTimeTrackingEntity);
                     break;
                 case 'date':
                     retObj = await groupService.editDateTimeTrackingEntity(editTimeTrackingEntityId, timeId, editTimeTrackingEntity?.date);

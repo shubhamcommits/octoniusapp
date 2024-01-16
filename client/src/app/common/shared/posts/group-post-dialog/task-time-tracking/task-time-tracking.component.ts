@@ -199,7 +199,7 @@ export class TaskTimeTrackingComponent implements OnChanges {
 
             this.resetEntityToEdit(editedEntity._id);
           });
-      }))
+      }));
     }
   }
 
