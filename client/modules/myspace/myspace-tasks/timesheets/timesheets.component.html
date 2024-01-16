@@ -159,6 +159,13 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let tte; columns: displayedColumns;"></tr>
       </table>
+
+      <div class="actions">
+        <button class="btn btn-primary btn-md float-left" (click)="openAddNewEntryDialog()">
+          <i class="material-icons-outlined">add</i>
+          <span i18n="@@taskTimeTracking.addEntry">Add entry</span>
+        </button>
+      </div>
     </div>
   </div>
 </div>

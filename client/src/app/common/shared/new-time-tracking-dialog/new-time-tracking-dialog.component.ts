@@ -1,0 +1,219 @@
+import { Component, EventEmitter, Injector, OnInit, Output } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+import { PublicFunctions } from 'modules/public.functions';
+import moment from 'moment';
+import { GroupService } from 'src/shared/services/group-service/group.service';
+import { UserService } from 'src/shared/services/user-service/user.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+
+@Component({
+  selector: 'app-new-time-tracking-dialog',
+  templateUrl: './new-time-tracking-dialog.component.html',
+  styleUrls: ['./new-time-tracking-dialog.component.scss']
+})
+export class NewTimeTrackingDialogComponent implements OnInit {
+
+  @Output() newTimeEvent = new EventEmitter();
+
+  userData: any;
+
+  
+  entryAlreadyExists = false;
+  
+  entryTask;
+  entryTaskId;
+  entryGroupId;
+  entryId;
+  entryUserId;
+  // entryUserArray = [];
+  entryTimeId;
+  entryDate;
+  entryTime;
+  entryTimeHours;
+  entryTimeMinutes;
+  entryCategory;
+  entryComment;
+
+  userTasks = [];
+  categories = [];
+
+  commentPlaceholder = $localize`:@@newTimeTrackingDialog.commentPlaceHolder:Comment`;
+
+  timeTrackingEntities = [];
+  timeTrackingEntitiesMapped = [];
+
+  publicFunctions = new PublicFunctions(this.injector);
+
+  constructor(
+    private groupService: GroupService,
+    private utilityService: UtilityService,
+    private userService: UserService,
+    private injector: Injector,
+    // @Inject(MAT_DIALOG_DATA) public data: any,
+    private mdDialogRef: MatDialogRef<NewTimeTrackingDialogComponent>
+  ) { }
+
+  async ngOnInit() {
+    if (!this.userData) {
+      this.userData = await this.publicFunctions.getCurrentUser();
+    }
+
+    await this.userService.getAllUserTasks().then(res => {
+      this.userTasks = res.tasks
+    });
+
+    this.initProperties();
+  }
+  
+	async initEntities() {
+    this.timeTrackingEntitiesMapped = [];
+
+    this.timeTrackingEntities.forEach(tte => {
+      tte?.times?.forEach(time => {
+        let tteMapped = {
+          _id: tte._id,
+          _user: tte._user,
+          _task: tte._task,
+          _category: tte._category,
+          timeId: time._id,
+          date: time.date,
+          hours: time.hours,
+          minutes: time.minutes,
+          comment: time.comment,
+        };
+        this.timeTrackingEntitiesMapped.push(tteMapped);
+      });
+    });
+    this.timeTrackingEntitiesMapped = [...this.timeTrackingEntitiesMapped];
+	}
+
+  isValidEntry() {
+    const index = (!!this.timeTrackingEntitiesMapped)
+      ? this.timeTrackingEntitiesMapped.findIndex(tte => ((tte._user._id || tte._user) == this.entryUserId) && ((tte._task._id || tte._task) == this.entryTaskId) && (tte._category == this.entryCategory) && (!!(tte.date) && !!(this.entryDate) && this.isSameDay(tte.date, this.entryDate)))
+      : -1;
+    if (!!this.entryId) {
+      this.entryAlreadyExists = false;
+    } else {
+      this.entryAlreadyExists = (index >= 0);
+    }
+
+    return (!!this.entryDate && !!this.entryTime && this.entryTimeHours && !!this.entryTimeMinutes && !!this.entryCategory && !this.entryAlreadyExists);
+  }
+
+  async onTaskSelected() {
+    if (!!this.entryTask) {
+      this.entryTaskId = this.entryTask._id;
+      this.entryGroupId = this.entryTask._group._id || this.entryTask._group;
+
+      await this.groupService.getTimeTrackingEntities(this.entryTaskId).then(async res => {
+        this.timeTrackingEntities = res['timeTrackingEntities'];
+    
+        await this.initEntities();
+      });
+
+      await this.groupService.getTimeTrackingCategories(this.entryGroupId).then(res => {
+        this.categories = res['categories'];
+      });
+    }
+  }
+
+  saveEntry() {
+    const newEntity = {
+      _user: this.entryUserId,
+      _task: this.entryTaskId,
+      _category: this.entryCategory,
+      times: [{
+        date: this.entryDate,
+        hours: this.entryTimeHours,
+        minutes: this.entryTimeMinutes,
+        comment: this.entryComment,
+      }],
+    };
+
+    this.groupService.saveTimeTrackingEntry(this.entryGroupId, newEntity).then(async (res: any) => {
+      this.timeTrackingEntities.push(res.timeTrackingEntity);
+
+      this.newTimeEvent.emit();
+
+      this.closeDialog();
+    });
+  }
+
+  closeDialog() {
+    this.mdDialogRef.close();
+  }
+
+  resetEntityToEdit(editedEntityId: string) {
+    const date = this.entryDate;
+    const hours = this.entryTimeHours;
+    const minutes = this.entryTimeMinutes;
+    const comment = this.entryComment;
+
+    const mappedIndex = (this.timeTrackingEntitiesMapped)
+      ? this.timeTrackingEntitiesMapped.findIndex(tte => tte._id == editedEntityId && this.isSameDay(tte.date, date) && tte.hours == hours && tte.minutes == minutes && tte.comment == comment)
+      : -1;
+    if (mappedIndex >= 0) {
+      this.onEditEntryEvent(this.timeTrackingEntitiesMapped[mappedIndex]);
+    }
+  }
+
+  onEditEntryEvent(timeTrackingEntity: any) {
+    this.entryId = timeTrackingEntity._id;
+    this.entryUserId = timeTrackingEntity?._user?._id || timeTrackingEntity?._user;
+    this.entryTimeId = timeTrackingEntity.timeId;
+    this.entryDate = timeTrackingEntity.date;
+    this.entryTimeHours = timeTrackingEntity.hours;
+    this.entryTimeMinutes = timeTrackingEntity.minutes;
+    this.entryTime = this.entryTimeHours + ':' + this.entryTimeMinutes;
+    this.entryCategory = timeTrackingEntity._category;
+    this.entryComment = timeTrackingEntity.comment;
+  }
+
+  /**
+   * This function is responsible for receiving the date from @module <app-date-picker></app-date-picker>
+   * @param dateObject
+   */
+  getDate(dateObject: any) {
+    this.entryDate = dateObject.toISOString() || null;
+  }
+
+  getTime(timeObject: any) {
+    if (!!this.entryTime) {
+      const time = this.entryTime.split(':');
+      this.entryTimeHours = time[0];
+      this.entryTimeMinutes = time[1];
+    } else {
+      this.entryTimeHours = '0';
+      this.entryTimeMinutes = '0';
+    }
+  }
+
+  initProperties() {
+    this.entryTask = null;
+    this.entryTaskId = '';
+    this.entryGroupId = '';
+    this.entryUserId = this.userData?._id;
+    this.entryId = '';
+    this.entryTimeId = '';
+    this.entryDate = '';
+    this.entryTime = '';
+    this.entryTimeHours = '';
+    this.entryTimeMinutes = '';
+    this.entryCategory = '';
+    this.entryComment = '';
+    this.entryAlreadyExists = false;
+  }
+
+  isSameDay(day1: any, day2: any) {
+    if (!day1 && !day2) {
+      return true;
+    } else if ((!!day1 && !day2) || (!!day2 && !day1)) {
+      return true;
+    }
+    return moment.utc(day1).isSame(moment.utc(day2), 'day');
+  }
+
+  formateDate(date) {
+    return (date) ? moment.utc(date).add('1', 'day').format("MMM D, YYYY") : '';
+  }
+}

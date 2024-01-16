@@ -272,7 +272,6 @@ export class GroupService {
   async editCategoryTimeTrackingEntity(editTimeTrackingEntityId: string, timeId: string, newCategory: string) {
     let dbTimeTrackingEntity = await TimeTrackingEntity.findOne({
         _id: editTimeTrackingEntityId,
-        // 'times._id': timeId
       }).lean();
     
     if (!dbTimeTrackingEntity) {
@@ -391,7 +390,7 @@ export class GroupService {
 
         if (!!tmpTTE) {
           tte = await TimeTrackingEntity.findOneAndUpdate({
-              _id: tmpTTE._id  
+              _id: tmpTTE._id
             }, {
               $push: { "times": {
                 date: editTimeTrackingEntity.date,

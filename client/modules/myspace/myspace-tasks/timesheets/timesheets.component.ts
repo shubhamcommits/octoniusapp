@@ -6,6 +6,8 @@ import { DateTime, Interval } from 'luxon';
 import { BehaviorSubject } from 'rxjs';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { DOCUMENT } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { NewTimeTrackingDialogComponent } from 'src/app/common/shared/new-time-tracking-dialog/new-time-tracking-dialog.component';
 // import * as Moment from 'moment';
 // import { extendMoment } from 'moment-range';
 
@@ -45,6 +47,7 @@ export class TimesheetsComponent implements OnInit, OnDestroy {
     private groupService: GroupService,
     private utilityService: UtilityService,
     private injector: Injector,
+    public dialog: MatDialog,
     @Inject(DOCUMENT) document: Document
   ) { }
 
@@ -132,10 +135,6 @@ export class TimesheetsComponent implements OnInit, OnDestroy {
     return dates;
   }
 
-  // isCurrentDay(day) {
-  //   return this.isSameDay(day, DateTime.now());
-  // }
-
   isSameDay(day1: DateTime, day2: DateTime) {
     if (!day1 && !day2) {
       return true;
@@ -144,11 +143,6 @@ export class TimesheetsComponent implements OnInit, OnDestroy {
     }
     return day1.startOf('day').toMillis() === day2.startOf('day').toMillis();
   }
-
-  // isWeekend(date) {
-  //   var day = date.toFormat('d');
-  //   return (day == '6') || (day == '0');
-  // }
 
   getTime(times, date) {
     const index = (!!times) ? times.findIndex(tte => this.isSameDay(DateTime.fromISO(tte.date), date)) : -1;
@@ -207,6 +201,8 @@ export class TimesheetsComponent implements OnInit, OnDestroy {
             if (!res.error) {
               this.displayHideInput(timeId);
 
+              this.entryTime = '';
+
               await this.generateNavDates();
 
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@timesheets.timeEdited:Time Edited!`));
@@ -218,5 +214,27 @@ export class TimesheetsComponent implements OnInit, OnDestroy {
     } else {
       this.displayHideInput(timeId);
     }
+  }
+
+  openAddNewEntryDialog() {
+    const data = {
+      // userData: this.userData
+    };
+
+    const dialogRef = this.dialog.open(NewTimeTrackingDialogComponent, {
+      width: '50%',
+      height: '50%',
+      disableClose: true,
+      hasBackdrop: true,
+      // data: data,
+    });
+
+    const newTimeEventSubs = dialogRef.componentInstance.newTimeEvent.subscribe(async (data) => {
+      await this.generateNavDates();
+    });
+
+    dialogRef.afterClosed().subscribe(async result => {
+      newTimeEventSubs.unsubscribe();
+    });
   }
 }

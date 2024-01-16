@@ -138,6 +138,7 @@ import { HolidayRejectionDialogComponent } from './hr/holiday-rejection-dialog/h
 import { CRMLeadCardComponent } from './posts/group-post-dialog/crm-lead-card/crm-lead-card.component';
 import { TaskTimeTrackingComponent } from './posts/group-post-dialog/task-time-tracking/task-time-tracking.component';
 import { TaskTimeTrackingListComponent } from './posts/group-post-dialog/task-time-tracking/task-time-tracking-list/task-time-tracking-list.component';
+import { NewTimeTrackingDialogComponent } from './new-time-tracking-dialog/new-time-tracking-dialog.component';
 
 @NgModule({
     declarations: [
@@ -253,6 +254,7 @@ import { TaskTimeTrackingListComponent } from './posts/group-post-dialog/task-ti
         PasswordStrengthComponent,
         PricingTableComponent,
         HolidayRejectionDialogComponent,
+        NewTimeTrackingDialogComponent,
     ],
     imports: [
         CommonModule,
@@ -376,6 +378,7 @@ import { TaskTimeTrackingListComponent } from './posts/group-post-dialog/task-ti
         PasswordStrengthComponent,
         PricingTableComponent,
         HolidayRejectionDialogComponent,
+        NewTimeTrackingDialogComponent,
     ],
     providers: [
         { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },

@@ -2559,7 +2559,28 @@ export class GroupController {
         newTimeTrackingEntity._created_by = req['userId'];
 
         try {
-            let timeTrackingEntity = await TimeTrackingEntity.create(newTimeTrackingEntity);
+            let tmpTTE = await TimeTrackingEntity.findOne({
+                $and: [
+                    { _user: newTimeTrackingEntity._user },
+                    { _task: newTimeTrackingEntity._task },
+                    { _category: newTimeTrackingEntity._category }
+                ]}).lean();
+
+            let timeTrackingEntity
+            if (!!tmpTTE) {
+                timeTrackingEntity = await TimeTrackingEntity.findOneAndUpdate({
+                        _id: tmpTTE._id  
+                    }, {
+                        $push: { "times": {
+                            date: newTimeTrackingEntity.date,
+                            hours: newTimeTrackingEntity.hours,
+                            minutes: newTimeTrackingEntity.minutes,
+                            comment: newTimeTrackingEntity.comment
+                        }}
+                    }).lean();
+            } else {
+                timeTrackingEntity = await TimeTrackingEntity.create(newTimeTrackingEntity);
+            }
 
             timeTrackingEntity = await TimeTrackingEntity.findById({
                     _id: timeTrackingEntity._id

@@ -45,6 +45,9 @@ routes.delete('/skills/:skill', skill.removeSkill);
 
 // -| POSTS |- 
 
+// GET - Fetches all user's tasks
+routes.get('/tasks', post.getAllUserTasks);
+
 // GET - Fetches the today's tasks
 routes.get('/tasks/today', post.getTodayTasks);
 
