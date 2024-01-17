@@ -228,7 +228,7 @@
       <label i18n="@@userWorkloadCalendar.numberOfDays" style="float: left; width: 100%;">Number Of Days</label>
       <input type="number" autocomplete="off" class="form-control" [(ngModel)]="newHoliday.num_days" disabled="true" />
       
-      <label i18n="@@userWorkloadCalendar.manager" *ngIf="isCurrentUser && !userHasManager" style="float: left; width: 100%;">Manager</label>
+      <label i18n="@@userWorkloadCalendar.manager" style="float: left; width: 100%;">Manager</label>
       <app-select-assignee type="holidays" [userData]="newHoliday._approval_manager"
         [workspaceData]="workspaceData" [showBar]="isCurrentUser && !userHasManager" [styleClass]="'feed-avatar-small'"
         (member)="selectManager($event)"></app-select-assignee>
