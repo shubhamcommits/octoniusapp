@@ -187,7 +187,7 @@ export class UsersControllers {
 
             // If user not found
             if (!user) {
-                return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
+                return sendError(res, new Error('Unable to find the user, either userId is invalid, the user is not active or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid, the user is not active or you have made an unauthorized request!', 404);
             }
 
             // Send status 200 response
@@ -1953,7 +1953,7 @@ export class UsersControllers {
 
         const { holiday } = req.body;
         const { userId } = req.params;
-
+console.log(req.params);
         try {
             delete holiday._id;
             holiday._user = userId;

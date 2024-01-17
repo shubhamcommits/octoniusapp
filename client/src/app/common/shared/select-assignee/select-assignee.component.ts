@@ -87,7 +87,7 @@ export class SelectAssigneeComponent implements OnInit {
       // Emit the output as the taskAssignee
       this.member.emit(this.eventMembersMap)
 
-    } else if (this.type == 'workspaceMembers') {
+    } else if (this.type == 'workspaceMembers' || this.type == 'holidays') {
       this.userData = memberMap;
       // Emit the output as the taskAssignee
       this.member.emit(this.userData)
