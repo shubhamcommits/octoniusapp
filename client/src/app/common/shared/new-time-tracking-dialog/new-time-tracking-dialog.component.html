@@ -14,7 +14,7 @@
     <div class="row">
       <div class="col-md-4">
         <app-date-picker class="form-control" name="entryDate"
-          [styleClass]="'input-date'" [disabled]="!entryTaskId"
+          [styleClass]="'input-date'" [canEdit]="!!entryTaskId"
           (date)="getDate($event)" [selectedDate]="entryDate">
         </app-date-picker>
       </div>
