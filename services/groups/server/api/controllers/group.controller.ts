@@ -2636,7 +2636,7 @@ export class GroupController {
                     break;
             }
 
-            if (!retObj.error) {
+            if (!retObj.error && !!retObj.timeTrackingEntity) {
                 let timeTrackingEntities = await TimeTrackingEntity.find({
                         _task: (retObj.timeTrackingEntity._task._id || retObj.timeTrackingEntity._task)
                     })

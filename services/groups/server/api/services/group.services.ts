@@ -365,46 +365,65 @@ export class GroupService {
   async editTimeTimeTrackingEntity(editTimeTrackingEntityId: string, timeId: string, editTimeTrackingEntity: any) {
     let tte;
     if (!!timeId && !timeId.includes('octonius_random')) {
-      tte = await TimeTrackingEntity.findByIdAndUpdate({
-          _id: editTimeTrackingEntityId
-        }, {
-            $set: {
-              'times.$[time].hours': editTimeTrackingEntity?.hours,
-              'times.$[time].minutes': editTimeTrackingEntity?.minutes,
-            }
-        },
-        {
-            arrayFilters: [{ "time._id": timeId }],
-            new: true
-        })
-        .populate('_user', 'first_name last_name profile_pic email')
-        .populate('_created_by', 'first_name last_name profile_pic email')
-        .lean();
+      if (editTimeTrackingEntity?.hours != '00' && editTimeTrackingEntity?.minutes != '00') {
+        tte = await TimeTrackingEntity.findByIdAndUpdate({
+            _id: editTimeTrackingEntityId
+          }, {
+              $set: {
+                'times.$[time].hours': editTimeTrackingEntity?.hours,
+                'times.$[time].minutes': editTimeTrackingEntity?.minutes,
+              }
+          },
+          {
+              arrayFilters: [{ "time._id": timeId }],
+              new: true
+          })
+          .populate('_user', 'first_name last_name profile_pic email')
+          .populate('_created_by', 'first_name last_name profile_pic email')
+          .lean();
+      }
     } else {
       let tmpTTE = await TimeTrackingEntity.findOne({
         $and: [
-          { _user: editTimeTrackingEntity._user },
-          { _task: editTimeTrackingEntity._task },
-          { _category: editTimeTrackingEntity._category }
+          { _user: editTimeTrackingEntity?._user },
+          { _task: editTimeTrackingEntity?._task },
+          { _category: editTimeTrackingEntity?._category }
         ]}).lean();
 
         if (!!tmpTTE) {
-          tte = await TimeTrackingEntity.findOneAndUpdate({
-              _id: tmpTTE._id
-            }, {
-              $push: { "times": {
-                date: editTimeTrackingEntity.date,
-                hours: editTimeTrackingEntity.hours,
-                minutes: editTimeTrackingEntity.minutes,
-                comment: editTimeTrackingEntity.comment
-              }}
-            }, {
-              new: true
-            })
-            .populate('_user', 'first_name last_name profile_pic email')
-            .populate('_created_by', 'first_name last_name profile_pic email')
-            .lean();
-        } else {
+          if (editTimeTrackingEntity?.hours != '00' && editTimeTrackingEntity?.minutes != '00') {
+            tte = await TimeTrackingEntity.findOneAndUpdate({
+                _id: tmpTTE._id
+              }, {
+                $push: { "times": {
+                  date: editTimeTrackingEntity?.date,
+                  hours: editTimeTrackingEntity?.hours,
+                  minutes: editTimeTrackingEntity?.minutes,
+                  comment: editTimeTrackingEntity?.comment
+                }}
+              }, {
+                new: true
+              })
+              .populate('_user', 'first_name last_name profile_pic email')
+              .populate('_created_by', 'first_name last_name profile_pic email')
+              .lean();
+          } else if (!!timeId && !timeId.includes('octonius_random')) {
+            tte = await TimeTrackingEntity.findByIdAndUpdate({
+                _id: editTimeTrackingEntityId
+              }, {
+                $pull: {
+                  times: {
+                    _id: timeId
+                  }
+                }
+              }, {
+                new: true
+              })
+              .populate('_user', 'first_name last_name profile_pic email')
+              .populate('_created_by', 'first_name last_name profile_pic email')
+              .lean();
+          }
+        } else if (editTimeTrackingEntity?.hours != '00' && editTimeTrackingEntity?.minutes != '00') {
           tte = await TimeTrackingEntity.create({
               _user: editTimeTrackingEntity?._user,
               _task: editTimeTrackingEntity?._task,
@@ -415,7 +434,7 @@ export class GroupService {
                 minutes: editTimeTrackingEntity?.minutes,
                 comment: editTimeTrackingEntity?.comment
               }],
-              _created_by: editTimeTrackingEntity._user
+              _created_by: editTimeTrackingEntity?._user
             });
 
           tte = await TimeTrackingEntity.findById({
