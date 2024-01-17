@@ -34,7 +34,7 @@ export class TimesheetsComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = ['task', 'category', 'group', 'day_1', 'day_2', 'day_3', 'day_4', 'day_5', 'day_6', 'day_7'];
 
-  entryTime;
+  entryTime = '00:00';
 
   // IsLoading behavior subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
@@ -167,9 +167,12 @@ export class TimesheetsComponent implements OnInit, OnDestroy {
 
   displayHideInput(id: string) {
     if (document.getElementById('input_' + id).style.display == 'none') {
+      document.getElementById('input_' + id).parentElement.style.border = '2px solid #005fd5';
       document.getElementById('input_' + id).style.display = 'block';
+      document.getElementById('input_' + id).focus();
       document.getElementById('span_' + id).style.display = 'none';
     } else {
+      document.getElementById('input_' + id).parentElement.style.border = '1px solid #0000001f';
       document.getElementById('input_' + id).style.display = 'none';
       document.getElementById('span_' + id).style.display = 'block';
     }
@@ -201,7 +204,7 @@ export class TimesheetsComponent implements OnInit, OnDestroy {
             if (!res.error) {
               this.displayHideInput(timeId);
 
-              this.entryTime = '';
+              this.entryTime = '00:00';
 
               await this.generateNavDates();
 
