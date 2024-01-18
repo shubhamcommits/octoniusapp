@@ -60,3 +60,4 @@ target/
 # K8s stuff #
 .terraform/*
 scripts/acceptance/k8s/kube-hetzner/.terraform/**
+scripts/production/k8s/kube-hetzner/.terraform/**

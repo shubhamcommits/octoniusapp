@@ -1,1 +1,2 @@
 scripts/acceptance/k8s/kube-hetzner/** filter=git-crypt diff=git-crypt
+scripts/production/k8s/kube-hetzner/** filter=git-crypt diff=git-crypt
