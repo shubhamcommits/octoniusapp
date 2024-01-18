@@ -529,9 +529,7 @@ export class UsersControllers {
                             }).countDocuments();
                     }
                     workspace.numNotifications = (numNotifications + numHolidayNotifications + hiveNotifications) || 0;
-console.log(workspace);
             }
-console.log(account._workspaces);
             
             // If user not found
             if (!account) {
