@@ -478,16 +478,61 @@ export class UsersControllers {
         try {
 
             // Find the user based on the userId
-            const user = await User.findOne({ _id: userId }).lean();
+            const userDB = await User.findOne({ _id: userId }).lean();
 
             // If user not found
-            if (!user) {
+            if (!userDB) {
                 return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
             }
 
-            const account = await Account.findOne({_id: user._account})
+            let account = await Account.findOne({_id: userDB._account})
                 .populate('_workspaces', '_id workspace_name workspace_avatar').lean();
 
+            for (let i = 0; i < account._workspaces.length; i++) {
+                let workspace = account._workspaces[i];
+
+                const user = await User.findOne({
+                    $and: [
+                        { email: account.email },
+                        { _workspace: workspace._id || workspace }
+                    ]}).select('_id _workspace hr_role role');
+
+                const numHolidayNotifications = await Holiday.find({
+                            $and: [
+                                { _approval_manager: user._id },
+                                { status: 'pending' }
+                            ]
+                        })
+                        .countDocuments();
+
+                    const numNotifications = await Notification.find({
+                            $and: [
+                                { _owner: user._id },
+                                { read: false }
+                            ]
+                        })
+                        .countDocuments();
+
+                    let hiveNotifications = 0;
+                    if (user.hr_role || user.role == 'owner') {
+                        hiveNotifications = await Notification.find({
+                                $and: [
+                                    { _workspace: user._workspace },
+                                    {
+                                        $or: [
+                                            { type: 'hive' },
+                                            { type: 'hive_new_entity' }
+                                        ]
+                                    },
+                                    { read: false }
+                                ]
+                            }).countDocuments();
+                    }
+                    workspace.numNotifications = (numNotifications + numHolidayNotifications + hiveNotifications) || 0;
+console.log(workspace);
+            }
+console.log(account._workspaces);
+            
             // If user not found
             if (!account) {
                 return sendError(res, new Error('Unable to find the account, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);

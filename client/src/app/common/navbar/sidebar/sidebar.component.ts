@@ -35,6 +35,8 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
   accountData: any = {};
   userWorkspaces = [];
 
+  totalNotifications = 0;
+
   userCollections: any = [];
 
   // userGroupsAndPortfoliosAndCollections = [];
@@ -52,16 +54,16 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
   public utilityService = this.injector.get(UtilityService);
 
   constructor(
-    private injector: Injector,
     private socketService:SocketService,
-    private router: Router,
     private storageService: StorageService,
     private authService: AuthService,
     private userService: UserService,
     private groupService: GroupService,
     private portfolioService: PortfolioService,
     private libraryService: LibraryService,
-    private managementPortalService: ManagementPortalService
+    private managementPortalService: ManagementPortalService,
+    private injector: Injector,
+    private router: Router,
   ) { }
 
   async ngOnInit() {
@@ -142,17 +144,6 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
         });
       }
     }
-
-    // this.userGroupsAndPortfoliosAndCollections = [...this.userGroups, ...this.userPortfolios, ...this.userCollections];
-
-    // this.userGroupsAndPortfoliosAndCollections = this.userGroupsAndPortfoliosAndCollections?.map(element => {
-    //     return {
-    //       _id: element._id,
-    //       name: element.group_name || element.portfolio_name || element.name,
-    //       avatar: element.group_avatar || element.portfolio_avatar || element.collection_avatar,
-    //       type: (element.group_name) ? 'group' : (element.portfolio_name) ? 'portfolio' : 'collection'
-    //     };
-    //   });
 
     this.sortElements();
   }
@@ -258,8 +249,13 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   async getUserWorkspaces() {
-    await this.userService.getUserWorkspaces(this.userData?._id).then(res => {
+    await this.userService.getUserWorkspaces(this.userData?._id).then((res: any) => {
+      this.totalNotifications = res['workspaces'].map(w => w.numNotifications).reduce((a, b) => { return a + b; });
       this.userWorkspaces = res['workspaces'].filter(workspace => (workspace._id || workspace) != this.workspaceData?._id);
+      // const index = (res['workspaces']) ? res['workspaces'].findIndex(workspace => (workspace._id || workspace) == this.workspaceData?._id) : -1;
+      // if (index >= 0){
+      //   this.workspaceData.numNotifications = res['workspaces'][index].numNotifications;
+      // }
     }).catch(err => {
       this.userWorkspaces = [];
     });
