@@ -12,10 +12,12 @@ import { GroupService } from 'src/shared/services/group-service/group.service';
 })
 export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDestroy {
 
-  @Input() groupData: any;
-  @Input() userData: any;
   @Input() startDate: any;
   @Input() endDate: any;
+  @Input() filterUserId: any;
+  
+  groupData: any;
+  userData: any;
 
   timeTrackingEntities = [];
   timeTrackingEntitiesMapped = [];
@@ -61,6 +63,10 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
       this.endDate = changes.endDate.currentValue;
     }
 
+    if (!!changes.filterUserData && !!changes.filterUserData.currentValue) {
+      this.filterUserId = changes.filterUserData.currentValue;
+    }
+
     await this.initView();
   }
 
@@ -72,6 +78,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
     this.isLoading$.next(true);
 
     this.userData = await this.publicFunctions.getCurrentUser();
+    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
 
     await this.generateNavDates(false);
 
@@ -83,7 +90,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
     await this.getFirstDay(change);
     await this.getLastDay(change);
 
-    await this.groupService.getGroupTimeTrackingEntites(this.groupData._id, this.startDate.toISODate(), this.endDate.toISODate()).then(async res => {
+    await this.groupService.getGroupTimeTrackingEntites(this.groupData._id, this.startDate.toISODate(), this.endDate.toISODate(), this.filterUserId).then(async res => {
       this.timeTrackingEntities = res['timeTrackingEntities'];
       this.timeTrackingEntities = this.timeTrackingEntities.filter(tte => !!tte.times && tte.times.length > 0);
     });

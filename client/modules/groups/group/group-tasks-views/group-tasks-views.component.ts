@@ -36,6 +36,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
   filteringBit:String = 'none'
   filteringData: any;
 
+  filterUserId;
   filterStartDate;
   filterEndDate;
 
@@ -363,22 +364,27 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
 
   async filtering() {
     if (this.filteringBit == "mytask") {
-      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      for (let index = 0; index < tasks.columns.length; index++) {
-        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
-          var bit = false;
-          if (task && task._assigned_to) {
-            task._assigned_to.forEach(element => {
-              if (element._id == this.userData._id) {
-                bit = true
-              }
-            });
-          }
-          return bit;
-        })
+      if (this.viewType == 'time_tracking') {
+        this.filterUserId = this.userData._id;
+      } else {
+        // to filter the rest of the views
+        let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+        let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+        for (let index = 0; index < tasks.columns.length; index++) {
+          this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
+            var bit = false;
+            if (task && task._assigned_to) {
+              task._assigned_to.forEach(element => {
+                if (element._id == this.userData._id) {
+                  bit = true
+                }
+              });
+            }
+            return bit;
+          })
+        }
+        this.unchangedColumns = tasks;
       }
-      this.unchangedColumns = tasks;
     } else if (this.filteringBit == 'due_before_today'){
       let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
@@ -472,22 +478,26 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
       }
       this.unchangedColumns = tasks;
     } else if (this.filteringBit == "users") {
-      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      for (let index = 0; index < tasks.columns.length; index++) {
-        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
-          var bit = false;
-          if (task && task._assigned_to) {
-            task._assigned_to.forEach(element => {
-              if (element._id == this.filteringData) {
-                bit = true
-              }
-            });
-          }
-          return bit;
-        })
+      if (this.viewType == 'time_tracking') {
+        this.filterUserId = this.filteringData;
+      } else {
+        let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+        let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+        for (let index = 0; index < tasks.columns.length; index++) {
+          this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
+            var bit = false;
+            if (task && task._assigned_to) {
+              task._assigned_to.forEach(element => {
+                if (element._id == this.filteringData) {
+                  bit = true
+                }
+              });
+            }
+            return bit;
+          })
+        }
+        this.unchangedColumns = tasks;
       }
-      this.unchangedColumns = tasks;
     } else if (this.filteringBit == "custom_field") {
       let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
@@ -511,7 +521,9 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
       this.filterStartDate = DateTime.fromJSDate(this.filteringData.startDate);
       this.filterEndDate = DateTime.fromJSDate(this.filteringData.endDate);
     } else {
-      this.columns = this.unchangedColumns.columns;
+      if (this.viewType != 'time_tracking') {
+        this.columns = this.unchangedColumns.columns;
+      }
     }
 
     this.utilityService.updateIsLoadingSpinnerSource(false);
