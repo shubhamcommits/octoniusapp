@@ -155,7 +155,6 @@ export class UsersControllers {
         const { params: { userId } } = req;
 
         try {
-
             // Find the user based on the userId
             const user = await User.findOne({
                     $and: [
@@ -365,12 +364,6 @@ export class UsersControllers {
                     select: '_id email _workspaces first_name last_name created_date'
                 })
                 .lean();
-// console.log(propertyToSave);
-//             const propertiesNames = Object.keys(propertyToSave);
-// console.log(propertiesNames.includes('email'));
-//             if (propertiesNames.includes('email')) {
-
-//             }
 
             // Send the status 200 response 
             return res.status(200).json({
@@ -1996,7 +1989,7 @@ export class UsersControllers {
 
         const { holiday } = req.body;
         const { userId } = req.params;
-console.log(req.params);
+
         try {
             delete holiday._id;
             holiday._user = userId;

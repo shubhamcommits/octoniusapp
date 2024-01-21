@@ -29,7 +29,7 @@ export class PostsControllers {
 
             // Fetch today's task
             const tasks: any = await postsService.getAllUserTasks(userId);
-console.log(tasks);
+
             // Send status 200 response
             return res.status(200).json({
                 message: 'All User´s Taks!',

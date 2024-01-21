@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Injector, OnInit, Output } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, EventEmitter, Inject, Injector, OnInit, Output } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { GroupService } from 'src/shared/services/group-service/group.service';
@@ -15,8 +15,9 @@ export class NewTimeTrackingDialogComponent implements OnInit {
 
   @Output() newTimeEvent = new EventEmitter();
 
-  userData: any;
+  tte: any;
 
+  userData: any;
   
   entryAlreadyExists = false;
   
@@ -46,12 +47,13 @@ export class NewTimeTrackingDialogComponent implements OnInit {
 
   constructor(
     private groupService: GroupService,
-    private utilityService: UtilityService,
     private userService: UserService,
     private injector: Injector,
-    // @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<NewTimeTrackingDialogComponent>
-  ) { }
+  ) {
+    this.tte = this.data.tte;
+  }
 
   async ngOnInit() {
     if (!this.userData) {
@@ -189,19 +191,35 @@ export class NewTimeTrackingDialogComponent implements OnInit {
   }
 
   initProperties() {
-    this.entryTask = null;
-    this.entryTaskId = '';
-    this.entryGroupId = '';
-    this.entryUserId = this.userData?._id;
-    this.entryId = '';
-    this.entryTimeId = '';
-    this.entryDate = '';
-    this.entryTime = '00:00';
-    this.entryTimeHours = '';
-    this.entryTimeMinutes = '';
-    this.entryCategory = '';
-    this.entryComment = '';
-    this.entryAlreadyExists = false;
+    if (!!this.tte) {
+      this.entryTask = this.tte?._task;
+      this.entryTaskId = this.tte?._task?._id;
+      this.entryGroupId = this.tte._task?._group?._id;
+      this.entryUserId = this.tte?._user?._id;
+      this.entryId = this.tte?._id;
+      this.entryTimeId = this.tte?.timeId;
+      this.entryDate = this.tte?.date;
+      this.entryTime = this.tte?.hours + ':' + this.tte?.minutes;
+      this.entryTimeHours = this.tte?.hours;
+      this.entryTimeMinutes = this.tte?.minutes;
+      this.entryCategory = this.tte?._category;
+      this.entryComment = this.tte?.comment;
+      this.entryAlreadyExists = false;
+    } else {
+      this.entryTask = null;
+      this.entryTaskId = '';
+      this.entryGroupId = '';
+      this.entryUserId = this.userData?._id;
+      this.entryId = '';
+      this.entryTimeId = '';
+      this.entryDate = '';
+      this.entryTime = '00:00';
+      this.entryTimeHours = '';
+      this.entryTimeMinutes = '';
+      this.entryCategory = '';
+      this.entryComment = '';
+      this.entryAlreadyExists = false;
+    }
   }
 
   isSameDay(day1: any, day2: any) {

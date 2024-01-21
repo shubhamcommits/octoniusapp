@@ -4,6 +4,7 @@ import { DateTime } from 'luxon';
 import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject } from 'rxjs';
 import { GroupService } from 'src/shared/services/group-service/group.service';
+import { NewTimeTrackingDialogComponent } from 'src/app/common/shared/new-time-tracking-dialog/new-time-tracking-dialog.component';
 
 @Component({
   selector: 'app-group-time-tracking-view',
@@ -338,27 +339,27 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
   //   }
   // }
 
-  // openAddNewEntryDialog() {
-  //   const data = {
-  //     // userData: this.userData
-  //   };
+  openTimeTrackingDetails(tte: any) {
+    const data = {
+      tte: tte
+    };
 
-  //   const dialogRef = this.dialog.open(NewTimeTrackingDialogComponent, {
-  //     width: '50%',
-  //     height: '50%',
-  //     disableClose: true,
-  //     hasBackdrop: true,
-  //     // data: data,
-  //   });
+    const dialogRef = this.dialog.open(NewTimeTrackingDialogComponent, {
+      width: '50%',
+      height: '50%',
+      disableClose: true,
+      hasBackdrop: true,
+      data: data,
+    });
 
-  //   const newTimeEventSubs = dialogRef.componentInstance.newTimeEvent.subscribe(async (data) => {
-  //     await this.generateNavDates();
-  //   });
+    // const newTimeEventSubs = dialogRef.componentInstance.newTimeEvent.subscribe(async (data) => {
+    //   await this.generateNavDates();
+    // });
 
-  //   dialogRef.afterClosed().subscribe(async result => {
-  //     newTimeEventSubs.unsubscribe();
-  //   });
-  // }
+    dialogRef.afterClosed().subscribe(async result => {
+      // newTimeEventSubs.unsubscribe();
+    });
+  }
   
   formateDate(date) {
     return (!!date) ? DateTime.fromISO(date).toLocaleString(DateTime.DATE_MED) : '';

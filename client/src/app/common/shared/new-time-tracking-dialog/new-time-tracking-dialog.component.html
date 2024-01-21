@@ -6,32 +6,34 @@
   <div class="new-record-form">
     <div class="row">
       <div class="col-md-12">
-        <mat-select ngDefaultControl appearance="fill" class="form-control" [(ngModel)]="entryTask"  (selectionChange)="onTaskSelected()">
+        <h2 *ngIf="!!tte">{{ entryTask?.title }}</h2>
+        <mat-select ngDefaultControl appearance="fill" class="form-control" *ngIf="!tte" [(ngModel)]="entryTask"  (selectionChange)="onTaskSelected()">
           <mat-option *ngFor="let task of userTasks" [value]="task">{{ task.title }}</mat-option>
         </mat-select>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-6">
         <app-date-picker class="form-control" name="entryDate"
-          [styleClass]="'input-date'" [canEdit]="!!entryTaskId"
+          [styleClass]="'input-date'" [canEdit]="!!entryTaskId && !tte"
           (date)="getDate($event)" [selectedDate]="entryDate">
         </app-date-picker>
       </div>
 
-      <div class="col-md-2">
+      <div class="col-md-3">
         <div class="form-control">
           <i class="material-icons-outlined muted">timer</i>
 
           <input type="time" style="border: none;"
             name="entryTime" min="00:00" max="24:00"
-            [disabled]="!entryTaskId"
+            [disabled]="!entryTaskId || !!tte"
             (blur)="getTime($event)" [(ngModel)]="entryTime" />
         </div>
       </div>
 
       <div class="col-md-3">
-        <mat-select ngDefaultControl appearance="fill" class="form-control"
+        <span *ngIf="!!tte">{{ entryCategory }}</span>
+        <mat-select *ngIf="!tte" ngDefaultControl appearance="fill" class="form-control"
           [disabled]="!categories || categories.length == 0 || !entryTaskId" [(ngModel)]="entryCategory">
           <mat-option *ngFor="let category of categories" [value]="category.name">{{ category.name }}</mat-option>
         </mat-select>
@@ -41,11 +43,11 @@
     <div class="row">
       <div class="col-md-12 form-control" style="width: 400px;">
         <textarea rows="4" style="border: none;" [(ngModel)]="entryComment"
-          [placeholder]="commentPlaceholder" [disabled]="!entryTaskId"></textarea>
+          [placeholder]="commentPlaceholder" [disabled]="!entryTaskId || !!tte"></textarea>
       </div>
     </div>
 
-    <div class="actions">
+    <div class="actions" *ngIf="!tte">
       <button class="btn btn-primary btn-md float-left" *ngIf="!entryId" (click)="saveEntry()" [disabled]="!isValidEntry()">
         <i class="material-icons-outlined">add</i>
         <span i18n="@@newTimeTrackingDialog.addEntry">Add entry</span>

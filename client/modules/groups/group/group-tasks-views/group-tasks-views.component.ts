@@ -213,8 +213,8 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
     // Start the loading spinner
     this.utilityService.updateIsLoadingSpinnerSource(true);
 
-    // if (view != 'archived' && view != 'time_tracking') {
-    if (view != 'archived') {
+    if (view != 'archived' && view != 'time_tracking') {
+    // if (view != 'archived') {
       this.userData.stats.lastTaskView = view;
       // User service
       const userService = this.injector.get(UserService);
