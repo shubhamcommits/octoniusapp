@@ -162,7 +162,7 @@ export class TimesheetsComponent implements OnInit, OnDestroy {
   }
   
   formateDate(date) {
-    return (!!date) ? DateTime.fromISO(date).toLocaleString({ weekday: 'short', day: 'numeric' }) : '';
+    return this.utilityService.formateDate(date, { weekday: 'short', day: 'numeric' });
   }
 
   displayHideInput(id: string) {

@@ -641,6 +641,6 @@ export class EditEntityDialogComponent implements OnInit {
   }
 
   formateDate(date: any) {
-    return (date) ? DateTime.fromISO(date).toLocaleString(DateTime.DATE_SHORT) : '';
+    return this.utilityService.formateDate(date, DateTime.DATE_SHORT);
   }
 }

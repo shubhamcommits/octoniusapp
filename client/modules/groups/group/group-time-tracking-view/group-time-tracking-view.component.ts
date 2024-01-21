@@ -1,10 +1,11 @@
-import { Component, OnInit, Injector, Input, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
+import { Component, OnInit, Injector, Input, OnChanges, SimpleChanges, OnDestroy, LOCALE_ID } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { DateTime } from 'luxon';
 import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject } from 'rxjs';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { NewTimeTrackingDialogComponent } from 'src/app/common/shared/new-time-tracking-dialog/new-time-tracking-dialog.component';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-group-time-tracking-view',
@@ -23,7 +24,6 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
   timeTrackingEntities = [];
   timeTrackingEntitiesMapped = [];
   dataSource = [];
-  // timeTrackingEntitiesMapped = [];
 
   //date for calendar Nav
   dates: any = [];
@@ -47,6 +47,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
 
   constructor(
     private groupService: GroupService,
+    private utilityService: UtilityService,
     private injector: Injector,
     public dialog: MatDialog
   ) { }
@@ -56,6 +57,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
   }
 
   async ngOnChanges(changes: SimpleChanges) {
+console.log(changes);
     if (!!changes.startDate && !!changes.startDate.currentValue) {
       this.startDate = changes.startDate.currentValue;
     }
@@ -91,7 +93,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
     await this.getFirstDay(change);
     await this.getLastDay(change);
 
-    await this.groupService.getGroupTimeTrackingEntites(this.groupData._id, this.startDate.toISODate(), this.endDate.toISODate(), this.filterUserId).then(async res => {
+    await this.groupService.getGroupTimeTrackingEntites(this.groupData._id, this.startDate, this.endDate, this.filterUserId).then(async res => {
       this.timeTrackingEntities = res['timeTrackingEntities'];
       this.timeTrackingEntities = this.timeTrackingEntities.filter(tte => !!tte.times && tte.times.length > 0);
     });
@@ -362,6 +364,6 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
   }
   
   formateDate(date) {
-    return (!!date) ? DateTime.fromISO(date).toLocaleString(DateTime.DATE_MED) : '';
+    return this.utilityService.formateDate(date, DateTime.DATE_MED);
   }
 }

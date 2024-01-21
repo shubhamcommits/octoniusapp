@@ -100,6 +100,6 @@ export class TaskTimeTrackingListComponent implements OnChanges {
   }
 
   formateDate(date) {
-    return (date) ? DateTime.fromISO(date).toLocaleString(DateTime.DATE_MED) : '';
+    return this.utilityService.formateDate(date, DateTime.DATE_MED);
   }
 }

@@ -198,6 +198,6 @@ export class FileVersionsComponent implements OnInit {
   }
 
   formateDate(date: any) {
-    return (date) ? DateTime.fromISO(date).toLocaleString(DateTime.DATETIME_MED) : '';
+    return this.utilityService.formateDate(date, DateTime.DATETIME_MED);
   }
 }

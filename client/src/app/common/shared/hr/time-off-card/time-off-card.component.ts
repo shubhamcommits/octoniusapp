@@ -47,6 +47,6 @@ export class TimeOffCardComponent implements OnInit {
     if (!!date && (date instanceof DateTime)) {
       return date.toLocaleString(DateTime.DATE_SHORT);
     }
-    return (!!date) ? DateTime.fromISO(date).toLocaleString(DateTime.DATE_SHORT) : '';
+    return this.utilityService.formateDate(date, DateTime.DATE_SHORT);
   }
 }
