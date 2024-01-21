@@ -521,7 +521,11 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
       this.filterStartDate = DateTime.fromJSDate(this.filteringData.startDate);
       this.filterEndDate = DateTime.fromJSDate(this.filteringData.endDate);
     } else {
-      if (this.viewType != 'time_tracking') {
+      if (this.viewType == 'time_tracking') {
+        this.filterStartDate = null;
+        this.filterEndDate = null;
+        this.filterUserId = null;
+      } else {
         this.columns = this.unchangedColumns.columns;
       }
     }
