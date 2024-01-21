@@ -103,7 +103,7 @@ export class EditUserProfileFieldsComponent implements OnInit {
               this.selectedCFValues[field.name] = await this.publicFunctions.getOtherUser(this.userData.profile_custom_fields[field.name])
                 .catch(err => {
                   this.selectedCFValues[field.name] = null;
-                  this.utilityService.infoNotification($localize`:@@userProfileCF.userNoActive:The user in your user Custom Field is no longer active in Octonius, please select a new one.`, $localize`:@@userWorkloadCalendar.noUser:No User`);
+                  this.utilityService.infoNotification($localize`:@@userProfileCF.userNoActive:The user in your User Custom Field is no longer active in Octonius, please select a new one.`, $localize`:@@userWorkloadCalendar.noUser:No User`);
                 });
             }
           }
