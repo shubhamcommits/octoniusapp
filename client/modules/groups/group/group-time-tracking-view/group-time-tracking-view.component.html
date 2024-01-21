@@ -1,0 +1,136 @@
+<div class="board">
+  <div class="container">
+    <div class="row text-center mb-3">
+      <div class="col-md-3">
+        <h6>{{ formateDate(startDate) }} - {{ formateDate(endDate) }}</h6>
+      </div>
+
+      <div class="col-md-6">
+        <div class="btn btn-default" (click)="changeDates('sub')">
+          <i class="material-icons">navigate_before</i>
+        </div>
+        <div class="btn btn-default" (click)="changeDates('today')" i18n="@@grouptimetrackingview.today">
+          Today
+        </div>
+        <div class="btn btn-default" (click)="changeDates('add')">
+          <i class="material-icons">navigate_next</i>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <button class="btn btn-md float-right" [ngClass]="{'btn-primary' : periodView == 'week', 'btn-info' : periodView == 'month'}"
+          (click)="changePeriod('month')" style="margin-left: 10px;">
+          <span i18n="@@groupTimeTrackingView.month">Month</span>
+        </button>
+
+        <button class="btn btn-md float-right" [ngClass]="{'btn-info' : periodView == 'week', 'btn-primary' : periodView == 'month'}"
+          (click)="changePeriod('week')">
+          <span i18n="@@groupTimeTrackingView.week">Week</span>
+        </button>
+      </div>
+    </div>
+  
+    <div class="table-wrapper" *ngIf="!!timeTrackingEntities && timeTrackingEntities.length > 0">
+      <table mat-table matSort [dataSource]="dataSource" class="">  
+        <ng-container matColumnDef="task">
+          <th mat-header-cell *matHeaderCellDef>
+            <span i18n="@@groupTimeTrackingView.task">Task</span>
+          </th>
+
+          <td mat-cell *matCellDef="let tte">
+              <span>{{ tte?._task?.title }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="user">
+          <th mat-header-cell *matHeaderCellDef>
+            <span i18n="@@groupTimeTrackingView.user">User</span>
+          </th>
+
+          <td mat-cell *matCellDef="let tte">
+            <app-secured-image [imgURL]="tte?._user?.profile_pic" [service]="'user'"
+              [workspaceId]="(userData?._workspace?._id || userData?._workspace)" [styleClass]="'avatar'"></app-secured-image>
+            <span>{{ tte?._user?.first_name + ' ' + tte?._user?.last_name }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="time">
+          <th mat-header-cell *matHeaderCellDef>
+            <span i18n="@@groupTimeTrackingView.timeSpent">Time spent</span>
+          </th>
+
+          <td mat-cell *matCellDef="let tte">
+            <span *ngIf="tte.hours !== '00'">{{ tte.hours + 'h ' }}</span>
+            <span *ngIf="tte.minutes !== '00'">{{ tte.minutes + 'm' }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>
+            <span i18n="@@groupTimeTrackingView.date">Date</span>
+          </th>
+
+          <td mat-cell *matCellDef="let tte">
+            <span>{{ formateDate(tte.date) }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef i18n="@@grouptimetrackingview.category"> Category </th>
+
+          <td mat-cell *matCellDef="let tte">
+            <span>{{ tte?._category }}</span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let tte; columns: displayedColumns;"></tr>
+
+        <!-- Group by header cells-->
+        <ng-container matColumnDef="groupReducer">
+          <td colspan="1000" mat-cell *matCellDef="let row">
+            <div fxFill fxLayoutAlign="center center">
+              <mat-icon *ngIf="!row.reduced">expand_less</mat-icon>
+              <mat-icon *ngIf="row.reduced">expand_more</mat-icon>
+              &nbsp;
+              <span>{{ row.userName }}</span>
+
+              <span style="margin-left: 100px;">
+                <span>{{ row.totalTasks }}</span>
+                &nbsp;<span i18n="@@groupTimeTrackingView.totalTasks">Total Tasks</span>
+              </span>
+
+              <span style="margin-left: 100px;">
+                <span i18n="@@groupTimeTrackingView.sum">SUM</span>: &nbsp;
+                <span *ngIf="row.totalHours !== '00'">{{ row.totalHours + 'h ' }}</span>
+                <span *ngIf="row.totalMinutes !== '00'">{{ row.totalMinutes + 'm' }}</span>
+              </span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Group by line -->
+        <tr mat-row  class="clickable pointer"
+            *matRowDef="let row; columns: ['groupReducer']; when: isGroup" 
+            (click)="reduceGroup(row)" > 
+        </tr>
+      </table>
+
+      <!--
+      <div class="actions">
+        <button class="btn btn-primary btn-md float-left" (click)="openAddNewEntryDialog()">
+          <i class="material-icons-outlined">add</i>
+          <span i18n="@@groupTimeTrackingView.addEntry">Add entry</span>
+        </button>
+      </div>
+      -->
+    </div>
+
+    <!-- placeholder for empty board starts -->
+    <div *ngIf="!timeTrackingEntities || timeTrackingEntities.length == 0" style="text-align: center;">
+      <img src='assets/images/placeholder_activity3.png' class="placeholder-img">
+      <p class="muted text-center" i18n="@@groupTimeTrackingView.boardEmpty">This board is empty. </p>
+    </div>
+    <!-- placeholder for empty board ends -->
+  </div>
+</div>

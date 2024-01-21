@@ -189,6 +189,9 @@ routes.put('/:groupId/newTimeTrackingCategory', group.saveNewTimeTrackingCategor
 // DELETE - Delete time tracking category
 routes.delete('/:groupId/removeTimeTrackingCategory/:categoryId', group.removeTimeTrackingCategory);
 
+// GET - Get the time tracking entities of a group for a time period
+routes.get('/:groupId/time-tracking-entities', group.getGroupTimeTrackingEntites);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

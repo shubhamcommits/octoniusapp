@@ -6,6 +6,7 @@ import { AutomationFlowsDialogComponent } from '../../automation-flows-dialog/au
 import { CustomFieldsDialogComponent } from '../../custom-fields-dialog/custom-fields-dialog.component';
 import { AdvancedFilterDialogComponent } from './advanced-filter-dialog/advanced-filter-dialog.component';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
+import { TimeTrackerDatesFilterDialogComponent } from './time-tracker-dates-filter-dialog/time-tracker-dates-filter-dialog.component';
 
 @Component({
   selector: 'app-board-bar',
@@ -160,6 +161,23 @@ export class BoardBarComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       sub.unsubscribe();
+    });
+  }
+
+  openTimeTrackerDatesFilterDialog() {
+    const data = {
+    };
+
+    const dialogRef = this.dialog.open(TimeTrackerDatesFilterDialogComponent, {
+      data: data,
+      hasBackdrop: true
+    });
+    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+      this.filterTask('time_tracking', data);
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      closeEventSubs.unsubscribe();
     });
   }
 

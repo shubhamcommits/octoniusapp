@@ -401,4 +401,13 @@ export class GroupService {
   removeTimeTrackingCategory(categoryId, groupId) {
     return this._http.delete(this.baseURL + `/${groupId}/removeTimeTrackingCategory/${categoryId}`).toPromise();
   }
+
+  getGroupTimeTrackingEntites(groupId: string, startDate: any, endDate: any) {
+    return this._http.get(this.baseURL + `/${groupId}/time-tracking-entities`, {
+      params: {
+        startDate: startDate,
+        endDate: endDate
+      }
+    }).toPromise();
+  }
 }

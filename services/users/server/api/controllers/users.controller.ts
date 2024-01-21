@@ -2175,13 +2175,20 @@ console.log(req.params);
             const { userId } = req.params;
             const { query: { startDate, endDate } } = req;
 
-            let timeTrackingEntities = await TimeTrackingEntity.find(
-                { _user: userId },
-                { 'times.date': {
-                        $elemMatch: { $gte: startDate, $lte: endDate }
+            let timeTrackingEntities = await TimeTrackingEntity.find({
+                $and: [
+                    { _user: userId },
+                    { times: {
+                            $elemMatch: { 
+                                $and: [
+                                    { date: { $gte: startDate }},
+                                    { date: { $lte: endDate }},
+                                ]
+                            }
+                        }
                     }
-                }
-            );
+                ]
+            });
 
             timeTrackingEntities = await TimeTrackingEntity.populate(timeTrackingEntities, [
                     {

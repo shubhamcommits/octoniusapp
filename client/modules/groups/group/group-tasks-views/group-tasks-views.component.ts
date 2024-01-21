@@ -2,10 +2,11 @@ import { Component, OnInit, OnDestroy, Injector, AfterContentChecked } from '@an
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
 import { PublicFunctions } from 'modules/public.functions';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import moment from 'moment';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-group-tasks-views',
@@ -35,6 +36,9 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
   filteringBit:String = 'none'
   filteringData: any;
 
+  filterStartDate;
+  filterEndDate;
+
   unchangedColumns: any;
 
   // IsLoading behaviou subject maintains the state for loading spinner
@@ -49,7 +53,6 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
   constructor(
     public utilityService: UtilityService,
     private groupService: GroupService,
-    private router: ActivatedRoute,
     private _router: Router,
     private injector: Injector) { }
 
@@ -80,15 +83,40 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
   async initView() {
 
     // Fetch current user details
-    this.userData = await this.publicFunctions.getCurrentUser();
+    if (!this.utilityService.objectExists(this.userData)) {
+      this.userData = await this.publicFunctions.getCurrentUser();
+    }
 
+    if (!this.utilityService.objectExists(this.groupData)) {
+      this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+    }
+
+    // Set the initial view
+    if (!!this.userData && !!this.userData.stats && !!this.userData.stats.lastTaskView && this.viewType != 'time_tracking') {
+      this.viewType = this.userData.stats.lastTaskView;
+
+      if (this.viewType === 'gantt' && (this.groupData && !this.groupData.project_type)) {
+        this.viewType = 'kanban';
+      }
+    }
+
+    if (this.viewType == 'time_tracking') {
+      await this.initTimeTrackingView();
+    } else {
+      await this.initTaskView();
+    }
+
+    this.utilityService.updateIsLoadingSpinnerSource(false);
+  }
+
+  async initTaskView() {
     if (this._router.routerState.snapshot.root.queryParamMap.has('postId')) {
       const postId = this._router.routerState.snapshot.root.queryParamMap.get('postId');
 
       let post: any = await this.publicFunctions.getPost(postId);
 
-      this.groupData = await this.publicFunctions.getGroupDetails(post?._group?._id || post?._group);
-      this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+      // this.groupData = await this.publicFunctions.getGroupDetails(post?._group?._id || post?._group);
+      // this.publicFunctions.sendUpdatesToGroupData(this.groupData);
 
       let canOpen = true;
       if (this.groupData?.enabled_rights) {
@@ -116,15 +144,6 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
 
     this.isIdeaModuleAvailable = await this.publicFunctions.checkIdeaStatus(this.workspaceData?._id, this.workspaceData?.management_private_api_key);
     this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
-
-    // Set the initial view
-    if (this.userData && this.userData.stats && this.userData.stats.lastTaskView) {
-      this.viewType = this.userData.stats.lastTaskView;
-
-      if (this.viewType === 'gantt' && (this.groupData && !this.groupData.project_type)) {
-        this.viewType = 'kanban';
-      }
-    }
 
     /**
      * Obtain the custom fields
@@ -183,14 +202,17 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
     }
     let unchangedColumns: any = { columns: col };
     this.unchangedColumns = JSON.parse(JSON.stringify(unchangedColumns));
+  }
 
-    this.utilityService.updateIsLoadingSpinnerSource(false);
+  initTimeTrackingView() {
+
   }
 
   async onChangeViewEmitter(view: string) {
     // Start the loading spinner
     this.utilityService.updateIsLoadingSpinnerSource(true);
 
+    // if (view != 'archived' && view != 'time_tracking') {
     if (view != 'archived') {
       this.userData.stats.lastTaskView = view;
       // User service
@@ -201,10 +223,12 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
       await this.publicFunctions.sendUpdatesToUserData(this.userData);
 
       this.viewType = view;
-
-      await this.initView();
     } else {
       this.viewType = view;
+    }
+    
+    if (view != 'archived') {
+      await this.initView();
     }
 
     // Return the function via stopping the loader
@@ -216,7 +240,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
     this.sortingData = sort.data;
   }
 
-  async onFilterTaskEmitter(filter: any){
+  async onFilterTaskEmitter(filter: any) {
     this.filteringBit = filter.bit;
     this.filteringData = filter.data;
 
@@ -483,6 +507,9 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
           task.task.is_idea == true));
       }
       this.unchangedColumns = tasks;
+    } else if (this.filteringBit == "time_tracking") {
+      this.filterStartDate = DateTime.fromJSDate(this.filteringData.startDate);
+      this.filterEndDate = DateTime.fromJSDate(this.filteringData.endDate);
     } else {
       this.columns = this.unchangedColumns.columns;
     }

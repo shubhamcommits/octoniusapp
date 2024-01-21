@@ -1,0 +1,64 @@
+@import "src/assets/scss/variables";
+@import "src/assets/scss/main";
+
+.has-gradient-text {
+    background: -webkit-linear-gradient(#13f7f4, #2af598);
+    -webkit-text-fill-color: transparent;
+}
+
+.board {
+    display: flex;
+    flex-direction: column;
+    // flex-grow: 1;
+
+    // Override Automatic Minimum Size
+    // https://stackoverflow.com/questions/36247140/why-dont-flex-items-shrink-past-content-size
+    min-width: 0;
+    min-height: 0;
+}
+
+.container {
+    margin-top: 70px;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+
+    th:not(:first-child) {
+        text-align: center;
+    }
+
+    td:not(:first-child) {
+        text-align: center;
+    }
+
+    td {
+        border: 1px solid #0000001f;
+    }
+}
+
+tr.clickable {
+    background-color: #E4EDF8;
+    border: 1px solid #0000001f;
+
+    td {
+        border: none;
+    }
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+    background: none;
+    display: none;
+}
+
+input[type="time"]::-webkit-datetime-edit-ampm-field {
+    display: none;
+}
+
+.actions {
+    margin: 10px 0;
+}
