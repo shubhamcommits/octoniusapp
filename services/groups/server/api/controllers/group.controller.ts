@@ -2827,7 +2827,50 @@ export class GroupController {
             groupTasks = groupTasks.map(post => post._id);
 
             let timeTrackingEntities = [];
-            if (!!filterUserId && filterUserId != 'undefined') {
+            if (!filterUserId || filterUserId == 'undefined' || filterUserId == 'null') {
+                if ((!!startDate && startDate != 'null') && (!!endDate && endDate != 'null')) {
+                    timeTrackingEntities = await TimeTrackingEntity.find({
+                        $and: [
+                            { _task: { $in: groupTasks }},
+                            { times: {
+                                    $elemMatch: { 
+                                        $and: [
+                                            { date: { $gte: startDate }},
+                                            { date: { $lte: endDate }},
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    });
+                } else if ((!!startDate && startDate != 'null') && (!endDate || endDate == 'null')) {
+                    timeTrackingEntities = await TimeTrackingEntity.find({
+                        $and: [
+                            { _task: { $in: groupTasks }},
+                            { times: {
+                                    $elemMatch: 
+                                        { date: { $gte: startDate }}
+                                }
+                            }
+                        ]
+                    });
+                } else if ((!startDate || startDate == 'null') && (!!endDate && endDate != 'null')) {
+                    timeTrackingEntities = await TimeTrackingEntity.find({
+                        $and: [
+                            { _task: { $in: groupTasks }},
+                            { times: {
+                                    $elemMatch:
+                                        { date: { $lte: endDate }},
+                                }
+                            }
+                        ]
+                    });
+                } else {
+                    timeTrackingEntities = await TimeTrackingEntity.find({
+                        _task: { $in: groupTasks }
+                    });
+                }
+            } else {
                 if ((!!startDate && startDate != 'null') && (!!endDate && endDate != 'null')) {
                     timeTrackingEntities = await TimeTrackingEntity.find({
                         $and: [
@@ -2874,49 +2917,6 @@ export class GroupController {
                             { _task: { $in: groupTasks }},
                             { _user: filterUserId}
                         ]
-                    });
-                }
-            } else {
-                if ((!!startDate && startDate != 'null') && (!!endDate && endDate != 'null')) {
-                    timeTrackingEntities = await TimeTrackingEntity.find({
-                        $and: [
-                            { _task: { $in: groupTasks }},
-                            { times: {
-                                    $elemMatch: { 
-                                        $and: [
-                                            { date: { $gte: startDate }},
-                                            { date: { $lte: endDate }},
-                                        ]
-                                    }
-                                }
-                            }
-                        ]
-                    });
-                } else if ((!!startDate && startDate != 'null') && (!endDate || endDate == 'null')) {
-                    timeTrackingEntities = await TimeTrackingEntity.find({
-                        $and: [
-                            { _task: { $in: groupTasks }},
-                            { times: {
-                                    $elemMatch: 
-                                        { date: { $gte: startDate }}
-                                }
-                            }
-                        ]
-                    });
-                } else if ((!startDate || startDate == 'null') && (!!endDate && endDate != 'null')) {
-                    timeTrackingEntities = await TimeTrackingEntity.find({
-                        $and: [
-                            { _task: { $in: groupTasks }},
-                            { times: {
-                                    $elemMatch:
-                                        { date: { $lte: endDate }},
-                                }
-                            }
-                        ]
-                    });
-                } else {
-                    timeTrackingEntities = await TimeTrackingEntity.find({
-                        _task: { $in: groupTasks }
                     });
                 }
             }
