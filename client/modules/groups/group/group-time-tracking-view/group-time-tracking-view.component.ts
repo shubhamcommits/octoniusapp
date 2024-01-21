@@ -57,7 +57,6 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
   }
 
   async ngOnChanges(changes: SimpleChanges) {
-console.log(changes);
     if (!!changes.startDate && !!changes.startDate.currentValue) {
       this.startDate = changes.startDate.currentValue;
     }
