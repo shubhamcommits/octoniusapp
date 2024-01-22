@@ -148,7 +148,9 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
         }
 
         accumulator[currentGroup._id].push(currentValue);
-
+        accumulator[currentGroup._id] = accumulator[currentGroup._id].sort((a, b) => {
+          return this.utilityService.compare(a.date, b.date, 1);
+        });
         return accumulator;
       }, {});
 

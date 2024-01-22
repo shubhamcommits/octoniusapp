@@ -851,6 +851,10 @@ console.log(error)
     return (!!date) ? DateTime.fromISO(date).setLocale(this.injector.get(LOCALE_ID)).toLocaleString(format || DateTime.DATE_MED) : '';
   }
 
+  compare(a: number | string, b: number | string, isAsc: number) {
+    return (a < b ? -1 : 1) * isAsc;
+  }
+
   openVideoChatDialog(chatData: any, canEdit: any) {
     const data = {
       chatData: chatData,

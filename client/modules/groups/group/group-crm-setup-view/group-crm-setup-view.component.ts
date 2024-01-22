@@ -183,18 +183,18 @@ export class GroupCRMSetupViewComponent implements OnInit, OnDestroy, AfterConte
 			this.sortedContacts = data.sort((a, b) => {
 				switch (property) {
 					case 'company':
-						return this.compare(a?._company.name, b?._company.name, directionValue);
+						return this.utilityService.compare(a?._company.name, b?._company.name, directionValue);
 					
 					case 'phone':
 					case 'email':
 					case 'link':
 						property += 's';
-						return this.compare(a[property][0], b[property][0], directionValue);
+						return this.utilityService.compare(a[property][0], b[property][0], directionValue);
 					default:
 						const index = (this.crmContactCustomFields) ? this.crmContactCustomFields.findIndex((f: any) => f.name === property) : -1;
 						return (index < 0) ? 
-							this.compare(a[property], b[property], directionValue) :
-							this.compare(a.crm_custom_fields[property], b.crm_custom_fields[property], directionValue);
+							this.utilityService.compare(a[property], b[property], directionValue) :
+							this.utilityService.compare(a.crm_custom_fields[property], b.crm_custom_fields[property], directionValue);
 				}
 			});
 		}
@@ -214,12 +214,12 @@ export class GroupCRMSetupViewComponent implements OnInit, OnDestroy, AfterConte
 				switch (property) {
 					case 'name':
 					case 'description':
-						return this.compare(a[property], b[property], directionValue);
+						return this.utilityService.compare(a[property], b[property], directionValue);
 					default:
 						const index = (this.crmCompanyCustomFields) ? this.crmCompanyCustomFields.findIndex((f: any) => f.name === property) : -1;
 						return (index < 0) ? 
-							this.compare(a[property], b[property], directionValue) :
-							this.compare(a.crm_custom_fields[property], b.crm_custom_fields[property], directionValue);
+							this.utilityService.compare(a[property], b[property], directionValue) :
+							this.utilityService.compare(a.crm_custom_fields[property], b.crm_custom_fields[property], directionValue);
 				}
 			});
 		}
@@ -260,178 +260,174 @@ export class GroupCRMSetupViewComponent implements OnInit, OnDestroy, AfterConte
 			});
 	}
 
-		addNewContactColumn($event: Event) {
-			// Find the index of the column to check if the same named column exist or not
-			const index = this.crmContactsCustomFieldsToShow.findIndex((f: any) => f.name.toLowerCase() === this.newContactColumnSelected.name.toLowerCase());
+	addNewContactColumn($event: Event) {
+		// Find the index of the column to check if the same named column exist or not
+		const index = this.crmContactsCustomFieldsToShow.findIndex((f: any) => f.name.toLowerCase() === this.newContactColumnSelected.name.toLowerCase());
 
-			// If index is found, then throw error notification
-			if (index !== -1) {
-				this.utilityService.warningNotification($localize`:@@crmContactList.sectionAlreadyExists:Section already exists!`);
-			} else {
-				// If not found, then push the element
-				// Create the group
-				if (!this.groupData.crm_custom_fields_to_show) {
-					this.groupData.crm_custom_fields_to_show = [];
-				}
-
-				this.groupData.crm_custom_fields_to_show.push(this.newContactColumnSelected.name);
-				this.crmContactsCustomFieldsToShow.push(this.getContactCustomField(this.newContactColumnSelected.name));
-				if (this.displayedContactsColumns.length - 1 >= 0) {
-					this.displayedContactsColumns.splice(this.displayedContactsColumns.length - 1, 0, this.newContactColumnSelected.name);
-				}
-
-				this.newContactColumnSelected = null;
-
-				this.crmGroupService.saveCRMCustomFieldsToShow(this.groupData._id, this.groupData.crm_custom_fields_to_show)
-					.then(res => {
-						this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-					});
-			}
-		}
-
-		removeContactColumn(field: any) {
-			let index: number = this.crmContactsCustomFieldsToShow.findIndex(cf => cf.name === field);
-			if (index !== -1) {
-				this.crmContactsCustomFieldsToShow.splice(index, 1);
+		// If index is found, then throw error notification
+		if (index !== -1) {
+			this.utilityService.warningNotification($localize`:@@crmContactList.sectionAlreadyExists:Section already exists!`);
+		} else {
+			// If not found, then push the element
+			// Create the group
+			if (!this.groupData.crm_custom_fields_to_show) {
+				this.groupData.crm_custom_fields_to_show = [];
 			}
 
-			index = this.displayedContactsColumns.indexOf(field.name);
-			if (index !== -1) {
-				this.displayedContactsColumns.splice(index, 1);
+			this.groupData.crm_custom_fields_to_show.push(this.newContactColumnSelected.name);
+			this.crmContactsCustomFieldsToShow.push(this.getContactCustomField(this.newContactColumnSelected.name));
+			if (this.displayedContactsColumns.length - 1 >= 0) {
+				this.displayedContactsColumns.splice(this.displayedContactsColumns.length - 1, 0, this.newContactColumnSelected.name);
 			}
 
-			index = this.groupData.crm_custom_fields_to_show.indexOf(field.name);
-			if (index !== -1) {
-				this.groupData.crm_custom_fields_to_show.splice(index, 1);
-			}
+			this.newContactColumnSelected = null;
 
 			this.crmGroupService.saveCRMCustomFieldsToShow(this.groupData._id, this.groupData.crm_custom_fields_to_show)
 				.then(res => {
 					this.publicFunctions.sendUpdatesToGroupData(this.groupData);
 				});
 		}
+	}
 
-		addNewCompanyColumn($event: Event) {
-			// Find the index of the column to check if the same named column exist or not
-			const index = this.crmCompanyCustomFieldsToShow.findIndex((f: any) => f.name.toLowerCase() === this.newCompanyColumnSelected.name.toLowerCase());
-
-			// If index is found, then throw error notification
-			if (index !== -1) {
-				this.utilityService.warningNotification($localize`:@@crmCompanyList.sectionAlreadyExists:Section already exists!`);
-			} else {
-				// If not found, then push the element
-				// Create the group
-				if (!this.groupData.crm_custom_fields_to_show) {
-					this.groupData.crm_custom_fields_to_show = [];
-				}
-
-				this.groupData.crm_custom_fields_to_show.push(this.newCompanyColumnSelected.name);
-				this.crmCompanyCustomFieldsToShow.push(this.getCompanyCustomField(this.newCompanyColumnSelected.name));
-				if (this.displayedCompanyColumns.length - 1 >= 0) {
-					this.displayedCompanyColumns.splice(this.displayedCompanyColumns.length - 1, 0, this.newCompanyColumnSelected.name);
-				}
-
-				this.newCompanyColumnSelected = null;
-
-				this.crmGroupService.saveCRMCustomFieldsToShow(this.groupData._id, this.groupData.crm_custom_fields_to_show)
-					.then(res => {
-						this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-					});
-			}
+	removeContactColumn(field: any) {
+		let index: number = this.crmContactsCustomFieldsToShow.findIndex(cf => cf.name === field);
+		if (index !== -1) {
+			this.crmContactsCustomFieldsToShow.splice(index, 1);
 		}
 
-		removeCompanyColumn(field: any) {
-			let index: number = this.crmCompanyCustomFieldsToShow.findIndex(cf => cf.name === field);
-			if (index !== -1) {
-				this.crmCompanyCustomFieldsToShow.splice(index, 1);
+		index = this.displayedContactsColumns.indexOf(field.name);
+		if (index !== -1) {
+			this.displayedContactsColumns.splice(index, 1);
+		}
+
+		index = this.groupData.crm_custom_fields_to_show.indexOf(field.name);
+		if (index !== -1) {
+			this.groupData.crm_custom_fields_to_show.splice(index, 1);
+		}
+
+		this.crmGroupService.saveCRMCustomFieldsToShow(this.groupData._id, this.groupData.crm_custom_fields_to_show)
+			.then(res => {
+				this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+			});
+	}
+
+	addNewCompanyColumn($event: Event) {
+		// Find the index of the column to check if the same named column exist or not
+		const index = this.crmCompanyCustomFieldsToShow.findIndex((f: any) => f.name.toLowerCase() === this.newCompanyColumnSelected.name.toLowerCase());
+
+		// If index is found, then throw error notification
+		if (index !== -1) {
+			this.utilityService.warningNotification($localize`:@@crmCompanyList.sectionAlreadyExists:Section already exists!`);
+		} else {
+			// If not found, then push the element
+			// Create the group
+			if (!this.groupData.crm_custom_fields_to_show) {
+				this.groupData.crm_custom_fields_to_show = [];
 			}
 
-			index = this.displayedCompanyColumns.indexOf(field.name);
-			if (index !== -1) {
-				this.displayedCompanyColumns.splice(index, 1);
+			this.groupData.crm_custom_fields_to_show.push(this.newCompanyColumnSelected.name);
+			this.crmCompanyCustomFieldsToShow.push(this.getCompanyCustomField(this.newCompanyColumnSelected.name));
+			if (this.displayedCompanyColumns.length - 1 >= 0) {
+				this.displayedCompanyColumns.splice(this.displayedCompanyColumns.length - 1, 0, this.newCompanyColumnSelected.name);
 			}
 
-			index = this.groupData.crm_custom_fields_to_show.indexOf(field.name);
-			if (index !== -1) {
-				this.groupData.crm_custom_fields_to_show.splice(index, 1);
-			}
+			this.newCompanyColumnSelected = null;
 
 			this.crmGroupService.saveCRMCustomFieldsToShow(this.groupData._id, this.groupData.crm_custom_fields_to_show)
 				.then(res => {
 					this.publicFunctions.sendUpdatesToGroupData(this.groupData);
 				});
 		}
+	}
 
-		deleteContact(contactId: string) {
-			this.utilityService.getConfirmDialogAlert($localize`:@@crmContactList.areYouSure:Are you sure?`, $localize`:@@crmContactList.removeContact:By doing this, you will delete the selected contact!`)
-				.then((res) => {
-					if (res.value) {
-						this.crmGroupService.removeCRMContact(contactId).then(async res => {
-							const index = (this.contacts) ? this.contacts.findIndex(c => c._id == contactId) : -1;
-							if (index >= 0) {
-								this.contacts.splice(index, 1);
-
-								await this.initContactTable();
-							}
-						});
-					}
-				});
+	removeCompanyColumn(field: any) {
+		let index: number = this.crmCompanyCustomFieldsToShow.findIndex(cf => cf.name === field);
+		if (index !== -1) {
+			this.crmCompanyCustomFieldsToShow.splice(index, 1);
 		}
 
-		openCompanyDialog(companyId?: string) {
-			const dialogRef = this.dialog.open(NewCRMCompanyDialogComponent, {
-				disableClose: true,
-				hasBackdrop: true,
-				width: '50%',
-				data: {
-					companyId: companyId
+		index = this.displayedCompanyColumns.indexOf(field.name);
+		if (index !== -1) {
+			this.displayedCompanyColumns.splice(index, 1);
+		}
+
+		index = this.groupData.crm_custom_fields_to_show.indexOf(field.name);
+		if (index !== -1) {
+			this.groupData.crm_custom_fields_to_show.splice(index, 1);
+		}
+
+		this.crmGroupService.saveCRMCustomFieldsToShow(this.groupData._id, this.groupData.crm_custom_fields_to_show)
+			.then(res => {
+				this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+			});
+	}
+
+	deleteContact(contactId: string) {
+		this.utilityService.getConfirmDialogAlert($localize`:@@crmContactList.areYouSure:Are you sure?`, $localize`:@@crmContactList.removeContact:By doing this, you will delete the selected contact!`)
+			.then((res) => {
+				if (res.value) {
+					this.crmGroupService.removeCRMContact(contactId).then(async res => {
+						const index = (this.contacts) ? this.contacts.findIndex(c => c._id == contactId) : -1;
+						if (index >= 0) {
+							this.contacts.splice(index, 1);
+
+							await this.initContactTable();
+						}
+					});
 				}
 			});
+	}
 
-			const companyEditedSubs = dialogRef.componentInstance.companyEdited.subscribe(async (data) => {
-				const index = (this.companies) ? this.companies.findIndex(c => c._id == data._id) : -1;
-				if (index >= 0) {
-					this.companies[index] = data;
+	openCompanyDialog(companyId?: string) {
+		const dialogRef = this.dialog.open(NewCRMCompanyDialogComponent, {
+			disableClose: true,
+			hasBackdrop: true,
+			width: '50%',
+			data: {
+				companyId: companyId
+			}
+		});
+
+		const companyEditedSubs = dialogRef.componentInstance.companyEdited.subscribe(async (data) => {
+			const index = (this.companies) ? this.companies.findIndex(c => c._id == data._id) : -1;
+			if (index >= 0) {
+				this.companies[index] = data;
+			}
+			
+			await this.initCompanyTable();
+		});
+
+		const companyCreatedSubs = dialogRef.componentInstance.companyCreated.subscribe(async (data) => {
+			if (!this.companies) {
+				this.companies = []
+			}
+
+			this.companies.unshift(data);
+
+			await this.initCompanyTable();
+		});
+
+		dialogRef.afterClosed().subscribe(async result => {
+			companyEditedSubs.unsubscribe();
+			companyCreatedSubs.unsubscribe();
+		});
+	}
+
+	deleteCompany(companyId: string) {
+		this.utilityService.getConfirmDialogAlert($localize`:@@crmCompanyList.areYouSure:Are you sure?`, $localize`:@@crmCompanyList.removeCompany:By doing this, you will delete the selected company!`)
+			.then((res) => {
+				if (res.value) {
+					this.crmGroupService.removeCRMCompany(companyId).then(async res => {
+						const index = (this.companies) ? this.companies.findIndex(c => c._id == companyId) : -1;
+						if (index >= 0) {
+							this.companies.splice(index, 1);
+
+							await this.initCompanyTable();
+						}
+					})
 				}
-				
-				await this.initCompanyTable();
 			});
-
-			const companyCreatedSubs = dialogRef.componentInstance.companyCreated.subscribe(async (data) => {
-				if (!this.companies) {
-					this.companies = []
-				}
-
-				this.companies.unshift(data);
-
-				await this.initCompanyTable();
-			});
-
-			dialogRef.afterClosed().subscribe(async result => {
-				companyEditedSubs.unsubscribe();
-				companyCreatedSubs.unsubscribe();
-			});
-		}
-
-		deleteCompany(companyId: string) {
-			this.utilityService.getConfirmDialogAlert($localize`:@@crmCompanyList.areYouSure:Are you sure?`, $localize`:@@crmCompanyList.removeCompany:By doing this, you will delete the selected company!`)
-				.then((res) => {
-					if (res.value) {
-						this.crmGroupService.removeCRMCompany(companyId).then(async res => {
-							const index = (this.companies) ? this.companies.findIndex(c => c._id == companyId) : -1;
-							if (index >= 0) {
-								this.companies.splice(index, 1);
-
-								await this.initCompanyTable();
-							}
-						})
-					}
-				});
-		}
-
-		private compare(a: number | string, b: number | string, isAsc: number) {
-			return (a < b ? -1 : 1) * isAsc;
-		}
+	}
 
 	isAdminUser() {
 		const index = this.groupData._admins.findIndex((admin: any) => admin._id === this.userData._id);

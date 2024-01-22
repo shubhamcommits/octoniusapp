@@ -199,7 +199,7 @@
             <!-- north-star-stats ENDS-->
 
             <!-- time-tracking STARTS-->
-            <mat-tab>
+            <mat-tab *ngIf="postData?.type == 'task'">
               <ng-template mat-tab-label>
                 <span i18n="@@groupCreatePostDialog.timeTracking">Time tracking</span>
               </ng-template>

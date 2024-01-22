@@ -68,15 +68,11 @@ export class TaskTimeTrackingListComponent implements OnChanges {
 		this.sortedData = data.sort((a, b) => {
 			switch (property) {
         case 'time':
-          return this.compare(a['hours']+':'+a['minutes'], b['hours']+':'+a['minutes'], directionValue);
+          return this.utilityService.compare(a['hours']+':'+a['minutes'], b['hours']+':'+a['minutes'], directionValue);
 				default:
-					return this.compare(a[property], b[property], directionValue);
+					return this.utilityService.compare(a[property], b[property], directionValue);
 			}
 		});
-	}
-
-  private compare(a: number | string, b: number | string, isAsc: number) {
-		return (a < b ? -1 : 1) * isAsc;
 	}
 
   openEditEntry(timeTrackingEntity) {

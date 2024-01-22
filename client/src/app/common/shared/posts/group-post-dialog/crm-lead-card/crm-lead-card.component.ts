@@ -108,24 +108,20 @@ export class CRMLeadCardComponent implements OnChanges {
 		this.sortedData = data.sort((a, b) => {
 			switch (property) {
 				case 'company':
-					return this.compare(a?._company.name, b?._company.name, directionValue);
+					return this.utilityService.compare(a?._company.name, b?._company.name, directionValue);
 				
 				case 'phone':
 				case 'email':
 				case 'link':
 					property += 's';
-					return this.compare(a[property][0], b[property][0], directionValue);
+					return this.utilityService.compare(a[property][0], b[property][0], directionValue);
 				default:
 					const index = (this.crmContactCustomFields) ? this.crmContactCustomFields.findIndex((f: any) => f.name === property) : -1;
 					return (index < 0) ? 
-						this.compare(a[property], b[property], directionValue) :
-						this.compare(a.crm_custom_fields[property], b.crm_custom_fields[property], directionValue);
+						this.utilityService.compare(a[property], b[property], directionValue) :
+						this.utilityService.compare(a.crm_custom_fields[property], b.crm_custom_fields[property], directionValue);
 			}
 		});
-	}
-
-	private compare(a: number | string, b: number | string, isAsc: number) {
-		return (a < b ? -1 : 1) * isAsc;
 	}
 
   async selectCompany(company: any) {
