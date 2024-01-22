@@ -1,6 +1,6 @@
 import { Component, OnInit, Injector, Input, OnChanges, SimpleChanges, OnDestroy, LOCALE_ID } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import { DateTime } from 'luxon';
+import { DateTime, Interval } from 'luxon';
 import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject } from 'rxjs';
 import { GroupService } from 'src/shared/services/group-service/group.service';
@@ -102,6 +102,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
   
 	async initTable() {
     this.timeTrackingEntitiesMapped = [];
+    const interval = Interval.fromDateTimes(this.startDate, this.endDate);
     this.timeTrackingEntities.forEach(tte => {
       tte?.times?.forEach(time => {
         let tteMapped = {
@@ -115,11 +116,12 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
           minutes: time.minutes,
           comment: time.comment,
         };
+
         this.timeTrackingEntitiesMapped.push(tteMapped);
       });
     });
     this.timeTrackingEntitiesMapped = [...this.timeTrackingEntitiesMapped];
-    this.timeTrackingEntities = this.timeTrackingEntitiesMapped.filter(tte => tte.hours !== '00' && tte.minutes !== '00');
+    this.timeTrackingEntities = this.timeTrackingEntitiesMapped.filter(tte => tte.hours !== '00' && tte.minutes !== '00' && interval.contains(DateTime.fromISO(tte.date)));
 
     this.buildDataSource();
 	}

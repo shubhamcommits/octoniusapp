@@ -4,7 +4,6 @@ import { sendError, axios } from '../../utils';
 import http from 'axios';
 import moment from 'moment';
 import { GroupService } from '../services';
-import { start } from 'pm2';
 
 const groupService = new GroupService();
 
@@ -2835,8 +2834,7 @@ export class GroupController {
                             { times: {
                                     $elemMatch: { 
                                         $and: [
-                                            { date: { $gte: startDate }},
-                                            { date: { $lte: endDate }},
+                                            { date: { $gte: startDate, $lte: endDate }},
                                         ]
                                     }
                                 }
@@ -2879,8 +2877,7 @@ export class GroupController {
                             { times: {
                                     $elemMatch: { 
                                         $and: [
-                                            { date: { $gte: startDate }},
-                                            { date: { $lte: endDate }},
+                                            { date: { $gte: startDate, $lte: endDate }},
                                         ]
                                     }
                                 }
