@@ -52,6 +52,9 @@ export class BoardBarComponent implements OnInit {
   groupMembers:any = [];
   shuttleGroups:any = [];
 
+  filterStartDate;
+  filterEndDate;
+
   isIndividualSubscription = true;
 
   constructor(
@@ -166,6 +169,8 @@ export class BoardBarComponent implements OnInit {
 
   openTimeTrackerDatesFilterDialog() {
     const data = {
+      startDate: this.filterStartDate,
+      endDate: this.filterEndDate
     };
 
     const dialogRef = this.dialog.open(TimeTrackerDatesFilterDialogComponent, {
@@ -173,6 +178,8 @@ export class BoardBarComponent implements OnInit {
       hasBackdrop: true
     });
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+      this.filterStartDate = data.startDate;
+      this.filterEndDate = data.endDate;
       this.filterTask('time_tracking', data);
     });
 

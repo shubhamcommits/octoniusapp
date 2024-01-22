@@ -19,10 +19,18 @@ export class TimeTrackerDatesFilterDialogComponent implements OnChanges {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<TimeTrackerDatesFilterDialogComponent>
   ) {
+    if (!!this.data) {
+      if (!!this.data.startDate) {
+        this.startDate = this.data.startDate;
+      }
+
+      if (!!this.data.endDate) {
+        this.endDate = this.data.endDate;
+      }
+    }
   }
 
   ngOnChanges(): void {
-    // this.startDate = this.column?.start_dates
   }
 
   closeDialog() {
