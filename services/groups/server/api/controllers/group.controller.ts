@@ -1,4 +1,4 @@
-import { Column, Flow, Group, Post, User, Workspace } from '../models';
+import { Column, Flow, Group, Post, TimeTrackingEntity, User, Workspace } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError, axios } from '../../utils';
 import http from 'axios';
@@ -2541,6 +2541,406 @@ export class GroupController {
             });
         } catch (error) {
             return sendError(res, error, 'Internal Server Error!', 500);
+        }
+    };
+
+    /**
+     * This function is responsible for adding a new time tracking entity
+     * @param { timeTrackingEntity } req 
+     * @param res 
+     */
+    async saveTimeTrackingEntry(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { groupId } = req.params;
+
+        // Fetch the newTimeTrackingEntity from fileHandler middleware
+        let newTimeTrackingEntity = req.body['newTimeTrackingEntity'];
+        newTimeTrackingEntity._created_by = req['userId'];
+
+        try {
+            let tmpTTE = await TimeTrackingEntity.findOne({
+                $and: [
+                    { _user: newTimeTrackingEntity._user },
+                    { _task: newTimeTrackingEntity._task },
+                    { _category: newTimeTrackingEntity._category }
+                ]}).lean();
+
+            let timeTrackingEntity
+            if (!!tmpTTE) {
+                timeTrackingEntity = await TimeTrackingEntity.findOneAndUpdate({
+                        _id: tmpTTE._id  
+                    }, {
+                        $push: { "times": {
+                            date: newTimeTrackingEntity.date,
+                            hours: newTimeTrackingEntity.hours,
+                            minutes: newTimeTrackingEntity.minutes,
+                            comment: newTimeTrackingEntity.comment
+                        }}
+                    }).lean();
+            } else {
+                timeTrackingEntity = await TimeTrackingEntity.create(newTimeTrackingEntity);
+            }
+
+            timeTrackingEntity = await TimeTrackingEntity.findById({
+                    _id: timeTrackingEntity._id
+                })
+                .populate('_user', 'first_name last_name profile_pic email')
+                .populate('_created_by', 'first_name last_name profile_pic email')
+                .lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Time Tracking entity created!',
+                timeTrackingEntity: timeTrackingEntity
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    /**
+     * This function is responsible for adding a new time tracking entity
+     * @param { timeTrackingEntity } req 
+     * @param res 
+     */
+    async editTimeTrackingEntry(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the editTimeTrackingEntityId
+        const { editTimeTrackingEntityId } = req.params;
+
+        // Fetch the newTimeTrackEntity from fileHandler middleware
+        let editTimeTrackingEntity = req.body['editTimeTrackingEntity'];
+        let propertyEdited = req.body['propertyEdited'];
+        
+        try {
+            const timeId = editTimeTrackingEntity.timeId;
+
+            let retObj: any = {};
+
+            switch (propertyEdited) {
+                case 'user':
+                    retObj = await groupService.editUserTimeTrackingEntity(editTimeTrackingEntityId, timeId, editTimeTrackingEntity?._user);
+                    break;
+                case 'category':
+                    retObj = await groupService.editCategoryTimeTrackingEntity(editTimeTrackingEntityId, timeId, editTimeTrackingEntity?._category);
+                    break;
+                case 'time':
+                    retObj = await groupService.editTimeTimeTrackingEntity(editTimeTrackingEntityId, timeId, editTimeTrackingEntity);
+                    break;
+                case 'date':
+                    retObj = await groupService.editDateTimeTrackingEntity(editTimeTrackingEntityId, timeId, editTimeTrackingEntity?.date);
+                    break;
+                case 'comment':
+                    retObj = await groupService.editCommentTimeTrackingEntity(editTimeTrackingEntityId, timeId, editTimeTrackingEntity?.comment);
+                    break;
+            }
+
+            if (!retObj.error && !!retObj.timeTrackingEntity) {
+                let timeTrackingEntities = await TimeTrackingEntity.find({
+                        _task: (retObj.timeTrackingEntity._task._id || retObj.timeTrackingEntity._task)
+                    })
+                    .populate('_user', 'first_name last_name profile_pic email')
+                    .populate('_created_by', 'first_name last_name profile_pic email')
+                    .lean();
+                
+                retObj.timeTrackingEntities = timeTrackingEntities;
+            }
+            // Send status 200 response
+            return res.status(200).json(retObj);
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async removeTimeTrackingEntity(req: Request, res: Response, next: NextFunction) {
+        // Fetch the groupId & fieldId
+        const { timeTrackingEntityId, timeId } = req.params;
+
+        try {
+
+            const tte = await TimeTrackingEntity.findByIdAndUpdate({
+                    _id: timeTrackingEntityId
+                }, {
+                    $pull: {
+                        times: {
+                            _id: timeId
+                        }
+                    }
+                }).select('times').lean();
+
+            if (!tte.times || tte.times.length == 0) {
+                await TimeTrackingEntity.findByIdAndDelete({
+                        _id: timeTrackingEntityId
+                    });
+            }
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Time tracking Entity deleted!'
+            });
+        } catch (err) {
+            console.log(err);
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for adding a new time tracking entity
+     * @param { timeTrackingEntity } req 
+     * @param res 
+     */
+    async getTimeTrackingEntities(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { postId } = req.params;
+
+        try {
+            let timeTrackingEntities = await TimeTrackingEntity.find({
+                    _task: postId
+                })
+                .populate('_user', 'first_name last_name profile_pic email')
+                .populate('_created_by', 'first_name last_name profile_pic email')
+                .lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Time Tracking entities found!',
+                timeTrackingEntities: timeTrackingEntities
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    /**
+     * This function fetches the posts of the group with specific dates
+     * @param req
+     */
+    async getTimeTrackingCategories(req: Request, res: Response) {
+        try {
+
+            const { groupId } = req.params;
+
+            // Find the Group based on the groupId
+            const group = await Group.findById({
+                    _id: groupId
+                })
+                .select('time_tracking_categories')
+                .lean() || [];
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Categories found!',
+                categories: group.time_tracking_categories || []
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
+     * This function is responsible for adding a new custom field for the particular group
+     * @param { customFiel } req 
+     * @param res 
+     */
+    async saveNewTimeTrackingCategory(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { groupId } = req.params;
+
+        // Fetch the newCustomField from fileHandler middleware
+        const newCategory = req.body['newCategory'];
+
+        try {
+
+            // Find the group and update their respective group avatar
+            const group = await Group.findByIdAndUpdate({
+                    _id: groupId
+                }, {
+                    //custom_fields: newCustomField
+                    $push: { "time_tracking_categories": newCategory }
+                }, {
+                    new: true
+                }).select('time_tracking_categories');
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group time tracking categories updated!',
+                categories: group.time_tracking_categories
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async removeTimeTrackingCategory(req: Request, res: Response, next: NextFunction) {
+        // Fetch the groupId & fieldId
+        const { groupId, categoryId } = req.params;
+
+        try {
+
+            let group = await Group.findById({
+                    _id: groupId
+                }).select('time_tracking_categories').lean();
+
+            // const catIndex = group.time_tracking_categories.findIndex(cat => cat._id == categoryId);
+            // const cat = (group && group.time_tracking_categories) ? group.time_tracking_categories[catIndex] : null;
+
+            // Find the group and update their respective group avatar
+            group = await Group.findByIdAndUpdate({
+                    _id: groupId
+                }, {
+                    $pull: {
+                        time_tracking_categories: {
+                            _id: categoryId
+                        }
+                    }
+                }).lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group time tracking categories updated!',
+                group: group
+            });
+        } catch (err) {
+            console.log(err);
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function fetches the time tracking entities of a user with a date between specific dates
+     * @param req
+     */
+    async getGroupTimeTrackingEntites(req: Request, res: Response) {
+        try {
+
+            const { groupId } = req.params;
+            const { query: { startDate, endDate, filterUserId } } = req;
+
+            let groupTasks = await Post.find({
+                _group: groupId
+            }).select('_id').lean() || [];
+
+            groupTasks = groupTasks.map(post => post._id);
+
+            let timeTrackingEntities = [];
+            if (!filterUserId || filterUserId == 'undefined' || filterUserId == 'null') {
+                if ((!!startDate && startDate != 'null') && (!!endDate && endDate != 'null')) {
+                    timeTrackingEntities = await TimeTrackingEntity.find({
+                        $and: [
+                            { _task: { $in: groupTasks }},
+                            { times: {
+                                    $elemMatch: { 
+                                        $and: [
+                                            { date: { $gte: startDate, $lte: endDate }},
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    });
+                } else if ((!!startDate && startDate != 'null') && (!endDate || endDate == 'null')) {
+                    timeTrackingEntities = await TimeTrackingEntity.find({
+                        $and: [
+                            { _task: { $in: groupTasks }},
+                            { times: {
+                                    $elemMatch: 
+                                        { date: { $gte: startDate }}
+                                }
+                            }
+                        ]
+                    });
+                } else if ((!startDate || startDate == 'null') && (!!endDate && endDate != 'null')) {
+                    timeTrackingEntities = await TimeTrackingEntity.find({
+                        $and: [
+                            { _task: { $in: groupTasks }},
+                            { times: {
+                                    $elemMatch:
+                                        { date: { $lte: endDate }},
+                                }
+                            }
+                        ]
+                    });
+                } else {
+                    timeTrackingEntities = await TimeTrackingEntity.find({
+                        _task: { $in: groupTasks }
+                    });
+                }
+            } else {
+                if ((!!startDate && startDate != 'null') && (!!endDate && endDate != 'null')) {
+                    timeTrackingEntities = await TimeTrackingEntity.find({
+                        $and: [
+                            { _task: { $in: groupTasks }},
+                            { _user: filterUserId},
+                            { times: {
+                                    $elemMatch: { 
+                                        $and: [
+                                            { date: { $gte: startDate, $lte: endDate }},
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    });
+                } else if ((!!startDate && startDate != 'null') && (!endDate || endDate == 'null')) {
+                    timeTrackingEntities = await TimeTrackingEntity.find({
+                        $and: [
+                            { _task: { $in: groupTasks }},
+                            { _user: filterUserId},
+                            { times: {
+                                    $elemMatch: 
+                                        { date: { $gte: startDate }}
+                                }
+                            }
+                        ]
+                    });
+                } else if ((!startDate || startDate == 'null') && (!!endDate && endDate != 'null')) {
+                    timeTrackingEntities = await TimeTrackingEntity.find({
+                        $and: [
+                            { _task: { $in: groupTasks }},
+                            { _user: filterUserId},
+                            { times: {
+                                    $elemMatch:
+                                        { date: { $lte: endDate }},
+                                }
+                            }
+                        ]
+                    });
+                } else {
+                    timeTrackingEntities = await TimeTrackingEntity.find({
+                        $and: [
+                            { _task: { $in: groupTasks }},
+                            { _user: filterUserId}
+                        ]
+                    });
+                }
+            }
+
+            timeTrackingEntities = await TimeTrackingEntity.populate(timeTrackingEntities, [
+                    {
+                        path: '_task',
+                        select: 'title _group',
+                        populate: {
+                            path: '_group',
+                            model: 'Group',
+                            select: 'group_name group_avatar'
+                        }
+                    },
+                    { path: '_user', select: 'first_name last_name profile_pic email' },
+                    { path: '_created_by', select: 'first_name last_name profile_pic email' }
+                ]);
+
+            // timeTrackingEntities = timeTrackingEntities.filter(tte => !!tte.times && tte.times.length > 0);
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Time Tracking Entities found!',
+                timeTrackingEntities: timeTrackingEntities
+            });
+        } catch (err) {
+            return sendError(res, err);
         }
     };
 }

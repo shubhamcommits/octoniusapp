@@ -37,7 +37,7 @@
 <!-- Assignee section for events ends -->
 
 <!-- Assignee section for tasks starts -->
-<section [id]="userData?._id" *ngIf="type === 'workspaceMembers'">
+<section [id]="userData?._id" *ngIf="type === 'workspaceMembers' || type === 'holidays'">
   <app-secured-image *ngIf="userData"
       [imgURL]="userData?.profile_pic"
       [service]="'user'"

@@ -31,7 +31,8 @@ export class ProfileCustomFieldsDialogComponent implements OnInit {
     this.workspaceData = this.data.workspaceData;
 
     await this.workspaceService.getProfileCustomFields(this.workspaceData._id).then((res) => {
-      res['workspace']['profile_custom_fields']?.forEach(field => {
+      res['workspace']['profile_custom_fields']?.forEach(async field => {
+        await this.sortValues(field);
         this.customFields.push(field);
       });
     });
@@ -41,6 +42,12 @@ export class ProfileCustomFieldsDialogComponent implements OnInit {
 
   onCloseDialog() {
     this.customFieldsEvent.emit(this.customFields);
+  }
+
+  sortValues(field) {
+    if (!field.input_type) {
+      field.values.sort((v1, v2) => (v1 > v2) ? 1 : -1);
+    }
   }
 
   async createCustomField() {
@@ -107,7 +114,7 @@ export class ProfileCustomFieldsDialogComponent implements OnInit {
       });
   }
 
-  addValue(field, event: Event) {
+  async addValue(field, event: Event) {
     const newValue = event.target['value'];
 
     if (newValue !== '') {
@@ -119,6 +126,7 @@ export class ProfileCustomFieldsDialogComponent implements OnInit {
         this.utilityService.warningNotification($localize`:@@profileCustomFieldsDialog.valueAlreadyExist:Value already exist!`);
       } else {
         field.values.push(newValue);
+        await this.sortValues(field);
 
         // Save the new value
         this.workspaceService.addCustomFieldNewValue(newValue, field._id, this.workspaceData._id);

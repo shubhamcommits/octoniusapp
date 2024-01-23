@@ -210,8 +210,8 @@ export class UserService {
     return this._http.post(this.BASE_API_URL + `/file/download`, file, { responseType: 'blob' });
   }
 
-  getUserTasks(): Observable<any> {
-    return this._http.get<any>(this.BASE_API_URL + `/tasks`);
+  getAllUserTasks() {
+    return this._http.get<any>(this.BASE_API_URL + `/tasks`).toPromise();
   }
 
   getCompletedUserTasks(): Observable<any> {
@@ -521,5 +521,14 @@ export class UserService {
 
   getPendingApprovalHolidays(userId?: string) {
     return this._http.get(this.BASE_API_URL + `/${userId}/pending-approval-holidays`).toPromise();
+  }
+
+  getUserTimeTrackingEntites(userId: string, startDate: any, endDate: any) {
+    return this._http.get(this.BASE_API_URL + `/${userId}/time-tracking-entities`, {
+      params: {
+        startDate: startDate,
+        endDate: endDate
+      }
+    }).toPromise();
   }
 }

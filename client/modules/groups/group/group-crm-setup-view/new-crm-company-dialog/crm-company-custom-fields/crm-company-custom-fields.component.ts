@@ -41,21 +41,24 @@ export class CRMCompanyCustomFieldsComponent implements OnChanges {
   }
 
   async initCustomFields() {
-    let customFieldsTmnp = this.groupData?.crm_custom_fields;
+    let customFieldsTmp = this.groupData?.crm_custom_fields;
 
-    if (!customFieldsTmnp) {
+    if (!customFieldsTmp) {
       await this.crmGroupService.getCRMGroupCustomFields(this.groupData?._id).then((res) => {
         if (res['crm_custom_fields']) {
-          customFieldsTmnp = res['crm_custom_fields'];
+          customFieldsTmp = res['crm_custom_fields'];
         }
       });
     }
 
-    if (customFieldsTmnp) {
+    if (customFieldsTmp) {
       this.crmCompanyCustomFields = [];
       
-      customFieldsTmnp.forEach(field => {
+      customFieldsTmp.forEach(field => {
         if (field.company_type) {
+          if (!field.input_type) {
+            field.values.sort((v1, v2) => (v1 > v2) ? 1 : -1);
+          }
           this.crmCompanyCustomFields.push(field);
 
           if (!this.companyData?.crm_custom_fields) {

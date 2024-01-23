@@ -1,5 +1,5 @@
 <div class="root">
-  <app-board-bar *ngIf="groupData"
+  <app-board-bar *ngIf="!!groupData"
       [groupData]="groupData"
       [sections]="columns"
       [userData]="userData"
@@ -68,6 +68,12 @@
       (taskClonnedEvent)="onTaskClonned($event)"
       (newSectionEvent)="newSectionAdded($event)">
   </app-group-kanban-archived-boards>
+
+  <app-group-time-tracking-view *ngIf="viewType === 'time_tracking'"
+      [filterUserId]="filterUserId"
+      [startDate]="filterStartDate"
+      [endDate]="filterEndDate">
+  </app-group-time-tracking-view>
 </div>
 
 <!-- Loading Spinner Starts -->

@@ -151,7 +151,6 @@
             <!-- subtasks STARTS-->
             <mat-tab *ngIf="showSubtasks && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id)">
               <ng-template mat-tab-label>
-                <!--<i class="material-icons">manage_history</i>-->
                 <span i18n="@@groupCreatePostDialog.subtasks">Subtasks</span>
               </ng-template>
 
@@ -170,7 +169,6 @@
             <!-- comment-list STARTS-->
             <mat-tab *ngIf="postData?.comments_count > 0">
               <ng-template mat-tab-label>
-                <!--<i class="material-icons">approval</i>-->
                 <span i18n="@@groupCreatePostDialog.comments">Comments</span>
               </ng-template>
 
@@ -188,7 +186,6 @@
             <!-- north-star-stats STARTS-->
             <mat-tab *ngIf="postData?.task?.isNorthStar">
               <ng-template mat-tab-label>
-                <!--<i class="material-icons">approval</i>-->
                 <span i18n="@@groupCreatePostDialog.northStarStats">North Star Stats</span>
               </ng-template>
 
@@ -201,10 +198,25 @@
             </mat-tab>
             <!-- north-star-stats ENDS-->
 
+            <!-- time-tracking STARTS-->
+            <mat-tab *ngIf="postData?.type == 'task'">
+              <ng-template mat-tab-label>
+                <span i18n="@@groupCreatePostDialog.timeTracking">Time tracking</span>
+              </ng-template>
+
+              <ng-template matTabContent>
+                <app-task-time-tracking
+                  [userId]="userData?._id"
+                  [groupId]="groupData?._id"
+                  [postData]="postData">
+                </app-task-time-tracking>
+              </ng-template>
+            </mat-tab>
+            <!-- time-tracking ENDS-->
+
             <!-- APPROVALS HISTORY STARTS-->
             <mat-tab *ngIf="postData?.type === 'task' && postData?.approval_active && postData?.approval_history && postData?.approval_history?.length > 0&& isBusinessSubscription">
               <ng-template mat-tab-label>
-                <!--<i class="material-icons">approval</i>-->
                 <span i18n="@@groupCreatePostDialog.approvalsHistory">Approvals History</span>
               </ng-template>
 
@@ -221,7 +233,6 @@
             <!-- TASK CHANGES HISTORY STARTS-->
             <mat-tab *ngIf="postData?.logs && postData?.logs?.length > 0">
               <ng-template mat-tab-label>
-                <!--<i class="material-icons">approval</i>-->
                 <span i18n="@@groupCreatePostDialog.changeLog">Change Log</span>
               </ng-template>
 
@@ -349,7 +360,6 @@
             <app-multiple-assignments
               [canEdit]="canEdit"
               [groupId]="groupId"
-              [userData]="userData"
               [post]="postData"
               [type]="'post'"
               (assigneeAddedEmiter)="onAssigned($event)"

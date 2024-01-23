@@ -13,6 +13,7 @@ import { Page } from "./page.model";
 import { Collection } from "./collection.model";
 import { Contact } from "./contact.model";
 import { Company } from "./company.model";
+import { TimeTrackingEntity } from "./time_tracking_entity.model";
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -33,4 +34,5 @@ export {
     Story as Story,
     User as User,
     Workspace as Workspace,
+    TimeTrackingEntity as TimeTrackingEntity,
 };

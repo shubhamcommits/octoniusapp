@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
 import { ColorPickerDialogComponent } from 'src/app/common/shared/color-picker-dialog/color-picker-dialog.component';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
+import { GroupTimeTrackingCategoriesDialogComponent } from '../../time-tracking-categories-dialog/time-tracking-categories-dialog.component';
 
 @Component({
   selector: 'app-group-settings',
@@ -250,6 +251,15 @@ export class GroupSettingsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       sub.unsubscribe();
+    });
+  }
+
+  openTimeTrackingCategoriesDialog() {
+    const dialogRef = this.dialog.open(GroupTimeTrackingCategoriesDialogComponent, {
+      width: '50%',
+      height: '50%',
+      disableClose: true,
+      data: { groupData: this.groupData }
     });
   }
 }

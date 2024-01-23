@@ -13,6 +13,7 @@ import { Message } from "./messages.model";
 import { Page } from "./page.model";
 import { Contact } from "./contact.model";
 import { Company } from "./company.model";
+import { TimeTrackingEntity } from "./time_tracking_entity.model";
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -56,5 +57,6 @@ export {
     Chat as Chat,
     Message as Message,
     
-    Page as Page
+    Page as Page,
+    TimeTrackingEntity as TimeTrackingEntity,
 };

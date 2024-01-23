@@ -17,12 +17,11 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
 
   @Input() groupId;
   @Input() workspaceData;
-  @Input() userData;
   @Input() post;
   @Input() portfolio;
   @Input() collection;
   @Input() assigned_to = [];
-  @Input() type; // post/flow/filter/chat/portfolio/collection
+  @Input() type; // post/flow/filter/chat/portfolio/collection/time-tracking
   @Input() canEdit = true;
 
   @Output() assigneeAddedEmiter = new EventEmitter();
@@ -55,12 +54,11 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
   ) { }
 
   async ngOnChanges() {
-
     if (!this.workspaceData) {
       this.workspaceData = await this.publicFunctions.getCurrentWorkspace(true);
     }
       
-    if (this.type == 'collection' && this.groupId) {
+    if ((this.type == 'collection' || this.type == 'time-tracking') && this.groupId) {
         this.groupService.getAllGroupMembers(this.groupId).then(res => {
           this.members = res['users'];
         });
@@ -137,6 +135,8 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
         }));
       } else if (this.type == 'flow') {
         this.assigneeRemovedEmiter.emit({ assigneeId: assigneeId });
+      } else if (this.type == 'time-tracking') {
+        this.assigneeRemovedEmiter.emit({ assigneeId: assigneeId });
       } else if (this.type == 'portfolio' || this.type == 'collection') {
         const index = this.assigned_to.findIndex((assignee) => assignee._id == assigneeId);
         this.assigned_to.splice(index, 1);
@@ -186,6 +186,9 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
             this.assigneeAddedEmiter.emit({post: this.post, assigneeId: member._id});
           }
         } else if (this.type == 'flow') {
+          //this.trigger.closeMenu();
+          this.assigneeAddedEmiter.emit({ assignee: member });
+        } else if (this.type == 'time-tracking') {
           //this.trigger.closeMenu();
           this.assigneeAddedEmiter.emit({ assignee: member });
         } else if (this.type == 'filter' || this.type == 'chat') {

@@ -39,7 +39,8 @@ export class FilesCustomFieldsDialogComponent implements OnInit {
 
     await this.groupService.getGroupFilesCustomFields(this.groupData._id).then((res) => {
       if (res['group']['files_custom_fields']) {
-        res['group']['files_custom_fields'].forEach(field => {
+        res['group']['files_custom_fields'].forEach(async field => {
+          await this.sortValues(field);
           this.customFields.push(field);
         });
       }
@@ -50,6 +51,12 @@ export class FilesCustomFieldsDialogComponent implements OnInit {
 
   onCloseDialog() {
     this.customFieldsEvent.emit(this.customFields);
+  }
+
+  sortValues(field) {
+    if (!field.input_type) {
+      field.values.sort((v1, v2) => (v1 > v2) ? 1 : -1);
+    }
   }
 
   async createCustomField() {
@@ -125,7 +132,7 @@ export class FilesCustomFieldsDialogComponent implements OnInit {
       });
   }
 
-  addValue(field, event: Event) {
+  async addValue(field, event: Event) {
     const newValue = event.target['value'];
 
     if (newValue !== '') {
@@ -137,6 +144,7 @@ export class FilesCustomFieldsDialogComponent implements OnInit {
         this.utilityService.warningNotification($localize`:@@filesCustomFieldDialog.valueAlreadyExists:Value already exists!`);
       } else {
         field.values.push(newValue);
+        await this.sortValues(field);
 
         // Save the new value
         this.groupService.addFilesCustomFieldNewValue(newValue, field._id, this.groupData._id).then(res => {

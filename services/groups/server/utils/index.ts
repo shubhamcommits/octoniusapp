@@ -1,6 +1,6 @@
 import { Auths } from './auth';
 import { sendErr } from './sendError';
-import { hasProperty } from './helperFunctions';
+import { hasProperty, isSameDay } from './helperFunctions';
 import { collectionFileUploader, collectionUploadFileUpload, companyFileUploader, fileHandler, groupUploadFileUpload, pageFileUploader, portfolioUploadFileUpload } from './filehandler';
 import { axios } from './proxy'
 
@@ -15,5 +15,6 @@ export {
     collectionFileUploader as collectionFileUploader,
     pageFileUploader as pageFileUploader,
     companyFileUploader as companyFileUploader,
+    isSameDay as isSameDay,
     axios as axios
 }

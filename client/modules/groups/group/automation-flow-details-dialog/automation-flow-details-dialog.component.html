@@ -42,7 +42,6 @@
                 <div *ngIf="trigger.name === 'Assigned to'">
                   <app-multiple-assignments
                     [groupId]="groupId"
-                    [userData]="userData"
                     [assigned_to]="trigger._user"
                     [type]="'flow'"
                     (assigneeAddedEmiter)="getMember($event, 'trigger', stepIndex, triggerIndex)"
@@ -188,7 +187,6 @@
                 <div *ngIf="action.name === 'Assign to'">
                   <app-multiple-assignments
                     [groupId]="groupId"
-                    [userData]="userData"
                     [assigned_to]="action._user"
                     [type]="'flow'"
                     (assigneeAddedEmiter)="getMember($event, 'action', stepIndex, actionIndex)"

@@ -407,7 +407,7 @@
         
           <tr *ngFor="let holiday of pendingHolidays; let index = index">
             <td>
-              <app-secured-image [imgURL]="holiday?._user?.profile_pic" [service]="'user'"
+              <app-secured-image [imgURL]="holiday?._user?.profile_pic" [service]="'user'" [inlineStyle]="'cursor: default;'"
                 [workspaceId]="workspaceData?._id" [styleClass]="'feed-avatar-small'"></app-secured-image>
               {{ holiday?._user?.first_name }} {{ holiday?._user?.last_name }}
             </td>

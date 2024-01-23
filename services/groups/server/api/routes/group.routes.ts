@@ -167,6 +167,31 @@ routes.get('/:groupId/shuttleTasks', group.getShuttleTasks);
 
 // PUT - Updates the settings of the custom fields table dialog in the group
 routes.put('/:groupId/saveCustomFieldsSettings', group.saveCustomFieldsSettings);
+
+// PUT - Save time track entity
+routes.put('/:groupId/timeTrackingEntry', group.saveTimeTrackingEntry);
+
+// POST - Edit time track entity
+routes.post('/:editTimeTrackingEntityId/timeTrackingEntry', group.editTimeTrackingEntry);
+
+// DELETE - Delete time tracking entity
+routes.delete('/:timeTrackingEntityId/removeTimeTrackingEntity/:timeId', group.removeTimeTrackingEntity);
+
+// GET - Get task time tracking entities
+routes.get('/:postId/timeTrackingEntities', group.getTimeTrackingEntities);
+
+// GET - Get group time tracking categories
+routes.get('/:groupId/timeTrackingCategories', group.getTimeTrackingCategories);
+
+// PUT - Save time tracking category
+routes.put('/:groupId/newTimeTrackingCategory', group.saveNewTimeTrackingCategory);
+
+// DELETE - Delete time tracking category
+routes.delete('/:groupId/removeTimeTrackingCategory/:categoryId', group.removeTimeTrackingCategory);
+
+// GET - Get the time tracking entities of a group for a time period
+routes.get('/:groupId/time-tracking-entities', group.getGroupTimeTrackingEntites);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

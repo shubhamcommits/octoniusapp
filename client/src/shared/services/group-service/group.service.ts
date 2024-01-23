@@ -373,4 +373,42 @@ export class GroupService {
       this.utilityService.saveAsExcelFile(sections, name);
     }
   }
+
+  saveTimeTrackingEntry(groupId: string, newTimeTrackingEntity) {
+    return this._http.put(this.baseURL + `/${groupId}/timeTrackingEntry`, { newTimeTrackingEntity }).toPromise();
+  }
+
+  editTimeTrackingEntry(editTimeTrackingEntity, propertyEdited: string) {
+    return this._http.post(this.baseURL + `/${editTimeTrackingEntity._id}/timeTrackingEntry`, { editTimeTrackingEntity, propertyEdited }).toPromise();
+  }
+
+  removeTimeTrackingEntity(timeTrackingEntityId: string, timeId: string) {
+    return this._http.delete(this.baseURL + `/${timeTrackingEntityId}/removeTimeTrackingEntity/${timeId}`).toPromise();
+  }
+
+  getTimeTrackingEntities(postId: string) {
+    return this._http.get(this.baseURL + `/${postId}/timeTrackingEntities`).toPromise();
+  }
+
+  getTimeTrackingCategories(groupId: string) {
+    return this._http.get(this.baseURL + `/${groupId}/timeTrackingCategories`).toPromise();
+  }
+
+  saveNewTimeTrackingCategory(newCategory: any, groupId) {
+    return this._http.put(this.baseURL + `/${groupId}/newTimeTrackingCategory`, { newCategory }).toPromise();
+  }
+
+  removeTimeTrackingCategory(categoryId, groupId) {
+    return this._http.delete(this.baseURL + `/${groupId}/removeTimeTrackingCategory/${categoryId}`).toPromise();
+  }
+
+  getGroupTimeTrackingEntites(groupId: string, startDate: any, endDate: any, filterUserId: string) {
+    return this._http.get(this.baseURL + `/${groupId}/time-tracking-entities`, {
+      params: {
+        startDate: startDate,
+        endDate: endDate,
+        filterUserId: filterUserId
+      }
+    }).toPromise();
+  }
 }

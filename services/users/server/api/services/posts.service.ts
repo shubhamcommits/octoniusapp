@@ -16,6 +16,58 @@ export class PostsService {
      * This function is responsible for fetching todays task for the user
      * @param userId 
      */
+    async getAllUserTasks(userId: string) {
+
+        const user = await User.findById(userId).select('_private_group');
+
+        // Fetch users task for today
+        const tasks = await Post.find({
+                $and: [
+                    // { $or: [
+                    //         { '_assigned_to': userId },
+                    //         { '_group': user._private_group }
+                    //     ]
+                    // },
+                    { _assigned_to: userId },
+                    { type: 'task' },
+                    { 'task.is_template': { $ne: true }},
+                    {
+                        $or: [
+                            { 
+                                $and: [
+                                    { _group: null },
+                                    { 'task.isNorthStar': true },
+                                    { 'task._parent_task': null }
+                                ]
+                            },
+                            { _group: { $ne: null }}
+                        ]
+                    },
+                    // {
+                    //     $or: [
+                    //         { 'task.status': 'to do' },
+                    //         { 'task.status': 'in progress' },
+                    //         { 'task.status': 'done' }
+                    //     ]
+                    // }
+                ]
+            })
+            .sort('-task.due_to')
+            .populate('_group', this.groupFields)
+            .populate('_posted_by', this.userFields)
+            .populate('_assigned_to', this.userFields)
+            .populate('_followers', this.userFields)
+            .populate('_liked_by', this.userFields)
+            .lean();
+
+        // Return Tasks
+        return tasks
+    }
+
+    /**
+     * This function is responsible for fetching todays task for the user
+     * @param userId 
+     */
     async getTodayTasks(userId: string) {
 
         // Generate the actual time

@@ -34,6 +34,10 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
   
   accountData: any = {};
   userWorkspaces = [];
+
+  totalNotifications = 0;
+
+  isExpanded = false;
   
   // userGroupsAndPortfoliosAndCollections = [];
   
@@ -256,10 +260,19 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
 
   async getUserWorkspaces() {
     await this.userService.getUserWorkspaces(this.userData?._id).then(res => {
+      this.totalNotifications = res['workspaces'].map(w => w.numNotifications).reduce((a, b) => { return a + b; });
       this.userWorkspaces = res['workspaces'].filter(workspace => (workspace._id || workspace) != this.workspaceData?._id);
+      const index = (res['workspaces']) ? res['workspaces'].findIndex(workspace => (workspace._id || workspace) == this.workspaceData?._id) : -1;
+      if (index >= 0){
+        this.workspaceData.numNotifications = res['workspaces'][index].numNotifications;
+      }
     }).catch(err => {
       this.userWorkspaces = [];
     });
+  }
+
+  toggleCollapsed() {
+    this.isExpanded = !this.isExpanded;
   }
 
   goToWorkspace(workspaceId: string) {

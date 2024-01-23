@@ -158,7 +158,13 @@ export class UserWorkloadCalendarComponent implements OnInit {
     }
 
     if (this.userHasManager) {
-      manager = await this.publicFunctions.getOtherUser(managerId);
+      manager = await this.publicFunctions.getOtherUser(managerId)
+        .catch(err => {
+          this.userHasManager = false;
+          this.utilityService.infoNotification($localize`:@@userWorkloadCalendar.managerNoActive:Your manager is no longer active in Octonius, please select a new one.`, $localize`:@@userWorkloadCalendar.noManager:No Manager`);
+        });
+    } else if(this.userData?.role == 'manager' || this.userData?.role == 'owner') {
+      manager = this.userData;
     }
 
     this.newHoliday = {
@@ -292,6 +298,6 @@ export class UserWorkloadCalendarComponent implements OnInit {
     if (!!date && (date instanceof DateTime)) {
       return date.toLocaleString(DateTime.DATE_SHORT);
     }
-    return (!!date) ? DateTime.fromISO(date).toLocaleString(DateTime.DATE_SHORT) : '';
+    return this.utilityService.formateDate(date, DateTime.DATE_SHORT);
   }
 }

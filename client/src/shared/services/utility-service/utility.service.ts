@@ -1,4 +1,4 @@
-import { Injectable, EventEmitter, Injector } from '@angular/core';
+import { Injectable, EventEmitter, Injector, LOCALE_ID } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,6 +16,7 @@ import { LikedByDialogComponent } from 'src/app/common/shared/liked-by-dialog/li
 import { GroupPostComponent } from 'src/app/common/shared/activity-feed/group-postbox/group-post/group-post.component';
 import { PublicFunctions } from 'modules/public.functions';
 import { VideoCallDialog } from 'modules/chat/components/video-call-dialog/video-call-dialog.component';
+import { DateTime } from 'luxon';
 
 @Injectable({
   providedIn: 'root'
@@ -844,6 +845,14 @@ console.log(error)
 
   objectExists(objectData: Object) {
     return (!!objectData && JSON.stringify(objectData) != JSON.stringify({}) && JSON.stringify(objectData) != JSON.stringify(undefined));
+  }
+
+  formateDate(date: any, format?: any) {
+    return (!!date) ? DateTime.fromISO(date).setLocale(this.injector.get(LOCALE_ID)).toLocaleString(format || DateTime.DATE_MED) : '';
+  }
+
+  compare(a: number | string, b: number | string, isAsc: number) {
+    return (a < b ? -1 : 1) * isAsc;
   }
 
   openVideoChatDialog(chatData: any, canEdit: any) {

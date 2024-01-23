@@ -17,6 +17,8 @@ import { Collection } from './collection.model';
 import { Page } from './page.model';
 import { Contact } from './contact.model';
 import { Company } from './company.model';
+import { TimeTrackingEntity } from './time_tracking_entity.model';
+import { Holiday } from './holidays.model';
 
 /*  =====================
  *  -- MODELS EXPORTS --
@@ -73,5 +75,7 @@ export {
     Collection as Collection,
 
     Company as Company,
-    Contact as Contact
+    Contact as Contact,
+    TimeTrackingEntity as TimeTrackingEntity,
+    Holiday as Holiday,
 }

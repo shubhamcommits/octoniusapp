@@ -297,6 +297,14 @@ const GroupSchema = new Schema({
         required: true,
         default: []
     }],
+    time_tracking_categories: {
+        type: [{
+            name: {
+                type: String,
+                required: true
+            }
+        }]
+    },
     records: {
         pulses: [{
             date: {

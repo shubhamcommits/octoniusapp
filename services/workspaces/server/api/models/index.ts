@@ -14,6 +14,7 @@ import { Entity } from './entity.model';
 import { Holiday } from './holidays.model';
 import { Contact } from './contact.model';
 import { Company } from './company.model';
+import { TimeTrackingEntity } from './time_tracking_entity.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -62,5 +63,7 @@ export {
     // Story
     Story as Story,
 
-    Entity as Entity
+    Entity as Entity,
+
+    TimeTrackingEntity as TimeTrackingEntity,
 };
