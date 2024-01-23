@@ -19,7 +19,7 @@ export class TaskTimeTrackingListComponent implements OnChanges {
   @Output() editTimeTrackingEntitEmitter = new EventEmitter();
 
   sortedData;
-	displayedColumns: string[] = ['image', 'name', 'time', 'comment', 'date', 'category', 'star'];
+	displayedColumns: string[] = ['image', 'name', 'time', 'date', 'comment', 'category', 'star'];
 
   publicFunctions = new PublicFunctions(this.injector);
 
