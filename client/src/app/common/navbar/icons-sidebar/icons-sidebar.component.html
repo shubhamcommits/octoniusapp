@@ -9,8 +9,8 @@
     <!-- MENU BUTTON ENDS -->
 
     <div *ngIf="userWorkspaces?.length > 0" class="components" style="margin-top: -5px; width: 78%;">
-      <a href="#pageWorkspacesSubmenu" data-toggle="collapse" aria-expanded="true" style="padding: 10px 0;"
-        [matTooltip]="workspaceData?.workspace_name" [matBadge]="totalNotifications" [matBadgeHidden]="totalNotifications == 0" matBadgePosition="before" matBadgeColor="warn">
+      <a href="#pageWorkspacesSubmenu" data-toggle="collapse" aria-expanded="true" style="padding: 10px 0;" (click)="toggleCollapsed()"
+        [matTooltip]="workspaceData?.workspace_name" [matBadge]="(!isExpanded) ? totalNotifications : workspaceData?.numNotifications" [matBadgeHidden]="totalNotifications == 0" matBadgePosition="before" matBadgeColor="warn">
         <app-secured-image [imgURL]="workspaceData?.workspace_avatar" [service]="'workspace'" [workspaceId]="workspaceData?._id" [styleClass]="'avatar'">
         </app-secured-image>
         <i class="material-icons-outlined carret">keyboard_arrow_down</i>
