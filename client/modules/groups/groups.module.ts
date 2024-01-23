@@ -99,6 +99,9 @@ import { CreateGroupDialogComponent } from './groups-list/create-group-dialog/cr
 import { CRMCompanyCustomFieldsComponent } from './group/group-crm-setup-view/new-crm-company-dialog/crm-company-custom-fields/crm-company-custom-fields.component';
 import { CRMCompanyImageDialogComponent } from './group/group-crm-setup-view/new-crm-company-dialog/crm-company-image-dialog/crm-company-image-dialog.component';
 import { CRMContactDialogComponent } from './group/group-crm-setup-view/crm-contact-dialog/crm-contact-dialog.component';
+import { GroupTimeTrackingCategoriesDialogComponent } from './group/time-tracking-categories-dialog/time-tracking-categories-dialog.component';
+import { GroupTimeTrackingViewComponent } from './group/group-time-tracking-view/group-time-tracking-view.component';
+import { TimeTrackerDatesFilterDialogComponent } from './group/group-kanban-boards/board-bar/time-tracker-dates-filter-dialog/time-tracker-dates-filter-dialog.component';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -132,6 +135,7 @@ import { CRMContactDialogComponent } from './group/group-crm-setup-view/crm-cont
         GroupKanbanBoardsComponent,
         GroupTasksListViewComponent,
         GroupKanbanArchivedBoardsComponent,
+        GroupTimeTrackingViewComponent,
         CreateColumnComponent,
         CreateSectionComponent,
         BoardBarComponent,
@@ -143,6 +147,7 @@ import { CRMContactDialogComponent } from './group/group-crm-setup-view/crm-cont
         CustomFieldsDialogComponent,
         CRMCustomFieldsDialogComponent,
         FilesCustomFieldsDialogComponent,
+        GroupTimeTrackingCategoriesDialogComponent,
         AdvancedFilterDialogComponent,
         DoneTasksListViewComponent,
         DoneTasksKanbanViewComponent,
@@ -153,6 +158,7 @@ import { CRMContactDialogComponent } from './group/group-crm-setup-view/crm-cont
         GroupCalendarViewComponent,
         GanttViewComponent,
         CreateProjectColumnDialogComponent,
+        TimeTrackerDatesFilterDialogComponent,
         ShowCustomFieldsColumnDialogComponent,
         KanbanTaskCardComponent,
         GroupReportsComponent,

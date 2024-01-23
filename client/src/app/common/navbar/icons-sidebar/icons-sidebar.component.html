@@ -8,16 +8,18 @@
     </button>
     <!-- MENU BUTTON ENDS -->
 
-    <div *ngIf="userWorkspaces?.length > 0" class="components" style="margin-top: -25px; width: 78%;">
-      <a href="#pageWorkspacesSubmenu" data-toggle="collapse" aria-expanded="true" style="padding: 10px 0;" [matTooltip]="workspaceData?.workspace_name">
+    <div *ngIf="userWorkspaces?.length > 0" class="components" style="margin-top: -5px; width: 78%;">
+      <a href="#pageWorkspacesSubmenu" data-toggle="collapse" aria-expanded="true" style="padding: 10px 0;" (click)="toggleCollapsed()"
+        [matTooltip]="workspaceData?.workspace_name" [matBadge]="(!isExpanded) ? totalNotifications : workspaceData?.numNotifications" [matBadgeHidden]="totalNotifications == 0" matBadgePosition="before" matBadgeColor="warn">
         <app-secured-image [imgURL]="workspaceData?.workspace_avatar" [service]="'workspace'" [workspaceId]="workspaceData?._id" [styleClass]="'avatar'">
         </app-secured-image>
         <i class="material-icons-outlined carret">keyboard_arrow_down</i>
       </a>
     
       <ul class="collapse list-unstyled" id="pageWorkspacesSubmenu">
-        <li *ngFor="let workspace of userWorkspaces">
-          <a (click)="goToWorkspace(workspace?._id || workspace)" style="padding: 10px 0;" [matTooltip]="workspace?.workspace_name">
+        <li *ngFor="let workspace of userWorkspaces" style="margin-top: 15px;">
+          <a (click)="goToWorkspace(workspace?._id || workspace)" style="padding: 10px 0;" [matTooltip]="workspace?.workspace_name"
+            [matBadge]="workspace.numNotifications" [matBadgeHidden]="workspace.numNotifications == 0" matBadgePosition="before" matBadgeColor="warn">
             <app-secured-image [imgURL]="workspace?.workspace_avatar" [service]="'workspace'" [workspaceId]="workspace?._id" [styleClass]="'avatar'">
             </app-secured-image>
           </a>
@@ -25,7 +27,8 @@
       </ul>
     </div>
     <div *ngIf="userWorkspaces?.length <= 0" class="components" style="margin-top: -25px; width: 78%;">
-      <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active" style="padding: 10px 0;" [matTooltip]="workspaceData?.workspace_name">
+      <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active" style="padding: 10px 0;"
+        [matTooltip]="workspaceData?.workspace_name" [matBadge]="(!isExpanded) ? totalNotifications : workspaceData?.numNotifications" [matBadgeHidden]="totalNotifications == 0" matBadgePosition="before" matBadgeColor="warn">
         <app-secured-image [imgURL]="workspaceData?.workspace_avatar" [service]="'workspace'" [workspaceId]="workspaceData?._id" [styleClass]="'avatar'">
         </app-secured-image>
       </a>

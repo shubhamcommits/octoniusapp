@@ -12,7 +12,7 @@
 
       <span *ngIf="viewType == 'kanban' || viewType == 'table'" class="separator"></span>
 
-      <button *ngIf="viewType == 'kanban' || viewType == 'table'" class="btn badge-filters" [matMenuTriggerFor]="menuFilter">
+      <button *ngIf="viewType == 'kanban' || viewType == 'table' || viewType == 'time_tracking'" class="btn badge-filters" [matMenuTriggerFor]="menuFilter">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" class="badge-filters">
           <path d="M9.597 18.209h4v-2h-4v2zm-7-12v2h18v-2h-18zm3 7h12v-2h-12v2z"/>
         </svg>
@@ -29,9 +29,9 @@
         <span i18n="@@groupBoardBar.customFields">Custom Fields</span>
       </button>
 
-      <span class="separator" *ngIf="isAdmin && viewType != 'archived' && !isIndividualSubscription"></span>
+      <span class="separator" *ngIf="isAdmin && viewType != 'archived' && viewType != 'time_tracking' && !isIndividualSubscription"></span>
 
-      <button class="btn badge-automator" *ngIf="isAdmin && viewType != 'archived' && !isIndividualSubscription" (click)="openAutomatorDialog()">
+      <button class="btn badge-automator" *ngIf="isAdmin && viewType != 'archived' && viewType != 'time_tracking' && !isIndividualSubscription" (click)="openAutomatorDialog()">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
           <path fill-rule="evenodd" d="M2.4 13.5v-12h10l-4 9h4l-7 12v-9h-3zm14-12h2l3.2 9h-1.9l-.7-2h-3.2l-.7 2h-1.9l3.2-9zm1 2l-1.15 3.65h2.3L17.4 3.5zm-7.877 8.674l-2.339 4.061.835-4.06H4.671V3.5h4.05l-2.524 7.818h3.826l-.5.856z" clip-rule="evenodd"/>
         </svg>
@@ -39,7 +39,7 @@
         <span i18n="@@groupBoardBar.automator">Automator</span>
       </button>
 
-      <span class="separator" *ngIf="viewType != 'archived' && !isIndividualSubscription"></span>
+      <span class="separator" *ngIf="viewType != 'archived' && viewType != 'time_tracking' && !isIndividualSubscription"></span>
 
       <button *ngIf="!isIndividualSubscription" [matMenuTriggerFor]="menu" class="btn badge-boardviews">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -78,6 +78,12 @@
 
           <span i18n="@@groupBoardBar.archived">Archived</span>
         </a>
+
+        <a mat-menu-item *ngIf="viewType != 'time_tracking'" (click)="changeView('time_tracking')" class="board-options">
+          <span class="material-icons-outlined mr-2">timer</span>
+
+          <span i18n="@@groupBoardBar.timeTracking">Time Tracking</span>
+        </a>
       </mat-menu>
 
       <mat-menu #menuSort="matMenu" class="widepanel">
@@ -85,31 +91,33 @@
           <span i18n="@@groupBoardBar.sort.none">None</span>
         </a>
 
-        <a mat-menu-item (click)="sortTasks('due_date')"
+        <a mat-menu-item (click)="sortTasks('due_date')" *ngIf="viewType != 'time_tracking'"
           [ngStyle]="{'color' : (sortby==='due_date') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.sort.dueDate">Due Date</span>
         </a>
 
-        <a mat-menu-item (click)="sortTasks('creation_date')"
+        <a mat-menu-item (click)="sortTasks('creation_date')" *ngIf="viewType != 'time_tracking'"
           [ngStyle]="{'color' : (sortby==='creation_date') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.sort.creationDate">Creation Date</span>
         </a>
 
-        <a mat-menu-item (click)="sortTasks('tags')" [ngStyle]="{'color' : (sortby==='tags') ? '#005fd5' : 'black'}">
+        <a mat-menu-item (click)="sortTasks('tags')" *ngIf="viewType != 'time_tracking'"
+          [ngStyle]="{'color' : (sortby==='tags') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.sort.tags">Tags</span>
         </a>
 
-        <a mat-menu-item (click)="sortTasks('status')" [ngStyle]="{'color' : (sortby==='status') ? '#005fd5' : 'black'}">
+        <a mat-menu-item (click)="sortTasks('status')" *ngIf="viewType != 'time_tracking'"
+          [ngStyle]="{'color' : (sortby==='status') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.sort.status">Status</span>
         </a>
 
-        <a mat-menu-item (click)="sortTasks('ideas')" *ngIf="isIdeaModuleAvailable"
+        <a mat-menu-item (click)="sortTasks('ideas')" *ngIf="viewType != 'time_tracking' && isIdeaModuleAvailable"
           [ngStyle]="{'color' : (sortby==='ideas') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.sort.ideas">Ideas</span>
         </a>
 
-        <a mat-menu-item [matMenuTriggerFor]="menuCustomFieldsSort" class="dropdownbtn widepanel"
-          [ngStyle]="{'color' : (sortby==='priority') ? '#005fd5' : 'black'}">
+        <a mat-menu-item [matMenuTriggerFor]="menuCustomFieldsSort" *ngIf="viewType != 'time_tracking'"
+          class="dropdownbtn widepanel" [ngStyle]="{'color' : (sortby==='priority') ? '#005fd5' : 'black'}">
             <span i18n="@@groupBoardBar.sort.customField">Custom Field</span>
         </a>
 
@@ -139,7 +147,12 @@
           </div>
         </span>
 
-        <span mat-menu-item class="overflowvisible widepanel">
+        <a mat-menu-item (click)="openTimeTrackerDatesFilterDialog()"
+          [ngStyle]="{'color' : (filterfor==='time_tracking') ? '#005fd5' : 'black'}">
+          <span i18n="@@groupBoardBar.filter.dates">Dates</span>
+        </a>
+
+        <span mat-menu-item class="overflowvisible widepanel" *ngIf="viewType != 'time_tracking'">
           <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
             <button [matMenuTriggerFor]="menuDueDate" class="dropdownbtn" style="padding: 0;">
               <span [ngStyle]="{'cursor': 'pointer','color' : (filterfor==='due_before_today' ||
@@ -197,20 +210,20 @@
           </div>
         </span>
 
-        <a mat-menu-item (click)="filterTask('ideas')" *ngIf="isIdeaModuleAvailable"
+        <a mat-menu-item (click)="filterTask('ideas')" *ngIf="viewType != 'time_tracking' && isIdeaModuleAvailable"
           [ngStyle]="{'color' : (filterfor==='ideas') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.filter.ideas">Ideas</span>
         </a>
 
-        <a mat-menu-item (click)="openAdvancedFilterDialog()" *ngIf="isIdeaModuleAvailable"
+        <a mat-menu-item (click)="openAdvancedFilterDialog()" *ngIf="viewType != 'time_tracking' && isIdeaModuleAvailable"
           [ngStyle]="{'color' : (filterfor==='custom_field') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.filter.advancedFilters">Advanced Filters</span>
         </a>
       </mat-menu>
 
-      <span class="separator"></span>
+      <span class="separator" *ngIf="viewType != 'time_tracking'"></span>
 
-      <button class="btn badge-automator" (click)="exportTo('excel')">
+      <button class="btn badge-automator" *ngIf="viewType != 'time_tracking'" (click)="exportTo('excel')">
         <span class="material-icons-outlined mr-2">file_download</span>
         <span i18n="@@groupBoardBar.export">Export</span>
       </button>

@@ -1,0 +1,43 @@
+@import "src/assets/scss/variables";
+@import "src/assets/scss/main";
+
+.container {
+	margin-top: 30px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+
+  th:not(:first-child) {
+	text-align: center;
+  }
+
+  td:not(:first-child) {
+	text-align: center;
+  }
+
+  td {
+	border: 1px solid #0000001f;
+  }
+}
+
+// input[type="time"] {
+// 	background-color: aqua;
+// }
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+	background: none;
+	display: none;
+}
+
+input[type="time"]::-webkit-datetime-edit-ampm-field {
+	display: none;
+}
+
+.actions {
+  margin: 10px 0;
+}

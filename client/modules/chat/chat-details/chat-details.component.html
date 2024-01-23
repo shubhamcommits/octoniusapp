@@ -9,7 +9,7 @@
 		</ul>
 	</div>
 
-	<app-multiple-assignments *ngIf="!objectExists(chatData?._group) && !isVideoCall" [canEdit]="canEdit" [workspaceData]="workspaceData" [userData]="userData"
+	<app-multiple-assignments *ngIf="!objectExists(chatData?._group) && !isVideoCall" [canEdit]="canEdit" [workspaceData]="workspaceData"
 		[assigned_to]="members" [type]="'chat'" (assigneeAddedEmiter)="onAssignedAdded($event)"
 		(assigneeRemovedEmiter)="onAssignedRemoved($event)">
 	</app-multiple-assignments>

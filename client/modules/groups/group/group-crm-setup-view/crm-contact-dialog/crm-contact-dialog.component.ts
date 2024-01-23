@@ -72,6 +72,9 @@ export class CRMContactDialogComponent implements OnInit {
       
       customFieldsTmp.forEach(field => {
         if (!field?.company_type) {
+          if (!field.input_type) {
+            field.values.sort((v1, v2) => (v1 > v2) ? 1 : -1);
+          }
           this.crmContactCustomFields.push(field);
 
           if (!this.contactData?.crm_custom_fields) {

@@ -1,4 +1,4 @@
-import { Account, Group, Holiday, User, Workspace, Notification } from '../models';
+import { Account, Group, Holiday, User, Workspace, Notification, TimeTrackingEntity } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError,PasswordHelper, axios } from '../../utils';
 import { DateTime } from 'luxon';
@@ -155,7 +155,6 @@ export class UsersControllers {
         const { params: { userId } } = req;
 
         try {
-
             // Find the user based on the userId
             const user = await User.findOne({
                     $and: [
@@ -187,7 +186,7 @@ export class UsersControllers {
 
             // If user not found
             if (!user) {
-                return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
+                return sendError(res, new Error('Unable to find the user, either userId is invalid, the user is not active or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid, the user is not active or you have made an unauthorized request!', 404);
             }
 
             // Send status 200 response
@@ -365,12 +364,6 @@ export class UsersControllers {
                     select: '_id email _workspaces first_name last_name created_date'
                 })
                 .lean();
-// console.log(propertyToSave);
-//             const propertiesNames = Object.keys(propertyToSave);
-// console.log(propertiesNames.includes('email'));
-//             if (propertiesNames.includes('email')) {
-
-//             }
 
             // Send the status 200 response 
             return res.status(200).json({
@@ -478,16 +471,59 @@ export class UsersControllers {
         try {
 
             // Find the user based on the userId
-            const user = await User.findOne({ _id: userId }).lean();
+            const userDB = await User.findOne({ _id: userId }).lean();
 
             // If user not found
-            if (!user) {
+            if (!userDB) {
                 return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
             }
 
-            const account = await Account.findOne({_id: user._account})
+            let account = await Account.findOne({_id: userDB._account})
                 .populate('_workspaces', '_id workspace_name workspace_avatar').lean();
 
+            for (let i = 0; i < account._workspaces.length; i++) {
+                let workspace = account._workspaces[i];
+
+                const user = await User.findOne({
+                    $and: [
+                        { email: account.email },
+                        { _workspace: workspace._id || workspace }
+                    ]}).select('_id _workspace hr_role role');
+
+                const numHolidayNotifications = await Holiday.find({
+                            $and: [
+                                { _approval_manager: user._id },
+                                { status: 'pending' }
+                            ]
+                        })
+                        .countDocuments();
+
+                    const numNotifications = await Notification.find({
+                            $and: [
+                                { _owner: user._id },
+                                { read: false }
+                            ]
+                        })
+                        .countDocuments();
+
+                    let hiveNotifications = 0;
+                    if (user.hr_role || user.role == 'owner') {
+                        hiveNotifications = await Notification.find({
+                                $and: [
+                                    { _workspace: user._workspace },
+                                    {
+                                        $or: [
+                                            { type: 'hive' },
+                                            { type: 'hive_new_entity' }
+                                        ]
+                                    },
+                                    { read: false }
+                                ]
+                            }).countDocuments();
+                    }
+                    workspace.numNotifications = (numNotifications + numHolidayNotifications + hiveNotifications) || 0;
+            }
+            
             // If user not found
             if (!account) {
                 return sendError(res, new Error('Unable to find the account, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
@@ -2121,4 +2157,55 @@ export class UsersControllers {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
+
+    /**
+     * This function fetches the time tracking entities of a user with a date between specific dates
+     * @param req
+     */
+    async getUserTimeTrackingEntites(req: Request, res: Response) {
+        try {
+
+            const { userId } = req.params;
+            const { query: { startDate, endDate } } = req;
+
+            let timeTrackingEntities = await TimeTrackingEntity.find({
+                $and: [
+                    { _user: userId },
+                    { times: {
+                            $elemMatch: { 
+                                $and: [
+                                    { date: { $gte: startDate }},
+                                    { date: { $lte: endDate }},
+                                ]
+                            }
+                        }
+                    }
+                ]
+            });
+
+            timeTrackingEntities = await TimeTrackingEntity.populate(timeTrackingEntities, [
+                    {
+                        path: '_task',
+                        select: 'title _group',
+                        populate: {
+                            path: '_group',
+                            model: 'Group',
+                            select: 'group_name group_avatar'
+                        }
+                    },
+                    { path: '_user', select: 'first_name last_name profile_pic email' },
+                    { path: '_created_by', select: 'first_name last_name profile_pic email' }
+                ]);
+
+            // timeTrackingEntities = timeTrackingEntities.filter(tte => !!tte.times && tte.times.length > 0);
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Time Tracking Entities found!',
+                timeTrackingEntities: timeTrackingEntities
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
 }

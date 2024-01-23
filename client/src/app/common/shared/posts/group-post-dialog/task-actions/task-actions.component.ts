@@ -88,7 +88,6 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   ) { }
 
   async ngOnChanges() {
-
     if (this.postData.type === 'task' && this.groupData && this.userData) {
       // Fetches the user groups from the server
       await this.publicFunctions.getAllUserGroups(this.groupData._workspace)
@@ -570,6 +569,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
 
   transformToCRMLead() {
     this.isCRMLead = !this.isCRMLead;
+    this.postData.task.is_crm_task = this.isCRMLead;
     this.transformIntoCRMLeadEmitter.emit(this.isCRMLead);
   }
 

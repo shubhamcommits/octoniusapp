@@ -7,6 +7,7 @@ import { debounceTime } from 'rxjs/internal/operators/debounceTime';
 import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-component-search-input-box',
@@ -15,11 +16,14 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 })
 export class ComponentSearchInputBoxComponent implements OnInit {
 
-  constructor(private injector: Injector) { }
+  constructor(
+    private utilityService: UtilityService,
+    private injector: Injector
+    ) { }
 
   @Input('placeholder') placeholder: string = '';
 
-  // Type are 'task', 'event', 'group', 'skill', 'tag', 'ragTag', 'ragMembers', 'workspaceMembers'
+  // Type are 'task', 'event', 'group', 'skill', 'tag', 'ragTag', 'ragMembers', 'workspaceMembers', 'holidays'
   @Input('type') type: string;
 
   // Incase the type is 'workspace'
@@ -93,7 +97,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
     this.subSink.add(this.itemValueChanged
       .pipe(distinctUntilChanged(), debounceTime(500))
       .subscribe(async () => {
-        if (this.type == 'skill' || this.type == 'group' || this.type == 'task' || this.type == 'event' || this.type === 'tag' || this.type === 'ragTag' || this.type === 'ragMembers' || this.type === 'workspaceMembers') {
+        if (this.type == 'skill' || this.type == 'group' || this.type == 'task' || this.type == 'event' || this.type === 'tag' || this.type === 'ragTag' || this.type === 'ragMembers' || this.type === 'workspaceMembers' || this.type === 'holidays') {
 
           // If value is null then empty the array
           if (this.itemValue == "") {
@@ -135,9 +139,40 @@ export class ComponentSearchInputBoxComponent implements OnInit {
               }
 
               this.itemList = this.workspaceData.members.filter( member => {
-                if (member && member.first_name && member.last_name) {
+                if (!!member && !!member.first_name && !!member.last_name) {
                   let item = member.first_name.toLowerCase() + ' ' + member.last_name.toLowerCase();
                   return item.includes(this.itemValue.toLowerCase());
+                } else {
+                  return false;
+                }
+              });
+              this.itemList.forEach(item => {
+                const index = (this.ragMemberList) ? this.ragMemberList.findIndex(member => member._id == item._id) : -1;
+                if(index >= 0) {
+                  item.showAddMem = true;
+                } else {
+                  item.showAddMem = false;
+                }
+              });
+            }
+
+            if(this.type === 'holidays') {
+              if (!this.utilityService.objectExists(this.workspaceData)) {
+                this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+              }
+
+              if (!this.utilityService.objectExists(this.userData)) {
+                this.userData = await this.publicFunctions.getCurrentUser();
+              }
+
+              this.itemList = this.workspaceData.members.filter( member => {
+                if (!!member && (!!member.first_name && !!member.last_name)) {
+                  if (this.userData.role != 'manager' && this.userData.role != 'owner' && member._id == this.userData?._id) {
+                    return false;
+                  } else {
+                    let item = member.first_name.toLowerCase() + ' ' + member.last_name.toLowerCase();
+                    return item.includes(this.itemValue.toLowerCase());
+                  }
                 } else {
                   return false;
                 }

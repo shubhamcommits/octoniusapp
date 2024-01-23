@@ -15,6 +15,7 @@ import { Page } from './page.model';
 import { Folder } from './folder.model';
 import { Contact } from './contact.model';
 import { Company } from './company.model';
+import { TimeTrackingEntity } from './time_tracking_entity.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -23,19 +24,20 @@ import { Company } from './company.model';
 export {
     Auth as Auth,
     Account as Account,
+    Company as Company,
+    Comment as Comment,
+    Contact as Contact,
+    Collection as Collection,
     Column as Column,
-    Group as Group,
-    Portfolio as Portfolio,
-    Post as Post,
-    User as User,
-    Workspace as Workspace,
+    File as File,
     Flow as Flow,
     Folder as Folder,
+    Group as Group,
     Notification as Notification,
-    Comment as Comment,
-    Collection as Collection,
-    File as File,
     Page as Page,
-    Contact as Contact,
-    Company as Company
+    Portfolio as Portfolio,
+    Post as Post,
+    TimeTrackingEntity as TimeTrackingEntity,
+    User as User,
+    Workspace as Workspace,
 };

@@ -15,6 +15,7 @@ import { Flow } from "./flow.model";
 import { Comment } from "./comment.model";
 import { Contact } from "./contact.model";
 import { Company } from "./company.model";
+import { TimeTrackingEntity } from "./time_tracking_entity.model";
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -38,4 +39,5 @@ export {
     Notification as Notification,
     User as User,
     Workspace as Workspace,
+    TimeTrackingEntity as TimeTrackingEntity,
 };

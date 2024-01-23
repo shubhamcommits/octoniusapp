@@ -385,6 +385,6 @@ export class RecentActivityComponent implements OnInit {
     if (!!date && (date instanceof DateTime)) {
       return date.toLocaleString(format);
     }
-    return (!!date) ? DateTime.fromISO(date).toLocaleString(format) : '';
+    return this.utilityService.formateDate(date, format);
   }
 }

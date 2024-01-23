@@ -8,6 +8,7 @@ import { Portfolio } from './portfolio.model';
 import { Page } from './page.model';
 import { Collection } from './collection.model';
 import { Notification } from './notification.model';
+import { TimeTrackingEntity } from './time_tracking_entity.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -24,4 +25,5 @@ export {
     Resetpwd as Resetpwd,
     User as User,
     Workspace as Workspace,
+    TimeTrackingEntity as TimeTrackingEntity,
 };

@@ -1,4 +1,5 @@
-import { Comment, User, Post, Group, Notification, Flow, Column } from "../models";
+import { isSameDay } from "../../utils";
+import { Comment, User, Post, Group, Notification, Flow, Column, TimeTrackingEntity } from "../models";
 import { Readable } from 'stream';
 
 const minio = require('minio');
@@ -172,5 +173,346 @@ export class GroupService {
     } catch (err) {
       throw (err);
     }
+  };
+
+  async editUserTimeTrackingEntity(editTimeTrackingEntityId: string, timeId: string, userId: string) {
+    let dbTimeTrackingEntity = await TimeTrackingEntity.findOne({
+        _id: editTimeTrackingEntityId,
+        'times._id': timeId
+      }).lean();
+    
+    if (!dbTimeTrackingEntity) {
+      return {
+        message: 'The time tracking entry does not exists.',
+        error: true
+      };
+    }
+
+    const task = dbTimeTrackingEntity._task;
+    const category = dbTimeTrackingEntity._category;
+    let time;
+    let index = (!!dbTimeTrackingEntity && !!dbTimeTrackingEntity.times) ? dbTimeTrackingEntity.times.findIndex(t => t._id == timeId) : -1;
+    if (index >= 0) {
+      time = dbTimeTrackingEntity.times[index];
+    }
+
+    let tmpTTE = await TimeTrackingEntity.findOne({
+      $and: [
+        { _user: userId },
+        { _task: task },
+        { _category: category }
+      ]}).lean();
+
+    index = (!!tmpTTE && !!tmpTTE.times) ? tmpTTE.times.findIndex(t => isSameDay(t.date, time.date)) : -1;
+    if (index >= 0) {
+      return {
+        message: 'The user already has a time recorded for this task with the same category.',
+        error: true
+      };
+    } else if (!!time && !!dbTimeTrackingEntity.times && dbTimeTrackingEntity.times.length > 1) {
+      await TimeTrackingEntity.findByIdAndUpdate({
+          _id: editTimeTrackingEntityId
+        }, {
+          $pull: {
+            times: {
+              _id: timeId
+            }
+          }
+        }).lean();
+    } else {
+      await TimeTrackingEntity.findByIdAndDelete({
+          _id: editTimeTrackingEntityId
+        });
+    }
+    
+    if(!!tmpTTE) {
+      tmpTTE = await TimeTrackingEntity.findOneAndUpdate({
+          _id: tmpTTE._id  
+        }, {
+          $push: { "times": {
+            date: time.date,
+            hours: time.hours,
+            minutes: time.minutes,
+            comment: time.comment
+          }}
+        }, {
+          new: true
+        })
+        .populate('_user', 'first_name last_name profile_pic email')
+        .populate('_created_by', 'first_name last_name profile_pic email')
+        .lean();
+    } else {
+      tmpTTE = await TimeTrackingEntity.create({
+          _user: userId,
+          _task: task,
+          _category: category,
+          times: [{
+            date: time.date,
+            hours: time.hours,
+            minutes: time.minutes,
+            comment: time.comment
+          }],
+          _created_by: dbTimeTrackingEntity._created_by
+        });
+
+      tmpTTE = await TimeTrackingEntity.findById({
+          _id: tmpTTE._id
+        })
+        .populate('_user', 'first_name last_name profile_pic email')
+        .populate('_created_by', 'first_name last_name profile_pic email')
+        .lean();
+    }
+
+    return {
+      message: 'Time Tracking entity edited!',
+      timeTrackingEntity: tmpTTE
+    };
+  };
+
+  async editCategoryTimeTrackingEntity(editTimeTrackingEntityId: string, timeId: string, newCategory: string) {
+    let dbTimeTrackingEntity = await TimeTrackingEntity.findOne({
+        _id: editTimeTrackingEntityId,
+      }).lean();
+    
+    if (!dbTimeTrackingEntity) {
+      return {
+        message: 'The time tracking entry does not exists.',
+        error: true
+      };
+    }
+
+    const task = dbTimeTrackingEntity._task;
+    const userId = dbTimeTrackingEntity._user;
+    let time;
+    let index = (!!dbTimeTrackingEntity && !!dbTimeTrackingEntity.times) ? dbTimeTrackingEntity.times.findIndex(t => t._id == timeId) : -1;
+    if (index >= 0) {
+      time = dbTimeTrackingEntity.times[index];
+    }
+
+    let tmpTTE = await TimeTrackingEntity.findOne({
+      $and: [
+        { _user: userId },
+        { _task: task },
+        { _category: newCategory }
+      ]}).lean();
+
+    index = (!!tmpTTE && !!tmpTTE.times) ? tmpTTE.times.findIndex(t => isSameDay(t.date, time.date)) : -1;
+    if (index >= 0) {
+      return {
+        message: 'The user already has a time recorded for this task with the same category.',
+        error: true
+      };
+    } else if (!!time && !!dbTimeTrackingEntity.times && dbTimeTrackingEntity.times.length > 1) {
+      await TimeTrackingEntity.findByIdAndUpdate({
+          _id: editTimeTrackingEntityId
+        }, {
+          $pull: {
+            times: {
+              _id: timeId
+            }
+          }
+        }).lean();
+    } else {
+      await TimeTrackingEntity.findByIdAndDelete({
+          _id: editTimeTrackingEntityId
+        });
+    }
+
+    if(!!tmpTTE) {
+      tmpTTE = await TimeTrackingEntity.findOneAndUpdate({
+          _id: tmpTTE._id  
+        }, {
+          $push: { "times": {
+            date: time.date,
+            hours: time.hours,
+            minutes: time.minutes,
+            comment: time.comment
+          }}
+        }, {
+          new: true
+        })
+        .populate('_user', 'first_name last_name profile_pic email')
+        .populate('_created_by', 'first_name last_name profile_pic email')
+        .lean();
+    } else {
+      tmpTTE = await TimeTrackingEntity.create({
+          _user: userId,
+          _task: task,
+          _category: newCategory,
+          times: [{
+            date: time.date,
+            hours: time.hours,
+            minutes: time.minutes,
+            comment: time.comment
+          }],
+          _created_by: dbTimeTrackingEntity._created_by
+        });
+
+      tmpTTE = await TimeTrackingEntity.findById({
+          _id: tmpTTE._id
+        })
+        .populate('_user', 'first_name last_name profile_pic email')
+        .populate('_created_by', 'first_name last_name profile_pic email')
+        .lean();
+    }
+
+    return {
+      message: 'Time Tracking entity edited!',
+      timeTrackingEntity: tmpTTE
+    };
+  };
+
+  async editTimeTimeTrackingEntity(editTimeTrackingEntityId: string, timeId: string, editTimeTrackingEntity: any) {
+    let tte;
+    if (!!timeId && !timeId.includes('octonius_random')) {
+      if (editTimeTrackingEntity?.hours != '00' && editTimeTrackingEntity?.minutes != '00') {
+        tte = await TimeTrackingEntity.findByIdAndUpdate({
+            _id: editTimeTrackingEntityId
+          }, {
+              $set: {
+                'times.$[time].hours': editTimeTrackingEntity?.hours,
+                'times.$[time].minutes': editTimeTrackingEntity?.minutes,
+              }
+          },
+          {
+              arrayFilters: [{ "time._id": timeId }],
+              new: true
+          })
+          .populate('_user', 'first_name last_name profile_pic email')
+          .populate('_created_by', 'first_name last_name profile_pic email')
+          .lean();
+      }
+    } else {
+      let tmpTTE = await TimeTrackingEntity.findOne({
+        $and: [
+          { _user: editTimeTrackingEntity?._user },
+          { _task: editTimeTrackingEntity?._task },
+          { _category: editTimeTrackingEntity?._category }
+        ]}).lean();
+
+        if (!!tmpTTE) {
+          if (editTimeTrackingEntity?.hours != '00' && editTimeTrackingEntity?.minutes != '00') {
+            tte = await TimeTrackingEntity.findOneAndUpdate({
+                _id: tmpTTE._id
+              }, {
+                $push: { "times": {
+                  date: editTimeTrackingEntity?.date,
+                  hours: editTimeTrackingEntity?.hours,
+                  minutes: editTimeTrackingEntity?.minutes,
+                  comment: editTimeTrackingEntity?.comment
+                }}
+              }, {
+                new: true
+              })
+              .populate('_user', 'first_name last_name profile_pic email')
+              .populate('_created_by', 'first_name last_name profile_pic email')
+              .lean();
+          } else if (!!timeId && !timeId.includes('octonius_random')) {
+            tte = await TimeTrackingEntity.findByIdAndUpdate({
+                _id: editTimeTrackingEntityId
+              }, {
+                $pull: {
+                  times: {
+                    _id: timeId
+                  }
+                }
+              }, {
+                new: true
+              })
+              .populate('_user', 'first_name last_name profile_pic email')
+              .populate('_created_by', 'first_name last_name profile_pic email')
+              .lean();
+          }
+        } else if (editTimeTrackingEntity?.hours != '00' && editTimeTrackingEntity?.minutes != '00') {
+          tte = await TimeTrackingEntity.create({
+              _user: editTimeTrackingEntity?._user,
+              _task: editTimeTrackingEntity?._task,
+              _category: editTimeTrackingEntity?._category,
+              times: [{
+                date: editTimeTrackingEntity?.date,
+                hours: editTimeTrackingEntity?.hours,
+                minutes: editTimeTrackingEntity?.minutes,
+                comment: editTimeTrackingEntity?.comment
+              }],
+              _created_by: editTimeTrackingEntity?._user
+            });
+
+          tte = await TimeTrackingEntity.findById({
+              _id: tte._id
+            })
+            .populate('_user', 'first_name last_name profile_pic email')
+            .populate('_created_by', 'first_name last_name profile_pic email')
+            .lean();
+        }
+    }
+
+    return {
+      message: 'Time Tracking entity edited!',
+      timeTrackingEntity: tte
+    };
+  };
+
+  async editDateTimeTrackingEntity(editTimeTrackingEntityId: string, timeId: string, newDate: any) {
+    let dbTimeTrackingEntity = await TimeTrackingEntity.findOne({
+        _id: editTimeTrackingEntityId,
+        // 'times._id': timeId
+      }).lean();
+    
+    if (!dbTimeTrackingEntity) {
+      return {
+        message: 'The time tracking entry does not exists.',
+        error: true
+      };
+    }
+    
+    const index = (!!dbTimeTrackingEntity && !!dbTimeTrackingEntity.times) ? dbTimeTrackingEntity.times.findIndex(t => isSameDay(t.date, newDate)) : -1;
+    if (index >= 0) {
+      return {
+        message: 'The user already has a time recorded for this task with the same category.',
+        error: true
+      };
+    } else {
+      const tte = await TimeTrackingEntity.findByIdAndUpdate({
+          _id: editTimeTrackingEntityId
+        }, {
+            $set: {
+              'times.$[time].date': newDate,
+            }
+        },
+        {
+            arrayFilters: [{ "time._id": timeId }],
+            new: true
+        })
+        .populate('_user', 'first_name last_name profile_pic email')
+        .populate('_created_by', 'first_name last_name profile_pic email')
+        .lean();
+
+      return {
+        message: 'Time Tracking entity edited!',
+        timeTrackingEntity: tte
+      };
+    }
+  };
+
+  async editCommentTimeTrackingEntity(editTimeTrackingEntityId: string, timeId: string, comment: string) {
+    const tte = await TimeTrackingEntity.findByIdAndUpdate({
+        _id: editTimeTrackingEntityId
+      }, {
+          $set: {
+            'times.$[time].comment': comment,
+          }
+      },
+      {
+          arrayFilters: [{ "time._id": timeId }],
+          new: true
+      })
+      .populate('_user', 'first_name last_name profile_pic email')
+      .populate('_created_by', 'first_name last_name profile_pic email')
+      .lean();
+
+    return {
+      message: 'Time Tracking entity created!',
+      timeTrackingEntity: tte
+    };
   };
 }

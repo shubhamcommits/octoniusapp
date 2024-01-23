@@ -1,0 +1,46 @@
+<div class="dialog-content">
+  <mat-dialog-actions class="d-flex justify-content-end" align="end">
+    <i mat-dialog-close class="material-icons" (click)="closeDialog()" style="cursor: pointer">close</i>
+  </mat-dialog-actions>
+
+  <div class="content">
+
+    <div class="modal-title" i18n="@@timeTrackerDatesFilterDialog.filterDates">Filter Dates</div>
+
+    <div class="content-box">
+      <p class="card-text" i18n="@@timeTrackerDatesFilterDialog.selectStartDueDate">Select a START and END date to filter.</p>
+      <app-date-picker class="input-date due"
+        (date)="getDate($event, 'start_date')" [selectedDate]="startDate">
+      </app-date-picker>
+      <!-- Clean field starts -->
+      <i (click)="getDate(null, 'start_date')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+      <!-- Clean field ends -->
+
+      <br/><br/>
+
+      <app-date-picker class="input-date due"
+        (date)="getDate($event, 'end_date')" [selectedDate]="endDate">
+      </app-date-picker>
+
+      <!-- Clean field starts -->
+      <i (click)="getDate(null, 'end_date')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+      <!-- Clean field ends -->
+    </div>
+
+    <!-- <div class="conten-box save-content">
+        <button
+            class="btn btn-danger btn-md"
+            (click)="cancel()"
+            i18n="@@timeTrackerDatesFilterDialog.cancel">
+          Cancel
+        </button>
+        
+        <button
+            class="btn float-right btn-primary btn-md"
+            (click)="saveColumnProjectDates()"
+            i18n="@@timeTrackerDatesFilterDialog.save">
+          Save
+      </button>
+    </div> -->
+  </div>
+</div>

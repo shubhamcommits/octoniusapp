@@ -30,7 +30,7 @@
         <!-- Collection Content ends -->
 
         <div class="d-md-none d-lg-block graph">
-            <!-- <app-multiple-assignments [canEdit]="editContent" [userData]="userData" [collection]="collectionData" [type]="'collection'"
+            <!-- <app-multiple-assignments [canEdit]="editContent" [collection]="collectionData" [type]="'collection'"
                 (assigneeAddedEmiter)="addManager($event)" (assigneeRemovedEmiter)="removeManager($event)">
             </app-multiple-assignments> -->
         </div>
@@ -61,7 +61,7 @@
 
     <app-multiple-assignments *ngIf="canEdit && editContent && objectExists(collectionData)" [canEdit]="canEdit" [type]="'collection'"
         [collection]="collectionData" [assigned_to]="collectionData?._members"
-        [groupId]="groupData?._id" [userData]="userData"
+        [groupId]="groupData?._id"
         (assigneeAddedEmiter)="onEditorAdded($event)" (assigneeRemovedEmiter)="onEditorRemoved($event)">
     </app-multiple-assignments>
 

@@ -16,6 +16,7 @@ import { Folder } from './folder.model';
 import { Story } from "./story.model";
 import { Contact } from './contact.model';
 import { Company } from './company.model';
+import { TimeTrackingEntity } from './time_tracking_entity.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -72,5 +73,6 @@ export {
     Question as Question,
 
     // Story
-    Story as Story
+    Story as Story,
+    TimeTrackingEntity as TimeTrackingEntity,
 };

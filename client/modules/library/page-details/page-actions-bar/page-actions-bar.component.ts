@@ -94,6 +94,6 @@ export class PageActionsBarComponent implements OnInit, OnChanges {
   }
 
   formateDate(date) {
-    return (date) ? DateTime.fromISO(date).toLocaleString(DateTime.DATETIME_MED) : '';
+    return this.utilityService.formateDate(date, DateTime.DATETIME_MED);
   }
 }

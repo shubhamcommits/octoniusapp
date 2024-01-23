@@ -1,0 +1,141 @@
+<div class="container">
+  <div class="row text-center mb-3">
+    <div class="col-md-1">
+    </div>
+    <div class="col-md-7">
+      <h6>{{ dates[0] | date:'MMM dd' }} - {{ dates[dates?.length - 1] | date:'MMM dd' }}</h6>
+    </div>
+    <div class="col-md-4">
+      <div class="btn btn-default" (click)="changeDates(7, 'sub')">
+        <i class="material-icons">navigate_before</i>
+      </div>
+      <div class="btn btn-default" (click)="changeDates(0, 'today')" i18n="@@timesheets.today">
+        Today
+      </div>
+      <div class="btn btn-default" (click)="changeDates(7, 'add')">
+        <i class="material-icons">navigate_next</i>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <table mat-table matSort [dataSource]="timeTrackingEntities" class="">
+      <ng-container matColumnDef="task">
+        <th mat-header-cell *matHeaderCellDef i18n="@@timesheets.task"> Task </th>
+    
+        <td mat-cell *matCellDef="let tte">
+          {{ tte._task.title }}
+        </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef i18n="@@timesheets.category"> Category </th>
+    
+        <td mat-cell *matCellDef="let tte">
+          <span>{{ tte?._category }}</span>
+        </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="group">
+        <th mat-header-cell *matHeaderCellDef i18n="@@timesheets.group"> Group </th>
+    
+        <td mat-cell *matCellDef="let tte">
+          <span>{{ tte?._task?._group?.group_name }}</span>
+        </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="day_1">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ formateDate(dates[0]) }}
+        </th>
+    
+        <td mat-cell *matCellDef="let tte">
+          <span [id]="'span_' + getTimeId(tte.times, dates[0])" (click)="displayHideInput(getTimeId(tte.times, dates[0]))">{{ getTime(tte.times, dates[0]) }}</span>
+          <input [id]="'input_' + getTimeId(tte.times, dates[0])" type="time" style="display: none; border: none;" min="00:00" max="24:00" (blur)="onTimeInputChange($event, tte, dates[0], getTimeId(tte.times, dates[0]))" [(ngModel)]="entryTime" />
+        </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="day_2">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ formateDate(dates[1]) }}
+        </th>
+    
+        <td mat-cell *matCellDef="let tte">
+          <span [id]="'span_' + getTimeId(tte.times, dates[1])" (click)="displayHideInput(getTimeId(tte.times, dates[1]))">{{ getTime(tte.times, dates[1]) }}</span>
+          <input [id]="'input_' + getTimeId(tte.times, dates[1])" type="time" style="display: none; border: none;" min="00:00" max="24:00" (blur)="onTimeInputChange($event, tte, dates[1], getTimeId(tte.times, dates[1]))" [(ngModel)]="entryTime" />
+        </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="day_3">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ formateDate(dates[2]) }}
+        </th>
+    
+        <td mat-cell *matCellDef="let tte">
+          <span [id]="'span_' + getTimeId(tte.times, dates[2])" (click)="displayHideInput(getTimeId(tte.times, dates[2]))">{{ getTime(tte.times, dates[2]) }}</span>
+          <input [id]="'input_' + getTimeId(tte.times, dates[2])" type="time" style="display: none; border: none;" min="00:00" max="24:00" (blur)="onTimeInputChange($event, tte, dates[2], getTimeId(tte.times, dates[2]))" [(ngModel)]="entryTime" />
+        </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="day_4">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ formateDate(dates[3]) }}
+        </th>
+    
+        <td mat-cell *matCellDef="let tte">
+          <span [id]="'span_' + getTimeId(tte.times, dates[3])" (click)="displayHideInput(getTimeId(tte.times, dates[3]))">{{ getTime(tte.times, dates[3]) }}</span>
+          <input [id]="'input_' + getTimeId(tte.times, dates[3])" type="time" style="display: none; border: none;" min="00:00" max="24:00" (blur)="onTimeInputChange($event, tte, dates[3], getTimeId(tte.times, dates[3]))" [(ngModel)]="entryTime" />
+        </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="day_5">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ formateDate(dates[4]) }}
+        </th>
+    
+        <td mat-cell *matCellDef="let tte">
+          <span [id]="'span_' + getTimeId(tte.times, dates[4])" (click)="displayHideInput(getTimeId(tte.times, dates[4]))">{{ getTime(tte.times, dates[4]) }}</span>
+          <input [id]="'input_' + getTimeId(tte.times, dates[4])" type="time" style="display: none; border: none;" min="00:00" max="24:00" (blur)="onTimeInputChange($event, tte, dates[4], getTimeId(tte.times, dates[4]))" [(ngModel)]="entryTime" />
+        </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="day_6">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ formateDate(dates[5]) }}
+        </th>
+    
+        <td mat-cell *matCellDef="let tte">
+          <span [id]="'span_' + getTimeId(tte.times, dates[5])" (click)="displayHideInput(getTimeId(tte.times, dates[5]))">{{ getTime(tte.times, dates[5]) }}</span>
+          <input [id]="'input_' + getTimeId(tte.times, dates[5])" type="time" style="display: none; border: none;" min="00:00" max="24:00" (blur)="onTimeInputChange($event, tte, dates[5], getTimeId(tte.times, dates[5]))" [(ngModel)]="entryTime" />
+        </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="day_7">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ formateDate(dates[6]) }}
+        </th>
+    
+        <td mat-cell *matCellDef="let tte">
+          <span [id]="'span_' + getTimeId(tte.times, dates[6])" (click)="displayHideInput(getTimeId(tte.times, dates[6]))">{{ getTime(tte.times, dates[6]) }}</span>
+          <input [id]="'input_' + getTimeId(tte.times, dates[6])" type="time" style="display: none; border: none;" min="00:00" max="24:00" (blur)="onTimeInputChange($event, tte, dates[6], getTimeId(tte.times, dates[6]))" [(ngModel)]="entryTime" />
+        </td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let tte; columns: displayedColumns;"></tr>
+    </table>
+
+    <div class="actions">
+      <button class="btn btn-primary btn-md float-left" (click)="openAddNewEntryDialog()">
+        <i class="material-icons-outlined">add</i>
+        <span i18n="@@taskTimeTracking.addEntry">Add entry</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- LOADING SPINNER STARTS -->
+<ng-container *ngIf="isLoading$ | async">
+  <app-loading-spinner></app-loading-spinner>
+</ng-container>
+<!-- LOADING SPINNER ENDS -->

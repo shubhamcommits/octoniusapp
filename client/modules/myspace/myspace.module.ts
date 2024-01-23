@@ -43,6 +43,9 @@ import { RecentActivityComponent } from './myspace-inbox/recent-activity/recent-
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatBadgeModule } from '@angular/material/badge';
 import { RecentStoriesComponent } from './myspace-inbox/recent-stories/recent-stories.component';
+import { MyTasksListComponent } from './myspace-tasks/my-tasks-list/my-tasks-list.component';
+import { TimesheetsComponent } from './myspace-tasks/timesheets/timesheets.component';
+import { FormsModule } from '@angular/forms';
 // import { MomentModule } from "ngx-moment";
 
 /**
@@ -68,15 +71,21 @@ import { RecentStoriesComponent } from './myspace-inbox/recent-stories/recent-st
 
     RecentGroupsComponent,
     RecentActivityComponent,
-    RecentStoriesComponent
+    RecentStoriesComponent,
+    MyTasksListComponent,
+    TimesheetsComponent
   ],
   imports: [
     CommonModule,
-    MyspaceRoutingModule,
+    FormsModule,
     SharedModule,
     MatMenuModule,
     MatTabsModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MyspaceRoutingModule,
+  ],
+  exports: [
+    TimesheetsComponent
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
