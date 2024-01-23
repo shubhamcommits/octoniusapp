@@ -29,7 +29,7 @@
         </div>
         <div *ngIf="userWorkspaces?.length <= 0" class="components" style="margin-top: -25px; width: 78%;">
             <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active" style="padding: 10px 0;"
-                [matTooltip]="workspaceData?.workspace_name" [matBadge]="(!isExpanded) ? totalNotifications : workspaceData?.numNotifications" [matBadgeHidden]="totalNotifications == 0" matBadgePosition="before" matBadgeColor="warn">
+                [matTooltip]="workspaceData?.workspace_name" [matBadge]="workspaceData?.numNotifications" [matBadgeHidden]="workspaceData?.numNotifications == 0" matBadgePosition="before" matBadgeColor="warn">
                 <app-secured-image [imgURL]="workspaceData?.workspace_avatar" [service]="'workspace'" [workspaceId]="workspaceData?._id" [styleClass]="'avatar'">
                 </app-secured-image>
                 <span>{{ workspaceData?.workspace_name | truncatetext: 16 }}</span>
