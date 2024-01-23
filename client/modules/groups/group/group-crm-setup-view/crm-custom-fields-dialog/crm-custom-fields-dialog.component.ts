@@ -43,13 +43,20 @@ export class CRMCustomFieldsDialogComponent implements OnInit {
 
     await this.crmGroupService.getCRMGroupCustomFields(this.groupData._id).then((res) => {
       if (res['crm_custom_fields']) {
-        res['crm_custom_fields'].forEach(field => {
+        res['crm_custom_fields'].forEach(async field => {
+          await this.sortValues(field);
           this.customFields.push(field);
         });
       }
     });
 
     this.customFields.sort((cf1, cf2) => (cf1.title > cf2.title) ? 1 : -1);
+  }
+
+  sortValues(field) {
+    if (!field.input_type) {
+      field.values.sort((v1, v2) => (v1 > v2) ? 1 : -1);
+    }
   }
 
   onCloseDialog() {
@@ -133,7 +140,7 @@ export class CRMCustomFieldsDialogComponent implements OnInit {
       });
   }
 
-  addValue(field, event: Event) {
+  async addValue(field, event: Event) {
     const newValue = event.target['value'];
 
     if (newValue !== '') {
@@ -145,6 +152,7 @@ export class CRMCustomFieldsDialogComponent implements OnInit {
         this.utilityService.warningNotification($localize`:@@crmCustomFieldDialog.valueAlreadyExists:Value already exists!`);
       } else {
         field.values.push(newValue);
+        await this.sortValues(field);
 
         // Save the new value
         this.crmGroupService.addCRMCustomFieldNewValue(newValue, field._id, this.groupData._id).then(res => {

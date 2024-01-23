@@ -39,13 +39,20 @@ export class CustomFieldsDialogComponent implements OnInit {
 
     await this.groupService.getGroupCustomFields(this.groupData._id).then((res) => {
       if (res['group']['custom_fields']) {
-        res['group']['custom_fields'].forEach(field => {
+        res['group']['custom_fields'].forEach(async field => {
+          await this.sortValues(field);
           this.customFields.push(field);
         });
       }
     });
 
     this.customFields.sort((cf1, cf2) => (cf1.title > cf2.title) ? 1 : -1);
+  }
+
+  sortValues(field) {
+    if (!field.input_type) {
+      field.values.sort((v1, v2) => (v1 > v2) ? 1 : -1);
+    }
   }
 
   onCloseDialog() {
@@ -127,7 +134,7 @@ export class CustomFieldsDialogComponent implements OnInit {
       });
   }
 
-  addValue(field, event: Event) {
+  async addValue(field, event: Event) {
     const newValue = event.target['value'];
 
     if (newValue !== '') {
@@ -139,6 +146,7 @@ export class CustomFieldsDialogComponent implements OnInit {
         this.utilityService.warningNotification($localize`:@@customFieldDialog.valueAlreadyExists:Value already exists!`);
       } else {
         field.values.push(newValue);
+        await this.sortValues(field);
 
         // Save the new value
         this.groupService.addCustomFieldNewValue(newValue, field._id, this.groupData._id).then(res => {
