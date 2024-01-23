@@ -53,14 +53,14 @@ export class CRMCustomFieldsDialogComponent implements OnInit {
     this.customFields.sort((cf1, cf2) => (cf1.title > cf2.title) ? 1 : -1);
   }
 
+  onCloseDialog() {
+    this.customFieldsEvent.emit(this.customFields);
+  }
+
   sortValues(field) {
     if (!field.input_type) {
       field.values.sort((v1, v2) => (v1 > v2) ? 1 : -1);
     }
-  }
-
-  onCloseDialog() {
-    this.customFieldsEvent.emit(this.customFields);
   }
 
   async createCustomField() {

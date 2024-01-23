@@ -35,6 +35,7 @@ export class AdvancedFilterDialogComponent implements OnInit {
     await this.groupService.getGroupCustomFields(this.groupData._id).then((res) => {
       res['group']['custom_fields'].forEach(field => {
         if (!field.input_type) {
+          field.values.sort((v1, v2) => (v1 > v2) ? 1 : -1);
           this.customFields.push(field);
         }
       });

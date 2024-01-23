@@ -254,20 +254,23 @@ export class GroupPostDialogComponent implements OnInit, AfterViewChecked {
   }
 
   async initCustomFields() {
-    let customFieldsTmnp = this.groupData?.custom_fields;
+    let customFieldsTmp = this.groupData?.custom_fields;
 
-    if (!customFieldsTmnp) {
+    if (!customFieldsTmp) {
       await this.groupService.getGroupCustomFields(this.groupId).then((res) => {
         if (res['group']['custom_fields']) {
-          customFieldsTmnp = res['group']['custom_fields'];
+          customFieldsTmp = res['group']['custom_fields'];
         }
       });
     }
 
-    if (customFieldsTmnp) {
+    if (customFieldsTmp) {
       this.customFields = [];
       
-      customFieldsTmnp.forEach(field => {
+      customFieldsTmp.forEach(field => {
+        if (!field.input_type) {
+          field.values.sort((v1, v2) => (v1 > v2) ? 1 : -1);
+        }
         this.customFields.push(field);
 
         if (!this.postData?.task.custom_fields) {

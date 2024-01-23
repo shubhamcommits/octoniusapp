@@ -153,6 +153,9 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
     await this.groupService.getGroupCustomFields(this.groupData?._id).then((res) => {
       if (!!res['group']['custom_fields']) {
         res['group']['custom_fields'].forEach(field => {
+          if (!field.input_type) {
+            field.values.sort((v1, v2) => (v1 > v2) ? 1 : -1);
+          }
           this.customFields.push(field);
         });
       }
