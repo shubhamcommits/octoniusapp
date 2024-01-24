@@ -122,7 +122,7 @@ console.log("timeTrackingEntities: ", timeTrackingEntities);
       });
     });
     this.timeTrackingEntitiesMapped = [...this.timeTrackingEntitiesMapped];
-    this.timeTrackingEntitiesMapped = this.timeTrackingEntitiesMapped.filter(tte => tte.hours !== '00' && tte.minutes !== '00' && interval.contains(DateTime.fromISO(tte.date)));
+    this.timeTrackingEntitiesMapped = this.timeTrackingEntitiesMapped.filter(tte => (tte.hours !== '00' || tte.minutes !== '00') && interval.contains(DateTime.fromISO(tte.date)));
 
     this.buildDataSource();
 	}
