@@ -91,7 +91,7 @@ export class TimesheetsComponent implements OnInit, OnDestroy {
         tte.times = tte.times.filter(time => interval.contains(DateTime.fromISO(time.date)));
 
         this.dates.forEach(date => {
-          const index = (!!tte.times) ? tte.times.findIndex(tte => this.isSameDay(date, DateTime.fromISO(tte.date))) : -1;
+          const index = (!!tte.times) ? tte.times.findIndex(time => this.isSameDay(date, DateTime.fromISO(time.date))) : -1;
           if (index < 0) {
             if (!tte.times) {
               tte.times = [];
