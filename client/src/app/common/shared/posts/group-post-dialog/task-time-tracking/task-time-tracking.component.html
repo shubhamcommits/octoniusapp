@@ -23,12 +23,10 @@
         </mat-select>
       </div>
 
-      <div class="user" *ngIf="userData?.role == 'manager' || userData?.role == 'owner'">
-             
-          <app-multiple-assignments [workspaceData]="workspaceData" [assigned_to]="entryUserArray" [type]="'time-tracking'"
+      <div class="user" *ngIf="userData?.role == 'manager' || userData?.role == 'owner' || isGroupManager(userData?._id)">
+          <app-multiple-assignments [workspaceData]="workspaceData" [assigned_to]="entryUserArray" [type]="'time-tracking'" [groupId]="groupData?._id"
             (assigneeAddedEmiter)="onAssignedAdded($event)" (assigneeRemovedEmiter)="onAssignedRemoved($event)">
           </app-multiple-assignments>
-        
       </div>
     </div>
 
@@ -41,7 +39,7 @@
   </div>
 
   <div class="actions">
-    <button class="btn btn-primary btn-md float-left" *ngIf="!entryId && (isAssignedToUser || userData?.role == 'manager' || userData?.role == 'owner')" (click)="saveEntry()" [disabled]="!isValidEntry()">
+    <button class="btn btn-primary btn-md float-left" *ngIf="!entryId && (isAssignedToUser || userData?.role == 'manager' || userData?.role == 'owner' || isGroupManager(userData?._id))" (click)="saveEntry()" [disabled]="!isValidEntry()">
       <i class="material-icons-outlined">add</i>
       <span i18n="@@taskTimeTracking.addEntry">Add entry</span>
     </button>
