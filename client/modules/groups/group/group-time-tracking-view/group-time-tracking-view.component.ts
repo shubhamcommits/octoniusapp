@@ -157,13 +157,16 @@ console.log("dataSource: ", this.dataSource);
         });
         return accumulator;
       }, {});
-
+console.log("groups: ", groups);
     let groupArray = Object.keys(groups).map(key => groups[key]);
+console.log("groupArray: ", groupArray);
     let flatList = groupArray.reduce((a,c) => { return a.concat(c); }, []);
-
-    return flatList.filter((rawLine) => {
+console.log("flatList: ", flatList);
+    const flatListFiltered = flatList.filter((rawLine) => {
       return rawLine.isGroup || collapsedGroups.every((group) => rawLine?._user?._id != group?._user?._id);
     });
+console.log("flatListFiltered: ", flatListFiltered);
+    return flatListFiltered;
   }
 
   getUserTotalNumbers(userId: string) {
