@@ -128,6 +128,8 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
 
   buildDataSource() {
     this.dataSource = this.groupBy(this.timeTrackingEntities, this.reducedGroups);
+console.log("timeTrackingEntitiesMapped: ", this.timeTrackingEntitiesMapped);
+console.log("dataSource: ", this.dataSource);
   }
 
   groupBy(data: any[], reducedGroups?: any[]){
@@ -196,7 +198,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
 
     userTotals[userId].hours += extraHours;
     userTotals[userId].minutes %= 60;
-
+console.log("userTotals: ", userTotals);
     // Return an object with the total hours, minutes, and tasks for the specified user
     return {
       totalHours: userTotals[userId].hours,
