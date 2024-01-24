@@ -321,6 +321,10 @@ export class TaskTimeTrackingComponent implements OnChanges {
     return moment.utc(day1).isSame(moment.utc(day2), 'day');
   }
 
+  isGroupManager(userId) {
+    return (this.groupData && this.groupData._admins) ? this.groupData._admins.find(admin => admin._id === userId) : false;
+  }
+
   formateDate(date) {
     return (date) ? moment.utc(date).add('1', 'day').format("MMM D, YYYY") : '';
   }

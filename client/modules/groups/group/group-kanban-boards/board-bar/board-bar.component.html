@@ -79,7 +79,7 @@
           <span i18n="@@groupBoardBar.archived">Archived</span>
         </a>
 
-        <a mat-menu-item *ngIf="viewType != 'time_tracking'" (click)="changeView('time_tracking')" class="board-options">
+        <a mat-menu-item *ngIf="viewType != 'time_tracking' && isAdmin" (click)="changeView('time_tracking')" class="board-options">
           <span class="material-icons-outlined mr-2">timer</span>
 
           <span i18n="@@groupBoardBar.timeTracking">Time Tracking</span>

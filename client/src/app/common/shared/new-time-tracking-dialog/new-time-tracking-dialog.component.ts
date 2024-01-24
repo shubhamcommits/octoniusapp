@@ -52,7 +52,7 @@ export class NewTimeTrackingDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<NewTimeTrackingDialogComponent>
   ) {
-    this.tte = this.data.tte;
+    this.tte = (!!this.data) ? this.data.tte : null;
   }
 
   async ngOnInit() {

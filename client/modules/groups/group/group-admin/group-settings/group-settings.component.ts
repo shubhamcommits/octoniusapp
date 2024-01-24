@@ -244,6 +244,7 @@ export class GroupSettingsComponent implements OnInit {
       width: '100%',
       height: '100%',
       disableClose: true,
+      hasBackdrop: true,
       data: { groupData: this.groupData }
     });
     const sub = dialogRef.componentInstance.closeEvent.subscribe(async (data) => {
@@ -259,6 +260,7 @@ export class GroupSettingsComponent implements OnInit {
       width: '50%',
       height: '50%',
       disableClose: true,
+      hasBackdrop: true,
       data: { groupData: this.groupData }
     });
   }
