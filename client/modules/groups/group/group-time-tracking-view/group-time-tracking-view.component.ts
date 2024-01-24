@@ -35,7 +35,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
 
   // isCurrentWeek = false;
 
-  displayedColumns: string[] = ['task', 'user', 'time', 'date', 'category'/*, 'star'*/];
+  displayedColumns: string[] = ['task', 'time', 'date', 'category', 'comment'/*, 'star'*/];
 
   entryTime = '00:00';
 
@@ -140,12 +140,12 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
         if(!accumulator[currentGroup._id]) {
           accumulator[currentGroup._id] = [{
             userName: `${currentValue?._user?.first_name} ${currentValue?._user?.last_name}`,
-            value: currentValue?._user,
+            _user: currentValue?._user,
             totalTasks: userNumbers.totalTasks,
             totalHours: userNumbers.totalHours,
             totalMinutes: userNumbers.totalMinutes,
             isGroup: true,
-            reduced: collapsedGroups.some((group) => group.value._id == currentValue?._user._id)
+            reduced: collapsedGroups.some((group) => group._user._id == currentValue?._user._id)
           }];
         }
 
@@ -160,7 +160,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
     let flatList = groupArray.reduce((a,c) => { return a.concat(c); }, []);
 
     return flatList.filter((rawLine) => {
-      return rawLine.isGroup || collapsedGroups.every((group) => rawLine?._user?._id != group?.value?._id);
+      return rawLine.isGroup || collapsedGroups.every((group) => rawLine?._user?._id != group?._user?._id);
     });
   }
 
