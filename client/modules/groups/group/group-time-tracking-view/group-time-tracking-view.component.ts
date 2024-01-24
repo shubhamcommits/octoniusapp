@@ -94,10 +94,9 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
 
     let timeTrackingEntities = [];
     await this.groupService.getGroupTimeTrackingEntites(this.groupData._id, this.startDate, this.endDate, this.filterUserId).then(async res => {
-console.log("res['timeTrackingEntities']: ", res['timeTrackingEntities']);
       timeTrackingEntities = res['timeTrackingEntities'].filter(tte => !!tte.times && tte.times.length > 0);
     });
-console.log("timeTrackingEntities: ", timeTrackingEntities);
+
     await this.initTable(timeTrackingEntities);
   }
   
@@ -129,8 +128,6 @@ console.log("timeTrackingEntities: ", timeTrackingEntities);
 
   buildDataSource() {
     this.dataSource = this.groupBy(this.timeTrackingEntitiesMapped, this.reducedGroups);
-console.log("timeTrackingEntitiesMapped: ", this.timeTrackingEntitiesMapped);
-console.log("dataSource: ", this.dataSource);
   }
 
   groupBy(data: any[], reducedGroups?: any[]){
@@ -158,16 +155,13 @@ console.log("dataSource: ", this.dataSource);
         });
         return accumulator;
       }, {});
-console.log("groups: ", groups);
+
     let groupArray = Object.keys(groups).map(key => groups[key]);
-console.log("groupArray: ", groupArray);
     let flatList = groupArray.reduce((a,c) => { return a.concat(c); }, []);
-console.log("flatList: ", flatList);
-    const flatListFiltered = flatList.filter((rawLine) => {
+
+    return flatList.filter((rawLine) => {
       return rawLine.isGroup || collapsedGroups.every((group) => rawLine?._user?._id != group?._user?._id);
     });
-console.log("flatListFiltered: ", flatListFiltered);
-    return flatListFiltered;
   }
 
   getUserTotalNumbers(userId: string) {
@@ -202,7 +196,7 @@ console.log("flatListFiltered: ", flatListFiltered);
 
     userTotals[userId].hours += extraHours;
     userTotals[userId].minutes %= 60;
-console.log("userTotals: ", userTotals);
+
     // Return an object with the total hours, minutes, and tasks for the specified user
     return {
       totalHours: userTotals[userId].hours,
