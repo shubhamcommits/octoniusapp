@@ -21,7 +21,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
   groupData: any;
   userData: any;
 
-  timeTrackingEntities = [];
+  // timeTrackingEntities = [];
   timeTrackingEntitiesMapped = [];
   dataSource = [];
 
@@ -92,18 +92,18 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
     await this.getFirstDay(change);
     await this.getLastDay(change);
 
+    let timeTrackingEntities = [];
     await this.groupService.getGroupTimeTrackingEntites(this.groupData._id, this.startDate, this.endDate, this.filterUserId).then(async res => {
-      this.timeTrackingEntities = res['timeTrackingEntities'];
-      this.timeTrackingEntities = this.timeTrackingEntities.filter(tte => !!tte.times && tte.times.length > 0);
+      timeTrackingEntities = res['timeTrackingEntities'].filter(tte => !!tte.times && tte.times.length > 0);
     });
     
-    await this.initTable();
+    await this.initTable(timeTrackingEntities);
   }
   
-	async initTable() {
+	async initTable(timeTrackingEntities: any) {
     this.timeTrackingEntitiesMapped = [];
     const interval = Interval.fromDateTimes(this.startDate, this.endDate);
-    this.timeTrackingEntities.forEach(tte => {
+    timeTrackingEntities.forEach(tte => {
       tte?.times?.forEach(time => {
         let tteMapped = {
           _id: tte._id,
@@ -121,16 +121,13 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
       });
     });
     this.timeTrackingEntitiesMapped = [...this.timeTrackingEntitiesMapped];
-    this.timeTrackingEntities = this.timeTrackingEntitiesMapped.filter(tte => tte.hours !== '00' && tte.minutes !== '00' && interval.contains(DateTime.fromISO(tte.date)));
+    this.timeTrackingEntitiesMapped = this.timeTrackingEntitiesMapped.filter(tte => tte.hours !== '00' && tte.minutes !== '00' && interval.contains(DateTime.fromISO(tte.date)));
 
     this.buildDataSource();
 	}
 
   buildDataSource() {
-console.log("timeTrackingEntities: ", this.timeTrackingEntities);
-    this.dataSource = this.groupBy(this.timeTrackingEntities, this.reducedGroups);
-console.log("timeTrackingEntitiesMapped: ", this.timeTrackingEntitiesMapped);
-console.log("dataSource: ", this.dataSource);
+    this.dataSource = this.groupBy(this.timeTrackingEntitiesMapped, this.reducedGroups);
   }
 
   groupBy(data: any[], reducedGroups?: any[]){
@@ -158,15 +155,14 @@ console.log("dataSource: ", this.dataSource);
         });
         return accumulator;
       }, {});
-console.log("groups: ", groups);
+
     let groupArray = Object.keys(groups).map(key => groups[key]);
-console.log("groupArray: ", groupArray);
     let flatList = groupArray.reduce((a,c) => { return a.concat(c); }, []);
-console.log("flatList: ", flatList);
+
     const flatListFiltered = flatList.filter((rawLine) => {
       return rawLine.isGroup || collapsedGroups.every((group) => rawLine?._user?._id != group?._user?._id);
     });
-console.log("flatListFiltered: ", flatListFiltered);
+
     return flatListFiltered;
   }
 
@@ -202,7 +198,7 @@ console.log("flatListFiltered: ", flatListFiltered);
 
     userTotals[userId].hours += extraHours;
     userTotals[userId].minutes %= 60;
-console.log("userTotals: ", userTotals);
+
     // Return an object with the total hours, minutes, and tasks for the specified user
     return {
       totalHours: userTotals[userId].hours,

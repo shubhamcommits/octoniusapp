@@ -30,7 +30,7 @@
       </div>
     </div>
   
-    <div class="table-wrapper" *ngIf="!!timeTrackingEntities && timeTrackingEntities.length > 0">
+    <div class="table-wrapper" *ngIf="!!timeTrackingEntitiesMapped && timeTrackingEntitiesMapped.length > 0">
       <table mat-table matSort [dataSource]="dataSource" class="">  
         <ng-container matColumnDef="task">
           <th mat-header-cell *matHeaderCellDef>
@@ -127,7 +127,7 @@
     </div>
 
     <!-- placeholder for empty board starts -->
-    <div *ngIf="!timeTrackingEntities || timeTrackingEntities.length == 0" style="text-align: center;">
+    <div *ngIf="!timeTrackingEntitiesMapped || timeTrackingEntitiesMapped.length == 0" style="text-align: center;">
       <img src='assets/images/placeholder_activity3.png' class="placeholder-img">
       <p class="muted text-center" i18n="@@groupTimeTrackingView.boardEmpty">This board is empty. </p>
     </div>
