@@ -127,6 +127,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
 	}
 
   buildDataSource() {
+console.log("timeTrackingEntities: ", this.timeTrackingEntities);
     this.dataSource = this.groupBy(this.timeTrackingEntities, this.reducedGroups);
 console.log("timeTrackingEntitiesMapped: ", this.timeTrackingEntitiesMapped);
 console.log("dataSource: ", this.dataSource);
