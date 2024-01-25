@@ -10,10 +10,10 @@
       <div class="time_spent mr-2">
         
           <i class="material-icons-outlined muted">timer</i>
-
-          <input type="time" style="border: none;"
-            name="entryTime" min="00:00" max="24:00"
-            (blur)="getTime($event)" [(ngModel)]="entryTime" />
+          
+          <app-time-input style="border: none;"
+            [value]="entryTime" [canEdit]="true"
+            (timeEvent)="getTime($event)"></app-time-input>
        
       </div>
 

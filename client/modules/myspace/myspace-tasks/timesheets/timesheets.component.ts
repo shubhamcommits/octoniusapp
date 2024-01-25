@@ -178,7 +178,9 @@ export class TimesheetsComponent implements OnInit, OnDestroy {
     }
   }
 
-  onTimeInputChange($event, tte: any, date: any, timeId: string) {
+  onTimeInputChange(timeObject: any, tte: any, date: any, timeId: string) {
+    this.entryTime = timeObject;
+
     if (!!this.entryTime) {
       const time = this.entryTime.split(':');
       const entryTimeHours = time[0];

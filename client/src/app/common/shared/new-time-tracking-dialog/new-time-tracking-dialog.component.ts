@@ -180,6 +180,8 @@ export class NewTimeTrackingDialogComponent implements OnInit {
   }
 
   getTime(timeObject: any) {
+    this.entryTime = timeObject;
+    
     if (!!this.entryTime) {
       const time = this.entryTime.split(':');
       this.entryTimeHours = time[0];

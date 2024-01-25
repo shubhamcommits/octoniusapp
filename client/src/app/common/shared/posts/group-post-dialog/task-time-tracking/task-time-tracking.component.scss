@@ -10,15 +10,6 @@
 	margin-top: 50px;
 }
 
-input[type="time"]::-webkit-calendar-picker-indicator {
-	background: none;
-	display: none;
-}
-input[type="time"]::-webkit-datetime-edit-ampm-field {
-	display: none;
-}
-
-
 .flexform{
 	display: flex;
 	width: 100%;

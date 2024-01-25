@@ -25,19 +25,6 @@ table {
   }
 }
 
-// input[type="time"] {
-// 	background-color: aqua;
-// }
-
-input[type="time"]::-webkit-calendar-picker-indicator {
-	background: none;
-	display: none;
-}
-
-input[type="time"]::-webkit-datetime-edit-ampm-field {
-	display: none;
-}
-
 .actions {
   margin: 10px 0;
 }

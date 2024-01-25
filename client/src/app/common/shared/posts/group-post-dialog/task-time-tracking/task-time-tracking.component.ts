@@ -31,7 +31,8 @@ export class TaskTimeTrackingComponent implements OnChanges {
   entryUserArray = [];
   entryTimeId;
   entryDate;
-  entryTime = '00:00';
+  // entryTime = '00:00';
+  entryTime = '';
   entryTimeHours;
   entryTimeMinutes;
   entryCategory;
@@ -259,6 +260,8 @@ export class TaskTimeTrackingComponent implements OnChanges {
   }
 
   getTime(timeObject: any) {
+    this.entryTime = timeObject;
+
     if (!!this.entryTime) {
       const time = this.entryTime.split(':');
       this.entryTimeHours = time[0];
@@ -291,7 +294,8 @@ export class TaskTimeTrackingComponent implements OnChanges {
     this.entryId = '';
     this.entryTimeId = '';
     this.entryDate = '';
-    this.entryTime = '00:00';
+    // this.entryTime = '00:00';
+    this.entryTime = '';
     this.entryTimeHours = '';
     this.entryTimeMinutes = '';
     this.entryCategory = '';
