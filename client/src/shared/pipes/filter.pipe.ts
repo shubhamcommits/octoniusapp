@@ -17,7 +17,7 @@ export class FilterPipe implements PipeTransform {
       return items;
     }
     searchText = searchText.toLocaleLowerCase();
-
+// console.log(items);
     return items.filter(it => {
       if (!!it.first_name || !!it.last_name) {
         // searching on user entity
@@ -30,6 +30,9 @@ export class FilterPipe implements PipeTransform {
       } else if (!!it.title) {
         // searching on task entity
         return it.title.toLocaleLowerCase().includes(searchText);
+      } else {
+        // searching on CF or other with no property to search
+        return it.toLocaleLowerCase().includes(searchText);
       }
     });
   }

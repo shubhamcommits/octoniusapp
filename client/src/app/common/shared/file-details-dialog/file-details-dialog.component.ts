@@ -60,6 +60,9 @@ export class FileDetailsDialogComponent implements OnInit {
 
   isFilesVersionsModuleAvailable = false;
 
+  cfSearchText = '';
+  cfSearchPlaceholder = $localize`:@@fileDetailsDialog.cfSearchPlaceholder:Search`;
+
   // IsLoading behaviou subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
 

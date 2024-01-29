@@ -20,6 +20,9 @@ export class CRMCompanyCustomFieldsComponent implements OnChanges {
   selectedCFValues = [];
   canEdit = true;
 
+  cfSearchText = '';
+  cfSearchPlaceholder = $localize`:@@crmCompanyCustomFields.cfSearchPlaceholder:Search`;
+
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(

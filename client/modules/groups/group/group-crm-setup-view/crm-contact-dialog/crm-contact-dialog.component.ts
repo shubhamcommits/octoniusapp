@@ -31,6 +31,9 @@ export class CRMContactDialogComponent implements OnInit {
   crmContactCustomFields;
   selectedCFValues = [];
 
+  cfSearchText = '';
+  cfSearchPlaceholder = $localize`:@@crmContactDialog.cfSearchPlaceholder:Search`;
+
   publicFunctions = new PublicFunctions(this.injector);
 
   constructor(

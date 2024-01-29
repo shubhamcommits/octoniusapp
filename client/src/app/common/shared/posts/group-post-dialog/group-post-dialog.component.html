@@ -428,7 +428,10 @@
                     appearance="fill"
                     class="col">
                     <mat-select-trigger>{{ selectedCFValues[cf.name] }}</mat-select-trigger>
-                    <mat-option *ngFor="let val of cf.values" [value]="val">{{ val }}</mat-option>
+                    <input type="email" class="form-control" id="search-text" aria-describedby="search-text" [(ngModel)]="cfSearchText"
+                      [placeholder]="cfSearchPlaceholder" autofocus (click)="$event.stopPropagation()"
+                      (keydown)="$event.stopPropagation()" (blur)="cfSearchText = ''">
+                    <mat-option *ngFor="let val of cf.values | appFilter: cfSearchText" [value]="val">{{ val }}</mat-option>
                 </mat-select>
 
                 <div *ngIf="cf.input_type && !cf.input_type_date" class="col" style="display: flex; float: left; width: 125px;">

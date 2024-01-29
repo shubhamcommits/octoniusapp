@@ -10,7 +10,7 @@
         <mat-select ngDefaultControl appearance="fill" class="form-control" *ngIf="!tte" [(ngModel)]="entryTask"  (selectionChange)="onTaskSelected()">
           <input type="email" class="form-control" id="search-text" aria-describedby="search-text" [(ngModel)]="taskSearchText"
             [placeholder]="taskSearchPlaceholder" autofocus
-            (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+            (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()" (blur)="taskSearchText = ''">
           <mat-option *ngFor="let task of userTasks | appFilter: taskSearchText" [value]="task">{{ task.title }}</mat-option>
         </mat-select>
       </div>
