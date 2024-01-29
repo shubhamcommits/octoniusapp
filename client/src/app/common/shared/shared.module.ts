@@ -139,6 +139,7 @@ import { CRMLeadCardComponent } from './posts/group-post-dialog/crm-lead-card/cr
 import { TaskTimeTrackingComponent } from './posts/group-post-dialog/task-time-tracking/task-time-tracking.component';
 import { TaskTimeTrackingListComponent } from './posts/group-post-dialog/task-time-tracking/task-time-tracking-list/task-time-tracking-list.component';
 import { NewTimeTrackingDialogComponent } from './new-time-tracking-dialog/new-time-tracking-dialog.component';
+import { TimeInputComponent } from './time-input/time-input.component';
 
 @NgModule({
     declarations: [
@@ -162,6 +163,7 @@ import { NewTimeTrackingDialogComponent } from './new-time-tracking-dialog/new-t
         CountrySelectComponent,
         QuillEditorComponent,
         TimePickerComponent,
+        TimeInputComponent,
         PostViewComponent,
         PostActionsComponent,
         LikePostComponent,
@@ -296,6 +298,7 @@ import { NewTimeTrackingDialogComponent } from './new-time-tracking-dialog/new-t
         SelectAssigneeComponent,
         QuillEditorComponent,
         TimePickerComponent,
+        TimeInputComponent,
         TaskStatusComponent,
         ChangeColumnComponent,
         InfiniteScrollComponent,

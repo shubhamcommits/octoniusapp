@@ -102,6 +102,7 @@ import { CRMContactDialogComponent } from './group/group-crm-setup-view/crm-cont
 import { GroupTimeTrackingCategoriesDialogComponent } from './group/time-tracking-categories-dialog/time-tracking-categories-dialog.component';
 import { GroupTimeTrackingViewComponent } from './group/group-time-tracking-view/group-time-tracking-view.component';
 import { TimeTrackerDatesFilterDialogComponent } from './group/group-kanban-boards/board-bar/time-tracker-dates-filter-dialog/time-tracker-dates-filter-dialog.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -189,6 +190,7 @@ import { TimeTrackerDatesFilterDialogComponent } from './group/group-kanban-boar
         MatSlideToggleModule,
         MatExpansionModule,
         MatTableModule,
+        MatPaginatorModule,
         MatSortModule,
         MatDatepickerModule,
         ResizableModule,

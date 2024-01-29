@@ -5,7 +5,7 @@
 
   <div class="dropdown">
     <div *ngIf="!postData?.crm?._company">
-      <input type="email" class="form-control" id="search-text"
+      <input type="text" class="form-control" id="search-text"
         aria-describedby="search-text" [(ngModel)]="companySearchText" placeholder="Search company" autofocus
         (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()" (keyup)="searchCompany()">
         
@@ -35,7 +35,7 @@
   </div>
 
   <div class="dropdown">
-    <input type="email" class="form-control " id="search-text" aria-describedby="search-text"
+    <input type="text" class="form-control " id="search-text" aria-describedby="search-text"
       [(ngModel)]="contactSearchText" placeholder="Search contact to add" autofocus (click)="$event.stopPropagation()"
       (keydown)="$event.stopPropagation()" (keyup)="searchContact()">
   

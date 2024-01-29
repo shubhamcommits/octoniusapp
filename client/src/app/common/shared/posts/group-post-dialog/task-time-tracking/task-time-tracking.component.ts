@@ -31,7 +31,8 @@ export class TaskTimeTrackingComponent implements OnChanges {
   entryUserArray = [];
   entryTimeId;
   entryDate;
-  entryTime = '00:00';
+  // entryTime = '00:00';
+  entryTime = '';
   entryTimeHours;
   entryTimeMinutes;
   entryCategory;
@@ -134,12 +135,10 @@ export class TaskTimeTrackingComponent implements OnChanges {
         _user: (!!this.entryUserId) ? this.entryUserId : this.userData?._id,
         _task: this.taskId,
         _category: this.entryCategory,
-        times: [{
-          date: this.entryDate,
-          hours: this.entryTimeHours,
-          minutes: this.entryTimeMinutes,
-          comment: this.entryComment,
-        }],
+        date: this.entryDate,
+        hours: this.entryTimeHours,
+        minutes: this.entryTimeMinutes,
+        comment: this.entryComment
       };
 
       this.groupService.saveTimeTrackingEntry(this.groupData._id, newEntity).then(async (res: any) => {
@@ -259,6 +258,8 @@ export class TaskTimeTrackingComponent implements OnChanges {
   }
 
   getTime(timeObject: any) {
+    this.entryTime = timeObject;
+
     if (!!this.entryTime) {
       const time = this.entryTime.split(':');
       this.entryTimeHours = time[0];
@@ -291,7 +292,8 @@ export class TaskTimeTrackingComponent implements OnChanges {
     this.entryId = '';
     this.entryTimeId = '';
     this.entryDate = '';
-    this.entryTime = '00:00';
+    // this.entryTime = '00:00';
+    this.entryTime = '';
     this.entryTimeHours = '';
     this.entryTimeMinutes = '';
     this.entryCategory = '';

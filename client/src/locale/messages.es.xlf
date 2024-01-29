@@ -1159,7 +1159,7 @@
         <target state="translated">¡El campo ya existe!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-profile-custom-fields/profile-custom-fields-dialog/profile-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">53</context>
+          <context context-type="linenumber">60</context>
         </context-group>
       </trans-unit>
       <trans-unit id="profileCustomFieldsDialog.pleaseWaitDeletingCF" datatype="html">
@@ -1167,7 +1167,7 @@
         <target state="translated">Espere, estamos eliminando el campo personalizado ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-profile-custom-fields/profile-custom-fields-dialog/profile-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">91</context>
+          <context context-type="linenumber">98</context>
         </context-group>
       </trans-unit>
       <trans-unit id="profileCustomFieldsDialog.cFDeleted" datatype="html">
@@ -1175,7 +1175,7 @@
         <target state="translated">¡Campo eliminado!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-profile-custom-fields/profile-custom-fields-dialog/profile-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">100</context>
+          <context context-type="linenumber">107</context>
         </context-group>
       </trans-unit>
       <trans-unit id="profileCustomFieldsDialog.unableDeleteCF" datatype="html">
@@ -1183,7 +1183,7 @@
         <target state="translated">No se puede eliminar el campo, ¡inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-profile-custom-fields/profile-custom-fields-dialog/profile-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">102</context>
+          <context context-type="linenumber">109</context>
         </context-group>
       </trans-unit>
       <trans-unit id="profileCustomFieldsDialog.valueAlreadyExist" datatype="html">
@@ -1191,7 +1191,7 @@
         <target state="translated">¡El valor ya existe!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-profile-custom-fields/profile-custom-fields-dialog/profile-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">119</context>
+          <context context-type="linenumber">126</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceProfileCF.profileFields" datatype="html">
@@ -4611,7 +4611,7 @@
         <target state="translated">¡El campo ya existe!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">62</context>
+          <context context-type="linenumber">69</context>
         </context-group>
       </trans-unit>
       <trans-unit id="customFieldDialog.pleaseWaitDeletingCF" datatype="html">
@@ -4619,7 +4619,7 @@
         <target state="translated">Espere, estamos eliminando el campo personalizado ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">106</context>
+          <context context-type="linenumber">113</context>
         </context-group>
       </trans-unit>
       <trans-unit id="customFieldDialog.fieldDeleted" datatype="html">
@@ -4627,7 +4627,7 @@
         <target state="translated">¡Campo eliminado!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">120</context>
+          <context context-type="linenumber">127</context>
         </context-group>
       </trans-unit>
       <trans-unit id="customFieldDialog.unableToDeleteField" datatype="html">
@@ -4635,7 +4635,7 @@
         <target state="translated">No se puede eliminar el campo, inténtelo de nuevo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">122</context>
+          <context context-type="linenumber">129</context>
         </context-group>
       </trans-unit>
       <trans-unit id="customFieldDialog.valueAlreadyExists" datatype="html">
@@ -4643,7 +4643,7 @@
         <target state="translated">¡El valor ya existe!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">139</context>
+          <context context-type="linenumber">146</context>
         </context-group>
       </trans-unit>
       <trans-unit id="customFieldDialog.pleaseWaitUpdatingCF" datatype="html">
@@ -4651,23 +4651,7 @@
         <target state="translated">Espere, estamos actualizando el campo personalizado ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">155</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">204</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">227</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="customFieldDialog.fieldUpdated" datatype="html">
-        <source>Field updated!</source>
-        <target state="translated">¡Campo actualizado!</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">160</context>
+          <context context-type="linenumber">163</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
@@ -4675,7 +4659,23 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">234</context>
+          <context context-type="linenumber">235</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="customFieldDialog.fieldUpdated" datatype="html">
+        <source>Field updated!</source>
+        <target state="translated">¡Campo actualizado!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
+          <context context-type="linenumber">168</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
+          <context context-type="linenumber">220</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
+          <context context-type="linenumber">242</context>
         </context-group>
       </trans-unit>
       <trans-unit id="customFieldDialog.unableToUpdateField" datatype="html">
@@ -4683,15 +4683,15 @@
         <target state="translated">No se puede actualizar el campo. Vuelve a intentarlo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">162</context>
+          <context context-type="linenumber">170</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">214</context>
+          <context context-type="linenumber">222</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">236</context>
+          <context context-type="linenumber">244</context>
         </context-group>
       </trans-unit>
       <trans-unit id="filesCustomFieldDialog.customFields" datatype="html">
@@ -4763,7 +4763,7 @@
         <target state="translated">¡El campo ya existe!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/files-custom-fields-dialog/files-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">62</context>
+          <context context-type="linenumber">69</context>
         </context-group>
       </trans-unit>
       <trans-unit id="filesCustomFieldDialog.pleaseWaitDeletingCF" datatype="html">
@@ -4771,7 +4771,7 @@
         <target state="translated">Espere, estamos eliminando el campo personalizado...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/files-custom-fields-dialog/files-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">106</context>
+          <context context-type="linenumber">113</context>
         </context-group>
       </trans-unit>
       <trans-unit id="filesCustomFieldDialog.fieldDeleted" datatype="html">
@@ -4779,7 +4779,7 @@
         <target state="translated">¡Campo eliminado!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/files-custom-fields-dialog/files-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">118</context>
+          <context context-type="linenumber">125</context>
         </context-group>
       </trans-unit>
       <trans-unit id="filesCustomFieldDialog.unableToDeleteField" datatype="html">
@@ -4787,7 +4787,7 @@
         <target state="translated">No se puede eliminar el campo, inténtelo de nuevo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/files-custom-fields-dialog/files-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">120</context>
+          <context context-type="linenumber">127</context>
         </context-group>
       </trans-unit>
       <trans-unit id="filesCustomFieldDialog.valueAlreadyExists" datatype="html">
@@ -4795,7 +4795,7 @@
         <target state="translated">¡El valor ya existe!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/files-custom-fields-dialog/files-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">137</context>
+          <context context-type="linenumber">144</context>
         </context-group>
       </trans-unit>
       <trans-unit id="filesCustomFieldDialog.pleaseWaitUpdatingCF" datatype="html">
@@ -4803,11 +4803,11 @@
         <target state="translated">Espere, estamos actualizando el campo personalizado...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/files-custom-fields-dialog/files-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">189</context>
+          <context context-type="linenumber">197</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/files-custom-fields-dialog/files-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">212</context>
+          <context context-type="linenumber">220</context>
         </context-group>
       </trans-unit>
       <trans-unit id="filesCustomFieldDialog.fieldUpdated" datatype="html">
@@ -4815,11 +4815,11 @@
         <target state="translated">¡Campo actualizado!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/files-custom-fields-dialog/files-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">197</context>
+          <context context-type="linenumber">205</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/files-custom-fields-dialog/files-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">219</context>
+          <context context-type="linenumber">227</context>
         </context-group>
       </trans-unit>
       <trans-unit id="filesCustomFieldDialog.unableToUpdateField" datatype="html">
@@ -4827,11 +4827,11 @@
         <target state="translated">No se puede actualizar el campo. Vuelve a intentarlo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/files-custom-fields-dialog/files-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">199</context>
+          <context context-type="linenumber">207</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/files-custom-fields-dialog/files-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">221</context>
+          <context context-type="linenumber">229</context>
         </context-group>
       </trans-unit>
       <trans-unit id="deleteGroup.deleteThisGroup" datatype="html">
@@ -5766,6 +5766,14 @@
           <context context-type="linenumber">115</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="crmContactDialog.cfSearchPlaceholder" datatype="html">
+        <source>Search</source>
+        <target state="translated">Buscar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-contact-dialog/crm-contact-dialog.component.ts</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="crmCustomFieldDialog.customFields" datatype="html">
         <source>Custom Fields</source>
         <target state="translated">Campos Personalizados</target>
@@ -5879,7 +5887,7 @@
         <target state="translated">¡El campo ya existe!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-custom-fields-dialog/crm-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">66</context>
+          <context context-type="linenumber">73</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmCustomFieldDialog.pleaseWaitDeletingCF" datatype="html">
@@ -5887,7 +5895,7 @@
         <target state="translated">Espere, estamos eliminando el campo personalizado...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-custom-fields-dialog/crm-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">112</context>
+          <context context-type="linenumber">119</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmCustomFieldDialog.fieldDeleted" datatype="html">
@@ -5895,7 +5903,7 @@
         <target state="translated">¡Campo eliminado!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-custom-fields-dialog/crm-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">126</context>
+          <context context-type="linenumber">133</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmCustomFieldDialog.unableToDeleteField" datatype="html">
@@ -5903,7 +5911,7 @@
         <target state="translated">No se puede eliminar el campo, ¡inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-custom-fields-dialog/crm-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">128</context>
+          <context context-type="linenumber">135</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmCustomFieldDialog.valueAlreadyExists" datatype="html">
@@ -5911,7 +5919,7 @@
         <target state="translated">¡El valor ya existe!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-custom-fields-dialog/crm-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">145</context>
+          <context context-type="linenumber">152</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmCustomFieldDialog.pleaseWaitUpdatingCF" datatype="html">
@@ -5919,31 +5927,11 @@
         <target state="translated">Espere, estamos actualizando el campo personalizado ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-custom-fields-dialog/crm-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">161</context>
+          <context context-type="linenumber">169</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-custom-fields-dialog/crm-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">174</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-custom-fields-dialog/crm-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">223</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-custom-fields-dialog/crm-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">246</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="crmCustomFieldDialog.fieldUpdated" datatype="html">
-        <source>Field updated!</source>
-        <target state="translated">¡Campo Actualizado!</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-custom-fields-dialog/crm-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">166</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-custom-fields-dialog/crm-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">179</context>
+          <context context-type="linenumber">182</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-custom-fields-dialog/crm-custom-fields-dialog.component.ts</context>
@@ -5951,7 +5939,27 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-custom-fields-dialog/crm-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">253</context>
+          <context context-type="linenumber">254</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmCustomFieldDialog.fieldUpdated" datatype="html">
+        <source>Field updated!</source>
+        <target state="translated">¡Campo Actualizado!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-custom-fields-dialog/crm-custom-fields-dialog.component.ts</context>
+          <context context-type="linenumber">174</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-custom-fields-dialog/crm-custom-fields-dialog.component.ts</context>
+          <context context-type="linenumber">187</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-custom-fields-dialog/crm-custom-fields-dialog.component.ts</context>
+          <context context-type="linenumber">239</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-custom-fields-dialog/crm-custom-fields-dialog.component.ts</context>
+          <context context-type="linenumber">261</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmCustomFieldDialog.unableToUpdateField" datatype="html">
@@ -5959,19 +5967,19 @@
         <target state="translated">No se puede actualizar el campo. ¡Inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-custom-fields-dialog/crm-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">168</context>
+          <context context-type="linenumber">176</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-custom-fields-dialog/crm-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">181</context>
+          <context context-type="linenumber">189</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-custom-fields-dialog/crm-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">233</context>
+          <context context-type="linenumber">241</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/crm-custom-fields-dialog/crm-custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">255</context>
+          <context context-type="linenumber">263</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmSetupBoardBar.customFields" datatype="html">
@@ -6210,6 +6218,14 @@
           <context context-type="linenumber">417</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="crmCompanyCustomFields.cfSearchPlaceholder" datatype="html">
+        <source>Search</source>
+        <target state="translated">Buscar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/new-crm-company-dialog/crm-company-custom-fields/crm-company-custom-fields.component.ts</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="crmCompanyImageDialog.updateCompanyImage" datatype="html">
         <source>Update company image</source>
         <target state="translated">Actualizar imagen de la compañía</target>
@@ -6428,6 +6444,14 @@
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/new-crm-contact-dialog/crm-contact-companies/crm-contact-companies.component.ts</context>
           <context context-type="linenumber">71</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="crmContactCustomFields.cfSearchPlaceholder" datatype="html">
+        <source>Search</source>
+        <target state="translated">Buscar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-crm-setup-view/new-crm-contact-dialog/crm-contact-custom-fields/crm-contact-custom-fields.component.ts</context>
+          <context context-type="linenumber">24</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmContactInformation.name" datatype="html">
@@ -7806,20 +7830,12 @@
           <context context-type="linenumber">37</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="groupTimeTrackingView.user" datatype="html">
-        <source>User</source>
-        <target state="translated">Usuario</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-time-tracking-view/group-time-tracking-view.component.html</context>
-          <context context-type="linenumber">47</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="groupTimeTrackingView.timeSpent" datatype="html">
         <source>Time spent</source>
         <target state="translated">Tiempo empleado</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-time-tracking-view/group-time-tracking-view.component.html</context>
-          <context context-type="linenumber">59</context>
+          <context context-type="linenumber">47</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupTimeTrackingView.date" datatype="html">
@@ -7827,7 +7843,7 @@
         <target state="translated">Fecha</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-time-tracking-view/group-time-tracking-view.component.html</context>
-          <context context-type="linenumber">70</context>
+          <context context-type="linenumber">58</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouptimetrackingview.category" datatype="html">
@@ -7835,7 +7851,15 @@
         <target state="translated">Categoría</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-time-tracking-view/group-time-tracking-view.component.html</context>
-          <context context-type="linenumber">79</context>
+          <context context-type="linenumber">67</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupTimeTrackingView.comment" datatype="html">
+        <source>Comment</source>
+        <target state="translated">Comentario</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-time-tracking-view/group-time-tracking-view.component.html</context>
+          <context context-type="linenumber">76</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupTimeTrackingView.tasks" datatype="html">
@@ -8019,19 +8043,19 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
-          <context context-type="linenumber">342</context>
+          <context context-type="linenumber">348</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
-          <context context-type="linenumber">465</context>
+          <context context-type="linenumber">471</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
-          <context context-type="linenumber">611</context>
+          <context context-type="linenumber">617</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
-          <context context-type="linenumber">673</context>
+          <context context-type="linenumber">679</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.unableToUpdateDetails" datatype="html">
@@ -8047,19 +8071,19 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
-          <context context-type="linenumber">345</context>
+          <context context-type="linenumber">351</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
-          <context context-type="linenumber">468</context>
+          <context context-type="linenumber">474</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
-          <context context-type="linenumber">614</context>
+          <context context-type="linenumber">620</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
-          <context context-type="linenumber">676</context>
+          <context context-type="linenumber">682</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-dates/post-dates.component.ts</context>
@@ -11761,11 +11785,11 @@
         <target state="translated">Aádir entrada</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-tasks/timesheets/timesheets.component.html</context>
-          <context context-type="linenumber">131</context>
+          <context context-type="linenumber">138</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/task-time-tracking/task-time-tracking.component.html</context>
-          <context context-type="linenumber">46</context>
+          <context context-type="linenumber">44</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timesheets.pleaseWait" datatype="html">
@@ -11773,7 +11797,7 @@
         <target state="translated">Espere, estamos actualizando la hora...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-tasks/timesheets/timesheets.component.ts</context>
-          <context context-type="linenumber">201</context>
+          <context context-type="linenumber">203</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timesheets.timeEdited" datatype="html">
@@ -11781,7 +11805,7 @@
         <target state="translated">¡Tiempo Editado!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-tasks/timesheets/timesheets.component.ts</context>
-          <context context-type="linenumber">211</context>
+          <context context-type="linenumber">213</context>
         </context-group>
       </trans-unit>
       <trans-unit id="timesheets.unableToEdited" datatype="html">
@@ -11789,7 +11813,7 @@
         <target state="translated">¡No se puede editar el Tiempo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-tasks/timesheets/timesheets.component.ts</context>
-          <context context-type="linenumber">213</context>
+          <context context-type="linenumber">215</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editHRFields.address" datatype="html">
@@ -15678,7 +15702,7 @@
         <target state="translated">Espere mientras lo desconectamos de forma segura...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
-          <context context-type="linenumber">201</context>
+          <context context-type="linenumber">203</context>
         </context-group>
       </trans-unit>
       <trans-unit id="iconsSidebar.successfullyLoggedOut" datatype="html">
@@ -15686,7 +15710,7 @@
         <target state="translated">¡Desconectado exitosamente!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
-          <context context-type="linenumber">208</context>
+          <context context-type="linenumber">210</context>
         </context-group>
       </trans-unit>
       <trans-unit id="iconsSidebar.errorLoggingOut" datatype="html">
@@ -15694,11 +15718,11 @@
         <target state="translated">Se produjo un error al cerrar la sesión, ¡inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
-          <context context-type="linenumber">211</context>
+          <context context-type="linenumber">213</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
-          <context context-type="linenumber">216</context>
+          <context context-type="linenumber">218</context>
         </context-group>
       </trans-unit>
       <trans-unit id="iconsSidebar.pleaseWaitSignYouIn" datatype="html">
@@ -15706,7 +15730,7 @@
         <target state="translated">Espere mientras lo registramos ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
-          <context context-type="linenumber">274</context>
+          <context context-type="linenumber">280</context>
         </context-group>
       </trans-unit>
       <trans-unit id="iconsSidebar.unexpectedError" datatype="html">
@@ -15714,7 +15738,7 @@
         <target state="translated">Se produjo un error inesperado. Vuelva a intentarlo más tarde!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
-          <context context-type="linenumber">278</context>
+          <context context-type="linenumber">284</context>
         </context-group>
       </trans-unit>
       <trans-unit id="iconsSidebar.workspaceIsNotAvailable" datatype="html">
@@ -15722,7 +15746,7 @@
         <target state="translated">Su espacio de trabajo no está disponible, comuníquese con su administrador.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
-          <context context-type="linenumber">311</context>
+          <context context-type="linenumber">317</context>
         </context-group>
       </trans-unit>
       <trans-unit id="iconsSidebar.hi" datatype="html">
@@ -15730,7 +15754,7 @@
         <target state="translated">Hi <x id="PH" equiv-text="res['user']['first_name']"/>,  ¡bienvenido de vuelta a tu workplace!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
-          <context context-type="linenumber">326</context>
+          <context context-type="linenumber">332</context>
         </context-group>
       </trans-unit>
       <trans-unit id="iconsSidebar.oopsErrorSigningIn" datatype="html">
@@ -15738,7 +15762,7 @@
         <target state="translated">Vaya, se ha producido un error al iniciar sesión. Inténtalo de nuevo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/icons-sidebar/icons-sidebar.component.ts</context>
-          <context context-type="linenumber">333</context>
+          <context context-type="linenumber">339</context>
         </context-group>
       </trans-unit>
       <trans-unit id="mobileNavbar.errorFetchingProfile" datatype="html">
@@ -15854,7 +15878,7 @@
         <target state="translated">Mi espacio</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">44</context>
+          <context context-type="linenumber">45</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.groups" datatype="html">
@@ -15862,7 +15886,7 @@
         <target state="translated">Groupos</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">53</context>
+          <context context-type="linenumber">54</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.portfolios" datatype="html">
@@ -15870,7 +15894,7 @@
         <target state="translated">Portafolio</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">76</context>
+          <context context-type="linenumber">77</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.collections" datatype="html">
@@ -15878,7 +15902,7 @@
         <target state="translated">Colecciones</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">96</context>
+          <context context-type="linenumber">97</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.exploreWork" datatype="html">
@@ -15886,7 +15910,7 @@
         <target state="translated">Workplace</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">133</context>
+          <context context-type="linenumber">134</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.administration" datatype="html">
@@ -15894,7 +15918,7 @@
         <target state="translated">Administración</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">145</context>
+          <context context-type="linenumber">146</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.myAccount" datatype="html">
@@ -15902,7 +15926,7 @@
         <target state="translated">Mi cuenta</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">161</context>
+          <context context-type="linenumber">162</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.signOut" datatype="html">
@@ -15910,7 +15934,7 @@
         <target state="translated">Cerrar sesión</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">173</context>
+          <context context-type="linenumber">174</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.workspace" datatype="html">
@@ -15918,7 +15942,7 @@
         <target state="translated">Workspace</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">114</context>
+          <context context-type="linenumber">116</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.pleaseWaitWhileLogOut" datatype="html">
@@ -15926,7 +15950,7 @@
         <target state="translated">Espere mientras lo desconectamos de forma segura ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">182</context>
+          <context context-type="linenumber">184</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.successfullyLogOut" datatype="html">
@@ -15934,7 +15958,7 @@
         <target state="translated">¡Desconectado exitosamente!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">189</context>
+          <context context-type="linenumber">191</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.errorWhileLogOut" datatype="html">
@@ -15942,11 +15966,11 @@
         <target state="translated">¡Ocurrió un error al cerrar la sesión! ¡Inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">192</context>
+          <context context-type="linenumber">194</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">197</context>
+          <context context-type="linenumber">199</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.pleaseWaitSignYouIn" datatype="html">
@@ -15954,7 +15978,7 @@
         <target state="translated">Espere mientras lo registramos ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">234</context>
+          <context context-type="linenumber">236</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.unexpectedError" datatype="html">
@@ -15962,7 +15986,7 @@
         <target state="translated">Se produjo un error inesperado. Vuelva a intentarlo más tarde!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">238</context>
+          <context context-type="linenumber">240</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.workspaceIsNotAvailable" datatype="html">
@@ -15970,7 +15994,7 @@
         <target state="translated">Su espacio de trabajo no está disponible, comuníquese con su administrador.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">290</context>
+          <context context-type="linenumber">296</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.hi" datatype="html">
@@ -15978,7 +16002,7 @@
         <target state="translated">Hola, <x id="PH" equiv-text="res['user']['first_name']"/>, bienvenido de nuevo a tu lugar de trabajo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">305</context>
+          <context context-type="linenumber">311</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.oopsErrorSigningIn" datatype="html">
@@ -15986,7 +16010,7 @@
         <target state="translated">Vaya, se ha producido un error al iniciar sesión. Inténtalo de nuevo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">312</context>
+          <context context-type="linenumber">318</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userAccountNavbar.edit" datatype="html">
@@ -18461,33 +18485,29 @@
           <context context-type="linenumber">153</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="fileDetailsDialog.cfSearchPlaceholder" datatype="html">
+        <source>Search</source>
+        <target state="translated">Buscar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
+          <context context-type="linenumber">64</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="fileDetailsDialog.plesaeWaitWeAreUpdaing" datatype="html">
         <source>Please wait we are updating the contents...</source>
         <target state="translated">Espere, estamos actualizando el contenido...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">200</context>
+          <context context-type="linenumber">203</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">232</context>
+          <context context-type="linenumber">235</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileDetailsDialog.detailsUpdated" datatype="html">
         <source>Details updated!</source>
         <target state="translated">¡Detalles actualizados!</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">210</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">238</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="fileDetailsDialog.unableToUpdateDetails" datatype="html">
-        <source>Unable to update the details, please try again!</source>
-        <target state="translated">No se pueden actualizar los detalles. Vuelve a intentarlo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
           <context context-type="linenumber">213</context>
@@ -18497,12 +18517,24 @@
           <context context-type="linenumber">241</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="fileDetailsDialog.unableToUpdateDetails" datatype="html">
+        <source>Unable to update the details, please try again!</source>
+        <target state="translated">No se pueden actualizar los detalles. Vuelve a intentarlo.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
+          <context context-type="linenumber">216</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
+          <context context-type="linenumber">244</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="fileDetailsDialog.pleaseWaitWeAreDeleting" datatype="html">
         <source>Please wait we are deleting the file...</source>
         <target state="translated">Espere, estamos eliminando el fichero...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">251</context>
+          <context context-type="linenumber">254</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileDetailsDialog.fileDeleted" datatype="html">
@@ -18510,7 +18542,7 @@
         <target state="translated">¡Fichero eliminado!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">259</context>
+          <context context-type="linenumber">262</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileDetailsDialog.unableToDeleteFile" datatype="html">
@@ -18518,7 +18550,7 @@
         <target state="translated">No se puede eliminar el archivo, inténtelo de nuevo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">261</context>
+          <context context-type="linenumber">264</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileVersions.newVersion" datatype="html">
@@ -19022,7 +19054,7 @@
         <target state="translated">Añadir entrada</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/new-time-tracking-dialog/new-time-tracking-dialog.component.html</context>
-          <context context-type="linenumber">51</context>
+          <context context-type="linenumber">54</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newTimeTrackingDialog.cancel" datatype="html">
@@ -19030,7 +19062,7 @@
         <target state="translated">X Cancelar</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/new-time-tracking-dialog/new-time-tracking-dialog.component.html</context>
-          <context context-type="linenumber">55</context>
+          <context context-type="linenumber">58</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newTimeTrackingDialog.alreadyHasTTE" datatype="html">
@@ -19038,7 +19070,7 @@
         <target state="translated">El usuario ya tiene tiempo para esta tarea en <x id="INTERPOLATION" equiv-text="{{ formateDate(entryDate) }}"/> para la categoría que seleccionaste.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/new-time-tracking-dialog/new-time-tracking-dialog.component.html</context>
-          <context context-type="linenumber">61</context>
+          <context context-type="linenumber">64</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newTimeTrackingDialog.commentPlaceHolder" datatype="html">
@@ -19046,7 +19078,15 @@
         <target state="translated">Commentario</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/new-time-tracking-dialog/new-time-tracking-dialog.component.ts</context>
-          <context context-type="linenumber">40</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newTimeTrackingDialog.taskSearchPlaceholder" datatype="html">
+        <source>Search Task</source>
+        <target state="translated">Buscar Tarea</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/new-time-tracking-dialog/new-time-tracking-dialog.component.ts</context>
+          <context context-type="linenumber">43</context>
         </context-group>
       </trans-unit>
       <trans-unit id="passwordStrength.lowerCase" datatype="html">
@@ -19170,19 +19210,19 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
-          <context context-type="linenumber">336</context>
+          <context context-type="linenumber">342</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
-          <context context-type="linenumber">456</context>
+          <context context-type="linenumber">462</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
-          <context context-type="linenumber">603</context>
+          <context context-type="linenumber">609</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
-          <context context-type="linenumber">664</context>
+          <context context-type="linenumber">670</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-dates/post-dates.component.ts</context>
@@ -19198,7 +19238,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
-          <context context-type="linenumber">686</context>
+          <context context-type="linenumber">692</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.postDeleted" datatype="html">
@@ -19210,7 +19250,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
-          <context context-type="linenumber">694</context>
+          <context context-type="linenumber">700</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.unableToDeletePost" datatype="html">
@@ -19222,7 +19262,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
-          <context context-type="linenumber">696</context>
+          <context context-type="linenumber">702</context>
         </context-group>
       </trans-unit>
       <trans-unit id="globalNorthStarStats.updated" datatype="html">
@@ -19282,7 +19322,7 @@
         <target state="translated">Espere, estamos actualizando el contenido...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/crm-lead-card/crm-lead-card.component.ts</context>
-          <context context-type="linenumber">189</context>
+          <context context-type="linenumber">185</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmLeadCard.detailsUpdated" datatype="html">
@@ -19290,7 +19330,7 @@
         <target state="translated">¡Detalles actualizados!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/crm-lead-card/crm-lead-card.component.ts</context>
-          <context context-type="linenumber">195</context>
+          <context context-type="linenumber">191</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmLeadCard.unableToUpdateDetails" datatype="html">
@@ -19298,7 +19338,7 @@
         <target state="translated">No se pueden actualizar los detalles. ¡Vuelve a intentarlo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/crm-lead-card/crm-lead-card.component.ts</context>
-          <context context-type="linenumber">198</context>
+          <context context-type="linenumber">194</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.save" datatype="html">
@@ -19451,6 +19491,14 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.html</context>
           <context context-type="linenumber">420</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupCreatePostDialog.cfSearchPlaceholder" datatype="html">
+        <source>Search</source>
+        <target state="translated">Buscar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.ts</context>
+          <context context-type="linenumber">110</context>
         </context-group>
       </trans-unit>
       <trans-unit id="northStar.northStar" datatype="html">
@@ -20534,19 +20582,12 @@
         </context-group>
       </trans-unit>
       <trans-unit id="taskTimeTrackingList.time" datatype="html">
-        <source> Time </source>
-        <target state="translated">Tiempo</target>
+        <source> Time spent</source>
+        <target state="translated">Tiempo empleado</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/task-time-tracking/task-time-tracking-list/task-time-tracking-list.component.html</context>
           <context context-type="linenumber">20</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="taskTimeTrackingList.comment" datatype="html">
-        <source> Comment </source>
-        <target state="translated">Commentario</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/task-time-tracking/task-time-tracking-list/task-time-tracking-list.component.html</context>
-          <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTimeTrackingList.date" datatype="html">
@@ -20554,7 +20595,15 @@
         <target state="translated">Fecha</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/task-time-tracking/task-time-tracking-list/task-time-tracking-list.component.html</context>
-          <context context-type="linenumber">36</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="taskTimeTrackingList.comment" datatype="html">
+        <source> Comment </source>
+        <target state="translated">Commentario</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/task-time-tracking/task-time-tracking-list/task-time-tracking-list.component.html</context>
+          <context context-type="linenumber">35</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTimeTrackingList.category" datatype="html">
@@ -20562,7 +20611,7 @@
         <target state="translated">categoría</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/task-time-tracking/task-time-tracking-list/task-time-tracking-list.component.html</context>
-          <context context-type="linenumber">44</context>
+          <context context-type="linenumber">45</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTimeTrackingList.edit" datatype="html">
@@ -20570,7 +20619,7 @@
         <target state="translated">Editar</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/task-time-tracking/task-time-tracking-list/task-time-tracking-list.component.html</context>
-          <context context-type="linenumber">60</context>
+          <context context-type="linenumber">61</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTimeTrackingList.delete" datatype="html">
@@ -20578,7 +20627,7 @@
         <target state="translated">Eliminar</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/task-time-tracking/task-time-tracking-list/task-time-tracking-list.component.html</context>
-          <context context-type="linenumber">64</context>
+          <context context-type="linenumber">65</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTimeTrackingList.areYouSure" datatype="html">
@@ -20586,7 +20635,7 @@
         <target state="translated">¿Estás seguro?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/task-time-tracking/task-time-tracking-list/task-time-tracking-list.component.ts</context>
-          <context context-type="linenumber">87</context>
+          <context context-type="linenumber">83</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTimeTrackingList.removeCompany" datatype="html">
@@ -20594,7 +20643,7 @@
         <target state="translated">¡Al hacer esto, eliminará el tiempo seleccionado!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/task-time-tracking/task-time-tracking-list/task-time-tracking-list.component.ts</context>
-          <context context-type="linenumber">87</context>
+          <context context-type="linenumber">83</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTimeTracking.cancel" datatype="html">
@@ -20602,7 +20651,7 @@
         <target state="translated">X Cancelar</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/task-time-tracking/task-time-tracking.component.html</context>
-          <context context-type="linenumber">50</context>
+          <context context-type="linenumber">48</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTimeTracking.close" datatype="html">
@@ -20610,7 +20659,7 @@
         <target state="translated">X Cerrar</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/task-time-tracking/task-time-tracking.component.html</context>
-          <context context-type="linenumber">51</context>
+          <context context-type="linenumber">49</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTimeTracking.alreadyHasTTE" datatype="html">
@@ -20618,7 +20667,7 @@
         <target state="translated">El usuario ya tiene tiempo para esta tarea en <x id="INTERPOLATION" equiv-text="{{ formateDate(entryDate) }}"/> para la categoría que seleccionaste.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/task-time-tracking/task-time-tracking.component.html</context>
-          <context context-type="linenumber">57</context>
+          <context context-type="linenumber">55</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTimeTracking.commentPlaceHolder" datatype="html">
@@ -20626,7 +20675,7 @@
         <target state="translated">Comentario</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/task-time-tracking/task-time-tracking.component.ts</context>
-          <context context-type="linenumber">42</context>
+          <context context-type="linenumber">43</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTimeTracking.pleaseWait" datatype="html">
@@ -20634,7 +20683,7 @@
         <target state="translated">Espere, estamos actualizando la hora...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/task-time-tracking/task-time-tracking.component.ts</context>
-          <context context-type="linenumber">173</context>
+          <context context-type="linenumber">172</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTimeTracking.timeEdited" datatype="html">
@@ -20642,7 +20691,7 @@
         <target state="translated">¡Tiempo Editado!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/task-time-tracking/task-time-tracking.component.ts</context>
-          <context context-type="linenumber">186</context>
+          <context context-type="linenumber">185</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTimeTracking.unableToEdited" datatype="html">
@@ -20650,7 +20699,7 @@
         <target state="translated">¡No se puede editar el Tiempo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/task-time-tracking/task-time-tracking.component.ts</context>
-          <context context-type="linenumber">190</context>
+          <context context-type="linenumber">189</context>
         </context-group>
       </trans-unit>
       <trans-unit id="multipleAssignments.unassigned" datatype="html">
@@ -25134,7 +25183,7 @@
         <target state="translated">Suscripción pendiente</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/utility-service/utility.service.ts</context>
-          <context context-type="linenumber">301</context>
+          <context context-type="linenumber">302</context>
         </context-group>
       </trans-unit>
       <trans-unit id="utilityService.daysTrialLeft" datatype="html">
@@ -25142,7 +25191,7 @@
         <target state="translated">Quedan <x id="PH" equiv-text="timeRemaining"/> días de prueba.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/utility-service/utility.service.ts</context>
-          <context context-type="linenumber">302</context>
+          <context context-type="linenumber">303</context>
         </context-group>
       </trans-unit>
       <trans-unit id="utilityService.noRightToOpenPost" datatype="html">
@@ -25150,7 +25199,7 @@
         <target state="translated">No tiene derechos para acceder a la publicación. ¡Contacta con el Gerente!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/utility-service/utility.service.ts</context>
-          <context context-type="linenumber">386</context>
+          <context context-type="linenumber">387</context>
         </context-group>
       </trans-unit>
       <trans-unit id="utilityService.areYouSure" datatype="html">
@@ -25158,7 +25207,7 @@
         <target state="translated">¿Estás seguro?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/utility-service/utility.service.ts</context>
-          <context context-type="linenumber">513</context>
+          <context context-type="linenumber">514</context>
         </context-group>
       </trans-unit>
       <trans-unit id="utilityService.youWontRevert" datatype="html">
@@ -25166,7 +25215,7 @@
         <target state="translated">¡No podrá revertir esto!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/utility-service/utility.service.ts</context>
-          <context context-type="linenumber">514</context>
+          <context context-type="linenumber">515</context>
         </context-group>
       </trans-unit>
       <trans-unit id="utilityService.yesSure" datatype="html">
@@ -25174,7 +25223,7 @@
         <target state="translated">¡Sí, estoy seguro!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/utility-service/utility.service.ts</context>
-          <context context-type="linenumber">519</context>
+          <context context-type="linenumber">520</context>
         </context-group>
       </trans-unit>
     </body>

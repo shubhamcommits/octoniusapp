@@ -2551,9 +2551,6 @@ export class GroupController {
      */
     async saveTimeTrackingEntry(req: Request, res: Response, next: NextFunction) {
 
-        // Fetch the groupId
-        const { groupId } = req.params;
-
         // Fetch the newTimeTrackingEntity from fileHandler middleware
         let newTimeTrackingEntity = req.body['newTimeTrackingEntity'];
         newTimeTrackingEntity._created_by = req['userId'];
@@ -2579,7 +2576,19 @@ export class GroupController {
                         }}
                     }).lean();
             } else {
-                timeTrackingEntity = await TimeTrackingEntity.create(newTimeTrackingEntity);
+               const newEntity = {
+                    _user: newTimeTrackingEntity?._user,
+                    _task: newTimeTrackingEntity?._task,
+                    _category: newTimeTrackingEntity?._category,
+                    times: [{
+                        date: newTimeTrackingEntity?.date,
+                        hours: newTimeTrackingEntity?.hours,
+                        minutes: newTimeTrackingEntity?.minutes,
+                        comment: newTimeTrackingEntity?.comment,
+                    }],
+                };
+
+                timeTrackingEntity = await TimeTrackingEntity.create(newEntity);
             }
 
             timeTrackingEntity = await TimeTrackingEntity.findById({

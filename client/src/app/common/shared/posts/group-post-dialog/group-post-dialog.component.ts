@@ -106,6 +106,9 @@ export class GroupPostDialogComponent implements OnInit, AfterViewChecked {
 
   myWorkplace = false;
 
+  cfSearchText = '';
+  cfSearchPlaceholder = $localize`:@@groupCreatePostDialog.cfSearchPlaceholder:Search`;
+
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
 

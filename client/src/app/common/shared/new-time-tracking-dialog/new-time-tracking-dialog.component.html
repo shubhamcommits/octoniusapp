@@ -7,8 +7,12 @@
     <div class="row">
       <div class="col-md-12">
         <h2 *ngIf="!!tte">{{ entryTask?.title }}</h2>
-        <mat-select ngDefaultControl appearance="fill" class="form-control" *ngIf="!tte" [(ngModel)]="entryTask"  (selectionChange)="onTaskSelected()">
-          <mat-option *ngFor="let task of userTasks" [value]="task">{{ task.title }}</mat-option>
+        <mat-select ngDefaultControl appearance="fill" class="form-control" *ngIf="!tte" [(ngModel)]="entryTask"
+          (openedChange)="taskSearchText = ''" (selectionChange)="onTaskSelected()">
+          <input type="text"(openedChange)="taskSearchText = ''"  class="form-control" id="search-text" aria-describedby="search-text" [(ngModel)]="taskSearchText"
+            [placeholder]="taskSearchPlaceholder" autofocus
+            (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+          <mat-option *ngFor="let task of userTasks | appFilter: taskSearchText" [value]="task">{{ task.title }}</mat-option>
         </mat-select>
       </div>
     </div>
@@ -24,10 +28,8 @@
         <div class="form-control">
           <i class="material-icons-outlined muted">timer</i>
 
-          <input type="time" style="border: none;"
-            name="entryTime" min="00:00" max="24:00"
-            [disabled]="!entryTaskId || !!tte"
-            (blur)="getTime($event)" [(ngModel)]="entryTime" />
+          <app-time-input style="border: none;" [value]="entryTime" [canEdit]="true"
+            (timeEvent)="getTime($event)"></app-time-input>
         </div>
       </div>
 
