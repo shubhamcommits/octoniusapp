@@ -157,11 +157,12 @@
               <mat-select ngDefaultControl *ngIf="!cf.input_type"
                   [(value)]="selectedCFValues[cf.name]"
                   [disabled]="!canEdit"
+                  (openedChange)="cfSearchText = ''"
                   (selectionChange)="onCustomFieldChange($event, cf.name)"
                   appearance="fill"
                   class="col">
                   <mat-select-trigger>{{ selectedCFValues[cf.name] }}</mat-select-trigger>
-                  <input type="email" class="form-control" id="search-text" aria-describedby="search-text" [(ngModel)]="cfSearchText"
+                  <input type="text" class="form-control" id="search-text" aria-describedby="search-text" [(ngModel)]="cfSearchText"
                       [placeholder]="cfSearchPlaceholder" autofocus (click)="$event.stopPropagation()"
                       (keydown)="$event.stopPropagation()" (blur)="cfSearchText = ''">
                   <mat-option *ngFor="let val of cf.values | appFilter: cfSearchText" [value]="val">{{ val }}</mat-option>

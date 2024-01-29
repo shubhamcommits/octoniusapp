@@ -7,10 +7,11 @@
     <div class="row">
       <div class="col-md-12">
         <h2 *ngIf="!!tte">{{ entryTask?.title }}</h2>
-        <mat-select ngDefaultControl appearance="fill" class="form-control" *ngIf="!tte" [(ngModel)]="entryTask"  (selectionChange)="onTaskSelected()">
-          <input type="email" class="form-control" id="search-text" aria-describedby="search-text" [(ngModel)]="taskSearchText"
+        <mat-select ngDefaultControl appearance="fill" class="form-control" *ngIf="!tte" [(ngModel)]="entryTask"
+          (openedChange)="taskSearchText = ''" (selectionChange)="onTaskSelected()">
+          <input type="text"(openedChange)="taskSearchText = ''"  class="form-control" id="search-text" aria-describedby="search-text" [(ngModel)]="taskSearchText"
             [placeholder]="taskSearchPlaceholder" autofocus
-            (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()" (blur)="taskSearchText = ''">
+            (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
           <mat-option *ngFor="let task of userTasks | appFilter: taskSearchText" [value]="task">{{ task.title }}</mat-option>
         </mat-select>
       </div>

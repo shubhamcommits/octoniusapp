@@ -105,6 +105,8 @@ export class NewTimeTrackingDialogComponent implements OnInit {
   }
 
   async onTaskSelected() {
+    this.taskSearchText = '';
+
     if (!!this.entryTask) {
       this.entryTaskId = this.entryTask._id;
       this.entryGroupId = this.entryTask._group._id || this.entryTask._group;
@@ -119,6 +121,11 @@ export class NewTimeTrackingDialogComponent implements OnInit {
         this.categories = res['categories'];
       });
     }
+  }
+
+  onBlurTaskSelection($event) {
+console.log($event);
+console.log(this.userTasks);
   }
 
   saveEntry() {

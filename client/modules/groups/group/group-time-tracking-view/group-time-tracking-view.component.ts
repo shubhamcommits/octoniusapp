@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, Input, OnChanges, SimpleChanges, OnDestroy, LOCALE_ID } from '@angular/core';
+import { Component, OnInit, Injector, Input, OnChanges, SimpleChanges, OnDestroy, LOCALE_ID, ViewChild } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { DateTime, Interval } from 'luxon';
 import { MatDialog } from '@angular/material/dialog';
@@ -6,6 +6,8 @@ import { BehaviorSubject } from 'rxjs';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { NewTimeTrackingDialogComponent } from 'src/app/common/shared/new-time-tracking-dialog/new-time-tracking-dialog.component';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { MatPaginator } from '@angular/material/paginator';
+// import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-group-time-tracking-view',
@@ -18,12 +20,15 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
   @Input() endDate: any;
   @Input() filterUserId: any;
   
+  // @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+  
   groupData: any;
   userData: any;
 
   // timeTrackingEntities = [];
   timeTrackingEntitiesMapped = [];
   dataSource = [];
+  // dataSource = new MatTableDataSource<any>();
 
   //date for calendar Nav
   dates: any = [];
@@ -128,9 +133,10 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
 
   buildDataSource() {
     this.dataSource = this.groupBy(this.timeTrackingEntitiesMapped, this.reducedGroups);
+    // this.dataSource.paginator = this.paginator;
   }
 
-  groupBy(data: any[], reducedGroups?: any[]){
+  groupBy(data: any[], reducedGroups?: any[]) {
     let collapsedGroups = reducedGroups;
     if(!reducedGroups) collapsedGroups = [];
 

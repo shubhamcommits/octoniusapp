@@ -24,7 +24,7 @@
       <div class="users-card">
         <div class="form-group">
           <label for="search-text" *ngIf="type != 'filter'" i18n="@@approvalActions.assignee">Assignee</label>
-          <input type="email" class="form-control" id="search-text" aria-describedby="search-text" [(ngModel)]="searchText"
+          <input type="text" class="form-control" id="search-text" aria-describedby="search-text" [(ngModel)]="searchText"
             placeholder="Search group member" autofocus
             (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
         </div>
