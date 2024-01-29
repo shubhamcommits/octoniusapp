@@ -1,1 +1,1 @@
-<input type="text" id="time" [(ngModel)]="value" (input)="updateTime()" (blur)="onBlurEvent()" />
+<input type="text" [(ngModel)]="value" (input)="updateTime($event)" (blur)="onBlurEvent()" />

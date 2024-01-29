@@ -13,7 +13,7 @@ export class TimeInputComponent implements OnInit {
   // Output time event emitter
   @Output() timeEvent = new EventEmitter();
 
-  @ViewChild('inputElement') inputElement: ElementRef;
+  // @ViewChild('inputElement') inputElement: ElementRef;
 
   // SEPARATOR_CHARACTER = ':';
 
@@ -22,13 +22,14 @@ export class TimeInputComponent implements OnInit {
   ngOnInit() {
   }
 
-  updateTime() {
+  updateTime($event) {
     const splitValues = this.splitTime();
     let hours = (!!splitValues && !!splitValues.hours) ? splitValues.hours : '';
     let minutes = (!!splitValues && !!splitValues.minutes) ? splitValues.minutes : '';
 
     // Format and update the input field
     this.value = `${hours || '00'}:${minutes || '00'}`;
+    $event.target.value = this.value;
   }
 
   onBlurEvent() {
