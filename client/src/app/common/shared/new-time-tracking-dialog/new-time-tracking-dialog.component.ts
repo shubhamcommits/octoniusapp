@@ -4,7 +4,6 @@ import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
-import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-new-time-tracking-dialog',
@@ -38,7 +37,10 @@ export class NewTimeTrackingDialogComponent implements OnInit {
   userTasks = [];
   categories = [];
 
+  taskSearchText = '';
+
   commentPlaceholder = $localize`:@@newTimeTrackingDialog.commentPlaceHolder:Comment`;
+  taskSearchPlaceholder = $localize`:@@newTimeTrackingDialog.taskSearchPlaceholder:Search Task`;
 
   timeTrackingEntities = [];
   timeTrackingEntitiesMapped = [];

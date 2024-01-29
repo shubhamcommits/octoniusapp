@@ -27,6 +27,9 @@ export class FilterPipe implements PipeTransform {
       } else if (!!it.name) {
         // searching on company entity
         return it.name.toLocaleLowerCase().includes(searchText);
+      } else if (!!it.title) {
+        // searching on task entity
+        return it.title.toLocaleLowerCase().includes(searchText);
       }
     });
   }
