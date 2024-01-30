@@ -365,7 +365,7 @@ export class GroupService {
   async editTimeTimeTrackingEntity(editTimeTrackingEntityId: string, timeId: string, editTimeTrackingEntity: any) {
     let tte;
     if (!!timeId && !timeId.includes('octonius_random')) {
-      if (editTimeTrackingEntity?.hours != '00' && editTimeTrackingEntity?.minutes != '00') {
+      if (editTimeTrackingEntity?.hours != '00' || editTimeTrackingEntity?.minutes != '00') {
         tte = await TimeTrackingEntity.findByIdAndUpdate({
             _id: editTimeTrackingEntityId
           }, {
@@ -391,7 +391,7 @@ export class GroupService {
         ]}).lean();
 
         if (!!tmpTTE) {
-          if (editTimeTrackingEntity?.hours != '00' && editTimeTrackingEntity?.minutes != '00') {
+          if (editTimeTrackingEntity?.hours != '00' || editTimeTrackingEntity?.minutes != '00') {
             tte = await TimeTrackingEntity.findOneAndUpdate({
                 _id: tmpTTE._id
               }, {
@@ -423,7 +423,7 @@ export class GroupService {
               .populate('_created_by', 'first_name last_name profile_pic email')
               .lean();
           }
-        } else if (editTimeTrackingEntity?.hours != '00' && editTimeTrackingEntity?.minutes != '00') {
+        } else if (editTimeTrackingEntity?.hours != '00' || editTimeTrackingEntity?.minutes != '00') {
           tte = await TimeTrackingEntity.create({
               _user: editTimeTrackingEntity?._user,
               _task: editTimeTrackingEntity?._task,

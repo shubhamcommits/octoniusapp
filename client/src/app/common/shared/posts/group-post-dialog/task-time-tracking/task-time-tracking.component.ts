@@ -124,7 +124,7 @@ export class TaskTimeTrackingComponent implements OnChanges {
       this.entryAlreadyExists = (index >= 0);
     }
 
-    return !this.showAddTimeForm || (!!this.entryDate && !!this.entryTime && this.entryTimeHours && !!this.entryTimeMinutes && !!this.entryCategory && !this.entryAlreadyExists);
+    return !this.showAddTimeForm || (!!this.entryDate && !!this.entryTime && this.entryTimeHours && !!this.entryTimeMinutes && !this.entryAlreadyExists);
   }
 
   saveEntry(propertyEdited?: string) {

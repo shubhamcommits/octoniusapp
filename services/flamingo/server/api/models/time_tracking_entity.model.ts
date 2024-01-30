@@ -16,7 +16,7 @@ const TimeTrackingEntitySchema = new Schema({
     _category: {
         type: String,
         default: null,
-        required: true
+        required: false
     },
     times: [{
         date: {

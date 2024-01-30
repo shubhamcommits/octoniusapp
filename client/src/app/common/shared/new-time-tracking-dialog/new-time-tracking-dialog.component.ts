@@ -101,7 +101,7 @@ export class NewTimeTrackingDialogComponent implements OnInit {
       this.entryAlreadyExists = (index >= 0);
     }
 
-    return (!!this.entryDate && !!this.entryTime && this.entryTimeHours && !!this.entryTimeMinutes && !!this.entryCategory && !this.entryAlreadyExists);
+    return (!!this.entryDate && !!this.entryTime && this.entryTimeHours && !!this.entryTimeMinutes && !this.entryAlreadyExists);
   }
 
   async onTaskSelected() {
@@ -123,22 +123,15 @@ export class NewTimeTrackingDialogComponent implements OnInit {
     }
   }
 
-  onBlurTaskSelection($event) {
-console.log($event);
-console.log(this.userTasks);
-  }
-
   saveEntry() {
     const newEntity = {
       _user: this.entryUserId,
       _task: this.entryTaskId,
       _category: this.entryCategory,
-      times: [{
-        date: this.entryDate,
-        hours: this.entryTimeHours,
-        minutes: this.entryTimeMinutes,
-        comment: this.entryComment,
-      }],
+      date: this.entryDate,
+      hours: this.entryTimeHours,
+      minutes: this.entryTimeMinutes,
+      comment: this.entryComment,
     };
 
     this.groupService.saveTimeTrackingEntry(this.entryGroupId, newEntity).then(async (res: any) => {
