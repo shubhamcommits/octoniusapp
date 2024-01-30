@@ -128,12 +128,10 @@ export class NewTimeTrackingDialogComponent implements OnInit {
       _user: this.entryUserId,
       _task: this.entryTaskId,
       _category: this.entryCategory,
-      times: [{
-        date: this.entryDate,
-        hours: this.entryTimeHours,
-        minutes: this.entryTimeMinutes,
-        comment: this.entryComment,
-      }],
+      date: this.entryDate,
+      hours: this.entryTimeHours,
+      minutes: this.entryTimeMinutes,
+      comment: this.entryComment,
     };
 
     this.groupService.saveTimeTrackingEntry(this.entryGroupId, newEntity).then(async (res: any) => {
