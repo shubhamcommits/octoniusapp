@@ -52,7 +52,7 @@
         <td mat-cell *matCellDef="let tte">
           <span [id]="'span_' + getTimeId(tte.times, dates[0])" (click)="displayHideInput(getTimeId(tte.times, dates[0]))">{{ getTime(tte.times, dates[0]) }}</span>
           <app-time-input [id]="'input_' + getTimeId(tte.times, dates[0])" style="display: none; border: none;"
-            [value]="entryTime" [canEdit]="true" (timeEvent)="onTimeInputChange($event, tte, dates[0], getTimeId(tte.times, dates[0]))"></app-time-input>
+            [value]="getTime(tte.times, dates[0])" [canEdit]="true" (timeEvent)="onTimeInputChange($event, tte, dates[0], getTimeId(tte.times, dates[0]))"></app-time-input>
         </td>
       </ng-container>
     
@@ -64,7 +64,7 @@
         <td mat-cell *matCellDef="let tte">
           <span [id]="'span_' + getTimeId(tte.times, dates[1])" (click)="displayHideInput(getTimeId(tte.times, dates[1]))">{{ getTime(tte.times, dates[1]) }}</span>
           <app-time-input [id]="'input_' + getTimeId(tte.times, dates[1])" style="display: none; border: none;"
-            [value]="entryTime" [canEdit]="true" (timeEvent)="onTimeInputChange($event, tte, dates[1], getTimeId(tte.times, dates[1]))"></app-time-input>
+            [value]="getTime(tte.times, dates[1])" [canEdit]="true" (timeEvent)="onTimeInputChange($event, tte, dates[1], getTimeId(tte.times, dates[1]))"></app-time-input>
         </td>
       </ng-container>
     
@@ -76,7 +76,7 @@
         <td mat-cell *matCellDef="let tte">
           <span [id]="'span_' + getTimeId(tte.times, dates[2])" (click)="displayHideInput(getTimeId(tte.times, dates[2]))">{{ getTime(tte.times, dates[2]) }}</span>
           <app-time-input [id]="'input_' + getTimeId(tte.times, dates[2])" style="display: none; border: none;"
-            [value]="entryTime" [canEdit]="true" (timeEvent)="onTimeInputChange($event, tte, dates[2], getTimeId(tte.times, dates[2]))"></app-time-input>
+            [value]="getTime(tte.times, dates[2])" [canEdit]="true" (timeEvent)="onTimeInputChange($event, tte, dates[2], getTimeId(tte.times, dates[2]))"></app-time-input>
         </td>
       </ng-container>
     
@@ -88,7 +88,7 @@
         <td mat-cell *matCellDef="let tte">
           <span [id]="'span_' + getTimeId(tte.times, dates[3])" (click)="displayHideInput(getTimeId(tte.times, dates[3]))">{{ getTime(tte.times, dates[3]) }}</span>
           <app-time-input [id]="'input_' + getTimeId(tte.times, dates[3])" style="display: none; border: none;"
-            [value]="entryTime" [canEdit]="true" (timeEvent)="onTimeInputChange($event, tte, dates[3], getTimeId(tte.times, dates[3]))"></app-time-input>
+            [value]="getTime(tte.times, dates[3])" [canEdit]="true" (timeEvent)="onTimeInputChange($event, tte, dates[3], getTimeId(tte.times, dates[3]))"></app-time-input>
         </td>
       </ng-container>
     
@@ -100,7 +100,7 @@
         <td mat-cell *matCellDef="let tte">
           <span [id]="'span_' + getTimeId(tte.times, dates[4])" (click)="displayHideInput(getTimeId(tte.times, dates[4]))">{{ getTime(tte.times, dates[4]) }}</span>
           <app-time-input [id]="'input_' + getTimeId(tte.times, dates[4])" style="display: none; border: none;"
-            [value]="entryTime" [canEdit]="true" (timeEvent)="onTimeInputChange($event, tte, dates[4], getTimeId(tte.times, dates[4]))"></app-time-input>
+            [value]="getTime(tte.times, dates[4])" [canEdit]="true" (timeEvent)="onTimeInputChange($event, tte, dates[4], getTimeId(tte.times, dates[4]))"></app-time-input>
         </td>
       </ng-container>
     
@@ -112,7 +112,7 @@
         <td mat-cell *matCellDef="let tte">
           <span [id]="'span_' + getTimeId(tte.times, dates[5])" (click)="displayHideInput(getTimeId(tte.times, dates[5]))">{{ getTime(tte.times, dates[5]) }}</span>
           <app-time-input [id]="'input_' + getTimeId(tte.times, dates[5])" style="display: none; border: none;"
-            [value]="entryTime" [canEdit]="true" (timeEvent)="onTimeInputChange($event, tte, dates[5], getTimeId(tte.times, dates[5]))"></app-time-input>
+            [value]="getTime(tte.times, dates[5])" [canEdit]="true" (timeEvent)="onTimeInputChange($event, tte, dates[5], getTimeId(tte.times, dates[5]))"></app-time-input>
         </td>
       </ng-container>
     
@@ -124,7 +124,7 @@
         <td mat-cell *matCellDef="let tte">
           <span [id]="'span_' + getTimeId(tte.times, dates[6])" (click)="displayHideInput(getTimeId(tte.times, dates[6]))">{{ getTime(tte.times, dates[6]) }}</span>
           <app-time-input [id]="'input_' + getTimeId(tte.times, dates[6])" style="display: none; border: none;"
-            [value]="entryTime" [canEdit]="true" (timeEvent)="onTimeInputChange($event, tte, dates[6], getTimeId(tte.times, dates[6]))"></app-time-input>
+            [value]="getTime(tte.times, dates[6])" [canEdit]="true" (timeEvent)="onTimeInputChange($event, tte, dates[6], getTimeId(tte.times, dates[6]))"></app-time-input>
         </td>
       </ng-container>
     
