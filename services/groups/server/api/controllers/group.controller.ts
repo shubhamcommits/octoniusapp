@@ -2586,6 +2586,7 @@ export class GroupController {
                         minutes: newTimeTrackingEntity?.minutes,
                         comment: newTimeTrackingEntity?.comment,
                     }],
+                    _created_by: newTimeTrackingEntity._created_by
                 };
 
                 timeTrackingEntity = await TimeTrackingEntity.create(newEntity);

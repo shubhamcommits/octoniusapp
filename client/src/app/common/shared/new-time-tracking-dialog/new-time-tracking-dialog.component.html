@@ -37,6 +37,7 @@
         <span *ngIf="!!tte">{{ entryCategory }}</span>
         <mat-select *ngIf="!tte" ngDefaultControl appearance="fill" class="form-control"
           [disabled]="!categories || categories.length == 0 || !entryTaskId" [(ngModel)]="entryCategory">
+          <mat-option value=""></mat-option>
           <mat-option *ngFor="let category of categories" [value]="category.name">{{ category.name }}</mat-option>
         </mat-select>
       </div>

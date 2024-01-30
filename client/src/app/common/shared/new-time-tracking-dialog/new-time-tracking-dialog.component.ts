@@ -101,7 +101,7 @@ export class NewTimeTrackingDialogComponent implements OnInit {
       this.entryAlreadyExists = (index >= 0);
     }
 
-    return (!!this.entryDate && !!this.entryTime && this.entryTimeHours && !!this.entryTimeMinutes && !!this.entryCategory && !this.entryAlreadyExists);
+    return (!!this.entryDate && !!this.entryTime && this.entryTimeHours && !!this.entryTimeMinutes && !this.entryAlreadyExists);
   }
 
   async onTaskSelected() {
@@ -121,11 +121,6 @@ export class NewTimeTrackingDialogComponent implements OnInit {
         this.categories = res['categories'];
       });
     }
-  }
-
-  onBlurTaskSelection($event) {
-console.log($event);
-console.log(this.userTasks);
   }
 
   saveEntry() {
