@@ -216,4 +216,13 @@ export class PortfolioService {
       }
     }).toPromise();
   }
+
+  getPortfolioTimeTrackingEntites(portfolioId: string, startDate: any, endDate: any) {
+    return this._http.get(this.baseURL + `/${portfolioId}/time-tracking-entities`, {
+      params: {
+        startDate: startDate,
+        endDate: endDate
+      }
+    }).toPromise();
+  }
 }

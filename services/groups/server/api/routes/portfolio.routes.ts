@@ -79,6 +79,9 @@ routes.get('/:portfolioId/tasks-next-week', portfolio.getNextWeekTasks);
 // GET - Fetches future tasks
 routes.get('/:portfolioId/tasks-future', portfolio.getFutureTasks);
 
+// GET - Get the time tracking entities of a group for a time period
+routes.get('/:portfolioId/time-tracking-entities', portfolio.getPortfolioTimeTrackingEntites);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================
