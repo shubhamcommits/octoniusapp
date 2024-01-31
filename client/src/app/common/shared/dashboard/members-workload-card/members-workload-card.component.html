@@ -56,9 +56,13 @@
                  <span class="muted mr-2" i18n="@@membersWorkloadCard.totalTasks"> Total tasks</span>
                  <span class="badge">{{ workload.numTasks }}</span>
 
-                <div class="allocation" *ngIf="groupData?.resource_management_allocation && groupData?.enable_allocation">
+                <!-- <div class="allocation" *ngIf="groupData?.resource_management_allocation && groupData?.enable_allocation"> -->
+                <div class="allocation">
                   <i  class="material-icons">update</i> &nbsp;&nbsp;
-                  <span>{{ workload.allocation || 0 }}h</span>
+                  <!-- <span>{{ workload.allocation || 0 }}h</span> -->
+                  <span>{{ workload.hours || '0' }}h</span>
+                  &nbsp;
+                  <span>{{ workload.minutes || '0' }}m</span>
                 </div>
 
                 <div class="tasks-list">

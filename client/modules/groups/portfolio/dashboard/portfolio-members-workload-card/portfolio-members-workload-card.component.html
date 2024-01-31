@@ -72,7 +72,10 @@
 
                 <div class="allocation">
                   <i  class="material-icons">update</i> &nbsp;&nbsp;
-                  <span>{{ workload.allocation || 0 }}h</span>
+                  <!-- <span>{{ workload.allocation || 0 }}h</span> -->
+                  <span>{{ workload.hours || '0' }}h</span>
+                  &nbsp;
+                  <span>{{ workload.minutes || '0' }}m</span>
                 </div>
 
                 <div class="tasks-list">

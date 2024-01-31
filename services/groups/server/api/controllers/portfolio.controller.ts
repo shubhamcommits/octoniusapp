@@ -1,4 +1,4 @@
-import { Column, Group, Portfolio, Post, User } from '../models';
+import { Column, Group, Portfolio, Post, TimeTrackingEntity, User } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError } from '../../utils';
 import moment from 'moment';
@@ -935,7 +935,6 @@ export class PortfolioController {
             // Generate the +14days from today time
             const todayPlus14Days = moment().add(14, 'days').endOf('day').format('YYYY-MM-DD');
 
-            // Only groups where user is manager
             const portfolio = await Portfolio.findOne({ _id: portfolioId })
                 .select('_groups')
                 .lean() || [];
@@ -980,4 +979,96 @@ export class PortfolioController {
             return sendError(res, new Error(err), 'Internal Server Error!', 500);
         }
     }
+
+    /**
+     * This function fetches the time tracking entities of a user with a date between specific dates
+     * @param req
+     */
+    async getPortfolioTimeTrackingEntites(req: Request, res: Response) {
+        try {
+
+            const { portfolioId } = req.params;
+            const { query: { startDate, endDate, filterUserId } } = req;
+
+            const portfolio = await Portfolio.findOne({ _id: portfolioId })
+                .select('_groups')
+                .lean() || [];
+
+            let groupTasks = await Post.find({
+                $and: [
+                    { _group: { $in: portfolio?._groups }},
+                    { type: 'task' }
+                ]
+            }).select('_id').lean() || [];
+
+            groupTasks = groupTasks.map(post => post._id);
+
+            let timeTrackingEntities = [];
+            if ((!!startDate && startDate != 'null') && (!!endDate && endDate != 'null')) {
+                timeTrackingEntities = await TimeTrackingEntity.find({
+                    $and: [
+                        { _task: { $in: groupTasks }},
+                        { times: {
+                                $elemMatch: { 
+                                    $and: [
+                                        { date: { $gte: startDate, $lte: endDate }},
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                });
+            } else if ((!!startDate && startDate != 'null') && (!endDate || endDate == 'null')) {
+                timeTrackingEntities = await TimeTrackingEntity.find({
+                    $and: [
+                        { _task: { $in: groupTasks }},
+                        { times: {
+                                $elemMatch: 
+                                    { date: { $gte: startDate }}
+                            }
+                        }
+                    ]
+                });
+            } else if ((!startDate || startDate == 'null') && (!!endDate && endDate != 'null')) {
+                timeTrackingEntities = await TimeTrackingEntity.find({
+                    $and: [
+                        { _task: { $in: groupTasks }},
+                        { times: {
+                                $elemMatch:
+                                    { date: { $lte: endDate }},
+                            }
+                        }
+                    ]
+                });
+            } else {
+                timeTrackingEntities = await TimeTrackingEntity.find({
+                    _task: { $in: groupTasks }
+                });
+            }
+
+            timeTrackingEntities = await TimeTrackingEntity.populate(timeTrackingEntities, [
+                    {
+                        path: '_task',
+                        select: 'title _group',
+                        populate: {
+                            path: '_group',
+                            model: 'Group',
+                            select: 'group_name group_avatar'
+                        }
+                    },
+                    { path: '_user', select: 'first_name last_name profile_pic email' },
+                    { path: '_created_by', select: 'first_name last_name profile_pic email' }
+                ]);
+
+            // timeTrackingEntities = timeTrackingEntities.filter(tte => !!tte.times && tte.times.length > 0);
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Time Tracking Entities found!',
+                timeTrackingEntities: timeTrackingEntities
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
 }

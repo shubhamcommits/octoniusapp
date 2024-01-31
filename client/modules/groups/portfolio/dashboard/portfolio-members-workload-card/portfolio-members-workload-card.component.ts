@@ -6,8 +6,9 @@ import { PortfolioService } from 'src/shared/services/portfolio-service/portfoli
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PortfolioUserWorkloadDialogComponent } from '../../portfolio-user-workload-dialog/portfolio-user-workload-dialog.component';
-import { DateTime } from 'luxon';
+import { DateTime, Interval } from 'luxon';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
+import { GroupService } from 'src/shared/services/group-service/group.service';
 
 @Component({
   selector: 'app-portfolio-members-workload-card',
@@ -35,10 +36,10 @@ export class PortfolioMembersWorkloadCardComponent implements OnChanges {
   constructor(
     private portfolioService: PortfolioService,
     private userService: UserService,
+    public utilityService: UtilityService,
+    private hrService: HRService,
     private injector: Injector,
     public dialog: MatDialog,
-    public utilityService: UtilityService,
-    private hrService: HRService
   ) { }
 
   async ngOnChanges() {
@@ -72,6 +73,31 @@ export class PortfolioMembersWorkloadCardComponent implements OnChanges {
       tasks = res['posts'];
     });
 
+    let timeTrackingEntitiesMapped = [];
+    await this.portfolioService.getPortfolioTimeTrackingEntites(this.portfolioData?._id, this.dates[0].toISODate(), this.dates[this.dates.length -1].toISODate()).then(async res => {
+      timeTrackingEntitiesMapped = [];
+        const interval = Interval.fromDateTimes(this.dates[0], this.dates[this.dates.length -1]);
+        res['timeTrackingEntities'].forEach(tte => {
+          tte?.times?.forEach(time => {
+            let tteMapped = {
+              _id: tte._id,
+              _user: tte._user,
+              _task: tte._task,
+              _category: tte._category,
+              timeId: time._id,
+              date: time.date,
+              hours: time.hours,
+              minutes: time.minutes,
+              comment: time.comment,
+            };
+
+            timeTrackingEntitiesMapped.push(tteMapped);
+          });
+        });
+        timeTrackingEntitiesMapped = [...timeTrackingEntitiesMapped];
+        timeTrackingEntitiesMapped = timeTrackingEntitiesMapped.filter(tte => (tte.hours !== '00' || tte.minutes !== '00') && interval.contains(DateTime.fromISO(tte.date)));
+    });
+
     let holidays = [];
     const membersIds = this.portfolioGroupsMembers.map(member => {return member._id});
     await this.hrService.getMembersOff(membersIds, this.dates[0], this.dates[this.dates.length - 1]).then(res => {
@@ -92,6 +118,8 @@ export class PortfolioMembersWorkloadCardComponent implements OnChanges {
           numTasks: 0,
           numDoneTasks: 0,
           allocation: 0,
+          hours: '0',
+          minutes: '0',
           outOfTheOfficeClass: '',
           overdue_tasks: 0,
           done_tasks: 0,
@@ -116,20 +144,36 @@ export class PortfolioMembersWorkloadCardComponent implements OnChanges {
         const tasksTmp = await memberTasks.filter(post => {return this.isSameDay(date, DateTime.fromISO(post.task.due_to)) });
         workloadDay.numTasks = tasksTmp.length;
 
-        if (tasksTmp && tasksTmp.length > 0) {
-          const allocationTasks = tasksTmp.map(post => post?.task?.allocation || 0);
+        let hours = 0;
+        let minutes = 0;
+        const tteMappedFiltered = timeTrackingEntitiesMapped.filter(tte => tte?._user?._id == member?._id && this.isSameDay(new DateTime(date), DateTime.fromISO(tte.date)));
+        tteMappedFiltered.forEach(tte => {
+          hours += parseInt(tte.hours) || 0;
+          minutes += parseInt(tte.minutes) || 0;
 
-          workloadDay.allocation = allocationTasks
-            .reduce((a, b) => {
-              return a + b;
-            });
+          if (!!minutes && minutes > 59) {
+            minutes = minutes - 60;
+            hours = hours + 1;
+          }
+        });
+
+        workloadDay.hours = hours + '';
+        workloadDay.minutes = minutes + '';
+
+        if (tasksTmp && tasksTmp.length > 0) {
+          // const allocationTasks = tasksTmp.map(post => post?.task?.allocation || 0);
+
+          // workloadDay.allocation = allocationTasks
+          //   .reduce((a, b) => {
+          //     return a + b;
+          //   });
 
           // filter done/to do/in progress tasks count
           workloadDay.numDoneTasks = tasksTmp.filter(post => { return post.task.status == 'done'; }).length;
           workloadDay.todo_tasks = tasksTmp.filter(post => { return post?.task?.status == 'to do'}).length;
           workloadDay.inprogress_tasks = tasksTmp.filter(post => { return post?.task?.status == 'in progress'}).length;
         } else {
-          workloadDay.allocation = 0;
+          // workloadDay.allocation = 0;
           workloadDay.numDoneTasks = 0;
           workloadDay.todo_tasks = 0;
           workloadDay.inprogress_tasks = 0;
