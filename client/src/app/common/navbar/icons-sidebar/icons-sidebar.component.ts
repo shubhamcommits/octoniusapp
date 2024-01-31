@@ -309,7 +309,6 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
             this.authService.signout().subscribe(async (res) => {
               this.clearUserData();
               this.socketService.disconnectSocket();
-              this.router.navigate(['/home']);
             });
           });
 
@@ -319,7 +318,6 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
                 this.authService.signout().subscribe((res) => {
                   this.clearUserData();
                   this.socketService.disconnectSocket();
-                  this.router.navigate(['/home']);
                 });
               }
             });
@@ -330,11 +328,10 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
               const navbar = document.getElementById('pageWorkspacesSubmenu');
               navbar?.classList.remove('show');
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@iconsSidebar.hi:Hi ${res['user']['first_name']}, welcome back to your workplace!`));
-              this.router.navigate(['/home']);
             }, 500);
           }
 
-          window.location.reload();
+          this.router.navigate(['/dashboard', 'myspace', 'inbox']).then(() => window.location.reload());
         }, (err) => {
           reject(this.utilityService.rejectAsyncPromise($localize`:@@iconsSidebar.oopsErrorSigningIn:Oops some error occurred while signing you in, please try again!`))
       }));
