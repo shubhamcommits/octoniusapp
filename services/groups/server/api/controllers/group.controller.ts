@@ -2828,7 +2828,7 @@ export class GroupController {
 
             const { groupId } = req.params;
             const { query: { startDate, endDate, filterUserId } } = req;
-
+console.log(startDate, endDate);
             let groupTasks = await Post.find({
                 $and: [
                     { _group: groupId },

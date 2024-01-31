@@ -102,7 +102,6 @@ export class MembersWorkloadCardComponent implements OnInit {
     });
 
     this.groupMembers.forEach(async member => {
-
       member.workload = [];
 
       // filter member´s tasks
@@ -140,19 +139,16 @@ export class MembersWorkloadCardComponent implements OnInit {
 
         let hours = 0;
         let minutes = 0;
-        const indexTT = (!!timeTrackingEntitiesMapped && timeTrackingEntitiesMapped.length > 0)
-          ? timeTrackingEntitiesMapped.findIndex(tte => tte?._user?._id == member?._id && this.isSameDay(new DateTime(date), new DateTime(tte.date)))
-          : -1;
-
-        if (indexTT >= 0) {
-          hours += parseInt(timeTrackingEntitiesMapped[indexTT].hours) || 0;
-          minutes += parseInt(timeTrackingEntitiesMapped[indexTT].minutes) || 0;
+        const tteMappedFiltered = timeTrackingEntitiesMapped.filter(tte => tte?._user?._id == member?._id && this.isSameDay(new DateTime(date), DateTime.fromISO(tte.date)));
+        tteMappedFiltered.forEach(tte => {
+          hours += parseInt(tte.hours) || 0;
+          minutes += parseInt(tte.minutes) || 0;
 
           if (!!minutes && minutes > 59) {
             minutes = minutes - 60;
             hours = hours + 1;
           }
-        }
+        });
 
         workloadDay.hours = hours + '';
         workloadDay.minutes = minutes + '';
