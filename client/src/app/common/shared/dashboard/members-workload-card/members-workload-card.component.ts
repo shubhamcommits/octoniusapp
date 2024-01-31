@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { DateTime } from 'luxon';
+import { DateTime, Interval } from 'luxon';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
 
 @Component({
@@ -76,12 +76,37 @@ export class MembersWorkloadCardComponent implements OnInit {
       holidays = res['holidays'];
     });
 
+    let timeTrackingEntitiesMapped = [];
+    await this.groupService.getGroupTimeTrackingEntites(this.groupId, this.dates[0].toISODate(), this.dates[this.dates.length -1].toISODate(), null).then(async res => {
+      timeTrackingEntitiesMapped = [];
+        const interval = Interval.fromDateTimes(this.dates[0], this.dates[this.dates.length -1]);
+        res['timeTrackingEntities'].forEach(tte => {
+          tte?.times?.forEach(time => {
+            let tteMapped = {
+              _id: tte._id,
+              _user: tte._user,
+              _task: tte._task,
+              _category: tte._category,
+              timeId: time._id,
+              date: time.date,
+              hours: time.hours,
+              minutes: time.minutes,
+              comment: time.comment,
+            };
+
+            timeTrackingEntitiesMapped.push(tteMapped);
+          });
+        });
+        timeTrackingEntitiesMapped = [...timeTrackingEntitiesMapped];
+        timeTrackingEntitiesMapped = timeTrackingEntitiesMapped.filter(tte => (tte.hours !== '00' || tte.minutes !== '00') && interval.contains(DateTime.fromISO(tte.date)));
+    });
+
     this.groupMembers.forEach(async member => {
 
       member.workload = [];
 
       // filter member´s tasks
-      const memberTasks = tasks.filter(post => { return post._assigned_to.includes(member?._id); });
+      const memberTasks = tasks.filter(post => post._assigned_to.includes(member?._id));
 
       this.dates.forEach(async date => {
         let workloadDay = {
@@ -91,6 +116,8 @@ export class MembersWorkloadCardComponent implements OnInit {
           numTasks: 0,
           numDoneTasks: 0,
           allocation: 0,
+          hours: '0',
+          minutes: '0',
           outOfTheOfficeClass: '',
           overdue_tasks: 0,
           done_tasks: 0,
@@ -108,25 +135,44 @@ export class MembersWorkloadCardComponent implements OnInit {
             });
         }
 
-        const tasksTmp = await memberTasks.filter(post => {return this.isSameDay(new DateTime(date), DateTime.fromISO(post.task.due_to)) });
+        const tasksTmp = await memberTasks.filter(post => this.isSameDay(new DateTime(date), DateTime.fromISO(post.task.due_to)));
         workloadDay.numTasks = tasksTmp.length;
 
-        if (tasksTmp && tasksTmp.length > 0) {
-          if (this.groupData.enable_allocation && this.groupData.resource_management_allocation) {
-            const allocationTasks = tasksTmp.map(post => post?.task?.allocation || 0);
+        let hours = 0;
+        let minutes = 0;
+        const indexTT = (!!timeTrackingEntitiesMapped && timeTrackingEntitiesMapped.length > 0)
+          ? timeTrackingEntitiesMapped.findIndex(tte => tte?._user?._id == member?._id && this.isSameDay(new DateTime(date), new DateTime(tte.date)))
+          : -1;
 
-            workloadDay.allocation = allocationTasks
-              .reduce((a, b) => {
-                return a + b;
-              });
+        if (indexTT >= 0) {
+          hours += parseInt(timeTrackingEntitiesMapped[indexTT].hours) || 0;
+          minutes += parseInt(timeTrackingEntitiesMapped[indexTT].minutes) || 0;
+
+          if (!!minutes && minutes > 59) {
+            minutes = minutes - 60;
+            hours = hours + 1;
           }
+        }
+
+        workloadDay.hours = hours + '';
+        workloadDay.minutes = minutes + '';
+
+        if (tasksTmp && tasksTmp.length > 0) {
+          // if (this.groupData.enable_allocation && this.groupData.resource_management_allocation) {
+          //   const allocationTasks = tasksTmp.map(post => post?.task?.allocation || 0);
+
+          //   workloadDay.allocation = allocationTasks
+          //     .reduce((a, b) => {
+          //       return a + b;
+          //     });
+          // }
 
           // filter done/to do/in progress tasks count
           workloadDay.numDoneTasks = tasksTmp.filter(post => { return post.task.status == 'done'; }).length;
           workloadDay.todo_tasks = tasksTmp.filter(post => { return post?.task?.status == 'to do'}).length;
           workloadDay.inprogress_tasks = tasksTmp.filter(post => { return post?.task?.status == 'in progress'}).length;
         } else {
-          workloadDay.allocation = 0;
+          // workloadDay.allocation = 0;
           workloadDay.numDoneTasks = 0;
           workloadDay.todo_tasks = 0;
           workloadDay.inprogress_tasks = 0;

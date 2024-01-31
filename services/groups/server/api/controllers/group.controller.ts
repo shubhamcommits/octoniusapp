@@ -2830,7 +2830,10 @@ export class GroupController {
             const { query: { startDate, endDate, filterUserId } } = req;
 
             let groupTasks = await Post.find({
-                _group: groupId
+                $and: [
+                    { _group: groupId },
+                    { type: 'task' }
+                ]
             }).select('_id').lean() || [];
 
             groupTasks = groupTasks.map(post => post._id);
