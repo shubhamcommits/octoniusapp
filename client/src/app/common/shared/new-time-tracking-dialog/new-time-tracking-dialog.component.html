@@ -28,7 +28,7 @@
         <div class="form-control">
           <i class="material-icons-outlined muted">timer</i>
 
-          <app-time-input style="border: none;" [value]="entryTime" [canEdit]="true"
+          <app-time-input style="border: none;" [value]="entryTime" [canEdit]="!!entryTaskId && !tte"
             (timeEvent)="getTime($event)"></app-time-input>
         </div>
       </div>
