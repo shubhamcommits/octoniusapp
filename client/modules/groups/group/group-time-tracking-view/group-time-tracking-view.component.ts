@@ -19,6 +19,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
   @Input() startDate: any;
   @Input() endDate: any;
   @Input() filterUserId: any;
+  @Input() exportData: any;
   
   // @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   
@@ -72,6 +73,10 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
 
     if (!!changes.filterUserData && !!changes.filterUserData.currentValue) {
       this.filterUserId = changes.filterUserData.currentValue;
+    }
+
+    if (!!changes.exportData && changes.exportData.currentValue != changes.exportData.previousValue) {
+      this.exportTimes('excel');
     }
 
     await this.initView();
@@ -270,86 +275,6 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
     this.endDate = (!!this.endDate && this.endDate?.isValid && !change) ? this.endDate : this.currentDate.endOf(this.periodView);
   }
 
-  // isSameDay(day1: DateTime, day2: DateTime) {
-  //   if (!day1 && !day2) {
-  //     return true;
-  //   } else if ((!!day1 && !day2) || (!!day2 && !day1)) {
-  //     return true;
-  //   }
-  //   return day1.startOf('day').toMillis() === day2.startOf('day').toMillis();
-  // }
-
-  // getTime(times, date) {
-  //   const index = (!!times) ? times.findIndex(tte => this.isSameDay(DateTime.fromISO(tte.date), date)) : -1;
-  //   if (index >= 0) {
-  //     return times[index].hours + ':' + times[index].minutes;
-  //   } else {
-  //     return '00:00';
-  //   }
-  // }
-
-  // getTimeId(times, date) {
-  //   const index = (!!times) ? times.findIndex(tte => this.isSameDay(DateTime.fromISO(tte.date), date)) : -1;
-  //   if (index >= 0) {
-  //     return times[index]._id;
-  //   }
-  //   return '';
-  // }
-
-  // displayHideInput(id: string) {
-  //   if (document.getElementById('input_' + id).style.display == 'none') {
-  //     document.getElementById('input_' + id).parentElement.style.border = '2px solid #005fd5';
-  //     document.getElementById('input_' + id).style.display = 'block';
-  //     document.getElementById('input_' + id).focus();
-  //     document.getElementById('span_' + id).style.display = 'none';
-  //   } else {
-  //     document.getElementById('input_' + id).parentElement.style.border = '1px solid #0000001f';
-  //     document.getElementById('input_' + id).style.display = 'none';
-  //     document.getElementById('span_' + id).style.display = 'block';
-  //   }
-  // }
-
-  // onTimeInputChange($event, tte: any, date: any, timeId: string) {
-  //   if (!!this.entryTime) {
-  //     const time = this.entryTime.split(':');
-  //     const entryTimeHours = time[0];
-  //     const entryTimeMinutes = time[1];
-
-  //     const index = (tte.times) ? tte.times.findIndex(t => this.isSameDay(DateTime.fromISO(t.date), date)) : -1;
-
-  //     let editedEntity = {
-  //       _id: tte._id,
-  //       _user: this.userData?._id,
-  //       _task: tte._task._id || tte._task,
-  //       _category: tte._category,
-  //       timeId: tte.times[index]._id || '',
-  //       date: date,
-  //       hours: entryTimeHours,
-  //       minutes: entryTimeMinutes,
-  //       comment: tte.times[index].comment || '',
-  //     }
-
-  //     this.utilityService.asyncNotification($localize`:@@timesheets.pleaseWait:Please wait we are updating the time...`, new Promise((resolve, reject) => {
-  //       this.groupService.editTimeTrackingEntry(editedEntity, 'time')
-  //         .then(async (res: any) => {
-  //           if (!res.error) {
-  //             this.displayHideInput(timeId);
-
-  //             this.entryTime = '00:00';
-
-  //             await this.generateNavDates();
-
-  //             resolve(this.utilityService.resolveAsyncPromise($localize`:@@timesheets.timeEdited:Time Edited!`));
-  //           } else {
-  //             reject(this.utilityService.rejectAsyncPromise($localize`:@@timesheets.unableToEdited:Unable to edit Time!`));
-  //           }
-  //         });
-  //     }))
-  //   } else {
-  //     this.displayHideInput(timeId);
-  //   }
-  // }
-
   openTimeTrackingDetails(tte: any) {
     const data = {
       tte: tte
@@ -363,13 +288,38 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
       data: data,
     });
 
-    // const newTimeEventSubs = dialogRef.componentInstance.newTimeEvent.subscribe(async (data) => {
-    //   await this.generateNavDates();
-    // });
-
     dialogRef.afterClosed().subscribe(async result => {
-      // newTimeEventSubs.unsubscribe();
     });
+  }
+
+  async exportTimes(exportType: string) {
+    if (!!this.groupData && !!this.dataSource) {
+      const dataToExport = await this.dataSource.map(tte => {
+        if (tte.isGroup) {
+          return {
+            user: tte.userName,
+            task: tte.totalTasks,
+            date: '',
+            hours: tte?.totalHours,
+            minutes: tte?.totalMinutes,
+            category: '',
+            comment: '',
+          }
+        } else {
+          return {
+            user: '',
+            task: tte?._task?.title,
+            date: this.formateDate(tte?.date),
+            hours: tte?.hours,
+            minutes: tte?.minutes,
+            category: tte?._category,
+            comment: tte?.comment,
+          }
+        }
+      });
+      this.groupService.exportTasksToFile(exportType, dataToExport, this.groupData?.group_name + '_times');
+      this.utilityService.updateIsLoadingSpinnerSource(false);
+    }
   }
   
   formateDate(date) {
