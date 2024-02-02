@@ -155,7 +155,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
       this.isDependent = true;
     }
 
-    this.estimation = this.postData?.task?.estimation.hours + ':' + this.postData?.task?.estimation.minutes;
+    this.estimation = (this.postData?.task?.estimation?.hours || '00') + ':' + (this.postData?.task?.estimation?.minutes || '00');
 
     this.parentTask = await this.isParent();
 
