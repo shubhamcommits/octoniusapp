@@ -820,8 +820,8 @@ export class GroupPostDialogComponent implements OnInit, AfterViewChecked {
     this.taskClonnedEvent.emit($event);
   }
 
-  onAllocationChanged(allocation) {
-    this.postData.task.allocation = allocation;
+  onEstimationChanged(estimation) {
+    this.postData.task.estimation = estimation;
   }
 
   /**

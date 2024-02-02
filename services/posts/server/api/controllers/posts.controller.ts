@@ -1803,26 +1803,26 @@ export class PostController {
     }
 
     /**
-     * This function is responsible for changing the task allocation
+     * This function is responsible for changing the task estimation
      * @param req 
      * @param res 
      * @param next 
      */
-    async saveAllocation(req: Request, res: Response, next: NextFunction) {
+    async saveEstimation(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { params: { postId }, body: { allocation } } = req;
+        const { params: { postId }, body: { estimation } } = req;
         const userId = req['userId'];
 
         // Call Service function to change the assignee
-        const post = await postService.saveAllocation(postId, userId, +allocation)
+        const post = await postService.saveEstimation(postId, userId, +estimation)
             .catch((err) => {
                 return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
             })
 
         // Send status 200 response
         return res.status(200).json({
-            message: 'Task allocation updated!',
+            message: 'Task estimation updated!',
             post: post
         });
     }

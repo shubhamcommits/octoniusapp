@@ -105,8 +105,8 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
       groupId: this.groupData._id,
       groupProjectType: this.groupData.project_type,
       selectedWidgets: this.groupData.selected_widgets,
-      resource_management_allocation: this.groupData.resource_management_allocation,
-      groupEnableAllocation: this.groupData.enable_allocation,
+      // resource_management_allocation: this.groupData.resource_management_allocation,
+      // groupEnableAllocation: this.groupData.enable_allocation,
       custom_fields: this.groupData.custom_fields,
       numGroupMembers: ((this.groupData?._admins?.length || 0) + (this.groupData?._members?.length || 0)),
       isIndividualSubscription: this.isIndividualSubscription
@@ -130,9 +130,9 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
       });
     });
 
-    const enableAllocationEventSubs = dialogRef.componentInstance.enableAllocationEvent.subscribe((data) => {
-      this.groupData.resource_management_allocation = data;
-    });
+    // const enableAllocationEventSubs = dialogRef.componentInstance.enableAllocationEvent.subscribe((data) => {
+    //   this.groupData.resource_management_allocation = data;
+    // });
 
     const closeEventSubs = dialogRef.componentInstance.cancelEvent.subscribe(async (data) => {
       this.groupData.selected_widgets = data;
@@ -146,7 +146,7 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
 
 
     dialogRef.afterClosed().subscribe(result => {
-      enableAllocationEventSubs.unsubscribe();
+      // enableAllocationEventSubs.unsubscribe();
       saveEventSubs.unsubscribe();
       closeEventSubs.unsubscribe();
     });

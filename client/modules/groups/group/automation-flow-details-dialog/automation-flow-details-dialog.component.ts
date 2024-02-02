@@ -85,8 +85,8 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
     }
 
     this.groupData = await this.publicFunctions.getCurrentGroupDetails();
-    if (this.groupData.enable_allocation) {
-      this.actionOptions.push('Set Time Allocation to');
+    if (this.groupData.enable_estimation) {
+      this.actionOptions.push('Set Time Estimation to');
     }
 
     // GETTING USER DATA FROM THE SHARED SERVICE
@@ -314,8 +314,8 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
         this.flowSteps[stepIndex].action[actionIndex].due_date_value = value;
         break;
 
-      case 'allocation':
-        this.flowSteps[stepIndex].action[actionIndex].allocation = value;
+      case 'estimation':
+        this.flowSteps[stepIndex].action[actionIndex].estimation = value;
         break;
 
       default:

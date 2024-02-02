@@ -316,8 +316,6 @@ export class GroupService {
 
   /**
    * This function is used to obtain all the tasks of a group of users in specific dates
-   * @param allocation
-   * @param postId
    */
   getGroupTasksBetweenDays(groupId: string, startDate: any, endDate: any) {
     return this._http.get(this.baseURL + `/${groupId}/tasks-between-days`, {

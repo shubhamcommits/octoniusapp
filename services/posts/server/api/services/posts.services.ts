@@ -3565,19 +3565,19 @@ export class PostService {
   }
 
   /**
-   * This function is responsible for changing the task dates
+   * This function is responsible for changing the task estimation
    * @param postId
-   * @param date_field
-   * @param newDate
+   * @param userId
+   * @param estimation
    */
-  async saveAllocation(postId: string, userId: string, allocation: number) {
+  async saveEstimation(postId: string, userId: string, estimation: number) {
 
     try {
       // Get post data
       var post: any = await Post.findOneAndUpdate({
         _id: postId
       }, {
-        "task.allocation": allocation
+        "task.estimation": estimation
       }, {
         new: true
       });
@@ -3587,10 +3587,10 @@ export class PostService {
       }, {
         $push: {
           "logs": {
-            action: 'save_allocation',
+            action: 'save_estimation',
             action_date: moment().format(),
             _actor: userId,
-            allocation: allocation
+            estimation: estimation
           }
         }
       },
@@ -3758,9 +3758,9 @@ export class PostService {
                   }
                 }
                 break;
-            case 'Set Time Allocation to':
+            case 'Set Time Estimation to':
                 if (shuttleIndex < 0) {
-                  post = await this.saveAllocation(post._id, userId, action?.allocation);
+                  post = await this.saveEstimation(post._id, userId, action?.estimation);
                 }
                 break;
             default:

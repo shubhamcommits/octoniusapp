@@ -558,7 +558,7 @@ export class PortfolioController {
                         { 'task.due_to': { $gte: startDate, $lte: endDate} }
                     ]
                 })
-                .select('task.status task.due_to _assigned_to task.allocation')
+                .select('task.status task.due_to _assigned_to task.estimation')
                 .lean() || [];
 
             // Send the status 200 response

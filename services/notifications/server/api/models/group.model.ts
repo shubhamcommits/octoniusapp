@@ -67,10 +67,10 @@ const GroupSchema = new Schema({
         type: Boolean,
         default: false,
     },
-    enable_allocation: {
-        type: Boolean,
-        default: false,
-    },
+    // enable_allocation: {
+    //     type: Boolean,
+    //     default: false,
+    // },
     project_status: {
         type: String,
         enum: ['ON TRACK', 'NOT STARTED', 'IN DANGER', 'ACHIEVED']
@@ -143,10 +143,10 @@ const GroupSchema = new Schema({
         type: [String],
         enum: ['WORK_STATISTICS', 'WORKLOAD', 'VELOCITY', 'ENGAGEMENT', 'KPI_PERFORMANCE', 'RESOURCE_MANAGEMENT', 'CF_TABLE', 'TOP_SOCIAL']
     },
-    resource_management_allocation: {
-        type: Boolean,
-        default: true,
-    },
+    // resource_management_allocation: {
+    //     type: Boolean,
+    //     default: true,
+    // },
     background_color: {
         type: String
     },

@@ -34,7 +34,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   @Output() dependencyTaskSelectedEmitter = new EventEmitter();
   @Output() taskClonedEmitter = new EventEmitter();
   @Output() taskFromTemplateEmitter = new EventEmitter();
-  @Output() taskAllocationEmitter = new EventEmitter();
+  @Output() taskEstimationEmitter = new EventEmitter();
   @Output() transformIntoNorthStarEmitter = new EventEmitter();
   @Output() transformIntoMilestoneEmitter = new EventEmitter();
   @Output() transformIntoIdeaEmitter = new EventEmitter();
@@ -62,7 +62,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   groupTemplates = [];
   templateAction = '';
 
-  allocation = '';
+  estimation = '';
 
   isIndividualSubscription = true;
 
@@ -154,7 +154,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
       this.isDependent = true;
     }
 
-    this.allocation = this.postData?.task?.allocation;
+    this.estimation = this.postData?.task?.estimation;
 
     this.parentTask = await this.isParent();
 
@@ -540,15 +540,15 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
     })
   }
 
-  allocationChange(event) {
+  estimationChange(event) {
 
-    const allocation = event.target.value;
+    const estimation = event.target.value;
 
     this.utilityService.asyncNotification($localize`:@@taskActions.pleaseWaitWeAreSavingTask:Please wait we are saving the task...`, new Promise((resolve, reject) => {
-      this.postService.saveAllocation(allocation, this.postData?._id)
+      this.postService.saveEstimation(estimation, this.postData?._id)
         .then((res) => {
-          this.allocation = allocation;
-          this.taskAllocationEmitter.emit(allocation);
+          this.estimation = estimation;
+          this.taskEstimationEmitter.emit(estimation);
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskActions.taskSave:👍 Task saved!`));
         })
         .catch((error) => {

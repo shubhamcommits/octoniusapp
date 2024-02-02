@@ -243,8 +243,8 @@ routes.put('/:postId/overwrite-template', postController.overwriteTemplate);
 // POST - Create a task from a template
 routes.post('/create-task-from-template', postController.createTaskFromTemplate);
 
-// PUT - Change task allocation
-routes.put('/:postId/save-allocation', postController.saveAllocation);
+// PUT - Change task estimation
+routes.put('/:postId/save-estimation', postController.saveEstimation);
 
 // PUT - Change post pin/unpin
 routes.put('/:postId/pin-to-top', postController.pinToTop);

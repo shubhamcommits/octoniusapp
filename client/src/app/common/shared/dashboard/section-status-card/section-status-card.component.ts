@@ -38,7 +38,7 @@ export class SectionStatusCardComponent implements OnInit {
     this.sections?.forEach((section: any) => {
       section.percentage = 0;
       section.numTasks = 0;
-      section.allocation = 0;
+      section.estimation = 0;
       section.cost = 0;
     });
 
@@ -83,9 +83,9 @@ export class SectionStatusCardComponent implements OnInit {
         const doneTasks = totalTasks.filter((task) => task.task.status.toLowerCase() === 'done').length;
         section.percentage = (totalTasks.length > 0) ? (doneTasks*100/totalTasks.length) : 100;
 
-        // Calculate the allocation of all tasks in the section (with subtasks)
-        section.allocation = totalTasks
-          .map(task => (task.task.allocation || 0))
+        // Calculate the estimation of all tasks in the section (with subtasks)
+        section.estimation = totalTasks
+          .map(task => (task.task.estimation || 0))
           .reduce((t1, t2) => {
             return t1 + t2;
           });
@@ -99,7 +99,7 @@ export class SectionStatusCardComponent implements OnInit {
               && this.groupData.members_fares[task._assigned_to[0]]) {
             memberFare = this.groupData?.members_fares[task._assigned_to[0]];
           }
-          section.cost += (task.task.allocation || 0) * memberFare;
+          section.cost += (task.task.estimation || 0) * memberFare;
         });
       });
     });

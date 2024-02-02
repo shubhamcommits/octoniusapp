@@ -297,11 +297,11 @@
                   </mat-menu>
                 </div>
 
-                <div *ngIf="action.name === 'Set Time Allocation to' && groupData?.enable_allocation">
-                  <div *ngIf="action.allocation" style="margin-right: 10px;" class="badge-section">
-                    {{ action.allocation }}
+                <div *ngIf="action.name === 'Set Time Estimation to' && groupData?.enable_estimation">
+                  <div *ngIf="action.estimation" style="margin-right: 10px;" class="badge-section">
+                    {{ action.estimation }}
                   </div>
-                  <input *ngIf="!action.allocation" (blur)="actionSelected('allocation', action.allocation, stepIndex, actionIndex)" [name]="action.allocation" [(ngModel)]="action.allocation" type="number"/>
+                  <input *ngIf="!action.estimation" (blur)="actionSelected('estimation', action.estimation, stepIndex, actionIndex)" [name]="action.estimation" [(ngModel)]="action.estimation" type="number"/>
                 </div>
 
               </div>

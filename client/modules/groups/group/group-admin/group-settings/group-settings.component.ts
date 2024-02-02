@@ -28,7 +28,7 @@ export class GroupSettingsComponent implements OnInit {
   // enabledCampaign: boolean;
   switchAgora: boolean = false;
   freezeDates: boolean = false;
-  enableAllocation: boolean = false;
+  // enableAllocation: boolean = false;
 
   groupSections: any = [];
 
@@ -180,16 +180,16 @@ export class GroupSettingsComponent implements OnInit {
             .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
         }
 
-        if (selected.source.name === 'enable_allocation') {
-          this.groupService.saveSettings(this.groupData?._id, {enable_allocation: selected.checked})
-            .then(()=> {
-              this.enableAllocation = selected.checked;
-              this.groupData.enable_allocation = selected.checked;
-              this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
-            })
-            .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
-        }
+        // if (selected.source.name === 'enable_allocation') {
+        //   this.groupService.saveSettings(this.groupData?._id, {enable_allocation: selected.checked})
+        //     .then(()=> {
+        //       this.enableAllocation = selected.checked;
+        //       this.groupData.enable_allocation = selected.checked;
+        //       this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+        //       resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
+        //     })
+        //     .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+        // }
 
         if(selected.source.name === 'enabled_campaign'){
           this.groupService.saveSettings(this.groupData?._id, {enabled_campaign: selected.checked})

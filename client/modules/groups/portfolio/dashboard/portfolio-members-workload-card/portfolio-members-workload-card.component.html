@@ -16,7 +16,7 @@
 
   <div class="row">
     <div class="col-md-12" style="padding: 10px;">
-      <h2 i18n="@@portfolioPortfolioMembersWorkloadCard.workloadAllocation" style="float: left; margin-right: 10px;">Workload allocation</h2>
+      <h2 i18n="@@portfolioPortfolioMembersWorkloadCard.workload" style="float: left; margin-right: 10px;">Workload</h2>
       <!-- <span class="material-icons-outlined" style="cursor: pointer;">info</span> -->
     </div>
   </div>
@@ -70,9 +70,8 @@
                  <span class="muted mr-2" i18n="@@portfolioMembersWorkloadCard.totalTasks"> Total tasks</span>
                  <span class="badge">{{ workload.numTasks }}</span>
 
-                <div class="allocation">
+                <div class="time-tracking">
                   <i  class="material-icons">update</i> &nbsp;&nbsp;
-                  <!-- <span>{{ workload.allocation || 0 }}h</span> -->
                   <span>{{ workload.hours || '0' }}h</span>
                   &nbsp;
                   <span>{{ workload.minutes || '0' }}m</span>

@@ -1677,9 +1677,9 @@ export class PublicFunctions {
                           }
                         }
                         return post;
-                    case 'Set Time Allocation to':
+                    case 'Set Time Estimation to':
                         if (shuttleIndex < 0) {
-                          post.task.allocation = action?.allocation;
+                          post.task.estimation = action?.estimation;
                         }
                         return post;
                     default:

@@ -416,10 +416,6 @@ export class UserService {
     return this._http.put<any>(`${this.BASE_API_URL}/${userId}/saveSelectedWidgets`, {selectedWidgets: selectedWidgets}).toPromise();
   }
 
-  showAllocationWidget(userId: string, settingsData: any) {
-    return this._http.put(this.BASE_API_URL + `/${userId}/showAllocationWidget`,{settingsData}).toPromise();
-  }
-
   /**
    * This function is used to save a custom field value
    * @param userId

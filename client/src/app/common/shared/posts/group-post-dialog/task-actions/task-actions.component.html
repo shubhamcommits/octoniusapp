@@ -91,12 +91,12 @@
     </mat-menu>
   </div>
 
-  <div *ngIf="postData?._assigned_to?.length < 2 && groupData?.enable_allocation && !postData?.task?.is_crm_task" class="set-parent">
+  <div *ngIf="!postData?.task?.is_crm_task" class="set-parent">
       <i class="material-icons">hourglass_top</i>
-      <span i18n="@@taskActions.allocation">ALLOCATION</span>
+      <span i18n="@@taskActions.estimation">ESTIMATION</span>
 
       <!-- INPUT STARTS -->
-      <input type="text" name="allocation" [ngModel]="allocation" (blur)="allocationChange($event)" class="input-search" placeholder="Allocation" />
+      <input type="text" name="estimation" [ngModel]="estimation" (blur)="estimationChange($event)" class="input-search" placeholder="Estimation" />
       <!-- INPUT ENDS -->
   </div>
 
