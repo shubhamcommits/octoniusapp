@@ -3758,7 +3758,7 @@ export class PostService {
                   }
                 }
                 break;
-            case 'Set Time Estimation to':
+            case 'Set Estimation Time to':
                 if (shuttleIndex < 0) {
                   post = await this.saveEstimation(post._id, userId, action?.estimation);
                 }

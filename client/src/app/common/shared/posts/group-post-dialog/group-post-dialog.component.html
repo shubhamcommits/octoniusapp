@@ -473,6 +473,7 @@
           [isCRMLead]="(postData?.task?.is_crm_task) ? postData?.task?.is_crm_task : false"
           [isShuttleTasksModuleAvailable]="isShuttleTasksModuleAvailable"
           [isMilestone]="(postData?.task?.is_milestone) ? postData?.task?.is_milestone : false"
+          [canEdit]="canEdit"
           (parentTaskSelectedEmitter)="onParentTaskSelected($event)"
           (dependencyTaskSelectedEmitter)="onDependencyTaskSelected($event)"
           (taskClonedEmitter)="onTaskClonned($event)"

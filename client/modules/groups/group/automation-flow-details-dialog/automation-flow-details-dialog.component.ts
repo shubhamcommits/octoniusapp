@@ -29,7 +29,7 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
   flowName = '';
 
   triggerOptions = ['Assigned to', 'Custom Field', 'Section is', 'Status is', 'Task is CREATED', 'Subtasks Status', 'Approval Flow is Completed', 'Due date is'];
-  actionOptions = ['Assign to', 'Change Status to', 'Custom Field', 'Move to', 'Set Due date'];
+  actionOptions = ['Assign to', 'Change Status to', 'Custom Field', 'Move to', 'Set Due date', 'Set Estimation Time to'];
   statusOptions = ['to do', 'in progress', 'done'];
   customFields = [];
   customFieldOptions = [];
@@ -86,7 +86,7 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
 
     this.groupData = await this.publicFunctions.getCurrentGroupDetails();
     if (this.groupData.enable_estimation) {
-      this.actionOptions.push('Set Time Estimation to');
+      this.actionOptions.push('Set Estimation Time to');
     }
 
     // GETTING USER DATA FROM THE SHARED SERVICE
@@ -315,7 +315,10 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
         break;
 
       case 'estimation':
-        this.flowSteps[stepIndex].action[actionIndex].estimation = value;
+        const time = value.split(':');
+        const hours = time[0];
+        const minutes = time[1];
+        this.flowSteps[stepIndex].action[actionIndex].estimation = { hours: hours, minutes: minutes };
         break;
 
       default:

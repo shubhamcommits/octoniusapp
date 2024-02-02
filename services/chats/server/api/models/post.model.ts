@@ -240,7 +240,14 @@ const PostSchema = new Schema({
                 type: Number
             },
             estimation: {
-                type: Number
+                hours: {
+                    type: String,
+                    default: null
+                },
+                minutes: {
+                    type: String,
+                    default: null
+                }
             }
         }
     ],
@@ -268,8 +275,14 @@ const PostSchema = new Schema({
             default: 0
         },
         estimation: {
-            type: Number,
-            default: 0
+            hours: {
+                type: String,
+                default: null
+            },
+            minutes: {
+                type: String,
+                default: null
+            }
         },
         // Custom Fields
         custom_fields: {

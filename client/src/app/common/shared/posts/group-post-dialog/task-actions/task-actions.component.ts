@@ -29,6 +29,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   @Input() isIdeaModuleAvailable = false;
   @Input() isCRMLead = false;
   @Input() isShuttleTasksModuleAvailable = false;
+  @Input() canEdit = true;
 
   @Output() parentTaskSelectedEmitter = new EventEmitter();
   @Output() dependencyTaskSelectedEmitter = new EventEmitter();
@@ -154,7 +155,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
       this.isDependent = true;
     }
 
-    this.estimation = this.postData?.task?.estimation;
+    this.estimation = this.postData?.task?.estimation.hours + ':' + this.postData?.task?.estimation.minutes;
 
     this.parentTask = await this.isParent();
 
@@ -540,15 +541,18 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
     })
   }
 
-  estimationChange(event) {
+  estimationChange(timeObject) {
 
-    const estimation = event.target.value;
+    // const estimation = event.target.value;
+    const time = timeObject.split(':');
+    const hours = time[0];
+    const minutes = time[1];
 
     this.utilityService.asyncNotification($localize`:@@taskActions.pleaseWaitWeAreSavingTask:Please wait we are saving the task...`, new Promise((resolve, reject) => {
-      this.postService.saveEstimation(estimation, this.postData?._id)
+      this.postService.saveEstimation({ hours: hours, minutes: minutes }, this.postData?._id)
         .then((res) => {
-          this.estimation = estimation;
-          this.taskEstimationEmitter.emit(estimation);
+          this.estimation = timeObject;
+          this.taskEstimationEmitter.emit(timeObject);
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskActions.taskSave:👍 Task saved!`));
         })
         .catch((error) => {

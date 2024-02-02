@@ -1677,7 +1677,7 @@ export class PublicFunctions {
                           }
                         }
                         return post;
-                    case 'Set Time Estimation to':
+                    case 'Set Estimation Time to':
                         if (shuttleIndex < 0) {
                           post.task.estimation = action?.estimation;
                         }

@@ -297,11 +297,15 @@
                   </mat-menu>
                 </div>
 
-                <div *ngIf="action.name === 'Set Time Estimation to' && groupData?.enable_estimation">
+                <div *ngIf="action.name === 'Set Estimation Time to'">
                   <div *ngIf="action.estimation" style="margin-right: 10px;" class="badge-section">
-                    {{ action.estimation }}
+                    {{ action.estimation.hours }}h
+                    &nbsp;
+                    {{ action.estimation.minutes }}m
                   </div>
-                  <input *ngIf="!action.estimation" (blur)="actionSelected('estimation', action.estimation, stepIndex, actionIndex)" [name]="action.estimation" [(ngModel)]="action.estimation" type="number"/>
+                  <!-- <input *ngIf="!action.estimation" (blur)="actionSelected('estimation', action.estimation, stepIndex, actionIndex)" [name]="action.estimation" [(ngModel)]="action.estimation" type="number"/> -->
+                  <app-time-input *ngIf="!action.estimation" id="estimation" [value]="(action?.estimation?.hours || '00') + ':' + (action?.estimation?.minutes || '00')" canEdit="true"
+                    (timeEvent)="actionSelected('estimation', $event, stepIndex, actionIndex)"></app-time-input>
                 </div>
 
               </div>

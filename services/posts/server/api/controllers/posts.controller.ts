@@ -1815,7 +1815,7 @@ export class PostController {
         const userId = req['userId'];
 
         // Call Service function to change the assignee
-        const post = await postService.saveEstimation(postId, userId, +estimation)
+        const post = await postService.saveEstimation(postId, userId, estimation)
             .catch((err) => {
                 return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
             })

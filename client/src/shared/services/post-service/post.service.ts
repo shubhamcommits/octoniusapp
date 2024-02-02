@@ -579,7 +579,7 @@ export class PostService {
    * @param estimation
    * @param postId
    */
-  saveEstimation(estimation: string, postId: string) {
+  saveEstimation(estimation: any, postId: string) {
     return this._http.put(this.baseURL + `/${postId}/save-estimation`, {
       estimation: estimation
     }).toPromise();
