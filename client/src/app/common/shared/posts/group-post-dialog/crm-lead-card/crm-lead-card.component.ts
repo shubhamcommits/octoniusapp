@@ -60,9 +60,11 @@ export class CRMLeadCardComponent implements OnChanges {
 	async initTable() {
 		await this.loadCustomFieldsToShow();
 
-		this.postData.crm._contacts = [...this.postData.crm._contacts];
-
-		this.sortedData = this.postData.crm._contacts.slice();
+    if (!!this.postData.crm) {
+      this.postData.crm._contacts = [...this.postData.crm._contacts];
+  
+      this.sortedData = this.postData.crm._contacts.slice();
+    }
 	}
 
 	loadCustomFieldsToShow() {

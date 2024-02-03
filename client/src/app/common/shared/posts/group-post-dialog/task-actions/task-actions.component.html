@@ -102,8 +102,6 @@
     </mat-menu>
   </div>
 
- 
-
   <div *ngIf="!parentTask && !isDependent && !isMilestone && (groupData?.shuttle_type && (!postData?.task?._shuttle_group || (postData?.task?._shuttle_group?._id || postData?.task?._shuttle_group) != groupData?._id)) && !postData?.task?.is_crm_task" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
    <span i18n="@@taskActions.makeSubtaskOf">Make subtask of...</span>
 
@@ -165,47 +163,48 @@
     </div>
   </div>
 
-  <!-- North Start Switch starts -->
-  <div *ngIf="!postData?.task?.is_crm_task" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
-    <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;"> explore </i>
-    <span i18n="@@taskActions.makeNorthStar">Convert to target</span>
+  <!-- Convert to starts -->
+  <div class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
+   
+    <span i18n="@@taskActions.convertTask">Convert to...</span>
 
-    <mat-slide-toggle color="primary" style=" margin-left: 15px;"
-      [checked]="isNorthStar"
-      [name]="'north_star'"
-      (change)="transformToNorthStart()">
-    </mat-slide-toggle>
+    <mat-form-field appearance="fill" style="margin-left: 15px;">
+      <mat-select multiple [value]="taskTypesSelection"
+        (selectionChange)="multipleSelectChange($event.value)" (openedChange)="saveTaskType($event)">
+        <mat-select-trigger>
+          <span *ngIf="taskTypesSelection.includes('northStar')">
+            <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;"> explore </i>
+            <span i18n="@@taskActions.northStar">North Star</span>
+          </span>
 
+          <span *ngIf="taskTypesSelection.includes('idea')">
+            <span *ngIf="taskTypesSelection.includes('northStar')">, </span>
+            <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;"> emoji_objects </i>
+            <span i18n="@@taskActions.idea">Idea</span>
+          </span>
 
-    <p i18n="@@taskActions.northStarAreGoals">North Stars are goals for you or your team.</p>
+          <span *ngIf="taskTypesSelection.includes('crm')">
+            <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;"> attach_money </i>
+            <span i18n="@@taskActions.crmLead">CRM Lead</span>
+          </span>
+        </mat-select-trigger>
+
+        <mat-option value="northStar" [disabled]="taskTypesSelection.includes('crm')">
+          <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;"> explore </i>
+          <span i18n="@@taskActions.northStar">North Star</span>
+        </mat-option>
+        <mat-option value="idea" [disabled]="taskTypesSelection.includes('crm')">
+          <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;">emoji_objects</i>
+          <span i18n="@@taskActions.idea">Idea</span>
+        </mat-option>
+        <mat-option value="crm" [disabled]="taskTypesSelection.includes('idea') || taskTypesSelection.includes('northStar')">
+          <i _ngcontent-bbh-c36="" class="material-icons-outlined muted" style="vertical-align: middle;">attach_money</i>
+          <span i18n="@@taskActions.crmLead">CRM Lead</span>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
-  <!-- North Start Switch ends -->
-
-  <!-- Idea Switch starts -->
-  <div *ngIf="isIdeaModuleAvailable && !postData?.task?.is_crm_task" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
-    <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;">emoji_objects</i>
-    <span i18n="@@taskActions.idea">Idea</span>
-
-    <mat-slide-toggle color="primary" style=" margin-left: 15px;"
-      [checked]="isIdea"
-      [name]="'idea'"
-      (change)="transformToIdea()">
-    </mat-slide-toggle>
-  </div>
-  <!-- Idea Switch ends -->
-
-  <!-- CRM Lead Switch starts -->
-  <div *ngIf="groupData.type == 'crm'" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
-    <i _ngcontent-bbh-c36="" class="material-icons-outlined muted" style="vertical-align: middle;">attach_money</i>
-    <span i18n="@@taskActions.crmLead">CRM Lead</span>
-
-    <mat-slide-toggle color="primary" style=" margin-left: 15px;"
-      [checked]="isCRMLead"
-      [name]="'crmLead'"
-      (change)="transformToCRMLead()">
-    </mat-slide-toggle>
-  </div>
-  <!-- CRM Lead Switch ends -->
+  <!-- Convert to ends -->
 
   <!-- Milestone Switch starts -->
   <div *ngIf="groupData && groupData.project_type && !isIndividualSubscription && !postData?.task?.is_crm_task" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">

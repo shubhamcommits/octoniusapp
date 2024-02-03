@@ -23,11 +23,11 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   @Input() groupData: any;
   @Input() userData: any;
   @Input() tasks: any;
-  @Input() isNorthStar = false;
   @Input() isMilestone = false;
+  @Input() isNorthStar = false;
   @Input() isIdea = false;
-  @Input() isIdeaModuleAvailable = false;
   @Input() isCRMLead = false;
+  @Input() isIdeaModuleAvailable = false;
   @Input() isShuttleTasksModuleAvailable = false;
   @Input() canEdit = true;
 
@@ -66,6 +66,8 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   estimation = '';
 
   isIndividualSubscription = true;
+
+  taskTypesSelection = [];
 
   // This observable is mapped with item field to recieve updates on change value
   itemValueChanged: Subject<Event> = new Subject<Event>();
@@ -167,6 +169,17 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
       this.postService.getGroupTemplates(this.groupData?._id || this.postData?._group?._id || this.postData?._group).then(res => {
         this.groupTemplates = res['posts'];
       });
+    }
+
+    this.taskTypesSelection = [];
+    if (this.isCRMLead) {
+      this.taskTypesSelection.push('crm');
+    }
+    if (this.isIdea) {
+      this.taskTypesSelection.push('idea');
+    }
+    if (this.isNorthStar) {
+      this.taskTypesSelection.push('northStar');
     }
 
     this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
@@ -559,6 +572,23 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
           reject(this.utilityService.rejectAsyncPromise($localize`:@@taskActions.errorWhileSavingTask:Error while saving the task!`));
         });
     }));
+  }
+
+  multipleSelectChange(value: any) {
+console.log(value);
+    this.taskTypesSelection = value;
+  }
+
+  saveTaskType(selectClosed: boolean) {
+console.log(selectClosed);
+console.log(this.taskTypesSelection);
+    if (!selectClosed) {
+      this.transformIntoNorthStarEmitter.emit(this.taskTypesSelection.includes('northStar'));
+      this.transformIntoIdeaEmitter.emit(this.taskTypesSelection.includes('idea'));
+
+      this.postData.task.is_crm_task = this.taskTypesSelection.includes('crm');
+      this.transformIntoCRMLeadEmitter.emit(this.taskTypesSelection.includes('crm'));
+    }
   }
 
   transformToNorthStart() {
