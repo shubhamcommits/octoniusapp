@@ -6,7 +6,6 @@
     <span i18n="@@taskActions.estimation" class="mr-2">Estimated time</span>
 
     <!-- INPUT STARTS -->
-    <!-- <input type="text" name="estimation" [ngModel]="estimation" (blur)="estimationChange($event)" class="input-search" placeholder="Estimation" /> -->
     <app-time-input id="estimation"
       [value]="estimation" [canEdit]="canEdit" (timeEvent)="estimationChange($event)"></app-time-input>
     <!-- INPUT ENDS -->
@@ -106,7 +105,7 @@
    <span i18n="@@taskActions.makeSubtaskOf">Make subtask of...</span>
 
     <!-- INPUT STARTS -->
-    <input type="search" id="keyword" autocomplete="off" placeholder="Search task" class="input-search"
+    <input type="search" id="keyword" autocomplete="off" [placeholder]="searchTaskPlaceholder" class="input-search"
       [(ngModel)]="itemValue" (keyup)="onSearch($event)" (ngModelChange)="modelChange($event)" />
     <!-- INPUT ENDS -->
     <div *ngIf="searchingOn === 'keyword'">
@@ -139,7 +138,7 @@
       <b>X</b> {{ task.title | truncatetext: 50 }}
     </button>
     <!-- INPUT STARTS -->
-    <input type="search" id="dependencyKeyword" autocomplete="off" placeholder="Search task" class="input-search"
+    <input type="search" id="dependencyKeyword" autocomplete="off" [placeholder]="searchTaskPlaceholder" class="input-search"
       [(ngModel)]="dependencyItemValue" (keyup)="onSearch($event)" (ngModelChange)="modelChangeForDependency($event)" />
     <!-- INPUT ENDS -->
     <div *ngIf="searchingOn === 'dependencyKeyword'">

@@ -69,6 +69,8 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
 
   taskTypesSelection = [];
 
+  searchTaskPlaceholder = $localize`:@@taskActions.searchTask:Search task`;
+
   // This observable is mapped with item field to recieve updates on change value
   itemValueChanged: Subject<Event> = new Subject<Event>();
 
@@ -575,13 +577,10 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   }
 
   multipleSelectChange(value: any) {
-console.log(value);
     this.taskTypesSelection = value;
   }
 
   saveTaskType(selectClosed: boolean) {
-console.log(selectClosed);
-console.log(this.taskTypesSelection);
     if (!selectClosed) {
       this.transformIntoNorthStarEmitter.emit(this.taskTypesSelection.includes('northStar'));
       this.transformIntoIdeaEmitter.emit(this.taskTypesSelection.includes('idea'));
