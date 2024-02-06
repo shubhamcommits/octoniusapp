@@ -1,4 +1,4 @@
-# Project Documentation for Octonius k8s
+# Kubernetes Deployment
 ![Diagram](diagrams/hetzner_cloud_infra.png)
 
 ## Introduction
@@ -19,71 +19,155 @@ Each environment includes:
 - **Backup solutions** for data resilience.
 
 ## Getting Started
-
 ### Prerequisites
 
-- Hetzner Cloud account with appropriate permissions.
-- CLI tools installed: `kubectl`, `terraform`, `packer`.
-- Understanding of Kubernetes and Terraform basics.
-> **_reference_** 
-> https://github.com/kube-hetzner/terraform-hcloud-kube-hetzner
-> https://kubernetes.io/docs/reference/kubectl/quick-reference/
-> https://justinoconnorcodes.files.wordpress.com/2021/09/terraform-cheatsheet-1.pdf
+Before you begin with deploying the stack using kube-hetzner, ensure you have the following prerequisites installed:
 
-### Setup Instructions
+1. **Hetzner Cloud Account:** You will need a Hetzner Cloud account with appropriate permissions to create and manage cloud resources.
 
-#### Infrastructure Provisioning
+2. **CLI Tools:**
+    - `kubectl`: Install `kubectl` to interact with Kubernetes clusters.
+        - On macOS:
+            ```bash
+            brew install kubectl
+            ```
+        - On Linux or Windows:
+        Follow the installation guide for `kubectl` [here](https://kubernetes.io/docs/reference/kubectl/overview/).
 
-1. Navigate to the environment-specific directory (`production` or `acceptance`).
-2. Use Terraform to set up the Hetzner Cloud infrastructure:
+    - `terraform`: Install `terraform` to manage infrastructure as code.
+        - On macOS:
+            ```bash
+            brew install terraform
+            ```
+        - On Linux or Windows:
+        Refer to the installation instructions [here](https://www.terraform.io/downloads.html).
+
+    - `packer`: Install `packer` for creating machine images.
+        - On macOS:
+            ```bash
+            brew install packer
+            ```
+        - On Linux or Windows:
+        Download and install `packer` from [here](https://www.packer.io/downloads).
+
+    - `git-crypt`: Install `git-crypt` for encrypting sensitive information in the **kube-hetzner** folder.
+        - On macOS:
+            ```bash
+            brew install git-crypt
+            ```
+        - On Windows (using `pacman`):
+            ```bash
+            pacman -S git-crypt
+            ```
+        - On Linux (using `apt-get`):
+            ```bash
+            apt-get install git-crypt
+            ```
+
+    - **Lens App:** Install the Lens app for managing Kubernetes clusters visually.
+        - On macOS:
+            ```bash
+            brew install lens
+            ```
+        - On Linux or Windows: 
+        Download and install Lens from [here](https://github.com/lensapp/lens/releases).
+
+### Important: Unlocking git-crypt
+
+Before you proceed with any further steps, it's crucial to unlock the `git-crypt` encryption on the **kube-hetzner** folder. This folder contains sensitive information and configurations required for this deployment. The decryption key for this folder should be requested from someone with access to the secrets.
+
+Follow these steps to unlock `git-crypt`:
+
+1. **Request the Decryption Key**: Contact a colleague or administrator who has access to the decryption key for the **kube-hetzner** folder.
+
+2. **Unlock the Folder**: Once you have the decryption key, use the following command to unlock the folder:
 
     ```bash
+    git-crypt unlock /path/to/key
+    ```
+Replace **/path/to/key** with the actual path to the decryption key file provided to you.
+
+**Confirmation**: After successfully unlocking the folder, you will have access to the encrypted configurations and sensitive data required to proceed with your deployment.
+
+>***Note***: Do not proceed with any further steps until you have successfully unlocked the kube-hetzner folder.
+
+4. **Basic Knowledge:**
+Ensure you have a basic understanding of Kubernetes and Terraform concepts.
+Refer to the following resources for learning:
+    - [kube-hetzner GitHub](https://github.com/kube-hetzner/terraform-hcloud-kube-hetzner)
+    - [Kubernetes kubectl Reference](https://kubernetes.io/docs/reference/kubectl/quick-reference/)
+    - [Terraform Cheat Sheet](https://justinoconnorcodes.files.wordpress.com/2021/09/terraform-cheatsheet-1.pdf)
+
+With these prerequisites in place, you are ready to deploy and manage Kubernetes (**k8s**) deployment using kube-hetzner.
+
+# Octonius App on Kubernetes
+
+## Introduction
+
+This guide will walk you through deploying and managing the Octonius app on a Kubernetes cluster. You can choose one of the following options:
+
+1. Create a New Cluster:
+    - [Create a New Cluster on Hetzner Cloud](#create-a-new-cluster)
+    - [Create a New Cluster on different provider](#create-a-new-cluster-on-different-provider) 
+2. [Install Octonius App Stack](#install-the-deployment)
+3. [Manage Octonius App Stack](#update-the-deployments-components)
+
+## Create a New Cluster
+
+If you want to create a new Kubernetes cluster to run the Octonius app on **Hetzner Cloud**, follow these steps:
+
+1. **Prerequisites**: Ensure you have the necessary prerequisites in place, including a Hetzner Cloud account.
+
+2. **Hetzner Cloud Token**: Obtain your Hetzner Cloud API token and add it to the `hcloud_token` variable in the `kube.tf` configuration file.
+
+3. **Cluster Configuration**: The `kube.tf` file is already configured for direct use with Hetzner Cloud. You can further customize your cluster by modifying the `agent_nodepools` and `control_plane_nodepools` variables. These variables define the pools for nodes in your cluster, allowing you to specify the size and characteristics of your worker nodes and control plane nodes.
+
+4. **Terraform Deployment**: Use Terraform to create your Kubernetes cluster on Hetzner Cloud. Run the following commands:
+    ```bash
+    terraform init --upgrade
     terraform validate
     terraform apply -auto-approve
     ```
+5. [Add your cluster to Lens](#adding-your-cluster-to-lens)    
+## Create a New Cluster on different provider
 
-![Diagram](diagrams/kubernetes_cluster.png)
-####  Cluster Configuration
+Follow thesee steps to create k3s cluster
+1. Deploy first master
+    ```bash
+    MYSECRET=secret
+    curl -fL https://get.k3s.io | K3S_TOKEN=${MYSECRET} \
+    sh -s - server --cluster-init
+    ```
+2. Get IP of first node
+    ```bash
+    root@x:~# k3s kubectl get nodes -o wide
+    NAME       STATUS   ROLES                       AGE   VERSION        INTERNAL-IP      EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+    shredder   Ready    control-plane,etcd,master   83s   v1.21.5+k3s2   192.168.39.201   <none>        Ubuntu 20.04.3 LTS   5.4.0-70-generic   containerd://1.4.11-k3s1
+    ```
+    > Oops! Did you mess something up? Just run k3s-uninstall.sh to wipe all traces of K3s, and start over!
+3. Deploy other k3s master nodes (optional)
+    ```bash
+    MYSECRET=secret
+    curl -fL https://get.k3s.io | K3S_TOKEN=${MYSECRET} \
+    sh -s - server --disable servicelb --server https://<IP OF FIRST MASTER>:6443
+    ```
+    ```bash
+    root@x:~# k3s kubectl get nodes
+    NAME         STATUS   ROLES                       AGE     VERSION
+    bebop        Ready    control-plane,etcd,master   4m13s   v1.21.5+k3s2
+    rocksteady   Ready    control-plane,etcd,master   4m42s   v1.21.5+k3s2
+    shredder     Ready    control-plane,etcd,master   8m54s   v1.21.5+k3s2
+    ```
+4. Deploy k3s worker nodes
+    ```bash
+    MYSECRET=secret
+    curl -fL https://get.k3s.io | K3S_TOKEN=${MYSECRET} \
+    K3S_URL=https://<IP OF FIRST MASTER>:6443 \
+    sh -s -
+    ```
+    > Oops! Did you mess something up? Just run k3s-agent-uninstall.sh to wipe all traces of K3s agent, and start over!
 
-- **Apply** the **k3s_kubeconfig.yaml** within the same directory to access your Kubernetes cluster.
-
-#### Application Deployment
-
-- **Follow** the README in each application directory within the environment folder for deployment instructions.
-
-###  Maintenance and Monitoring
-
-####  Updating Applications
-
-- **Keel.sh** is utilized to automate application updates within the Kubernetes cluster. Consult the **02_keel.sh** README for setup and usage instructions.
-
-####  Monitoring Setup
-
-Implement monitoring and logging with Prometheus, Grafana, and Loki, following the provided configuration guides within the **05_monitoring** directory.
-
-
-### Backups
-
-Set up regular backups as outlined in the environment-specific backup documentation, ensuring data resilience and recovery capabilities.
-
-### Additional Details
-
-#### git-crypt Encryption
-
-The **kube-hetzner** folder is encrypted with git-crypt to secure sensitive information. Ensure you have the correct keys to access or modify the configurations.
-```bash
-#osx
-brew install git-crypt
-#windows 
-pacman -S git-crypt
-#linux 
-apt-get install git-crypt
-```
-- After install run the command to unloack
-
-```bash 
-git-crypt unloack /path/to/key
-```
+5. Copy `/etc/rancher/k3s/k3s.yaml` to to `~/.kube/config` or import it to [lens app](#adding-your-cluster-to-lens).
 
 ### Adding Your Cluster to Lens
 
@@ -124,3 +208,48 @@ If you ever need to disconnect Lens from your cluster, follow these steps:
 Adding your Hetzner Cloud Cluster to Lens provides an efficient way to manage and monitor your Kubernetes resources. 
 
 For more detailed information about configuring, deploying, and maintaining applications on your cluster, you can explore the subsequent folders in your project's directory structure. Each folder contains specific resources, configurations, and documentation related to different aspects of your cluster and applications. .
+
+# Octonius App stack
+![Diagram](diagrams/kubernetes_cluster.png)
+
+## Install the deployment
+To install the app on a fresh cluster you need to navigate to each folder ***from 01 to 07***, which corresponds to different components of the stack, and follow the instructions provided in the Readme.md files within each folder to set up and configure the respective component. These instructions include modifying configuration files if necessary.
+> Refrence: [Project Structure](#project-structure-1)
+
+## Update the deployments components 
+To update different components of the stack, head to the component respective folder edit the values file and apply the changes, all required commands are availalble in the components Readme.md file
+> Refrence: [Project Structure](#project-structure-1)
+## Project Structure
+
+- **01_cert-manager**
+
+    - [Readme.md](./kube-hetzner/apps/01_cert-manager/Readme.md): This file provides instructions and documentation for setting up and configuring Cert-Manager, a Kubernetes add-on for managing TLS certificates.
+    - **cluster-issuer.yaml**: Configuration file for defining ClusterIssuers in Kubernetes, used to manage certificates.
+    - **minio-certificate.yaml**: Configuration file for defining TLS certificates specific to Minio, an object storage server.
+    minio-operator-ca-secret.yaml: Configuration file for defining a Secret resource that holds the CA (Certificate Authority) certificate for Minio.
+    - **minio-self-signed.yaml**: Configuration file for defining a self-signed certificate for Minio, showcasing Cert-Manager's capabilities.
+
+- **02_keel.sh**
+    - [Readme.md](./kube-hetzner/apps/02_keel.sh/Readme.md): Documentation for using Keel, an automated Kubernetes deployment tool for updating container images.
+    - **values.yaml**: Configuration file for Keel, specifying how to manage image updates.
+
+- **03_mongodb**
+    - [Readme.md](./kube-hetzner/apps/03_mongodb/Readme.md): Documentation for deploying and configuring MongoDB on Kubernetes.
+    - **mongo-values.yml**: Configuration file for MongoDB Community Edition cluster deployment.
+
+- **04_minio**
+    - [Readme.md](./kube-hetzner/apps/04_minio/Readme.md): Information about Minio, an object storage server, and its usage within the project.
+
+- **05_monitoring**
+    - [Readme.md](./kube-hetzner/apps/05_monitoring/Readme.md): Documentation for setting up monitoring tools, including Loki, on Kubernetes.
+    - **values-loki.yaml**: Configuration file for Grafana Loki stack deployment.
+ 
+ - **06_octonius**
+    - [README.md](./kube-hetzner/apps/06_octonius/README.md): Documentation for the Octonius application and its components.
+    - **Chart.yaml**: Helm chart metadata for deploying the Octonius application.
+    - **templates**: Contains various YAML templates for deploying Octonius microservices and server components.
+    - **values.yaml**: Configuration file for customizing Octonius application deployment.
+
+- **07_backup**
+    - [Readme.md](./kube-hetzner/apps/07_backup/Readme.md): Documentation for backup procedures and configurations, specifically related to MongoDB backup on Kubernetes.
+    - **deplyment.yaml**: Configuration file for managing backup procedures.
