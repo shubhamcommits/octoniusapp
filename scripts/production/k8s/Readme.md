@@ -132,6 +132,7 @@ If you want to create a new Kubernetes cluster to run the Octonius app on **Hetz
 ## Create a New Cluster on different provider
 
 Follow thesee steps to create k3s cluster
+
 1. Deploy first master
     ```bash
     MYSECRET=secret
@@ -144,7 +145,8 @@ Follow thesee steps to create k3s cluster
     NAME       STATUS   ROLES                       AGE   VERSION        INTERNAL-IP      EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
     shredder   Ready    control-plane,etcd,master   83s   v1.21.5+k3s2   192.168.39.201   <none>        Ubuntu 20.04.3 LTS   5.4.0-70-generic   containerd://1.4.11-k3s1
     ```
-    > Oops! Did you mess something up? Just run k3s-uninstall.sh to wipe all traces of K3s, and start over!
+> Oops! Did you mess something up? Just run k3s-uninstall.sh to wipe all traces of K3s, and start over!
+
 3. Deploy other k3s master nodes (optional)
     ```bash
     MYSECRET=secret
@@ -165,7 +167,7 @@ Follow thesee steps to create k3s cluster
     K3S_URL=https://<IP OF FIRST MASTER>:6443 \
     sh -s -
     ```
-    > Oops! Did you mess something up? Just run k3s-agent-uninstall.sh to wipe all traces of K3s agent, and start over!
+> Oops! Did you mess something up? Just run k3s-agent-uninstall.sh to wipe all traces of K3s agent, and start over!
 
 5. Copy `/etc/rancher/k3s/k3s.yaml` to to `~/.kube/config` or import it to [lens app](#adding-your-cluster-to-lens).
 
@@ -213,12 +215,16 @@ For more detailed information about configuring, deploying, and maintaining appl
 ![Diagram](diagrams/kubernetes_cluster.png)
 
 ## Install the deployment
+
 To install the app on a fresh cluster you need to navigate to each folder ***from 01 to 07***, which corresponds to different components of the stack, and follow the instructions provided in the Readme.md files within each folder to set up and configure the respective component. These instructions include modifying configuration files if necessary.
+
 > Refrence: [Project Structure](#project-structure-1)
 
 ## Update the deployments components 
 To update different components of the stack, head to the component respective folder edit the values file and apply the changes, all required commands are availalble in the components Readme.md file
+
 > Refrence: [Project Structure](#project-structure-1)
+
 ## Project Structure
 
 - **01_cert-manager**
