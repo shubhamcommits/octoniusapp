@@ -44,6 +44,7 @@
       <span *ngIf="log?.action === 'remove_dependent'" class="approval-deleted ml-2" i18n="@@postLogs.removeDependentOf">Removed a dependent of </span> <span *ngIf="log?.action === 'remove_dependent' && log?._task">{{ log?._task?.title }}</span>
       <span *ngIf="log?.action === 'set_parent'" class="approval-deleted ml-2" i18n="@@postLogs.setParent">Made a child of </span> <span *ngIf="log?.action === 'set_parent' && log?._task">{{ log?._task?.title }}</span>
       <span *ngIf="log?.action === 'save_allocation'" class="approval-deleted ml-2" i18n="@@postLogs.saveAllocation">Changed the Allocation to </span> <span *ngIf="log?.action === 'save_allocation' && log?.allocation">{{ log?.allocation }}</span>
+      <span *ngIf="log?.action === 'save_estimation'" class="approval-deleted ml-2" i18n="@@postLogs.saveEstimation">Changed the Estimation to </span> <span *ngIf="log?.action === 'save_estimation' && log?.estimation">{{ log?.estimation }}</span>
       <span *ngIf="log?.action === 'updated_tags'" class="approval-deleted ml-2" i18n="@@postLogs.saveTags">Updated the tags</span>
       <span *ngIf="log?.action === 'attach_file'" class="approval-deleted ml-2" i18n="@@postLogs.attachFile">Attached a file</span>
       <span *ngIf="log?.action === 'attach_file_cloud'" class="approval-deleted ml-2" i18n="@@postLogs.attachFileCloud">Attached a file from a connected cloud</span>

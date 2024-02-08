@@ -1,16 +1,26 @@
 <div class="content-box">
   <p class="box-title" i18n="@@taskActions.actions">Actions</p>
 
+  <div *ngIf="!postData?.task?.is_crm_task" class="set-parent">
+    <i class="material-icons">hourglass_top</i>
+    <span i18n="@@taskActions.estimation" class="mr-2">Estimated time</span>
+
+    <!-- INPUT STARTS -->
+    <app-time-input id="estimation"
+      [value]="estimation" [canEdit]="canEdit" (timeEvent)="estimationChange($event)"></app-time-input>
+    <!-- INPUT ENDS -->
+</div>
+
   <div *ngIf="!postData?.task?._parent_task && !isIndividualSubscription && !postData?.task?.is_crm_task">
     <button *ngIf="postData?._group" mat-menu-item [matMenuTriggerFor]="transferMenu"
       (click)="saveTransferAction('copy')">
         <i  class="material-icons">content_copy</i>
-        <span i18n="@@taskActions.copyToGroup">COPY TO GROUP</span>
+        <span i18n="@@taskActions.copyToGroup">Copy to group</span>
     </button>
     <button *ngIf="postData?._group" mat-menu-item [matMenuTriggerFor]="transferMenu"
       (click)="saveTransferAction('move')">
         <i class="material-icons">arrow_forward</i>
-        <span i18n="@@taskActions.moveToGroup">MOVE TO GROUP</span>
+        <span i18n="@@taskActions.moveToGroup">Move to group</span>
     </button>
 
     <mat-menu #transferMenu="matMenu">
@@ -37,7 +47,7 @@
   <div *ngIf="!postData?.task?._parent_task && postData?._group && !postData?.task?.is_crm_task">
     <button mat-menu-item [matMenuTriggerFor]="templateTaskMenu">
         <i class="material-icons-outlined">playlist_add</i>
-        <span i18n="@@taskActions.templates">TEMPLATES</span>
+        <span i18n="@@taskActions.templates">Templates</span>
     </button>
 
     <mat-menu #templateTaskMenu="matMenu">
@@ -91,20 +101,11 @@
     </mat-menu>
   </div>
 
-  <div *ngIf="postData?._assigned_to?.length < 2 && groupData?.enable_allocation && !postData?.task?.is_crm_task" class="set-parent">
-      <i class="material-icons">hourglass_top</i>
-      <span i18n="@@taskActions.allocation">ALLOCATION</span>
-
-      <!-- INPUT STARTS -->
-      <input type="text" name="allocation" [ngModel]="allocation" (blur)="allocationChange($event)" class="input-search" placeholder="Allocation" />
-      <!-- INPUT ENDS -->
-  </div>
-
   <div *ngIf="!parentTask && !isDependent && !isMilestone && (groupData?.shuttle_type && (!postData?.task?._shuttle_group || (postData?.task?._shuttle_group?._id || postData?.task?._shuttle_group) != groupData?._id)) && !postData?.task?.is_crm_task" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
-   <span i18n="@@taskActions.makeSubtaskOf">MAKE SUBTASK OF</span>
+   <span i18n="@@taskActions.makeSubtaskOf">Make subtask of...</span>
 
     <!-- INPUT STARTS -->
-    <input type="search" id="keyword" autocomplete="off" placeholder="Search task" class="input-search"
+    <input type="search" id="keyword" autocomplete="off" [placeholder]="searchTaskPlaceholder" class="input-search"
       [(ngModel)]="itemValue" (keyup)="onSearch($event)" (ngModelChange)="modelChange($event)" />
     <!-- INPUT ENDS -->
     <div *ngIf="searchingOn === 'keyword'">
@@ -130,14 +131,14 @@
   </div>
 
   <div *ngIf="groupData && groupData?.project_type && !isChild && !isIndividualSubscription && !postData?.task?.is_crm_task" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
-    <span i18n="@@taskActions.makeDependencyOf">MAKE DEPENDENCY OF</span>
+    <span i18n="@@taskActions.makeDependencyOf">Make dependency of...</span>
 
     <button *ngFor="let task of dependencyTask; let i = index" class="btn dependencylabel" style="margin-right: 1rem;"
        (click)="removeDependencyTask(i)">
       <b>X</b> {{ task.title | truncatetext: 50 }}
     </button>
     <!-- INPUT STARTS -->
-    <input type="search" id="dependencyKeyword" autocomplete="off" placeholder="Search task" class="input-search"
+    <input type="search" id="dependencyKeyword" autocomplete="off" [placeholder]="searchTaskPlaceholder" class="input-search"
       [(ngModel)]="dependencyItemValue" (keyup)="onSearch($event)" (ngModelChange)="modelChangeForDependency($event)" />
     <!-- INPUT ENDS -->
     <div *ngIf="searchingOn === 'dependencyKeyword'">
@@ -161,52 +162,53 @@
     </div>
   </div>
 
-  <!-- North Start Switch starts -->
-  <div *ngIf="!postData?.task?.is_crm_task" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
-    <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;"> explore </i>
-    <span i18n="@@taskActions.makeNorthStar">CONVERT TO TARGET</span>
+  <!-- Convert to starts -->
+  <div class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
+   
+    <span i18n="@@taskActions.convertTask">Convert to...</span>
 
-    <mat-slide-toggle color="primary" style=" margin-left: 15px;"
-      [checked]="isNorthStar"
-      [name]="'north_star'"
-      (change)="transformToNorthStart()">
-    </mat-slide-toggle>
+    <mat-form-field appearance="fill" style="margin-left: 15px;">
+      <mat-select multiple [value]="taskTypesSelection"
+        (selectionChange)="multipleSelectChange($event.value)" (openedChange)="saveTaskType($event)">
+        <mat-select-trigger>
+          <span *ngIf="taskTypesSelection.includes('northStar')">
+            <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;"> explore </i>
+            <span i18n="@@taskActions.northStar">North Star</span>
+          </span>
 
+          <span *ngIf="taskTypesSelection.includes('idea')">
+            <span *ngIf="taskTypesSelection.includes('northStar')">, </span>
+            <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;"> emoji_objects </i>
+            <span i18n="@@taskActions.idea">Idea</span>
+          </span>
 
-    <p i18n="@@taskActions.northStarAreGoals">North Stars are goals for you or your team.</p>
+          <span *ngIf="taskTypesSelection.includes('crm')">
+            <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;"> attach_money </i>
+            <span i18n="@@taskActions.crmLead">CRM Lead</span>
+          </span>
+        </mat-select-trigger>
+
+        <mat-option value="northStar" [disabled]="taskTypesSelection.includes('crm')">
+          <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;"> explore </i>
+          <span i18n="@@taskActions.northStar">North Star</span>
+        </mat-option>
+        <mat-option value="idea" [disabled]="taskTypesSelection.includes('crm')">
+          <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;">emoji_objects</i>
+          <span i18n="@@taskActions.idea">Idea</span>
+        </mat-option>
+        <mat-option value="crm" [disabled]="taskTypesSelection.includes('idea') || taskTypesSelection.includes('northStar')">
+          <i _ngcontent-bbh-c36="" class="material-icons-outlined muted" style="vertical-align: middle;">attach_money</i>
+          <span i18n="@@taskActions.crmLead">CRM Lead</span>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
-  <!-- North Start Switch ends -->
-
-  <!-- Idea Switch starts -->
-  <div *ngIf="isIdeaModuleAvailable && !postData?.task?.is_crm_task" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
-    <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;">emoji_objects</i>
-    <span i18n="@@taskActions.idea">Idea</span>
-
-    <mat-slide-toggle color="primary" style=" margin-left: 15px;"
-      [checked]="isIdea"
-      [name]="'idea'"
-      (change)="transformToIdea()">
-    </mat-slide-toggle>
-  </div>
-  <!-- Idea Switch ends -->
-
-  <!-- CRM Lead Switch starts -->
-  <div *ngIf="groupData.type == 'crm'" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
-    <i _ngcontent-bbh-c36="" class="material-icons-outlined muted" style="vertical-align: middle;">attach_money</i>
-    <span i18n="@@taskActions.crmLead">CRM Lead</span>
-
-    <mat-slide-toggle color="primary" style=" margin-left: 15px;"
-      [checked]="isCRMLead"
-      [name]="'crmLead'"
-      (change)="transformToCRMLead()">
-    </mat-slide-toggle>
-  </div>
-  <!-- CRM Lead Switch ends -->
+  <!-- Convert to ends -->
 
   <!-- Milestone Switch starts -->
   <div *ngIf="groupData && groupData.project_type && !isIndividualSubscription && !postData?.task?.is_crm_task" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
     <img src="assets/images/Icon/icon_milestone.svg" alt="Flag"/>
-    <span i18n="@@taskActions.makeMilestone">MAKE MILESTONE</span>
+    <span i18n="@@taskActions.makeMilestone">Make milestone</span>
     <mat-slide-toggle color="primary" style=" margin-left: 15px;"
       [checked]="isMilestone"
       [name]="'milestone'"

@@ -575,6 +575,17 @@ export class PostService {
   }
 
   /**
+   * This function is used to save the estimation of a task
+   * @param estimation
+   * @param postId
+   */
+  saveEstimation(estimation: any, postId: string) {
+    return this._http.put(this.baseURL + `/${postId}/save-estimation`, {
+      estimation: estimation
+    }).toPromise();
+  }
+
+  /**
    * This method is used to pin/unpin a post to the top
    * @param postId
    * @param pin

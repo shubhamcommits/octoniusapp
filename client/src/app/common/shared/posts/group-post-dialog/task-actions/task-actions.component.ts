@@ -23,18 +23,19 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   @Input() groupData: any;
   @Input() userData: any;
   @Input() tasks: any;
-  @Input() isNorthStar = false;
   @Input() isMilestone = false;
+  @Input() isNorthStar = false;
   @Input() isIdea = false;
-  @Input() isIdeaModuleAvailable = false;
   @Input() isCRMLead = false;
+  @Input() isIdeaModuleAvailable = false;
   @Input() isShuttleTasksModuleAvailable = false;
+  @Input() canEdit = true;
 
   @Output() parentTaskSelectedEmitter = new EventEmitter();
   @Output() dependencyTaskSelectedEmitter = new EventEmitter();
   @Output() taskClonedEmitter = new EventEmitter();
   @Output() taskFromTemplateEmitter = new EventEmitter();
-  @Output() taskAllocationEmitter = new EventEmitter();
+  @Output() taskEstimationEmitter = new EventEmitter();
   @Output() transformIntoNorthStarEmitter = new EventEmitter();
   @Output() transformIntoMilestoneEmitter = new EventEmitter();
   @Output() transformIntoIdeaEmitter = new EventEmitter();
@@ -62,9 +63,13 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   groupTemplates = [];
   templateAction = '';
 
-  allocation = '';
+  estimation = '';
 
   isIndividualSubscription = true;
+
+  taskTypesSelection = [];
+
+  searchTaskPlaceholder = $localize`:@@taskActions.searchTask:Search task`;
 
   // This observable is mapped with item field to recieve updates on change value
   itemValueChanged: Subject<Event> = new Subject<Event>();
@@ -154,7 +159,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
       this.isDependent = true;
     }
 
-    this.allocation = this.postData?.task?.allocation;
+    this.estimation = (this.postData?.task?.estimation?.hours || '00') + ':' + (this.postData?.task?.estimation?.minutes || '00');
 
     this.parentTask = await this.isParent();
 
@@ -166,6 +171,17 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
       this.postService.getGroupTemplates(this.groupData?._id || this.postData?._group?._id || this.postData?._group).then(res => {
         this.groupTemplates = res['posts'];
       });
+    }
+
+    this.taskTypesSelection = [];
+    if (this.isCRMLead) {
+      this.taskTypesSelection.push('crm');
+    }
+    if (this.isIdea) {
+      this.taskTypesSelection.push('idea');
+    }
+    if (this.isNorthStar) {
+      this.taskTypesSelection.push('northStar');
     }
 
     this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
@@ -540,21 +556,38 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
     })
   }
 
-  allocationChange(event) {
+  estimationChange(timeObject) {
 
-    const allocation = event.target.value;
+    // const estimation = event.target.value;
+    const time = timeObject.split(':');
+    const hours = time[0];
+    const minutes = time[1];
 
     this.utilityService.asyncNotification($localize`:@@taskActions.pleaseWaitWeAreSavingTask:Please wait we are saving the task...`, new Promise((resolve, reject) => {
-      this.postService.saveAllocation(allocation, this.postData?._id)
+      this.postService.saveEstimation({ hours: hours, minutes: minutes }, this.postData?._id)
         .then((res) => {
-          this.allocation = allocation;
-          this.taskAllocationEmitter.emit(allocation);
+          this.estimation = timeObject;
+          this.taskEstimationEmitter.emit(timeObject);
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskActions.taskSave:👍 Task saved!`));
         })
         .catch((error) => {
           reject(this.utilityService.rejectAsyncPromise($localize`:@@taskActions.errorWhileSavingTask:Error while saving the task!`));
         });
     }));
+  }
+
+  multipleSelectChange(value: any) {
+    this.taskTypesSelection = value;
+  }
+
+  saveTaskType(selectClosed: boolean) {
+    if (!selectClosed) {
+      this.transformIntoNorthStarEmitter.emit(this.taskTypesSelection.includes('northStar'));
+      this.transformIntoIdeaEmitter.emit(this.taskTypesSelection.includes('idea'));
+
+      this.postData.task.is_crm_task = this.taskTypesSelection.includes('crm');
+      this.transformIntoCRMLeadEmitter.emit(this.taskTypesSelection.includes('crm'));
+    }
   }
 
   transformToNorthStart() {

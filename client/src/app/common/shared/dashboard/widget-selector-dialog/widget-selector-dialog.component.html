@@ -30,7 +30,7 @@
           <h4 class="ml-3 mt-4"> {{ widget.name }}</h4>
         </div>
 
-        <div style="margin-left: 120px; margin-top: 30px;" *ngIf="widget.code == 'RESOURCE_MANAGEMENT' && groupId && groupEnableAllocation">
+        <!-- <div style="margin-left: 120px; margin-top: 30px;" *ngIf="widget.code == 'RESOURCE_MANAGEMENT' && groupId && groupEnableAllocation">
           <mat-slide-toggle color="primary"
               [disabled]="!isSelected(widget.code)"
               [checked]="resource_management_allocation"
@@ -38,7 +38,7 @@
               (change)="enableDisplayAllocation($event)">
             <h6><b i18n="@@widgetSelectorDialog.allocation">Allocation</b></h6>
           </mat-slide-toggle>
-        </div>
+        </div> -->
       </div>
     </div>
 

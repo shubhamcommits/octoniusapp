@@ -193,7 +193,7 @@ const PostSchema = new Schema({
             action: {
                 type: String,
                 required: true,
-                enum: ['created', 'change_content', 'change_status', 'change_section', 'assigned_to', 'removed_assignee', 'new_due_date', 'new_start_date', 'commented', 'change_cf', 'copy_to', 'moved_to', 'make_dependency', 'make_dependent', 'remove_dependency', 'remove_dependent', 'make_ns', 'make_no_ns', 'update_ns', 'make_idea', 'make_no_idea', 'make_crm_task', 'make_no_crm_task', 'make_milestone', 'make_no_milestone', 'set_parent', 'save_allocation', 'change_title', 'change_time', 'updated_tags', 'attach_file', 'attach_file_cloud', 'update_crm_info']
+                enum: ['created', 'change_content', 'change_status', 'change_section', 'assigned_to', 'removed_assignee', 'new_due_date', 'new_start_date', 'commented', 'change_cf', 'copy_to', 'moved_to', 'make_dependency', 'make_dependent', 'remove_dependency', 'remove_dependent', 'make_ns', 'make_no_ns', 'update_ns', 'make_idea', 'make_no_idea', 'make_crm_task', 'make_no_crm_task', 'make_milestone', 'make_no_milestone', 'set_parent', 'save_allocation', 'save_estimation', 'change_title', 'change_time', 'updated_tags', 'attach_file', 'attach_file_cloud', 'update_crm_info']
             },
             _actor: {
                 type: Schema.Types.ObjectId,
@@ -238,6 +238,16 @@ const PostSchema = new Schema({
             },
             allocation: {
                 type: Number
+            },
+            estimation: {
+                hours: {
+                    type: String,
+                    default: null
+                },
+                minutes: {
+                    type: String,
+                    default: null
+                }
             }
         }
     ],
@@ -263,6 +273,16 @@ const PostSchema = new Schema({
         allocation: {
             type: Number,
             default: 0
+        },
+        estimation: {
+            hours: {
+                type: String,
+                default: null
+            },
+            minutes: {
+                type: String,
+                default: null
+            }
         },
         // Custom Fields
         custom_fields: {

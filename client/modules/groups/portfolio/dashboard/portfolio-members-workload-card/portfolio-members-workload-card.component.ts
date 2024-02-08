@@ -117,7 +117,7 @@ export class PortfolioMembersWorkloadCardComponent implements OnChanges {
           is_weekend_day: this.isWeekend(date),
           numTasks: 0,
           numDoneTasks: 0,
-          allocation: 0,
+          // allocation: 0,
           hours: '0',
           minutes: '0',
           outOfTheOfficeClass: '',
