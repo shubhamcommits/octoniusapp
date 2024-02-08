@@ -145,7 +145,8 @@
 
         <div class="content-box" *ngIf="(showSubtasks && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id))
             || (postData?.comments_count > 0) || (postData?.task?.isNorthStar) || (postData?.logs && postData?.logs?.length > 0)
-            || (postData?.type === 'task' && postData?.approval_active && postData?.approval_history && postData?.approval_history?.length > 0)">
+            || (postData?.type === 'task' && postData?.approval_active && postData?.approval_history && postData?.approval_history?.length > 0)
+            || (postData?.type === 'task')">
           <!-- TABS STARTS -->
           <mat-tab-group mat-align-tabs="start" [selectedIndex]="selectedTab">
             <!-- subtasks STARTS-->
