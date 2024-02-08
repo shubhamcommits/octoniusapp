@@ -79,7 +79,7 @@
     "rich-text": "^4.1.0",
     "rxjs": "^6.6.3",
     "sharedb": "^1.9.1",
-    "socket.io-client": "^4.0.0",
+    "socket.io-client": "~4.0.0",
     "subsink": "^1.0.0",
     "sweetalert2": "^10.12.7",
     "tslib": "^2.0.0",
