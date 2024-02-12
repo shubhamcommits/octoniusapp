@@ -73,10 +73,8 @@ export class PageDetailsComponent implements OnInit {
     private _router: Router,
     private utilityService: UtilityService,
     private libraryService: LibraryService,
-    private libreofficeService: LibreofficeService,
     public storageService: StorageService,
-    private filesService: FilesService,
-    private workspaceService: WorkspaceService
+    private filesService: FilesService
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => {
       return false;
@@ -117,11 +115,11 @@ export class PageDetailsComponent implements OnInit {
     this.authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`;
 
     // Fetch the current loggedIn user data
-    if (!this.objectExists(this.userData) && this.isAuth) {
+    if (!this.objectExists(this.userData) && !!this.isAuth) {
       this.userData = await this.publicFunctions.getCurrentUser();
     }
 
-    if (!this.objectExists(this.groupData) && this.isAuth) {
+    if (!this.objectExists(this.groupData) && !!this.isAuth) {
       // Fetch the current group data
       this.groupData = await this.publicFunctions.getCurrentGroupDetails();
     } else if (!this.objectExists(this.groupData)) {
@@ -130,7 +128,7 @@ export class PageDetailsComponent implements OnInit {
       });
     }
 
-    if (!this.objectExists(this.workspaceData) && this.isAuth) {
+    if (!this.objectExists(this.workspaceData) && !!this.isAuth) {
       // Fetch the current workspace data
       this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     } else if (!this.objectExists(this.workspaceData)) {

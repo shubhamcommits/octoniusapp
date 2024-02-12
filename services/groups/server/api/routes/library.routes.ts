@@ -5,9 +5,6 @@ import { Auths, collectionFileUploader, collectionUploadFileUpload, pageFileUplo
 const routes = express.Router();
 const library = new LibraryController();
 
-// Auths Helper Function
-const authsHelper = new Auths();
-
 // GET - Get collection based on the collectionId
 routes.get('/collection/:collectionId', library.getCollection);
 
@@ -45,6 +42,9 @@ routes.get('/collection/:collectionId/folders', library.getFolders);
 routes.get('/collection/:collectionId/files', library.getFiles);
 
 // -| Authentication |-
+
+// Auths Helper Function
+const authsHelper = new Auths();
 
 // Verify the token
 routes.use(authsHelper.verifyToken);

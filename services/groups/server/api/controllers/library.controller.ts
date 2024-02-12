@@ -1435,7 +1435,7 @@ export class LibraryController {
             if (!group) {
                 return sendError(res, new Error('Oops, group not found!'), 'Group not found, Invalid groupId!', 404);
             }
-console.log(group);
+
             // Find the Group based on the groupId
             var workspace = await Workspace.findOne({
                     _id: group?._workspace
@@ -1445,7 +1445,7 @@ console.log(group);
                     select: 'first_name last_name profile_pic current_position role email active',
                 })
                 .lean();
-console.log(workspace);
+
             // Check if group already exist with the same groupId
             if (!workspace) {
                 return sendError(res, new Error('Oops, workspace not found!'), 'Workspace not found, Invalid workspaceId!', 404);
