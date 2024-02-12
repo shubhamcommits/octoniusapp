@@ -7,6 +7,7 @@ import { ColorPickerDialogComponent } from 'src/app/common/shared/color-picker-d
 import { Router } from '@angular/router';
 import { LibraryService } from 'src/shared/services/library-service/library.service';
 import { ShareCollectionDialogComponent } from 'src/app/common/shared/share-collection-dialog/share-collection-dialog.component';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
 
 @Component({
   selector: 'app-collection-header',
@@ -38,27 +39,33 @@ export class CollectionHeaderComponent implements OnInit, OnChanges {
     public injector: Injector,
     public dialog: MatDialog,
     private router: Router,
+    public storageService: StorageService,
     private utilityService: UtilityService,
     private libraryService: LibraryService
   ) { }
 
   async ngOnInit() {
-    await this.publicFunctions.getAllUserGroups(this.workspaceData?._id)
-      .then((groups: any) => {
+    const isAuth = this.storageService.existData('authToken');
 
-        groups.splice(groups.findIndex(group => group._id == this.groupData?._id), 1);
+    // Fetch the current loggedIn user data
+    if (this.objectExists(this.workspaceData) && !!isAuth) {
+      await this.publicFunctions.getAllUserGroups(this.workspaceData?._id)
+        .then((groups: any) => {
 
-        this.userGroups = groups;
+          groups.splice(groups.findIndex(group => group._id == this.groupData?._id), 1);
 
-        this.userGroups.sort((g1, g2) => (g1.group_name > g2.group_name) ? 1 : -1);
-        this.utilityService.removeDuplicates(this.userGroups, '_id').then((groups)=>{
           this.userGroups = groups;
+
+          this.userGroups.sort((g1, g2) => (g1.group_name > g2.group_name) ? 1 : -1);
+          this.utilityService.removeDuplicates(this.userGroups, '_id').then((groups)=>{
+            this.userGroups = groups;
+          });
+        })
+        .catch(() => {
+          // If the function breaks, then catch the error and console to the application
+          this.publicFunctions.sendError(new Error($localize`:@@collectionHeader.unableToConnectToServer:Unable to connect to the server, please try again later!`));
         });
-      })
-      .catch(() => {
-        // If the function breaks, then catch the error and console to the application
-        this.publicFunctions.sendError(new Error($localize`:@@collectionHeader.unableToConnectToServer:Unable to connect to the server, please try again later!`));
-      });
+    }
   }
 
   async ngOnChanges(changes: SimpleChanges) {

@@ -205,10 +205,11 @@ export class PublicFunctions {
 
     async getWorkspaceDetailsFromHTTP() {
       return new Promise(async (resolve, reject) => {
-          let userData = await this.getCurrentUser();
-          const workspaceService = this.injector.get(WorkspaceService);
-          const utilityService = this.injector.get(UtilityService);
+        const workspaceService = this.injector.get(WorkspaceService);
+        const utilityService = this.injector.get(UtilityService);
+        let userData = await this.getCurrentUser();
 
+        if (utilityService.objectExists(userData)) {
           this.subSink.add(workspaceService.getWorkspace(userData['_workspace'])
             .pipe(retry(1))
             .subscribe((res) => { resolve(res['workspace']) },
@@ -217,6 +218,7 @@ export class PublicFunctions {
                 utilityService.errorNotification($localize`:@@publicFunctions.errorOccuredWhileFetchingWorkspaceDetails:Error occurred while fetching the workspace details, please try again!`);
                 reject(err)
             }));
+        }
       });
     }
 

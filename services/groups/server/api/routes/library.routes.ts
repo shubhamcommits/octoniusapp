@@ -5,9 +5,6 @@ import { Auths, collectionFileUploader, collectionUploadFileUpload, pageFileUplo
 const routes = express.Router();
 const library = new LibraryController();
 
-// Auths Helper Function
-const authsHelper = new Auths();
-
 // GET - Get collection based on the collectionId
 routes.get('/collection/:collectionId', library.getCollection);
 
@@ -38,7 +35,16 @@ routes.get('/page/:pageId/by-page', library.getPagesByParent);
 // GET - Get group by page
 routes.get('/page/:pageId/workspace-by-page', library.getWorkspaceByPage);
 
+// GET - Get all folders in a collection
+routes.get('/collection/:collectionId/folders', library.getFolders);
+
+// GET - Get all files of a folder
+routes.get('/collection/:collectionId/files', library.getFiles);
+
 // -| Authentication |-
+
+// Auths Helper Function
+const authsHelper = new Auths();
 
 // Verify the token
 routes.use(authsHelper.verifyToken);
@@ -85,14 +91,8 @@ routes.get('/collection/:workspaceId/confluence-spaces', library.getUserConfluen
 // GET - Export selected confluence spaces
 routes.post('/collection/:workspaceId/export-spaces/:groupId', library.exportConfluenceSpaces);
 
-// GET - Get all folders in a collection
-routes.get('/collection/:collectionId/folders', library.getFolders);
-
 // GET - Get a folder details
 routes.get('/collection/folder/:folderId', library.getFolder);
-
-// GET - Get all files of a folder
-routes.get('/collection/:collectionId/files', library.getFiles);
 
 // POST - Create new page in the collection
 routes.post('/page/:collectionId', library.createPage);

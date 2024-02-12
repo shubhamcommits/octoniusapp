@@ -50,7 +50,7 @@ export class LibraryGuard implements CanActivateChild  {
       });
     }
 
-    if (this.pageId) {
+    if (!!this.pageId) {
       await this.libraryService.getGroupByPage(this.pageId).then(res => {
         currentGroup = res['group'];
       }).catch(error => {
