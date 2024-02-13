@@ -2,7 +2,7 @@ import { Response, Request, NextFunction } from "express";
 import { FlowService, PostService, TagsService } from '../services';
 import moment from "moment/moment";
 import { sendErr } from '../utils/sendError';
-import { Post } from "../models";
+import { Post, TimeTrackingEntity } from "../models";
 import http from 'axios';
 
 const ObjectId = require('mongoose').Types.ObjectId;
@@ -2004,5 +2004,57 @@ export class PostController {
             message: 'Post Edited Successfully!',
             post: updatedPost
         });
+    }
+
+    async recalculateCost(req: Request, res: Response, next: NextFunction) {
+        // Fetch the timeTrackingEntityId & timeId
+        const { postId } = req.params;
+
+        try {
+            let timeTrackingEntities = await TimeTrackingEntity.find({
+                    _task: postId
+                })
+                .populate('_user', 'hr')
+                .lean();
+
+            for (let i = 0; i < timeTrackingEntities.length; i++) {
+                let tte = timeTrackingEntities[i];
+
+                for (let j = 0; j < tte.times.length; j++) {
+                    let time = tte.times[j];
+
+                    const newCost = await postService.calculateTimeEntityCost((tte._user.hr.hourly_rate || 0), time);
+
+                    await TimeTrackingEntity.findByIdAndUpdate({
+                            _id: tte._id
+                        }, {
+                            $set: {
+                                'times.$[time].cost': newCost,
+                            }
+                        },
+                        {
+                            arrayFilters: [{ "time._id": time._id }],
+                            new: true
+                        });
+                }
+                
+            }
+
+            timeTrackingEntities = await TimeTrackingEntity.find({
+                    _task: postId
+                })
+                .populate('_user', 'first_name last_name profile_pic email')
+                .populate('_created_by', 'first_name last_name profile_pic email')
+                .lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Task cost edited!',
+                timeTrackingEntities: timeTrackingEntities
+            });
+        } catch (err) {
+            console.log(err);
+            return sendErr(res, err, 'Internal Server Error!', 500);
+        }
     }
 }

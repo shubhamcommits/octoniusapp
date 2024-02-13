@@ -48,6 +48,13 @@
       <span i18n="@@taskTimeTracking.close" *ngIf="!!entryId">X Close</span>
     </button>
 
+    <button class="btn btn-outline-primary btn-md float-left" style="margin-left: 30px;"
+      *ngIf="(userData?.role == 'manager' || userData?.role == 'owner' || isGroupManager(userData?._id))"
+      (click)="recalculateCosts()">
+      <span class="material-icons-outlined"> attach_money </span>
+      <span i18n="@@taskTimeTracking.recalculateCost">Re-Calculate Cost</span>
+    </button>
+
     <div *ngIf="entryAlreadyExists">
       <span>❌</span>
       &nbsp;

@@ -533,7 +533,6 @@ export class GroupService {
   };
 
   async calculateTimeEntityCost(userRate: number, time: any) {
-console.log(userRate * time.hours + (time.minutes/60)*userRate);
     return (userRate * time.hours + (time.minutes/60)*userRate);
   }
 }

@@ -672,4 +672,8 @@ export class PostService {
   saveCRMInfo(postId: string, crm_info: any) {
     return this._http.put(this.baseURL + `/${postId}/saveCRMInfo`, { crm_info }).toPromise();
   }
+
+  recalculateCost(postId: string) {
+    return this._http.post(this.baseURL + `/${postId}/recalculateCost`, {}).toPromise();
+  }
 }
