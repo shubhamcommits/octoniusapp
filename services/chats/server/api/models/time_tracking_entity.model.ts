@@ -34,6 +34,10 @@ const TimeTrackingEntitySchema = new Schema({
         comment: {
             type: String,
             default: null
+        },
+        cost: {
+            type: Number,
+            default: 0
         }
     }],
     created_date: {

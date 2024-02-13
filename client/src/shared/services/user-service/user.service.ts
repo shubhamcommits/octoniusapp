@@ -527,4 +527,8 @@ export class UserService {
       }
     }).toPromise();
   }
+
+  recalculateCost(timeTrackingEntityId: string, timeId: string) {
+    return this._http.post(this.BASE_API_URL + `/${timeTrackingEntityId}/recalculateCost/${timeId}`, {}).toPromise();
+  }
 }

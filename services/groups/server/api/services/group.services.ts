@@ -224,6 +224,10 @@ export class GroupService {
           _id: editTimeTrackingEntityId
         });
     }
+
+    const user = await User.findById({ _id: userId })
+      .select('hr').lean();
+    const newCost = await this.calculateTimeEntityCost((user.hr.hourly_rate || 0), time);
     
     if(!!tmpTTE) {
       tmpTTE = await TimeTrackingEntity.findOneAndUpdate({
@@ -233,7 +237,8 @@ export class GroupService {
             date: time.date,
             hours: time.hours,
             minutes: time.minutes,
-            comment: time.comment
+            comment: time.comment,
+            cost: newCost
           }}
         }, {
           new: true
@@ -250,7 +255,8 @@ export class GroupService {
             date: time.date,
             hours: time.hours,
             minutes: time.minutes,
-            comment: time.comment
+            comment: time.comment,
+            cost: newCost
           }],
           _created_by: dbTimeTrackingEntity._created_by
         });
@@ -363,7 +369,14 @@ export class GroupService {
   };
 
   async editTimeTimeTrackingEntity(editTimeTrackingEntityId: string, timeId: string, editTimeTrackingEntity: any) {
-    let tte;
+    let tte = await TimeTrackingEntity.findById({
+          _id: editTimeTrackingEntityId
+      })
+      .populate('_user', 'hr')
+      .lean();
+    
+    const newCost = await this.calculateTimeEntityCost((tte._user.hr.hourly_rate || 0), editTimeTrackingEntity);
+
     if (!!timeId && !timeId.includes('octonius_random')) {
       if (editTimeTrackingEntity?.hours != '00' || editTimeTrackingEntity?.minutes != '00') {
         tte = await TimeTrackingEntity.findByIdAndUpdate({
@@ -372,6 +385,7 @@ export class GroupService {
               $set: {
                 'times.$[time].hours': editTimeTrackingEntity?.hours,
                 'times.$[time].minutes': editTimeTrackingEntity?.minutes,
+                cost: newCost
               }
           },
           {
@@ -399,7 +413,8 @@ export class GroupService {
                   date: editTimeTrackingEntity?.date,
                   hours: editTimeTrackingEntity?.hours,
                   minutes: editTimeTrackingEntity?.minutes,
-                  comment: editTimeTrackingEntity?.comment
+                  comment: editTimeTrackingEntity?.comment,
+                  cost: newCost
                 }}
               }, {
                 new: true
@@ -432,7 +447,8 @@ export class GroupService {
                 date: editTimeTrackingEntity?.date,
                 hours: editTimeTrackingEntity?.hours,
                 minutes: editTimeTrackingEntity?.minutes,
-                comment: editTimeTrackingEntity?.comment
+                comment: editTimeTrackingEntity?.comment,
+                cost: newCost
               }],
               _created_by: editTimeTrackingEntity?._user
             });
@@ -515,4 +531,9 @@ export class GroupService {
       timeTrackingEntity: tte
     };
   };
+
+  async calculateTimeEntityCost(userRate: number, time: any) {
+console.log(userRate * time.hours + (time.minutes/60)*userRate);
+    return (userRate * time.hours + (time.minutes/60)*userRate);
+  }
 }

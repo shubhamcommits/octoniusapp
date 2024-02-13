@@ -106,6 +106,7 @@ export class TaskTimeTrackingComponent implements OnChanges {
           hours: time.hours,
           minutes: time.minutes,
           comment: time.comment,
+          cost: time.cost,
         };
         this.timeTrackingEntitiesMapped.push(tteMapped);
       });

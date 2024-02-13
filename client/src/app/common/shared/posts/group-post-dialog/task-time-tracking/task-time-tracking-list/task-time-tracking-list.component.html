@@ -39,8 +39,6 @@
     </td>
   </ng-container>
 
-  
-
   <ng-container matColumnDef="category">
     <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@taskTimeTrackingList.category"> category </th>
 
@@ -49,19 +47,34 @@
     </td>
   </ng-container>
 
+  <ng-container matColumnDef="cost">
+    <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@taskTimeTrackingList.cost"> cost </th>
+
+    <td mat-cell *matCellDef="let timeTrackingEntity">
+      <span>{{ (timeTrackingEntity?.cost || 0) | number: '1.2-2' }}</span>
+    </td>
+  </ng-container>
+
   <ng-container matColumnDef="star">
-    <th mat-header-cell *matHeaderCellDef style="text-align: right;">
+    <th mat-header-cell *matHeaderCellDef>
     </th>
 
-    <td mat-cell *matCellDef="let timeTrackingEntities" style="text-align: right;">
+    <td mat-cell *matCellDef="let timeTrackingEntities">
       <i class="material-icons-outlined ml-2 muted pointer"
         [matMenuTriggerFor]="menu">more_horiz</i>
       <mat-menu #menu="matMenu">
+        <a mat-menu-item (click)="recalculateCost(timeTrackingEntities?._id, timeTrackingEntities?.timeId)">
+          <span class="material-icons-outlined"> attach_money </span>
+          <span i18n="@@taskTimeTrackingList.recalculateCost">Re-Calculate Cost</span>
+        </a>
+
         <a mat-menu-item (click)="openEditEntry(timeTrackingEntities)">
+          <span class="material-icons-outlined">create</span>
           <span i18n="@@taskTimeTrackingList.edit">Edit</span>
         </a>
 
         <a mat-menu-item (click)="deleteEntry(timeTrackingEntities?._id, timeTrackingEntities?.timeId)">
+          <span class="material-icons-outlined">delete</span>
           <span i18n="@@taskTimeTrackingList.delete">Delete</span>
         </a>
       </mat-menu>

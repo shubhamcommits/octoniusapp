@@ -61,6 +61,7 @@
 <div class="list-records">
   <app-task-time-tracking-list
     [timeTrackingEntities]="timeTrackingEntitiesMapped" [userData]="userData"
+    [isAdmin]="userData?.role == 'manager' || userData?.role == 'owner' || isGroupManager(userData?._id)"
     (editTimeTrackingEntitEmitter)="onEditEntryEvent($event)"></app-task-time-tracking-list>
 </div>
 

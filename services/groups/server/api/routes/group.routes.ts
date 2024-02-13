@@ -171,6 +171,9 @@ routes.put('/:groupId/saveCustomFieldsSettings', group.saveCustomFieldsSettings)
 // PUT - Save time track entity
 routes.put('/:groupId/timeTrackingEntry', group.saveTimeTrackingEntry);
 
+// POST - Delete time tracking entity
+routes.post('/:timeTrackingEntityId/recalculateCost/:timeId', group.recalculateCost);
+
 // POST - Edit time track entity
 routes.post('/:editTimeTrackingEntityId/timeTrackingEntry', group.editTimeTrackingEntry);
 
