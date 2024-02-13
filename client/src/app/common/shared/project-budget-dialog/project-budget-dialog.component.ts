@@ -14,7 +14,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 })
 export class ProjectBudgetDialogComponent implements OnInit {
 
-  @Output() closeEvent = new EventEmitter();
+  @Output() budgetUpdatedEvent = new EventEmitter();
 
   columnId: any;
   columnTitle: string;
@@ -74,6 +74,7 @@ export class ProjectBudgetDialogComponent implements OnInit {
     this.utilityService.asyncNotification($localize`:@@projectBudgetDialog.pleaseWaitWeUpdateBudget:Please wait we are updating the budget...`, new Promise((resolve, reject) => {
       this.columnService.saveAmountBudget(this.columnId, this.budget?.amount_planned, this.budget?.currency)
         .then((res) => {
+          this.budgetUpdatedEvent.emit(this.budget);
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@projectBudgetDialog.budgetUpdated:Budget updated!`));
         })
         .catch((err) => {
@@ -94,6 +95,7 @@ export class ProjectBudgetDialogComponent implements OnInit {
               this.budget.expenses.unshift(this.expense);
               this.calculateTotalSpent();
               this.resetExpense();
+              this.budgetUpdatedEvent.emit(this.budget);
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@projectBudgetDialog.expenseSaved:Expense saved!`));
             })
             .catch((err) => {
@@ -108,6 +110,7 @@ export class ProjectBudgetDialogComponent implements OnInit {
               this.budget.expenses[index] = this.expense;
               this.calculateTotalSpent();
               this.resetExpense();
+              this.budgetUpdatedEvent.emit(this.budget);
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@projectBudgetDialog.expenseSaved:Expense saved!`));
             })
             .catch((err) => {
@@ -134,6 +137,7 @@ export class ProjectBudgetDialogComponent implements OnInit {
               let index = this.budget.expenses.findIndex((exp: any) => exp._id === expense._id);
               this.budget.expenses.splice(index, 1);
               this.calculateTotalSpent();
+              this.budgetUpdatedEvent.emit(this.budget);
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@projectBudgetDialog.expenseDeleted:Expense deleted!`));
             })
             .catch((err) => {
