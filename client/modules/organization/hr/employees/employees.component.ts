@@ -32,7 +32,7 @@ export class EmployeesComponent implements OnInit {
   users = [];
 
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['photo', 'first_name', 'last_name', 'email', 'job', 'department', 'star'];
+  displayedColumns: string[] = ['photo', 'first_name', 'last_name', 'email', 'job', 'cost', 'star'];
 
   // Public functions
   public publicFunctions = new PublicFunctions(this.injector);
