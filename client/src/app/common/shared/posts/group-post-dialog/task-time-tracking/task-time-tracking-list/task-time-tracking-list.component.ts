@@ -68,7 +68,7 @@ export class TaskTimeTrackingListComponent implements OnChanges {
     this.utilityService.getConfirmDialogAlert($localize`:@@taskTimeTrackingList.areYouSure:Are you sure?`, $localize`:@@taskTimeTrackingList.recalculate:By doing this, you will re-calculate the cost of the selected time record with the current rate of the user!`)
 			.then((res) => {
 				if (res.value) {
-					this.userService.recalculateCost(timeTrackingEntityId, timeId).then(async res => {
+					this.groupService.recalculateCost(timeTrackingEntityId, timeId).then(async res => {
 						const index = (this.timeTrackingEntities) ? this.timeTrackingEntities.findIndex(tte => tte._id == timeTrackingEntityId && tte.timeId == timeId) : -1;
 						if (index >= 0) {
 							this.timeTrackingEntities[index].cost = res['newCost'];

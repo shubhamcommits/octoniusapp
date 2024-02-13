@@ -349,7 +349,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
     this.utilityService.getConfirmDialogAlert($localize`:@@taskTimeTrackingList.areYouSure:Are you sure?`, $localize`:@@taskTimeTrackingList.recalculate:By doing this, you will re-calculate the cost of the selected time record with the current rate of the user!`)
 			.then((res) => {
 				if (res.value) {
-					this.userService.recalculateCost(timeTrackingEntityId, timeId).then(async res => {
+					this.groupService.recalculateCost(timeTrackingEntityId, timeId).then(async res => {
 						await this.generateNavDates(false);
 					})
 				}
