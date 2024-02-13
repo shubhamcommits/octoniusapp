@@ -8,6 +8,7 @@ import { NewTimeTrackingDialogComponent } from 'src/app/common/shared/new-time-t
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { UserService } from 'src/shared/services/user-service/user.service';
+import { DecimalPipe } from '@angular/common';
 // import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
@@ -58,7 +59,8 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
     private userService: UserService,
     private utilityService: UtilityService,
     private injector: Injector,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private decimalPipe: DecimalPipe
   ) { }
 
   async ngOnInit() {
@@ -314,14 +316,27 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
             comment: '',
           }
         } else {
-          return {
-            user: '',
-            task: tte?._task?.title,
-            date: this.formateDate(tte?.date),
-            hours: tte?.hours,
-            minutes: tte?.minutes,
-            category: tte?._category,
-            comment: tte?.comment,
+          if (this.isAdmin) {
+            return {
+              user: '',
+              task: tte?._task?.title,
+              date: this.formateDate(tte?.date),
+              hours: tte?.hours,
+              minutes: tte?.minutes,
+              category: tte?._category,
+              comment: tte?.comment,
+              cost: this.decimalPipe.transform(tte?.cost, '1.2-2')
+            }
+          } else {
+            return {
+              user: '',
+              task: tte?._task?.title,
+              date: this.formateDate(tte?.date),
+              hours: tte?.hours,
+              minutes: tte?.minutes,
+              category: tte?._category,
+              comment: tte?.comment,
+            }
           }
         }
       });
