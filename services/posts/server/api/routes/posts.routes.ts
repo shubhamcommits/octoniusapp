@@ -267,4 +267,7 @@ routes.put('/:postId/automator', postController.runAutomator.bind(postController
 // PUT - This route is used to edit the post crm information
 routes.put('/:postId/saveCRMInfo', postController.saveCRMInfo);
 
+// POST - Recalculate the cost of a task
+routes.post('/:postId/recalculateCost', postController.recalculateCost);
+
 export { routes as postRoutes };

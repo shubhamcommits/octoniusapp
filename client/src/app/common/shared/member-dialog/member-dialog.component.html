@@ -78,7 +78,19 @@
               </div>
             </div>
 
-            <hr *ngIf="userData && userData?.skills && userData?.skills?.length > 0 && userData?.bio && userData?.bio != ''" />
+            <hr *ngIf="!!userData && !!groupData && !!currentUser && (currentUser?.role == 'manager' || currentUser?.role == 'owner' || isGroupManager(currentUser?._id)) && !!userData?.bio && userData?.bio != ''" />
+            
+            <div class="card-tile" *ngIf="!!currentUser && !!groupData && (currentUser?.role == 'manager' || currentUser?.role == 'owner' || isGroupManager(currentUser?._id))">
+              <div class="card-block">
+                <h6 class="card-title"><b i18n="@@memberDialog.hourlyRate">Hourly Rate</b></h6>
+
+                <input type="number" name="hourlyRate" [(ngModel)]="userData.hr.hourly_rate" class="form-control"
+                  [value]="userData?.hr?.hourly_rate" (keyup.enter)="saveProperty({'hr.hourly_rate': $event.target.value})"
+                  (blur)="saveProperty({'hr.hourly_rate': $event.target.value})" />
+              </div>
+            </div>
+
+            <hr *ngIf="userData && userData?.skills && userData?.skills?.length > 0 && ((userData?.bio && userData?.bio != '') || (!!currentUser && !!groupData && (currentUser?.role == 'manager' || currentUser?.role == 'owner' || isGroupManager(currentUser?._id))))" />
 
             <div class="card-tile" *ngIf="userData && userData?.skills && userData?.skills?.length > 0">
               <div class="card-block">

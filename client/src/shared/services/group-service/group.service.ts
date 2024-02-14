@@ -376,6 +376,10 @@ export class GroupService {
     return this._http.put(this.baseURL + `/${groupId}/timeTrackingEntry`, { newTimeTrackingEntity }).toPromise();
   }
 
+  recalculateCost(timeTrackingEntityId: string, timeId: string) {
+    return this._http.post(this.baseURL + `/${timeTrackingEntityId}/recalculateCost/${timeId}`, {}).toPromise();
+  }
+
   editTimeTrackingEntry(editTimeTrackingEntity, propertyEdited: string) {
     return this._http.post(this.baseURL + `/${editTimeTrackingEntity._id}/timeTrackingEntry`, { editTimeTrackingEntity, propertyEdited }).toPromise();
   }

@@ -43,10 +43,10 @@
         <td mat-cell *matCellDef="let user"> {{user?.current_position}} </td>
       </ng-container>
 
-      <!-- Department Column -->
-      <ng-container matColumnDef="department">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header i18n=" @@employees.department"> Department </th>
-        <td mat-cell *matCellDef="let user"> {{user?.department}} </td>
+      <!-- Cost Column -->
+      <ng-container matColumnDef="cost">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header i18n=" @@employees.cost"> Cost </th>
+        <td mat-cell *matCellDef="let user"> {{ (user?.hr?.hourly_rate || 0) | number: '1.2-2' }} </td>
       </ng-container>
 
       <!-- Options Column -->

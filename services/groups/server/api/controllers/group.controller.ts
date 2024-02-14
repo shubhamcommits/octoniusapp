@@ -2556,6 +2556,10 @@ export class GroupController {
         newTimeTrackingEntity._created_by = req['userId'];
 
         try {
+            const user = await User.findById({ _id: (newTimeTrackingEntity._user._id || newTimeTrackingEntity._user) })
+                .select('hr').lean();
+            const newCost = await groupService.calculateTimeEntityCost((user.hr.hourly_rate || 0), { hours: newTimeTrackingEntity.hours, minutes: newTimeTrackingEntity.minutes });
+
             let tmpTTE = await TimeTrackingEntity.findOne({
                 $and: [
                     { _user: newTimeTrackingEntity._user },
@@ -2572,7 +2576,8 @@ export class GroupController {
                             date: newTimeTrackingEntity.date,
                             hours: newTimeTrackingEntity.hours,
                             minutes: newTimeTrackingEntity.minutes,
-                            comment: newTimeTrackingEntity.comment
+                            comment: newTimeTrackingEntity.comment,
+                            cost: newCost
                         }}
                     }).lean();
             } else {
@@ -2585,6 +2590,7 @@ export class GroupController {
                         hours: newTimeTrackingEntity?.hours,
                         minutes: newTimeTrackingEntity?.minutes,
                         comment: newTimeTrackingEntity?.comment,
+                        cost: newCost
                     }],
                     _created_by: newTimeTrackingEntity._created_by
                 };
@@ -2608,6 +2614,51 @@ export class GroupController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     };
+
+    async recalculateCost(req: Request, res: Response, next: NextFunction) {
+        // Fetch the timeTrackingEntityId & timeId
+        const { timeTrackingEntityId, timeId } = req.params;
+
+        try {
+            let tte = await TimeTrackingEntity.findById({
+                    _id: timeTrackingEntityId
+                })
+                .populate('_user', 'hr')
+                .lean();
+
+            let index = (!!tte && !!tte.times) ? tte.times.findIndex(t => t._id == timeId) : -1;
+            let time;
+            if (index >= 0) {
+                time = tte.times[index];
+            }
+
+            const newCost = await groupService.calculateTimeEntityCost((tte._user.hr.hourly_rate || 0), time);
+            
+            tte = await TimeTrackingEntity.findByIdAndUpdate({
+                    _id: timeTrackingEntityId
+                }, {
+                    $set: {
+                        'times.$[time].cost': newCost,
+                    }
+                },
+                {
+                    arrayFilters: [{ "time._id": timeId }],
+                    new: true
+                })
+                .populate('_user', 'first_name last_name profile_pic email')
+                .populate('_created_by', 'first_name last_name profile_pic email')
+                .lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Time tracking Entity cost edited!',
+                newCost: newCost
+            });
+        } catch (err) {
+            console.log(err);
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
 
     /**
      * This function is responsible for adding a new time tracking entity
@@ -2825,10 +2876,9 @@ export class GroupController {
      */
     async getGroupTimeTrackingEntites(req: Request, res: Response) {
         try {
-
             const { groupId } = req.params;
             const { query: { startDate, endDate, filterUserId } } = req;
-console.log(startDate, endDate);
+
             let groupTasks = await Post.find({
                 $and: [
                     { _group: groupId },

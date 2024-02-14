@@ -25,16 +25,17 @@ export class ColumnProjectSectionComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.calculateTotalSpent();
+
     this.canSeeBudget = this.userData?.role == 'owner' || this.userData?.role == 'admin' || this.userData?.role == 'manager'
     || (this.groupData?._admins.findIndex((admin: any) => (admin._id || admin) == this.userData?._id)>=0);
   }
 
-  formateDate(date: any, format: string) {
-    return date ? moment.utc(date).format(format) : '';
-  }
-
-  isDelay(realDueDate: any, dueDate: any) {
-    return moment(realDueDate).isAfter(moment(dueDate), 'day');
+  calculateTotalSpent() {
+    this.column.budget.totalSpent = 0;
+    this.column.budget?.expenses?.forEach(expense => {
+      this.column.budget.totalSpent += expense.amount;
+    });
   }
 
   newBudget(columnId: string, initialBudget: number) {
@@ -43,7 +44,8 @@ export class ColumnProjectSectionComponent implements OnInit {
       this.columnService.saveAmountBudget(columnId, initialBudget)
         .then((res) => {
           this.column.budget = {
-            amount_planned: initialBudget
+            amount_planned: initialBudget,
+            totalSpent: 0
           }
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@columnProjectSection.projectUpdated:Project updated!`));
         })
@@ -70,14 +72,31 @@ export class ColumnProjectSectionComponent implements OnInit {
         hasBackdrop: true
       });
 
-      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-        this.column.budget = data['budget'];
+      const budgetUpdatedEventSubs = dialogRef.componentInstance.budgetUpdatedEvent.subscribe((data) => {
+        this.column.budget = data;
+        this.calculateTotalSpent();
       });
 
 
       dialogRef.afterClosed().subscribe(result => {
-        closeEventSubs.unsubscribe();
+        budgetUpdatedEventSubs.unsubscribe();
       });
     }
+  }
+
+  getBudgetStyle() {
+    if (this.column.budget.amount_planned - this.column?.budget?.totalSpent < 0) {
+      return 'over-budget';
+    } else if (this.column.budget.amount_planned - this.column?.budget?.totalSpent > 0) {
+      return 'under-budget';
+    }
+  }
+
+  formateDate(date: any, format: string) {
+    return date ? moment.utc(date).format(format) : '';
+  }
+
+  isDelay(realDueDate: any, dueDate: any) {
+    return moment(realDueDate).isAfter(moment(dueDate), 'day');
   }
 }

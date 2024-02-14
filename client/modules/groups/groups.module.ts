@@ -27,7 +27,7 @@ import { GanttViewComponent } from './group/gantt-view/gantt-view.component';
   * 2. !===== MODULES =====!
   */
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { GroupsRoutingModule } from './groups-routing.module';
@@ -206,7 +206,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
         PostService,
         CommentService,
         FlowService,
-        DatePipe
+        DatePipe,
+        DecimalPipe
     ],
     schemas: [
         CUSTOM_ELEMENTS_SCHEMA

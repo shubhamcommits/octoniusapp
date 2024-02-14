@@ -7,6 +7,8 @@ import { GroupService } from 'src/shared/services/group-service/group.service';
 import { NewTimeTrackingDialogComponent } from 'src/app/common/shared/new-time-tracking-dialog/new-time-tracking-dialog.component';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { MatPaginator } from '@angular/material/paginator';
+import { UserService } from 'src/shared/services/user-service/user.service';
+import { DecimalPipe } from '@angular/common';
 // import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
@@ -20,6 +22,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
   @Input() endDate: any;
   @Input() filterUserId: any;
   @Input() exportData: any;
+  @Input() isAdmin: any = false;
   
   // @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   
@@ -53,9 +56,11 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
 
   constructor(
     private groupService: GroupService,
+    private userService: UserService,
     private utilityService: UtilityService,
     private injector: Injector,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private decimalPipe: DecimalPipe
   ) { }
 
   async ngOnInit() {
@@ -92,6 +97,10 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
     this.userData = await this.publicFunctions.getCurrentUser();
     this.groupData = await this.publicFunctions.getCurrentGroupDetails();
 
+    this.displayedColumns = (this.isAdmin)
+      ? ['task', 'time', 'date', 'category', 'comment', 'cost', 'star']
+      : ['task', 'time', 'date', 'category', 'comment'];
+
     await this.generateNavDates(false);
 
     // Return the function via stopping the loader
@@ -125,6 +134,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
           hours: time.hours,
           minutes: time.minutes,
           comment: time.comment,
+          cost: time.cost,
         };
 
         this.timeTrackingEntitiesMapped.push(tteMapped);
@@ -155,6 +165,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
             totalTasks: userNumbers.totalTasks,
             totalHours: userNumbers.totalHours,
             totalMinutes: userNumbers.totalMinutes,
+            cost: userNumbers.cost,
             isGroup: true,
             reduced: collapsedGroups.some((group) => group._user._id == currentValue?._user._id)
           }];
@@ -190,7 +201,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
 
       // Initialize totals for the user if not present
       if (!userTotals[userId]) {
-        userTotals[userId] = { hours: 0, minutes: 0, tasks: new Set() };
+        userTotals[userId] = { hours: 0, minutes: 0, tasks: new Set(), cost: 0 };
       }
 
       // Add the hours and minutes from the current entry
@@ -199,6 +210,8 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
 
       // Add the task to the set for counting unique tasks
       userTotals[userId].tasks.add(tte._task._id);
+
+      userTotals[userId].cost += tte.cost;
     });
 
     // Convert excess minutes to hours if necessary
@@ -213,6 +226,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
       totalHours: userTotals[userId].hours,
       totalMinutes: userTotals[userId].minutes,
       totalTasks: userTotals[userId].tasks.size,
+      cost: userTotals[userId].cost,
     };
   }
 
@@ -296,30 +310,67 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
     if (!!this.groupData && !!this.dataSource) {
       const dataToExport = await this.dataSource.map(tte => {
         if (tte.isGroup) {
-          return {
-            user: tte.userName,
-            task: tte.totalTasks,
-            date: '',
-            hours: tte?.totalHours,
-            minutes: tte?.totalMinutes,
-            category: '',
-            comment: '',
+          if (this.isAdmin) {
+            return {
+              user: tte.userName,
+              task: tte.totalTasks,
+              date: '',
+              hours: tte?.totalHours,
+              minutes: tte?.totalMinutes,
+              category: '',
+              comment: '',
+              cost: tte?.cost
+            }
+          } else {
+            return {
+              user: tte.userName,
+              task: tte.totalTasks,
+              date: '',
+              hours: tte?.totalHours,
+              minutes: tte?.totalMinutes,
+              category: '',
+              comment: ''
+            }
           }
         } else {
-          return {
-            user: '',
-            task: tte?._task?.title,
-            date: this.formateDate(tte?.date),
-            hours: tte?.hours,
-            minutes: tte?.minutes,
-            category: tte?._category,
-            comment: tte?.comment,
+          if (this.isAdmin) {
+            return {
+              user: '',
+              task: tte?._task?.title,
+              date: this.formateDate(tte?.date),
+              hours: tte?.hours,
+              minutes: tte?.minutes,
+              category: tte?._category,
+              comment: tte?.comment,
+              cost: this.decimalPipe.transform(tte?.cost, '1.2-2')
+            }
+          } else {
+            return {
+              user: '',
+              task: tte?._task?.title,
+              date: this.formateDate(tte?.date),
+              hours: tte?.hours,
+              minutes: tte?.minutes,
+              category: tte?._category,
+              comment: tte?.comment
+            }
           }
         }
       });
       this.groupService.exportTasksToFile(exportType, dataToExport, this.groupData?.group_name + '_times');
       this.utilityService.updateIsLoadingSpinnerSource(false);
     }
+  }
+
+  recalculateCost(timeTrackingEntityId: string, timeId: string) {
+    this.utilityService.getConfirmDialogAlert($localize`:@@taskTimeTrackingList.areYouSure:Are you sure?`, $localize`:@@taskTimeTrackingList.recalculate:By doing this, you will re-calculate the cost of the selected time record with the current rate of the user!`)
+			.then((res) => {
+				if (res.value) {
+					this.groupService.recalculateCost(timeTrackingEntityId, timeId).then(async res => {
+						await this.generateNavDates(false);
+					})
+				}
+			});
   }
   
   formateDate(date) {

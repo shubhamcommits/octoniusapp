@@ -3,6 +3,7 @@ import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 // import { DateTime } from 'luxon';
 import { GroupService } from 'src/shared/services/group-service/group.service';
+import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
@@ -51,6 +52,7 @@ export class TaskTimeTrackingComponent implements OnChanges {
 
   constructor(
     private groupService: GroupService,
+    private postService: PostService,
     private utilityService: UtilityService,
     private injector: Injector
   ) { }
@@ -106,6 +108,7 @@ export class TaskTimeTrackingComponent implements OnChanges {
           hours: time.hours,
           minutes: time.minutes,
           comment: time.comment,
+          cost: time.cost,
         };
         this.timeTrackingEntitiesMapped.push(tteMapped);
       });
@@ -313,6 +316,18 @@ export class TaskTimeTrackingComponent implements OnChanges {
   //   this.entryCategory = oldEntity._category;
   //   this.entryComment = oldEntity.comment;
   // }
+
+  recalculateCosts() {
+    this.utilityService.getConfirmDialogAlert($localize`:@@taskTimeTrackingList.areYouSure:Are you sure?`, $localize`:@@taskTimeTrackingList.recalculate:By doing this, you will re-calculate the cost of the selected time record with the current rate of the user!`)
+			.then((res) => {
+				if (res.value) {
+					this.postService.recalculateCost(this.taskId).then(async res => {
+						this.timeTrackingEntities = res['timeTrackingEntities'];
+            await this.initTable();
+					});
+				}
+			});
+  }
 
   isSameDay(day1: any, day2: any) {
     if (!day1 && !day2) {

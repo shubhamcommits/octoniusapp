@@ -3935,4 +3935,8 @@ export class PostService {
       throw (err);
     }
   };
+
+  async calculateTimeEntityCost(userRate: number, time: any) {
+    return (userRate * time.hours + (time.minutes/60)*userRate);
+  }
 }

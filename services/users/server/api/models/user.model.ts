@@ -161,6 +161,10 @@ const UserSchema = new Schema({
         country: {
             type: String,
             default: null
+        },
+        hourly_rate: {
+            type: Number,
+            required: false
         }
     },
     stats: {
