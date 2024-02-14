@@ -131,6 +131,11 @@
                 <span *ngIf="row.totalHours !== '00'">{{ row.totalHours + 'h ' }}</span>
                 <span *ngIf="row.totalMinutes !== '00'">{{ row.totalMinutes + 'm' }}</span>
               </span>
+
+              <span style="margin-left: 100px;">
+                <span i18n="@@groupTimeTrackingView.cost">Cost</span>: &nbsp;
+                <span>{{ (row.cost || 0) | number: '1.2-2' }}</span>
+              </span>
             </div>
           </td>
         </ng-container>

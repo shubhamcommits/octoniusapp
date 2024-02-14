@@ -99,7 +99,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
 
     this.displayedColumns = (this.isAdmin)
       ? ['task', 'time', 'date', 'category', 'comment', 'cost', 'star']
-      : ['task', 'time', 'date', 'category', 'comment', 'star'];
+      : ['task', 'time', 'date', 'category', 'comment'];
 
     await this.generateNavDates(false);
 
@@ -165,6 +165,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
             totalTasks: userNumbers.totalTasks,
             totalHours: userNumbers.totalHours,
             totalMinutes: userNumbers.totalMinutes,
+            cost: userNumbers.cost,
             isGroup: true,
             reduced: collapsedGroups.some((group) => group._user._id == currentValue?._user._id)
           }];
@@ -200,7 +201,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
 
       // Initialize totals for the user if not present
       if (!userTotals[userId]) {
-        userTotals[userId] = { hours: 0, minutes: 0, tasks: new Set() };
+        userTotals[userId] = { hours: 0, minutes: 0, tasks: new Set(), cost: 0 };
       }
 
       // Add the hours and minutes from the current entry
@@ -209,6 +210,8 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
 
       // Add the task to the set for counting unique tasks
       userTotals[userId].tasks.add(tte._task._id);
+
+      userTotals[userId].cost += tte.cost;
     });
 
     // Convert excess minutes to hours if necessary
@@ -223,6 +226,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
       totalHours: userTotals[userId].hours,
       totalMinutes: userTotals[userId].minutes,
       totalTasks: userTotals[userId].tasks.size,
+      cost: userTotals[userId].cost,
     };
   }
 
@@ -306,14 +310,27 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
     if (!!this.groupData && !!this.dataSource) {
       const dataToExport = await this.dataSource.map(tte => {
         if (tte.isGroup) {
-          return {
-            user: tte.userName,
-            task: tte.totalTasks,
-            date: '',
-            hours: tte?.totalHours,
-            minutes: tte?.totalMinutes,
-            category: '',
-            comment: '',
+          if (this.isAdmin) {
+            return {
+              user: tte.userName,
+              task: tte.totalTasks,
+              date: '',
+              hours: tte?.totalHours,
+              minutes: tte?.totalMinutes,
+              category: '',
+              comment: '',
+              cost: tte?.cost
+            }
+          } else {
+            return {
+              user: tte.userName,
+              task: tte.totalTasks,
+              date: '',
+              hours: tte?.totalHours,
+              minutes: tte?.totalMinutes,
+              category: '',
+              comment: ''
+            }
           }
         } else {
           if (this.isAdmin) {
@@ -335,7 +352,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
               hours: tte?.hours,
               minutes: tte?.minutes,
               category: tte?._category,
-              comment: tte?.comment,
+              comment: tte?.comment
             }
           }
         }
