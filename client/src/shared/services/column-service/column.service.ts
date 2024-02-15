@@ -237,7 +237,7 @@ export class ColumnService {
   }
 
   getSectionTimeTrackingCost(sectionId: string) {
-    return this._http.get(this.baseUrl + `/${sectionId}/sectionTimeTrackingCost`, {}).toPromise()
+    return this._http.get(this.baseUrl + `/columns/${sectionId}/sectionTimeTrackingCost`, {}).toPromise()
   }
   /**
    *
