@@ -235,6 +235,10 @@ export class ColumnService {
     // Call the HTTP Request
     return this._http.put(this.basePostsUrl + `/section/permissions/${sectionId}/removeMemberFromPermission`, { permissionId, memberId }).toPromise();
   }
+
+  getSectionTimeTrackingCost(sectionId: string) {
+    return this._http.get(this.basePostsUrl + `/${sectionId}/sectionTimeTrackingCost`, {}).toPromise()
+  }
   /**
    *
    * ENDS THE BLOCK OF METHODS TO UPDATE THE RIGHTS OF AN ITEM

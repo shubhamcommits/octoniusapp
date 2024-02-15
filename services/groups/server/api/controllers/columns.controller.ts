@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { Column, Group, Post } from '../models';
+import { Column, Group, Post, TimeTrackingEntity } from '../models';
 import { sendError } from '../../utils';
 import moment from 'moment';
 
@@ -607,4 +607,39 @@ export class ColumnsController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     };
+
+    // get the cost of all the timetracking linked to the task in the section
+    async getSectionTimeTrackingCost(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Fetch GroupId from the query
+            const { sectionId } = req.params;
+
+            let totalCost = 0;
+
+            if (sectionId) {
+                const tasks = await Post.find({
+                        'task._column': sectionId
+                    }).select('_id').lean();
+
+                const timeTrackingEntities = await TimeTrackingEntity.find({
+                        _task: { $in: tasks }
+                    })
+                    .lean();
+
+                for (let i = 0; i < timeTrackingEntities?.length; i++) {
+                    for (let j = 0; j < timeTrackingEntities[i]?.times?.length; j++) {
+                        totalCost += (timeTrackingEntities[i]?.times[j]?.cost || 0)
+                    }
+                }
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Cost obtained Successfully!',
+                time_tracking_cost: totalCost
+            });
+        } catch (err) {
+            return sendError(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
 }
