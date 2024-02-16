@@ -37,7 +37,7 @@ function devConfigInit() {
   process.env.DOMAIN = process.env.DOMAIN || 'localhost'
 
   // Groups Microservice
-  process.env.GROUPS_PORT = process.env.GROUPS || '4000'
+  process.env.GROUPS_PORT = process.env.GROUPS || '4001'
   process.env.GROUPS_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.GROUPS_PORT}`
   process.env.GROUPS_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.GROUPS_PORT}/api`
 

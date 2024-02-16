@@ -3,7 +3,7 @@
 - `/`
 - `/passwords`
 
-**PORT 4000** - `http://localhost:4000/api` -> `/api/groups`
+**PORT 4001** - `http://localhost:4001/api` -> `/api/groups`
 
 - `/`
 - `/members`

@@ -118,10 +118,10 @@ services:
       context: ./services/groups/server
       dockerfile: Dockerfile.dev
     ports:
-      - 4000:4000
+      - 4001:4001
     environment:
       - NODE_ENV=development
-      - PORT=4000
+      - PORT=4001
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
       - DB_URL=mongodb://mongodb:27017/octonius
