@@ -109,6 +109,7 @@ export class ProjectBudgetDialogComponent implements OnInit {
 
     this.timeTrackingEntities.forEach(tte => {
       tte?.times?.forEach(time => {
+
         let tteMapped = {
           _id: tte._id,
           _user: tte._user,
@@ -122,11 +123,12 @@ export class ProjectBudgetDialogComponent implements OnInit {
           amount: time.cost,
           isTT: true
         };
+
         this.budget.expenses.push(tteMapped);
       });
     });
 
-    this.budget.expenses = [...this.budget.expenses];
+    this.budget.expenses = this.utilityService.removeDuplicates([...this.budget.expenses], '_id');
 
     this.budget.expenses.sort((e1, e2) => (moment(e1.date).isAfter(moment(e2.date))) ? -1 : 1);
   }
