@@ -94,13 +94,14 @@ export const environment = {
   // Utilities URLs
   UTILITIES_BASE_URL: `${url.protocol}://${url.domain}:10000`,
   UTILITIES_BASE_API_URL: `${url.protocol}://${url.domain}:10000/api`,
-  UTILITIES_USERS_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/users`,
   UTILITIES_GROUPS_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/groups`,
+  //UTILITIES_GROUP_FILES_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/groupsFiles`,
   UTILITIES_FILES_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/files`,
   UTILITIES_POSTS_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/posts`,
+  UTILITIES_USERS_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/users`,
   UTILITIES_WORKSPACES_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/workspaces`,
   UTILITIES_FLAMINGOS_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/flamingo`,
-  
+
   LIBREOFFICE_BASE_URL: `${url.protocol}://${url.domain}:9980/`,
   LIBREOFFICE_BASE_PORT: '9980',
 
@@ -115,8 +116,8 @@ export const environment = {
   // MANAGEMENT_URL: 'https://management.octonius.com',
   MANAGEMENT_URL: `${url.protocol}://${url.domain}:3300`,
 
-  STRIPE_PRICING_TABLE_ID: 'prctbl_1NUnP1GvwAwbe8mc0DOFa6Wk',
-  STRIPE_PK: 'pk_test_51LXiwTGvwAwbe8mcOdlaROgsl7f1FXxJZyO7eqtJzE4w1wpaqeeoKCICNfghxHU02HCnAKt1bfGe3kCpanWFjzDA00mQwBQkcm',
+  STRIPE_PRICING_TABLE_ID: 'prctbl_1NUpoWGvwAwbe8mcJ6NbwIhq',
+  STRIPE_PK: 'pk_live_51LXiwTGvwAwbe8mcFvHDyI4isnNcSNwh8C2i3BGlksekQjDL9dpjGhs4kiOKYaE4p5sbccSU0mKj1VIt5KtJHYkD00Dpvr33gN',
   STRIPE_INDIVIDUAL_PRODUCT_ID: 'prod_OHKubm9b6aqLtv',
   STRIPE_TEAM_PRODUCT_ID: 'prod_OHLYSPKkuKtKT5',
   STRIPE_BUSINESS_PRODUCT_ID: 'prod_OHLYDzd3gB29cY',
