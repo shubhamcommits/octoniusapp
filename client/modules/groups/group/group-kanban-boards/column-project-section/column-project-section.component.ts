@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import moment from 'moment';
 import { ProjectBudgetDialogComponent } from 'src/app/common/shared/project-budget-dialog/project-budget-dialog.component';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
+import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
@@ -21,14 +22,39 @@ export class ColumnProjectSectionComponent implements OnInit {
   constructor(
     public utilityService: UtilityService,
     private columnService: ColumnService,
+    private groupService: GroupService,
     public dialog: MatDialog
   ) { }
 
   async ngOnInit() {
+    await this.calculateHoursSpent();
+
     this.calculateTotalSpent();
 
     this.canSeeBudget = this.userData?.role == 'owner' || this.userData?.role == 'admin' || this.userData?.role == 'manager'
     || (this.groupData?._admins.findIndex((admin: any) => (admin._id || admin) == this.userData?._id)>=0);
+  }
+
+  async calculateHoursSpent() {
+    let timeTrackingEntities = [];
+    await this.groupService.getSectionTimeTrackingEntities(this.column?._id).then(res => {
+      timeTrackingEntities = res['timeTrackingEntities'];
+    });
+
+    this.column.hours_logged = 0;
+    this.column.minutes_logged = 0;
+
+    timeTrackingEntities.forEach(tte => {
+      tte?.times?.forEach(time => {
+        this.column.hours_logged += parseInt(time.hours);
+        this.column.minutes_logged += parseInt(time.minutes);
+
+        const extraHours = Math.floor(this.column.minutes_logged / 60);
+
+        this.column.hours_logged += extraHours;
+        this.column.minutes_logged %= 60;
+      });
+    });
   }
 
   calculateTotalSpent() {

@@ -8,13 +8,29 @@
     </span>
   </div>
 
-  <div class="project-container bold" *ngIf="column?.real_due_date">
-    <span i18n="@@columnProjectSection.real">Real</span>
-    <span *ngIf="column?.real_due_date" class="float-right">
-      <i *ngIf="isDelay(column?.real_due_date, column?.due_date)" class="material-icons-outlined" style="color: #eb5757;">arrow_right_alt</i>
-      {{ formateDate(column?.real_due_date, "Do, MMM") }}
-      <i *ngIf="isDelay(column?.real_due_date, column?.due_date)" class="material-icons-outlined" style="color: #eb5757; margin-top: -6px;">error</i>
-    </span>
+  <!--
+    <div class="project-container bold" *ngIf="column?.real_due_date">
+      <span i18n="@@columnProjectSection.real">Real</span>
+      <span *ngIf="column?.real_due_date" class="float-right">
+        <i *ngIf="isDelay(column?.real_due_date, column?.due_date)" class="material-icons-outlined" style="color: #eb5757;">arrow_right_alt</i>
+        {{ formateDate(column?.real_due_date, "Do, MMM") }}
+        <i *ngIf="isDelay(column?.real_due_date, column?.due_date)" class="material-icons-outlined" style="color: #eb5757; margin-top: -6px;">error</i>
+      </span>
+    </div>
+    -->
+  
+  <div class="project-container" *ngIf="!!column?.hours_logged || !!column?.minutes_logged">
+    <span i18n="@@columnProjectSection.timeLogged">Time Logged</span>
+  
+    <div class="float-right">
+      <span *ngIf="column?.hours_logged">
+        {{ column?.hours_logged }} h
+      </span>
+      &nbsp;
+      <span *ngIf="column?.minutes_logged">
+        {{ column?.minutes_logged }} m
+      </span>
+    </div>
   </div>
 
   <div class="project-container" style="height: 40px;" *ngIf="canSeeBudget && column?.project_type && !(column?.budget?.amount_planned)">
