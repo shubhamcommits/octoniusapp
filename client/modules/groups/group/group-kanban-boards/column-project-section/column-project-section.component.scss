@@ -1,23 +1,37 @@
 @import "src/assets/scss/variables";
 
 .project-header{
-  padding: 10px;
+  padding: 4px;
   background:#fff;
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14); 
   border-radius: 8px;
+  margin-bottom: 24px;
 }
 
 .project-container {
   width: 310px;
-  border-bottom: 1px solid $border-color;
+  // border-bottom: 1px solid $border-color;
   margin-bottom: 16px;
   padding: 10px;
 }
 
-.over-budget {
-  background-color: #F67B99;
+// .over-budget {
+//   background-color: #F67B99;
+// }
+
+// .under-budget {
+//   background-color: #2AA578;
+// }
+
+.badge{
+  font-size:14px ;
+  list-style: none;
 }
 
-.under-budget {
-  background-color: #2AA578;
+.logtime{
+  background:rgba(251, 183, 50, 0.72) ;
+}
+
+.budgetspent{
+  background: rgba(176, 255, 208, 0.86);
 }

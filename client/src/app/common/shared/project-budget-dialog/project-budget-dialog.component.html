@@ -9,12 +9,15 @@
 
   <div class="budget-properties budget-box new-record-form">
     <div>
-      <p class="box-title">
+      <h3 class="">
         <!-- <span class="material-icons" style="line-height: 35px;">monetization_on</span> -->
         <span i18n="@@projectBudgetDialog.budgetManagement">Budget Management</span>
-      </p>
+        <i class="material-icons-outlined muted" (click)="showEditBudget = !showEditBudget" style="cursor: pointer; float: right;">edit</i>
 
-      <br />
+      </h3>
+
+
+      <hr />
 
       <div class="budget-details">
         <div class="container">
@@ -59,7 +62,6 @@
       </div>
 
       <div class="budget_graph">
-        <i class="material-icons-outlined" (click)="showEditBudget = !showEditBudget" style="cursor: pointer; float: right;">edit</i>
 
         <div class="d-md-none d-lg-block" *ngIf="chartReady">
           <canvas
