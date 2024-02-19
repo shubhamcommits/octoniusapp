@@ -195,6 +195,9 @@ routes.delete('/:groupId/removeTimeTrackingCategory/:categoryId', group.removeTi
 // GET - Get the time tracking entities of a group for a time period
 routes.get('/:groupId/time-tracking-entities', group.getGroupTimeTrackingEntites);
 
+// GET - Get the time tracking entities of a section
+routes.get('/:sectionId/time-tracking-entities-by-section', group.getGroupTimeTrackingEntitesBySection);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

@@ -7,6 +7,7 @@ import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import moment from 'moment';
 import { DateTime } from 'luxon';
+import { ColumnService } from 'src/shared/services/column-service/column.service';
 
 @Component({
   selector: 'app-group-tasks-views',
@@ -56,6 +57,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
   constructor(
     public utilityService: UtilityService,
     private groupService: GroupService,
+    private columnService: ColumnService,
     private _router: Router,
     private injector: Injector) { }
 
@@ -103,9 +105,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
       }
     }
 
-    if (this.viewType == 'time_tracking') {
-      await this.initTimeTrackingView();
-    } else {
+    if (this.viewType != 'time_tracking') {
       await this.initTaskView();
     }
 
@@ -171,7 +171,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
     /**
      * Adding the property of tasks in every column
      */
-    if (this.columns) {
+    if (!!this.columns) {
       if (this.groupData?.enabled_rights) {
         await this.filterRAGSections();
       } else {
@@ -197,21 +197,18 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
       await this.filterRAGTasks();
     }
 
-    /**
-     * Sort the tasks into their respective columns
-     */
+    // Add TT cost in column budget
+    await this.getTimeTrackingCost(this.columns);
+
+    // Sort the tasks into their respective columns
     await this.sortTasksInColumns(this.columns, this.tasks);
 
     let col = [];
-    if (this.columns) {
+    if (!!this.columns) {
       this.columns.forEach(val => col.push(Object.assign({}, val)));
     }
     let unchangedColumns: any = { columns: col };
     this.unchangedColumns = JSON.parse(JSON.stringify(unchangedColumns));
-  }
-
-  initTimeTrackingView() {
-
   }
 
   async onChangeViewEmitter(view: string) {
@@ -263,13 +260,23 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
     return index >= 0;
   }
 
+  getTimeTrackingCost(sections: any) {
+    if (!!sections) {
+      sections.forEach(async (section: any) => {
+        this.columnService.getSectionTimeTrackingCost(section._id).then(res => {
+          section.budget.time_tracking_cost = res['time_tracking_cost'];
+        });
+      });
+    }
+  }
+
   /**
    * This Function is responsible for sorting the tasks into columns
    * @param columns
    * @param tasks
    */
   sortTasksInColumns(columns: any, tasks: any) {
-    if (columns) {
+    if (!!columns) {
       columns.forEach(async (column: any) => {
         // Feed the tasks into that column which has matching property _column with the column title
         column.tasks = await tasks
@@ -285,8 +292,8 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
           });
 
         // Find the hightes due date on the tasks of the column
-        const highestDate = this.publicFunctions.getHighestDate(column.tasks);
-        column.real_due_date = (highestDate) ? highestDate : column?.due_date;
+        // const highestDate = this.publicFunctions.getHighestDate(column.tasks);
+        // column.real_due_date = (highestDate) ? highestDate : column?.due_date;
 
         // Calculate number of done tasks
         column.numDoneTasks = column.tasks.filter((post) => post?.task?.status?.toLowerCase() == 'done').length;

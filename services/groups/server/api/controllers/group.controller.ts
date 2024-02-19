@@ -3006,4 +3006,51 @@ export class GroupController {
             return sendError(res, err);
         }
     };
+
+    /**
+     * This function fetches the time tracking entities of a user with a date between specific dates
+     * @param req
+     */
+    async getGroupTimeTrackingEntitesBySection(req: Request, res: Response) {
+        try {
+            const { sectionId } = req.params;
+
+            let groupTasks = await Post.find({
+                $and: [
+                    { 'task._column': sectionId },
+                    { type: 'task' }
+                ]
+            }).select('_id').lean() || [];
+
+            groupTasks = groupTasks.map(post => post._id);
+
+            let timeTrackingEntities = await TimeTrackingEntity.find({
+                    _task: { $in: groupTasks }
+                });
+
+            timeTrackingEntities = await TimeTrackingEntity.populate(timeTrackingEntities, [
+                    {
+                        path: '_task',
+                        select: 'title _group',
+                        populate: {
+                            path: '_group',
+                            model: 'Group',
+                            select: 'group_name group_avatar'
+                        }
+                    },
+                    { path: '_user', select: 'first_name last_name profile_pic email' },
+                    { path: '_created_by', select: 'first_name last_name profile_pic email' }
+                ]);
+
+            // timeTrackingEntities = timeTrackingEntities.filter(tte => !!tte.times && tte.times.length > 0);
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Time Tracking Entities found!',
+                timeTrackingEntities: timeTrackingEntities
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
 }

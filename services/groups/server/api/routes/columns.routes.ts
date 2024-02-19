@@ -73,4 +73,7 @@ router.put('/:sectionId/setDisplayCustomFieldInColumn', columns.setDisplayCustom
 // PUT - Archives an entrie section and its tasks
 router.put('/:sectionId/archive', columns.archive);
 
+// GET - get the cost of all the timetracking linked to the task in the section
+router.get('/:sectionId/sectionTimeTrackingCost', columns.getSectionTimeTrackingCost);
+
 export { router as columnRoutes };

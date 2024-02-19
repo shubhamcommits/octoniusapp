@@ -9,7 +9,7 @@ pm2 stop auths-server
 pm2 delete auths-server
 
 
-# Stops and kills the groups server from port 4000
+# Stops and kills the groups server from port 4001
 pm2 stop groups-server
 pm2 delete groups-server
 

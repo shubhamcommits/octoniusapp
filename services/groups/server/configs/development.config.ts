@@ -9,7 +9,7 @@ function devConfigInit() {
   process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 
   // Application Port
-  process.env.PORT = process.env.PORT || '4000'
+  process.env.PORT = process.env.PORT || '4001'
 
   // Application Host
   process.env.HOST = process.env.HOST || '0.0.0.0'
@@ -42,7 +42,7 @@ function devConfigInit() {
   process.env.AUTHS_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api`
 
   // Groups Microservice
-  process.env.GROUPS_PORT = process.env.GROUPS || '4000'
+  process.env.GROUPS_PORT = process.env.GROUPS || '4001'
   process.env.GROUPS_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.GROUPS_PORT}`
   process.env.GROUPS_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.GROUPS_PORT}/api`
 

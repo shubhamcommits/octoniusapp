@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { Column, Group, Post } from '../models';
+import { Column, Group, Post, TimeTrackingEntity } from '../models';
 import { sendError } from '../../utils';
 import moment from 'moment';
 
@@ -289,7 +289,7 @@ export class ColumnsController {
 
         try {
             // Find the group and update their respective group avatar
-            const group = await Column.updateOne({
+            const group = await Column.findOneAndUpdate({
                 _id: column.columnId
             }, {
                 "$set": {
@@ -297,7 +297,7 @@ export class ColumnsController {
                 }
             }, {
                 new: true
-            }).select('custom_fields_to_show');
+            }).select('custom_fields_to_show').lean();
 
             // Send status 200 response
             return res.status(200).json({
@@ -316,7 +316,7 @@ export class ColumnsController {
 
         try {
             // Find the group and update their respective group avatar
-            const column = await Column.updateOne({
+            const column = await Column.findOneAndUpdate({
                 _id: columnId
             }, {
                 "$set": {
@@ -324,7 +324,7 @@ export class ColumnsController {
                 }
             }, {
                 new: true
-            });
+            }).lean();
 
             // Send status 200 response
             return res.status(200).json({
@@ -343,7 +343,7 @@ export class ColumnsController {
 
         try {
             // Find the group and update their respective group avatar
-            const column = await Column.updateOne({
+            const column = await Column.findOneAndUpdate({
                 _id: columnId
             }, {
                 "$set": {
@@ -352,7 +352,7 @@ export class ColumnsController {
                 }
             }, {
                 new: true
-            });
+            }).lean();
 
             // Send status 200 response
             return res.status(200).json({
@@ -376,7 +376,7 @@ export class ColumnsController {
             }
 
             // Find the group and update their respective group avatar
-            const column = await Column.updateOne({
+            const column = await Column.findOneAndUpdate({
                 _id: columnId
             }, {
                 "$set": {
@@ -385,7 +385,7 @@ export class ColumnsController {
                 }
             }, {
                 new: true
-            });
+            }).lean();
 
             // Send status 200 response
             return res.status(200).json({
@@ -400,20 +400,22 @@ export class ColumnsController {
     async addBudgetExpense(req: Request, res: Response, next: NextFunction) {
 
         // Fetch the columnId and amountPlanned
-        let { columnId, expense } = req.body;
+        let { sectionId } = req.params;
+        let { expense } = req.body;
 
         try {
+            expense._created_user = req['userId'];
 
             // Find the group and update their respective group avatar
-            const column = await Column.updateOne({
-                _id: columnId
+            const column = await Column.findOneAndUpdate({
+                _id: sectionId
             }, {
                 $push: {
                     'budget.expenses': expense
                 }
             }, {
                 new: true
-            });
+            }).lean();
 
             // Send status 200 response
             return res.status(200).json({
@@ -428,22 +430,25 @@ export class ColumnsController {
     async updateBudgetExpense(req: Request, res: Response, next: NextFunction) {
 
         // Fetch the columnId and amountPlanned
-        let { columnId, expense } = req.body;
+        let { sectionId } = req.params;
+        let { expense } = req.body;
 
         try {
-
             // Find the group and update their respective group avatar
-            const column = await Column.updateOne({
-              _id: columnId
-            }, {
-              $set: {
-                "budget.expenses.$[expense].amount": expense.amount,
-                "budget.expenses.$[expense].reason": expense.reason
-              }
-            }, {
-              arrayFilters: [{ "expense._id": expense._id }],
-              new: true
-            });
+            let column = await Column.findOneAndUpdate({
+                    _id: sectionId
+                }, {
+                    $set: {
+                        "budget.expenses.$[expense].amount": expense.amount,
+                        "budget.expenses.$[expense].reason": expense.reason,
+                        "budget.expenses.$[expense]._user": expense._user,
+                        "budget.expenses.$[expense].date": expense.date
+                    }
+                }, {
+                    arrayFilters: [{ "expense._id": expense._id }],
+                    new: true
+                })
+                .populate({ path: 'budget.expenses._user' }).lean();
 
             // Send status 200 response
             return res.status(200).json({
@@ -607,4 +612,39 @@ export class ColumnsController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     };
+
+    // get the cost of all the timetracking linked to the task in the section
+    async getSectionTimeTrackingCost(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Fetch GroupId from the query
+            const { sectionId } = req.params;
+
+            let totalCost = 0;
+
+            if (sectionId) {
+                const tasks = await Post.find({
+                        'task._column': sectionId
+                    }).select('_id').lean();
+
+                const timeTrackingEntities = await TimeTrackingEntity.find({
+                        _task: { $in: tasks }
+                    })
+                    .lean();
+
+                for (let i = 0; i < timeTrackingEntities?.length; i++) {
+                    for (let j = 0; j < timeTrackingEntities[i]?.times?.length; j++) {
+                        totalCost += (timeTrackingEntities[i]?.times[j]?.cost || 0)
+                    }
+                }
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Cost obtained Successfully!',
+                time_tracking_cost: totalCost
+            });
+        } catch (err) {
+            return sendError(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
 }

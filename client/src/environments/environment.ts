@@ -57,8 +57,8 @@ export const environment = {
   AUTH_BASE_API_URL: `${url.protocol}://${url.domain}:3000/api`,
 
   // Groups URLs
-  GROUPS_BASE_URL: `${url.protocol}://${url.domain}:4000`,
-  GROUPS_BASE_API_URL: `${url.protocol}://${url.domain}:4000/api`,
+  GROUPS_BASE_URL: `${url.protocol}://${url.domain}:4001`,
+  GROUPS_BASE_API_URL: `${url.protocol}://${url.domain}:4001/api`,
 
   // Workspace URLs
   WORKSPACE_BASE_URL: `${url.protocol}://${url.domain}:5001`,

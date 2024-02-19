@@ -566,7 +566,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
           }
         }
         // Find the hightes due date on the tasks of the column
-        col.real_due_date = this.publicFunctions.getHighestDate(col.tasks);
+        // col.real_due_date = this.publicFunctions.getHighestDate(col.tasks);
 
         // Calculate number of done tasks
         col.numDoneTasks = col.tasks.filter((post) => post?.task?.status?.toLowerCase() == 'done').length;
@@ -598,20 +598,20 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     this.columns[oldColumnIndex]['tasks'].splice(index, 1);
 
     // Find the highest due date on the tasks of the column
-    if (this.columns[oldColumnIndex]['tasks'].length == 0) {
-      this.columns[oldColumnIndex].real_due_date = null;
-    } else {
-      this.columns[oldColumnIndex].real_due_date = this.publicFunctions.getHighestDate(this.columns[oldColumnIndex].tasks);
-    }
+    // if (this.columns[oldColumnIndex]['tasks'].length == 0) {
+    //   this.columns[oldColumnIndex].real_due_date = null;
+    // } else {
+    //   this.columns[oldColumnIndex].real_due_date = this.publicFunctions.getHighestDate(this.columns[oldColumnIndex].tasks);
+    // }
 
     // Add the task into the new column
     this.columns[newColumnIndex]['tasks'].unshift(columnEvent.post);
     // Find the highest due date on the tasks of the column
-    if (this.columns[newColumnIndex]['tasks'].length == 0) {
-      this.columns[newColumnIndex].real_due_date = null;
-    } else {
-      this.columns[newColumnIndex].real_due_date = this.publicFunctions.getHighestDate(this.columns[newColumnIndex].tasks);
-    }
+    // if (this.columns[newColumnIndex]['tasks'].length == 0) {
+    //   this.columns[newColumnIndex].real_due_date = null;
+    // } else {
+    //   this.columns[newColumnIndex].real_due_date = this.publicFunctions.getHighestDate(this.columns[newColumnIndex].tasks);
+    // }
 
     // Calculate number of done tasks
     this.columns[oldColumnIndex].numDoneTasks = this.columns[oldColumnIndex].tasks.filter((post) => post?.task?.status?.toLowerCase() == 'done').length;
