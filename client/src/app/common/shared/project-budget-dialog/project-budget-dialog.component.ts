@@ -128,7 +128,7 @@ export class ProjectBudgetDialogComponent implements OnInit {
       });
     });
 
-    this.budget.expenses = this.utilityService.removeDuplicates([...this.budget.expenses], '_id');
+    this.budget.expenses = await this.utilityService.removeDuplicates([...this.budget.expenses], '_id');
 
     this.budget.expenses.sort((e1, e2) => (moment(e1.date).isAfter(moment(e2.date))) ? -1 : 1);
   }
