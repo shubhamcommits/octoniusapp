@@ -136,8 +136,8 @@
           {{ expense?._user?.first_name || 'Deleted' }} {{ expense?._user?.last_name || 'User' }}
           &nbsp;
           <span>
-            &nbsp;<span i18n="@@projectBudgetDialog.added" style="color: #f51616;">added</span>&nbsp;
-            <span>
+            &nbsp;<span i18n="@@projectBudgetDialog.added">added</span>&nbsp;
+            <span class="bold">
               {{ expense.amount | currency: budget.currency }}
             </span>
             &nbsp;-&nbsp;
@@ -158,19 +158,19 @@
           {{ expense?._user?.first_name || 'Deleted' }} {{ expense?._user?.last_name || 'User' }}
           &nbsp;
           <span>
-            &nbsp;<span i18n="@@projectBudgetDialog.registered" style="color: #f51616;">registered</span>&nbsp;
-            <span>{{ expense?.hours + 'h and ' + expense?.minutes+ 'm' }}</span>
-            &nbsp;<span i18n="@@projectBudgetDialog.toTheTask" style="color: #f51616;">to the task</span>&nbsp;
-            <span>{{ expense?._task?.title }}</span>
-            &nbsp;<span i18n="@@projectBudgetDialog.onTheCategory" style="color: #f51616;">to the category</span>&nbsp;
-            <span>{{ expense?._task?._category }}</span>
-            &nbsp;<span i18n="@@projectBudgetDialog.whichCost" style="color: #f51616;">which cost</span>&nbsp;
-            <span>
+            &nbsp;<span i18n="@@projectBudgetDialog.registered">registered</span>&nbsp;
+            <span class="bold">{{ expense?.hours + 'h and ' + expense?.minutes+ 'm' }}</span>
+            &nbsp;<span i18n="@@projectBudgetDialog.toTheTask">to the task</span>&nbsp;
+            <span class="bold">{{ expense?._task?.title }}</span>
+            &nbsp;<span i18n="@@projectBudgetDialog.onTheCategory" *ngIf="!!expense?._task?._category">to the category</span>&nbsp;
+            <span class="bold">{{ expense?._task?._category }}</span>
+            &nbsp;<span i18n="@@projectBudgetDialog.whichCost">which cost</span>&nbsp;
+            <span class="bold">
               {{ expense.amount | currency: budget.currency }}
             </span>
             &nbsp;
             <span *ngIf="!!expense.reason">-&nbsp;</span>
-            <span style="font-weight: 900;">
+            <span class="bold" style="font-weight: 900;">
               {{ expense.reason }}
             </span>
           </span>
