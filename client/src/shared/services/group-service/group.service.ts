@@ -413,4 +413,8 @@ export class GroupService {
       }
     }).toPromise();
   }
+
+  getSectionTimeTrackingEntities(sectionId: string) {
+    return this._http.get(this.baseURL + `/${sectionId}/time-tracking-entities-by-section`, {}).toPromise();
+  }
 }

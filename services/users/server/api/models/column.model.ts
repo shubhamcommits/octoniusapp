@@ -53,6 +53,11 @@ const ColumnSchema = new Schema({
                 type: Schema.Types.ObjectId,
                 ref: 'User',
                 required: true
+            },
+            _created_user: {
+                type: Schema.Types.ObjectId,
+                ref: 'User',
+                required: true
             }
         }]
     },

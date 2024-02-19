@@ -161,7 +161,6 @@ export class ColumnService {
 
   addBudgetExpense(columnId: string, expense: any) {
     const column = {
-      columnId: columnId,
       expense: expense
     };
     return this._http.put(this.baseUrl + `/columns/${columnId}/addBudgetExpense`, column).toPromise();
@@ -169,7 +168,6 @@ export class ColumnService {
 
   updateBudgetExpense(columnId: string, expense: any) {
     const column = {
-      columnId: columnId,
       expense: expense
     };
     return this._http.put(this.baseUrl + `/columns/${columnId}/updateBudgetExpense`, column).toPromise();

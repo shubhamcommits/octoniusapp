@@ -7,24 +7,125 @@
       </div>
   </mat-dialog-actions>
 
-  <div class="budget-content">
-    <div class="">
-        <div class="modal-header">
-          <h4 class="modal-title">
-            {{ columnTitle }} <span i18n="@@projectBudgetDialog.sectionBudget">budget</span>
-          </h4>
+  <div class="budget-properties budget-box new-record-form">
+    <div>
+      <p class="box-title">
+        <!-- <span class="material-icons" style="line-height: 35px;">monetization_on</span> -->
+        <span i18n="@@projectBudgetDialog.budgetManagement">Budget Management</span>
+      </p>
 
+      <br />
+
+      <div class="budget-details">
+        <div class="container">
+          <div class="row">
+            <div class="col">
+              <label class="bold" i18n="@@projectBudgetDialog.totalBudget">Total Budget</label>
+              <span class="badget-badge">{{ budget.amount_planned | currency: budget.currency }}</span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <label class="bold" i18n="@@projectBudgetDialog.currentBalance">Current Balance</label>
+              <span class="badget-badge" [ngClass]="getBudgetStyle()">{{ budget.amount_planned - totalSpent | currency: budget.currency }}</span>
+            </div>
+          </div>
+          
+          <div *ngIf="showEditBudget" class="row flexform form-group" style="margin-top: 20px;">
+            <div class="planned_budget mr-2">
+              <i class="material-icons-outlined muted">attach_money</i>
+            
+              <input class="" name="target" type="number" [(ngModel)]="budget.amount_planned" [placeholder]="budgetPlaceholder"
+                (keyup.enter)="saveBudget()" (focusout)="saveBudget()">
+            </div>
+
+            <div class="col" style="padding-left: 0;">
+              <mat-form-field class="currency_select">
+                <mat-select ngDefaultControl (selectionChange)="saveBudget()" (click)="$event.stopPropagation()"
+                  [(ngModel)]="budget.currency" name="new_type">
+                  <mat-option *ngFor="let currency of currencies" [value]="currency.code">{{ currency.name }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="showEditBudget">
+            <button class="btn btn-outline-danger btn-md float-left" (click)="showEditBudget = !showEditBudget">
+              <span i18n="@@taskTimeTracking.close">X Close</span>
+            </button>
+          </div>
         </div>
-        <p class="ml-3" i18n="@@projectBudgetDialog.addBudgetForProject">Add a budget for your project and track the expenses as you advance through the workload.</p>
-        <div style="width: 200px; margin-top: -40px;" class="float-right">
-          <img src="assets/images/budget-placeholder.svg" alt="" style="width: 143px;">
+      </div>
+
+      <div class="budget_graph">
+        <i class="material-icons-outlined" (click)="showEditBudget = !showEditBudget" style="cursor: pointer; float: right;">edit</i>
+
+        <div class="d-md-none d-lg-block" *ngIf="chartReady">
+          <canvas
+            baseChart
+            height="100"
+            [data]="doughnutChartData"
+            [labels]="doughnutChartLabels"
+            [chartType]="doughnutChartType"
+            [options]="doughnutChartOptions"
+            [colors]="doughnutChartColors"
+            [plugins]="doughnutChartPlugins"></canvas>
         </div>
-        <div class="clearfix"></div>
+      </div>
+
+      <hr style="clear: both; border: none;" />
     </div>
+  </div>
+
+  <div class="budget-content budget-box new-record-form">
+    <div *ngIf="showAddExpenseForm">
+      <div class="flexform form-group">
+        <div class="time_spent mr-2">
+          <i class="material-icons-outlined muted">attach_money</i>
+
+          <input type="number" [(ngModel)]="expense.amount" style="border: none;" />
+        </div>
+
+        <div class="calendar mr-2">
+          <app-date-picker class="" name="entryDate" [styleClass]="'input-date calendar'" (date)="getDate($event)"
+            [selectedDate]="expense.date">
+          </app-date-picker>
+        </div>
+    
+        <div class="user">
+          <app-multiple-assignments [workspaceData]="workspaceData" [assigned_to]="entryUserArray" [type]="'time-tracking'"
+            [groupId]="groupData?._id" (assigneeAddedEmiter)="onAssignedAdded($event)"
+            (assigneeRemovedEmiter)="onAssignedRemoved($event)">
+          </app-multiple-assignments>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-md-12 form-control" style="width: 400px;">
+          <textarea rows="4" [(ngModel)]="expense.reason" [placeholder]="reasonPlaceholder" style="border: none;"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-outline-primary btn-md float-left" (click)="saveExpense()" [disabled]="!isValidEntry()">
+        <i class="material-icons-outlined">attach_money</i>
+        <span i18n="@@taskTimeTracking.addEntry" *ngIf="!expense._id">Add expense</span>
+        <span i18n="@@taskTimeTracking.addEntry" *ngIf="!!expense._id">Save expense</span>
+      </button>
+    
+      <button class="btn btn-outline-danger btn-md float-left" style="margin-left: 30px;" (click)="resetExpense()"
+        *ngIf="showAddExpenseForm">
+        <span i18n="@@taskTimeTracking.cancel">X Cancel</span>
+      </button>
+    </div>
+
+    <hr style="clear: both; border: none;" />
 
     <div style="margin-top: 30px;" *ngIf="budget?.expenses && budget?.expenses.length > 0">
       <div class="expense content-box" *ngFor="let expense of budget?.expenses; let index = index">
-        <div>
+        <div *ngIf="!expense.isTT">
           <app-secured-image
             [imgURL]="expense?._user?.profile_pic"
             [service]="'user'"
@@ -34,8 +135,8 @@
           &nbsp;
           {{ expense?._user?.first_name || 'Deleted' }} {{ expense?._user?.last_name || 'User' }}
           &nbsp;
-          <span style="color: #f51616;">
-            &nbsp;<span i18n="@@projectBudgetDialog.added">added</span>&nbsp;
+          <span>
+            &nbsp;<span i18n="@@projectBudgetDialog.added" style="color: #f51616;">added</span>&nbsp;
             <span>
               {{ expense.amount | currency: budget.currency }}
             </span>
@@ -46,11 +147,41 @@
           </span>
         </div>
 
+        <div *ngIf="!!expense.isTT">
+          <app-secured-image
+            [imgURL]="expense?._user?.profile_pic"
+            [service]="'user'"
+            [workspaceId]="(currentUser?._workspace?._id || currentUser?._workspace)"
+            [styleClass]="'avatar'"
+            style="margin-right:15px"></app-secured-image>
+          &nbsp;
+          {{ expense?._user?.first_name || 'Deleted' }} {{ expense?._user?.last_name || 'User' }}
+          &nbsp;
+          <span>
+            &nbsp;<span i18n="@@projectBudgetDialog.registered" style="color: #f51616;">registered</span>&nbsp;
+            <span>{{ expense?.hours + 'h and ' + expense?.minutes+ 'm' }}</span>
+            &nbsp;<span i18n="@@projectBudgetDialog.toTheTask" style="color: #f51616;">to the task</span>&nbsp;
+            <span>{{ expense?._task?.title }}</span>
+            &nbsp;<span i18n="@@projectBudgetDialog.onTheCategory" style="color: #f51616;">to the category</span>&nbsp;
+            <span>{{ expense?._task?._category }}</span>
+            &nbsp;<span i18n="@@projectBudgetDialog.whichCost" style="color: #f51616;">which cost</span>&nbsp;
+            <span>
+              {{ expense.amount | currency: budget.currency }}
+            </span>
+            &nbsp;
+            <span *ngIf="!!expense.reason">-&nbsp;</span>
+            <span style="font-weight: 900;">
+              {{ expense.reason }}
+            </span>
+          </span>
+        </div>
+
         <div>
           <span>
             {{ formateDate(expense.date, 'MMM Do, YYYY') }}
           </span>
-          <span>
+
+          <span *ngIf="!expense.isTT && (expense?._user?._id == currentUser?._id || expense?._created_user?._id == currentUser?._id)">
             <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
             <mat-menu #menu="matMenu">
               <a mat-menu-item (click)="editExpense(expense)">
@@ -66,89 +197,5 @@
         </div>
       </div>
     </div>
-
   </div>
-
-  <!-- Top Right Section starts -->
-  <div class="budget-properties budget-box">
-    <div>
-      <p class="box-title">
-        <span class="material-icons" style="line-height: 35px;">monetization_on</span>
-        <span i18n="@@projectBudgetDialog.budget">Budget</span>
-      </p>
-      <p> Your budget for the project.</p>
-
-      <br/>
-      <div class="focus" style="margin-top: 24px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 2px solid;">
-        <div class="container">
-          <div class="row">
-            <div class="col">
-              <label for="target" i18n="@@projectBudgetDialog.currency">Currency:</label>
-            </div>
-            <div class="col" style="padding-left: 0;">
-              <mat-form-field style="width:100%; margin-top: -20px;">
-                <mat-select ngDefaultControl
-                  (selectionChange)="saveBudget()"
-                  (click)="$event.stopPropagation()"
-                  [(ngModel)]="budget.currency"
-                  name="new_type">
-                    <mat-option *ngFor="let currency of currencies" [value]="currency.code">{{ currency.name }}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <div class="w-100"></div>
-
-            <div class="col">
-              <label for="target" class="bold" i18n="@@projectBudgetDialog.planned">Planned</label>
-            </div>
-            <div class="col" style="text-align: center;">
-              <input class="target" name="target" type="number" [(ngModel)]="budget.amount_planned"
-                (keyup.enter)="saveBudget()" (focusout)="saveBudget()">
-            </div>
-            <div class="w-100"></div>
-
-            <div class="col">
-              <label for="value" class="bold" i18n="@@projectBudgetDialog.totalSpent">Total spent</label>
-            </div>
-            <div class="col" style="text-align: center; line-height: 30px;">
-              <span>{{ totalSpent | currency: budget.currency }}</span>
-            </div>
-            <div class="w-100"></div>
-
-            <div class="col">
-              <label for="value" class="bold" i18n="@@projectBudgetDialog.available">Available</label>
-            </div>
-            <div class="col" style="text-align: center; line-height: 30px;" [ngClass]="getBudgetStyle()">
-              <span>{{ budget.amount_planned - totalSpent | currency: budget.currency }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="row">
-          <div class="col">
-            <label for="target" i18n="@@projectBudgetDialog.addExpense">Add expense</label>
-          </div>
-          <div class="col" style="padding-left: 0;">
-            <input class="target" name="target" type="number" [(ngModel)]="expense.amount" (keyup.enter)="saveExpense()">
-          </div>
-          <div class="w-100"></div>
-
-          <div class="col">
-            <label for="target" i18n="@@projectBudgetDialog.whatDidYouSpentItOn">What did you spend it on?</label>
-          </div>
-          <div class="col" style="padding-left: 0;">
-            <input class="target" name="target" type="text" [(ngModel)]="expense.reason" (keyup.enter)="saveExpense()">
-          </div>
-          <div class="w-100"></div>
-        </div>
-
-        <div style="display: flex; justify-content: center;">
-          <div class="save" (click)="saveExpense()" i18n="@@projectBudgetDialog.save">Save</div>
-          <div class="cancel" (click)="resetExpense()" i18n="@@projectBudgetDialog.cancel">Cancel</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Top Right Section ends -->
 </div>
