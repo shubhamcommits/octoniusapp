@@ -68,30 +68,57 @@ export class KpiPerformanceCardComponent implements OnChanges {
   }
 
   async initTimeTrackingEntities() {
-    let timeTrackingEntities = [];
-    await this.groupService.getGroupTimeTrackingEntites(this.parentId, null, null, null).then(res => {
-      timeTrackingEntities = res['timeTrackingEntities'];
-    });
+    if (this.type == 'group') {
+      let timeTrackingEntities = [];
+      await this.groupService.getGroupTimeTrackingEntites(this.parentId, null, null, null).then(res => {
+        timeTrackingEntities = res['timeTrackingEntities'];
+      });
 
-    timeTrackingEntities.forEach(async tte => {
-      const index = (!!this.projects) ? this.projects.findIndex(p => p?._id == (tte?._task?.task?._column?._id || tte?._task?.task?._column)) : -1;
-      if (index >= 0) {
-        tte?.times?.forEach(time => {
-          if (!this.projects[index].timeTrackingEntitiesMapped) {
-            this.projects[index].timeTrackingEntitiesMapped = [];
-          }
+      timeTrackingEntities.forEach(async tte => {
+        const index = (!!this.projects) ? this.projects.findIndex(p => p?._id == (tte?._task?.task?._column?._id || tte?._task?.task?._column)) : -1;
+        if (index >= 0) {
+          tte?.times?.forEach(time => {
+            if (!this.projects[index].timeTrackingEntitiesMapped) {
+              this.projects[index].timeTrackingEntitiesMapped = [];
+            }
 
-          this.projects[index].timeTrackingEntitiesMapped.push({
-            _id: time._id,
-            amount: time.cost,
-            hours: time.hours,
-            minutes: time.minutes
+            this.projects[index].timeTrackingEntitiesMapped.push({
+              _id: time._id,
+              amount: time.cost,
+              hours: time.hours,
+              minutes: time.minutes
+            });
           });
+
+          this.projects[index].timeTrackingEntitiesMapped = await this.utilityService.removeDuplicates([...this.projects[index].timeTrackingEntitiesMapped], '_id');
+        }
+      });
+    } else {
+      await this.projects.forEach(async project => {
+        let timeTrackingEntities = [];
+        await this.groupService.getSectionTimeTrackingEntities(project._id).then(async res => {
+          timeTrackingEntities = timeTrackingEntities.concat(res['timeTrackingEntities']);
+          timeTrackingEntities = await this.utilityService.removeDuplicates(timeTrackingEntities, '_id');
         });
 
-        this.projects[index].timeTrackingEntitiesMapped = await this.utilityService.removeDuplicates([...this.projects[index].timeTrackingEntitiesMapped], '_id');
-      }
-    });
+        timeTrackingEntities.forEach(async tte => {
+          tte?.times?.forEach(time => {
+            if (!project.timeTrackingEntitiesMapped) {
+              project.timeTrackingEntitiesMapped = [];
+            }
+
+            project.timeTrackingEntitiesMapped.push({
+              _id: time._id,
+              amount: time.cost,
+              hours: time.hours,
+              minutes: time.minutes
+            });
+          });
+
+          project.timeTrackingEntitiesMapped = await this.utilityService.removeDuplicates([...project.timeTrackingEntitiesMapped], '_id');
+        });
+      });
+    }
   }
 
   /**
