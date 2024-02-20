@@ -10,13 +10,15 @@
     <div class="project_stats">
       <div class="muted">
         <span i18n="@@projectBudget.budget">Budget</span>:
-        <span>{{ project?.budget?.amount_planned | currency: project?.budget?.currency }}</span>
+        <br/>
+        <span *ngIf="!!project?.budget?.currency">{{ project?.budget?.amount_planned | currency: project?.budget?.currency }}</span>
         <span *ngIf="!project?.budget?.currency">{{ project?.budget?.amount_planned }}</span>
       </div>
       <div class="real_cost" [class]="projectStatusClass">
-        <span i18n="@@projectBudget.realCost">Real cost</span>:
-        <span>{{ project?.budget?.real_cost | currency: project?.budget?.currency }}</span>
-        <span *ngIf="!project?.budget?.currency">{{ project?.budget?.real_cost }}</span>
+        <span i18n="@@projectBudget.currentBalance">Current Balance</span>:
+        <br/>
+        <span *ngIf="!!project?.budget?.currency">{{ (project?.budget?.amount_planned - project?.budget?.real_cost) | currency: project?.budget?.currency }}</span>
+        <span *ngIf="!project?.budget?.currency">{{ (project?.budget?.amount_planned - project?.budget?.real_cost) }}</span>
       </div>
     </div>
   </div>
