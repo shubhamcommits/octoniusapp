@@ -1,4 +1,4 @@
-import { Component, Injector, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Injector, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { PostService } from 'src/shared/services/post-service/post.service';
@@ -11,6 +11,7 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 export class ProjectStatisticsComponent implements OnChanges {
 
   @Input() project: any;
+  @Input() timeTrackingEntities: any = [];
 
   chartReady = false;
 
@@ -40,11 +41,23 @@ export class ProjectStatisticsComponent implements OnChanges {
     private injector: Injector
     ) { }
 
-  ngOnChanges() {
-    this.initView();
+  async ngOnChanges(changes: SimpleChanges) {
+    await this.initView();
   }
 
   async initView() {
+    this.project.budget.hours_logged = 0;
+    this.project.budget.minutes_logged = 0;
+
+    this.timeTrackingEntities?.forEach((entity) => {
+      this.project.budget.hours_logged += parseInt(entity.hours);
+      this.project.budget.minutes_logged += parseInt(entity.minutes);
+
+      const extraHours = Math.floor(this.project.budget.minutes_logged / 60);
+
+      this.project.budget.hours_logged += extraHours;
+      this.project.budget.minutes_logged %= 60;
+    });
 
     this.completitionPercentageClass = "badge " + this.setStatusClass(this.project?.project_status, true);
     this.projectStatusClass = this.setStatusClass(this.project?.project_status, false);

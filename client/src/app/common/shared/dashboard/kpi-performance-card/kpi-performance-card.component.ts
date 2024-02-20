@@ -3,6 +3,8 @@ import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
+import { GroupService } from 'src/shared/services/group-service/group.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-kpi-performance-card',
@@ -31,14 +33,18 @@ export class KpiPerformanceCardComponent implements OnChanges {
 
   constructor(
     private columnService: ColumnService,
+    private groupService: GroupService,
+    private utilityService: UtilityService,
     private injector: Injector
   ) { }
 
-  ngOnChanges() {
+  async ngOnChanges() {
     // Starts the spinner
     this.isLoading$.next(true);
 
-    this.initView();
+    await this.initView();
+
+    await this.initTimeTrackingEntities();
   }
 
   async initView() {
@@ -59,6 +65,33 @@ export class KpiPerformanceCardComponent implements OnChanges {
 
     // Stops the spinner and return the value with ngOnInit
     return this.isLoading$.next(false);
+  }
+
+  async initTimeTrackingEntities() {
+    let timeTrackingEntities = [];
+    await this.groupService.getGroupTimeTrackingEntites(this.parentId, null, null, null).then(res => {
+      timeTrackingEntities = res['timeTrackingEntities'];
+    });
+
+    timeTrackingEntities.forEach(async tte => {
+      const index = (!!this.projects) ? this.projects.findIndex(p => p?._id == (tte?._task?.task?._column?._id || tte?._task?.task?._column)) : -1;
+      if (index >= 0) {
+        tte?.times?.forEach(time => {
+          if (!this.projects[index].timeTrackingEntitiesMapped) {
+            this.projects[index].timeTrackingEntitiesMapped = [];
+          }
+
+          this.projects[index].timeTrackingEntitiesMapped.push({
+            _id: time._id,
+            amount: time.cost,
+            hours: time.hours,
+            minutes: time.minutes
+          });
+        });
+
+        this.projects[index].timeTrackingEntitiesMapped = await this.utilityService.removeDuplicates([...this.projects[index].timeTrackingEntitiesMapped], '_id');
+      }
+    });
   }
 
   /**

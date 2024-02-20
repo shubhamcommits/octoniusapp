@@ -2984,7 +2984,7 @@ export class GroupController {
             timeTrackingEntities = await TimeTrackingEntity.populate(timeTrackingEntities, [
                     {
                         path: '_task',
-                        select: 'title _group',
+                        select: 'title _group task',
                         populate: {
                             path: '_group',
                             model: 'Group',

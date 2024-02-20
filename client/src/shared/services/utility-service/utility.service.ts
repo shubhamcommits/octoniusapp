@@ -419,7 +419,7 @@ export class UtilityService {
    * @param property - pass the property on the basis of which you want to define distinction among arrays of objects
    */
   async removeDuplicates(array: Array<any>, property: string) {
-    return array.filter((obj, pos, arr) => {
+    return array?.filter((obj, pos, arr) => {
       return arr.map(mapObj => mapObj[property]).indexOf(obj[property]) === pos;
     });
   }
