@@ -1,4 +1,4 @@
-import { Component, Injector, Input, OnChanges } from '@angular/core';
+import { Component, Injector, Input, AfterViewInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
@@ -6,9 +6,10 @@ import { PublicFunctions } from 'modules/public.functions';
   templateUrl: './project-budget.component.html',
   styleUrls: ['./project-budget.component.scss']
 })
-export class ProjectBudgetComponent implements OnChanges {
+export class ProjectBudgetComponent implements AfterViewInit {
 
   @Input() project: any;
+  @Input() timeTrackingEntities: any = [];
 
   chartReady = false;
 
@@ -47,12 +48,12 @@ export class ProjectBudgetComponent implements OnChanges {
     private injector: Injector
     ) { }
 
-  ngOnChanges() {
-    this.initView();
+  async ngAfterViewInit() {
+    await this.initView();
   }
 
   async initView() {
-    let noBudget = false;
+    // let noBudget = false;
     if (!this.project.budget) {
       this.project.budget  = {
         real_cost: 0,
@@ -73,7 +74,7 @@ export class ProjectBudgetComponent implements OnChanges {
           ctx.fillText('No Budget', centerX, centerY);
         }
       }];
-      noBudget = true;
+      // noBudget = true;
     } else {
       this.project.budget.real_cost = await this.calculateRealCost();
     }
@@ -84,24 +85,15 @@ export class ProjectBudgetComponent implements OnChanges {
 
 
     /* Chart Setup */
-    if (this.completitionPercentage > 100) {
-      this.doughnutChartLabels = [$localize`:@@projectBudget.realCost:Real cost`];
-      this.doughnutChartData = [this.project?.budget?.real_cost];
-      this.doughnutChartColors = [{
-        backgroundColor: [
-          '#EB5757'
-        ]
-      }];
-    } else if(!noBudget) {
-      this.doughnutChartLabels = [$localize`:@@projectBudget.budgetLeft:Budget left`, $localize`:@@projectBudget.realCost:Real cost`];
-      this.doughnutChartData = [this.project?.budget?.amount_planned - this.project?.budget?.real_cost, this.project?.budget?.real_cost];
-      this.doughnutChartColors = [{
-        backgroundColor: [
-          '#E4EDF8',
-          '#2AA578'
-        ]
-      }];
-    }
+    const balance = this.project?.budget?.amount_planned - this.project?.budget?.real_cost;
+    this.doughnutChartLabels = [$localize`:@@projectBudget.cost:Cost`, $localize`:@@projectBudget.currentBalance:Current Balance`];
+    this.doughnutChartData = [this.project?.budget?.real_cost, balance];
+    this.doughnutChartColors = [{
+      backgroundColor: [
+        (balance >= 0) ? '#005FD5' : '#EB5757',
+        (balance >= 0) ? '#2AA578' : '#005FD5'
+      ]
+    }];
 
     this.chartReady = true;
   }
@@ -127,6 +119,11 @@ export class ProjectBudgetComponent implements OnChanges {
     this.project?.budget?.expenses?.forEach(expense => {
       realCost += expense.amount;
     });
+
+    this.timeTrackingEntities?.forEach(entity => {
+      realCost += entity.amount;
+    });
+
     return realCost;
   }
 

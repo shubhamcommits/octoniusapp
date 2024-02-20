@@ -14,13 +14,13 @@
 
         <!-- PROJECT STATUS STARTS -->
         <div [class]="project.projectStatusClass" class="project_status">
-          <app-project-statistics [project]="project"></app-project-statistics>
+          <app-project-statistics [project]="project" [timeTrackingEntities]="project.timeTrackingEntitiesMapped"></app-project-statistics>
         </div>
         <!-- PROJECT STATUS ENDS -->
 
         <!-- PROJECT BUDGET STARTS -->
         <div class="project_budget">
-          <app-project-budget [project]="project"></app-project-budget>
+          <app-project-budget [project]="project" [timeTrackingEntities]="project.timeTrackingEntitiesMapped"></app-project-budget>
         </div>
         <!-- PROJECT BUDGET ENDS -->
       </div>
