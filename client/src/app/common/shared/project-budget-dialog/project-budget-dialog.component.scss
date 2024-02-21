@@ -44,6 +44,7 @@
       margin-top: 24px;
       margin-bottom: 24px;
       padding-bottom: 24px;
+      width: 470px;
     }
 
     .budget_graph {
@@ -82,12 +83,13 @@
   }
 
   mat-select {
-    background-color: #F3F4F6;
+    background-color: #FFFFFF;
     border-radius: 4px;
     padding: 5px;
     margin-left: 10px;
     vertical-align: middle;
     color: #969A9E;
+    margin-top: -10px;
   }
 
   input {
