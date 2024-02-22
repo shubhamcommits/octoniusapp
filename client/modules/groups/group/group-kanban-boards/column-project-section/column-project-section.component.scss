@@ -23,15 +23,25 @@
 //   background-color: #2AA578;
 // }
 
-.badge{
+.budget {
+  &:hover {
+    color: #fff;
+    background-color: #4a90e2;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14); 
+    border-radius: 8px;
+  }
+
+  .budgetspent {
+    background: rgba(176, 255, 208, 0.86);
+    color: #000000;
+  }
+}
+
+.badge {
   font-size:14px ;
   list-style: none;
 }
 
-.logtime{
+.logtime {
   background:rgba(251, 183, 50, 0.72) ;
-}
-
-.budgetspent{
-  background: rgba(176, 255, 208, 0.86);
 }
