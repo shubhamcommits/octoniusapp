@@ -29,7 +29,7 @@
           <div class="row">
             <div class="col">
               <label class="bold" i18n="@@projectBudgetDialog.currentBalance">Current Balance</label>
-              <span class="badget-badge" [ngClass]="getBudgetStyle()">{{ budget.amount_planned - totalSpent | currency: budget.currency }}</span>
+              <span class="badget-badge" [ngClass]="getBudgetStyle()">{{ (budget.amount_planned - totalSpent) | currency: (budget.currency|| 'USD') }}</span>
             </div>
           </div>
           
