@@ -83,13 +83,14 @@
   }
 
   mat-select {
-    background-color: #FFFFFF;
+    // background-color: #FFFFFF;
     border-radius: 4px;
     padding: 5px;
     margin-left: 10px;
     vertical-align: middle;
     color: #969A9E;
     margin-top: -10px;
+    width: 90%;
   }
 
   input {
@@ -162,8 +163,7 @@
 .flexform {
   display: flex;
   width: 100%;
-  height: 44px;
-  padding: 2px 12px;
+  padding:12px;
   align-items: center;
 
   .calendar {
@@ -174,16 +174,18 @@
   .planned_budget {
     border: 1px solid #ced4da;
     border-radius: 4px;
-    padding: 6px;
     background: #ffffff;
+    height: 40px;
+    display: flex;
+    align-items: center;
   }
 
   .currency_select {
     border: 1px solid #ced4da;
     border-radius: 4px;
-    padding: 0 10px 0 0;
     background: #ffffff;
     height: 40px;
+    display: flex;
   }
 
   .user {

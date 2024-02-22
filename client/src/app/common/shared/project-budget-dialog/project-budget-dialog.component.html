@@ -33,7 +33,7 @@
             </div>
           </div>
           
-          <div *ngIf="showEditBudget" class="row flexform form-group" style="margin-top: 20px;">
+          <div *ngIf="showEditBudget" class="flexform form-group" style="margin-top: 20px;">
             <div class="planned_budget mr-2">
               <i class="material-icons-outlined muted">attach_money</i>
             
@@ -41,8 +41,8 @@
                 (keyup.enter)="saveBudget()" (focusout)="saveBudget()">
             </div>
 
-            <div class="col" style="padding-left: 0;">
-              <mat-form-field class="currency_select">
+            <div class="currency_select">
+              <mat-form-field >
                 <mat-select ngDefaultControl (selectionChange)="saveBudget()" (click)="$event.stopPropagation()"
                   [(ngModel)]="budget.currency" name="new_type">
                   <mat-option *ngFor="let currency of currencies" [value]="currency.code">{{ currency.name }}</mat-option>
@@ -78,7 +78,7 @@
     </div>
   </div>
 
-  <div class="budget-content budget-box new-record-form">
+  <div class="budget-content new-record-form">
     <div *ngIf="showAddExpenseForm">
       <div class="flexform form-group">
         <div class="time_spent mr-2">
