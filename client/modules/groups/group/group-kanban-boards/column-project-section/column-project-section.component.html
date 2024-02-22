@@ -50,8 +50,9 @@
   <div class="project-container budget" style="cursor: pointer;" (click)="openBudgetDialog(column)"
       *ngIf="canSeeBudget && column?.project_type && column?.budget?.amount_planned">
     <span i18n="@@columnProjectSection.currentBalance">Current Balance</span>
+
     <span class="float-right badge budgetspent">
-      {{ ((column?.budget.amount_planned || 0) - (column?.budget?.totalSpent || 0) - (column?.budget?.time_tracking_cost || 0))| currency: (column?.budget?.currency || 'USD') }}
+      {{ (column?.budget?.amount_planned - totalSpent)| currency: (column?.budget?.currency || 'USD') }}
       <!-- <span class="material-icons" style="line-height: 1px;">monetization_on</span> -->
     </span>
   </div>

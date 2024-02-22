@@ -1,11 +1,9 @@
-import { DecimalPipe } from '@angular/common';
 import { Component, EventEmitter, Inject, Injector, OnInit, Output } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
 import { CountryCurrencyService } from 'src/shared/services/country-currency/country-currency.service';
-import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
@@ -73,11 +71,9 @@ export class ProjectBudgetDialogComponent implements OnInit {
   constructor(
     public utilityService: UtilityService,
     private columnService: ColumnService,
-    private groupService: GroupService,
     private countryCurrencyService: CountryCurrencyService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<ProjectBudgetDialogComponent>,
-    private decimalPipe: DecimalPipe,
     private injector: Injector
   ) {
     this.columnId = this.data.columnId;
@@ -96,47 +92,13 @@ export class ProjectBudgetDialogComponent implements OnInit {
     }
     
     this.resetExpense();
-    
-    await this.initTimeTrackingEntities();
 
     // Calculate the total spent
     this.calculateTotalSpent();
     this.initGraphic();
   }
 
-  async initTimeTrackingEntities() {
-    await this.groupService.getSectionTimeTrackingEntities(this.columnId).then(res => {
-      this.timeTrackingEntities = res['timeTrackingEntities'];
-    });
-
-    this.timeTrackingEntities.forEach(tte => {
-      tte?.times?.forEach(time => {
-
-        let tteMapped = {
-          _id: tte._id,
-          _user: tte._user,
-          _task: tte._task,
-          _category: tte._category,
-          timeId: time._id,
-          date: time.date,
-          hours: time.hours,
-          minutes: time.minutes,
-          reason: time.comment,
-          amount: time.cost,
-          isTT: true
-        };
-
-        this.budget.expenses.push(tteMapped);
-      });
-    });
-
-    this.budget.expenses = await this.utilityService.removeDuplicates([...this.budget.expenses], '_id');
-
-    this.budget.expenses.sort((e1, e2) => (moment(e1.date).isAfter(moment(e2.date))) ? -1 : 1);
-  }
-
   async initGraphic() {
-    // let noBudget = false;
     if (!this.budget) {
       this.budget  = {
         amount_planned: 0
@@ -156,7 +118,6 @@ export class ProjectBudgetDialogComponent implements OnInit {
           ctx.fillText('No Budget', centerX, centerY);
         }
       }];
-      // noBudget = true;
     }
 
     this.completitionPercentage = await this.getPercentageExpense();
@@ -166,26 +127,16 @@ export class ProjectBudgetDialogComponent implements OnInit {
 
 
     /* Chart Setup */
-    // if (this.completitionPercentage > 100) {
-    //   this.doughnutChartLabels = [$localize`:@@projectBudgetDialog.cost:Cost`];
-    //   this.doughnutChartData = [this.totalSpent];
-    //   this.doughnutChartColors = [{
-    //     backgroundColor: [
-    //       '#EB5757'
-    //     ]
-    //   }];
-    // } else if(!noBudget) {
-      const spent = this.totalSpent;
-      const balance = this.budget?.amount_planned - this.totalSpent;
-      this.doughnutChartLabels = [$localize`:@@projectBudgetDialog.cost:Cost`, $localize`:@@projectBudgetDialog.currentBalance:Current Balance`];
-      this.doughnutChartData = [spent, balance];
-      this.doughnutChartColors = [{
-        backgroundColor: [
-          (balance >= 0) ? '#005FD5' : '#EB5757',
-          (balance >= 0) ? '#2AA578' : '#005FD5'
-        ]
-      }];
-    // }
+    const spent = this.totalSpent;
+    const balance = this.budget?.amount_planned - this.totalSpent;
+    this.doughnutChartLabels = [$localize`:@@projectBudgetDialog.cost:Cost`, $localize`:@@projectBudgetDialog.currentBalance:Current Balance`];
+    this.doughnutChartData = [spent, balance];
+    this.doughnutChartColors = [{
+      backgroundColor: [
+        (balance >= 0) ? '#005FD5' : '#EB5757',
+        (balance >= 0) ? '#2AA578' : '#005FD5'
+      ]
+    }];
 
     this.chartReady = true;
   }
@@ -329,7 +280,10 @@ export class ProjectBudgetDialogComponent implements OnInit {
   }
 
   calculateTotalSpent() {
-    this.totalSpent = 0;
+    if (!this.totalSpent) {
+      this.totalSpent = 0;
+    }
+
     this.budget?.expenses?.forEach(expense => {
       this.totalSpent += expense.amount;
     });

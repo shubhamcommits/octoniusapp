@@ -17,6 +17,8 @@ export class ColumnProjectSectionComponent implements OnInit {
   @Input() userData;
   @Input() groupData;
 
+  totalSpent = 0;
+
   canSeeBudget = false;
 
   constructor(
@@ -29,7 +31,7 @@ export class ColumnProjectSectionComponent implements OnInit {
   async ngOnInit() {
     await this.calculateHoursSpent();
 
-    this.calculateTotalSpent();
+    await this.calculateTotalSpent();
 
     this.canSeeBudget = this.userData?.role == 'owner' || this.userData?.role == 'admin' || this.userData?.role == 'manager'
     || (this.groupData?._admins.findIndex((admin: any) => (admin._id || admin) == this.userData?._id)>=0);
@@ -53,14 +55,40 @@ export class ColumnProjectSectionComponent implements OnInit {
 
         this.column.hours_logged += extraHours;
         this.column.minutes_logged %= 60;
+
+        let tteMapped = {
+          _id: time._id,
+          _user: tte._user,
+          _task: tte._task,
+          _category: tte._category,
+          date: time.date,
+          hours: time.hours,
+          minutes: time.minutes,
+          reason: time.comment,
+          amount: time.cost,
+          isTT: true
+        };
+        
+        // if (!this.totalSpent) {
+        //   this.totalSpent = 0;
+        // }
+        // this.totalSpent += time.cost;
+
+        this.column.budget.expenses.push(tteMapped);
       });
     });
+
+    this.column.budget.expenses = await this.utilityService.removeDuplicates([...this.column.budget.expenses], '_id');
+    this.column.budget.expenses.sort((e1, e2) => (moment(e1.date).isAfter(moment(e2.date))) ? -1 : 1);
   }
 
   calculateTotalSpent() {
-    this.column.budget.totalSpent = 0;
+    if (!this.totalSpent) {
+      this.totalSpent = 0;
+    }
+
     this.column.budget?.expenses?.forEach(expense => {
-      this.column.budget.totalSpent += expense.amount;
+      this.totalSpent += expense.amount;
     });
   }
 
