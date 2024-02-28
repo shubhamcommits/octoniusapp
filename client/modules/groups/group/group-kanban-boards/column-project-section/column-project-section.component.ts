@@ -68,11 +68,6 @@ export class ColumnProjectSectionComponent implements OnInit {
           amount: time.cost,
           isTT: true
         };
-        
-        // if (!this.totalSpent) {
-        //   this.totalSpent = 0;
-        // }
-        // this.totalSpent += time.cost;
 
         this.column.budget.expenses.push(tteMapped);
       });
