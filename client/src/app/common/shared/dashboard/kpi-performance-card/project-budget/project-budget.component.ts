@@ -1,4 +1,4 @@
-import { Component, Injector, Input, AfterViewInit } from '@angular/core';
+import { Component, Injector, Input, OnChanges } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
@@ -6,7 +6,7 @@ import { PublicFunctions } from 'modules/public.functions';
   templateUrl: './project-budget.component.html',
   styleUrls: ['./project-budget.component.scss']
 })
-export class ProjectBudgetComponent implements AfterViewInit {
+export class ProjectBudgetComponent implements OnChanges {
 
   @Input() project: any;
   @Input() timeTrackingEntities: any = [];
@@ -48,7 +48,7 @@ export class ProjectBudgetComponent implements AfterViewInit {
     private injector: Injector
     ) { }
 
-  async ngAfterViewInit() {
+  async ngOnChanges() {
     await this.initView();
   }
 
