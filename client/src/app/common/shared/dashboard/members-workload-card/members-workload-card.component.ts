@@ -165,7 +165,7 @@ export class MembersWorkloadCardComponent implements OnInit {
         }
 
         holidays.forEach(outOfficeDay => {
-          if (outOfficeDay._user._id == member._id) {
+          if ((outOfficeDay._user._id == member._id) && (workloadDay.date >= DateTime.fromISO(outOfficeDay.start_date)) && (workloadDay.date <= DateTime.fromISO(outOfficeDay.end_date))) {
             workloadDay.outOfTheOfficeClass = (outOfficeDay.type == 'holidays')
               ? 'cal-day-holidays'
               : ((outOfficeDay.type == 'personal')
