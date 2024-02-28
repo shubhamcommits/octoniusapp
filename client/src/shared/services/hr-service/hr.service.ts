@@ -115,12 +115,13 @@ export class HRService {
     return this._http.get(this.baseUrl + `/${workspaceId}/topMembersOff`).toPromise();
   }
 
-  getMembersOff(members: any, from: any, to: any, workspaceId?: string) {
+  getMembersOff(members: any, from: any, to: any, approved: boolean, workspaceId?: string) {
     return this._http.get(this.baseUrl + `/${workspaceId}/membersOff`, {
       params: {
         from: from,
         to: to,
-        members: members
+        members: members,
+        approved: approved
       }
     }).toPromise();
   }

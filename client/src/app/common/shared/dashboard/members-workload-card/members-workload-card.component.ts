@@ -72,7 +72,7 @@ export class MembersWorkloadCardComponent implements OnInit {
 
     const membersIds = this.groupMembers.map(member => {return member._id});
     let holidays = [];
-    await this.hrService.getMembersOff(membersIds, this.dates[0], this.dates[this.dates.length - 1]).then(res => {
+    await this.hrService.getMembersOff(membersIds, this.dates[0], this.dates[this.dates.length - 1], false).then(res => {
       holidays = res['holidays'];
     });
 
@@ -154,38 +154,27 @@ export class MembersWorkloadCardComponent implements OnInit {
         workloadDay.minutes = minutes + '';
 
         if (tasksTmp && tasksTmp.length > 0) {
-          // if (this.groupData.enable_allocation && this.groupData.resource_management_allocation) {
-          //   const allocationTasks = tasksTmp.map(post => post?.task?.allocation || 0);
-
-          //   workloadDay.allocation = allocationTasks
-          //     .reduce((a, b) => {
-          //       return a + b;
-          //     });
-          // }
-
           // filter done/to do/in progress tasks count
           workloadDay.numDoneTasks = tasksTmp.filter(post => { return post.task.status == 'done'; }).length;
           workloadDay.todo_tasks = tasksTmp.filter(post => { return post?.task?.status == 'to do'}).length;
           workloadDay.inprogress_tasks = tasksTmp.filter(post => { return post?.task?.status == 'in progress'}).length;
         } else {
-          // workloadDay.allocation = 0;
           workloadDay.numDoneTasks = 0;
           workloadDay.todo_tasks = 0;
           workloadDay.inprogress_tasks = 0;
         }
 
-        const index = (!!holidays) ? holidays.findIndex(holiday => ((holiday._user == member._id) && (workloadDay.date >= DateTime.fromISO(holiday.start_date)) && (workloadDay.date <= DateTime.fromISO(holiday.end_date)))) : -1;
+        holidays.forEach(outOfficeDay => {
+          if (outOfficeDay._user._id == member._id) {
+            workloadDay.outOfTheOfficeClass = (outOfficeDay.type == 'holidays')
+              ? 'cal-day-holidays'
+              : ((outOfficeDay.type == 'personal')
+                ? 'cal-day-personal'
+                : ((outOfficeDay.type == 'sick') ? 'cal-day-sick' : ''));
 
-        if (index >= 0) {
-          const outOfficeDay = holidays[index];
-          workloadDay.outOfTheOfficeClass = (outOfficeDay.type == 'holidays')
-            ? 'cal-day-holidays'
-            : ((outOfficeDay.type == 'personal')
-              ? 'cal-day-personal'
-              : ((outOfficeDay.type == 'sick') ? 'cal-day-sick' : ''));
-
-          workloadDay.outOfTheOfficeClass += (workloadDay.outOfTheOfficeClass != '' && outOfficeDay.approved) ? '-approved' : '';
-        }
+            workloadDay.outOfTheOfficeClass += (workloadDay.outOfTheOfficeClass != '' && outOfficeDay.approved) ? '-approved' : '';
+          }
+        });
 
         member.workload.push(workloadDay);
       });

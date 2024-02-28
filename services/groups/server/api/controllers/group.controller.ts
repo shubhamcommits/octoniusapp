@@ -2345,6 +2345,35 @@ export class GroupController {
     };
 
     /**
+     * This function fetches the posts of multiple groups with specific dates
+     * @param req
+     */
+    async getMultipleGroupsTasksBetweenDays(req: Request, res: Response) {
+        try {
+            const { query: { startDate, endDate, groups }} = req;
+
+            // Find the Group based on the groupId
+            const posts = await Post.find({
+                $and: [
+                    { _group: { $in: groups }},
+                    { type: 'task' },
+                    { 'task.due_to': { $gte: startDate, $lte: endDate} }
+                ]
+            })
+            .select('task.status task.due_to _assigned_to task.estimation')
+            .lean() || [];
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Posts found!',
+                posts: posts
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
      * Save the widgets selected for the group.
      */
     async saveSelectedWidgets(req: Request, res: Response, next: NextFunction) {
@@ -2996,6 +3025,61 @@ export class GroupController {
                 ]);
 
             // timeTrackingEntities = timeTrackingEntities.filter(tte => !!tte.times && tte.times.length > 0);
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Time Tracking Entities found!',
+                timeTrackingEntities: timeTrackingEntities
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
+     * This function fetches the time tracking entities of a user with a date between specific dates
+     * @param req
+     */
+    async getMultipleGroupsTimeTrackingEntites(req: Request, res: Response) {
+        try {
+            const { query: { groups, startDate, endDate } } = req;
+
+            let groupTasks = await Post.find({
+                $and: [
+                    { _group: { $in: groups }},
+                    { type: 'task' }
+                ]
+            }).select('_id').lean() || [];
+
+            groupTasks = groupTasks.map(post => post._id);
+
+            let timeTrackingEntities  = await TimeTrackingEntity.find({
+                    $and: [
+                        { _task: { $in: groupTasks }},
+                        { times: {
+                                $elemMatch: { 
+                                    $and: [
+                                        { date: { $gte: startDate, $lte: endDate }},
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                });
+
+            timeTrackingEntities = await TimeTrackingEntity.populate(timeTrackingEntities, [
+                    {
+                        path: '_task',
+                        select: 'title _group task',
+                        populate: {
+                            path: '_group',
+                            model: 'Group',
+                            select: 'group_name group_avatar'
+                        }
+                    },
+                    { path: '_user', select: 'first_name last_name profile_pic email' },
+                    { path: '_created_by', select: 'first_name last_name profile_pic email' }
+                ]);
 
             // Send the status 200 response
             return res.status(200).json({

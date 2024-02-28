@@ -2208,4 +2208,36 @@ export class UsersControllers {
             return sendError(res, err);
         }
     };
+
+    /**
+     * This function fetches the time tracking entities of a user with a date between specific dates
+     * @param req
+     */
+    async getUserGroups(req: Request, res: Response) {
+        try {
+
+            const { userId } = req.params;
+
+            let groups = await Group.find({
+                    $and: [
+                        {
+                            $or: [
+                                { _members: userId },
+                                { _admins: userId }
+                            ]
+                        },
+                        { group_name: { $ne: 'Global' }},
+                        { group_name: { $ne: 'personal' }}
+                    ]
+                }).select('_id group_name').lean();
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Groups found!',
+                groups: groups
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
 }

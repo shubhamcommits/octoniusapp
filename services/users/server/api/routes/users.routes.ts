@@ -196,6 +196,9 @@ routes.get('/:userId/pending-approval-holidays', user.getPendingApprovalHolidays
 // GET - Get the time tracking entities of a user for a week 
 routes.get('/:userId/time-tracking-entities', user.getUserTimeTrackingEntites);
 
+// GET - Get the time tracking entities of a user for a week 
+routes.get('/:userId/user-groups', user.getUserGroups);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

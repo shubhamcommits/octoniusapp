@@ -33,6 +33,9 @@ routes.get('/social-stats', members.getGroupMembersSocialStats);
 // GET - Get a list of members
 routes.get('/all', members.getAllGroupMembers);
 
+// GET - Get the members of a list of groups
+routes.get('/members-from-multiple-groups', members.getMembersFromMultipleGroups);
+
 // POST - Add a new user to the group
 routes.post('/add', members.addNewUserInGroup);
 
