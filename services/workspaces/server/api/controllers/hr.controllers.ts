@@ -841,52 +841,99 @@ export class HRControllers {
 
     async getMembersOff(req: Request, res: Response, next: NextFunction) {
         try {
-            const { query: { members, from, to }} = req;
+            const { query: { members, from, to, approved }} = req;
 
-            const holidays = await Holiday.find({
-                    $and: [
-                        { _user: { $in: members }},
-                        { status: 'approved' },
-                        {
-                            $or: [
-                                {
-                                    $and: [
-                                        { start_date: { $gte: from }},
-                                        { start_date: { $lte: to }},
-                                        { end_date: { $gte: from }},
-                                        { end_date: { $lte: to }}
-                                    ]
-                                }, {
-                                    $and: [
-                                        { start_date: { $lte: from }},
-                                        { start_date: { $lte: to }},
-                                        { end_date: { $gte: from }},
-                                        { end_date: { $lte: to }}
-                                    ]
-                                }, {
-                                    $and: [
-                                        { start_date: { $lte: from }},
-                                        { start_date: { $lte: to }},
-                                        { end_date: { $gte: from }},
-                                        { end_date: { $gte: to }}
-                                    ]
-                                }, {
-                                    $and: [
-                                        { start_date: { $gte: from }},
-                                        { start_date: { $lte: to }},
-                                        { end_date: { $gte: from }},
-                                        { end_date: { $gte: to }}
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                })
-                .populate({
-                    path: '_user',
-                    select: '_id first_name last_name email profile_pic hr'
-                })
-                .lean() || [];
+            let holidays = [];
+            if (!!approved) {
+                holidays = await Holiday.find({
+                        $and: [
+                            { _user: { $in: members }},
+                            {
+                                $or: [
+                                    {
+                                        $and: [
+                                            { start_date: { $gte: from }},
+                                            { start_date: { $lte: to }},
+                                            { end_date: { $gte: from }},
+                                            { end_date: { $lte: to }}
+                                        ]
+                                    }, {
+                                        $and: [
+                                            { start_date: { $lte: from }},
+                                            { start_date: { $lte: to }},
+                                            { end_date: { $gte: from }},
+                                            { end_date: { $lte: to }}
+                                        ]
+                                    }, {
+                                        $and: [
+                                            { start_date: { $lte: from }},
+                                            { start_date: { $lte: to }},
+                                            { end_date: { $gte: from }},
+                                            { end_date: { $gte: to }}
+                                        ]
+                                    }, {
+                                        $and: [
+                                            { start_date: { $gte: from }},
+                                            { start_date: { $lte: to }},
+                                            { end_date: { $gte: from }},
+                                            { end_date: { $gte: to }}
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    })
+                    .populate({
+                        path: '_user',
+                        select: '_id first_name last_name email profile_pic hr'
+                    })
+                    .lean() || [];
+            } else {
+                holidays = await Holiday.find({
+                        $and: [
+                            { _user: { $in: members }},
+                            { status: 'approved' },
+                            {
+                                $or: [
+                                    {
+                                        $and: [
+                                            { start_date: { $gte: from }},
+                                            { start_date: { $lte: to }},
+                                            { end_date: { $gte: from }},
+                                            { end_date: { $lte: to }}
+                                        ]
+                                    }, {
+                                        $and: [
+                                            { start_date: { $lte: from }},
+                                            { start_date: { $lte: to }},
+                                            { end_date: { $gte: from }},
+                                            { end_date: { $lte: to }}
+                                        ]
+                                    }, {
+                                        $and: [
+                                            { start_date: { $lte: from }},
+                                            { start_date: { $lte: to }},
+                                            { end_date: { $gte: from }},
+                                            { end_date: { $gte: to }}
+                                        ]
+                                    }, {
+                                        $and: [
+                                            { start_date: { $gte: from }},
+                                            { start_date: { $lte: to }},
+                                            { end_date: { $gte: from }},
+                                            { end_date: { $gte: to }}
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    })
+                    .populate({
+                        path: '_user',
+                        select: '_id first_name last_name email profile_pic hr'
+                    })
+                    .lean() || [];
+            }
 
             const users = holidays.map(holiday => {
                 holiday._user.start_date = holiday.start_date;

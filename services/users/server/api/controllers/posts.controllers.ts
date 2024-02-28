@@ -297,12 +297,12 @@ export class PostsControllers {
             const { userId, groupId } = req.query;
 
             // If userId is not found
-            if(!userId || !groupId){
-                return sendError(res, new Error('Unable to find the user and group, either userId and groupId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
+            if(!userId) {
+                return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
             }
 
             // Fetch overdue task
-            const tasks: any = await postsService.getWorkloadCardOverdueTasks(userId.toString(), groupId.toString());
+            const tasks: any = await postsService.getWorkloadCardOverdueTasks(userId, groupId);
 
             // Send status 200 response
             return res.status(200).json({

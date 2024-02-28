@@ -481,33 +481,58 @@ export class PostsService {
      * @param userId 
      * @param groupId
      */
-    async getWorkloadCardOverdueTasks(userId: string, groupId: string) {
+    async getWorkloadCardOverdueTasks(userId: any, groupId: any) {
 
         // Generate the actual time
         const today = moment().format('YYYY-MM-DD');
 
-        // Fetch the tasks posts
-        const tasks = await Post.find({
-                $and: [
-                    { '_assigned_to': userId },        
-                    { '_group': groupId },
-                    { 'task.due_to': { $lt: today }},
-                    { 'task.is_template': { $ne: true }},
-                    {
-                        $or: [
-                            { 'task.status': 'to do' },
-                            { 'task.status': 'in progress' }
-                        ]
-                    }
-                ]
-            })
-            .sort('-task.due_to')
-            .populate('_group', this.groupFields)
-            .populate('_posted_by', this.userFields)
-            .populate('_assigned_to', this.userFields)
-            .populate('_followers', this.userFields)
-            .populate('_liked_by', this.userFields)
-            .lean();
+        let tasks = [];
+        if (!!groupId) {
+            // Fetch the tasks posts
+            tasks = await Post.find({
+                    $and: [
+                        { '_assigned_to': userId.toString() },        
+                        { '_group': groupId.toString() },
+                        { 'task.due_to': { $lt: today }},
+                        { 'task.is_template': { $ne: true }},
+                        {
+                            $or: [
+                                { 'task.status': 'to do' },
+                                { 'task.status': 'in progress' }
+                            ]
+                        }
+                    ]
+                })
+                .sort('-task.due_to')
+                .populate('_group', this.groupFields)
+                .populate('_posted_by', this.userFields)
+                .populate('_assigned_to', this.userFields)
+                .populate('_followers', this.userFields)
+                .populate('_liked_by', this.userFields)
+                .lean();
+        } else {
+            // Fetch the tasks posts
+            tasks = await Post.find({
+                    $and: [
+                        { '_assigned_to': userId.toString() },        
+                        { 'task.due_to': { $lt: today }},
+                        { 'task.is_template': { $ne: true }},
+                        {
+                            $or: [
+                                { 'task.status': 'to do' },
+                                { 'task.status': 'in progress' }
+                            ]
+                        }
+                    ]
+                })
+                .sort('-task.due_to')
+                .populate('_group', this.groupFields)
+                .populate('_posted_by', this.userFields)
+                .populate('_assigned_to', this.userFields)
+                .populate('_followers', this.userFields)
+                .populate('_liked_by', this.userFields)
+                .lean();
+        }
 
         // Return tasks
         return tasks

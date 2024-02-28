@@ -610,4 +610,45 @@ export class MembersControllers {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
+
+    /**
+     * This function is responsible for fetching the list of group members based on the groupId
+     * @param { params: { groupId } }req 
+     * @param res 
+     * @param next 
+     */
+    async getMembersFromMultipleGroups(req: Request, res: Response, next: NextFunction) {
+
+        const { query: { groups } } = req;
+
+        try {
+
+            // If either groupId is null or not provided then we throw BAD REQUEST 
+            if (!groups) {
+                return res.status(400).json({
+                    message: 'Please provide groups as the query parameter!'
+                })
+            }
+
+            // Find the users based on the regex expression matched with either full_name or email property present in the current group
+            const users = await User.find({
+                    $and: [
+                        { _groups: { $in: groups }},
+                        { active: true }
+                    ]
+                })
+                .sort('_id')
+                .select('first_name last_name full_name email current_position active role profile_pic created_date integrations')
+                .lean() || [];
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `The First ${users.length} group members found!`,
+                users: users
+            })
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
 }

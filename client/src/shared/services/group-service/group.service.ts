@@ -414,7 +414,35 @@ export class GroupService {
     }).toPromise();
   }
 
+  getMultipleGroupsTimeTrackingEntites(groups: any, startDate: any, endDate: any) {
+    return this._http.get(this.baseURL + `/null/multiple-groups-time-tracking-entities`, {
+      params: {
+        groups: groups,
+        startDate: startDate,
+        endDate: endDate
+      }
+    }).toPromise();
+  }
+
   getSectionTimeTrackingEntities(sectionId: string) {
     return this._http.get(this.baseURL + `/${sectionId}/time-tracking-entities-by-section`, {}).toPromise();
+  }
+
+  getMembersFromMultipleGroups(groups: any) {
+    return this._http.get(this.baseURL + `/members/members-from-multiple-groups`, {
+      params: {
+        groups: groups
+      }
+    }).toPromise();
+  }
+
+  getMultipleGroupsTasksBetweenDays(groups: any, startDate: any, endDate: any) {
+    return this._http.get(this.baseURL + `/null/tasks-between-days-multiple-groups`, {
+      params: {
+        groups: groups,
+        startDate: startDate,
+        endDate: endDate
+      }
+    }).toPromise()
   }
 }

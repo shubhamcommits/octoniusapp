@@ -269,11 +269,11 @@ export class UserService {
     return this._http.get(this.BASE_API_URL + `/tasks/overdue`).toPromise();
   }
 
-  getWorkloadOverdueTasks(userId: string, groupId: string) {
+  getWorkloadOverdueTasks(userId: string, groupId?: string) {
     return this._http.get(this.BASE_API_URL + `/tasks/workloadOverdue`, {
       params: {
         userId: userId,
-        groupId: groupId.trim()
+        groupId: groupId
       }
     }).toPromise();
   }
@@ -526,5 +526,9 @@ export class UserService {
         endDate: endDate
       }
     }).toPromise();
+  }
+
+  getUserGroups(userId: string) {
+    return this._http.get(this.BASE_API_URL + `/${userId}/user-groups`, {}).toPromise();
   }
 }

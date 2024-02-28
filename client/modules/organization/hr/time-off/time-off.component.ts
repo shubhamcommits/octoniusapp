@@ -78,7 +78,7 @@ export class TimneOffComponent implements OnInit {
     const to = date.endOf('month');
 
     const membersIds = (!!this.workspaceData.members) ? this.workspaceData.members.map(member => member._id) : [];
-    this.hrService.getMembersOff(membersIds, from, to).then(res => {
+    this.hrService.getMembersOff(membersIds, from, to, true).then(res => {
       this.membersOff = res['members'];
 
       // Assign the data to the data source for the table to render

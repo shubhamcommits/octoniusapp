@@ -159,6 +159,9 @@ routes.get('/:groupId/postsCount', group.getPostsCount);
 // GET - Get group tasks between two dates
 routes.get('/:groupId/tasks-between-days', group.getTasksBetweenDates);
 
+// GET - Get multiple groups tasks between two dates
+routes.get('/:groupId/tasks-between-days-multiple-groups', group.getMultipleGroupsTasksBetweenDays);
+
 // PUT - Updates the widgets to show in the group
 routes.put('/:groupId/saveSelectedWidgets', group.saveSelectedWidgets);
 
@@ -197,6 +200,9 @@ routes.get('/:groupId/time-tracking-entities', group.getGroupTimeTrackingEntites
 
 // GET - Get the time tracking entities of a section
 routes.get('/:sectionId/time-tracking-entities-by-section', group.getGroupTimeTrackingEntitesBySection);
+
+// GET - Get the time tracking entities of a group for a time period
+routes.get('/null/multiple-groups-time-tracking-entities', group.getMultipleGroupsTimeTrackingEntites);
 
 /*  ===================
  *  -- EXPORT ROUTES --
