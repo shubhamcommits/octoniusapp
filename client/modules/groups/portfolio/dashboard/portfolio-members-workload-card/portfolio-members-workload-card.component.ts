@@ -171,7 +171,7 @@ export class PortfolioMembersWorkloadCardComponent implements OnChanges {
           workloadDay.inprogress_tasks = 0;
         }
 
-        const index = (!!holidays) ? holidays.findIndex(holiday => ((holiday._user == member._id) && (workloadDay.date >= DateTime.fromISO(holiday.start_date)) && (workloadDay.date <= DateTime.fromISO(holiday.end_date)))) : -1;
+        const index = (!!holidays) ? holidays.findIndex(holiday => ((holiday._user._id == member._id) && (workloadDay.date >= DateTime.fromISO(holiday.start_date)) && (workloadDay.date <= DateTime.fromISO(holiday.end_date)))) : -1;
         if (index >= 0) {
           const outOfficeDay = holidays[index];
           workloadDay.outOfTheOfficeClass = (outOfficeDay.type == 'holidays')
