@@ -117,7 +117,7 @@ export const environment = {
   MANAGEMENT_URL: `${url.protocol}://${url.domain}:3300`,
 
   STRIPE_PRICING_TABLE_ID: 'prctbl_1NUpoWGvwAwbe8mcJ6NbwIhq',
-  STRIPE_PK: 'pk_live_51LXiwTGvwAwbe8mcFvHDyI4isnNcSNwh8C2i3BGlksekQjDL9dpjGhs4kiOKYaE4p5sbccSU0mKj1VIt5KtJHYkD00Dpvr33gN',
+  STRIPE_PK: 'pk_live_51Op56sIlxjvoPMgbR74SNBAN3kLUrt2e37K9tRXmrHv3VyHm4FOxfIReLQc4Nlwflh5HTpfsG3EWjgF7VITNarbg002C6sXLta',
   STRIPE_INDIVIDUAL_PRODUCT_ID: 'prod_OHKubm9b6aqLtv',
   STRIPE_TEAM_PRODUCT_ID: 'prod_OHLYSPKkuKtKT5',
   STRIPE_BUSINESS_PRODUCT_ID: 'prod_OHLYDzd3gB29cY',
