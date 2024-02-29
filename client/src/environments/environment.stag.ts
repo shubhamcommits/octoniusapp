@@ -92,9 +92,9 @@ export const environment = {
   MANAGEMENT_URL: `${window["env"]["protocol"]}://${window["env"]["mgmt_portal_domain"]}`,
 
   STRIPE_PRICING_TABLE_ID: 'prctbl_1NUpoWGvwAwbe8mcJ6NbwIhq',
-  STRIPE_PK: 'pk_live_51LXiwTGvwAwbe8mcFvHDyI4isnNcSNwh8C2i3BGlksekQjDL9dpjGhs4kiOKYaE4p5sbccSU0mKj1VIt5KtJHYkD00Dpvr33gN',
+  STRIPE_PK: 'pk_live_51Op56sIlxjvoPMgbR74SNBAN3kLUrt2e37K9tRXmrHv3VyHm4FOxfIReLQc4Nlwflh5HTpfsG3EWjgF7VITNarbg002C6sXLta',
   STRIPE_INDIVIDUAL_PRODUCT_ID: 'prod_OHOYxENDSZerYK',
-  STRIPE_TEAM_PRODUCT_ID: 'prod_OHOYDRY0qz2Cpp',
-  STRIPE_BUSINESS_PRODUCT_ID: 'prod_OHOY2V5uUOUMBJ',
-  STRIPE_ONPREMISE_PRODUCT_ID: 'prod_OHOYDpqPYjGXAX',
+  STRIPE_TEAM_PRODUCT_ID: 'prod_PeOscG15Pc3olm',
+  STRIPE_BUSINESS_PRODUCT_ID: 'prod_PeOw2Sy2msCwHl',
+  STRIPE_ONPREMISE_PRODUCT_ID: 'prod_PePFjZ7tGQ4I2J',
 };
