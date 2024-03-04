@@ -555,11 +555,11 @@ export class MembersControllers {
             groupUpdate = await Group.findById(groupId)
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files'
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files'
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files'
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files'
                 })
                 .lean();
 

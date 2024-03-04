@@ -83,33 +83,32 @@ export class GroupInformationComponent implements OnInit {
     const groupTypeNormal = $localize`:@@groupInformation.groupTypeNormal:Normal`;
     const groupTypeAgora = $localize`:@@groupInformation.groupTypeAgora:Agora`;
     const groupTypeCRM = $localize`:@@groupInformation.groupTypeCRM:CRM`;
-    const groupTypeAccounting = $localize`:@@groupInformation.groupTypeAccounting:Accounting`;
     const groupTypeResource = $localize`:@@groupInformation.groupTypeResource:Resource`;
+    const groupTypeAccounting = $localize`:@@groupInformation.groupTypeAccounting:Accounting`;
 
     // Swal modal for update details
     return this.utilityService.getSwalModal({
       title: title,
       html:
-        `<input id="phone-number" type="text" placeholder="${groupNamePlaceholder}"
+        `<input id="group-name" type="text" placeholder="${groupNamePlaceholder}"
           value="${this.groupData.group_name || 'Your Group Name here...'}" class="swal2-input">` +
-        `<input id="mobile-number" type="text" placeholder="${groupDescriptionPlaceholder}"
+        `<input id="group-description" type="text" placeholder="${groupDescriptionPlaceholder}"
           value="${this.groupData.description || ''}" class="swal2-input">` +
         `<select id="group-type" value="${this.groupData.type}" placeholder="${groupTypePlaceholder}" class="swal2-input">
-            <option value="" selected disabled hidden>Choose an option</option>
+            <option value="" selected disabled>Choose an option</option>
             <option value="normal">${groupTypeNormal}</option>
             <option value="agora">${groupTypeAgora}</option>
             <option value="crm">${groupTypeCRM}</option>
+            <option value="resource">${groupTypeResource}</option>
           </select>`,
             // <option value="accounting">${groupTypeAccounting}</option>
-            // <option value="resource">${groupTypeResource} Management</option>
             
       focusConfirm: false,
       preConfirm: () => {
-
         // Return Object to passed in the req.body
         return {
-          group_name: document.getElementById('phone-number')['value'],
-          description: document.getElementById('mobile-number')['value'],
+          group_name: document.getElementById('group-name')['value'],
+          description: document.getElementById('group-description')['value'],
           type: document.getElementById('group-type')['value'],
         }
       },

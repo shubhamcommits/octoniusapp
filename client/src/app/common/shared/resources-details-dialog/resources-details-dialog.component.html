@@ -1,0 +1,191 @@
+<mat-dialog-actions align="end">
+  <i mat-dialog-close class="material-icons" (click)="closeDialog()" style="cursor: pointer">close</i>
+</mat-dialog-actions>
+
+<mat-dialog-content>
+  <div class="new-record-form" *ngIf="!resourceId && !resourceData">
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label for="title" i18n="@@resourcesDetailsDialog.title" class="muted">Title</label>
+          <input type="text" class="form-control" [(ngModel)]="newResource.title" name="title">
+      
+          <label for="description" i18n="@@resourcesDetailsDialog.description" class="muted">description</label>
+          <input type="text" class="form-control" [(ngModel)]="newResource.description" name="description">
+      
+          <label for="packaging" i18n="@@resourcesDetailsDialog.packaging" class="muted">Packaging</label>
+          <input type="text" class="form-control" [(ngModel)]="newResource.packaging" name="packaging">
+      
+          <label for="total_stock" i18n="@@resourcesDetailsDialog.totalStock" class="muted">Total Stock</label>
+          <input type="number" class="form-control" [(ngModel)]="newResource.total_stock" name="total_stock">
+      
+          <label for="balance" i18n="@@resourcesDetailsDialog.balance" class="muted">Balance</label>
+          <input type="number" class="form-control" [(ngModel)]="newResource.balance" name="balance">
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary btn-md float-left" (click)="createResource()" [disabled]="!isValidResource()">
+        <i class="material-icons-outlined">add</i>
+        <span i18n="@@resourcesDetailsDialog.addEntry">Add entry</span>
+      </button>
+
+      <button class="btn btn-outline-danger btn-md float-left" style="margin-left: 30px;" (click)="closeDialog()">
+        <span i18n="@@resourcesDetailsDialog.cancel">X Cancel</span>
+      </button>
+
+      <button class="btn btn-outline-danger btn-md float-right" style="margin-left: 30px;" (click)="closeDialog()">
+        <span i18n="@@resourcesDetailsDialog.deleteItem">Delete item</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="new-record-form" *ngIf="!!resourceData">
+    <div class="details">
+      <div style="float: left; width: 50%;">
+        <h6>
+          <strong *ngIf="!editResource">{{ resourceData?.title }}</strong>
+          <input *ngIf="editResource" type="text" [(ngModel)]="resourceData.title"
+            (keyup.enter)="onUpdated({title: resourceData?.title})" (blur)="onUpdated({title: resourceData?.title})" style="border: none;" />
+        </h6>
+
+        <div class="row">
+          <div class="col-md-4">
+            <span class="" i18n="@@resourcesDetailsDialog.totalStock">Total Stock</span>
+          </div>
+          <div class="col-md-8">
+            <span *ngIf="!editResource" class="badge stock">{{ resourceData?.total_stock }}</span>
+            <input *ngIf="editResource" type="number" [(ngModel)]="resourceData.total_stock"
+              (keyup.enter)="onUpdated({total_stock: resourceData?.total_stock})" (blur)="onUpdated({total_stock: resourceData?.total_stock})" style="border: none;" />
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-4">
+            <span class="" i18n="@@resourcesDetailsDialog.currentBalance">Current Balance</span>
+          </div>
+          <div class="col-md-8">
+            <span *ngIf="!editResource" class="badge" [ngClass]="getBalanceClass()">{{ resourceData?.balance }}</span>
+            <input *ngIf="editResource" type="number" [(ngModel)]="resourceData.balance"
+              (keyup.enter)="onUpdated({balance: resourceData?.balance})" (blur)="onUpdated({balance: resourceData?.balance})" style="border: none;" />
+          </div>
+        </div>
+      </div>
+      <div style="float: right;">
+        <i class="material-icons-outlined pointer" *ngIf="!editResource" (click)="editResource = !editResource">edit</i>
+
+        <div class="graph">
+          <div class="d-md-none d-lg-block" *ngIf="chartReady">
+            <canvas
+              baseChart
+              height="100"
+              [data]="doughnutChartData"
+              [labels]="doughnutChartLabels"
+              [chartType]="doughnutChartType"
+              [options]="doughnutChartOptions"
+              [colors]="doughnutChartColors"
+              [plugins]="doughnutChartPlugins"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-2">
+            <qrcode
+              [qrdata]="qrCodeUrl"
+              [allowEmptyString]="true"
+              [elementType]="'canvas'"
+              [errorCorrectionLevel]="'M'"
+              [imageSrc]="'src/assets/logo.svg'"
+              [imageHeight]="50"
+              [imageWidth]="50"
+              [margin]="4"
+              [scale]="1"
+              [width]="100"
+            ></qrcode>
+        </div>
+
+        <div class="col-md-10">
+          <div class="row">
+            <div class="col-md-12">
+              <span i18n="@@resourcesDetailsDialog.productDescription">Product description: </span>
+              <span *ngIf="!editResource">{{ resourceData?.description }}</span>
+              <input *ngIf="editResource" type="text" [(ngModel)]="resourceData.description"
+                (keyup.enter)="onUpdated({description: resourceData?.description})" (blur)="onUpdated({description: resourceData?.description})" style="border: none;" />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div *ngFor="let cf of customFields" class="d-flex custom-field justify-content-start mb-3 row">
+                <p>{{ cf.title }}: </p>
+
+                <div *ngIf="!editResource">
+                  {{ selectedCFValues[cf.name] }}
+                </div>
+
+                <div *ngIf="editResource">
+                  <mat-select ngDefaultControl *ngIf="!cf.input_type" [(value)]="selectedCFValues[cf.name]"
+                    (openedChange)="cfSearchText = ''" (selectionChange)="onCustomFieldChange($event, cf.name)"
+                    appearance="fill" class="col">
+                    <mat-select-trigger>{{ selectedCFValues[cf.name] }}</mat-select-trigger>
+                    <input type="text" class="form-control" [id]="'search-text' + cf.name" [(ngModel)]="cfSearchText"
+                      [placeholder]="cfSearchPlaceholder" autofocus (click)="$event.stopPropagation()"
+                      (keydown)="$event.stopPropagation()">
+                    <mat-option *ngFor="let val of cf.values | appFilter: cfSearchText" [value]="val">{{ val }}</mat-option>
+                  </mat-select>
+                
+                  <div *ngIf="cf.input_type && !cf.input_type_date" class="col" style="display: flex; float: left; width: 125px;">
+                    <input type="text" [name]="cf.name" [(ngModel)]="selectedCFValues[cf.name]" class="col"
+                      style="width: 94px;" [value]="selectedCFValues[cf.name]"
+                      (keyup.enter)="saveInputCustomField($event, cf.name)" (blur)="saveInputCustomField($event, cf.name)" />
+                    <!-- <i (click)="saveCustomField(cf.name, selectedCFValues[cf.name]);"
+                      class="material-icons muted mr-5"
+                      style="cursor: pointer; font-size: 14px; margin-left: 10px;color: #0bc6a0;">save</i> -->
+                  </div>
+                
+                  <div *ngIf="cf.input_type && cf.input_type_date">
+                    <app-date-picker (date)="getCFDate($event, cf.name)"
+                      [selectedDate]="formateDate(selectedCFValues[cf.name])" [styleClass]="'btn-group input-date'" [canEdit]="true">
+                    </app-date-picker>
+                  </div>
+
+                  <i (click)="saveCustomField(cf.name, null);" class="material-icons muted mr-5"
+                    style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="clearfix"></div>
+
+      <div class="clearfix" *ngIf="editResource">
+        <button class="btn btn-outline-danger btn-md float-left" (click)="editResource = !editResource">
+          <span i18n="@@resourceActivity.cancel">X Cancel</span>
+        </button>
+
+        <button class="btn btn-outline-danger btn-md float-right" (click)="deleteResource()">
+          <span i18n="@@resourceActivity.deleteItem">Delete item</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="details">
+      <div>
+        <span i18n="@@resourcesDetailsDialog.inventoryActivity">Inventory activity</span>
+      </div>
+
+      <app-resource-activity
+        [userData]="userData"
+        [groupData]="groupData"
+        [workspaceData]="workspaceData"
+        [resourceData]="resourceData"
+        ></app-resource-activity>
+    </div>
+  </div>
+</mat-dialog-content>

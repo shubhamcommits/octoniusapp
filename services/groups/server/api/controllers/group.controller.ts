@@ -40,14 +40,14 @@ export class GroupController {
                 .sort('_id')
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     }
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     }
@@ -103,7 +103,7 @@ export class GroupController {
                 .limit(5)
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name active profile_pic role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name active profile_pic role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     },
@@ -113,7 +113,7 @@ export class GroupController {
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name active profile_pic role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name active profile_pic role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     },
@@ -160,14 +160,14 @@ export class GroupController {
                 .sort('_id')
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     }
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     }
@@ -223,7 +223,7 @@ export class GroupController {
                 .limit(5)
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name active profile_pic role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name active profile_pic role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     },
@@ -233,7 +233,7 @@ export class GroupController {
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name active profile_pic role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name active profile_pic role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     },
@@ -527,14 +527,14 @@ export class GroupController {
                 })
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                     match: {
                         active: true
                     }
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                     match: {
                         active: true
                     }
@@ -572,14 +572,14 @@ export class GroupController {
                 })
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                     match: {
                         active: true
                     }
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                     match: {
                         active: true
                     }
@@ -619,14 +619,14 @@ export class GroupController {
             })
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                     match: {
                         active: true
                     }
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                     match: {
                         active: true
                     }
@@ -787,7 +787,7 @@ export class GroupController {
             )
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     },
@@ -797,7 +797,7 @@ export class GroupController {
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     },
@@ -1679,14 +1679,14 @@ export class GroupController {
                 })
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                     match: {
                         active: true
                     }
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                     match: {
                         active: true
                     }
@@ -1722,14 +1722,14 @@ export class GroupController {
             })
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                     match: {
                         active: true
                     }
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                     match: {
                         active: true
                     }
@@ -1945,14 +1945,14 @@ export class GroupController {
             group = await Group.findById(groupId)
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     }
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     }
@@ -2108,14 +2108,14 @@ export class GroupController {
             group = await Group.findById(groupId)
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     }
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     }
@@ -2153,11 +2153,11 @@ export class GroupController {
             group = await Group.findById(groupId)
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files'
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files'
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files'
+                    select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files'
                 })
                 .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' })
                 .lean();
@@ -2393,14 +2393,14 @@ export class GroupController {
             })
             .populate({
                 path: '_members',
-                select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
+                select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                 match: {
                     active: true
                 }
             })
             .populate({
                 path: '_admins',
-                select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
+                select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                 match: {
                     active: true
                 }
@@ -2549,14 +2549,14 @@ export class GroupController {
             })
             .populate({
                 path: '_members',
-                select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
+                select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                 match: {
                     active: true
                 }
             })
             .populate({
                 path: '_admins',
-                select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show share_files',
+                select: 'first_name last_name profile_pic active role hr_role email created_date custom_fields_to_show crm_custom_fields_to_show resources_custom_fields_to_show share_files',
                 match: {
                     active: true
                 }

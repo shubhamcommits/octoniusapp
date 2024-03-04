@@ -2,7 +2,7 @@
   <div class="card-block">
       <h6><b>Settings</b></h6>
 
-      <div class="mt-5 mb-5 pt-3" *ngIf="!isIndividualSubscription">
+      <div class="mt-5 mb-5 pt-3" *ngIf="!isIndividualSubscription && groupData?.type != 'resource'">
         <mat-slide-toggle color="primary"
             [checked]="groupData.share_files"
             [name]="'share_files'"

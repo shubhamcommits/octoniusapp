@@ -87,12 +87,21 @@
         </a>
       </li>
 
-      <li class="nav-item" *ngIf="!myWorkplace">
+      <li class="nav-item" *ngIf="!myWorkplace && groupData?.type != 'resource'">
         <a [ngClass]="activeState == 'groups_activity'?'nav-link active-nav':'nav-link'"
             (click)="changeState('groups_activity')"
             routerLink="/dashboard/work/groups/activity"
             routerLinkActive="active" i18n="@@groupNavbar.activity">
               Activity
+        </a>
+      </li>
+
+      <li class="nav-item" *ngIf="!myWorkplace && groupData?.type == 'resource'">
+        <a [ngClass]="activeState == 'groups_resource'?'nav-link active-nav':'nav-link'"
+            (click)="changeState('groups_resource')"
+            routerLink="/dashboard/work/groups/resource"
+            routerLinkActive="active" i18n="@@groupNavbar.resourceManagement">
+              Resource Management
         </a>
       </li>
 
@@ -116,7 +125,7 @@
           </a>
       </li>
 
-      <li class="nav-item" *ngIf="!myWorkplace">
+      <li class="nav-item" *ngIf="!myWorkplace && groupData?.type != 'resource'">
           <a [ngClass]="activeState == 'groups_files'?'nav-link active-nav':'nav-link'"
               (click)="changeState('groups_files')"
               routerLink="/dashboard/work/groups/files"
@@ -126,7 +135,7 @@
           </a>
       </li>
 
-      <li class="nav-item" *ngIf="!myWorkplace && !isIndividualSubscription">
+      <li class="nav-item" *ngIf="!myWorkplace && !isIndividualSubscription && groupData?.type != 'resource'">
         <a [ngClass]="activeState == 'groups_library'?'nav-link active-nav':'nav-link'"
           (click)="changeState('groups_library')" routerLink="/dashboard/work/groups/library" routerLinkActive="active"
           i18n="@@groupNavbar.library">

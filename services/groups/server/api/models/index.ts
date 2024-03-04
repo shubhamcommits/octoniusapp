@@ -16,6 +16,7 @@ import { Folder } from './folder.model';
 import { Contact } from './contact.model';
 import { Company } from './company.model';
 import { TimeTrackingEntity } from './time_tracking_entity.model';
+import { Resource } from './resource.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -37,6 +38,7 @@ export {
     Page as Page,
     Portfolio as Portfolio,
     Post as Post,
+    Resource as Resource,
     TimeTrackingEntity as TimeTrackingEntity,
     User as User,
     Workspace as Workspace,

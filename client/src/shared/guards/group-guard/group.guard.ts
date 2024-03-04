@@ -5,10 +5,7 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
 } from '@angular/router';
-import { Observable } from 'rxjs/internal/Observable';
-import { map } from 'rxjs/operators';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { GroupService } from 'src/shared/services/group-service/group.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 
@@ -82,9 +79,19 @@ export class GroupGuard implements CanActivate  {
       const newGroup = await this.publicFunctions.getGroupDetails(currentGroup?._id);
       await this.publicFunctions.sendUpdatesToGroupData(newGroup);
       this.utilityService.warningNotification($localize`:@@groupGuard.oopsNoPermissionForSection:Oops seems like you don\'t have the permission to access the section, kindly contact your superior to provide you the proper admin rights!`);
-      this.router.navigate(['dashboard', 'work', 'groups', 'activity']);
+      
+      if (currentGroup.type == 'resource') {
+        this.router.navigate(['dashboard', 'work', 'groups', 'resource']);
+      } else {
+        this.router.navigate(['dashboard', 'work', 'groups', 'activity']);
+      }
       return false;
     }
+
+    if (state.url.includes('/activity') && currentGroup.type == 'resource') {
+      this.router.navigate(['dashboard', 'work', 'groups', 'resource']);
+    }
+
     return true;
   }
 

@@ -140,6 +140,10 @@ import { TaskTimeTrackingComponent } from './posts/group-post-dialog/task-time-t
 import { TaskTimeTrackingListComponent } from './posts/group-post-dialog/task-time-tracking/task-time-tracking-list/task-time-tracking-list.component';
 import { NewTimeTrackingDialogComponent } from './new-time-tracking-dialog/new-time-tracking-dialog.component';
 import { TimeInputComponent } from './time-input/time-input.component';
+import { ResourcesDetailsDialogComponent } from './resources-details-dialog/resources-details-dialog.component';
+import { ResourceActivityComponent } from './resources-details-dialog/resource-activity/resource-activity.component';
+import { ResourceActivityListComponent } from './resources-details-dialog/resource-activity/resource-activity-list/resource-activity-list.component';
+import { QRCodeModule } from 'angularx-qrcode';
 
 @NgModule({
     declarations: [
@@ -257,6 +261,9 @@ import { TimeInputComponent } from './time-input/time-input.component';
         PricingTableComponent,
         HolidayRejectionDialogComponent,
         NewTimeTrackingDialogComponent,
+        ResourcesDetailsDialogComponent,
+        ResourceActivityComponent,
+        ResourceActivityListComponent,
     ],
     imports: [
         CommonModule,
@@ -270,6 +277,7 @@ import { TimeInputComponent } from './time-input/time-input.component';
         MatMenuModule,
         MaterialModule,
         ChartModule,
+        QRCodeModule,
         CalendarModule.forRoot({
             provide: DateAdapter,
             useFactory: adapterFactory
@@ -382,6 +390,9 @@ import { TimeInputComponent } from './time-input/time-input.component';
         PricingTableComponent,
         HolidayRejectionDialogComponent,
         NewTimeTrackingDialogComponent,
+        ResourcesDetailsDialogComponent,
+        ResourceActivityComponent,
+        ResourceActivityListComponent,
     ],
     providers: [
         { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },

@@ -6,6 +6,7 @@ import { FlowController } from './flow.controller';
 import { PortfolioController } from './portfolio.controller';
 import { LibraryController } from './library.controller';
 import { CRMController } from './crm.controller';
+import { ResourcesController } from './resources.controller';
 
 /*  =======================
  *  -- FUNCTION EXPORTS --
@@ -32,5 +33,7 @@ export {
 
     LibraryController as LibraryController,
 
-    CRMController as CRMController
+    CRMController as CRMController,
+
+    ResourcesController as ResourcesController,
 }

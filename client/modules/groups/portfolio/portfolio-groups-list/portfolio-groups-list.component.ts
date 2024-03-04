@@ -115,10 +115,14 @@ export class PortfolioGroupsListComponent implements OnInit {
     const userGroupsIndex = this.userData._groups.findIndex((usergroup: any) => usergroup == group?._id);
 
     if (groupMembersIndex >= 0 || groupAdminsIndex >= 0 || userGroupsIndex >= 0) {
-      const newGroup = await this.publicFunctions.getGroupDetails(groupId);
+      const newGroup: any = await this.publicFunctions.getGroupDetails(groupId);
       await this.publicFunctions.sendUpdatesToGroupData(newGroup);
       await this.publicFunctions.sendUpdatesToPortfolioData({});
-      this.router.navigate(['/dashboard', 'work', 'groups', 'activity']);
+    if (newGroup.type == 'resource') {
+      this.router.navigate(['dashboard', 'work', 'groups', 'resource']);
+    } else {
+      this.router.navigate(['dashboard', 'work', 'groups', 'activity']);
+    }
     } else {
       this.utilityService.warningNotification($localize`:@@portfolioGroupsList.cannotAccess:You are not allow to access the group, you are not a member of it!`)
     }
