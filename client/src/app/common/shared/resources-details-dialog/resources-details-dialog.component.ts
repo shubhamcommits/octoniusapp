@@ -21,10 +21,10 @@ export class ResourcesDetailsDialogComponent implements OnInit {
   newResource: any = {
     title: '',
     description: '',
-    packaging: '',
     total_stock: 0,
     balance: 0,
-    _group: null
+    _group: null,
+    custom_fields: new Map<string, string>()
   };
   
   resourceData: any;
@@ -100,15 +100,17 @@ export class ResourcesDetailsDialogComponent implements OnInit {
     this.qrCodeUrl += '/dashboard/work/groups/resource/id=' + this.resourceData?._id;
   }
 
-  initNewResource() {
+  async initNewResource() {
     this.newResource = {
       title: '',
       description: '',
-      packaging: '',
       total_stock: 0,
       balance: 0,
-      _group: this.groupData
+      _group: this.groupData,
+      custom_fields: new Map<string, string>()
     };
+
+    await this.initCustomFields();
   }
 
   initResourceToEdit() {
@@ -142,9 +144,7 @@ export class ResourcesDetailsDialogComponent implements OnInit {
           });
         }
       });
-    }
-
-    if (customFieldsTmp) {
+    } else {
       this.customFields = [];
       
       customFieldsTmp.forEach(field => {
@@ -153,15 +153,17 @@ export class ResourcesDetailsDialogComponent implements OnInit {
         }
         this.customFields.push(field);
 
-        if (!this.resourceData.custom_fields) {
-          this.resourceData.custom_fields = new Map<string, string>();
-        }
-
-        if (!this.resourceData.custom_fields[field.name]) {
-          this.resourceData.custom_fields[field.name] = '';
-          this.selectedCFValues[field.name] = '';
-        } else {
-          this.selectedCFValues[field.name] = this.resourceData.custom_fields[field.name];
+        if (!!this.resourceData) {
+          if (!this.resourceData?.custom_fields) {
+            this.resourceData.custom_fields = new Map<string, string>();
+          }
+          
+          if (!this.resourceData?.custom_fields[field.name]) {
+            this.resourceData.custom_fields[field.name] = '';
+            this.selectedCFValues[field.name] = '';
+          } else {
+            this.selectedCFValues[field.name] = this.resourceData.custom_fields[field.name];
+          }
         }
       });
     }
@@ -225,6 +227,14 @@ export class ResourcesDetailsDialogComponent implements OnInit {
       }));
   }
 
+  saveNewResourceCustomField(customFieldValue: string, customFieldName: string) {
+    if (!this.newResource.custom_fields) {
+      this.newResource.custom_fields = new Map<string, string>();
+    }
+
+    this.newResource.custom_fields[customFieldName] = customFieldValue;
+  }
+
   onCustomFieldChange(event: Event, customFieldName: string) {
     const customFieldValue = event['value'];
     this.saveCustomField(customFieldName, customFieldValue);
@@ -233,6 +243,10 @@ export class ResourcesDetailsDialogComponent implements OnInit {
   saveInputCustomField(event: Event, customFieldName: string) {
     const customFieldValue = event.target['value'];
     this.saveCustomField(customFieldName, customFieldValue);
+  }
+
+  getCFDate(dateObject: any, cfTitle: string) {
+    this.saveCustomField(cfTitle, dateObject.toDate());
   }
 
   saveCustomField(customFieldName: string, customFieldValue: string) {
@@ -253,16 +267,42 @@ export class ResourcesDetailsDialogComponent implements OnInit {
     }));
   }
 
-  /**
-   * This function is responsible for receiving the date from @module <app-date-picker></app-date-picker>
-   * @param dateObject
-   */
-  getCFDate(dateObject: any, cfTitle: string) {
-    this.saveCustomField(cfTitle, dateObject.toDate());
+  saveAsImage(parent: any) {
+    let parentElement = parent.qrcElement.nativeElement.querySelector("canvas").toDataURL("image/png");
+
+    if (parentElement) {
+      // converts base 64 encoded image to blobData
+      let blobData = this.convertBase64ToBlob(parentElement)
+      // saves as image
+      const blob = new Blob([blobData], { type: "image/png" })
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement("a")
+      link.href = url
+      // name of the file
+      link.download = "angularx-qrcode"
+      link.click()
+    }
+  }
+
+  private convertBase64ToBlob(Base64Image: string) {
+    // split into two parts
+    const parts = Base64Image.split(";base64,")
+    // hold the content type
+    const imageType = parts[0].split(":")[1]
+    // decode base64 string
+    const decodedData = window.atob(parts[1])
+    // create unit8array of size same as row data length
+    const uInt8Array = new Uint8Array(decodedData.length)
+    // insert all character code into uint8array
+    for (let i = 0; i < decodedData.length; ++i) {
+      uInt8Array[i] = decodedData.charCodeAt(i)
+    }
+    // return blob image after conversion
+    return new Blob([uInt8Array], { type: imageType })
   }
 
   isValidResource() {
-    return (!!this.newResource && !!this.newResource?.title && this.newResource?.description && !!this.newResource?.packaging && !!this.newResource?.total_stock && !!this.newResource?.balance);
+    return (!!this.newResource && !!this.newResource?.title && this.newResource?.description && !!this.newResource?.total_stock && !!this.newResource?.balance);
   }
 
   closeDialog() {

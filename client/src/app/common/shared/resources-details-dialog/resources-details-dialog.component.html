@@ -1,5 +1,5 @@
 <mat-dialog-actions align="end">
-  <i mat-dialog-close class="material-icons" (click)="closeDialog()" style="cursor: pointer">close</i>
+  <i mat-dialog-close class="material-icons pointer" (click)="closeDialog()">close</i>
 </mat-dialog-actions>
 
 <mat-dialog-content>
@@ -13,14 +13,37 @@
           <label for="description" i18n="@@resourcesDetailsDialog.description" class="muted">description</label>
           <input type="text" class="form-control" [(ngModel)]="newResource.description" name="description">
       
-          <label for="packaging" i18n="@@resourcesDetailsDialog.packaging" class="muted">Packaging</label>
-          <input type="text" class="form-control" [(ngModel)]="newResource.packaging" name="packaging">
-      
           <label for="total_stock" i18n="@@resourcesDetailsDialog.totalStock" class="muted">Total Stock</label>
           <input type="number" class="form-control" [(ngModel)]="newResource.total_stock" name="total_stock">
       
           <label for="balance" i18n="@@resourcesDetailsDialog.balance" class="muted">Balance</label>
           <input type="number" class="form-control" [(ngModel)]="newResource.balance" name="balance">
+
+          <div *ngFor="let cf of customFields" class="">
+            <label [for]="cf.name" class="muted">{{ cf.title }}</label>
+
+            <mat-select ngDefaultControl *ngIf="!cf.input_type" [(value)]="newResource?.custom_fields[cf.name]"
+              (openedChange)="cfSearchText = ''" (selectionChange)="saveNewResourceCustomField($event.value, cf.name)" appearance="fill"
+              class="form-control">
+              <mat-select-trigger>{{ newResource?.custom_fields[cf.name] }}</mat-select-trigger>
+              <input type="text" class="form-control" [id]="'search-text' + cf.name" [(ngModel)]="cfSearchText"
+                [placeholder]="cfSearchPlaceholder" autofocus
+                (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+              <mat-option *ngFor="let val of cf.values | appFilter: cfSearchText" [value]="val">{{ val }}</mat-option>
+            </mat-select>
+    
+            <input *ngIf="cf.input_type && !cf.input_type_date" type="text" [name]="cf.name" [(ngModel)]="newResource?.custom_fields[cf.name]" class="form-control"
+              [value]="newResource?.custom_fields[cf.name]"
+              (keyup.enter)="saveNewResourceCustomField($event.target.value, cf.name)" (blur)="saveNewResourceCustomField($event.target.value, cf.name)" />
+
+            <app-date-picker *ngIf="cf.input_type && cf.input_type_date" cass="form-control"
+              (date)="saveNewResourceCustomField($event, cf.name)" [selectedDate]="formateDate(newResource?.custom_fields[cf.name])"
+              [styleClass]="'btn-group input-date'" [canEdit]="true">
+            </app-date-picker>
+    
+            <i (click)="saveNewResourceCustomField(null, cf.name);" class="material-icons muted mr-5 pointer"
+              style="font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
+          </div>
         </div>
       </div>
     </div>
@@ -95,6 +118,7 @@
       <div class="row">
         <div class="col-md-2">
             <qrcode
+              #parent
               [qrdata]="qrCodeUrl"
               [allowEmptyString]="true"
               [elementType]="'canvas'"
@@ -104,8 +128,9 @@
               [imageWidth]="50"
               [margin]="4"
               [scale]="1"
-              [width]="100"
-            ></qrcode>
+              [width]="100"></qrcode>
+
+            <a (click)="saveAsImage(parent)" class="pointer" i18n="@@resourcesDetailsDialog.downloadQR">Download QR</a>
         </div>
 
         <div class="col-md-10">
@@ -142,9 +167,6 @@
                     <input type="text" [name]="cf.name" [(ngModel)]="selectedCFValues[cf.name]" class="col"
                       style="width: 94px;" [value]="selectedCFValues[cf.name]"
                       (keyup.enter)="saveInputCustomField($event, cf.name)" (blur)="saveInputCustomField($event, cf.name)" />
-                    <!-- <i (click)="saveCustomField(cf.name, selectedCFValues[cf.name]);"
-                      class="material-icons muted mr-5"
-                      style="cursor: pointer; font-size: 14px; margin-left: 10px;color: #0bc6a0;">save</i> -->
                   </div>
                 
                   <div *ngIf="cf.input_type && cf.input_type_date">
@@ -153,8 +175,8 @@
                     </app-date-picker>
                   </div>
 
-                  <i (click)="saveCustomField(cf.name, null);" class="material-icons muted mr-5"
-                    style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
+                  <i (click)="saveCustomField(cf.name, null);" class="material-icons muted mr-5 pointer"
+                    style="font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
                 </div>
               </div>
             </div>
