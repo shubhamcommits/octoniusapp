@@ -221,9 +221,22 @@ export class GroupResourceManagementComponent implements OnInit {
   }
 
   async onExportToEmitter(exportType: any) {
-    let exportResources = [];
+    let exportResources = this.resources.map(resource => {
+      let ret = {
+        item: resource?.title,
+        stock: resource?.total_stock,
+        balance: resource?.balance,
+        updated: this.formateDate(resource?.last_updated_date),
+        description: resource.description,
+      };
 
-    // TODO - Map resources
+      this.customFields.forEach(cf => {
+        if (!!resource.custom_fields && !!resource.custom_fields[cf.name]) {
+          ret[cf.name] = resource.custom_fields[cf.name];
+        }
+      });
+      return ret;
+    });
 
     this.resourcesGroupService.exportInventoryToFile(exportType, exportResources, this.groupData?.group_name + '_resources');
 
