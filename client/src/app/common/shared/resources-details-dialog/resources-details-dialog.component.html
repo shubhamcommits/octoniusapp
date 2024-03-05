@@ -16,8 +16,8 @@
           <label for="total_stock" i18n="@@resourcesDetailsDialog.totalStock" class="muted">Total Stock</label>
           <input type="number" class="form-control" [(ngModel)]="newResource.total_stock" name="total_stock">
       
-          <label for="balance" i18n="@@resourcesDetailsDialog.balance" class="muted">Balance</label>
-          <input type="number" class="form-control" [(ngModel)]="newResource.balance" name="balance">
+          <label for="usedStock" i18n="@@resourcesDetailsDialog.usedStock" class="muted">Balance</label>
+          <input type="number" class="form-control" [(ngModel)]="newResource.used_stock" name="usedStock">
 
           <div *ngFor="let cf of customFields" class="">
             <label [for]="cf.name" class="muted">{{ cf.title }}</label>
@@ -86,12 +86,21 @@
         
         <div class="row">
           <div class="col-md-4">
+            <span class="" i18n="@@resourcesDetailsDialog.usedStock">Used Stock</span>
+          </div>
+          <div class="col-md-8">
+            <span *ngIf="!editResource" class="badge used_stock">{{ resourceData?.used_stock }}</span>
+            <input *ngIf="editResource" type="number" [(ngModel)]="resourceData.used_stock"
+              (keyup.enter)="onUpdated({used_stock: resourceData?.used_stock})" (blur)="onUpdated({used_stock: resourceData?.used_stock})" style="border: none;" />
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-4">
             <span class="" i18n="@@resourcesDetailsDialog.currentBalance">Current Balance</span>
           </div>
           <div class="col-md-8">
-            <span *ngIf="!editResource" class="badge" [ngClass]="getBalanceClass()">{{ resourceData?.balance }}</span>
-            <input *ngIf="editResource" type="number" [(ngModel)]="resourceData.balance"
-              (keyup.enter)="onUpdated({balance: resourceData?.balance})" (blur)="onUpdated({balance: resourceData?.balance})" style="border: none;" />
+            <span class="badge" [ngClass]="getBalanceClass()">{{ (resourceData?.total_stock || 0) - (resourceData?.used_stock || 0) }}</span>
           </div>
         </div>
       </div>
@@ -207,6 +216,7 @@
         [groupData]="groupData"
         [workspaceData]="workspaceData"
         [resourceData]="resourceData"
+        (resouceEditedEmitter)="onResouceEditedEmitter($event)"
         ></app-resource-activity>
     </div>
   </div>

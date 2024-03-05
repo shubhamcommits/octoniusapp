@@ -22,7 +22,7 @@ export class ResourcesDetailsDialogComponent implements OnInit {
     title: '',
     description: '',
     total_stock: 0,
-    balance: 0,
+    used_stock: 0,
     _group: null,
     custom_fields: new Map<string, string>()
   };
@@ -105,7 +105,7 @@ export class ResourcesDetailsDialogComponent implements OnInit {
       title: '',
       description: '',
       total_stock: 0,
-      balance: 0,
+      used_stock: 0,
       _group: this.groupData,
       custom_fields: new Map<string, string>()
     };
@@ -190,8 +190,8 @@ export class ResourcesDetailsDialogComponent implements OnInit {
 
 
     /* Chart Setup */
-    this.doughnutChartLabels = [$localize`:@@resourcesDetailsDialog.totalStock:Total stock`, $localize`:@@resourcesDetailsDialog.currentBalance:Current balance`];
-    this.doughnutChartData = [this.resourceData.total_stock, this.resourceData.balance];
+    this.doughnutChartLabels = [$localize`:@@resourcesDetailsDialog.totalStock:Total stock`, $localize`:@@resourcesDetailsDialog.usedStock:Used stock`];
+    this.doughnutChartData = [this.resourceData.total_stock, this.resourceData.used_stock];
     this.doughnutChartColors = [{
       backgroundColor: ['#005fd5', '#fbb732']
     }];
@@ -213,6 +213,11 @@ export class ResourcesDetailsDialogComponent implements OnInit {
 
   deleteResource() {
     this.removeResourceEvent.emit(this.resourceData?._id);
+  }
+
+  onResouceEditedEmitter(resource: any) {
+    this.resourceData = resource;
+    this.editedResourceEvent.emit(this.resourceData);
   }
 
   onUpdated(propertyData: any) {
@@ -302,7 +307,7 @@ export class ResourcesDetailsDialogComponent implements OnInit {
   }
 
   isValidResource() {
-    return (!!this.newResource && !!this.newResource?.title && this.newResource?.description && !!this.newResource?.total_stock && !!this.newResource?.balance);
+    return (!!this.newResource && !!this.newResource?.title && this.newResource?.description && !!this.newResource?.total_stock && !!this.newResource?.used_stock);
   }
 
   closeDialog() {
@@ -314,7 +319,7 @@ export class ResourcesDetailsDialogComponent implements OnInit {
   }
 
   getBalanceClass() {
-    let percentage = (this.resourceData.balance * 100) / this.resourceData.total_stock;
+    let percentage = (!!this.resourceData.total_stock) ? ((this.resourceData.total_stock - (this.resourceData.used_stock || 0)) * 100) / this.resourceData.total_stock : 0;
     return (percentage <= 5) ? 'danger' : (percentage <= 20) ? 'warning' : 'ok' ;
   }
 }

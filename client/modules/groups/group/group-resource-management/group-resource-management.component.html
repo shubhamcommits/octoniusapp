@@ -42,7 +42,7 @@
 					<th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@groupResourceManagement.name"> Quantity </th>
 			
 					<td mat-cell *matCellDef="let resource">
-						<span class="badge" [ngClass]="getBadgeClass(resource)">{{ resource?.balance }}</span>
+						<span class="badge" [ngClass]="getBadgeClass(resource)">{{ (resource?.total_stock || 0) - (resource?.used_stock || 0) }}</span>
 					</td>
 				</ng-container>
 			

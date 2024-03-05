@@ -5,7 +5,7 @@
         <i class="material-icons-outlined">inventory_2</i>
 
         <input type="number" [(ngModel)]="activityQuantity" [placeholder]="quantityPlaceholder"
-          (input)="onQuantityUpdated($event)" (blur)="onQuantityUpdated($event)"
+          (keyup.enter)="onQuantityUpdated($event)" (blur)="onQuantityUpdated($event)"
           style="border: none;"/>
       </div>
 
@@ -46,7 +46,9 @@
   </div>
 
   <div class="actions">
-    <button class="btn btn-primary btn-md float-left" style="margin-right: 30px;" *ngIf="!activityId && (isAssignedToUser || userData?.role == 'manager' || userData?.role == 'owner' || isGroupManager(userData?._id))" (click)="saveEntry()" [disabled]="!isValidEntry()">
+    <button class="btn btn-primary btn-md float-left" style="margin-right: 30px;"
+      *ngIf="!activityId && (isAssignedToUser || userData?.role == 'manager' || userData?.role == 'owner' || isGroupManager(userData?._id))"
+      (click)="saveEntry()" [disabled]="!isValidEntry()">
       <i class="material-icons-outlined">add</i>
       <span i18n="@@resourceActivity.addEntry">Add entry</span>
     </button>

@@ -225,7 +225,7 @@ export class GroupResourceManagementComponent implements OnInit {
       let ret = {
         item: resource?.title,
         stock: resource?.total_stock,
-        balance: resource?.balance,
+        balance: resource?.total_stock - resource?.used_stock,
         updated: this.formateDate(resource?.last_updated_date),
         description: resource.description,
       };
@@ -257,7 +257,7 @@ export class GroupResourceManagementComponent implements OnInit {
 		this.sortedData = data.sort((a, b) => {
       switch (property) {
 				case 'quantity':
-					return this.utilityService.compare((a.balance / a.total_stock), (b.balance / b.total_stock), directionValue);
+					return this.utilityService.compare(((a.total_stock - a.used_stock) / a.total_stock), ((b.total_stock - b.used_stock) / b.total_stock), directionValue);
 				default:
 					const index = (this.customFields) ? this.customFields.findIndex((f: any) => f.name === property) : -1;
 					return (index < 0) ? 
@@ -273,7 +273,7 @@ export class GroupResourceManagementComponent implements OnInit {
   }
 
   getBadgeClass(resource: any) {
-    let percentage = (resource.balance * 100) / resource.total_stock;
+    let percentage = (!!resource.total_stock) ? ((resource.total_stock - (resource.used_stock || 0)) * 100) / resource.total_stock : 0;
     return (percentage <= 5) ? 'danger' : (percentage <= 20) ? 'warning' : '' ;
   }
 

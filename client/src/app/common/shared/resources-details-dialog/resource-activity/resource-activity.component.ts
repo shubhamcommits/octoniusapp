@@ -1,4 +1,4 @@
-import { Component, Injector, Input, OnChanges } from '@angular/core';
+import { Component, EventEmitter, Injector, Input, OnChanges, Output } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { ResourcesGroupService } from 'src/shared/services/resources-group-service /resources-group.service';
@@ -16,6 +16,8 @@ export class ResourceActivityComponent implements OnChanges {
   @Input() groupData: any;
   @Input() workspaceData: any;
   @Input() resourceData: any;
+
+  @Output() resouceEditedEmitter = new EventEmitter();
   
   resourceId: any;
 
@@ -73,10 +75,12 @@ export class ResourceActivityComponent implements OnChanges {
 
     this.members = await this.publicFunctions.getCurrentGroupMembers();
 
-    this.activityUserArray = [this.userData];
-    this.activityUserId = this.userData?._id;
+    // this.activityUserArray = [this.userData];
+    // this.activityUserId = this.userData?._id;
 
-    this.initProperties();
+    if (!this.activityId) {
+      this.initProperties();
+    }
   }
 
   isValidEntry() {
@@ -99,7 +103,7 @@ export class ResourceActivityComponent implements OnChanges {
 
       this.resourcesGroupService.saveActivityEntry(this.resourceData._id, newActivity).then(async (res: any) => {
         this.resourceData = res.resource;
-        
+        this.resouceEditedEmitter.emit(this.resourceData);
         this.showAddActivityForm = false;
 
         this.initProperties();
@@ -127,6 +131,7 @@ export class ResourceActivityComponent implements OnChanges {
           .then(async (res: any) => {
             if (!res.error) {
               this.resourceData = res.resource;
+              this.resouceEditedEmitter.emit(this.resourceData);
 
               if (!this.activityId) {
                 this.showAddActivityForm = false;
@@ -165,15 +170,15 @@ export class ResourceActivityComponent implements OnChanges {
   }
 
   onEditActivityEntryEvent(activityEntity: any) {
-    this.activityId = activityEntity._id;
-    this.activityQuantity = activityEntity.quantity;
-    this.activityAddInventory = activityEntity.add_inventory;
-    this.activityProject = activityEntity._project._id;
-    this.activityDate = activityEntity.date;
+    this.activityId = activityEntity?._id;
+    this.activityQuantity = activityEntity?.quantity;
+    this.activityAddInventory = activityEntity?.add_inventory;
+    this.activityProject = activityEntity?._project?._id || activityEntity?._project;
+    this.activityDate = activityEntity?.date;
     this.activityUserId = activityEntity?._user?._id || activityEntity?._user;
     this.activityUserArray = [activityEntity?._user];
-    this.activityFile = activityEntity.file;
-    this.activityComment = activityEntity.comment;
+    this.activityFile = activityEntity?.file;
+    this.activityComment = activityEntity?.comment;
 
     this.showAddActivityForm = true;
   }

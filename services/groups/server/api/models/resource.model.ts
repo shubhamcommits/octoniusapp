@@ -16,7 +16,7 @@ const ResourceSchema = new Schema({
         type: Number,
         default: null
     },
-    balance: {
+    used_stock: {
         type: Number,
         default: null
     },
