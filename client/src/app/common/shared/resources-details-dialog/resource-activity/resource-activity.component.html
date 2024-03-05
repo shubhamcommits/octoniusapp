@@ -12,7 +12,6 @@
       <div class="mr-2">
         <mat-select ngDefaultControl appearance="fill" class="form-control" [(ngModel)]="activityAddInventory"
           (selectionChange)="changeActivityAddInventory($event)" [placeholder]="reasonPlaceholder">
-          <mat-option value=""></mat-option>
           <mat-option [value]="true" i18n="@@resourceActivity.addInventory">Add new inventory</mat-option>
           <mat-option [value]="false" i18n="@@resourceActivity.useInventory">Use inventory</mat-option>
         </mat-select>
@@ -21,7 +20,6 @@
       <div class="category mr-2">
         <mat-select ngDefaultControl appearance="fill" class="form-control" [(ngModel)]="activityProject"
           (selectionChange)="changeActivityProject($event)" [placeholder]="projectPlaceholder">
-          <mat-option value=""></mat-option>
           <mat-option *ngFor="let project of projects" [value]="project._id">{{ project.title }}</mat-option>
         </mat-select>
       </div>

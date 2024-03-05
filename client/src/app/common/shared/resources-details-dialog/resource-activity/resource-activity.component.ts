@@ -169,7 +169,7 @@ console.log(this.resourceData);
     this.activityId = activityEntity._id;
     this.activityQuantity = activityEntity.quantity;
     this.activityAddInventory = activityEntity.add_inventory;
-    this.activityProject = activityEntity._category;
+    this.activityProject = activityEntity._project._id;
     this.activityDate = activityEntity.date;
     this.activityUserId = activityEntity?._user?._id || activityEntity?._user;
     this.activityUserArray = [activityEntity?._user];
