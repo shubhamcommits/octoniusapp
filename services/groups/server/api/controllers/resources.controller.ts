@@ -36,9 +36,17 @@ export class ResourcesController {
 
         try {
             // Find the resource and update
-            const resource = await Resource.findByIdAndUpdate({
+            let resource = await Resource.findByIdAndUpdate({
                     _id: resourceId
-                }, propertyData, {
+                }, propertyData);
+
+            resource = await Resource.findByIdAndUpdate({
+                    _id: resourceId
+                }, {
+                    $set: {
+                        "last_updated_date": moment().format()
+                    }
+                }, {
                     new: true
                 })
                 .populate({
@@ -516,7 +524,10 @@ export class ResourcesController {
             resource = await Resource.findByIdAndUpdate({
                     _id: resourceId
                 }, {
-                    $set: { "custom_fields": resource['custom_fields'] }
+                    $set: {
+                        "custom_fields": resource['custom_fields'],
+                        "last_updated_date": moment().format()
+                    }
                 }, {
                     new: true
                 })
@@ -592,7 +603,8 @@ export class ResourcesController {
                     $set: {
                         "balance": (newActivity.add_inventory)
                             ? resource.balance + newActivity.quantity
-                            : resource.balance - newActivity.quantity
+                            : resource.balance - newActivity.quantity,
+                        "last_updated_date": moment().format()
                     }
                 }, {
                     new: true
@@ -657,7 +669,8 @@ export class ResourcesController {
                         }, {
                             $set: {
                                 'activity.$[act]._user': editedEntity?._user,
-                                edited_date: moment().format()
+                                'activity.$[act].edited_date': moment().format(),
+                                "last_updated_date": moment().format()
                             }
                         },
                         {
@@ -696,7 +709,8 @@ export class ResourcesController {
                         }, {
                             $set: {
                                 'activity.$[act]._project': editedEntity?._project,
-                                edited_date: moment().format()
+                                'activity.$[act].edited_date': moment().format(),
+                                "last_updated_date": moment().format()
                             }
                         },
                         {
@@ -749,7 +763,7 @@ export class ResourcesController {
                             }, {
                                 $set: {
                                     'activity.$[act].quantity': editedEntity?.quantity,
-                                    edited_date: moment().format()
+                                    'activity.$[act].edited_date': moment().format()
                                 }
                             },
                             {
@@ -763,7 +777,8 @@ export class ResourcesController {
                                 $set: {
                                     "balance": (editedEntity.add_inventory)
                                         ? newBalance - editedEntity.quantity
-                                        : newBalance + editedEntity.quantity
+                                        : newBalance + editedEntity.quantity,
+                                    "last_updated_date": moment().format()
                                 }
                             }, {
                                 new: true
@@ -802,7 +817,8 @@ export class ResourcesController {
                         }, {
                             $set: {
                                 'activity.$[act].date': editedEntity?.date,
-                                edited_date: moment().format()
+                                'activity.$[act].edited_date': moment().format(),
+                                "last_updated_date": moment().format()
                             }
                         },
                         {
@@ -842,7 +858,8 @@ export class ResourcesController {
                         }, {
                             $set: {
                                 'activity.$[act].comment': editedEntity?.comment,
-                                edited_date: moment().format()
+                                'activity.$[act].edited_date': moment().format(),
+                                "last_updated_date": moment().format()
                             }
                         },
                         {
@@ -882,7 +899,7 @@ export class ResourcesController {
                         }, {
                             $set: {
                                 'activity.$[act].add_inventory': editedEntity?.add_inventory,
-                                edited_date: moment().format()
+                                'activity.$[act].edited_date': moment().format()
                             }
                         },
                         {
@@ -897,7 +914,8 @@ export class ResourcesController {
                             $set: {
                                 "balance": (editedEntity.add_inventory)
                                     ? resource.balance + (editedEntity.quantity * 2)
-                                    : resource.balance - (editedEntity.quantity * 2)
+                                    : resource.balance - (editedEntity.quantity * 2),
+                                "last_updated_date": moment().format()
                             }
                         }, {
                             new: true
@@ -953,6 +971,9 @@ export class ResourcesController {
                         activity: {
                             _id: activityEntityId
                         }
+                    },
+                    $set: {
+                        "last_updated_date": moment().format()
                     }
                 }).select('activity').lean();
 
