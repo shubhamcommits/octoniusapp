@@ -531,4 +531,8 @@ export class UserService {
   getUserGroups(userId: string) {
     return this._http.get(this.BASE_API_URL + `/${userId}/user-groups`, {}).toPromise();
   }
+
+  getUserProjects(userId: string) {
+    return this._http.get(this.BASE_API_URL + `/${userId}/user-projects`, {}).toPromise();
+  }
 }

@@ -56,6 +56,10 @@ export class ResourcesController {
                     }
                 })
                 .populate({
+                    path: 'activity._project',
+                    select: 'title'
+                })
+                .populate({
                     path: 'activity._user',
                     select: 'first_name last_name profile_pic role email',
                     match: {
@@ -100,6 +104,10 @@ export class ResourcesController {
                     match: {
                         active: true
                     }
+                })
+                .populate({
+                    path: 'activity._project',
+                    select: 'title'
                 })
                 .populate({
                     path: 'activity._user',
@@ -172,6 +180,10 @@ export class ResourcesController {
                     match: {
                         active: true
                     }
+                })
+                .populate({
+                    path: 'activity._project',
+                    select: 'title'
                 })
                 .populate({
                     path: 'activity._user',
@@ -523,6 +535,10 @@ export class ResourcesController {
                     }
                 })
                 .populate({
+                    path: 'activity._project',
+                    select: 'title'
+                })
+                .populate({
                     path: 'activity._user',
                     select: 'first_name last_name profile_pic role email',
                     match: {
@@ -596,6 +612,10 @@ export class ResourcesController {
                     }
                 })
                 .populate({
+                    path: 'activity._project',
+                    select: 'title'
+                })
+                .populate({
                     path: 'activity._user',
                     select: 'first_name last_name profile_pic role email',
                     match: {
@@ -658,6 +678,10 @@ export class ResourcesController {
                                 }
                             })
                             .populate({
+                                path: 'activity._project',
+                                select: 'title'
+                            })
+                            .populate({
                                 path: 'activity._user',
                                 select: 'first_name last_name profile_pic role email',
                                 match: {
@@ -692,6 +716,10 @@ export class ResourcesController {
                             match: {
                                 active: true
                             }
+                        })
+                        .populate({
+                            path: 'activity._project',
+                            select: 'title'
                         })
                         .populate({
                             path: 'activity._user',
@@ -755,6 +783,10 @@ export class ResourcesController {
                                 }
                             })
                             .populate({
+                                path: 'activity._project',
+                                select: 'title'
+                            })
+                            .populate({
                                 path: 'activity._user',
                                 select: 'first_name last_name profile_pic role email',
                                 match: {
@@ -792,6 +824,10 @@ export class ResourcesController {
                             }
                         })
                         .populate({
+                            path: 'activity._project',
+                            select: 'title'
+                        })
+                        .populate({
                             path: 'activity._user',
                             select: 'first_name last_name profile_pic role email',
                             match: {
@@ -826,6 +862,10 @@ export class ResourcesController {
                             match: {
                                 active: true
                             }
+                        })
+                        .populate({
+                            path: 'activity._project',
+                            select: 'title'
                         })
                         .populate({
                             path: 'activity._user',
@@ -875,6 +915,10 @@ export class ResourcesController {
                             match: {
                                 active: true
                             }
+                        })
+                        .populate({
+                            path: 'activity._project',
+                            select: 'title'
                         })
                         .populate({
                             path: 'activity._user',

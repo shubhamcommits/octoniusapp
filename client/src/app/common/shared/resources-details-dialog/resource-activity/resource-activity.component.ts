@@ -2,6 +2,7 @@ import { Component, Injector, Input, OnChanges } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { ResourcesGroupService } from 'src/shared/services/resources-group-service /resources-group.service';
+import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
@@ -46,11 +47,13 @@ export class ResourceActivityComponent implements OnChanges {
 
   constructor(
     private resourcesGroupService: ResourcesGroupService,
+    private userService: UserService,
     private utilityService: UtilityService,
     private injector: Injector
   ) { }
 
   async ngOnChanges() {
+console.log(this.resourceData);
     if (!this.userData) {
       this.userData = await this.publicFunctions.getCurrentUser();
     }
@@ -65,10 +68,9 @@ export class ResourceActivityComponent implements OnChanges {
 
     this.resourceId = this.resourceData?._id;
 
-    // TODO Should be get projects
-    // this.groupService.getTimeTrackingCategories(this.groupData._id).then(res => {
-    //   this.categories = res['categories'];
-    // });
+    this.userService.getUserProjects(this.userData._id).then(res => {
+      this.projects = res['projects'];
+    });
 
     this.members = await this.publicFunctions.getCurrentGroupMembers();
 
