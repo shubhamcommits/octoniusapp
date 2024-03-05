@@ -37,7 +37,9 @@ export class GroupResourceManagementComponent implements OnInit {
     public dialog: MatDialog,
     private _router: Router,
     private injector: Injector
-    ) { }
+    ) {
+      this.sortedData = [];
+    }
 
   async ngOnInit() {
     this.groupData = await this.publicFunctions.getCurrentGroupDetails();
