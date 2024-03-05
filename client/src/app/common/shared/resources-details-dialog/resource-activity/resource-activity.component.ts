@@ -53,7 +53,6 @@ export class ResourceActivityComponent implements OnChanges {
   ) { }
 
   async ngOnChanges() {
-console.log(this.resourceData);
     if (!this.userData) {
       this.userData = await this.publicFunctions.getCurrentUser();
     }
