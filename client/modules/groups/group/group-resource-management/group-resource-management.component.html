@@ -97,7 +97,8 @@
 					</th>
 					<td mat-cell *matCellDef="let resource">
 						<div class="cf_cell">
-							{{ resource?.custom_fields[cf.name] }}
+							<span>{{ resource?.custom_fields[cf.name] }}</span>
+							<!-- <span *ngIf="resource?.custom_fields[cf.name]" class="badge" [ngStyle]="{'background-color' : cf.badge_color || '#005FD5'}">{{ resource?.custom_fields[cf.name] }}</span> -->
 						</div>
 					</td>
 				</ng-container>

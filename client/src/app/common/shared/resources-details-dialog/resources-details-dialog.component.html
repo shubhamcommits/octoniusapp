@@ -128,7 +128,8 @@
                 <p style="margin-right: 5px;">{{ cf.title }}:</p>
 
                 <div *ngIf="!editResource">
-                  {{ selectedCFValues[cf.name] }}
+                  <span *ngIf="!!selectedCFValues[cf.name] && !!cf.badge_color" class="badge" [ngStyle]="{'background-color' : cf.badge_color || '#005FD5'}">{{ selectedCFValues[cf.name] }}</span>
+                  <span *ngIf="!!selectedCFValues[cf.name] && !cf.badge_color">{{ selectedCFValues[cf.name] }}</span>
                 </div>
 
                 <div *ngIf="editResource" class="">

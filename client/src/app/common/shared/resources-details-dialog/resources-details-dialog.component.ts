@@ -191,7 +191,7 @@ export class ResourcesDetailsDialogComponent implements OnInit {
       };
       this.chartColors = [
         {
-          borderColor: '#005FD5',
+          borderColor: (!this.resourceData.stock || (this.resourceData.stock <= 5)) ? '#ee5d5d' : (this.resourceData.stock <= 20) ? '#fbb732' : '#2aa578',
           backgroundColor: '#FFFFFF',
         },
       ];
@@ -367,8 +367,7 @@ export class ResourcesDetailsDialogComponent implements OnInit {
     } else if ((!!day1 && !day2) || (!!day2 && !day1)) {
       return true;
     }
-console.log(day1);
-console.log(day2);
+
     return day1.startOf('day').toMillis() === day2.startOf('day').toMillis();
   }
 
