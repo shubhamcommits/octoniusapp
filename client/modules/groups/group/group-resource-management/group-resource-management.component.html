@@ -130,8 +130,8 @@
 						<i class="material-icons-outlined ml-2 muted pointer" [matMenuTriggerFor]="menu">more_horiz</i>
 						<mat-menu #menu="matMenu">
 							<a mat-menu-item (click)="openResourceDetailsDialog(resource)">
-								<span class="material-icons-outlined">create</span>
-								<span i18n="@@groupResourceManagement.edit">Edit</span>
+								<span class="material-icons-outlined">visibility</span>
+								<span i18n="@@groupResourceManagement.viewDetails">View Details</span>
 							</a>
 			
 							<a mat-menu-item (click)="deleteResource(resource?._id)">
