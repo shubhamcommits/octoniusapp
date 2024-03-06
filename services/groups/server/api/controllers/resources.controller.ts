@@ -597,81 +597,44 @@ export class ResourcesController {
                     new: true
                 });
 
-            if (newActivity.add_inventory) {
-                resource = await Resource.findByIdAndUpdate({
-                        _id: resourceId
-                    }, {
-                        $set: {
-                            "total_stock": resource.total_stock + newActivity.quantity,
-                            "last_updated_date": moment().format()
-                        }
-                    }, {
-                        new: true
-                    })
-                    .populate({
-                        path: '_group',
-                        select: 'group_name group_avatar workspace_name _members _admins',
-                        match: {
-                            active: true
-                        }
-                    })
-                    .populate({
-                        path: '_created_by',
-                        select: 'first_name last_name profile_pic role email',
-                        match: {
-                            active: true
-                        }
-                    })
-                    .populate({
-                        path: 'activity._project',
-                        select: 'title'
-                    })
-                    .populate({
-                        path: 'activity._user',
-                        select: 'first_name last_name profile_pic role email',
-                        match: {
-                            active: true
-                        }
-                    })
-                    .lean();
-            } else {
-                resource = await Resource.findByIdAndUpdate({
-                        _id: resourceId
-                    }, {
-                        $set: {
-                            "used_stock": resource.used_stock + newActivity.quantity,
-                            "last_updated_date": moment().format()
-                        }
-                    }, {
-                        new: true
-                    })
-                    .populate({
-                        path: '_group',
-                        select: 'group_name group_avatar workspace_name _members _admins',
-                        match: {
-                            active: true
-                        }
-                    })
-                    .populate({
-                        path: '_created_by',
-                        select: 'first_name last_name profile_pic role email',
-                        match: {
-                            active: true
-                        }
-                    })
-                    .populate({
-                        path: 'activity._project',
-                        select: 'title'
-                    })
-                    .populate({
-                        path: 'activity._user',
-                        select: 'first_name last_name profile_pic role email',
-                        match: {
-                            active: true
-                        }
-                    })
-                    .lean();
-            }
+            resource = await Resource.findByIdAndUpdate({
+                    _id: resourceId
+                }, {
+                    $set: {
+                        "stock": (newActivity.add_inventory)
+                            ? resource.stock + newActivity.quantity
+                            : resource.stock - newActivity.quantity,
+                        "last_updated_date": moment().format()
+                    }
+                }, {
+                    new: true
+                })
+                .populate({
+                    path: '_group',
+                    select: 'group_name group_avatar workspace_name _members _admins',
+                    match: {
+                        active: true
+                    }
+                })
+                .populate({
+                    path: '_created_by',
+                    select: 'first_name last_name profile_pic role email',
+                    match: {
+                        active: true
+                    }
+                })
+                .populate({
+                    path: 'activity._project',
+                    select: 'title'
+                })
+                .populate({
+                    path: 'activity._user',
+                    select: 'first_name last_name profile_pic role email',
+                    match: {
+                        active: true
+                    }
+                })
+                .lean();
 
             // Send status 200 response
             return res.status(200).json({
@@ -782,107 +745,58 @@ export class ResourcesController {
                         .lean();
                     break;
                 case 'quantity':
-                    resource = await Resource.findById({ _id: resourceId }).select('total_stock used_stock activity').lean();
-                    const index = (!!resource.activity) ? resource.activity.findIndex(a => a._id == activityEntityId) : -1;
-                    if (index >= 0) {
-                        const activity = resource.activity[index];
+                    resource = await Resource.findById({ _id: resourceId }).select('stock activity').lean();
+                    const indexQuantity = (!!resource.activity) ? resource.activity.findIndex(a => a._id == activityEntityId) : -1;
+                    if (indexQuantity >= 0) {
+                        const activity = resource.activity[indexQuantity];
 
-                        let newBalance = 0;
+                        let newBalance = resource.stock;
                         if (activity.add_inventory) {
-                            newBalance = resource.total_stock
+                            newBalance -= activity.quantity + editedEntity.quantity;
                         } else {
-                            newBalance = resource.used_stock
+                            newBalance += activity.quantity - editedEntity.quantity;
                         }
-                        newBalance -= activity.quantity
 
                         resource = await Resource.findByIdAndUpdate({
                                 _id: resourceId
                             }, {
                                 $set: {
                                     'activity.$[act].quantity': editedEntity?.quantity,
-                                    'activity.$[act].edited_date': moment().format()
+                                    'activity.$[act].edited_date': moment().format(),
+                                    "stock": newBalance,
+                                    "last_updated_date": moment().format()
                                 }
                             },
                             {
                                 arrayFilters: [{ "act._id": activityEntityId }],
                                 new: true
-                            }).select('used_stock');
-
-                        if (activity.add_inventory) {
-                            resource = await Resource.findByIdAndUpdate({
-                                    _id: resourceId
-                                }, {
-                                    $set: {
-                                        "total_stock": newBalance + editedEntity.quantity,
-                                        "last_updated_date": moment().format()
-                                    }
-                                }, {
-                                    new: true
-                                })
-                                .populate({
-                                    path: '_group',
-                                    select: 'group_name group_avatar workspace_name _members _admins',
-                                    match: {
-                                        active: true
-                                    }
-                                })
-                                .populate({
-                                    path: '_created_by',
-                                    select: 'first_name last_name profile_pic role email',
-                                    match: {
-                                        active: true
-                                    }
-                                })
-                                .populate({
-                                    path: 'activity._project',
-                                    select: 'title'
-                                })
-                                .populate({
-                                    path: 'activity._user',
-                                    select: 'first_name last_name profile_pic role email',
-                                    match: {
-                                        active: true
-                                    }
-                                })
-                                .lean();
-                        } else {
-                            resource = await Resource.findByIdAndUpdate({
-                                    _id: resourceId
-                                }, {
-                                    $set: {
-                                        "used_stock": newBalance + editedEntity.quantity,
-                                        "last_updated_date": moment().format()
-                                    }
-                                }, {
-                                    new: true
-                                })
-                                .populate({
-                                    path: '_group',
-                                    select: 'group_name group_avatar workspace_name _members _admins',
-                                    match: {
-                                        active: true
-                                    }
-                                })
-                                .populate({
-                                    path: '_created_by',
-                                    select: 'first_name last_name profile_pic role email',
-                                    match: {
-                                        active: true
-                                    }
-                                })
-                                .populate({
-                                    path: 'activity._project',
-                                    select: 'title'
-                                })
-                                .populate({
-                                    path: 'activity._user',
-                                    select: 'first_name last_name profile_pic role email',
-                                    match: {
-                                        active: true
-                                    }
-                                })
-                                .lean();
-                        }
+                            })
+                            .populate({
+                                path: '_group',
+                                select: 'group_name group_avatar workspace_name _members _admins',
+                                match: {
+                                    active: true
+                                }
+                            })
+                            .populate({
+                                path: '_created_by',
+                                select: 'first_name last_name profile_pic role email',
+                                match: {
+                                    active: true
+                                }
+                            })
+                            .populate({
+                                path: 'activity._project',
+                                select: 'title'
+                            })
+                            .populate({
+                                path: 'activity._user',
+                                select: 'first_name last_name profile_pic role email',
+                                match: {
+                                    active: true
+                                }
+                            })
+                            .lean();
                     }
                     break;
                 case 'date':
@@ -968,95 +882,60 @@ export class ResourcesController {
                         .lean();
                     break;
                 case 'add_inventory':
-                    resource = await Resource.findByIdAndUpdate({
-                            _id: resourceId
-                        }, {
-                            $set: {
-                                'activity.$[act].add_inventory': editedEntity?.add_inventory,
-                                'activity.$[act].edited_date': moment().format()
+                    resource = await Resource.findById({ _id: resourceId }).select('stock activity').lean();
+                    const indexAddInventory = (!!resource.activity) ? resource.activity.findIndex(a => a._id == activityEntityId) : -1;
+                    if (indexAddInventory >= 0) {
+                        const activity = resource.activity[indexAddInventory];
+
+                        if (activity.add_inventory !== editedEntity.add_inventory) {
+                            let newBalance = resource.stock;
+                            if (editedEntity.add_inventory ) {
+                                newBalance += activity.quantity + editedEntity.quantity;
+                            } else {
+                                newBalance -= activity.quantity - editedEntity.quantity;
                             }
-                        },
-                        {
-                            arrayFilters: [{ "act._id": activityEntityId }],
-                            new: true
-                        });
-                    
-                    if (editedEntity.add_inventory) {
-                        resource = await Resource.findByIdAndUpdate({
-                                _id: resourceId
-                            }, {
-                                $set: {
-                                    "total_stock": resource.total_stock + editedEntity.quantity,
-                                    "used_stock": resource.used_stock - editedEntity.quantity,
-                                    "last_updated_date": moment().format()
-                                }
-                            }, {
-                                new: true
-                            })
-                            .populate({
-                                path: '_group',
-                                select: 'group_name group_avatar workspace_name _members _admins',
-                                match: {
-                                    active: true
-                                }
-                            })
-                            .populate({
-                                path: '_created_by',
-                                select: 'first_name last_name profile_pic role email',
-                                match: {
-                                    active: true
-                                }
-                            })
-                            .populate({
-                                path: 'activity._project',
-                                select: 'title'
-                            })
-                            .populate({
-                                path: 'activity._user',
-                                select: 'first_name last_name profile_pic role email',
-                                match: {
-                                    active: true
-                                }
-                            })
-                            .lean();
-                    } else {
-                        resource = await Resource.findByIdAndUpdate({
-                                _id: resourceId
-                            }, {
-                                $set: {
-                                    "total_stock": resource.total_stock - editedEntity.quantity,
-                                    "used_stock": resource.used_stock + editedEntity.quantity,
-                                    "last_updated_date": moment().format()
-                                }
-                            }, {
-                                new: true
-                            })
-                            .populate({
-                                path: '_group',
-                                select: 'group_name group_avatar workspace_name _members _admins',
-                                match: {
-                                    active: true
-                                }
-                            })
-                            .populate({
-                                path: '_created_by',
-                                select: 'first_name last_name profile_pic role email',
-                                match: {
-                                    active: true
-                                }
-                            })
-                            .populate({
-                                path: 'activity._project',
-                                select: 'title'
-                            })
-                            .populate({
-                                path: 'activity._user',
-                                select: 'first_name last_name profile_pic role email',
-                                match: {
-                                    active: true
-                                }
-                            })
-                            .lean();
+
+                            resource = await Resource.findByIdAndUpdate({
+                                    _id: resourceId
+                                }, {
+                                    $set: {
+                                        'activity.$[act].add_inventory': editedEntity?.add_inventory,
+                                        'activity.$[act].edited_date': moment().format(),
+                                        "stock": newBalance,
+                                        "last_updated_date": moment().format()
+                                    }
+                                },
+                                {
+                                    arrayFilters: [{ "act._id": activityEntityId }],
+                                    new: true
+                                })
+                                .populate({
+                                    path: '_group',
+                                    select: 'group_name group_avatar workspace_name _members _admins',
+                                    match: {
+                                        active: true
+                                    }
+                                })
+                                .populate({
+                                    path: '_created_by',
+                                    select: 'first_name last_name profile_pic role email',
+                                    match: {
+                                        active: true
+                                    }
+                                })
+                                .populate({
+                                    path: 'activity._project',
+                                    select: 'title'
+                                })
+                                .populate({
+                                    path: 'activity._user',
+                                    select: 'first_name last_name profile_pic role email',
+                                    match: {
+                                        active: true
+                                    }
+                                })
+                                .lean();
+                        }
                     }
                     break;
             }
@@ -1077,15 +956,12 @@ export class ResourcesController {
         try {
             const resource = await Resource.findById({
                     _id: resourceId
-                }).select('total_stock used_stock activity').lean();
+                }).select('stock activity').lean();
 
-            let activityTmp;
             const index = (!!resource.activity) ? resource.activity.findIndex(a => a._id == activityEntityId) : -1;
             if (index >=  0) {
-                activityTmp = resource.activity[index];
-            }
+                const activityTmp = resource.activity[index];
 
-            if (!!activityTmp) {
                 await Resource.findByIdAndUpdate({
                         _id: resourceId
                     }, {
@@ -1096,25 +972,16 @@ export class ResourcesController {
                         }
                     }).select('activity').lean();
 
-                if (activityTmp.add_inventory) {
-                    await Resource.findByIdAndUpdate({
-                            _id: resourceId
-                        }, {
-                            $set: {
-                                "total_stock": resource.total_stock - activityTmp.quantity,
-                                "last_updated_date": moment().format()
-                            }
-                        });
-                } else {
-                    await Resource.findByIdAndUpdate({
-                            _id: resourceId
-                        }, {
-                            $set: {
-                                "used_stock": resource.used_stock - activityTmp.quantity,
-                                "last_updated_date": moment().format()
-                            }
-                        });
-                }
+                await Resource.findByIdAndUpdate({
+                        _id: resourceId
+                    }, {
+                        $set: {
+                            "stock": (activityTmp.add_inventory)
+                                ? resource.stock - activityTmp.quantity
+                                : resource.stock + activityTmp.quantity,
+                            "last_updated_date": moment().format()
+                        }
+                    });
             }
 
             // Send status 200 response

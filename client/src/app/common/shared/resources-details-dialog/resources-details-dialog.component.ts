@@ -21,8 +21,7 @@ export class ResourcesDetailsDialogComponent implements OnInit {
   newResource: any = {
     title: '',
     description: '',
-    total_stock: 0,
-    used_stock: 0,
+    stock: 0,
     _group: null,
     custom_fields: new Map<string, string>()
   };
@@ -38,24 +37,24 @@ export class ResourcesDetailsDialogComponent implements OnInit {
   userData: any;
   workspaceData: any;
 
-  chartReady = false;
+  // chartReady = false;
 
-  doughnutChartLabels = [];
-  doughnutChartData = [0];
-  doughnutChartType = 'doughnut';
-  doughnutChartOptions = {
-    cutoutPercentage: 75,
-    responsive: true,
-    legend: {
-      display: false
-    }
-  };
-  doughnutChartColors = [{
-    backgroundColor: [
-      '#2AA578'
-    ]
-  }];
-  doughnutChartPlugins = [];
+  // doughnutChartLabels = [];
+  // doughnutChartData = [0];
+  // doughnutChartType = 'doughnut';
+  // doughnutChartOptions = {
+  //   cutoutPercentage: 75,
+  //   responsive: true,
+  //   legend: {
+  //     display: false
+  //   }
+  // };
+  // doughnutChartColors = [{
+  //   backgroundColor: [
+  //     '#2AA578'
+  //   ]
+  // }];
+  // doughnutChartPlugins = [];
 
   qrCodeUrl = environment.clientUrl;
 
@@ -104,8 +103,7 @@ export class ResourcesDetailsDialogComponent implements OnInit {
     this.newResource = {
       title: '',
       description: '',
-      total_stock: 0,
-      used_stock: 0,
+      stock: 0,
       _group: this.groupData,
       custom_fields: new Map<string, string>()
     };
@@ -126,7 +124,7 @@ export class ResourcesDetailsDialogComponent implements OnInit {
     this.resourceData = resourceData;
 
     await this.initCustomFields();
-    await this.initGraphic();
+    // await this.initGraphic();
   }
 
   async initCustomFields() {
@@ -169,35 +167,35 @@ export class ResourcesDetailsDialogComponent implements OnInit {
     }
   }
 
-  async initGraphic() {
-    if (!this.resourceData) {
-      this.doughnutChartPlugins = [{
-        beforeDraw(chart) {
-          const ctx = chart.ctx;
+  // async initGraphic() {
+  //   if (!this.resourceData) {
+  //     this.doughnutChartPlugins = [{
+  //       beforeDraw(chart) {
+  //         const ctx = chart.ctx;
 
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
-          const centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+  //         ctx.textAlign = 'center';
+  //         ctx.textBaseline = 'middle';
+  //         const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+  //         const centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
 
-          ctx.font = '25px Nunito';
-          ctx.fillStyle = '#9d9fa1';
+  //         ctx.font = '25px Nunito';
+  //         ctx.fillStyle = '#9d9fa1';
 
-          ctx.fillText('No Stock', centerX, centerY);
-        }
-      }];
-    }
+  //         ctx.fillText('No Stock', centerX, centerY);
+  //       }
+  //     }];
+  //   }
 
 
-    /* Chart Setup */
-    this.doughnutChartLabels = [$localize`:@@resourcesDetailsDialog.totalStock:Total stock`, $localize`:@@resourcesDetailsDialog.usedStock:Used stock`];
-    this.doughnutChartData = [this.resourceData.total_stock, this.resourceData.used_stock];
-    this.doughnutChartColors = [{
-      backgroundColor: ['#005fd5', '#fbb732']
-    }];
+  //   /* Chart Setup */
+  //   this.doughnutChartLabels = [$localize`:@@resourcesDetailsDialog.totalStock:Total stock`, $localize`:@@resourcesDetailsDialog.usedStock:Used stock`];
+  //   this.doughnutChartData = [this.resourceData.stock, this.resourceData.used_stock];
+  //   this.doughnutChartColors = [{
+  //     backgroundColor: ['#005fd5', '#fbb732']
+  //   }];
 
-    this.chartReady = true;
-  }
+  //   this.chartReady = true;
+  // }
 
   createResource() {
     this.utilityService.asyncNotification($localize`:@@resourcesDetailsDialog.pleaseWaitWeCreateResource:Please wait, while we are creating the resource for you...`, new Promise((resolve, reject) => {
@@ -307,7 +305,7 @@ export class ResourcesDetailsDialogComponent implements OnInit {
   }
 
   isValidResource() {
-    return (!!this.newResource && !!this.newResource?.title && this.newResource?.description && !!this.newResource?.total_stock && !!this.newResource?.used_stock);
+    return (!!this.newResource && !!this.newResource?.title && this.newResource?.description && !!this.newResource?.stock);
   }
 
   closeDialog() {
@@ -319,7 +317,6 @@ export class ResourcesDetailsDialogComponent implements OnInit {
   }
 
   getBalanceClass() {
-    let percentage = (!!this.resourceData.total_stock) ? ((this.resourceData.total_stock - (this.resourceData.used_stock || 0)) * 100) / this.resourceData.total_stock : 0;
-    return (percentage <= 5) ? 'danger' : (percentage <= 20) ? 'warning' : 'ok' ;
+    return (!this.resourceData.stock || (this.resourceData.stock <= 5)) ? 'danger' : (this.resourceData.stock <= 20) ? 'warning' : 'ok' ;
   }
 }

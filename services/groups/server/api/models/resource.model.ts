@@ -12,11 +12,7 @@ const ResourceSchema = new Schema({
         type: String,
         default: null
     },
-    total_stock: {
-        type: Number,
-        default: null
-    },
-    used_stock: {
+    stock: {
         type: Number,
         default: null
     },
