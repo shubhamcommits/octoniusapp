@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Inject, Injector, LOCALE_ID, OnInit, Output } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
+import { DateTime, Interval } from 'luxon';
 import { environment } from 'src/environments/environment';
 import { ResourcesGroupService } from 'src/shared/services/resources-group-service /resources-group.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -37,24 +37,15 @@ export class ResourcesDetailsDialogComponent implements OnInit {
   userData: any;
   workspaceData: any;
 
-  // chartReady = false;
+  chartReady = false;
 
-  // doughnutChartLabels = [];
-  // doughnutChartData = [0];
-  // doughnutChartType = 'doughnut';
-  // doughnutChartOptions = {
-  //   cutoutPercentage: 75,
-  //   responsive: true,
-  //   legend: {
-  //     display: false
-  //   }
-  // };
-  // doughnutChartColors = [{
-  //   backgroundColor: [
-  //     '#2AA578'
-  //   ]
-  // }];
-  // doughnutChartPlugins = [];
+  chartData;
+  chartType;
+  chartLabels;
+  chartOptions;
+  chartColors;
+  chartLegend;
+  chartPlugins;
 
   qrCodeUrl = environment.clientUrl;
 
@@ -124,7 +115,7 @@ export class ResourcesDetailsDialogComponent implements OnInit {
     this.resourceData = resourceData;
 
     await this.initCustomFields();
-    // await this.initGraphic();
+    await this.initGraphic();
   }
 
   async initCustomFields() {
@@ -167,35 +158,81 @@ export class ResourcesDetailsDialogComponent implements OnInit {
     }
   }
 
-  // async initGraphic() {
-  //   if (!this.resourceData) {
-  //     this.doughnutChartPlugins = [{
-  //       beforeDraw(chart) {
-  //         const ctx = chart.ctx;
+  async initGraphic() {
+    if (!!this.resourceData) {
+      const dates = await this.getDates();
+      const graphData = await this.getGraphData(dates);
 
-  //         ctx.textAlign = 'center';
-  //         ctx.textBaseline = 'middle';
-  //         const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
-  //         const centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+      this.chartData = graphData;
+      this.chartLabels = this.formatDates(dates);
+      this.chartOptions = {
+        responsive: true,
+        legend: {
+          display: false
+        },
+        scales: {
+            yAxes: [{
+                stacked: true,
+                display: true,
+                gridLines: {
+                    drawBorder: true,
+                    display: true,
+                },
+            }],
+            xAxes: [{
+                stacked: true,
+                display: true,
+                gridLines: {
+                    drawBorder: true,
+                    display: true,
+                }
+            }]
+        }
+      };
+      this.chartColors = [
+        {
+          borderColor: '#005FD5',
+          backgroundColor: '#FFFFFF',
+        },
+      ];
+      this.chartLegend = true;
+      this.chartType = 'line';
+      this.chartPlugins = [];
 
-  //         ctx.font = '25px Nunito';
-  //         ctx.fillStyle = '#9d9fa1';
+      this.chartReady = true;
+    }
+  }
 
-  //         ctx.fillText('No Stock', centerX, centerY);
-  //       }
-  //     }];
-  //   }
+  async getDates() {
+    const currentDate = DateTime.now();
+    // const firstDay = currentDate.startOf('week');
+    // const lastDay = currentDate.endOf('week');
+    
+    let datesRet = [];
+    for (let i = 6; i >= 0; i--) {
+      datesRet.push(currentDate.plus({ days: -i }));
+    }
 
+    return datesRet;
+  }
 
-  //   /* Chart Setup */
-  //   this.doughnutChartLabels = [$localize`:@@resourcesDetailsDialog.totalStock:Total stock`, $localize`:@@resourcesDetailsDialog.usedStock:Used stock`];
-  //   this.doughnutChartData = [this.resourceData.stock, this.resourceData.used_stock];
-  //   this.doughnutChartColors = [{
-  //     backgroundColor: ['#005fd5', '#fbb732']
-  //   }];
+  getGraphData(dates) {
+    let points = [];
 
-  //   this.chartReady = true;
-  // }
+    const interval = Interval.fromDateTimes(dates[0], dates[dates.length - 1]);
+    const activity = this.resourceData?.activity.filter(a => interval.contains(DateTime.fromISO(a.date)))
+
+    dates.forEach(date => {
+      const acTmp = activity.filter(a => this.isSameDay(date, DateTime.fromISO(a.date)));
+      let value = 0;
+      acTmp.forEach(a => {
+        value = (a.add_inventory) ? value + a.quantity : value - a.quantity;
+      });
+      points.push(value);
+    });
+
+    return points;
+  }
 
   createResource() {
     this.utilityService.asyncNotification($localize`:@@resourcesDetailsDialog.pleaseWaitWeCreateResource:Please wait, while we are creating the resource for you...`, new Promise((resolve, reject) => {
@@ -313,7 +350,26 @@ export class ResourcesDetailsDialogComponent implements OnInit {
   }
 
   formateDate(date) {
-    return (date) ? moment.utc(date).add('1', 'day').format("MMM D, YYYY") : '';
+    return this.utilityService.formateDate(date, DateTime.DATE_MED);
+  }
+
+  formatDates(dates) {
+    let newDates = [];
+    dates.forEach(date => {
+      newDates.push(this.formateDate(date));
+    });
+    return newDates;
+  }
+
+  isSameDay(day1: DateTime, day2: DateTime) {
+    if (!day1 && !day2) {
+      return true;
+    } else if ((!!day1 && !day2) || (!!day2 && !day1)) {
+      return true;
+    }
+console.log(day1);
+console.log(day2);
+    return day1.startOf('day').toMillis() === day2.startOf('day').toMillis();
   }
 
   getBalanceClass() {

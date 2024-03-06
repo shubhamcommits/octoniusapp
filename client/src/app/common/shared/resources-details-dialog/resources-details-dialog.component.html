@@ -84,79 +84,47 @@
               (keyup.enter)="onUpdated({stock: resourceData?.stock})" (blur)="onUpdated({stock: resourceData?.stock})" />
           </div>
         </div>
-        
-        <!-- <div class="row">
-          <div class="col-md-4">
-            <span class="" i18n="@@resourcesDetailsDialog.usedStock">Used Stock</span>
-          </div>
-          <div class="col-md-8">
-            <span *ngIf="!editResource" class="badge used_stock">{{ resourceData?.used_stock }}</span>
-            <input *ngIf="editResource" type="number" [(ngModel)]="resourceData.used_stock"
-              (keyup.enter)="onUpdated({used_stock: resourceData?.used_stock})" (blur)="onUpdated({used_stock: resourceData?.used_stock})" style="border: none;" />
-          </div>
-        </div> -->
-        
-        <!-- <div class="row">
-          <div class="col-md-4">
-            <span class="" i18n="@@resourcesDetailsDialog.currentBalance">Current Balance</span>
-          </div>
-          <div class="col-md-8">
-            <span class="badge" [ngClass]="getBalanceClass()">{{ resourceData?.stock || 0 }}</span>
-          </div>
-        </div> -->
       </div>
 
       <div style="float: right;">
         <i class="material-icons-outlined pointer" *ngIf="!editResource" (click)="editResource = !editResource">edit</i>
 
-        <!-- <div class="graph">
-          <div class="d-md-none d-lg-block" *ngIf="chartReady">
-            <canvas
-              baseChart
-              height="100"
-              [data]="doughnutChartData"
-              [labels]="doughnutChartLabels"
-              [chartType]="doughnutChartType"
-              [options]="doughnutChartOptions"
-              [colors]="doughnutChartColors"
-              [plugins]="doughnutChartPlugins"></canvas>
-          </div>
-        </div> -->
+        
       </div>
 
       <div class="clearfix"></div>
 
       <div class="row">
-        <div class="col-md-2">
-            <qrcode
-              #parent
-              [qrdata]="qrCodeUrl"
-              [allowEmptyString]="true"
-              [elementType]="'canvas'"
-              [errorCorrectionLevel]="'M'"
-              [margin]="4"
-              [scale]="1"
-              [width]="100"></qrcode>
-              <!-- [imageSrc]="'assets/images/logo.svg'"
-              [imageHeight]="25"
-              [imageWidth]="25" -->
+        <div class="col-md-8 row">
+          <div class="col-md-2">
+              <qrcode
+                #parent
+                [qrdata]="qrCodeUrl"
+                [allowEmptyString]="true"
+                [elementType]="'canvas'"
+                [errorCorrectionLevel]="'M'"
+                [margin]="4"
+                [scale]="1"
+                [width]="100"></qrcode>
+                <!-- [imageSrc]="'assets/images/logo.svg'"
+                [imageHeight]="25"
+                [imageWidth]="25" -->
 
-            <a (click)="saveAsImage(parent)" class="pointer" i18n="@@resourcesDetailsDialog.downloadQR">Download QR</a>
-        </div>
-
-        <div class="col-md-10">
-          <div class="row" style="margin-top: 10px;">
-            <div class="col-md-12">
-              <span i18n="@@resourcesDetailsDialog.productDescription">Product description: </span>
-              <span *ngIf="!editResource">{{ resourceData?.description }}</span>
-              <input *ngIf="editResource" type="text" [(ngModel)]="resourceData.description" class="form-control"
-                (keyup.enter)="onUpdated({description: resourceData?.description})" (blur)="onUpdated({description: resourceData?.description})" />
-            </div>
+              <a (click)="saveAsImage(parent)" class="pointer" i18n="@@resourcesDetailsDialog.downloadQR">Download QR</a>
           </div>
 
-          <div class="row" style="margin-top: 10px;">
-            <div class="col-md-12">
-              <div *ngFor="let cf of customFields" class="d-flex custom-field justify-content-start mb-3 row">
+          <div class="col-md-10">
+            <div class="row" style="margin-top: 10px;">
+              <div class="col-md-12">
+                <span i18n="@@resourcesDetailsDialog.productDescription">Product description: </span>
+                <span *ngIf="!editResource">{{ resourceData?.description }}</span>
+                <input *ngIf="editResource" type="text" [(ngModel)]="resourceData.description" class="form-control"
+                  (keyup.enter)="onUpdated({description: resourceData?.description})" (blur)="onUpdated({description: resourceData?.description})" />
+              </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px;">
+              <div *ngFor="let cf of customFields" class="d-flex custom-field justify-content-start mb-3 col-md-12">
                 <p style="margin-right: 5px;">{{ cf.title }}:</p>
 
                 <div *ngIf="!editResource">
@@ -190,6 +158,16 @@
                     style="font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+          
+        <div class="col-md-4">
+          <div class="graph">
+            <div class="d-md-none d-lg-block" *ngIf="chartReady">
+              <canvas baseChart height="100" [data]="chartData" [labels]="chartLabels" [options]="chartOptions"
+                [colors]="chartColors" [legend]="chartLegend" [chartType]="chartType" [plugins]="chartPlugins">
+              </canvas>
             </div>
           </div>
         </div>
