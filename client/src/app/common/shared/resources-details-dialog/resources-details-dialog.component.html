@@ -79,17 +79,16 @@
             <span class="" i18n="@@resourcesDetailsDialog.stock">Stock</span>
           </div>
           <div class="col-md-11">
-            <span *ngIf="!editResource" class="badge" [ngClass]="getBalanceClass()">{{ resourceData?.stock }}</span>
+            <span class="badge" [ngClass]="getBalanceClass()">{{ resourceData?.stock }}</span>
+            <!-- <span *ngIf="!editResource" class="badge" [ngClass]="getBalanceClass()">{{ resourceData?.stock }}</span>
             <input *ngIf="editResource" type="number" [(ngModel)]="resourceData.stock" class="form-control"
-              (keyup.enter)="onUpdated({stock: resourceData?.stock})" (blur)="onUpdated({stock: resourceData?.stock})" />
+              (keyup.enter)="onUpdated({stock: resourceData?.stock})" (blur)="onUpdated({stock: resourceData?.stock})" /> -->
           </div>
         </div>
       </div>
 
       <div style="float: right;">
         <i class="material-icons-outlined pointer" *ngIf="!editResource" (click)="editResource = !editResource">edit</i>
-
-        
       </div>
 
       <div class="clearfix"></div>
