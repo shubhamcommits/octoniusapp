@@ -17,7 +17,7 @@
         </mat-select>
       </div>
 
-      <div class="category mr-2">
+      <div class="category mr-2" *ngIf="activityAddInventory!= null && !activityAddInventory">
         <mat-select ngDefaultControl appearance="fill" class="form-control" [(ngModel)]="activityProject"
           (selectionChange)="changeActivityProject($event)" [placeholder]="projectPlaceholder">
           <mat-option *ngFor="let project of projects" [value]="project._id">{{ project.title }}</mat-option>
@@ -66,6 +66,7 @@
   <app-resource-activity-list
     [activityList]="resourceData?.activity" [resourceId]="resourceData?._id" [userData]="userData"
     [isAdmin]="userData?.role == 'manager' || userData?.role == 'owner' || isGroupManager(userData?._id)"
-    (editTimeTrackingEntitEmitter)="onEditActivityEntryEvent($event)"></app-resource-activity-list>
+    (editActivityEntityEmitter)="onEditActivityEntryEvent($event)"
+    (deleteActivityEntityEmitter)="onDeleteActivityEntryEvent($event)"></app-resource-activity-list>
 </div>
 

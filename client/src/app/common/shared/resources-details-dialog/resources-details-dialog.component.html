@@ -10,14 +10,14 @@
           <label for="title" i18n="@@resourcesDetailsDialog.title" class="muted">Title</label>
           <input type="text" class="form-control" [(ngModel)]="newResource.title" name="title">
       
-          <label for="description" i18n="@@resourcesDetailsDialog.description" class="muted">description</label>
+          <label for="description" i18n="@@resourcesDetailsDialog.description" class="muted">Description</label>
           <input type="text" class="form-control" [(ngModel)]="newResource.description" name="description">
       
           <label for="stock" i18n="@@resourcesDetailsDialog.totalStock" class="muted">Total Stock</label>
           <input type="number" class="form-control" [(ngModel)]="newResource.stock" name="stock">
       
-          <!-- <label for="usedStock" i18n="@@resourcesDetailsDialog.usedStock" class="muted">Balance</label>
-          <input type="number" class="form-control" [(ngModel)]="newResource.used_stock" name="usedStock"> -->
+          <label for="unitPrice" i18n="@@resourcesDetailsDialog.unitPrice" class="muted">Unit Price</label>
+          <input type="number" class="form-control" [(ngModel)]="newResource.unit_price" name="unitPrice">
 
           <div *ngFor="let cf of customFields" class="">
             <label [for]="cf.name" class="muted">{{ cf.title }}</label>
@@ -75,14 +75,27 @@
         </h6>
 
         <div class="row">
-          <div class="col-md-1">
+          <div class="col-md-2">
             <span class="" i18n="@@resourcesDetailsDialog.stock">Stock</span>
           </div>
-          <div class="col-md-11">
-            <span class="badge" [ngClass]="getBalanceClass()">{{ resourceData?.stock }}</span>
+
+          <div class="col-md-10">
+            <span class="badge" [ngClass]="getBalanceClass()">{{ resourceData?.stock || 0 }}</span>
             <!-- <span *ngIf="!editResource" class="badge" [ngClass]="getBalanceClass()">{{ resourceData?.stock }}</span>
             <input *ngIf="editResource" type="number" [(ngModel)]="resourceData.stock" class="form-control"
               (keyup.enter)="onUpdated({stock: resourceData?.stock})" (blur)="onUpdated({stock: resourceData?.stock})" /> -->
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-2">
+            <span class="" i18n="@@resourcesDetailsDialog.unitPrice">Unit Price</span>
+          </div>
+
+          <div class="col-md-10">
+            <span *ngIf="!editResource" class="badge">{{ (resourceData?.unit_price || 0) | number: '1.2-2' }}</span>
+            <input *ngIf="editResource" type="number" [(ngModel)]="resourceData.unit_price" class="form-control"
+              (keyup.enter)="onUpdated({unit_price: resourceData?.unit_price})" (blur)="onUpdated({unit_price: resourceData?.unit_price})" />
           </div>
         </div>
       </div>

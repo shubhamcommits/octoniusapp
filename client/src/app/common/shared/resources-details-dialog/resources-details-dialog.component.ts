@@ -22,6 +22,7 @@ export class ResourcesDetailsDialogComponent implements OnInit {
     title: '',
     description: '',
     stock: 0,
+    unit_price: 0,
     _group: null,
     custom_fields: new Map<string, string>()
   };
@@ -95,6 +96,7 @@ export class ResourcesDetailsDialogComponent implements OnInit {
       title: '',
       description: '',
       stock: 0,
+      unit_price: 0,
       _group: this.groupData,
       custom_fields: new Map<string, string>()
     };

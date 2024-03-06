@@ -17,7 +17,8 @@ export class ResourceActivityListComponent implements OnChanges {
   @Input() userData: any;
   @Input() isAdmin: any = false;
   
-  @Output() editTimeTrackingEntitEmitter = new EventEmitter();
+  @Output() editActivityEntityEmitter = new EventEmitter();
+  @Output() deleteActivityEntityEmitter = new EventEmitter();
 
   sortedData;
   displayedColumns: string[] = ['image', 'name', 'description', 'project', 'comment', 'time', 'date', 'star'];
@@ -62,7 +63,7 @@ export class ResourceActivityListComponent implements OnChanges {
 	}
 
 	openEditEntry(activityEntity) {
-		this.editTimeTrackingEntitEmitter.emit(activityEntity);
+		this.editActivityEntityEmitter.emit(activityEntity);
 	}
 
 	deleteEntry(activityEntityId: string) {
@@ -75,6 +76,8 @@ export class ResourceActivityListComponent implements OnChanges {
 								this.activityList.splice(index, 1);
 
 								await this.initTable();
+
+								this.deleteActivityEntityEmitter.emit(res['resource']);
 							}
 						})
 					}

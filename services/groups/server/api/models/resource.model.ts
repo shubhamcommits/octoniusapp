@@ -16,6 +16,10 @@ const ResourceSchema = new Schema({
         type: Number,
         default: null
     },
+    unit_price: {
+        type: Number,
+        default: null
+    },
     _group: {
         type: Schema.Types.ObjectId,
         ref: 'Group',

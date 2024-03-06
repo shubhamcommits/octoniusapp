@@ -1,13 +1,17 @@
 import { Group, Resource } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError, axios } from '../../utils';
+import { ResourceService } from '../services';
 import moment from 'moment';
+import mongoose from 'mongoose';
+import { resourcesRoutes } from '../routes';
+
+const resourceService = new ResourceService();
 
 /*  ===================
  *  -- Resources METHODS --
  *  ===================
  * */
-
 export class ResourcesController {
 
     /**
@@ -38,7 +42,9 @@ export class ResourcesController {
             // Find the resource and update
             let resource = await Resource.findByIdAndUpdate({
                     _id: resourceId
-                }, propertyData);
+                }, {
+                    $set: propertyData
+                });
 
             resource = await Resource.findByIdAndUpdate({
                     _id: resourceId
@@ -478,7 +484,6 @@ export class ResourcesController {
 
     /**
      * This function is responsible for updating the custom fields to show in the list view for the particular group
-     * @param { column } req 
      * @param res 
      */
     async updateCustomFieldsToShow(req: Request, res: Response, next: NextFunction) {
@@ -578,14 +583,17 @@ export class ResourcesController {
         const { body: { newActivity }, params: { resourceId } } = req;
         
         try {
+            const project = newActivity._project || null;
+            const activityId = new mongoose.Types.ObjectId();
             let resource = await Resource.findByIdAndUpdate({
                     _id: resourceId
                 }, {
                     $push: {
                         "activity": {
+                            _id: activityId,
                             quantity: newActivity.quantity,
                             add_inventory: newActivity.add_inventory,
-                            _project: newActivity._project || null,
+                            _project: project,
                             date: newActivity.date,
                             _user: newActivity._user,
                             file: newActivity.file,
@@ -595,7 +603,7 @@ export class ResourcesController {
                     }
                 }, {
                     new: true
-                });
+                }).select('stock').lean();
 
             resource = await Resource.findByIdAndUpdate({
                     _id: resourceId
@@ -635,6 +643,11 @@ export class ResourcesController {
                     }
                 })
                 .lean();
+            
+            const projectId = project?._id || project;
+            if (!!projectId && !newActivity.add_inventory) {
+                resourceService.addExpenseToProject(newActivity, resource, projectId);
+            }
 
             // Send status 200 response
             return res.status(200).json({
@@ -702,47 +715,72 @@ export class ResourcesController {
                                 }
                             })
                             .lean();
+                    
+                    const indexUser = (!!resource.activity) ? resource.activity.findIndex(a => a._id == activityEntityId) : -1;
+                    if (indexUser >= 0) {
+                        const activityTmp = resource.activity[indexUser];
+                        if (!activityTmp.add_inventory) {
+                            resourceService.editExpenseUser(editedEntity?._user?._id || editedEntity?._user, activityTmp._project._id || activityTmp._project, resourceId, activityTmp._id)
+                        }
+                    }
                     break;
                 case 'project':
-                    resource = await Resource.findByIdAndUpdate({
-                            _id: resourceId
-                        }, {
-                            $set: {
-                                'activity.$[act]._project': editedEntity?._project,
-                                'activity.$[act].edited_date': moment().format(),
-                                "last_updated_date": moment().format()
-                            }
-                        },
-                        {
-                            arrayFilters: [{ "act._id": activityEntityId }],
-                            new: true
-                        })
-                        .populate({
-                            path: '_group',
-                            select: 'group_name group_avatar workspace_name _members _admins',
-                            match: {
-                                active: true
-                            }
-                        })
-                        .populate({
-                            path: '_created_by',
-                            select: 'first_name last_name profile_pic role email',
-                            match: {
-                                active: true
-                            }
-                        })
-                        .populate({
-                            path: 'activity._project',
-                            select: 'title'
-                        })
-                        .populate({
-                            path: 'activity._user',
-                            select: 'first_name last_name profile_pic role email',
-                            match: {
-                                active: true
-                            }
-                        })
-                        .lean();
+                    resource = await Resource.findById({ _id: resourceId }).select('stock activity').lean();
+                    let indexProject = (!!resource.activity) ? resource.activity.findIndex(a => a._id == activityEntityId) : -1;
+                    if (indexProject >= 0) {
+                        let activity = resource.activity[indexProject];
+
+                        resource = await Resource.findByIdAndUpdate({
+                                _id: resourceId
+                            }, {
+                                $set: {
+                                    'activity.$[act].add_inventory': false,
+                                    'activity.$[act]._project': editedEntity?._project,
+                                    'activity.$[act].edited_date': moment().format(),
+                                    "last_updated_date": moment().format()
+                                }
+                            },
+                            {
+                                arrayFilters: [{ "act._id": activityEntityId }],
+                                new: true
+                            })
+                            .populate({
+                                path: '_group',
+                                select: 'group_name group_avatar workspace_name _members _admins',
+                                match: {
+                                    active: true
+                                }
+                            })
+                            .populate({
+                                path: '_created_by',
+                                select: 'first_name last_name profile_pic role email',
+                                match: {
+                                    active: true
+                                }
+                            })
+                            .populate({
+                                path: 'activity._project',
+                                select: 'title'
+                            })
+                            .populate({
+                                path: 'activity._user',
+                                select: 'first_name last_name profile_pic role email',
+                                match: {
+                                    active: true
+                                }
+                            })
+                            .lean();
+
+                        if (!!activity && activity._project) {
+                            await resourceService.deleteExpenseFromProject(activity, resourceId);
+                        }
+
+                        indexProject = (!!resource.activity) ? resource.activity.findIndex(a => a._id == activityEntityId) : -1;
+                        if (indexProject >= 0) {
+                            activity = resource.activity[indexProject];
+                            await resourceService.addExpenseToProject(activity, resource, editedEntity?._project);
+                        }
+                    }
                     break;
                 case 'quantity':
                     resource = await Resource.findById({ _id: resourceId }).select('stock activity').lean();
@@ -839,6 +877,14 @@ export class ResourcesController {
                             }
                         })
                         .lean();
+                    
+                    const indexDate = (!!resource.activity) ? resource.activity.findIndex(a => a._id == activityEntityId) : -1;
+                    if (indexDate >=  0) {
+                        const activityTmp = resource.activity[indexDate];
+                        if (!activityTmp.add_inventory) {
+                            resourceService.editExpenseDate(editedEntity?.date, activityTmp._project._id || activityTmp._project, resourceId, activityTmp._id)
+                        }
+                    }
                     break;
                 case 'comment':
                     resource = await Resource.findByIdAndUpdate({
@@ -880,6 +926,15 @@ export class ResourcesController {
                             }
                         })
                         .lean();
+                    
+                    const indexComment = (!!resource.activity) ? resource.activity.findIndex(a => a._id == activityEntityId) : -1;
+                    if (indexComment >=  0) {
+                        const activityTmp = resource.activity[indexComment];
+                        if (!activityTmp.add_inventory) {
+                            resourceService.editExpenseComment(editedEntity?.comment, activityTmp._project._id || activityTmp._project, resourceId, activityTmp._id)
+                        }
+                    }
+
                     break;
                 case 'add_inventory':
                     resource = await Resource.findById({ _id: resourceId }).select('stock activity').lean();
@@ -889,10 +944,11 @@ export class ResourcesController {
 
                         if (activity.add_inventory !== editedEntity.add_inventory) {
                             let newBalance = resource.stock;
+
                             if (editedEntity.add_inventory ) {
-                                newBalance += activity.quantity + editedEntity.quantity;
+                                newBalance = newBalance + (activity.quantity * 2);
                             } else {
-                                newBalance -= activity.quantity - editedEntity.quantity;
+                                newBalance = newBalance - (activity.quantity * 2);
                             }
 
                             resource = await Resource.findByIdAndUpdate({
@@ -900,6 +956,7 @@ export class ResourcesController {
                                 }, {
                                     $set: {
                                         'activity.$[act].add_inventory': editedEntity?.add_inventory,
+                                        'activity.$[act]._project': (editedEntity?.add_inventory) ? null : editedEntity._project,
                                         'activity.$[act].edited_date': moment().format(),
                                         "stock": newBalance,
                                         "last_updated_date": moment().format()
@@ -935,6 +992,13 @@ export class ResourcesController {
                                     }
                                 })
                                 .lean();
+                        
+                            if (editedEntity.add_inventory) {
+                                resourceService.deleteExpenseFromProject(activity, resourceId);
+                            }
+                            // the expense is not added here because it needs a project to be selected.
+                            // } else if (!!(editedEntity._project._id || editedEntity._project)) {
+                            //     resourceService.addExpenseToProject(editedEntity, resource, (editedEntity._project._id || editedEntity._project));
                         }
                     }
                     break;
@@ -954,7 +1018,7 @@ export class ResourcesController {
         const { resourceId, activityEntityId } = req.params;
 
         try {
-            const resource = await Resource.findById({
+            let resource = await Resource.findById({
                     _id: resourceId
                 }).select('stock activity').lean();
 
@@ -970,9 +1034,9 @@ export class ResourcesController {
                                 _id: activityEntityId
                             }
                         }
-                    }).select('activity').lean();
+                    }).lean();
 
-                await Resource.findByIdAndUpdate({
+                resource = await Resource.findByIdAndUpdate({
                         _id: resourceId
                     }, {
                         $set: {
@@ -981,12 +1045,45 @@ export class ResourcesController {
                                 : resource.stock + activityTmp.quantity,
                             "last_updated_date": moment().format()
                         }
-                    });
+                    }, {
+                        new: true
+                    })
+                    .populate({
+                        path: '_group',
+                        select: 'group_name group_avatar workspace_name _members _admins',
+                        match: {
+                            active: true
+                        }
+                    })
+                    .populate({
+                        path: '_created_by',
+                        select: 'first_name last_name profile_pic role email',
+                        match: {
+                            active: true
+                        }
+                    })
+                    .populate({
+                        path: 'activity._project',
+                        select: 'title'
+                    })
+                    .populate({
+                        path: 'activity._user',
+                        select: 'first_name last_name profile_pic role email',
+                        match: {
+                            active: true
+                        }
+                    })
+                    .lean();
+                
+                if (!!activityTmp._project && !activityTmp.add_inventory) {
+                    resourceService.deleteExpenseFromProject(activityTmp, resourceId);
+                }
             }
 
             // Send status 200 response
             return res.status(200).json({
-                message: 'Resource Activity Entity deleted!'
+                message: 'Resource Activity Entity deleted!',
+                resource: resource
             });
         } catch (err) {
             console.log(err);

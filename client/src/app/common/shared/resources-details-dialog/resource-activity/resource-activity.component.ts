@@ -84,7 +84,7 @@ export class ResourceActivityComponent implements OnChanges {
   }
 
   isValidEntry() {
-    return !this.showAddActivityForm || (!!this.activityDate && this.activityAddInventory != null && !!this.activityQuantity && !!this.activityUserId);
+    return !this.showAddActivityForm || (!!this.activityDate && this.activityAddInventory != null && (this.activityAddInventory || (!this.activityAddInventory && !!this.activityProject)) && !!this.activityQuantity && !!this.activityUserId);
   }
 
   saveEntry(propertyEdited?: string) {
@@ -183,6 +183,11 @@ export class ResourceActivityComponent implements OnChanges {
     this.showAddActivityForm = true;
   }
 
+  onDeleteActivityEntryEvent(resource: any) {
+    this.resourceData = resource;
+    this.resouceEditedEmitter.emit(this.resourceData);
+  }
+
   onAssignedAdded(res: any) {
     if (this.activityUserId != (res?.assignee?._id || res?.assignee)) {
       this.activityUserArray = [res?.assignee];
@@ -212,6 +217,10 @@ export class ResourceActivityComponent implements OnChanges {
   }
 
   changeActivityAddInventory($event: any) {
+    if (this.activityAddInventory) {
+      this.activityProject = null;
+    }
+
     if (!!this.activityId && this.isValidEntry()) {
       this.saveEntry('add_inventory');
     }

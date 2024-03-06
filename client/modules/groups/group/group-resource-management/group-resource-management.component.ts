@@ -23,7 +23,7 @@ export class GroupResourceManagementComponent implements OnInit {
   resources: any = [];
 
   sortedData;
-  displayedColumns: string[] = ['item', 'quantity', 'updated', 'description', 'star'];
+  displayedColumns: string[] = ['item', 'quantity', 'unit_price', 'updated', 'description', 'star'];
 
   customFieldsToShow = [];
   // unchangedTasks: any;
