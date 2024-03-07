@@ -109,6 +109,19 @@
       <div class="row">
         <div class="col-md-8 row">
           <div class="col-md-2">
+            <qrcode (click)="openDetails(content)" class="pointer"
+              [qrdata]="qrCodeUrl"
+              [allowEmptyString]="true"
+              [elementType]="'canvas'"
+              [errorCorrectionLevel]="'M'"
+              [margin]="4"
+              [scale]="1"
+              [width]="100"></qrcode>
+              <!-- [imageSrc]="'assets/images/logo.svg'"
+              [imageHeight]="25"
+              [imageWidth]="25" -->
+            
+            <ng-template #content let-modal>
               <qrcode
                 #parent
                 [qrdata]="qrCodeUrl"
@@ -117,12 +130,11 @@
                 [errorCorrectionLevel]="'M'"
                 [margin]="4"
                 [scale]="1"
-                [width]="100"></qrcode>
-                <!-- [imageSrc]="'assets/images/logo.svg'"
-                [imageHeight]="25"
-                [imageWidth]="25" -->
+                [width]="500"></qrcode>
 
               <a (click)="saveAsImage(parent)" class="pointer" i18n="@@resourcesDetailsDialog.downloadQR">Download QR</a>
+            </ng-template>
+
           </div>
 
           <div class="col-md-10">

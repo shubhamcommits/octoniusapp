@@ -376,4 +376,8 @@ export class ResourcesDetailsDialogComponent implements OnInit {
   getBalanceClass() {
     return (!this.resourceData.stock || (this.resourceData.stock <= 5)) ? 'danger' : (this.resourceData.stock <= 20) ? 'warning' : 'ok' ;
   }
+
+  async openDetails(content: any) {
+    this.utilityService.openModal(content, {});
+  }
 }
