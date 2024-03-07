@@ -163,9 +163,8 @@ export class ResourcesDetailsDialogComponent implements OnInit {
   async initGraphic() {
     if (!!this.resourceData) {
       const dates = await this.getDates();
-      const graphData = await this.getGraphData(dates);
 
-      this.chartData = graphData;
+      this.chartData = await this.getGraphData(dates);
       this.chartLabels = this.formatDates(dates);
       this.chartOptions = {
         responsive: true,
@@ -196,6 +195,10 @@ export class ResourcesDetailsDialogComponent implements OnInit {
           borderColor: (!this.resourceData.stock || (this.resourceData.stock <= 5)) ? '#ee5d5d' : (this.resourceData.stock <= 20) ? '#fbb732' : '#2aa578',
           backgroundColor: '#FFFFFF',
         },
+        {
+          borderColor: '#ee5d5d',
+          backgroundColor: '#FFFFFF',
+        }
       ];
       this.chartLegend = true;
       this.chartType = 'line';
@@ -219,21 +222,32 @@ export class ResourcesDetailsDialogComponent implements OnInit {
   }
 
   getGraphData(dates) {
-    let points = [];
-
+    let velocity = [];
+    let stock = [];
     const interval = Interval.fromDateTimes(dates[0], dates[dates.length - 1]);
     const activity = this.resourceData?.activity.filter(a => interval.contains(DateTime.fromISO(a.date)))
 
     dates.forEach(date => {
       const acTmp = activity.filter(a => this.isSameDay(date, DateTime.fromISO(a.date)));
-      let value = 0;
+      let velocityValue = 0;
       acTmp.forEach(a => {
-        value = (a.add_inventory) ? value + a.quantity : value - a.quantity;
+        velocityValue = (a.add_inventory) ? velocityValue + a.quantity : velocityValue - a.quantity;
       });
-      points.push(value);
+      velocity.push(velocityValue);
     });
 
-    return points;
+    let stockValue = this.resourceData.stock;
+    dates.reverse().forEach(date => {
+      const acTmp = activity.filter(a => this.isSameDay(date, DateTime.fromISO(a.date)));
+      acTmp.forEach(a => {
+        stockValue = (a.add_inventory) ? stockValue - a.quantity : stockValue + a.quantity;
+      });
+      stock.push(stockValue);
+    });
+
+    const ret = [velocity, stock.reverse()];
+// console.log(ret);
+    return ret;
   }
 
   createResource() {
