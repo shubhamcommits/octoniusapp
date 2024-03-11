@@ -1,0 +1,45 @@
+.new-record-form {
+	margin: 10px auto;
+	width: 80%;
+	.actions {
+		margin-top: 20px;
+	}
+}
+
+.list-records {
+	margin-top: 50px;
+}
+
+.details {
+	border-radius: 5px;
+	border: 1px solid #E4EDF8;
+	background: #FFF;
+	padding: 25px;
+	margin-bottom: 20px;
+}
+
+.badge {
+	margin: 0 1px !important;
+	display: inline;
+
+	font-style: normal;
+	font-weight: 700 !important;
+	font-size: 12px;
+	align-items: center;
+	color: #ffffff;
+	background-color: #005FD5;
+	border-radius: 10px;
+	padding: 2px 10px !important;
+}
+
+.ok {
+	background-color: #2aa578;
+}
+
+.warning {
+	background-color: #fbb732;
+}
+
+.danger {
+	background-color: #ee5d5d;
+}

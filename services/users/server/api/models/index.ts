@@ -2,6 +2,7 @@ import { Account } from "./account.model";
 import { Auth } from './auth.model';
 import { Collection } from "./collection.model";
 import { Column } from './column.model';
+import { Resource } from './resource.model';
 import { Entity } from "./entity.model";
 import { Group } from './group.model';
 import { Holiday } from "./holidays.model";
@@ -26,6 +27,7 @@ export {
     Auth as Auth,
     Collection as Collection,
     Column as Column,
+    Resource as Resource,
     Comment as Comment,
     Company as Company,
     Contact as Contact,

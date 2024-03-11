@@ -31,15 +31,15 @@ export class TaskTimeTrackingListComponent implements OnChanges {
     private injector: Injector
   ) { }
 
-  async ngOnChanges() {
-    await this.initTable();
-  }
+	async ngOnChanges() {
+		await this.initTable();
+	}
   
 	async initTable() {
-    this.displayedColumns = (this.isAdmin)
-      ? ['image', 'name', 'time', 'date', 'comment', 'category', 'cost', 'star']
-      : ['image', 'name', 'time', 'date', 'comment', 'category', 'star'];
-    this.timeTrackingEntities = [...this.timeTrackingEntities];
+		this.displayedColumns = (this.isAdmin)
+			? ['image', 'name', 'time', 'date', 'comment', 'category', 'cost', 'star']
+			: ['image', 'name', 'time', 'date', 'comment', 'category', 'star'];
+		this.timeTrackingEntities = [...this.timeTrackingEntities];
 		this.sortedData = this.timeTrackingEntities.slice();    
 	}
 

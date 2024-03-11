@@ -1,5 +1,6 @@
 import { GroupService } from './group.services';
 import { LibraryService } from './library.services';
+import { ResourceService } from './resource.services';
 
 /*  ==========================
  *  -- SERVICE EXPORTS --
@@ -7,5 +8,6 @@ import { LibraryService } from './library.services';
  * */
 export { 
     GroupService as GroupService,
-    LibraryService as LibraryService
+    LibraryService as LibraryService,
+    ResourceService as ResourceService
 };

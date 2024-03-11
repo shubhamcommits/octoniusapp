@@ -103,6 +103,9 @@ import { GroupTimeTrackingCategoriesDialogComponent } from './group/time-trackin
 import { GroupTimeTrackingViewComponent } from './group/group-time-tracking-view/group-time-tracking-view.component';
 import { TimeTrackerDatesFilterDialogComponent } from './group/group-kanban-boards/board-bar/time-tracker-dates-filter-dialog/time-tracker-dates-filter-dialog.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { GroupResourceManagementComponent } from './group/group-resource-management/group-resource-management.component';
+import { ResourcesBarComponent } from './group/group-resource-management/resources-bar/resources-bar.component';
+import { ResourcesCustomFieldsDialogComponent } from './group/resources-custom-fields-dialog/resources-custom-fields-dialog.component';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -132,6 +135,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
         GroupComponent,
         GroupAdminComponent,
         GroupActivityComponent,
+        GroupResourceManagementComponent,
         DeleteGroupComponent,
         GroupKanbanBoardsComponent,
         GroupTasksListViewComponent,
@@ -148,6 +152,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
         CustomFieldsDialogComponent,
         CRMCustomFieldsDialogComponent,
         FilesCustomFieldsDialogComponent,
+        ResourcesCustomFieldsDialogComponent,
         GroupTimeTrackingCategoriesDialogComponent,
         AdvancedFilterDialogComponent,
         DoneTasksListViewComponent,
@@ -175,6 +180,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
         NewCRMCompanyDialogComponent,
         CRMCompanyInformationComponent,
         CRMCompanyImageDialogComponent,
+        ResourcesBarComponent
     ],
     imports: [
         CommonModule,

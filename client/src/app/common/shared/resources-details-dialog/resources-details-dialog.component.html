@@ -1,0 +1,230 @@
+<mat-dialog-actions align="end">
+  <i mat-dialog-close class="material-icons pointer" (click)="closeDialog()">close</i>
+</mat-dialog-actions>
+
+<mat-dialog-content>
+  <div class="new-record-form" *ngIf="!resourceId && !resourceData">
+    <p style="text-align: center;">
+      <img src="assets/images/inventory_placeholder.svg" alt="" style="width: 200px; margin: 24px auto;">
+    </p>
+
+    <h2 style="text-align: center;" i18n="@@resourcesDetailsDialog.addNewItem">Add a new inventory item</h2>
+
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label for="title" i18n="@@resourcesDetailsDialog.title" class="muted">Title</label>
+          <input type="text" class="form-control" [(ngModel)]="newResource.title" name="title">
+      
+          <label for="description" i18n="@@resourcesDetailsDialog.description" class="muted">Description</label>
+          <input type="text" class="form-control" [(ngModel)]="newResource.description" name="description">
+      
+          <label for="stock" i18n="@@resourcesDetailsDialog.totalStock" class="muted">Total Stock</label>
+          <input type="number" class="form-control" [(ngModel)]="newResource.stock" name="stock">
+      
+          <label for="unitPrice" i18n="@@resourcesDetailsDialog.unitPrice" class="muted">Unit Price</label>
+          <input type="number" class="form-control" [(ngModel)]="newResource.unit_price" name="unitPrice">
+
+          <div *ngFor="let cf of customFields" class="">
+            <label [for]="cf.name" class="muted">{{ cf.title }}</label>
+
+            <mat-select ngDefaultControl *ngIf="!cf.input_type" [(value)]="newResource?.custom_fields[cf.name]"
+              (openedChange)="cfSearchText = ''" (selectionChange)="saveNewResourceCustomField($event.value, cf.name)" appearance="fill"
+              class="form-control">
+              <mat-select-trigger>{{ newResource?.custom_fields[cf.name] }}</mat-select-trigger>
+              <input type="text" class="form-control" [id]="'search-text' + cf.name" [(ngModel)]="cfSearchText"
+                [placeholder]="cfSearchPlaceholder" autofocus
+                (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+              <mat-option *ngFor="let val of cf.values | appFilter: cfSearchText" [value]="val">{{ val }}</mat-option>
+            </mat-select>
+    
+            <input *ngIf="cf.input_type && !cf.input_type_date"
+              [type]="(cf.input_type_number) ? 'number': 'text'" [name]="cf.name" [(ngModel)]="newResource?.custom_fields[cf.name]" class="form-control"
+              [value]="newResource?.custom_fields[cf.name]"
+              (keyup.enter)="saveNewResourceCustomField($event.target.value, cf.name)" (blur)="saveNewResourceCustomField($event.target.value, cf.name)" />
+
+            <app-date-picker *ngIf="cf.input_type && cf.input_type_date" cass="form-control"
+              (date)="saveNewResourceCustomField($event, cf.name)" [selectedDate]="formateDate(newResource?.custom_fields[cf.name])"
+              [styleClass]="'btn-group input-date'" [canEdit]="true">
+            </app-date-picker>
+    
+            <i (click)="saveNewResourceCustomField(null, cf.name);" class="material-icons muted mr-5 pointer"
+              style="font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary btn-md float-left" (click)="createResource()" [disabled]="!isValidResource()">
+        <i class="material-icons-outlined">add</i>
+        <span i18n="@@resourcesDetailsDialog.addEntry">Add entry</span>
+      </button>
+
+      <button class="btn btn-outline-danger btn-md float-left" style="margin-left: 30px;" (click)="closeDialog()">
+        <span i18n="@@resourcesDetailsDialog.cancel">X Cancel</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="new-record-form" *ngIf="!!resourceData">
+    <div class="details">
+      <div style="float: left; width: 50%;">
+        <h6 class=" mb-3">
+          <strong *ngIf="!editResource">{{ resourceData?.title }}</strong>
+          <input *ngIf="editResource" type="text" [(ngModel)]="resourceData.title" class="form-control" style="border-top: none; border-right: none; border-left: none;"
+            (keyup.enter)="onUpdated({title: resourceData?.title})" (blur)="onUpdated({title: resourceData?.title})" />
+        </h6>
+
+        <div class="row mb-3">
+          <div class="col-md-2">
+            <span class="" i18n="@@resourcesDetailsDialog.stock">Stock</span>
+          </div>
+
+          <div class="col-md-10">
+            <span class="badge" [ngClass]="getBalanceClass()">{{ resourceData?.stock || 0 }}</span>
+            <!-- <span *ngIf="!editResource" class="badge" [ngClass]="getBalanceClass()">{{ resourceData?.stock }}</span>
+            <input *ngIf="editResource" type="number" [(ngModel)]="resourceData.stock" class="form-control"
+              (keyup.enter)="onUpdated({stock: resourceData?.stock})" (blur)="onUpdated({stock: resourceData?.stock})" /> -->
+          </div>
+        </div>
+
+        <div class="row  mb-3">
+          <div class="col-md-2">
+            <span class="" i18n="@@resourcesDetailsDialog.unitPrice">Unit Price</span>
+          </div>
+
+          <div class="col-md-10">
+            <span *ngIf="!editResource" class="badge">{{ (resourceData?.unit_price || 0) | number: '1.2-2' }}</span>
+            <input *ngIf="editResource" type="number" [(ngModel)]="resourceData.unit_price" class="form-control"
+              (keyup.enter)="onUpdated({unit_price: resourceData?.unit_price})" (blur)="onUpdated({unit_price: resourceData?.unit_price})" />
+          </div>
+        </div>
+      </div>
+
+      <div style="float: right;">
+        <i class="material-icons-outlined pointer" *ngIf="!editResource" (click)="editResource = !editResource">edit</i>
+      </div>
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-8 row">
+          <div class="col-md-2">
+            <qrcode (click)="openDetails(content)" class="pointer"
+              [qrdata]="qrCodeUrl"
+              [allowEmptyString]="true"
+              [elementType]="'canvas'"
+              [errorCorrectionLevel]="'M'"
+              [margin]="4"
+              [scale]="1"
+              [width]="100"></qrcode>
+              <!-- [imageSrc]="'assets/images/logo.svg'"
+              [imageHeight]="25"
+              [imageWidth]="25" -->
+            
+            <ng-template #content let-modal>
+              <qrcode
+                #parent
+                [qrdata]="qrCodeUrl"
+                [allowEmptyString]="true"
+                [elementType]="'canvas'"
+                [errorCorrectionLevel]="'M'"
+                [margin]="4"
+                [scale]="1"
+                [width]="500"></qrcode>
+
+              <a (click)="saveAsImage(parent)" class="pointer" i18n="@@resourcesDetailsDialog.downloadQR">Download QR</a>
+            </ng-template>
+
+          </div>
+
+          <div class="col-md-10">
+            <div class="row" style="margin-top: 10px;">
+              <div class="col-md-12">
+                <span i18n="@@resourcesDetailsDialog.productDescription">Product description: </span>
+                <span *ngIf="!editResource">{{ resourceData?.description }}</span>
+                <input *ngIf="editResource" type="text" [(ngModel)]="resourceData.description" class="form-control"
+                  (keyup.enter)="onUpdated({description: resourceData?.description})" (blur)="onUpdated({description: resourceData?.description})" />
+              </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px;">
+              <div *ngFor="let cf of customFields" class="d-flex custom-field justify-content-start mb-3 col-md-12">
+                <p style="margin-right: 5px;">{{ cf.title }}:</p>
+
+                <div *ngIf="!editResource">
+                  <span *ngIf="!!selectedCFValues[cf.name] && !!cf.badge_color" class="badge" [ngStyle]="{'background-color' : cf.badge_color || '#005FD5'}">{{ selectedCFValues[cf.name] }}</span>
+                  <span *ngIf="!!selectedCFValues[cf.name] && !cf.badge_color">{{ selectedCFValues[cf.name] }}</span>
+                </div>
+
+                <div *ngIf="editResource" class="">
+                  <mat-select ngDefaultControl *ngIf="!cf.input_type" [(value)]="selectedCFValues[cf.name]"
+                    (openedChange)="cfSearchText = ''" (selectionChange)="onCustomFieldChange($event, cf.name)"
+                    appearance="fill" class="col form-control">
+                    <mat-select-trigger>{{ selectedCFValues[cf.name] }}</mat-select-trigger>
+                    <input type="text" class="form-control" [id]="'search-text' + cf.name" [(ngModel)]="cfSearchText"
+                      [placeholder]="cfSearchPlaceholder" autofocus (click)="$event.stopPropagation()"
+                      (keydown)="$event.stopPropagation()">
+                    <mat-option *ngFor="let val of cf.values | appFilter: cfSearchText" [value]="val">{{ val }}</mat-option>
+                  </mat-select>
+                
+                  <div *ngIf="cf.input_type && !cf.input_type_date" class="form-control" style="display: flex; float: left; width: 125px;">
+                    <input [type]="(cf.input_type_number) ? 'number': 'text'" [name]="cf.name" [(ngModel)]="selectedCFValues[cf.name]"
+                      style="width: 94px;" [value]="selectedCFValues[cf.name]" style="border: none;"
+                      (keyup.enter)="saveInputCustomField($event, cf.name)" (blur)="saveInputCustomField($event, cf.name)" />
+                  </div>
+                
+                  <div *ngIf="cf.input_type && cf.input_type_date" class="form-control">
+                    <app-date-picker (date)="getCFDate($event, cf.name)" style="border: none;"
+                      [selectedDate]="formateDate(selectedCFValues[cf.name])" [styleClass]="'btn-group input-date'" [canEdit]="true">
+                    </app-date-picker>
+                  </div>
+
+                  <i (click)="saveCustomField(cf.name, null);" class="material-icons muted mr-5 pointer"
+                    style="font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+          
+        <div class="col-md-4">
+          <div class="graph">
+            <div class="d-md-none d-lg-block" *ngIf="chartReady">
+              <canvas baseChart height="100" [data]="chartData" [labels]="chartLabels" [options]="chartOptions"
+                [colors]="chartColors" [legend]="chartLegend" [chartType]="chartType" [plugins]="chartPlugins">
+              </canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="clearfix"></div>
+
+      <div class="clearfix" *ngIf="editResource">
+        <button class="btn btn-outline-secondary btn-md float-left" (click)="editResource = !editResource">
+          <span i18n="@@resourcesDetailsDialog.close">X Close</span>
+        </button>
+
+        <button class="btn btn-outline-danger btn-md float-right" (click)="deleteResource()">
+          <span i18n="@@resourcesDetailsDialog.deleteItem">Delete item</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="details">
+      <div>
+        <span i18n="@@resourcesDetailsDialog.inventoryActivity">Inventory activity</span>
+      </div>
+
+      <app-resource-activity
+        [userData]="userData"
+        [groupData]="groupData"
+        [workspaceData]="workspaceData"
+        [resourceData]="resourceData"
+        (resouceEditedEmitter)="onResouceEditedEmitter($event)"
+        ></app-resource-activity>
+    </div>
+  </div>
+</mat-dialog-content>

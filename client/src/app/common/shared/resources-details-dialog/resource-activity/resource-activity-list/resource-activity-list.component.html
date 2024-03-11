@@ -1,0 +1,85 @@
+<table mat-table matSort [dataSource]="sortedData" (matSortChange)="sortData($event)" class="">
+  <ng-container matColumnDef="image">
+    <th mat-header-cell *matHeaderCellDef></th>
+
+    <td mat-cell *matCellDef="let activityEntity">
+      <app-secured-image [imgURL]="activityEntity?._user?.profile_pic" [service]="'user'" [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
+        [styleClass]="'avatar'"></app-secured-image>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@resourceActivityList.name"> Name </th>
+
+    <td mat-cell *matCellDef="let activityEntity">
+      <span *ngIf="!!activityEntity._user && !!activityEntity._user.first_name">{{ activityEntity?._user?.first_name + ' ' + activityEntity?._user?.last_name }}</span>
+      <span *ngIf="!activityEntity._user || !activityEntity._user.first_name" i18n="@@resourceActivityList.deletedUser">Deleted user</span>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="description">
+    <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@resourceActivityList.quantity"> Quantity </th>
+
+    <td mat-cell *matCellDef="let activityEntity">
+      <span i18n="@@resourceActivityList.updatedQuantity">Updated quantity:</span>
+      <span *ngIf="!activityEntity.add_inventory" style="color: #EE5D5D;"> used {{ activityEntity?.quantity }}</span>
+      <span *ngIf="activityEntity.add_inventory" style="color: #2AA578;"> added {{ activityEntity?.quantity }}</span>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="project">
+    <th mat-header-cell *matHeaderCellDef i18n="@@resourceActivityList.project"> Project </th>
+
+    <td mat-cell *matCellDef="let activityEntity">
+      <span>{{ activityEntity?._project?.title }}</span>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="comment">
+    <th mat-header-cell *matHeaderCellDef i18n="@@resourceActivityList.comment"> Comment </th>
+
+    <td mat-cell *matCellDef="let activityEntity">
+      <span>{{ activityEntity?.comment }}</span>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="time">
+    <th mat-header-cell *matHeaderCellDef i18n="@@resourceActivityList.time"> Time </th>
+
+    <td mat-cell *matCellDef="let activityEntity">
+      <span>{{ formateTime(activityEntity?.edited_date) }}</span>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="date">
+    <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@resourceActivityList.date"> Date </th>
+
+    <td mat-cell *matCellDef="let activityEntity">
+      <span>{{ formateDate(activityEntity?.date) }}</span>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="star">
+    <th mat-header-cell *matHeaderCellDef>
+    </th>
+
+    <td mat-cell *matCellDef="let activityEntity">
+      <i class="material-icons-outlined ml-2 muted pointer"
+        [matMenuTriggerFor]="menu">more_horiz</i>
+      <mat-menu #menu="matMenu">
+        <a mat-menu-item (click)="openEditEntry(activityEntity)">
+          <span class="material-icons-outlined">create</span>
+          <span i18n="@@resourceActivityList.edit">Edit</span>
+        </a>
+
+        <a mat-menu-item (click)="deleteEntry(activityEntity?._id)">
+          <span class="material-icons-outlined">delete</span>
+          <span i18n="@@resourceActivityList.delete">Delete</span>
+        </a>
+      </mat-menu>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let activityEntity; columns: displayedColumns;"></tr>
+</table>

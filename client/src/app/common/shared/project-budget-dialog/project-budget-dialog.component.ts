@@ -90,6 +90,15 @@ export class ProjectBudgetDialogComponent implements OnInit {
     if (!this.budget.expenses) {
       this.budget.expenses = [];
     }
+
+    this.budget.expenses.forEach(expense => {
+      if (!!expense._resource) {
+        const index = (!!expense._resource.activity) ? expense._resource.activity.findIndex(a => a._id == expense._resource_activity) : -1;
+        if (index >= 0) {
+          expense.resource_quantity = expense._resource.activity[index].quantity;
+        }
+      }
+    });
     
     this.resetExpense();
 

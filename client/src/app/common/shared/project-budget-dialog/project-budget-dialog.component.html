@@ -53,7 +53,7 @@
 
           <div class="row" *ngIf="showEditBudget">
             <button class="btn btn-outline-danger btn-md float-left" (click)="showEditBudget = !showEditBudget">
-              <span i18n="@@taskTimeTracking.close">X Close</span>
+              <span i18n="@@projectBudgetDialog.close">X Close</span>
             </button>
           </div>
         </div>
@@ -111,13 +111,13 @@
     <div class="actions">
       <button class="btn btn-outline-primary btn-md float-left" (click)="saveExpense()" [disabled]="!isValidEntry()">
         <i class="material-icons-outlined">attach_money</i>
-        <span i18n="@@taskTimeTracking.addEntry" *ngIf="!expense._id">Add expense</span>
-        <span i18n="@@taskTimeTracking.addEntry" *ngIf="!!expense._id">Save expense</span>
+        <span i18n="@@projectBudgetDialog.addEntry" *ngIf="!expense._id">Add expense</span>
+        <span i18n="@@projectBudgetDialog.saveExpense" *ngIf="!!expense._id">Save expense</span>
       </button>
     
       <button class="btn btn-outline-danger btn-md float-left" style="margin-left: 30px;" (click)="resetExpense()"
         *ngIf="showAddExpenseForm">
-        <span i18n="@@taskTimeTracking.cancel">X Cancel</span>
+        <span i18n="@@projectBudgetDialog.cancel">X Cancel</span>
       </button>
     </div>
 
@@ -135,15 +135,22 @@
           &nbsp;
           {{ expense?._user?.first_name || 'Deleted' }} {{ expense?._user?.last_name || 'User' }}
           &nbsp;
-          <span>
-            &nbsp;<span i18n="@@projectBudgetDialog.added">added</span>&nbsp;
-            <span class="bold">
-              {{ expense.amount | currency: budget.currency }}
-            </span>
-            &nbsp;-&nbsp;
-            <span style="font-weight: 900;">
-              {{ expense.reason }}
-            </span>
+          <span *ngIf="!expense._resource">
+            <span i18n="@@projectBudgetDialog.added">added</span>&nbsp;
+            <span class="bold">{{ expense.amount | currency: budget.currency }}</span>&nbsp;
+            <span *ngIf="!!expense.reason">-&nbsp;</span>
+            <span class="bold" style="font-weight: 900;">{{ expense.reason }}</span>
+          </span>
+
+          <span *ngIf="!!expense._resource">
+            <span i18n="@@projectBudgetDialog.used">used</span>&nbsp;
+            <span class="bold">{{ expense.amount | currency: budget.currency }}</span>&nbsp;
+            <span i18n="@@projectBudgetDialog.on">on</span>&nbsp;
+            <span>{{ expense.resource_quantity }}</span>&nbsp;
+            <span i18n="@@projectBudgetDialog.unitsOf">units of</span>&nbsp;
+            <span style="font-weight: 900;">{{ expense?._resource?.title }}</span>&nbsp;
+            <span *ngIf="!!expense.reason">-&nbsp;</span>
+            <span class="bold" style="font-weight: 900;">{{ expense.reason }}</span>
           </span>
         </div>
 
@@ -158,21 +165,16 @@
           {{ expense?._user?.first_name || 'Deleted' }} {{ expense?._user?.last_name || 'User' }}
           &nbsp;
           <span>
-            &nbsp;<span i18n="@@projectBudgetDialog.registered">registered</span>&nbsp;
-            <span class="bold">{{ expense?.hours + 'h and ' + expense?.minutes+ 'm' }}</span>
-            &nbsp;<span i18n="@@projectBudgetDialog.toTheTask">to the task</span>&nbsp;
-            <span class="bold">{{ expense?._task?.title }}</span>
-            &nbsp;<span i18n="@@projectBudgetDialog.onTheCategory" *ngIf="!!expense?._task?._category">to the category</span>&nbsp;
-            <span class="bold">{{ expense?._task?._category }}</span>
-            &nbsp;<span i18n="@@projectBudgetDialog.whichCost">which cost</span>&nbsp;
-            <span class="bold">
-              {{ expense.amount | currency: budget.currency }}
-            </span>
-            &nbsp;
+            <span i18n="@@projectBudgetDialog.registered">registered</span>&nbsp;
+            <span class="bold">{{ expense?.hours + 'h and ' + expense?.minutes+ 'm' }}</span>&nbsp;
+            <span i18n="@@projectBudgetDialog.toTheTask">to the task</span>&nbsp;
+            <span class="bold">{{ expense?._task?.title }}</span>&nbsp;
+            <span i18n="@@projectBudgetDialog.onTheCategory" *ngIf="!!expense?._task?._category">to the category</span>&nbsp;
+            <span class="bold">{{ expense?._task?._category }}</span>&nbsp;
+            <span i18n="@@projectBudgetDialog.whichCost">which cost</span>&nbsp;
+            <span class="bold"> {{ expense.amount | currency: budget.currency }} </span>&nbsp;
             <span *ngIf="!!expense.reason">-&nbsp;</span>
-            <span class="bold" style="font-weight: 900;">
-              {{ expense.reason }}
-            </span>
+            <span class="bold" style="font-weight: 900;">{{ expense.reason }}</span>
           </span>
         </div>
 
@@ -181,7 +183,7 @@
             {{ formateDate(expense.date, 'MMM Do, YYYY') }}
           </span>
 
-          <span *ngIf="!expense.isTT && (expense?._user?._id == currentUser?._id || expense?._created_user?._id == currentUser?._id)">
+          <span *ngIf="!expense.isTT && !expense._resource && (expense?._user?._id == currentUser?._id || expense?._created_user?._id == currentUser?._id)">
             <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
             <mat-menu #menu="matMenu">
               <a mat-menu-item (click)="editExpense(expense)">

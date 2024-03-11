@@ -118,12 +118,12 @@ export class CreateGroupDialogComponent implements OnInit {
    * Create group helper function, which makes the HTTP request to create the group
    */
   createGroup() {
-    this.utilityService.asyncNotification($localize`:@@createGroupDialog.pleaseWaitWeCreateAgora:Please wait, while we are creating agora for you...`, new Promise((resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@createGroupDialog.pleaseWaitWeCreateGroup:Please wait, while we are creating the group for you...`, new Promise((resolve, reject) => {
       this.groupsService.createGroup(this.groupName, this.workspaceData?.workspace_name, this.workspaceData?._id, this.userData?._id, this.groupType)
         .then((res)=> {
           this.groupEmitter.emit(res['group']);
           this.closeDialog();
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@createGroupDialog.agoraCreated:Agora created!`))
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@createGroupDialog.groupCreated:Group created!`))
         })
         .catch(()=> reject(this.utilityService.rejectAsyncPromise($localize`:@@createGroupDialog.unexpectedErrorCreatingGroup:An unexpected error occurred while creating the group, please try again!`)));
       }));

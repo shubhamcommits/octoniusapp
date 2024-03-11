@@ -5,6 +5,7 @@ import { Post } from "./post.model";
 import { User } from './user.model';
 import { File } from './file.model';
 import { Column } from './column.model';
+import { Resource } from './resource.model';
 import { Account } from "./account.model";
 import { Story } from "./story.model";
 import { Workspace } from "./workspace.model";
@@ -49,6 +50,7 @@ export {
 
     // COLUMN
     Column as Column,
+    Resource as Resource,
 
     // FILE
     File as File,

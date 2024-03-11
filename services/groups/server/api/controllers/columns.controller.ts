@@ -17,7 +17,9 @@ export class ColumnsController {
             }).lean() || [];
 
             section = await Column.populate(section, [
+                { path: '_group' },
                 { path: 'budget.expenses._user' },
+                { path: 'budget.expenses._resource' },
                 { path: 'permissions._members', select: 'first_name last_name profile_pic role email' }
             ]);
 
@@ -46,7 +48,9 @@ export class ColumnsController {
             }).sort({kanban_order: 1}).lean() || [];
 
             columns = await Column.populate(columns, [
+                { path: '_group' },
                 { path: 'budget.expenses._user' },
+                { path: 'budget.expenses._resource' },
                 { path: 'permissions._members', select: 'first_name last_name profile_pic role email' }
             ]);
 
@@ -75,7 +79,9 @@ export class ColumnsController {
             }).sort({kanban_order: 1}).lean() || [];
 
             columns = await Column.populate(columns, [
+                { path: '_group' },
                 { path: 'budget.expenses._user' },
+                { path: 'budget.expenses._resource' },
                 { path: 'permissions._members', select: 'first_name last_name profile_pic role email' }
             ]);
 
@@ -109,6 +115,7 @@ export class ColumnsController {
               columns = await Column.populate(columns, [
                 { path: '_group' },
                 { path: 'budget.expenses._user' },
+                { path: 'budget.expenses._resource' },
                 { path: 'permissions._members', select: 'first_name last_name profile_pic role email' }
               ]);
             } else if (workspaceId) {
@@ -131,9 +138,10 @@ export class ColumnsController {
               }).lean() || [];
 
               columns = await Column.populate(columns, [
-                  { path: '_group' },
-                  { path: 'budget.expenses._user' },
-                  { path: 'permissions._members', select: 'first_name last_name profile_pic role email' }
+                { path: '_group' },
+                { path: 'budget.expenses._user' },
+                { path: 'budget.expenses._resource' },
+                { path: 'permissions._members', select: 'first_name last_name profile_pic role email' }
               ]);
             }
 
@@ -165,9 +173,10 @@ export class ColumnsController {
               }).lean() || [];
 
               columns = await Column.populate(columns, [
-                  { path: '_group' },
-                  { path: 'budget.expenses._user' },
-                  { path: 'permissions._members', select: 'first_name last_name profile_pic role email' }
+                { path: '_group' },
+                { path: 'budget.expenses._user' },
+                { path: 'budget.expenses._resource' },
+                { path: 'permissions._members', select: 'first_name last_name profile_pic role email' }
               ]);
             }
 
@@ -408,14 +417,14 @@ export class ColumnsController {
 
             // Find the group and update their respective group avatar
             const column = await Column.findOneAndUpdate({
-                _id: sectionId
-            }, {
-                $push: {
-                    'budget.expenses': expense
-                }
-            }, {
-                new: true
-            }).lean();
+                    _id: sectionId
+                }, {
+                    $push: {
+                        'budget.expenses': expense
+                    }
+                }, {
+                    new: true
+                }).lean();
 
             // Send status 200 response
             return res.status(200).json({
@@ -469,14 +478,14 @@ export class ColumnsController {
 
             // Find the group and update their respective group avatar
             const column = await Column.findOneAndUpdate({
-                _id: columnId
-            }, 
-            { 
-              $pull: {
-                'budget.expenses': { _id: expenseId }}
-            }, {
-              new: true
-            });
+                    _id: columnId
+                }, 
+                { 
+                $pull: {
+                    'budget.expenses': { _id: expenseId }}
+                }, {
+                new: true
+                });
 
             // Send status 200 response
             return res.status(200).json({

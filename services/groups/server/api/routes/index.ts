@@ -6,6 +6,7 @@ import { memberRoutes } from './member.routes';
 import { portfolioRoutes } from './portfolio.routes';
 import { pulseRoutes } from './pulse.routes';
 import { crmRoutes } from './crm.routes';
+import { resourcesRoutes } from './resources.routes';
 
 /*  =====================
  *  -- ROUTES EXPORTS --
@@ -19,5 +20,6 @@ export {
     flowRoutes as flowRoutes,
     portfolioRoutes as portfolioRoutes,
     libraryRoutes as libraryRoutes,
-    crmRoutes as crmRoutes
+    crmRoutes as crmRoutes,
+    resourcesRoutes as resourcesRoutes
 }

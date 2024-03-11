@@ -7,6 +7,7 @@ import { Comment } from './comment.model';
 import { Flow } from './flow.model';
 import { Notification } from './notification.model';
 import { Column } from './column.model';
+import { Resource } from './resource.model';
 import { Story } from "./story.model";
 import { Chat } from "./chat.model";
 import { Message } from "./messages.model";
@@ -47,6 +48,7 @@ export {
 
     // COLUMN
     Column as Column,
+    Resource as Resource,
 
     // NOTIFICATION
     Notification as Notification,

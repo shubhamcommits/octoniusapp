@@ -24,6 +24,7 @@ import { LibraryGuard } from 'src/shared/guards/library-guard/library.guard';
 import { IndivicualSubscriptionGuard } from 'src/shared/guards/indivicual-subscription-guard/indivicual-subscription.guard';
 import { CRMGuard } from 'src/shared/guards/crm-guard/crm.guard';
 import { GroupCRMSetupViewComponent } from './group/group-crm-setup-view/group-crm-setup-view.component';
+import { GroupResourceManagementComponent } from './group/group-resource-management/group-resource-management.component';
 
 
 /**
@@ -40,6 +41,9 @@ const routes: Routes = [
 
       // Group Activity
       { path: 'activity', component: GroupActivityComponent },
+
+      // Group Resource Management
+      { path: 'resource', component: GroupResourceManagementComponent },
 
       // Group tasks
       { path: 'tasks', component: GroupTasksViewsComponent },

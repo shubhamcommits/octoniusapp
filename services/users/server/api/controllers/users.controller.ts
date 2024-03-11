@@ -1,4 +1,4 @@
-import { Account, Group, Holiday, User, Workspace, Notification, TimeTrackingEntity } from '../models';
+import { Account, Group, Holiday, User, Workspace, Notification, TimeTrackingEntity, Column } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError,PasswordHelper, axios } from '../../utils';
 import { DateTime } from 'luxon';
@@ -2235,6 +2235,45 @@ export class UsersControllers {
             return res.status(200).json({
                 message: 'Groups found!',
                 groups: groups
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
+     * This function fetches the time tracking entities of a user with a date between specific dates
+     * @param req
+     */
+    async getUserProjects(req: Request, res: Response) {
+        try {
+
+            const { userId } = req.params;
+
+            const groups = await Group.find({
+                    $and: [
+                        {
+                            $or: [
+                                { _members: userId },
+                                { _admins: userId }
+                            ]
+                        },
+                        { group_name: { $ne: 'Global' }},
+                        { group_name: { $ne: 'personal' }}
+                    ]
+                }).select('_id').lean();
+            
+            let projects = await Column.find({
+                    $and: [
+                        { _group: { $in: groups }},
+                        { project_type: true }
+                    ]
+                }).select('_id title').lean();
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Projects found!',
+                projects: projects
             });
         } catch (err) {
             return sendError(res, err);

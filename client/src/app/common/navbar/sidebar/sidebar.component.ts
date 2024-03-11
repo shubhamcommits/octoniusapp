@@ -216,7 +216,11 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
     const newGroup = await this.publicFunctions.getGroupDetails(group?._id);
     await this.publicFunctions.sendUpdatesToGroupData(newGroup);
     await this.publicFunctions.sendUpdatesToPortfolioData({});
-    this.router.navigate(['/dashboard', 'work', 'groups', 'activity']);
+    if (group.type == 'resource') {
+      this.router.navigate(['dashboard', 'work', 'groups', 'resource']);
+    } else {
+      this.router.navigate(['dashboard', 'work', 'groups', 'activity']);
+    }
   }
 
   async goToPortfolio(group: any) {

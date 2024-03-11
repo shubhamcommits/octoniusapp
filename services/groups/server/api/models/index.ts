@@ -1,5 +1,6 @@
 import { Auth } from './auth.model';
 import { Column } from './column.model';
+import { Resource } from './resource.model';
 import { Flow } from './flow.model';
 import { Group } from './group.model';
 import { Post } from './post.model';
@@ -29,6 +30,7 @@ export {
     Contact as Contact,
     Collection as Collection,
     Column as Column,
+    Resource as Resource,
     File as File,
     Flow as Flow,
     Folder as Folder,

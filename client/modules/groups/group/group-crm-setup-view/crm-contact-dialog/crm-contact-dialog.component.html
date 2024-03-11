@@ -134,7 +134,7 @@
                     
                                 <div *ngIf="cf.input_type && !cf.input_type_date" class="col"
                                     style="display: flex; float: left; width: 125px;">
-                                    <input type="text" [name]="cf.name" [(ngModel)]="selectedCFValues[cf.name]" [disabled]="true"
+                                    <input [type]="(cf.input_type_number) ? 'number': 'text'" [name]="cf.name" [(ngModel)]="selectedCFValues[cf.name]" [disabled]="true"
                                         class="col" style="width: 94px;" [value]="selectedCFValues[cf.name]" />
                                 </div>
                     

@@ -59,6 +59,14 @@ const ColumnSchema = new Schema({
                 type: Schema.Types.ObjectId,
                 ref: 'User',
                 required: true
+            },
+            _resource: {
+                type: Schema.Types.ObjectId,
+                ref: 'Resource',
+                required: false
+            },
+            _resource_activity: {
+                type: String
             }
         }]
     },

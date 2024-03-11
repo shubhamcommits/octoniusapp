@@ -13,7 +13,8 @@ import {
     flowRoutes,
     portfolioRoutes,
     libraryRoutes,
-    crmRoutes
+    crmRoutes,
+    resourcesRoutes
 } from './routes';
 import fileUpload from 'express-fileupload';
 import { fileHandler } from '../utils';
@@ -102,6 +103,7 @@ app.use('/api/pulse', pulseRoutes);
 app.use('/api/portfolio', portfolioRoutes);
 app.use('/api/library', libraryRoutes);
 app.use('/api/crm', crmRoutes);
+app.use('/api/resources', resourcesRoutes);
 app.use('/api', groupsRoutes);
 
 // Invalid routes handling middleware
