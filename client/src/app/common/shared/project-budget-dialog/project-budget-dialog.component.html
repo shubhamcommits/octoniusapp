@@ -53,7 +53,7 @@
 
           <div class="row" *ngIf="showEditBudget">
             <button class="btn btn-outline-danger btn-md float-left" (click)="showEditBudget = !showEditBudget">
-              <span i18n="@@taskTimeTracking.close">X Close</span>
+              <span i18n="@@projectBudgetDialog.close">X Close</span>
             </button>
           </div>
         </div>
@@ -111,13 +111,13 @@
     <div class="actions">
       <button class="btn btn-outline-primary btn-md float-left" (click)="saveExpense()" [disabled]="!isValidEntry()">
         <i class="material-icons-outlined">attach_money</i>
-        <span i18n="@@taskTimeTracking.addEntry" *ngIf="!expense._id">Add expense</span>
-        <span i18n="@@taskTimeTracking.addEntry" *ngIf="!!expense._id">Save expense</span>
+        <span i18n="@@projectBudgetDialog.addEntry" *ngIf="!expense._id">Add expense</span>
+        <span i18n="@@projectBudgetDialog.saveExpense" *ngIf="!!expense._id">Save expense</span>
       </button>
     
       <button class="btn btn-outline-danger btn-md float-left" style="margin-left: 30px;" (click)="resetExpense()"
         *ngIf="showAddExpenseForm">
-        <span i18n="@@taskTimeTracking.cancel">X Cancel</span>
+        <span i18n="@@projectBudgetDialog.cancel">X Cancel</span>
       </button>
     </div>
 

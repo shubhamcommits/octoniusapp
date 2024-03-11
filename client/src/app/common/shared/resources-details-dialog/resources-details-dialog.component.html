@@ -4,8 +4,12 @@
 
 <mat-dialog-content>
   <div class="new-record-form" *ngIf="!resourceId && !resourceData">
-    <p style="text-align: center;"><img src="assets/images/inventory_placeholder.svg" alt="" style="width: 200px; margin: 24px auto;"></p>
-      <h2 style="text-align: center;">Add a new inventory item</h2>
+    <p style="text-align: center;">
+      <img src="assets/images/inventory_placeholder.svg" alt="" style="width: 200px; margin: 24px auto;">
+    </p>
+
+    <h2 style="text-align: center;" i18n="@@resourcesDetailsDialog.addNewItem">Add a new inventory item</h2>
+
     <div class="row">
       <div class="col">
         <div class="form-group">
@@ -60,8 +64,6 @@
       <button class="btn btn-outline-danger btn-md float-left" style="margin-left: 30px;" (click)="closeDialog()">
         <span i18n="@@resourcesDetailsDialog.cancel">X Cancel</span>
       </button>
-
- 
     </div>
   </div>
 
@@ -202,11 +204,11 @@
 
       <div class="clearfix" *ngIf="editResource">
         <button class="btn btn-outline-secondary btn-md float-left" (click)="editResource = !editResource">
-          <span i18n="@@resourceActivity.cancel">X Close</span>
+          <span i18n="@@resourcesDetailsDialog.close">X Close</span>
         </button>
 
         <button class="btn btn-outline-danger btn-md float-right" (click)="deleteResource()">
-          <span i18n="@@resourceActivity.deleteItem">Delete item</span>
+          <span i18n="@@resourcesDetailsDialog.deleteItem">Delete item</span>
         </button>
       </div>
     </div>
