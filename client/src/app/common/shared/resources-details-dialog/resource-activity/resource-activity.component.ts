@@ -84,7 +84,7 @@ export class ResourceActivityComponent implements OnChanges {
   }
 
   isValidEntry() {
-    return !this.showAddActivityForm || (!!this.activityDate && this.activityAddInventory != null && (this.activityAddInventory || (!this.activityAddInventory && !!this.activityProject)) && !!this.activityQuantity && !!this.activityUserId);
+    return !this.showAddActivityForm || (!!this.activityDate && this.activityAddInventory != null && !!this.activityQuantity && !!this.activityUserId);
   }
 
   saveEntry(propertyEdited?: string) {
