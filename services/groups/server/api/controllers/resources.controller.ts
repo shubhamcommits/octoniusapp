@@ -719,7 +719,7 @@ export class ResourcesController {
                     const indexUser = (!!resource.activity) ? resource.activity.findIndex(a => a._id == activityEntityId) : -1;
                     if (indexUser >= 0) {
                         const activityTmp = resource.activity[indexUser];
-                        if (!activityTmp.add_inventory) {
+                        if (!activityTmp.add_inventory && (!!activityTmp?._project?._id || !!activityTmp?._project)) {
                             resourceService.editExpenseUser(editedEntity?._user?._id || editedEntity?._user, activityTmp._project._id || activityTmp._project, resourceId, activityTmp._id)
                         }
                     }
@@ -776,7 +776,7 @@ export class ResourcesController {
                         }
 
                         indexProject = (!!resource.activity) ? resource.activity.findIndex(a => a._id == activityEntityId) : -1;
-                        if (indexProject >= 0) {
+                        if (indexProject >= 0 && !!editedEntity?._project) {
                             activity = resource.activity[indexProject];
                             await resourceService.addExpenseToProject(activity, resource, editedEntity?._project);
                         }
@@ -881,7 +881,7 @@ export class ResourcesController {
                     const indexDate = (!!resource.activity) ? resource.activity.findIndex(a => a._id == activityEntityId) : -1;
                     if (indexDate >=  0) {
                         const activityTmp = resource.activity[indexDate];
-                        if (!activityTmp.add_inventory) {
+                        if (!activityTmp.add_inventory && (!!activityTmp?._project?._id || !!activityTmp?._project)) {
                             resourceService.editExpenseDate(editedEntity?.date, activityTmp._project._id || activityTmp._project, resourceId, activityTmp._id)
                         }
                     }
@@ -930,7 +930,7 @@ export class ResourcesController {
                     const indexComment = (!!resource.activity) ? resource.activity.findIndex(a => a._id == activityEntityId) : -1;
                     if (indexComment >=  0) {
                         const activityTmp = resource.activity[indexComment];
-                        if (!activityTmp.add_inventory) {
+                        if (!activityTmp.add_inventory && (!!activityTmp?._project?._id || !!activityTmp?._project)) {
                             resourceService.editExpenseComment(editedEntity?.comment, activityTmp._project._id || activityTmp._project, resourceId, activityTmp._id)
                         }
                     }
@@ -993,7 +993,7 @@ export class ResourcesController {
                                 })
                                 .lean();
                         
-                            if (editedEntity.add_inventory) {
+                            if (editedEntity.add_inventory && (!!activity?._project?._id || !!activity?._project)) {
                                 resourceService.deleteExpenseFromProject(activity, resourceId);
                             }
                             // the expense is not added here because it needs a project to be selected.
@@ -1075,7 +1075,7 @@ export class ResourcesController {
                     })
                     .lean();
                 
-                if (!!activityTmp._project && !activityTmp.add_inventory) {
+                if (!!activityTmp._project && !activityTmp.add_inventory && (!!activityTmp?._project?._id || !!activityTmp?._project)) {
                     resourceService.deleteExpenseFromProject(activityTmp, resourceId);
                 }
             }

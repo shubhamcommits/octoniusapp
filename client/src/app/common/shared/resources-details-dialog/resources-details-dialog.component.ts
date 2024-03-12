@@ -165,7 +165,7 @@ export class ResourcesDetailsDialogComponent implements OnInit {
       const dates = await this.getDates();
 
       this.chartData = await this.getGraphData(dates);
-      this.chartLabels = this.formatDates(dates);
+      this.chartLabels = this.formatDates(dates.reverse());
       this.chartOptions = {
         responsive: true,
         legend: {
@@ -202,7 +202,15 @@ export class ResourcesDetailsDialogComponent implements OnInit {
       ];
       this.chartLegend = true;
       this.chartType = 'line';
-      this.chartPlugins = [];
+      this.chartPlugins = [{
+        beforeLayout: (chart) => {
+          chart.data.datasets.forEach(
+            (data) => {
+              data.label = '';
+            }
+          )
+        }
+      }];
 
       this.chartReady = true;
     }
@@ -210,8 +218,6 @@ export class ResourcesDetailsDialogComponent implements OnInit {
 
   async getDates() {
     const currentDate = DateTime.now();
-    // const firstDay = currentDate.startOf('week');
-    // const lastDay = currentDate.endOf('week');
     
     let datesRet = [];
     for (let i = 6; i >= 0; i--) {
@@ -266,8 +272,8 @@ export class ResourcesDetailsDialogComponent implements OnInit {
     this.removeResourceEvent.emit(this.resourceData?._id);
   }
 
-  onResouceEditedEmitter(resource: any) {
-    this.resourceData = resource;
+  async onResouceEditedEmitter(resource: any) {
+    await this.initEditResource(resource);
     this.editedResourceEvent.emit(this.resourceData);
   }
 
