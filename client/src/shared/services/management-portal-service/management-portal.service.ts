@@ -102,10 +102,10 @@ export class ManagementPortalService {
    */
   getStripeCustomer(customerId: string, mgmtApiPrivateKey: string) {
     return this._http.get(this.WORKSPACE_BASE_API_URL + `/billing/get-customer/${customerId}`, {
-      params: {
-        mgmtApiPrivateKey: mgmtApiPrivateKey
-      }
-    })
+        params: {
+          mgmtApiPrivateKey: mgmtApiPrivateKey
+        }
+      })
       .toPromise()
   }
 
@@ -209,32 +209,44 @@ export class ManagementPortalService {
     storageService.setLocalData('stripeSubscription', JSON.stringify(stripeSubscription))
   }
 
-  async checkIsIndividualSubscription() {
-    const subscription = await this.getStripeSubscription();
-    const utilityService = this.injector.get(UtilityService);
+  async checkIsIndividualSubscription(workspaceId: string, mgmtApiPrivateKey: string) {
+    // const subscription = await this.getStripeSubscription();
+    // const utilityService = this.injector.get(UtilityService);
 
-    if (!subscription.product && subscription.plan) {
-      subscription.product = subscription.plan.product
-    }
+    // if (!subscription.product && subscription.plan) {
+    //   subscription.product = subscription.plan.product
+    // }
     
-    return utilityService.objectExists(subscription)
-      && utilityService.objectExists(subscription.product)
-      && subscription.product != ''
-      && subscription.product == environment.STRIPE_INDIVIDUAL_PRODUCT_ID;
+    // return utilityService.objectExists(subscription)
+    //   && utilityService.objectExists(subscription.product)
+    //   && subscription.product != ''
+    //   && subscription.product == environment.STRIPE_INDIVIDUAL_PRODUCT_ID;
+    
+    return this._http.get(this.WORKSPACE_BASE_API_URL + `/billing/is-individual-subscription/${workspaceId}`, {
+        params: {
+          mgmtApiPrivateKey: mgmtApiPrivateKey
+        }
+      });
   }
 
-  async checkIsBusinessSubscription() {
-    const subscription = await this.getStripeSubscription();
-    const utilityService = this.injector.get(UtilityService);
+  async checkIsBusinessSubscription(workspaceId: string, mgmtApiPrivateKey: string) {
+    // const subscription = await this.getStripeSubscription();
+    // const utilityService = this.injector.get(UtilityService);
 
-    if (!subscription.product && subscription.plan) {
-      subscription.product = subscription.plan.product
-    }
+    // if (!subscription.product && subscription.plan) {
+    //   subscription.product = subscription.plan.product
+    // }
 
-    return utilityService.objectExists(subscription)
-      && (utilityService.objectExists(subscription.product)
-      && subscription.product != ''
-      && subscription.product == environment.STRIPE_BUSINESS_PRODUCT_ID);
+    // return utilityService.objectExists(subscription)
+    //   && (utilityService.objectExists(subscription.product)
+    //   && subscription.product != ''
+    //   && subscription.product == environment.STRIPE_BUSINESS_PRODUCT_ID);
+    return this._http.get(this.WORKSPACE_BASE_API_URL + `/billing/is-business-subscription/${workspaceId}`, {
+        params: {
+          mgmtApiPrivateKey: mgmtApiPrivateKey
+        }
+      })
+      .toPromise()
   }
   /* | ======================================= BILLING ENDS ========================================== | */
 

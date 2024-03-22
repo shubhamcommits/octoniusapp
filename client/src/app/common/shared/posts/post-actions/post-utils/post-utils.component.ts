@@ -53,7 +53,7 @@ export class PostUtilsComponent implements OnInit {
     this.groupId = (this.post._group) ? ((this.post._group._id) ? this.post._group._id : this.post._group) : null;
 
     this.canDelete = await this.utilityService.canUserDoTaskAction(this.post, this.groupData, this.userData, 'delete');
-    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+    this.isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
 
     if (this.groupId) {
       // Fetches the user groups from the server

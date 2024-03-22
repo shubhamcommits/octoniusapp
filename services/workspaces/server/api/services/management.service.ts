@@ -213,6 +213,58 @@ export class ManagementService {
         }
     }
 
+    checkIsIndividualSubscription(workspaceId: string, mgmtApiPrivateKey: string) {
+        try {
+            // Add this this if/else to use octonius in local without running mgmt portal
+            // mgmt would be needed for some functionalities, but basic work can be done
+            if (process.env.NODE_ENV == 'development') {
+                return new Promise((resolve, reject) => {
+                    resolve({
+                        data: {
+                            message: 'succesfully retrieved the subscription',
+                            status: true
+                        }
+                    });
+                });
+            } else {
+                return axios.get(`${this.MANAGEMENT_BASE_API_URL}/billings/${workspaceId}/is-individual-subscription`, {
+                    params: {
+                        API_KEY: mgmtApiPrivateKey
+                    },
+                    
+                });
+            }
+        } catch (err) {
+            throw (err);
+        }
+    }
+
+    checkIsBusinessSubscription(workspaceId: string, mgmtApiPrivateKey: string) {
+        try {
+            // Add this this if/else to use octonius in local without running mgmt portal
+            // mgmt would be needed for some functionalities, but basic work can be done
+            if (process.env.NODE_ENV == 'development') {
+                return new Promise((resolve, reject) => {
+                    resolve({
+                        data: {
+                            message: 'succesfully retrieved the subscription',
+                            status: true
+                        }
+                    });
+                });
+            } else {
+                return axios.get(`${this.MANAGEMENT_BASE_API_URL}/billings/${workspaceId}/is-business-subscription`, {
+                    params: {
+                        API_KEY: mgmtApiPrivateKey
+                    },
+                    
+                });
+            }
+        } catch (err) {
+            throw (err);
+        }
+    }
+
     /**
      * This function is responsible for check if the workspace has organization module active
      * @param workspaceId

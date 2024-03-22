@@ -75,7 +75,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
       }
     });
 
-    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+    this.isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
   }
 
   async ngOnChanges(changes: SimpleChanges) {

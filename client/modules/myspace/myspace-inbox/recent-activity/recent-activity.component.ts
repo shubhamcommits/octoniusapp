@@ -15,6 +15,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { HolidayRejectionDialogComponent } from 'src/app/common/shared/hr/holiday-rejection-dialog/holiday-rejection-dialog.component';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
 import { EditMemberPayrollDialogComponent } from 'modules/organization/hr/employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component';
+import { MemberApprovalHolidaysAvailabilityDialogComponent } from 'src/app/common/shared/member-approval-holidays-availability-dialog/member-approval-holidays-availability-dialog.component';
 
 @Component({
   selector: 'app-recent-activity',
@@ -89,7 +90,7 @@ export class RecentActivityComponent implements OnInit {
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     this.isOrganizationModuleAvailable = await this.publicFunctions.isOrganizationModuleAvailable();
-    this.isBusinessSubscription = await this.managementPortalService.checkIsBusinessSubscription();
+    this.isBusinessSubscription = await this.publicFunctions.checkIsBusinessSubscription();
 
     await this.initNotifications();
 
@@ -230,9 +231,13 @@ export class RecentActivityComponent implements OnInit {
   async goToGroup(groupId: string, notificationId: string, index: any, type: string) {
     this.markNotificationAsRead(notificationId, this.userData._id, index, type);
 
-    const newGroup = await this.publicFunctions.getGroupDetails(groupId);
+    const newGroup: any = await this.publicFunctions.getGroupDetails(groupId);
     await this.publicFunctions.sendUpdatesToGroupData(newGroup);
-    this._router.navigate(['/dashboard', 'work', 'groups', 'activity']);
+    if (newGroup.type == 'resource') {
+      this._router.navigate(['dashboard', 'work', 'groups', 'resource']);
+    } else {
+      this._router.navigate(['dashboard', 'work', 'groups', 'activity']);
+    }
   }
 
   async viewFolioNotification(notification: any, index: any) {
@@ -378,6 +383,23 @@ export class RecentActivityComponent implements OnInit {
           }));
         }
       });
+  }
+
+  openAvailabilityDialog(holiday: any) {
+    const data = {
+      holiday: holiday
+    };
+
+    const dialogRef = this.dialog.open(MemberApprovalHolidaysAvailabilityDialogComponent, {
+      width: '75%',
+      height: '75%',
+      disableClose: true,
+      hasBackdrop: true,
+      data: data,
+    });
+
+    dialogRef.afterClosed().subscribe(async result => {
+    });
   }
 
   formateDate(date: any, withTime: boolean = false) {

@@ -53,7 +53,7 @@ export class FilesBarComponent implements OnInit {
 
   async ngOnInit() {
     this.isAdmin = this.isAdminUser();
-    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+    this.isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
 
     this.customFields = [];
     this.groupService.getGroupFilesCustomFields(this.groupData?._id).then((res) => {

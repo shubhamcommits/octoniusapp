@@ -79,7 +79,7 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
 
     this.period = (!!this.userData?.stats?.group_dashboard_period) ? this.userData.stats.group_dashboard_period : 7;
 
-    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+    this.isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
   }
 
   ngOnDestroy(): void {

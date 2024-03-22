@@ -48,7 +48,7 @@ export class GroupSettingsComponent implements OnInit {
 
   async ngOnInit() {
 
-    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+    this.isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
 
     if (!this.utilityService.objectExists(this.groupData)) {
       this.groupData = await this.publicFunctions.getCurrentGroupDetails();

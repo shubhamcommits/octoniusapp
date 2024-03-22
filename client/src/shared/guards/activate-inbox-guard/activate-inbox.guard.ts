@@ -1,15 +1,17 @@
-import {Injectable } from '@angular/core';
+import {Injectable, Injector } from '@angular/core';
 import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, UrlTree } from '@angular/router';
+import { PublicFunctions } from 'modules/public.functions';
 import { Observable } from 'rxjs';
-import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ActivateInboxGuard implements CanActivate {
 
+  private publicFunctions = new PublicFunctions(this.injector);
+
   constructor(
-    private managementPortalService: ManagementPortalService,
+    private injector: Injector,
     private router: Router
   ) {}
 
@@ -20,7 +22,7 @@ export class ActivateInboxGuard implements CanActivate {
   }
 
   async checkUserIndivicualSubscription() {
-    const isIndividualSubscription: any = await this.managementPortalService.checkIsIndividualSubscription();
+    const isIndividualSubscription: any = await this.publicFunctions.checkIsIndividualSubscription();
     if (!isIndividualSubscription) {
       return true;
     } else {

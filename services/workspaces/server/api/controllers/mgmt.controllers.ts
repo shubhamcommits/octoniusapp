@@ -561,6 +561,58 @@ export class ManagementControllers {
         }
     }
 
+    /**
+     * This function fetches the stripe customer details for the currently loggedIn user
+     */
+    async checkIsIndividualSubscription(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { workspaceId } = req.params;
+            const { mgmtApiPrivateKey } = req.query;
+
+            let message;
+            let status;
+            await managementService.checkIsIndividualSubscription(workspaceId, mgmtApiPrivateKey.toString())
+                .then(res => {
+                    message = res['data']['message'];
+                    status = res['data']['status'];
+                });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: message,
+                status: status
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function fetches the stripe customer details for the currently loggedIn user
+     */
+    async checkIsBusinessSubscription(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { workspaceId } = req.params;
+            const { mgmtApiPrivateKey } = req.query;
+
+            let message;
+            let status;
+            await managementService.checkIsBusinessSubscription(workspaceId, mgmtApiPrivateKey.toString())
+                .then(res => {
+                    message = res['data']['message'];
+                    status = res['data']['status'];
+                });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: message,
+                status: status
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
     /* | ======================================= BILLING ENDS ========================================== | */
 
     /**

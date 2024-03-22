@@ -131,7 +131,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
 
     this.isFavoriteGroup = this.checkIsFavoriteGroup();
 
-    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+    this.isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
 
     if (this.routerFromEvent && this.routerFromEvent?._urlSegment) {
       const segments = this.routerFromEvent?._urlSegment?.children?.primary?.segments;

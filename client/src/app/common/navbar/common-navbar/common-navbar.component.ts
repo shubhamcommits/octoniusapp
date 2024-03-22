@@ -66,7 +66,7 @@ export class CommonNavbarComponent implements OnInit, OnDestroy {
       this.isCurrentUser = true;
     }
 
-    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+    this.isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
 
     // Subscribe to the change in workspace data from the socket server
     this.subSink.add(this.utilityService.currentWorkplaceData.subscribe((res) => {

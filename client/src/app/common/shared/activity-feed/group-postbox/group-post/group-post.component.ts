@@ -370,7 +370,7 @@ export class GroupPostComponent implements OnInit {
     }
 
     formData.append('isShuttleTasksModuleAvailable', (await this.publicFunctions.isShuttleTasksModuleAvailable()).toString());
-    formData.append('isIndividualSubscription', (await this.managementPortalService.checkIsIndividualSubscription()).toString());
+    formData.append('isIndividualSubscription', (await this.publicFunctions.checkIsIndividualSubscription()).toString());
 
     // Call the Helper Function
     this.onCreatePost(formData)

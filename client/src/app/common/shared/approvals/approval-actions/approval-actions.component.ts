@@ -271,7 +271,7 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
     if (action == 'approved') {
       if (this.confirmationCode && this.confirmationCode != '') {
         const isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
-        const isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+        const isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
 
         this.approvalService.confirmAction(this.itemData._id, this.type, approvalId, this.confirmationCode, this.confirmation, isShuttleTasksModuleAvailable, isIndividualSubscription).then(async res => {
           this.itemData = res['item'];

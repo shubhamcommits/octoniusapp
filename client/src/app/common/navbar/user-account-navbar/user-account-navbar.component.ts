@@ -70,7 +70,7 @@ export class UserAccountNavbarComponent implements OnInit, OnDestroy {
     await this.publicFunctions.getCurrentUser().then(user => this.userData = user);
 
     this.isOrganizationModuleAvailable = await this.publicFunctions.isOrganizationModuleAvailable();
-    this.isBusinessSubscription = await this.managementPortalService.checkIsBusinessSubscription();
+    this.isBusinessSubscription = await this.publicFunctions.checkIsBusinessSubscription();
     // Subscribe to the change in workspace data from the socket server
     this.subSink.add(this.utilityService.currentWorkplaceData.subscribe((res) => {
       if (JSON.stringify(res) != JSON.stringify({})) {

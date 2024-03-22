@@ -184,7 +184,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
       this.taskTypesSelection.push('northStar');
     }
 
-    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+    this.isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
   }
 
   ngAfterViewInit() {

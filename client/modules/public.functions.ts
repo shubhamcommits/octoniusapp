@@ -1284,7 +1284,7 @@ export class PublicFunctions {
         utilityService.asyncNotification($localize`:@@publicFunctions.pleaseWaitWeChangeTaskAssignee:Please wait we are changing the task assignee...`,
             new Promise(async (resolve, reject) => {
                 const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
-                const isIndividualSubscription = await managementPortalService.checkIsIndividualSubscription();
+                const isIndividualSubscription = await this.checkIsIndividualSubscription();
                 // Call HTTP Request to change the assignee
                 postService.changeTaskAssignee(postId, assigneeId, isShuttleTasksModuleAvailable, isIndividualSubscription)
                     .then((res) => {
@@ -1310,7 +1310,7 @@ export class PublicFunctions {
         utilityService.asyncNotification($localize`:@@publicFunctions.pleaseWaitChangingTaskDueDate:Please wait we are changing the task due date...`,
             new Promise(async (resolve, reject) => {
                 const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
-                const isIndividualSubscription = await managementPortalService.checkIsIndividualSubscription();
+                const isIndividualSubscription = await this.checkIsIndividualSubscription();
                 // Call HTTP Request to change the request
                 postService.changeTaskDueDate(postId, dueDate, isShuttleTasksModuleAvailable, isIndividualSubscription)
                     .then((res) => {
@@ -1335,7 +1335,7 @@ export class PublicFunctions {
         let managementPortalService = this.injector.get(ManagementPortalService)
 
         const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
-        const isIndividualSubscription = await managementPortalService.checkIsIndividualSubscription();
+        const isIndividualSubscription = await this.checkIsIndividualSubscription();
 
         // Call HTTP Request to change the request
         return postService.changeTaskStatus(postId, status, userId, groupId, isShuttleTasksModuleAvailable, isIndividualSubscription);
@@ -1354,7 +1354,7 @@ export class PublicFunctions {
         utilityService.asyncNotification($localize`:@@publicFunctions.pleaseWaitWeAreMovingTaskToSection:Please wait we are moving the task to a new section...`,
             new Promise(async (resolve, reject) => {
                 const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
-                const isIndividualSubscription = await managementPortalService.checkIsIndividualSubscription();
+                const isIndividualSubscription = await this.checkIsIndividualSubscription();
                 // Call HTTP Request to change the request
                 postService.changeTaskColumn(postId, columnId, userId, groupId, isShuttleTasksModuleAvailable, isIndividualSubscription)
                     .then((res) => {
@@ -1377,7 +1377,7 @@ export class PublicFunctions {
         let managementPortalService = this.injector.get(ManagementPortalService);
 
         const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
-        const isIndividualSubscription = await managementPortalService.checkIsIndividualSubscription();
+        const isIndividualSubscription = await this.checkIsIndividualSubscription();
 
         // Call HTTP Request to change the request
         return postService.selectShuttleStatus(postId, groupId, status, isShuttleTasksModuleAvailable, isIndividualSubscription);
@@ -1394,7 +1394,7 @@ export class PublicFunctions {
         let managementPortalService = this.injector.get(ManagementPortalService);
 
         const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
-        const isIndividualSubscription = await managementPortalService.checkIsIndividualSubscription();
+        const isIndividualSubscription = await this.checkIsIndividualSubscription();
 
         utilityService.asyncNotification($localize`:@@publicFunctions.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise(async (resolve, reject) => {
           await postService.selectShuttleSection(postId, groupId, shuttleSectionId, isShuttleTasksModuleAvailable, isIndividualSubscription)
@@ -1470,7 +1470,7 @@ export class PublicFunctions {
 
     async executedAutomationFlowsPropertiesFront(flows: any[], post: any, groupId: string, isCreationTaskTrigger?: boolean, shuttleIndex?: number) {
       const managementPortalService = this.injector.get(ManagementPortalService);
-      const isIndividualSubscription = await managementPortalService.checkIsIndividualSubscription();
+      const isIndividualSubscription = await this.checkIsIndividualSubscription();
 
       if (!isIndividualSubscription) {
         if (flows && flows.length > 0) {
@@ -2569,5 +2569,28 @@ console.log(error);
     }
 
     return '';
+  }
+
+  async checkIsIndividualSubscription() {
+    const workspace = await this.getCurrentWorkspace();
+    let status = false;
+    let managementPortalService = this.injector.get(ManagementPortalService)
+    await managementPortalService.checkIsIndividualSubscription(workspace._id, workspace.management_private_api_key)
+      .then(res => {
+        status = res['status'] || false;
+      });
+    return status;
+  }
+
+  async checkIsBusinessSubscription() {
+    const workspace = await this.getCurrentWorkspace();
+
+    let status = false;
+    let managementPortalService = this.injector.get(ManagementPortalService)
+    await managementPortalService.checkIsBusinessSubscription(workspace._id, workspace.management_private_api_key)
+      .then(res => {
+        status = res['status'] || false;
+      });
+    return status;
   }
 }

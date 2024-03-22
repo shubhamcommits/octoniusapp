@@ -6,18 +6,17 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-// import { PublicFunctions } from 'modules/public.functions';
-import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Injectable({
   providedIn: 'root',
 })
 export class IndivicualSubscriptionGuard implements CanActivate  {
 
-  // private publicFunctions = new PublicFunctions(this.injector);
+  private publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
-    private managementPortalService: ManagementPortalService,
+    private injector: Injector,
     private utilityService: UtilityService,
     private router: Router
   ) {
@@ -31,7 +30,7 @@ export class IndivicualSubscriptionGuard implements CanActivate  {
   }
 
   async checkUserIndivicualSubscription() {
-    const isIndividualSubscription: any = await this.managementPortalService.checkIsIndividualSubscription();
+    const isIndividualSubscription: any = await this.publicFunctions.checkIsIndividualSubscription();
     if (!isIndividualSubscription) {
       return true;
     } else {

@@ -101,7 +101,7 @@ export class NewNorthStarDialogComponent implements OnInit {
       // Append Post Data
       formData.append('post', JSON.stringify(postData))
       formData.append('isShuttleTasksModuleAvailable', (await this.publicFunctions.isShuttleTasksModuleAvailable()).toString());
-      formData.append('isIndividualSubscription', (await this.managementPortalService.checkIsIndividualSubscription()).toString());
+      formData.append('isIndividualSubscription', (await this.publicFunctions.checkIsIndividualSubscription()).toString());
 
       // Call the Helper Function
       this.utilityService.asyncNotification($localize`:@@newNorthStarDialog.pleaseWaitCreatingPost:Please wait we are creating the task...`, new Promise((resolve, reject) => {

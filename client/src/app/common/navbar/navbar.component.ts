@@ -133,7 +133,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData)
     }
 
-    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+    this.isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
 
     this.subSink.add(this._router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
