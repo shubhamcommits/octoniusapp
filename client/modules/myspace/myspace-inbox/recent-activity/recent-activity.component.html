@@ -404,7 +404,7 @@
                 <th></th>
             </tr>
           
-            <tr *ngFor="let holiday of pendingHolidays; let index = index" (click)="openAvailabilityDialog(holiday)" class="pointer">
+            <tr *ngFor="let holiday of pendingHolidays; let index = index" class="pointer">
                 <td>
                     <app-secured-image [imgURL]="holiday?._user?.profile_pic" [service]="'user'" [inlineStyle]="'cursor: default;'"
                         [workspaceId]="workspaceData?._id" [styleClass]="'feed-avatar-small'"></app-secured-image>

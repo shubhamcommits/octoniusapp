@@ -15,7 +15,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { HolidayRejectionDialogComponent } from 'src/app/common/shared/hr/holiday-rejection-dialog/holiday-rejection-dialog.component';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
 import { EditMemberPayrollDialogComponent } from 'modules/organization/hr/employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component';
-import { MemberApprovalHolidaysAvailabilityDialogComponent } from 'src/app/common/shared/member-approval-holidays-availability-dialog/member-approval-holidays-availability-dialog.component';
 
 @Component({
   selector: 'app-recent-activity',
@@ -383,23 +382,6 @@ export class RecentActivityComponent implements OnInit {
           }));
         }
       });
-  }
-
-  openAvailabilityDialog(holiday: any) {
-    const data = {
-      holiday: holiday
-    };
-
-    const dialogRef = this.dialog.open(MemberApprovalHolidaysAvailabilityDialogComponent, {
-      width: '75%',
-      height: '75%',
-      disableClose: true,
-      hasBackdrop: true,
-      data: data,
-    });
-
-    dialogRef.afterClosed().subscribe(async result => {
-    });
   }
 
   formateDate(date: any, withTime: boolean = false) {
