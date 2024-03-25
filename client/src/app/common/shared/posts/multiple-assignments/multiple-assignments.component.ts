@@ -106,7 +106,7 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
 
   async ngOnInit() {
     this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
-    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+    this.isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
   }
 
   ngOnDestroy(): void {

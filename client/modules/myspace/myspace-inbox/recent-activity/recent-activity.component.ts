@@ -89,7 +89,7 @@ export class RecentActivityComponent implements OnInit {
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     this.isOrganizationModuleAvailable = await this.publicFunctions.isOrganizationModuleAvailable();
-    this.isBusinessSubscription = await this.managementPortalService.checkIsBusinessSubscription();
+    this.isBusinessSubscription = await this.publicFunctions.checkIsBusinessSubscription();
 
     await this.initNotifications();
 
@@ -230,9 +230,13 @@ export class RecentActivityComponent implements OnInit {
   async goToGroup(groupId: string, notificationId: string, index: any, type: string) {
     this.markNotificationAsRead(notificationId, this.userData._id, index, type);
 
-    const newGroup = await this.publicFunctions.getGroupDetails(groupId);
+    const newGroup: any = await this.publicFunctions.getGroupDetails(groupId);
     await this.publicFunctions.sendUpdatesToGroupData(newGroup);
-    this._router.navigate(['/dashboard', 'work', 'groups', 'activity']);
+    if (newGroup.type == 'resource') {
+      this._router.navigate(['dashboard', 'work', 'groups', 'resource']);
+    } else {
+      this._router.navigate(['dashboard', 'work', 'groups', 'activity']);
+    }
   }
 
   async viewFolioNotification(notification: any, index: any) {

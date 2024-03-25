@@ -103,8 +103,8 @@ export class FileDetailsDialogComponent implements OnInit {
       this.canView = true;
     }
 
-    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
-    this.isBusinessSubscription = await this.managementPortalService.checkIsBusinessSubscription();
+    this.isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
+    this.isBusinessSubscription = await this.publicFunctions.checkIsBusinessSubscription();
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);

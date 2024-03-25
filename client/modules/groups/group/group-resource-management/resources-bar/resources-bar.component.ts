@@ -63,7 +63,7 @@ export class ResourcesBarComponent implements OnInit {
   async ngOnInit() {
     this.groupMembers = await this.publicFunctions.getCurrentGroupMembers();
     this.shuttleGroups = await this.publicFunctions.getShuttleGroups(this.groupData?._workspace, this.groupData?._id);
-    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+    this.isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
   }
 
   // changeView(view: string) {

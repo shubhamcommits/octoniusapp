@@ -21,9 +21,6 @@ export class PricingTableComponent implements OnInit {
   // Stripe Payment Handler
   handler: any;
   
-  // PRICING_TABLE_ID = environment.STRIPE_PRICING_TABLE_ID;
-  // STRIPE_PK = environment.STRIPE_PK;
-  
   // Workspace object
   workspaceService = this.injector.get(WorkspaceService);
   

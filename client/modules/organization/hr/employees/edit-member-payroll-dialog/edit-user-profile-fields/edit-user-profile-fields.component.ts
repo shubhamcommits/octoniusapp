@@ -64,7 +64,7 @@ export class EditUserProfileFieldsComponent implements OnInit {
 
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
-    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+    this.isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
 
     if (!this.isIndividualSubscription) {
       this.initProfileCustomFields();

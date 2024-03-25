@@ -126,7 +126,7 @@ export class GroupFilesComponent implements OnInit {
     this.groupData = await this.publicFunctions.getCurrentGroupDetails();
 
     this.isFilesVersionsModuleAvailable = await this.publicFunctions.isFilesVersionsModuleAvailable();
-    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+    this.isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
     this.isAdmin = this.isAdminUser();
 
     const folderId = await this.router.snapshot.queryParamMap.has('folder') ? this.router.snapshot.queryParamMap.get('folder') : false

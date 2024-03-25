@@ -133,7 +133,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges, On
 
   async ngOnInit() {
     this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
-    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+    this.isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
   }
 
   // Required for ControlValueAccessor interface

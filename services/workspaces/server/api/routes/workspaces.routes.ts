@@ -85,6 +85,12 @@ routes.get('/billing/can-invite-more-members/:workspaceId', mgmt.canInviteMoreMe
 // GET - get customer details
 routes.get('/billing/get-customer/:customerId', mgmt.getStripeCustomer);
 
+// GET - check if the workspace has a individual subscription
+routes.get('/billing/is-individual-subscription/:workspaceId', mgmt.checkIsIndividualSubscription);
+
+// GET - check if the workspace has a business subscription
+routes.get('/billing/is-business-subscription/:workspaceId', mgmt.checkIsBusinessSubscription);
+
 // GET - get subscription
 // routes.get('/billing/stripe-subscription', mgmt.getSubscription);
 

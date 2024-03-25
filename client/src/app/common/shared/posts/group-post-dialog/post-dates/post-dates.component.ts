@@ -130,7 +130,7 @@ export class PostDatesComponent implements OnInit, OnChanges {
     await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise(async (resolve, reject) => {
       if (property === 'due_date') {
         const isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
-        const isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+        const isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
 
         this.postService.changeTaskDueDate(this.postData?._id, date?moment(date).format('YYYY-MM-DD'):null, isShuttleTasksModuleAvailable, isIndividualSubscription)
         .then((res) => {

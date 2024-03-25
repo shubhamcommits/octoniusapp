@@ -20,7 +20,7 @@
       <div *ngIf="notificationsData.unreadNotifications.length > 0 && !(isLoading$ | async)" >
         <div class="notification-item" style="flex-direction: row-reverse;">
           <div class="notification_more">
-            <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="general_menu" style="cursor: pointer;">more_horiz</i>
+            <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="general_menu" class="pointer">more_horiz</i>
             <mat-menu #general_menu="matMenu">
               <a mat-menu-item (click)="markAllNotificationAsRead('')">
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">check_circle_outline</i>
@@ -114,7 +114,7 @@
           </div>
 
           <div class="notification_more">
-            <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
+            <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" class="pointer">more_horiz</i>
             <mat-menu #menu="matMenu">
               <a mat-menu-item *ngIf="notification?.type !== 'mention_folio' && notification?.type !== 'join-group' && notification?.type !== 'leave-group' && (notification?.type != 'approved-item' && notification?.type != 'reject-item' && notification?.type != 'launch-approval-flow' && notification?.type != 'mention_collection' && notification?.type != 'mention_page')"
                 (click)="viewNotification(notification, index)">
@@ -178,7 +178,7 @@
       <div *ngIf="notificationsData.unreadPosts.length > 0 && !(isLoading$ | async)" >
         <div class="notification-item" style="flex-direction: row-reverse;">
           <div class="notification_more">
-            <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="general_menu" style="cursor: pointer;">more_horiz</i>
+            <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="general_menu" class="pointer">more_horiz</i>
             <mat-menu #general_menu="matMenu">
               <a mat-menu-item (click)="markAllNotificationAsRead('new-post')">
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">check_circle_outline</i>
@@ -217,7 +217,7 @@
           </div>
 
           <div class="notification_more">
-            <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
+            <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" class="pointer">more_horiz</i>
             <mat-menu #menu="matMenu">
               <a mat-menu-item *ngIf="notification?.type !== 'mention_folio'"
                 (click)="viewPost(notification?._origin_post?._id, notification?._origin_post?._group?._id)">
@@ -293,7 +293,7 @@
           </div>
 
           <div class="notification_more">
-            <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
+            <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" class="pointer">more_horiz</i>
             <mat-menu #menu="matMenu">
               <a mat-menu-item [routerLink]="['/dashboard', 'work', 'lounge', 'story']" [queryParams]="{ story: event?._id  }">
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
@@ -394,55 +394,54 @@
       <!-- Empty State ends -->
     
       <div *ngIf="pendingHolidays.length > 0 && !(isLoading$ | async)">
-        <!-- NOTIFICATION ITEM STARTS-->
         <table style="width: 100%; margin-top: 20px;">
-          <tr>
-            <th i18n="@@recentActivity.member">Member</th>
-            <th i18n="@@recentActivity.starts">Starts</th>
-            <th i18n="@@recentActivity.ends">Ends</th>
-            <th i18n="@@recentActivity.type">Type</th>
-            <th i18n="@@recentActivity.numDays">Number Days</th>
-            <th i18n="@@recentActivity.description">Description</th>
-            <th i18n="@@recentActivity.status">Status</th>
-            <th></th>
-          </tr>
-        
-          <tr *ngFor="let holiday of pendingHolidays; let index = index">
-            <td>
-              <app-secured-image [imgURL]="holiday?._user?.profile_pic" [service]="'user'" [inlineStyle]="'cursor: default;'"
-                [workspaceId]="workspaceData?._id" [styleClass]="'feed-avatar-small'"></app-secured-image>
-              {{ holiday?._user?.first_name }} {{ holiday?._user?.last_name }}
-            </td>
-            <td>{{ formateDate(holiday.start_date) }}</td>
-            <td>{{ formateDate(holiday.end_date) }}</td>
-            <td>{{ holiday.type }}</td>
-            <td>{{ holiday.num_days }}</td>
-            <td>{{ holiday.description }}</td>
-        
-            <td>
-              <span *ngIf="holiday?.status == 'approved'" class="approved dropdown-toggle" data-toggle="dropdown" i18n="@@recentActivity.approved">APPROVED</span>
-              <span *ngIf="holiday?.status == 'pending'" class="pending dropdown-toggle" data-toggle="dropdown" i18n="@@recentActivity.pending">PENDING</span>
-              
-              <!-- Menu Drawer Starts -->
-              <ul class="dropdown-menu">
-                <li class="dropdown-item" (click)="doHolidayAction('approved', holiday?._id)">
-                  <div class="approved action-button">
-                    <i class="material-icons">check_circle</i>
-                    &nbsp;
-                    <span i18n="@@recentActivity.approve">APPROVE</span>
-                  </div>
-                </li>
-                <li class="dropdown-item" (click)="doHolidayAction('rejected', holiday?._id)">
-                  <div class="rejected action-button">
-                    <i class="material-icons">highlight_off</i>
-                    &nbsp;
-                    <span i18n="@@recentActivity.reject">REJECT</span>
-                  </div>
-                </li>
-              </ul>
-              <!-- Menu Drawer Ends -->
-            </td>
-          </tr>
+            <tr>
+                <th i18n="@@recentActivity.member">Member</th>
+                <th i18n="@@recentActivity.starts">Starts</th>
+                <th i18n="@@recentActivity.ends">Ends</th>
+                <th i18n="@@recentActivity.type">Type</th>
+                <th i18n="@@recentActivity.numDays">Number Days</th>
+                <th i18n="@@recentActivity.description">Description</th>
+                <th i18n="@@recentActivity.status">Status</th>
+                <th></th>
+            </tr>
+          
+            <tr *ngFor="let holiday of pendingHolidays; let index = index" class="pointer">
+                <td>
+                    <app-secured-image [imgURL]="holiday?._user?.profile_pic" [service]="'user'" [inlineStyle]="'cursor: default;'"
+                        [workspaceId]="workspaceData?._id" [styleClass]="'feed-avatar-small'"></app-secured-image>
+                    {{ holiday?._user?.first_name }} {{ holiday?._user?.last_name }}
+                </td>
+                <td>{{ formateDate(holiday.start_date) }}</td>
+                <td>{{ formateDate(holiday.end_date) }}</td>
+                <td>{{ holiday.type }}</td>
+                <td>{{ holiday.num_days }}</td>
+                <td>{{ holiday.description }}</td>
+            
+                <td (click)="$event.stopPropagation();">
+                    <span *ngIf="holiday?.status == 'approved'" class="approved dropdown-toggle" [matMenuTriggerFor]="menu" i18n="@@recentActivity.approved">APPROVED</span>
+                    <span *ngIf="holiday?.status == 'pending'" class="pending dropdown-toggle" [matMenuTriggerFor]="menu" i18n="@@recentActivity.pending">PENDING</span>
+                    
+                    <!-- Menu Drawer Starts -->
+                    <mat-menu #menu="matMenu">
+                        <a mat-menu-item (click)="doHolidayAction('approved', holiday?._id)">
+                            <div class="approved action-button">
+                                <i class="material-icons">check_circle</i>
+                                &nbsp;
+                                <span i18n="@@recentActivity.approve">APPROVE</span>
+                            </div>
+                        </a>
+                        <a mat-menu-item (click)="doHolidayAction('rejected', holiday?._id)">
+                            <div class="rejected action-button">
+                                <i class="material-icons">highlight_off</i>
+                                &nbsp;
+                                <span i18n="@@recentActivity.reject">REJECT</span>
+                            </div>
+                        </a>
+                    </mat-menu>
+                    <!-- Menu Drawer Ends -->
+                </td>
+            </tr>
         </table>
       </div>
     </mat-tab>

@@ -154,8 +154,8 @@ export class GroupPostDialogComponent implements OnInit, AfterViewChecked {
 
     this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
     this.isIdeaModuleAvailable = await this.publicFunctions.checkIdeaStatus();
-    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
-    this.isBusinessSubscription = await this.managementPortalService.checkIsBusinessSubscription();
+    this.isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
+    this.isBusinessSubscription = await this.publicFunctions.checkIsBusinessSubscription();
 
     this.userData = await this.publicFunctions.getCurrentUser();
 

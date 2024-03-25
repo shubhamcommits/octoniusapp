@@ -51,7 +51,7 @@ export class GroupAdminComponent implements OnInit {
     // Fetch Current Workspace
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
-    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+    this.isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
 
     this.myWorkplace = await this.publicFunctions.isPersonalNavigation(this.groupData, this.userData);
 

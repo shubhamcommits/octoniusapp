@@ -55,7 +55,7 @@ export class AdminGeneralComponent implements OnInit, AfterContentChecked, OnDes
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     this.allowDecentralizedRoles = this.workspaceData['allow_decentralized_roles'];
 
-    this.isIndividualSubscription = await this.managementPortalService.checkIsIndividualSubscription();
+    this.isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
   }
 
   ngAfterContentChecked() {
