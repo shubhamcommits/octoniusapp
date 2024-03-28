@@ -20,7 +20,7 @@
       <div *ngIf="notificationsData.unreadNotifications.length > 0 && !(isLoading$ | async)" >
         <div class="notification-item" style="flex-direction: row-reverse;">
           <div class="notification_more">
-            <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="general_menu" class="pointer">more_horiz</i>
+            <i class="material-icons-outlined ml-2 muted pointer" [matMenuTriggerFor]="general_menu">more_horiz</i>
             <mat-menu #general_menu="matMenu">
               <a mat-menu-item (click)="markAllNotificationAsRead('')">
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">check_circle_outline</i>
@@ -112,7 +112,7 @@
           </div>
 
           <div class="notification_more">
-            <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" class="pointer">more_horiz</i>
+            <i class="material-icons-outlined ml-2 muted pointer" [matMenuTriggerFor]="menu">more_horiz</i>
             <mat-menu #menu="matMenu">
               <a mat-menu-item *ngIf="notification?.type !== 'mention_folio' && notification?.type !== 'join-group' && notification?.type !== 'leave-group' && (notification?.type != 'approved-item' && notification?.type != 'reject-item' && notification?.type != 'launch-approval-flow' && notification?.type != 'mention_collection' && notification?.type != 'mention_page')"
                 (click)="viewNotification(notification, index)">
@@ -176,7 +176,7 @@
       <div *ngIf="notificationsData.unreadPosts.length > 0 && !(isLoading$ | async)" >
         <div class="notification-item" style="flex-direction: row-reverse;">
           <div class="notification_more">
-            <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="general_menu" class="pointer">more_horiz</i>
+            <i class="material-icons-outlined ml-2 muted pointer" [matMenuTriggerFor]="general_menu">more_horiz</i>
             <mat-menu #general_menu="matMenu">
               <a mat-menu-item (click)="markAllNotificationAsRead('new-post')">
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">check_circle_outline</i>
@@ -215,7 +215,7 @@
           </div>
 
           <div class="notification_more">
-            <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" class="pointer">more_horiz</i>
+            <i class="material-icons-outlined ml-2 muted pointer" [matMenuTriggerFor]="menu">more_horiz</i>
             <mat-menu #menu="matMenu">
               <a mat-menu-item *ngIf="notification?.type !== 'mention_folio'"
                 (click)="viewPost(notification?._origin_post?._id, notification?._origin_post?._group?._id)">
@@ -291,7 +291,7 @@
           </div>
 
           <div class="notification_more">
-            <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" class="pointer">more_horiz</i>
+            <i class="material-icons-outlined ml-2 muted pointer" [matMenuTriggerFor]="menu">more_horiz</i>
             <mat-menu #menu="matMenu">
               <a mat-menu-item [routerLink]="['/dashboard', 'work', 'lounge', 'story']" [queryParams]="{ story: event?._id  }">
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
@@ -404,7 +404,7 @@
                 <th></th>
             </tr>
           
-            <tr *ngFor="let holiday of pendingHolidays; let index = index" class="pointer">
+            <tr *ngFor="let holiday of pendingHolidays; let index = index">
                 <td>
                     <app-secured-image [imgURL]="holiday?._user?.profile_pic" [service]="'user'" [inlineStyle]="'cursor: default;'"
                         [workspaceId]="workspaceData?._id" [styleClass]="'feed-avatar-small'"></app-secured-image>
