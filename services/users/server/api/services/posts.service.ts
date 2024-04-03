@@ -1,8 +1,5 @@
-import { Comment, Column, Flow, Group, Notification, Portfolio, Post, User } from "../models";
-import { Readable } from 'stream';
-import moment from "moment";
-
-const minio = require('minio');
+import { Portfolio, Post, User } from "../models";
+import { DateTime } from 'luxon';
 
 export class PostsService {
 
@@ -71,10 +68,10 @@ export class PostsService {
     async getTodayTasks(userId: string) {
 
         // Generate the actual time
-        const startOfDay = moment().startOf('day').format('YYYY-MM-DD');
-
+        // const startOfDay = moment().startOf('day').format('YYYY-MM-DD');
         // Generate the +24h time
-        const endOfDay = moment().endOf('day').format('YYYY-MM-DD');
+        // const endOfDay = moment().endOf('day').format('YYYY-MM-DD');
+        const today = DateTime.now();
 
         const user = await User.findById(userId).select('_private_group');
 
@@ -86,7 +83,8 @@ export class PostsService {
                             { '_group': user._private_group }
                         ]
                     },
-                    { 'task.due_to': { $gte: startOfDay, $lte: endOfDay }},
+                    // { 'task.due_to': { $gte: startOfDay, $lte: endOfDay }},
+                    { 'task.due_to': { $eq: today.toJSDate() }},
                     { 'task.is_template': { $ne: true }},
                     { $or: [
                             { 
@@ -129,7 +127,7 @@ export class PostsService {
         const user = await User.findById(userId).select('_private_group');
 
         // Generate the actual time
-        const today = moment().format('YYYY-MM-DD');
+        const today = DateTime.now();
 
         // Fetch the tasks posts
         const tasks = await Post.find({
@@ -139,7 +137,7 @@ export class PostsService {
                             { '_group': user._private_group }
                         ]
                     },
-                    { 'task.due_to': { $lt: today }},
+                    { 'task.due_to': { $lt: today.toJSDate() }},
                     { 'task.is_template': { $ne: true }},
                     { $or: [
                             { 
@@ -181,10 +179,12 @@ export class PostsService {
         const user = await User.findById(userId).select('_private_group');
 
         // Generate the today
-        const tomorrow = moment().add(1, 'days').startOf('day').format('YYYY-MM-DD');
+        // const tomorrow = moment().add(1, 'days').startOf('day').format('YYYY-MM-DD');
+        const tomorrow = DateTime.now().plus({ days: 1 });
 
         // Generate the date for the end of the week
-        const endOfWeek = moment().add(1, 'days').endOf('day').endOf('isoWeek').format('YYYY-MM-DD');
+        // const endOfWeek = moment().add(1, 'days').endOf('day').endOf('isoWeek').format('YYYY-MM-DD');
+        const endOfWeek = DateTime.now().plus({ weeks: 1 }).endOf('week');
 
         // Fetch the tasks posts
         const tasks = await Post.find({
@@ -194,7 +194,7 @@ export class PostsService {
                             { '_group': user._private_group }
                         ]
                     },
-                    { 'task.due_to': { $gte: tomorrow, $lte: endOfWeek }},
+                    { 'task.due_to': { $gte: tomorrow.toJSDate(), $lte: endOfWeek.toJSDate() }},
                     { 'task.is_template': { $ne: true }},
                     { $or: [
                             { 
@@ -237,10 +237,12 @@ export class PostsService {
         const user = await User.findById(userId).select('_private_group');
 
         // Generate the date for the end of the week
-        const endOfWeek = moment().add(1, 'days').endOf('day').endOf('isoWeek').format('YYYY-MM-DD');
+        // const endOfWeek = moment().add(1, 'days').endOf('day').endOf('isoWeek').format('YYYY-MM-DD');
+        const endOfWeek = DateTime.now().endOf('week');
 
         // Generate the date for the end of the next week
-        const endOfNextWeek = moment().endOf('isoWeek').add(1, 'days').endOf('day').endOf('isoWeek').format('YYYY-MM-DD');
+        // const endOfNextWeek = moment().endOf('isoWeek').add(1, 'days').endOf('day').endOf('isoWeek').format('YYYY-MM-DD');
+        const endOfNextWeek = DateTime.now().plus({ weeks: 1 }).endOf('week');
 
         // Fetch the tasks posts
         const tasks = await Post.find({
@@ -250,7 +252,7 @@ export class PostsService {
                             { '_group': user._private_group }
                         ]
                     },
-                    {'task.due_to': { $gt: endOfWeek, $lte: endOfNextWeek }},
+                    {'task.due_to': { $gt: endOfWeek.toJSDate(), $lte: endOfNextWeek.toJSDate() }},
                     { 'task.is_template': { $ne: true }},
                     { $or: [
                             { 
@@ -293,7 +295,8 @@ export class PostsService {
         const user = await User.findById(userId).select('_private_group');
 
         // Generate the +14days from today time
-        const todayPlus14Days = moment().add(14, 'days').endOf('day').format('YYYY-MM-DD');
+        // const todayPlus14Days = moment().add(14, 'days').endOf('day').format('YYYY-MM-DD');
+        const todayPlus14Days = DateTime.now().plus({ days: 14 })
 
         // Fetch the tasks posts
         const tasks = await Post.find({
@@ -307,7 +310,7 @@ export class PostsService {
                     },
                     {
                         $or: [
-                            { 'task.due_to': { $gte: todayPlus14Days }},
+                            { 'task.due_to': { $gte: todayPlus14Days.toJSDate() }},
                             { 'task.due_to': null }
                         ]
                         
@@ -357,10 +360,11 @@ export class PostsService {
         const user = await User.findById(userId).select('_private_group');
 
         // Generate the actual time
-        const startOfDay = moment().startOf('day').format();
-
+        // const startOfDay = moment().startOf('day').format();
         // Generate the +24h time
-        const endOfDay = moment().endOf('day').format();
+        // const endOfDay = moment().endOf('day').format();
+
+        const today = DateTime.now();
 
         // Find the user's today agenda events
         const events = await Post.find({
@@ -371,7 +375,8 @@ export class PostsService {
                     // { '_assigned_to': 'all' }
                     { '_group': user._private_group }
                 ],
-                'event.due_to': { $gte: startOfDay, $lte: endOfDay }
+                // 'event.due_to': { $gte: startOfDay, $lte: endOfDay }
+                'event.due_to': { $eq: today.toJSDate() }
 
             })
             .sort('event.due_to')
@@ -393,10 +398,11 @@ export class PostsService {
         const user = await User.findById(userId).select('_private_group');
 
         // Generate the actual time
-        const todayForEvent = moment().add(1, 'days').startOf('day').format();
-
+        // const todayForEvent = moment().add(1, 'days').startOf('day').format();
+        const todayForEvent = DateTime.now();
         // Generate the +24h time
-        const todayPlus7Days = moment().add(7, 'days').endOf('day').format();
+        // const todayPlus7Days = moment().add(7, 'days').endOf('day').format();
+        const todayPlus7Days = DateTime.now().plus({ days: 7 });
 
         // Find the user's today agenda events
         const events = await Post.find({
@@ -407,7 +413,7 @@ export class PostsService {
                     // { '_assigned_to': 'all' }
                     { '_group': user._private_group }
                 ],
-                'event.due_to': { $gte: todayForEvent, $lte: todayPlus7Days }
+                'event.due_to': { $gte: todayForEvent.toJSDate(), $lte: todayPlus7Days.toJSDate() }
             })
             .sort('event.due_to')
             .populate('_posted_by', this.userFields)
@@ -422,11 +428,12 @@ export class PostsService {
     async getRecentPosts(userId: string) {
 
         // Generate the actual time
-        const today = moment().startOf('day').format('YYYY-MM-DD');
+        // const today = moment().startOf('day').format('YYYY-MM-DD');
+        const today = DateTime.now();
 
         // Generate the +24h time
-        const tomorrow = moment().endOf('day').format('YYYY-MM-DD');
-
+        // const tomorrow = moment().endOf('day').format('YYYY-MM-DD');
+        const tomorrow = DateTime.now().plus({ days: 1 });
         // Get the group(s) that the user belongs to
         let user: any = await User.findById(userId)
             .select('_groups');
@@ -434,7 +441,7 @@ export class PostsService {
         // Fetch the tasks and events
         let posts: any = await Post.find({
                 '_group': { $in: user._groups },
-                'created_date': { $gte: today, $lt: tomorrow }
+                'created_date': { $gte: today.toJSDate(), $lt: tomorrow.toJSDate() }
             })
             .sort('-created_date')
             .populate('_group', this.groupFields)
@@ -484,55 +491,51 @@ export class PostsService {
     async getWorkloadCardOverdueTasks(userId: any, groupId: any) {
 
         // Generate the actual time
-        const today = moment().format('YYYY-MM-DD');
+        const today = DateTime.now();
 
         let tasks = [];
+        let query = {};
         if (!!groupId) {
-            // Fetch the tasks posts
-            tasks = await Post.find({
-                    $and: [
-                        { '_assigned_to': userId.toString() },        
-                        { '_group': groupId.toString() },
-                        { 'task.due_to': { $lt: today }},
-                        { 'task.is_template': { $ne: true }},
-                        {
-                            $or: [
-                                { 'task.status': 'to do' },
-                                { 'task.status': 'in progress' }
-                            ]
-                        }
-                    ]
-                })
-                .sort('-task.due_to')
-                .populate('_group', this.groupFields)
-                .populate('_posted_by', this.userFields)
-                .populate('_assigned_to', this.userFields)
-                .populate('_followers', this.userFields)
-                .populate('_liked_by', this.userFields)
-                .lean();
+          query = {
+                $and: [
+                    { '_assigned_to': userId.toString() },
+                    { 'type': 'task' },
+                    { '_group': groupId.toString() },
+                    { 'task.due_to': { $lt: today.toJSDate() } },
+                    { 'task.is_template': { $ne: true }},
+                    {
+                        $or: [
+                            { 'task.status': 'to do' },
+                            { 'task.status': 'in progress' }
+                        ]
+                    }
+                ]
+            }
         } else {
-            // Fetch the tasks posts
-            tasks = await Post.find({
-                    $and: [
-                        { '_assigned_to': userId.toString() },        
-                        { 'task.due_to': { $lt: today }},
-                        { 'task.is_template': { $ne: true }},
-                        {
-                            $or: [
-                                { 'task.status': 'to do' },
-                                { 'task.status': 'in progress' }
-                            ]
-                        }
-                    ]
-                })
-                .sort('-task.due_to')
-                .populate('_group', this.groupFields)
-                .populate('_posted_by', this.userFields)
-                .populate('_assigned_to', this.userFields)
-                .populate('_followers', this.userFields)
-                .populate('_liked_by', this.userFields)
-                .lean();
+            query = {
+                $and: [
+                    { '_assigned_to': userId.toString() },
+                    { 'type': 'task' },
+                    { 'task.due_to': { $lt: today.toJSDate() } },
+                    { 'task.is_template': { $ne: true }},
+                    {
+                        $or: [
+                            { 'task.status': 'to do' },
+                            { 'task.status': 'in progress' }
+                        ]
+                    }
+                ]
+            }
         }
+
+        tasks = await Post.find(query)
+            .sort('-task.due_to')
+            .populate('_group', this.groupFields)
+            .populate('_posted_by', this.userFields)
+            .populate('_assigned_to', this.userFields)
+            .populate('_followers', this.userFields)
+            .populate('_liked_by', this.userFields)
+            .lean();
 
         // Return tasks
         return tasks
@@ -553,14 +556,14 @@ export class PostsService {
             .lean();
 
         // Generate the actual time
-        const today = moment().format('YYYY-MM-DD');
+        const today = DateTime.now();
 
         // Fetch the tasks posts
         const tasks = await Post.find({
                 $and: [
                     { _assigned_to: userId },
                     { _group: { $in : portfolio?._groups }},
-                    { 'task.due_to': { $lt: today }},
+                    { 'task.due_to': { $lt: today.toJSDate() }},
                     { 'task.is_template': { $ne: true }},
                     {
                         $or: [

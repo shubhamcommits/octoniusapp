@@ -3936,6 +3936,94 @@ export class PostService {
     }
   };
 
+  /**
+   * This service is responsible for fetching templates based on the @groupId
+   * @param groupId
+   */
+  async getTasksPerGroupUserStatusAndDate(groupId: any, userId: any, status: any, dueDate: any) {
+    try {
+      // Posts Variable
+      var posts = [];
+
+      let query = {};
+      if (!!status && status != 'undefined' && status != 'null') {
+        if (status == 'overdue') {
+          query = {
+            $and: [
+              { '_group': groupId },
+              { 'type': 'task' },
+              { 'task.is_template': { $ne: true }},
+              {
+                $or: [
+                  { 'task.status': 'to do' },
+                  { 'task.status': 'in progress' }
+                ]
+              },
+              { '_assigned_to': userId },
+              { 'task.due_to': { $lt: dueDate } },
+            ]
+          };
+        } else {
+          query = {
+            $and: [
+              { '_group': groupId },
+              { 'type': 'task' },
+              { 'task.is_template': { $ne: true }},
+              { 'task.status': (status == 'to-do') ? 'to do' : (status == 'in-progress') ? 'in progress' : 'done' },
+              { '_assigned_to': userId },
+              { 'task.due_to': dueDate },
+            ]
+          };
+        }
+      } else {
+console.log({groupId});
+console.log({userId});
+console.log({status});
+console.log({dueDate});
+        query = {
+          $and: [
+            { '_group': groupId },
+            { 'type': 'task' },
+            { 'task.is_template': { $ne: true }},
+            { '_assigned_to': userId },
+            { 'task.due_to': dueDate },
+          ]
+        };
+      }
+
+      posts = await Post.find(query)
+        .select('title type permissions task approval_flow_launched tags _group comments_count content _content_mentions created_date files')
+        .populate({ path: '_group', select: this.groupFields })
+        .populate({ path: '_posted_by', select: this.userFields })
+        .populate({ path: '_assigned_to', select: this.userFields })
+        .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
+        .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+        .populate({ path: 'task._parent_task', select: '_id title _assigned_to _group task' })
+        .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
+        .populate({ path: 'task.shuttles._shuttle_group', select: '_id group_name group_avatar' })
+        .populate({ path: 'task.shuttles._shuttle_section',select:'_id title' })
+        .populate({ path: 'performance_task._assigned_to', select: this.userFields })
+        .populate({ path: 'permissions._members', select: this.userFields })
+        .populate({ path: 'crm._company', select: '_id name description company_pic' })
+        .populate({ path: 'crm._contacts', select: '_id name description phones emails links _company position crm_custom_fields' })
+        .populate({ path: 'crm._contacts._company', select: '_id name description company_pic' })
+        .populate({ path: 'logs._actor', select: this.userFields })
+        .populate({ path: 'logs._new_section', select: '_id title' })
+        .populate({ path: 'logs._assignee', select: this.userFields })
+        .populate({ path: 'logs._group', select: this.groupFields })
+        .populate({ path: 'logs._task', select: '_id title' })
+        .lean();
+console.log({posts});
+      // Return set of posts
+      return posts;
+
+    } catch (err) {
+
+      // Return With error
+      throw (err);
+    }
+  }
+
   async calculateTimeEntityCost(userRate: number, time: any) {
     return (userRate * time.hours + (time.minutes/60)*userRate);
   }

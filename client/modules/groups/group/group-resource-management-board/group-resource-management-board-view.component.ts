@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, Input, OnChanges, SimpleChanges, OnDestroy, LOCALE_ID, ViewChild } from '@angular/core';
+import { Component, OnInit, Injector, Input } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { DateTime, Interval } from 'luxon';
 import { BehaviorSubject } from 'rxjs';
@@ -7,6 +7,8 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
 import moment from 'moment';
+import { MatDialog } from '@angular/material/dialog';
+import { UserTaskForDayDialogComponent } from 'src/app/common/shared/posts/user-task-for-day-dialog/user-task-for-day-dialog.component';
 
 @Component({
   selector: 'app-group-resource-management-board-view',
@@ -36,10 +38,11 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private injector: Injector,
     private groupService: GroupService,
     public utilityService: UtilityService,
-    private hrService: HRService
+    private hrService: HRService,
+    private injector: Injector,
+    public dialog: MatDialog,
   ) { }
 
   async ngOnInit() {
@@ -243,6 +246,34 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe(result => {
         closeEventSubs.unsubscribe();
+      });
+    }
+  }
+
+  openTaskForDayModal(selectedDay: DateTime, selectedUser: any, status?: string) {
+      const data = {
+        selectedDay: selectedDay,
+        selectedUser: selectedUser,
+        status: status
+      }
+
+      const dialogRef = this.dialog.open(UserTaskForDayDialogComponent, {
+        width: '75%',
+        maxHeight: '80%',
+        disableClose: false,
+        hasBackdrop: true,
+        // panelClass: 'groupCreatePostDialog',
+        data: data
+      });
+
+    if (dialogRef) {
+      // const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe(async () => {
+      //   await this.initTable();
+      // });
+
+      dialogRef.afterClosed().subscribe(async () => {
+        // closeEventSubs.unsubscribe();
+        await this.initTable();
       });
     }
   }
