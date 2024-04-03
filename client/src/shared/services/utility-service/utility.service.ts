@@ -849,6 +849,10 @@ console.log(error)
     return (!!objectData && JSON.stringify(objectData) != JSON.stringify({}) && JSON.stringify(objectData) != JSON.stringify(undefined));
   }
 
+  arrayExists(arrayData: []) {
+    return (!!arrayData && arrayData.length > 0);
+  }
+
   formateDate(date: any, format?: any) {
     return (!!date) ? DateTime.fromISO(date).setLocale(this.injector.get(LOCALE_ID)).toLocaleString(format || DateTime.DATE_MED) : '';
   }

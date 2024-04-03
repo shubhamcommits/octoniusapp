@@ -183,8 +183,8 @@ export class UserTaskForDayDialogComponent implements OnInit, OnDestroy {
   }
 
   // Check if the data provided is not empty{}
-  checkDataExist(object: Object) {
-    return !(JSON.stringify(object) === JSON.stringify({}))
+  arrayExists(object: []) {
+    return this.utilityService.arrayExists(object);
   }
 
   // onCloseDialog() {
