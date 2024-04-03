@@ -1,19 +1,14 @@
 <div class="board">
-  <div class="container">
-    <div class="row text-center mb-3">
-      <div class="card-title mt-1" i18n="@@groupResourceManagementBoardViewComponent.resourceManagement">
-        Resource management
-      </div>
-    </div>
+  <div class="container-fluid">
+
 
     <div>
       <div class="row text-center mb-3">
-        <div class="col-md-1">
-        </div>
-        <div class="col-md-7">
+
+        <div class="col-md-9">
             <h6>{{ dates[0] | date:'MMM dd' }} - {{ dates[dates?.length - 1] | date:'MMM dd' }}</h6>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="btn btn-default" (click)="changeDates(7, 'sub')">
             <i class="material-icons">navigate_before</i>
           </div>
@@ -53,18 +48,18 @@
               </td>
               <td *ngFor="let workload of member.workload" [ngClass]="workload?.outOfTheOfficeClass">
 
-                  <span class="muted mr-2" i18n="@@groupResourceManagementBoardViewComponent.totalTasks"> Total tasks</span>
+                  <span class="text-primary mr-2" i18n="@@groupResourceManagementBoardViewComponent.totalTasks"> Total tasks</span>
                   <span class="badge pointer" (click)="openTaskForDayModal(workload?.date, member)">{{ workload.numTasks }}</span>
 
                   <div class="time-tracking">
-                    <i  class="material-icons">update</i> &nbsp;&nbsp;
+                    <i  class="material-icons ">update</i> &nbsp;&nbsp;
                     <span>{{ workload.hours || '0' }}h</span>
                     &nbsp;
                     <span>{{ workload.minutes || '0' }}m</span>
                   </div>
 
                   <div class="new-task">
-                    <button class="btn btn-success" (click)="openFullscreenModal(workload?.date, member)">
+                    <button class="btn btn-outline-success" (click)="openFullscreenModal(workload?.date, member)">
                       <i class="material-icons-outlined">add_task</i>
                       &nbsp;
                       <span i18n="@@groupResourceManagementBoardViewComponent.addTask">Add task</span>
