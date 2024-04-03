@@ -53,9 +53,6 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
     this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
 
     await this.initTable();
-
-    // Stops the spinner and return the value with ngOnInit
-    this.isLoading$.next(false);
   }
 
   async initTable() {
@@ -187,6 +184,9 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
 
       member.workload = member.workload.sort((w1, w2) => (w1.date < w2.date) ? -1 : 1);
     });
+
+    // Stops the spinner and return the value with ngOnInit
+    this.isLoading$.next(false);
   }
 
   getRangeDates(firstDay) {
@@ -241,6 +241,9 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
 
     if (dialogRef) {
       const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe(async (data) => {
+        // Starts the spinner
+        this.isLoading$.next(true);
+
         await this.initTable();
       });
 
@@ -272,6 +275,9 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
       // });
 
       dialogRef.afterClosed().subscribe(async () => {
+        // Starts the spinner
+        this.isLoading$.next(true);
+
         // closeEventSubs.unsubscribe();
         await this.initTable();
       });
