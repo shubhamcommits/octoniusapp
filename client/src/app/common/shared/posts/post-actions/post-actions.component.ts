@@ -63,15 +63,17 @@ export class PostActionsComponent implements OnInit {
       }
     });
 
-    await this.post._followers.forEach(user => {
-      (user['first_name'] && user['last_name'])
+    if (!!this.post._followers) {
+      await this.post._followers.forEach(user => {
+        (user['first_name'] && user['last_name'])
         ? this.followedByUsers.push((user['first_name'] || 'Deleted') + ' ' + (user['last_name'] || 'User'))
         : this.publicFunctions.getOtherUser(user._id || user).then(otherUser => {
-            this.followedByUsers.push(otherUser['first_name'] + ' ' + otherUser['last_name']);
-          }).catch(err => {
-            this.followedByUsers.push($localize`:@@postActions.deletedUser:Deleted User`);
-          });
-    });
+          this.followedByUsers.push(otherUser['first_name'] + ' ' + otherUser['last_name']);
+        }).catch(err => {
+          this.followedByUsers.push($localize`:@@postActions.deletedUser:Deleted User`);
+        });
+      });
+    }
 
     this.showComments = false;
   }

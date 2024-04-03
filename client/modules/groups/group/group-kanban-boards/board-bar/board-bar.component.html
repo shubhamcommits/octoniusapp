@@ -29,9 +29,9 @@
         <span i18n="@@groupBoardBar.customFields">Custom Fields</span>
       </button>
 
-      <span class="separator" *ngIf="isAdmin && viewType != 'archived' && viewType != 'time_tracking' && !isIndividualSubscription"></span>
+      <span class="separator" *ngIf="isAdmin && viewType != 'archived' && viewType != 'time_tracking' && viewType != 'resource_mgmt' && !isIndividualSubscription"></span>
 
-      <button class="btn badge-automator" *ngIf="isAdmin && viewType != 'archived' && viewType != 'time_tracking' && !isIndividualSubscription" (click)="openAutomatorDialog()">
+      <button class="btn badge-automator" *ngIf="isAdmin && viewType != 'archived' && viewType != 'time_tracking' && viewType != 'resource_mgmt' && !isIndividualSubscription" (click)="openAutomatorDialog()">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
           <path fill-rule="evenodd" d="M2.4 13.5v-12h10l-4 9h4l-7 12v-9h-3zm14-12h2l3.2 9h-1.9l-.7-2h-3.2l-.7 2h-1.9l3.2-9zm1 2l-1.15 3.65h2.3L17.4 3.5zm-7.877 8.674l-2.339 4.061.835-4.06H4.671V3.5h4.05l-2.524 7.818h3.826l-.5.856z" clip-rule="evenodd"/>
         </svg>
@@ -39,7 +39,7 @@
         <span i18n="@@groupBoardBar.automator">Automator</span>
       </button>
 
-      <span class="separator" *ngIf="viewType != 'archived' && viewType != 'time_tracking' && !isIndividualSubscription"></span>
+      <span class="separator" *ngIf="viewType != 'archived' && viewType != 'time_tracking' && viewType != 'resource_mgmt' && !isIndividualSubscription"></span>
 
       <button *ngIf="!isIndividualSubscription" [matMenuTriggerFor]="menu" class="btn badge-boardviews">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -83,6 +83,12 @@
           <span class="material-icons-outlined mr-2">timer</span>
 
           <span i18n="@@groupBoardBar.timeTracking">Time Tracking</span>
+        </a>
+
+        <a mat-menu-item *ngIf="viewType != 'resource_mgmt' && isAdmin" (click)="changeView('resource_mgmt')" class="board-options">
+          <span class="material-icons-outlined mr-2">timer</span>
+
+          <span i18n="@@groupBoardBar.resourceManagement">Resource management</span>
         </a>
       </mat-menu>
 
@@ -221,9 +227,9 @@
         </a>
       </mat-menu>
 
-      <span class="separator"></span>
+      <span class="separator" *ngIf="viewType != 'time_tracking' && viewType != 'resource_mgmt' && isIdeaModuleAvailable"></span>
 
-      <button class="btn badge-automator" (click)="exportTo('excel')">
+      <button class="btn badge-automator" (click)="exportTo('excel')" *ngIf="viewType != 'time_tracking' && viewType != 'resource_mgmt' && isIdeaModuleAvailable">
         <span class="material-icons-outlined mr-2">file_download</span>
         <span i18n="@@groupBoardBar.export">Export</span>
       </button>

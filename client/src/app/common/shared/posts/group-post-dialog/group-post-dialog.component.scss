@@ -179,3 +179,37 @@
         background-color: #4a20c3;
     }
 }
+
+.search-task {
+    margin-bottom: 10px;
+}
+
+.task-list {
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding-left: 0;
+    margin-bottom: 0;
+    max-height: 300px;
+    overflow: scroll;
+    white-space: nowrap;
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    .task-list-item {
+        position: relative;
+        display: block;
+        padding: 10px 15px;
+        background-color: #fff;
+        // border: 1px solid rgba(0, 0, 0, 0.125);
+        cursor: pointer;
+
+        &:hover {
+            color: #fff;
+            background-color: #4a90e2;
+            box-shadow: 0px 1px 1px #00000024;
+            border-radius: 8px;
+        }
+    }
+}

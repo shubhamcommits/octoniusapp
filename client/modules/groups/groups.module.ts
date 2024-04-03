@@ -106,6 +106,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { GroupResourceManagementComponent } from './group/group-resource-management/group-resource-management.component';
 import { ResourcesBarComponent } from './group/group-resource-management/resources-bar/resources-bar.component';
 import { ResourcesCustomFieldsDialogComponent } from './group/resources-custom-fields-dialog/resources-custom-fields-dialog.component';
+import { GroupResourceManagementBoardViewComponent } from './group/group-resource-management-board/group-resource-management-board-view.component';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -180,7 +181,8 @@ import { ResourcesCustomFieldsDialogComponent } from './group/resources-custom-f
         NewCRMCompanyDialogComponent,
         CRMCompanyInformationComponent,
         CRMCompanyImageDialogComponent,
-        ResourcesBarComponent
+        ResourcesBarComponent,
+        GroupResourceManagementBoardViewComponent
     ],
     imports: [
         CommonModule,

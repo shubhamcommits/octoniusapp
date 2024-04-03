@@ -20,6 +20,7 @@ export class NewTaskComponent implements OnInit {
   @Input() parentId: string;
   @Input() parentNS: boolean = false;
   @Input() isIdeaModuleAvailable;
+  @Input() canEdit: boolean = true;
 
   // Post Event Emitter
   @Output('post') post = new EventEmitter()

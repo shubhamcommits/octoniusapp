@@ -359,7 +359,7 @@ export class UtilityService {
   /**
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
-  openPostDetailsFullscreenModal(postId: string, groupId: string, canOpen: boolean, columns?: any) {
+  openPostDetailsFullscreenModal(postId: string, groupId: string, canOpen: boolean, columns?: any, selectedDate?: DateTime, selectedUser?: any) {
     let dialogOpen;
 
     // !groupData?.enabled_rights || postData?.canView || postData?.canEdit
@@ -368,7 +368,9 @@ export class UtilityService {
         {
           postId: postId,
           groupId: groupId,
-          columns: columns
+          columns: columns,
+          selectedDate: selectedDate,
+          selectedUser: selectedUser
         }
       :
         {

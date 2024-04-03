@@ -125,7 +125,7 @@ export class QuillEditorComponent implements OnInit, OnChanges, AfterViewInit {
   ngOnChanges() {
     if (this.quill) {
       // Fetch the delta ops from the JSON string
-      let delta = (this.isJSON(this.contents))
+      let delta = (this.isJSON(this.contents) && JSON.parse(this.contents))
         ? JSON.parse(this.contents)['ops']
         : this.quill.clipboard.convert(this.contents);
 
