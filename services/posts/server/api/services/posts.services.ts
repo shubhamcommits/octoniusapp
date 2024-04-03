@@ -3976,10 +3976,6 @@ export class PostService {
           };
         }
       } else {
-console.log({groupId});
-console.log({userId});
-console.log({status});
-console.log({dueDate});
         query = {
           $and: [
             { '_group': groupId },
@@ -4013,7 +4009,7 @@ console.log({dueDate});
         .populate({ path: 'logs._group', select: this.groupFields })
         .populate({ path: 'logs._task', select: '_id title' })
         .lean();
-console.log({posts});
+
       // Return set of posts
       return posts;
 
