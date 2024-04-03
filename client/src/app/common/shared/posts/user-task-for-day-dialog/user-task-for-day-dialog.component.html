@@ -32,7 +32,7 @@
   <div *ngFor="let task of tasksForTheDay; let i = index;">
     <a (click)="openModal(task)">
       <!-- My Space Today Tasks -->
-      <div [ngClass]="(task.task.status === 'to do') ? 'media card-tile overview-task todo-bar' : (task.task.status === 'in progress') ? 'media card-tile overview-task working-bar' : (task.task.status.trim() === 'completed' || task.task.status.trim() === 'done') ? 'media card-tile overview-task done-bar' : ''">
+      <div [ngClass]="getTaskStatusClass(task)">
         <div class="row media-body">
           <div class="col-md-6">
             <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>

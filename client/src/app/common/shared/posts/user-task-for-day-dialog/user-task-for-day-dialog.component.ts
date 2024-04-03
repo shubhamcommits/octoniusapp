@@ -152,6 +152,16 @@ export class UserTaskForDayDialogComponent implements OnInit, OnDestroy {
       }
   }
 
+  getTaskStatusClass(task: any) {
+    return (task.task.status === 'to do')
+      ? 'media card-tile overview-task todo-bar'
+      : (task.task.status === 'in progress')
+        ? 'media card-tile overview-task working-bar'
+        : (task.task.status.trim() === 'completed' || task.task.status.trim() === 'done')
+          ? 'media card-tile overview-task done-bar'
+          : '';
+  }
+
   getPriorityClass(priority: string) {
     return 'label-priority ' + priority.toLocaleLowerCase();
   }
