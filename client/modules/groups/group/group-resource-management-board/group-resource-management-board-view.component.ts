@@ -254,45 +254,45 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
     }
   }
 
-  async openTaskForDayModal(selectedDay: DateTime, selectedUser: any, status?: string) {
-    const data = {
-      status: status,
-      selectedDay: selectedDay,
-      selectedUser: selectedUser,
-      groupData: this.groupData,
-      userData: this.userData,
-      tasksForTheDay: await this.publicFunctions.filterRAGTasks(await this.getTasks(selectedDay, selectedUser, status), this.userData)
-    }
+  // async openTaskForDayModal(selectedDay: DateTime, selectedUser: any, status?: string) {
+  //   const data = {
+  //     status: status,
+  //     selectedDay: selectedDay,
+  //     selectedUser: selectedUser,
+  //     groupData: this.groupData,
+  //     userData: this.userData,
+  //     tasksForTheDay: await this.publicFunctions.filterRAGTasks(await this.getTasks(selectedDay, selectedUser, status), this.userData)
+  //   }
 
-    this.dialog.open(UserTaskForDayDialogComponent, {
-      width: '75%',
-      maxHeight: '80%',
-      disableClose: false,
-      hasBackdrop: true,
-      data: data
-    }).afterClosed().subscribe(async () => {
-      // Starts the spinner
-      this.isLoading$.next(true);
-      await this.initTable();
-    });
-  }
+  //   this.dialog.open(UserTaskForDayDialogComponent, {
+  //     width: '75%',
+  //     maxHeight: '80%',
+  //     disableClose: false,
+  //     hasBackdrop: true,
+  //     data: data
+  //   }).afterClosed().subscribe(async () => {
+  //     // Starts the spinner
+  //     this.isLoading$.next(true);
+  //     await this.initTable();
+  //   });
+  // }
 
-  async getTasks(selectedDay: DateTime, selectedUser: any, status?: string) {
-    return new Promise((resolve, reject) => {
-      let postService = this.injector.get(PostService);
-      postService.getTasksPerGroupUserStatusAndDate(this.groupData._id, selectedUser._id, status, selectedDay.toJSDate())
-        .then((res) => {
-          res['posts'] = res['posts'].filter((task)=> {
-            return task._group != null;
-          });
+  // async getTasks(selectedDay: DateTime, selectedUser: any, status?: string) {
+  //   return new Promise((resolve, reject) => {
+  //     let postService = this.injector.get(PostService);
+  //     postService.getTasksPerGroupUserStatusAndDate(this.groupData._id, selectedUser._id, status, selectedDay.toJSDate())
+  //       .then((res) => {
+  //         res['posts'] = res['posts'].filter((task)=> {
+  //           return task._group != null;
+  //         });
 
-          resolve(res['posts']);
-        })
-        .catch(() => {
-          reject([]);
-        })
-    })
-  }
+  //         resolve(res['posts']);
+  //       })
+  //       .catch(() => {
+  //         reject([]);
+  //       })
+  //   })
+  // }
 
   /**
    * This function is responsible for opening a fullscreen dialog to see the member profile
