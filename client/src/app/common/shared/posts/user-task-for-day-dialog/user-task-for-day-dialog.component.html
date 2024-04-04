@@ -11,7 +11,7 @@
     <span *ngIf="!!status && status == 'overdue'" i18n="@@userTaskForDayDialogComponent.overdue">Overdue</span>
     <span *ngIf="!!status && status == 'to-do'" i18n="@@userTaskForDayDialogComponent.toDo">To Do</span>
     <span *ngIf="!!status && status == 'in-progress'" i18n="@@userTaskForDayDialogComponent.inProgress">In Progress</span>
-    <span *ngIf="!!status && status == 'done'" i18n="@@userTaskForDayDialogComponent.done">Completed</span>
+    <span *ngIf="!!status && status == 'done'" i18n="@@userTaskForDayDialogComponent.completed">Completed</span>
     &nbsp;
     <span i18n="@@userTaskForDayDialogComponent.tasksDueOn">Tasks due on</span>
     &nbsp;
@@ -50,7 +50,7 @@
             </div>
 
             <div class="col-md-2">
-              <div *ngIf="task.overdue" class="overview-item small text-right overdue" i18n="@@userTaskForDayDialogComponent.overdue">
+              <div *ngIf="task.overdue" class="overview-item small text-right overdue" i18n="@@userTaskForDayDialogComponent.overdueC">
                 OVERDUE
               </div>
               <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
