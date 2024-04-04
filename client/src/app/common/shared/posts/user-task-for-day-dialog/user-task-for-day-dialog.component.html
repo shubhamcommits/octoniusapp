@@ -23,42 +23,44 @@
   </h5>
 
   <!-- Empty State of tasks starts -->
-  <div *ngIf="!arrayExists(tasksForTheDay)">
+  <div *ngIf="!tasksForTheDay || tasksForTheDay.length == 0">
     <img src='assets/images/placeholder_activity3.png' class="placeholder-img">
     <p class="muted text-center" i18n="@@userTaskForDayDialogComponent.done">Done. That's a wrap! </p>
   </div>
   <!-- Empty State of tasks ends -->
 
-  <div *ngFor="let task of tasksForTheDay; let i = index;">
-    <a (click)="openModal(task)">
-      <!-- My Space Today Tasks -->
-      <div [class]="getTaskStatusClass(task)">
-        <div class="row media-body">
-          <div class="col-md-6">
-            <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
-          </div>
-          <div class="col-md-1" *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
-            <div [class]="getPriorityClass(task?.task?.custom_fields['priority'])">
-              {{ task?.task?.custom_fields['priority'] }}
+  <div *ngIf="!!tasksForTheDay && tasksForTheDay.length > 0">
+    <div *ngFor="let task of tasksForTheDay; let i = index;">
+      <a (click)="openModal(task)">
+        <!-- My Space Today Tasks -->
+        <div [class]="getTaskStatusClass(task)">
+          <div class="row media-body">
+            <div class="col-md-6">
+              <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
             </div>
-          </div>
-          <div class="col-md-1" *ngIf="!task?.task?.custom_fields || !task?.task?.custom_fields['priority']">
-          </div>
-          <div class="col-md-3">
-            <div class=" grouplabel " [innerHTML]="task?._group?.group_name"></div>
-          </div>
+            <div class="col-md-1" *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
+              <div [class]="getPriorityClass(task?.task?.custom_fields['priority'])">
+                {{ task?.task?.custom_fields['priority'] }}
+              </div>
+            </div>
+            <div class="col-md-1" *ngIf="!task?.task?.custom_fields || !task?.task?.custom_fields['priority']">
+            </div>
+            <div class="col-md-3">
+              <div class=" grouplabel " [innerHTML]="task?._group?.group_name"></div>
+            </div>
 
-          <div class="col-md-2">
-            <div *ngIf="task.overdue" class="overview-item small text-right overdue" i18n="@@userTaskForDayDialogComponent.overdue">
-              OVERDUE
+            <div class="col-md-2">
+              <div *ngIf="task.overdue" class="overview-item small text-right overdue" i18n="@@userTaskForDayDialogComponent.overdue">
+                OVERDUE
+              </div>
+              <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
+                {{ formateDate(task?.task?.due_to) }}
+              </div>
             </div>
-            <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
-              {{ formateDate(task?.task?.due_to) }}
-            </div>
-          </div>
 
+          </div>
         </div>
-      </div>
-    </a>
+      </a>
+    </div>
   </div>
 </div>

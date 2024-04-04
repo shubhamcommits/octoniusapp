@@ -2077,7 +2077,7 @@ export class PostController {
         await postService.getTasksPerGroupUserStatusAndDate(groupId, userId, status, dueDate)
             .then((posts) => {
                 return res.status(200).json({
-                    message: `The group templates!`,
+                    message: `The user tasks for the specific day and status!`,
                     posts: posts
                 });
             })

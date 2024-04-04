@@ -254,34 +254,25 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
   }
 
   openTaskForDayModal(selectedDay: DateTime, selectedUser: any, status?: string) {
-      const data = {
-        selectedDay: selectedDay,
-        selectedUser: selectedUser,
-        status: status
-      }
-
-      const dialogRef = this.dialog.open(UserTaskForDayDialogComponent, {
-        width: '75%',
-        maxHeight: '80%',
-        disableClose: false,
-        hasBackdrop: true,
-        // panelClass: 'groupCreatePostDialog',
-        data: data
-      });
-
-    if (dialogRef) {
-      // const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe(async () => {
-      //   await this.initTable();
-      // });
-
-      dialogRef.afterClosed().subscribe(async () => {
-        // Starts the spinner
-        this.isLoading$.next(true);
-
-        // closeEventSubs.unsubscribe();
-        await this.initTable();
-      });
+    const data = {
+      groupData: this.groupData,
+      userData: this.userData,
+      selectedDay: selectedDay,
+      selectedUser: selectedUser,
+      status: status
     }
+
+    const dialogRef = this.dialog.open(UserTaskForDayDialogComponent, {
+      width: '75%',
+      maxHeight: '80%',
+      disableClose: false,
+      hasBackdrop: true,
+      data: data
+    }).afterClosed().subscribe(async () => {
+      // Starts the spinner
+      this.isLoading$.next(true);
+      await this.initTable();
+    });
   }
 
   /**

@@ -2,7 +2,7 @@ import { Component, OnInit, Injector, ViewChild, TemplateRef, Input, OnDestroy, 
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { DateTime } from 'luxon';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PostService } from 'src/shared/services/post-service/post.service';
 
 @Component({
@@ -27,12 +27,6 @@ export class UserTaskForDayDialogComponent implements OnInit, OnDestroy {
   userData;
 
   tasksForTheDay: any = [];
-
-  // todayTasks: any = [];
-  // thisWeekTasks: any = [];
-  // nextWeekTasks: any = [];
-  // futureTasks: any = [];
-  // overdueTasks: any = [];
   
   post: any;
 
@@ -45,21 +39,21 @@ export class UserTaskForDayDialogComponent implements OnInit, OnDestroy {
     private injector: Injector,
     private utilityService: UtilityService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private mdDialogRef: MatDialogRef<UserTaskForDayDialogComponent>,
-  ) { }
-
-  async ngOnInit() {
-
+  ) {
+    this.userData = this.data.userData;
+    this.groupData = this.data.groupData;
     this.selectedDay = this.data.selectedDay;
     this.selectedUser = this.data.selectedUser;
     this.status = this.data.status;
-
-    // Fetch the current user
-    this.userData = await this.publicFunctions.getCurrentUser();
-    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
-
-    await this.loadTasks();
+console.log(this.userData);
+console.log(this.groupData);
+console.log(this.selectedDay);
+console.log(this.selectedUser);
+console.log(this.status);
+    this.loadTasks();
   }
+
+  async ngOnInit() { }
 
   ngOnDestroy() {
     this.utilityService.closeAllModals();
@@ -179,13 +173,4 @@ console.log(this.tasksForTheDay);
   formateDate(date) {
     return this.utilityService.formateDate(date, DateTime.DATE_MED);
   }
-
-  // Check if the data provided is not empty{}
-  arrayExists(object: []) {
-    return this.utilityService.arrayExists(object);
-  }
-
-  // onCloseDialog() {
-  //   this.closeEvent.emit();
-  // }
 }
