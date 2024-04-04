@@ -488,7 +488,7 @@ export class PostsService {
      * @param userId 
      * @param groupId
      */
-    async getWorkloadCardOverdueTasks(userId: any, groupId: any) {
+    async getWorkloadCardOverdueTasks(userId: string, groupId: string) {
 
         // Generate the actual time
         const today = DateTime.now();
@@ -496,13 +496,16 @@ export class PostsService {
         let tasks = [];
         let query = {};
         if (!!groupId) {
+console.log("AAAAA", groupId);
+console.log("AAAAA", userId);
+console.log("AAAAA", today);
           query = {
                 $and: [
-                    { '_assigned_to': userId.toString() },
+                    { '_group': groupId },
+                    { '_assigned_to': userId },
                     { 'type': 'task' },
-                    { '_group': groupId.toString() },
-                    { 'task.due_to': { $lt: today.toJSDate() } },
                     { 'task.is_template': { $ne: true }},
+                    { 'task.due_to': { $lt: today } },
                     {
                         $or: [
                             { 'task.status': 'to do' },
@@ -514,10 +517,10 @@ export class PostsService {
         } else {
             query = {
                 $and: [
-                    { '_assigned_to': userId.toString() },
+                    { '_assigned_to': userId },
                     { 'type': 'task' },
-                    { 'task.due_to': { $lt: today.toJSDate() } },
                     { 'task.is_template': { $ne: true }},
+                    { 'task.due_to': { $lt: today } },
                     {
                         $or: [
                             { 'task.status': 'to do' },
@@ -536,7 +539,7 @@ export class PostsService {
             .populate('_followers', this.userFields)
             .populate('_liked_by', this.userFields)
             .lean();
-
+console.log({ tasks });
         // Return tasks
         return tasks
     }
