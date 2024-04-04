@@ -1,0 +1,95 @@
+<div class="board">
+  <div class="container-fluid">
+
+
+    <div>
+      <div class="row text-center mb-3">
+
+        <div class="col-md-9">
+            <h6>{{ dates[0] | date:'MMM dd' }} - {{ dates[dates?.length - 1] | date:'MMM dd' }}</h6>
+        </div>
+        <div class="col-md-3">
+          <div class="btn btn-default" (click)="changeDates(7, 'sub')">
+            <i class="material-icons">navigate_before</i>
+          </div>
+          <div class="btn btn-default" (click)="changeDates(0, 'today')" i18n="@@groupResourceManagementBoardViewComponent.today">
+            Today
+          </div>
+          <div class="btn btn-default" (click)="changeDates(7, 'add')">
+            <i class="material-icons">navigate_next</i>
+          </div>
+        </div>
+
+      </div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th class="header"> {{ currentMonth }} </th>
+              <th *ngFor="let date of dates" [ngClass]="{'today': date?.is_current_day,'muted': !date?.is_current_day, 'weekend': date?.is_weekend_day}"> {{ date | date: 'dd' }} </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let member of groupMembers">
+              <td>
+                <div class="member">
+                  <div>
+                    <app-secured-image
+                      [imgURL]="member?.profile_pic"
+                      [service]="'user'"
+                      [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
+                      [styleClass]="'ml-2 feed-avatar'"
+                      (click)="openMeberBusinessCard(member?._id)"></app-secured-image>
+                  </div>
+                  <div class="name">
+                    {{ member?.first_name }}  {{ member?.last_name }}
+                  </div>
+                </div>
+              </td>
+              <td *ngFor="let workload of member.workload" [ngClass]="workload?.outOfTheOfficeClass">
+
+                  <span class="text-primary mr-2" i18n="@@groupResourceManagementBoardViewComponent.totalTasks"> Total tasks</span>
+                  <span class="badge pointer" *ngIf="!workload?.date?.is_current_day" (click)="openTaskForDayModal(workload?.date, member)">{{ workload.numTasks }}</span>
+                  <span class="badge pointer" *ngIf="workload?.date?.is_current_day" (click)="openTaskForDayModal(workload?.date, member)">{{ workload.numTasks + workload.overdue_tasks }}</span>
+
+                  <div class="time-tracking">
+                    <i  class="material-icons ">update</i> &nbsp;&nbsp;
+                    <span>{{ workload.hours || '0' }}h</span>
+                    &nbsp;
+                    <span>{{ workload.minutes || '0' }}m</span>
+                  </div>
+
+                  <div class="new-task">
+                    <button class="btn btn-outline-success" (click)="openFullscreenModal(workload?.date, member)">
+                      <i class="material-icons-outlined">add_task</i>
+                      &nbsp;
+                      <span i18n="@@groupResourceManagementBoardViewComponent.addTask">Add task</span>
+                    </button>
+                  </div>
+
+                  <div class="tasks-list">
+                    <ul>
+                      <li><span class="badge overdue-task pointer" *ngIf="workload?.date?.is_current_day" (click)="openTaskForDayModal(workload?.date, member, 'overdue')">{{ workload.overdue_tasks }}</span></li>
+                      <li><span class="badge to-do-task pointer" (click)="openTaskForDayModal(workload?.date, member, 'to-do')">{{ workload.todo_tasks }}</span></li>
+                      <li><span class="badge in-progress-task pointer" (click)="openTaskForDayModal(workload?.date, member, 'in-progress')">{{ workload.inprogress_tasks }}</span></li>
+                      <li><span class="badge badge-done pointer" (click)="openTaskForDayModal(workload?.date, member, 'done')">{{ workload.numDoneTasks }}</span></li>
+                    </ul>
+                  </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="col-5" *ngIf="groupMembers.length === 0">
+      <img src='assets/images/inbox-tasks-card-empty.svg'>
+    </div>
+
+    <!-- LOADING SPINNER STARTS -->
+    <ng-container *ngIf="isLoading$ | async">
+      <app-loading-spinner></app-loading-spinner>
+    </ng-container>
+    <!-- LOADING SPINNER ENDS -->
+  </div>
+</div>

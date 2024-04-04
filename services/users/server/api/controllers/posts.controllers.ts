@@ -302,7 +302,7 @@ export class PostsControllers {
             }
 
             // Fetch overdue task
-            const tasks: any = await postsService.getWorkloadCardOverdueTasks(userId, groupId);
+            const tasks: any = await postsService.getWorkloadCardOverdueTasks(userId.toString(), groupId.toString());
 
             // Send status 200 response
             return res.status(200).json({

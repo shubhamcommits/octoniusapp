@@ -1,6 +1,6 @@
 <div *ngIf="!subtask">
-  <div class="task-box" *ngIf="!column.addTask">
-    <button class="btn btn-block task muted" (click)="column.addTask = true">
+  <div class="task-box" *ngIf="!column || !column.addTask">
+    <button class="btn btn-block task muted" (click)="column.addTask = true" [disabled]="!canEdit">
       <i class="material-icons-outlined">add</i>
       <span *ngIf="!saveAsNorthStar && !saveAsIdea && !saveAsCRMLead" i18n="@@newTask.newTask">New Task</span>
       <span *ngIf="saveAsNorthStar" i18n="@@newTask.newNorthStar">New Target</span>
@@ -32,7 +32,7 @@
     </mat-menu>
   </div>
 
-  <div class="add-task" *ngIf="column.addTask">
+  <div class="add-task" *ngIf="!!column && column.addTask">
     <input class="form-control" type="text" placeholder="Enter title"
       [(ngModel)]="postTitle"
       (keyup.enter)="newTask()"

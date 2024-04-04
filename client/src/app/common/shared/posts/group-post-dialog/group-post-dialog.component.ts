@@ -1,14 +1,14 @@
-import { Component, OnInit, EventEmitter, Output, Inject, Injector, AfterViewInit, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Inject, Injector, AfterViewChecked } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
-import moment from 'moment';
 // ShareDB Client
 import { BehaviorSubject } from 'rxjs';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
-import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
+import moment from 'moment';
+import { ColumnService } from 'src/shared/services/column-service/column.service';
 
 @Component({
   selector: 'app-group-post-dialog',
@@ -29,6 +29,11 @@ export class GroupPostDialogComponent implements OnInit, AfterViewChecked {
   userData: any;
   groupId: string;
   columns: any;
+  selectedDate: any;
+  selectedUser: any;
+
+  searchText: string = '';
+
   // shuttleColumns: any;
   tasks:any;
   customFields;
@@ -120,7 +125,7 @@ export class GroupPostDialogComponent implements OnInit, AfterViewChecked {
     private groupService: GroupService,
     private utilityService: UtilityService,
     private flowService: FlowService,
-    private managementPortalService: ManagementPortalService,
+    private columnService: ColumnService,
     private injector: Injector,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<GroupPostDialogComponent>
@@ -131,35 +136,74 @@ export class GroupPostDialogComponent implements OnInit, AfterViewChecked {
     this.isLoading$.next(true);
 
     const postId = this.data.postId;
-    this.postData = await this.publicFunctions.getPost(postId);
     this.groupId = this.data.groupId;
     this.columns = this.data.columns;
-
-    if (!this.groupId) {
-      this.groupId = (this.postData._group) ? (this.postData._group._id || this.postData._group) : null;
-      this.myWorkplace = false;
-    }
-
-    if (this.groupId) {
-      this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
-
-      this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
-
-      this.myWorkplace = this.publicFunctions.isPersonalNavigation(this.groupData, this.userData);
-
-      this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
-        this.flows = res['flows'];
-      });
-    }
-
-    this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
-    this.isIdeaModuleAvailable = await this.publicFunctions.checkIdeaStatus();
-    this.isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
-    this.isBusinessSubscription = await this.publicFunctions.checkIsBusinessSubscription();
+    this.selectedDate = this.data.selectedDate;
+    this.selectedUser = this.data.selectedUser;
 
     this.userData = await this.publicFunctions.getCurrentUser();
 
-    await this.initPostData();
+    if (!!postId) {
+      this.postData = await this.publicFunctions.getPost(postId);
+
+      if (!this.groupId) {
+        this.groupId = (this.postData._group) ? (this.postData._group._id || this.postData._group) : null;
+        this.myWorkplace = false;
+      }
+
+      if (this.groupId) {
+        this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
+
+        this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
+
+        this.myWorkplace = this.publicFunctions.isPersonalNavigation(this.groupData, this.userData);
+
+        this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
+          this.flows = res['flows'];
+        });
+      }
+
+      this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
+      this.isIdeaModuleAvailable = await this.publicFunctions.checkIdeaStatus();
+      this.isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
+      this.isBusinessSubscription = await this.publicFunctions.checkIsBusinessSubscription();
+
+      await this.initPostData();
+    } else {
+      if (this.groupId) {
+        this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
+      } else {
+        this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+        this.groupId = this.groupData._id;
+      }
+
+      this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
+
+      this.postData = {
+        title: '',
+        content: '',
+        type: 'task',
+        _posted_by: this.userData._id,
+        created_date:  moment().format(),
+        _group: this.groupData._id,
+        _content_mentions: [],
+        _assigned_to: [this.selectedUser],
+        task: {
+          status: 'to do',
+          due_to: this.selectedDate,
+          custom_fields: [],
+          _column: null,
+          isNorthStar: false,
+          northStar: null,
+          is_milestone: false,
+          is_idea: false,
+          is_crm_task: false
+        }
+      };
+
+      // Return the function via stopping the loader
+      return this.isLoading$.next(false);
+    }
   }
 
   ngAfterViewChecked() {
@@ -842,7 +886,57 @@ export class GroupPostDialogComponent implements OnInit, AfterViewChecked {
     this.canEdit = !this.postData?.approval_flow_launched;
   }
 
+  async onNewTaskColumnSelected(newColumnId: string) {
+    await this.columnService.getSection(newColumnId).then(async res => {
+      this.postData.task._column = res['section'];
+      this.postData.task._column.addTask = false;
+    });
+  }
+
+  /**
+   * This function is responsible for fetching the post
+   * @param post
+   * @param column
+   */
+  async createPost(post: any) {
+    post.canEdit = true;
+    const section = this.postData.task._column;
+    this.postData = post;
+    this.postData.task._column = section;
+    this.postData.task.due_to = this.selectedDate,
+    this.dueDate = this.postData.task.due_to;
+    this.postData._assigned_to = [this.selectedUser];
+
+    this.title = this.postData.title;
+
+    await this.updateDetails('created');
+  }
+
+  async selectTaskToAssign(task: any) {
+    this.postData = task;
+    this.searchText = '';
+
+    if (!this.postData._assigned_to) {
+      this.postData._assigned_to = [this.selectedUser];
+    } else {
+      this.postData._assigned_to.push(this.selectedUser);
+    }
+
+    this.postData._assigned_to = await this.utilityService.removeDuplicates(this.postData._assigned_to, '_id');
+
+    this.postData.task.due_to = moment(this.selectedDate).format(),
+    this.dueDate = this.postData.task.due_to;
+
+    this.title = this.postData.title;
+
+    await this.updateDetails('assigned_to');
+  }
+
   formateDate(date) {
     return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
+  }
+
+  objectExists(object: any) {
+    return this.utilityService.objectExists(object);
   }
 }

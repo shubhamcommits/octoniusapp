@@ -270,4 +270,6 @@ routes.put('/:postId/saveCRMInfo', postController.saveCRMInfo);
 // POST - Recalculate the cost of a task
 routes.post('/:postId/recalculateCost', postController.recalculateCost);
 
+// GET - This route is used to get the tasks of a user with specific due date and status
+routes.get('/post/tasks-per-user-status-date', postController.getTasksPerGroupUserStatusAndDate);
 export { routes as postRoutes };
