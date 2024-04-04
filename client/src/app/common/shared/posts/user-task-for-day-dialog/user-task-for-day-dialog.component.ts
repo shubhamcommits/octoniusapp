@@ -59,11 +59,6 @@ export class UserTaskForDayDialogComponent implements OnInit, OnDestroy {
     this.groupData = await this.publicFunctions.getCurrentGroupDetails();
 
     await this.loadTasks();
-
-    // Send Updates to router state
-    this.publicFunctions.sendUpdatesToRouterState({
-      state: 'home'
-    });
   }
 
   ngOnDestroy() {
@@ -71,9 +66,12 @@ export class UserTaskForDayDialogComponent implements OnInit, OnDestroy {
   }
 
   async loadTasks() {
-    this.tasksForTheDay = await this.publicFunctions.filterRAGTasks(await this.getTasks(), this.userData);
+    const tasks = await this.getTasks();
+console.log({tasks});
+    this.tasksForTheDay = await this.publicFunctions.filterRAGTasks(tasks, this.userData);
 
     this.markOverdueTasks();
+console.log(this.tasksForTheDay);
   }
 
   async getTasks() {
