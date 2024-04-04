@@ -3,7 +3,6 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { PublicFunctions } from 'modules/public.functions';
 import { DateTime } from 'luxon';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { PostService } from 'src/shared/services/post-service/post.service';
 
 @Component({
   selector: 'app-user-task-for-day-dialog',
@@ -22,15 +21,9 @@ export class UserTaskForDayDialogComponent implements OnInit, OnDestroy {
   status = '';
   selectedDay: any;
   selectedUser: any;
-  
   groupData;
   userData;
-
   tasksForTheDay: any = [];
-  
-  post: any;
-
-  columns;
 
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector);
@@ -40,16 +33,19 @@ export class UserTaskForDayDialogComponent implements OnInit, OnDestroy {
     private utilityService: UtilityService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
-    this.userData = this.data.userData;
-    this.groupData = this.data.groupData;
+    this.status = this.data.status;
     this.selectedDay = this.data.selectedDay;
     this.selectedUser = this.data.selectedUser;
-    this.status = this.data.status;
-console.log(this.userData);
-console.log(this.groupData);
+    this.groupData = this.data.groupData;
+    this.userData = this.data.userData;
+    this.tasksForTheDay = this.data.tasksForTheDay;
+console.log(this.status);
 console.log(this.selectedDay);
 console.log(this.selectedUser);
-console.log(this.status);
+console.log(this.groupData);
+console.log(this.userData);
+console.log(this.tasksForTheDay);
+// console.log(this.status);
     this.loadTasks();
   }
 
@@ -60,57 +56,47 @@ console.log(this.status);
   }
 
   async loadTasks() {
-    const tasks = await this.getTasks();
-console.log({tasks});
-    this.tasksForTheDay = await this.publicFunctions.filterRAGTasks(tasks, this.userData);
+    // this.tasksForTheDay = await this.publicFunctions.filterRAGTasks(await this.getTasks(), this.userData);
 
-    this.markOverdueTasks();
+    // this.markOverdueTasks();
 console.log(this.tasksForTheDay);
   }
 
-  async getTasks() {
-    return new Promise((resolve, reject) => {
-      let postService = this.injector.get(PostService);
-      postService.getTasksPerGroupUserStatusAndDate(this.groupData._id, this.selectedUser._id, this.status, this.selectedDay.toJSDate())
-        .then((res) => {
-          res['posts'] = res['posts'].filter((task)=> {
-            return task._group != null;
-          });
+  // async getTasks() {
+  //   return new Promise((resolve, reject) => {
+  //     let postService = this.injector.get(PostService);
+  //     postService.getTasksPerGroupUserStatusAndDate(this.groupData._id, this.selectedUser._id, this.status, this.selectedDay.toJSDate())
+  //       .then((res) => {
+  //         res['posts'] = res['posts'].filter((task)=> {
+  //           return task._group != null;
+  //         });
 
-          resolve(res['posts']);
-        })
-        .catch(() => {
-          reject([]);
-        })
-    })
-  }
+  //         resolve(res['posts']);
+  //       })
+  //       .catch(() => {
+  //         reject([]);
+  //       })
+  //   })
+  // }
 
   private markOverdueTasks() {
-    this.tasksForTheDay = this.tasksForTheDay.map(task => {
-      task.overdue = (this.status == 'overdue') ? true : false;
+    this.tasksForTheDay = this.tasksForTheDay.map(async task => {
+      // task.overdue = (this.status == 'overdue') ? true : false;
+      task.overdue = await this.isOverDue(DateTime.fromJSDate(task.task.due_to), DateTime.now())
       return task;
     });
   }
 
-  async openModal(task) {
+  isOverDue(day1: DateTime, day2: DateTime) {
+    return day1.startOf('day') < day2.startOf('day');
+  }
 
-    this.post = task;
-
+  async openModal(post: any) {
     // Open the Modal
-    let dialogRef;
-    const canOpen = !this.userData?._private_group?.enabled_rights || this.post?.canView || this.post?.canEdit;
-    if (this.post.type === 'task' && !this.post.task._parent_task) {
-      await this.publicFunctions.getAllColumns(this.post._group._id).then(data => this.columns = data);
-      dialogRef = this.utilityService.openPostDetailsFullscreenModal(this.post._id, this.userData?._private_group?._id, canOpen, this.columns);
-    } else {
-      // for subtasks it is not returning the parent information, so need to make a workaround
-      if (this.post.task._parent_task && !this.post.task._parent_task._id) {
-          await this.publicFunctions.getPost(this.post.task._parent_task).then(post => {
-            this.post.task._parent_task = post;
-          });
-      }
-      dialogRef = this.utilityService.openPostDetailsFullscreenModal(this.post._id, this.userData?._private_group?._id, canOpen);
-    }
+    let columns = [];
+    const canOpen = !this.userData?._private_group?.enabled_rights || post?.canView || post?.canEdit;
+    await this.publicFunctions.getAllColumns(post._group._id).then((data: any) => columns = data);
+    const dialogRef = this.utilityService.openPostDetailsFullscreenModal(post._id, this.groupData?._id, canOpen, columns);
 
     if (dialogRef) {
       const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {

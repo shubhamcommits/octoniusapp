@@ -9,6 +9,7 @@ import { HRService } from 'src/shared/services/hr-service/hr.service';
 import moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 import { UserTaskForDayDialogComponent } from 'src/app/common/shared/posts/user-task-for-day-dialog/user-task-for-day-dialog.component';
+import { PostService } from 'src/shared/services/post-service/post.service';
 
 @Component({
   selector: 'app-group-resource-management-board-view',
@@ -253,16 +254,17 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
     }
   }
 
-  openTaskForDayModal(selectedDay: DateTime, selectedUser: any, status?: string) {
+  async openTaskForDayModal(selectedDay: DateTime, selectedUser: any, status?: string) {
     const data = {
-      groupData: this.groupData,
-      userData: this.userData,
+      status: status,
       selectedDay: selectedDay,
       selectedUser: selectedUser,
-      status: status
+      groupData: this.groupData,
+      userData: this.userData,
+      tasksForTheDay: await this.publicFunctions.filterRAGTasks(await this.getTasks(selectedDay, selectedUser, status), this.userData)
     }
 
-    const dialogRef = this.dialog.open(UserTaskForDayDialogComponent, {
+    this.dialog.open(UserTaskForDayDialogComponent, {
       width: '75%',
       maxHeight: '80%',
       disableClose: false,
@@ -273,6 +275,23 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
       this.isLoading$.next(true);
       await this.initTable();
     });
+  }
+
+  async getTasks(selectedDay: DateTime, selectedUser: any, status?: string) {
+    return new Promise((resolve, reject) => {
+      let postService = this.injector.get(PostService);
+      postService.getTasksPerGroupUserStatusAndDate(this.groupData._id, selectedUser._id, status, selectedDay.toJSDate())
+        .then((res) => {
+          res['posts'] = res['posts'].filter((task)=> {
+            return task._group != null;
+          });
+
+          resolve(res['posts']);
+        })
+        .catch(() => {
+          reject([]);
+        })
+    })
   }
 
   /**
