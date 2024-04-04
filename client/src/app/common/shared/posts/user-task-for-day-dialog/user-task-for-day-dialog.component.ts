@@ -39,28 +39,23 @@ export class UserTaskForDayDialogComponent implements OnInit, OnDestroy {
     this.groupData = this.data.groupData;
     this.userData = this.data.userData;
     this.tasksForTheDay = this.data.tasksForTheDay;
-console.log(this.status);
-console.log(this.selectedDay);
-console.log(this.selectedUser);
-console.log(this.groupData);
-console.log(this.userData);
-console.log(this.tasksForTheDay);
-// console.log(this.status);
-    this.loadTasks();
+
+    // this.loadTasks();
   }
 
-  async ngOnInit() { }
+  async ngOnInit() {
+    this.markOverdueTasks();
+  }
 
   ngOnDestroy() {
     this.utilityService.closeAllModals();
   }
 
-  async loadTasks() {
-    // this.tasksForTheDay = await this.publicFunctions.filterRAGTasks(await this.getTasks(), this.userData);
+  // async loadTasks() {
+  //   this.tasksForTheDay = await this.publicFunctions.filterRAGTasks(await this.getTasks(), this.userData);
 
-    // this.markOverdueTasks();
-console.log(this.tasksForTheDay);
-  }
+  //   this.markOverdueTasks();
+  // }
 
   // async getTasks() {
   //   return new Promise((resolve, reject) => {

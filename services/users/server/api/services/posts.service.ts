@@ -496,9 +496,6 @@ export class PostsService {
         let tasks = [];
         let query = {};
         if (!!groupId) {
-console.log("AAAAA", groupId);
-console.log("AAAAA", userId);
-console.log("AAAAA", today);
           query = {
                 $and: [
                     { '_group': groupId },
@@ -539,7 +536,7 @@ console.log("AAAAA", today);
             .populate('_followers', this.userFields)
             .populate('_liked_by', this.userFields)
             .lean();
-console.log({ tasks });
+
         // Return tasks
         return tasks
     }

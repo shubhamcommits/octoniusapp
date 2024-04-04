@@ -49,8 +49,8 @@
               <td *ngFor="let workload of member.workload" [ngClass]="workload?.outOfTheOfficeClass">
 
                   <span class="text-primary mr-2" i18n="@@groupResourceManagementBoardViewComponent.totalTasks"> Total tasks</span>
-                  <span class="badge pointer" *ngIf="!workload?.date?.is_current_day" (click)="openTaskForDayModal(workload?.date, member)">{{ workload.numTasks }}</span>
-                  <span class="badge pointer" *ngIf="workload?.date?.is_current_day" (click)="openTaskForDayModal(workload?.date, member)">{{ workload.numTasks + workload.overdue_tasks }}</span>
+                  <span class="badge" *ngIf="!workload?.date?.is_current_day">{{ workload.numTasks }}</span>
+                  <span class="badge" *ngIf="workload?.date?.is_current_day">{{ workload.numTasks + workload.overdue_tasks }}</span>
 
                   <div class="time-tracking">
                     <i  class="material-icons ">update</i> &nbsp;&nbsp;
@@ -69,10 +69,10 @@
 
                   <div class="tasks-list">
                     <ul>
-                      <li><span class="badge overdue-task pointer" *ngIf="workload?.date?.is_current_day" (click)="openTaskForDayModal(workload?.date, member, 'overdue')">{{ workload.overdue_tasks }}</span></li>
-                      <li><span class="badge to-do-task pointer" (click)="openTaskForDayModal(workload?.date, member, 'to-do')">{{ workload.todo_tasks }}</span></li>
-                      <li><span class="badge in-progress-task pointer" (click)="openTaskForDayModal(workload?.date, member, 'in-progress')">{{ workload.inprogress_tasks }}</span></li>
-                      <li><span class="badge badge-done pointer" (click)="openTaskForDayModal(workload?.date, member, 'done')">{{ workload.numDoneTasks }}</span></li>
+                      <li><span class="badge overdue-task" *ngIf="workload?.date?.is_current_day">{{ workload.overdue_tasks }}</span></li>
+                      <li><span class="badge to-do-task">{{ workload.todo_tasks }}</span></li>
+                      <li><span class="badge in-progress-task">{{ workload.inprogress_tasks }}</span></li>
+                      <li><span class="badge badge-done">{{ workload.numDoneTasks }}</span></li>
                     </ul>
                   </div>
               </td>

@@ -3948,9 +3948,6 @@ export class PostService {
       let query = {};
       if (!!status && status != 'undefined' && status != 'null') {
         if (status == 'overdue') {
-console.log("AAAAA", groupId);
-console.log("AAAAA", userId);
-console.log("AAAAA", dueDate);
           query = {
             $and: [
               { '_group': groupId },
@@ -3967,9 +3964,6 @@ console.log("AAAAA", dueDate);
             ]
           };
         } else {
-console.log("BBBBB", groupId);
-console.log("BBBBB", userId);
-console.log("BBBBB", dueDate);
           query = {
             $and: [
               { '_group': groupId },
@@ -3982,9 +3976,6 @@ console.log("BBBBB", dueDate);
           };
         }
       } else {
-console.log("CCCCC", groupId);
-console.log("CCCCC", userId);
-console.log("CCCCC", dueDate);
         query = {
           $and: [
             { '_group': groupId },
@@ -4033,7 +4024,7 @@ console.log("CCCCC", dueDate);
         .populate({ path: 'logs._group', select: this.groupFields })
         .populate({ path: 'logs._task', select: '_id title' })
         .lean();
-console.log({ posts });
+
       // Return set of posts
       return posts;
 
