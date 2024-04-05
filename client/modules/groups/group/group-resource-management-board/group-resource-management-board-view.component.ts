@@ -264,26 +264,26 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
     }
   }
 
-  async openTaskForDayModal(selectedDay: DateTime, selectedUser: any, status: string, tasks: any[]) {
-    const data = {
-      status: status,
-      selectedDay: selectedDay,
-      selectedUser: selectedUser,
-      tasksForTheDay: tasks
-    }
+  // async openTaskForDayModal(selectedDay: DateTime, selectedUser: any, status: string, tasks: any[]) {
+  //   const data = {
+  //     status: status,
+  //     selectedDay: selectedDay,
+  //     selectedUser: selectedUser,
+  //     tasksForTheDay: tasks
+  //   }
 
-    this.dialog.open(UserTaskForDayDialogComponent, {
-      width: '75%',
-      maxHeight: '80%',
-      disableClose: false,
-      hasBackdrop: true,
-      data: data
-    }).afterClosed().subscribe(async () => {
-      // Starts the spinner
-      this.isLoading$.next(true);
-      await this.initTable();
-    });
-  }
+  //   this.dialog.open(UserTaskForDayDialogComponent, {
+  //     width: '75%',
+  //     maxHeight: '80%',
+  //     disableClose: false,
+  //     hasBackdrop: true,
+  //     data: data
+  //   }).afterClosed().subscribe(async () => {
+  //     // Starts the spinner
+  //     this.isLoading$.next(true);
+  //     await this.initTable();
+  //   });
+  // }
 
   /**
    * This function is responsible for opening a fullscreen dialog to see the member profile
