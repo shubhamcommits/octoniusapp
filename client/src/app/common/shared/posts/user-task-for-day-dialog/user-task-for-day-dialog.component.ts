@@ -142,10 +142,12 @@ export class UserTaskForDayDialogComponent implements OnInit, OnDestroy {
     return 'label-priority ' + priority.toLocaleLowerCase();
   }
 
-  isOverDue(day1: DateTime) {
+  isOverDue(day1: any) {
     return (!!day1 && day1 instanceof DateTime)
       ? day1.startOf('day') < DateTime.now().startOf('day')
-      : false;
+      : (!!day1)
+        ? DateTime.fromISO(day1).startOf('day') < DateTime.now().startOf('day')
+        : false;
   }
 
   formateDate(date) {

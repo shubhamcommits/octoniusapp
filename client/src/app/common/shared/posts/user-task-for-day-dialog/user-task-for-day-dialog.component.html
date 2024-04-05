@@ -53,11 +53,10 @@
               <div *ngIf="isOverDue(task?.task?.due_to)" class="overview-item small text-right overdue" i18n="@@userTaskForDayDialogComponent.overdueC">
                 OVERDUE
               </div>
-              <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
+              <div *ngIf="!isOverDue(task?.task?.due_to)" class="overview-item small text-muted text-right">
                 {{ formateDate(task?.task?.due_to) }}
               </div>
             </div>
-
           </div>
         </div>
       </a>
