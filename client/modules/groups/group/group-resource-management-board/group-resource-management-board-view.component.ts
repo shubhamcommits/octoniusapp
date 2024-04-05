@@ -18,7 +18,6 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 })
 export class GroupResourceManagementBoardViewComponent implements OnInit {
 
-  @Input() groupId: string;
   @Input() sections: [];
   @Input() isAdmin: any = false;
 
@@ -51,13 +50,13 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
     this.isLoading$.next(true);
 
     this.userData = await this.publicFunctions.getCurrentUser();
-    this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
+    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
 
     await this.initTable();
   }
 
   async initTable() {
-    this.groupService.getAllGroupMembers(this.groupData?._id).then(res => {
+    await this.groupService.getAllGroupMembers(this.groupData?._id).then(res => {
       this.groupMembers = res['users'];
     });
 
@@ -81,7 +80,7 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
     });
 
     let timeTrackingEntitiesMapped = [];
-    await this.groupService.getGroupTimeTrackingEntites(this.groupId, this.dates[0].toISODate(), this.dates[this.dates.length -1].toISODate(), null).then(async res => {
+    await this.groupService.getGroupTimeTrackingEntites(this.groupData._id, this.dates[0].toISODate(), this.dates[this.dates.length -1].toISODate(), null).then(async res => {
       timeTrackingEntitiesMapped = [];
         const interval = Interval.fromDateTimes(this.dates[0], this.dates[this.dates.length -1]);
         res['timeTrackingEntities'].forEach(tte => {
@@ -129,7 +128,7 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
         };
 
         if (this.isCurrentDay(date)) {
-          this.userService.getWorkloadOverdueTasks(member?._id, this.groupId)
+          this.userService.getWorkloadOverdueTasks(member?._id, this.groupData._id)
             .then((res) => {
               workloadDay.overdue_tasks = res['tasks'].length;
             })
@@ -258,10 +257,7 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
   //   const data = {
   //     status: status,
   //     selectedDay: selectedDay,
-  //     selectedUser: selectedUser,
-  //     groupData: this.groupData,
-  //     userData: this.userData,
-  //     tasksForTheDay: await this.publicFunctions.filterRAGTasks(await this.getTasks(selectedDay, selectedUser, status), this.userData)
+  //     selectedUser: selectedUser
   //   }
 
   //   this.dialog.open(UserTaskForDayDialogComponent, {
@@ -275,23 +271,6 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
   //     this.isLoading$.next(true);
   //     await this.initTable();
   //   });
-  // }
-
-  // async getTasks(selectedDay: DateTime, selectedUser: any, status?: string) {
-  //   return new Promise((resolve, reject) => {
-  //     let postService = this.injector.get(PostService);
-  //     postService.getTasksPerGroupUserStatusAndDate(this.groupData._id, selectedUser._id, status, selectedDay.toJSDate())
-  //       .then((res) => {
-  //         res['posts'] = res['posts'].filter((task)=> {
-  //           return task._group != null;
-  //         });
-
-  //         resolve(res['posts']);
-  //       })
-  //       .catch(() => {
-  //         reject([]);
-  //       })
-  //   })
   // }
 
   /**

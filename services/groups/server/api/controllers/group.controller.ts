@@ -660,7 +660,6 @@ export class GroupController {
      */
     async create(req: Request, res: Response) {
         try {
-
             // Preparing the group data
             const groupData = {
                 group_name: req.body.group_name,
@@ -673,11 +672,11 @@ export class GroupController {
 
             // Checking if group already exists
             const groupExist = await Group.findOne({
-                $and: [
-                    { group_name: groupData.group_name },
-                    { _workspace: groupData._workspace }
-                ]
-            });
+                    $and: [
+                        { group_name: groupData.group_name },
+                        { _workspace: groupData._workspace }
+                    ]
+                });
 
             // If Group Exists in the workspace, then send error response
             if (groupExist) {
@@ -697,51 +696,50 @@ export class GroupController {
 
             // Find the group and update their respective group avatar
             group = await Group.findByIdAndUpdate({
-                _id: group._id
-            }, {
-                //custom_fields: newCustomField
-                $push: { "custom_fields": default_CF }
-            }, {
-                new: true
-            })
+                    _id: group._id
+                }, {
+                    //custom_fields: newCustomField
+                    $push: { "custom_fields": default_CF }
+                }, {
+                    new: true
+                }).lean();
 
             // Find the user and update the _groups array in the corresponding user document 
-            await User.findByIdAndUpdate({
-                _id: groupData._admins,
-                _workspace: groupData._workspace
-            }, {
-                $push: {
-                    _groups: group
-                }
-            }, {
-                new: true
-            }).lean();
+            const user = await User.findByIdAndUpdate({
+                    _id: req['userId']
+                }, {
+                    $push: {
+                        _groups: group._id
+                    }
+                }, {
+                    new: true
+                }).lean();
 
             // Send new workspace to the mgmt portal
             // Obtain the workspace of the group
-            const workspace = await Workspace.findOne({ _id: groupData._workspace });
+            const workspace = await Workspace.findOne({ _id: user._workspace });
 
             // Count all the groups present inside the workspace
             const groupsCount: number = await Group.find({ $and: [
-                { group_name: { $ne: 'personal' } },
-                { _workspace: groupData._workspace }
-            ]}).countDocuments();
+                    { group_name: { $ne: 'personal' } },
+                    { _workspace: workspace._id }
+                ]}).countDocuments();
 
             // Count all the users present inside the workspace
             const usersCount: number = await User.find({ $and: [
-                { active: true },
-                { _workspace: groupData._workspace }
-            ] }).countDocuments();
+                    { active: true },
+                    { _workspace: workspace._id }
+                ] }).countDocuments();
 
             // Count all the users present inside the workspace
             const guestsCount: number = await User.find({ $and: [
-                { active: true },
-                { _workspace: groupData._workspace },
-                { role: 'guest'}
-            ] }).countDocuments();
+                    { active: true },
+                    { _workspace: workspace._id },
+                    { role: 'guest'}
+                ] }).countDocuments();
 
             let workspaceMgmt = {
-                _id: groupData._workspace,
+                _id: workspace._id,
                 company_name: workspace.company_name,
                 workspace_name: workspace.workspace_name,
                 owner_email: workspace.owner_email,
