@@ -540,7 +540,7 @@ export class PostService {
    * This function is responsible for creating a copy of the task assigning it to a specific user
    */
   cloneToAssignee(assignees: any, postId: string) {
-    return this._http.post(this.baseURL + '/clone-to-assignee', { postId: postId, assignees: assignees }).toPromise();
+    return this._http.post(this.baseURL + `${postId}/clone-to-assignee`, { postId: postId, assignees: assignees }).toPromise();
   }
 
   getGroupTemplates(groupId: string) {
@@ -677,14 +677,14 @@ export class PostService {
     return this._http.post(this.baseURL + `/${postId}/recalculateCost`, {}).toPromise();
   }
 
-  getTasksPerGroupUserStatusAndDate(groupId: string, userId: string, status: string, dueDate: any) {
-    return this._http.get(this.baseURL + `/post/tasks-per-user-status-date`, {
-      params: {
-        groupId: groupId,
-        userId: userId,
-        status: status,
-        dueDate: dueDate
-      }
-    }).toPromise()    
-  }
+  // getTasksPerGroupUserStatusAndDate(groupId: string, userId: string, status: string, dueDate: any) {
+  //   return this._http.get(this.baseURL + `/post/tasks-per-user-status-date`, {
+  //     params: {
+  //       groupId: groupId,
+  //       userId: userId,
+  //       status: status,
+  //       dueDate: dueDate
+  //     }
+  //   }).toPromise()    
+  // }
 }

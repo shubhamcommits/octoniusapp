@@ -46,10 +46,10 @@
                   </div>
                 </div>
               </td>
+
               <td *ngFor="let workload of member.workload" [ngClass]="workload?.outOfTheOfficeClass">
                   <span class="text-primary mr-2" i18n="@@groupResourceManagementBoardViewComponent.totalTasks"> Total tasks</span>
-                  <span class="badge" *ngIf="!workload?.date?.is_current_day">{{ workload.numTasks }}</span>
-                  <span class="badge" *ngIf="workload?.date?.is_current_day">{{ workload.numTasks + workload.overdue_tasks }}</span>
+                  <span class="badge">{{ workload.total_tasks.length }}</span>
 
                   <div class="time-tracking">
                     <i  class="material-icons ">update</i> &nbsp;&nbsp;
@@ -68,10 +68,10 @@
 
                   <div class="tasks-list">
                     <ul>
-                      <li><span class="badge overdue-task" *ngIf="workload?.date?.is_current_day">{{ workload.overdue_tasks }}</span></li>
-                      <li><span class="badge to-do-task">{{ workload.todo_tasks }}</span></li>
-                      <li><span class="badge in-progress-task">{{ workload.inprogress_tasks }}</span></li>
-                      <li><span class="badge badge-done">{{ workload.numDoneTasks }}</span></li>
+                      <li><span class="badge overdue-task" *ngIf="workload?.date?.is_current_day">{{ workload.overdue_tasks.length }}</span></li>
+                      <li><span class="badge to-do-task">{{ workload.todo_tasks.length }}</span></li>
+                      <li><span class="badge in-progress-task">{{ workload.inprogress_tasks.length }}</span></li>
+                      <li><span class="badge badge-done">{{ workload.done_tasks.length }}</span></li>
                     </ul>
                   </div>
               </td>

@@ -221,12 +221,11 @@ routes.put('/:postId/set-dependency', postController.setDependencyTask);
 // PUT - Used to remove a dependency task to a task
 routes.put('/:postId/remove-dependency', postController.removeDependencyTask);
 
-
-
+// POST - Used to update the dates of a task in the 'gantt' view
 routes.post('/:postId/gantt-task-dates-update',postController.updateGanttTasksDates.bind(postController))
 
 // POST - Used to clone the post to a user
-routes.post('/clone-to-assignee', postController.cloneToAssignee);
+routes.post('/:postId/clone-to-assignee', postController.cloneToAssignee);
 
 /**
  * GET - This route fetches the list of templates present in a group
@@ -271,5 +270,6 @@ routes.put('/:postId/saveCRMInfo', postController.saveCRMInfo);
 routes.post('/:postId/recalculateCost', postController.recalculateCost);
 
 // GET - This route is used to get the tasks of a user with specific due date and status
-routes.get('/post/tasks-per-user-status-date', postController.getTasksPerGroupUserStatusAndDate);
+// routes.get('/post/tasks-per-user-status-date', postController.getTasksPerGroupUserStatusAndDate);
+
 export { routes as postRoutes };

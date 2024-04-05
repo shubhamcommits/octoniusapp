@@ -1679,22 +1679,26 @@ export class PostController {
      * @param next 
      */
     async cloneToAssignee(req: Request, res: Response, next: NextFunction) {
-
-        // Post Object From request
-        const { postId, assignees } = req.body;
-
-        // Call servide function for adding the post
-        assignees.forEach(async assigneeId => {
-            const postData = await postService.cloneToAssignee(postId, assigneeId)
+        try {
+            // Post Object From request
+            const { params: { postId }, body: { assignees } } = req;
+// console.log({postId});
+// console.log({assignees});
+            // Call servide function for adding the post
+            assignees.forEach(async assigneeId => {
+                const postData = await postService.cloneToAssignee(postId, assigneeId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
                 });
-        });
-
-        // Send Status 200 response
-        return res.status(200).json({
-            message: 'Post Clonned Successfully!',
-        });
+            });
+            
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'Post Clonned Successfully!',
+            });
+        } catch (error) {
+            sendErr(res, error);
+        }
     }
 
     /**
@@ -2064,27 +2068,27 @@ export class PostController {
      * @param res 
      * @param next 
      */
-    async getTasksPerGroupUserStatusAndDate(req: Request, res: Response, next: NextFunction) {
+    // async getTasksPerGroupUserStatusAndDate(req: Request, res: Response, next: NextFunction) {
 
-        // Fetch groupId and lastPostId from request
-        var { groupId, userId, status, dueDate } = req.query;
+    //     // Fetch groupId and lastPostId from request
+    //     var { groupId, userId, status, dueDate } = req.query;
 
-        // If groupId is not present, then return error
-        if (!groupId) {
-            return sendErr(res, new Error('Please provide the groupId as the query parameter'), 'Please provide the groupId as the query paramater!', 400);
-        }
+    //     // If groupId is not present, then return error
+    //     if (!groupId) {
+    //         return sendErr(res, new Error('Please provide the groupId as the query parameter'), 'Please provide the groupId as the query paramater!', 400);
+    //     }
 
-        await postService.getTasksPerGroupUserStatusAndDate(groupId, userId, status, dueDate)
-            .then((posts) => {
-                return res.status(200).json({
-                    message: `The user tasks for the specific day and status!`,
-                    posts: posts
-                });
-            })
-            .catch((err) => {
+    //     await postService.getTasksPerGroupUserStatusAndDate(groupId, userId, status, dueDate)
+    //         .then((posts) => {
+    //             return res.status(200).json({
+    //                 message: `The user tasks for the specific day and status!`,
+    //                 posts: posts
+    //             });
+    //         })
+    //         .catch((err) => {
 
-                // If there's an error send bad request
-                return sendErr(res, new Error(err), 'Unable to fetch the templates, kindly check the stack trace for error', 400)
-            });
-    }
+    //             // If there's an error send bad request
+    //             return sendErr(res, new Error(err), 'Unable to fetch the templates, kindly check the stack trace for error', 400)
+    //         });
+    // }
 }

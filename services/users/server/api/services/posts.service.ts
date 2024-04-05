@@ -8,6 +8,7 @@ export class PostsService {
 
     // Select Group Fileds on population
     groupFields: any = 'group_name group_avatar';
+    postFields: any = 'title _group _assigned_to permissions _posted_by _created_by approval_flow_launched task.status task._column task.due_to task.estimation task?._parent_task'
 
     /**
      * This function is responsible for fetching todays task for the user
@@ -502,7 +503,7 @@ export class PostsService {
                     { '_assigned_to': userId },
                     { 'type': 'task' },
                     { 'task.is_template': { $ne: true }},
-                    { 'task.due_to': { $lt: today } },
+                    { 'task.due_to': { $lt: today.toISODate() } },
                     {
                         $or: [
                             { 'task.status': 'to do' },
@@ -517,7 +518,7 @@ export class PostsService {
                     { '_assigned_to': userId },
                     { 'type': 'task' },
                     { 'task.is_template': { $ne: true }},
-                    { 'task.due_to': { $lt: today } },
+                    { 'task.due_to': { $lt: today.toISODate() } },
                     {
                         $or: [
                             { 'task.status': 'to do' },
@@ -530,6 +531,7 @@ export class PostsService {
 
         tasks = await Post.find(query)
             .sort('-task.due_to')
+            .select(this.postFields)
             .populate('_group', this.groupFields)
             .populate('_posted_by', this.userFields)
             .populate('_assigned_to', this.userFields)

@@ -22,7 +22,6 @@ export class UserTaskForDayDialogComponent implements OnInit, OnDestroy {
   status = '';
   selectedDay: any;
   selectedUser: any;
-
   tasksForTheDay: any = [];
 
   groupData;
@@ -42,6 +41,10 @@ export class UserTaskForDayDialogComponent implements OnInit, OnDestroy {
     this.status = this.data.status;
     this.selectedDay = this.data.selectedDay;
     this.selectedUser = this.data.selectedUser;
+    this.tasksForTheDay = this.data.tasksForTheDay;
+
+    this.userData = await this.publicFunctions.getCurrentUser();
+    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
 
     this.loadTasks();
   }
@@ -51,58 +54,47 @@ export class UserTaskForDayDialogComponent implements OnInit, OnDestroy {
   }
 
   async loadTasks() {
-    this.tasksForTheDay = await this.publicFunctions.filterRAGTasks(await this.getTasks(), this.userData);
-
-    this.markOverdueTasks();
+    // this.tasksForTheDay = await this.publicFunctions.filterRAGTasks(await this.getTasks(), this.userData);
+    this.tasksForTheDay = await this.publicFunctions.filterRAGTasks(this.tasksForTheDay, this.userData);
   }
 
-  async getTasks() {
-    return new Promise((resolve, reject) => {
-      let postService = this.injector.get(PostService);
-      postService.getTasksPerGroupUserStatusAndDate(this.groupData._id, this.selectedUser._id, this.status, this.selectedDay.toJSDate())
-        .then((res) => {
-          res['posts'] = res['posts'].filter((task)=> {
-            return task._group != null;
-          });
+  // async getTasks() {
+  //   return new Promise((resolve, reject) => {
+  //     let postService = this.injector.get(PostService);
+  //     postService.getTasksPerGroupUserStatusAndDate(this.groupData._id, this.selectedUser._id, this.status, this.selectedDay.toJSDate())
+  //       .then((res) => {
+  //         res['posts'] = res['posts'].filter((task)=> {
+  //           return task._group != null;
+  //         });
 
-          resolve(res['posts']);
-        })
-        .catch(() => {
-          reject([]);
-        })
-    })
-  }
-
-  private markOverdueTasks() {
-    this.tasksForTheDay = this.tasksForTheDay.map(async task => {
-      // task.overdue = (this.status == 'overdue') ? true : false;
-      task.overdue = await this.isOverDue(DateTime.fromJSDate(task.task.due_to), DateTime.now())
-      return task;
-    });
-  }
-
-  isOverDue(day1: DateTime, day2: DateTime) {
-    return day1.startOf('day') < day2.startOf('day');
-  }
+  //         resolve(res['posts']);
+  //       })
+  //       .catch(() => {
+  //         reject([]);
+  //       })
+  //   })
+  // }
 
   async openModal(post: any) {
-    // Open the Modal
-    let columns = [];
-    const canOpen = !this.userData?._private_group?.enabled_rights || post?.canView || post?.canEdit;
-    await this.publicFunctions.getAllColumns(post._group._id).then((data: any) => columns = data);
-    const dialogRef = this.utilityService.openPostDetailsFullscreenModal(post._id, this.groupData?._id, canOpen, columns);
-
-    if (dialogRef) {
-      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-        this.updateTask(data);
-      });
-      const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
-        this.onDeleteTask(data);
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        closeEventSubs.unsubscribe();
-        deleteEventSubs.unsubscribe();
-      });
+    if (!!post) {
+      // Open the Modal
+      let columns = [];
+      const canOpen = !this.userData?._private_group?.enabled_rights || post?.canView || post?.canEdit;
+      await this.publicFunctions.getAllColumns(this.groupData?._id).then((data: any) => columns = data);
+      const dialogRef = this.utilityService.openPostDetailsFullscreenModal(post._id, this.groupData?._id, canOpen, columns);
+      
+      if (dialogRef) {
+        const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+          this.updateTask(data);
+        });
+        const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
+          this.onDeleteTask(data);
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          closeEventSubs.unsubscribe();
+          deleteEventSubs.unsubscribe();
+        });
+      }
     }
   }
 
@@ -111,8 +103,6 @@ export class UserTaskForDayDialogComponent implements OnInit, OnDestroy {
     if (index !== -1) {
       this.tasksForTheDay[index] = task;
     }
-
-    this.markOverdueTasks();
   }
 
   onDeleteTask(deletedTaskId) {
@@ -122,20 +112,6 @@ export class UserTaskForDayDialogComponent implements OnInit, OnDestroy {
         this.tasksForTheDay.splice(indexTask, 1);
         return;
       }
-  }
-
-  getTaskStatusClass(task: any) {
-    return (task.task.status === 'to do')
-      ? 'media card-tile overview-task todo-bar'
-      : (task.task.status === 'in progress')
-        ? 'media card-tile overview-task working-bar'
-        : (task.task.status.trim() === 'completed' || task.task.status.trim() === 'done')
-          ? 'media card-tile overview-task done-bar'
-          : '';
-  }
-
-  getPriorityClass(priority: string) {
-    return 'label-priority ' + priority.toLocaleLowerCase();
   }
 
   sortTasksByPriority(tasks: any) {
@@ -148,6 +124,30 @@ export class UserTaskForDayDialogComponent implements OnInit, OnDestroy {
           ? -1 : ((!t1?.task?.custom_fields && t2?.task?.custom_fields))
             ? 1 : 0);
     });
+  }
+
+  getTaskStatusClass(task: any) {
+    return (!!task && !!task.task)
+      ? (task.task.status === 'to do')
+        ? 'media card-tile overview-task todo-bar'
+        : (task.task.status === 'in progress')
+          ? 'media card-tile overview-task working-bar'
+          : (task.task.status.trim() === 'completed' || task.task.status.trim() === 'done')
+            ? 'media card-tile overview-task done-bar'
+            : ''
+      : '';
+  }
+
+  getPriorityClass(priority: string) {
+    return 'label-priority ' + priority.toLocaleLowerCase();
+  }
+
+  isOverDue(day1: any) {
+    return (!!day1 && day1 instanceof DateTime)
+      ? day1.startOf('day') < DateTime.now().startOf('day')
+      : (!!day1)
+        ? DateTime.fromISO(day1).startOf('day') < DateTime.now().startOf('day')
+        : false;
   }
 
   formateDate(date) {

@@ -2326,10 +2326,12 @@ export class GroupController {
                 $and: [
                     { _group: groupId },
                     { type: 'task' },
+                    { 'task.is_template': { $ne: true }},
                     { 'task.due_to': { $gte: startDate, $lte: endDate} }
                 ]
             })
-            .select('task.status task.due_to _assigned_to task.estimation')
+            .select('title _group _assigned_to permissions _posted_by _created_by approval_flow_launched task.status task._column task.due_to task.estimation task?._parent_task')
+            .populate('_group', 'group_name group_avatar')
             .lean() || [];
 
             // Send the status 200 response
@@ -2909,7 +2911,8 @@ export class GroupController {
             let groupTasks = await Post.find({
                 $and: [
                     { _group: groupId },
-                    { type: 'task' }
+                    { type: 'task' },
+                    { 'task.is_template': { $ne: true }}
                 ]
             }).select('_id').lean() || [];
 
