@@ -2912,7 +2912,8 @@ export class GroupController {
             let groupTasks = await Post.find({
                 $and: [
                     { _group: groupId },
-                    { type: 'task' }
+                    { type: 'task' },
+                    { 'task.is_template': { $ne: true }}
                 ]
             }).select('_id').lean() || [];
 
