@@ -69,8 +69,8 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
     this.dates = await this.getRangeDates(firstDay);
 
     let tasks = [];
-    await this.groupService.getGroupTasksBetweenDays(this.groupData._id, this.dates[0].toISODate(), this.dates[this.dates.length -1].toISODate()).then(res => {
-      tasks = res['posts'];
+    await this.groupService.getGroupTasksBetweenDays(this.groupData._id, this.dates[0].toISODate(), this.dates[this.dates.length -1].toISODate()).then(async res => {
+      tasks = await this.publicFunctions.filterRAGTasks(res['posts'], this.userData);
     });
 
     const membersIds = this.groupMembers.map(member => {return member._id});
@@ -109,11 +109,11 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
 
       // filter member´s tasks
       const memberTasks = tasks.filter(post => post._assigned_to.includes(member?._id));
-
-      this.dates.forEach(async date => {
+      
+      this.dates.forEach(date => {
         let workloadDay = {
           date: date,
-          is_current_day: this.isCurrentDay(date),
+          is_current_day: date.is_current_day,
           is_weekend_day: this.isWeekend(date),
           total_tasks: [],
           // allocation: 0,
@@ -126,9 +126,9 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
           inprogress_tasks: []
         };
 
-        let tasksTmp = await memberTasks.filter(post => this.isSameDay(new DateTime(date), DateTime.fromISO(post.task.due_to)));
-        tasksTmp = await this.publicFunctions.filterRAGTasks(tasksTmp, this.userData);
-        if (this.isCurrentDay(date)) {
+        let tasksTmp = memberTasks.filter(post => this.isSameDay(new DateTime(date), DateTime.fromISO(post.task.due_to)));
+
+        if (date.is_current_day) {
           this.userService.getWorkloadOverdueTasks(member?._id, this.groupData._id)
             .then(async (res) => {
               workloadDay.overdue_tasks = await this.publicFunctions.filterRAGTasks(res['tasks'], this.userData);
@@ -160,13 +160,8 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
         if (tasksTmp && tasksTmp.length > 0) {
           // filter done/to do/in progress tasks count
           workloadDay.done_tasks = tasksTmp.filter(post => { return post.task.status == 'done'; });
-          workloadDay.done_tasks = await this.publicFunctions.filterRAGTasks(workloadDay.done_tasks, this.userData);
-
           workloadDay.todo_tasks = tasksTmp.filter(post => { return post?.task?.status == 'to do'});
-          workloadDay.todo_tasks = await this.publicFunctions.filterRAGTasks(workloadDay.todo_tasks, this.userData);
-
           workloadDay.inprogress_tasks = tasksTmp.filter(post => { return post?.task?.status == 'in progress'});
-          workloadDay.inprogress_tasks = await this.publicFunctions.filterRAGTasks(workloadDay.inprogress_tasks, this.userData);
         } else {
           workloadDay.done_tasks = [];
           workloadDay.todo_tasks = [];
@@ -229,8 +224,18 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
     return this.isSameDay(day, DateTime.now());
   }
 
-  isSameDay(day1: DateTime, day2: DateTime) {
-    return day1.startOf('day').toMillis() === day2.startOf('day').toMillis();
+  isSameDay(day1: any, day2: any) {
+    if (!!day1 && !!day2) {
+      if (day1 instanceof DateTime && day2 instanceof DateTime) {
+        return day1.startOf('day').toMillis() == DateTime.now().startOf('day').toMillis();
+      } else {
+        return DateTime.fromISO(day1).startOf('day').toMillis() == DateTime.now().startOf('day').toMillis();
+      }
+    } else if ((!day1 && !!day2) || !!day1 && !day2) {
+      return false;
+    } else if (!day1 && !day2) {
+      return true;
+    }
   }
 
   isWeekend(date) {

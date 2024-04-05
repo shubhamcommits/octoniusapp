@@ -46,10 +46,10 @@
                   </div>
                 </div>
               </td>
+
               <td *ngFor="let workload of member.workload" [ngClass]="workload?.outOfTheOfficeClass">
                   <span class="text-primary mr-2" i18n="@@groupResourceManagementBoardViewComponent.totalTasks"> Total tasks</span>
                   <span class="badge pointer" (click)="openTaskForDayModal(workload?.date, member, null, workload.total_tasks)">{{ workload.total_tasks.length }}</span>
-                  <!-- <span class="badge pointer" *ngIf="workload?.date?.is_current_day" (click)="openTaskForDayModal(workload?.date, member, null, workload.total_tasks.concat(workload.overdue_tasks))">{{ workload.total_tasks.length + workload.overdue_tasks.length }}</span> -->
 
                   <div class="time-tracking">
                     <i  class="material-icons ">update</i> &nbsp;&nbsp;
