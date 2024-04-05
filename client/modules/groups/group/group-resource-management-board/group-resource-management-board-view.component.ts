@@ -115,30 +115,31 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
           date: date,
           is_current_day: this.isCurrentDay(date),
           is_weekend_day: this.isWeekend(date),
-          numTasks: 0,
-          numDoneTasks: 0,
+          total_tasks: [],
           // allocation: 0,
           hours: '0',
           minutes: '0',
           outOfTheOfficeClass: '',
-          overdue_tasks: 0,
-          done_tasks: 0,
-          todo_tasks: 0,
-          inprogress_tasks: 0
+          overdue_tasks: [],
+          done_tasks: [],
+          todo_tasks: [],
+          inprogress_tasks: []
         };
 
+        let tasksTmp = await memberTasks.filter(post => this.isSameDay(new DateTime(date), DateTime.fromISO(post.task.due_to)));
+        tasksTmp = await this.publicFunctions.filterRAGTasks(tasksTmp, this.userData);
         if (this.isCurrentDay(date)) {
           this.userService.getWorkloadOverdueTasks(member?._id, this.groupData._id)
-            .then((res) => {
-              workloadDay.overdue_tasks = res['tasks'].length;
+            .then(async (res) => {
+              workloadDay.overdue_tasks = await this.publicFunctions.filterRAGTasks(res['tasks'], this.userData);
+              workloadDay.total_tasks = tasksTmp.concat(workloadDay.overdue_tasks);
             })
             .catch(() => {
-              workloadDay.overdue_tasks = 0;
+              workloadDay.overdue_tasks = [];
             });
+        } else {
+          workloadDay.total_tasks = tasksTmp;
         }
-
-        const tasksTmp = await memberTasks.filter(post => this.isSameDay(new DateTime(date), DateTime.fromISO(post.task.due_to)));
-        workloadDay.numTasks = tasksTmp.length;
 
         let hours = 0;
         let minutes = 0;
@@ -158,13 +159,18 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
 
         if (tasksTmp && tasksTmp.length > 0) {
           // filter done/to do/in progress tasks count
-          workloadDay.numDoneTasks = tasksTmp.filter(post => { return post.task.status == 'done'; }).length;
-          workloadDay.todo_tasks = tasksTmp.filter(post => { return post?.task?.status == 'to do'}).length;
-          workloadDay.inprogress_tasks = tasksTmp.filter(post => { return post?.task?.status == 'in progress'}).length;
+          workloadDay.done_tasks = tasksTmp.filter(post => { return post.task.status == 'done'; });
+          workloadDay.done_tasks = await this.publicFunctions.filterRAGTasks(workloadDay.done_tasks, this.userData);
+
+          workloadDay.todo_tasks = tasksTmp.filter(post => { return post?.task?.status == 'to do'});
+          workloadDay.todo_tasks = await this.publicFunctions.filterRAGTasks(workloadDay.todo_tasks, this.userData);
+
+          workloadDay.inprogress_tasks = tasksTmp.filter(post => { return post?.task?.status == 'in progress'});
+          workloadDay.inprogress_tasks = await this.publicFunctions.filterRAGTasks(workloadDay.inprogress_tasks, this.userData);
         } else {
-          workloadDay.numDoneTasks = 0;
-          workloadDay.todo_tasks = 0;
-          workloadDay.inprogress_tasks = 0;
+          workloadDay.done_tasks = [];
+          workloadDay.todo_tasks = [];
+          workloadDay.inprogress_tasks = [];
         }
 
         holidays.forEach(outOfficeDay => {
@@ -181,7 +187,7 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
 
         member.workload.push(workloadDay);
       });
-
+      
       member.workload = member.workload.sort((w1, w2) => (w1.date < w2.date) ? -1 : 1);
     });
 
@@ -253,25 +259,26 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
     }
   }
 
-  // async openTaskForDayModal(selectedDay: DateTime, selectedUser: any, status?: string) {
-  //   const data = {
-  //     status: status,
-  //     selectedDay: selectedDay,
-  //     selectedUser: selectedUser
-  //   }
+  async openTaskForDayModal(selectedDay: DateTime, selectedUser: any, status: string, tasks: any[]) {
+    const data = {
+      status: status,
+      selectedDay: selectedDay,
+      selectedUser: selectedUser,
+      tasksForTheDay: tasks
+    }
 
-  //   this.dialog.open(UserTaskForDayDialogComponent, {
-  //     width: '75%',
-  //     maxHeight: '80%',
-  //     disableClose: false,
-  //     hasBackdrop: true,
-  //     data: data
-  //   }).afterClosed().subscribe(async () => {
-  //     // Starts the spinner
-  //     this.isLoading$.next(true);
-  //     await this.initTable();
-  //   });
-  // }
+    this.dialog.open(UserTaskForDayDialogComponent, {
+      width: '75%',
+      maxHeight: '80%',
+      disableClose: false,
+      hasBackdrop: true,
+      data: data
+    }).afterClosed().subscribe(async () => {
+      // Starts the spinner
+      this.isLoading$.next(true);
+      await this.initTable();
+    });
+  }
 
   /**
    * This function is responsible for opening a fullscreen dialog to see the member profile

@@ -677,14 +677,14 @@ export class PostService {
     return this._http.post(this.baseURL + `/${postId}/recalculateCost`, {}).toPromise();
   }
 
-  getTasksPerGroupUserStatusAndDate(groupId: string, userId: string, status: string, dueDate: any) {
-    return this._http.get(this.baseURL + `/post/tasks-per-user-status-date`, {
-      params: {
-        groupId: groupId,
-        userId: userId,
-        status: status,
-        dueDate: dueDate
-      }
-    }).toPromise()    
-  }
+  // getTasksPerGroupUserStatusAndDate(groupId: string, userId: string, status: string, dueDate: any) {
+  //   return this._http.get(this.baseURL + `/post/tasks-per-user-status-date`, {
+  //     params: {
+  //       groupId: groupId,
+  //       userId: userId,
+  //       status: status,
+  //       dueDate: dueDate
+  //     }
+  //   }).toPromise()    
+  // }
 }
