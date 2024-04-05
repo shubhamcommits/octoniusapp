@@ -47,7 +47,6 @@
                 </div>
               </td>
               <td *ngFor="let workload of member.workload" [ngClass]="workload?.outOfTheOfficeClass">
-
                   <span class="text-primary mr-2" i18n="@@groupResourceManagementBoardViewComponent.totalTasks"> Total tasks</span>
                   <span class="badge" *ngIf="!workload?.date?.is_current_day">{{ workload.numTasks }}</span>
                   <span class="badge" *ngIf="workload?.date?.is_current_day">{{ workload.numTasks + workload.overdue_tasks }}</span>

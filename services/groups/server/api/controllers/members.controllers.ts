@@ -114,7 +114,6 @@ export class MembersControllers {
         const { query: { groupId } } = req;
 
         try {
-
             // If either groupId is null or not provided then we throw BAD REQUEST 
             if (!groupId) {
                 return res.status(400).json({

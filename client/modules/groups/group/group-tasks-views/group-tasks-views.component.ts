@@ -85,8 +85,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
     this.subSink.unsubscribe();
   }
 
-  async initView() {
-
+  async initView(view?: string) {
     // Fetch current user details
     if (!this.utilityService.objectExists(this.userData)) {
       this.userData = await this.publicFunctions.getCurrentUser();
@@ -97,11 +96,15 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
     }
 
     // Set the initial view
-    if (!!this.userData && !!this.userData.stats && !!this.userData.stats.lastTaskView && this.viewType != 'time_tracking') {
-      this.viewType = this.userData.stats.lastTaskView;
-
-      if (this.viewType === 'gantt' && (this.groupData && !this.groupData.project_type)) {
-        this.viewType = 'kanban';
+    if (!!view) {
+      this.viewType = view;
+    } else {
+      if (!!this.userData && !!this.userData.stats && !!this.userData.stats.lastTaskView && this.viewType != 'time_tracking') {
+        this.viewType = this.userData.stats.lastTaskView;
+        
+        if (this.viewType === 'gantt' && (this.groupData && !this.groupData.project_type)) {
+          this.viewType = 'kanban';
+        }
       }
     }
 
@@ -117,9 +120,6 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
       const postId = this._router.routerState.snapshot.root.queryParamMap.get('postId');
 
       let post: any = await this.publicFunctions.getPost(postId);
-
-      // this.groupData = await this.publicFunctions.getGroupDetails(post?._group?._id || post?._group);
-      // this.publicFunctions.sendUpdatesToGroupData(this.groupData);
 
       let canOpen = true;
       if (this.groupData?.enabled_rights) {
@@ -215,7 +215,9 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
     // Start the loading spinner
     this.utilityService.updateIsLoadingSpinnerSource(true);
 
-    if (view != 'archived' && view != 'time_tracking') {
+    this.viewType = view;
+
+    if (view != 'archived' && view != 'time_tracking' && view != 'resource_mgmt' && this.userData.stats.lastTaskView != view) {
     // if (view != 'archived') {
       this.userData.stats.lastTaskView = view;
       // User service
@@ -224,14 +226,10 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
       // Update user´s last view
       await userService.updateUser(this.userData);
       await this.publicFunctions.sendUpdatesToUserData(this.userData);
-
-      this.viewType = view;
-    } else {
-      this.viewType = view;
     }
     
     if (view != 'archived') {
-      await this.initView();
+      await this.initView(view);
     }
 
     // Return the function via stopping the loader

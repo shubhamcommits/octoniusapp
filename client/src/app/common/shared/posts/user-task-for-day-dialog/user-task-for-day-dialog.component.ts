@@ -3,6 +3,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { PublicFunctions } from 'modules/public.functions';
 import { DateTime } from 'luxon';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { PostService } from 'src/shared/services/post-service/post.service';
 
 @Component({
   selector: 'app-user-task-for-day-dialog',
@@ -21,9 +22,11 @@ export class UserTaskForDayDialogComponent implements OnInit, OnDestroy {
   status = '';
   selectedDay: any;
   selectedUser: any;
+
+  tasksForTheDay: any = [];
+
   groupData;
   userData;
-  tasksForTheDay: any = [];
 
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector);
@@ -33,46 +36,42 @@ export class UserTaskForDayDialogComponent implements OnInit, OnDestroy {
     private utilityService: UtilityService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
-    this.status = this.data.status;
-    this.selectedDay = this.data.selectedDay;
-    this.selectedUser = this.data.selectedUser;
-    this.groupData = this.data.groupData;
-    this.userData = this.data.userData;
-    this.tasksForTheDay = this.data.tasksForTheDay;
-
-    // this.loadTasks();
   }
 
   async ngOnInit() {
-    this.markOverdueTasks();
+    this.status = this.data.status;
+    this.selectedDay = this.data.selectedDay;
+    this.selectedUser = this.data.selectedUser;
+
+    this.loadTasks();
   }
 
   ngOnDestroy() {
     this.utilityService.closeAllModals();
   }
 
-  // async loadTasks() {
-  //   this.tasksForTheDay = await this.publicFunctions.filterRAGTasks(await this.getTasks(), this.userData);
+  async loadTasks() {
+    this.tasksForTheDay = await this.publicFunctions.filterRAGTasks(await this.getTasks(), this.userData);
 
-  //   this.markOverdueTasks();
-  // }
+    this.markOverdueTasks();
+  }
 
-  // async getTasks() {
-  //   return new Promise((resolve, reject) => {
-  //     let postService = this.injector.get(PostService);
-  //     postService.getTasksPerGroupUserStatusAndDate(this.groupData._id, this.selectedUser._id, this.status, this.selectedDay.toJSDate())
-  //       .then((res) => {
-  //         res['posts'] = res['posts'].filter((task)=> {
-  //           return task._group != null;
-  //         });
+  async getTasks() {
+    return new Promise((resolve, reject) => {
+      let postService = this.injector.get(PostService);
+      postService.getTasksPerGroupUserStatusAndDate(this.groupData._id, this.selectedUser._id, this.status, this.selectedDay.toJSDate())
+        .then((res) => {
+          res['posts'] = res['posts'].filter((task)=> {
+            return task._group != null;
+          });
 
-  //         resolve(res['posts']);
-  //       })
-  //       .catch(() => {
-  //         reject([]);
-  //       })
-  //   })
-  // }
+          resolve(res['posts']);
+        })
+        .catch(() => {
+          reject([]);
+        })
+    })
+  }
 
   private markOverdueTasks() {
     this.tasksForTheDay = this.tasksForTheDay.map(async task => {
