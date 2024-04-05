@@ -4,7 +4,6 @@ import { sendError, axios } from '../../utils';
 import http from 'axios';
 import moment from 'moment';
 import { GroupService } from '../services';
-import { start } from 'pm2';
 
 const groupService = new GroupService();
 
