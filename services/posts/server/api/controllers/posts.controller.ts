@@ -1679,22 +1679,26 @@ export class PostController {
      * @param next 
      */
     async cloneToAssignee(req: Request, res: Response, next: NextFunction) {
-
-        // Post Object From request
-        const { postId, assignees } = req.body;
-
-        // Call servide function for adding the post
-        assignees.forEach(async assigneeId => {
-            const postData = await postService.cloneToAssignee(postId, assigneeId)
+        try {
+            // Post Object From request
+            const { params: { postId }, body: { assignees } } = req;
+// console.log({postId});
+// console.log({assignees});
+            // Call servide function for adding the post
+            assignees.forEach(async assigneeId => {
+                const postData = await postService.cloneToAssignee(postId, assigneeId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
                 });
-        });
-
-        // Send Status 200 response
-        return res.status(200).json({
-            message: 'Post Clonned Successfully!',
-        });
+            });
+            
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'Post Clonned Successfully!',
+            });
+        } catch (error) {
+            sendErr(res, error);
+        }
     }
 
     /**

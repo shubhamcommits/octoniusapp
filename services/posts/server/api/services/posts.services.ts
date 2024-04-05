@@ -3108,7 +3108,6 @@ export class PostService {
   }
 
   async cloneToAssignee(postId: string, assigneeId: string, parentId?: string) {
-
     try {
       const oldPost = await Post.findById(postId).lean();
 
