@@ -534,6 +534,7 @@ export class PostsService {
             .select(this.postFields)
             .populate('_group', this.groupFields)
             .populate('_posted_by', this.userFields)
+            .populate('_created_by', this.userFields)
             .populate('_assigned_to', this.userFields)
             .populate('_followers', this.userFields)
             .populate('_liked_by', this.userFields)

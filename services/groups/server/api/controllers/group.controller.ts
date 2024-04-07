@@ -2317,10 +2317,9 @@ export class GroupController {
      */
     async getTasksBetweenDates(req: Request, res: Response) {
         try {
-
             const { groupId } = req.params;
             const { query: { startDate, endDate } } = req;
-
+console.log(groupId, startDate, endDate);
             // Find the Group based on the groupId
             const posts = await Post.find({
                 $and: [
@@ -2332,8 +2331,11 @@ export class GroupController {
             })
             .select('title _group _assigned_to permissions _posted_by _created_by approval_flow_launched task.status task._column task.due_to task.estimation task?._parent_task')
             .populate('_group', 'group_name group_avatar')
+            .populate('_posted_by', 'first_name last_name profile_pic role email')
+            .populate('_created_by', 'first_name last_name profile_pic role email')
+            .populate('_assigned_to', 'first_name last_name profile_pic role email')
             .lean() || [];
-
+console.log(posts);
             // Send the status 200 response
             return res.status(200).json({
                 message: 'Posts found!',

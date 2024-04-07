@@ -70,9 +70,10 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
 
     let tasks = [];
     await this.groupService.getGroupTasksBetweenDays(this.groupData._id, this.dates[0].toISODate(), this.dates[this.dates.length -1].toISODate()).then(async res => {
+console.log({res});
       tasks = await this.publicFunctions.filterRAGTasks(res['posts'], this.userData);
     });
-
+console.log({tasks});
     const membersIds = this.groupMembers.map(member => {return member._id});
     let holidays = [];
     await this.hrService.getMembersOff(membersIds, this.dates[0], this.dates[this.dates.length - 1], false).then(res => {
@@ -109,7 +110,7 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
 
       // filter member´s tasks
       const memberTasks = tasks.filter(post => post._assigned_to.includes(member?._id));
-      
+console.log({memberTasks});
       this.dates.forEach(date => {
         let workloadDay = {
           date: date,
@@ -127,7 +128,7 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
         };
 
         let tasksTmp = memberTasks.filter(post => this.isSameDay(new DateTime(date), DateTime.fromISO(post.task.due_to)));
-
+console.log({tasksTmp});
         if (date.is_current_day) {
           this.userService.getWorkloadOverdueTasks(member?._id, this.groupData._id)
             .then(async (res) => {
@@ -167,7 +168,7 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
           workloadDay.todo_tasks = [];
           workloadDay.inprogress_tasks = [];
         }
-
+console.log({workloadDay});
         holidays.forEach(outOfficeDay => {
           if ((outOfficeDay._user._id == member._id) && (workloadDay.date >= DateTime.fromISO(outOfficeDay.start_date)) && (workloadDay.date <= DateTime.fromISO(outOfficeDay.end_date))) {
             workloadDay.outOfTheOfficeClass = (outOfficeDay.type == 'holidays')
@@ -264,26 +265,26 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
     }
   }
 
-  // async openTaskForDayModal(selectedDay: DateTime, selectedUser: any, status: string, tasks: any[]) {
-  //   const data = {
-  //     status: status,
-  //     selectedDay: selectedDay,
-  //     selectedUser: selectedUser,
-  //     tasksForTheDay: tasks
-  //   }
+  async openTaskForDayModal(selectedDay: DateTime, selectedUser: any, status: string, tasks: any[]) {
+    const data = {
+      status: status,
+      selectedDay: selectedDay,
+      selectedUser: selectedUser,
+      tasksForTheDay: tasks
+    }
 
-  //   this.dialog.open(UserTaskForDayDialogComponent, {
-  //     width: '75%',
-  //     maxHeight: '80%',
-  //     disableClose: false,
-  //     hasBackdrop: true,
-  //     data: data
-  //   }).afterClosed().subscribe(async () => {
-  //     // Starts the spinner
-  //     this.isLoading$.next(true);
-  //     await this.initTable();
-  //   });
-  // }
+    this.dialog.open(UserTaskForDayDialogComponent, {
+      width: '75%',
+      maxHeight: '80%',
+      disableClose: false,
+      hasBackdrop: true,
+      data: data
+    }).afterClosed().subscribe(async () => {
+      // Starts the spinner
+      this.isLoading$.next(true);
+      await this.initTable();
+    });
+  }
 
   /**
    * This function is responsible for opening a fullscreen dialog to see the member profile
