@@ -1,6 +1,6 @@
 import { Component, OnInit, Injector, Input } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import { DateTime, Interval } from 'luxon';
+import { DateTime } from 'luxon';
 import { BehaviorSubject } from 'rxjs';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -82,7 +82,7 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
     let timeTrackingEntitiesMapped = [];
     await this.groupService.getGroupTimeTrackingEntites(this.groupData._id, this.dates[0].toISODate(), this.dates[this.dates.length -1].toISODate(), null).then(async res => {
       timeTrackingEntitiesMapped = [];
-        const interval = Interval.fromDateTimes(this.dates[0], this.dates[this.dates.length -1]);
+        // const interval = Interval.fromDateTimes(this.dates[0], this.dates[this.dates.length -1]);
         res['timeTrackingEntities'].forEach(tte => {
           tte?.times?.forEach(time => {
             let tteMapped = {
@@ -100,16 +100,21 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
             timeTrackingEntitiesMapped.push(tteMapped);
           });
         });
+
         timeTrackingEntitiesMapped = [...timeTrackingEntitiesMapped];
-        timeTrackingEntitiesMapped = timeTrackingEntitiesMapped.filter(tte => (tte.hours !== '00' || tte.minutes !== '00') && interval.contains(DateTime.fromISO(tte.date)));
+        // timeTrackingEntitiesMapped = timeTrackingEntitiesMapped.filter(tte => (tte.hours !== '00' || tte.minutes !== '00') && interval.contains(DateTime.fromISO(tte.date)));
+        timeTrackingEntitiesMapped = timeTrackingEntitiesMapped.filter(tte => (tte.hours !== '00' || tte.minutes !== '00'));
     });
 
     this.groupMembers.forEach(async member => {
       member.workload = [];
 
       // filter member´s tasks
-      const memberTasks = tasks.filter(post => post._assigned_to.includes(member?._id));
-      
+      const memberTasks = tasks.filter(post => {
+        const index = (!!post._assigned_to) ? post._assigned_to.findIndex(a => (a._id || a) == (member._id || member)) : -1;
+        return index >= 0;
+      });
+
       this.dates.forEach(date => {
         let workloadDay = {
           date: date,
@@ -144,6 +149,7 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
         let hours = 0;
         let minutes = 0;
         const tteMappedFiltered = timeTrackingEntitiesMapped.filter(tte => tte?._user?._id == member?._id && this.isSameDay(new DateTime(date), DateTime.fromISO(tte.date)));
+
         tteMappedFiltered.forEach(tte => {
           hours += parseInt(tte.hours) || 0;
           minutes += parseInt(tte.minutes) || 0;
@@ -264,26 +270,26 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
     }
   }
 
-  // async openTaskForDayModal(selectedDay: DateTime, selectedUser: any, status: string, tasks: any[]) {
-  //   const data = {
-  //     status: status,
-  //     selectedDay: selectedDay,
-  //     selectedUser: selectedUser,
-  //     tasksForTheDay: tasks
-  //   }
+  async openTaskForDayModal(selectedDay: DateTime, selectedUser: any, status: string, tasks: any[]) {
+    const data = {
+      status: status,
+      selectedDay: selectedDay,
+      selectedUser: selectedUser,
+      tasksForTheDay: tasks
+    }
 
-  //   this.dialog.open(UserTaskForDayDialogComponent, {
-  //     width: '75%',
-  //     maxHeight: '80%',
-  //     disableClose: false,
-  //     hasBackdrop: true,
-  //     data: data
-  //   }).afterClosed().subscribe(async () => {
-  //     // Starts the spinner
-  //     this.isLoading$.next(true);
-  //     await this.initTable();
-  //   });
-  // }
+    this.dialog.open(UserTaskForDayDialogComponent, {
+      width: '75%',
+      maxHeight: '80%',
+      disableClose: false,
+      hasBackdrop: true,
+      data: data
+    }).afterClosed().subscribe(async () => {
+      // Starts the spinner
+      this.isLoading$.next(true);
+      await this.initTable();
+    });
+  }
 
   /**
    * This function is responsible for opening a fullscreen dialog to see the member profile

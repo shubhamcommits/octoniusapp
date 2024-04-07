@@ -218,6 +218,28 @@ const workspaceSchema = new Schema({
         onedrive_tenant_id: {
             type: String
         },
+        is_ms_365_connected: {
+            type: Boolean,
+            default: false
+        },
+        ms_365_client_id: {
+            type: String
+        },
+        ms_365_client_secret: {
+            type: String
+        },
+        ms_365_tenant_id: {
+            type: String
+        },
+        ms_365_authority: {
+            type: String
+        },
+        ms_365_authority_id: {
+            type: String
+        },
+        ms_365_private_key_path: {
+            type: String
+        },
         is_atlassia_connected: {
             type: Boolean,
             default: false
