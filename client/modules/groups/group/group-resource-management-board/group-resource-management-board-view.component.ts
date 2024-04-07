@@ -109,7 +109,11 @@ console.log({tasks});
       member.workload = [];
 
       // filter member´s tasks
-      const memberTasks = tasks.filter(post => post._assigned_to.includes(member?._id));
+      const memberTasks = tasks.filter(post => {
+        const index = (!!post._assigned_to) ? post._assigned_to.findIndex(a => (a._id || a) == (member._id || member)) : -1;
+        return index >= 0;
+      });
+console.log({member});
 console.log({memberTasks});
       this.dates.forEach(date => {
         let workloadDay = {
