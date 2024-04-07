@@ -70,10 +70,9 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
 
     let tasks = [];
     await this.groupService.getGroupTasksBetweenDays(this.groupData._id, this.dates[0].toISODate(), this.dates[this.dates.length -1].toISODate()).then(async res => {
-console.log({res});
       tasks = await this.publicFunctions.filterRAGTasks(res['posts'], this.userData);
     });
-console.log({tasks});
+
     const membersIds = this.groupMembers.map(member => {return member._id});
     let holidays = [];
     await this.hrService.getMembersOff(membersIds, this.dates[0], this.dates[this.dates.length - 1], false).then(res => {
@@ -101,13 +100,10 @@ console.log({tasks});
             timeTrackingEntitiesMapped.push(tteMapped);
           });
         });
-console.log({res});
-console.log({timeTrackingEntitiesMapped});
+
         timeTrackingEntitiesMapped = [...timeTrackingEntitiesMapped];
-console.log({timeTrackingEntitiesMapped});
         // timeTrackingEntitiesMapped = timeTrackingEntitiesMapped.filter(tte => (tte.hours !== '00' || tte.minutes !== '00') && interval.contains(DateTime.fromISO(tte.date)));
         timeTrackingEntitiesMapped = timeTrackingEntitiesMapped.filter(tte => (tte.hours !== '00' || tte.minutes !== '00'));
-console.log({timeTrackingEntitiesMapped});
     });
 
     this.groupMembers.forEach(async member => {
@@ -118,8 +114,7 @@ console.log({timeTrackingEntitiesMapped});
         const index = (!!post._assigned_to) ? post._assigned_to.findIndex(a => (a._id || a) == (member._id || member)) : -1;
         return index >= 0;
       });
-console.log({member});
-console.log({memberTasks});
+
       this.dates.forEach(date => {
         let workloadDay = {
           date: date,
@@ -137,7 +132,7 @@ console.log({memberTasks});
         };
 
         let tasksTmp = memberTasks.filter(post => this.isSameDay(new DateTime(date), DateTime.fromISO(post.task.due_to)));
-console.log({tasksTmp});
+
         if (date.is_current_day) {
           this.userService.getWorkloadOverdueTasks(member?._id, this.groupData._id)
             .then(async (res) => {
@@ -154,7 +149,7 @@ console.log({tasksTmp});
         let hours = 0;
         let minutes = 0;
         const tteMappedFiltered = timeTrackingEntitiesMapped.filter(tte => tte?._user?._id == member?._id && this.isSameDay(new DateTime(date), DateTime.fromISO(tte.date)));
-console.log({tteMappedFiltered});
+
         tteMappedFiltered.forEach(tte => {
           hours += parseInt(tte.hours) || 0;
           minutes += parseInt(tte.minutes) || 0;
@@ -178,7 +173,7 @@ console.log({tteMappedFiltered});
           workloadDay.todo_tasks = [];
           workloadDay.inprogress_tasks = [];
         }
-console.log({workloadDay});
+
         holidays.forEach(outOfficeDay => {
           if ((outOfficeDay._user._id == member._id) && (workloadDay.date >= DateTime.fromISO(outOfficeDay.start_date)) && (workloadDay.date <= DateTime.fromISO(outOfficeDay.end_date))) {
             workloadDay.outOfTheOfficeClass = (outOfficeDay.type == 'holidays')
