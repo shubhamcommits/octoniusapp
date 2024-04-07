@@ -1,6 +1,6 @@
 import { Component, OnInit, Injector, Input } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import { DateTime, Interval } from 'luxon';
+import { DateTime } from 'luxon';
 import { BehaviorSubject } from 'rxjs';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -83,7 +83,7 @@ console.log({tasks});
     let timeTrackingEntitiesMapped = [];
     await this.groupService.getGroupTimeTrackingEntites(this.groupData._id, this.dates[0].toISODate(), this.dates[this.dates.length -1].toISODate(), null).then(async res => {
       timeTrackingEntitiesMapped = [];
-        const interval = Interval.fromDateTimes(this.dates[0], this.dates[this.dates.length -1]);
+        // const interval = Interval.fromDateTimes(this.dates[0], this.dates[this.dates.length -1]);
         res['timeTrackingEntities'].forEach(tte => {
           tte?.times?.forEach(time => {
             let tteMapped = {
@@ -105,7 +105,8 @@ console.log({res});
 console.log({timeTrackingEntitiesMapped});
         timeTrackingEntitiesMapped = [...timeTrackingEntitiesMapped];
 console.log({timeTrackingEntitiesMapped});
-        timeTrackingEntitiesMapped = timeTrackingEntitiesMapped.filter(tte => (tte.hours !== '00' || tte.minutes !== '00') && interval.contains(DateTime.fromISO(tte.date)));
+        // timeTrackingEntitiesMapped = timeTrackingEntitiesMapped.filter(tte => (tte.hours !== '00' || tte.minutes !== '00') && interval.contains(DateTime.fromISO(tte.date)));
+        timeTrackingEntitiesMapped = timeTrackingEntitiesMapped.filter(tte => (tte.hours !== '00' || tte.minutes !== '00'));
 console.log({timeTrackingEntitiesMapped});
     });
 
