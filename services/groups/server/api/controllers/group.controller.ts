@@ -2909,7 +2909,10 @@ console.log(posts);
         try {
             const { groupId } = req.params;
             const { query: { startDate, endDate, filterUserId } } = req;
-
+console.log({groupId})
+console.log({startDate})
+console.log({endDate})
+console.log({filterUserId})
             let groupTasks = await Post.find({
                 $and: [
                     { _group: groupId },
@@ -3026,7 +3029,7 @@ console.log(posts);
                     { path: '_user', select: 'first_name last_name profile_pic email' },
                     { path: '_created_by', select: 'first_name last_name profile_pic email' }
                 ]);
-
+console.log({timeTrackingEntities});
             // timeTrackingEntities = timeTrackingEntities.filter(tte => !!tte.times && tte.times.length > 0);
 
             // Send the status 200 response
