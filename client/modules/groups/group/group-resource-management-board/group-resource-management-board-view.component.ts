@@ -132,7 +132,6 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
         };
 
         let tasksTmp = memberTasks.filter(post => this.isSameDay(new DateTime(date), DateTime.fromISO(post.task.due_to)));
-
         if (date.is_current_day) {
           this.userService.getWorkloadOverdueTasks(member?._id, this.groupData._id)
             .then(async (res) => {
@@ -148,8 +147,8 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
 
         let hours = 0;
         let minutes = 0;
-        const tteMappedFiltered = timeTrackingEntitiesMapped.filter(tte => tte?._user?._id == member?._id && this.isSameDay(new DateTime(date), DateTime.fromISO(tte.date)));
 
+        const tteMappedFiltered = timeTrackingEntitiesMapped.filter(tte => tte?._user?._id == member?._id && this.isSameDay(new DateTime(date), DateTime.fromISO(tte.date)));
         tteMappedFiltered.forEach(tte => {
           hours += parseInt(tte.hours) || 0;
           minutes += parseInt(tte.minutes) || 0;
@@ -233,11 +232,11 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
   isSameDay(day1: any, day2: any) {
     if (!!day1 && !!day2) {
       if (day1 instanceof DateTime && day2 instanceof DateTime) {
-        return day1.startOf('day').toMillis() == DateTime.now().startOf('day').toMillis();
+        return day1.startOf('day').toMillis() == day2.startOf('day').toMillis();
       } else {
-        return DateTime.fromISO(day1).startOf('day').toMillis() == DateTime.now().startOf('day').toMillis();
+        return DateTime.fromISO(day1).startOf('day').toMillis() == DateTime.fromISO(day2).startOf('day').toMillis();
       }
-    } else if ((!day1 && !!day2) || !!day1 && !day2) {
+    } else if ((!day1 && !!day2) || (!!day1 && !day2)) {
       return false;
     } else if (!day1 && !day2) {
       return true;
