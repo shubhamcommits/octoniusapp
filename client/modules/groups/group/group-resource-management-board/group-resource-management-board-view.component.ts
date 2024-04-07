@@ -149,6 +149,8 @@ console.log({tasksTmp});
         let hours = 0;
         let minutes = 0;
         const tteMappedFiltered = timeTrackingEntitiesMapped.filter(tte => tte?._user?._id == member?._id && this.isSameDay(new DateTime(date), DateTime.fromISO(tte.date)));
+console.log({timeTrackingEntitiesMapped});
+console.log({tteMappedFiltered});
         tteMappedFiltered.forEach(tte => {
           hours += parseInt(tte.hours) || 0;
           minutes += parseInt(tte.minutes) || 0;
