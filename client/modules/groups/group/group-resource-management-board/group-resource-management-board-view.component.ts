@@ -103,6 +103,7 @@ console.log({tasks});
         });
         timeTrackingEntitiesMapped = [...timeTrackingEntitiesMapped];
         timeTrackingEntitiesMapped = timeTrackingEntitiesMapped.filter(tte => (tte.hours !== '00' || tte.minutes !== '00') && interval.contains(DateTime.fromISO(tte.date)));
+console.log({res});
     });
 
     this.groupMembers.forEach(async member => {
