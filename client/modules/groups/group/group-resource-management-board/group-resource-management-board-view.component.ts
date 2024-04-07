@@ -101,9 +101,12 @@ console.log({tasks});
             timeTrackingEntitiesMapped.push(tteMapped);
           });
         });
-        timeTrackingEntitiesMapped = [...timeTrackingEntitiesMapped];
-        timeTrackingEntitiesMapped = timeTrackingEntitiesMapped.filter(tte => (tte.hours !== '00' || tte.minutes !== '00') && interval.contains(DateTime.fromISO(tte.date)));
 console.log({res});
+console.log({timeTrackingEntitiesMapped});
+        timeTrackingEntitiesMapped = [...timeTrackingEntitiesMapped];
+console.log({timeTrackingEntitiesMapped});
+        timeTrackingEntitiesMapped = timeTrackingEntitiesMapped.filter(tte => (tte.hours !== '00' || tte.minutes !== '00') && interval.contains(DateTime.fromISO(tte.date)));
+console.log({timeTrackingEntitiesMapped});
     });
 
     this.groupMembers.forEach(async member => {
@@ -150,7 +153,6 @@ console.log({tasksTmp});
         let hours = 0;
         let minutes = 0;
         const tteMappedFiltered = timeTrackingEntitiesMapped.filter(tte => tte?._user?._id == member?._id && this.isSameDay(new DateTime(date), DateTime.fromISO(tte.date)));
-console.log({timeTrackingEntitiesMapped});
 console.log({tteMappedFiltered});
         tteMappedFiltered.forEach(tte => {
           hours += parseInt(tte.hours) || 0;
