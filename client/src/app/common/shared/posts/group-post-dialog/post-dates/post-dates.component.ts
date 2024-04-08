@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Injector, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-post-dates',
@@ -21,8 +21,8 @@ export class PostDatesComponent implements OnInit, OnChanges {
   @Output() dueDateEvent = new EventEmitter();
   @Output() timeEvent = new EventEmitter();
 
-  startDate: any;
-  dueDate: any;
+  // startDate: any;
+  // dueDate: any;
   dueTime: any = {
     hour: 1,
     minute: 30
@@ -45,13 +45,13 @@ export class PostDatesComponent implements OnInit, OnChanges {
       if ((this.postData?.task.due_to && this.postData?.task.due_to != null)
         || (this.postData?.event.due_to && this.postData?.event.due_to != null)) {
         // Set the DueDate variable
-        this.dueDate = moment(this.postData?.task.due_to || this.postData?.event.due_to);
+        // this.dueDate = moment(this.postData?.task.due_to || this.postData?.event.due_to);
       }
 
       // Set the due date variable for task
       if (this.postData?.task.start_date && this.postData?.task.start_date != null) {
         // Set the DueDate variable
-        this.startDate = moment(this.postData?.task.start_date);
+        // this.startDate = moment(this.postData?.task.start_date);
       }
     }
 
@@ -62,13 +62,13 @@ export class PostDatesComponent implements OnInit, OnChanges {
       if (this.postData?.event.due_to && this.postData?.event.due_to != null) {
 
         // Set the DueDate variable
-        this.dueDate = moment(this.postData?.task.due_to || this.postData?.event.due_to);
+        // this.dueDate = moment(this.postData?.task.due_to || this.postData?.event.due_to);
       }
 
-      if (this.dueDate) {
-        this.dueTime.hour = this.dueDate.getHours();
-        this.dueTime.minute = this.dueDate.getMinutes();
-      }
+      // if (this.dueDate) {
+      //   this.dueTime.hour = this.dueDate.getHours();
+      //   this.dueTime.minute = this.dueDate.getMinutes();
+      // }
     }
   }
 
@@ -90,7 +90,8 @@ export class PostDatesComponent implements OnInit, OnChanges {
   }
 
   formateDate(date) {
-    return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
+    return this.utilityService.formateDate(date, DateTime.DATE_MED)
+    // return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
   }
 
   /**
@@ -110,14 +111,13 @@ export class PostDatesComponent implements OnInit, OnChanges {
    * @param dateObject
    */
   getDate(dateObject: any, property: string) {
-
     if (property === 'start_date') {
-      this.startDate = dateObject.toDate();
-      this.updateDate(dateObject.toDate(), property);
+      // this.startDate = dateObject.toDate();
+      this.updateDate(dateObject.toISODate(), property);
     }
     if (property === 'due_date') {
-      this.dueDate = dateObject.toDate();
-      this.updateDate(dateObject.toDate(), property);
+      // this.dueDate = dateObject.toDate();
+      this.updateDate(dateObject.toISODate(), property);
     }
   }
 
@@ -132,10 +132,10 @@ export class PostDatesComponent implements OnInit, OnChanges {
         const isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
         const isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
 
-        this.postService.changeTaskDueDate(this.postData?._id, date?moment(date).format('YYYY-MM-DD'):null, isShuttleTasksModuleAvailable, isIndividualSubscription)
+        this.postService.changeTaskDueDate(this.postData?._id, date?this.formateDate(date):null, isShuttleTasksModuleAvailable, isIndividualSubscription)
         .then((res) => {
           this.postData = res['post'];
-          this.dueDate = moment(this.postData?.task?.due_to);
+          // this.dueDate = moment(this.postData?.task?.due_to);
           this.dueDateEvent.emit(date);
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.dateUpdated:Date updated!`));
@@ -145,10 +145,10 @@ export class PostDatesComponent implements OnInit, OnChanges {
         });
 
       } else if(property === 'start_date') {
-        this.postService.saveTaskDates(this.postData?._id, date?moment(date).format('YYYY-MM-DD'):null, property)
+        this.postService.saveTaskDates(this.postData?._id, date?this.formateDate(date):null, property)
           .then((res) => {
             this.postData = res['post'];
-            this.startDate = moment(this.postData?.task?.start_date);
+            // this.startDate = moment(this.postData?.task?.start_date);
             this.startDateEvent.emit(date);
             // Resolve with success
             resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.dateUpdated:Date updated!`));

@@ -2,11 +2,13 @@ import { Component, OnChanges, Output, EventEmitter, Input, forwardRef } from '@
 import { NG_VALUE_ACCESSOR} from '@angular/forms';
 import { MAT_DATE_FORMATS, DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
-import * as _moment from 'moment';
+import { DateTime } from 'luxon';
+// import * as _moment from 'moment';
 // tslint:disable-next-line:no-duplicate-imports
 import {default as _rollupMoment} from 'moment';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
-const moment = _rollupMoment || _moment;
+// const moment = _rollupMoment || _moment;
 
 const INLINE_EDIT_CONTROL_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -42,24 +44,24 @@ export const MY_FORMATS = {
 })
 export class DatePickerComponent implements OnChanges {
 
-  constructor() { }
-
   @Input('selectedDate') selectedDate: any;
   @Input() upperLimit: any;
   @Input() lowerLimit: any;
   @Input() styleClass;
   @Input() canEdit = true;
   @Input() showInput = true;
-
+  
   // Output date event emitter
   @Output('date') date = new EventEmitter();
-
+  
   private _value = ''; // Private variable for input value
-
+  
   public onChange: any = Function.prototype; // Trascend the onChange event
+  
+  constructor(private utilityService: UtilityService) { }
 
   ngOnChanges() {
-    this._value = this.selectedDate;
+    this._value = this.formateDate(this.selectedDate);
   }
 
   // Control Value Accessors for ngModel
@@ -85,7 +87,7 @@ export class DatePickerComponent implements OnChanges {
    */
   emitDate(dateObject: any) {
     // Emit the date to the other components
-    this.date.emit(dateObject.value)
+    this.date.emit(DateTime.fromJSDate(dateObject.value.toDate()))
   }
 
   /**
@@ -93,14 +95,30 @@ export class DatePickerComponent implements OnChanges {
    * @param dateObject
    */
   myDateFilter = (d:Date): boolean => {
-    if (moment(this.upperLimit, 'YYYY-MM-DD', true).isValid()) {
+    if (!!this.upperLimit && DateTime.fromISO(this.upperLimit).isvalid) {
       //checking for the upper bound -> i.e start_date can not greate than due_date.
-      return moment(moment.utc(d,"YYYY-MM-DD")).isBefore(moment.utc(this.upperLimit,"YYYY-MM-DD"))?true:false
-    } else if (moment(this.lowerLimit, 'YYYY-MM-DD', true).isValid()) {
+      return this.isBefore(d, this.upperLimit);
+    } else if (!!this.lowerLimit && DateTime.fromISO(this.lowerLimit).isvalid) {
       //checking for the lower bound -> i.e due_date can not smaller than start_date.
-      return moment(moment.utc(d,"YYYY-MM-DD")).isBefore(moment.utc(this.lowerLimit,"YYYY-MM-DD").add(-1,'days'))?false:true
+      return this.isBefore(d, this.lowerLimit);
     } else {
       return true;
     }
+  }
+
+  isBefore(day1: any, day2: any) {
+    if (!!day1 && !!day2) {
+      if (day1 instanceof DateTime && day2 instanceof DateTime) {
+        return day1.startOf('day').toMillis() < day2.startOf('day').toMillis();
+      } else {
+        return DateTime.fromISO(day1).startOf('day').toMillis() > DateTime.fromISO(day2).startOf('day').toMillis();
+      }
+    } else if ((!day1 && !!day2) || (!!day1 && !day2) || (!day1 && !day2)) {
+      return false;
+    }
+  }
+
+  formateDate(date: any) {
+    return this.utilityService.formateDate(date);
   }
 }

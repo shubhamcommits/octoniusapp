@@ -1,8 +1,9 @@
 <div class="btn-group">
   <mat-datepicker-toggle matSuffix [for]="dEvent"></mat-datepicker-toggle>
-  <input [ngStyle]="{ display: (!showInput) ? 'none' : '' }" matInput [matDatepicker]='dEvent' [matDatepickerFilter]="myDateFilter" (dateChange)="emitDate($event)"
+  <input style="width: 0px;" [ngStyle]="{ display: (!showInput) ? 'none' : '' }" matInput [matDatepicker]='dEvent' [matDatepickerFilter]="myDateFilter" (dateChange)="emitDate($event)"
     [value]="value" class="{{styleClass}}" disabled>
 
+  <div style="margin-top: 10px; margin-right: 10px;" [ngStyle]="{ display: (!showInput) ? 'none' : '' }" class="{{styleClass}}">{{ value }}</div>
 
   <mat-datepicker #dEvent [disabled]="!canEdit"></mat-datepicker>
 </div>

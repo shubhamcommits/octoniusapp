@@ -416,6 +416,7 @@ export class GroupPostDialogComponent implements OnInit, AfterViewChecked {
    */
    getStartDate(dateObject: any) {
     this.startDate = dateObject;
+    this.postData.task.start_date = dateObject;
     this.datesChangeEvent.emit({
         start_date: this.startDate,
         due_date: this.dueDate
@@ -428,6 +429,7 @@ export class GroupPostDialogComponent implements OnInit, AfterViewChecked {
    */
    getDueDate(dateObject: any) {
     this.dueDate = dateObject;
+    this.postData.task.due_to = dateObject;
   }
 
   /**
