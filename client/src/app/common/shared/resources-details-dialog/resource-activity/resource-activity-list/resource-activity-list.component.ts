@@ -4,6 +4,7 @@ import { PublicFunctions } from 'modules/public.functions';
 import { DateTime } from 'luxon';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { ResourcesGroupService } from 'src/shared/services/resources-group-service /resources-group.service';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-resource-activity-list',
@@ -28,6 +29,7 @@ export class ResourceActivityListComponent implements OnChanges {
   constructor(
     private resourcesGroupService: ResourcesGroupService,
     private utilityService: UtilityService,
+    private datesService: DatesService,
     private injector: Injector
   ) { }
 
@@ -85,10 +87,10 @@ export class ResourceActivityListComponent implements OnChanges {
 	}
 
 	formateDate(date) {
-		return this.utilityService.formateDate(date, DateTime.DATE_MED);
+		return this.datesService.formateDate(date, DateTime.DATE_MED);
 	}
 
 	formateTime(date) {
-		return this.utilityService.formateDate(date, DateTime.TIME_SIMPLE);
+		return this.datesService.formateDate(date, DateTime.TIME_SIMPLE);
 	}
 }

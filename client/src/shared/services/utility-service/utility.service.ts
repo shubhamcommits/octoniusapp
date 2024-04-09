@@ -1,4 +1,4 @@
-import { Injectable, EventEmitter, Injector, LOCALE_ID } from '@angular/core';
+import { Injectable, EventEmitter, Injector } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,6 +16,7 @@ import { GroupPostComponent } from 'src/app/common/shared/activity-feed/group-po
 import { PublicFunctions } from 'modules/public.functions';
 import { VideoCallDialog } from 'modules/chat/components/video-call-dialog/video-call-dialog.component';
 import { DateTime } from 'luxon';
+import { DatesService } from '../dates-service/dates.service';
 
 @Injectable({
   providedIn: 'root'
@@ -818,7 +819,8 @@ export class UtilityService {
     const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
     const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
     const data: Blob = new Blob([excelBuffer], {type: EXCEL_TYPE});
-    fileSaver.saveAs(data, fileName + '_export_' + this.formateDate(DateTime.now(), "YYYY-MM-DD") + EXCEL_EXTENSION);
+    let datesService = this.injector.get(DatesService);
+    fileSaver.saveAs(data, fileName + '_export_' + datesService.formateDate(DateTime.now(), "YYYY-MM-DD") + EXCEL_EXTENSION);
   }
 
   /**
@@ -839,7 +841,7 @@ export class UtilityService {
             }
           })
           .catch(error => {
-console.log(error)
+            console.log(error);
           })
       });
   }
@@ -850,34 +852,6 @@ console.log(error)
 
   arrayExists(arrayData: []) {
     return (!!arrayData && arrayData.length > 0);
-  }
-
-  formateDate(date: any, format?: any) {
-    return (!!date) ? DateTime.fromISO(date).setLocale(this.injector.get(LOCALE_ID)).toLocaleString(format || DateTime.DATE_MED) : '';
-  }
-
-  isBefore(day1: any, day2: any) {
-    if (!!day1 && !!day2) {
-      if (day1 instanceof DateTime && day2 instanceof DateTime) {
-        return day1.startOf('day').toMillis() < day2.startOf('day').toMillis();
-      } else {
-        return DateTime.fromISO(day1).startOf('day').toMillis() > DateTime.fromISO(day2).startOf('day').toMillis();
-      }
-    } else if ((!day1 && !!day2) || (!!day1 && !day2) || (!day1 && !day2)) {
-      return false;
-    }
-  }
-
-  isSameDay(day1: any, day2: any) {
-    if (!!day1 && !!day2) {
-      if (day1 instanceof DateTime && day2 instanceof DateTime) {
-        return day1.startOf('day').toMillis() == day2.startOf('day').toMillis();
-      } else {
-        return DateTime.fromISO(day1).startOf('day').toMillis() == DateTime.fromISO(day2).startOf('day').toMillis();
-      }
-    } else if ((!day1 && !!day2) || (!!day1 && !day2) || (!day1 && !day2)) {
-      return false;
-    }
   }
 
   compare(a: number | string, b: number | string, isAsc: number) {

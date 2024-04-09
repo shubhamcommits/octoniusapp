@@ -1,9 +1,8 @@
 import { Component, EventEmitter, Injector, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { DateTime } from 'luxon';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-post-dates',
@@ -36,7 +35,7 @@ export class PostDatesComponent implements OnInit, OnChanges {
   constructor(
     private utilityService: UtilityService,
     private postService: PostService,
-    private managementPortalService: ManagementPortalService,
+    private datesService: DatesService,
     private injector: Injector) { }
 
   ngOnInit() {
@@ -90,8 +89,7 @@ export class PostDatesComponent implements OnInit, OnChanges {
   }
 
   formateDate(date) {
-    return this.utilityService.formateDate(date, DateTime.DATE_MED)
-    // return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
+    return this.datesService.formateDate(date);
   }
 
   /**

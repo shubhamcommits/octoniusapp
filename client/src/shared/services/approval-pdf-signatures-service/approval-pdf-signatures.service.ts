@@ -3,7 +3,7 @@ import { PDFDocument, PDFPage, rgb, StandardFonts } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit';
 import { environment } from 'src/environments/environment';
 import { DateTime } from 'luxon';
-import { UtilityService } from '../utility-service/utility.service';
+import { DatesService } from '../dates-service/dates.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ import { UtilityService } from '../utility-service/utility.service';
 export class ApprovalPDFSignaturesService {
 
   constructor(
-    private utilityService: UtilityService
+    private datesService: DatesService
   ) { }
 
   async addSignaturePage(fileData: any, pdfDoc: PDFDocument, token: string) {
@@ -255,7 +255,7 @@ export class ApprovalPDFSignaturesService {
     );
 
     page.drawText(
-      'Signed on: ' + this.utilityService.formateDate(DateTime.fromISO(approval.approval_date), "MMM DD, yyyy HH:mm"),
+      'Signed on: ' + this.datesService.formateDate(DateTime.fromISO(approval.approval_date), "MMM DD, yyyy HH:mm"),
       {
         x: x + 200,
         y: y - 25,
@@ -310,7 +310,7 @@ export class ApprovalPDFSignaturesService {
     histories = histories.filter(h => h.action == action);
     return histories?.sort((a1, a2) => {
       if (a1.approval_date && a2.approval_date) {
-        if (this.utilityService.isBefore(DateTime.fromISO(a1.approval_date), DateTime.fromISO(a2.approval_date))) {
+        if (this.datesService.isBefore(DateTime.fromISO(a1.approval_date), DateTime.fromISO(a2.approval_date))) {
           return 1;
         } else {
           return -1;

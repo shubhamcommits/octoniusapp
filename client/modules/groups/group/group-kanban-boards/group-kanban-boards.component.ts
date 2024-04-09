@@ -9,6 +9,7 @@ import { CreateProjectColumnDialogComponent } from './create-project-column-dial
 import { ShowCustomFieldsColumnDialogComponent } from './show-custom-fields-column-dialog/show-custom-fields-column-dialog.component';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { DateTime } from 'luxon';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-group-kanban-boards',
@@ -52,7 +53,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     public utilityService: UtilityService,
     private columnService: ColumnService,
     private flowService: FlowService,
-    private managementPortalService: ManagementPortalService,
+    private datesService: DatesService,
     private injector: Injector,
     public dialog: MatDialog
   ) { }
@@ -104,7 +105,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
         let task = this.columns[index].tasks;
         task.sort((t1, t2) => {
           if (t1.task?.due_to && t2.task?.due_to) {
-            if (this.utilityService.isBefore(DateTime.fromISO(t1.task?.due_to), DateTime.fromISO(t2.task?.due_to))) {
+            if (this.datesService.isBefore(DateTime.fromISO(t1.task?.due_to), DateTime.fromISO(t2.task?.due_to))) {
               return this.sortingBit == 'due_date' ? -1 : 1;
             } else {
               return this.sortingBit == 'due_date' ? 1 : -1;
@@ -125,7 +126,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
         let task = this.columns[index].tasks;
         task.sort((t1, t2) => {
           if (t1.created_date && t2.created_date) {
-            if (this.utilityService.isBefore(DateTime.fromISO(t1.created_date), DateTime.fromISO(t2.created_date))) {
+            if (this.datesService.isBefore(DateTime.fromISO(t1.created_date), DateTime.fromISO(t2.created_date))) {
               return this.sortingBit == 'creation_date' ? -1 : 1;
             } else {
               return this.sortingBit == 'creation_date' ? 1 : -1;
@@ -741,7 +742,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   }
 
   isDelay(realDueDate: any, dueDate: any) {
-    return this.utilityService.isBefore(DateTime.fromISO(dueDate), DateTime.fromISO(realDueDate));
+    return this.datesService.isBefore(DateTime.fromISO(dueDate), DateTime.fromISO(realDueDate));
   }
 
   calculateCFStatistics(cfName: string, tasks: any) {

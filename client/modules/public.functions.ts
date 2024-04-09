@@ -25,6 +25,7 @@ import { LibraryService } from 'src/shared/services/library-service/library.serv
 import { SearchService } from 'src/shared/services/search-service/search.service';
 import { LibreofficeService } from 'src/shared/services/libreoffice-service/libreoffice.service';
 import { DateTime } from 'luxon';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Injectable({
   providedIn: 'root'
@@ -1305,7 +1306,7 @@ export class PublicFunctions {
     changeTaskDueDate(postId: string, dueDate: string) {
         let postService = this.injector.get(PostService)
         let utilityService = this.injector.get(UtilityService)
-        let managementPortalService = this.injector.get(ManagementPortalService)
+        let datesService = this.injector.get(DatesService)
 
         utilityService.asyncNotification($localize`:@@publicFunctions.pleaseWaitChangingTaskDueDate:Please wait we are changing the task due date...`,
             new Promise(async (resolve, reject) => {
@@ -1314,7 +1315,7 @@ export class PublicFunctions {
                 // Call HTTP Request to change the request
                 postService.changeTaskDueDate(postId, dueDate, isShuttleTasksModuleAvailable, isIndividualSubscription)
                     .then((res) => {
-                        resolve(utilityService.resolveAsyncPromise($localize`:@@publicFunctions.taskDueDAteChanged:Task due date changed to ${utilityService.formateDate(dueDate)}!`))
+                        resolve(utilityService.resolveAsyncPromise($localize`:@@publicFunctions.taskDueDAteChanged:Task due date changed to ${datesService.formateDate(dueDate)}!`))
                     })
                     .catch(() => {
                         reject(utilityService.rejectAsyncPromise($localize`:@@publicFunctions.unableToChangeDueDate:Unable to change the due date, please try again!`))
@@ -1495,7 +1496,7 @@ export class PublicFunctions {
     }
 
     doesTriggersMatch(triggers: any[], post: any, groupId: string, isCreationTaskTrigger: boolean, shuttleIndex: number) {
-        const utilityService = this.injector.get(UtilityService);
+        const datesService = this.injector.get(DatesService);
         let retValue = true;
         if (triggers && triggers.length > 0) {
             triggers.forEach(async trigger => {
@@ -1586,9 +1587,9 @@ export class PublicFunctions {
                             break;
                         case 'Due date is':
                             const today = DateTime.now();
-                            if (((trigger?.due_date_value == 'overdue') && (post?.task?.status != 'done') && (utilityService.isBefore(DateTime.fromISO(post?.task?.due_to), today)))
-                                    || ((trigger?.due_date_value == 'today') && (utilityService.isSameDay(DateTime.fromISO(post?.task?.due_to), today)))
-                                    || ((trigger?.due_date_value == 'tomorrow') && (utilityService.isSameDay(DateTime.fromISO(post?.task?.due_to), today.plus({ days: 1 }))))) {
+                            if (((trigger?.due_date_value == 'overdue') && (post?.task?.status != 'done') && (datesService.isBefore(DateTime.fromISO(post?.task?.due_to), today)))
+                                    || ((trigger?.due_date_value == 'today') && (datesService.isSameDay(DateTime.fromISO(post?.task?.due_to), today)))
+                                    || ((trigger?.due_date_value == 'tomorrow') && (datesService.isSameDay(DateTime.fromISO(post?.task?.due_to), today.plus({ days: 1 }))))) {
                                 retValue = true;
                             }
                             break;
@@ -2011,11 +2012,11 @@ export class PublicFunctions {
      *
      */
     checkOverdue(taskPost: any) {
-      let utilityService = this.injector.get(UtilityService);
+      let datesService = this.injector.get(DatesService);
       // Today's date object
       const today = DateTime.now().startOf('day');
       return (taskPost?.task?.status != 'done') &&
-        (utilityService.isBefore(DateTime.fromISO(taskPost?.task?.due_to), today));
+        (datesService.isBefore(DateTime.fromISO(taskPost?.task?.due_to), today));
     }
 
     /**

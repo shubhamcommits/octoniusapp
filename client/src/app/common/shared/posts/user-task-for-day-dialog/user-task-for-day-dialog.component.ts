@@ -3,7 +3,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { PublicFunctions } from 'modules/public.functions';
 import { DateTime } from 'luxon';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { PostService } from 'src/shared/services/post-service/post.service';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-user-task-for-day-dialog',
@@ -33,6 +33,7 @@ export class UserTaskForDayDialogComponent implements OnInit, OnDestroy {
   constructor(
     private injector: Injector,
     private utilityService: UtilityService,
+    private datesService: DatesService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
   }
@@ -151,6 +152,6 @@ export class UserTaskForDayDialogComponent implements OnInit, OnDestroy {
   }
 
   formateDate(date) {
-    return this.utilityService.formateDate(date, DateTime.DATE_MED);
+    return this.datesService.formateDate(date);
   }
 }

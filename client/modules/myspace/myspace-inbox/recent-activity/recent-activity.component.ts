@@ -5,7 +5,6 @@ import { BehaviorSubject } from 'rxjs';
 import { retry } from 'rxjs/internal/operators/retry';
 import { take } from 'rxjs/internal/operators/take';
 import { LoungeService } from 'src/shared/services/lounge-service/lounge.service';
-import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { SubSink } from 'subsink';
 import { DateTime } from 'luxon';
@@ -15,6 +14,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { HolidayRejectionDialogComponent } from 'src/app/common/shared/hr/holiday-rejection-dialog/holiday-rejection-dialog.component';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
 import { EditMemberPayrollDialogComponent } from 'modules/organization/hr/employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component';
+// import { MemberApprovalHolidaysAvailabilityDialogComponent } from 'src/app/common/shared/member-approval-holidays-availability-dialog/member-approval-holidays-availability-dialog.component';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-recent-activity',
@@ -63,7 +64,7 @@ export class RecentActivityComponent implements OnInit {
     public dialog: MatDialog,
     private socketService: SocketService,
     private loungeService: LoungeService,
-    private managementPortalService: ManagementPortalService,
+    private datesService: DatesService,
     private utilityService: UtilityService,
     private userService: UserService,
     private hrService: HRService
@@ -384,11 +385,28 @@ export class RecentActivityComponent implements OnInit {
       });
   }
 
+  // openAvailabilityDialog(holiday: any) {
+  //   const data = {
+  //     holiday: holiday
+  //   };
+
+  //   const dialogRef = this.dialog.open(MemberApprovalHolidaysAvailabilityDialogComponent, {
+  //     width: '75%',
+  //     height: '75%',
+  //     disableClose: true,
+  //     hasBackdrop: true,
+  //     data: data,
+  //   });
+
+  //   dialogRef.afterClosed().subscribe(async result => {
+  //   });
+  // }
+
   formateDate(date: any, withTime: boolean = false) {
     const format = (withTime) ? DateTime.DATETIME_MED : DateTime.DATE_SHORT;
     if (!!date && (date instanceof DateTime)) {
       return date.toLocaleString(format);
     }
-    return this.utilityService.formateDate(date, format);
+    return this.datesService.formateDate(date, format);
   }
 }

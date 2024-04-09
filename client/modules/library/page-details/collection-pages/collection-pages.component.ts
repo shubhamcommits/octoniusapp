@@ -7,6 +7,7 @@ import { DateTime } from 'luxon';
 import { ActivatedRoute } from '@angular/router';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 /** Flat node with expandable and level information */
 interface PageFlatNode {	
@@ -78,6 +79,7 @@ export class CollectionPagesComponent implements OnInit, OnChanges {
 		public dialog: MatDialog,
 		private activatedRoute: ActivatedRoute,
 		private utilityService: UtilityService,
+		private datesService: DatesService,
 		private libraryService: LibraryService
 	) { }
 
@@ -148,7 +150,7 @@ export class CollectionPagesComponent implements OnInit, OnChanges {
   }
 
 	formateDate(date) {
-		return this.utilityService.formateDate(date, DateTime.DATE_MED);
+		return this.datesService.formateDate(date, DateTime.DATE_MED);
 	}
 
 	objectExists(object: any) {

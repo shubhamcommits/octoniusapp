@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { DateTime } from 'luxon';
 import { LibraryService } from 'src/shared/services/library-service/library.service';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-page-actions-bar',
@@ -31,6 +32,7 @@ export class PageActionsBarComponent implements OnInit, OnChanges {
     public dialog: MatDialog,
     private _router: Router,
     private utilityService: UtilityService,
+    private datesService: DatesService,
     private libraryService: LibraryService
   ) { }
 
@@ -94,6 +96,6 @@ export class PageActionsBarComponent implements OnInit, OnChanges {
   }
 
   formateDate(date) {
-    return this.utilityService.formateDate(date, DateTime.DATETIME_MED);
+    return this.datesService.formateDate(date, DateTime.DATETIME_MED);
   }
 }

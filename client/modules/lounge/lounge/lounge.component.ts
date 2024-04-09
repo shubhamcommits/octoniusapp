@@ -6,6 +6,7 @@ import { DateTime } from 'luxon';
 import { LoungeService } from 'src/shared/services/lounge-service/lounge.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EditLoungeComponent } from './edit-lounge/edit-lounge.component';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-lounge',
@@ -37,6 +38,7 @@ export class LoungeComponent implements OnInit, OnDestroy {
   constructor(
     private injector: Injector,
     public dialog: MatDialog,
+    private datesService: DatesService,
     private loungeService: LoungeService
   ) { }
 
@@ -82,7 +84,7 @@ export class LoungeComponent implements OnInit, OnDestroy {
       }
 
       cat.items.sort((t1, t2) => {
-        if (this.utilityService.isBefore(DateTime.fromISO(t1.created_date), DateTime.fromISO(t2.created_date))) {
+        if (this.datesService.isBefore(DateTime.fromISO(t1.created_date), DateTime.fromISO(t2.created_date))) {
           return 1;
         } else {
           return -1;

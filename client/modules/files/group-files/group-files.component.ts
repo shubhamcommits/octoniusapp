@@ -26,6 +26,7 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 import * as ShareDB from "sharedb/lib/client";
 import Quill from 'quill';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-group-files',
@@ -117,7 +118,7 @@ export class GroupFilesComponent implements OnInit {
     public dialog: MatDialog,
     public storageService: StorageService,
     private groupService: GroupService,
-    private managementPortalService: ManagementPortalService,
+    private datesService: DatesService,
     private approvalPDFSignaturesService: ApprovalPDFSignaturesService
   ) { }
 
@@ -854,7 +855,7 @@ export class GroupFilesComponent implements OnInit {
     if (this.sortingBit == 'created_date' || this.sortingBit == 'none') {
       this.folders.sort((t1, t2) => {
         if (t1.created_date && t2.created_date) {
-          if (this.utilityService.isBefore(DateTime.fromISO(t1.created_date), DateTime.fromISO(t2.created_date))) {
+          if (this.datesService.isBefore(DateTime.fromISO(t1.created_date), DateTime.fromISO(t2.created_date))) {
             return this.sortingBit == 'created_date' ? -1 : 1;
           } else {
             return this.sortingBit == 'created_date' ? 1 : -1;
@@ -869,7 +870,7 @@ export class GroupFilesComponent implements OnInit {
       });
       this.files.sort((t1, t2) => {
         if (t1.created_date && t2.created_date) {
-          if (this.utilityService.isBefore(DateTime.fromISO(t1.created_date), DateTime.fromISO(t2.created_date))) {
+          if (this.datesService.isBefore(DateTime.fromISO(t1.created_date), DateTime.fromISO(t2.created_date))) {
             return this.sortingBit == 'created_date' ? -1 : 1;
           } else {
             return this.sortingBit == 'created_date' ? 1 : -1;
@@ -887,8 +888,8 @@ export class GroupFilesComponent implements OnInit {
         if (this.sortingData?.input_type_date) {
           return (t1?.custom_fields && t2?.custom_fields)
             ? (t1?.custom_fields[this.sortingData.name] && t2?.custom_fields[this.sortingData.name])
-              ?((this.utilityService.isBefore(DateTime.fromISO(t1?.custom_fields[this.sortingData.name]), DateTime.fromISO(t2?.custom_fields[this.sortingData.name])))
-                ? -1 : (this.utilityService.isBefore(DateTime.fromISO(t2?.custom_fields[this.sortingData.name]), DateTime.fromISO(t1?.custom_fields[this.sortingData.name])))
+              ?((this.datesService.isBefore(DateTime.fromISO(t1?.custom_fields[this.sortingData.name]), DateTime.fromISO(t2?.custom_fields[this.sortingData.name])))
+                ? -1 : (this.datesService.isBefore(DateTime.fromISO(t2?.custom_fields[this.sortingData.name]), DateTime.fromISO(t1?.custom_fields[this.sortingData.name])))
                   ? 1 : 0)
               : ((t1?.custom_fields[this.sortingData.name] && !t2?.custom_fields[this.sortingData.name])
                 ? -1 : ((!t1?.custom_fields[this.sortingData.name] && t2?.custom_fields[this.sortingData.name]))

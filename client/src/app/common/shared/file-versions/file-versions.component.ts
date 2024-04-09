@@ -8,6 +8,7 @@ import { ApprovalPDFSignaturesService } from 'src/shared/services/approval-pdf-s
 import { FilesService } from 'src/shared/services/files-service/files.service';
 import { SubSink } from 'subsink';
 import { DateTime } from 'luxon';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-file-versions',
@@ -50,6 +51,7 @@ export class FileVersionsComponent implements OnInit {
     public libreofficeService: LibreofficeService,
     public storageService: StorageService,
     public utilityService: UtilityService,
+    public datesService: DatesService,
     public approvalPDFSignaturesService: ApprovalPDFSignaturesService,
     private injector: Injector
   ) { }
@@ -198,6 +200,6 @@ export class FileVersionsComponent implements OnInit {
   }
 
   formateDate(date: any) {
-    return this.utilityService.formateDate(date, DateTime.DATETIME_MED);
+    return this.datesService.formateDate(date, DateTime.DATETIME_MED);
   }
 }

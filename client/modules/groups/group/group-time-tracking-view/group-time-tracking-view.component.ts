@@ -6,9 +6,8 @@ import { BehaviorSubject } from 'rxjs';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { NewTimeTrackingDialogComponent } from 'src/app/common/shared/new-time-tracking-dialog/new-time-tracking-dialog.component';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { MatPaginator } from '@angular/material/paginator';
-import { UserService } from 'src/shared/services/user-service/user.service';
 import { DecimalPipe } from '@angular/common';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 // import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
@@ -56,7 +55,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
 
   constructor(
     private groupService: GroupService,
-    private userService: UserService,
+    private datesService: DatesService,
     private utilityService: UtilityService,
     private injector: Injector,
     public dialog: MatDialog,
@@ -374,6 +373,6 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
   }
   
   formateDate(date) {
-    return this.utilityService.formateDate(date, DateTime.DATE_MED);
+    return this.datesService.formateDate(date, DateTime.DATE_MED);
   }
 }

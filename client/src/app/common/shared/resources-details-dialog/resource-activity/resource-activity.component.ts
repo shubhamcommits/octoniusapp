@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Injector, Input, OnChanges, Output } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 import { ResourcesGroupService } from 'src/shared/services/resources-group-service /resources-group.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -50,6 +51,7 @@ export class ResourceActivityComponent implements OnChanges {
     private resourcesGroupService: ResourcesGroupService,
     private userService: UserService,
     private utilityService: UtilityService,
+    private datesService: DatesService,
     private injector: Injector
   ) { }
 
@@ -249,7 +251,7 @@ export class ResourceActivityComponent implements OnChanges {
   }
 
   isSameDay(day1: any, day2: any) {
-    return this.utilityService.isSameDay(day1, day2);
+    return this.datesService.isSameDay(day1, day2);
   }
 
   isGroupManager(userId) {

@@ -5,6 +5,7 @@ import { DateTime, Interval } from 'luxon';
 import { environment } from 'src/environments/environment';
 import { ResourcesGroupService } from 'src/shared/services/resources-group-service /resources-group.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-resources-details-dialog',
@@ -58,6 +59,7 @@ export class ResourcesDetailsDialogComponent implements OnInit {
   constructor(
     private resourcesGroupService: ResourcesGroupService,
     private utilityService: UtilityService,
+    private datesService: DatesService,
     private injector: Injector,
     private mdDialogRef: MatDialogRef<ResourcesDetailsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -374,19 +376,13 @@ export class ResourcesDetailsDialogComponent implements OnInit {
   formatDates(dates) {
     let newDates = [];
     dates.forEach(date => {
-      newDates.push(this.utilityService.formateDate(date));
+      newDates.push(this.datesService.formateDate(date));
     });
     return newDates;
   }
 
   isSameDay(day1: DateTime, day2: DateTime) {
-    if (!day1 && !day2) {
-      return true;
-    } else if ((!!day1 && !day2) || (!!day2 && !day1)) {
-      return true;
-    }
-
-    return day1.startOf('day').toMillis() === day2.startOf('day').toMillis();
+    return this.datesService.isSameDay(day1, day2);
   }
 
   getBalanceClass() {

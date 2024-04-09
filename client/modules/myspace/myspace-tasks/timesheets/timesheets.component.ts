@@ -8,6 +8,7 @@ import { GroupService } from 'src/shared/services/group-service/group.service';
 import { DOCUMENT } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { NewTimeTrackingDialogComponent } from 'src/app/common/shared/new-time-tracking-dialog/new-time-tracking-dialog.component';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 // import * as Moment from 'moment';
 // import { extendMoment } from 'moment-range';
 
@@ -46,6 +47,7 @@ export class TimesheetsComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private groupService: GroupService,
     private utilityService: UtilityService,
+    private datesService: DatesService,
     private injector: Injector,
     public dialog: MatDialog,
     @Inject(DOCUMENT) document: Document
@@ -162,7 +164,7 @@ export class TimesheetsComponent implements OnInit, OnDestroy {
   }
   
   formateDate(date) {
-    return this.utilityService.formateDate(date, { weekday: 'short', day: 'numeric' });
+    return this.datesService.formateDate(date, { weekday: 'short', day: 'numeric' });
   }
 
   displayHideInput(id: string) {

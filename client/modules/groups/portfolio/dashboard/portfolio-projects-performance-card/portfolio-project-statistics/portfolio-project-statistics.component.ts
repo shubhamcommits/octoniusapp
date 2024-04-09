@@ -1,7 +1,7 @@
 import { Component, Injector, Input, OnChanges, OnInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
-import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-portfolio-project-statistics-card',
@@ -37,7 +37,7 @@ export class PortfolioProjectStatisticsComponent implements OnChanges {
 
   constructor(
     private postService: PostService,
-    private utilityService: UtilityService,
+    private datesService: DatesService,
     private injector: Injector
     ) { }
 
@@ -163,6 +163,6 @@ export class PortfolioProjectStatisticsComponent implements OnChanges {
   }
 
   formateDate(date: any, format: string) {
-    return this.utilityService.formateDate(date, format);
+    return this.datesService.formateDate(date, format);
   }
 }

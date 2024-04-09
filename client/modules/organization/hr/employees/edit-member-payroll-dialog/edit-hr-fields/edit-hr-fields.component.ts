@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -40,6 +41,7 @@ export class EditHRFieldsComponent implements OnInit {
   constructor(
     private hrService: HRService,
     private utilityService: UtilityService,
+    private datesService: DatesService,
     private userService: UserService,
     private injector: Injector
   ) {
@@ -343,7 +345,7 @@ export class EditHRFieldsComponent implements OnInit {
    */
 
   formateDate(date) {
-    return this.utilityService.formateDate(date);
+    return this.datesService.formateDate(date);
     // return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
   }
 }

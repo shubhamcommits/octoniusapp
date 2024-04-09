@@ -5,6 +5,7 @@ import { DateTime } from 'luxon';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-task-time-tracking-list',
@@ -26,7 +27,7 @@ export class TaskTimeTrackingListComponent implements OnChanges {
 
   constructor(
     private groupService: GroupService,
-    private userService: UserService,
+    private datesService: DatesService,
     private utilityService: UtilityService,
     private injector: Injector
   ) { }
@@ -101,6 +102,6 @@ export class TaskTimeTrackingListComponent implements OnChanges {
   }
 
   formateDate(date) {
-    return this.utilityService.formateDate(date, DateTime.DATE_MED);
+    return this.datesService.formateDate(date, DateTime.DATE_MED);
   }
 }

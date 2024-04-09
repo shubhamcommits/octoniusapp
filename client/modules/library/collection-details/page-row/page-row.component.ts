@@ -4,6 +4,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { MatDialog } from '@angular/material/dialog';
 import { LibraryService } from 'src/shared/services/library-service/library.service';
 import { DateTime } from 'luxon';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-page-row',
@@ -31,6 +32,7 @@ export class PageRowComponent implements OnInit, OnChanges {
 		public injector: Injector,
 		public dialog: MatDialog,
 		private utilityService: UtilityService,
+		private datesService: DatesService,
 		private libraryService: LibraryService
 	) { }
 
@@ -100,7 +102,7 @@ export class PageRowComponent implements OnInit, OnChanges {
 	}
 
 	formateDate(date) {
-		return this.utilityService.formateDate(date, DateTime.DATE_MED);
+		return this.datesService.formateDate(date, DateTime.DATE_MED);
 	}
 
 	objectExists(object: any) {

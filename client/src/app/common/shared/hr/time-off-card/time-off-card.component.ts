@@ -4,6 +4,7 @@ import { PublicFunctions } from 'modules/public.functions';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { DateTime } from 'luxon';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-time-off-card',
@@ -26,6 +27,7 @@ export class TimeOffCardComponent implements OnInit {
   constructor(
     private injector: Injector,
     public dialog: MatDialog,
+    public datesService: DatesService,
     private hrService: HRService
   ) { }
 
@@ -44,9 +46,6 @@ export class TimeOffCardComponent implements OnInit {
   }
 
   formateDate(date: any) {
-    if (!!date && (date instanceof DateTime)) {
-      return date.toLocaleString(DateTime.DATE_SHORT);
-    }
-    return this.utilityService.formateDate(date, DateTime.DATE_SHORT);
+    return this.datesService.formateDate(date, DateTime.DATE_SHORT);
   }
 }

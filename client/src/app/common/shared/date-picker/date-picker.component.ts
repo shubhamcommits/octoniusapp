@@ -3,10 +3,9 @@ import { NG_VALUE_ACCESSOR} from '@angular/forms';
 import { MAT_DATE_FORMATS, DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { DateTime } from 'luxon';
-// import * as _moment from 'moment';
 // tslint:disable-next-line:no-duplicate-imports
 import {default as _rollupMoment} from 'moment';
-import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 // const moment = _rollupMoment || _moment;
 
@@ -58,7 +57,7 @@ export class DatePickerComponent implements OnChanges {
   
   public onChange: any = Function.prototype; // Trascend the onChange event
   
-  constructor(private utilityService: UtilityService) { }
+  constructor(private datesService: DatesService) { }
 
   ngOnChanges() {
     this._value = this.formateDate(this.selectedDate);
@@ -119,6 +118,6 @@ export class DatePickerComponent implements OnChanges {
   }
 
   formateDate(date: any) {
-    return this.utilityService.formateDate(date);
+    return this.datesService.formateDate(date);
   }
 }
