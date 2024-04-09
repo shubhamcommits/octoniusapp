@@ -285,6 +285,26 @@ const UserSchema = new Schema({
                 default: null
             }
         },
+        ms_365: {
+            enabled_mail_subscription: {
+                type: Boolean,
+                default: false
+            },
+            subscription_id: {
+                type: String,
+                default: null,
+                unique : true
+            },
+            user_account_id: {
+                type: String,
+                default: null,
+                unique : true
+            },
+            token: {
+                type: String,
+                default: null
+            }
+        },
         zapier:{
             webhook:[{
                 trigger: {

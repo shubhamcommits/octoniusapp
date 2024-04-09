@@ -234,9 +234,6 @@ const workspaceSchema = new Schema({
         ms_365_authority: {
             type: String
         },
-        ms_365_authority_id: {
-            type: String
-        },
         ms_365_private_key_path: {
             type: String
         },
