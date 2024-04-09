@@ -197,6 +197,43 @@
       </div>
     </div>
     <!-- Atlassian INTEGRATION ENDS -->
+
+    <!-- Atlassian INTEGRATION STARTS -->
+    <div class="integration">
+      <div class="mt-2 mb-2 pt-3">
+        <mat-slide-toggle color="primary" [checked]="workspaceData?.integrations?.is_ms_365_connected"
+          [name]="'enabled_azure'" [(ngModel)]="workspaceData.integrations.is_ms_365_connected">
+          <h6>
+            <b i18n="@@workspaceIntegrationsDialog.enableMS365Integrations">Enable MS365 Integration</b>
+          </h6>
+        </mat-slide-toggle>
+    
+        <br />
+        <p class="card-text" i18n="@@workspaceIntegrationsDialog.enableMS365IntegrationsDescription">This will allow the
+          users to synchronize the information in MS365 account.</p>
+        <br />
+    
+        <div class="integration-properties" *ngIf="workspaceData?.integrations?.is_ms_365_connected">
+          <div class="form-group">
+            <label for="ms_365_client_id" i18n="@@workspaceIntegrationsDialog.ms_365_client_id">Client ID:</label>
+            <input type="text" class="form-control" name="ms_365_client_id" [(ngModel)]="workspaceData.integrations.ms_365_client_id" placeholder="Please provide the MS365 Client ID">
+            <br />
+            <label for="ms_365_tenant_id" i18n="@@workspaceIntegrationsDialog.ms_365_tenant_id">Tenant ID:</label>
+            <input type="text" class="form-control" name="ms_365_tenant_id" [(ngModel)]="workspaceData.integrations.ms_365_tenant_id" placeholder="Please provide the MS365 Tenant ID">
+            <br/>
+            <label for="ms_365_client_secret" i18n="@@workspaceIntegrationsDialog.ms_365_client_secret">Client Secret:</label>
+            <input type="text" class="form-control" name="ms_365_client_secret" [(ngModel)]="workspaceData.integrations.ms_365_client_secret" placeholder="Please provide the MS365 Client Secret">
+            <br/>
+            <label for="ms_365_authority" i18n="@@workspaceIntegrationsDialog.ms_365_authority">Authority ID:</label>
+            <input type="text" class="form-control" name="ms_365_authority" [(ngModel)]="workspaceData.integrations.ms_365_authority" placeholder="Please provide the MS365 Authority">
+            <br/>
+            <label for="ms_365_private_key_path" i18n="@@workspaceIntegrationsDialog.ms_365_private_key_path">Private Key Path:</label>
+            <input type="text" class="form-control" name="ms_365_private_key_path" [(ngModel)]="workspaceData.integrations.ms_365_private_key_path" placeholder="Please provide the MS365 Private Key Path">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Atlassian INTEGRATION ENDS -->
   </div>
 
   <div style="margin-top: 20px; text-align: center;">

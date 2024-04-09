@@ -2331,7 +2331,27 @@ export class PublicFunctions {
         }
       }
 
-      return Array.from(new Set([...filesList, ...googleFilesList, ...boxFilesList]));
+      let ms365FilesList: any = [];
+
+      // Fetch Access Token
+      if (storageService.existData('ms365User') && workspaceData?.integrations?.is_ms_365_connected) {
+        let ms365User: any = storageService.getLocalData('ms365User');
+
+        if (utilityService.objectExists(ms365User)) {
+          // Get MS365 file list
+          ms365FilesList = await integrationsService.searchMS365Files(searchVal) || []
+
+          // MS365 File List
+          if (ms365FilesList.length > 0) {
+            ms365FilesList = ms365FilesList.map((file: any) => ({
+              id: file.id,
+              value: '<a style="color:inherit;" target="_blank" href="' + file.searchResult.onClickTelemetryUrl + '"' + '>' + file.name + '</a>'
+            }));
+          }
+        }
+      }
+
+      return Array.from(new Set([...filesList, ...googleFilesList, ...boxFilesList, ...ms365FilesList]));
   }
   
     /**

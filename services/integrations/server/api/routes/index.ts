@@ -5,13 +5,15 @@ import { zapierRoutes } from './zapier.routes';
 import { ldapRoutes } from './ldap.routes';
 import { boxRoutes } from './box.routes';
 import { googleRoutes } from './google.routes';
+import { msRoutes } from './ms.routes';
 
 export {
-    teamsRoutes as teamsRoutes,
-    slackRoutes as slackRoutes,
-    zapierRoutes as zapierRoutes,
-    integrationRoutes as integrationRoutes,
-    ldapRoutes as ldapRoutes,
+    boxRoutes as boxRoutes,
     googleRoutes as googleRoutes,
-    boxRoutes as boxRoutes
+    integrationRoutes as integrationRoutes,
+    msRoutes as msRoutes,
+    ldapRoutes as ldapRoutes,
+    slackRoutes as slackRoutes,
+    teamsRoutes as teamsRoutes,
+    zapierRoutes as zapierRoutes,
 };

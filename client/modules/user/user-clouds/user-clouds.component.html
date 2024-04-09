@@ -5,15 +5,18 @@
            <app-user-available-clouds
             [userData]="userData"
             (googleUser)="initiliazeGoogleUser($event)"
-            (boxUser)="initiliazeBoxUser($event)"></app-user-available-clouds>
+            (boxUser)="initiliazeBoxUser($event)"
+            (ms365User)="initiliazeBoxUser($event)"></app-user-available-clouds>
         </div>
 
         <div class="col-md-8">
-            <img *ngIf="!objectDataExists(googleUser) && !slackAuthSuccessful && !objectDataExists(boxUser)" src="assets/images/empty-clouds.svg">
-            <app-user-connected-clouds *ngIf="googleUser || slackAuthSuccessful || boxUser"
+            <img *ngIf="!objectDataExists(googleUser) && !slackAuthSuccessful && !objectDataExists(boxUser) && !objectDataExists(ms365User)" src="assets/images/empty-clouds.svg">
+            <app-user-connected-clouds *ngIf="objectDataExists(googleUser) || slackAuthSuccessful || objectDataExists(boxUser) || objectDataExists(ms365User)"
               [googleUser]="googleUser"
               [boxUser]="boxUser"
-              [slackAuthSuccessful]="slackAuthSuccessful"></app-user-connected-clouds>
+              [ms365User]="ms365User"
+              [slackAuthSuccessful]="slackAuthSuccessful"
+              (ms365Disconnected)="onMS365Disconnected($event)"></app-user-connected-clouds>
         </div>
     </div>
 </div>

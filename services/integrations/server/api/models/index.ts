@@ -4,6 +4,7 @@ import { Column } from './column.model';
 import { Resource } from './resource.model';
 import { Flow } from './flow.model';
 import { Group } from './group.model';
+import { Portfolio } from './portfolio.model';
 import { Post } from './post.model';
 import { User } from './user.model';
 import { Workspace } from './workspace.model';
@@ -13,6 +14,7 @@ import { Story } from "./story.model";
 import { Contact } from './contact.model';
 import { Company } from './company.model';
 import { TimeTrackingEntity } from './time_tracking_entity.model';
+import { Collection } from './collection.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -26,12 +28,16 @@ export {
     // Account
     Account as Account,
 
+    Collection as Collection,
+
     // COLUMN
     Column as Column,
     Resource as Resource,
 
     // GROUP
     Group as Group,
+
+    Portfolio as Portfolio,
 
     // POST
     Post as Post,

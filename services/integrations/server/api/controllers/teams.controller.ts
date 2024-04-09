@@ -1,6 +1,6 @@
 import e, { Response, Request, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import moment from 'moment/moment'
+// import { DateTime } from 'luxon';
 import { Group, Column, Auth, User } from '../models';
 import { Auths, sendError } from '../../utils';
 import FormData from 'form-data';
@@ -195,7 +195,8 @@ export class TeamsController {
             "task": {
                 "status": "to do",
                 "_column": columnSelection,
-                "due_to": moment(dueDate).format("YYYY-MM-DD")
+                // "due_to": moment(dueDate).format("YYYY-MM-DD")
+                "due_to": dueDate
             }
         };
 

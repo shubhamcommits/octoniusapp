@@ -6,6 +6,6 @@
     </div>
     <div class="col-md-6 push-right">
         <button *ngIf="!slackAuthSuccessful" id="slack-connect" class="btn btn-primary btn-sm" (click) ="slackAuth()" i18n="@@connectSlack.connect">Connect</button>
-        <button *ngIf="slackAuthSuccessful" class="btn btn-success btn-sm" i18n="@@connectSlack.connected">Connected</button>
+        <button *ngIf="slackAuthSuccessful" disabled="true" class="btn btn-success btn-sm" i18n="@@connectSlack.connected">Connected</button>
     </div>
 </div>

@@ -18,8 +18,8 @@ export class UserAvailableCloudsComponent implements OnInit {
   @Input() userData:any;
 
   @Output('googleUser') googleUser = new EventEmitter();
-
   @Output('boxUser') boxUser = new EventEmitter();
+  @Output('ms365User') ms365User = new EventEmitter();
 
   workspaceData: any;
 
@@ -70,5 +70,9 @@ export class UserAvailableCloudsComponent implements OnInit {
 
   emitBoxUser(boxUser: any) {
     this.boxUser.emit(boxUser)
+  }
+
+  emitMS365User(ms365User: any) {
+    this.ms365User.emit(ms365User)
   }
 }
