@@ -581,19 +581,18 @@ export class EditEntityDialogComponent implements OnInit {
     this.createNewDaysOff = !this.createNewDaysOff;
   }
 
-  addBankHolidayDate(momentDate: any, dayOffId: string) {
+  addBankHolidayDate(date: any, dayOffId: string) {
     const doIndex = (this.entityData.payroll_days_off) ? this.entityData.payroll_days_off.findIndex((dayOff: any) => dayOff._id === dayOffId) : -1;
     if (doIndex >= 0) {
       if (!this.entityData.payroll_days_off[doIndex].bank_holidays) {
         this.entityData.payroll_days_off[doIndex].bank_holidays = [];
       }
-      const bhIndex = this.entityData.payroll_days_off[doIndex].bank_holidays.findIndex((bh: any) => DateTime.fromJSDate(momentDate).equals(DateTime.fromJSDate(bh)));
+      const bhIndex = this.entityData.payroll_days_off[doIndex].bank_holidays.findIndex((bh: any) => this.utilityService.isSameDay(date, bh));
       // If index is found, then throw error notification
       if (bhIndex !== -1) {
         this.utilityService.warningNotification($localize`:@@editentitydialog.valueAlreadyExists:Value already exists!`);
       } else {
-        this.hrService.addBankHoliday(this.entityData?._id, dayOffId, momentDate).then(res => {
-          // this.entityData.payroll_days_off[doIndex].bank_holidays.push(momentDate);
+        this.hrService.addBankHoliday(this.entityData?._id, dayOffId, date.toISODate()).then(res => {
           this.entityData = res['entity'];
         });
       }

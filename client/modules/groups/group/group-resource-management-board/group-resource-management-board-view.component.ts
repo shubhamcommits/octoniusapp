@@ -199,7 +199,7 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
     let dates = [];
     for (var i = 0; i < 7; i++) {
       let date = firstDay.plus({ days: i });
-      date.is_current_day = this.isCurrentDay(date);
+      date.is_current_day = this.isSameDay(date, DateTime.now());
       date.is_weekend_day = this.isWeekend(date);
       dates.push(date);
     }
@@ -225,22 +225,8 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
     this.generateNavDates();
   }
 
-  isCurrentDay(day) {
-    return this.isSameDay(day, DateTime.now());
-  }
-
   isSameDay(day1: any, day2: any) {
-    if (!!day1 && !!day2) {
-      if (day1 instanceof DateTime && day2 instanceof DateTime) {
-        return day1.startOf('day').toMillis() == day2.startOf('day').toMillis();
-      } else {
-        return DateTime.fromISO(day1).startOf('day').toMillis() == DateTime.fromISO(day2).startOf('day').toMillis();
-      }
-    } else if ((!day1 && !!day2) || (!!day1 && !day2)) {
-      return false;
-    } else if (!day1 && !day2) {
-      return true;
-    }
+    return this.utilityService.isSameDay(day1, day2);
   }
 
   isWeekend(date) {

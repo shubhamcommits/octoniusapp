@@ -1,7 +1,5 @@
 import { Component, EventEmitter, Inject, OnChanges, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import moment from 'moment';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
@@ -57,8 +55,8 @@ export class CreateProjectColumnDialogComponent implements OnChanges {
       this.utilityService.asyncNotification($localize`:@@createProjectColumn.pleaseWaitWeSaveProjectDates:Please wait we are saving your project dates...`, new Promise((resolve, reject) => {
         this.columnService.saveColumnProjectDates(this.column?._id, this.startDate, this.dueDate)
           .then((res) => {
-            this.column.start_date = moment(this.startDate).hours(12).format('YYYY-MM-DD');
-            this.column.due_date = moment(this.dueDate).hours(12).format('YYYY-MM-DD');
+            this.column.start_date = this.startDate;
+            this.column.due_date = this.dueDate;
 
             // Close the modal
             this.closeEvent.emit(this.column);
@@ -82,7 +80,7 @@ export class CreateProjectColumnDialogComponent implements OnChanges {
   getDate(dateObject: any, property: string) {
     if (property == 'start_date') {
       if (dateObject) {
-        this.startDate = dateObject.toDate();
+        this.startDate = dateObject.toISODate();
       } else {
         this.startDate = null;
         this.column.start_date = null;
@@ -91,7 +89,7 @@ export class CreateProjectColumnDialogComponent implements OnChanges {
 
     if (property == 'due_date') {
       if (dateObject) {
-        this.dueDate = dateObject.toDate();
+        this.dueDate = dateObject.toISODate();
       } else {
         this.dueDate = null;
         this.column.due_date = null;

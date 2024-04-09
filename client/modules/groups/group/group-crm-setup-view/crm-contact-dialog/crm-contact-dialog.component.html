@@ -141,16 +141,11 @@
                                 <div *ngIf="cf.input_type && cf.input_type_date">
                                     <!-- Date Picker starts -->
                                     <app-date-picker
-                                        [selectedDate]="formateDate(selectedCFValues[cf.name])" [styleClass]="'btn-group input-date'"
+                                        [selectedDate]="selectedCFValues[cf.name]" [styleClass]="'btn-group input-date'"
                                         [canEdit]="false">
                                     </app-date-picker>
                                     <!--Date Picker ends -->
                                 </div>
-                    
-                                <!-- Clean field starts -->
-                                <!-- <i *ngIf="canEdit" (click)="saveCustomField(cf.name, cf.title, null);" class="material-icons muted mr-5"
-                                    style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i> -->
-                                <!-- Clean field ends -->
                             </div>
                         </div>
                     </div>

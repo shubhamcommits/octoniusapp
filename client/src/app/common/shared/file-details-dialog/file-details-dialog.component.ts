@@ -3,7 +3,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
-import moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
 import { FilesService } from 'src/shared/services/files-service/files.service';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
@@ -108,10 +107,6 @@ export class FileDetailsDialogComponent implements OnInit {
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
-  }
-
-  formateCFDate(date){
-    return moment(moment.utc(date), "YYYY-MM-DD").toDate();
   }
 
   async initFileData() {
@@ -271,7 +266,7 @@ export class FileDetailsDialogComponent implements OnInit {
    * @param dateObject
    */
   getDate(dateObject: any, cfName: string) {
-    this.saveCustomField(cfName, dateObject.toDate());
+    this.saveCustomField(cfName, dateObject.toISODate());
   }
 
   onAssigneeEmitter(fileData: any) {

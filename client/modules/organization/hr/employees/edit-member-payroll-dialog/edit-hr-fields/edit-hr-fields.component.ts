@@ -173,7 +173,7 @@ export class EditHRFieldsComponent implements OnInit {
   // }
 
   saveJoinDate(valueToSave: any) {
-    this.memberData.company_join_date = valueToSave;
+    this.memberData.company_join_date = valueToSave.toISODate();
     this.saveProperty({ 'company_join_date': valueToSave });
   }
 
@@ -205,7 +205,7 @@ export class EditHRFieldsComponent implements OnInit {
   }
 
   onDateEntityCustomFieldChange(dateObject: any, cfId: string) {
-    this.savePayrollCustomField(cfId, dateObject.toDate());
+    this.savePayrollCustomField(cfId, dateObject.toISODate());
   }
 
   savePayrollCustomField(customFieldId: string, customFieldValue: any) {
@@ -292,7 +292,7 @@ export class EditHRFieldsComponent implements OnInit {
   }
 
   onDateEntityBenefitChange(dateObject: any, benefitId: string) {
-    this.savePayrollBenefit(benefitId, dateObject.toDate());
+    this.savePayrollBenefit(benefitId, dateObject.toISODate());
   }
 
   savePayrollBenefit(benefitId: string, benefitValue: any) {
@@ -343,6 +343,7 @@ export class EditHRFieldsComponent implements OnInit {
    */
 
   formateDate(date) {
-    return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
+    return this.utilityService.formateDate(date);
+    // return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
   }
 }

@@ -7,7 +7,7 @@ import { LoungeService } from 'src/shared/services/lounge-service/lounge.service
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { LoungeImageUpdateComponent } from '../lounge-image-update/lounge-image-update.component';
-import moment from 'moment';
+// import moment from 'moment';
 
 @Component({
   selector: 'app-story-details',
@@ -224,8 +224,7 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
   }
   
   getDate(dateObject: any) {
-    const selcetedMomentDate = moment(dateObject.toDate());
-    this.storyData.event_date  = selcetedMomentDate;
+    this.storyData.event_date  = dateObject.toISODate();
     this.updateDate({ 'event_date': this.storyData.event_date });
   }
 
@@ -260,10 +259,6 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
           reject(this.utilityService.rejectAsyncPromise($localize`:@@storyDetails.unableToUpdateDetails:Unable to update the details, please try again!`));
         });
     }));
-  }
-
-  formateDate(date) {
-    return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
   }
 
   isValidTime(str) {

@@ -34,7 +34,7 @@
             <div class="month">{{ storyData?.event_date | date: 'MM' }}</div>
           </div>
 
-          <app-date-picker (date)="getDate($event)" [selectedDate]="formateDate(storyData?.event_date)" 
+          <app-date-picker (date)="getDate($event)" [selectedDate]="storyData?.event_date"
             [showInput]="false" class="btn-group input-date">
           </app-date-picker>
         </div>

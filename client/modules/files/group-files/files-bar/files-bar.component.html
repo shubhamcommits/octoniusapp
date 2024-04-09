@@ -152,8 +152,8 @@
 
       <span *ngIf="cf.input_type_date">
         <!-- Date Picker starts -->
-        <app-date-picker (date)="filter('custom_field', cf, $event.toDate())"
-          [selectedDate]="formateCFDate(selectedCFFilterDate)"
+        <app-date-picker (date)="filter('custom_field', cf, $event.toISODate())"
+          [selectedDate]="selectedCFFilterDate"
           [styleClass]="'btn-group input-date'">
         </app-date-picker>
         <!--Date Picker ends -->

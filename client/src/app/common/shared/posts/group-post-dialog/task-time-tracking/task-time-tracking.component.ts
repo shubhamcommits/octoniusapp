@@ -1,7 +1,5 @@
 import { Component, Injector, Input, OnChanges } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
-// import { DateTime } from 'luxon';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -330,12 +328,7 @@ export class TaskTimeTrackingComponent implements OnChanges {
   }
 
   isSameDay(day1: any, day2: any) {
-    if (!day1 && !day2) {
-      return true;
-    } else if ((!!day1 && !day2) || (!!day2 && !day1)) {
-      return true;
-    }
-    return moment.utc(day1).isSame(moment.utc(day2), 'day');
+    return this.utilityService.isSameDay(day1, day2);
   }
 
   isGroupManager(userId) {
@@ -343,6 +336,6 @@ export class TaskTimeTrackingComponent implements OnChanges {
   }
 
   formateDate(date) {
-    return (date) ? moment.utc(date).add('1', 'day').format("MMM D, YYYY") : '';
+    return this.utilityService.formateDate(date);
   }
 }

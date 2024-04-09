@@ -1,10 +1,9 @@
 import { Component, Input, Output, OnChanges, EventEmitter, ViewChild, ViewEncapsulation, Injector, OnInit } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import { BehaviorSubject } from 'rxjs';
 import { ApprovalService } from 'src/shared/services/approval-service/approval.service';
-import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
 
@@ -43,7 +42,7 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
 
   flowCompleted: boolean = false;
 
-  today = moment().startOf('day').format('YYYY-MM-DD');
+  today = DateTime.now();
 
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
@@ -57,7 +56,6 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
   constructor(
     private approvalService: ApprovalService,
     public utilityService: UtilityService,
-    private managementPortalService: ManagementPortalService,
     private injector: Injector
   ) { }
 
@@ -187,7 +185,7 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
    */
   getDate(dateObject: any) {
     if (dateObject) {
-      this.itemData.approval_due_date = moment(dateObject.toDate()).hours(12).format('YYYY-MM-DD');
+      this.itemData.approval_due_date = dateObject.toISODate();
     } else {
       this.itemData.approval_due_date = null;
     }
@@ -335,9 +333,5 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
       }
     }
     return true
-  }
-
-  formateDate(date) {
-    return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
   }
 }

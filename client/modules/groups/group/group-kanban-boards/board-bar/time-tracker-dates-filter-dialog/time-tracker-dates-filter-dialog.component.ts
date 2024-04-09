@@ -45,7 +45,7 @@ export class TimeTrackerDatesFilterDialogComponent implements OnChanges {
   getDate(dateObject: any, property: string) {
     if (property == 'start_date') {
       if (dateObject) {
-        this.startDate = dateObject.toDate();
+        this.startDate = dateObject.toISODate();
       } else {
         this.startDate = null;
       }
@@ -53,13 +53,12 @@ export class TimeTrackerDatesFilterDialogComponent implements OnChanges {
 
     if (property == 'end_date') {
       if (dateObject) {
-        this.endDate = dateObject.toDate();
+        this.endDate = dateObject.toISODate();
       } else {
         this.endDate = null;
       }
     }
-// console.log(dateObject);
-// console.log(dateObject.toDate());
+
     this.closeEvent.emit({
       startDate: this.startDate,
       endDate: this.endDate

@@ -371,14 +371,10 @@ export class ResourcesDetailsDialogComponent implements OnInit {
     this.mdDialogRef.close();
   }
 
-  formateDate(date) {
-    return this.utilityService.formateDate(date, DateTime.DATE_MED);
-  }
-
   formatDates(dates) {
     let newDates = [];
     dates.forEach(date => {
-      newDates.push(this.formateDate(date));
+      newDates.push(this.utilityService.formateDate(date));
     });
     return newDates;
   }

@@ -25,7 +25,7 @@
             <div *ngIf="cf.input_type && cf.input_type_date">
                 <!-- Date Picker starts -->
                 <app-date-picker (date)="getCFDate($event, cf.name, cf.title)"
-                    [selectedDate]="formateDate(selectedCFValues[cf.name])" [styleClass]="'btn-group input-date'"
+                    [selectedDate]="selectedCFValues[cf.name]" [styleClass]="'btn-group input-date'"
                     [canEdit]="canEdit">
                 </app-date-picker>
                 <!--Date Picker ends -->

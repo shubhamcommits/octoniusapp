@@ -261,10 +261,10 @@ export class UserWorkloadCalendarComponent implements OnInit {
 
   calculateNumHolidays(property: string, date) {
     if (property === 'start_date') {
-      this.newHoliday.start_date = DateTime.fromJSDate(date.toDate());
+      this.newHoliday.start_date = date;
     }
     if (property === 'end_date') {
-      this.newHoliday.end_date = DateTime.fromJSDate(date.toDate());
+      this.newHoliday.end_date = date;
     }
 
     if (this.newHoliday.end_date >= this.newHoliday.start_date) {

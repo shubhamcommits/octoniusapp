@@ -1,7 +1,6 @@
 import { Component, OnInit, ElementRef, Injector } from '@angular/core';
 import { SearchService } from 'src/shared/services/search-service/search.service';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
 import { MatDialogRef } from '@angular/material/dialog';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
@@ -341,18 +340,14 @@ export class SearchHeaderComponent implements OnInit {
    */
   getDate(dateObject: any, property: string) {
     if (property == 'from') {
-      this.advancedFilters.from_date = (dateObject) ? dateObject.toDate() : '';
+      this.advancedFilters.from_date = (dateObject) ? dateObject.toISODate() : '';
     }
 
     if (property == 'to') {
-      this.advancedFilters.to_date = (dateObject) ? dateObject.toDate() : '';
+      this.advancedFilters.to_date = (dateObject) ? dateObject.toISODate() : '';
     }
 
     this.search();
-  }
-
-  formateDate(date) {
-    return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
   }
 
   closeSearch() {

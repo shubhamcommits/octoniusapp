@@ -875,7 +875,7 @@ export class GroupPostDialogComponent implements OnInit, AfterViewChecked {
    * @param dateObject
    */
   getCFDate(dateObject: any, cfName: string, cfTitle: string) {
-    this.saveCustomField(cfName, cfTitle, dateObject.toDate());
+    this.saveCustomField(cfName, cfTitle, dateObject.toISODate());
   }
 
   onAssigneeEmitter(itemData: any) {
@@ -932,10 +932,6 @@ export class GroupPostDialogComponent implements OnInit, AfterViewChecked {
     this.title = this.postData.title;
 
     await this.updateDetails('assigned_to');
-  }
-
-  formateDate(date) {
-    return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
   }
 
   objectExists(object: any) {
