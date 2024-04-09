@@ -2,9 +2,8 @@ import { Group, Resource } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError, axios } from '../../utils';
 import { ResourceService } from '../services';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import mongoose from 'mongoose';
-import { resourcesRoutes } from '../routes';
 
 const resourceService = new ResourceService();
 
@@ -50,7 +49,7 @@ export class ResourcesController {
                     _id: resourceId
                 }, {
                     $set: {
-                        "last_updated_date": moment().format()
+                        "last_updated_date": DateTime.now().toISODate()
                     }
                 }, {
                     new: true
@@ -531,7 +530,7 @@ export class ResourcesController {
                 }, {
                     $set: {
                         "custom_fields": resource['custom_fields'],
-                        "last_updated_date": moment().format()
+                        "last_updated_date": DateTime.now().toISODate()
                     }
                 }, {
                     new: true
@@ -598,7 +597,7 @@ export class ResourcesController {
                             _user: newActivity._user,
                             file: newActivity.file,
                             comment: newActivity.comment,
-                            edited_date: moment().format()
+                            edited_date: DateTime.now().toISODate()
                         }
                     }
                 }, {
@@ -612,7 +611,7 @@ export class ResourcesController {
                         "stock": (newActivity.add_inventory)
                             ? resource.stock + newActivity.quantity
                             : resource.stock - newActivity.quantity,
-                        "last_updated_date": moment().format()
+                        "last_updated_date": DateTime.now().toISODate()
                     }
                 }, {
                     new: true
@@ -682,8 +681,8 @@ export class ResourcesController {
                         }, {
                             $set: {
                                 'activity.$[act]._user': editedEntity?._user,
-                                'activity.$[act].edited_date': moment().format(),
-                                "last_updated_date": moment().format()
+                                'activity.$[act].edited_date': DateTime.now().toISODate(),
+                                "last_updated_date": DateTime.now().toISODate()
                             }
                         },
                         {
@@ -736,8 +735,8 @@ export class ResourcesController {
                                 $set: {
                                     'activity.$[act].add_inventory': false,
                                     'activity.$[act]._project': editedEntity?._project,
-                                    'activity.$[act].edited_date': moment().format(),
-                                    "last_updated_date": moment().format()
+                                    'activity.$[act].edited_date': DateTime.now().toISODate(),
+                                    "last_updated_date": DateTime.now().toISODate()
                                 }
                             },
                             {
@@ -800,9 +799,9 @@ export class ResourcesController {
                             }, {
                                 $set: {
                                     'activity.$[act].quantity': editedEntity?.quantity,
-                                    'activity.$[act].edited_date': moment().format(),
+                                    'activity.$[act].edited_date': DateTime.now().toISODate(),
                                     "stock": newBalance,
-                                    "last_updated_date": moment().format()
+                                    "last_updated_date": DateTime.now().toISODate()
                                 }
                             },
                             {
@@ -843,8 +842,8 @@ export class ResourcesController {
                         }, {
                             $set: {
                                 'activity.$[act].date': editedEntity?.date,
-                                'activity.$[act].edited_date': moment().format(),
-                                "last_updated_date": moment().format()
+                                'activity.$[act].edited_date': DateTime.now().toISODate(),
+                                "last_updated_date": DateTime.now().toISODate()
                             }
                         },
                         {
@@ -892,8 +891,8 @@ export class ResourcesController {
                         }, {
                             $set: {
                                 'activity.$[act].comment': editedEntity?.comment,
-                                'activity.$[act].edited_date': moment().format(),
-                                "last_updated_date": moment().format()
+                                'activity.$[act].edited_date': DateTime.now().toISODate(),
+                                "last_updated_date": DateTime.now().toISODate()
                             }
                         },
                         {
@@ -957,9 +956,9 @@ export class ResourcesController {
                                     $set: {
                                         'activity.$[act].add_inventory': editedEntity?.add_inventory,
                                         'activity.$[act]._project': (editedEntity?.add_inventory) ? null : editedEntity._project,
-                                        'activity.$[act].edited_date': moment().format(),
+                                        'activity.$[act].edited_date': DateTime.now().toISODate(),
                                         "stock": newBalance,
-                                        "last_updated_date": moment().format()
+                                        "last_updated_date": DateTime.now().toISODate()
                                     }
                                 },
                                 {
@@ -1043,7 +1042,7 @@ export class ResourcesController {
                             "stock": (activityTmp.add_inventory)
                                 ? resource.stock - activityTmp.quantity
                                 : resource.stock + activityTmp.quantity,
-                            "last_updated_date": moment().format()
+                            "last_updated_date": DateTime.now().toISODate()
                         }
                     }, {
                         new: true

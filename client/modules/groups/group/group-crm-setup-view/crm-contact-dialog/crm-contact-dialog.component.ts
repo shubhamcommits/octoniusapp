@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Inject, Injector, OnInit, Output } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
 import { CRMGroupService } from 'src/shared/services/crm-group-service/crm-group.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
@@ -93,10 +92,6 @@ export class CRMContactDialogComponent implements OnInit {
         }
       });
     }
-  }
-
-  formateDate(date) {
-    return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
   }
 
   closeDialog() {

@@ -1,4 +1,3 @@
-import moment from 'moment/moment';
 import { Component, OnInit, Input, Injector } from '@angular/core';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';

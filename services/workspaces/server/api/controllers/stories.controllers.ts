@@ -1,7 +1,7 @@
 import { sendError } from '../../utils';
 import { Lounge, Story } from '../models';
 import { Request, Response, NextFunction } from 'express';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 
 export class StoriesController {
 
@@ -685,7 +685,7 @@ export class StoriesController {
                 })
             }
             
-            const today = moment().local().add(1, 'days').format('YYYY-MM-DD');
+            const today = DateTime.now().toISODate();
 
             // Find the story
             const stories: any = await Story.find({

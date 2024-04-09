@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
-import moment from 'moment/moment';
 import { PDFDocument, PDFPage, rgb, StandardFonts } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit';
 import { environment } from 'src/environments/environment';
-import { StorageService } from '../storage-service/storage.service';
+import { DateTime } from 'luxon';
+import { UtilityService } from '../utility-service/utility.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApprovalPDFSignaturesService {
 
-  constructor() { }
+  constructor(
+    private utilityService: UtilityService
+  ) { }
 
   async addSignaturePage(fileData: any, pdfDoc: PDFDocument, token: string) {
     //const pdfDoc = await PDFDocument.load(existingPdfBytes);
@@ -253,7 +255,7 @@ export class ApprovalPDFSignaturesService {
     );
 
     page.drawText(
-      'Signed on: ' + moment.utc(approval.approval_date).format("MMM DD, yyyy HH:mm"),
+      'Signed on: ' + this.utilityService.formateDate(DateTime.fromISO(approval.approval_date), "MMM DD, yyyy HH:mm"),
       {
         x: x + 200,
         y: y - 25,
@@ -308,7 +310,7 @@ export class ApprovalPDFSignaturesService {
     histories = histories.filter(h => h.action == action);
     return histories?.sort((a1, a2) => {
       if (a1.approval_date && a2.approval_date) {
-        if (moment.utc(a1.approval_date).isBefore(a2.approval_date)) {
+        if (this.utilityService.isBefore(DateTime.fromISO(a1.approval_date), DateTime.fromISO(a2.approval_date))) {
           return 1;
         } else {
           return -1;

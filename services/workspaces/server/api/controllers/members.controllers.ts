@@ -1,7 +1,7 @@
 import { sendError, axios } from '../../utils';
 import { User, Workspace, Group, Account, Post, Comment, Story } from '../models';
 import { Request, Response, NextFunction } from 'express';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 
 export class MembersControllers {
 
@@ -202,8 +202,8 @@ export class MembersControllers {
 
             numDays = +numDays;
 
-            const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');
-            const today = moment().subtract(1, 'days').endOf('day').format();
+            const comparingDate = DateTime.now().minus({ days: numDays}).toISODate();
+            const today = DateTime.now().endOf('day').toISODate();
 
             let groups = [];
             if (filteringGroups && filteringGroups != 'undefined' && filteringGroups.length > 0) {

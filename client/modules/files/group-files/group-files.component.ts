@@ -16,11 +16,11 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
 import { FileDetailsDialogComponent } from 'src/app/common/shared/file-details-dialog/file-details-dialog.component';
 import { GroupService } from 'src/shared/services/group-service/group.service';
-import moment from 'moment';
 import { pdfExporter } from "quill-to-pdf";
 import { saveAs } from "file-saver";
 import { PDFDocument } from 'pdf-lib';
 import { ApprovalPDFSignaturesService } from 'src/shared/services/approval-pdf-signatures-service/approval-pdf-signatures.service';
+import { DateTime } from 'luxon';
 
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import * as ShareDB from "sharedb/lib/client";
@@ -854,7 +854,7 @@ export class GroupFilesComponent implements OnInit {
     if (this.sortingBit == 'created_date' || this.sortingBit == 'none') {
       this.folders.sort((t1, t2) => {
         if (t1.created_date && t2.created_date) {
-          if (moment.utc(t1.created_date).isBefore(t2.created_date)) {
+          if (this.utilityService.isBefore(DateTime.fromISO(t1.created_date), DateTime.fromISO(t2.created_date))) {
             return this.sortingBit == 'created_date' ? -1 : 1;
           } else {
             return this.sortingBit == 'created_date' ? 1 : -1;
@@ -869,7 +869,7 @@ export class GroupFilesComponent implements OnInit {
       });
       this.files.sort((t1, t2) => {
         if (t1.created_date && t2.created_date) {
-          if (moment.utc(t1.created_date).isBefore(t2.created_date)) {
+          if (this.utilityService.isBefore(DateTime.fromISO(t1.created_date), DateTime.fromISO(t2.created_date))) {
             return this.sortingBit == 'created_date' ? -1 : 1;
           } else {
             return this.sortingBit == 'created_date' ? 1 : -1;
@@ -887,8 +887,8 @@ export class GroupFilesComponent implements OnInit {
         if (this.sortingData?.input_type_date) {
           return (t1?.custom_fields && t2?.custom_fields)
             ? (t1?.custom_fields[this.sortingData.name] && t2?.custom_fields[this.sortingData.name])
-              ?((moment.utc(t1?.custom_fields[this.sortingData.name]).isBefore(t2?.custom_fields[this.sortingData.name]))
-                ? -1 : (moment.utc(t1?.custom_fields[this.sortingData.name]).isAfter(t2?.custom_fields[this.sortingData.name]))
+              ?((this.utilityService.isBefore(DateTime.fromISO(t1?.custom_fields[this.sortingData.name]), DateTime.fromISO(t2?.custom_fields[this.sortingData.name])))
+                ? -1 : (this.utilityService.isBefore(DateTime.fromISO(t2?.custom_fields[this.sortingData.name]), DateTime.fromISO(t1?.custom_fields[this.sortingData.name])))
                   ? 1 : 0)
               : ((t1?.custom_fields[this.sortingData.name] && !t2?.custom_fields[this.sortingData.name])
                 ? -1 : ((!t1?.custom_fields[this.sortingData.name] && t2?.custom_fields[this.sortingData.name]))

@@ -10,7 +10,6 @@ import { PermissionDialogComponent } from 'modules/groups/group/permission-dialo
 
 import * as XLSX from 'xlsx';
 import * as fileSaver from 'file-saver';
-import moment from 'moment';
 import { FilesService } from '../files-service/files.service';
 import { LikedByDialogComponent } from 'src/app/common/shared/liked-by-dialog/liked-by-dialog.component';
 import { GroupPostComponent } from 'src/app/common/shared/activity-feed/group-postbox/group-post/group-post.component';
@@ -819,7 +818,7 @@ export class UtilityService {
     const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
     const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
     const data: Blob = new Blob([excelBuffer], {type: EXCEL_TYPE});
-    fileSaver.saveAs(data, fileName + '_export_' + moment(moment().utc(), "YYYY-MM-DD") + EXCEL_EXTENSION);
+    fileSaver.saveAs(data, fileName + '_export_' + this.formateDate(DateTime.now(), "YYYY-MM-DD") + EXCEL_EXTENSION);
   }
 
   /**

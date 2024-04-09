@@ -1,7 +1,5 @@
 import { Component, OnInit, Injector, OnDestroy  } from '@angular/core';
-import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({

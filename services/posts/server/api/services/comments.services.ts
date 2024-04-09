@@ -1,9 +1,7 @@
 import { Comment, Post, User, Notification, Story, Page } from '../models';
 import http from 'axios';
-import moment from 'moment';
 import followRedirects from 'follow-redirects';
-import { sendErr } from '../utils/sendError';
-import { sendError } from '../utils';
+import { DateTime } from 'luxon';
 
 const fs = require('fs');
 const minio = require('minio');
@@ -40,7 +38,7 @@ const minio = require('minio');
             _story: storyId,
             _page: pageId,
             files: comment.files,
-            created_date: moment().format()
+            created_date: DateTime.now().toISODate()
           };
 
           // Create comment
@@ -59,7 +57,7 @@ const minio = require('minio');
                   comments: newComment._id,
                   "logs": {
                     action: 'commented',
-                    action_date: moment().format(),
+                    action_date: DateTime.now().toISODate(),
                     _actor: userId
                   }
                 },
@@ -399,7 +397,7 @@ const minio = require('minio');
                 $push: {
                   "logs": {
                     action: 'comment_removed',
-                    action_date: moment().format(),
+                    action_date: DateTime.now().toISODate(),
                     _actor: userId
                   }
                 },
@@ -573,7 +571,7 @@ const minio = require('minio');
        */
       getCommentsCount = async (postId, numDays) => {
         try {
-          const comparingDate = moment().local().subtract(+numDays, 'days').format('YYYY-MM-DD');
+          const comparingDate = DateTime.now().minus({days: +numDays }).toISODate();
 
           const numComments = await Comment.find({
             $and: [

@@ -1,5 +1,5 @@
 import http from 'axios';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import { Chat, Group, Message } from '../models';
 
 /*  ===============================
@@ -202,7 +202,7 @@ export class ChatService {
         }, {
           $addToSet: { members: {
             _user: memberId,
-            joined_on: moment().format(),
+            joined_on: DateTime.now().toISODate(),
             is_admin: false
           } }
         }, {
@@ -312,7 +312,7 @@ export class ChatService {
           _id: (newMessage._chat._id || newMessage._chat)
         }, {
           $set: {
-            last_message_on: moment().format()
+            last_message_on: DateTime.now().toISODate()
 
           }
         });

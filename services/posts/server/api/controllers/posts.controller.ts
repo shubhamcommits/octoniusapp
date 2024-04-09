@@ -3,7 +3,6 @@ import { FlowService, PostService, TagsService } from '../services';
 import moment from "moment/moment";
 import { sendErr } from '../utils/sendError';
 import { Post, TimeTrackingEntity } from "../models";
-import http from 'axios';
 
 const ObjectId = require('mongoose').Types.ObjectId;
 

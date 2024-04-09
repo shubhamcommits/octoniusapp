@@ -2,7 +2,7 @@ import { Column, Flow, Group, Post, TimeTrackingEntity, User, Workspace } from '
 import { Response, Request, NextFunction } from 'express';
 import { sendError, axios } from '../../utils';
 import http from 'axios';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import { GroupService } from '../services';
 
 const groupService = new GroupService();
@@ -2263,7 +2263,7 @@ export class GroupController {
                 },
                 $push: {
                     "records.status": {
-                        date: moment().format(),
+                        date: DateTime.now().toISODate(),
                         project_status: status
                     }
                 }
@@ -2291,7 +2291,7 @@ export class GroupController {
             const { groupId } = req.params;
             const { query: { period } } = req;
 
-            const comparingDate = moment().local().subtract(+period, 'days').format('YYYY-MM-DD');
+            const comparingDate = DateTime.now().minus({ days: +period }).toISODate();
 
             // Find the Group based on the groupId
             const numPosts = await Post.find({

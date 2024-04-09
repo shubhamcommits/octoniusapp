@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { File } from '../models';
 import { Flamingo } from '../models';
 import { Question } from '../models';
@@ -228,7 +227,7 @@ export class FlamingoService {
                 $push: {
                     responses: {
                         answers: responses,
-                        created_date: moment().format()
+                        created_date: DateTime.now().toISODate()
                     }
                 }
             },
@@ -249,7 +248,7 @@ export class FlamingoService {
             delete newFlamingo._id;
             delete newFlamingo.responses;
             newFlamingo.publish = false;
-            newFlamingo.created_date = moment().format();
+            newFlamingo.created_date = DateTime.now().toISODate();
 
             // Duplicate questions
             newFlamingo._questions = [];
@@ -259,7 +258,7 @@ export class FlamingoService {
 
                 delete newQuestion._id;
 
-                newQuestion.created_date = moment().format();
+                newQuestion.created_date = DateTime.now().toISODate();
 
                 newQuestion = await Question.create(newQuestion);
                 newFlamingo._questions.push(newQuestion);

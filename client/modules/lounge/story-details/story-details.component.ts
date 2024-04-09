@@ -7,7 +7,6 @@ import { LoungeService } from 'src/shared/services/lounge-service/lounge.service
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { LoungeImageUpdateComponent } from '../lounge-image-update/lounge-image-update.component';
-// import moment from 'moment';
 
 @Component({
   selector: 'app-story-details',
