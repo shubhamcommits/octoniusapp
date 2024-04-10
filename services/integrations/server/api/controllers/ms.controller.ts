@@ -61,18 +61,6 @@ export class MSController {
             if(process.env.NODE_ENV == 'production') {
                 callBackUrl = `${process.env.PROTOCOL}://${process.env.DOMAIN}/dashboard/user/clouds`;
             }
-            
-            const tokenRequest = {
-                code: ms365Code,
-                scopes: OAUTH_SCOPES.split(','),
-                redirectUri: callBackUrl,
-            };
-
-            const response = await req.app.locals.msalClient.acquireTokenByCode(tokenRequest);
-// console.log(response);
-            // Save the user's homeAccountId in their session
-            const userAccountId = response.account.homeAccountId;
-            const token = response.accessToken;
 
             let user;
             if (!req.app.locals.msalClient) {
@@ -87,13 +75,25 @@ export class MSController {
                 msAuthProvider.initMSALClient(req, res, next, workspace?.integrations);
             }
             
+            const tokenRequest = {
+                code: ms365Code,
+                scopes: OAUTH_SCOPES.split(','),
+                redirectUri: callBackUrl,
+            };
+
+            const response = await req.app.locals.msalClient.acquireTokenByCode(tokenRequest);
+// console.log(response);
+            // Save the user's homeAccountId in their session
+            const userAccountId = response.account.homeAccountId;
+            const token = response.accessToken;
+            
             const client = getGraphClientForUser(
                 req.app.locals.msalClient,
                 userAccountId,
             );
 
             // Get the user's profile from Microsoft Graph
-            await client.api('/me').select('displayName, mail').get();
+            // await client.api('/me').select('displayName, mail').get();
 
             const msUser = {
                 token: token,
@@ -107,7 +107,7 @@ export class MSController {
                     $set: {
                         'integrations.ms_365': {
                             token: token,
-                            // subscription_id: subscription._id,
+                            // email_subscription_id: subscription._id,
                             user_account_id: userAccountId,
                             enabled_mail_subscription: false
                         }
@@ -195,7 +195,7 @@ console.log(subscription);
                 }, {
                     $set: {
                         'integrations.ms_365': {
-                            subscription_id: subscription._id,
+                            email_subscription_id: subscription._id,
                             enabled_mail_subscription: true,
                         }
                     }
@@ -242,7 +242,7 @@ console.log(err);
                     _id: userId
                 }).select('integrations _workspace').lean();
             
-            if (!!user.integrations.ms_365.subscription_id) {
+            if (!!user.integrations.ms_365.email_subscription_id) {
                 if (!req.app.locals.msalClient) {
                     const workspace = await Workspace.findById({_id: user._workspace})
                         .select('integrations')
@@ -256,7 +256,7 @@ console.log(err);
                     user.integrations.ms_365.user_account_id,
                 );
                 
-                await client.api(`/subscriptions/${user.integrations.ms_365.subscription_id}`).delete();
+                await client.api(`/subscriptions/${user.integrations.ms_365.email_subscription_id}`).delete();
                 
                 user = await User.findByIdAndUpdate(
                     {
@@ -264,7 +264,7 @@ console.log(err);
                     }, {
                         $set: {
                             'integrations.ms_365': {
-                                subscription_id: '',
+                                email_subscription_id: '',
                                 enabled_mail_subscription: false,
                             }
                         }
@@ -355,7 +355,7 @@ console.log(err);
 
                         const user: any = await User.findOne({
                                 $and: [
-                                    { 'integrations.ms_365.subscription_id': notification.subscriptionId },
+                                    { 'integrations.ms_365.email_subscription_id': notification.subscriptionId },
                                     { active: true }
                                 ]
                             })
@@ -422,7 +422,7 @@ console.log(err);
                     // Verify we have a matching subscription record in the database
                     const user: any = await User.findOne({
                             $and: [
-                                { 'integrations.ms_365.subscription_id': notification.subscriptionId },
+                                { 'integrations.ms_365.email_subscription_id': notification.subscriptionId },
                                 { active: true }
                             ]
                         }).select('integrations');
@@ -554,7 +554,7 @@ console.log(err);
                     _id: userId
                 }).select('integrations _workspace').lean();
 
-            if (!!user.integrations.ms_365.subscription_id) {
+            if (!!user.integrations.ms_365.email_subscription_id) {
                 if (!req.app.locals.msalClient) {
                     const workspace = await Workspace.findById({_id: user._workspace})
                         .select('integrations')
@@ -568,7 +568,7 @@ console.log(err);
                     user.integrations.ms_365.user_account_id,
                 );
                 
-                await client.api(`/subscriptions/${user.integrations.ms_365.subscription_id}`).delete();
+                await client.api(`/subscriptions/${user.integrations.ms_365.email_subscription_id}`).delete();
             }
 
             user = await User.findByIdAndUpdate(
@@ -578,7 +578,7 @@ console.log(err);
                     $set: {
                         'integrations.ms_365': {
                             token: '',
-                            subscription_id: '',
+                            email_subscription_id: '',
                             user_account_id: '',
                             enabled_mail_subscription: false,
                         }

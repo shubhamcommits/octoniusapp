@@ -300,7 +300,7 @@ const UserSchema = new Schema({
                 type: Boolean,
                 default: false
             },
-            subscription_id: {
+            email_subscription_id: {
                 type: String,
                 default: null,
                 unique : true
