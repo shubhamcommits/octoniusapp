@@ -99,26 +99,7 @@ export class MSController {
                 token: token,
                 userAccountId: userAccountId,
             };
-//             // If in production, use the current host to receive notifications
-//             // In development, must use an ngrok proxy
-//             // const notificationHost = process.env.NODE_ENV === 'production' ? `${req.protocol}://${req.hostname}` : process.env.NGROK_PROXY;
-//             const notificationHost = process.env.NODE_ENV === 'production'
-//                 ? `${process.env.PROTOCOL}://${process.env.HOST}/api/ms365`
-//                 : `https://392b-83-52-63-220.ngrok-free.app/api/ms365`;
-//                 // : `${process.env.PROTOCOL}://${process.env.HOST}:${process.env.PORT}/api/ms365`;
-//             // http://localhost:13000/api/ms365/callback
 
-//             // Create the subscription
-//             const subscription = await client.api('/subscriptions').create({
-//                 changeType: 'created',
-//                 notificationUrl: `${notificationHost}/listen`,
-//                 lifecycleNotificationUrl: `${notificationHost}/lifecycle`,
-//                 resource: 'me/mailFolders/inbox/messages',
-//                 clientState: SUBSCRIPTION_CLIENT_STATE,
-//                 includeResourceData: false,
-//                 expirationDateTime: new Date(Date.now() + 3600000).toISOString(),
-//             });
-// console.log(subscription);
             user = await User.findByIdAndUpdate(
                 {
                     _id: userId

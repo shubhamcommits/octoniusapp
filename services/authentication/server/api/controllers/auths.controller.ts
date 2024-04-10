@@ -928,12 +928,12 @@ export class AuthsController {
      * @param next 
      * @returns 
      */
-    isRightAuthToken(req: Request, res: Response, next: NextFunction) {
-        return res.status(200).json({
-                message: 'User is correctly log in.',
-                valid: true
-            });
-    }
+    // isRightAuthToken(req: Request, res: Response, next: NextFunction) {
+    //     return res.status(200).json({
+    //             message: 'User is correctly log in.',
+    //             valid: true
+    //         });
+    // }
 
     /**
      * This function fetches the stripe customer details for the currently loggedIn user
