@@ -9,7 +9,7 @@ const msFunctions = new MSController();
 // Define auths helper controllers
 const auths = new Auths();
 
-routes.get('/auth/:workspaceId', auths.verifyToken, auths.isLoggedIn, msFunctions.authMS365);
+routes.get('/auth', auths.verifyToken, auths.isLoggedIn, msFunctions.authMS365);
 
 routes.get('/token', auths.verifyToken, auths.isLoggedIn, msFunctions.getMS365Token);
 

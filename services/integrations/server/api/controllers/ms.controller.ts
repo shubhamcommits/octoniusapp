@@ -442,10 +442,16 @@ console.log(err);
 
     async authMS365(req, res, next) {
         try {
-            const { params: { workspaceId }} = req;
+            const userId = req['userId'];
 
-            const workspace: any = await Workspace.findById({ _id: workspaceId }).select('integrations').lean();
-
+            // const workspace: any = await Workspace.findById({ _id: workspaceId }).select('integrations').lean();
+            const user = await User.findById({
+                    _id: userId
+                }).select('_workspace').lean();
+            
+            const workspace = await Workspace.findById({_id: user._workspace})
+                .select('integrations')
+                .lean();
             if (!workspace || !workspace.integrations  || !workspace.integrations.is_ms_365_connected || !workspace.integrations.ms_365_client_id || !workspace.integrations.ms_365_client_secret) {
                 return sendError(res, new Error('Unable to find the workspace, or workspace is missing MS365 configuration!'), 'Unable to find the workspace, or workspace is missing MS365 configuration!', 404);
             }

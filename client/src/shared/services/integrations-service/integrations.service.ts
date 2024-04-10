@@ -514,10 +514,10 @@ export class IntegrationsService {
     /**
      * This function opens up the window to signin to google and connect the account
      */
-    async authorizeMS365SignIn(workspaceId: string, redirect_uri?: string) {
+    async authorizeMS365SignIn() {
         return new Promise(async (resolve) => {
             let ms365Service = this.injector.get(MS365CloudService);
-            await ms365Service.authorizeMS365SignIn(workspaceId, redirect_uri)
+            await ms365Service.authorizeMS365SignIn()
               .then((res: any) => resolve(res.authorize_url))
               .catch((err) => resolve(null));
         });
@@ -530,11 +530,9 @@ export class IntegrationsService {
     async handleMS365SignIn(ms365Code: string/*, ms365ClientInfo: string, ms365SessionState: string*/) {
 
       let utilityService = this.injector.get(UtilityService);
+      let storageService = this.injector.get(StorageService);
 
       try {
-        // StorageService Instance
-        let storageService = this.injector.get(StorageService);
-
         // Access token variable
         let token: any = null;
         let userAccountId: any = null;
@@ -573,6 +571,7 @@ export class IntegrationsService {
         // Return ms365 user details
         return ms365User || {};
       } catch(error) {
+        storageService.removeLocalData('connectingMS365');
         utilityService.updateIsLoadingSpinnerSource(false);
       }
     }

@@ -38,12 +38,8 @@ export class MS365CloudService {
     return this._http.get(this.INTEGRATIONS_API_URL + '/ms365/token').toPromise();
   }
 
-  authorizeMS365SignIn(workspaceId: string, redirect_uri?: string) {
-    return this._http.get(this.INTEGRATIONS_API_URL + `/ms365/auth/${workspaceId}`, {
-      params: {
-        redirect_uri: redirect_uri
-      }
-    }).toPromise();
+  authorizeMS365SignIn() {
+    return this._http.get(this.INTEGRATIONS_API_URL + `/ms365/auth/`, {}).toPromise();
   }
 
   /**
