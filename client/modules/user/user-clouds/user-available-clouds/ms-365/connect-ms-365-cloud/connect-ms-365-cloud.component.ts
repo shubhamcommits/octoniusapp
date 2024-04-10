@@ -21,8 +21,8 @@ export class ConnectMS365CloudComponent implements OnInit {
   workspaceData: any;
 
   ms365Code = this.activatedRoute.snapshot.queryParamMap.get("code");
-  ms365ClientInfo = this.activatedRoute.snapshot.queryParamMap.get("client_info");
-  ms365SessionState = this.activatedRoute.snapshot.queryParamMap.get("session_state");
+  // ms365ClientInfo = this.activatedRoute.snapshot.queryParamMap.get("client_info");
+  // ms365SessionState = this.activatedRoute.snapshot.queryParamMap.get("session_state");
 
   // Public Functions
   private publicFunctions = new PublicFunctions(this.injector);
@@ -49,10 +49,11 @@ export class ConnectMS365CloudComponent implements OnInit {
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     this.ms365UserDetails = await this.integrationsService.getCurrentMS365User();
-
-    const connectingMS365 = this.storageService.existData('connectingMS365') ? this.storageService.getLocalData('connectingMS365') : false;
-
-    if (!!this.ms365Code && !!this.ms365ClientInfo && !!this.ms365SessionState && !this.utilityService.objectExists(this.ms365UserDetails) && connectingMS365) {
+const connectingMS365 = this.storageService.existData('connectingMS365') ? this.storageService.getLocalData('connectingMS365') : false;
+    console.log(this.ms365Code);
+    console.log(this.ms365UserDetails);
+    console.log(connectingMS365);
+    if (!!this.ms365Code && !this.utilityService.objectExists(this.ms365UserDetails) && connectingMS365) {
       // Call the handle ms365 signin function
       this.ms365UserDetails = await this.integrationsService.handleMS365SignIn(this.ms365Code/*, this.ms365ClientInfo, this.ms365SessionState*/);
 
