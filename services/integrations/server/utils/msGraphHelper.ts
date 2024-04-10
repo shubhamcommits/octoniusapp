@@ -40,11 +40,11 @@ function getGraphClientForUser(msalClient, userAccountId) {
 
 				if (account) {
 					// Prepare the callback url
-					let callBackUrl = `${process.env.PROTOCOL}://${process.env.HOST}:${process.env.CLIENT_PORT}/dashboard/user/clouds`
+					let callBackUrl = `${process.env.PROTOCOL}://localhost:${process.env.CLIENT_PORT}/dashboard/user/clouds`
 
 					// Check if the env is production
 					if(process.env.NODE_ENV == 'production') {
-						callBackUrl = `${process.env.PROTOCOL}://${process.env.HOST}/dashboard/user/clouds`
+						callBackUrl = `${process.env.PROTOCOL}://${process.env.DOMAIN}/dashboard/user/clouds`
 					}
 					// Attempt to get the token silently
 					// This method uses the token cache and

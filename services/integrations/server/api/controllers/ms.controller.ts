@@ -59,7 +59,7 @@ export class MSController {
             
             // Check if the env is production
             if(process.env.NODE_ENV == 'production') {
-                callBackUrl = `${process.env.PROTOCOL}://${process.env.HOST}/dashboard/user/clouds`;
+                callBackUrl = `${process.env.PROTOCOL}://${process.env.DOMAIN}/dashboard/user/clouds`;
             }
             
             const tokenRequest = {
@@ -471,7 +471,7 @@ console.log(err);
 
             // Check if the env is production
             if(process.env.NODE_ENV == 'production') {
-                callBackUrl = `${process.env.PROTOCOL}://${process.env.HOST}/dashboard/user/clouds`;
+                callBackUrl = `${process.env.PROTOCOL}://${process.env.DOMAIN}/dashboard/user/clouds`;
             }
 
             // Microsoft identity platform redirects the browser here with the
