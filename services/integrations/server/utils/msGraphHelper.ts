@@ -103,12 +103,9 @@ function getGraphClientForApp(msalClient) {
  * Processes an encrypted notification
  * @param  {object} notification - The notification containing encrypted content
  */
-function processEncryptedNotification(notification) {
+function processEncryptedNotification(notification, privateKeyPath) {
 	// Decrypt the symmetric key sent by Microsoft Graph
-	const symmetricKey = decryptSymmetricKey(
-		notification.encryptedContent.dataKey,
-		process.env.PRIVATE_KEY_PATH,
-	);
+	const symmetricKey = decryptSymmetricKey(notification.encryptedContent.dataKey, privateKeyPath);
 
 	// Validate the signature on the encrypted content
 	const isSignatureValid = verifySignature(

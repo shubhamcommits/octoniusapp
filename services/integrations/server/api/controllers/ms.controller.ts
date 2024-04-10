@@ -360,12 +360,16 @@ console.log(err);
                                 ]
                             })
                             .select('integrations')
+                            .populate({
+                                path: '_workspace',
+                                select: 'integrations'
+                            })
                             .lean();
-
+console.log(user._workspace);
                         if (!!user) {
                             // If notification has encrypted content, process that
                             if (notification.encryptedContent) {
-                                processEncryptedNotification(notification);
+                                processEncryptedNotification(notification, user._workspace.ms_365_private_key_path);
                             } else {
                                 await processNotification(
                                     notification,
