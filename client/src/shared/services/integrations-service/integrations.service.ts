@@ -527,7 +527,7 @@ export class IntegrationsService {
      * This function handles the ms365 signin result and connect the account to octonius server
      * @param ms365SignInResult
      */
-    async handleMS365SignIn(ms365Code: string/*, ms365ClientInfo: string, ms365SessionState: string*/) {
+    async handleMS365SignIn(userData: any, ms365Code: string/*, ms365ClientInfo: string, ms365SessionState: string*/) {
 
       let utilityService = this.injector.get(UtilityService);
       let storageService = this.injector.get(StorageService);
@@ -539,7 +539,7 @@ export class IntegrationsService {
         let userData: any = null;
 
         let ms365User = storageService.getLocalData('ms365User');
-        if (!!ms365Code && !utilityService.objectExists(ms365User)) {
+        if (!!ms365Code && !utilityService.objectExists(ms365User) && !userData?.integrations?.ms_365?.user_account_id && !userData?.integrations?.ms_365?.token) {
             // Fetch the Google Drive Token Object
             let tokenResults: any = await this.getMS365DriveTokenFromAuthResult(ms365Code/*, ms365ClientInfo, ms365SessionState, workspaceData?._id*/);
 
@@ -550,8 +550,13 @@ export class IntegrationsService {
             // Update the user details with updated token
             await this.publicFunctions.sendUpdatesToUserData(userData);
         } else {
-            token = ms365User.token;
-            userAccountId = ms365User.userAccountId;
+            if (utilityService.objectExists(ms365User)) {
+                token = ms365User.token;
+                userAccountId = ms365User.userAccountId;
+            } else if (userData?.integrations?.ms_365?.user_account_id && userData?.integrations?.ms_365?.token) {
+                token = userData?.integrations?.ms_365?.token;
+                userAccountId = userData?.integrations?.ms_365?.user_account_id;
+            }
         }
 
         if (!!token && !!userAccountId) {
