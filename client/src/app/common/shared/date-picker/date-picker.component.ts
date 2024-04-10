@@ -83,6 +83,7 @@ export class DatePickerComponent implements OnChanges {
    * @param dateObject
    */
   emitDate(dateObject: any) {
+    this.value = this.datesService.formateDate(dateObject.value.toDate());
     // Emit the date to the other components
     this.date.emit(DateTime.fromJSDate(dateObject.value.toDate()))
   }
