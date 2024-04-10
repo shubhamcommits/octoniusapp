@@ -82,7 +82,7 @@ console.log(connectingMS365);
           // Open up the SignIn Window in order to authorize the ms365 user
           let ms365SignInUrl: any = await this.integrationsService.authorizeMS365SignIn();
 
-          if (ms365SignInUrl && !this.userData?.integrations?.ms_365?.user_account_id && !this.userData?.integrations?.ms_365?.token) {
+          if (ms365SignInUrl/* && !this.userData?.integrations?.ms_365?.user_account_id && !this.userData?.integrations?.ms_365?.token*/) {
             window.location.href = ms365SignInUrl;
           } else {
             console.log("error: no url returned")
