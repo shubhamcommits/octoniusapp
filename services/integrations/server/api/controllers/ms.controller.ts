@@ -80,18 +80,17 @@ export class MSController {
                 scopes: OAUTH_SCOPES.split(','),
                 redirectUri: callBackUrl,
             };
-
+console.log({tokenRequest});
             const response = await req.app.locals.msalClient.acquireTokenByCode(tokenRequest);
-// console.log(response);
-            // Save the user's homeAccountId in their session
+console.log({response});
+// Save the user's homeAccountId in their session
             const userAccountId = response.account.homeAccountId;
             const token = response.accessToken;
-            
             const client = getGraphClientForUser(
                 req.app.locals.msalClient,
                 userAccountId,
             );
-
+console.log({client});
             // Get the user's profile from Microsoft Graph
             // await client.api('/me').select('displayName, mail').get();
 
@@ -99,7 +98,7 @@ export class MSController {
                 token: token,
                 userAccountId: userAccountId,
             };
-
+console.log({msUser});
             user = await User.findByIdAndUpdate(
                 {
                     _id: userId
@@ -451,23 +450,6 @@ console.log(err);
                 return sendError(res, new Error('Unable to find the workspace, or workspace is missing MS365 configuration!'), 'Unable to find the workspace, or workspace is missing MS365 configuration!', 404);
             }
 
-            // const msalConfig = {
-            //     auth: {
-            //         clientId: workspace?.integrations?.ms_365_client_id,
-            //         authority: `${workspace?.integrations?.ms_365_authority}/${workspace?.integrations?.ms_365_tenant_id}`,
-            //         clientSecret: workspace?.integrations?.ms_365_client_secret,
-            //     },
-            //     system: {
-            //         loggerOptions: {
-            //             loggerCallback(logLevel, message, containsPii) {
-            //                 console.log(message);
-            //             },
-            //             piiLoggingEnabled: false,
-            //             logLevel: msal.LogLevel.Error,
-            //         },
-            //     },
-            // };
-            // const msalInstance = msAuthProvider.getMsalInstance(req, msalConfig);
             const msalInstance = msAuthProvider.initMSALClient(req, res, next, workspace?.integrations);
 
             // Prepare the callback url
