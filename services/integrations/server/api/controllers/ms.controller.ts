@@ -1,5 +1,5 @@
 import e, { Response, Request, NextFunction } from "express";
-import { Auths, OAUTH_SCOPES, SUBSCRIPTION_CLIENT_STATE, processEncryptedNotification, processNotification, isTokenValid, sendError, renewSubscription } from '../../utils';
+import { OAUTH_SCOPES, SUBSCRIPTION_CLIENT_STATE, processEncryptedNotification, processNotification, isTokenValid, sendError, renewSubscription } from '../../utils';
 
 const msal = require('@azure/msal-node');
 import { getGraphClientForUser } from "../../utils";

@@ -144,7 +144,7 @@ export class ColumnService {
     const column = {
       columnId: columnId,
       startDate: DateTime.fromISO(startDate).toISODate(),
-      dueDate: DateTime.fromISO(dueDate).toISOString()
+      dueDate: DateTime.fromISO(dueDate).toISODate()
     };
 
     return this._http.put(this.baseUrl + `/columns/${columnId}/saveColumnProjectDates`, column).toPromise();

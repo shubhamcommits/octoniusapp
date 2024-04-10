@@ -254,7 +254,7 @@ export class TaskTimeTrackingComponent implements OnChanges {
    */
   getDate(dateObject: any) {
     const oldDate = this.entryDate;
-    this.entryDate = dateObject.toISOString() || null;
+    this.entryDate = dateObject.toISODate() || null;
     if (!!this.entryId && this.isValidEntry() && !this.isSameDay(this.entryDate, oldDate)) {
       this.saveEntry('date');
     }

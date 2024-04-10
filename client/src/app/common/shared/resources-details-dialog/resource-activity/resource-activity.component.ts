@@ -211,7 +211,7 @@ export class ResourceActivityComponent implements OnChanges {
    */
   getDate(dateObject: any) {
     const oldDate = this.activityDate;
-    this.activityDate = dateObject.toISOString() || null;
+    this.activityDate = dateObject.toISODate() || null;
     if (!!this.activityDate && this.isValidEntry() && !this.isSameDay(this.activityDate, oldDate)) {
       this.saveEntry('date');
     }

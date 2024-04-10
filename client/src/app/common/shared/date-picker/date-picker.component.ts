@@ -3,8 +3,6 @@ import { NG_VALUE_ACCESSOR} from '@angular/forms';
 import { MAT_DATE_FORMATS, DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { DateTime } from 'luxon';
-// tslint:disable-next-line:no-duplicate-imports
-import {default as _rollupMoment} from 'moment';
 import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 // const moment = _rollupMoment || _moment;
@@ -60,7 +58,7 @@ export class DatePickerComponent implements OnChanges {
   constructor(private datesService: DatesService) { }
 
   ngOnChanges() {
-    this._value = this.formateDate(this.selectedDate);
+    this._value = this.datesService.formateDate(this.selectedDate);
   }
 
   // Control Value Accessors for ngModel
@@ -96,28 +94,12 @@ export class DatePickerComponent implements OnChanges {
   myDateFilter = (d:Date): boolean => {
     if (!!this.upperLimit && DateTime.fromISO(this.upperLimit).isvalid) {
       //checking for the upper bound -> i.e start_date can not greate than due_date.
-      return this.isBefore(d, this.upperLimit);
+      return this.datesService.isBefore(d, this.upperLimit);
     } else if (!!this.lowerLimit && DateTime.fromISO(this.lowerLimit).isvalid) {
       //checking for the lower bound -> i.e due_date can not smaller than start_date.
-      return this.isBefore(d, this.lowerLimit);
+      return this.datesService.isBefore(d, this.lowerLimit);
     } else {
       return true;
     }
-  }
-
-  isBefore(day1: any, day2: any) {
-    if (!!day1 && !!day2) {
-      if (day1 instanceof DateTime && day2 instanceof DateTime) {
-        return day1.startOf('day').toMillis() < day2.startOf('day').toMillis();
-      } else {
-        return DateTime.fromISO(day1).startOf('day').toMillis() > DateTime.fromISO(day2).startOf('day').toMillis();
-      }
-    } else if ((!day1 && !!day2) || (!!day1 && !day2) || (!day1 && !day2)) {
-      return false;
-    }
-  }
-
-  formateDate(date: any) {
-    return this.datesService.formateDate(date);
   }
 }

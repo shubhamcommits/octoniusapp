@@ -277,7 +277,7 @@ export class ProjectBudgetDialogComponent implements OnInit {
    * @param dateObject
    */
   getDate(dateObject: any) {
-    this.expense.date = dateObject.toISOString() || null;
+    this.expense.date = dateObject.toISODate() || null;
   }
 
   isValidEntry() {

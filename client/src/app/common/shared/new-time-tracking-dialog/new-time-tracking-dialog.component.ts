@@ -178,7 +178,7 @@ export class NewTimeTrackingDialogComponent implements OnInit {
    * @param dateObject
    */
   getDate(dateObject: any) {
-    this.entryDate = dateObject.toISOString() || null;
+    this.entryDate = dateObject.toISODate() || null;
   }
 
   getTime(timeObject: any) {
