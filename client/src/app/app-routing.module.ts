@@ -64,16 +64,6 @@ const routes: Routes = [
       canActivate: [AuthenticationGuard, FlamingoGuard]
   },
 
-  // 'office' ROUTE - LAZY LOAD THE FLAMINGO MODULE
-  /*
-  {
-    path: 'document/office',
-    loadChildren: () => import('modules/office/office.module')
-      .then((module) => module.OfficeModule),
-      canActivate: [AuthenticationGuard]
-  },
-  */
-
   // 'chat'
   {
     path: 'videoChat',

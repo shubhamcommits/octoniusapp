@@ -227,6 +227,9 @@ const workspaceSchema = new Schema({
         ms_365_private_key_path: {
             type: String
         },
+        ms_365_online_host: {
+            type: String
+        },
         is_atlassia_connected: {
             type: Boolean,
             default: false

@@ -177,22 +177,11 @@ export class SearchResultsComponent implements OnChanges {
     return environment.UTILITIES_FILES_UPLOADS + '/' + this.workspaceId + '/' + this.data.modified_name + '?authToken=Bearer ' + this.storageService.getLocalData('authToken')['token'];
   }
 
-  getFileExtension(fileName: string) {
-    let file = fileName.split(".");
-    let fileType = file[file.length-1].toLowerCase();
-    if (fileType == 'mp4') {
-      fileType = 'mov';
-    }
-    return fileType;
-  }
-
   isOfficeFile(fileName: string) {
-    const officeExtensions = ['ott', 'odm', 'doc', 'docx', 'xls', 'xlsx', 'ods', 'ots', 'odt', 'xst', 'odg', 'otg', 'odp', 'ppt', 'pptx', 'otp', 'pot', 'odf', 'odc', 'odb'];
-    const fileExtension = this.getFileExtension(fileName);
-    return officeExtensions.includes(fileExtension);
+    return this.publicFunctions.isOfficeFile(fileName);
   }
 
-  async openOfficeDoc(fileId: string) {
+  async openOfficeDoc(file: any) {
     let workspaceId = '';
     if (this.data._workspace && this.data._workspace._id) {
       workspaceId = this.data._workspace._id;
@@ -200,7 +189,8 @@ export class SearchResultsComponent implements OnChanges {
       const workspace: any = await this.publicFunctions.getCurrentWorkspace();
       workspaceId = workspace._id;
     }
-    window.open(await this.publicFunctions.getLibreOfficeURL(fileId, workspaceId), "_blank");
+
+    window.open(await this.publicFunctions.getLibreOfficeURL(file, workspaceId), "_blank");
   }
 
   openFullscreenModal(userId: string) {

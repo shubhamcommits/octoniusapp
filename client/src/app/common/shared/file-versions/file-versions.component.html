@@ -21,7 +21,7 @@
     </a>
 
     <a *ngIf="(file?.type == 'file' && isOfficeFile(file?.original_name)) || file?.type === 'campaign'"
-        (click)="openOfficeDoc(file?._id)" class="mt-0" style="cursor: pointer;">
+        (click)="openOfficeDoc(file)" class="mt-0" style="cursor: pointer;">
       <img [src]="getFileIcon(file?.original_name)"
         onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
       <span i18n="@@fileVersions.version">Version</span>

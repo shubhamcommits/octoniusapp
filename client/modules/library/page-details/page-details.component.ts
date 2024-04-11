@@ -6,10 +6,8 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { MatDialog } from '@angular/material/dialog';
 import { LibraryService } from 'src/shared/services/library-service/library.service';
 import { FilesService } from 'src/shared/services/files-service/files.service';
-import { LibreofficeService } from 'src/shared/services/libreoffice-service/libreoffice.service';
 import { environment } from 'src/environments/environment';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
-import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 
 @Component({
   selector: 'app-page-details',
@@ -320,8 +318,8 @@ export class PageDetailsComponent implements OnInit {
     // Start the loading spinner
     this.utilityService.updateIsLoadingSpinnerSource(true);
 
-    if (this.isOfficeFile(file?.original_name)) {
-      window.open(await this.publicFunctions.getLibreOfficeURL(file?._id, this.workspaceData?._id), "_blank");
+    if (this.publicFunctions.isOfficeFile(file?.original_name)) {
+      window.open(await this.publicFunctions.getLibreOfficeURL(file, this.workspaceData?._id), "_blank");
     } else {
       this.filesService.getMinioFile(file?._id, file?.modified_name, this.workspaceData?._id, this.authToken).then(res =>{
         window.open(res['url'], "_blank");
@@ -351,25 +349,6 @@ export class PageDetailsComponent implements OnInit {
           }));
         }
       });
-  }
-
-  isOfficeFile(fileName: string) {
-    const officeExtensions = ['ott', 'odm', 'doc', 'docx', 'xls', 'xlsx', 'ods', 'ots', 'odt', 'xst', 'odg', 'otg', 'odp', 'ppt', 'pptx', 'otp', 'pot', 'odf', 'odc', 'odb'];
-    const fileExtension = this.getFileExtension(fileName);
-    return officeExtensions.includes(fileExtension);
-  }
-
-  getFileExtension(fileName: string) {
-    let fileType = '';
-    if (fileName) {
-      let file = fileName?.split(".");
-      fileType = file[file.length-1].toLowerCase();
-      if (fileType == 'mp4') {
-        fileType = 'mov';
-      }
-    }
-    
-    return fileType;
   }
 
   canEditAction() {

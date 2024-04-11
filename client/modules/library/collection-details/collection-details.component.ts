@@ -307,8 +307,8 @@ export class CollectionDetailsComponent implements OnInit {
     // Start the loading spinner
     this.utilityService.updateIsLoadingSpinnerSource(true);
 
-    if (this.isOfficeFile(file?.original_name)) {
-      window.open(await this.publicFunctions.getLibreOfficeURL(file?._id, this.workspaceData?._id), "_blank");
+    if (this.publicFunctions.isOfficeFile(file?.original_name)) {
+      window.open(await this.publicFunctions.getLibreOfficeURL(file, this.workspaceData?._id), "_blank");
     } else {
       this.filesService.getMinioFile(file?._id, file?.modified_name, this.workspaceData?._id, this.authToken).then(res =>{
         window.open(res['url'], "_blank");
@@ -520,26 +520,7 @@ export class CollectionDetailsComponent implements OnInit {
    * @param fileName - Name of the file to obtain the icon img
    */
   getFileIcon(fileName: string) {
-    return "assets/images/" + this.getFileExtension(fileName) + "-file-icon.png";
-  }
-
-  getFileExtension(fileName: string) {
-    let fileType = '';
-    if (fileName) {
-      let file = fileName?.split(".");
-      fileType = file[file.length-1].toLowerCase();
-      if (fileType == 'mp4') {
-        fileType = 'mov';
-      }
-    }
-    
-    return fileType;
-  }
-
-  isOfficeFile(fileName: string) {
-    const officeExtensions = ['ott', 'odm', 'doc', 'docx', 'xls', 'xlsx', 'ods', 'ots', 'odt', 'xst', 'odg', 'otg', 'odp', 'ppt', 'pptx', 'otp', 'pot', 'odf', 'odc', 'odb'];
-    const fileExtension = this.getFileExtension(fileName);
-    return officeExtensions.includes(fileExtension);
+    return "assets/images/" + this.publicFunctions.getFileExtension(fileName) + "-file-icon.png";
   }
 
   objectExists(object: any) {

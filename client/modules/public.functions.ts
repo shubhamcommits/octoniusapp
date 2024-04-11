@@ -2438,42 +2438,63 @@ export class PublicFunctions {
       } else if (file?.type == 'file') {
         const lastFileVersion: any = await utilityService.getFileLastVersion(file?._id);
         if (this.isOfficeFile(lastFileVersion?.original_name)) {
-          url = await this.getLibreOfficeURL(lastFileVersion?._id, workspaceId);
+          url = await this.getLibreOfficeURL(lastFileVersion, workspaceId);
         } else {
           await filesService.getMinioFile(file?._id, file?.modified_name, workspaceId, storageService.getLocalData("authToken")["token"])
             .then(async res =>{
               url = res['url'];
             })
-            .catch(error => {
-console.log(error);
-            });
+            .catch(error => console.log(error));
         }
       }
 
       return url;
     }
 
-    async getLibreOfficeURL(fileId: string, workspaceId: string) {
+    async getLibreOfficeURL(file: any, workspaceId: string) {
       let utilityService = this.injector.get(UtilityService);
       let libreofficeService = this.injector.get(LibreofficeService);
       let storageService = this.injector.get(StorageService);
       // wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
+      const fileExt = this.getFileExtension(file.original_name);
+      const fileId = file._id;
       let wopiClientURL = '';
       await libreofficeService.getLibreofficeUrl().then(res => {
-          wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}/${workspaceId}?access_token=${storageService.getLocalData("authToken")["token"]}`;
+          if (res['url']) {
+            wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}/${workspaceId}?access_token=${storageService.getLocalData("authToken")["token"]}`;
+          } else if (res['data']) {
+            const actions: {[key: string]: [[string, string]]} = res['data'];
+            if (actions[fileExt]) {
+              for (let [key, [name, action]] of Object.entries(actions[fileExt])) {
+                if (name !== 'editnew') {
+                  const btn = document.createElement('button');
+                  btn.type = 'submit';
+                  btn.innerText = name;
+
+                  const token = sessionStorage.getItem('token');
+                  const userName = sessionStorage.getItem('userName');
+                  const wopiServer = sessionStorage.getItem('wopiServer');
+                  // const ttl = userName === 'UserB' ? Date.now() + 12000000 : Date.now() + 300000;
+                  const ttl = 0;
+
+                  wopiClientURL = `${action}${action.endsWith('?') ? '' : '&'}WOPISrc=${encodeURIComponent(`${wopiServer}/wopi/files/${fileId}`)}&access_token=${token}|${userName}&access_token_ttl=${ttl}`;
+                }
+              }
+            }
+          }
         }).catch(error => {
           utilityService.errorNotification($localize`:@@publicFunctions.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
         });
       return wopiClientURL;
     }
 
-    private isOfficeFile(fileName: string) {
+    isOfficeFile(fileName: string) {
       const officeExtensions = ['ott', 'odm', 'doc', 'docx', 'xls', 'xlsx', 'ods', 'ots', 'odt', 'xst', 'odg', 'otg', 'odp', 'ppt', 'pptx', 'otp', 'pot', 'odf', 'odc', 'odb'];
       const fileExtension = this.getFileExtension(fileName);
       return officeExtensions.includes(fileExtension);
     }
 
-    private getFileExtension(fileName: string) {
+    getFileExtension(fileName: string) {
       let fileType = '';
       if (fileName) {
         let file = fileName?.split(".");

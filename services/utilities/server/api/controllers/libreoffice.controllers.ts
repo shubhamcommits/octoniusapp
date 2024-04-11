@@ -4,6 +4,8 @@ import { FilesService } from "../services";
 import { User } from "../models";
 import { DateTime } from 'luxon';
 
+import { Element, xml2js } from 'xml-js';
+
 let http = require('http');
 let https = require('https');
 let Dom = require('xmldom').DOMParser;
@@ -20,43 +22,97 @@ export class LibreofficeControllers {
 
     async libreofficeUrl(req, res) {
         try {
-            let libreofficeOnlineHost = process.env.LIBREOFFICE_SERVER;
-            let httpClient = libreofficeOnlineHost.startsWith('https') ? https : http;
+            const userId = req['userId'];
+            const user: any = await User.findOne({ _id: userId })
+                .select('_workspace')
+                .populate({
+                    path: '_workspace',
+                    select: 'integrations'
+                })
+                .lean();
+
+            const useMS365 = (user._workspace.integrations.is_ms_365_connected && !!user._workspace.integrations.ms_365_online_host);
+
+            let onlineHost = (useMS365) ? user._workspace.integrations.ms_365_online_host : process.env.LIBREOFFICE_SERVER;
+            let httpClient = onlineHost.startsWith('https') ? https : http;
             let data = '';
-            let request = httpClient.get(libreofficeOnlineHost + '/hosting/discovery', (response) => {
+            let request = httpClient.get(onlineHost + '/hosting/discovery', (response) => {
+                // the whole response has been received, so respond
+                response.on('end', function() {
+                    res.json({
+                        url: data,
+                    });
+                });
+
+                
                 response.on('data', (chunk) => { data += chunk.toString(); });
                 response.on('end', () => {
-                    let err;
-                    if (response.statusCode !== 200) {
-                        err = 'Request failed. Satus Code: ' + response.statusCode;
-                        response.resume();
-                        console.log(err)
-                        return sendError(res, new Error(err), err, response.statusCode);
-                    }
-                    if (!response.complete) {
-                        err = 'No able to retrieve the discovery.xml file from the Libreoffice Online server with the submitted address.';
-                        console.log(err);
-                        return sendError(res, new Error(err), err, 404);
-                    }
-                    let doc = new Dom().parseFromString(data);
-                    if (!doc) {
-                        err = 'The retrieved discovery.xml file is not a valid XML file'
-                        console.log(err);
-                        return sendError(res, new Error(err), err, 404);
-                    }
-                    let mimeType = 'text/plain';
-                    let nodes = xpath.select("/wopi-discovery/net-zone/app[@name='" + mimeType + "']/action", doc);
-                    if (!nodes || nodes.length !== 1) {
-                        err = 'The requested mime type is not handled'
-                        console.log(err);
-                        return sendError(res, new Error(err), err, 404);
-                    }
+                    if (useMS365) {
+                        let str = '';
+                        const dataFromXml = xml2js(str, { compact: false }) as Element;
+                        const data: {[key: string]: [[string, string]]} = {};
+                        const implemented = process.env.WOPI_IMPLEMENTED?.split(',');
 
-                    let onlineUrl = nodes[0].getAttribute('urlsrc');
-                    onlineUrl = onlineUrl.replace("http:", "https:");
-                    res.json({
-                        url: onlineUrl,
-                    });
+                        dataFromXml.elements?.find((el: Element) => el.name === 'wopi-discovery')
+                            ?.elements?.find((el: Element) => el.name === 'net-zone')
+                                ?.elements?.forEach((el: Element) => {
+                                    el.elements?.forEach((el: Element) => {
+                                        if (el.attributes?.name && typeof(el.attributes?.name) === 'string') {
+                                            if (implemented?.includes(el.attributes.name)) {
+                                                const name = el.attributes.name;
+                                                const splitUrl: string[] = (el.attributes.urlsrc)?.toString().split('?') ?? [];
+                                                const queryParams = splitUrl[1].replace(/<.*>/, '').replace(/&$/, '');
+
+                                                if (el.attributes?.ext) {
+                                                    if (!Object.prototype.hasOwnProperty.call(data, el.attributes?.ext)) {
+                                                        data[el.attributes.ext] = [[name, `${splitUrl[0]}?${queryParams}`]];
+                                                    } else {
+                                                        data[el.attributes.ext].push([name, `${splitUrl[0]}?${queryParams}`]);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    });
+                            });
+
+                        res.json({
+                            data: data,
+                        });
+                        
+                    } else {
+                        let err;
+                        if (response.statusCode !== 200) {
+                            err = 'Request failed. Satus Code: ' + response.statusCode;
+                            response.resume();
+                            console.log(err)
+                            return sendError(res, new Error(err), err, response.statusCode);
+                        }
+                        if (!response.complete) {
+                            err = 'No able to retrieve the discovery.xml file from the Libreoffice Online server with the submitted address.';
+                            console.log(err);
+                            return sendError(res, new Error(err), err, 404);
+                        }
+                        let doc = new Dom().parseFromString(data);
+                        if (!doc) {
+                            err = 'The retrieved discovery.xml file is not a valid XML file'
+                            console.log(err);
+                            return sendError(res, new Error(err), err, 404);
+                        }
+                        let mimeType = 'text/plain';
+                        let nodes = xpath.select("/wopi-discovery/net-zone/app[@name='" + mimeType + "']/action", doc);
+                        if (!nodes || nodes.length !== 1) {
+                            err = 'The requested mime type is not handled'
+                            console.log(err);
+                            return sendError(res, new Error(err), err, 404);
+                        }
+                        
+                        let onlineUrl = nodes[0].getAttribute('urlsrc');
+                        onlineUrl = onlineUrl.replace("http:", "https:");
+
+                        res.json({
+                            url: onlineUrl,
+                        });
+                    }
                 });
                 response.on('error', function(err) {
                     console.log('Request error: ' + err.message);

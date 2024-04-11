@@ -87,29 +87,18 @@ export class FileVersionsComponent implements OnInit {
    * @param fileName - Name of the file to obtain the icon img
    */
   getFileIcon(fileName: string) {
-    return "assets/images/" + this.getFileExtension(fileName) + "-file-icon.png";
-  }
-
-  getFileExtension(fileName: string) {
-    let file = fileName.split(".");
-    let fileType = file[file.length-1].toLowerCase();
-    if (fileType == 'mp4') {
-      fileType = 'mov';
-    }
-    return fileType;
+    return "assets/images/" + this.publicFunctions.getFileExtension(fileName) + "-file-icon.png";
   }
 
   isOfficeFile(fileName: string) {
-    const officeExtensions = ['ott', 'odm', 'doc', 'docx', 'xls', 'xlsx', 'ods', 'ots', 'odt', 'xst', 'odg', 'otg', 'odp', 'ppt', 'pptx', 'otp', 'pot', 'odf', 'odc', 'odb'];
-    const fileExtension = this.getFileExtension(fileName);
-    return officeExtensions.includes(fileExtension);
+    return this.publicFunctions.isOfficeFile(fileName);
   }
 
-  async openOfficeDoc(fileId: string) {
+  async openOfficeDoc(file: any) {
     // Start the loading spinner
     this.utilityService.updateIsLoadingSpinnerSource(true);
 
-    window.open(await this.publicFunctions.getLibreOfficeURL(fileId, this.groupData?._workspace?._id), "_blank");
+    window.open(await this.publicFunctions.getLibreOfficeURL(file, this.groupData?._workspace?._id), "_blank");
 
     this.utilityService.updateIsLoadingSpinnerSource(false);
   }
