@@ -38,9 +38,9 @@ routes.post('/add-file', asyncHandler(copyFile));
 routes.get('/fileNames', asyncHandler(getFileNames));
 routes.get('/discovery', asyncHandler(getDiscoveryInfo));
 
-routes.route('/files/:file_id/contents').get(asyncHandler(getFile)).post(asyncHandler(putFile));
-routes.route('/files/:file_id').get(asyncHandler(checkFileInfo)).post(asyncHandler(handleHeaders));
-routes.route('/containers/*').all((req: Request, res: Response, next: NextFunction) => res.sendStatus(501));
-routes.route('/ecosystem/*').all((req: Request, res: Response, next: NextFunction) => res.sendStatus(501));
+routes.route('/wopi/files/:file_id/contents').get(asyncHandler(getFile)).post(asyncHandler(putFile));
+routes.route('/wopi/files/:file_id').get(asyncHandler(checkFileInfo)).post(asyncHandler(handleHeaders));
+routes.route('/wopi/containers/*').all((req: Request, res: Response, next: NextFunction) => res.sendStatus(501));
+routes.route('/wopi/ecosystem/*').all((req: Request, res: Response, next: NextFunction) => res.sendStatus(501));
 
 export { routes as msRoutes };
