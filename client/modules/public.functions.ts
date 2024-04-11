@@ -2494,7 +2494,7 @@ console.log({res});
             utilityService.errorNotification($localize`:@@publicFunctions.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
           });
       } else {
-        await libreofficeService.getLibreofficeUrl().then(res => {
+        await libreofficeService.getLibreofficeWOPIUrl().then(res => {
 console.log({res});
             if (res['url']) {
               wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}/${workspaceId}?access_token=${storageService.getLocalData("authToken")["token"]}`;
