@@ -116,17 +116,16 @@ async function getWopiMethods(onlineHost: string, useMS365: boolean): Promise<an
                 }
                 let mimeType = 'text/plain';
                 let nodes = xpath.select("/wopi-discovery/net-zone/app[@name='" + mimeType + "']/action", doc);
-                if (!nodes || nodes.length !== 1) {
+console.log({nodes});
+console.log(nodes[0]);
+                if (!!nodes && !!nodes[0]) {
+                  resolve(nodes[0].getAttribute('urlsrc').replace("http:", "https:"));
+                } else {
                     err = 'The requested mime type is not handled'
                     console.log(err);
                     reject(new Error(err));
                     // return sendError(res, new Error(err), err, 404);
                 }
-                
-                let onlineUrl = nodes[0].getAttribute('urlsrc');
-                onlineUrl = onlineUrl.replace("http:", "https:");
-
-                resolve(onlineUrl);
             }
         });
 
