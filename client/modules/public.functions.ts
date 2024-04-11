@@ -2495,7 +2495,6 @@ console.log({res});
           });
       } else {
         await libreofficeService.getLibreofficeWOPIUrl().then(res => {
-console.log({res});
             if (res['url']) {
               wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}/${workspaceId}?access_token=${storageService.getLocalData("authToken")["token"]}`;
             }
