@@ -2,7 +2,7 @@ import { flamingoFileHandler } from "./flamingo.filehandler";
 import { groupFileHandler, groupFileUploader, groupFileDelete, groupsFilesHandler, minioFileHandler, folioFileDelete } from "./group.filehandler";
 import { postFileHandler } from "./post.filehandler";
 import { userFileHandler } from "./user.filehandler";
-import { utilitiesFileHandler } from "./utilities.filehandler";
+import { getWopiMethods, utilitiesFileHandler } from "./utilities.filehandler";
 import { workspaceFileHandler } from "./workspace.filehandler";
 
 /*  =========================
@@ -15,6 +15,7 @@ export {
   userFileHandler as userFileHandler,
   workspaceFileHandler as workspaceFileHandler,
   flamingoFileHandler as flamingoFileHandler,
+  getWopiMethods as getWopiMethods,
   groupsFilesHandler as groupsFilesHandler,
   groupFileDelete as groupFileDelete,
   groupFileUploader as groupFileUploader,
