@@ -172,10 +172,9 @@ console.log(err);
             // In development, must use an ngrok proxy
             // const notificationHost = process.env.NODE_ENV === 'production' ? `${req.protocol}://${req.hostname}` : process.env.NGROK_PROXY;
             const notificationHost = process.env.NODE_ENV === 'production'
-                ? `${process.env.PROTOCOL}://${process.env.HOST}/api/ms365`
+                ? `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/ms365`
                 : `https://392b-83-52-63-220.ngrok-free.app/api/ms365`;
-                // : `${process.env.PROTOCOL}://${process.env.HOST}:${process.env.PORT}/api/ms365`;
-            // http://localhost:13000/api/ms365/callback
+                // : `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.PORT}/api/ms365`;
 
             // Create the subscription
             const subscription = await client.api('/subscriptions').create({
