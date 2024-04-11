@@ -85,4 +85,8 @@ export class MS365CloudService {
   public updateMS365UserDataService(ms365UserData: any){
     this.ms365UserDataSource.next(ms365UserData);
   }
+
+  getOfficeWOPIUrl() {
+    return this._http.get(this.INTEGRATIONS_API_URL + '/libreoffice/libreofficeUrl').toPromise();
+  }
 }

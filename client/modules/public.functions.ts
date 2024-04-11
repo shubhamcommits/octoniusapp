@@ -26,6 +26,7 @@ import { SearchService } from 'src/shared/services/search-service/search.service
 import { LibreofficeService } from 'src/shared/services/libreoffice-service/libreoffice.service';
 import { DateTime } from 'luxon';
 import { DatesService } from 'src/shared/services/dates-service/dates.service';
+import { MS365CloudService } from './user/user-clouds/user-available-clouds/ms-365/services/ms-365-cloud.service';
 
 @Injectable({
   providedIn: 'root'
@@ -2454,38 +2455,55 @@ export class PublicFunctions {
     async getLibreOfficeURL(file: any, workspaceId: string) {
       let utilityService = this.injector.get(UtilityService);
       let libreofficeService = this.injector.get(LibreofficeService);
+      let ms365CloudService = this.injector.get(MS365CloudService);
       let storageService = this.injector.get(StorageService);
+
+      const workspaceData = await this.getCurrentWorkspace();
+
       // wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
       const fileExt = this.getFileExtension(file.original_name);
       const fileId = file._id;
       let wopiClientURL = '';
-      await libreofficeService.getLibreofficeUrl().then(res => {
+
+      const useMS365 = (workspaceData.integrations.is_ms_365_connected && !!workspaceData.integrations.ms_365_online_host);
+
+      if (useMS365) {
+        await ms365CloudService.getOfficeWOPIUrl().then(res => {
 console.log({res});
-          if (res['url']) {
-            wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}/${workspaceId}?access_token=${storageService.getLocalData("authToken")["token"]}`;
-          } else if (res['msData']) {
-            const actions: {[key: string]: [[string, string]]} = res['data'];
-            if (actions[fileExt]) {
-              for (let [key, [name, action]] of Object.entries(actions[fileExt])) {
-                if (name !== 'editnew') {
-                  const btn = document.createElement('button');
-                  btn.type = 'submit';
-                  btn.innerText = name;
+            if (res['msData']) {
+              const actions: {[key: string]: [[string, string]]} = res['data'];
+              if (actions[fileExt]) {
+                for (let [key, [name, action]] of Object.entries(actions[fileExt])) {
+                  if (name !== 'editnew') {
+                    const btn = document.createElement('button');
+                    btn.type = 'submit';
+                    btn.innerText = name;
 
-                  const token = sessionStorage.getItem('token');
-                  const userName = sessionStorage.getItem('userName');
-                  const wopiServer = sessionStorage.getItem('wopiServer');
-                  // const ttl = userName === 'UserB' ? Date.now() + 12000000 : Date.now() + 300000;
-                  const ttl = 0;
+                    const token = sessionStorage.getItem('token');
+                    const userName = sessionStorage.getItem('userName');
+                    const wopiServer = sessionStorage.getItem('wopiServer');
+                    // const ttl = userName === 'UserB' ? Date.now() + 12000000 : Date.now() + 300000;
+                    const ttl = 0;
 
-                  wopiClientURL = `${action}${action.endsWith('?') ? '' : '&'}WOPISrc=${encodeURIComponent(`${wopiServer}/wopi/files/${fileId}`)}&access_token=${token}|${userName}&access_token_ttl=${ttl}`;
+                    wopiClientURL = `${action}${action.endsWith('?') ? '' : '&'}WOPISrc=${encodeURIComponent(`${wopiServer}/wopi/files/${fileId}`)}&access_token=${token}|${userName}&access_token_ttl=${ttl}`;
+                  }
                 }
               }
             }
-          }
-        }).catch(error => {
-          utilityService.errorNotification($localize`:@@publicFunctions.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
-        });
+          }).catch(error => {
+            utilityService.errorNotification($localize`:@@publicFunctions.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
+          });
+      } else {
+        await libreofficeService.getLibreofficeUrl().then(res => {
+console.log({res});
+            if (res['url']) {
+              wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}/${workspaceId}?access_token=${storageService.getLocalData("authToken")["token"]}`;
+            }
+          }).catch(error => {
+            utilityService.errorNotification($localize`:@@publicFunctions.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
+          });
+      }
+
       return wopiClientURL;
     }
 
