@@ -61,7 +61,7 @@ async function getWopiMethods(onlineHost: string, useMS365: boolean): Promise<an
             if (useMS365) {
                 let str = '';
                 const dataFromXml = xml2js(str, { compact: false }) as Element;
-                const data: {[key: string]: [[string, string]]} = {};
+                const msData: {[key: string]: [[string, string]]} = {};
                 const implemented = process.env.WOPI_IMPLEMENTED?.split(',');
 
                 dataFromXml.elements?.find((el: Element) => el.name === 'wopi-discovery')
@@ -75,10 +75,10 @@ async function getWopiMethods(onlineHost: string, useMS365: boolean): Promise<an
                                         const queryParams = splitUrl[1].replace(/<.*>/, '').replace(/&$/, '');
 
                                         if (el.attributes?.ext) {
-                                            if (!Object.prototype.hasOwnProperty.call(data, el.attributes?.ext)) {
-                                                data[el.attributes.ext] = [[name, `${splitUrl[0]}?${queryParams}`]];
+                                            if (!Object.prototype.hasOwnProperty.call(msData, el.attributes?.ext)) {
+                                                msData[el.attributes.ext] = [[name, `${splitUrl[0]}?${queryParams}`]];
                                             } else {
-                                                data[el.attributes.ext].push([name, `${splitUrl[0]}?${queryParams}`]);
+                                                msData[el.attributes.ext].push([name, `${splitUrl[0]}?${queryParams}`]);
                                             }
                                         }
                                     }
@@ -86,7 +86,7 @@ async function getWopiMethods(onlineHost: string, useMS365: boolean): Promise<an
                             });
                     });
 
-                resolve(data);
+                resolve(msData);
 
                 // res.json({
                 //     data: data,

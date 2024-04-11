@@ -2463,7 +2463,7 @@ export class PublicFunctions {
 console.log({res});
           if (res['url']) {
             wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}/${workspaceId}?access_token=${storageService.getLocalData("authToken")["token"]}`;
-          } else if (res['data']) {
+          } else if (res['msData']) {
             const actions: {[key: string]: [[string, string]]} = res['data'];
             if (actions[fileExt]) {
               for (let [key, [name, action]] of Object.entries(actions[fileExt])) {

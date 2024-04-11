@@ -1,13 +1,14 @@
+import { Response, Request, NextFunction } from "express";
 import { Auths } from '../../utils/auths';
 import { sendError } from "../../utils/senderror";
 import { FilesService } from "../services";
 import { User } from "../models";
-import { DateTime } from 'luxon';
-import { extname } from 'path';
-import { getWopiMethods } from '../../utils/filehandlers';
+import moment from "moment";
 
 let http = require('http');
 let https = require('https');
+let Dom = require('xmldom').DOMParser;
+let xpath = require('xpath');
 const fs = require('fs');
 const path = require('path');
 const minio = require('minio');
@@ -20,19 +21,49 @@ export class LibreofficeControllers {
 
     async libreofficeUrl(req, res) {
         try {
-            const userId = req['userId'];
-            const user: any = await User.findOne({ _id: userId })
-                .select('_workspace')
-                .populate({
-                    path: '_workspace',
-                    select: 'integrations'
-                })
-                .lean();
+            let libreofficeOnlineHost = process.env.LIBREOFFICE_SERVER;
+            let httpClient = libreofficeOnlineHost.startsWith('https') ? https : http;
+            let data = '';
+            let request = httpClient.get(libreofficeOnlineHost + '/hosting/discovery', (response) => {
+                response.on('data', (chunk) => { data += chunk.toString(); });
+                response.on('end', () => {
+                    let err;
+                    if (response.statusCode !== 200) {
+                        err = 'Request failed. Satus Code: ' + response.statusCode;
+                        response.resume();
+                        console.log(err)
+                        return sendError(res, new Error(err), err, response.statusCode);
+                    }
+                    if (!response.complete) {
+                        err = 'No able to retrieve the discovery.xml file from the Libreoffice Online server with the submitted address.';
+                        console.log(err);
+                        return sendError(res, new Error(err), err, 404);
+                    }
+                    let doc = new Dom().parseFromString(data);
+                    if (!doc) {
+                        err = 'The retrieved discovery.xml file is not a valid XML file'
+                        console.log(err);
+                        return sendError(res, new Error(err), err, 404);
+                    }
+                    let mimeType = 'text/plain';
+                    let nodes = xpath.select("/wopi-discovery/net-zone/app[@name='" + mimeType + "']/action", doc);
+                    if (!nodes || nodes.length !== 1) {
+                        err = 'The requested mime type is not handled'
+                        console.log(err);
+                        return sendError(res, new Error(err), err, 404);
+                    }
 
-            const useMS365 = (user._workspace.integrations.is_ms_365_connected && !!user._workspace.integrations.ms_365_online_host);
-            let onlineHost = (useMS365) ? user._workspace.integrations.ms_365_online_host : process.env.LIBREOFFICE_SERVER;
-            
-            res.json(await getWopiMethods(onlineHost, useMS365));
+                    let onlineUrl = nodes[0].getAttribute('urlsrc');
+                    onlineUrl = onlineUrl.replace("http:", "https:");
+                    res.json({
+                        url: onlineUrl,
+                    });
+                });
+                response.on('error', function(err) {
+                    console.log('Request error: ' + err.message);
+                    return sendError(res, err, 'Request error: ' + err.message, 404);
+                });
+            });
         } catch(err) {
             return sendError(res, new Error(err), 'Bad Request, please check into error stack!', 400);
         }
@@ -68,7 +99,7 @@ export class LibreofficeControllers {
             if (fileVersions && fileVersions.length > 0) {
                 fileVersions?.sort((f1, f2) => {
                     if (f1.created_date && f2.created_date) {
-                        if (DateTime.fromISO(f1.created_date).startOf('day').toMillis() < DateTime.fromISO(f2.created_date).startOf('day').toMillis()) {
+                        if (moment.utc(f1.created_date).isBefore(f2.created_date)) {
                             return 1;
                         } else {
                             return -1;
@@ -91,83 +122,29 @@ export class LibreofficeControllers {
             }
 
             // calculate if user can edit file based on RAD
-            const user: any = await User.findOne({ _id: userId })
-                .select('_workspace')
-                .populate({
-                    path: '_workspace',
-                    select: 'integrations'
-                })
-                .lean();
-
+            const user = await User.findById({ _id: userId }).lean();
             let canEdit;
             if (fileLastVersion._parent || fileLastVersion?._id == fileId) {
                 canEdit = await authsHelper.canUserEditFileAction(fileLastVersion, user, fileId);
             } else {
                 canEdit = false;
             }
-
-            let fileInfo = {};
-            if (user._workspace.integrations.is_ms_365_connected && !!user._workspace.integrations.ms_365_online_host) {
-                const actionUrls = (await getWopiMethods(user._workspace.integrations.ms_365_online_host, true))[extname(fileLastVersion.original_name).replace('.', '')];
-                const editUrl = actionUrls?.find((x: string[]) => x[0] === 'edit')[1];
-                const viewUrl = actionUrls?.find((x: string[]) => x[0] === 'view')[1];
-                const wopiServer = user._workspace.integrations.ms_365_online_host;
-                const query = Object.entries(req.query).reduce(
-                    (accumulator, [key, value]) => {
-                    const q = key === 'access_token_ttl' ? 'access_token_ttl=0&' : `${key}=${value}&`;
-
-                    return accumulator + q;
-                    }, '') + `WOPISrc=${encodeURIComponent(wopiServer + req.originalUrl.split('?')[0])}`;
-                const hostEditUrl = `${editUrl}${editUrl?.endsWith('?') ? '' : '&'}${query}`;
-                const hostViewUrl = `${viewUrl}${viewUrl?.endsWith('?') ? '' : '&'}${query}`;
-
-                fileInfo = {
-                    AllowExternalMarketplace: true,
-                    BaseFileName: fileLastVersion.original_name,
-                    BreadcrumbBrandName: 'LocalStorage WOPI Host',
-                    BreadcrumbBrandUrl: wopiServer,
-                    BreadcrumbDocName: fileLastVersion.original_name,
-                    BreadcrumbFolderName: 'WopiStorage',
-                    BreadcrumbFolderUrl: wopiServer,
-                    HostEditUrl: `${wopiServer}?action_url=${encodeURIComponent(hostEditUrl)}`,
-                    HostViewUrl: `${wopiServer}?action_url=${encodeURIComponent(hostViewUrl)}`,
-                    // LastModifiedTime: new Date(fileStats.mtime).toISOString(),
-                    OwnerId: user.first_name + ' ' + user.last_name,
-                    ReadOnly: !canEdit,
-                    // Size: fileStats.size,
-                    SupportsCoauth: true,
-                    SupportsCobalt: false,
-                    SupportsDeleteFile: true,
-                    SupportsExtendedLockLength: true,
-                    SupportsGetLock: true,
-                    SupportsLocks: true,
-                    SupportsRename: true,
-                    SupportsUpdate: true,
-                    UserCanRename: true,
-                    UserCanWrite: true,
-                    UserFriendlyName: user.first_name + ' ' + user.last_name,
-                    UserId: user.first_name + ' ' + user.last_name,
-                    // Version: fileStats.mtimeMs.toString(),
-                }
-            } else {
-                fileInfo = {
-                    BaseFileName: fileLastVersion.original_name,
-                    OwnerId: fileLastVersion?._posted_by?._id || fileLastVersion?._posted_by,
-                    UserId: user._id || '',
-                    UserFriendlyName: user.first_name + ' ' + user.last_name,
-                    UserExtraInfo: {
-                        avatar: process.env.UTILITIES_USERS_UPLOADS + '/' + req.params.workspaceId + '/' + user.profile_pic + '?noAuth=true',
-                        mail: user.email
-                    },
-                    UserCanWrite: canEdit,
-                    UserCanNotWriteRelative: true, // to show Save As button
-                    HidePrintOption: true,
-                    DisableExport: true,
-                    SupportsUpdate: true,
-                };
-            }
             
-            return res.json(fileInfo);
+            return res.json({
+                BaseFileName: fileLastVersion.original_name,
+                OwnerId: fileLastVersion?._posted_by?._id || fileLastVersion?._posted_by,
+                UserId: user._id || '',
+                UserFriendlyName: user.first_name + ' ' + user.last_name,
+                UserExtraInfo: {
+                    avatar: process.env.UTILITIES_USERS_UPLOADS + '/' + req.params.workspaceId + '/' + user.profile_pic + '?noAuth=true',
+                    mail: user.email
+                },
+                UserCanWrite: canEdit,
+                UserCanNotWriteRelative: true, // to show Save As button
+                HidePrintOption: true,
+                DisableExport: true,
+                SupportsUpdate: true,
+            });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
