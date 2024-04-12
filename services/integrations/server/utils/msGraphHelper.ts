@@ -1,5 +1,3 @@
-import { MSAuthProvider } from "../api/service/msAuth.service";
-
 const jwt = require('jsonwebtoken');
 const jwksClient = require('jwks-rsa');
 const graph = require('@microsoft/microsoft-graph-client');
@@ -8,13 +6,11 @@ const fs = require('fs');
 const path = require('path');
 
 const OAUTH_SCOPES = 'user.read,mail.read,Files.ReadWrite.All';
-const SUBSCRIPTION_CLIENT_STATE = '';
+const SUBSCRIPTION_CLIENT_STATE = 'oCtOnIuScLiEnTsTaTefoRvAlIdAtIoN';
 
 const client = jwksClient({
   jwksUri: 'https://login.microsoftonline.com/common/discovery/v2.0/keys',
 });
-
-const msAuthProvider = new MSAuthProvider();
 
 /**
  * Gets a Graph client configured to use delegated auth
