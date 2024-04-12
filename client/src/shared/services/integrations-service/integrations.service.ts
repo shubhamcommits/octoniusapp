@@ -536,7 +536,6 @@ export class IntegrationsService {
         // Access token variable
         let token: any = null;
         let userAccountId: any = null;
-        let userData: any = null;
 
         let ms365User = storageService.getLocalData('ms365User');
         if (!!ms365Code && !utilityService.objectExists(ms365User) && !userData?.integrations?.ms_365?.user_account_id && !userData?.integrations?.ms_365?.token) {

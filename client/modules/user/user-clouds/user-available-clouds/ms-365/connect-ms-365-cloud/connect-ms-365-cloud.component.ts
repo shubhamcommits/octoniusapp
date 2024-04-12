@@ -84,7 +84,7 @@ console.log(connectingMS365);
 
           if (ms365SignInUrl && !this.userData?.integrations?.ms_365?.user_account_id && !this.userData?.integrations?.ms_365?.token) {
             window.location.href = ms365SignInUrl;
-          } else if (this.userData?.integrations?.ms_365?.user_account_id && this.userData?.integrations?.ms_365?.token) {
+          } else if (!!this.userData?.integrations?.ms_365?.user_account_id && !!this.userData?.integrations?.ms_365?.token) {
             this.ms365UserDetails = await this.integrationsService.handleMS365SignIn(this.userData, this.ms365Code/*, this.ms365ClientInfo, this.ms365SessionState*/);
 
             // Emit MS365 User details to parent components
