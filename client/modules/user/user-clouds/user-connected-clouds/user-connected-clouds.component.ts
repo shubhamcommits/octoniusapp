@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Injector, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
@@ -8,7 +8,7 @@ import { UserService } from 'src/shared/services/user-service/user.service';
   templateUrl: './user-connected-clouds.component.html',
   styleUrls: ['./user-connected-clouds.component.scss']
 })
-export class UserConnectedCloudsComponent implements OnInit {
+export class UserConnectedCloudsComponent implements OnInit, OnChanges {
 
   @Input() googleUser: any;
   @Input() boxUser: any;
@@ -31,6 +31,10 @@ export class UserConnectedCloudsComponent implements OnInit {
   async ngOnInit() {
     this.userData = await this.publicFunctions.getCurrentUser();
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+  }
+
+  async ngOnChanges(changes: SimpleChanges) {
+console.log(changes);
   }
 
   async onMS365Disconnected($event) {

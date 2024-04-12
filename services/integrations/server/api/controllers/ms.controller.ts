@@ -154,7 +154,7 @@ console.log(err);
                 {
                     _id: userId
                 }).select('_workspace integrations').lean();
-            
+console.log(req.app.locals.msalClient);
             if (!req.app.locals.msalClient) {
                 const workspace = await Workspace.findById({_id: user._workspace})
                     .select('integrations')
@@ -162,12 +162,12 @@ console.log(err);
 
                 msAuthProvider.initMSALClient(req, res, next, workspace?.integrations);
             }
-            
+console.log(req.app.locals.msalClient);
             const client = getGraphClientForUser(
                 req.app.locals.msalClient,
                 user.integrations.ms_365.user_account_id,
             );
-
+console.log(client);
             // If in production, use the current host to receive notifications
             // In development, must use an ngrok proxy
             // const notificationHost = process.env.NODE_ENV === 'production' ? `${req.protocol}://${req.hostname}` : process.env.NGROK_PROXY;
@@ -175,7 +175,7 @@ console.log(err);
                 ? `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/ms365`
                 : `https://392b-83-52-63-220.ngrok-free.app/api/ms365`;
                 // : `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.PORT}/api/ms365`;
-
+console.log({notificationHost});
             // Create the subscription
             const subscription = await client.api('/subscriptions').create({
                 changeType: 'created',
