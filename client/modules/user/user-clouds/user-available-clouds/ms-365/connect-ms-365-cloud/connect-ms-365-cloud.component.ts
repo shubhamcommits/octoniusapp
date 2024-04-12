@@ -49,14 +49,15 @@ export class ConnectMS365CloudComponent implements OnInit {
     this.ms365UserDetails = await this.integrationsService.getCurrentMS365User();
     const connectingMS365 = this.storageService.existData('connectingMS365') ? this.storageService.getLocalData('connectingMS365') : false;
     this.userData = await this.publicFunctions.getCurrentUser();
+
+    if (!!this.ms365Code && !this.utilityService.objectExists(this.ms365UserDetails) && connectingMS365) {
 console.log(this.userData);
 console.log(this.ms365Code);
 console.log(this.ms365UserDetails);
 console.log(connectingMS365);
-    if (!!this.ms365Code && !this.utilityService.objectExists(this.ms365UserDetails) && connectingMS365) {
       // Call the handle ms365 signin function
       this.ms365UserDetails = await this.integrationsService.handleMS365SignIn(this.userData, this.ms365Code/*, this.ms365ClientInfo, this.ms365SessionState*/);
-
+console.log(this.ms365UserDetails);
       // Emit MS365 User details to parent components
       this.ms365User.emit(this.ms365UserDetails);
     } else {
