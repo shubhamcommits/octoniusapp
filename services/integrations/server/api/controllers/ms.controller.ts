@@ -172,16 +172,18 @@ console.log(client);
             // In development, must use an ngrok proxy
             // const notificationHost = process.env.NODE_ENV === 'production' ? `${req.protocol}://${req.hostname}` : process.env.NGROK_PROXY;
             const notificationHost = process.env.NODE_ENV === 'production'
-                ? `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/integrations/ms365`
-                : `https://392b-83-52-63-220.ngrok-free.app/api/ms365`;
+                ? `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/ms365`
+                : `https://c49e-83-52-63-220.ngrok-free.app/api/ms365`;
                 // : `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.PORT}/api/ms365`;
 console.log({notificationHost});
             // Create the subscription
             const subscription = await client.api('/subscriptions').create({
+            // const subscription = await client.api('/subscriptions').post({
                 changeType: 'created',
                 notificationUrl: `${notificationHost}/listen`,
                 lifecycleNotificationUrl: `${notificationHost}/lifecycle`,
-                resource: 'me/mailFolders/inbox/messages',
+                // resource: 'me/mailFolders/inbox/messages',
+                resource: 'me/mailFolders(\'Inbox\')/messages',
                 clientState: SUBSCRIPTION_CLIENT_STATE,
                 includeResourceData: false,
                 expirationDateTime: new Date(Date.now() + 3600000).toISOString(),
@@ -319,9 +321,12 @@ console.log(err);
      */
     async listenWebhook(req, res, next) {
         try {
+console.log("00000", req.body);
             if (req.query && req.query.validationToken) {
+console.log("11111", req.query);
                 res.set('Content-Type', 'text/plain');
                 res.send(req.query.validationToken);
+                res.status(200).end();
                 return;
             }
             console.log(JSON.stringify(req.body, null, 2));
@@ -380,7 +385,7 @@ console.log(user._workspace);
                 }
             }
 
-            res.status(202).end();
+            return res.status(202).end();
         } catch (err) {
 console.log(err);
             return sendError(res, err);
@@ -404,9 +409,12 @@ console.log(err);
      */
     async lifecycleWebhook(req, res, next) {
         try {
+console.log("00000", req.query);
             if (req.query && req.query.validationToken) {
+console.log("11111");
                 res.set('Content-Type', 'text/plain');
                 res.send(req.query.validationToken);
+                res.status(200).end();
                 return;
             }
 
