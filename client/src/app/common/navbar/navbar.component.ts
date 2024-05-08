@@ -156,6 +156,18 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         await this.integrationsService.handleGoogleSignIn()
       }, 1800000);
     }
+
+    window['Appcues'].identify(
+      this.userData?._id, // unique, required
+      {
+        createdAt: this.userData?.created_date,
+        role: this.userData?.role,
+        firstName: this.userData?.first_name,
+        companyName: this.userData?.company_name,
+        workSpaceName: this.userData?.workspace_name,
+        email: this.userData?.email
+      }
+    );
   }
 
   ngAfterViewInit() {
