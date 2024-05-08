@@ -2,7 +2,6 @@ import { sendError } from '../../utils';
 import { Request, Response, NextFunction } from 'express';
 import { Entity, Holiday, User, Notification } from '../models';
 import { Readable } from 'stream';
-import moment from 'moment';
 import { DateTime } from 'luxon';
 
 export class HRControllers {
@@ -25,7 +24,7 @@ export class HRControllers {
                     name: entityName,
                     _workspace: workspaceId,
                     _posted_by: req['userId'],
-                    created_date: moment().format()
+                    created_date: DateTime.now().toISODate()
                 });
 
             // Send the status 200 response 
@@ -771,8 +770,8 @@ export class HRControllers {
         try {
             const { params: { workspaceId } } = req;
 
-            const from = moment().startOf('week');
-            const to = moment().endOf('week');
+            const from = DateTime.now().startOf('week').toISODate();
+            const to = DateTime.now().endOf('week').toISODate();
 
             const holidays = await Holiday.find({
                     $and: [

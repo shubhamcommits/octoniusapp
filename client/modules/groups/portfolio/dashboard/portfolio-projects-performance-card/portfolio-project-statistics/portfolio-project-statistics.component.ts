@@ -1,6 +1,6 @@
 import { Component, Injector, Input, OnChanges, OnInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 
 @Component({
@@ -37,6 +37,7 @@ export class PortfolioProjectStatisticsComponent implements OnChanges {
 
   constructor(
     private postService: PostService,
+    private datesService: DatesService,
     private injector: Injector
     ) { }
 
@@ -107,7 +108,6 @@ export class PortfolioProjectStatisticsComponent implements OnChanges {
     const percentageDone = (this.task_count + this.overdue_task_count > 0) ? ((this.done_task_count*100)/(this.task_count + this.overdue_task_count)) : 0;
     this.completitionPercentage = Math.round(percentageDone);
 
-    //this.project.estimation_due_date = moment(Math.max(...tasks.map(post => moment(post.task.due_to))));
     const allTasks = tasks.concat(overdueTasks);
     this.project.estimation_due_date = (allTasks && allTasks.length > 0) ? this.publicFunctions.getHighestDate(allTasks) : this.project?.due_date;
 
@@ -163,6 +163,6 @@ export class PortfolioProjectStatisticsComponent implements OnChanges {
   }
 
   formateDate(date: any, format: string) {
-    return date ? moment.utc(date).format(format) : '';
+    return this.datesService.formateDate(date, format);
   }
 }

@@ -37,7 +37,6 @@ const utilitiesFileHandler = async (req: Request, res: Response, next: NextFunct
   } catch (err) {
     return sendError(res, err, 'Internal Server Error!', 500);
   }
-
 }
 
 export { utilitiesFileHandler }

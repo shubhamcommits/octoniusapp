@@ -11,7 +11,7 @@ export class LibreofficeService {
 
   baseUrl = environment.UTILITIES_BASE_API_URL;
 
-  getLibreofficeUrl() {
+  getLibreofficeWOPIUrl() {
     return this._http.get(this.baseUrl + '/libreoffice/libreofficeUrl').toPromise();
   }
 }

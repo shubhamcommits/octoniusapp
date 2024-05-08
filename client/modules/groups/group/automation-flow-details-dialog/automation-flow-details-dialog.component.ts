@@ -2,10 +2,8 @@ import { Component, OnInit, Inject, Output, EventEmitter, OnDestroy, Injector } 
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
-import { environment } from 'src/environments/environment';
 import { SubSink } from 'subsink';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
 
 @Component({
   selector: 'app-automation-flow-details-dialog',
@@ -371,9 +369,5 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
 
   getActionDueDateIndex(dueDateValue: string) {
     return this.dueDateActionOptions.findIndex(dd => dd.type == dueDateValue);
-  }
-
-  formateDate(date){
-    return moment(moment.utc(date), "YYYY-MM-DD").toDate();
   }
 }

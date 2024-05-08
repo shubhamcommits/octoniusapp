@@ -1,0 +1,22 @@
+<div class="card-tile">
+    <div class="card-title">
+        <h2 class="float-left">
+            <strong i18n="@@ms365AccountDetails.ms365">MS365</strong>
+        </h2>
+        <button class="btn btn-danger" (click)="disconnectMS365Account()" i18n="@@ms365AccountDetails.disconect">Disconnect</button>
+    </div>
+    <div class="user-sticky-card media mt-4">
+        <hr>
+        <!-- <img class="mr-3 feed-avatar" src="{{ms365User?.user?.avatar_url}}"
+            onerror="this.src='/assets/images/user.png'"> -->
+        <div class="media-body">
+            <div *ngIf="!!userData">
+                <mat-slide-toggle color="primary" [checked]="userData?.integrations?.ms_365?.enabled_mail_subscription" [name]="'enabled_mail_subscription'"
+                    (change)="subscribeToEmail($event)" [(ngModel)]="userData.integrations.ms_365.enabled_mail_subscription">
+                    <h6><b i18n="@@ms365AccountDetails.enableMailSubscription">Enable Mail Subscription</b></h6>
+                    <p class="card-text" i18n="@@ms365AccountDetails.enableMailSubscriptionDesc"></p>
+                </mat-slide-toggle>
+            </div>
+        </div>
+    </div>
+</div>

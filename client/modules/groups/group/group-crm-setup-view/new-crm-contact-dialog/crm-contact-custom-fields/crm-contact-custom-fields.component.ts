@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Injector, Input, OnChanges, Output } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
 import { CRMGroupService } from 'src/shared/services/crm-group-service/crm-group.service';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
@@ -28,7 +28,8 @@ export class CRMContactCustomFieldsComponent implements OnChanges {
   constructor(
     private crmGroupService: CRMGroupService,
 		private utilityService: UtilityService,
-    	private injector: Injector,
+		private datesService: DatesService,
+    private injector: Injector,
   ) { }
 
   async ngOnChanges(): Promise<void> {
@@ -107,7 +108,7 @@ export class CRMContactCustomFieldsComponent implements OnChanges {
    * @param dateObject
    */
   getCFDate(dateObject: any, cfName: string, cfTitle: string) {
-    this.saveCustomField(cfName, cfTitle, dateObject.toDate());
+    this.saveCustomField(cfName, cfTitle, dateObject.toISODate());
   }
 
   saveCustomField(customFieldName: string, customFieldTitle: string, customFieldValue: string) {
@@ -118,6 +119,7 @@ export class CRMContactCustomFieldsComponent implements OnChanges {
   }
 
   formateDate(date) {
-    return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
+    return this.datesService.formateDate(date);
+    // return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
   }
 }

@@ -2,7 +2,7 @@ import { Response, Request, NextFunction } from "express";
 import { sendError } from "../senderror";
 import { File, Flamingo } from '../../api/models';
 import { Readable } from 'stream';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 
 const minio = require('minio');
 
@@ -69,7 +69,7 @@ const groupsFilesHandler = async (req: Request, res: Response, next: NextFunctio
       if (fileVersions && fileVersions.length > 0) {
         fileVersions?.sort((f1, f2) => {
           if (f1.created_date && f2.created_date) {
-            if (moment.utc(f1.created_date).isBefore(f2.created_date)) {
+            if (DateTime.fromISO(f1.created_date).startOf('day').toMillis() < DateTime.fromISO(f2.created_date).startOf('day').toMillis()) {
               return 1;
             } else {
               return -1;

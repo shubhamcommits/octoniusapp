@@ -1,5 +1,5 @@
-import moment from "moment";
 import { Column } from "../models";
+import { DateTime } from 'luxon';
 
 /*  ===============================
  *  -- Resource Service --
@@ -15,7 +15,7 @@ export class ResourceService {
           'budget.expenses': {
             amount: activity.quantity * resource.unit_price,
             reason: activity.comment,
-            date: moment().format(),
+            date: DateTime.now().toISODate(),
             _user: activity._user,
             _resource: resource._id,
             _resource_activity: activity._id,

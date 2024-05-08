@@ -2,7 +2,6 @@ import { Page, File, Collection, Comment, User } from "../models";
 import { Readable } from 'stream';
 import { axios } from '../../utils';
 import { DateTime } from 'luxon';
-import moment from "moment";
 import got from "got";
 
 const { convertHtmlToDelta } = require('node-quill-converter');
@@ -240,7 +239,7 @@ export class LibraryService {
               _members: [userId],
               _created_by: (user) ? user?._id : userId,
               content: this.htmlToDelta(space?.body?.view?.value),
-              created_date: moment().format()
+              created_date: DateTime.now().toISODate()
             });
 
             await this.exportSpaceConfluencePages(domain, space?.id, email, userId, collection?._id, workspaceId, groupId);
@@ -326,7 +325,7 @@ export class LibraryService {
               content: this.htmlToDelta(comment?.body?.view?.value),
               _commented_by: (user) ? user?._id : userId,
               _page: pageId,
-              created_date: moment().format()
+              created_date: DateTime.now().toISODate()
             });
 
             if (comment.children && comment.children.attachment && comment.children.attachment.results) {

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OfficeHeaderComponent } from './office-header.component';
+import { ConnectMS365CloudComponent } from './connect-ms-365-cloud.component';
 
-describe('OfficeHeaderComponent', () => {
-  let component: OfficeHeaderComponent;
-  let fixture: ComponentFixture<OfficeHeaderComponent>;
+describe('ConnectMS365CloudComponent', () => {
+  let component: ConnectMS365CloudComponent;
+  let fixture: ComponentFixture<ConnectMS365CloudComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OfficeHeaderComponent ]
+      declarations: [ ConnectMS365CloudComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OfficeHeaderComponent);
+    fixture = TestBed.createComponent(ConnectMS365CloudComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

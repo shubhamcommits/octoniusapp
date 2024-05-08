@@ -48,7 +48,7 @@ routes.get('/all-workspaces-integrations', auth.getAllWorkspacesIntegrations);
 routes.get('/allowed-workspaces', auth.getAllowedWorkspacesByDomain);
 
 // GET - Check if the user is corretly signin and using the right token
-routes.get('/right-token', authsHelper.verifyToken, authsHelper.isLoggedIn, auth.isRightAuthToken);
+// routes.get('/right-token', authsHelper.verifyToken, authsHelper.isLoggedIn, auth.isRightAuthToken);
 
 // GET - get subscription products
 routes.get('/billing/get-subscription-products', auth.getSubscriptionProducts);

@@ -1,4 +1,4 @@
-import { Injectable, EventEmitter, Injector, LOCALE_ID } from '@angular/core';
+import { Injectable, EventEmitter, Injector } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
@@ -10,13 +10,13 @@ import { PermissionDialogComponent } from 'modules/groups/group/permission-dialo
 
 import * as XLSX from 'xlsx';
 import * as fileSaver from 'file-saver';
-import moment from 'moment';
 import { FilesService } from '../files-service/files.service';
 import { LikedByDialogComponent } from 'src/app/common/shared/liked-by-dialog/liked-by-dialog.component';
 import { GroupPostComponent } from 'src/app/common/shared/activity-feed/group-postbox/group-post/group-post.component';
 import { PublicFunctions } from 'modules/public.functions';
 import { VideoCallDialog } from 'modules/chat/components/video-call-dialog/video-call-dialog.component';
 import { DateTime } from 'luxon';
+import { DatesService } from '../dates-service/dates.service';
 
 @Injectable({
   providedIn: 'root'
@@ -819,7 +819,8 @@ export class UtilityService {
     const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
     const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
     const data: Blob = new Blob([excelBuffer], {type: EXCEL_TYPE});
-    fileSaver.saveAs(data, fileName + '_export_' + moment(moment().utc(), "YYYY-MM-DD") + EXCEL_EXTENSION);
+    let datesService = this.injector.get(DatesService);
+    fileSaver.saveAs(data, fileName + '_export_' + datesService.formateDate(DateTime.now(), "YYYY-MM-DD") + EXCEL_EXTENSION);
   }
 
   /**
@@ -840,7 +841,7 @@ export class UtilityService {
             }
           })
           .catch(error => {
-console.log(error)
+            console.log(error);
           })
       });
   }
@@ -851,10 +852,6 @@ console.log(error)
 
   arrayExists(arrayData: []) {
     return (!!arrayData && arrayData.length > 0);
-  }
-
-  formateDate(date: any, format?: any) {
-    return (!!date) ? DateTime.fromISO(date).setLocale(this.injector.get(LOCALE_ID)).toLocaleString(format || DateTime.DATE_MED) : '';
   }
 
   compare(a: number | string, b: number | string, isAsc: number) {

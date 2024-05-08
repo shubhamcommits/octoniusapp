@@ -1,7 +1,7 @@
 import { User, ChatNotification, Chat, Message } from "../models";
 import { Readable } from 'stream';
 import { helperFunctions, firebaseNotifications } from '../../utils';
-import moment from "moment";
+import { DateTime } from 'luxon';
 
 /*  ===============================
  *  -- CHAT Service --
@@ -52,7 +52,7 @@ export class ChatService {
                         _owner: user._id || user,
                         _message: messageId,
                         _chat: chatId,
-                        created_date: moment().format(),
+                        created_date: DateTime.now().toISODate(),
                         text: 'sent you a message',
                         type: 'new-chat-message'
                     });
@@ -118,7 +118,7 @@ export class ChatService {
                 }, {
                     $set: {
                         read: true,
-                        read_date: moment().format()
+                        read_date: DateTime.now().toISODate()
                     }
                 });
             return countReadMessages;

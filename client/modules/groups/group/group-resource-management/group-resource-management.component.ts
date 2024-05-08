@@ -7,6 +7,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { DateTime } from 'luxon';
 import { Sort } from '@angular/material/sort';
 import { Router } from '@angular/router';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-group-resource-management',
@@ -34,6 +35,7 @@ export class GroupResourceManagementComponent implements OnInit {
   constructor(
     private resourcesGroupService: ResourcesGroupService,
     private utilityService: UtilityService,
+    private datesService: DatesService,
     public dialog: MatDialog,
     private _router: Router,
     private injector: Injector
@@ -281,6 +283,6 @@ export class GroupResourceManagementComponent implements OnInit {
   }
 
   formateDate(date) {
-    return this.utilityService.formateDate(date, DateTime.DATE_MED);
+    return this.datesService.formateDate(date, DateTime.DATE_MED);
   }
 }

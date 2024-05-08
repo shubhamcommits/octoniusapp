@@ -23,8 +23,8 @@ import { UserPasswordUpdateComponent } from './user-profile/user-password-update
 import { UserProfileCustomFieldsComponent } from './user-profile/user-profile-custom-fields/user-profile-custom-fields.component';
 import { FormsModule } from '@angular/forms';
 import { UserHiveComponent } from './user-hive/user-hive.component';
-import { EditUserProfileFieldsComponent } from 'modules/organization/hr/employees/edit-member-payroll-dialog/edit-user-profile-fields/edit-user-profile-fields.component';
 import { OrganizationHRModule } from 'modules/organization/hr/organization-hr.module';
+import { MS365CloudModule } from './user-clouds/user-available-clouds/ms-365/ms-365-cloud.module';
 
 
 @NgModule({
@@ -47,6 +47,7 @@ import { OrganizationHRModule } from 'modules/organization/hr/organization-hr.mo
         FormsModule,
         GoogleCloudModule,
         BoxCloudModule,
+        MS365CloudModule,
         SlackCloudModule,
         TeamModule,
         ZapModule,

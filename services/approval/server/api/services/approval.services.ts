@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import { Notification, Post, File, Workspace } from '../models';
 import { axios } from '../utils';
 import http from 'axios';
@@ -29,7 +29,7 @@ export class ApprovalService {
                   _actor: userId,
                   description: '',
                   action: 'created',
-                  approval_date: moment().format()
+                  approval_date: DateTime.now().toISODate()
                 }
               }
             })
@@ -53,7 +53,7 @@ export class ApprovalService {
                   _actor: userId,
                   description: '',
                   action: 'deleted',
-                  approval_date: moment().format()
+                  approval_date: DateTime.now().toISODate()
                 }
               }
             })
@@ -76,7 +76,7 @@ export class ApprovalService {
                   _actor: userId,
                   description: '',
                   action: 'created',
-                  approval_date: moment().format()
+                  approval_date: DateTime.now().toISODate()
                 }
               }
             })
@@ -100,7 +100,7 @@ export class ApprovalService {
                   _actor: userId,
                   description: '',
                   action: 'deleted',
-                  approval_date: moment().format()
+                  approval_date: DateTime.now().toISODate()
                 }
               }
             })
@@ -278,7 +278,7 @@ export class ApprovalService {
               _actor: userId,
               description: '',
               action: 'launch',
-              approval_date: moment().format()
+              approval_date: DateTime.now().toISODate()
             }
           }
         })
@@ -311,7 +311,7 @@ export class ApprovalService {
               _actor: userId,
               description: '',
               action: 'launch',
-              approval_date: moment().format()
+              approval_date: DateTime.now().toISODate()
             }
           }
         })
@@ -461,7 +461,7 @@ export class ApprovalService {
                   _actor: userId,
                   description: description,
                   action: 'rejected',
-                  approval_date: moment().format()
+                  approval_date: DateTime.now().toISODate()
                 }
               }
             },
@@ -521,7 +521,7 @@ export class ApprovalService {
                   _actor: userId,
                   description: description,
                   action: 'rejected',
-                  approval_date: moment().format()
+                  approval_date: DateTime.now().toISODate()
                 }
               }
             },
@@ -561,7 +561,7 @@ export class ApprovalService {
   
           if (approvalFileIndex >= 0) {
             if (fileDB.approval_flow[approvalFileIndex].confirmation_code == code) {
-              const fileSignatureDate = moment().format();
+              const fileSignatureDate = DateTime.now().toISODate();
               const fileCrypto: any = {
                 approvalId: approvalId,
                 itemId: itemId,
@@ -586,7 +586,7 @@ export class ApprovalService {
                   _actor: userId,
                   description: description,
                   action: 'approved',
-                  approval_date: moment().format()
+                  approval_date: DateTime.now().toISODate()
                 });
               }
               file.save();
@@ -644,7 +644,7 @@ export class ApprovalService {
           let approvalPostIndex = await ((postDB && postDB.approval_flow) ? postDB.approval_flow.findIndex(approval => approval._id == approvalId) : -1);
           if (approvalPostIndex >= 0) {
             if (postDB.approval_flow[approvalPostIndex].confirmation_code == code) {
-              const postSignatureDate = moment().format();
+              const postSignatureDate = DateTime.now().toISODate();
               const postCrypto: any = {
                   approvalId: approvalId,
                   itemId: itemId,
@@ -668,7 +668,7 @@ export class ApprovalService {
                   _actor: userId,
                   description: description,
                   action: 'approved',
-                  approval_date: moment().format()
+                  approval_date: DateTime.now().toISODate()
                 });
               }
 

@@ -13,3 +13,7 @@
 <div class="col-md-8">
     <app-team-account-details></app-team-account-details>
 </div>
+
+<div class="col-md-8" *ngIf="!!ms365User && workspaceData?.integrations?.is_ms_365_connected && !!userData?.integrations?.ms_365 && !!userData?.integrations?.ms_365?.token && !!userData?.integrations?.ms_365?.user_account_id">
+    <app-ms-365-account-details (ms365Disconnected)="onMS365Disconnected($event)"></app-ms-365-account-details>
+</div>

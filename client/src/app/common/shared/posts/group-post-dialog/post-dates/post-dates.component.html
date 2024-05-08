@@ -5,8 +5,8 @@
   <div *ngIf="groupData && groupData.project_type && !postData?.task?.is_milestone && !postData?.task?.is_crm_task">
     <!-- Date Picker starts -->
     <app-date-picker (date)="getDate($event, 'start_date')"
-      [selectedDate]="formateDate(postData?.task.start_date)"
-      [upperLimit]="formateDate(postData?.task.due_to)"
+      [selectedDate]="postData?.task.start_date"
+      [upperLimit]="postData?.task.due_to"
       [styleClass]="'btn-group input-date due'"
       [canEdit]="canEditDates">
     </app-date-picker>
@@ -23,8 +23,8 @@
     <!-- Date Picker starts -->
     <app-date-picker
       (date)="getDate($event, 'due_date')"
-      [selectedDate]="formateDate(postData?.task.due_to)"
-      [lowerLimit]=" (postData?.task?.is_milestone) ? '' : formateDate(postData?.task.start_date)"
+      [selectedDate]="postData?.task.due_to"
+      [lowerLimit]=" (postData?.task?.is_milestone) ? '' : postData?.task.start_date"
       [styleClass]="'btn-group input-date ' +  (checkOverdue() === true ? 'overdue' : 'due')"
       [canEdit]="canEditDates">
     </app-date-picker>

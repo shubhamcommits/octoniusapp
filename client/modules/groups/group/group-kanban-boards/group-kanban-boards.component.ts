@@ -3,12 +3,13 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
-import moment from 'moment/moment';
 import { MatDialog } from '@angular/material/dialog';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 import { CreateProjectColumnDialogComponent } from './create-project-column-dialog/create-project-column-dialog.component';
 import { ShowCustomFieldsColumnDialogComponent } from './show-custom-fields-column-dialog/show-custom-fields-column-dialog.component';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
+import { DateTime } from 'luxon';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-group-kanban-boards',
@@ -34,7 +35,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   public publicFunctions = new PublicFunctions(this.injector);
 
   // Today's date object
-  today = moment().startOf('day').format('YYYY-MM-DD');
+  today = DateTime.now();
 
   flows = [];
 
@@ -52,7 +53,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     public utilityService: UtilityService,
     private columnService: ColumnService,
     private flowService: FlowService,
-    private managementPortalService: ManagementPortalService,
+    private datesService: DatesService,
     private injector: Injector,
     public dialog: MatDialog
   ) { }
@@ -98,17 +99,13 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     this.publicFunctions.isMobileDevice().then(res => this.isMobile = res);
   }
 
-  formateDate(date: any, format: string) {
-    return date ? moment.utc(date).format(format) : '';
-  }
-
   async sorting() {
     if (this.sortingBit == 'due_date' || this.sortingBit == 'none') {
       for (let index = 0; index < this.columns.length; index++) {
         let task = this.columns[index].tasks;
         task.sort((t1, t2) => {
           if (t1.task?.due_to && t2.task?.due_to) {
-            if (moment.utc(t1.task?.due_to).isBefore(t2.task?.due_to)) {
+            if (this.datesService.isBefore(DateTime.fromISO(t1.task?.due_to), DateTime.fromISO(t2.task?.due_to))) {
               return this.sortingBit == 'due_date' ? -1 : 1;
             } else {
               return this.sortingBit == 'due_date' ? 1 : -1;
@@ -129,7 +126,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
         let task = this.columns[index].tasks;
         task.sort((t1, t2) => {
           if (t1.created_date && t2.created_date) {
-            if (moment.utc(t1.created_date).isBefore(t2.created_date)) {
+            if (this.datesService.isBefore(DateTime.fromISO(t1.created_date), DateTime.fromISO(t2.created_date))) {
               return this.sortingBit == 'creation_date' ? -1 : 1;
             } else {
               return this.sortingBit == 'creation_date' ? 1 : -1;
@@ -745,7 +742,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   }
 
   isDelay(realDueDate: any, dueDate: any) {
-    return moment(realDueDate).isAfter(moment(dueDate), 'day');
+    return this.datesService.isBefore(DateTime.fromISO(dueDate), DateTime.fromISO(realDueDate));
   }
 
   calculateCFStatistics(cfName: string, tasks: any) {

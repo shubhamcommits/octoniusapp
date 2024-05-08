@@ -73,7 +73,7 @@
                 <label for="joinDate" class="cflabel" i18n="@@editHRFields.joinedOn">Joined on:</label>
             
                 <app-date-picker class="form-control" style="height: 50px" [styleClass]="'btn-group input-date'"
-                    [selectedDate]="formateDate(memberData.company_join_date)"
+                    [selectedDate]="memberData.company_join_date"
                     (date)="saveJoinDate($event)"
                     [canEdit]="true">
                 </app-date-picker>
@@ -100,7 +100,7 @@
 
                 <app-date-picker *ngIf="cf.type == 'Date'" class="form-control"
                     [styleClass]="'btn-group input-date'" [canEdit]="true"
-                    [selectedDate]="formateDate(selectedHRCFValues[cf._id])"
+                    [selectedDate]="selectedHRCFValues[cf._id]"
                     (date)="onDateEntityCustomFieldChange($event, cf._id)">
                 </app-date-picker>
             </div>
@@ -188,7 +188,7 @@
 
                 <app-date-picker *ngIf="benefit.type == 'Date'" class="form-control"
                     [styleClass]="'btn-group input-date'" [canEdit]="true"
-                    [selectedDate]="formateDate(selectedHRBenefitValues[benefit._id])"
+                    [selectedDate]="selectedHRBenefitValues[benefit._id]"
                     (date)="onDateEntityBenefitChange($event, benefit._id)">
                 </app-date-picker>
             </div>

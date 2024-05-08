@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import moment from 'moment';
+import { Component, Injector, Input } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
+import { DateTime } from 'luxon';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-kanban-task-card',
@@ -27,6 +27,7 @@ export class KanbanTaskCardComponent {
 
   constructor(
     public utilityService: UtilityService,
+    public datesService: DatesService,
     private injector: Injector
     ) {}
 
@@ -48,7 +49,8 @@ export class KanbanTaskCardComponent {
   }
 
   formateDate(date: any, format: string) {
-    return date ? moment.utc(date).format(format) : '';
+    return this.datesService.formateDate(date, DateTime.DATE_MED);
+    // return date ? moment.utc(date).format(format) : '';
   }
 
   getPriorityClass(priority: string) {

@@ -5,10 +5,12 @@
             <h2 i18n="@@userAvailableCluds.availableIntegrations">Available integrations</h2>
             <hr>
             <app-connect-google-cloud *ngIf="workspaceData?.integrations?.is_google_connected" (googleUser)="emitGoogleUser($event)"></app-connect-google-cloud>
-            <br />
+            <br *ngIf="workspaceData?.integrations?.is_slack_connected" />
             <app-connect-slack *ngIf="workspaceData?.integrations?.is_slack_connected" [userData]="userData"></app-connect-slack>
-            <br />
+            <br *ngIf="workspaceData?.integrations?.is_box_connected" />
             <app-connect-box-cloud *ngIf="workspaceData?.integrations?.is_box_connected" (boxUser)="emitBoxUser($event)"></app-connect-box-cloud>
+            <br *ngIf="workspaceData?.integrations?.is_ms_365_connected" />
+            <app-connect-ms-365-cloud *ngIf="workspaceData?.integrations?.is_ms_365_connected" (ms365User)="emitMS365User($event)"></app-connect-ms-365-cloud>
             <br />
             <!--
             <div class="row">

@@ -1,6 +1,5 @@
-import { Group, User, Workspace } from "../models";
-import moment from "moment";
-import http from "axios";
+import { User, Workspace } from "../models";
+import { DateTime } from 'luxon';
 
 export class UsersService {
 
@@ -32,7 +31,7 @@ export class UsersService {
             let invited_user: any = {
                 email: email,
                 type: type,
-                invited_date: moment().format()
+                invited_date: DateTime.now().toISODate()
             };
 
             let query = {};

@@ -8,6 +8,7 @@ import { HRService } from 'src/shared/services/hr-service/hr.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { UserTimeOffDialogComponent } from './user-time-off-dialog/user-time-off-dialog.component';
 import { DateTime } from 'luxon';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-time-off',
@@ -38,6 +39,7 @@ export class TimneOffComponent implements OnInit {
   constructor(
     private hrService: HRService,
     private injector: Injector,
+    private datesService: DatesService,
     public dialog: MatDialog
   ) { }
 
@@ -127,7 +129,7 @@ console.log(this.selectedDate);
     if (!!date && (date instanceof DateTime)) {
       return date.toLocaleString(DateTime.DATE_SHORT);
     }
-    return this.utilityService.formateDate(date, DateTime.DATE_SHORT);
+    return this.datesService.formateDate(date, DateTime.DATE_SHORT);
   }
 
   displayMonth(date: any) {

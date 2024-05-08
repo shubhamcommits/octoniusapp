@@ -1,4 +1,4 @@
-import moment from "moment";
+import { DateTime } from 'luxon';
 
 /**
  * This function is resposible for checking if an object has certain property or not
@@ -10,12 +10,15 @@ function hasProperty(object: any, property: any) {
 }
 
 function isSameDay(day1: any, day2: any) {
-    if (!day1 && !day2) {
-        return true;
-    } else if ((!!day1 && !day2) || (!!day2 && !day1)) {
-        return true;
+    if (!!day1 && !!day2) {
+      if (day1 instanceof DateTime && day2 instanceof DateTime) {
+        return day1.startOf('day').toMillis() == day2.startOf('day').toMillis();
+      } else {
+        return DateTime.fromISO(day1).startOf('day').toMillis() == DateTime.fromISO(day2).startOf('day').toMillis();
+      }
+    } else if ((!day1 && !!day2) || (!!day1 && !day2) || (!day1 && !day2)) {
+      return false;
     }
-    return moment.utc(day1).isSame(moment.utc(day2), 'day');
 }
 
 /*  =======================

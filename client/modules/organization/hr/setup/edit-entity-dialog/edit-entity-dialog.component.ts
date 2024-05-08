@@ -5,6 +5,7 @@ import { HRService } from 'src/shared/services/hr-service/hr.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { EntityAddMembersDialogComponent } from '../entity-add-members-dialog/entity-add-members-dialog.component';
 import { DateTime } from 'luxon';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-edit-entity-dialog',
@@ -71,6 +72,7 @@ export class EditEntityDialogComponent implements OnInit {
     private hrService: HRService,
     private countryCurrencyService: CountryCurrencyService,
     private utilityService: UtilityService,
+    private datesService: DatesService,
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<EditEntityDialogComponent>
@@ -581,19 +583,18 @@ export class EditEntityDialogComponent implements OnInit {
     this.createNewDaysOff = !this.createNewDaysOff;
   }
 
-  addBankHolidayDate(momentDate: any, dayOffId: string) {
+  addBankHolidayDate(date: any, dayOffId: string) {
     const doIndex = (this.entityData.payroll_days_off) ? this.entityData.payroll_days_off.findIndex((dayOff: any) => dayOff._id === dayOffId) : -1;
     if (doIndex >= 0) {
       if (!this.entityData.payroll_days_off[doIndex].bank_holidays) {
         this.entityData.payroll_days_off[doIndex].bank_holidays = [];
       }
-      const bhIndex = this.entityData.payroll_days_off[doIndex].bank_holidays.findIndex((bh: any) => DateTime.fromJSDate(momentDate).equals(DateTime.fromJSDate(bh)));
+      const bhIndex = this.entityData.payroll_days_off[doIndex].bank_holidays.findIndex((bh: any) => this.datesService.isSameDay(date, bh));
       // If index is found, then throw error notification
       if (bhIndex !== -1) {
         this.utilityService.warningNotification($localize`:@@editentitydialog.valueAlreadyExists:Value already exists!`);
       } else {
-        this.hrService.addBankHoliday(this.entityData?._id, dayOffId, momentDate).then(res => {
-          // this.entityData.payroll_days_off[doIndex].bank_holidays.push(momentDate);
+        this.hrService.addBankHoliday(this.entityData?._id, dayOffId, date.toISODate()).then(res => {
           this.entityData = res['entity'];
         });
       }
@@ -641,6 +642,6 @@ export class EditEntityDialogComponent implements OnInit {
   }
 
   formateDate(date: any) {
-    return this.utilityService.formateDate(date, DateTime.DATE_SHORT);
+    return this.datesService.formateDate(date, DateTime.DATE_SHORT);
   }
 }

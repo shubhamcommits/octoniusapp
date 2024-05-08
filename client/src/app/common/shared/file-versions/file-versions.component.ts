@@ -8,6 +8,7 @@ import { ApprovalPDFSignaturesService } from 'src/shared/services/approval-pdf-s
 import { FilesService } from 'src/shared/services/files-service/files.service';
 import { SubSink } from 'subsink';
 import { DateTime } from 'luxon';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-file-versions',
@@ -50,6 +51,7 @@ export class FileVersionsComponent implements OnInit {
     public libreofficeService: LibreofficeService,
     public storageService: StorageService,
     public utilityService: UtilityService,
+    public datesService: DatesService,
     public approvalPDFSignaturesService: ApprovalPDFSignaturesService,
     private injector: Injector
   ) { }
@@ -85,29 +87,18 @@ export class FileVersionsComponent implements OnInit {
    * @param fileName - Name of the file to obtain the icon img
    */
   getFileIcon(fileName: string) {
-    return "assets/images/" + this.getFileExtension(fileName) + "-file-icon.png";
-  }
-
-  getFileExtension(fileName: string) {
-    let file = fileName.split(".");
-    let fileType = file[file.length-1].toLowerCase();
-    if (fileType == 'mp4') {
-      fileType = 'mov';
-    }
-    return fileType;
+    return "assets/images/" + this.publicFunctions.getFileExtension(fileName) + "-file-icon.png";
   }
 
   isOfficeFile(fileName: string) {
-    const officeExtensions = ['ott', 'odm', 'doc', 'docx', 'xls', 'xlsx', 'ods', 'ots', 'odt', 'xst', 'odg', 'otg', 'odp', 'ppt', 'pptx', 'otp', 'pot', 'odf', 'odc', 'odb'];
-    const fileExtension = this.getFileExtension(fileName);
-    return officeExtensions.includes(fileExtension);
+    return this.publicFunctions.isOfficeFile(fileName);
   }
 
-  async openOfficeDoc(fileId: string) {
+  async openOfficeDoc(file: any) {
     // Start the loading spinner
     this.utilityService.updateIsLoadingSpinnerSource(true);
 
-    window.open(await this.publicFunctions.getLibreOfficeURL(fileId, this.groupData?._workspace?._id), "_blank");
+    window.open(await this.publicFunctions.getLibreOfficeURL(file, this.groupData?._workspace?._id), "_blank");
 
     this.utilityService.updateIsLoadingSpinnerSource(false);
   }
@@ -198,6 +189,6 @@ export class FileVersionsComponent implements OnInit {
   }
 
   formateDate(date: any) {
-    return this.utilityService.formateDate(date, DateTime.DATETIME_MED);
+    return this.datesService.formateDate(date, DateTime.DATETIME_MED);
   }
 }

@@ -5,6 +5,7 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { DateTime } from 'luxon';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-user-workload-calendar',
@@ -55,6 +56,7 @@ export class UserWorkloadCalendarComponent implements OnInit {
     private userService: UserService,
     private hrService: HRService,
     private utilityService: UtilityService,
+    private datesService: DatesService,
     private injector: Injector,
     public dialog: MatDialog
     ) { }
@@ -261,10 +263,10 @@ export class UserWorkloadCalendarComponent implements OnInit {
 
   calculateNumHolidays(property: string, date) {
     if (property === 'start_date') {
-      this.newHoliday.start_date = DateTime.fromJSDate(date.toDate());
+      this.newHoliday.start_date = date;
     }
     if (property === 'end_date') {
-      this.newHoliday.end_date = DateTime.fromJSDate(date.toDate());
+      this.newHoliday.end_date = date;
     }
 
     if (this.newHoliday.end_date >= this.newHoliday.start_date) {
@@ -288,16 +290,7 @@ export class UserWorkloadCalendarComponent implements OnInit {
       && !this.errorCode
   }
 
-  // clearDates() {
-  //   this.selectedDays = [];
-  //   this.daysToCancel = [];
-  //   this.refresh.next();
-  // }
-
   formateDate(date: any) {
-    if (!!date && (date instanceof DateTime)) {
-      return date.toLocaleString(DateTime.DATE_SHORT);
-    }
-    return this.utilityService.formateDate(date, DateTime.DATE_SHORT);
+    return this.datesService.formateDate(date, DateTime.DATE_SHORT);
   }
 }

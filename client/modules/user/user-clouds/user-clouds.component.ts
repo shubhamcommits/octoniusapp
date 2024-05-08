@@ -20,11 +20,9 @@ export class UserCloudsComponent implements OnInit {
   // User Data Variable
   userData: any;
 
-  // Google User
   googleUser: any;
-
-  // Box User
   boxUser: any;
+  ms365User: any;
 
   // Public functions class member
   publicFunctions = new PublicFunctions(this.injector)
@@ -56,6 +54,8 @@ export class UserCloudsComponent implements OnInit {
 
     this.boxUser = await this.integrationsService.getCurrentBoxUser(this.userData?._workspace?._id || this.userData?._workspace);
 
+    this.ms365User = await this.integrationsService.getCurrentMS365User();
+
     this.googleUser = await this.integrationsService.getCurrentGoogleUser();
 
     this.slackAuthSuccessful = (this.userData && this.userData.integrations && this.userData.integrations.is_slack_connected) ? true : false;
@@ -85,6 +85,19 @@ export class UserCloudsComponent implements OnInit {
    */
   initiliazeBoxUser(boxUser: any){
     this.boxUser = boxUser
+  }
+
+  /**
+   * This function receives the event change from <app-user-available-clouds></app-user-available-clouds>
+   * @param ms365User
+   */
+  initiliazeMS365User(ms365User: any){
+    this.ms365User = ms365User
+  }
+
+  async onMS365Disconnected($event) {
+    await this.integrationsService.sendUpdatesToMS365UserData({});
+    this.ms365User = await this.integrationsService.getCurrentMS365User();
   }
 
   /**

@@ -67,7 +67,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.routeStateService.updatePathParamState(data);
       }
       if (e instanceof NavigationEnd) {
-        // window['Appcues'].page();
+        window['Appcues'].page();
         if (this.storageService.existData('authToken') && !e.url.includes('/dashboard/user/teams') && !e.url.includes('/dashboard/user/zap') && !e.url.includes('/document/') && !e.url.includes('/flamingo/') ) {
           this.isAuth = true;
         } else {

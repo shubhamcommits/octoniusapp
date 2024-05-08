@@ -1,7 +1,6 @@
-import { Inject, Injectable, Injector, LOCALE_ID } from '@angular/core';
+import { Injectable, Injector, LOCALE_ID } from '@angular/core';
 import { retry } from 'rxjs/internal/operators/retry';
 import { SubSink } from 'subsink';
-import moment from 'moment/moment';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { UserService } from "src/shared/services/user-service/user.service";
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
@@ -25,6 +24,9 @@ import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
 import { LibraryService } from 'src/shared/services/library-service/library.service';
 import { SearchService } from 'src/shared/services/search-service/search.service';
 import { LibreofficeService } from 'src/shared/services/libreoffice-service/libreoffice.service';
+import { DateTime } from 'luxon';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
+import { MS365CloudService } from './user/user-clouds/user-available-clouds/ms-365/services/ms-365-cloud.service';
 
 @Injectable({
   providedIn: 'root'
@@ -1305,7 +1307,7 @@ export class PublicFunctions {
     changeTaskDueDate(postId: string, dueDate: string) {
         let postService = this.injector.get(PostService)
         let utilityService = this.injector.get(UtilityService)
-        let managementPortalService = this.injector.get(ManagementPortalService)
+        let datesService = this.injector.get(DatesService)
 
         utilityService.asyncNotification($localize`:@@publicFunctions.pleaseWaitChangingTaskDueDate:Please wait we are changing the task due date...`,
             new Promise(async (resolve, reject) => {
@@ -1314,7 +1316,7 @@ export class PublicFunctions {
                 // Call HTTP Request to change the request
                 postService.changeTaskDueDate(postId, dueDate, isShuttleTasksModuleAvailable, isIndividualSubscription)
                     .then((res) => {
-                        resolve(utilityService.resolveAsyncPromise($localize`:@@publicFunctions.taskDueDAteChanged:Task due date changed to ${moment(dueDate).format('YYYY-MM-DD')}!`))
+                        resolve(utilityService.resolveAsyncPromise($localize`:@@publicFunctions.taskDueDAteChanged:Task due date changed to ${datesService.formateDate(dueDate)}!`))
                     })
                     .catch(() => {
                         reject(utilityService.rejectAsyncPromise($localize`:@@publicFunctions.unableToChangeDueDate:Unable to change the due date, please try again!`))
@@ -1495,6 +1497,7 @@ export class PublicFunctions {
     }
 
     doesTriggersMatch(triggers: any[], post: any, groupId: string, isCreationTaskTrigger: boolean, shuttleIndex: number) {
+        const datesService = this.injector.get(DatesService);
         let retValue = true;
         if (triggers && triggers.length > 0) {
             triggers.forEach(async trigger => {
@@ -1584,10 +1587,10 @@ export class PublicFunctions {
                             }
                             break;
                         case 'Due date is':
-                            const today = moment().startOf('day').format('YYYY-MM-DD');
-                            if (((trigger?.due_date_value == 'overdue') && (post?.task?.status != 'done') && (moment.utc(post?.task?.due_to).format('YYYY-MM-DD') < today))
-                                    || ((trigger?.due_date_value == 'today') && (moment.utc(post?.task?.due_to).isSame(today)))
-                                    || ((trigger?.due_date_value == 'tomorrow') && (moment.utc(post?.task?.due_to).isSame(moment().startOf('day').add(1, 'days'))))) {
+                            const today = DateTime.now();
+                            if (((trigger?.due_date_value == 'overdue') && (post?.task?.status != 'done') && (datesService.isBefore(DateTime.fromISO(post?.task?.due_to), today)))
+                                    || ((trigger?.due_date_value == 'today') && (datesService.isSameDay(DateTime.fromISO(post?.task?.due_to), today)))
+                                    || ((trigger?.due_date_value == 'tomorrow') && (datesService.isSameDay(DateTime.fromISO(post?.task?.due_to), today.plus({ days: 1 }))))) {
                                 retValue = true;
                             }
                             break;
@@ -1662,20 +1665,20 @@ export class PublicFunctions {
                             _shuttle_group: action?._shuttle_group,
                             _shuttle_section: action?._shuttle_group?._shuttle_section,
                             shuttle_status: 'to do',
-                            shuttled_at: moment().format()
+                            shuttled_at: DateTime.now().toISODate()
                           });
                         }
                         return Promise.resolve({});
                     case 'Set Due date':
                         if (shuttleIndex < 0) {
                           if (action?.due_date_value == 'tomorrow') {
-                            post.task.due_to = moment().add(1,'days');
+                            post.task.due_to = DateTime.now().plus({ days: 1 });
                           } else if (action?.due_date_value == 'end_of_week') {
-                            post.task.due_to = moment().endOf('week').subtract(1,'days');
+                            post.task.due_to = DateTime.now().endOf('week').minus({ days: 1});
                           } else if (action?.due_date_value == 'end_of_next_week') {
-                            post.task.due_to = moment().add(1,'weeks').endOf('week').subtract(1,'days');
+                            post.task.due_to = DateTime.now().plus({ weeks: 1 }).endOf('week').minus({ days: 1});
                           } else if (action?.due_date_value == 'end_of_month') {
-                            post.task.due_to = moment().endOf('month');
+                            post.task.due_to = DateTime.now().endOf('month');
                           }
                         }
                         return post;
@@ -1719,8 +1722,8 @@ export class PublicFunctions {
      * @returns
      */
     getHighestDate(posts: any) {
-      const highestDate = moment(Math.max(...posts.map(post => moment(post.task.due_to))));
-      return (!highestDate || !highestDate.isValid()) ? null : highestDate;
+      const highestDate = DateTime.fromISO(Math.max(...posts.map(post => DateTime.fromISO(post.task.due_to))));
+      return (!highestDate || !highestDate.isValid) ? null : highestDate;
     }
 
     async checkFlamingoStatus(workspaceId: string, mgmtApiPrivateKey: string) {
@@ -2010,10 +2013,11 @@ export class PublicFunctions {
      *
      */
     checkOverdue(taskPost: any) {
+      let datesService = this.injector.get(DatesService);
       // Today's date object
-      const today = moment().startOf('day').format('YYYY-MM-DD');
+      const today = DateTime.now().startOf('day');
       return (taskPost?.task?.status != 'done') &&
-        (moment.utc(taskPost?.task?.due_to).format('YYYY-MM-DD') < today);
+        (datesService.isBefore(DateTime.fromISO(taskPost?.task?.due_to), today));
     }
 
     /**
@@ -2331,7 +2335,27 @@ export class PublicFunctions {
         }
       }
 
-      return Array.from(new Set([...filesList, ...googleFilesList, ...boxFilesList]));
+      let ms365FilesList: any = [];
+
+      // Fetch Access Token
+      if (storageService.existData('ms365User') && workspaceData?.integrations?.is_ms_365_connected) {
+        let ms365User: any = storageService.getLocalData('ms365User');
+
+        if (utilityService.objectExists(ms365User)) {
+          // Get MS365 file list
+          ms365FilesList = await integrationsService.searchMS365Files(searchVal) || []
+
+          // MS365 File List
+          if (ms365FilesList.length > 0) {
+            ms365FilesList = ms365FilesList.map((file: any) => ({
+              id: file.id,
+              value: '<a style="color:inherit;" target="_blank" href="' + file.searchResult.onClickTelemetryUrl + '"' + '>' + file.name + '</a>'
+            }));
+          }
+        }
+      }
+
+      return Array.from(new Set([...filesList, ...googleFilesList, ...boxFilesList, ...ms365FilesList]));
   }
   
     /**
@@ -2415,42 +2439,80 @@ export class PublicFunctions {
       } else if (file?.type == 'file') {
         const lastFileVersion: any = await utilityService.getFileLastVersion(file?._id);
         if (this.isOfficeFile(lastFileVersion?.original_name)) {
-          url = await this.getLibreOfficeURL(lastFileVersion?._id, workspaceId);
+          url = await this.getLibreOfficeURL(lastFileVersion, workspaceId);
         } else {
           await filesService.getMinioFile(file?._id, file?.modified_name, workspaceId, storageService.getLocalData("authToken")["token"])
             .then(async res =>{
               url = res['url'];
             })
-            .catch(error => {
-console.log(error);
-            });
+            .catch(error => console.log(error));
         }
       }
 
       return url;
     }
 
-    async getLibreOfficeURL(fileId: string, workspaceId: string) {
+    async getLibreOfficeURL(file: any, workspaceId: string) {
       let utilityService = this.injector.get(UtilityService);
       let libreofficeService = this.injector.get(LibreofficeService);
+      let ms365CloudService = this.injector.get(MS365CloudService);
       let storageService = this.injector.get(StorageService);
+
+      const workspaceData = await this.getCurrentWorkspace();
+
       // wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
+      const fileExt = this.getFileExtension(file.original_name);
+      const fileId = file._id;
       let wopiClientURL = '';
-      await libreofficeService.getLibreofficeUrl().then(res => {
-          wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}/${workspaceId}?access_token=${storageService.getLocalData("authToken")["token"]}`;
-        }).catch(error => {
-          utilityService.errorNotification($localize`:@@publicFunctions.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
-        });
+
+      const useMS365 = (workspaceData.integrations.is_ms_365_connected && !!workspaceData.integrations.ms_365_online_host);
+
+      if (useMS365) {
+        await ms365CloudService.getOfficeWOPIUrl().then(res => {
+console.log({res});
+            if (res['msData']) {
+              const actions: {[key: string]: [[string, string]]} = res['data'];
+              if (actions[fileExt]) {
+                for (let [key, [name, action]] of Object.entries(actions[fileExt])) {
+                  if (name !== 'editnew') {
+                    const btn = document.createElement('button');
+                    btn.type = 'submit';
+                    btn.innerText = name;
+
+                    const token = sessionStorage.getItem('token');
+                    const userName = sessionStorage.getItem('userName');
+                    const wopiServer = sessionStorage.getItem('wopiServer');
+                    // const ttl = userName === 'UserB' ? Date.now() + 12000000 : Date.now() + 300000;
+                    const ttl = 0;
+
+                    wopiClientURL = `${action}${action.endsWith('?') ? '' : '&'}WOPISrc=${encodeURIComponent(`${wopiServer}/wopi/files/${fileId}`)}&access_token=${token}|${userName}&access_token_ttl=${ttl}`;
+                  }
+                }
+              }
+            }
+          }).catch(error => {
+            utilityService.errorNotification($localize`:@@publicFunctions.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
+          });
+      } else {
+        await libreofficeService.getLibreofficeWOPIUrl().then(res => {
+            if (res['url']) {
+              wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}/${workspaceId}?access_token=${storageService.getLocalData("authToken")["token"]}`;
+            }
+          }).catch(error => {
+            utilityService.errorNotification($localize`:@@publicFunctions.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
+          });
+      }
+
       return wopiClientURL;
     }
 
-    private isOfficeFile(fileName: string) {
+    isOfficeFile(fileName: string) {
       const officeExtensions = ['ott', 'odm', 'doc', 'docx', 'xls', 'xlsx', 'ods', 'ots', 'odt', 'xst', 'odg', 'otg', 'odp', 'ppt', 'pptx', 'otp', 'pot', 'odf', 'odc', 'odb'];
       const fileExtension = this.getFileExtension(fileName);
       return officeExtensions.includes(fileExtension);
     }
 
-    private getFileExtension(fileName: string) {
+    getFileExtension(fileName: string) {
       let fileType = '';
       if (fileName) {
         let file = fileName?.split(".");

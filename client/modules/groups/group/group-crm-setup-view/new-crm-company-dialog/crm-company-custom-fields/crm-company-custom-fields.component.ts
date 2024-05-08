@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Injector, Input, OnChanges, Output } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
 import { CRMGroupService } from 'src/shared/services/crm-group-service/crm-group.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
@@ -107,7 +106,7 @@ export class CRMCompanyCustomFieldsComponent implements OnChanges {
    * @param dateObject
    */
   getCFDate(dateObject: any, cfName: string, cfTitle: string) {
-    this.saveCustomField(cfName, cfTitle, dateObject.toDate());
+    this.saveCustomField(cfName, cfTitle, dateObject.toISODate());
   }
 
   saveCustomField(customFieldName: string, customFieldTitle: string, customFieldValue: string) {
@@ -115,9 +114,5 @@ export class CRMCompanyCustomFieldsComponent implements OnChanges {
     this.companyData.crm_custom_fields[customFieldName] = customFieldValue;
 
     this.companyCFEdited.emit(this.companyData);
-  }
-
-  formateDate(date) {
-    return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
   }
 }

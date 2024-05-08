@@ -44,7 +44,7 @@
               (keyup.enter)="saveNewResourceCustomField($event.target.value, cf.name)" (blur)="saveNewResourceCustomField($event.target.value, cf.name)" />
 
             <app-date-picker *ngIf="cf.input_type && cf.input_type_date" cass="form-control"
-              (date)="saveNewResourceCustomField($event, cf.name)" [selectedDate]="formateDate(newResource?.custom_fields[cf.name])"
+              (date)="saveNewResourceCustomField($event, cf.name)" [selectedDate]="newResource?.custom_fields[cf.name]"
               [styleClass]="'btn-group input-date'" [canEdit]="true">
             </app-date-picker>
     
@@ -177,7 +177,7 @@
                 
                   <div *ngIf="cf.input_type && cf.input_type_date" class="form-control">
                     <app-date-picker (date)="getCFDate($event, cf.name)" style="border: none;"
-                      [selectedDate]="formateDate(selectedCFValues[cf.name])" [styleClass]="'btn-group input-date'" [canEdit]="true">
+                      [selectedDate]="selectedCFValues[cf.name]" [styleClass]="'btn-group input-date'" [canEdit]="true">
                     </app-date-picker>
                   </div>
 

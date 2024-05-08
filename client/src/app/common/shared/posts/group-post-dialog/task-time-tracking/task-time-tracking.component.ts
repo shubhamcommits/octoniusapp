@@ -1,7 +1,6 @@
 import { Component, Injector, Input, OnChanges } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
-// import { DateTime } from 'luxon';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -54,6 +53,7 @@ export class TaskTimeTrackingComponent implements OnChanges {
     private groupService: GroupService,
     private postService: PostService,
     private utilityService: UtilityService,
+    private datesService: DatesService,
     private injector: Injector
   ) { }
 
@@ -254,7 +254,7 @@ export class TaskTimeTrackingComponent implements OnChanges {
    */
   getDate(dateObject: any) {
     const oldDate = this.entryDate;
-    this.entryDate = dateObject.toISOString() || null;
+    this.entryDate = dateObject.toISODate() || null;
     if (!!this.entryId && this.isValidEntry() && !this.isSameDay(this.entryDate, oldDate)) {
       this.saveEntry('date');
     }
@@ -328,21 +328,16 @@ export class TaskTimeTrackingComponent implements OnChanges {
 				}
 			});
   }
-
-  isSameDay(day1: any, day2: any) {
-    if (!day1 && !day2) {
-      return true;
-    } else if ((!!day1 && !day2) || (!!day2 && !day1)) {
-      return true;
-    }
-    return moment.utc(day1).isSame(moment.utc(day2), 'day');
-  }
-
+  
   isGroupManager(userId) {
     return (this.groupData && this.groupData._admins) ? this.groupData._admins.find(admin => admin._id === userId) : false;
   }
+  
+  isSameDay(day1: any, day2: any) {
+    return this.datesService.isSameDay(day1, day2);
+  }
 
   formateDate(date) {
-    return (date) ? moment.utc(date).add('1', 'day').format("MMM D, YYYY") : '';
+    return this.datesService.formateDate(date);
   }
 }

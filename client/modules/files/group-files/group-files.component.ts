@@ -16,16 +16,16 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
 import { FileDetailsDialogComponent } from 'src/app/common/shared/file-details-dialog/file-details-dialog.component';
 import { GroupService } from 'src/shared/services/group-service/group.service';
-import moment from 'moment';
 import { pdfExporter } from "quill-to-pdf";
 import { saveAs } from "file-saver";
 import { PDFDocument } from 'pdf-lib';
 import { ApprovalPDFSignaturesService } from 'src/shared/services/approval-pdf-signatures-service/approval-pdf-signatures.service';
+import { DateTime } from 'luxon';
 
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import * as ShareDB from "sharedb/lib/client";
 import Quill from 'quill';
-import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-group-files',
@@ -117,7 +117,7 @@ export class GroupFilesComponent implements OnInit {
     public dialog: MatDialog,
     public storageService: StorageService,
     private groupService: GroupService,
-    private managementPortalService: ManagementPortalService,
+    private datesService: DatesService,
     private approvalPDFSignaturesService: ApprovalPDFSignaturesService
   ) { }
 
@@ -295,19 +295,6 @@ export class GroupFilesComponent implements OnInit {
       });
   }
 
-  // async openViewFileDialog(file: any) {
-  //   const dialogRef = this.dialog.open(PreviewFilesDialogComponent, {
-  //     width: '90%',
-  //     height: '90%',
-  //     data: {
-  //       modified_name: file?.modified_name,
-  //       fileId: file?._id,
-  //       workspaceId: this.workspaceId,
-  //       authToken: this.authToken
-  //     }
-  //   });
-  // }
-
   openViewFolioDialog(folioId: string) {
     const dialogRef = this.dialog.open(PreviewFilesDialogComponent, {
       width: '90%',
@@ -373,25 +360,6 @@ export class GroupFilesComponent implements OnInit {
     selBox.style.opacity = '0';
 
     let url = await this.publicFunctions.getFileUrl(file, this.workspaceId);
-    // let url = this.clientUrl;
-    // if (environment.production) {
-    //   url += '/' + this.locale;
-    // }
-    // if (file?.type == 'folio') {
-    //   url += '/document/' + file?._id + '?readOnly=true';
-    // } else if (file?.type == 'flamingo') {
-    //   url += '/document/flamingo/' + file?._id;
-    // } else if (file?.type == 'file') {
-    //   const lastFileVersion: any = await this.utilityService.getFileLastVersion(file?._id);
-    //   if (this.isOfficeFile(lastFileVersion?.original_name)) {
-    //     url = await this.getLibreOfficeURL(lastFileVersion);
-    //   } else {
-    //     // url = this.filesBaseUrl + '/' + file?.modified_name + '?authToken=' + this.authToken;
-    //     await this.filesService.getMinioFile(file?._id, file?.modified_name, this.workspaceId, this.authToken).then(async res =>{
-    //       url = res['url'];
-    //     });
-    //   }
-    // }
 
     selBox.value = url;
     // Append the element to the DOM
@@ -576,26 +544,15 @@ export class GroupFilesComponent implements OnInit {
    * @param fileName - Name of the file to obtain the icon img
    */
   getFileIcon(fileName: string) {
-    return "assets/images/" + this.getFileExtension(fileName) + "-file-icon.png";
-  }
-
-  getFileExtension(fileName: string) {
-    let fileType = '';
-    if (fileName) {
-      let file = fileName?.split(".");
-      fileType = file[file.length-1].toLowerCase();
-      if (fileType == 'mp4') {
-        fileType = 'mov';
-      }
-    }
-    
-    return fileType;
+    return "assets/images/" + this.publicFunctions.getFileExtension(fileName) + "-file-icon.png";
   }
 
   isOfficeFile(fileName: string) {
-    const officeExtensions = ['ott', 'odm', 'doc', 'docx', 'xls', 'xlsx', 'ods', 'ots', 'odt', 'xst', 'odg', 'otg', 'odp', 'ppt', 'pptx', 'otp', 'pot', 'odf', 'odc', 'odb'];
-    const fileExtension = this.getFileExtension(fileName);
-    return officeExtensions.includes(fileExtension);
+    return this.publicFunctions.isOfficeFile(fileName);
+  }
+
+  getFileExtension(fileName: string) {
+    return this.publicFunctions.getFileExtension(fileName);
   }
 
   /**
@@ -854,7 +811,7 @@ export class GroupFilesComponent implements OnInit {
     if (this.sortingBit == 'created_date' || this.sortingBit == 'none') {
       this.folders.sort((t1, t2) => {
         if (t1.created_date && t2.created_date) {
-          if (moment.utc(t1.created_date).isBefore(t2.created_date)) {
+          if (this.datesService.isBefore(DateTime.fromISO(t1.created_date), DateTime.fromISO(t2.created_date))) {
             return this.sortingBit == 'created_date' ? -1 : 1;
           } else {
             return this.sortingBit == 'created_date' ? 1 : -1;
@@ -869,7 +826,7 @@ export class GroupFilesComponent implements OnInit {
       });
       this.files.sort((t1, t2) => {
         if (t1.created_date && t2.created_date) {
-          if (moment.utc(t1.created_date).isBefore(t2.created_date)) {
+          if (this.datesService.isBefore(DateTime.fromISO(t1.created_date), DateTime.fromISO(t2.created_date))) {
             return this.sortingBit == 'created_date' ? -1 : 1;
           } else {
             return this.sortingBit == 'created_date' ? 1 : -1;
@@ -887,8 +844,8 @@ export class GroupFilesComponent implements OnInit {
         if (this.sortingData?.input_type_date) {
           return (t1?.custom_fields && t2?.custom_fields)
             ? (t1?.custom_fields[this.sortingData.name] && t2?.custom_fields[this.sortingData.name])
-              ?((moment.utc(t1?.custom_fields[this.sortingData.name]).isBefore(t2?.custom_fields[this.sortingData.name]))
-                ? -1 : (moment.utc(t1?.custom_fields[this.sortingData.name]).isAfter(t2?.custom_fields[this.sortingData.name]))
+              ?((this.datesService.isBefore(DateTime.fromISO(t1?.custom_fields[this.sortingData.name]), DateTime.fromISO(t2?.custom_fields[this.sortingData.name])))
+                ? -1 : (this.datesService.isBefore(DateTime.fromISO(t2?.custom_fields[this.sortingData.name]), DateTime.fromISO(t1?.custom_fields[this.sortingData.name])))
                   ? 1 : 0)
               : ((t1?.custom_fields[this.sortingData.name] && !t2?.custom_fields[this.sortingData.name])
                 ? -1 : ((!t1?.custom_fields[this.sortingData.name] && t2?.custom_fields[this.sortingData.name]))
@@ -967,9 +924,6 @@ export class GroupFilesComponent implements OnInit {
 
   async modifyPdf(fileData: any) {
     const token = this.storageService.getLocalData('authToken')['token'];
-    // const url = this.filesBaseUrl + '/' + fileData?.modified_name + '?authToken=Bearer ' + token;
-    // const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer());
-    // const pdfDoc = await PDFDocument.load(existingPdfBytes);
     this.filesService.getMinioFile(fileData?._id, fileData?.modified_name, this.workspaceId, this.authToken).then(async res =>{
       const pdfDoc = await PDFDocument.load(res['url']);
 
@@ -1032,7 +986,7 @@ export class GroupFilesComponent implements OnInit {
     if (this.isFilesVersionsModuleAvailable) {
       const lastFileVersion: any = await this.utilityService.getFileLastVersion(file?._id);
       if (this.isOfficeFile(lastFileVersion?.original_name)) {
-        window.open(await this.publicFunctions.getLibreOfficeURL(lastFileVersion?._id, this.workspaceId), "_blank");
+        window.open(await this.publicFunctions.getLibreOfficeURL(lastFileVersion, this.workspaceId), "_blank");
       } else {
         // window.open(this.filesBaseUrl + '/' + lastFileVersion?.modified_name + '?authToken=' + this.authToken, "_blank");
         this.filesService.getMinioFile(lastFileVersion?._id, lastFileVersion?.modified_name, this.workspaceId, this.authToken).then(res =>{
@@ -1040,7 +994,7 @@ export class GroupFilesComponent implements OnInit {
         });
       }
     } else {
-      window.open(await this.publicFunctions.getLibreOfficeURL(file?._id, this.workspaceId), "_blank");
+      window.open(await this.publicFunctions.getLibreOfficeURL(file, this.workspaceId), "_blank");
     }
 
     this.isLoading$.next(false);
@@ -1057,7 +1011,7 @@ export class GroupFilesComponent implements OnInit {
     if (this.isFilesVersionsModuleAvailable) {
       const lastFileVersion: any = await this.utilityService.getFileLastVersion(file?._id);
       if (this.isOfficeFile(lastFileVersion?.original_name)) {
-        window.open(await this.publicFunctions.getLibreOfficeURL(lastFileVersion?._id, this.workspaceId), "_blank");
+        window.open(await this.publicFunctions.getLibreOfficeURL(lastFileVersion, this.workspaceId), "_blank");
       } else {
         this.filesService.getMinioFile(lastFileVersion?._id, lastFileVersion?.modified_name, this.workspaceId, this.authToken).then(res =>{
           window.open(res['url'], "_blank");

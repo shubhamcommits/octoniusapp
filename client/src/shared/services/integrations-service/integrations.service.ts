@@ -6,6 +6,7 @@ import { StorageService } from '../storage-service/storage.service';
 import { UtilityService } from '../utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { BoxCloudService } from 'modules/user/user-clouds/user-available-clouds/box-cloud/services/box-cloud.service';
+import { MS365CloudService } from 'modules/user/user-clouds/user-available-clouds/ms-365/services/ms-365-cloud.service';
 
 // Google API Variable
 declare const gapi: any;
@@ -504,5 +505,158 @@ export class IntegrationsService {
     }
     /**
      * BOX INTEGRATION ENDS
+     */
+
+    /**
+     * MS365 INTEGRATION STARTS
+     */
+
+    /**
+     * This function opens up the window to signin to google and connect the account
+     */
+    async authorizeMS365SignIn() {
+        return new Promise(async (resolve) => {
+            let ms365Service = this.injector.get(MS365CloudService);
+            await ms365Service.authorizeMS365SignIn()
+              .then((res: any) => resolve(res.authorize_url))
+              .catch((err) => resolve(null));
+        });
+    }
+
+    /**
+     * This function handles the ms365 signin result and connect the account to octonius server
+     * @param ms365SignInResult
+     */
+    async handleMS365SignIn(userData: any, ms365Code: string/*, ms365ClientInfo: string, ms365SessionState: string*/) {
+
+      let utilityService = this.injector.get(UtilityService);
+      let storageService = this.injector.get(StorageService);
+
+      try {
+        // Access token variable
+        let token: any = null;
+        let userAccountId: any = null;
+
+        let ms365User = storageService.getLocalData('ms365User');
+        if (!!ms365Code && !utilityService.objectExists(ms365User) && !userData?.integrations?.ms_365?.user_account_id && !userData?.integrations?.ms_365?.token) {
+            // Fetch the Google Drive Token Object
+            let tokenResults: any = await this.getMS365DriveTokenFromAuthResult(ms365Code/*, ms365ClientInfo, ms365SessionState, workspaceData?._id*/);
+
+            token = tokenResults.msUser.token;
+            userAccountId = tokenResults.msUser.userAccountId;
+            userData = tokenResults.user;
+
+            // Update the user details with updated token
+            await this.publicFunctions.sendUpdatesToUserData(userData);
+        } else {
+            if (utilityService.objectExists(ms365User)) {
+                token = ms365User.token;
+                userAccountId = ms365User.userAccountId;
+            } else if (userData?.integrations?.ms_365?.user_account_id && userData?.integrations?.ms_365?.token) {
+                token = userData?.integrations?.ms_365?.token;
+                userAccountId = userData?.integrations?.ms_365?.user_account_id;
+            }
+        }
+
+        if (!!token && !!userAccountId) {
+            ms365User = {
+              'userAccountId': userAccountId,
+              'accessToken': token
+            };
+
+            // Change the observable state
+            this.sendUpdatesToMS365UserData(ms365User);
+        }
+
+        storageService.removeLocalData('connectingMS365');
+
+        utilityService.updateIsLoadingSpinnerSource(false);
+
+        // Return ms365 user details
+        return ms365User || {};
+      } catch(error) {
+        storageService.removeLocalData('connectingMS365');
+        utilityService.updateIsLoadingSpinnerSource(false);
+      }
+    }
+
+    /**
+     * This functions calls the refresh token service function
+     */
+    async getRefreshMS365TokenFromUser() {
+        let ms365CloudService = this.injector.get(MS365CloudService)
+        return new Promise(async (resolve) => {
+            await ms365CloudService.getRefreshTokenFromUserData()
+                .then((res) => resolve(res['ms365Token']));
+        });
+    }
+
+    /**
+     * This function is responsible for fetching the authorization code from google auth results
+     * @param code
+     * @param access_token
+     */
+    async getMS365DriveTokenFromAuthResult(ms365Code: string/*, ms365ClientInfo: string, ms365SessionState: string, workspaceId: string*/) {
+      let ms365Service = this.injector.get(MS365CloudService)
+      return new Promise(async (resolve) => {
+          await ms365Service.getMS365DriveTokenFromAuthResult(ms365Code/*, ms365ClientInfo, ms365SessionState, workspaceId*/)
+              .then((res) => {
+                resolve(res)
+              })
+              .catch(() => resolve({}))
+      });
+    }
+
+    /**
+     * This function is responsible for fetching the ms365 drive files from connected ms365 drive
+     * @param searchTerm
+     * @returns
+     */
+    searchMS365Files(searchTerm: string) {
+      return new Promise((resolve) => {
+          let ms365Service = this.injector.get(MS365CloudService);
+          ms365Service.getMS365Files(searchTerm)
+              .then((res) => {
+                resolve(res['files']);
+              })
+              .catch(() => resolve([]))
+      });
+    }
+
+    public async getCurrentMS365User() {
+      let utilityService = this.injector.get(UtilityService);
+      let userData: any = await this.getMS365UserDetailsFromService();
+
+      if (!utilityService.objectExists(userData)) {
+        userData = await this.getMS365UserDetailsFromStorage();
+      }
+
+      this.sendUpdatesToMS365UserData(userData);
+
+      return userData || {};
+    }
+
+    async getMS365UserDetailsFromService() {
+        return new Promise((resolve) => {
+            const ms365CloudService = this.injector.get(MS365CloudService);
+            this.subSink.add(ms365CloudService.currentMS365UserData.subscribe((res) => {
+                resolve(res)
+            }));
+        });
+    }
+
+    async getMS365UserDetailsFromStorage() {
+        const storageService = this.injector.get(StorageService);
+        return (storageService.existData('ms365User') === null) ? {} : storageService.getLocalData('ms365User');
+    }
+
+    async sendUpdatesToMS365UserData(ms365UserData: Object) {
+        const storageService = this.injector.get(StorageService);
+        const ms365CloudService = this.injector.get(MS365CloudService);
+        ms365CloudService.updateMS365UserDataService(ms365UserData);
+        storageService.setLocalData('ms365User', JSON.stringify(ms365UserData));
+    }
+    /**
+     * MS365 INTEGRATION ENDS
      */
 }

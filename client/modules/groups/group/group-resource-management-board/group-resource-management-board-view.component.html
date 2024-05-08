@@ -49,7 +49,7 @@
 
               <td *ngFor="let workload of member.workload" [ngClass]="workload?.outOfTheOfficeClass">
                   <span class="text-primary mr-2" i18n="@@groupResourceManagementBoardViewComponent.totalTasks"> Total tasks</span>
-                  <span class="badge">{{ workload.total_tasks.length }}</span>
+                  <span class="badge pointer" (click)="openTaskForDayModal(workload?.date, member, null, workload.total_tasks)">{{ workload.total_tasks.length }}</span>
 
                   <div class="time-tracking">
                     <i  class="material-icons ">update</i> &nbsp;&nbsp;
@@ -68,10 +68,10 @@
 
                   <div class="tasks-list">
                     <ul>
-                      <li><span class="badge overdue-task" *ngIf="workload?.date?.is_current_day">{{ workload.overdue_tasks.length }}</span></li>
-                      <li><span class="badge to-do-task">{{ workload.todo_tasks.length }}</span></li>
-                      <li><span class="badge in-progress-task">{{ workload.inprogress_tasks.length }}</span></li>
-                      <li><span class="badge badge-done">{{ workload.done_tasks.length }}</span></li>
+                      <li><span class="badge overdue-task pointer" *ngIf="workload?.date?.is_current_day" (click)="openTaskForDayModal(workload?.date, member, 'overdue', workload.overdue_tasks)">{{ workload.overdue_tasks.length }}</span></li>
+                      <li><span class="badge to-do-task pointer" (click)="openTaskForDayModal(workload?.date, member, 'to-do', workload.todo_tasks)">{{ workload.todo_tasks.length }}</span></li>
+                      <li><span class="badge in-progress-task pointer" (click)="openTaskForDayModal(workload?.date, member, 'in-progress', workload.inprogress_tasks)">{{ workload.inprogress_tasks.length }}</span></li>
+                      <li><span class="badge badge-done pointer" (click)="openTaskForDayModal(workload?.date, member, 'done', workload.done_tasks)">{{ workload.done_tasks.length }}</span></li>
                     </ul>
                   </div>
               </td>

@@ -1,10 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { connect } from 'http2';
 import moment from 'moment';
 import { ChatService } from 'src/shared/services/chat-service/chat.service';
-import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-// ;
 
 
 @Component({

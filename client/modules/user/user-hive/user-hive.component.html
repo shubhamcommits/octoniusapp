@@ -66,50 +66,6 @@
     </div>
 
     <div class="col">
-      <!--
-      <div class="form-group">
-        <div class="fieldUI mb-4">
-          <label for="position" class="cflabel" i18n="@@userHive.position">Position</label>
-        
-          <input type="text" [(ngModel)]="userData.current_position" class="form-control" name="position"
-            (blur)="saveProperty({'current_position': $event.target.value})">
-        </div>
-        
-        <div class="fieldUI mb-4">
-          <label for="joinDate" class="cflabel" i18n="@@userHive.joinedOn">Joined on:</label>
-        
-          <input type="date" [(ngModel)]="joinDate" class="form-control" name="joinDate"
-            (blur)="saveProperty({'company_join_date': $event.target.value})">
-        </div>
-
-        <div *ngFor="let cf of hrCustomFields" class="fieldUI mb-4">
-          <label [for]="cf._id" class="cflabel">{{ cf.name }}</label>
-
-          <mat-select ngDefaultControl *ngIf="isCurrentUser && cf.type == 'Select'" [(value)]="selectedHRCFValues[cf._id]"
-            (selectionChange)="onSelectEntityCustomFieldChange($event, cf._id)" appearance="fill" [name]="cf._id"
-            [disabled]="!isCurrentUser && cf.type == 'Select'">
-            <mat-select-trigger>{{ selectedHRCFValues[cf._id] }}</mat-select-trigger>
-            <mat-option *ngFor="let val of cf.values" [value]="val">{{ val }}</mat-option>
-          </mat-select>
-
-          <input type="number" *ngIf="isCurrentUser && cf.type == 'Number'" [name]="cf.name" [(ngModel)]="selectedHRCFValues[cf._id]" [disabled]="!isCurrentUser"
-            class="form-control" [value]="selectedHRCFValues[cf._id]"
-            (keyup.enter)="onInputEntityCustomFieldChange($event, cf._id)"
-            (blur)="onInputEntityCustomFieldChange($event, cf._id)" />
-
-          <input type="text" *ngIf="isCurrentUser && cf.type == 'Text'" [name]="cf.name" [(ngModel)]="selectedHRCFValues[cf._id]" [disabled]="!isCurrentUser"
-            class="form-control" [value]="selectedHRCFValues[cf._id]"
-            (keyup.enter)="onInputEntityCustomFieldChange($event, cf._id)"
-            (blur)="onInputEntityCustomFieldChange($event, cf._id)" />
-
-          <app-date-picker *ngIf="isCurrentUser && cf.type == 'Date'" class="form-control" style="height: 50px"
-            [styleClass]="'btn-group input-date'" [canEdit]="isCurrentUser"
-            [selectedDate]="formateDate(selectedHRCFValues[cf._id])"
-            (date)="onDateEntityCustomFieldChange($event, cf._id)">
-          </app-date-picker>
-        </div>
-      </div>
-      -->
       <div class="form-group">
         <div class="fieldUI mb-4">
           <label for="position" class="cflabel" i18n="@@userHive.position">Position</label>
@@ -121,7 +77,7 @@
           <label for="joinDate" class="cflabel" i18n="@@userHive.joinedOn">Joined on:</label>
       
           <app-date-picker class="form-control" style="height: 50px" [styleClass]="'btn-group input-date'"
-            [selectedDate]="formateDate(userData.company_join_date)" [canEdit]="false">
+            [selectedDate]="userData.company_join_date" [canEdit]="false">
           </app-date-picker>
         </div>
       
@@ -145,7 +101,7 @@
       
           <app-date-picker *ngIf="isCurrentUser && cf.type == 'Date'" class="form-control" style="height: 50px"
             [styleClass]="'btn-group input-date'" [canEdit]="isCurrentUser"
-            [selectedDate]="formateDate(selectedHRCFValues[cf._id])" [canEdit]="false">
+            [selectedDate]="selectedHRCFValues[cf._id]" [canEdit]="false">
           </app-date-picker>
         </div>
       </div>

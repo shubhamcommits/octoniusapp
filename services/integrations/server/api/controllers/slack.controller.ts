@@ -5,7 +5,7 @@ import e, { Response, Request, NextFunction } from "express";
 import FormData from 'form-data';
 import axios from "axios";
 import jwt from "jsonwebtoken";
-import moment from 'moment/moment'
+import { DateTime } from 'luxon';
 
 /*  ===============================
  *  -- Slack CONTROLLERS --
@@ -218,10 +218,6 @@ export class SlackController {
 
                     // If step_1 create and send the second Create Task popup to slack
                     if(callback == 'step_1') {
-
-                        // Current Date
-                        const currentDate = moment().format("YYYY-MM-DD");
-                        
                         //Sate value
                         const values = view.state.values;
 
@@ -398,7 +394,7 @@ export class SlackController {
                                     "type": "input",
                                     "element": {
                                         "type": "datepicker",
-                                        "initial_date": currentDate,
+                                        "initial_date": DateTime.now().toISODate(),
                                         "placeholder": {
                                             "type": "plain_text",
                                             "text": "Select a date",
@@ -483,7 +479,7 @@ export class SlackController {
                         var formData = new FormData();
 
                         // Postdata
-                        const postData = {"title": taskData.title,"content": taskData.description,"type":"task","_posted_by": userOctonius._id,"_group": taskData.groupId,"_content_mentions":[],"_assigned_to": user,"task":{"status":"to do","_column": column,"due_to": moment(date).format("YYYY-MM-DD")}};
+                        const postData = {"title": taskData.title,"content": taskData.description,"type":"task","_posted_by": userOctonius._id,"_group": taskData.groupId,"_content_mentions":[],"_assigned_to": user,"task":{"status":"to do","_column": column,"due_to": DateTime.fromISO(date).toISODate()}};
 
                         formData.append('post',JSON.stringify(postData));
 

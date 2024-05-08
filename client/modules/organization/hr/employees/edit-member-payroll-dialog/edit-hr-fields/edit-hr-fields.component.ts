@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -40,6 +41,7 @@ export class EditHRFieldsComponent implements OnInit {
   constructor(
     private hrService: HRService,
     private utilityService: UtilityService,
+    private datesService: DatesService,
     private userService: UserService,
     private injector: Injector
   ) {
@@ -173,7 +175,7 @@ export class EditHRFieldsComponent implements OnInit {
   // }
 
   saveJoinDate(valueToSave: any) {
-    this.memberData.company_join_date = valueToSave;
+    this.memberData.company_join_date = valueToSave.toISODate();
     this.saveProperty({ 'company_join_date': valueToSave });
   }
 
@@ -205,7 +207,7 @@ export class EditHRFieldsComponent implements OnInit {
   }
 
   onDateEntityCustomFieldChange(dateObject: any, cfId: string) {
-    this.savePayrollCustomField(cfId, dateObject.toDate());
+    this.savePayrollCustomField(cfId, dateObject.toISODate());
   }
 
   savePayrollCustomField(customFieldId: string, customFieldValue: any) {
@@ -292,7 +294,7 @@ export class EditHRFieldsComponent implements OnInit {
   }
 
   onDateEntityBenefitChange(dateObject: any, benefitId: string) {
-    this.savePayrollBenefit(benefitId, dateObject.toDate());
+    this.savePayrollBenefit(benefitId, dateObject.toISODate());
   }
 
   savePayrollBenefit(benefitId: string, benefitValue: any) {
@@ -343,6 +345,7 @@ export class EditHRFieldsComponent implements OnInit {
    */
 
   formateDate(date) {
-    return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
+    return this.datesService.formateDate(date);
+    // return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
   }
 }
