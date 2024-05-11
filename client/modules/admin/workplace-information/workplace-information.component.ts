@@ -19,6 +19,7 @@ export class WorkplaceInformationComponent implements OnInit {
 
   @Output() workspaceUpdatedEvent = new EventEmitter();
 
+  editCompanyName = false;
   editWorkspaceName = false;
 
   publicFunctions = new PublicFunctions(this.injector);
@@ -32,10 +33,28 @@ export class WorkplaceInformationComponent implements OnInit {
   ngOnInit() {
   }
 
+  async companyNameChange(event: any) {
+    await this.utilityService.asyncNotification($localize`:@@workplaceInformation.pleaseWaitUpdatingCompanyName:Please wait we are updating the company name...`, new Promise(async (resolve, reject) => {
+      await this.workspaceService.updateWorkspaceProperties(this.workspaceData._id, { company_name: event.target.value })
+        .then((res) => {
+          this.workspaceData.company_name = event.target.value;
+          this.workspaceUpdatedEvent.emit(res['workspace']);
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@workplaceInformation.detailsUpdated:Details updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@workplaceInformation.unableToUpdateDetails:Unable to update the details, please try again!`));
+        });
+    }));
+
+    this.editCompanyName = !this.editCompanyName;
+  }
+
   async workspaceNameChange(event: any) {
     await this.utilityService.asyncNotification($localize`:@@workplaceInformation.pleaseWaitUpdatingWorkplaceName:Please wait we are updating the workspace name...`, new Promise(async (resolve, reject) => {
       await this.workspaceService.updateWorkspaceProperties(this.workspaceData._id, { workspace_name: event.target.value })
         .then((res) => {
+          this.workspaceData.workspace_name = event.target.value;
           this.workspaceUpdatedEvent.emit(res['workspace']);
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@workplaceInformation.detailsUpdated:Details updated!`));

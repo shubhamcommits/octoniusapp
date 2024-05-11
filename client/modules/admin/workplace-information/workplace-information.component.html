@@ -10,7 +10,21 @@
             <hr />
             <p class="card-text" *ngIf="routerState === 'billing'">
               <span i18n="@@workplaceInformation.companyName">Company Name</span>:
-              {{ workspaceData?.company_name }}</p>
+              <span *ngIf="!editCompanyName">
+                    {{ workspaceData?.company_name }}
+                    <span (click)="editCompanyName = !editCompanyName" class="material-icons-outlined" style="cursor: pointer; font-size: 15px; margin-left: 10px; margin-bottom: 10px;">mode_edit</span>
+                </span>
+                <!-- Company Name Input starts -->
+                <input *ngIf="editCompanyName"
+                    type="text"
+                    name="companyName"
+                    placeholder="✍🏻 Company Name"
+                    [ngModel]="workspaceData?.company_name"
+                    (blur)="companyNameChange($event)"
+                    (keyup.enter)="companyNameChange($event)"
+                    (keyup.esc)="editCompanyName = false" />
+                <!-- Company Name Input ends -->
+            </p>
             <p class="card-text">
                 <span i18n="@@workplaceInformation.workspaceName">Workspace Name</span>:
                 <span *ngIf="!editWorkspaceName">
@@ -24,7 +38,8 @@
                     placeholder="✍🏻 Workspace Name"
                     [ngModel]="workspaceData?.workspace_name"
                     (blur)="workspaceNameChange($event)"
-                    (keyup.enter)="workspaceNameChange($event)" />
+                    (keyup.enter)="workspaceNameChange($event)"
+                    (keyup.esc)="editWorkspaceName = false" />
                 <!-- Workspace Name Input ends -->
             </p>
             <p class="card-text">
