@@ -66,6 +66,7 @@ export class UserAvatarComponent implements OnChanges {
       this.showInitials = false;
     } else if (!!this.userData) {
       this.showInitials = true;
+      this.tooltip = this.userData.first_name + ' ' + this.userData.last_name;
       this.createInititals();
     } else {
       this.src$.next(this.photoUrl);
