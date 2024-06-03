@@ -25,6 +25,8 @@ export class UserAvatarComponent implements OnChanges {
 
   workspaceData;
 
+  backgroundColor;
+
   onErrorUrl: string = '';
 
   private src$ = new BehaviorSubject<string>(this.photoUrl);
@@ -118,7 +120,47 @@ export class UserAvatarComponent implements OnChanges {
       }
     }
 
+    // this.backgroundColor = this.backgroundColors[Math.floor(Math.random() * this.backgroundColors.length)];
+    this.generateBGColor(name);
+
     this.initials = initials;
+  }
+
+  generateBGColor(name: string) {
+    const hRange = [0, 360];
+    const sRange = [0, 100];
+    const lRange = [0, 100];
+
+    const hash = this.getHashOfString(name);
+    const h = this.normalizeHash(hash, hRange[0], hRange[1]);
+    const s = this.normalizeHash(hash, sRange[0], sRange[1]);
+    const l = this.normalizeHash(hash, lRange[0], lRange[1]);
+
+    this.backgroundColor = this.hslToHex(h, s, l);
+  }
+
+  getHashOfString(str: string) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    hash = Math.abs(hash);
+    return hash;
+  }
+
+  normalizeHash(hash: number, min: number, max: number) {
+    return Math.floor((hash % (max - min)) + min);
+  }
+
+  hslToHex(h, s, l) {
+    l /= 100;
+    const a = s * Math.min(l, 1 - l) / 100;
+    const f = n => {
+      const k = (n + h / 30) % 12;
+      const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+      return Math.round(255 * color).toString(16).padStart(2, '0');   // convert to Hex and prefix "0" if needed
+    };
+    return `#${f(0)}${f(8)}${f(4)}`;
   }
 
   hideLoader() {

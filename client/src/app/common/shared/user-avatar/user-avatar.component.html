@@ -11,6 +11,6 @@
   </span>
 </span>
 
-<span *ngIf="showInitials" class="circle">
+<span *ngIf="showInitials" class="circle" [ngStyle]="{'background-color' : backgroundColor}">
   {{ initials }}
 </span>
