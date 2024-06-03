@@ -10,7 +10,7 @@
         <div class="col-md-6">
           <app-secured-image
               [imgURL]="member?.profile_pic"
-              [service]="'user'"
+              [service]="'user'" [userData]="member"
               [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
               [styleClass]="'feed-avatar'"
               style="margin-right:15px; float: left;"></app-secured-image>

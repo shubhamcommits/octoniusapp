@@ -37,6 +37,7 @@
                     <app-secured-image
                       [imgURL]="member?.profile_pic"
                       [service]="'user'"
+                      [userData]="member"
                       [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
                       [styleClass]="'ml-2 feed-avatar'"
                       (click)="openMeberBusinessCard(member?._id)"></app-secured-image>

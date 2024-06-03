@@ -48,7 +48,7 @@
         <div class="assignee">
           <app-secured-image
             [imgURL]="approval?._assigned_to?.profile_pic"
-            [service]="'user'"
+            [service]="'user'" [userData]="approval?._assigned_to"
             [workspaceId]="workspaceData?._id"
             [alt]="approval?._assigned_to?.first_name + ' ' + approval?._assigned_to?.last_name"
             [styleClass]="'feed-avatar-small'"

@@ -5,7 +5,7 @@
 
               <app-secured-image
                   [imgURL]="comment?._commented_by?.profile_pic"
-                  [service]="'user'"
+                  [service]="'user'" [userData]="comment?._commented_by"
                   [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
                   [styleClass]="'feed-avatar'"></app-secured-image>
             </div>

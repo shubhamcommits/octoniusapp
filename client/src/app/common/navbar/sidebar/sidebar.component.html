@@ -150,13 +150,14 @@
 
             <li>
                 <!-- USER PROFILE BADGE STARTS -->
-                <a class="nav-link" *ngIf="this.userData"
+                <a class="nav-link" *ngIf="userData"
                   [routerLink]="['/dashboard', 'user', 'profile']"
                   routerLinkActive="active"
                   (click)="changeState('profile')">
                     <app-secured-image
                         [imgURL]="userData?.profile_pic"
                         [service]="'user'"
+                        [userData]="userData"
                         [workspaceId]="workspaceData?._id"
                         [styleClass]="'avatar'"></app-secured-image>
                     <span i18n="@@sidebar.myAccount">My Account</span>

@@ -82,6 +82,7 @@
           <app-secured-image
             [imgURL]="member?.profile_pic"
             [service]="'user'"
+            [userData]="member"
             [workspaceId]="workplaceData?._id"
             [tooltip]="member?.first_name + ' ' + member?.last_name"
             [styleClass]="'feed-avatar'"

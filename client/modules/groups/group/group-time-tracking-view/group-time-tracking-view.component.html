@@ -118,6 +118,7 @@
               <mat-icon *ngIf="row.reduced">expand_more</mat-icon>
               &nbsp;
               <app-secured-image [imgURL]="row?._user?.profile_pic" [service]="'user'"
+                [userData]="row?._user"
                 [workspaceId]="(userData?._workspace?._id || userData?._workspace)" [styleClass]="'avatar'"></app-secured-image>
               <span>{{ row.userName }}</span>
 

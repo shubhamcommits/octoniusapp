@@ -424,6 +424,7 @@
               <app-secured-image
                 [imgURL]="lastAssignedBy.profile_pic"
                 [service]="'user'"
+                [userData]="lastAssignedBy"
                 [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
                 [styleClass]="'feed-avatar-small'"
                 style="float: left; cursor: auto;"></app-secured-image>
@@ -440,6 +441,7 @@
               <app-secured-image *ngIf="postData && postData?._posted_by"
                 [imgURL]="postData?._posted_by?.profile_pic"
                 [service]="'user'"
+                [userData]="postData?._posted_by"
                 [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
                 [styleClass]="'feed-avatar-small'"
                 style="float: left; cursor: auto;"></app-secured-image>

@@ -25,6 +25,7 @@ export class SecuredImageComponent implements OnChanges  {
   @Input() inlineStyle: string = ''; // inline styles
   @Input() noAuth: boolean = false; // in case we need a work around for security (only valid for selecting workplace because the user is not logged in yet)
   @Input() workspaceId: string;
+  @Input() userData;
 
   onErrorUrl: string = '';
 
@@ -105,18 +106,18 @@ export class SecuredImageComponent implements OnChanges  {
         this.onErrorUrl = "assets/images/icon-new-group.svg";
         break;
       case 'user':
-        if(!this.imgURL || this.imgURL == 'undefined' || this.isLocalImg || !this.workspaceId) {
-          this.imgURL = "assets/images/user.png";
-          this.isLocalImg = true;
-        }
+        // if(!this.imgURL || this.imgURL == 'undefined' || this.isLocalImg || !this.workspaceId) {
+        //   this.imgURL = "assets/images/user.png";
+        //   this.isLocalImg = true;
+        // }
 
-        if (!this.isLocalImg && this.imgURL.indexOf(environment.UTILITIES_USERS_UPLOADS) == -1) {
-          this.src$.next(environment.UTILITIES_USERS_UPLOADS + '/' + this.workspaceId + '/' + this.imgURL);
-        } else {
-          this.src$.next(this.imgURL);
-        }
+        // if (!this.isLocalImg && this.imgURL.indexOf(environment.UTILITIES_USERS_UPLOADS) == -1) {
+        //   this.src$.next(environment.UTILITIES_USERS_UPLOADS + '/' + this.workspaceId + '/' + this.imgURL);
+        // } else {
+        //   this.src$.next(this.imgURL);
+        // }
 
-        this.onErrorUrl = "assets/images/user.png";
+        // this.onErrorUrl = "assets/images/user.png";
         break;
       case 'flamingo':
           if(!this.imgURL || this.imgURL == 'undefined' || this.isLocalImg || !this.workspaceId) {

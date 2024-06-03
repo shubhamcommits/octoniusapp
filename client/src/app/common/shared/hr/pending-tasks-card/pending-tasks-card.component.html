@@ -12,7 +12,7 @@
 			<div *ngFor="let task of pendingTasks">
 				<div *ngIf="task.type == 'hive'">
 					<app-secured-image [imgURL]="task._owner?.profile_pic" [service]="'user'" [workspaceId]="workspaceData?._id"
-						[styleClass]="'mr-3 feed-avatar-small'" [inlineStyle]="'cursor: default;'"></app-secured-image>
+						[userData]="task._owner" [styleClass]="'mr-3 feed-avatar-small'" [inlineStyle]="'cursor: default;'"></app-secured-image>
 			
 					{{ task._owner?.first_name }} {{ task._owner?.last_name }}
 

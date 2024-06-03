@@ -160,3 +160,39 @@
 .pointer {
   cursor: pointer;
 }
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.assignee-avatar {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 5px 10px;
+}
+
+.feed-avatar-small {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin: 5px 10px;
+}
+
+.group-avatar {
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+
+.peoplecard-avatar {
+  width: 120px !important;
+  height: 120px !important;
+  border-radius: 50% !important;
+  object-fit: cover;
+}

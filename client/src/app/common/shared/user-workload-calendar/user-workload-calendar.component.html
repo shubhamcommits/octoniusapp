@@ -110,7 +110,7 @@
             <td>{{ holiday.num_days }}</td>
             <td>
               <app-secured-image [imgURL]="holiday?._approval_manager?.profile_pic" [service]="'user'"
-                [workspaceId]="workspaceData?._id" [styleClass]="'feed-avatar-small'"></app-secured-image>
+                [userData]="holiday?._approval_manager" [workspaceId]="workspaceData?._id" [styleClass]="'feed-avatar-small'"></app-secured-image>
               {{ holiday?._approval_manager?.first_name }} {{ holiday?._approval_manager?.last_name }}
             </td>
         
@@ -166,7 +166,7 @@
             <td>{{ holiday.num_days }}</td>
             <td>
               <app-secured-image [imgURL]="holiday?._approval_manager?.profile_pic" [service]="'user'"
-                [workspaceId]="workspaceData?._id" [styleClass]="'feed-avatar-small'"></app-secured-image>
+                [userData]="holiday?._approval_manager" [workspaceId]="workspaceData?._id" [styleClass]="'feed-avatar-small'"></app-secured-image>
               {{ holiday?._approval_manager?.first_name }} {{ holiday?._approval_manager?.last_name }}
             </td>
         

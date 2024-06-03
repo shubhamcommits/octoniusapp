@@ -28,6 +28,7 @@
                         <app-secured-image
                             [imgURL]="notifications?._actor?.profile_pic"
                             [service]="'user'"
+                            [userData]="notifications?._actor"
                             [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
                             [styleClass]="'topnav-avatar'"
                             style="margin-right:15px"></app-secured-image>
@@ -67,6 +68,7 @@
                         <app-secured-image
                             [imgURL]="notifications?._actor?.profile_pic"
                             [service]="'user'"
+                            [userData]="notifications?._actor"
                             [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
                             [styleClass]="'topnav-avatar'"
                             style="margin-right:15px"></app-secured-image>

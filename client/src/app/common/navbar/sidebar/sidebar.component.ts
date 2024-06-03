@@ -85,6 +85,8 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
         this.userPortfolios = to;
         await this.mapGroupsAndPortfoliosAndCollections();
       }
+
+      await this.initProperties();
     }
   }
 
@@ -99,7 +101,6 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
     this.userData = await this.publicFunctions.getCurrentUser();
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     this.accountData = await this.publicFunctions.getCurrentAccount();
-
     await this.getUserWorkspaces();
 
     if (!this.isIndividualSubscription) {
@@ -130,6 +131,7 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
         });
       }
     }
+
     // Sometimes the favorites are not populated
     for (let i = 0; i < this.userPortfolios.length; i++) {
       if (!this.userPortfolios[i]?._id) {
@@ -138,6 +140,7 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
         });
       }
     }
+
     // Sometimes the favorites are not populated
     for (let i = 0; i < this.userCollections.length; i++) {
       if (!this.userCollections[i]?._id) {

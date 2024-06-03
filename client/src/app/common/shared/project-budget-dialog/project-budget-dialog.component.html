@@ -129,6 +129,7 @@
           <app-secured-image
             [imgURL]="expense?._user?.profile_pic"
             [service]="'user'"
+            [userData]="expense?._user"
             [workspaceId]="(currentUser?._workspace?._id || currentUser?._workspace)"
             [styleClass]="'avatar'"
             style="margin-right:15px"></app-secured-image>
@@ -158,6 +159,7 @@
           <app-secured-image
             [imgURL]="expense?._user?.profile_pic"
             [service]="'user'"
+            [userData]="expense?._user"
             [workspaceId]="(currentUser?._workspace?._id || currentUser?._workspace)"
             [styleClass]="'avatar'"
             style="margin-right:15px"></app-secured-image>

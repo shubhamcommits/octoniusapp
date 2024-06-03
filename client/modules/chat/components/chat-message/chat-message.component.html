@@ -9,7 +9,8 @@
 				<app-secured-image [imgURL]="message?._posted_by?.profile_pic" [service]="'user'"
 				 	[workspaceId]="(userData?._workspace?._id || userData?._workspace)"
 					[alt]="message?._posted_by?.first_name + ' ' + message?._posted_by?.last_name" [styleClass]="'feed-avatar-small'"
-					[tooltip]="message?._posted_by?.first_name + ' ' + message?._posted_by?.last_name">
+					[tooltip]="message?._posted_by?.first_name + ' ' + message?._posted_by?.last_name"
+					[userData]="message?._posted_by">
 				</app-secured-image>
 			</div>
 
