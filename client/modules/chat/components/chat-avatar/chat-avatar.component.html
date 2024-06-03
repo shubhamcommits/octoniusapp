@@ -1,6 +1,10 @@
 <app-secured-image *ngIf="chatData?._group" [imgURL]="avatarURL" [service]="'group'" [workspaceId]="(userData?._workspace?._id || userData?._workspace)" [styleClass]="'avatar'"></app-secured-image>
 
-<app-secured-image *ngIf="!chatData?._group && members && members?.length == 1" [imgURL]="avatarURL" [service]="'user'" [workspaceId]="(userData?._workspace?._id || userData?._workspace)" [styleClass]="'avatar'"></app-secured-image>
+<app-secured-image *ngIf="!chatData?._group && members && members?.length == 1"
+  [imgURL]="avatarURL" [service]="'user'"
+  [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
+  [userData]="this.members[0]?._user"
+  [styleClass]="'avatar'"></app-secured-image>
 <!-- <ion-badge *ngIf="!chatData?._group && members && members.length > 1">
   {{ members?.length -1 }}+
 </ion-badge> -->

@@ -12,6 +12,7 @@
         <app-secured-image *ngIf="userData"
           [imgURL]="userData?.profile_pic"
           [service]="'user'"
+          [userData]="userData"
           [workspaceId]="workspaceData?._id"></app-secured-image>
         <app-crop-image class="container" [resizeToWidth]="300" [cropperMinWidth]="300" (outputImage)="getCroppedImage($event)"></app-crop-image>
     </div>

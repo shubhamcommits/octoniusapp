@@ -19,12 +19,11 @@
     [style]="inlineStyle" />
 </ng-template>
 -->
-
-<span *ngIf="isLoading">
+<span *ngIf="isLoading && service !== 'user'">
   <img [src]="onErrorUrl" [style]="inlineStyle" class="{{ styleClass }}" onerror="this.src=this.onErrorUrl" alt="{{ alt }}" />
 </span>
 
-<span [ngStyle]="{'display': (isLoading) ? 'none' : '' }">
+<span *ngIf="service !== 'user'" [ngStyle]="{'display': (isLoading) ? 'none' : '' }">
   <img *ngIf="dataUrl$ | async as url"
     [src]="url"
     [style]="inlineStyle"
@@ -35,3 +34,8 @@
     onerror="this.src=this.onErrorUrl"
     (load)="hideLoader()" (error)="hideLoader()" />
 </span>
+
+<app-user-avatar *ngIf="service === 'user'" [photoUrl]="imgURL"
+  [userData]="userData"
+  [tooltip]="tooltip" [placement]="placement" [alt]="alt" [inlineStyle]="inlineStyle" [noAuth]="noAuth"
+  [styleClass]="styleClass"></app-user-avatar>

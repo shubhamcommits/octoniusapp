@@ -18,6 +18,7 @@
     <app-secured-image *ngIf="group?._group?.group_name == 'personal'"
       [imgURL]="userData?.profile_pic"
       [service]="'user'"
+      [userData]="userData"
       [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
       [styleClass]="'mr-3 group-avatar'"></app-secured-image>
 

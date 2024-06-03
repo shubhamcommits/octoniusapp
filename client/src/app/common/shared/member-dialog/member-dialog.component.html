@@ -14,7 +14,7 @@
               <div class="card-block">
                   <app-secured-image
                     [imgURL]="userData?.profile_pic"
-                    [service]="'user'"
+                    [service]="'user'" [userData]="userData"
                     [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
                     [styleClass]="'peoplecard-avatar'"
                     [placement]="'below'"></app-secured-image>

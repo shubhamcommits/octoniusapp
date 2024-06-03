@@ -20,7 +20,7 @@
 
         <!-- My workplace avatar starts -->
         <app-secured-image *ngIf="userData && (myWorkplace || !groupData)" [imgURL]="userData?.profile_pic"
-          [service]="'user'" [workspaceId]="(userData?._workspace?._id || userData?._workspace)" [tooltip]="'This is your workplace'" [placement]="'right'"
+          [service]="'user'" [userData]="userData" [workspaceId]="(userData?._workspace?._id || userData?._workspace)" [tooltip]="'This is your workplace'" [placement]="'right'"
           [styleClass]="'mr-3 feed-avatar'"></app-secured-image>
         <!-- My Workplace avatar ends -->
 

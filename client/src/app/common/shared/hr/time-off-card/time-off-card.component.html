@@ -8,7 +8,7 @@
 			<div *ngFor="let member of membersOff">
 				<div>
 					<app-secured-image [imgURL]="member?.profile_pic" [service]="'user'"
-						[workspaceId]="workspaceData?._id"
+						[workspaceId]="workspaceData?._id" [userData]="member"
 						[styleClass]="'mr-3 feed-avatar-small'" [inlineStyle]="'cursor: default;'"></app-secured-image>
 
 					{{ member?.first_name }} {{ member?.last_name }} - 

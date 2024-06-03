@@ -85,6 +85,7 @@
                           [imgURL]="folder?._created_by?.profile_pic"
                           [service]="'user'"
                           [workspaceId]="workspaceId"
+                          [userData]="folder?._created_by"
                           [styleClass]="'mr-3 feed-avatar'">
                       </app-secured-image>
 
@@ -162,6 +163,7 @@
                           [imgURL]="file?._posted_by?.profile_pic"
                           [service]="'user'"
                           [workspaceId]="workspaceId"
+                          [userData]="file?._posted_by"
                           [styleClass]="'feed-avatar'">
                       </app-secured-image>
 

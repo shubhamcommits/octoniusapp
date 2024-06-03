@@ -36,6 +36,7 @@
             <app-secured-image *ngIf="notification?._actor"
               [imgURL]="notification?._actor?.profile_pic"
               [service]="'user'"
+              [userData]="notification?._actor"
               [workspaceId]="workspaceData?._id"
               [styleClass]="'avatar'"
               style="margin-right:15px"></app-secured-image>
@@ -43,6 +44,7 @@
             <app-secured-image *ngIf="!notification?._actor"
               [imgURL]="notification?._owner?.profile_pic"
               [service]="'user'"
+              [userData]="notification?._owner"
               [workspaceId]="workspaceData?._id"
               [styleClass]="'avatar'"
               style="margin-right:15px"></app-secured-image>
@@ -193,6 +195,7 @@
             <app-secured-image
               [imgURL]="notification?._actor?.profile_pic"
               [service]="'user'"
+              [userData]="notification?._actor"
               [workspaceId]="workspaceData?._id"
               [styleClass]="'avatar'"
               style="margin-right:15px"></app-secured-image>
@@ -285,6 +288,7 @@
             <app-secured-image
               [imgURL]="event?._posted_by?.profile_pic"
               [service]="'user'"
+              [userData]="event?._posted_by"
               [workspaceId]="workspaceData?._id"
               [styleClass]="'avatar'"
               style="margin-right:15px"></app-secured-image>
@@ -332,6 +336,7 @@
             <app-secured-image *ngIf="notification?._actor"
               [imgURL]="notification?._actor?.profile_pic"
               [service]="'user'"
+              [userData]="notification?._actor"
               [workspaceId]="workspaceData?._id"
               [styleClass]="'avatar'"
               style="margin-right:15px"></app-secured-image>
@@ -339,6 +344,7 @@
             <app-secured-image *ngIf="!notification?._actor"
               [imgURL]="notification?._owner?.profile_pic"
               [service]="'user'"
+              [userData]="notification?._owner"
               [workspaceId]="workspaceData?._id"
               [styleClass]="'avatar'"
               style="margin-right:15px"></app-secured-image>
@@ -409,7 +415,7 @@
             <tr *ngFor="let holiday of pendingHolidays; let index = index">
                 <td>
                     <app-secured-image [imgURL]="holiday?._user?.profile_pic" [service]="'user'" [inlineStyle]="'cursor: default;'"
-                        [workspaceId]="workspaceData?._id" [styleClass]="'feed-avatar-small'"></app-secured-image>
+                      [userData]="holiday?._user" [workspaceId]="workspaceData?._id" [styleClass]="'feed-avatar-small'"></app-secured-image>
                     {{ holiday?._user?.first_name }} {{ holiday?._user?.last_name }}
                 </td>
                 <td>{{ formateDate(holiday.start_date) }}</td>
@@ -463,7 +469,7 @@
         <div class="notification-item" *ngFor="let task of pendingHRTasks; let index = index">
           <div class="notification_actor">
             <app-secured-image [imgURL]="task?._owner?.profile_pic" [service]="'user'" [workspaceId]="workspaceData?._id"
-						  [styleClass]="'mr-3 feed-avatar-small'" ></app-secured-image>
+						  [userData]="task?._owner" [styleClass]="'mr-3 feed-avatar-small'" ></app-secured-image>
           </div>
 
           <div class="notification_title">

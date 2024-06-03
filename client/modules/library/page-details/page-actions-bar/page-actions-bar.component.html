@@ -4,6 +4,7 @@
     <app-secured-image *ngIf="isAuth"
       [imgURL]="pageData?._created_by?.profile_pic"
       [service]="'user'"
+      [userData]="pageData?._created_by"
       [workspaceId]="workspaceData?._id"
       [styleClass]="'feed-avatar-small'"
       style="float: left; cursor: auto;"></app-secured-image>
@@ -11,6 +12,7 @@
     <app-secured-image *ngIf="!isAuth"
       [imgURL]="pageData?._created_by?.profile_pic"
       [service]="'user'"
+      [userData]="pageData?._created_by"
       [workspaceId]="workspaceData?._id"
       [styleClass]="'feed-avatar-small'"
       style="float: left; cursor: auto;"

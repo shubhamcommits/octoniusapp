@@ -4,6 +4,7 @@
     <app-secured-image *ngFor="let assignee of assigned_to"
       [imgURL]="assignee?.profile_pic"
       [service]="'user'"
+      [userData]="assignee"
       [workspaceId]="workspaceData?._id"
       [alt]="assignee?.first_name + ' ' + assignee?.last_name"
       [styleClass]="'feed-avatar-small'"
@@ -12,7 +13,7 @@
   </div>
 
   <div *ngIf="type == 'time-tracking' && !!assigned_to && !!assigned_to[0]" (click)="unassign(assigned_to[0]._id)" style="cursor: pointer;">
-    <app-secured-image [imgURL]="assigned_to[0]?.profile_pic" [service]="'user'"
+    <app-secured-image [imgURL]="assigned_to[0]?.profile_pic" [service]="'user'" [userData]="assigned_to[0]"
       [workspaceId]="workspaceData?._id" [alt]="assigned_to[0]?.first_name + ' ' + assigned_to[0]?.last_name"
       [styleClass]="'feed-avatar-small'" [tooltip]="assigned_to[0]?.first_name + ' ' + assigned_to[0]?.last_name"
       (click)="unassign(assigned_to[0]._id)"></app-secured-image>
@@ -24,7 +25,7 @@
     <span *ngFor="let assignee of assigned_to">
       <app-secured-image style="width: 24px; height: 24px; margin: 0 10px;"
         [imgURL]="(assignee?._user?.profile_pic || assignee?.profile_pic)" [service]="'user'"
-        [workspaceId]="workspaceData?._id"
+        [workspaceId]="workspaceData?._id" [userData]="assignee"
         [alt]="(assignee?._user?.first_name || assignee?.first_name) + ' ' + (assignee?._user?.last_name || assignee?.last_name)"
         [styleClass]="'feed-avatar-small'" [inlineStyle]="'margin: 0px;'"
         [tooltip]="(assignee?._user?.first_name || assignee?.first_name) + ' ' + (assignee?._user?.last_name || assignee?.last_name)"

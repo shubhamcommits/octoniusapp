@@ -20,6 +20,7 @@ export class MemberListMenuComponent implements OnInit {
 
   searchText = '';
   picsUrl:string='';
+  member;
 
   workspaceData;
 
@@ -52,6 +53,7 @@ export class MemberListMenuComponent implements OnInit {
     this.groupMembers.forEach(element => {
       if(element._id==selectedMemberId){
         this.picsUrl = this.baseUrl + '/' + this.workspaceId + '/' +element.profile_pic;
+        this.member = element;
       }
     });
     this.userSelctionEmitter.emit(selectedMemberId);

@@ -3,6 +3,7 @@
         <app-secured-image
           [imgURL]="userData?.profile_pic"
           [service]="'user'"
+            [userData]="userData"
           [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
           [styleClass]="'mr-3 feed-avatar'"></app-secured-image>
         <div class="media-body">

@@ -562,7 +562,7 @@ export class FolioEditorComponent implements AfterViewInit {
     if (!this.commentsMetaData) {
       this.commentsMetaData = [];
     }
-    this.commentsMetaData.push({ range: this.range, comment: this.enteredComment, userId: this.userData._id, user_name : userName, profile_pic : this.userData.profile_pic });
+    this.commentsMetaData.push({ range: this.range, comment: this.enteredComment, userData: this.userData, userId: this.userData._id, user_name : userName, profile_pic : this.userData.profile_pic });
     this.commentsMetaData = await this.sortComments();
     this.quill.formatText(this.range.index, this.range.length, {
       background: "#fff72b",

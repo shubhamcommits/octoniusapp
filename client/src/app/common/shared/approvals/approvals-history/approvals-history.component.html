@@ -2,7 +2,7 @@
   <div class="notification_actor">
     <app-secured-image
       [imgURL]="approval?._actor?.profile_pic"
-      [service]="'user'"
+      [service]="'user'" [userData]="approval?._actor"
       [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
       [styleClass]="'avatar'"
       style="margin-right:15px"></app-secured-image>

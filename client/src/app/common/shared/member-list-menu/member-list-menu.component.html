@@ -6,6 +6,7 @@
     <app-secured-image *ngIf="filterfor==='users'"
       [imgURL]="picsUrl"
       [service]="'user'"
+      [userData]="member"
       [workspaceId]="workspaceId"
       [styleClass]="'feed-avatar'"></app-secured-image>
 </button>

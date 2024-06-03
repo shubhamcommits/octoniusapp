@@ -5,6 +5,7 @@
         (click)="openFullscreenModal(person?._id)"
         [imgURL]="person?.profile_pic"
         [service]="'user'"
+        [userData]="person"
         [workspaceId]="workspaceData?._id"
         [styleClass]="'feed-avatar-small'"></app-secured-image>
   </div>

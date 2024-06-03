@@ -121,7 +121,7 @@
           <div *ngIf="fileData?._posted_by" id="avatar-assignee" style="margin-bottom: 30px;">
             <app-secured-image
               [imgURL]="fileData?._posted_by?.profile_pic"
-              [service]="'user'"
+              [service]="'user'" [userData]="fileData?._posted_by"
               [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
               [styleClass]="'feed-avatar-small'"
               style="float: left; cursor: auto;"></app-secured-image>
