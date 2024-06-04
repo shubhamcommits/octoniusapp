@@ -7,16 +7,15 @@ import { map, switchMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-user-avatar',
-  templateUrl: './user-avatar.component.html',
-  styleUrls: ['./user-avatar.component.scss']
+  selector: 'app-avatar',
+  templateUrl: './avatar.component.html',
+  styleUrls: ['./avatar.component.scss']
 })
-export class UserAvatarComponent implements OnChanges {
+export class AvatarComponent implements OnChanges {
 
   @Input() public photoUrl: string = '';
   @Input() public userData;
   @Input() public styleClass: string;
-
   @Input() tooltip: string = ''; // tooltip
   @Input() placement: string = 'right'; // placement
   @Input() alt: string = ''; // alternative text
@@ -56,6 +55,11 @@ export class UserAvatarComponent implements OnChanges {
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     this.isLocalImg = !!this.photoUrl && this.photoUrl.indexOf('assets/images') != -1;
 
+    if (!this.styleClass) {
+      this.styleClass = 'circle-default-size';
+    }
+    this.styleClass += ' circle';
+
     if(!this.photoUrl || this.photoUrl == 'undefined' || this.isLocalImg) {
       this.photoUrl = "assets/images/user.png";
       this.isLocalImg = true;
@@ -66,8 +70,11 @@ export class UserAvatarComponent implements OnChanges {
       this.showInitials = false;
     } else if (!!this.userData) {
       this.showInitials = true;
-      this.tooltip = this.userData.first_name + ' ' + this.userData.last_name;
-      this.createInititals();
+      const name = (this.userData?.first_name || '') + ' ' + (this.userData?.last_name || '')
+      this.tooltip = name;
+
+      await this.createInititals(name);
+      await this.generateBGColor(name);
     } else {
       this.src$.next(this.photoUrl);
       this.showInitials = false;
@@ -104,9 +111,8 @@ export class UserAvatarComponent implements OnChanges {
     }
   }
 
-  private createInititals(): void {
+  private createInititals(name: string): void {
     let initials = "";
-    const name = this.userData.first_name + ' ' + this.userData.last_name;
     for (let i = 0; i < name.length; i++) {
       if (name.charAt(i) === ' ') {
         continue;
@@ -120,9 +126,6 @@ export class UserAvatarComponent implements OnChanges {
         }
       }
     }
-
-    // this.backgroundColor = this.backgroundColors[Math.floor(Math.random() * this.backgroundColors.length)];
-    this.generateBGColor(name);
 
     this.initials = initials;
   }
