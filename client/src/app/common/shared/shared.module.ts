@@ -145,7 +145,7 @@ import { ResourceActivityComponent } from './resources-details-dialog/resource-a
 import { ResourceActivityListComponent } from './resources-details-dialog/resource-activity/resource-activity-list/resource-activity-list.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { UserTaskForDayDialogComponent } from './posts/user-task-for-day-dialog/user-task-for-day-dialog.component';
-import { UserAvatarComponent } from './user-avatar/user-avatar.component';
+import { AvatarComponent } from './avatar/avatar.component';
 
 @NgModule({
     declarations: [
@@ -267,7 +267,7 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
         ResourceActivityComponent,
         ResourceActivityListComponent,
         UserTaskForDayDialogComponent,
-        UserAvatarComponent,
+        AvatarComponent,
     ],
     imports: [
         CommonModule,
@@ -398,7 +398,7 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
         ResourceActivityComponent,
         ResourceActivityListComponent,
         UserTaskForDayDialogComponent,
-        UserAvatarComponent,
+        AvatarComponent,
     ],
     providers: [
         { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },

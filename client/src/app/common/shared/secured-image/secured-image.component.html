@@ -35,7 +35,8 @@
     (load)="hideLoader()" (error)="hideLoader()" />
 </span>
 
-<app-user-avatar *ngIf="service === 'user'" [photoUrl]="imgURL"
-  [userData]="userData"
-  [tooltip]="tooltip" [placement]="placement" [alt]="alt" [inlineStyle]="inlineStyle" [noAuth]="noAuth"
-  [styleClass]="styleClass"></app-user-avatar>
+<app-avatar *ngIf="service === 'user'"
+  [photoUrl]="imgURL" [userData]="userData"
+  [tooltip]="tooltip" [placement]="placement" [alt]="alt"
+  [styleClass]="styleClass" [inlineStyle]="inlineStyle"
+  [noAuth]="noAuth"></app-avatar>

@@ -11,6 +11,9 @@
   </span>
 </span>
 
-<span *ngIf="showInitials" class="circle" [ngStyle]="{'background-color' : backgroundColor}">
+<span *ngIf="showInitials"
+  [ngClass]="styleClass"
+  [ngStyle]="{'background-color' : backgroundColor}"
+  matTooltipPosition="{{ placement }}" matTooltip="{{ tooltip }}">
   {{ initials }}
 </span>
