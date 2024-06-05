@@ -16,7 +16,7 @@
           </h1>
           
           <!-- SELECT A WORKPLACE -->
-          <div class="form-group" *ngIf="!!allowedWorkspaces && allowedWorkspaces.length > 0"
+          <div class="form-group" *ngIf="is_on_premise_environment && !!allowedWorkspaces && allowedWorkspaces.length > 0"
               style="width: 100%; margin:50px auto; padding-bottom: 50px; align-items: center; border-bottom: 1px solid #005fd521;">
             <span class="muted" i18n="@@authJoinWorkplace.workplacesDomainAllowed">This is a list of workplaces your email is already allowed to join. Select the one you want to join and make sure you know the access code for it. It is usually found in the invitation email or directly communicated to you by your Administrator.</span>
             <div *ngFor="let workspace of allowedWorkspaces" class="workplace-cells"

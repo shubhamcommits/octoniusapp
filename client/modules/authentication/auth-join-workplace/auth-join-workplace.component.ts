@@ -1,8 +1,6 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SlowBuffer } from 'buffer';
 import { PublicFunctions } from 'modules/public.functions';
-import { ThemeService } from 'ng2-charts';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
@@ -15,6 +13,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 })
 export class AuthJoinWorkplaceComponent implements OnInit {
 
+  is_on_premise_environment = !(environment.clientUrl == 'app.octonius.com' || environment.clientUrl == 'v1.apps.octonius.com' || environment.clientUrl.includes('localhost'))
   allowedWorkspaces = [];
   selectedWorkplaceId = '';
 
