@@ -882,20 +882,12 @@
           <context context-type="linenumber">230</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workspaceIntegrationsDialog.ms_365_online_host" datatype="html">
-        <source>Online Host:</source>
-        <target state="needs-translation"/>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component.html</context>
-          <context context-type="linenumber">233</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="workspaceIntegrationsDialog.save" datatype="html">
         <source> Save </source>
         <target state="translated">ذخیره </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component.html</context>
-          <context context-type="linenumber">243,245</context>
+          <context context-type="linenumber">245,247</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceIntegrationsDialog.pleaseWaitsavingSettings" datatype="html">
@@ -1623,7 +1615,7 @@
         <target state="translated">محدوده</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.html</context>
-          <context context-type="linenumber">15</context>
+          <context context-type="linenumber">29</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceInformation.ownerName" datatype="html">
@@ -1631,7 +1623,7 @@
         <target state="translated">نام صاحب (مالک)</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.html</context>
-          <context context-type="linenumber">31</context>
+          <context context-type="linenumber">46</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceInformation.totalMembers" datatype="html">
@@ -1639,7 +1631,7 @@
         <target state="translated">کل اعضا</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.html</context>
-          <context context-type="linenumber">34</context>
+          <context context-type="linenumber">49</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceInformation.companyMembers" datatype="html">
@@ -1647,7 +1639,7 @@
         <target state="translated">اعضای شرکت</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.html</context>
-          <context context-type="linenumber">37</context>
+          <context context-type="linenumber">52</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceInformation.invitedGuests" datatype="html">
@@ -1655,7 +1647,7 @@
         <target state="translated">مهمانان دعوت شده</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.html</context>
-          <context context-type="linenumber">40</context>
+          <context context-type="linenumber">55</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceInformation.inviteAccessCode" datatype="html">
@@ -1663,15 +1655,15 @@
         <target state="translated">کد دسترسی دعوت کنید</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.html</context>
-          <context context-type="linenumber">43</context>
+          <context context-type="linenumber">58</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workplaceInformation.pleaseWaitUpdatingWorkplaceName" datatype="html">
-        <source>Please wait we are updating the workspace name...</source>
-        <target state="translated">لطفا صبر کنید ما در حال به روز رسانی نام فضای کاری هستیم...</target>
+      <trans-unit id="workplaceInformation.pleaseWaitUpdatingCompanyName" datatype="html">
+        <source>Please wait we are updating the company name...</source>
+        <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.ts</context>
-          <context context-type="linenumber">36</context>
+          <context context-type="linenumber">37</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceInformation.detailsUpdated" datatype="html">
@@ -1679,7 +1671,11 @@
         <target state="translated">جزئیات به روز شد!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.ts</context>
-          <context context-type="linenumber">41</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.ts</context>
+          <context context-type="linenumber">60</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceInformation.unableToUpdateDetails" datatype="html">
@@ -1687,7 +1683,19 @@
         <target state="translated">نمی توان جزئیات را به روز کرد، لطفا دوباره امتحان کنید!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.ts</context>
-          <context context-type="linenumber">44</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.ts</context>
+          <context context-type="linenumber">63</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workplaceInformation.pleaseWaitUpdatingWorkplaceName" datatype="html">
+        <source>Please wait we are updating the workspace name...</source>
+        <target state="translated">لطفا صبر کنید ما در حال به روز رسانی نام فضای کاری هستیم...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.ts</context>
+          <context context-type="linenumber">54</context>
         </context-group>
       </trans-unit>
       <trans-unit id="authJoinWorkplace.joinAnotherWorkspace" datatype="html">
@@ -1743,11 +1751,11 @@
         <target state="translated">یک خطای غیرمنتظره رخ داده است، لطفاً بعداً دوباره امتحان کنید!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
-          <context context-type="linenumber">66</context>
+          <context context-type="linenumber">65</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
-          <context context-type="linenumber">113</context>
+          <context context-type="linenumber">112</context>
         </context-group>
       </trans-unit>
       <trans-unit id="authJoinWorkplace.nameCannotBeEmpty" datatype="html">
@@ -1755,7 +1763,7 @@
         <target state="translated">نام محل کار نمی تواند خالی باشد!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
-          <context context-type="linenumber">73</context>
+          <context context-type="linenumber">72</context>
         </context-group>
       </trans-unit>
       <trans-unit id="authJoinWorkplace.nameIsCorrect" datatype="html">
@@ -1763,7 +1771,7 @@
         <target state="translated">این نام محل کار درست است!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
-          <context context-type="linenumber">88</context>
+          <context context-type="linenumber">87</context>
         </context-group>
       </trans-unit>
       <trans-unit id="authJoinWorkplace.insufficientData" datatype="html">
@@ -1771,7 +1779,7 @@
         <target state="translated">داده های ناکافی یا نادرست، لطفاً تمام فیلدها را به درستی پر کنید!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
-          <context context-type="linenumber">101</context>
+          <context context-type="linenumber">100</context>
         </context-group>
       </trans-unit>
       <trans-unit id="authJoinWorkplace.pleaseWaitSettingUp" datatype="html">
@@ -1779,7 +1787,7 @@
         <target state="translated">لطفاً منتظر بمانید تا محل کار و حساب جدید شما را تنظیم کنیم...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
-          <context context-type="linenumber">108</context>
+          <context context-type="linenumber">107</context>
         </context-group>
       </trans-unit>
       <trans-unit id="authJoinWorkplace.welcomeToWorkplace" datatype="html">
@@ -1787,7 +1795,7 @@
         <target state="translated">سلام <x id="PH" equiv-text="res['user']['first_name']"/>، به محل کار جدید خود خوش آمدید!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
-          <context context-type="linenumber">129</context>
+          <context context-type="linenumber">128</context>
         </context-group>
       </trans-unit>
       <trans-unit id="authJoinWorkplace.oopsErrorOccuredSettingUp" datatype="html">
@@ -1795,7 +1803,7 @@
         <target state="translated">اوه هنگام تنظیم شما خطایی رخ داد، لطفاً دوباره امتحان کنید!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
-          <context context-type="linenumber">133</context>
+          <context context-type="linenumber">132</context>
         </context-group>
       </trans-unit>
       <trans-unit id="authNewWorkplace.createNewWorkspace" datatype="html">
@@ -2703,11 +2711,11 @@
         <target state="translated">کپی لینک</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
-          <context context-type="linenumber">96</context>
+          <context context-type="linenumber">97</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
-          <context context-type="linenumber">179</context>
+          <context context-type="linenumber">181</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.delete" datatype="html">
@@ -2715,11 +2723,11 @@
         <target state="translated">حذف</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
-          <context context-type="linenumber">101</context>
+          <context context-type="linenumber">102</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
-          <context context-type="linenumber">254</context>
+          <context context-type="linenumber">256</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/global-north-star-dialog/global-north-star-dialog.component.html</context>
@@ -2731,11 +2739,11 @@
         <target state="translated">انتقال به پوشه</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
-          <context context-type="linenumber">107</context>
+          <context context-type="linenumber">108</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
-          <context context-type="linenumber">204</context>
+          <context context-type="linenumber">206</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-details.component.html</context>
@@ -2751,11 +2759,11 @@
         <target state="translated">مجوزها</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
-          <context context-type="linenumber">119</context>
+          <context context-type="linenumber">120</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
-          <context context-type="linenumber">249</context>
+          <context context-type="linenumber">251</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.html</context>
@@ -2775,7 +2783,7 @@
         <target state="translated">فایل کمپین:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
-          <context context-type="linenumber">142</context>
+          <context context-type="linenumber">143</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.download" datatype="html">
@@ -2783,7 +2791,7 @@
         <target state="translated">دانلود</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
-          <context context-type="linenumber">174</context>
+          <context context-type="linenumber">176</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.moveToGroup" datatype="html">
@@ -2791,7 +2799,7 @@
         <target state="translated">انتقال به گروه</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
-          <context context-type="linenumber">191</context>
+          <context context-type="linenumber">193</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.copyFlamingo" datatype="html">
@@ -2799,7 +2807,7 @@
         <target state="translated">فلامینگو را کپی کنید</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
-          <context context-type="linenumber">216</context>
+          <context context-type="linenumber">218</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.view" datatype="html">
@@ -2807,7 +2815,7 @@
         <target state="translated">نمایش</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
-          <context context-type="linenumber">228</context>
+          <context context-type="linenumber">230</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.details" datatype="html">
@@ -2815,7 +2823,7 @@
         <target state="translated">جزئیات</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
-          <context context-type="linenumber">233</context>
+          <context context-type="linenumber">235</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.newVersion" datatype="html">
@@ -2823,7 +2831,7 @@
         <target state="translated">نسخه جدید</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
-          <context context-type="linenumber">238</context>
+          <context context-type="linenumber">240</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.exportToPDF" datatype="html">
@@ -2831,7 +2839,7 @@
         <target state="translated">صادرات به PDF</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
-          <context context-type="linenumber">244</context>
+          <context context-type="linenumber">246</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.unableToConnectToServer" datatype="html">
@@ -5071,7 +5079,7 @@
         <target state="translated">موجودیت RAG جدید</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.html</context>
-          <context context-type="linenumber">56</context>
+          <context context-type="linenumber">57</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupRAGDialog.addTag" datatype="html">
@@ -5079,7 +5087,7 @@
         <target state="translated">افزودن برچسب</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.html</context>
-          <context context-type="linenumber">60</context>
+          <context context-type="linenumber">61</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupRagDialog.pleaseWaitAddingNewUserToRag" datatype="html">
@@ -7715,7 +7723,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-resource-management-board/group-resource-management-board-view.component.html</context>
-          <context context-type="linenumber">51</context>
+          <context context-type="linenumber">52</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupResourceManagementBoardViewComponent.addTask" datatype="html">
@@ -7723,7 +7731,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-resource-management-board/group-resource-management-board-view.component.html</context>
-          <context context-type="linenumber">65</context>
+          <context context-type="linenumber">66</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupResourceManagement.currentInventory" datatype="html">
@@ -8091,7 +8099,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-time-tracking-view/group-time-tracking-view.component.html</context>
-          <context context-type="linenumber">136</context>
+          <context context-type="linenumber">137</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTimeTrackingList.recalculateCost" datatype="html">
@@ -8103,7 +8111,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/task-time-tracking/task-time-tracking-list/task-time-tracking-list.component.html</context>
-          <context context-type="linenumber">68</context>
+          <context context-type="linenumber">69</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupTimeTrackingView.tasks" datatype="html">
@@ -8111,7 +8119,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-time-tracking-view/group-time-tracking-view.component.html</context>
-          <context context-type="linenumber">126</context>
+          <context context-type="linenumber">127</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupTimeTrackingView.sum" datatype="html">
@@ -8119,7 +8127,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-time-tracking-view/group-time-tracking-view.component.html</context>
-          <context context-type="linenumber">130</context>
+          <context context-type="linenumber">131</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupTimeTrackingView.boardEmpty" datatype="html">
@@ -8127,7 +8135,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-time-tracking-view/group-time-tracking-view.component.html</context>
-          <context context-type="linenumber">163</context>
+          <context context-type="linenumber">164</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTimeTrackingList.areYouSure" datatype="html">
@@ -8199,7 +8207,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/permission-dialog/permission-dialog.component.html</context>
-          <context context-type="linenumber">80</context>
+          <context context-type="linenumber">81</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permissionDialog.addPermission" datatype="html">
@@ -8207,7 +8215,7 @@
         <target state="translated">اضافه کردن مجوز</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/permission-dialog/permission-dialog.component.html</context>
-          <context context-type="linenumber">65</context>
+          <context context-type="linenumber">66</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permissionDialog.save" datatype="html">
@@ -8215,7 +8223,7 @@
         <target state="translated"> خوب</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/permission-dialog/permission-dialog.component.html</context>
-          <context context-type="linenumber">126,128</context>
+          <context context-type="linenumber">128,130</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permissionDialog.pleaseWaitChangingPermissionRight" datatype="html">
@@ -9035,7 +9043,7 @@
         <target state="translated"> مجموع وظایف</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/portfolio/dashboard/portfolio-members-workload-card/portfolio-members-workload-card.component.html</context>
-          <context context-type="linenumber">70</context>
+          <context context-type="linenumber">71</context>
         </context-group>
       </trans-unit>
       <trans-unit id="projectBudget.budgetTitle" datatype="html">
@@ -10201,7 +10209,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.html</context>
-          <context context-type="linenumber">69,71</context>
+          <context context-type="linenumber">70,72</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.shareCollection" datatype="html">
@@ -10209,7 +10217,7 @@
         <target state="translated">اشتراک گذاری مجموعه</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.html</context>
-          <context context-type="linenumber">83</context>
+          <context context-type="linenumber">84</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.save" datatype="html">
@@ -10217,7 +10225,7 @@
         <target state="translated">ذخیره</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.html</context>
-          <context context-type="linenumber">87,89</context>
+          <context context-type="linenumber">88,90</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.cancel" datatype="html">
@@ -10225,7 +10233,7 @@
         <target state="translated"> لغو </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.html</context>
-          <context context-type="linenumber">92,94</context>
+          <context context-type="linenumber">93,95</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.share" datatype="html">
@@ -10233,7 +10241,7 @@
         <target state="translated">اشتراک گذاری</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.html</context>
-          <context context-type="linenumber">101</context>
+          <context context-type="linenumber">102</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.moveToGroupLink" datatype="html">
@@ -10241,7 +10249,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.html</context>
-          <context context-type="linenumber">107</context>
+          <context context-type="linenumber">108</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.edit" datatype="html">
@@ -10249,7 +10257,7 @@
         <target state="translated">ویرایش</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.html</context>
-          <context context-type="linenumber">121</context>
+          <context context-type="linenumber">122</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.delete" datatype="html">
@@ -10257,7 +10265,7 @@
         <target state="translated">حذف</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/collection-details/collection-header/collection-header.component.html</context>
-          <context context-type="linenumber">128</context>
+          <context context-type="linenumber">129</context>
         </context-group>
       </trans-unit>
       <trans-unit id="collectionHeader.unableToConnectToServer" datatype="html">
@@ -10785,15 +10793,15 @@
         <target state="translated">فعال</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/page-details/page-actions-bar/page-actions-bar.component.html</context>
-          <context context-type="linenumber">26</context>
+          <context context-type="linenumber">28</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/story-details/story-actions-bar/story-actions-bar.component.html</context>
-          <context context-type="linenumber">18</context>
+          <context context-type="linenumber">19</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/story-details/story-actions-bar/story-actions-bar.component.html</context>
-          <context context-type="linenumber">23</context>
+          <context context-type="linenumber">24</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageDetails.areYouSure" datatype="html">
@@ -10901,7 +10909,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/page-details/page-details.component.html</context>
-          <context context-type="linenumber">120</context>
+          <context context-type="linenumber">122</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageDetails.authors" datatype="html">
@@ -10917,7 +10925,7 @@
         <target state="translated">لغو</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/page-details/page-details.component.html</context>
-          <context context-type="linenumber">147</context>
+          <context context-type="linenumber">149</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageDetails.save" datatype="html">
@@ -10925,7 +10933,7 @@
         <target state="translated">ذخیره</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/library/page-details/page-details.component.html</context>
-          <context context-type="linenumber">149,151</context>
+          <context context-type="linenumber">151,153</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageDetails.newPage" datatype="html">
@@ -11341,11 +11349,11 @@
         <target state="translated">رفتن</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/story-details/story-actions-bar/story-actions-bar.component.html</context>
-          <context context-type="linenumber">32</context>
+          <context context-type="linenumber">33</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/story-details/story-actions-bar/story-actions-bar.component.html</context>
-          <context context-type="linenumber">51</context>
+          <context context-type="linenumber">52</context>
         </context-group>
       </trans-unit>
       <trans-unit id="storyActionsBar.maybe" datatype="html">
@@ -11353,11 +11361,11 @@
         <target state="translated">شاید</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/story-details/story-actions-bar/story-actions-bar.component.html</context>
-          <context context-type="linenumber">37</context>
+          <context context-type="linenumber">38</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/story-details/story-actions-bar/story-actions-bar.component.html</context>
-          <context context-type="linenumber">58</context>
+          <context context-type="linenumber">59</context>
         </context-group>
       </trans-unit>
       <trans-unit id="storyActionsBar.notGoing" datatype="html">
@@ -11365,11 +11373,11 @@
         <target state="translated">نمی رود</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/story-details/story-actions-bar/story-actions-bar.component.html</context>
-          <context context-type="linenumber">42</context>
+          <context context-type="linenumber">43</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/story-details/story-actions-bar/story-actions-bar.component.html</context>
-          <context context-type="linenumber">65</context>
+          <context context-type="linenumber">66</context>
         </context-group>
       </trans-unit>
       <trans-unit id="storyActionsBar.edit" datatype="html">
@@ -11377,7 +11385,7 @@
         <target state="translated">ویرایش</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/story-details/story-actions-bar/story-actions-bar.component.html</context>
-          <context context-type="linenumber">125</context>
+          <context context-type="linenumber">126</context>
         </context-group>
       </trans-unit>
       <trans-unit id="storyActionsBar.cancelEdit" datatype="html">
@@ -11385,7 +11393,7 @@
         <target state="translated">لغو ویرایش</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/story-details/story-actions-bar/story-actions-bar.component.html</context>
-          <context context-type="linenumber">126</context>
+          <context context-type="linenumber">127</context>
         </context-group>
       </trans-unit>
       <trans-unit id="storyActionsBar.editIconImage" datatype="html">
@@ -11393,7 +11401,7 @@
         <target state="translated">ویرایش تصویر آیکون</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/story-details/story-actions-bar/story-actions-bar.component.html</context>
-          <context context-type="linenumber">136</context>
+          <context context-type="linenumber">137</context>
         </context-group>
       </trans-unit>
       <trans-unit id="storyActionsBar.delete" datatype="html">
@@ -11401,7 +11409,7 @@
         <target state="translated">حذف</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/story-details/story-actions-bar/story-actions-bar.component.html</context>
-          <context context-type="linenumber">140</context>
+          <context context-type="linenumber">141</context>
         </context-group>
       </trans-unit>
       <trans-unit id="storyDetails.pleaseWaitWeSend" datatype="html">
@@ -11617,7 +11625,7 @@
         <target state="translated">فضای من</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-header/myspace-header.component.html</context>
-          <context context-type="linenumber">10</context>
+          <context context-type="linenumber">11</context>
         </context-group>
       </trans-unit>
       <trans-unit id="myspaceHeader.inbox" datatype="html">
@@ -11625,7 +11633,7 @@
         <target state="translated">صندوق ورودی</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-header/myspace-header.component.html</context>
-          <context context-type="linenumber">14</context>
+          <context context-type="linenumber">15</context>
         </context-group>
       </trans-unit>
       <trans-unit id="myspaceHeader.myTasks" datatype="html">
@@ -11633,7 +11641,7 @@
         <target state="translated">وظایف من</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-header/myspace-header.component.html</context>
-          <context context-type="linenumber">20</context>
+          <context context-type="linenumber">21</context>
         </context-group>
       </trans-unit>
       <trans-unit id="myspaceHeader.personalWorkspace" datatype="html">
@@ -11641,7 +11649,7 @@
         <target state="translated">محل کار شخصی</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-header/myspace-header.component.html</context>
-          <context context-type="linenumber">27</context>
+          <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.recentActivities" datatype="html">
@@ -11673,7 +11681,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">183</context>
+          <context context-type="linenumber">185</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.assignedYou" datatype="html">
@@ -11681,7 +11689,7 @@
         <target state="translated">اختصاص داده شده به شما در</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">60</context>
+          <context context-type="linenumber">62</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.mentionedYou" datatype="html">
@@ -11689,7 +11697,7 @@
         <target state="translated">تو رو در مورد</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">61</context>
+          <context context-type="linenumber">63</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.completed" datatype="html">
@@ -11697,7 +11705,7 @@
         <target state="translated">تکمیل شده</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">62</context>
+          <context context-type="linenumber">64</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.started" datatype="html">
@@ -11705,7 +11713,7 @@
         <target state="translated">شروع</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">63</context>
+          <context context-type="linenumber">65</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.likedYourComment" datatype="html">
@@ -11713,7 +11721,7 @@
         <target state="translated">دوست داشت نظر خود را در</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">64</context>
+          <context context-type="linenumber">66</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.likes" datatype="html">
@@ -11721,7 +11729,7 @@
         <target state="translated"> دوست دارد</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">65</context>
+          <context context-type="linenumber">67</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.follows" datatype="html">
@@ -11729,7 +11737,7 @@
         <target state="translated">زیر</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">66</context>
+          <context context-type="linenumber">68</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.commentedOn" datatype="html">
@@ -11737,7 +11745,7 @@
         <target state="translated">نظر داد</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">67</context>
+          <context context-type="linenumber">69</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.addedYou" datatype="html">
@@ -11745,7 +11753,7 @@
         <target state="translated">شما را به</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">68</context>
+          <context context-type="linenumber">70</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.removedYou" datatype="html">
@@ -11753,7 +11761,7 @@
         <target state="translated">شما را از</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">69</context>
+          <context context-type="linenumber">71</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.launchApprovalFlow" datatype="html">
@@ -11761,7 +11769,7 @@
         <target state="needs-adaptation">جریان تأیید مورد را راه اندازی کرد</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">70</context>
+          <context context-type="linenumber">72</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.itemApprovedByAll" datatype="html">
@@ -11769,7 +11777,7 @@
         <target state="needs-adaptation">همه واگذارندگان مورد را تایید کرده اند</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">71</context>
+          <context context-type="linenumber">73</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.rejectedTheItem" datatype="html">
@@ -11777,7 +11785,7 @@
         <target state="needs-adaptation">مورد را رد کرد</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">72</context>
+          <context context-type="linenumber">74</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.assignedYourGroup" datatype="html">
@@ -11785,7 +11793,7 @@
         <target state="translated">گروه شما را اختصاص داد</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">73</context>
+          <context context-type="linenumber">75</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.edited" datatype="html">
@@ -11793,7 +11801,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">74</context>
+          <context context-type="linenumber">76</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.theTask" datatype="html">
@@ -11801,7 +11809,7 @@
         <target state="translated">وظیفه</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">85</context>
+          <context context-type="linenumber">87</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.fromGroup" datatype="html">
@@ -11809,7 +11817,7 @@
         <target state="translated">از گروه</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">91</context>
+          <context context-type="linenumber">93</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.view" datatype="html">
@@ -11817,39 +11825,39 @@
         <target state="translated">نمایش</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">120</context>
+          <context context-type="linenumber">122</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">125</context>
+          <context context-type="linenumber">127</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">130</context>
+          <context context-type="linenumber">132</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">135</context>
+          <context context-type="linenumber">137</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">140</context>
+          <context context-type="linenumber">142</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">145</context>
+          <context context-type="linenumber">147</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">223</context>
+          <context context-type="linenumber">226</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">298</context>
+          <context context-type="linenumber">302</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">369</context>
+          <context context-type="linenumber">375</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.markAsRead" datatype="html">
@@ -11857,11 +11865,11 @@
         <target state="translated">علامت گذاری همانطور که خوانده شده</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">149</context>
+          <context context-type="linenumber">151</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">227</context>
+          <context context-type="linenumber">230</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.newsFeed" datatype="html">
@@ -11869,11 +11877,11 @@
         <target state="translated">خوراک خبری</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">165</context>
+          <context context-type="linenumber">167</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">167</context>
+          <context context-type="linenumber">169</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.everyoneIsSilent" datatype="html">
@@ -11881,7 +11889,7 @@
         <target state="translated">همه ساکت هستند. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">173</context>
+          <context context-type="linenumber">175</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.posted" datatype="html">
@@ -11889,7 +11897,7 @@
         <target state="translated"> ارسال شده</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">202</context>
+          <context context-type="linenumber">205</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.events" datatype="html">
@@ -11897,11 +11905,11 @@
         <target state="translated">رویدادها</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">243</context>
+          <context context-type="linenumber">246</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">245</context>
+          <context context-type="linenumber">248</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.noEvents" datatype="html">
@@ -11909,7 +11917,7 @@
         <target state="translated">هیچ رویدادی وجود ندارد. مشارکت کنید.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">251</context>
+          <context context-type="linenumber">254</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.pendingApprovals" datatype="html">
@@ -11917,11 +11925,11 @@
         <target state="translated">تاییدیه های معلق</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">314</context>
+          <context context-type="linenumber">318</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">316</context>
+          <context context-type="linenumber">320</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.noPendingApprovals" datatype="html">
@@ -11929,11 +11937,11 @@
         <target state="translated">هیچ تاییدیه معلقی وجود ندارد.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">322</context>
+          <context context-type="linenumber">326</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">390</context>
+          <context context-type="linenumber">396</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.requestYoToReviewItem" datatype="html">
@@ -11941,7 +11949,7 @@
         <target state="translated">از شما درخواست کرد که مورد را بررسی کنید:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">354</context>
+          <context context-type="linenumber">360</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.bofore" datatype="html">
@@ -11949,7 +11957,7 @@
         <target state="translated">قبل</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">361</context>
+          <context context-type="linenumber">367</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.pendingHolidays" datatype="html">
@@ -11957,11 +11965,11 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">382</context>
+          <context context-type="linenumber">388</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">383</context>
+          <context context-type="linenumber">389</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.member" datatype="html">
@@ -11969,7 +11977,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">397</context>
+          <context context-type="linenumber">403</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.starts" datatype="html">
@@ -11977,7 +11985,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">398</context>
+          <context context-type="linenumber">404</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.ends" datatype="html">
@@ -11985,7 +11993,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">399</context>
+          <context context-type="linenumber">405</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.type" datatype="html">
@@ -11993,7 +12001,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">400</context>
+          <context context-type="linenumber">406</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.numDays" datatype="html">
@@ -12001,7 +12009,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">401</context>
+          <context context-type="linenumber">407</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.description" datatype="html">
@@ -12009,7 +12017,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">402</context>
+          <context context-type="linenumber">408</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.status" datatype="html">
@@ -12017,7 +12025,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">403</context>
+          <context context-type="linenumber">409</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.approved" datatype="html">
@@ -12025,7 +12033,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">420</context>
+          <context context-type="linenumber">426</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.pending" datatype="html">
@@ -12033,7 +12041,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">421</context>
+          <context context-type="linenumber">427</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.approve" datatype="html">
@@ -12041,7 +12049,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">429</context>
+          <context context-type="linenumber">435</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.reject" datatype="html">
@@ -12049,7 +12057,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">436</context>
+          <context context-type="linenumber">442</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.pendingHRTasks" datatype="html">
@@ -12057,11 +12065,11 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">454</context>
+          <context context-type="linenumber">460</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">456</context>
+          <context context-type="linenumber">462</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.openProfile" datatype="html">
@@ -12069,7 +12077,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">482</context>
+          <context context-type="linenumber">488</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.markComplited" datatype="html">
@@ -12077,7 +12085,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">487</context>
+          <context context-type="linenumber">493</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.areYouSure" datatype="html">
@@ -12921,7 +12929,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/employees.component.html</context>
-          <context context-type="linenumber">24</context>
+          <context context-type="linenumber">25</context>
         </context-group>
       </trans-unit>
       <trans-unit id="employees.lastName" datatype="html">
@@ -12929,7 +12937,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/employees.component.html</context>
-          <context context-type="linenumber">30</context>
+          <context context-type="linenumber">31</context>
         </context-group>
       </trans-unit>
       <trans-unit id="employees.email" datatype="html">
@@ -12937,7 +12945,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/employees.component.html</context>
-          <context context-type="linenumber">36</context>
+          <context context-type="linenumber">37</context>
         </context-group>
       </trans-unit>
       <trans-unit id="employees.job" datatype="html">
@@ -12945,7 +12953,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/employees.component.html</context>
-          <context context-type="linenumber">42</context>
+          <context context-type="linenumber">43</context>
         </context-group>
       </trans-unit>
       <trans-unit id="employees.cost" datatype="html">
@@ -12953,7 +12961,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/employees.component.html</context>
-          <context context-type="linenumber">48</context>
+          <context context-type="linenumber">49</context>
         </context-group>
       </trans-unit>
       <trans-unit id="employees.edit" datatype="html">
@@ -12961,7 +12969,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/employees.component.html</context>
-          <context context-type="linenumber">62</context>
+          <context context-type="linenumber">63</context>
         </context-group>
       </trans-unit>
       <trans-unit id="employees.noDataMatchingFilter" datatype="html">
@@ -12969,7 +12977,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/employees/employees.component.html</context>
-          <context context-type="linenumber">73</context>
+          <context context-type="linenumber">74</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editEntityDialog.legalInformation" datatype="html">
@@ -13770,7 +13778,7 @@
         <target state="translated">افزودن</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/setup/entity-add-members-dialog/entity-add-members-dialog.component.html</context>
-          <context context-type="linenumber">48</context>
+          <context context-type="linenumber">50</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editentitydialog.addToEntity" datatype="html">
@@ -13970,7 +13978,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/time-off/time-off.component.html</context>
-          <context context-type="linenumber">33</context>
+          <context context-type="linenumber">35</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pendingTasksCard.lastName" datatype="html">
@@ -13978,7 +13986,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/time-off/time-off.component.html</context>
-          <context context-type="linenumber">39</context>
+          <context context-type="linenumber">41</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pendingTasksCard.email" datatype="html">
@@ -13986,7 +13994,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/time-off/time-off.component.html</context>
-          <context context-type="linenumber">45</context>
+          <context context-type="linenumber">47</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pendingTasksCard.startDate" datatype="html">
@@ -13994,7 +14002,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/time-off/time-off.component.html</context>
-          <context context-type="linenumber">51</context>
+          <context context-type="linenumber">53</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pendingTasksCard.endDate" datatype="html">
@@ -14002,7 +14010,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/time-off/time-off.component.html</context>
-          <context context-type="linenumber">57</context>
+          <context context-type="linenumber">59</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pendingTasksCard.noDataMatchingFilter" datatype="html">
@@ -14010,7 +14018,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/hr/time-off/time-off.component.html</context>
-          <context context-type="linenumber">83,84</context>
+          <context context-type="linenumber">85,86</context>
         </context-group>
       </trans-unit>
       <trans-unit id="chartPerson.removeManager" datatype="html">
@@ -14018,7 +14026,7 @@
         <target state="translated">مدیر را حذف کنید</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/organization-chart/chart-person/chart-person.component.html</context>
-          <context context-type="linenumber">27</context>
+          <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="chartPerson.pleaseWaitsavingSettings" datatype="html">
@@ -14242,7 +14250,7 @@
         <target state="translated">نقش:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/people-directory-search-results/people-directory-search-results.component.html</context>
-          <context context-type="linenumber">18</context>
+          <context context-type="linenumber">19</context>
         </context-group>
       </trans-unit>
       <trans-unit id="peopleDirectorySearchResults.work" datatype="html">
@@ -14250,7 +14258,7 @@
         <target state="translated">مدیر کار</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/people-directory-search-results/people-directory-search-results.component.html</context>
-          <context context-type="linenumber">19</context>
+          <context context-type="linenumber">20</context>
         </context-group>
       </trans-unit>
       <trans-unit id="peopleDirectory.skill" datatype="html">
@@ -14392,7 +14400,6 @@
       <trans-unit id="publicFunctions.taskDueDAteChanged" datatype="html">
         <source>Task due date changed to <x id="PH" equiv-text="datesService.formateDate(dueDate)"/>!</source>
         <target state="needs-adaptation">موعد مقرر وظیفه به <x id="PH" equiv-text="moment(dueDate).format('YYYY-MM-DD')"/>!</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
           <context context-type="linenumber">1319</context>
@@ -14567,7 +14574,7 @@
         <target state="translated">تاریخ</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
-          <context context-type="linenumber">99</context>
+          <context context-type="linenumber">100</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchHeader.from" datatype="html">
@@ -14575,7 +14582,7 @@
         <target state="translated">از</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
-          <context context-type="linenumber">101</context>
+          <context context-type="linenumber">102</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchHeader.to" datatype="html">
@@ -14583,7 +14590,7 @@
         <target state="translated">به</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
-          <context context-type="linenumber">115</context>
+          <context context-type="linenumber">116</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchHeader.fileMetadata" datatype="html">
@@ -14591,7 +14598,7 @@
         <target state="translated">فراداده فایل</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
-          <context context-type="linenumber">132</context>
+          <context context-type="linenumber">133</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchHeader.userGroup" datatype="html">
@@ -14599,7 +14606,7 @@
         <target state="translated">گروه کاربر</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
-          <context context-type="linenumber">140</context>
+          <context context-type="linenumber">141</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchHeader.customFields" datatype="html">
@@ -14607,7 +14614,7 @@
         <target state="translated">فیلدهای سفارشی</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
-          <context context-type="linenumber">149</context>
+          <context context-type="linenumber">150</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchHeader.clear" datatype="html">
@@ -14615,7 +14622,7 @@
         <target state="translated"> پاک کردن</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
-          <context context-type="linenumber">172,174</context>
+          <context context-type="linenumber">173,175</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchHeader.close" datatype="html">
@@ -14623,7 +14630,7 @@
         <target state="translated"> نزدیک</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
-          <context context-type="linenumber">176,178</context>
+          <context context-type="linenumber">177,179</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchHeader.files" datatype="html">
@@ -14631,7 +14638,7 @@
         <target state="translated">فایل ها</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
-          <context context-type="linenumber">186</context>
+          <context context-type="linenumber">187</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchHeader.posts" datatype="html">
@@ -14639,7 +14646,7 @@
         <target state="translated">نوشته ها</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
-          <context context-type="linenumber">193</context>
+          <context context-type="linenumber">194</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchHeader.tasks" datatype="html">
@@ -14647,7 +14654,7 @@
         <target state="translated">وظایف</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
-          <context context-type="linenumber">200</context>
+          <context context-type="linenumber">201</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchHeader.pages" datatype="html">
@@ -14655,7 +14662,7 @@
         <target state="translated">صفحات</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
-          <context context-type="linenumber">207</context>
+          <context context-type="linenumber">208</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchHeader.users" datatype="html">
@@ -14663,7 +14670,7 @@
         <target state="translated">کاربران</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
-          <context context-type="linenumber">214</context>
+          <context context-type="linenumber">215</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchResult.location" datatype="html">
@@ -14703,11 +14710,11 @@
         <target state="translated">فیلدهای سفارشی:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">73</context>
+          <context context-type="linenumber">74</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">116</context>
+          <context context-type="linenumber">118</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchResult.role" datatype="html">
@@ -14715,7 +14722,7 @@
         <target state="translated">نقش:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">100</context>
+          <context context-type="linenumber">102</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchResult.email" datatype="html">
@@ -14723,7 +14730,7 @@
         <target state="translated">پست الکترونیک:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">101</context>
+          <context context-type="linenumber">103</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchResult.phone" datatype="html">
@@ -14731,7 +14738,7 @@
         <target state="translated">شماره تلفن:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">102</context>
+          <context context-type="linenumber">104</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchResult.mobile" datatype="html">
@@ -14739,7 +14746,7 @@
         <target state="translated">شماره موبایل:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">103</context>
+          <context context-type="linenumber">105</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchResult.currentPosition" datatype="html">
@@ -14747,7 +14754,7 @@
         <target state="translated">موقعیت فعلی:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">104</context>
+          <context context-type="linenumber">106</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchResult.company" datatype="html">
@@ -14755,7 +14762,7 @@
         <target state="translated">شرکت:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">105</context>
+          <context context-type="linenumber">107</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchResult.joined" datatype="html">
@@ -14763,7 +14770,7 @@
         <target state="translated">پیوست در:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">106</context>
+          <context context-type="linenumber">108</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchResult.bio" datatype="html">
@@ -14771,7 +14778,7 @@
         <target state="translated">بیوگرافی:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">108</context>
+          <context context-type="linenumber">110</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchResult.skills" datatype="html">
@@ -14779,7 +14786,7 @@
         <target state="translated">مهارت ها:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">111</context>
+          <context context-type="linenumber">113</context>
         </context-group>
       </trans-unit>
       <trans-unit id="boxAccountDetails.box" datatype="html">
@@ -15199,7 +15206,7 @@
         <target state="translated">پروفایل</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-header/user-header.component.html</context>
-          <context context-type="linenumber">25</context>
+          <context context-type="linenumber">27</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userHeader.integrations" datatype="html">
@@ -15207,7 +15214,7 @@
         <target state="translated">ادغام</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-header/user-header.component.html</context>
-          <context context-type="linenumber">33</context>
+          <context context-type="linenumber">35</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userHive.address" datatype="html">
@@ -15943,7 +15950,7 @@
         <target state="translated"> تصویر خود را به روز کنید</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/common-navbar/user-image-details/user-image-details.component.html</context>
-          <context context-type="linenumber">25,27</context>
+          <context context-type="linenumber">26,28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userImageDetails.pleaseWait" datatype="html">
@@ -16287,7 +16294,7 @@
         <target state="translated">خطا در حین واکشی جزئیات پروفایل شما رخ داده است</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/navbar.component.ts</context>
-          <context context-type="linenumber">229</context>
+          <context context-type="linenumber">241</context>
         </context-group>
       </trans-unit>
       <trans-unit id="portfolioImageDetails.updateYourGroupAvatar" datatype="html">
@@ -16367,11 +16374,11 @@
         <target state="translated">همه به روز</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/push-notifications/push-notifications.component.html</context>
-          <context context-type="linenumber">51</context>
+          <context context-type="linenumber">52</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/push-notifications/push-notifications.component.html</context>
-          <context context-type="linenumber">82</context>
+          <context context-type="linenumber">84</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pushNotifications.olderNotifications" datatype="html">
@@ -16379,7 +16386,7 @@
         <target state="translated">اعلان های قدیمی تر</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/push-notifications/push-notifications.component.html</context>
-          <context context-type="linenumber">60</context>
+          <context context-type="linenumber">61</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.mySpace" datatype="html">
@@ -16422,9 +16429,9 @@
           <context context-type="linenumber">134</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sidebar.administration" datatype="html">
-        <source>Administration</source>
-        <target state="translated">مدیریت</target>
+      <trans-unit id="sidebar.settings" datatype="html">
+        <source>Settings</source>
+        <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">146</context>
@@ -16435,7 +16442,7 @@
         <target state="translated">حساب من</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">162</context>
+          <context context-type="linenumber">163</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.signOut" datatype="html">
@@ -16443,7 +16450,7 @@
         <target state="translated">خروج</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">174</context>
+          <context context-type="linenumber">175</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.workspace" datatype="html">
@@ -16451,7 +16458,7 @@
         <target state="translated">فضای کاری</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">116</context>
+          <context context-type="linenumber">117</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.pleaseWaitWhileLogOut" datatype="html">
@@ -16459,7 +16466,7 @@
         <target state="translated">لطفا صبر کنید، در حالی که ما شما را به طور امن خارج...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">184</context>
+          <context context-type="linenumber">187</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.successfullyLogOut" datatype="html">
@@ -16467,7 +16474,7 @@
         <target state="translated">با موفقیت وارد سیستم شوید!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">191</context>
+          <context context-type="linenumber">194</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.errorWhileLogOut" datatype="html">
@@ -16475,11 +16482,11 @@
         <target state="translated">خطا رخ داده است در حالی که ورود به سیستم شما!, لطفا دوباره سعی کنید!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">194</context>
+          <context context-type="linenumber">197</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">199</context>
+          <context context-type="linenumber">202</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.pleaseWaitSignYouIn" datatype="html">
@@ -16487,7 +16494,7 @@
         <target state="translated">لطفا صبر کنید تا ما وارد سیستم شما شویم...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">240</context>
+          <context context-type="linenumber">243</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.unexpectedError" datatype="html">
@@ -16495,7 +16502,7 @@
         <target state="translated">یک خطای غیرمنتظره رخ داده است، لطفاً بعداً دوباره امتحان کنید!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">244</context>
+          <context context-type="linenumber">247</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.workspaceIsNotAvailable" datatype="html">
@@ -16503,7 +16510,7 @@
         <target state="translated">فضای کاری شما در دسترس نیست، لطفا با سرپرست خود تماس بگیرید!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">299</context>
+          <context context-type="linenumber">302</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.hi" datatype="html">
@@ -16511,7 +16518,7 @@
         <target state="translated">سلام <x id="PH" equiv-text="res['user']['first_name']"/>، به محل کار خود خوش امدید!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">313</context>
+          <context context-type="linenumber">316</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.oopsErrorSigningIn" datatype="html">
@@ -16519,7 +16526,7 @@
         <target state="translated">اوه هنگام ورود به سیستم شما خطایی رخ داد، لطفاً دوباره امتحان کنید!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
-          <context context-type="linenumber">319</context>
+          <context context-type="linenumber">322</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userAccountNavbar.edit" datatype="html">
@@ -18414,10 +18421,6 @@
           <context context-type="sourcefile">src/app/common/shared/dashboard/members-workload-card/members-workload-card.component.html</context>
           <context context-type="linenumber">19,21</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/member-approval-holidays-availability-dialog/member-approval-holidays-availability-dialog.component.html</context>
-          <context context-type="linenumber">17,19</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="membersWorkloadCard.totalTasks" datatype="html">
         <source> Total tasks</source>
@@ -18425,10 +18428,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/members-workload-card/members-workload-card.component.html</context>
           <context context-type="linenumber">56</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/member-approval-holidays-availability-dialog/member-approval-holidays-availability-dialog.component.html</context>
-          <context context-type="linenumber">54</context>
         </context-group>
       </trans-unit>
       <trans-unit id="organizationalStructureCard.organizationalStructure" datatype="html">
@@ -19576,7 +19575,7 @@
         <target state="needs-adaptation">وظیفه کلون</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/member-list-menu/member-list-menu.component.html</context>
-          <context context-type="linenumber">14</context>
+          <context context-type="linenumber">15</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newTimeTrackingDialog.addEntry" datatype="html">
@@ -19800,7 +19799,7 @@
         <target state="translated">به روز شده</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/global-north-star-dialog/stats/global-north-star-stats.component.html</context>
-          <context context-type="linenumber">16</context>
+          <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
       <trans-unit id="globalNorthStarStats.to" datatype="html">
@@ -19808,11 +19807,11 @@
         <target state="translated">به</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/global-north-star-dialog/stats/global-north-star-stats.component.html</context>
-          <context context-type="linenumber">20</context>
+          <context context-type="linenumber">21</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/global-north-star-dialog/stats/global-north-star-stats.component.html</context>
-          <context context-type="linenumber">54</context>
+          <context context-type="linenumber">56</context>
         </context-group>
       </trans-unit>
       <trans-unit id="globalNorthStarStats.changedStatus" datatype="html">
@@ -19820,7 +19819,7 @@
         <target state="translated">تغییر وضعیت</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/global-north-star-dialog/stats/global-north-star-stats.component.html</context>
-          <context context-type="linenumber">45</context>
+          <context context-type="linenumber">47</context>
         </context-group>
       </trans-unit>
       <trans-unit id="globalNorthStarStats.changedSection" datatype="html">
@@ -19828,7 +19827,7 @@
         <target state="translated">تغییر بخش از</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/global-north-star-dialog/stats/global-north-star-stats.component.html</context>
-          <context context-type="linenumber">46</context>
+          <context context-type="linenumber">48</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmLeadCard.company" datatype="html">
@@ -20004,7 +20003,7 @@
         <target state="translated">ایجاد شده توسط</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.html</context>
-          <context context-type="linenumber">438</context>
+          <context context-type="linenumber">439</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.on" datatype="html">
@@ -20012,7 +20011,7 @@
         <target state="translated">در <x id="INTERPOLATION" equiv-text="{{ postData?.created_date | date: 'MMM dd, yyyy'}}"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.html</context>
-          <context context-type="linenumber">450</context>
+          <context context-type="linenumber">452</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.tags" datatype="html">
@@ -20020,7 +20019,7 @@
         <target state="translated">برچسب ها</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.html</context>
-          <context context-type="linenumber">458</context>
+          <context context-type="linenumber">460</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.customFields" datatype="html">
@@ -20028,7 +20027,7 @@
         <target state="translated">موضوعات سفارشی</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/group-post-dialog.component.html</context>
-          <context context-type="linenumber">472</context>
+          <context context-type="linenumber">474</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.cfSearchPlaceholder" datatype="html">
@@ -20180,7 +20179,7 @@
         <target state="translated">یک کاربر ناشناس</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/north-star/stats/north-star-stats.component.html</context>
-          <context context-type="linenumber">14</context>
+          <context context-type="linenumber">15</context>
         </context-group>
       </trans-unit>
       <trans-unit id="northStarStats.increased" datatype="html">
@@ -20188,7 +20187,7 @@
         <target state="translated">افزایش یافت</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/north-star/stats/north-star-stats.component.html</context>
-          <context context-type="linenumber">16</context>
+          <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
       <trans-unit id="northStarStats.decreased" datatype="html">
@@ -20196,7 +20195,7 @@
         <target state="translated">کاهش یافت</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/north-star/stats/north-star-stats.component.html</context>
-          <context context-type="linenumber">17</context>
+          <context context-type="linenumber">18</context>
         </context-group>
       </trans-unit>
       <trans-unit id="northStarStats.set" datatype="html">
@@ -20204,7 +20203,7 @@
         <target state="translated">تنظیم</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/north-star/stats/north-star-stats.component.html</context>
-          <context context-type="linenumber">18</context>
+          <context context-type="linenumber">19</context>
         </context-group>
       </trans-unit>
       <trans-unit id="northStarStats.theValueTo" datatype="html">
@@ -20212,7 +20211,7 @@
         <target state="translated">ارزش برای</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/north-star/stats/north-star-stats.component.html</context>
-          <context context-type="linenumber">20</context>
+          <context context-type="linenumber">21</context>
         </context-group>
       </trans-unit>
       <trans-unit id="northStarStats.andSetTheStatusTo" datatype="html">
@@ -20220,7 +20219,7 @@
         <target state="translated">و وضعیت را تنظیم کنید</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/north-star/stats/north-star-stats.component.html</context>
-          <context context-type="linenumber">26</context>
+          <context context-type="linenumber">27</context>
         </context-group>
       </trans-unit>
       <trans-unit id="northStarStats.on" datatype="html">
@@ -20228,7 +20227,7 @@
         <target state="translated">فعال</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/north-star/stats/north-star-stats.component.html</context>
-          <context context-type="linenumber">32</context>
+          <context context-type="linenumber">33</context>
         </context-group>
       </trans-unit>
       <trans-unit id="northStarStats.at" datatype="html">
@@ -20236,7 +20235,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/north-star/stats/north-star-stats.component.html</context>
-          <context context-type="linenumber">36</context>
+          <context context-type="linenumber">37</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.startDate" datatype="html">
@@ -20272,7 +20271,7 @@
         <target state="translated">کاربر حذف شده</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">14</context>
+          <context context-type="linenumber">15</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.created" datatype="html">
@@ -20280,7 +20279,7 @@
         <target state="translated">این مورد را ایجاد کرد</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">16</context>
+          <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.editedTitle" datatype="html">
@@ -20288,7 +20287,7 @@
         <target state="translated">عنوان را ویرایش کرد</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">17</context>
+          <context context-type="linenumber">18</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.commented" datatype="html">
@@ -20296,7 +20295,7 @@
         <target state="translated">نظر داده شده</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">18</context>
+          <context context-type="linenumber">19</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.removedComment" datatype="html">
@@ -20304,7 +20303,7 @@
         <target state="translated">یک نظر حذف شد</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">19</context>
+          <context context-type="linenumber">20</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.changedContent" datatype="html">
@@ -20312,7 +20311,7 @@
         <target state="translated">محتوای مورد را تغییر داد</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">20</context>
+          <context context-type="linenumber">21</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.makeNS" datatype="html">
@@ -20320,7 +20319,7 @@
         <target state="translated">تبدیل به ستاره شمالی شد</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">21</context>
+          <context context-type="linenumber">22</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.makeNoNS" datatype="html">
@@ -20328,7 +20327,7 @@
         <target state="translated">تبدیل به یک کار عادی</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">22</context>
+          <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.updateNS" datatype="html">
@@ -20336,7 +20335,7 @@
         <target state="translated">مقدار ستاره شمالی را به روز کرد</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">23</context>
+          <context context-type="linenumber">24</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.makeIdea" datatype="html">
@@ -20344,7 +20343,7 @@
         <target state="translated">تبدیل به یک ایده</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">24</context>
+          <context context-type="linenumber">25</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.makeNoIdea" datatype="html">
@@ -20352,7 +20351,7 @@
         <target state="translated">تبدیل به یک کار عادی</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">25</context>
+          <context context-type="linenumber">26</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.makeCRMTask" datatype="html">
@@ -20360,7 +20359,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">26</context>
+          <context context-type="linenumber">27</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.makeNoCRMTask" datatype="html">
@@ -20368,7 +20367,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">27</context>
+          <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.makeMilestone" datatype="html">
@@ -20376,7 +20375,7 @@
         <target state="translated">تبدیل به یک نقطه عطف</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">28</context>
+          <context context-type="linenumber">29</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.makeNoMilestone" datatype="html">
@@ -20384,7 +20383,7 @@
         <target state="translated">حذف نقطه عطف</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">29</context>
+          <context context-type="linenumber">30</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.changedStatus" datatype="html">
@@ -20392,7 +20391,7 @@
         <target state="translated">وضعیت را به تغییر داد</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">30</context>
+          <context context-type="linenumber">31</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.movedToSection" datatype="html">
@@ -20400,7 +20399,7 @@
         <target state="translated">به بخش منتقل شد</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">31</context>
+          <context context-type="linenumber">32</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.assigned" datatype="html">
@@ -20408,7 +20407,7 @@
         <target state="translated">اختصاص یافته به </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">32</context>
+          <context context-type="linenumber">33</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.unassigned" datatype="html">
@@ -20416,7 +20415,7 @@
         <target state="translated">واگذار نشده از</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">33</context>
+          <context context-type="linenumber">34</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.dueDate" datatype="html">
@@ -20424,7 +20423,7 @@
         <target state="translated">تاریخ سررسید را تغییر داد</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">34</context>
+          <context context-type="linenumber">35</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.startDate" datatype="html">
@@ -20432,7 +20431,7 @@
         <target state="translated">تاریخ شروع را به تغییر داد</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">35</context>
+          <context context-type="linenumber">36</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.editedTime" datatype="html">
@@ -20440,7 +20439,7 @@
         <target state="translated">زمان را ویرایش کرد</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">36</context>
+          <context context-type="linenumber">37</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.changedCF" datatype="html">
@@ -20448,7 +20447,7 @@
         <target state="translated">تغییر کرد</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">37</context>
+          <context context-type="linenumber">38</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.cfTo" datatype="html">
@@ -20456,7 +20455,7 @@
         <target state="translated">به</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">38</context>
+          <context context-type="linenumber">39</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.copiedTo" datatype="html">
@@ -20464,7 +20463,7 @@
         <target state="translated">در گروه کپی شد</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">39</context>
+          <context context-type="linenumber">40</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.movedTo" datatype="html">
@@ -20472,7 +20471,7 @@
         <target state="translated">به گروه منتقل شد</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">40</context>
+          <context context-type="linenumber">41</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.dependencyOf" datatype="html">
@@ -20480,7 +20479,7 @@
         <target state="translated">وابستگی ایجاد کرده است</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">41</context>
+          <context context-type="linenumber">42</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.dependentOf" datatype="html">
@@ -20488,7 +20487,7 @@
         <target state="translated">وابسته ساخته شده است</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">42</context>
+          <context context-type="linenumber">43</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.removeDependencyOf" datatype="html">
@@ -20496,7 +20495,7 @@
         <target state="translated">حذف یک وابستگی از</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">43</context>
+          <context context-type="linenumber">44</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.removeDependentOf" datatype="html">
@@ -20504,7 +20503,7 @@
         <target state="translated">حذف یک وابسته از</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">44</context>
+          <context context-type="linenumber">45</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.setParent" datatype="html">
@@ -20512,7 +20511,7 @@
         <target state="translated">فرزندی ساخته شده است</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">45</context>
+          <context context-type="linenumber">46</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.saveAllocation" datatype="html">
@@ -20520,7 +20519,7 @@
         <target state="translated">تخصیص را به تغییر داد</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">46</context>
+          <context context-type="linenumber">47</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.saveEstimation" datatype="html">
@@ -20528,7 +20527,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">47</context>
+          <context context-type="linenumber">48</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.saveTags" datatype="html">
@@ -20536,7 +20535,7 @@
         <target state="translated">برچسب ها را به روز کرد</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">48</context>
+          <context context-type="linenumber">49</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.attachFile" datatype="html">
@@ -20544,7 +20543,7 @@
         <target state="translated">فایل پیوست</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">49</context>
+          <context context-type="linenumber">50</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.attachFileCloud" datatype="html">
@@ -20552,7 +20551,7 @@
         <target state="translated">فایلی را از یک ابر متصل پیوست کرد</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">50</context>
+          <context context-type="linenumber">51</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.updateCRMInfo" datatype="html">
@@ -20560,7 +20559,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">51</context>
+          <context context-type="linenumber">52</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.on" datatype="html">
@@ -20568,7 +20567,7 @@
         <target state="translated">فعال</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">53</context>
+          <context context-type="linenumber">54</context>
         </context-group>
       </trans-unit>
       <trans-unit id="shuttleTask.taskShuttle" datatype="html">
@@ -21144,7 +21143,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/task-time-tracking/task-time-tracking-list/task-time-tracking-list.component.html</context>
-          <context context-type="linenumber">12</context>
+          <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTimeTrackingList.time" datatype="html">
@@ -21152,7 +21151,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/task-time-tracking/task-time-tracking-list/task-time-tracking-list.component.html</context>
-          <context context-type="linenumber">20</context>
+          <context context-type="linenumber">21</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTimeTrackingList.date" datatype="html">
@@ -21160,7 +21159,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/task-time-tracking/task-time-tracking-list/task-time-tracking-list.component.html</context>
-          <context context-type="linenumber">27</context>
+          <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTimeTrackingList.comment" datatype="html">
@@ -21168,7 +21167,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/task-time-tracking/task-time-tracking-list/task-time-tracking-list.component.html</context>
-          <context context-type="linenumber">35</context>
+          <context context-type="linenumber">36</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTimeTrackingList.category" datatype="html">
@@ -21176,7 +21175,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/task-time-tracking/task-time-tracking-list/task-time-tracking-list.component.html</context>
-          <context context-type="linenumber">43</context>
+          <context context-type="linenumber">44</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTimeTrackingList.cost" datatype="html">
@@ -21184,7 +21183,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/task-time-tracking/task-time-tracking-list/task-time-tracking-list.component.html</context>
-          <context context-type="linenumber">51</context>
+          <context context-type="linenumber">52</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTimeTrackingList.edit" datatype="html">
@@ -21192,7 +21191,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/task-time-tracking/task-time-tracking-list/task-time-tracking-list.component.html</context>
-          <context context-type="linenumber">73</context>
+          <context context-type="linenumber">74</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTimeTrackingList.delete" datatype="html">
@@ -21200,7 +21199,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post-dialog/task-time-tracking/task-time-tracking-list/task-time-tracking-list.component.html</context>
-          <context context-type="linenumber">78</context>
+          <context context-type="linenumber">79</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTimeTrackingList.remove" datatype="html">
@@ -21288,7 +21287,7 @@
         <target state="translated"> بدون واگذاری </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/multiple-assignments/multiple-assignments.component.html</context>
-          <context context-type="linenumber">41,43</context>
+          <context context-type="linenumber">42,44</context>
         </context-group>
       </trans-unit>
       <trans-unit id="multipleAssignments.addAssignee" datatype="html">
@@ -21296,7 +21295,7 @@
         <target state="translated">تعیین کننده را اضافه کنید</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/multiple-assignments/multiple-assignments.component.html</context>
-          <context context-type="linenumber">47</context>
+          <context context-type="linenumber">48</context>
         </context-group>
       </trans-unit>
       <trans-unit id="multipleAssignments.addUser" datatype="html">
@@ -21304,11 +21303,11 @@
         <target state="translated">افزودن کاربران</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/multiple-assignments/multiple-assignments.component.html</context>
-          <context context-type="linenumber">48</context>
+          <context context-type="linenumber">49</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/multiple-assignments/multiple-assignments.component.html</context>
-          <context context-type="linenumber">54</context>
+          <context context-type="linenumber">55</context>
         </context-group>
       </trans-unit>
       <trans-unit id="multipleAssignments.addEditor" datatype="html">
@@ -21316,7 +21315,7 @@
         <target state="translated">افزودن ویرایشگر</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/multiple-assignments/multiple-assignments.component.html</context>
-          <context context-type="linenumber">49</context>
+          <context context-type="linenumber">50</context>
         </context-group>
       </trans-unit>
       <trans-unit id="multipleAssignments.assignee" datatype="html">
@@ -21324,7 +21323,7 @@
         <target state="translated">کارگذار</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/multiple-assignments/multiple-assignments.component.html</context>
-          <context context-type="linenumber">63</context>
+          <context context-type="linenumber">64</context>
         </context-group>
       </trans-unit>
       <trans-unit id="multipleAssignments.pleaseWaitWeAreUpdatingContents" datatype="html">
@@ -21700,7 +21699,7 @@
         <target state="translated"> اختصاص داده شده به {{post._assigned_to?. طول || 0}} عضو (ها) </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-view/post-view.component.html</context>
-          <context context-type="linenumber">28,30</context>
+          <context context-type="linenumber">29,31</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postView.assignedToAllMembers" datatype="html">
@@ -21708,7 +21707,7 @@
         <target state="translated"> اختصاص داده شده به همه اعضا </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-view/post-view.component.html</context>
-          <context context-type="linenumber">31,33</context>
+          <context context-type="linenumber">32,34</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postView.due" datatype="html">
@@ -21716,7 +21715,7 @@
         <target state="translated">قابل پرداخت</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-view/post-view.component.html</context>
-          <context context-type="linenumber">54</context>
+          <context context-type="linenumber">55</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postView.readMore" datatype="html">
@@ -21724,11 +21723,11 @@
         <target state="translated">ادامه مطلب...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-view/post-view.component.html</context>
-          <context context-type="linenumber">93,95</context>
+          <context context-type="linenumber">94,96</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-view/post-view.component.html</context>
-          <context context-type="linenumber">108,110</context>
+          <context context-type="linenumber">109,111</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userTaskForDayDialogComponent.overdue" datatype="html">
@@ -21932,7 +21931,7 @@
         <target state="translated">اضافه</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/project-budget-dialog/project-budget-dialog.component.html</context>
-          <context context-type="linenumber">139</context>
+          <context context-type="linenumber">140</context>
         </context-group>
       </trans-unit>
       <trans-unit id="projectBudgetDialog.used" datatype="html">
@@ -21940,7 +21939,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/project-budget-dialog/project-budget-dialog.component.html</context>
-          <context context-type="linenumber">146</context>
+          <context context-type="linenumber">147</context>
         </context-group>
       </trans-unit>
       <trans-unit id="projectBudgetDialog.on" datatype="html">
@@ -21948,7 +21947,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/project-budget-dialog/project-budget-dialog.component.html</context>
-          <context context-type="linenumber">148</context>
+          <context context-type="linenumber">149</context>
         </context-group>
       </trans-unit>
       <trans-unit id="projectBudgetDialog.unitsOf" datatype="html">
@@ -21956,7 +21955,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/project-budget-dialog/project-budget-dialog.component.html</context>
-          <context context-type="linenumber">150</context>
+          <context context-type="linenumber">151</context>
         </context-group>
       </trans-unit>
       <trans-unit id="projectBudgetDialog.registered" datatype="html">
@@ -21964,7 +21963,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/project-budget-dialog/project-budget-dialog.component.html</context>
-          <context context-type="linenumber">168</context>
+          <context context-type="linenumber">170</context>
         </context-group>
       </trans-unit>
       <trans-unit id="projectBudgetDialog.toTheTask" datatype="html">
@@ -21972,7 +21971,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/project-budget-dialog/project-budget-dialog.component.html</context>
-          <context context-type="linenumber">170</context>
+          <context context-type="linenumber">172</context>
         </context-group>
       </trans-unit>
       <trans-unit id="projectBudgetDialog.onTheCategory" datatype="html">
@@ -21980,7 +21979,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/project-budget-dialog/project-budget-dialog.component.html</context>
-          <context context-type="linenumber">172</context>
+          <context context-type="linenumber">174</context>
         </context-group>
       </trans-unit>
       <trans-unit id="projectBudgetDialog.whichCost" datatype="html">
@@ -21988,7 +21987,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/project-budget-dialog/project-budget-dialog.component.html</context>
-          <context context-type="linenumber">174</context>
+          <context context-type="linenumber">176</context>
         </context-group>
       </trans-unit>
       <trans-unit id="projectBudgetDialog.edit" datatype="html">
@@ -21996,7 +21995,7 @@
         <target state="translated">ویرایش</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/project-budget-dialog/project-budget-dialog.component.html</context>
-          <context context-type="linenumber">191</context>
+          <context context-type="linenumber">193</context>
         </context-group>
       </trans-unit>
       <trans-unit id="projectBudgetDialog.delete" datatype="html">
@@ -22004,7 +22003,7 @@
         <target state="translated">حذف</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/project-budget-dialog/project-budget-dialog.component.html</context>
-          <context context-type="linenumber">195</context>
+          <context context-type="linenumber">197</context>
         </context-group>
       </trans-unit>
       <trans-unit id="projectBudgetDialog.addBudget" datatype="html">
@@ -22184,7 +22183,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/resources-details-dialog/resource-activity/resource-activity-list/resource-activity-list.component.html</context>
-          <context context-type="linenumber">12</context>
+          <context context-type="linenumber">14</context>
         </context-group>
       </trans-unit>
       <trans-unit id="resourceActivityList.deletedUser" datatype="html">
@@ -22192,7 +22191,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/resources-details-dialog/resource-activity/resource-activity-list/resource-activity-list.component.html</context>
-          <context context-type="linenumber">16</context>
+          <context context-type="linenumber">18</context>
         </context-group>
       </trans-unit>
       <trans-unit id="resourceActivityList.quantity" datatype="html">
@@ -22200,7 +22199,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/resources-details-dialog/resource-activity/resource-activity-list/resource-activity-list.component.html</context>
-          <context context-type="linenumber">21</context>
+          <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit>
       <trans-unit id="resourceActivityList.updatedQuantity" datatype="html">
@@ -22208,7 +22207,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/resources-details-dialog/resource-activity/resource-activity-list/resource-activity-list.component.html</context>
-          <context context-type="linenumber">24</context>
+          <context context-type="linenumber">26</context>
         </context-group>
       </trans-unit>
       <trans-unit id="resourceActivityList.project" datatype="html">
@@ -22216,7 +22215,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/resources-details-dialog/resource-activity/resource-activity-list/resource-activity-list.component.html</context>
-          <context context-type="linenumber">31</context>
+          <context context-type="linenumber">33</context>
         </context-group>
       </trans-unit>
       <trans-unit id="resourceActivityList.comment" datatype="html">
@@ -22224,7 +22223,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/resources-details-dialog/resource-activity/resource-activity-list/resource-activity-list.component.html</context>
-          <context context-type="linenumber">39</context>
+          <context context-type="linenumber">41</context>
         </context-group>
       </trans-unit>
       <trans-unit id="resourceActivityList.time" datatype="html">
@@ -22232,7 +22231,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/resources-details-dialog/resource-activity/resource-activity-list/resource-activity-list.component.html</context>
-          <context context-type="linenumber">47</context>
+          <context context-type="linenumber">49</context>
         </context-group>
       </trans-unit>
       <trans-unit id="resourceActivityList.date" datatype="html">
@@ -22240,7 +22239,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/resources-details-dialog/resource-activity/resource-activity-list/resource-activity-list.component.html</context>
-          <context context-type="linenumber">55</context>
+          <context context-type="linenumber">57</context>
         </context-group>
       </trans-unit>
       <trans-unit id="resourceActivityList.edit" datatype="html">
@@ -22248,7 +22247,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/resources-details-dialog/resource-activity/resource-activity-list/resource-activity-list.component.html</context>
-          <context context-type="linenumber">72</context>
+          <context context-type="linenumber">74</context>
         </context-group>
       </trans-unit>
       <trans-unit id="resourceActivityList.delete" datatype="html">
@@ -22256,7 +22255,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/resources-details-dialog/resource-activity/resource-activity-list/resource-activity-list.component.html</context>
-          <context context-type="linenumber">77</context>
+          <context context-type="linenumber">79</context>
         </context-group>
       </trans-unit>
       <trans-unit id="resourceActivityList.areYouSure" datatype="html">
@@ -22652,7 +22651,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/share-collection-dialog/share-collection-dialog.component.html</context>
-          <context context-type="linenumber">136</context>
+          <context context-type="linenumber">138</context>
         </context-group>
       </trans-unit>
       <trans-unit id="shareCollectionDialog.readOnly" datatype="html">
@@ -22664,7 +22663,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/share-collection-dialog/share-collection-dialog.component.html</context>
-          <context context-type="linenumber">137</context>
+          <context context-type="linenumber">139</context>
         </context-group>
       </trans-unit>
       <trans-unit id="shareCollectionDialog.shareWithUsers" datatype="html">
