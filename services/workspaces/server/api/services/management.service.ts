@@ -120,13 +120,13 @@ export class ManagementService {
                             message: 'succesfully retrieved the subscription',
                             subscription: {
                                 "id": "",
-                                "product": "prod_OHLYDzd3gB29cY",
+                                "product": "prod_QGaXyUXflYGnf6",
                                 "plan": {
-                                    "product": "prod_OHLYDzd3gB29cY"
+                                    "product": "prod_QGaXyUXflYGnf6"
                                 }
                             },
                             product: {
-                                "id": "prod_OHLYDzd3gB29cY"
+                                "id": "prod_QGaXyUXflYGnf6"
                             }
                         }
                     });
