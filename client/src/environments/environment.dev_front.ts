@@ -116,5 +116,5 @@ export const environment = {
   // MANAGEMENT_URL
   MANAGEMENT_URL: `${url["protocol"]}://${url["domain"]}`,
 
-  STRIPE_ONPREMISE_PRODUCT_ID: 'prod_PePFjZ7tGQ4I2J',
+  STRIPE_ONPREMISE_PRODUCT_ID: 'prod_QGcUdQO22vzE7d',
 };
