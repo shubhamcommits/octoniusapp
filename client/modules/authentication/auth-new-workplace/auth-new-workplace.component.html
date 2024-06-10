@@ -38,7 +38,7 @@
               <app-pricing-table [canCreateSubscription]="false"></app-pricing-table>
             </ng-template>
 
-            <mat-select ngDefaultControl (selectionChange)="selectStripeProduct($event.value)">
+            <mat-select ngDefaultControl (selectionChange)="selectStripeProduct($event.value)" style="border:1px solid #ced4da; padding: 6px; border-radius: 4px;">
               <mat-option *ngFor="let product of stripeProducts" [value]="product.id">{{ product.name }}</mat-option>
             </mat-select>
           </div>
