@@ -116,5 +116,5 @@ export const environment = {
   // MANAGEMENT_URL: 'https://management.octonius.com',
   MANAGEMENT_URL: `${url.protocol}://${url.domain}:3300`,
 
-  STRIPE_ONPREMISE_PRODUCT_ID: 'prod_OHNN4xSuwUbN2z',
+  STRIPE_ONPREMISE_PRODUCT_ID: 'prod_QGcUdQO22vzE7d',
 };
