@@ -3142,9 +3142,6 @@ export class PostService {
           // Instantiate the fileName variable and add the date object in the name
           let fileName = Date.now().toString() + currentFile.original_name;
 
-          // Get the folder link from the environment
-          const folder = process.env.FILE_UPLOAD_FOLDER;
-
           var minioClient = new minio.Client({
               endPoint: process.env.MINIO_DOMAIN,
               port: +(process.env.MINIO_API_PORT),
@@ -3155,25 +3152,25 @@ export class PostService {
 
           var conds = new minio.CopyConditions();
 
-          await minioClient.bucketExists((group._workspace).toLowerCase(), async (error, exists) => {
+          await minioClient.bucketExists((group._workspace).toString().toLowerCase(), async (error, exists) => {
             if (error) {
               throw (error);
             }
 
             if (!exists) {
               // Make a bucket.
-              await minioClient.makeBucket((group._workspace).toLowerCase(), async (error) => {
+              await minioClient.makeBucket((group._workspace).toString().toLowerCase(), async (error) => {
                 if (error) {
                   throw (error);
                 }
 
                 const encryption = { algorithm: "AES256" };
-                await minioClient.setBucketEncryption((group._workspace).toLowerCase(), encryption)
+                await minioClient.setBucketEncryption((group._workspace).toString().toLowerCase(), encryption)
                   .then(() => console.log("Encryption enabled"))
                   .catch((error) => console.error(error));
 
                 // Using fPutObject API upload your file to the bucket.
-                minioClient.copyObject((group._workspace).toLowerCase(), fileName, currentFile.modified_name, conds, (e, data) => {
+                minioClient.copyObject((group._workspace).toString().toLowerCase(), fileName, currentFile.modified_name, conds, (e, data) => {
                   if (e) {
                     throw (e);
                   }
@@ -3181,7 +3178,7 @@ export class PostService {
               });
             } else {
               // Using fPutObject API upload your file to the bucket.
-              minioClient.copyObject((group._workspace).toLowerCase(), fileName, currentFile.modified_name, conds, (e, data) => {
+              minioClient.copyObject((group._workspace).toString().toLowerCase(), fileName, currentFile.modified_name, conds, (e, data) => {
                 if (error) {
                   throw (error);
                 }

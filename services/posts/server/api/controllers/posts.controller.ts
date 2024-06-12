@@ -1681,8 +1681,7 @@ export class PostController {
         try {
             // Post Object From request
             const { params: { postId }, body: { assignees } } = req;
-// console.log({postId});
-// console.log({assignees});
+
             // Call servide function for adding the post
             assignees.forEach(async assigneeId => {
                 const postData = await postService.cloneToAssignee(postId, assigneeId)
