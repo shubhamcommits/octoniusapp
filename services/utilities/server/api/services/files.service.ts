@@ -171,7 +171,7 @@ export class FilesService {
             }
 
             // Populate File Properties
-            file = this.populateFileProperties(file);
+            file = await this.populateFileProperties(file);
         }
 
         // Return file

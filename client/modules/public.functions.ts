@@ -2248,6 +2248,72 @@ export class PublicFunctions {
       let utilityService = this.injector.get(UtilityService);
       let integrationsService = this.injector.get(IntegrationsService);
 
+      let googleFilesList: any = [];
+      // Fetch Access Token
+      if (storageService.existData('googleUser') && workspaceData?.integrations?.is_google_connected) {
+
+        let googleUser: any = storageService.getLocalData('googleUser');
+
+        if (utilityService.objectExists(googleUser)) {
+          // Fetch the access token from the storage
+          let accessToken = googleUser['accessToken']
+
+          // Get Google file list
+          googleFilesList = await integrationsService.searchGoogleFiles(searchVal, accessToken) || []
+
+          // Google File List
+          if (googleFilesList.length > 0) {
+            googleFilesList = googleFilesList.map((file: any) => ({
+              id: '5b9649d1f5acc923a497d1da',
+              value: '<a style="color:inherit;" target="_blank" href="' + file.embedLink + '"' + '>' + file.title + '</a>'
+            }));
+          }
+        }
+      }
+
+      let boxFilesList: any = [];
+      // Fetch Access Token
+      if (storageService.existData('boxUser') && workspaceData?.integrations?.is_box_connected) {
+        const boxUser: any = storageService.getLocalData('boxUser');
+
+        if (utilityService.objectExists(boxUser)) {
+          // Fetch the access token from the storage
+          let boxAccessToken = boxUser['accessToken'];
+
+          // Get Box file list
+          boxFilesList = await integrationsService.searchBoxFiles(searchVal, boxAccessToken, workspaceData?.integrations) || []
+
+          // Box File List
+          if (boxFilesList.length > 0) {
+            boxFilesList = boxFilesList
+                .filter(file => file && file.shared_link && file.shared_link.url)
+                .map((file: any) => ({
+                    id: 'boxfile',
+                    value: '<a style="color:inherit;" target="_blank" href="' + file.shared_link.url + '"' + '>' + file.name + '</a>'
+                  }));
+          }
+        }
+      }
+
+      let ms365FilesList: any = [];
+      // Fetch Access Token
+      if (storageService.existData('ms365User') && workspaceData?.integrations?.is_ms_365_connected) {
+        let ms365User: any = storageService.getLocalData('ms365User');
+
+        if (utilityService.objectExists(ms365User)) {
+          // Get MS365 file list
+          ms365FilesList = await integrationsService.searchMS365Files(searchVal) || []
+
+          // MS365 File List
+          if (ms365FilesList.length > 0) {
+            ms365FilesList = ms365FilesList.map((file: any) => ({
+              id: file.id,
+              value: '<a style="color:inherit;" target="_blank" href="' + file.searchResult.onClickTelemetryUrl + '"' + '>' + file.name + '</a>'
+            }));
+          }
+        }
+      }
+
       // Fetch the users list from the server
       let filesList: any = [];
       if (groupId) {
@@ -2285,75 +2351,6 @@ export class PublicFunctions {
 //             //     : `<a href="${environment.UTILITIES_FILES_UPLOADS}/${workspaceData._id}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
 //         }
 //       });
-
-      let googleFilesList: any = [];
-
-      // Fetch Access Token
-      if (storageService.existData('googleUser') && workspaceData?.integrations?.is_google_connected) {
-
-        let googleUser: any = storageService.getLocalData('googleUser');
-
-        if (utilityService.objectExists(googleUser)) {
-          // Fetch the access token from the storage
-          let accessToken = googleUser['accessToken']
-
-          // Get Google file list
-          googleFilesList = await integrationsService.searchGoogleFiles(searchVal, accessToken) || []
-
-          // Google File List
-          if (googleFilesList.length > 0) {
-            googleFilesList = googleFilesList.map((file: any) => ({
-              id: '5b9649d1f5acc923a497d1da',
-              value: '<a style="color:inherit;" target="_blank" href="' + file.embedLink + '"' + '>' + file.title + '</a>'
-            }));
-          }
-        }
-      }
-
-      let boxFilesList: any = [];
-
-      // Fetch Access Token
-      if (storageService.existData('boxUser') && workspaceData?.integrations?.is_box_connected) {
-        const boxUser: any = storageService.getLocalData('boxUser');
-
-        if (utilityService.objectExists(boxUser)) {
-          // Fetch the access token from the storage
-          let boxAccessToken = boxUser['accessToken'];
-
-          // Get Box file list
-          boxFilesList = await integrationsService.searchBoxFiles(searchVal, boxAccessToken, workspaceData?.integrations) || []
-
-          // Box File List
-          if (boxFilesList.length > 0) {
-            boxFilesList = boxFilesList
-                .filter(file => file && file.shared_link && file.shared_link.url)
-                .map((file: any) => ({
-                    id: 'boxfile',
-                    value: '<a style="color:inherit;" target="_blank" href="' + file.shared_link.url + '"' + '>' + file.name + '</a>'
-                  }));
-          }
-        }
-      }
-
-      let ms365FilesList: any = [];
-
-      // Fetch Access Token
-      if (storageService.existData('ms365User') && workspaceData?.integrations?.is_ms_365_connected) {
-        let ms365User: any = storageService.getLocalData('ms365User');
-
-        if (utilityService.objectExists(ms365User)) {
-          // Get MS365 file list
-          ms365FilesList = await integrationsService.searchMS365Files(searchVal) || []
-
-          // MS365 File List
-          if (ms365FilesList.length > 0) {
-            ms365FilesList = ms365FilesList.map((file: any) => ({
-              id: file.id,
-              value: '<a style="color:inherit;" target="_blank" href="' + file.searchResult.onClickTelemetryUrl + '"' + '>' + file.name + '</a>'
-            }));
-          }
-        }
-      }
 
       return Array.from(new Set([...filesList, ...googleFilesList, ...boxFilesList, ...ms365FilesList]));
   }
@@ -2469,7 +2466,6 @@ export class PublicFunctions {
 
       if (useMS365) {
         await ms365CloudService.getOfficeWOPIUrl().then(res => {
-console.log({res});
             if (res['msData']) {
               const actions: {[key: string]: [[string, string]]} = res['data'];
               if (actions[fileExt]) {
@@ -2495,10 +2491,12 @@ console.log({res});
           });
       } else {
         await libreofficeService.getLibreofficeWOPIUrl().then(res => {
+// console.log({res});
             if (res['url']) {
               wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}/${workspaceId}?access_token=${storageService.getLocalData("authToken")["token"]}`;
             }
           }).catch(error => {
+// console.log({error});
             utilityService.errorNotification($localize`:@@publicFunctions.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
           });
       }
