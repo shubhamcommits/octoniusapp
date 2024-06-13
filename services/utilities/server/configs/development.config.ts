@@ -84,7 +84,9 @@ function devConfigInit() {
 
   // Libreoffice Image Service
   process.env.LIBREOFFICE_PROTOCOL = process.env.LIBREOFFICE_PROTOCOL || 'https'
-  process.env.LIBREOFFICE_DOMAIN = process.env.LIBREOFFICE_DOMAIN || 'betadocs.octonius.com'
+  process.env.LIBREOFFICE_DOMAIN = process.env.LIBREOFFICE_DOMAIN || 'docs.octonius.com'
+  // process.env.LIBREOFFICE_DOMAIN = process.env.LIBREOFFICE_DOMAIN || 'betadocs.octonius.com'
+  // process.env.LIBREOFFICE_DOMAIN = process.env.LIBREOFFICE_DOMAIN || 'docs.apps.octonius.com'
   process.env.LIBREOFFICE_SERVER = `${process.env.LIBREOFFICE_PROTOCOL}://${process.env.LIBREOFFICE_DOMAIN}`
 
   process.env.MINIO_API_PORT = process.env.MINIO_API_PORT || '19000'
