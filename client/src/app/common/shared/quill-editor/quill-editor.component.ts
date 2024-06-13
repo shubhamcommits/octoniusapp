@@ -317,6 +317,8 @@ export class QuillEditorComponent implements OnInit, OnChanges, AfterViewInit {
             });
           }
 
+          this.renderResult(searchVal, values, renderList);
+
         // If User types "#" then trigger the list for files mentioning
         } else if (mentionChar === "#") {
           // Initialise values with list of collection pages
@@ -324,20 +326,32 @@ export class QuillEditorComponent implements OnInit, OnChanges, AfterViewInit {
             searchVal = searchTerm.split(' ')[1];
             values = await this.publicFunctions.suggestCollectionPages(searchVal, this.groupId, this.workspaceData);  
 
+            this.renderResult(searchVal, values, renderList);
+
           // Initialise values with list of collections
           } else if (searchTerm.slice(0, 4) === 'col ') {
             searchVal = searchTerm.replace('col ', '');
             values = await this.publicFunctions.suggestCollection(this.groupId, searchVal);
 
+            this.renderResult(searchVal, values, renderList);
+
           // Initialise values with list of files
           } else if (searchTerm.slice(0, 5) === 'file ') {
             searchVal = searchTerm.replace('file ', '');
-            values = await this.publicFunctions.suggestFiles(searchVal, this.groupId, this.workspaceData);
+            this.publicFunctions.suggestFiles(searchVal, this.groupId, this.workspaceData).subscribe(
+              response => {
+                values = response;
+
+                this.renderResult(searchVal, values, renderList);
+              }
+            );
   
           // Initialise values with list of posts
           } else if (searchTerm.slice(0, 5) === 'post ') {
             searchVal = searchTerm.replace('post ', '');
             values = await this.publicFunctions.suggestPosts(searchVal, this.groupId);
+
+            this.renderResult(searchVal, values, renderList);
             
             // If none of the filters are used, initialise values with all entities
           } else if (searchTerm.length === 0) {
@@ -360,23 +374,30 @@ export class QuillEditorComponent implements OnInit, OnChanges, AfterViewInit {
               { value: '<span >#col <em>collectionname</em> <p style="color: #9D9D9D" i18n="@@quillEditor.findACollectionToTag"> find a collection to tag </p> </span>' },
               { value: '<span >#colpage <em>collectionpage</em> <p style="color: #9D9D9D" i18n="@@quillEditor.findAPageFromACollectionToTag"> find a page from a collection to tag </p> </span>' },              
             ]
-            values = cmdSuggestions  
+            values = cmdSuggestions;
+
+            this.renderResult(searchVal, values, renderList);
           }
-      }
+        }
       
-      // If searchVal is undefined, then display the list of command suggestions
-          if (searchVal === undefined) {
-          renderList(values);
-        } else {
-          const matches = [];
-          for (let i = 0; i < values?.length; i++) {
-            if (values[i] && values[i].value && ~values[i].value.toLowerCase().indexOf(searchVal?.toLowerCase())) {
-              matches.push(values[i]);
-            }
-          }
-          renderList(matches, searchVal);
+        
+      }
+    }
+  }
+
+  private renderResult(searchVal, values, renderList) {
+    // If searchVal is undefined, then display the list of command suggestions
+    if (searchVal === undefined) {
+      renderList(values);
+    } else {
+      const matches = [];
+      for (let i = 0; i < values?.length; i++) {
+        if (values[i] && values[i].value && ~values[i].value.toLowerCase().indexOf(searchVal?.toLowerCase())) {
+          matches.push(values[i]);
         }
       }
+
+      renderList(matches, searchVal);
     }
   }
 

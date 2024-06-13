@@ -27,6 +27,8 @@ import { LibreofficeService } from 'src/shared/services/libreoffice-service/libr
 import { DateTime } from 'luxon';
 import { DatesService } from 'src/shared/services/dates-service/dates.service';
 import { MS365CloudService } from './user/user-clouds/user-available-clouds/ms-365/services/ms-365-cloud.service';
+import { map, mergeMap } from 'rxjs/operators';
+import { forkJoin, from } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -2242,25 +2244,137 @@ export class PublicFunctions {
      * @param groupId: string
      * @param workspaceData: any
      */
-    async suggestFiles(searchVal: string, groupId: string, workspaceData: any) {
-      // Storage Service Instance
+    suggestFiles(searchVal: string, groupId: string, workspaceData: any) {
+      // Convert promises to observables
+      const serviceGoogle$ = from(this.getGoogleSuggestedFiles(searchVal, workspaceData?.integrations?.is_google_connected));
+      const serviceBox$ = from(this.getBoxSuggestedFiles(searchVal, workspaceData?.integrations));
+      const serviceMS365$ = from(this.getMS365SuggestedFiles(searchVal, workspaceData?.integrations?.is_ms_365_connected));
+      const serviceOctonius$ = from(this.getOctoniusSuggestedFiles(searchVal, groupId, workspaceData?._id));
+
+      // Merge the observables to emit results as they come
+      return serviceGoogle$.pipe(
+        mergeMap(serviceGoogleResult => {
+          return serviceBox$.pipe(
+            mergeMap(serviceBoxResult => {
+              return serviceMS365$.pipe(
+                mergeMap(serviceMS365Result => {
+                  return serviceOctonius$.pipe(
+                    map(serviceOctoniusResult => {
+                      return [...serviceGoogleResult, ...serviceBoxResult, ...serviceMS365Result, ...serviceOctoniusResult];
+                    })
+                  );
+                })
+              );
+            })
+          );
+        })
+      );
+    }
+
+    private async getGoogleSuggestedFiles(searchVal: string, isGoogleConnected: boolean) {
+      let integrationsService = this.injector.get(IntegrationsService);
       let storageService = this.injector.get(StorageService);
       let utilityService = this.injector.get(UtilityService);
-      let integrationsService = this.injector.get(IntegrationsService);
+      
+      let googleFilesList: any = [];
+      // Fetch Access Token
+      if (storageService.existData('googleUser') && isGoogleConnected) {
 
-      // Fetch the users list from the server
+        let googleUser: any = storageService.getLocalData('googleUser');
+
+        if (utilityService.objectExists(googleUser)) {
+          // Fetch the access token from the storage
+          let accessToken = googleUser['accessToken']
+
+          // Get Google file list
+          googleFilesList = await integrationsService.searchGoogleFiles(searchVal, accessToken) || []
+
+          // Google File List
+          if (googleFilesList.length > 0) {
+            googleFilesList = googleFilesList.map((file: any) => ({
+              id: '5b9649d1f5acc923a497d1da',
+              value: '<a style="color:inherit;" target="_blank" href="' + file.embedLink + '"' + '>' + file.title + '</a>'
+            }));
+          }
+        }
+      }
+
+      return googleFilesList;
+    }
+
+    private async getBoxSuggestedFiles(searchVal: string, integrations: any) {
+      let integrationsService = this.injector.get(IntegrationsService);
+      let storageService = this.injector.get(StorageService);
+      let utilityService = this.injector.get(UtilityService);
+      
+      let boxFilesList: any = [];
+      // Fetch Access Token
+      if (storageService.existData('boxUser') && integrations?.is_box_connected) {
+        const boxUser: any = storageService.getLocalData('boxUser');
+
+        if (utilityService.objectExists(boxUser)) {
+          // Fetch the access token from the storage
+          let boxAccessToken = boxUser['accessToken'];
+
+          // Get Box file list
+          boxFilesList = await integrationsService.searchBoxFiles(searchVal, boxAccessToken, integrations) || []
+
+          // Box File List
+          if (boxFilesList.length > 0) {
+            boxFilesList = boxFilesList
+                .filter(file => file && file.shared_link && file.shared_link.url)
+                .map((file: any) => ({
+                    id: 'boxfile',
+                    value: '<a style="color:inherit;" target="_blank" href="' + file.shared_link.url + '"' + '>' + file.name + '</a>'
+                  }));
+          }
+        }
+      }
+
+      return boxFilesList;
+    }
+
+    private async getMS365SuggestedFiles(searchVal: string, isMS365Connected: boolean) {
+      let integrationsService = this.injector.get(IntegrationsService);
+      let storageService = this.injector.get(StorageService);
+      let utilityService = this.injector.get(UtilityService);
+      
+      let ms365FilesList: any = [];
+      // Fetch Access Token
+      if (storageService.existData('ms365User') && isMS365Connected) {
+        let ms365User: any = storageService.getLocalData('ms365User');
+
+        if (utilityService.objectExists(ms365User)) {
+          // Get MS365 file list
+          ms365FilesList = await integrationsService.searchMS365Files(searchVal) || []
+
+          // MS365 File List
+          if (ms365FilesList.length > 0) {
+            ms365FilesList = ms365FilesList.map((file: any) => ({
+              id: file.id,
+              value: '<a style="color:inherit;" target="_blank" href="' + file.searchResult.onClickTelemetryUrl + '"' + '>' + file.name + '</a>'
+            }));
+          }
+        }
+      }
+
+      return ms365FilesList;
+    }
+
+    private async getOctoniusSuggestedFiles(searchVal: string, groupId: string, workspaceId: string) {
+      // Fetch the files list from the server
       let filesList: any = [];
       if (groupId) {
-        filesList = await this.searchFiles(groupId, searchVal, workspaceData._id, 'true');
+        filesList = await this.searchFiles(groupId, searchVal, workspaceId, 'true');
       } else {
-        filesList = await this.searchFiles(null, searchVal, workspaceData._id, 'true');
+        filesList = await this.searchFiles(null, searchVal, workspaceId, 'true');
       }
 
       // Map the files list
       let retFileList = [];
       for (let i = 0; i < filesList.length; i++) {
         const file = filesList[i];
-        const url = await this.getFileUrl(file, workspaceData?._id);
+        const url = await this.getFileUrl(file, workspaceId);
         if (!!url) {
           retFileList.push({
             id: file._id,
@@ -2286,77 +2400,8 @@ export class PublicFunctions {
 //         }
 //       });
 
-      let googleFilesList: any = [];
-
-      // Fetch Access Token
-      if (storageService.existData('googleUser') && workspaceData?.integrations?.is_google_connected) {
-
-        let googleUser: any = storageService.getLocalData('googleUser');
-
-        if (utilityService.objectExists(googleUser)) {
-          // Fetch the access token from the storage
-          let accessToken = googleUser['accessToken']
-
-          // Get Google file list
-          googleFilesList = await integrationsService.searchGoogleFiles(searchVal, accessToken) || []
-
-          // Google File List
-          if (googleFilesList.length > 0) {
-            googleFilesList = googleFilesList.map((file: any) => ({
-              id: '5b9649d1f5acc923a497d1da',
-              value: '<a style="color:inherit;" target="_blank" href="' + file.embedLink + '"' + '>' + file.title + '</a>'
-            }));
-          }
-        }
-      }
-
-      let boxFilesList: any = [];
-
-      // Fetch Access Token
-      if (storageService.existData('boxUser') && workspaceData?.integrations?.is_box_connected) {
-        const boxUser: any = storageService.getLocalData('boxUser');
-
-        if (utilityService.objectExists(boxUser)) {
-          // Fetch the access token from the storage
-          let boxAccessToken = boxUser['accessToken'];
-
-          // Get Box file list
-          boxFilesList = await integrationsService.searchBoxFiles(searchVal, boxAccessToken, workspaceData?.integrations) || []
-
-          // Box File List
-          if (boxFilesList.length > 0) {
-            boxFilesList = boxFilesList
-                .filter(file => file && file.shared_link && file.shared_link.url)
-                .map((file: any) => ({
-                    id: 'boxfile',
-                    value: '<a style="color:inherit;" target="_blank" href="' + file.shared_link.url + '"' + '>' + file.name + '</a>'
-                  }));
-          }
-        }
-      }
-
-      let ms365FilesList: any = [];
-
-      // Fetch Access Token
-      if (storageService.existData('ms365User') && workspaceData?.integrations?.is_ms_365_connected) {
-        let ms365User: any = storageService.getLocalData('ms365User');
-
-        if (utilityService.objectExists(ms365User)) {
-          // Get MS365 file list
-          ms365FilesList = await integrationsService.searchMS365Files(searchVal) || []
-
-          // MS365 File List
-          if (ms365FilesList.length > 0) {
-            ms365FilesList = ms365FilesList.map((file: any) => ({
-              id: file.id,
-              value: '<a style="color:inherit;" target="_blank" href="' + file.searchResult.onClickTelemetryUrl + '"' + '>' + file.name + '</a>'
-            }));
-          }
-        }
-      }
-
-      return Array.from(new Set([...filesList, ...googleFilesList, ...boxFilesList, ...ms365FilesList]));
-  }
+      return filesList;
+    }
   
     /**
      * This function is responsible for fetching the collection pages list
@@ -2364,10 +2409,6 @@ export class PublicFunctions {
      */
     async suggestCollectionPages(searchVal: string, groupId: string, workspaceData: any) {
       // Storage Service Instance
-      let storageService = this.injector.get(StorageService);
-      let utilityService = this.injector.get(UtilityService);
-      let integrationsService = this.injector.get(IntegrationsService);
-
       let pagesList: any = await this.searchPages(groupId, searchVal, workspaceData._id);
       
       // Map the users list
@@ -2469,7 +2510,6 @@ export class PublicFunctions {
 
       if (useMS365) {
         await ms365CloudService.getOfficeWOPIUrl().then(res => {
-console.log({res});
             if (res['msData']) {
               const actions: {[key: string]: [[string, string]]} = res['data'];
               if (actions[fileExt]) {
@@ -2495,10 +2535,12 @@ console.log({res});
           });
       } else {
         await libreofficeService.getLibreofficeWOPIUrl().then(res => {
+// console.log({res});
             if (res['url']) {
               wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}/${workspaceId}?access_token=${storageService.getLocalData("authToken")["token"]}`;
             }
           }).catch(error => {
+// console.log({error});
             utilityService.errorNotification($localize`:@@publicFunctions.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
           });
       }

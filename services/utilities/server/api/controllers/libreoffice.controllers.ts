@@ -23,6 +23,7 @@ export class LibreofficeControllers {
             let libreofficeOnlineHost = process.env.LIBREOFFICE_SERVER;
             let httpClient = libreofficeOnlineHost.startsWith('https') ? https : http;
             let data = '';
+
             let request = httpClient.get(libreofficeOnlineHost + '/hosting/discovery', (response) => {
                 response.on('data', (chunk) => { data += chunk.toString(); });
                 response.on('end', () => {
@@ -38,6 +39,7 @@ export class LibreofficeControllers {
                         console.log(err);
                         return sendError(res, new Error(err), err, 404);
                     }
+
                     let doc = new Dom().parseFromString(data);
                     if (!doc) {
                         err = 'The retrieved discovery.xml file is not a valid XML file'
@@ -54,6 +56,7 @@ export class LibreofficeControllers {
 
                     let onlineUrl = nodes[0].getAttribute('urlsrc');
                     onlineUrl = onlineUrl.replace("http:", "https:");
+
                     res.json({
                         url: onlineUrl,
                     });
