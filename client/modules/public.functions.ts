@@ -27,6 +27,8 @@ import { LibreofficeService } from 'src/shared/services/libreoffice-service/libr
 import { DateTime } from 'luxon';
 import { DatesService } from 'src/shared/services/dates-service/dates.service';
 import { MS365CloudService } from './user/user-clouds/user-available-clouds/ms-365/services/ms-365-cloud.service';
+import { map, mergeMap } from 'rxjs/operators';
+import { forkJoin, from } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -2242,15 +2244,41 @@ export class PublicFunctions {
      * @param groupId: string
      * @param workspaceData: any
      */
-    async suggestFiles(searchVal: string, groupId: string, workspaceData: any) {
-      // Storage Service Instance
+    suggestFiles(searchVal: string, groupId: string, workspaceData: any) {
+      // Convert promises to observables
+      const serviceGoogle$ = from(this.getGoogleSuggestedFiles(searchVal, workspaceData?.integrations?.is_google_connected));
+      const serviceBox$ = from(this.getBoxSuggestedFiles(searchVal, workspaceData?.integrations));
+      const serviceMS365$ = from(this.getMS365SuggestedFiles(searchVal, workspaceData?.integrations?.is_ms_365_connected));
+      const serviceOctonius$ = from(this.getOctoniusSuggestedFiles(searchVal, groupId, workspaceData?._id));
+
+      // Merge the observables to emit results as they come
+      return serviceGoogle$.pipe(
+        mergeMap(serviceGoogleResult => {
+          return serviceBox$.pipe(
+            mergeMap(serviceBoxResult => {
+              return serviceMS365$.pipe(
+                mergeMap(serviceMS365Result => {
+                  return serviceOctonius$.pipe(
+                    map(serviceOctoniusResult => {
+                      return [...serviceGoogleResult, ...serviceBoxResult, ...serviceMS365Result, ...serviceOctoniusResult];
+                    })
+                  );
+                })
+              );
+            })
+          );
+        })
+      );
+    }
+
+    private async getGoogleSuggestedFiles(searchVal: string, isGoogleConnected: boolean) {
+      let integrationsService = this.injector.get(IntegrationsService);
       let storageService = this.injector.get(StorageService);
       let utilityService = this.injector.get(UtilityService);
-      let integrationsService = this.injector.get(IntegrationsService);
-
+      
       let googleFilesList: any = [];
       // Fetch Access Token
-      if (storageService.existData('googleUser') && workspaceData?.integrations?.is_google_connected) {
+      if (storageService.existData('googleUser') && isGoogleConnected) {
 
         let googleUser: any = storageService.getLocalData('googleUser');
 
@@ -2271,9 +2299,17 @@ export class PublicFunctions {
         }
       }
 
+      return googleFilesList;
+    }
+
+    private async getBoxSuggestedFiles(searchVal: string, integrations: any) {
+      let integrationsService = this.injector.get(IntegrationsService);
+      let storageService = this.injector.get(StorageService);
+      let utilityService = this.injector.get(UtilityService);
+      
       let boxFilesList: any = [];
       // Fetch Access Token
-      if (storageService.existData('boxUser') && workspaceData?.integrations?.is_box_connected) {
+      if (storageService.existData('boxUser') && integrations?.is_box_connected) {
         const boxUser: any = storageService.getLocalData('boxUser');
 
         if (utilityService.objectExists(boxUser)) {
@@ -2281,7 +2317,7 @@ export class PublicFunctions {
           let boxAccessToken = boxUser['accessToken'];
 
           // Get Box file list
-          boxFilesList = await integrationsService.searchBoxFiles(searchVal, boxAccessToken, workspaceData?.integrations) || []
+          boxFilesList = await integrationsService.searchBoxFiles(searchVal, boxAccessToken, integrations) || []
 
           // Box File List
           if (boxFilesList.length > 0) {
@@ -2295,9 +2331,17 @@ export class PublicFunctions {
         }
       }
 
+      return boxFilesList;
+    }
+
+    private async getMS365SuggestedFiles(searchVal: string, isMS365Connected: boolean) {
+      let integrationsService = this.injector.get(IntegrationsService);
+      let storageService = this.injector.get(StorageService);
+      let utilityService = this.injector.get(UtilityService);
+      
       let ms365FilesList: any = [];
       // Fetch Access Token
-      if (storageService.existData('ms365User') && workspaceData?.integrations?.is_ms_365_connected) {
+      if (storageService.existData('ms365User') && isMS365Connected) {
         let ms365User: any = storageService.getLocalData('ms365User');
 
         if (utilityService.objectExists(ms365User)) {
@@ -2314,19 +2358,23 @@ export class PublicFunctions {
         }
       }
 
-      // Fetch the users list from the server
+      return ms365FilesList;
+    }
+
+    private async getOctoniusSuggestedFiles(searchVal: string, groupId: string, workspaceId: string) {
+      // Fetch the files list from the server
       let filesList: any = [];
       if (groupId) {
-        filesList = await this.searchFiles(groupId, searchVal, workspaceData._id, 'true');
+        filesList = await this.searchFiles(groupId, searchVal, workspaceId, 'true');
       } else {
-        filesList = await this.searchFiles(null, searchVal, workspaceData._id, 'true');
+        filesList = await this.searchFiles(null, searchVal, workspaceId, 'true');
       }
 
       // Map the files list
       let retFileList = [];
       for (let i = 0; i < filesList.length; i++) {
         const file = filesList[i];
-        const url = await this.getFileUrl(file, workspaceData?._id);
+        const url = await this.getFileUrl(file, workspaceId);
         if (!!url) {
           retFileList.push({
             id: file._id,
@@ -2352,8 +2400,8 @@ export class PublicFunctions {
 //         }
 //       });
 
-      return Array.from(new Set([...filesList, ...googleFilesList, ...boxFilesList, ...ms365FilesList]));
-  }
+      return filesList;
+    }
   
     /**
      * This function is responsible for fetching the collection pages list
@@ -2361,10 +2409,6 @@ export class PublicFunctions {
      */
     async suggestCollectionPages(searchVal: string, groupId: string, workspaceData: any) {
       // Storage Service Instance
-      let storageService = this.injector.get(StorageService);
-      let utilityService = this.injector.get(UtilityService);
-      let integrationsService = this.injector.get(IntegrationsService);
-
       let pagesList: any = await this.searchPages(groupId, searchVal, workspaceData._id);
       
       // Map the users list
