@@ -322,7 +322,7 @@ export class QuillEditorComponent implements OnInit, OnChanges, AfterViewInit {
           // }
 
           // this.renderResult(searchVal, values, renderList);
-console.log(searchTerm);
+
           this.mentionSubject.next(searchTerm);
 
           this.mentionSubject.pipe(
