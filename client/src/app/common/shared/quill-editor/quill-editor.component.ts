@@ -322,11 +322,11 @@ export class QuillEditorComponent implements OnInit, OnChanges, AfterViewInit {
           // }
 
           // this.renderResult(searchVal, values, renderList);
-
+console.log(searchTerm);
           this.mentionSubject.next(searchTerm);
 
           this.mentionSubject.pipe(
-            debounceTime(3000),
+            debounceTime(300),
             switchMap((val: string) => this.publicFunctions.suggestMembers(val, this.groupId, this.workspaceData, this.mentionAll))
           ).subscribe(values => this.renderResult(searchTerm, values, renderList));
 
@@ -342,7 +342,7 @@ export class QuillEditorComponent implements OnInit, OnChanges, AfterViewInit {
             this.mentionSubject.next(searchVal);
 
             this.mentionSubject.pipe(
-              debounceTime(3000),
+              debounceTime(300),
               switchMap((val: string) => this.publicFunctions.suggestCollectionPages(val, this.groupId, this.workspaceData))
             ).subscribe(values => this.renderResult(searchVal, values, renderList));
 
@@ -356,7 +356,7 @@ export class QuillEditorComponent implements OnInit, OnChanges, AfterViewInit {
             this.mentionSubject.next(searchVal);
 
             this.mentionSubject.pipe(
-              debounceTime(3000),
+              debounceTime(300),
               switchMap((val: string) => this.publicFunctions.suggestCollection(this.groupId, val))
             ).subscribe(values => this.renderResult(searchVal, values, renderList));
 
@@ -374,7 +374,7 @@ export class QuillEditorComponent implements OnInit, OnChanges, AfterViewInit {
             this.mentionSubject.next(searchVal);
 
             this.mentionSubject.pipe(
-              debounceTime(3000),
+              debounceTime(300),
               switchMap((val: string) => this.publicFunctions.suggestFiles(val, this.groupId, this.workspaceData))
             ).subscribe(values => this.renderResult(searchVal, values, renderList));
   
@@ -388,7 +388,7 @@ export class QuillEditorComponent implements OnInit, OnChanges, AfterViewInit {
             this.mentionSubject.next(searchVal);
 
             this.mentionSubject.pipe(
-              debounceTime(3000),
+              debounceTime(300),
               switchMap((val: string) => this.publicFunctions.suggestPosts(val, this.groupId))
             ).subscribe(values => this.renderResult(searchVal, values, renderList));
             

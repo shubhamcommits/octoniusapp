@@ -731,7 +731,7 @@ export class FolioEditorComponent implements AfterViewInit {
           this.mentionSubject.next(searchTerm);
 
           this.mentionSubject.pipe(
-            debounceTime(3000),
+            debounceTime(300),
             switchMap((val: string) => this.publicFunctions.suggestMembers(val, this.groupData?._id, this.workspaceData, this.mentionAll))
           ).subscribe(values => this.renderResult(searchTerm, values, renderList));
 
@@ -741,13 +741,12 @@ export class FolioEditorComponent implements AfterViewInit {
           if (searchTerm.slice(0, 8) === 'colpage ') {
             searchVal = searchTerm.split(' ')[1];
             // values = await this.publicFunctions.suggestCollectionPages(searchVal, this.groupData?._id, this.workspaceData);
-
             // this.renderResult(searchVal, values, renderList);
 
             this.mentionSubject.next(searchVal);
 
             this.mentionSubject.pipe(
-              debounceTime(3000),
+              debounceTime(300),
               switchMap((val: string) => this.publicFunctions.suggestCollectionPages(val, this.groupData?._id, this.workspaceData))
             ).subscribe(values => this.renderResult(searchVal, values, renderList));
 
@@ -755,13 +754,12 @@ export class FolioEditorComponent implements AfterViewInit {
           } else if (searchTerm.slice(0, 4) === 'col ') {
             searchVal = searchTerm.replace('col ', '');
             // values = await this.publicFunctions.suggestCollection(this.groupData?._id, searchVal);
-
             // this.renderResult(searchVal, values, renderList);
 
             this.mentionSubject.next(searchVal);
 
             this.mentionSubject.pipe(
-              debounceTime(3000),
+              debounceTime(300),
               switchMap((val: string) => this.publicFunctions.suggestCollection(this.groupData?._id, val))
             ).subscribe(values => this.renderResult(searchVal, values, renderList));
 
@@ -771,7 +769,6 @@ export class FolioEditorComponent implements AfterViewInit {
             // this.publicFunctions.suggestFiles(searchVal, this.groupData?._id, this.workspaceData).subscribe(
             //   response => {
             //     values = response;
-
             //     this.renderResult(searchVal, values, renderList);
             //   }
             // );
@@ -779,7 +776,7 @@ export class FolioEditorComponent implements AfterViewInit {
             this.mentionSubject.next(searchVal);
 
             this.mentionSubject.pipe(
-              debounceTime(3000),
+              debounceTime(300),
               switchMap((val: string) => this.publicFunctions.suggestFiles(val, this.groupData?._id, this.workspaceData))
             ).subscribe(values => this.renderResult(searchVal, values, renderList));
   
@@ -787,13 +784,12 @@ export class FolioEditorComponent implements AfterViewInit {
           } else if (searchTerm.slice(0, 5) === 'post ') {
             searchVal = searchTerm.replace('post ', '');
             // values = await this.publicFunctions.suggestPosts(searchVal, this.groupData?._id);
-
             // this.renderResult(searchVal, values, renderList);
 
             this.mentionSubject.next(searchVal);
 
             this.mentionSubject.pipe(
-              debounceTime(3000),
+              debounceTime(300),
               switchMap((val: string) => this.publicFunctions.suggestPosts(val, this.groupData?._id))
             ).subscribe(values => this.renderResult(searchVal, values, renderList));
             
