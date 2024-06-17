@@ -146,6 +146,8 @@ import { ResourceActivityListComponent } from './resources-details-dialog/resour
 import { QRCodeModule } from 'angularx-qrcode';
 import { UserTaskForDayDialogComponent } from './posts/user-task-for-day-dialog/user-task-for-day-dialog.component';
 import { AvatarComponent } from './avatar/avatar.component';
+import { PostCRMOrderProductsComponent } from './posts/group-post-dialog/crm-order-products/crm-order-products.component';
+import { NewCRMOrderProductDialogComponent } from './posts/group-post-dialog/crm-order-products/new-crm-order-product-dialog/new-crm-order-product-dialog.component';
 
 @NgModule({
     declarations: [
@@ -207,6 +209,8 @@ import { AvatarComponent } from './avatar/avatar.component';
         NorthStarComponent,
         NorthStarStatsComponent,
         GroupPostDialogComponent,
+        PostCRMOrderProductsComponent,
+        NewCRMOrderProductDialogComponent,
         GlobalNorthStarDialogComponent,
         GlobalNorthStarStatsComponent,
         WorkStatisticsCardComponent,
@@ -334,6 +338,8 @@ import { AvatarComponent } from './avatar/avatar.component';
         MatSidenavModule,
         InlineInputComponent,
         GroupPostDialogComponent,
+        PostCRMOrderProductsComponent,
+        NewCRMOrderProductDialogComponent,
         GlobalNorthStarDialogComponent,
         GlobalNorthStarStatsComponent,
         ChartsModule,

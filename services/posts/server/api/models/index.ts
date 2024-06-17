@@ -15,6 +15,7 @@ import { Page } from "./page.model";
 import { Contact } from "./contact.model";
 import { Company } from "./company.model";
 import { TimeTrackingEntity } from "./time_tracking_entity.model";
+import { Product } from "./product.model";
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -33,6 +34,8 @@ export {
 
     // POST
     Post as Post,
+
+    Product as Product,
 
     // USER
     User as User,

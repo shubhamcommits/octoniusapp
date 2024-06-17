@@ -956,6 +956,7 @@ export class PostService {
       .populate({ path: 'crm._company', select: '_id name description company_pic' })
       .populate({ path: 'crm._contacts', select: '_id name description phones emails links _company position crm_custom_fields' })
       .populate({ path: 'crm._contacts._company', select: '_id name description company_pic' })
+      .populate({ path: 'crm.orders._product', select: '_id name description crm_custom_fields' })
       .populate({ path: 'logs._actor', select: this.userFields })
       .populate({ path: 'logs._new_section', select: '_id title' })
       .populate({ path: 'logs._assignee', select: this.userFields })

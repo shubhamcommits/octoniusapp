@@ -1,0 +1,61 @@
+<div class="container">
+    <mat-dialog-actions class="d-flex justify-content-end" align="end">
+        <i class="material-icons" (click)="closeDialog()" style="cursor: pointer">close</i>
+    </mat-dialog-actions>
+
+    <h2 mat-dialog-title style="margin: -50px 0 0 0 !important;">
+        <span *ngIf="!!orderData && !!orderData?._id && !!orderData?._product && !!orderData?._product?.name">{{ orderData?._product?.name }}</span>
+        <span i18n="@@newCRMOrderProductDialogComponent.newContact" *ngIf="!orderData || !orderData?._id">New Order</span>
+    </h2>
+
+    <div mat-dialog-content>
+        <div class="block">
+            <div class="row">
+                <label for="company" i18n="@@newCRMOrderProductDialogComponent.company" class="muted">Company</label>
+            </div>
+
+            <div class="dropdown">
+                <div *ngIf="!orderData?._product">
+                    <input type="text" class="form-control" id="search-text"
+                        aria-describedby="search-text" [(ngModel)]="productSearchText" placeholder="Search product" autofocus
+                        (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()" (keyup)="searchProduct()">
+                        
+                    <ul *ngIf="!!productSearchResults && !!productSearchText" class="product-list dropdown-menu">
+                        <li class="product-list-item pointer" *ngFor="let product of productSearchResults" (click)="selectProduct(product)">
+                            {{ product.name }}
+                        </li>
+                    </ul>
+                </div>
+            
+                <div *ngIf="!!orderData?._product" class="form-control" style="text-align: left;">
+                    <span>{{ orderData?._product?.name }}</span>
+                
+                    <!-- Clean field starts -->
+                    <i (click)="selectProduct(null)" class="material-icons muted mr-5"
+                        style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
+                    <!-- Clean field ends -->
+                </div>
+            </div>
+        
+            <div class="row">
+                <label for="company" i18n="@@newCRMOrderProductDialogComponent.company" class="muted">Company</label>
+            </div>
+
+            <div class="row">
+                <input type="number" class="form-control" [(ngModel)]="orderData.quantity" name="quantity">
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div style="margin-top: 20px;">
+            <button class="btn btn-danger" (click)="closeDialog()" i18n="@@newCRMOrderProductDialogComponent.cancel" style="margin: 0 10px">
+                Cancel
+            </button>
+
+            <button class="btn btn-primary" (click)="saveOrder()" i18n="@@newCRMOrderProductDialogComponent.save" style="margin: 0 10px">
+                Save
+            </button>
+        </div>
+    </div>
+</div>

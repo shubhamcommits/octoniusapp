@@ -1,4 +1,4 @@
-import { Column, Company, Contact, Flow, Group, Product } from '../models';
+import { Column, Company, Contact, Flow, Group, Post, Product } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError } from '../../utils';
 
@@ -933,6 +933,112 @@ export class CRMController {
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+    
+    /**
+     * This function removes a crm contact
+     * @param req - @constant contactId
+     */
+    async removeCRMOrder(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { postId, orderId } = req.params;
+
+            let post = await Post.findByIdAndUpdate(
+                { _id: postId },
+                {
+                    $pull: {
+                        "crm.orders": {
+                            _id: orderId
+                        }
+                    }
+                },
+                {
+                    // arrayFilters: [{ "order._id": orderId }],
+                    new: true
+                }).lean();
+
+            post = await Post.findOne({
+                    _id: postId
+                })
+                .populate({ path: 'crm.orders._product', select: '_id name description crm_custom_fields' })
+                .lean();
+
+            return res.status(200).json({
+                message: 'Order deleted successfully!',
+                post: post
+              });
+        } catch (error) {
+            return sendError(res, error, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function updates a crm contact
+     * @param req - @constant contactData
+     */
+    async updateCRMOrder(req: Request, res: Response) {
+        try {
+            const { postId } = req.params;
+            const { orderData } = req.body;
+
+            let post = await Post.findByIdAndUpdate(
+                { _id: postId },
+                {
+                    $set: {
+                        "crm.orders.$[order]._product": orderData._product,
+                        "crm.orders.$[order].quantity": orderData.quantity
+                    }
+                },
+                {
+                    arrayFilters: [{ "order._id": orderData._id }],
+                    new: true
+                })
+                .lean();
+
+            post = await Post.findOne({
+                    _id: postId
+                })
+                .populate({ path: 'crm.orders._product', select: '_id name description crm_custom_fields' })
+                .lean();
+
+            return res.status(200).json({
+                message: 'Order updated!',
+                post: post
+              });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
+     * This function creates a crm contact
+     * @param req - @constant contactData
+     */
+    async createCRMOrder(req: Request, res: Response) {
+        try {
+            const { postId } = req.params;
+            const { orderData } = req.body;
+
+            let post = await Post.findByIdAndUpdate(
+                { _id: postId },
+                {
+                    $addToSet: { 'crm.orders': orderData }
+                },
+                { new: true });
+
+            post = await Post.findOne({
+                    _id: postId
+                })
+                .populate({ path: 'crm.orders._product', select: '_id name description crm_custom_fields' })
+                .lean();
+
+            return res.status(200).json({
+                message: 'Order created successfully!',
+                post: post
+              });
+        } catch (err) {
+            return sendError(res, err);
         }
     };
 }

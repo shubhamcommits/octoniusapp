@@ -186,6 +186,15 @@ const PostSchema = new Schema({
         _contacts: [{
             type: Schema.Types.ObjectId,
             ref: 'Contact',
+        }],
+        orders: [{
+            _product: {
+                type: Schema.Types.ObjectId,
+                ref: 'Product',
+            },
+            quantity: {
+                type: Number
+            },
         }]
     },
     logs: [
@@ -306,6 +315,11 @@ const PostSchema = new Schema({
         },
 
         is_crm_task: {
+            type: Boolean,
+            default: false
+        },
+
+        is_crm_order: {
             type: Boolean,
             default: false
         },

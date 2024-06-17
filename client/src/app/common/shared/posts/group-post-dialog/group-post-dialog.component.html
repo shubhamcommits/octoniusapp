@@ -59,7 +59,7 @@
 
 <div class="post-dialog-content" *ngIf="objectExists(postData) && postData._id">
     <div class="post-content">
-        <div  *ngIf="postData?.task?.is_crm_task && groupData?.type == 'crm'">
+        <div  *ngIf="(postData?.task?.is_crm_task || postData?.task?.is_crm_order) && groupData?.type == 'crm'">
           <div class="content-box">
             <div class="modal-header">
               <!-- Event Post Header starts -->
@@ -77,7 +77,7 @@
             <!-- Post Header Title ends -->
             
             <!-- CRM Lead Card starts -->
-            <app-crm-lead-card [postData]="postData" [userData]="userData" [groupData]="groupData"
+            <app-crm-lead-card *ngIf="postData?.task?.is_crm_task" [postData]="postData" [userData]="userData" [groupData]="groupData"
               [isAdmin]="canEdit"></app-crm-lead-card>
             <!-- CRM Lead Card ends -->
           </div>
@@ -128,7 +128,7 @@
           </div>
         </div>
 
-        <div *ngIf="!(postData?.task?.is_crm_task && groupData?.type == 'crm')">
+        <div *ngIf="!((postData?.task?.is_crm_task || postData?.task?.is_crm_order) && groupData?.type == 'crm')">
           <div class="content-box">
             <div class="modal-header">
               <!-- Event Post Header starts -->
@@ -234,6 +234,21 @@
               </ng-template>
             </mat-tab>
             <!-- comment-list ENDS-->
+
+            <!-- CRM Order STARTS-->
+            <mat-tab *ngIf="postData?.task?.is_crm_order && groupData?.type == 'crm'">
+              <ng-template mat-tab-label>
+                <span i18n="@@groupCreatePostDialog.products">Products</span>
+              </ng-template>
+
+              <ng-template matTabContent>
+                <app-crm-order-products
+                  [orders]="postData?.crm?.orders"
+                  [postId]="postData?._id"
+                  [groupData]="groupData"></app-crm-order-products>
+              </ng-template>
+            </mat-tab>
+            <!-- CRM Order ENDS-->
 
             <!-- north-star-stats STARTS-->
             <mat-tab *ngIf="postData?.task?.isNorthStar">
@@ -387,7 +402,7 @@
         <!-- Status ends -->
 
         <!-- Shuttle Task starts -->
-        <app-shuttle-task *ngIf="isShuttleTasksModuleAvailable && groupData?.shuttle_type && postData && postData?.task?.shuttle_type && !postData?.task?.is_crm_task"
+        <app-shuttle-task *ngIf="isShuttleTasksModuleAvailable && groupData?.shuttle_type && postData && postData?.task?.shuttle_type && !postData?.task?.is_crm_task && !postData?.task?.is_crm_order"
           [postData]="postData"
           [groupData]="groupData"
           [userData]="userData"
@@ -541,7 +556,7 @@
         </app-task-actions>
 
         <!-- APPROVAL STARTS -->
-        <div class="content-box" *ngIf="postData && postData?.type === 'task' &&  isBusinessSubscription && !postData?.task?.is_crm_task">
+        <div class="content-box" *ngIf="postData && postData?.type === 'task' &&  isBusinessSubscription && !postData?.task?.is_crm_task && !postData?.task?.is_crm_order">
           <app-approval-actions
             [groupId]="groupData?._id"
             [userData]="userData"
