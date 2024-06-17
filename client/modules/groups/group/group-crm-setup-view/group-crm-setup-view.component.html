@@ -7,20 +7,20 @@
     <!-- subtasks STARTS-->
     <mat-tab>
       <ng-template mat-tab-label>
-        <span i18n="@@groupContactsView.contacts">Contacts</span>
+        <span i18n="@@groupCrmSetupView.contacts">Contacts</span>
       </ng-template>
 
       <div class="block">
         <div class="row">
           <button class="btn btn-warning" (click)="openContactDialog()">
             <i class="material-icons-outlined">add</i>
-            <span i18n="@@crmSetupBoardBar.newContact">New Contact</span>
+            <span i18n="@@groupCrmSetupView.newContact">New Contact</span>
           </button>
         </div>
         
         <table mat-table matSort [dataSource]="sortedContacts" (matSortChange)="sortContactData($event)" class="">
           <ng-container matColumnDef="name">
-            <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@crmContactList.name"> Name </th>
+            <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@groupCrmSetupView.name"> Name </th>
         
             <td mat-cell *matCellDef="let contact">
               <span>{{ contact?.name }}</span>
@@ -28,7 +28,7 @@
           </ng-container>
         
           <ng-container matColumnDef="company">
-            <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@crmContactList.company"> Company </th>
+            <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@groupCrmSetupView.company"> Company </th>
         
             <td mat-cell *matCellDef="let contact">
               <span>{{ contact?._company?.name }}</span>
@@ -36,7 +36,7 @@
           </ng-container>
         
           <ng-container matColumnDef="position">
-            <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@crmContactList.position"> Position </th>
+            <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@groupCrmSetupView.position"> Position </th>
         
             <td mat-cell *matCellDef="let contact">
               <span>{{ contact?.position }}</span>
@@ -44,7 +44,7 @@
           </ng-container>
         
           <ng-container matColumnDef="phone">
-            <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@crmContactList.phone"> Phone </th>
+            <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@groupCrmSetupView.phone"> Phone </th>
         
             <td mat-cell *matCellDef="let contact">
               <span>{{ contact?.phones[0] }}</span>
@@ -52,7 +52,7 @@
           </ng-container>
         
           <ng-container matColumnDef="email">
-            <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@crmContactList.email"> E-Mail </th>
+            <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@groupCrmSetupView.email"> E-Mail </th>
         
             <td mat-cell *matCellDef="let contact">
               <span>{{ contact?.emails[0] }}</span>
@@ -60,7 +60,7 @@
           </ng-container>
         
           <ng-container matColumnDef="link">
-            <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@crmContactList.link"> Link </th>
+            <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@groupCrmSetupView.link"> Link </th>
         
             <td mat-cell *matCellDef="let contact">
               <span>{{ contact?.links[0] }}</span>
@@ -109,10 +109,10 @@
                 [matMenuTriggerFor]="menu">more_horiz</i>
               <mat-menu #menu="matMenu">
                 <a mat-menu-item (click)="openContactDialog(contact?._id)">
-                  <span i18n="@@crmContactList.edit">Edit</span>
+                  <span i18n="@@groupCrmSetupView.edit">Edit</span>
                 </a>
                 <a mat-menu-item (click)="deleteContact(contact?._id)">
-                  <span i18n="@@crmContactList.delete">Delete</span>
+                  <span i18n="@@groupCrmSetupView.delete">Delete</span>
                 </a>
               </mat-menu>
             </td>
@@ -126,14 +126,14 @@
   
     <mat-tab>
       <ng-template mat-tab-label>
-        <span i18n="@@groupContactsView.companies">Companies</span>
+        <span i18n="@@groupCrmSetupView.companies">Companies</span>
       </ng-template>
   
       <div class="block">
         <div class="row">
           <button class="btn btn-warning" (click)="openCompanyDialog()">
             <i class="material-icons-outlined">add</i>
-            <span i18n="@@crmSetupBoardBar.newCompany">New Company</span>
+            <span i18n="@@groupCrmSetupView.newCompany">New Company</span>
           </button>
         </div>
         
@@ -216,6 +216,92 @@
         
           <tr mat-header-row *matHeaderRowDef="displayedCompanyColumns"></tr>
           <tr mat-row *matRowDef="let company; columns: displayedCompanyColumns;"></tr>
+        </table>
+      </div>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span i18n="@@groupCrmSetupView.products">Products</span>
+      </ng-template>
+    
+      <div class="block">
+        <div class="row">
+          <button class="btn btn-warning" (click)="openProductDialog()">
+            <i class="material-icons-outlined">add</i>
+            <span i18n="@@groupCrmSetupView.newProduct">New Product</span>
+          </button>
+        </div>
+    
+        <table mat-table matSort [dataSource]="sortedProductData" (matSortChange)="sortProductData($event)" class="">
+          <ng-container matColumnDef="name">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@groupCrmSetupView.name"> Name </th>
+    
+            <td mat-cell *matCellDef="let product">
+              <span>{{ product?.name }}</span>
+            </td>
+          </ng-container>
+    
+          <ng-container matColumnDef="description">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@groupCrmSetupView.description"> Description </th>
+    
+            <td mat-cell *matCellDef="let product">
+              <span>{{ product?.description }}</span>
+            </td>
+          </ng-container>
+    
+          <!-- CUSTOM FIELDS START -->
+          <ng-container [matColumnDef]="cf.name" *ngFor="let cf of crmProductCustomFieldsToShow">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+              <div class="cf_cell">
+                {{ cf.title }}
+                <i class="material-icons small" *ngIf="isAdmin" (click)="removeProductColumn(cf)"
+                  style="cursor: pointer;">close</i>
+              </div>
+            </th>
+            <td mat-cell *matCellDef="let product">
+              <div class="cf_cell" *ngIf="!!product?.crm_custom_fields">
+                {{ product?.crm_custom_fields[cf.name] }}
+              </div>
+            </td>
+          </ng-container>
+          <!-- CUSTOM FIELDS ENDS -->
+    
+          <ng-container matColumnDef="star">
+            <th mat-header-cell *matHeaderCellDef style="text-align: right;">
+              <div class="">
+                <i class="material-icons-outlined" style="cursor: pointer;" *ngIf="isAdmin"
+                  [matMenuTriggerFor]="addColumn">add</i>
+              </div>
+              <mat-menu #addColumn="matMenu">
+                <div class="newColumnMatMenu">
+                  <span i18n="@@asksTableView.addCF">Add custom field</span>
+                  <mat-form-field>
+                    <mat-label i18n="@@asksTableView.selectOption">Select an option</mat-label>
+                    <mat-select ngDefaultControl (selectionChange)="addNewProductColumn($event)"
+                      (click)="$event.stopPropagation()" [(ngModel)]="newProductColumnSelected" name="new_column">
+                      <mat-option *ngFor="let f of crmProductCustomFields" [value]="f">{{ f.title }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </mat-menu>
+            </th>
+    
+            <td mat-cell *matCellDef="let product" style="text-align: right;">
+              <i class="material-icons-outlined ml-2 muted pointer" [matMenuTriggerFor]="menu">more_horiz</i>
+              <mat-menu #menu="matMenu">
+                <a mat-menu-item (click)="openProductDialog(product?._id)">
+                  <span i18n="@@groupCrmSetupView.edit">Edit</span>
+                </a>
+                <a mat-menu-item (click)="deleteProduct(product?._id)">
+                  <span i18n="@@groupCrmSetupView.delete">Delete</span>
+                </a>
+              </mat-menu>
+            </td>
+          </ng-container>
+    
+          <tr mat-header-row *matHeaderRowDef="displayedProductColumns"></tr>
+          <tr mat-row *matRowDef="let product; columns: displayedProductColumns;"></tr>
         </table>
       </div>
     </mat-tab>

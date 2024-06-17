@@ -55,6 +55,24 @@ routes.post('/createCompany', crm.createCRMCompany);
 // DELETE - Delete an automation flow
 routes.delete('/:companyId/company', crm.removeCRMCompany);
 
+// GET - Get a crm product details
+routes.get('/:productId/product', crm.getCRMProduct);
+
+// GET - Get all the crm products in a group
+routes.get('/:groupId/products', crm.getGroupCRMProducts);
+
+// GET - Search for products in a group
+routes.get('/:groupId/searchProducts', crm.searchGroupCRMProducts);
+
+// PUT - Update the flow name
+routes.put('/:productId/updateProduct/:groupId', crm.updateCRMProduct);
+
+// POST - Add new automation flow
+routes.post('/createProduct', crm.createCRMProduct);
+
+// DELETE - Delete an automation flow
+routes.delete('/:productId/product', crm.removeCRMProduct);
+
 // CUSTOM FIELDS
 
 // PUT - Save custom field
@@ -72,7 +90,7 @@ routes.put('/:groupId/crmCustomFields/addValue', crm.addCRMCustomFieldValue);
 // PUT - Set the CF to be displayed in the kanban card
 routes.put('/:groupId/crmCustomFields/displayInKanbanCard', crm.setCRMCustomFieldDisplayKanbanCard);
 
-// PUT - Set the CF to be for company or contact
+// PUT - Set the CF to be for company or contact or product
 routes.put('/:groupId/crmCustomFields/setCRMCustomFieldType', crm.setCRMCustomFieldType);
 
 // PUT - Set the CF color to be displayed

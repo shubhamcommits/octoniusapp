@@ -321,9 +321,10 @@ const GroupSchema = new Schema({
                 type: Boolean,
                 default: false
             },
-            company_type: {
-                type: Boolean,
-                default: false
+            type: {
+                type: String,
+                default: false,
+                enum: ['contact', 'company', 'product']
             },
             values: {
                 type: [String],

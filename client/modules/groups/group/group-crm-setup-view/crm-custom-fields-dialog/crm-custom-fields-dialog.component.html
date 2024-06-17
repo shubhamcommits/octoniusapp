@@ -52,9 +52,10 @@
 
                     <div class="values">
                       <label class="onoffswitch-label" style="margin-left: 9px;" i18n="@@crmCustomFieldDialog.type">Type:</label>
-                      <mat-radio-group [(ngModel)]="field.company_type" (change)="setCFType(field.company_type, field._id)">
-                        <mat-radio-button [value]="false" style="margin-right: 10px;" i18n="@@crmCustomFieldDialog.contact">Contact</mat-radio-button>
-                        <mat-radio-button [value]="true" i18n="@@crmCustomFieldDialog.company">Company</mat-radio-button>
+                      <mat-radio-group [(ngModel)]="field.type" (change)="setCFType(field.type, field._id)">
+                        <mat-radio-button [value]="'contact'" style="margin-right: 10px;" i18n="@@crmCustomFieldDialog.contact">Contact</mat-radio-button>
+                        <mat-radio-button [value]="'company'" i18n="@@crmCustomFieldDialog.company">Company</mat-radio-button>
+                        <mat-radio-button [value]="'product'" i18n="@@crmCustomFieldDialog.product">Product</mat-radio-button>
                       </mat-radio-group>
                     </div>
 
@@ -91,10 +92,11 @@
 
                 <br />
 
-                <label class="onoffswitch-label" style="margin-left: 10px; margin-right: 10px;" for="company_type" i18n="@@crmCustomFieldDialog.type">Type:</label>
-                <mat-radio-group [(ngModel)]="isCompanyType" name="company_type">
-                  <mat-radio-button [value]="false" style="margin-right: 10px;" i18n="@@crmCustomFieldDialog.contact">Contact</mat-radio-button>
-                  <mat-radio-button [value]="true" i18n="@@crmCustomFieldDialog.company">Company</mat-radio-button>
+                <label class="onoffswitch-label" style="margin-left: 10px; margin-right: 10px;" for="type" i18n="@@crmCustomFieldDialog.type">Type:</label>
+                <mat-radio-group [(ngModel)]="cfType" name="type">
+                  <mat-radio-button [value]="'contact'" style="margin-right: 10px;" i18n="@@crmCustomFieldDialog.contact">Contact</mat-radio-button>
+                  <mat-radio-button [value]="'company'" i18n="@@crmCustomFieldDialog.company">Company</mat-radio-button>
+                  <mat-radio-button [value]="'product'" i18n="@@crmCustomFieldDialog.product">Product</mat-radio-button>
                 </mat-radio-group>
 
                 <br />
