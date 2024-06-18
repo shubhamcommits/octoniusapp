@@ -540,6 +540,7 @@
           [isIdea]="(postData?.task?.is_idea) ? postData?.task?.is_idea : false"
           [isIdeaModuleAvailable]="isIdeaModuleAvailable"
           [isCRMLead]="(postData?.task?.is_crm_task) ? postData?.task?.is_crm_task : false"
+          [isCRMOrder]="(postData?.task?.is_crm_order) ? postData?.task?.is_crm_order : false"
           [isShuttleTasksModuleAvailable]="isShuttleTasksModuleAvailable"
           [isMilestone]="(postData?.task?.is_milestone) ? postData?.task?.is_milestone : false"
           [canEdit]="canEdit"
@@ -552,6 +553,7 @@
           (transformIntoMilestoneEmitter)="transformToMileStone($event)"
           (transformIntoIdeaEmitter)="transformToIdea($event)"
           (transformIntoCRMLeadEmitter)="transformToCRMLead($event)"
+          (transformIntoCRMOrderEmitter)="transformToCRMOrder($event)"
           (shuttleGroupEmitter)="setShuttleGroup($event)">
         </app-task-actions>
 

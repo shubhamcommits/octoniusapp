@@ -771,6 +771,12 @@ export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
     this.updateDetails(makeCRMLeadLogAction);
   }
 
+  transformToCRMOrder(data:any) {
+    this.postData.task.is_crm_order = data;
+    const makeCRMOrderLogAction = (this.postData.task.is_crm_order) ? 'make_crm_order' : 'make_no_crm_order';
+    this.updateDetails(makeCRMOrderLogAction);
+  }
+
   async setShuttleGroup(data: any) {
     this.postData.task.shuttle_type = true;
     if (!this.postData?.task.shuttles) {

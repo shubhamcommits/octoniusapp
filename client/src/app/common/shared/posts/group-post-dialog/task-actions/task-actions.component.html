@@ -200,6 +200,10 @@
           <i _ngcontent-bbh-c36="" class="material-icons-outlined muted" style="vertical-align: middle;">attach_money</i>
           <span i18n="@@taskActions.crmLead">CRM Lead</span>
         </mat-option>
+        <mat-option value="crm_order" [disabled]="taskTypesSelection.includes('idea') || taskTypesSelection.includes('northStar')">
+          <i _ngcontent-bbh-c36="" class="material-icons-outlined muted" style="vertical-align: middle;">sell</i>
+          <span i18n="@@taskActions.crmOrder">CRM Order</span>
+        </mat-option>
       </mat-select>
     </mat-form-field>
   </div>

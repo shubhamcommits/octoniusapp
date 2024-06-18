@@ -27,6 +27,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   @Input() isNorthStar = false;
   @Input() isIdea = false;
   @Input() isCRMLead = false;
+  @Input() isCRMOrder = false;
   @Input() isIdeaModuleAvailable = false;
   @Input() isShuttleTasksModuleAvailable = false;
   @Input() canEdit = true;
@@ -40,6 +41,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   @Output() transformIntoMilestoneEmitter = new EventEmitter();
   @Output() transformIntoIdeaEmitter = new EventEmitter();
   @Output() transformIntoCRMLeadEmitter = new EventEmitter();
+  @Output() transformIntoCRMOrderEmitter = new EventEmitter();
   @Output() shuttleGroupEmitter = new EventEmitter();
 
   userGroups = [];
@@ -176,6 +178,9 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
     this.taskTypesSelection = [];
     if (this.isCRMLead) {
       this.taskTypesSelection.push('crm');
+    }
+    if (this.isCRMOrder) {
+      this.taskTypesSelection.push('crm_order');
     }
     if (this.isIdea) {
       this.taskTypesSelection.push('idea');
@@ -587,6 +592,9 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
 
       this.postData.task.is_crm_task = this.taskTypesSelection.includes('crm');
       this.transformIntoCRMLeadEmitter.emit(this.taskTypesSelection.includes('crm'));
+      
+      this.postData.task.is_crm_order = this.taskTypesSelection.includes('crm_order');
+      this.transformIntoCRMOrderEmitter.emit(this.taskTypesSelection.includes('crm_order'));
     }
   }
 
@@ -604,6 +612,12 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
     this.isCRMLead = !this.isCRMLead;
     this.postData.task.is_crm_task = this.isCRMLead;
     this.transformIntoCRMLeadEmitter.emit(this.isCRMLead);
+  }
+
+  transformToCRMOrder() {
+    this.isCRMOrder = !this.isCRMOrder;
+    this.postData.task.is_crm_order = this.isCRMOrder;
+    this.transformIntoCRMOrderEmitter.emit(this.isCRMOrder);
   }
 
   transformToMilestone() {
