@@ -363,4 +363,16 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
     this.publicFunctions.sendUpdatesToUserData(res['user']);
     this.storageService.setLocalData('authToken', JSON.stringify(res['token']));
   }
+
+  isMySpacePage() {
+    return this.router.url.includes('myspace');
+  }
+
+  isWorkspacePage() {
+    return this.router.url.includes('work/groups/all')
+      || this.router.url.includes('work/northstar')
+      || this.router.url.includes('work/dashboard')
+      || this.router.url.includes('work/lounge')
+      || this.router.url.includes('work/organization');
+  }
 }
