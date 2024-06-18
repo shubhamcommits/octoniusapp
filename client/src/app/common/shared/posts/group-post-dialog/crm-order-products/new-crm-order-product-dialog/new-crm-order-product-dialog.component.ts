@@ -91,6 +91,10 @@ export class NewCRMOrderProductDialogComponent implements OnInit {
     // this.updateCRM(this.postData?._id, this.postData?.crm);
   }
 
+  onOrderInfoEdited(newOrderDetails: any) {
+    this.orderData = newOrderDetails;
+  }
+
   closeDialog() {
     this.utilityService.getConfirmDialogAlert($localize`:@@newCRMOrderDialog.areYouSure:Are you sure?`, $localize`:@@newCRMOrderDialog.loseData:By doing this, you will lose all the information added in the order!`)
       .then((res) => {

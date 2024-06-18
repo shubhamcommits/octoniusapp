@@ -196,11 +196,11 @@
           <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;">emoji_objects</i>
           <span i18n="@@taskActions.idea">Idea</span>
         </mat-option>
-        <mat-option value="crm" [disabled]="taskTypesSelection.includes('idea') || taskTypesSelection.includes('northStar')">
+        <mat-option value="crm" [disabled]="taskTypesSelection.includes('idea') || taskTypesSelection.includes('northStar') || taskTypesSelection.includes('crm_order')">
           <i _ngcontent-bbh-c36="" class="material-icons-outlined muted" style="vertical-align: middle;">attach_money</i>
           <span i18n="@@taskActions.crmLead">CRM Lead</span>
         </mat-option>
-        <mat-option value="crm_order" [disabled]="taskTypesSelection.includes('idea') || taskTypesSelection.includes('northStar')">
+        <mat-option value="crm_order" [disabled]="taskTypesSelection.includes('idea') || taskTypesSelection.includes('northStar') || taskTypesSelection.includes('crm')">
           <i _ngcontent-bbh-c36="" class="material-icons-outlined muted" style="vertical-align: middle;">sell</i>
           <span i18n="@@taskActions.crmOrder">CRM Order</span>
         </mat-option>

@@ -20,19 +20,19 @@
     </h2>
 
     <div mat-dialog-content>
-        <mat-tab-group mat-align-tabs="start">
+        <!-- <mat-tab-group mat-align-tabs="start">
             <mat-tab>
-                <ng-template mat-tab-label>
+                <ng-template mat-tab-label> -->
                     <span i18n="@@newCRMProductDialog.contactInformation">Product Information</span>
-                </ng-template>
+                <!-- </ng-template>
         
-                <ng-template matTabContent>
+                <ng-template matTabContent> -->
                     <app-crm-product-information
                         [productData]="productData" [workspaceId]="groupData?._workspace?._id || groupData?._workspace" [groupId]="groupData?._id"
                         (productInfoEdited)="onProductInfoEdited($event)"
                         ></app-crm-product-information>
                         <!-- (productImageEdited)="onProductImageEdited($event)" -->
-                </ng-template>
+                <!-- </ng-template>
             </mat-tab>
 
             <mat-tab>
@@ -42,11 +42,11 @@
             
                 <ng-template matTabContent>
                     <app-crm-product-custom-fields [productData]="productData"
-                        [workspaceId]="groupData?._workspace?._id || groupData?._workspace" [groupId]="groupData?._id"
+                        [groupData]="groupData"
                         (productCFEdited)="onProductInfoEdited($event)"></app-crm-product-custom-fields>
                 </ng-template>
             </mat-tab>
-        </mat-tab-group>
+        </mat-tab-group> -->
     </div>
 
     <div>

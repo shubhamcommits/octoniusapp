@@ -1,0 +1,35 @@
+<div class="block">
+    <div class="row" *ngFor="let cf of crmProductCustomFields">
+        <div class="col-md-4">
+            <span>{{ cf.title }}</span>
+        </div>
+    
+        <div class="col-md-8">
+            <mat-select ngDefaultControl *ngIf="!cf.input_type" [(value)]="selectedCFValues[cf.name]" [disabled]="!canEdit"
+                (openedChange)="cfSearchText = ''" (selectionChange)="onCustomFieldChange($event, cf.name)"
+                appearance="fill" class="col">
+                <mat-select-trigger>{{ selectedCFValues[cf.name] }}</mat-select-trigger>
+                <input type="text" class="form-control" [id]="'search-text' + cf.name" [(ngModel)]="cfSearchText"
+                    [placeholder]="cfSearchPlaceholder" autofocus
+                    (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+                <mat-option *ngFor="let val of cf.values | appFilter: cfSearchText" [value]="val">{{ val }}</mat-option>
+            </mat-select>
+            
+            <div *ngIf="cf.input_type && !cf.input_type_date" class="col" style="display: flex; float: left; width: 125px;">
+                <input [type]="(cf.input_type_number) ? 'number': 'text'" [name]="cf.name" [(ngModel)]="selectedCFValues[cf.name]" [disabled]="!canEdit" class="col"
+                    style="width: 94px;" [value]="selectedCFValues[cf.name]"
+                    (blur)="saveCustomField(cf.name, selectedCFValues[cf.name]);"
+                    (keyup.enter)="saveInputCustomField($event, cf.name)" />
+            </div>
+            
+            <div *ngIf="cf.input_type && cf.input_type_date">
+                <!-- Date Picker starts -->
+                <app-date-picker (date)="getCFDate($event, cf.name, cf.title)"
+                    [selectedDate]="selectedCFValues[cf.name]" [styleClass]="'btn-group input-date'"
+                    [canEdit]="canEdit">
+                </app-date-picker>
+                <!--Date Picker ends -->
+            </div>
+        </div>
+    </div>
+</div>
