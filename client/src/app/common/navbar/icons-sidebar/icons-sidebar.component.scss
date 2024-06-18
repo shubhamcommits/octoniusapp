@@ -40,7 +40,7 @@
       display: block;
       color: $border-color;
       &:hover{
-          color: #E4EDF8 !important;
+          color: #E4EDF8;
           text-decoration: none !important;
           background: rgba(0, 28, 71, 0.2);
           border-radius: 4px;
@@ -114,8 +114,8 @@ ul ul{
   border: 1px solid rgba(228, 237, 248, 0.6);
 }
 
-.active {
+.active a{
     background: #e4edf8;
-    color: #005fd5;
+    color: #005fd5 !important;
     border-radius: 4px;
 }
