@@ -36,15 +36,15 @@
         
                 <ul *ngIf="!contactData?._company && !!companySearchResults && !!companySearchText" class="company-list dropdown-menu">
                     <li class="company-list-item" *ngFor="let company of companySearchResults" (click)="selectCompany(company)">
-                        <app-secured-image [imgURL]="company.company_pic" [service]="'group'" [workspaceId]="workspaceData?._id"
-                            [styleClass]="'group-avatar'"></app-secured-image>
+                        <!-- <app-secured-image [imgURL]="company.company_pic" [service]="'group'" [workspaceId]="workspaceData?._id"
+                            [styleClass]="'group-avatar'"></app-secured-image> -->
                         {{ company.name }}
                     </li>
                 </ul>
         
                 <div *ngIf="!!contactData?._company" class="form-control" style="text-align: left;">
-                    <app-secured-image [imgURL]="contactData._company.company_pic" [service]="'group'"
-                        [workspaceId]="workspaceData?._id" [styleClass]="'group-avatar'"></app-secured-image>
+                    <!-- <app-secured-image [imgURL]="contactData._company.company_pic" [service]="'group'"
+                        [workspaceId]="workspaceData?._id" [styleClass]="'group-avatar'"></app-secured-image> -->
                     <span>{{ contactData._company.name }}</span>
         
                     <!-- Clean field starts -->

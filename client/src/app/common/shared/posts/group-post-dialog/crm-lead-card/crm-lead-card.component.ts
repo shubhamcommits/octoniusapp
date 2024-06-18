@@ -202,7 +202,7 @@ export class CRMLeadCardComponent implements OnChanges {
 		const dialogRef = this.dialog.open(CRMContactDialogComponent, {
       disableClose: true,
       hasBackdrop: true,
-      width: '40%',
+      width: '60%',
       height: '50%',
       data: {
         contactId: contactId
