@@ -29,7 +29,7 @@ export class CRMLeadCardComponent implements OnChanges {
   contactSearchText = '';
 
   sortedData;
-	displayedColumns: string[] = ['name', 'position', 'phone', 'email', 'link', 'star'];
+	displayedColumns: string[] = ['name', 'position', /*'phone', 'email', 'link',*/ 'star'];
 	crmCustomFieldsToShow = [];
 	crmContactCustomFields = [];
 

@@ -1,6 +1,6 @@
 <div class="">
   <div class="row">
-    <label for="company" i18n="@@crmLeadCard.company" class="muted">Company</label>
+    <label class="box-title" for="company" i18n="@@crmLeadCard.company">Company</label>
   </div>
 
   <div class="dropdown">
@@ -11,16 +11,16 @@
         
       <ul *ngIf="!!companySearchResults && !!companySearchText" class="company-list dropdown-menu">
         <li class="company-list-item pointer" *ngFor="let company of companySearchResults" (click)="selectCompany(company)">
-          <app-secured-image [imgURL]="company.company_pic" [service]="'group'" [workspaceId]="this.userData?._workspace?._id || this.userData?._workspace"
-            [styleClass]="'group-avatar'"></app-secured-image>
+          <!-- <app-secured-image [imgURL]="company.company_pic" [service]="'group'" [workspaceId]="this.userData?._workspace?._id || this.userData?._workspace"
+            [styleClass]="'group-avatar'"></app-secured-image> -->
           {{ company.name }}
         </li>
       </ul>
     </div>
   
     <div *ngIf="!!postData?.crm?._company" class="form-control" style="text-align: left;">
-      <app-secured-image [imgURL]="postData?.crm?._company.company_pic" [service]="'group'"
-        [workspaceId]="this.userData?._workspace?._id || this.userData?._workspace" [styleClass]="'group-avatar'"></app-secured-image>
+      <!-- <app-secured-image [imgURL]="postData?.crm?._company.company_pic" [service]="'group'"
+        [workspaceId]="this.userData?._workspace?._id || this.userData?._workspace" [styleClass]="'group-avatar'"></app-secured-image> -->
       <span>{{ postData?.crm?._company.name }}</span>
   
       <!-- Clean field starts -->
@@ -31,7 +31,7 @@
   </div>
 
   <div class="row">
-    <label for="contact" i18n="@@crmLeadCard.contacts" class="muted">Contacts</label>
+    <label class="box-title" for="contact" i18n="@@crmLeadCard.contacts">Contacts</label>
   </div>
 
   <div class="dropdown">
@@ -65,29 +65,29 @@
           </td>
         </ng-container>
       
-        <ng-container matColumnDef="phone">
+        <!-- <ng-container matColumnDef="phone">
           <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@crmContactList.phone"> Phone </th>
       
           <td mat-cell *matCellDef="let contact" class="pointer" (click)="openContactDialog(contact?._id)">
             <span>{{ contact?.phones[0] }}</span>
           </td>
-        </ng-container>
+        </ng-container> -->
       
-        <ng-container matColumnDef="email">
+        <!-- <ng-container matColumnDef="email">
           <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@crmContactList.email"> E-Mail </th>
       
           <td mat-cell *matCellDef="let contact" class="pointer" (click)="openContactDialog(contact?._id)">
             <span>{{ contact?.emails[0] }}</span>
           </td>
-        </ng-container>
+        </ng-container> -->
       
-        <ng-container matColumnDef="link">
+        <!-- <ng-container matColumnDef="link">
           <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@crmContactList.link"> Link </th>
       
           <td mat-cell *matCellDef="let contact" class="pointer" (click)="openContactDialog(contact?._id)">
             <span>{{ contact?.links[0] }}</span>
           </td>
-        </ng-container>
+        </ng-container> -->
       
         <!-- CUSTOM FIELDS START -->
         <ng-container [matColumnDef]="cf.name" *ngFor="let cf of crmCustomFieldsToShow">

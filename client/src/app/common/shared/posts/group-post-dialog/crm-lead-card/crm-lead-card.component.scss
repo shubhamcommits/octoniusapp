@@ -3,7 +3,7 @@ table {
 }
 
 .row {
-  margin: 10px;
+  margin: 20px 10px 0 10px;
 }
 
 .company-list {
@@ -34,4 +34,16 @@ table {
 
     }
   }
+}
+
+.box-title {
+  font-family: Nunito;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 22px;
+  color: #242d3a;
+  // padding-bottom: 10px;
+  // padding-top: 10px;
+  // margin-bottom: 12px !important;
 }

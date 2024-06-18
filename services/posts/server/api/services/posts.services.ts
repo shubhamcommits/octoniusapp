@@ -769,6 +769,7 @@ export class PostService {
             isNorthStar: post.task.isNorthStar || false,
             is_idea: post.task.is_idea || false,
             is_crm_task: post.task.is_crm_task || false,
+            is_crm_order: post.task.is_crm_order || false,
             is_milestone: post?.task?.is_milestone || false,
             northStar: post.task.northStar,
             _parent_task: post.task._parent_task

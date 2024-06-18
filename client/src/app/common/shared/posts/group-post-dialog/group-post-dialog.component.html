@@ -59,31 +59,22 @@
 
 <div class="post-dialog-content" *ngIf="objectExists(postData) && postData._id">
     <div class="post-content">
+        <!--
         <div  *ngIf="(postData?.task?.is_crm_task || postData?.task?.is_crm_order) && groupData?.type == 'crm'">
           <div class="content-box">
             <div class="modal-header">
-              <!-- Event Post Header starts -->
               <h4 class="modal-title">
-                <!-- Post Title starts -->
                 <input name="postTitle" type="text" [ngModel]="title" (blur)="titleChange($event)" class="post-title"
                   placeholder="✍🏻 Title" />
-                <!-- Post Title ends -->
               </h4>
             
               <app-post-utils *ngIf="userData" [post]="postData" [userData]="userData" [groupData]="groupData" [canEdit]="canEdit"
                 mode="fullscreen" (delete)="deletePost()">
               </app-post-utils>
             </div>
-            <!-- Post Header Title ends -->
-            
-            <!-- CRM Lead Card starts -->
-            <app-crm-lead-card *ngIf="postData?.task?.is_crm_task" [postData]="postData" [userData]="userData" [groupData]="groupData"
-              [isAdmin]="canEdit"></app-crm-lead-card>
-            <!-- CRM Lead Card ends -->
           </div>
 
           <div class="content-box">
-            <!-- Post Content starts -->
             <app-quill-editor
                 *ngIf="canEdit"
                 [editorId]="'postbox-editor'"
@@ -101,9 +92,7 @@
                 [readOnly]="true"
                 [contents]="postData?.content"
                 [groupId]="groupId"></app-quill-editor>
-            <!-- Post Content ends -->
 
-            <!-- Attach files starts -->
             <div class="attach-files" *ngIf="postData">
                 <app-attach-files
                     [post]="postData"
@@ -111,9 +100,6 @@
                     (cloudFiles)="onCloudFileAttach($event)">
                 </app-attach-files>
             </div>
-            <!-- Attach files ends -->
-
-            <!-- <div class="clearfix"></div> -->
 
             <app-post-actions
                 [post]="postData"
@@ -127,8 +113,9 @@
             </app-post-actions>
           </div>
         </div>
+        -->
 
-        <div *ngIf="!((postData?.task?.is_crm_task || postData?.task?.is_crm_order) && groupData?.type == 'crm')">
+        <div>
           <div class="content-box">
             <div class="modal-header">
               <!-- Event Post Header starts -->
@@ -469,7 +456,13 @@
             </div>
 
         </div>
-        <!-- Assignee Modal ends -->
+
+        <!-- CRM Lead Card starts -->
+        <div class="content-box" *ngIf="postData && postData?.type === 'task' && (postData?.task?.is_crm_task || postData?.task?.is_crm_order) && groupData?.type == 'crm'">
+          <app-crm-lead-card [postData]="postData" [userData]="userData"
+            [groupData]="groupData" [isAdmin]="canEdit"></app-crm-lead-card>
+        </div>
+        <!-- CRM Lead Card ends -->
 
         <div class="content-box">
             <p class="box-title" i18n="@@groupCreatePostDialog.tags">Tags</p>

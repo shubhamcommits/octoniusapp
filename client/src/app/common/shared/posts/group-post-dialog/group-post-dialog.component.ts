@@ -578,6 +578,7 @@ export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
       isNorthStar: this.postData?.task?.isNorthStar || false,
       is_idea: this.postData?.task?.is_idea || false,
       is_crm_task: this.postData?.task?.is_crm_task || false,
+      is_crm_order: this.postData?.task?.is_crm_order || false,
       is_milestone: this.postData?.task?.is_milestone || false,
       northStar: this.postData?.task?.northStar || false,
       assigned_to: this.postData?._assigned_to
