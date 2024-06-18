@@ -592,7 +592,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
 
       this.postData.task.is_crm_task = this.taskTypesSelection.includes('crm');
       this.transformIntoCRMLeadEmitter.emit(this.taskTypesSelection.includes('crm'));
-      
+
       this.postData.task.is_crm_order = this.taskTypesSelection.includes('crm_order');
       this.transformIntoCRMOrderEmitter.emit(this.taskTypesSelection.includes('crm_order'));
     }

@@ -38,7 +38,7 @@ export class GroupCRMSetupViewComponent implements OnInit, OnDestroy, AfterConte
 
 	///////// COMPANY TABLE STARTS /////////
 	sortedCompanyData;
-	displayedCompanyColumns: string[] = ['image', 'name', 'description', 'star'];
+	displayedCompanyColumns: string[] = [/*'image', */'name', 'description', 'star'];
 	crmCompanyCustomFieldsToShow = [];
 
 	newCompanyColumnSelected;

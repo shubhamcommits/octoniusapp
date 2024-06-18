@@ -29,7 +29,7 @@ export class CRMLeadCardComponent implements OnChanges {
   contactSearchText = '';
 
   sortedData;
-	displayedColumns: string[] = ['name', 'position', 'phone', 'email', 'link', 'star'];
+	displayedColumns: string[] = ['name', 'position', /*'phone', 'email', 'link',*/ 'star'];
 	crmCustomFieldsToShow = [];
 	crmContactCustomFields = [];
 
@@ -202,7 +202,7 @@ export class CRMLeadCardComponent implements OnChanges {
 		const dialogRef = this.dialog.open(CRMContactDialogComponent, {
       disableClose: true,
       hasBackdrop: true,
-      width: '40%',
+      width: '60%',
       height: '50%',
       data: {
         contactId: contactId
