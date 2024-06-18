@@ -122,6 +122,54 @@ export class CRMGroupService {
     return this._http.post(this.baseURL + `/createCompany`, { companyData }).toPromise();
   }
 
+  /**
+   * This function is responsible for fetching a group crm product
+   * @param productId
+   */
+  getCRMProduct(productId: string) {
+    return this._http.get(this.baseURL + `/${productId}/product`).toPromise();
+  }
+
+  /**
+   * This function is responsible for deleting a crm contact
+   * @param productId
+   */
+  removeCRMProduct(productId: string){
+    return this._http.delete(this.baseURL + `/${productId}/product`).toPromise()
+  }
+
+  /**
+   * This function is responsible for fetching all companies in a group
+   * @param groupId
+   */
+  getCRMProducts(groupId: string) {
+    return this._http.get(this.baseURL + `/${groupId}/products`).toPromise();
+  }
+
+  /**
+   * This function is responsible for searching for Products in a group
+   * @param groupId
+   */
+  searchCRMProducts(groupId: string, productSearchText: string) {
+    return this._http.get(this.baseURL + `/${groupId}/searchProducts`, { params: {productSearchText} }).toPromise();
+  }
+
+  /**
+   * This function is responsible for updating the crm Product details
+   * @param productData
+   */
+  updateCRMProduct(productData: any, groupId: string) {
+    return this._http.put(this.baseURL + `/${productData._id}/updateProduct/${groupId}`, { productData }).toPromise()
+  }
+
+  /**
+   * This function is responsible for creating a crm product
+   * @param groupId
+   */
+  createCRMProduct(productData: any) {
+    return this._http.post(this.baseURL + `/createProduct`, { productData }).toPromise();
+  }
+
   saveNewCRMCustomField(newCustomField: { name: string; title: string; values: any[]; }, groupId: any) {
     return this._http.put(this.baseURL + `/${groupId}/crmCustomFields`, { newCustomField }).toPromise();
   }
@@ -142,8 +190,8 @@ export class CRMGroupService {
     return this._http.put(this.baseURL + `/${groupId}/crmCustomFields/displayInKanbanCard`, { fieldId, display_in_kanban_card }).toPromise();
   }
 
-  setCRMCustomFieldType(company_type: boolean, fieldId: string, groupId: string) {
-    return this._http.put(this.baseURL + `/${groupId}/crmCustomFields/setCRMCustomFieldType`, { fieldId, company_type }).toPromise();
+  setCRMCustomFieldType(type: string, fieldId: string, groupId: string) {
+    return this._http.put(this.baseURL + `/${groupId}/crmCustomFields/setCRMCustomFieldType`, { fieldId, type }).toPromise();
   }
 
   setCRMCustomFieldColor(color: string, fieldId: string, groupId: string) {
@@ -160,5 +208,25 @@ export class CRMGroupService {
     };
 
     return this._http.put(this.baseURL + `/${groupId}/crmCustomFieldsToShow`, customFieldsData).toPromise();
+  }
+
+  /**
+   * This function is responsible for updating the crm order details
+   * @param contactData
+   */
+  updateCRMOrder(postId: string, orderData: any){
+    return this._http.put(this.baseURL + `/${postId}/crmOrder`, { orderData }).toPromise()
+  }
+
+  /**
+   * This function is responsible for creating a crm order
+   * @param groupId
+   */
+  createCRMOrder(postId: string, orderData: any){
+    return this._http.post(this.baseURL + `/${postId}/crmOrder`, { orderData }).toPromise()
+  }
+
+  removeCRMOrder(postId: string, orderId: string) {
+    return this._http.delete(this.baseURL + `/${postId}/crmOrder/${orderId}`).toPromise();
   }
 }

@@ -26,6 +26,8 @@
       <span *ngIf="log?.action === 'make_no_idea'" class="approval-deleted ml-2" i18n="@@postLogs.makeNoIdea">Transformed into a normal task</span>
       <span *ngIf="log?.action === 'make_crm_task'" class="approval-deleted ml-2" i18n="@@postLogs.makeCRMTask">Transformed into a CRM Lead</span>
       <span *ngIf="log?.action === 'make_no_crm_task'" class="approval-deleted ml-2" i18n="@@postLogs.makeNoCRMTask">Transformed into a normal task</span>
+      <span *ngIf="log?.action === 'make_crm_order'" class="approval-deleted ml-2" i18n="@@postLogs.makeCRMOrder">Transformed into a CRM Order</span>
+      <span *ngIf="log?.action === 'make_no_crm_order'" class="approval-deleted ml-2" i18n="@@postLogs.makeNoCRMTask">Transformed into a normal task</span>
       <span *ngIf="log?.action === 'make_milestone'" class="approval-deleted ml-2" i18n="@@postLogs.makeMilestone">Transformed into a Milestone</span>
       <span *ngIf="log?.action === 'make_no_milestone'" class="approval-deleted ml-2" i18n="@@postLogs.makeNoMilestone">Removed the Milestone</span>
       <span *ngIf="log?.action === 'change_status'" class="approval-deleted ml-2" i18n="@@postLogs.changedStatus">Changed the Status to </span> <span *ngIf="log?.action === 'change_status' && log?.new_status">{{ log?.new_status }}</span>

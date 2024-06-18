@@ -107,6 +107,9 @@ import { GroupResourceManagementComponent } from './group/group-resource-managem
 import { ResourcesBarComponent } from './group/group-resource-management/resources-bar/resources-bar.component';
 import { ResourcesCustomFieldsDialogComponent } from './group/resources-custom-fields-dialog/resources-custom-fields-dialog.component';
 import { GroupResourceManagementBoardViewComponent } from './group/group-resource-management-board/group-resource-management-board-view.component';
+import { NewCRMProductDialogComponent } from './group/group-crm-setup-view/new-crm-product-dialog/new-crm-product-dialog.component';
+import { CRMProductCustomFieldsComponent } from './group/group-crm-setup-view/new-crm-product-dialog/crm-product-custom-fields/crm-product-custom-fields.component';
+import { CRMProductInformationComponent } from './group/group-crm-setup-view/new-crm-product-dialog/crm-product-information/crm-product-information.component';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -182,7 +185,10 @@ import { GroupResourceManagementBoardViewComponent } from './group/group-resourc
         CRMCompanyInformationComponent,
         CRMCompanyImageDialogComponent,
         ResourcesBarComponent,
-        GroupResourceManagementBoardViewComponent
+        GroupResourceManagementBoardViewComponent,
+        NewCRMProductDialogComponent,
+        CRMProductCustomFieldsComponent,
+        CRMProductInformationComponent
     ],
     imports: [
         CommonModule,

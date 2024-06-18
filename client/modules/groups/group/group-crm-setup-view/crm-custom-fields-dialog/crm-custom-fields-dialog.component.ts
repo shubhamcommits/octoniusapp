@@ -24,7 +24,7 @@ export class CRMCustomFieldsDialogComponent implements OnInit {
 
   groupData;
 
-  isCompanyType = false;
+  cfType = '';
 
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
@@ -79,7 +79,7 @@ export class CRMCustomFieldsDialogComponent implements OnInit {
           input_type_number: (this.newCustomFieldInputType && this.newCustomFieldInputSelectType == 'number') ? true : false,
           input_type_text: (this.newCustomFieldInputType && this.newCustomFieldInputSelectType == 'text') ? true : false,
           input_type_date: (this.newCustomFieldInputType && this.newCustomFieldInputSelectType == 'date') ? true : false,
-          company_type: this.isCompanyType,
+          type: this.cfType,
           values: []
         };
 
@@ -100,7 +100,7 @@ export class CRMCustomFieldsDialogComponent implements OnInit {
         this.showNewCustomField = false;
         this.newCustomFieldTitle = '';
         this.newCustomFieldInputType = false;
-        this.isCompanyType = false;
+        this.cfType = '';
       }
     }
   }
@@ -110,7 +110,6 @@ export class CRMCustomFieldsDialogComponent implements OnInit {
    * @param field
    */
   removeCustomField(field) {
-
     // Ask User to remove this field or not
     this.utilityService.getConfirmDialogAlert()
       .then((result) => {
@@ -178,9 +177,9 @@ export class CRMCustomFieldsDialogComponent implements OnInit {
     }));
   }
 
-  setCFType(isCompanyType: boolean, fieldId: string) {
+  setCFType(type: string, fieldId: string) {
     this.utilityService.asyncNotification($localize`:@@crmCustomFieldDialog.pleaseWaitUpdatingCF:Please wait we are updating the custom field...`, new Promise((resolve, reject) => {
-      this.crmGroupService.setCRMCustomFieldType(isCompanyType, fieldId, this.groupData._id).then(res => {
+      this.crmGroupService.setCRMCustomFieldType(type, fieldId, this.groupData._id).then(res => {
         this.groupData.crm_custom_fields = res['group'].crm_custom_fields;
         this.publicFunctions.sendUpdatesToGroupData(this.groupData);
 

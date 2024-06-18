@@ -2219,7 +2219,7 @@ export class PublicFunctions {
      * @param groupId: string
      * @param workspaceData: any
      */
-    async suggestMembers(searchTerm: string, groupId: string, workspaceData: any) {
+    async suggestMembers(searchTerm: string, groupId: string, workspaceData: any, mentionAll: boolean) {
 
       // Fetch the users list from the server
       let usersList: any = [];
@@ -2233,6 +2233,14 @@ export class PublicFunctions {
         id: user._id,
         value: user.first_name + " " + user.last_name
       }))
+
+      // Adding All Object to mention all the members
+      if (mentionAll) {
+        usersList.unshift({
+          id: 'all',
+          value: 'all'
+        });
+      }
 
       // Return the Array without duplicates
       return Array.from(new Set(usersList))

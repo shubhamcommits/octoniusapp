@@ -57,6 +57,8 @@ Quill.register('modules/clipboard', QuillClipboard, true)
 // Environments
 import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { debounceTime, switchMap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-quill-editor',
@@ -92,6 +94,8 @@ export class QuillEditorComponent implements OnInit, OnChanges, AfterViewInit {
 
   // Quill modules variable
   modules: any;
+
+  mentionSubject = new Subject<string>();
 
   // Uploads url for Files
   filesBaseUrl = environment.UTILITIES_BASE_API_URL;
@@ -140,7 +144,7 @@ export class QuillEditorComponent implements OnInit, OnChanges, AfterViewInit {
     this.modules.toolbar = (this.toolbar === false) ? false : this.quillFullToolbar()
 
     // Set the Mention Module
-    this.modules.mention = this.metionModule();
+    this.modules.mention = this.mentionModule();
 
     // Enable Autolinking
     // this.sanitizeLink()
@@ -252,7 +256,7 @@ export class QuillEditorComponent implements OnInit, OnChanges, AfterViewInit {
   /**
    * This function returns the mention module
    */
-  metionModule() {
+  mentionModule() {
 
     // Check if groupId is object to take id...
     // In some places in code it is sending object, in other it is sending _id... needs refactoring
@@ -307,51 +311,86 @@ export class QuillEditorComponent implements OnInit, OnChanges, AfterViewInit {
         // If User types "@" then trigger the list for user mentioning
         if (mentionChar === "@") {
           // Initialise values with list of members
-          values = await this.publicFunctions.suggestMembers(searchTerm, this.groupId, this.workspaceData);
+          // values = await this.publicFunctions.suggestMembers(searchTerm, this.groupId, this.workspaceData);
 
           // Adding All Object to mention all the members
-          if (this.mentionAll) {
-            values.unshift({
-              id: 'all',
-              value: 'all'
-            });
-          }
+          // if (this.mentionAll) {
+          //   values.unshift({
+          //     id: 'all',
+          //     value: 'all'
+          //   });
+          // }
 
-          this.renderResult(searchVal, values, renderList);
+          // this.renderResult(searchVal, values, renderList);
+
+          this.mentionSubject.next(searchTerm);
+
+          this.mentionSubject.pipe(
+            debounceTime(300),
+            switchMap((val: string) => this.publicFunctions.suggestMembers(val, this.groupId, this.workspaceData, this.mentionAll))
+          ).subscribe(values => this.renderResult(searchTerm, values, renderList));
 
         // If User types "#" then trigger the list for files mentioning
         } else if (mentionChar === "#") {
           // Initialise values with list of collection pages
           if (searchTerm.slice(0, 8) === 'colpage ') {
             searchVal = searchTerm.split(' ')[1];
-            values = await this.publicFunctions.suggestCollectionPages(searchVal, this.groupId, this.workspaceData);  
+            // values = await this.publicFunctions.suggestCollectionPages(searchVal, this.groupId, this.workspaceData);
 
-            this.renderResult(searchVal, values, renderList);
+            // this.renderResult(searchVal, values, renderList);
+
+            this.mentionSubject.next(searchVal);
+
+            this.mentionSubject.pipe(
+              debounceTime(300),
+              switchMap((val: string) => this.publicFunctions.suggestCollectionPages(val, this.groupId, this.workspaceData))
+            ).subscribe(values => this.renderResult(searchVal, values, renderList));
 
           // Initialise values with list of collections
           } else if (searchTerm.slice(0, 4) === 'col ') {
             searchVal = searchTerm.replace('col ', '');
-            values = await this.publicFunctions.suggestCollection(this.groupId, searchVal);
+            // values = await this.publicFunctions.suggestCollection(this.groupId, searchVal);
 
-            this.renderResult(searchVal, values, renderList);
+            // this.renderResult(searchVal, values, renderList);
+
+            this.mentionSubject.next(searchVal);
+
+            this.mentionSubject.pipe(
+              debounceTime(300),
+              switchMap((val: string) => this.publicFunctions.suggestCollection(this.groupId, val))
+            ).subscribe(values => this.renderResult(searchVal, values, renderList));
 
           // Initialise values with list of files
           } else if (searchTerm.slice(0, 5) === 'file ') {
             searchVal = searchTerm.replace('file ', '');
-            this.publicFunctions.suggestFiles(searchVal, this.groupId, this.workspaceData).subscribe(
-              response => {
-                values = response;
+            // this.publicFunctions.suggestFiles(searchVal, this.groupId, this.workspaceData).subscribe(
+            //   response => {
+            //     values = response;
 
-                this.renderResult(searchVal, values, renderList);
-              }
-            );
+            //     this.renderResult(searchVal, values, renderList);
+            //   }
+            // );
+
+            this.mentionSubject.next(searchVal);
+
+            this.mentionSubject.pipe(
+              debounceTime(300),
+              switchMap((val: string) => this.publicFunctions.suggestFiles(val, this.groupId, this.workspaceData))
+            ).subscribe(values => this.renderResult(searchVal, values, renderList));
   
           // Initialise values with list of posts
           } else if (searchTerm.slice(0, 5) === 'post ') {
             searchVal = searchTerm.replace('post ', '');
-            values = await this.publicFunctions.suggestPosts(searchVal, this.groupId);
+            // values = await this.publicFunctions.suggestPosts(searchVal, this.groupId);
 
-            this.renderResult(searchVal, values, renderList);
+            // this.renderResult(searchVal, values, renderList);
+
+            this.mentionSubject.next(searchVal);
+
+            this.mentionSubject.pipe(
+              debounceTime(300),
+              switchMap((val: string) => this.publicFunctions.suggestPosts(val, this.groupId))
+            ).subscribe(values => this.renderResult(searchVal, values, renderList));
             
             // If none of the filters are used, initialise values with all entities
           } else if (searchTerm.length === 0) {
@@ -379,8 +418,6 @@ export class QuillEditorComponent implements OnInit, OnChanges, AfterViewInit {
             this.renderResult(searchVal, values, renderList);
           }
         }
-      
-        
       }
     }
   }

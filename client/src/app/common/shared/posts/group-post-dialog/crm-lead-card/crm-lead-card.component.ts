@@ -77,7 +77,7 @@ export class CRMLeadCardComponent implements OnChanges {
 				const cf = this.getCustomField(field);
 				const indexCRMCFToShow = (!!this.crmCustomFieldsToShow) ? this.crmCustomFieldsToShow.findIndex(cf => cf.name === field) : -1;
 				// Push the Column
-				if (cf && indexCRMCFToShow < 0 && !cf.company_type) {
+				if (cf && indexCRMCFToShow < 0 && cf.type == 'contact') {
 					this.crmCustomFieldsToShow.push(cf);
 			
 					if (this.displayedColumns.length - 1 >= 0) {

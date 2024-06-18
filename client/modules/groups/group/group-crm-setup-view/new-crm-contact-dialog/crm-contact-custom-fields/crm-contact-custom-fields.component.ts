@@ -59,7 +59,7 @@ export class CRMContactCustomFieldsComponent implements OnChanges {
       this.crmContactCustomFields = [];
       
       customFieldsTmp.forEach(field => {
-        if (!field?.company_type) {
+        if (field?.type == 'contact') {
           if (!field.input_type) {
             field.values.sort((v1, v2) => (v1 > v2) ? 1 : -1);
           }

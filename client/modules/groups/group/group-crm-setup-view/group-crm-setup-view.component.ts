@@ -7,6 +7,7 @@ import { Sort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { NewCRMContactDialogComponent } from './new-crm-contact-dialog/new-crm-contact-dialog.component';
 import { NewCRMCompanyDialogComponent } from './new-crm-company-dialog/new-crm-company-dialog.component';
+import { NewCRMProductDialogComponent } from './new-crm-product-dialog/new-crm-product-dialog.component';
 
 @Component({
   selector: 'app-group-crm-setup-view',
@@ -17,6 +18,7 @@ export class GroupCRMSetupViewComponent implements OnInit, OnDestroy, AfterConte
 
 	contacts = [];
 	companies = [];
+	products = [];
 
 	groupData: any;
 	
@@ -42,6 +44,15 @@ export class GroupCRMSetupViewComponent implements OnInit, OnDestroy, AfterConte
 	newCompanyColumnSelected;
 	crmCompanyCustomFields = [];
 	///////// COMPANY TABLE STARTS /////////
+
+	///////// PRODUCT TABLE STARTS /////////
+	sortedProductData;
+	displayedProductColumns: string[] = ['name', 'description', 'star'];
+	crmProductCustomFieldsToShow = [];
+
+	newProductColumnSelected;
+	crmProductCustomFields = [];
+	///////// PRODUCT TABLE STARTS /////////
 
 	// IsLoading behaviou subject maintains the state for loading spinner
 	isLoading$;
@@ -72,11 +83,15 @@ export class GroupCRMSetupViewComponent implements OnInit, OnDestroy, AfterConte
 		await this.crmGroupService.getGroupCRMInformation(this.groupData?._id).then(res => {
 			this.contacts = res['contacts'];
 			this.companies = res['companies'];
-			this.crmContactCustomFields = res['crm_custom_fields'].filter(cf => !cf.company_type);
+			this.products = res['products'];
+			this.crmContactCustomFields = res['crm_custom_fields'].filter(cf => cf.type == 'contact');
+			this.crmCompanyCustomFields = res['crm_custom_fields'].filter(cf => cf.type == 'company');
+			this.crmProductCustomFields = res['crm_custom_fields'].filter(cf => cf.type == 'product');
 		});
 
 		await this.initContactTable();
 		await this.initCompanyTable();
+		await this.initProductTable();
 
 		// End the loading spinner
 		this.utilityService.updateIsLoadingSpinnerSource(false);
@@ -111,6 +126,14 @@ export class GroupCRMSetupViewComponent implements OnInit, OnDestroy, AfterConte
 			this.sortedCompanyData = this.companies.slice();
 		}
 
+		async initProductTable() {
+			await this.loadProductCustomFieldsToShow();
+
+			this.products = [...this.products];
+
+			this.sortedProductData = this.products.slice();
+		}
+
 		getContactCustomField(fieldName: string) {
 			const index = (this.crmContactCustomFields) ? this.crmContactCustomFields.findIndex((f: any) => f.name === fieldName) : -1;
 			return (index >= 0) ? this.crmContactCustomFields[index] : null;
@@ -119,6 +142,11 @@ export class GroupCRMSetupViewComponent implements OnInit, OnDestroy, AfterConte
 		getCompanyCustomField(fieldName: string) {
 			const index = (this.crmCompanyCustomFields) ? this.crmCompanyCustomFields.findIndex((f: any) => f.name === fieldName) : -1;
 			return (index >= 0) ? this.crmCompanyCustomFields[index] : null;
+		}
+
+		getProductCustomField(fieldName: string) {
+			const index = (this.crmProductCustomFields) ? this.crmProductCustomFields.findIndex((f: any) => f.name === fieldName) : -1;
+			return (index >= 0) ? this.crmProductCustomFields[index] : null;
 		}
 
 		loadContactCustomFieldsToShow() {
@@ -131,7 +159,7 @@ export class GroupCRMSetupViewComponent implements OnInit, OnDestroy, AfterConte
 					const cf = this.getContactCustomField(field);
 					const indexCRMCFToShow = (!!this.crmContactsCustomFieldsToShow) ? this.crmContactsCustomFieldsToShow.findIndex(cf => cf.name === field) : -1;
 					// Push the Column
-					if (cf && indexCRMCFToShow < 0 && !cf.company_type) {
+					if (cf && indexCRMCFToShow < 0 && cf.type == 'contact') {
 						this.crmContactsCustomFieldsToShow.push(cf);
 				
 						if (this.displayedContactsColumns.length - 1 >= 0) {
@@ -155,13 +183,37 @@ export class GroupCRMSetupViewComponent implements OnInit, OnDestroy, AfterConte
 					const cf = this.getCompanyCustomField(field);
 					const indexCRMCFToShow = (!!this.crmCompanyCustomFieldsToShow) ? this.crmCompanyCustomFieldsToShow.findIndex(cf => cf.name === field) : -1;
 					// Push the Column
-					if (cf && indexCRMCFToShow < 0 && cf.company_type) {
+					if (cf && indexCRMCFToShow < 0 && cf.type == 'company') {
 						this.crmCompanyCustomFieldsToShow.push(cf);
 				
 						if (this.displayedCompanyColumns.length - 1 >= 0) {
 							const indexDisplayedColumns = (!!this.displayedCompanyColumns) ? this.displayedCompanyColumns.findIndex(col => col === field.name) : -1;
 							if (indexDisplayedColumns < 0) {
 								this.displayedCompanyColumns.splice(this.displayedCompanyColumns.length - 1, 0, field);
+							}
+						}
+					}
+				});
+			}
+		}
+
+		loadProductCustomFieldsToShow() {
+			if (!!this.groupData && !!this.groupData.crm_custom_fields_to_show) {
+				if (!this.crmProductCustomFieldsToShow) {
+					this.crmProductCustomFieldsToShow = [];
+				}
+				
+				this.groupData.crm_custom_fields_to_show.forEach(field => {
+					const cf = this.getProductCustomField(field);
+					const indexCRMCFToShow = (!!this.crmProductCustomFieldsToShow) ? this.crmProductCustomFieldsToShow.findIndex(cf => cf.name === field) : -1;
+					// Push the Column
+					if (cf && indexCRMCFToShow < 0 && cf.type == 'product') {
+						this.crmProductCustomFieldsToShow.push(cf);
+				
+						if (this.displayedProductColumns.length - 1 >= 0) {
+							const indexDisplayedColumns = (!!this.displayedProductColumns) ? this.displayedProductColumns.findIndex(col => col === field.name) : -1;
+							if (indexDisplayedColumns < 0) {
+								this.displayedProductColumns.splice(this.displayedProductColumns.length - 1, 0, field);
 							}
 						}
 					}
@@ -217,6 +269,31 @@ export class GroupCRMSetupViewComponent implements OnInit, OnDestroy, AfterConte
 						return this.utilityService.compare(a[property], b[property], directionValue);
 					default:
 						const index = (this.crmCompanyCustomFields) ? this.crmCompanyCustomFields.findIndex((f: any) => f.name === property) : -1;
+						return (index < 0) ? 
+							this.utilityService.compare(a[property], b[property], directionValue) :
+							this.utilityService.compare(a.crm_custom_fields[property], b.crm_custom_fields[property], directionValue);
+				}
+			});
+		}
+
+		sortProductData(sort: Sort) {
+			const direction = sort.direction;
+			let property = sort.active;
+			let directionValue = (direction == 'asc') ? 1 : -1;
+
+			const data = this.companies.slice();
+			if (!property || direction === '') {
+				this.sortedProductData = data;
+				return;
+			}
+
+			this.sortedProductData = data.sort((a, b) => {
+				switch (property) {
+					case 'name':
+					case 'description':
+						return this.utilityService.compare(a[property], b[property], directionValue);
+					default:
+						const index = (this.crmProductCustomFields) ? this.crmProductCustomFields.findIndex((f: any) => f.name === property) : -1;
 						return (index < 0) ? 
 							this.utilityService.compare(a[property], b[property], directionValue) :
 							this.utilityService.compare(a.crm_custom_fields[property], b.crm_custom_fields[property], directionValue);
@@ -362,6 +439,57 @@ export class GroupCRMSetupViewComponent implements OnInit, OnDestroy, AfterConte
 			});
 	}
 
+	addNewProductColumn($event: Event) {
+		// Find the index of the column to check if the same named column exist or not
+		const index = this.crmProductCustomFieldsToShow.findIndex((f: any) => f.name.toLowerCase() === this.newProductColumnSelected.name.toLowerCase());
+
+		// If index is found, then throw error notification
+		if (index !== -1) {
+			this.utilityService.warningNotification($localize`:@@crmCompanyList.sectionAlreadyExists:Section already exists!`);
+		} else {
+			// If not found, then push the element
+			// Create the group
+			if (!this.groupData.crm_custom_fields_to_show) {
+				this.groupData.crm_custom_fields_to_show = [];
+			}
+
+			this.groupData.crm_custom_fields_to_show.push(this.newProductColumnSelected.name);
+			this.crmProductCustomFieldsToShow.push(this.getProductCustomField(this.newProductColumnSelected.name));
+			if (this.displayedProductColumns.length - 1 >= 0) {
+				this.displayedProductColumns.splice(this.displayedProductColumns.length - 1, 0, this.newProductColumnSelected.name);
+			}
+
+			this.newProductColumnSelected = null;
+
+			this.crmGroupService.saveCRMCustomFieldsToShow(this.groupData._id, this.groupData.crm_custom_fields_to_show)
+				.then(res => {
+					this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+				});
+		}
+	}
+
+	removeProductColumn(field: any) {
+		let index: number = this.crmProductCustomFieldsToShow.findIndex(cf => cf.name === field);
+		if (index !== -1) {
+			this.crmProductCustomFieldsToShow.splice(index, 1);
+		}
+
+		index = this.displayedProductColumns.indexOf(field.name);
+		if (index !== -1) {
+			this.displayedProductColumns.splice(index, 1);
+		}
+
+		index = this.groupData.crm_custom_fields_to_show.indexOf(field.name);
+		if (index !== -1) {
+			this.groupData.crm_custom_fields_to_show.splice(index, 1);
+		}
+
+		this.crmGroupService.saveCRMCustomFieldsToShow(this.groupData._id, this.groupData.crm_custom_fields_to_show)
+			.then(res => {
+				this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+			});
+	}
+
 	deleteContact(contactId: string) {
 		this.utilityService.getConfirmDialogAlert($localize`:@@crmContactList.areYouSure:Are you sure?`, $localize`:@@crmContactList.removeContact:By doing this, you will delete the selected contact!`)
 			.then((res) => {
@@ -421,8 +549,58 @@ export class GroupCRMSetupViewComponent implements OnInit, OnDestroy, AfterConte
 						const index = (this.companies) ? this.companies.findIndex(c => c._id == companyId) : -1;
 						if (index >= 0) {
 							this.companies.splice(index, 1);
-
 							await this.initCompanyTable();
+						}
+					})
+				}
+			});
+	}
+
+	openProductDialog(productId?: string) {
+		const dialogRef = this.dialog.open(NewCRMProductDialogComponent, {
+			disableClose: true,
+			hasBackdrop: true,
+			width: '50%',
+			data: {
+				productId: productId
+			}
+		});
+
+		const productEditedSubs = dialogRef.componentInstance.productEdited.subscribe(async (data) => {
+			const index = (this.products) ? this.products.findIndex(p => p._id == data._id) : -1;
+			if (index >= 0) {
+				this.products[index] = data;
+			}
+			
+			await this.initProductTable();
+		});
+
+		const productCreatedSubs = dialogRef.componentInstance.productCreated.subscribe(async (data) => {
+			if (!this.products) {
+				this.products = []
+			}
+
+			this.products.unshift(data);
+
+			await this.initProductTable();
+		});
+
+		dialogRef.afterClosed().subscribe(async result => {
+			productEditedSubs.unsubscribe();
+			productCreatedSubs.unsubscribe();
+		});
+	}
+
+	deleteProduct(productId: string) {
+		this.utilityService.getConfirmDialogAlert($localize`:@@crmCompanyList.areYouSure:Are you sure?`, $localize`:@@crmCompanyList.removeProduct:By doing this, you will delete the selected product!`)
+			.then((res) => {
+				if (res.value) {
+					this.crmGroupService.removeCRMProduct(productId).then(async res => {
+						const index = (this.products) ? this.products.findIndex(p => p._id == productId) : -1;
+						if (index >= 0) {
+							this.products.splice(index, 1);
+
+							await this.initProductTable();
 						}
 					})
 				}

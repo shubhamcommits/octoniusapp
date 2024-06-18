@@ -1,4 +1,4 @@
-import { Column, Company, Contact, Flow, Group } from '../models';
+import { Column, Company, Contact, Flow, Group, Post, Product } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError } from '../../utils';
 
@@ -33,12 +33,19 @@ export class CRMController {
                 })
                 .sort('name')
                 .lean();
+
+            const products = await Product.find({
+                    _group: req.params.groupId
+                })
+                .sort('name')
+                .lean();
             
             // Send the status 200 response
             return res.status(200).json({
                 message: 'Contacts found!',
                 contacts: contacts,
                 companies: companies,
+                products: products,
                 crm_custom_fields: group.crm_custom_fields
             });
         } catch (err) {
@@ -419,6 +426,172 @@ export class CRMController {
             return sendError(res, error, 'Internal Server Error!', 500);
         }
     }
+    
+    /**
+     * This function fetches a crm contact corresponding to the @constant contactId 
+     * @param req - @constant contactId
+     */
+    async getCRMProduct(req: Request, res: Response) {
+        try {
+            const product = await Product.findOne({
+                    _id: req.params.productId
+                })
+                .lean();
+
+            if (!product) {
+                return sendError(res, new Error('Oops, product not found!'), 'Product not found, Invalid productId!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Product found!',
+                product: product
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
+     * This function fetches all the crm products of a group corresponding to the @constant groupId 
+     * @param req - @constant groupId
+     */
+    async getGroupCRMProducts(req: Request, res: Response) {
+        try {
+            const products = await Product.find({
+                    _group: req.params.groupId
+                })
+                .sort('name')
+                .lean();
+
+            if (!products) {
+                return sendError(res, new Error('Oops, products not found!'), 'Products not found, Invalid groupId!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Products found!',
+                products: products
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
+     * This function fetches all the crm contacts of a group corresponding to the @constant groupId 
+     * @param req - @constant groupId
+     */
+    async searchGroupCRMProducts(req: Request, res: Response) {
+        try {
+            const products = await Product.find({
+                    $and: [
+                        { _group: req.params.groupId },
+                        { name: { $regex: req.query.productSearchText, $options: 'i' } }
+                    ]
+                })
+                .sort('name')
+                .lean();
+
+            if (!products) {
+                return sendError(res, new Error('Oops, products not found!'), 'Products not found, Invalid groupId!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Products found!',
+                products: products
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
+     * This function updates a crm product
+     * @param req - @constant companyData
+     */
+    async updateCRMProduct(req: Request, res: Response) {
+        try {
+            const { productId } = req.params;
+            const { productData } = req.body;
+
+            let product = await Product.findOneAndUpdate({
+                    _id: productId 
+                }, {
+                    $set : { 
+                        name: productData?.name,
+                        description: productData?.description,
+                        crm_custom_fields: productData?.crm_custom_fields,
+                    }
+                }, {
+                    new: true
+                })
+                .sort('name')
+                .lean();
+
+            // Check if group already exist with the same groupId
+            if (!product) {
+                return sendError(res, new Error('Oops, product not found!'), 'Product not found, Invalid companyId!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Product updated!',
+                product: product
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
+     * This function creates a crm product
+     * @param req - @constant productData
+     */
+    async createCRMProduct(req: Request, res: Response) {
+        try {
+            const { productData } = req.body;
+
+            let product = await Product.create(productData);
+
+            if (!product) {
+                return sendError(res, new Error('Oops, product not created!'), 'Product not found, Invalid product data!', 404);
+            }
+
+            product = await Product.findOne({
+                    _id: product._id
+                })
+                .lean();
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Product created!',
+                product: product
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+    
+    /**
+     * This function removes a crm product
+     * @param req - @constant productId
+     */
+    async removeCRMProduct(req: Request, res: Response, next: NextFunction) {
+        try {
+            const productId = req.params.productId
+
+            const product = await Product.findOneAndDelete({_id: productId}).lean();
+
+            return res.status(200).json({
+                message: 'Product deleted successfully!',
+                product: product
+              });
+        } catch (error) {
+            return sendError(res, error, 'Internal Server Error!', 500);
+        }
+    }
 
     /**
      * This function is responsible for adding a new crm custom field for the particular group
@@ -644,14 +817,14 @@ export class CRMController {
 
         // Fetch the field and value from fileHandler middleware
         const fieldId = req.body['fieldId'];
-        const company_type = req.body['company_type'];
+        const type = req.body['type'];
 
         try {
             // Find the custom field in a group and add the value
             const group = await Group.findByIdAndUpdate({
                     _id: groupId
                 }, {
-                    $set: { "crm_custom_fields.$[field].company_type": company_type }
+                    $set: { "crm_custom_fields.$[field].type": type }
                 }, {
                     arrayFilters: [{ "field._id": fieldId }],
                     new: true
@@ -760,6 +933,112 @@ export class CRMController {
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+    
+    /**
+     * This function removes a crm contact
+     * @param req - @constant contactId
+     */
+    async removeCRMOrder(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { postId, orderId } = req.params;
+
+            let post = await Post.findByIdAndUpdate(
+                { _id: postId },
+                {
+                    $pull: {
+                        "crm.orders": {
+                            _id: orderId
+                        }
+                    }
+                },
+                {
+                    // arrayFilters: [{ "order._id": orderId }],
+                    new: true
+                }).lean();
+
+            post = await Post.findOne({
+                    _id: postId
+                })
+                .populate({ path: 'crm.orders._product', select: '_id name description crm_custom_fields' })
+                .lean();
+
+            return res.status(200).json({
+                message: 'Order deleted successfully!',
+                post: post
+              });
+        } catch (error) {
+            return sendError(res, error, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function updates a crm contact
+     * @param req - @constant contactData
+     */
+    async updateCRMOrder(req: Request, res: Response) {
+        try {
+            const { postId } = req.params;
+            const { orderData } = req.body;
+
+            let post = await Post.findByIdAndUpdate(
+                { _id: postId },
+                {
+                    $set: {
+                        "crm.orders.$[order]._product": orderData._product,
+                        "crm.orders.$[order].quantity": orderData.quantity
+                    }
+                },
+                {
+                    arrayFilters: [{ "order._id": orderData._id }],
+                    new: true
+                })
+                .lean();
+
+            post = await Post.findOne({
+                    _id: postId
+                })
+                .populate({ path: 'crm.orders._product', select: '_id name description crm_custom_fields' })
+                .lean();
+
+            return res.status(200).json({
+                message: 'Order updated!',
+                post: post
+              });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
+     * This function creates a crm contact
+     * @param req - @constant contactData
+     */
+    async createCRMOrder(req: Request, res: Response) {
+        try {
+            const { postId } = req.params;
+            const { orderData } = req.body;
+
+            let post = await Post.findByIdAndUpdate(
+                { _id: postId },
+                {
+                    $addToSet: { 'crm.orders': orderData }
+                },
+                { new: true });
+
+            post = await Post.findOne({
+                    _id: postId
+                })
+                .populate({ path: 'crm.orders._product', select: '_id name description crm_custom_fields' })
+                .lean();
+
+            return res.status(200).json({
+                message: 'Order created successfully!',
+                post: post
+              });
+        } catch (err) {
+            return sendError(res, err);
         }
     };
 }

@@ -28,13 +28,13 @@ routes.get('/:groupId/searchContacts/:companyId', crm.searchGroupCRMContacts);
 // GET - Get a crm contact details
 routes.get('/:contactId/contact', crm.getCRMContact);
 
-// DELETE - Delete an automation flow
+// DELETE - Delete an contract
 routes.delete('/:contactId/contact', crm.removeCRMContact);
 
-// PUT - Update the flow name
+// PUT - Update the contract
 routes.put('/:contactId/updateContact', crm.updateCRMContact);
 
-// POST - Add new automation flow
+// POST - Add new contract
 routes.post('/createContact', crm.createCRMContact);
 
 // GET - Get a crm company details
@@ -46,14 +46,32 @@ routes.get('/:groupId/companies', crm.getGroupCRMCompanies);
 // GET - Search for companies in a group
 routes.get('/:groupId/searchCompanies', crm.searchGroupCRMCompanies);
 
-// PUT - Update the flow name
+// PUT - Update the company
 routes.put('/:companyId/updateCompany/:workspaceId/:groupId', companyFileUploader, crm.updateCRMCompany);
 
-// POST - Add new automation flow
+// POST - Add new company
 routes.post('/createCompany', crm.createCRMCompany);
 
-// DELETE - Delete an automation flow
+// DELETE - Delete an company
 routes.delete('/:companyId/company', crm.removeCRMCompany);
+
+// GET - Get a crm product details
+routes.get('/:productId/product', crm.getCRMProduct);
+
+// GET - Get all the crm products in a group
+routes.get('/:groupId/products', crm.getGroupCRMProducts);
+
+// GET - Search for products in a group
+routes.get('/:groupId/searchProducts', crm.searchGroupCRMProducts);
+
+// PUT - Update the product
+routes.put('/:productId/updateProduct/:groupId', crm.updateCRMProduct);
+
+// POST - Add new product
+routes.post('/createProduct', crm.createCRMProduct);
+
+// DELETE - Delete an product
+routes.delete('/:productId/product', crm.removeCRMProduct);
 
 // CUSTOM FIELDS
 
@@ -72,7 +90,7 @@ routes.put('/:groupId/crmCustomFields/addValue', crm.addCRMCustomFieldValue);
 // PUT - Set the CF to be displayed in the kanban card
 routes.put('/:groupId/crmCustomFields/displayInKanbanCard', crm.setCRMCustomFieldDisplayKanbanCard);
 
-// PUT - Set the CF to be for company or contact
+// PUT - Set the CF to be for company or contact or product
 routes.put('/:groupId/crmCustomFields/setCRMCustomFieldType', crm.setCRMCustomFieldType);
 
 // PUT - Set the CF color to be displayed
@@ -83,6 +101,15 @@ routes.put('/:groupId/crmCustomFields/removeValue', crm.removeCRMCustomFieldValu
 
 // PUT - Save crm custom field to show
 routes.put('/:groupId/crmCustomFieldsToShow', crm.updateCRMCustomFieldsToShow);
+
+// DELETE - Delete an order
+routes.delete('/:postId/crmOrder/:orderId', crm.removeCRMOrder);
+
+// PUT - Update the order
+routes.put('/:postId/crmOrder', crm.updateCRMOrder);
+
+// POST - Add new order
+routes.post('/:postId/crmOrder', crm.createCRMOrder);
 
 /*  ===================
  *  -- EXPORT ROUTES --

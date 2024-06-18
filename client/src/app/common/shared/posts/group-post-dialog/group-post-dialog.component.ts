@@ -1,10 +1,9 @@
-import { Component, OnInit, EventEmitter, Output, Inject, Injector, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Inject, Injector } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
-// ShareDB Client
 import { BehaviorSubject } from 'rxjs';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 import moment from 'moment';
@@ -15,7 +14,7 @@ import { ColumnService } from 'src/shared/services/column-service/column.service
   templateUrl: './group-post-dialog.component.html',
   styleUrls: ['./group-post-dialog.component.scss']
 })
-export class GroupPostDialogComponent implements OnInit, AfterViewChecked {
+export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, AfterViewInit*/ {
 
   // Close Event Emitter - Emits when closing dialog
   @Output() closeEvent = new EventEmitter();
@@ -206,9 +205,9 @@ export class GroupPostDialogComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  ngAfterViewChecked() {
-    this.selectedDefaultTab();
-  }
+  // ngAfterViewChecked() {
+  //   this.selectedDefaultTab();
+  // }
 
   async initPostData() {
     // Set the title of the post
@@ -340,38 +339,41 @@ export class GroupPostDialogComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  selectedDefaultTab() {
-    let tabsLength = 1;
-    if (this.showSubtasks && (!this.postData?.task?.shuttle_type || this.groupData?._id == this.postData?._group?._id)) {
-      tabsLength++;
-    }
-    if (this.postData?.comments_count > 0) {
-      tabsLength++;
-    }
-    if (this.postData?.task?.isNorthStar) {
-      tabsLength++;
-    }
-    if (this.postData?.type === 'task' && this.postData?.approval_active && this.postData?.approval_history && this.postData?.approval_history?.length > 0 && this.isBusinessSubscription) {
-      tabsLength++;
-    }
-    if (this.postData?.logs && this.postData?.logs?.length > 0) {
-      tabsLength++;
-    }
+  // selectedDefaultTab() {
+  //   let tabsLength = 1;
+  //   if (this.showSubtasks && (!this.postData?.task?.shuttle_type || this.groupData?._id == this.postData?._group?._id)) {
+  //     tabsLength++;
+  //   }
+  //   if (this.postData?.comments_count > 0) {
+  //     tabsLength++;
+  //   }
+  //   if (this.postData?.task?.isNorthStar) {
+  //     tabsLength++;
+  //   }
+  //   if (this.postData?.type === 'task' && this.postData?.approval_active && this.postData?.approval_history && this.postData?.approval_history?.length > 0 && this.isBusinessSubscription) {
+  //     tabsLength++;
+  //   }
+  //   if (this.postData?.logs && this.postData?.logs?.length > 0) {
+  //     tabsLength++;
+  //   }
+  //   if (this.postData?.task?.is_crm_order) {
+  //     tabsLength++;
+  //   }
 
-    if (this.showSubtasks && (!this.postData?.task?.shuttle_type || this.groupData?._id == this.postData?._group?._id)) {
-      this.selectedTab = 0;
-    } else if (this.postData?.comments_count > 0 && length > 1) {
-      this.selectedTab = 1;
-    } else if (this.postData?.task?.isNorthStar && length > 2) {
-      this.selectedTab = 2;
-    } else if (this.postData?.type === 'task' && this.postData?.approval_active && this.postData?.approval_history && this.postData?.approval_history?.length > 0 && this.isBusinessSubscription && length > 3) {
-      this.selectedTab = 3;
-    } else if (this.postData?.logs && this.postData?.logs?.length > 0 && length > 4) {
-      this.selectedTab = 4;
-    } else {
-      this.selectedTab = 0;
-    }
-  }
+  //   if (this.showSubtasks && (!this.postData?.task?.shuttle_type || this.groupData?._id == this.postData?._group?._id)) {
+  //     this.selectedTab = 0;
+  //   } else if (this.postData?.comments_count > 0 && length > 1) {
+  //     this.selectedTab = 1;
+  //   } else if (this.postData?.task?.isNorthStar && length > 2) {
+  //     this.selectedTab = 2;
+  //   } else if (this.postData?.type === 'task' && this.postData?.approval_active && this.postData?.approval_history && this.postData?.approval_history?.length > 0 && this.isBusinessSubscription && length > 3) {
+  //     this.selectedTab = 3;
+  //   } else if (this.postData?.logs && this.postData?.logs?.length > 0 && length > 4) {
+  //     this.selectedTab = 4;
+  //   } else {
+  //     this.selectedTab = 0;
+  //   }
+  // }
 
   /**
    * This function is mapped with the event change of @variable - title
@@ -767,6 +769,12 @@ export class GroupPostDialogComponent implements OnInit, AfterViewChecked {
     this.postData.task.is_crm_task = data;
     const makeCRMLeadLogAction = (this.postData.task.is_crm_task) ? 'make_crm_task' : 'make_no_crm_task';
     this.updateDetails(makeCRMLeadLogAction);
+  }
+
+  transformToCRMOrder(data:any) {
+    this.postData.task.is_crm_order = data;
+    const makeCRMOrderLogAction = (this.postData.task.is_crm_order) ? 'make_crm_order' : 'make_no_crm_order';
+    this.updateDetails(makeCRMOrderLogAction);
   }
 
   async setShuttleGroup(data: any) {
