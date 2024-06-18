@@ -23,9 +23,7 @@ export class PostCRMOrderProductsComponent implements OnInit, OnDestroy, AfterCo
 	///////// ORDER TABLE STARTS /////////
 	sortedOrderData;
 	displayedOrderColumns: string[] = ['name', 'quantity', 'star'];
-	crmProductCustomFieldsToShow = [];
-
-	newOrderColumnSelected;
+	// crmProductCustomFieldsToShow = [];
 	crmProductCustomFields = [];
 	///////// ORDER TABLE STARTS /////////
 
@@ -90,23 +88,37 @@ export class PostCRMOrderProductsComponent implements OnInit, OnDestroy, AfterCo
 	}
 
 	loadOrderCustomFieldsToShow() {
+		// if (!!this.groupData && !!this.groupData.crm_custom_fields_to_show) {
+		// 	if (!this.crmProductCustomFieldsToShow) {
+		// 		this.crmProductCustomFieldsToShow = [];
+		// 	}
+			
+		// 	this.groupData.crm_custom_fields_to_show.forEach(field => {
+		// 		const cf = this.getOrderCustomField(field);
+		// 		const indexCRMCFToShow = (!!this.crmProductCustomFieldsToShow) ? this.crmProductCustomFieldsToShow.findIndex(cf => cf.name === field) : -1;
+		// 		// Push the Column
+		// 		if (cf && indexCRMCFToShow < 0 && cf.type == 'product') {
+		// 			this.crmProductCustomFieldsToShow.push(cf);
+			
+		// 			if (this.displayedOrderColumns.length - 1 >= 0) {
+		// 				const indexDisplayedColumns = (!!this.displayedOrderColumns) ? this.displayedOrderColumns.findIndex(col => col === field.name) : -1;
+		// 				if (indexDisplayedColumns < 0) {
+		// 					this.displayedOrderColumns.splice(this.displayedOrderColumns.length - 1, 0, field);
+		// 				}
+		// 			}
+		// 		}
+		// 	});
+		// }
 		if (!!this.groupData && !!this.groupData.crm_custom_fields_to_show) {
-			if (!this.crmProductCustomFieldsToShow) {
-				this.crmProductCustomFieldsToShow = [];
+			if (!this.crmProductCustomFields) {
+				this.crmProductCustomFields = [];
 			}
 			
-			this.groupData.crm_custom_fields_to_show.forEach(field => {
-				const cf = this.getOrderCustomField(field);
-				const indexCRMCFToShow = (!!this.crmProductCustomFieldsToShow) ? this.crmProductCustomFieldsToShow.findIndex(cf => cf.name === field) : -1;
-				// Push the Column
-				if (cf && indexCRMCFToShow < 0 && cf.type == 'product') {
-					this.crmProductCustomFieldsToShow.push(cf);
-			
-					if (this.displayedOrderColumns.length - 1 >= 0) {
-						const indexDisplayedColumns = (!!this.displayedOrderColumns) ? this.displayedOrderColumns.findIndex(col => col === field.name) : -1;
-						if (indexDisplayedColumns < 0) {
-							this.displayedOrderColumns.splice(this.displayedOrderColumns.length - 1, 0, field);
-						}
+			this.crmProductCustomFields.forEach(field => {
+				if (this.displayedOrderColumns.length - 1 >= 0) {
+					const indexDisplayedColumns = (!!this.displayedOrderColumns) ? this.displayedOrderColumns.findIndex(col => col === field.name) : -1;
+					if (indexDisplayedColumns < 0) {
+						this.displayedOrderColumns.splice(this.displayedOrderColumns.length - 1, 0, field.name);
 					}
 				}
 			});

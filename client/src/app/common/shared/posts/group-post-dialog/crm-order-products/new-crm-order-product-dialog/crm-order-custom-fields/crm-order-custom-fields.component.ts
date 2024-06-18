@@ -4,16 +4,16 @@ import { CRMGroupService } from 'src/shared/services/crm-group-service/crm-group
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
-  selector: 'app-crm-product-custom-fields',
-  templateUrl: './crm-product-custom-fields.component.html',
-  styleUrls: ['./crm-product-custom-fields.component.scss']
+  selector: 'app-crm-order-custom-fields',
+  templateUrl: './crm-order-custom-fields.component.html',
+  styleUrls: ['./crm-order-custom-fields.component.scss']
 })
-export class CRMProductCustomFieldsComponent implements OnChanges {
+export class CRMOrderCustomFieldsComponent implements OnChanges {
 
-  @Input() productData;
+  @Input() orderData;
   @Input() groupData;
 
-  @Output() productCFEdited = new EventEmitter();
+  @Output() orderCFEdited = new EventEmitter();
 
   crmProductCustomFields;
   selectedCFValues = [];
@@ -59,15 +59,15 @@ export class CRMProductCustomFieldsComponent implements OnChanges {
           }
           this.crmProductCustomFields.push(field);
 
-          if (!this.productData?.crm_custom_fields) {
-            this.productData.crm_custom_fields = new Map<string, string>();
+          if (!this.orderData?.crm_custom_fields) {
+            this.orderData.crm_custom_fields = new Map<string, string>();
           }
 
-          if (!this.productData?.crm_custom_fields[field.name]) {
-            this.productData.crm_custom_fields[field.name] = '';
+          if (!this.orderData?.crm_custom_fields[field.name]) {
+            this.orderData.crm_custom_fields[field.name] = '';
             this.selectedCFValues[field.name] = '';
           } else {
-            this.selectedCFValues[field.name] = this.productData?.crm_custom_fields[field.name];
+            this.selectedCFValues[field.name] = this.orderData?.crm_custom_fields[field.name];
           }
         }
       });
@@ -84,17 +84,17 @@ export class CRMProductCustomFieldsComponent implements OnChanges {
     //     break;
     // }
 
-    this.productCFEdited.emit(this.productData);
+    this.orderCFEdited.emit(this.orderData);
   }
 
-  onCustomFieldChange(event: Event, customFieldName: string, customFieldTitle: string) {
+  onCustomFieldChange(event: Event, customFieldName: string) {
     const customFieldValue = event['value'];
-    this.saveCustomField(customFieldName, customFieldTitle, customFieldValue);
+    this.saveCustomField(customFieldName, customFieldValue);
   }
 
-  saveInputCustomField(event: Event, customFieldName: string, customFieldTitle: string) {
+  saveInputCustomField(event: Event, customFieldName: string) {
     const customFieldValue = event.target['value'];
-    this.saveCustomField(customFieldName, customFieldTitle, customFieldValue);
+    this.saveCustomField(customFieldName, customFieldValue);
   }
 
   /**
@@ -102,13 +102,13 @@ export class CRMProductCustomFieldsComponent implements OnChanges {
    * @param dateObject
    */
   getCFDate(dateObject: any, cfName: string, cfTitle: string) {
-    this.saveCustomField(cfName, cfTitle, dateObject.toISODate());
+    this.saveCustomField(cfName, dateObject.toISODate());
   }
 
-  saveCustomField(customFieldName: string, customFieldTitle: string, customFieldValue: string) {
+  saveCustomField(customFieldName: string, customFieldValue: string) {
     this.selectedCFValues[customFieldName] = customFieldValue;
-    this.productData.crm_custom_fields[customFieldName] = customFieldValue;
+    this.orderData.crm_custom_fields[customFieldName] = customFieldValue;
 
-    this.productCFEdited.emit(this.productData);
+    this.orderCFEdited.emit(this.orderData);
   }
 }

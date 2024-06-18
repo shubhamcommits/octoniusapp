@@ -195,6 +195,11 @@ const PostSchema = new Schema({
             quantity: {
                 type: Number
             },
+            // Custom Fields
+            crm_custom_fields: {
+                type: Map,
+                of: String
+            }
         }]
     },
     logs: [

@@ -29,15 +29,16 @@
       </ng-container>
 
       <!-- CUSTOM FIELDS START -->
-      <ng-container [matColumnDef]="cf.name" *ngFor="let cf of crmProductCustomFieldsToShow">
+      <ng-container [matColumnDef]="cf.name" *ngFor="let cf of crmProductCustomFields">
         <th mat-header-cell mat-sort-header *matHeaderCellDef>
           <div class="cf_cell">
             {{ cf.title }}
           </div>
         </th>
+
         <td mat-cell *matCellDef="let order">
-          <div class="cf_cell" *ngIf="!!order?._product?.crm_custom_fields">
-            {{ order?._product?.crm_custom_fields[cf.name] }}
+          <div class="cf_cell" *ngIf="!!order?.crm_custom_fields">
+            {{ order?.crm_custom_fields[cf.name] }}
           </div>
         </td>
       </ng-container>

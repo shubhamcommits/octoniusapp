@@ -10,40 +10,64 @@
 
     <div mat-dialog-content>
         <div class="block">
-            <div class="row">
-                <label for="product" i18n="@@newCRMOrderProductDialogComponent.product" class="muted">Product</label>
-            </div>
-
-            <div class="dropdown">
-                <div *ngIf="!orderData?._product">
-                    <input type="text" class="form-control" id="search-text" name="product"
-                        aria-describedby="search-text" [(ngModel)]="productSearchText" placeholder="Search product" autofocus
-                        (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()" (keyup)="searchProduct()">
+            <mat-tab-group mat-align-tabs="start">
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <span i18n="@@newCRMProductDialog.contactInformation">Order Information</span>
+                    </ng-template>
+            
+                    <ng-template matTabContent>
+                        <div class="row">
+                            <label for="product" i18n="@@newCRMOrderProductDialogComponent.product" class="muted">Product</label>
+                        </div>
                         
-                    <ul *ngIf="!!productSearchResults && !!productSearchText" class="product-list dropdown-menu">
-                        <li class="product-list-item pointer" *ngFor="let product of productSearchResults" (click)="selectProduct(product)">
-                            {{ product.name }}
-                        </li>
-                    </ul>
-                </div>
+                        <div class="dropdown">
+                            <div *ngIf="!orderData?._product">
+                                <input type="text" class="form-control" id="search-text" name="product" aria-describedby="search-text"
+                                    [(ngModel)]="productSearchText" placeholder="Search product" autofocus (click)="$event.stopPropagation()"
+                                    (keydown)="$event.stopPropagation()" (keyup)="searchProduct()">
+                        
+                                <ul *ngIf="!!productSearchResults && !!productSearchText" class="product-list dropdown-menu">
+                                    <li class="product-list-item pointer" *ngFor="let product of productSearchResults"
+                                        (click)="selectProduct(product)">
+                                        {{ product.name }}
+                                    </li>
+                                </ul>
+                            </div>
+                        
+                            <div *ngIf="!!orderData?._product" class="form-control" style="text-align: left;">
+                                <span>{{ orderData?._product?.name }}</span>
+                        
+                                <!-- Clean field starts -->
+                                <i (click)="selectProduct(null)" class="material-icons muted mr-5"
+                                    style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
+                                <!-- Clean field ends -->
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <label for="quantity" i18n="@@newCRMOrderProductDialogComponent.quantity" class="muted">Quantity</label>
+                        </div>
+                        
+                        <div class="row">
+                            <input type="number" class="form-control" [(ngModel)]="orderData.quantity" name="quantity">
+                        </div>
+                    </ng-template>
+                </mat-tab>
             
-                <div *ngIf="!!orderData?._product" class="form-control" style="text-align: left;">
-                    <span>{{ orderData?._product?.name }}</span>
-                
-                    <!-- Clean field starts -->
-                    <i (click)="selectProduct(null)" class="material-icons muted mr-5"
-                        style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
-                    <!-- Clean field ends -->
-                </div>
-            </div>
-        
-            <div class="row">
-                <label for="quantity" i18n="@@newCRMOrderProductDialogComponent.quantity" class="muted">Quantity</label>
-            </div>
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <span i18n="@@newCRMProductDialog.customFields">Custom Fields</span>
+                    </ng-template>
             
-            <div class="row">
-                <input type="number" class="form-control" [(ngModel)]="orderData.quantity" name="quantity">
-            </div>
+                    <ng-template matTabContent>
+                        <app-crm-order-custom-fields
+                            [orderData]="orderData"
+                            [groupData]="groupData"
+                            (orderCFEdited)="onOrderInfoEdited($event)"></app-crm-order-custom-fields>
+                    </ng-template>
+                </mat-tab>
+            </mat-tab-group>
         </div>
     </div>
 

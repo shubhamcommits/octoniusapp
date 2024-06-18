@@ -127,7 +127,7 @@ export class GroupCRMSetupViewComponent implements OnInit, OnDestroy, AfterConte
 		}
 
 		async initProductTable() {
-			await this.loadProductCustomFieldsToShow();
+			// await this.loadProductCustomFieldsToShow();
 
 			this.products = [...this.products];
 
@@ -197,29 +197,29 @@ export class GroupCRMSetupViewComponent implements OnInit, OnDestroy, AfterConte
 			}
 		}
 
-		loadProductCustomFieldsToShow() {
-			if (!!this.groupData && !!this.groupData.crm_custom_fields_to_show) {
-				if (!this.crmProductCustomFieldsToShow) {
-					this.crmProductCustomFieldsToShow = [];
-				}
+		// loadProductCustomFieldsToShow() {
+		// 	if (!!this.groupData && !!this.groupData.crm_custom_fields_to_show) {
+		// 		if (!this.crmProductCustomFieldsToShow) {
+		// 			this.crmProductCustomFieldsToShow = [];
+		// 		}
 				
-				this.groupData.crm_custom_fields_to_show.forEach(field => {
-					const cf = this.getProductCustomField(field);
-					const indexCRMCFToShow = (!!this.crmProductCustomFieldsToShow) ? this.crmProductCustomFieldsToShow.findIndex(cf => cf.name === field) : -1;
-					// Push the Column
-					if (cf && indexCRMCFToShow < 0 && cf.type == 'product') {
-						this.crmProductCustomFieldsToShow.push(cf);
+		// 		this.groupData.crm_custom_fields_to_show.forEach(field => {
+		// 			const cf = this.getProductCustomField(field);
+		// 			const indexCRMCFToShow = (!!this.crmProductCustomFieldsToShow) ? this.crmProductCustomFieldsToShow.findIndex(cf => cf.name === field) : -1;
+		// 			// Push the Column
+		// 			if (cf && indexCRMCFToShow < 0 && cf.type == 'product') {
+		// 				this.crmProductCustomFieldsToShow.push(cf);
 				
-						if (this.displayedProductColumns.length - 1 >= 0) {
-							const indexDisplayedColumns = (!!this.displayedProductColumns) ? this.displayedProductColumns.findIndex(col => col === field.name) : -1;
-							if (indexDisplayedColumns < 0) {
-								this.displayedProductColumns.splice(this.displayedProductColumns.length - 1, 0, field);
-							}
-						}
-					}
-				});
-			}
-		}
+		// 				if (this.displayedProductColumns.length - 1 >= 0) {
+		// 					const indexDisplayedColumns = (!!this.displayedProductColumns) ? this.displayedProductColumns.findIndex(col => col === field.name) : -1;
+		// 					if (indexDisplayedColumns < 0) {
+		// 						this.displayedProductColumns.splice(this.displayedProductColumns.length - 1, 0, field);
+		// 					}
+		// 				}
+		// 			}
+		// 		});
+		// 	}
+		// }
 
 		sortContactData(sort: Sort) {
 			const direction = sort.direction;

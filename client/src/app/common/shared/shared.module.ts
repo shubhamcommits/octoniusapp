@@ -148,6 +148,7 @@ import { UserTaskForDayDialogComponent } from './posts/user-task-for-day-dialog/
 import { AvatarComponent } from './avatar/avatar.component';
 import { PostCRMOrderProductsComponent } from './posts/group-post-dialog/crm-order-products/crm-order-products.component';
 import { NewCRMOrderProductDialogComponent } from './posts/group-post-dialog/crm-order-products/new-crm-order-product-dialog/new-crm-order-product-dialog.component';
+import { CRMOrderCustomFieldsComponent } from './posts/group-post-dialog/crm-order-products/new-crm-order-product-dialog/crm-order-custom-fields/crm-order-custom-fields.component';
 
 @NgModule({
     declarations: [
@@ -211,6 +212,7 @@ import { NewCRMOrderProductDialogComponent } from './posts/group-post-dialog/crm
         GroupPostDialogComponent,
         PostCRMOrderProductsComponent,
         NewCRMOrderProductDialogComponent,
+        CRMOrderCustomFieldsComponent,
         GlobalNorthStarDialogComponent,
         GlobalNorthStarStatsComponent,
         WorkStatisticsCardComponent,
@@ -340,6 +342,7 @@ import { NewCRMOrderProductDialogComponent } from './posts/group-post-dialog/crm
         GroupPostDialogComponent,
         PostCRMOrderProductsComponent,
         NewCRMOrderProductDialogComponent,
+        CRMOrderCustomFieldsComponent,
         GlobalNorthStarDialogComponent,
         GlobalNorthStarStatsComponent,
         ChartsModule,
