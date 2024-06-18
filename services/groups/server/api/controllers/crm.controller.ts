@@ -987,7 +987,8 @@ export class CRMController {
                 {
                     $set: {
                         "crm.orders.$[order]._product": orderData._product,
-                        "crm.orders.$[order].quantity": orderData.quantity
+                        "crm.orders.$[order].quantity": orderData.quantity,
+                        "crm.orders.$[order].crm_custom_fields": orderData.crm_custom_fields
                     }
                 },
                 {
