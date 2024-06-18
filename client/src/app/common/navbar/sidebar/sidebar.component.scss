@@ -42,7 +42,7 @@
         display: block;
         color: $border-color;
         &:hover{
-            color: #E4EDF8 !important;
+            color: #E4EDF8;
             text-decoration: none !important;
             background: rgba(0, 28, 71, 0.2);
             border-radius: 4px;
@@ -71,7 +71,7 @@ a[data-toggle="collapse"] {
 ul ul a {
     font-size: 12px !important;
     /* background: #6d7fcc; */
-    color: #FFFFFF !important;
+    color: #FFFFFF;
     font-weight: 400 !important;
 }
 
@@ -128,8 +128,8 @@ ul ul{
    border-top: 1px solid rgba(0, 28, 71, 0.07);
 }
 
-.active {
+.active a{
     background: #e4edf8;
-    color: #005fd5;
+    color: #005fd5 !important;
     border-radius: 4px;
 }
