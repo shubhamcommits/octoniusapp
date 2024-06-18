@@ -11,12 +11,12 @@
     <div mat-dialog-content>
         <div class="block">
             <div class="row">
-                <label for="company" i18n="@@newCRMOrderProductDialogComponent.company" class="muted">Company</label>
+                <label for="product" i18n="@@newCRMOrderProductDialogComponent.product" class="muted">Product</label>
             </div>
 
             <div class="dropdown">
                 <div *ngIf="!orderData?._product">
-                    <input type="text" class="form-control" id="search-text"
+                    <input type="text" class="form-control" id="search-text" name="product"
                         aria-describedby="search-text" [(ngModel)]="productSearchText" placeholder="Search product" autofocus
                         (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()" (keyup)="searchProduct()">
                         
@@ -38,9 +38,9 @@
             </div>
         
             <div class="row">
-                <label for="company" i18n="@@newCRMOrderProductDialogComponent.company" class="muted">Company</label>
+                <label for="quantity" i18n="@@newCRMOrderProductDialogComponent.quantity" class="muted">Quantity</label>
             </div>
-
+            
             <div class="row">
                 <input type="number" class="form-control" [(ngModel)]="orderData.quantity" name="quantity">
             </div>
