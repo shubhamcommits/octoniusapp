@@ -1,9 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import { ActivatedRoute } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
-import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({
   selector: 'app-group-admin',
@@ -36,9 +34,7 @@ export class GroupAdminComponent implements OnInit {
   constructor(
     private injector: Injector,
     private utilityService: UtilityService,
-    private groupService: GroupService,
-    private managementPortalService: ManagementPortalService,
-    private router: ActivatedRoute) { }
+    private groupService: GroupService) { }
 
   async ngOnInit() {
 

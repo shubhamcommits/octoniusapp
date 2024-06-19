@@ -37,7 +37,7 @@
 
   <div class="menu-options">
     <ul class="list-unstyled components">
-      <li [ngClass]="isMySpacePage() ? 'active' : ''">
+      <li [ngClass]="isMySpacePage ? 'active' : ''">
           <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active">
             <i class="material-icons-outlined">home</i>
           </a>
@@ -107,7 +107,7 @@
 
       <li *ngIf="!isIndividualSubscription"> <hr class="divider-line"></li>
 
-      <li *ngIf="!isIndividualSubscription" [ngClass]="isWorkspacePage() ? 'active' : ''">
+      <li *ngIf="!isIndividualSubscription" [ngClass]="isWorkspacePage ? 'active' : ''">
         <a routerLinkActive="active" routerLink="/dashboard/work/groups/all" class="explore-work">
           <i class="material-icons-outlined carret">groups</i>
         </a>
