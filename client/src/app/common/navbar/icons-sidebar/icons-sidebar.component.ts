@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Injector, Input, EventEmitter, Output, OnChanges, SimpleChanges } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
@@ -44,6 +44,9 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
   // Workspace data for the current workspace
   public workspaceData: any = {};
   userCollections: any = [];
+
+  isMySpacePage = true;
+  isWorkspacePage = false;
   
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector);
@@ -69,6 +72,26 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
 
   async ngOnInit() {
     await this.initProperties();
+
+    this.subSink.add(this.utilityService.currentGroupData.subscribe(async (res) => {
+      this.isMySpacePage = this.router.url.includes('myspace') || await this.publicFunctions.isPersonalNavigation(res, this.userData);
+    }));
+
+    this.subSink.add(this.router.events.subscribe(async (res) => {
+      if (res instanceof NavigationEnd) {
+        this.isWorkspacePage = res.url.includes('work/groups/all')
+        || res.url.includes('work/northstar')
+        || res.url.includes('work/dashboard')
+        || res.url.includes('work/lounge')
+        || res.url.includes('work/organization');
+      } else {
+        this.isWorkspacePage = this.router.url.includes('work/groups/all')
+          || this.router.url.includes('work/northstar')
+          || this.router.url.includes('work/dashboard')
+          || this.router.url.includes('work/lounge')
+          || this.router.url.includes('work/organization');
+      }
+    }));
   }
 
   async ngOnChanges(changes: SimpleChanges) {
