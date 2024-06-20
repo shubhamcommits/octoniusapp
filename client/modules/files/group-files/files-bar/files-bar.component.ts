@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter, Injector, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { FilesCustomFieldsDialogComponent } from 'modules/groups/group/files-custom-fields-dialog/files-custom-fields-dialog.component';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { FilesSettingsDialogComponent } from '../files-settings-dialog/files-settings-dialog.component';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
+import { FilesCustomFieldsDialogComponent } from './files-custom-fields-dialog/files-custom-fields-dialog.component';
 
 @Component({
   selector: 'app-files-bar',

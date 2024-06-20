@@ -1,0 +1,64 @@
+@import "src/assets/scss/variables";
+
+.column-title {
+    display: flex;
+    justify-content: space-between;
+    margin: 24px 0;
+    width: 310px;
+    cursor: move;
+    p {
+        font-size: 15px;
+        font-weight: 400;
+        text-transform: uppercase !important;
+    }
+}
+
+.dropdown-item {
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    span {
+        color: #ff6584;
+    }
+}
+
+.project-container {
+    width: 310px;
+    border-bottom: 1px solid $border-color;
+    margin-bottom: 16px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+}
+
+.tasks-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    height: 70vh;
+    overflow-x: hidden;
+    width: 310px;
+}
+// to fix the annoying scroll bar but still being able to scroll vertically
+.tasks-container::-webkit-scrollbar {
+    width: 0 !important;
+}
+
+.dropdown-toggle:after {
+    content: none;
+}
+
+.dropdown-menu {
+    top: 20px !important;
+    transform: none !important;
+}
+
+.badge {
+    font-size:14px ;
+    list-style: none;
+  }
+
+.donebadge {
+    background:#4a90e2;
+    color: #fff;
+}

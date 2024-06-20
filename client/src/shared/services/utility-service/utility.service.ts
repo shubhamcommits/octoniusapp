@@ -6,7 +6,6 @@ import { GroupPostDialogComponent } from 'src/app/common/shared/posts/group-post
 import { MemberDialogComponent } from 'src/app/common/shared/member-dialog/member-dialog.component';
 import { PostService } from '../post-service/post.service';
 import { ColumnService } from '../column-service/column.service';
-import { PermissionDialogComponent } from 'modules/groups/group/permission-dialog/permission-dialog.component';
 
 import * as XLSX from 'xlsx';
 import * as fileSaver from 'file-saver';
@@ -17,6 +16,7 @@ import { PublicFunctions } from 'modules/public.functions';
 import { VideoCallDialog } from 'modules/chat/components/video-call-dialog/video-call-dialog.component';
 import { DateTime } from 'luxon';
 import { DatesService } from '../dates-service/dates.service';
+import { PermissionDialogComponent } from 'src/app/common/shared/permission-dialog/permission-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -359,16 +359,16 @@ export class UtilityService {
   /**
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
-  openPostDetailsFullscreenModal(postId: string, groupId: string, canOpen: boolean, columns?: any, selectedDate?: DateTime, selectedUser?: any) {
+  openPostDetailsFullscreenModal(postId: string, groupId: string, canOpen: boolean, sections?: any, selectedDate?: DateTime, selectedUser?: any) {
     let dialogOpen;
 
     // !groupData?.enabled_rights || postData?.canView || postData?.canEdit
     if (canOpen) {
-      const data = (columns) ?
+      const data = (sections) ?
         {
           postId: postId,
           groupId: groupId,
-          columns: columns,
+          columns: sections,
           selectedDate: selectedDate,
           selectedUser: selectedUser
         }

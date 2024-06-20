@@ -13,7 +13,6 @@ import { GroupComponent } from './group/group.component';
 import { GroupActivityComponent } from './group/group-activity/group-activity.component';
 import { GroupAdminComponent } from './group/group-admin/group-admin.component';
 import { GroupMembersComponent } from './group/group-members/group-members.component';
-import { GroupTasksViewsComponent } from './group/group-tasks-views/group-tasks-views.component';
 import { GroupGuard } from 'src/shared/guards/group-guard/group.guard';
 import { GroupDashboardComponent } from './group/group-dashboard/group-dashboard.component';
 import { GroupReportsComponent } from './group/group-reports/group-reports.component';
@@ -25,6 +24,7 @@ import { IndivicualSubscriptionGuard } from 'src/shared/guards/indivicual-subscr
 import { CRMGuard } from 'src/shared/guards/crm-guard/crm.guard';
 import { GroupCRMSetupViewComponent } from './group/group-crm-setup-view/group-crm-setup-view.component';
 import { GroupResourceManagementComponent } from './group/group-resource-management/group-resource-management.component';
+import { GroupTasksViewsComponent } from './group/group-tasks-views/group-tasks-views.component';
 
 
 /**

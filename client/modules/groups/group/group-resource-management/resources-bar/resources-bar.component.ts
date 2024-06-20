@@ -2,9 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angul
 import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { CustomFieldsDialogComponent } from '../../custom-fields-dialog/custom-fields-dialog.component';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
-import { ResourcesCustomFieldsDialogComponent } from '../../resources-custom-fields-dialog/resources-custom-fields-dialog.component';
+import { ResourcesCustomFieldsDialogComponent } from './resources-custom-fields-dialog/resources-custom-fields-dialog.component';
 
 @Component({
   selector: 'app-resources-bar',

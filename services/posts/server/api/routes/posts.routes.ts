@@ -40,10 +40,15 @@ routes.post('/:workspaceId', postFileUploader, postController.add.bind(postContr
 
 /**
  * GET - This route fetches the list of posts present in a group
- * @param { group Id, lastPostId } query
+ * @param { groupId, lastPostId } query
  * @param lastPostId - optional
  */
 routes.get('/', postController.getPosts);
+
+/**
+ * GET - This route fetches the list of tasks present in a section
+ */
+routes.get('/tasksBySection/:sectionId', postController.getTasksBySection);
 
 /**
  * GET - This route fetches the list of archived tasks present in a group
@@ -221,8 +226,8 @@ routes.put('/:postId/set-dependency', postController.setDependencyTask);
 // PUT - Used to remove a dependency task to a task
 routes.put('/:postId/remove-dependency', postController.removeDependencyTask);
 
-// POST - Used to update the dates of a task in the 'gantt' view
-routes.post('/:postId/gantt-task-dates-update',postController.updateGanttTasksDates.bind(postController))
+// POST - Used to update the dates of a task in the 'timeline' view
+routes.post('/:postId/timeline-task-dates-update',postController.updateGanttTasksDates.bind(postController))
 
 // POST - Used to clone the post to a user
 routes.post('/:postId/clone-to-assignee', postController.cloneToAssignee);

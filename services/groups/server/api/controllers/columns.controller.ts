@@ -196,11 +196,13 @@ export class ColumnsController {
         try {
             const groupId = req.body.groupId;
             const columnName = req.body.columnName;
+            const kanbanOrder = req.body.kanbanOrder;
 
             // Preparing the group data
             const columnData = {
                 _group: groupId,
                 title: columnName,
+                kanban_order: kanbanOrder,
                 custom_fields_to_show: ['priority']
             }
 
@@ -562,10 +564,10 @@ export class ColumnsController {
     };
 
     async archive(req: Request, res: Response, next: NextFunction) {
+
         const { sectionId } = req.body;
 
         try {
-
             let column = await Column.findById({
                     _id: sectionId
                 })
