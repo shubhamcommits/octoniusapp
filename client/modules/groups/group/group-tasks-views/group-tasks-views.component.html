@@ -1,5 +1,5 @@
 <div class="root">
-  <app-board-bar-2 *ngIf="!!groupData"
+  <app-board-bar *ngIf="!!groupData"
       [groupData]="groupData"
       [sections]="sections"
       [userData]="userData"
@@ -12,7 +12,7 @@
       (sortTaskEmitter)="onSortTaskEmitter($event)"
       (filterTaskEmitter)="onFilterTaskEmitter($event)"
       (exportToEmitter)="onExportToEmitter($event)">
-  </app-board-bar-2>
+  </app-board-bar>
 
   <app-kanban-board *ngIf="viewType === 'kanban'"
       [groupData]="groupData"
