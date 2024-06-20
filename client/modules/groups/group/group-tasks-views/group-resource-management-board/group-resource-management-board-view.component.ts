@@ -10,6 +10,7 @@ import moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 import { UserTaskForDayDialogComponent } from 'src/app/common/shared/posts/user-task-for-day-dialog/user-task-for-day-dialog.component';
 import { DatesService } from 'src/shared/services/dates-service/dates.service';
+import { AddTaskResourceManagementDialogComponent } from './add-task-resource-management-dialog/add-task-resource-management-dialog.component';
 
 @Component({
   selector: 'app-group-resource-management-board-view',
@@ -238,19 +239,49 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
    */
   openFullscreenModal(selectedDay: DateTime, selectedUser: any): void {
     const canOpen = !this.groupData?.enabled_rights;
-    const dialogRef = this.utilityService.openPostDetailsFullscreenModal(null, this.groupData._id, canOpen, this.sections, moment(selectedDay.toJSDate()), selectedUser);
-
-    if (dialogRef) {
-      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe(async (data) => {
-        // Starts the spinner
-        this.isLoading$.next(true);
-
-        await this.initTable();
+    // const dialogRef = this.utilityService.openPostDetailsFullscreenModal(null, this.groupData._id, canOpen, this.sections, moment(selectedDay.toJSDate()), selectedUser);
+    if (canOpen) {
+      const dialogRef = this.dialog.open(AddTaskResourceManagementDialogComponent, {
+        width: '100%',
+        height: '100%',
+        disableClose: true,
+        panelClass: 'groupCreatePostDialog',
+        data: {
+          groupId: this.groupData._id,
+          columns: this.sections,
+          selectedDate: selectedDay,
+          selectedUser: selectedUser
+        }
       });
-
-      dialogRef.afterClosed().subscribe(result => {
-        closeEventSubs.unsubscribe();
-      });
+      
+      if (dialogRef) {
+        const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe(async (data) => {
+          // Starts the spinner
+          this.isLoading$.next(true);
+          
+          await this.initTable();
+        });
+        const taskSelectedEventSubs = dialogRef.componentInstance.taskSelectedEvent.subscribe(async (data) => {
+          const dialogRef = this.utilityService.openPostDetailsFullscreenModal(data._id, this.groupData._id, canOpen, this.sections, selectedDay, selectedUser);
+          if (dialogRef) {
+            const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe(async (data) => {
+              // Starts the spinner
+              this.isLoading$.next(true);
+              
+              await this.initTable();
+            });
+            
+            dialogRef.afterClosed().subscribe(result => {
+              closeEventSubs.unsubscribe();
+            });
+          }
+        });
+        
+        dialogRef.afterClosed().subscribe(result => {
+          closeEventSubs.unsubscribe();
+          taskSelectedEventSubs.unsubscribe();
+        });
+      }
     }
   }
 

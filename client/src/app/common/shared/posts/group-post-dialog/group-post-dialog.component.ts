@@ -150,7 +150,7 @@ export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
         this.myWorkplace = false;
       }
 
-      if (this.groupId) {
+      if (!!this.groupId) {
         this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
 
         this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);

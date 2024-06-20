@@ -6,115 +6,8 @@
   </div>
 </mat-dialog-actions>
 
-<div class="post-dialog-content" *ngIf="objectExists(postData) && !postData._id">
-  <div class="post-content">
-
-    <div class="search-task">
-      <input class="form-control" type="text" placeholder="Enter task title to search" autofocus
-        [(ngModel)]="searchText"
-        (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
-    
-      <ul class="task-list" *ngIf="!!searchText">
-        <li class="task-list-item" *ngFor="let task of tasks | appFilter: searchText"
-          (click)="selectTaskToAssign(task)">
-          {{ task.title }}
-        </li>
-      </ul>
-    </div>
-
-    <app-new-task [canEdit]="objectExists(postData?.task?._column)" [groupData]="groupData" [userData]="userData" [column]="postData?.task?._column"
-      (post)="createPost($event)" [isIdeaModuleAvailable]="isIdeaModuleAvailable"></app-new-task>
-  </div>
-
-  <div class="post-properties">
-    <div class="content-box">
-      <div class="shuttle-box">
-        <p class="mt-1" style="margin-top: 18px; width:70px" i18n="@@groupCreatePostDialog.section">
-          Section
-        </p>
-
-        <app-change-column class="ml-2"
-          [sectionId]="(postData?.task?._column?._id || postData?.task?._column)"
-          [columns]="columns"
-          (moveTask)="onNewTaskColumnSelected($event.newColumnId)">
-        </app-change-column>
-      </div>
-    </div>
-
-    <app-post-dates
-      [userData]="userData"
-      [postData]="postData"
-      [groupData]="groupData"
-      [canEdit]="false"></app-post-dates>
-
-    <div class="content-box">
-      <p class="box-title" i18n="@@groupCreatePostDialog.assignee">Assignee</p>
-    
-      <app-multiple-assignments [canEdit]="false" [groupId]="groupId" [post]="postData" [type]="'post'"
-        (assigneeAddedEmiter)="onAssigned($event)" (assigneeRemovedEmiter)="onAssigned($event)">
-      </app-multiple-assignments>
-    </div>
-  </div>
-</div>
-
 <div class="post-dialog-content" *ngIf="objectExists(postData) && postData._id">
     <div class="post-content">
-        <!--
-        <div  *ngIf="(postData?.task?.is_crm_task || postData?.task?.is_crm_order) && groupData?.type == 'crm'">
-          <div class="content-box">
-            <div class="modal-header">
-              <h4 class="modal-title">
-                <input name="postTitle" type="text" [ngModel]="title" (blur)="titleChange($event)" class="post-title"
-                  placeholder="✍🏻 Title" />
-              </h4>
-            
-              <app-post-utils *ngIf="userData" [post]="postData" [userData]="userData" [groupData]="groupData" [canEdit]="canEdit"
-                mode="fullscreen" (delete)="deletePost()">
-              </app-post-utils>
-            </div>
-          </div>
-
-          <div class="content-box">
-            <app-quill-editor
-                *ngIf="canEdit"
-                [editorId]="'postbox-editor'"
-                [toolbar]="true"
-                [readOnly]="false"
-                [contents]="postData?.content"
-                [groupId]="groupId"
-                (content)="quillContentChanged($event)">
-            </app-quill-editor>
-
-            <app-quill-editor
-                *ngIf="!canEdit"
-                [editorId]="'postbox-editor'"
-                [toolbar]="false"
-                [readOnly]="true"
-                [contents]="postData?.content"
-                [groupId]="groupId"></app-quill-editor>
-
-            <div class="attach-files" *ngIf="postData">
-                <app-attach-files
-                    [post]="postData"
-                    (files)="onAttach($event)"
-                    (cloudFiles)="onCloudFileAttach($event)">
-                </app-attach-files>
-            </div>
-
-            <app-post-actions
-                [post]="postData"
-                [userData]="userData"
-                [fullscreen]="true"
-                [groupData]="groupData"
-                [isIdeaModuleAvailable]="isIdeaModuleAvailable"
-                [canEdit]="canEdit"
-                (pinEvent)="onPostPin($event)"
-                (newCommentEmitter)="newCommentAdded($event)">
-            </app-post-actions>
-          </div>
-        </div>
-        -->
-
         <div>
           <div class="content-box">
             <div class="modal-header">
@@ -150,9 +43,7 @@
               </app-attach-files>
             </div>
             <!-- Attach files ends -->
-        
-            <!-- <div class="clearfix"></div> -->
-        
+
             <app-post-actions [post]="postData" [userData]="userData" [fullscreen]="true" [groupData]="groupData"
               [isIdeaModuleAvailable]="isIdeaModuleAvailable" [canEdit]="canEdit" (pinEvent)="onPostPin($event)"
               (newCommentEmitter)="newCommentAdded($event)">

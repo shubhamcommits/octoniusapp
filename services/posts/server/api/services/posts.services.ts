@@ -494,7 +494,7 @@ export class PostService {
           });
       }
 
-      if (post._content_mentions.length !== 0) {
+      if (post?._content_mentions?.length !== 0) {
         // Create Real time Notification for all the mentions on post content
         return http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-mention`, {
             postId: post._id,

@@ -95,6 +95,7 @@ import { CustomFieldsDialogComponent } from './group/group-tasks-views/board-bar
 import { ResourcesCustomFieldsDialogComponent } from './group/group-resource-management/resources-bar/resources-custom-fields-dialog/resources-custom-fields-dialog.component';
 import { GroupTimeTrackingCategoriesDialogComponent } from './group/group-admin/group-settings/time-tracking-categories-dialog/time-tracking-categories-dialog.component';
 import { AutomationFlowDetailsDialogComponent } from './group/automation-flows-dialog/automation-flow-details-dialog/automation-flow-details-dialog.component';
+import { AddTaskResourceManagementDialogComponent } from './group/group-tasks-views/group-resource-management-board/add-task-resource-management-dialog/add-task-resource-management-dialog.component';
 
 @NgModule({
     declarations: [
@@ -152,6 +153,7 @@ import { AutomationFlowDetailsDialogComponent } from './group/automation-flows-d
         CRMProductCustomFieldsComponent,
         CRMProductInformationComponent,
         GroupResourceManagementBoardViewComponent,
+        AddTaskResourceManagementDialogComponent,
         GroupTasksViewsComponent,
         AdvancedFilterDialogComponent,
         TimeTrackerDatesFilterDialogComponent,

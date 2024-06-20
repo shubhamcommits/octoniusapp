@@ -42,7 +42,6 @@ export class NewTaskComponent implements OnInit {
 
   constructor(
     private flowService: FlowService,
-    private managementPortalService: ManagementPortalService,
     public injector: Injector
   ) { }
 
@@ -51,7 +50,7 @@ export class NewTaskComponent implements OnInit {
       this.column = null;
     }
 
-    if (this.groupData) {
+    if (this.groupData && this.groupData._id) {
       this.flowService.getGroupAutomationFlows(this.groupData._id).then(res => {
         this.flows = res['flows'];
       });
