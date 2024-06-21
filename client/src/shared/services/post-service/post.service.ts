@@ -163,8 +163,20 @@ export class PostService {
    * @param lastPostId - optional
    */
   getTasksBySection(sectionId: string) {
-    return this._http.get(this.baseURL + `/tasksBySection/${sectionId}`, {}).toPromise();
+    return this._http.get(this.baseURL + `/tasksBySection/${sectionId}`, {});
   }
+
+	/**
+	 * This function fetches the list of posts present in a group
+	 * @param { groupId, type, lastPostId } query
+	 * @param lastPostId - optional
+	 */
+	getTasksBySectionPromise(sectionId: string) {
+			return new Promise(async (resolve) => {
+				this.getTasksBySection(sectionId)
+					.subscribe((res) => resolve(res['posts']));
+			});
+	}
 
   /**
    *  This function fetches the list of archived tasks present in a group
@@ -893,73 +905,71 @@ export class PostService {
 
     let exportTasks = [];
     for (let i = 0; i < sections.length; i++) {
-      let section = sections[i];
+		let section = sections[i];
 
-      await this.getTasksBySection(section?._id).then(async (res) => {
-        section.tasks = res['posts']
+		section.tasks = await this.getTasksBySectionPromise(section?._id);
 
-        if (groupData?.enabled_rights) {
-          section.tasks = await this.filterRAGTasks(section.tasks, groupData, userData);
-        }
-      });
+		if (groupData?.enabled_rights) {
+			section.tasks = await this.filterRAGTasks(section.tasks, groupData, userData);
+		}
 
-      for (let j = 0; j < section.tasks.length; j++) {
+		for (let j = 0; j < section.tasks.length; j++) {
 
-        let post = section.tasks[j];
+			let post = section.tasks[j];
 
-        let task: any = {
-          title: post.title || '',
-          posted_by: (post && post._posted_by) ? (post?._posted_by?.first_name + ' ' + post?._posted_by?.last_name) : '',
-          created_date: (post?.created_date) ? moment.utc(post?.created_date).format("MMM D, YYYY HH:mm") : '',
-          tags: post.tags || '',
-          status: post.task.status || '',
-        };
+			let task: any = {
+			title: post.title || '',
+			posted_by: (post && post._posted_by) ? (post?._posted_by?.first_name + ' ' + post?._posted_by?.last_name) : '',
+			created_date: (post?.created_date) ? moment.utc(post?.created_date).format("MMM D, YYYY HH:mm") : '',
+			tags: post.tags || '',
+			status: post.task.status || '',
+			};
 
-        if (post.task.start_date) {
-          task.due_to = (post.task.start_date) ? moment.utc(post.task.start_date).format("MMM D, YYYY") : '';
-        }
-        task.due_to = (post.task.due_to) ? moment.utc(post.task.due_to).format("MMM D, YYYY") : '';
+			if (post.task.start_date) {
+			task.due_to = (post.task.start_date) ? moment.utc(post.task.start_date).format("MMM D, YYYY") : '';
+			}
+			task.due_to = (post.task.due_to) ? moment.utc(post.task.due_to).format("MMM D, YYYY") : '';
 
-        if (post.task._parent_task) {
-          task.section = '';
-          task.parent_task = post.task._parent_task.title || '';
-        } else {
-          task.section = section.title || '';
-          task.parent_task = '';
-        }
+			if (post.task._parent_task) {
+			task.section = '';
+			task.parent_task = post.task._parent_task.title || '';
+			} else {
+			task.section = section.title || '';
+			task.parent_task = '';
+			}
 
-        let assignedTo = '';
-        if (post._assigned_to && post._assigned_to.length > 0) {
-          post._assigned_to.forEach(user => {
-            if (user) {
-              assignedTo += user?.first_name + ' ' + user?.last_name + '; ';
-            }
-          });
+			let assignedTo = '';
+			if (post._assigned_to && post._assigned_to.length > 0) {
+			post._assigned_to.forEach(user => {
+				if (user) {
+				assignedTo += user?.first_name + ' ' + user?.last_name + '; ';
+				}
+			});
 
-          task.assigned_to = assignedTo;
-        }
+			task.assigned_to = assignedTo;
+			}
 
-        if (isIdeaModuleAvailable && post.task.is_idea && post.task.idea) {
-          task.idea_positive = post?.task?.idea?.positive_votes?.length || 0;
-          task.idea_negative = post?.task?.idea?.negative_votes?.length || 0;
-          task.idea_count = task.idea_positive - task.idea_negative;
-        }
+			if (isIdeaModuleAvailable && post.task.is_idea && post.task.idea) {
+			task.idea_positive = post?.task?.idea?.positive_votes?.length || 0;
+			task.idea_negative = post?.task?.idea?.negative_votes?.length || 0;
+			task.idea_count = task.idea_positive - task.idea_negative;
+			}
 
-        if (post.task.isNorthStar && post.task.northStar) {
-          task.northStar_targetValue = post.task.northStar.target_value || 0;
-          let sum = 0;
-          if (post.task.northStar.values) {
-            for (let k = 0; k < post.task.northStar.values.length; k++) {
-              sum += post.task.northStar.values[k];
-            }
-          }
-          task.northStar_currentValue = sum;
-          task.northStar_type = post.task.northStar.type;
-        }
+			if (post.task.isNorthStar && post.task.northStar) {
+			task.northStar_targetValue = post.task.northStar.target_value || 0;
+			let sum = 0;
+			if (post.task.northStar.values) {
+				for (let k = 0; k < post.task.northStar.values.length; k++) {
+				sum += post.task.northStar.values[k];
+				}
+			}
+			task.northStar_currentValue = sum;
+			task.northStar_type = post.task.northStar.type;
+			}
 
-        exportTasks.push(task);
-      }
-    }
+			exportTasks.push(task);
+		}
+		}
 
     groupService.exportTasksToFile(exportType, exportTasks, groupData?.group_name + '_tasks');
   }

@@ -1,5 +1,5 @@
-import { Component, OnInit, Injector, Input, OnChanges, SimpleChanges, Output, EventEmitter, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { Component, Injector, Input, OnChanges, SimpleChanges, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
@@ -16,7 +16,7 @@ import { PostService } from 'src/shared/services/post-service/post.service';
   templateUrl: './kanban-section.component.html',
   styleUrls: ['./kanban-section.component.scss']
 })
-export class KanbanSectionComponent implements OnInit, OnChanges, OnDestroy {
+export class KanbanSectionComponent implements OnChanges, OnDestroy {
 
   @Input() section: any;
   @Input() sections: any;
@@ -36,7 +36,7 @@ export class KanbanSectionComponent implements OnInit, OnChanges, OnDestroy {
   @Output() deleteSectionEvent = new EventEmitter();
   @Output() archiveSectionEvent = new EventEmitter();
 
-  tasks = [];
+  tasks: any = [];
 
   unchangedTasks: any;
   
@@ -52,21 +52,20 @@ export class KanbanSectionComponent implements OnInit, OnChanges, OnDestroy {
     private postService: PostService,
     private datesService: DatesService,
     private injector: Injector,
-    private cdr: ChangeDetectorRef,
     public dialog: MatDialog
-  ) { }
-
-  async ngOnInit() {
-    if (!this.utilityService.objectExists(this.groupData)) {
-      this.groupData =  await this.publicFunctions.getCurrentGroupDetails();
-    }
-
+  ) {
     this.subSink.add(this.columnService.refresh$.subscribe((data) => {
       this.initSection();
     }));
   }
 
   async ngOnChanges(changes: SimpleChanges) {
+    if (!this.utilityService.objectExists(this.groupData)) {
+      this.groupData =  await this.publicFunctions.getCurrentGroupDetails();
+    }
+    await this.initSection();
+
+    this.utilityService.updateIsLoadingSpinnerSource(true);
 
     for (const propName in changes) {
       if (propName === 'sortingBit') {
@@ -81,6 +80,8 @@ export class KanbanSectionComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.tasks = await this.postService.sortTasks(this.tasks, this.sortingBit, this.sortingData);
+
+    this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 
   /**
@@ -90,23 +91,18 @@ export class KanbanSectionComponent implements OnInit, OnChanges, OnDestroy {
     this.subSink.unsubscribe();
   }
 
-  initSection() {
-    this.postService.getTasksBySection(this.section?._id).then(async (res) => {
-      this.tasks = res['posts'];
-
+  async initSection() {
+    if (!!this.section && !!this.section._id) {
+      this.tasks = await this.postService.getTasksBySectionPromise(this.section?._id)
+      
       if (this.groupData?.enabled_rights) {
         this.tasks = await this.postService.filterRAGTasks(this.unchangedTasks?.tasksList, this.groupData, this.userData);
       }
-
+      
       this.countDoneTasks();
+    }
 
-      let task = [];
-      if (!!this.tasks) {
-        this.tasks.forEach(val => task.push(Object.assign({}, val)));
-      }
-      let unchangedTasks: any = task;
-      this.unchangedTasks = JSON.parse(JSON.stringify(unchangedTasks));
-    });
+    this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 
   /**

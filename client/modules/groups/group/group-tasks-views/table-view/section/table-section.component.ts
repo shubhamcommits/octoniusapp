@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input, Injector, ViewChild, Output, EventEmitter, SimpleChanges, OnInit } from '@angular/core';
+import { Component, OnChanges, Input, Injector, ViewChild, Output, EventEmitter, SimpleChanges, OnInit, OnDestroy } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,7 +12,7 @@ import { SubSink } from 'subsink';
   templateUrl: './table-section.component.html',
   styleUrls: ['./table-section.component.scss']
 })
-export class TableSectionComponent implements OnInit, OnChanges {
+export class TableSectionComponent implements OnChanges, OnDestroy {
 
   @Input() groupData: any;
   @Input() userData: any;
@@ -33,7 +33,7 @@ export class TableSectionComponent implements OnInit, OnChanges {
 
   @ViewChild(MatAccordion, { static: true }) accordion: MatAccordion;
 
-  tasks = [];
+  tasks: any = [];
 
   unchangedTasks: any;
   
@@ -56,19 +56,20 @@ export class TableSectionComponent implements OnInit, OnChanges {
     private postService: PostService,
     private injector: Injector,
     public dialog: MatDialog
-  ) { }
-
-  async ngOnInit() {
-    if (!this.utilityService.objectExists(this.groupData)) {
-      this.groupData =  await this.publicFunctions.getCurrentGroupDetails();
-    }
-
+  ) {
     this.subSink.add(this.columnService.refresh$.subscribe((data) => {
       this.initSection();
     }));
   }
 
   async ngOnChanges(changes: SimpleChanges) {
+    if (!this.utilityService.objectExists(this.groupData)) {
+      this.groupData =  await this.publicFunctions.getCurrentGroupDetails();
+    }
+    await this.initSection();
+
+    this.utilityService.updateIsLoadingSpinnerSource(true);
+
     for (const propName in changes) {
       if (propName === 'sortingBit') {
         this.sortingBit = changes[propName].currentValue;
@@ -77,34 +78,32 @@ export class TableSectionComponent implements OnInit, OnChanges {
         this.sortingData = changes[propName].currentValue;
       }
       if (propName === 'filteringBit' || propName === 'filteringData') {
-        this.tasks = await this.postService.filterTasks(this.unchangedTasks?.tasksList, this.filteringBit, this.filteringData, this.userData);
+        this.tasks = await this.postService.filterTasks(this.tasks, this.filteringBit, this.filteringData, this.userData);
       }
     }
 
     this.tasks = await this.postService.sortTasks(this.tasks, this.sortingBit, this.sortingData);
-      
+
     this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 
-  initSection() {
-    this.postService.getTasksBySection(this.section?._id).then(async (res) => {
-      this.tasks = res['posts'];
+  /**
+   * This functions unsubscribes all the observables subscription to avoid memory leak
+   */
+  ngOnDestroy(): void {
+    this.subSink.unsubscribe();
+  }
 
+  async initSection() {
+    if (!!this.section && !!this.section._id) {
+      this.tasks = await this.postService.getTasksBySectionPromise(this.section?._id)
+      
       if (this.groupData?.enabled_rights) {
-        this.tasks = await this.postService.filterRAGTasks(this.tasks, this.groupData, this.userData);
+        this.tasks = await this.postService.filterRAGTasks(this.unchangedTasks?.tasksList, this.groupData, this.userData);
       }
+    }
 
-      let taskslist = [];
-      if (this.tasks) {
-        this.tasks.forEach(val => taskslist.push(Object.assign({}, val)));
-      }
-      let unchangedTasks: any = { tasksList: taskslist };
-      this.unchangedTasks = JSON.parse(JSON.stringify(unchangedTasks));
-
-      this.tasks = await this.postService.sortTasks([...this.tasks], this.sortingBit, this.sortingData);
-
-      this.utilityService.updateIsLoadingSpinnerSource(false);
-    });
+    this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 
   /**
