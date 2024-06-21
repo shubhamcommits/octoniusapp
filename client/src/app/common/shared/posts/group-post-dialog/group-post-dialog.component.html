@@ -29,12 +29,9 @@
             <!-- Post Header Title ends -->
         
             <!-- Post Content starts -->
-            <app-quill-editor *ngIf="canEdit" [editorId]="'postbox-editor'" [toolbar]="true" [readOnly]="false"
+            <app-quill-editor *ngIf="canEdit" [editorId]="'postbox-editor'" [toolbar]="canEdit" [readOnly]="!canEdit"
               [contents]="postData?.content" [groupId]="groupId" (content)="quillContentChanged($event)">
             </app-quill-editor>
-        
-            <app-quill-editor *ngIf="!canEdit" [editorId]="'postbox-editor'" [toolbar]="false" [readOnly]="true"
-              [contents]="postData?.content" [groupId]="groupId"></app-quill-editor>
             <!-- Post Content ends -->
         
             <!-- Attach files starts -->

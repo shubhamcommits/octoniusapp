@@ -239,7 +239,6 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
    */
   openFullscreenModal(selectedDay: DateTime, selectedUser: any): void {
     const canOpen = !this.groupData?.enabled_rights;
-    // const dialogRef = this.utilityService.openPostDetailsFullscreenModal(null, this.groupData._id, canOpen, this.sections, moment(selectedDay.toJSDate()), selectedUser);
     if (canOpen) {
       const dialogRef = this.dialog.open(AddTaskResourceManagementDialogComponent, {
         width: '100%',
