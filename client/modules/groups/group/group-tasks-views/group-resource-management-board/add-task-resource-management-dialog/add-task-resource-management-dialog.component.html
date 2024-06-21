@@ -1,0 +1,67 @@
+<mat-dialog-actions align="end">
+  <div class="action-box">
+      <a (click)="onCloseDialog()" mat-dialog-close>
+        <i class="material-icons" style="cursor: pointer">close</i>
+      </a>
+  </div>
+</mat-dialog-actions>
+
+<div class="post-dialog-content" *ngIf="objectExists(postData) && !postData._id">
+  <div class="post-content">
+
+    <div class="search-task">
+      <input class="form-control" type="text" placeholder="Enter task title to search" autofocus
+        [(ngModel)]="searchText"
+        (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+    
+      <ul class="task-list" *ngIf="!!searchText">
+        <li class="task-list-item" *ngFor="let task of tasks | appFilter: searchText"
+          (click)="selectTaskToAssign(task)">
+          {{ task.title }}
+        </li>
+      </ul>
+    </div>
+
+    <app-new-task
+      [canEdit]="objectExists(postData?.task?._column)"
+      [groupData]="postData"
+      [userData]="userData"
+      [column]="postData?.task?._column"
+      [isIdeaModuleAvailable]="isIdeaModuleAvailable"
+      (post)="createPost($event)"></app-new-task>
+  </div>
+
+  <div class="post-properties">
+    <div class="content-box">
+      <div class="shuttle-box">
+        <p class="mt-1" style="margin-top: 18px; width:70px" i18n="@@groupCreatePostDialog.section">
+          Section
+        </p>
+
+        <app-change-column class="ml-2"
+          [sectionId]="(postData?.task?._column?._id || postData?.task?._column)"
+          [columns]="columns"
+          (moveTask)="onNewTaskColumnSelected($event.newColumnId)">
+        </app-change-column>
+      </div>
+    </div>
+
+    <app-post-dates
+      [userData]="userData"
+      [postData]="postData"
+      [groupData]="groupData"
+      [canEdit]="false"></app-post-dates>
+
+    <div class="content-box">
+      <p class="box-title" i18n="@@groupCreatePostDialog.assignee">Assignee</p>
+    
+      <app-multiple-assignments [canEdit]="false" [groupId]="groupId" [post]="postData" [type]="'post'"></app-multiple-assignments>
+    </div>
+  </div>
+</div>
+
+<!-- Loading Spinner Starts -->
+<ng-container *ngIf="isLoading$ | async">
+  <app-loading-spinner class="media"></app-loading-spinner>
+</ng-container>
+<!-- Loading Spinner Ends -->

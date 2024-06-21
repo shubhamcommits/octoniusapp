@@ -314,6 +314,37 @@ export class PostController {
     }
 
     /**
+     * This function fetches the tasks present inside a section
+     * @param { query: { groupId, lastPostId } } req 
+     * @param res 
+     * @param next 
+     */
+    async getTasksBySection(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch groupId and lastPostId from request
+        const { params: { sectionId } } = req;
+
+        // If sectionId is not present, then return error
+        if (!sectionId) {
+            return sendErr(res, new Error('Please provide the sectionId as the query parameter'), 'Please provide the sectionId as the query paramater!', 400);
+        }
+
+        // Fetch the next 5 recent posts
+        await postService.getTasksBySection(sectionId)
+            .then((posts) => {
+                return res.status(200).json({
+                    message: `Tasks found successfully!`,
+                    posts: posts
+                });
+            })
+            .catch((err) => {
+
+                // If there's an error send bad request
+                return sendErr(res, new Error(err), 'Unable to fetch the posts, kindly check the stack trace for error', 400)
+            });
+    }
+
+    /**
      * This function fetches the archived tasks present inside a group
      * @param { query: { groupId } } req 
      * @param res 

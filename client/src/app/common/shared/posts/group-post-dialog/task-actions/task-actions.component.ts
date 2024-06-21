@@ -10,7 +10,6 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
 import { GroupPostDialogComponent } from '../group-post-dialog.component';
-import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({
   selector: 'app-task-actions',
@@ -88,7 +87,6 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   constructor(
     private utilityService: UtilityService,
     private postService: PostService,
-    private managementPortalService: ManagementPortalService,
     private _router: Router,
     private injector: Injector,
     private mdDialogRef: MatDialogRef<GroupPostDialogComponent>

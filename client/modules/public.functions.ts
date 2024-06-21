@@ -29,6 +29,7 @@ import { DatesService } from 'src/shared/services/dates-service/dates.service';
 import { MS365CloudService } from './user/user-clouds/user-available-clouds/ms-365/services/ms-365-cloud.service';
 import { map, mergeMap } from 'rxjs/operators';
 import { forkJoin, from } from 'rxjs';
+import { FlowService } from 'src/shared/services/flow-service/flow.service';
 
 @Injectable({
   providedIn: 'root'
@@ -1473,10 +1474,16 @@ export class PublicFunctions {
     }
 
     async executedAutomationFlowsPropertiesFront(flows: any[], post: any, groupId: string, isCreationTaskTrigger?: boolean, shuttleIndex?: number) {
-      const managementPortalService = this.injector.get(ManagementPortalService);
       const isIndividualSubscription = await this.checkIsIndividualSubscription();
-
+      
       if (!isIndividualSubscription) {
+        if (!flows) {
+          const flowService = this.injector.get(FlowService);
+          await flowService.getGroupAutomationFlows(groupId).then(res => {
+            flows = res['flows'];
+          });
+        }
+
         if (flows && flows.length > 0) {
           let doTrigger = true;
             flows.forEach((flow, flowIndex) => {

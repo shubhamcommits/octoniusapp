@@ -149,6 +149,7 @@ import { AvatarComponent } from './avatar/avatar.component';
 import { PostCRMOrderProductsComponent } from './posts/group-post-dialog/crm-order-products/crm-order-products.component';
 import { NewCRMOrderProductDialogComponent } from './posts/group-post-dialog/crm-order-products/new-crm-order-product-dialog/new-crm-order-product-dialog.component';
 import { CRMOrderCustomFieldsComponent } from './posts/group-post-dialog/crm-order-products/new-crm-order-product-dialog/crm-order-custom-fields/crm-order-custom-fields.component';
+import { PermissionDialogComponent } from './permission-dialog/permission-dialog.component';
 
 @NgModule({
     declarations: [
@@ -274,6 +275,7 @@ import { CRMOrderCustomFieldsComponent } from './posts/group-post-dialog/crm-ord
         ResourceActivityListComponent,
         UserTaskForDayDialogComponent,
         AvatarComponent,
+        PermissionDialogComponent,
     ],
     imports: [
         CommonModule,
@@ -408,6 +410,7 @@ import { CRMOrderCustomFieldsComponent } from './posts/group-post-dialog/crm-ord
         ResourceActivityListComponent,
         UserTaskForDayDialogComponent,
         AvatarComponent,
+        PermissionDialogComponent,
     ],
     providers: [
         { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },

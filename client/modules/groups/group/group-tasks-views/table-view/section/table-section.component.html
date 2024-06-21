@@ -1,0 +1,41 @@
+<mat-expansion-panel class="list-column" style="background-color: #fafafa; box-shadow: none;"  id="section._id" [expanded]="isFirst" >
+  <mat-expansion-panel-header class="column-title">
+    <!-- COLUMN TITLE -->
+    <mat-panel-title>
+      <!-- SHUTTLE COLUMN -->
+      <img *ngIf="isShuttleTasksModuleAvailable && section?._id == (groupData?._shuttle_section?._id || groupData?._shuttle_section)" src="assets/images/icon-task-shuttle.svg" alt="" style="width: 32px;">
+
+      <p class="muted" style="margin-right: 10px;"> {{ section?.title }}</p>
+    </mat-panel-title>
+    <!-- COLUMN TITLE -->
+    <mat-panel-description>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <!-- TASK CONTAINER STARTS -->
+  <div [id]="section?.title">
+    <!-- CREATE TASK STARTS -->
+    <app-new-task [groupData]="groupData" [userData]="userData" [column]="section" (post)="getPost($event)"></app-new-task>
+    <!-- CREATE TASK ENDS -->
+
+    <!-- TASKS TABLE STARTS -->
+    <app-tasks-table
+      [tasks]="tasks"
+      [groupData]="groupData"
+      [userData]="userData"
+      [sections]="sections"
+      [section]="section"
+      [isAdmin]="isAdmin"
+      [customFields]="customFields"
+      [sortingBit]="sortingBit"
+      [sortingData]="sortingData"
+      [isIdeaModuleAvailable]="isIdeaModuleAvailable"
+      (taskClonnedEvent)="onTaskClonned($event)"
+      >
+      <!-- (taskChangeSectionEmitter)="onTaskChangeSection($event)" -->
+    </app-tasks-table>
+    <!-- TASKS TABLE ENDS -->
+  </div>
+  <!-- TASK CONTAINER ENDS -->
+
+</mat-expansion-panel>

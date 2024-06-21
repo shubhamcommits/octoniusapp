@@ -37,6 +37,9 @@ routes.use(authsHelper.isLoggedIn);
 // GET - Get workspace details
 routes.get('/:workspaceId', workspaces.getWorkspace);
 
+// GET - Get All workspaces in the DB
+routes.get('/all', workspaces.getAllWorkspace);
+
 // PUT - Edit the workspace details
 routes.put('/:workspaceId', workspaceFileUploader, workspaces.updateWorkspace);
 

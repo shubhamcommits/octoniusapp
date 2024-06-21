@@ -1,0 +1,24 @@
+$border-color: #e4edf8;
+
+.list{
+    margin-top: 50px;
+}
+.column-title{
+    margin: 0 0 16px 0;
+    border-bottom: 1px solid $border-color;
+    p{
+        text-transform: uppercase;
+    }
+
+}
+
+.tag{
+  font-style: normal;
+  font-weight: bold;
+  font-size: 13px;
+  line-height: 23px;
+  color: #005FD5;
+  background: #E4EDF8;
+  border-radius: 20px;
+  padding: 5px;
+}
