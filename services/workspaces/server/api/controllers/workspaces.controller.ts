@@ -117,6 +117,36 @@ export class WorkspaceController {
     }
 
     /**
+     * This function is responsible for fetching the workspace details
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async getAllWorkspace(req: Request, res: Response, next: NextFunction) {
+
+        const { workspaceId } = req.params;
+
+        try {
+
+            // Find the workspace based on the workspaceId
+            const workspaces: any = await Workspace.find().lean();
+
+            // If unable to find the workspace
+            if (!workspaces) {
+                return sendError(res, new Error('Unable to fetch the workspaces!'), 'Unable to fetch the workspaces!', 404);
+            }
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: `All workspaces found!`,
+                workspaces: workspaces
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
      * This function is responsible for creating a new workspace
      * @param { body: { newWorkspace, accountData } }req 
      * @param res 

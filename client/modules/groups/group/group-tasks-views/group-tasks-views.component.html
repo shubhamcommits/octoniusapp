@@ -1,7 +1,7 @@
 <div class="root">
   <app-board-bar *ngIf="!!groupData"
       [groupData]="groupData"
-      [sections]="columns"
+      [sections]="sections"
       [userData]="userData"
       [isAdmin]="isAdmin"
       [customFields]="customFields"
@@ -14,63 +14,57 @@
       (exportToEmitter)="onExportToEmitter($event)">
   </app-board-bar>
 
-  <app-group-kanban-boards *ngIf="viewType === 'kanban'"
+  <app-kanban-board *ngIf="viewType === 'kanban'"
       [groupData]="groupData"
       [userData]="userData"
-      [columns]="columns"
-      [tasks]="tasks"
+      [sections]="sections"
       [isIdeaModuleAvailable]="isIdeaModuleAvailable"
       [isShuttleTasksModuleAvailable]="isShuttleTasksModuleAvailable"
       [sortingBit]="sortingBit"
       [sortingData]="sortingData"
-      (taskClonnedEvent)="onTaskClonned($event)"
-      (newSectionEvent)="newSectionAdded($event)">
-  </app-group-kanban-boards>
+      [filteringBit]="filteringBit"
+      [filteringData]="filteringData">
+    </app-kanban-board>
 
-  <app-group-tasks-list-view *ngIf="viewType === 'table'"
+  <app-table-view *ngIf="viewType === 'table'"
       [groupData]="groupData"
       [userData]="userData"
-      [sections]="columns"
-      [tasks]="tasks"
+      [sections]="sections"
       [customFields]="customFields"
       [isAdmin]="isAdmin"
       [isIdeaModuleAvailable]="isIdeaModuleAvailable"
       [isShuttleTasksModuleAvailable]="isShuttleTasksModuleAvailable"
       [sortingBit]="sortingBit"
       [sortingData]="sortingData"
-      (taskClonnedEvent)="onTaskClonned($event)"
-      (newSectionEvent)="newSectionAdded($event)">
-  </app-group-tasks-list-view>
+      [filteringBit]="filteringBit"
+      [filteringData]="filteringData">
+  </app-table-view>
 
-  <app-gantt-view *ngIf="viewType === 'gantt'"
-    [tasks]="tasks"
+  <app-timeline-view *ngIf="viewType === 'timeline'"
     [userData]="userData"
-    [columns]="columns"
+    [sections]="sections"
     [workspaceId]="workspaceData?._id"
     [isIdeaModuleAvailable]="isIdeaModuleAvailable"
-    (taskClonnedEvent)="onTaskClonned($event)"
-    >
-  </app-gantt-view>
+    [isShuttleTasksModuleAvailable]="isShuttleTasksModuleAvailable">
+  </app-timeline-view>
 
   <app-group-calendar-view *ngIf="viewType === 'calendar'"
-    [groupId]="groupData._id" [tasks]="tasks"
+    [groupId]="groupData._id"
     [isIdeaModuleAvailable]="isIdeaModuleAvailable">
   </app-group-calendar-view>
 
-  <app-group-kanban-archived-boards *ngIf="viewType === 'archived'"
+  <app-kanban-archived-sections *ngIf="viewType === 'archived'"
       [groupData]="groupData"
       [userData]="userData"
       [customFields]="customFields"
       [isIdeaModuleAvailable]="isIdeaModuleAvailable"
       [isShuttleTasksModuleAvailable]="isShuttleTasksModuleAvailable"
       [sortingBit]="sortingBit"
-      [sortingData]="sortingData"
-      (taskClonnedEvent)="onTaskClonned($event)"
-      (newSectionEvent)="newSectionAdded($event)">
-  </app-group-kanban-archived-boards>
+      [sortingData]="sortingData">
+  </app-kanban-archived-sections>
 
   <app-group-time-tracking-view *ngIf="viewType === 'time_tracking'"
-      [filterUserId]="filterUserId"
+      [filterUserId]="userData._id"
       [startDate]="filterStartDate"
       [endDate]="filterEndDate"
       [exportData]="exportData"
@@ -78,7 +72,7 @@
   </app-group-time-tracking-view>
 
   <app-group-resource-management-board-view *ngIf="viewType === 'resource_mgmt'"
-      [sections]="columns"
+      [sections]="sections"
       [isAdmin]="isAdmin">
   </app-group-resource-management-board-view>
 </div>

@@ -247,6 +247,36 @@ export class PostService {
     }
   }
 
+  /**
+   * This service is responsible for fetching recent 5 posts based on the @lastPostId and @groupId
+   * @param groupId
+   * @param lastPostId
+   */
+  async getTasksBySection(sectionId: string) {
+
+    try {
+      // Posts Variable
+      var posts = [];
+
+      posts = await this.filterGroupPosts(
+        Post.find({
+          $and: [
+            { 'task._column': sectionId },
+            { type: 'task' },
+            { archived: { $ne: true }}
+          ]
+        }), 'task')
+
+      // Return set of posts
+      return posts;
+
+    } catch (err) {
+
+      // Return With error
+      throw (err);
+    }
+  }
+
   async getArchivedTasks(groupId: string) {
     try {
 
@@ -464,7 +494,7 @@ export class PostService {
           });
       }
 
-      if (post._content_mentions.length !== 0) {
+      if (post?._content_mentions?.length !== 0) {
         // Create Real time Notification for all the mentions on post content
         return http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-mention`, {
             postId: post._id,

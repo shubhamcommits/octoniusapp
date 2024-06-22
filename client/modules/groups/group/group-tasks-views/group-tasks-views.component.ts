@@ -5,9 +5,9 @@ import { PublicFunctions } from 'modules/public.functions';
 import { Router } from '@angular/router';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
-import moment from 'moment';
 import { DateTime } from 'luxon';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
+import { PostService } from 'src/shared/services/post-service/post.service';
 
 @Component({
   selector: 'app-group-tasks-views',
@@ -18,32 +18,30 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
 
   viewType = 'kanban';
 
-  // GroupData
+  sections: any = [];
   groupData: any;
-  columns: any = [];
-  tasks: any = [];
   userData: any;
+  workspaceData: any;
   customFields: any = [];
+
+  tasks: any = [];
 
   isAdmin = false;
 
   sortingBit:String = 'none';
   sortingData: any;
 
-  workspaceData: any;
+  filteringBit:String = 'none'
+  filteringData: any;
+  filterStartDate;
+  filterEndDate;
+  
+  // unchangedColumns: any;
+
   isIdeaModuleAvailable = false;
   isShuttleTasksModuleAvailable = false;
 
-  filteringBit:String = 'none'
-  filteringData: any;
-
-  filterUserId;
-  filterStartDate;
-  filterEndDate;
-
   exportData = false;
-
-  unchangedColumns: any;
 
   // IsLoading behaviou subject maintains the state for loading spinner
   isLoading$;
@@ -58,6 +56,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
     public utilityService: UtilityService,
     private groupService: GroupService,
     private columnService: ColumnService,
+    private postService: PostService,
     private _router: Router,
     private injector: Injector) { }
 
@@ -102,7 +101,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
       if (!!this.userData && !!this.userData.stats && !!this.userData.stats.lastTaskView && this.viewType != 'time_tracking') {
         this.viewType = this.userData.stats.lastTaskView;
         
-        if (this.viewType === 'gantt' && (this.groupData && !this.groupData.project_type)) {
+        if (this.viewType === 'timeline' && (this.groupData && !this.groupData.project_type)) {
           this.viewType = 'kanban';
         }
       }
@@ -133,10 +132,10 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
       }
 
       if (canOpen) {
-        this.columns = await this.publicFunctions.getAllColumns(this.groupData?._id);
+        this.sections = await this.publicFunctions.getAllColumns(this.groupData?._id);
       }
 
-      this.utilityService.openPostDetailsFullscreenModal(postId, this.groupData._id, canOpen, this.columns);
+      this.utilityService.openPostDetailsFullscreenModal(postId, this.groupData._id, canOpen, this.sections);
     }
 
     this.groupData = await this.publicFunctions.getCurrentGroupDetails();
@@ -166,49 +165,52 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
     /**
      * Here we fetch all the columns available in a group, and if null we initialise them with the default one
      */
-    this.columns = await this.publicFunctions.getAllColumns(this.groupData?._id);
+    this.sections = await this.publicFunctions.getAllColumns(this.groupData?._id);
 
     /**
      * Adding the property of tasks in every column
      */
-    if (!!this.columns) {
+    if (!!this.sections) {
       if (this.groupData?.enabled_rights) {
         await this.filterRAGSections();
       } else {
-        this.columns?.forEach(column => {
+        this.sections?.forEach(column => {
           column.canEdit = true;
         });
       }
-
-      this.columns?.forEach((column: any) => {
-        column.tasks = []
-      });
-    }
-
-    // Fetch all the tasks posts from the server
-    this.tasks = await this.publicFunctions.getPosts(this.groupData?._id, 'task');
-
-    if (this.groupData.shuttle_type && this.isShuttleTasksModuleAvailable) {
-      const shuttleTasks = await this.publicFunctions.getShuttleTasks(this.groupData?._id);
-      this.tasks = this.tasks.concat(shuttleTasks);
-    }
-
-    if (this.groupData?.enabled_rights) {
-      await this.filterRAGTasks();
     }
 
     // Add TT cost in column budget
-    await this.getTimeTrackingCost(this.columns);
+    await this.getTimeTrackingCost(this.sections);
+  }
 
-    // Sort the tasks into their respective columns
-    await this.sortTasksInColumns(this.columns, this.tasks);
-
-    let col = [];
-    if (!!this.columns) {
-      this.columns.forEach(val => col.push(Object.assign({}, val)));
+  getTimeTrackingCost(sections: any) {
+    if (!!sections) {
+      sections.forEach(async (section: any) => {
+        this.columnService.getSectionTimeTrackingCost(section._id).then(res => {
+          section.budget.time_tracking_cost = res['time_tracking_cost'];
+        });
+      });
     }
-    let unchangedColumns: any = { columns: col };
-    this.unchangedColumns = JSON.parse(JSON.stringify(unchangedColumns));
+  }
+
+  filterRAGSections() {
+    let columnsTmp = [];
+    this.sections.forEach(async column => {
+        const canEdit = await this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'edit');
+        let canView = false;
+
+        if (!canEdit) {
+          const hide = await this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'hide');
+          canView = await this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'view') || !hide;
+        }
+
+        column.canEdit = canEdit;
+        if (canEdit || canView) {
+          columnsTmp.push(column);
+        }
+    });
+    this.sections = columnsTmp;
   }
 
   async onChangeViewEmitter(view: string) {
@@ -245,7 +247,15 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
     this.filteringBit = filter.bit;
     this.filteringData = filter.data;
 
-    this.filtering();
+    if (this.viewType == 'time_tracking') {
+      if (!!this.filteringData.startDate) {
+        this.filterStartDate = DateTime.fromJSDate(this.filteringData.startDate);
+      }
+
+      if (!!this.filteringData.endDate) {
+        this.filterEndDate = DateTime.fromJSDate(this.filteringData.endDate);
+      }
+    }
   }
 
   async onCustomFieldEmitter(customFields) {
@@ -253,364 +263,18 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
     this.groupData = await this.publicFunctions.getCurrentGroupDetails();
   }
 
-  isAdminUser() {
-    const index = this.groupData._admins.findIndex((admin: any) => admin._id === this.userData._id);
-    return index >= 0;
-  }
-
-  getTimeTrackingCost(sections: any) {
-    if (!!sections) {
-      sections.forEach(async (section: any) => {
-        this.columnService.getSectionTimeTrackingCost(section._id).then(res => {
-          section.budget.time_tracking_cost = res['time_tracking_cost'];
-        });
-      });
-    }
-  }
-
-  /**
-   * This Function is responsible for sorting the tasks into columns
-   * @param columns
-   * @param tasks
-   */
-  sortTasksInColumns(columns: any, tasks: any) {
-    if (!!columns) {
-      columns.forEach(async (column: any) => {
-        // Feed the tasks into that column which has matching property _column with the column title
-        column.tasks = await tasks
-          .filter((post: any) => ((post.task._column && (post.task._column._id || post.task._column) == column._id)
-            || (post.task.shuttle_type && post.task.shuttles
-                && post.task.shuttles.findIndex(shuttle => (shuttle._shuttle_section._id || shuttle._shuttle_section) == column._id) >= 0))
-          )
-          .sort(function(t1, t2) {
-            if (t1.task.status != t2.task.status) {
-              return t1.task.status == 'done' ? 1 : -1;
-            }
-            return t2.title - t1.title;
-          });
-
-        // Find the hightes due date on the tasks of the column
-        // const highestDate = this.publicFunctions.getHighestDate(column.tasks);
-        // column.real_due_date = (highestDate) ? highestDate : column?.due_date;
-
-        // Calculate number of done tasks
-        column.numDoneTasks = column.tasks.filter((post) => post?.task?.status?.toLowerCase() == 'done').length;
-      });
-    }
-  }
-
-  async onTaskClonned(data) {
-    // Start the loading spinner
-    this.utilityService.updateIsLoadingSpinnerSource(true);
-
-    await this.initView();
-
-    // Return the function via stopping the loader
-    return this.utilityService.updateIsLoadingSpinnerSource(false);
-  }
-
-  async newSectionAdded(column: any) {
-    const canEdit = await this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'edit');
-    let canView = false;
-
-    if (!canEdit) {
-      const hide = await this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'hide');
-      canView = await this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'view') || !hide;
-    }
-
-    column.canEdit = canEdit;
-    if (canEdit || canView) {
-      // Push the Column
-      this.columns.push(column);
-    }
-  }
-
-  filterRAGSections() {
-    let columnsTmp = [];
-    this.columns.forEach(async column => {
-        const canEdit = await this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'edit');
-        let canView = false;
-
-        if (!canEdit) {
-          const hide = await this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'hide');
-          canView = await this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'view') || !hide;
-        }
-
-        column.canEdit = canEdit;
-        if (canEdit || canView) {
-          columnsTmp.push(column);
-        }
-    });
-    this.columns = columnsTmp;
-  }
-
-  filterRAGTasks() {
-    let tasks = [];
-
-    if (this.tasks) {
-      // Filtering other tasks
-      this.tasks.forEach(async task => {
-        if (task?.permissions && task?.permissions?.length > 0) {
-          const canEdit = await this.utilityService.canUserDoTaskAction(task, this.groupData, this.userData, 'edit');
-          let canView = false;
-          if (!canEdit) {
-            const hide = await this.utilityService.canUserDoTaskAction(task, this.groupData, this.userData, 'hide');
-            canView = await this.utilityService.canUserDoTaskAction(task, this.groupData, this.userData, 'view') || !hide;
-          }
-
-          if (canEdit || canView) {
-            task.canView = true;
-            tasks.push(task);
-          }
-        } else {
-          task.canView = true;
-          tasks.push(task);
-        }
-      });
-    }
-
-    this.tasks = tasks;
-  }
-
-  async filtering() {
-    if (this.filteringBit == "mytask") {
-      if (this.viewType == 'time_tracking') {
-        this.filterUserId = this.userData._id;
-      } else {
-        // to filter the rest of the views
-        let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
-        let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-        for (let index = 0; index < tasks.columns.length; index++) {
-          this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
-            var bit = false;
-            if (task && task._assigned_to) {
-              task._assigned_to.forEach(element => {
-                if (element._id == this.userData._id) {
-                  bit = true
-                }
-              });
-            }
-            return bit;
-          })
-        }
-        this.unchangedColumns = tasks;
-      }
-    } else if (this.filteringBit == 'due_before_today'){
-      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      for (let index = 0; index < tasks.columns.length; index++) {
-        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => (
-          (task?.task?.due_to)? moment.utc(task?.task?.due_to).isBefore(moment().add(-1,'days')):false))
-      }
-      this.unchangedColumns = tasks;
-    } else if (this.filteringBit == 'due_today'){
-      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      for (let index = 0; index < tasks.columns.length; index++) {
-        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => (
-          (task?.task?.due_to)? moment.utc(task?.task?.due_to).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD'):false))
-      }
-      this.unchangedColumns = tasks;
-    } else if (this.filteringBit == 'due_today'){
-      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      for (let index = 0; index < tasks.columns.length; index++) {
-        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => (
-          (task?.task?.due_to)? moment.utc(task?.task?.due_to).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD'):false))
-      }
-      this.unchangedColumns = tasks;
-    } else if (this.filteringBit == 'due_tomorrow'){
-      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      for (let index = 0; index < tasks.columns.length; index++) {
-        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => (
-          (task?.task?.due_to)? moment.utc(task?.task?.due_to).format('YYYY-MM-DD') == moment().add(1,'days').format('YYYY-MM-DD'):false))
-      }
-      this.unchangedColumns = tasks;
-    } else if (this.filteringBit == 'due_week'){
-      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      for (let index = 0; index < tasks.columns.length; index++) {
-        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
-          const first = moment().startOf('week').format();
-          const last = moment().endOf('week').add(1,'days').format();
-          if(task?.task?.due_to){
-            if((moment.utc(task?.task?.due_to).isAfter(first)) && (moment.utc(task?.task?.due_to).isBefore(last))){
-              return true;
-            }else{
-              return false;
-            }
-          } else {
-            return false;
-          }
-
-        })
-      }
-      this.unchangedColumns = tasks;
-    } else if (this.filteringBit == 'due_next_week'){
-      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      for (let index = 0; index < tasks.columns.length; index++) {
-        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
-          const first = moment().endOf('week').add(1,'days').format();
-          const last = moment().endOf('week').add(9,'days').format();
-          if(task?.task?.due_to){
-            if((moment.utc(task?.task?.due_to).isAfter(first)) && (moment.utc(task?.task?.due_to).isBefore(last))){
-              return true;
-            }else{
-              return false;
-            }
-          } else {
-            return false;
-          }
-
-        })
-      }
-      this.unchangedColumns = tasks;
-    } else if (this.filteringBit == 'due_14_days'){
-      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      for (let index = 0; index < tasks.columns.length; index++) {
-        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
-          const first = moment().format();
-          const last = moment().add(14,'days').format();
-          if(task?.task?.due_to){
-            if((moment.utc(task?.task?.due_to).isAfter(first)) && (moment.utc(task?.task?.due_to).isBefore(last))){
-              return true;
-            }else{
-              return false;
-            }
-          } else {
-            return false;
-          }
-
-        })
-      }
-      this.unchangedColumns = tasks;
-    } else if (this.filteringBit == "users") {
-      if (this.viewType == 'time_tracking') {
-        this.filterUserId = this.filteringData;
-      } else {
-        let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
-        let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-        for (let index = 0; index < tasks.columns.length; index++) {
-          this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
-            var bit = false;
-            if (task && task._assigned_to) {
-              task._assigned_to.forEach(element => {
-                if (element._id == this.filteringData) {
-                  bit = true
-                }
-              });
-            }
-            return bit;
-          })
-        }
-        this.unchangedColumns = tasks;
-      }
-    } else if (this.filteringBit == "custom_field") {
-      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      const cfName = this.filteringData.name;
-      const cfValue = this.filteringData.value;
-      for (let index = 0; index < tasks.columns.length; index++) {
-        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
-          return (task.task.custom_fields && task.task.custom_fields[cfName] == cfValue);
-        });
-      }
-      this.unchangedColumns = tasks;
-    } else if (this.filteringBit == "ideas") {
-      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      for (let index = 0; index < tasks.columns.length; index++) {
-        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => (
-          task.task.is_idea == true));
-      }
-      this.unchangedColumns = tasks;
-    } else if (this.filteringBit == "time_tracking") {
-      this.filterStartDate = DateTime.fromJSDate(this.filteringData.startDate);
-      this.filterEndDate = DateTime.fromJSDate(this.filteringData.endDate);
-    } else {
-      if (this.viewType == 'time_tracking') {
-        this.filterStartDate = null;
-        this.filterEndDate = null;
-        this.filterUserId = null;
-      } else {
-        this.columns = this.unchangedColumns.columns;
-      }
-    }
-
-    this.utilityService.updateIsLoadingSpinnerSource(false);
-  }
-
   async onExportToEmitter(exportType: any) {
     if (this.viewType !== 'time_tracking') {
-      let exportTasks = [];
-      for (let i = 0; i < this.columns.length; i++) {
-        let section = this.columns[i];
-
-        for (let j = 0; j < section.tasks.length; j++) {
-          let post = section.tasks[j];
-
-          let task: any = {
-            title: post.title || '',
-            posted_by: (post && post._posted_by) ? (post?._posted_by?.first_name + ' ' + post?._posted_by?.last_name) : '',
-            created_date: (post?.created_date) ? moment.utc(post?.created_date).format("MMM D, YYYY HH:mm") : '',
-            tags: post.tags || '',
-            status: post.task.status || '',
-          };
-
-          if (post.task.start_date) {
-            task.due_to = (post.task.start_date) ? moment.utc(post.task.start_date).format("MMM D, YYYY") : '';
-          }
-          task.due_to = (post.task.due_to) ? moment.utc(post.task.due_to).format("MMM D, YYYY") : '';
-
-          if (post.task._parent_task) {
-            task.section = '';
-            task.parent_task = post.task._parent_task.title || '';
-          } else {
-            task.section = section.title || '';
-            task.parent_task = '';
-          }
-
-          let assignedTo = '';
-          if (post._assigned_to && post._assigned_to.length > 0) {
-            post._assigned_to.forEach(user => {
-              if (user) {
-                assignedTo += user?.first_name + ' ' + user?.last_name + '; ';
-              }
-            });
-
-            task.assigned_to = assignedTo;
-          }
-
-          if (this.isIdeaModuleAvailable && post.task.is_idea && post.task.idea) {
-            task.idea_positive = post?.task?.idea?.positive_votes?.length || 0;
-            task.idea_negative = post?.task?.idea?.negative_votes?.length || 0;
-            task.idea_count = task.idea_positive - task.idea_negative;
-          }
-
-          if (post.task.isNorthStar && post.task.northStar) {
-            task.northStar_targetValue = post.task.northStar.target_value || 0;
-            let sum = 0;
-            if (post.task.northStar.values) {
-              for (let k = 0; k < post.task.northStar.values.length; k++) {
-                sum += post.task.northStar.values[k];
-              }
-            }
-            task.northStar_currentValue = sum;
-            task.northStar_type = post.task.northStar.type;
-          }
-
-          exportTasks.push(task);
-        }
-      }
-
-      this.groupService.exportTasksToFile(exportType, exportTasks, this.groupData?.group_name + '_tasks');
+      await this.postService.exportTasksTo(exportType, this.sections, this.groupData, this.userData, this.isIdeaModuleAvailable);
 
       this.utilityService.updateIsLoadingSpinnerSource(false);
     } else {
       this.exportData = !this.exportData;
     }
+  }
+
+  isAdminUser() {
+    const index = this.groupData._admins.findIndex((admin: any) => admin._id === this.userData._id);
+    return index >= 0;
   }
 }

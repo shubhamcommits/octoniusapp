@@ -1,8 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AutomationFlowDetailsDialogComponent } from '../automation-flow-details-dialog/automation-flow-details-dialog.component';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
+import { AutomationFlowDetailsDialogComponent } from './automation-flow-details-dialog/automation-flow-details-dialog.component';
 
 @Component({
   selector: 'app-automation-flows-dialog',

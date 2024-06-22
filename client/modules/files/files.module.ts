@@ -21,6 +21,7 @@ import { FilesBarComponent } from './group-files/files-bar/files-bar.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FilesSettingsDialogComponent } from './group-files/files-settings-dialog/files-settings-dialog.component';
+import { FilesCustomFieldsDialogComponent } from './group-files/files-bar/files-custom-fields-dialog/files-custom-fields-dialog.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { FilesSettingsDialogComponent } from './group-files/files-settings-dialo
     GroupNewFileComponent,
     FilesBarComponent,
     DragDropFilesDirective,
-    FilesSettingsDialogComponent
+    FilesSettingsDialogComponent,
+    FilesCustomFieldsDialogComponent
   ],
   imports: [
     CommonModule,

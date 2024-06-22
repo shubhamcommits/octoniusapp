@@ -1,13 +1,20 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { DateTime } from 'luxon';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
+import { UtilityService } from '../utility-service/utility.service';
+import moment from 'moment';
+import { GroupService } from '../group-service/group.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
 
-  constructor(private _http: HttpClient) { }
+  constructor(
+    private _http: HttpClient,
+    private injector: Injector,) { }
 
   // BaseUrl of the Post MicroService
   baseURL = environment.POST_BASE_API_URL;
@@ -151,6 +158,27 @@ export class PostService {
   }
 
   /**
+   * This function fetches the list of posts present in a group
+   * @param { groupId, type, lastPostId } query
+   * @param lastPostId - optional
+   */
+  getTasksBySection(sectionId: string) {
+    return this._http.get(this.baseURL + `/tasksBySection/${sectionId}`, {});
+  }
+
+	/**
+	 * This function fetches the list of posts present in a group
+	 * @param { groupId, type, lastPostId } query
+	 * @param lastPostId - optional
+	 */
+	getTasksBySectionPromise(sectionId: string) {
+			return new Promise(async (resolve) => {
+				this.getTasksBySection(sectionId)
+					.subscribe((res) => resolve(res['posts']));
+			});
+	}
+
+  /**
    *  This function fetches the list of archived tasks present in a group
    * @param groupId
    * @returns
@@ -270,7 +298,7 @@ export class PostService {
   updateGanttTasksDates(postId: string, groupId: string, dateDueTo: string, startdate: string, startdays: number, enddays: number, isShuttleTasksModuleAvailable: boolean) {
 
     // Call the HTTP Request
-    return this._http.post(this.baseURL + `/${postId}/gantt-task-dates-update`, {
+    return this._http.post(this.baseURL + `/${postId}/timeline-task-dates-update`, {
       date_due_to: dateDueTo,
       start_date: startdate,
       s_days: startdays,
@@ -677,14 +705,272 @@ export class PostService {
     return this._http.post(this.baseURL + `/${postId}/recalculateCost`, {}).toPromise();
   }
 
-  // getTasksPerGroupUserStatusAndDate(groupId: string, userId: string, status: string, dueDate: any) {
-  //   return this._http.get(this.baseURL + `/post/tasks-per-user-status-date`, {
-  //     params: {
-  //       groupId: groupId,
-  //       userId: userId,
-  //       status: status,
-  //       dueDate: dueDate
-  //     }
-  //   }).toPromise()    
-  // }
+  async sortTasks(tasks: any, sortingBit: any, sortingData: any) {
+    const datesService = this.injector.get(DatesService);
+    if (sortingBit == 'reverse' || sortingBit == 'inverse') {
+      return tasks?.reverse();
+    } else {
+      return tasks?.sort((t1, t2) => {
+        if (sortingBit == 'due_date' || sortingBit == 'none') {
+          if (t1.task?.due_to && t2.task?.due_to) {
+            if (datesService.isBefore(DateTime.fromISO(t1.task?.due_to), DateTime.fromISO(t2.task?.due_to))) {
+              return sortingBit == 'due_date' ? -1 : 1;
+            } else {
+              return sortingBit == 'due_date' ? 1 : -1;
+            }
+          } else {
+            if (t1.task?.due_to && !t2.task?.due_to) {
+              return -1;
+            } else if (!t1.task?.due_to && t2.task?.due_to) {
+              return 1;
+            }
+          }
+        } else if (sortingBit == 'creation_date') {
+          if (t1.created_date && t2.created_date) {
+            if (datesService.isBefore(DateTime.fromISO(t1.created_date), DateTime.fromISO(t2.created_date))) {
+              return sortingBit == 'creation_date' ? -1 : 1;
+            } else {
+              return sortingBit == 'creation_date' ? 1 : -1;
+            }
+          } else {
+            if (t1.created_date && !t2.created_date) {
+              return -1;
+            } else if (!t1.created_date && t2.created_date) {
+              return 1;
+            }
+          }
+        } else if (sortingBit == 'custom_field') {
+          if (sortingData && sortingData.name == 'priority') {
+            return (t1?.task?.custom_fields && t2?.task?.custom_fields)
+              ? (((t1?.task?.custom_fields['priority'] == 'High' && t2?.task?.custom_fields['priority'] != 'High') || (t1?.task?.custom_fields['priority'] == 'Medium' && t2?.task?.custom_fields['priority'] == 'Low'))
+                ? -1 : (((t1?.task?.custom_fields['priority'] != 'High' && t2?.task?.custom_fields['priority'] == 'High') || (t1?.task?.custom_fields['priority'] == 'Low' && t2?.task?.custom_fields['priority'] == 'Medium'))
+                  ? 1 : 0))
+              : ((t1?.task?.custom_fields && !t2?.task?.custom_fields)
+                ? -1 : ((!t1?.task?.custom_fields && t2?.task?.custom_fields))
+                  ? 1 : 0);
+          } else {
+            return (t1?.task?.custom_fields && t2?.task?.custom_fields)
+              ? (t1?.task?.custom_fields[sortingData.name] && t2?.task?.custom_fields[sortingData.name])
+                ?((t1?.task?.custom_fields[sortingData.name] > t2?.task?.custom_fields[sortingData.name])
+                  ? -1 : (t1?.task?.custom_fields < t2?.task?.custom_fields)
+                    ? 1 : 0)
+              : ((t1?.task?.custom_fields[sortingData.name] && !t2?.task?.custom_fields[sortingData.name])
+                ? -1 : ((!t1?.task?.custom_fields[sortingData.name] && t2?.task?.custom_fields[sortingData.name]))
+                  ? 1 : 0)
+                : ((t1?.task?.custom_fields && !t2?.task?.custom_fields)
+                  ? -1 : ((!t1?.task?.custom_fields && t2?.task?.custom_fields))
+                    ? 1 : 0);
+          }
+        } else if (sortingBit == 'tags') {
+          if (t1?.tags.length > 0 && t2?.tags.length > 0) {
+            const name1 = t1?.tags[0]?.toLowerCase();
+            const name2 = t2?.tags[0]?.toLowerCase();
+            if (name1 > name2) { return 1; }
+            if (name1 < name2) { return -1; }
+            return 0;
+          } else {
+            if (t1?.tags.length > 0 && t2?.tags.length == 0) {
+              return -1;
+            } else if (t1?.tags.length == 0 && t2?.tags.length > 0) {
+              return 1;
+            }
+          }
+        } else if (sortingBit == 'status') {
+          return (t1?.task?.status && t2?.task?.status)
+            ? (((t1?.task?.status == 'to do' && t2?.task?.status != 'to do') || (t1?.task?.status == 'in progress' && t2?.task?.status == 'done'))
+              ? -1 : (((t1?.task?.status != 'to do' && t2?.task?.status == 'to do') || (t1?.task?.status == 'done' && t2?.task?.status == 'in progress'))
+                ? 1 : 0))
+            : ((t1?.task?.status && !t2?.task?.status)
+              ? -1 : ((!t1?.task?.status && t2?.task?.status))
+                ? 1 : 0);
+        } else if (sortingBit == 'ideas') {
+          return ((t1?.task?.idea?.positive_votes?.length || 0 - t1?.task?.idea?.negative_votes?.length || 0) > (t2?.task?.idea?.positive_votes || 0 - t2?.task?.idea?.negative_votes || 0)) ? -1 : 1;
+        }
+      });
+    }
+  }
+
+  async filterTasks(tasks: any, filteringBit: any, filteringData: any, userData: any) {
+    return tasks?.filter((task: any) => {
+      if (filteringBit == "mytask") {
+        var bit = false;
+        if (task && task._assigned_to) {
+          task._assigned_to.forEach(element => {
+            if (element._id == userData._id) {
+              bit = true
+            }
+          });
+        }
+        return bit;
+      } else if (filteringBit == 'due_before_today') {
+        return (task?.task?.due_to) ? moment.utc(task?.task?.due_to).isBefore(moment().add(-1,'days')) : false;
+      } else if (filteringBit == 'due_today'){
+        return (task?.task?.due_to) ? moment.utc(task?.task?.due_to).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD') : false;
+      } else if (filteringBit == 'due_today'){
+        return (task?.task?.due_to) ? moment.utc(task?.task?.due_to).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD') : false;
+      } else if (filteringBit == 'due_tomorrow'){
+        return (task?.task?.due_to) ? moment.utc(task?.task?.due_to).format('YYYY-MM-DD') == moment().add(1,'days').format('YYYY-MM-DD') : false;
+      } else if (filteringBit == 'due_week'){
+        const first = moment().startOf('week').format();
+        const last = moment().endOf('week').add(1,'days').format();
+        if(task?.task?.due_to){
+          if((moment.utc(task?.task?.due_to).isAfter(first)) && (moment.utc(task?.task?.due_to).isBefore(last))){
+            return true;
+          }else{
+            return false;
+          }
+        } else {
+          return false;
+        }
+      } else if (filteringBit == 'due_next_week'){
+        const first = moment().endOf('week').add(1,'days').format();
+        const last = moment().endOf('week').add(9,'days').format();
+        if(task?.task?.due_to){
+          if((moment.utc(task?.task?.due_to).isAfter(first)) && (moment.utc(task?.task?.due_to).isBefore(last))){
+            return true;
+          }else{
+            return false;
+          }
+        } else {
+          return false;
+        }
+      } else if (filteringBit == 'due_14_days'){
+        const first = moment().format();
+        const last = moment().add(14,'days').format();
+        if (task?.task?.due_to) {
+          if ((moment.utc(task?.task?.due_to).isAfter(first)) && (moment.utc(task?.task?.due_to).isBefore(last))) {
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      } else if (filteringBit == "users") {
+        var bit = false;
+        if (task && task._assigned_to) {
+          task._assigned_to.forEach(element => {
+            if (element._id == filteringData) {
+              bit = true
+            }
+          });
+        }
+
+        return bit;
+      } else if (filteringBit == "custom_field") {
+        return (task.task.custom_fields && task.task.custom_fields[filteringData.name] == filteringData.value);
+      } else if (filteringBit == "ideas") {
+        return (task.task.is_idea == true);
+      } else {
+        return true;
+      }
+    });
+  }
+
+  filterRAGTasks(tasks: any, groupData: any, userData: any) {
+
+    const utilityService = this.injector.get(UtilityService);
+
+    let tasksTmp = [];
+
+    if (!!tasks) {
+      // Filtering other tasks
+      tasks.forEach(async task => {
+        if (task?.permissions && task?.permissions?.length > 0) {
+          const canEdit = await utilityService.canUserDoTaskAction(task, groupData, userData, 'edit');
+          let canView = false;
+          if (!canEdit) {
+            const hide = await utilityService.canUserDoTaskAction(task, groupData, userData, 'hide');
+            canView = await utilityService.canUserDoTaskAction(task, groupData, userData, 'view') || !hide;
+          }
+
+          if (canEdit || canView) {
+            task.canView = true;
+            tasks.push(task);
+          }
+        } else {
+          task.canView = true;
+          tasks.push(task);
+        }
+      });
+    }
+
+    return tasksTmp;
+  }
+
+  async exportTasksTo(exportType: any, sections: any, groupData: any, userData: any, isIdeaModuleAvailable: any) {
+
+    // const utilityService = this.injector.get(UtilityService);
+    const groupService = this.injector.get(GroupService);
+
+    let exportTasks = [];
+    for (let i = 0; i < sections.length; i++) {
+		let section = sections[i];
+
+		section.tasks = await this.getTasksBySectionPromise(section?._id);
+
+		if (groupData?.enabled_rights) {
+			section.tasks = await this.filterRAGTasks(section.tasks, groupData, userData);
+		}
+
+		for (let j = 0; j < section.tasks.length; j++) {
+
+			let post = section.tasks[j];
+
+			let task: any = {
+			title: post.title || '',
+			posted_by: (post && post._posted_by) ? (post?._posted_by?.first_name + ' ' + post?._posted_by?.last_name) : '',
+			created_date: (post?.created_date) ? moment.utc(post?.created_date).format("MMM D, YYYY HH:mm") : '',
+			tags: post.tags || '',
+			status: post.task.status || '',
+			};
+
+			if (post.task.start_date) {
+			task.due_to = (post.task.start_date) ? moment.utc(post.task.start_date).format("MMM D, YYYY") : '';
+			}
+			task.due_to = (post.task.due_to) ? moment.utc(post.task.due_to).format("MMM D, YYYY") : '';
+
+			if (post.task._parent_task) {
+			task.section = '';
+			task.parent_task = post.task._parent_task.title || '';
+			} else {
+			task.section = section.title || '';
+			task.parent_task = '';
+			}
+
+			let assignedTo = '';
+			if (post._assigned_to && post._assigned_to.length > 0) {
+			post._assigned_to.forEach(user => {
+				if (user) {
+				assignedTo += user?.first_name + ' ' + user?.last_name + '; ';
+				}
+			});
+
+			task.assigned_to = assignedTo;
+			}
+
+			if (isIdeaModuleAvailable && post.task.is_idea && post.task.idea) {
+			task.idea_positive = post?.task?.idea?.positive_votes?.length || 0;
+			task.idea_negative = post?.task?.idea?.negative_votes?.length || 0;
+			task.idea_count = task.idea_positive - task.idea_negative;
+			}
+
+			if (post.task.isNorthStar && post.task.northStar) {
+			task.northStar_targetValue = post.task.northStar.target_value || 0;
+			let sum = 0;
+			if (post.task.northStar.values) {
+				for (let k = 0; k < post.task.northStar.values.length; k++) {
+				sum += post.task.northStar.values[k];
+				}
+			}
+			task.northStar_currentValue = sum;
+			task.northStar_type = post.task.northStar.type;
+			}
+
+			exportTasks.push(task);
+		}
+		}
+
+    groupService.exportTasksToFile(exportType, exportTasks, groupData?.group_name + '_tasks');
+  }
 }

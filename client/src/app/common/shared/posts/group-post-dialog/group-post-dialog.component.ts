@@ -150,7 +150,7 @@ export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
         this.myWorkplace = false;
       }
 
-      if (this.groupId) {
+      if (!!this.groupId) {
         this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
 
         this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
@@ -168,40 +168,6 @@ export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
       this.isBusinessSubscription = await this.publicFunctions.checkIsBusinessSubscription();
 
       await this.initPostData();
-    } else {
-      if (this.groupId) {
-        this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
-      } else {
-        this.groupData = await this.publicFunctions.getCurrentGroupDetails();
-        this.groupId = this.groupData._id;
-      }
-
-      this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
-
-      this.postData = {
-        title: '',
-        content: '',
-        type: 'task',
-        _posted_by: this.userData._id,
-        created_date:  moment().format(),
-        _group: this.groupData._id,
-        _content_mentions: [],
-        _assigned_to: [this.selectedUser],
-        task: {
-          status: 'to do',
-          due_to: this.selectedDate,
-          custom_fields: [],
-          _column: null,
-          isNorthStar: false,
-          northStar: null,
-          is_milestone: false,
-          is_idea: false,
-          is_crm_task: false
-        }
-      };
-
-      // Return the function via stopping the loader
-      return this.isLoading$.next(false);
     }
   }
 
@@ -408,8 +374,10 @@ export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
   }
 
   quillContentChanged(event: any) {
-    this.contentChanged = true;
-    this.quillData = event;
+    if (this.canEdit) {
+      this.contentChanged = true;
+      this.quillData = event;
+    }
   }
 
   /**

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { DateTime } from 'luxon';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,13 @@ export class ColumnService {
 
   baseUrl = environment.GROUPS_BASE_API_URL;
   basePostsUrl = environment.POST_BASE_API_URL;
+
+  private refreshSection = new BehaviorSubject<any>(null);
+  refresh$ = this.refreshSection.asObservable();
+
+  triggerRefreshSection(sectionId) {
+    this.refreshSection.next(sectionId);
+  }
 
   /**
    * This function is responsible for fetching an specific section by id
@@ -90,10 +98,11 @@ export class ColumnService {
    * @param groupId
    * @param columnName
    */
-  addColumn(groupId: string, columnName: string) {
+  addSection(groupId: string, columnName: string, kanbanOrder: number) {
     const group = {
       groupId: groupId,
-      columnName: columnName
+      columnName: columnName,
+      kanbanOrder: kanbanOrder
     }
     return this._http.post(this.baseUrl + `/columns/`, group)
     .toPromise()
