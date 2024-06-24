@@ -24,7 +24,7 @@
           <!-- SELECT A WORKPLACE -->
           <div class="form-group" *ngIf="!!accountData && !!accountData?._workspaces">
             <p i18n="@@selectWorkspace.listWorkspaces">This is a list of workplaces(organizations) you already joined.</p>
-            <div *ngFor="let workspace of accountData?._workspaces"
+            <div *ngFor="let workspace of accountData?._workspaces; trackBy: utilityService.trackByIndex"
                 class="workplace-cells" (click)="selectWorkspace(workspace._id)">
               <div class="btn-select-workplace">
                 <img src="{{ this.baseUrl }}/{{ workspace?._id }}/{{ workspace.workspace_avatar }}?noAuth=true"

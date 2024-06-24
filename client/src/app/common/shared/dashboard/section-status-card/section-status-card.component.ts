@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Injector } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { PostService } from 'src/shared/services/post-service/post.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-section-status-card',
@@ -18,6 +19,7 @@ export class SectionStatusCardComponent implements OnInit {
   tasks: any = [];
 
   constructor(
+    public utilityService: UtilityService,
     private postService: PostService,
     private injector: Injector
   ) { }

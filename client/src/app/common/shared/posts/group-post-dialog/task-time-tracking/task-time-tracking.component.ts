@@ -50,9 +50,9 @@ export class TaskTimeTrackingComponent implements OnChanges {
   publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    public utilityService: UtilityService,
     private groupService: GroupService,
     private postService: PostService,
-    private utilityService: UtilityService,
     private datesService: DatesService,
     private injector: Injector
   ) { }

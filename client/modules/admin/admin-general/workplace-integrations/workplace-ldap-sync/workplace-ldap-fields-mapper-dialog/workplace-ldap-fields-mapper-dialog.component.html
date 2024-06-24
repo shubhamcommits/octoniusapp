@@ -43,7 +43,7 @@
             </th>
           </tr>
 
-          <tr *ngFor="let ldapPropertyName of ldapPropertiesNames">
+          <tr *ngFor="let ldapPropertyName of ldapPropertiesNames; trackBy: utilityService.trackByIndex">
             <td>
               <input [checked]="ldapPropertiesToMap.indexOf(ldapPropertyName)>=0" class="" type="checkbox" (click)="selectProperty(ldapPropertyName)">
             </td>
@@ -58,7 +58,7 @@
                   [(value)]="mapSelectedProperties[ldapPropertyName]"
                   (selectionChange)="changePropertyValue($event, ldapPropertyName)"
                   appearance="fill">
-                <mat-option *ngFor="let profileCF of profileCustomFields; let j=index" [value]="profileCF.name">{{ profileCF.title }}</mat-option>
+                <mat-option *ngFor="let profileCF of profileCustomFields; let j=index; trackBy: utilityService.trackByIndex" [value]="profileCF.name">{{ profileCF.title }}</mat-option>
               </mat-select>
             </td>
             

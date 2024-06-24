@@ -17,7 +17,7 @@
 
   <div class="row">
     <div class="price-list">
-      <div *ngFor="let product of subscription_products" class="price">
+      <div *ngFor="let product of subscription_products; trackBy: utilityService.trackByIndex" class="price">
         <h2>
           <span> {{ product.name }} </span>
         </h2>

@@ -5,7 +5,7 @@
         <!-- ALL COLUMN DETAILS FOR NO-MOBILE STARTS -->
         <div class="board-columns" cdkDropListGroup *ngIf="sections">
 
-            <div class="board-column" id="column._id" cdkDrag *ngFor="let section of sections; let i = index;">
+            <div class="board-column" id="column._id" cdkDrag *ngFor="let section of sections; let i = index; trackBy: utilityService.trackByIndex">
                 <app-kanban-section
                   [section]=section
                   [sections]="sections"
@@ -39,7 +39,7 @@
         <!-- ALL COLUMN DETAILS FOR MOBILE STARTS -->
         <div class="board-columns" *ngIf="sections">
 
-            <div class="board-column" *ngFor="let section of sections; let i = index;">
+            <div class="board-column" *ngFor="let section of sections; let i = index; trackBy: utilityService.trackByIndex">
                 <app-kanban-section
                   [section]=section
                   [sections]="sections"

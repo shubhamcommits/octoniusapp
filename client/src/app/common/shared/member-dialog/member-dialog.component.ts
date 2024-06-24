@@ -25,10 +25,10 @@ export class MemberDialogComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
+    public utilityService: UtilityService,
     private mdDialogRef: MatDialogRef<MemberDialogComponent>,
     private injector: Injector,
     private userService: UserService,
-    private utilityService: UtilityService,
   ) { }
 
   async ngOnInit() {

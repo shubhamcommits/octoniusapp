@@ -27,12 +27,12 @@ export class EntityAddMembersDialogComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    public utilityService: UtilityService,
     private hrService: HRService,
     private workspaceService: WorkspaceService,
-    private utilityService: UtilityService,
     private injector: Injector,
+    private mdDialogRef: MatDialogRef<EntityAddMembersDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private mdDialogRef: MatDialogRef<EntityAddMembersDialogComponent>
   ) {
     this.entityId = this.data.entityId;
   }

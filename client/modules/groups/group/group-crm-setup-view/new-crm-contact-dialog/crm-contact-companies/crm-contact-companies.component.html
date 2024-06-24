@@ -10,7 +10,7 @@
                         (keydown)="$event.stopPropagation()" (keyup)="searchCompany()">
 
                     <ul *ngIf="!companyHistoryData._company && !!companySearchResults && !!companySearchText" class="company-list">
-                        <li class="company-list-item" *ngFor="let company of companySearchResults" (click)="selectCompany(company)">
+                        <li class="company-list-item" *ngFor="let company of companySearchResults; trackBy: utilityService.trackByIndex" (click)="selectCompany(company)">
                             <!-- <app-secured-image
                                 [imgURL]="company.company_pic" [service]="'group'" [workspaceId]="workspaceData?._id"
                                 [styleClass]="'group-avatar'"></app-secured-image> -->
@@ -94,7 +94,7 @@
             <th></th>
         </tr>
     
-        <tr *ngFor="let companyHistory of contactData?.company_history">
+        <tr *ngFor="let companyHistory of contactData?.company_history; trackBy: utilityService.trackByIndex">
             <!-- <td>
                 <app-secured-image
                     [imgURL]="companyHistory?._company?.company_pic" [service]="'group'" [workspaceId]="workspaceData?._id"

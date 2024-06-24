@@ -31,7 +31,7 @@
         </div>
 
         <!-- NOTIFICATION ITEM STARTS-->
-        <div class="notification-item" *ngFor="let notification of notificationsData?.unreadNotifications; let index = index">
+        <div class="notification-item" *ngFor="let notification of notificationsData?.unreadNotifications; let index = index; trackBy: utilityService.trackByIndex">
           <div class="notification_actor">
             <app-secured-image *ngIf="notification?._actor"
               [imgURL]="notification?._actor?.profile_pic"
@@ -188,7 +188,7 @@
           </div>
         </div>
         <!-- NOTIFICATION ITEM STARTS-->
-        <div class="notification-item" *ngFor="let notification of notificationsData?.unreadPosts; let index = index">
+        <div class="notification-item" *ngFor="let notification of notificationsData?.unreadPosts; let index = index; trackBy: utilityService.trackByIndex">
           <div class="notification_actor">
             <app-secured-image
               [imgURL]="notification?._actor?.profile_pic"
@@ -257,7 +257,7 @@
 
       <div *ngIf="attendingEvents.length > 0 && !(isLoading$ | async)" >
         <!-- NOTIFICATION ITEM STARTS-->
-        <div class="notification-item" *ngFor="let event of attendingEvents; let index = index">
+        <div class="notification-item" *ngFor="let event of attendingEvents; let index = index; trackBy: utilityService.trackByIndex">
           <div class="notification_actor">
             <app-secured-image
               [imgURL]="event?.icon_pic"
@@ -329,7 +329,7 @@
 
       <div *ngIf="notificationsData.pendingApprovals.length > 0 && !(isLoading$ | async)" >
         <!-- NOTIFICATION ITEM STARTS-->
-        <div class="notification-item" *ngFor="let notification of notificationsData?.pendingApprovals; let index = index">
+        <div class="notification-item" *ngFor="let notification of notificationsData?.pendingApprovals; let index = index; trackBy: utilityService.trackByIndex">
           <div class="notification_actor">
             <app-secured-image *ngIf="notification?._actor"
               [imgURL]="notification?._actor?.profile_pic"
@@ -410,7 +410,7 @@
                 <th></th>
             </tr>
           
-            <tr *ngFor="let holiday of pendingHolidays; let index = index">
+            <tr *ngFor="let holiday of pendingHolidays; let index = index; trackBy: utilityService.trackByIndex">
                 <td>
                     <app-secured-image [imgURL]="holiday?._user?.profile_pic" [service]="'user'" [inlineStyle]="'cursor: default;'"
                       [userData]="holiday?._user" [workspaceId]="workspaceData?._id" [styleClass]="'feed-avatar-small'"></app-secured-image>
@@ -464,7 +464,7 @@
 
       <div *ngIf="pendingHRTasks.length > 0 && !(isLoading$ | async)" >
         <!-- NOTIFICATION ITEM STARTS-->
-        <div class="notification-item" *ngFor="let task of pendingHRTasks; let index = index">
+        <div class="notification-item" *ngFor="let task of pendingHRTasks; let index = index; trackBy: utilityService.trackByIndex">
           <div class="notification_actor">
             <app-secured-image [imgURL]="task?._owner?.profile_pic" [service]="'user'" [workspaceId]="workspaceData?._id"
 						  [userData]="task?._owner" [styleClass]="'mr-3 feed-avatar-small'" ></app-secured-image>

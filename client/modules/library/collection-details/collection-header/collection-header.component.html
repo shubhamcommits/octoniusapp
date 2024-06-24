@@ -50,7 +50,7 @@
     </button>
 
     <div *ngIf="(!canEdit || !editContent) && objectExists(collectionData)">
-        <app-secured-image *ngFor="let assignee of collectionData?._members"
+        <app-secured-image *ngFor="let assignee of collectionData?._members; trackBy: utilityService.trackByIndex"
         [imgURL]="assignee?.profile_pic"
         [service]="'user'"
         [userData]="assignee"
@@ -72,7 +72,7 @@
     </button>
     
     <mat-menu #moveMenu="matMenu">
-        <ng-container *ngFor="let group of userGroups; let index = index">
+        <ng-container *ngFor="let group of userGroups; let index = index; trackBy: utilityService.trackByIndex">
             <button mat-menu-item (click)="moveToGroup(userGroups[index]?._id)">{{
                 group.group_name }}</button>
         </ng-container>
@@ -110,7 +110,7 @@
             </li>
     
             <mat-menu #moveMenu2="matMenu">
-                <ng-container *ngFor="let group of userGroups; let index = index">
+                <ng-container *ngFor="let group of userGroups; let index = index; trackBy: utilityService.trackByIndex">
                     <button mat-menu-item (click)="moveToGroup(userGroups[index]?._id)">{{
                         group.group_name }}</button>
                 </ng-container>

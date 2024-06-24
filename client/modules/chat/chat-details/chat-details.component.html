@@ -22,7 +22,7 @@
 		<mat-spinner></mat-spinner>
 	</div>
 
-	<app-chat-message [message]="message" [userData]="userData" [previousMessage]="messages[index-1]" *ngFor="let message of messages; let index = index"></app-chat-message>
+	<app-chat-message [message]="message" [userData]="userData" [previousMessage]="messages[index-1]" *ngFor="let message of messages; let index = index; trackBy: utilityService.trackByIndex"></app-chat-message>
 </div>
 	
 <div class="chat-input">

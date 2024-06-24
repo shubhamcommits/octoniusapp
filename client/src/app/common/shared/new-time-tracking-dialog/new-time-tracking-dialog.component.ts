@@ -4,6 +4,7 @@ import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-new-time-tracking-dialog',
@@ -48,10 +49,11 @@ export class NewTimeTrackingDialogComponent implements OnInit {
   publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public utilityService: UtilityService,
     private groupService: GroupService,
     private userService: UserService,
     private injector: Injector,
-    @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<NewTimeTrackingDialogComponent>
   ) {
     this.tte = (!!this.data) ? this.data.tte : null;

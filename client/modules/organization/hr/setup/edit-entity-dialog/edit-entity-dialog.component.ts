@@ -69,13 +69,13 @@ export class EditEntityDialogComponent implements OnInit {
   entityMembers = [];
 
   constructor(
+    public utilityService: UtilityService,
+    public dialog: MatDialog,
     private hrService: HRService,
     private countryCurrencyService: CountryCurrencyService,
-    private utilityService: UtilityService,
     private datesService: DatesService,
-    public dialog: MatDialog,
+    private mdDialogRef: MatDialogRef<EditEntityDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private mdDialogRef: MatDialogRef<EditEntityDialogComponent>
   ) {
     this.entityId = this.data.entityId;
     this.hrService.getEntityDetails(this.entityId).then(res => {

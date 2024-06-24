@@ -1,7 +1,7 @@
 <div class="responses-container">
   <div class="row response">
       <div class="col-md-2 response-list" [ngStyle]="{'height': responseListHeight,'overflow-y':'auto','overflow-x':'hidden'}">
-        <div *ngFor="let response of responses; let i = index;"
+        <div *ngFor="let response of responses; let i = index; trackBy: utilityService.trackByIndex"
             [ngClass]="i==activeResponseIndex?'responses-container-active':'responses-container-inactive'"
             (click)="changeActiveIndex(i)" style="position: relative;">
             {{ i }} - {{ response?.created_date | date: 'MMM d, y' }}
@@ -12,7 +12,7 @@
           <div class="row active-answer-header">
             <h5 i18n="@@flamingoResultResponses.personAnswered">This person answered:</h5>
           </div>
-          <div *ngFor="let answer of activeResponse?.answers; let index = index" class="row active-answer-body">
+          <div *ngFor="let answer of activeResponse?.answers; let index = index; trackBy: utilityService.trackByIndex" class="row active-answer-body">
             <div class="col-md-2">
               <div [ngClass]="getQuestionTypeClass(answer?._question?.type)">
                 <i class="material-icons">{{ getQuestionTypeIcon(answer?._question?.type) }}</i>&nbsp;&nbsp;{{ index + 1 }}
@@ -36,7 +36,7 @@
                 {{ answer?.dropdown_answer }}
               </div>
               <div class="answer-dropdown" *ngIf="answer?._question?.type == 'Multiple'">
-                <span *ngFor="let answer of answer?.answer_multiple">
+                <span *ngFor="let answer of answer?.answer_multiple; trackBy: utilityService.trackByIndex">
                   {{ answer }} <br />
                 </span>
               </div>

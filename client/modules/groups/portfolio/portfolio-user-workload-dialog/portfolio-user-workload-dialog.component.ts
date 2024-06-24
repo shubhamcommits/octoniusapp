@@ -40,8 +40,8 @@ export class PortfolioUserWorkloadDialogComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<PortfolioUserWorkloadDialogComponent>,
     private injector: Injector,
-    private utilityService: UtilityService,
-    private portfolioService: PortfolioService
+    private portfolioService: PortfolioService,
+    public utilityService: UtilityService,
   ) {
   }
 

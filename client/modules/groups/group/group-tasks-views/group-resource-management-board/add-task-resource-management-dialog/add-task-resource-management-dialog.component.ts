@@ -44,8 +44,8 @@ export class AddTaskResourceManagementDialogComponent implements OnInit/*, After
   public isLoading$ = new BehaviorSubject(false);
 
   constructor(
+    public utilityService: UtilityService,
     private postService: PostService,
-    private utilityService: UtilityService,
     private columnService: ColumnService,
     private injector: Injector,
     @Inject(MAT_DIALOG_DATA) public data: any,

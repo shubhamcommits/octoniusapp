@@ -31,8 +31,8 @@ export class MyTasksListComponent implements OnInit, OnDestroy {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    public utilityService: UtilityService,
     private injector: Injector,
-    private utilityService: UtilityService,
   ) { }
 
   async ngOnInit() {

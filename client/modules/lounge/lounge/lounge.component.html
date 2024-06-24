@@ -29,7 +29,7 @@
   </div>
 
   <div class="media-body">
-    <div *ngFor="let category of categories; let index = index" class="category">
+    <div *ngFor="let category of categories; let index = index; trackBy: utilityService.trackByIndex" class="category">
 
       <!-- SECTION SEPARATOR INDICATOR STARTS -->
       <app-section-separator *ngIf="index > 0"></app-section-separator>
@@ -50,7 +50,7 @@
 
       <div class="category-body row">
         <div *ngIf="category.items && category.items.length > 0" class="cards-list">
-          <div *ngFor="let item of category.items" class="card img-fluid">
+          <div *ngFor="let item of category.items; trackBy: utilityService.trackByIndex" class="card img-fluid">
 
 
             <div *ngIf="item.type == 'lounge'" (click)="cleanStoredData()"

@@ -48,7 +48,7 @@ export class GroupsListComponent implements OnInit {
     public injector: Injector,
     private router: Router,
     public dialog: MatDialog,
-    private utilityService: UtilityService
+    public utilityService: UtilityService
   ) { }
 
   async ngOnInit() {

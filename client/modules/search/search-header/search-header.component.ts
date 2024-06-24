@@ -51,8 +51,8 @@ export class SearchHeaderComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    public utilityService: UtilityService,
     private searchService: SearchService,
-    private utilityService: UtilityService,
     private injector: Injector,
     private mdDialogRef: MatDialogRef<SearchHeaderComponent>
   ) { }

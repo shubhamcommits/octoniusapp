@@ -57,13 +57,13 @@ export class ResourcesDetailsDialogComponent implements OnInit {
   publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(LOCALE_ID) public locale: string,
+    public utilityService: UtilityService,
     private resourcesGroupService: ResourcesGroupService,
-    private utilityService: UtilityService,
     private datesService: DatesService,
     private injector: Injector,
     private mdDialogRef: MatDialogRef<ResourcesDetailsDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    @Inject(LOCALE_ID) public locale: string,
   ) {
     this.resourceId = (!!this.data) ? this.data.resourceId : null;
   }

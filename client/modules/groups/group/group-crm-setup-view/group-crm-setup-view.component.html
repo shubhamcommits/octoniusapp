@@ -68,7 +68,7 @@
           </ng-container>
         
           <!-- CUSTOM FIELDS START -->
-          <ng-container [matColumnDef]="cf.name" *ngFor="let cf of crmContactsCustomFieldsToShow">
+          <ng-container [matColumnDef]="cf.name" *ngFor="let cf of crmContactsCustomFieldsToShow; trackBy: utilityService.trackByIndex">
             <th mat-header-cell mat-sort-header *matHeaderCellDef>
               <div class="cf_cell">
                 {{ cf.title }}
@@ -97,7 +97,7 @@
                     <mat-label i18n="@@asksTableView.selectOption">Select an option</mat-label>
                     <mat-select ngDefaultControl (selectionChange)="addNewContactColumn($event)" (click)="$event.stopPropagation()"
                       [(ngModel)]="newContactColumnSelected" name="new_column">
-                      <mat-option *ngFor="let f of crmContactCustomFields" [value]="f">{{ f.title }}</mat-option>
+                      <mat-option *ngFor="let f of crmContactCustomFields; trackBy: utilityService.trackByIndex" [value]="f">{{ f.title }}</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
@@ -164,7 +164,7 @@
           </ng-container>
         
           <!-- CUSTOM FIELDS START -->
-          <ng-container [matColumnDef]="cf.name" *ngFor="let cf of crmCompanyCustomFieldsToShow">
+          <ng-container [matColumnDef]="cf.name" *ngFor="let cf of crmCompanyCustomFieldsToShow; trackBy: utilityService.trackByIndex">
             <th mat-header-cell mat-sort-header *matHeaderCellDef>
               <div class="cf_cell">
                 {{ cf.title }}
@@ -193,7 +193,7 @@
                     <mat-label i18n="@@asksTableView.selectOption">Select an option</mat-label>
                     <mat-select ngDefaultControl (selectionChange)="addNewCompanyColumn($event)" (click)="$event.stopPropagation()"
                       [(ngModel)]="newCompanyColumnSelected" name="new_column">
-                      <mat-option *ngFor="let f of crmCompanyCustomFields" [value]="f">{{ f.title }}</mat-option>
+                      <mat-option *ngFor="let f of crmCompanyCustomFields; trackBy: utilityService.trackByIndex" [value]="f">{{ f.title }}</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
@@ -252,7 +252,7 @@
     
           <!-- CUSTOM FIELDS START -->
           <!--
-          <ng-container [matColumnDef]="cf.name" *ngFor="let cf of crmProductCustomFieldsToShow">
+          <ng-container [matColumnDef]="cf.name" *ngFor="let cf of crmProductCustomFieldsToShow; trackBy: utilityService.trackByIndex">
             <th mat-header-cell mat-sort-header *matHeaderCellDef>
               <div class="cf_cell">
                 {{ cf.title }}
@@ -283,7 +283,7 @@
                     <mat-label i18n="@@asksTableView.selectOption">Select an option</mat-label>
                     <mat-select ngDefaultControl (selectionChange)="addNewProductColumn($event)"
                       (click)="$event.stopPropagation()" [(ngModel)]="newProductColumnSelected" name="new_column">
-                      <mat-option *ngFor="let f of crmProductCustomFields" [value]="f">{{ f.title }}</mat-option>
+                      <mat-option *ngFor="let f of crmProductCustomFields; trackBy: utilityService.trackByIndex" [value]="f">{{ f.title }}</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>

@@ -21,7 +21,7 @@
           <div class="clearfix"></div>
       </div>
 
-      <div class="content-box" *ngFor="let group of userGroups">
+      <div class="content-box" *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
         <div style="display: flex; cursor: pointer;" (click)="selectGroup(group?._id)">
           <app-secured-image
             [imgURL]="group?.group_avatar"

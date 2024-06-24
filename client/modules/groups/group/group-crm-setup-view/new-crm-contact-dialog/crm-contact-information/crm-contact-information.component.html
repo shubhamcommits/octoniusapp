@@ -35,7 +35,7 @@
                     (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()" (keyup)="searchCompany()">
         
                 <ul *ngIf="!contactData?._company && !!companySearchResults && !!companySearchText" class="company-list dropdown-menu">
-                    <li class="company-list-item" *ngFor="let company of companySearchResults" (click)="selectCompany(company)">
+                    <li class="company-list-item" *ngFor="let company of companySearchResults; trackBy: utilityService.trackByIndex" (click)="selectCompany(company)">
                         <!-- <app-secured-image [imgURL]="company.company_pic" [service]="'group'" [workspaceId]="workspaceData?._id"
                             [styleClass]="'group-avatar'"></app-secured-image> -->
                         {{ company.name }}
@@ -79,7 +79,7 @@
             </div>
     
             <div class="row" *ngIf="!!contactData && !!contactData.phones">
-                <div class="col-md-12" *ngFor="let phone of contactData.phones">{{ phone }}</div>
+                <div class="col-md-12" *ngFor="let phone of contactData.phones; trackBy: utilityService.trackByIndex">{{ phone }}</div>
             </div>
         </div>
     </div>
@@ -102,7 +102,7 @@
             </div>
     
             <div class="row" *ngIf="!!contactData && !!contactData.emails">
-                <div class="col-md-12" *ngFor="let email of contactData.emails">{{ email }}</div>
+                <div class="col-md-12" *ngFor="let email of contactData.emails; trackBy: utilityService.trackByIndex">{{ email }}</div>
             </div>
         </div>
     </div>
@@ -125,7 +125,7 @@
             </div>
     
             <div class="row" *ngIf="!!contactData && !!contactData.links">
-                <div class="col-md-12" *ngFor="let link of contactData.links">{{ link }}</div>
+                <div class="col-md-12" *ngFor="let link of contactData.links; trackBy: utilityService.trackByIndex">{{ link }}</div>
             </div>
         </div>
     </div>

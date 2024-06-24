@@ -1,4 +1,5 @@
 import { Component, Injector, Input, OnChanges } from '@angular/core';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-scale-responses-graph',
@@ -23,7 +24,9 @@ export class ScaleResponsesGraphComponent implements OnChanges {
   barChartColors;
   barChartPlugins;
 
-  constructor() { }
+  constructor(
+    public utilityService: UtilityService
+  ) { }
 
   ngOnChanges() {
     this.initView();

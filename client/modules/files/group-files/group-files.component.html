@@ -71,7 +71,7 @@
         <!--<app-infinite-scroll (scrolled)="onScroll()">-->
           <!-- Folder details start -->
           <div class="media card-tile user-list" style="border-bottom: 1px solid #e4edf8;"
-              *ngFor="let folder of folders">
+              *ngFor="let folder of folders; trackBy: utilityService.trackByIndex">
 
               <a class="mt-0" style="cursor: pointer" (click)="openFolder(folder?._id)">
                   <img src="assets/images/add-folder-icon.png"
@@ -109,7 +109,7 @@
                             </a>
 
                             <mat-menu #moveFolderMenu="matMenu">
-                              <ng-container *ngFor="let folderMenu of folders; let index = index">
+                              <ng-container *ngFor="let folderMenu of folders; let index = index; trackBy: utilityService.trackByIndex">
                                 <button mat-menu-item *ngIf="folder._id != folderMenu._id" (click)="moveToFolder(folder._id, folderMenu?._id, 'folder')">{{ folderMenu?.folder_name }}</button>
                               </ng-container>
                             </mat-menu>
@@ -127,7 +127,7 @@
 
           <!-- File Details Starts -->
           <div class="media card-tile user-list" style="border-bottom: 1px solid #e4edf8;"
-              *ngFor="let file of files">
+              *ngFor="let file of files; trackBy: utilityService.trackByIndex">
 
               <a *ngIf="file?.type === 'file' && !isOfficeFile(file?.original_name)" class="mt-0" style="cursor: pointer"
                     (click)="openDocument(file)">
@@ -194,7 +194,7 @@
                             </a>
 
                             <mat-menu #transferMenu="matMenu">
-                              <ng-container *ngFor="let group of userGroups; let index = index">
+                              <ng-container *ngFor="let group of userGroups; let index = index; trackBy: utilityService.trackByIndex">
                                 <button mat-menu-item (click)="transferToGroup(file._id, userGroups[index]?._id, file?.type)">{{ group.group_name }}</button>
                               </ng-container>
                             </mat-menu>
@@ -207,7 +207,7 @@
                             </a>
 
                             <mat-menu #moveFileMenu="matMenu">
-                              <ng-container *ngFor="let folder of folders; let index = index">
+                              <ng-container *ngFor="let folder of folders; let index = index; trackBy: utilityService.trackByIndex">
                                 <button mat-menu-item (click)="moveToFolder(file._id, folder?._id, 'file')">{{ folder?.folder_name }}</button>
                               </ng-container>
                             </mat-menu>

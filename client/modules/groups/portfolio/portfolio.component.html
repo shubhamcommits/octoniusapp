@@ -12,7 +12,7 @@
     <!-- STARTS USER PORTFOLIOS -->
     <div class="media-body">
         <div class="row">
-            <ng-container *ngFor="let portfolio of userPortfolios">
+            <ng-container *ngFor="let portfolio of userPortfolios; trackBy: utilityService.trackByIndex">
                 <div class="cards-list">
                     <div class="card img-fluid"
                         (click)="goToPortfolio(portfolio?._id)">

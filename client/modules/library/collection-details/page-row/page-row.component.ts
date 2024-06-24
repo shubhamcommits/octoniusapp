@@ -31,7 +31,7 @@ export class PageRowComponent implements OnInit, OnChanges {
 	constructor(
 		public injector: Injector,
 		public dialog: MatDialog,
-		private utilityService: UtilityService,
+		public utilityService: UtilityService,
 		private datesService: DatesService,
 		private libraryService: LibraryService
 	) { }

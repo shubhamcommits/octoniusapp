@@ -8,7 +8,7 @@
   </div>
 
   <!-- groups list  -->
-  <div class="media" *ngFor="let group of recentGroups" (click)="goToGroup(group?._group?._id)" style="cursor: pointer;">
+  <div class="media" *ngFor="let group of recentGroups; trackBy: utilityService.trackByIndex" (click)="goToGroup(group?._group?._id)" style="cursor: pointer;">
     <app-secured-image *ngIf="group?._group?.group_name != 'personal'"
       [imgURL]="group?._group?.group_avatar"
       [service]="'group'" 

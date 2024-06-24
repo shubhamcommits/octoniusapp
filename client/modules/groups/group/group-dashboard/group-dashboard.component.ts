@@ -2,7 +2,6 @@ import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { WidgetSelectorDialogComponent } from 'src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component';
-import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
@@ -46,8 +45,7 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
-    private utilityService: UtilityService,
-    private managementPortalService: ManagementPortalService,
+    public utilityService: UtilityService,
     private injector: Injector,
     public dialog: MatDialog) { }
 

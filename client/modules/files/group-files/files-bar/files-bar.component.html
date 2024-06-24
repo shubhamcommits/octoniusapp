@@ -100,7 +100,7 @@
 </mat-menu>
 
 <mat-menu #menuCustomFieldsSort="matMenu">
-  <a mat-menu-item *ngFor="let cf of customFields" (click)="sort('custom_field', cf)" style="margin: 10px;text-decoration: none;">
+  <a mat-menu-item *ngFor="let cf of customFields; trackBy: utilityService.trackByIndex" (click)="sort('custom_field', cf)" style="margin: 10px;text-decoration: none;">
     <span>{{ cf.title }}</span>
   </a>
 </mat-menu>
@@ -120,12 +120,12 @@
 </mat-menu>
 
 <mat-menu #menuCustomFieldsFilter="matMenu">
-  <a mat-menu-item *ngFor="let cf of customFields" [matMenuTriggerFor]="menuCustomFieldsValuesFilter" style="margin: 10px;text-decoration: none;">
+  <a mat-menu-item *ngFor="let cf of customFields; trackBy: utilityService.trackByIndex" [matMenuTriggerFor]="menuCustomFieldsValuesFilter" style="margin: 10px;text-decoration: none;">
     <span>{{ cf.title }}</span>
 
     <mat-menu #menuCustomFieldsValuesFilter="matMenu">
       <span *ngIf="!cf.input_type">
-        <a mat-menu-item *ngFor="let cfValue of cf.values" (click)="filter('custom_field', cf, cfValue)" style="margin: 10px;text-decoration: none;">
+        <a mat-menu-item *ngFor="let cfValue of cf.values; trackBy: utilityService.trackByIndex" (click)="filter('custom_field', cf, cfValue)" style="margin: 10px;text-decoration: none;">
           <span>{{ cfValue }}</span>
         </a>
       </span>

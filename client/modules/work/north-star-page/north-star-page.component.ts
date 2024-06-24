@@ -69,12 +69,13 @@ export class NorthStarPageComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    public dialog: MatDialog,
+    public utilityService: UtilityService,
     private postService: PostService,
-    private utilityService: UtilityService,
     private injector: Injector,
     private _router: Router,
     private changeDetectorRef: ChangeDetectorRef,
-    public dialog: MatDialog) { }
+  ) { }
 
   async ngOnInit() {
     if (this._router.routerState.snapshot.root.queryParamMap.has('postId')) {

@@ -29,8 +29,8 @@ import { UserService } from 'src/shared/services/user-service/user.service';
     public publicFunctions = new PublicFunctions(this.injector);
 
     constructor(
+        public utilityService: UtilityService,
         private injector: Injector,
-        private utilityService: UtilityService,
         private workspaceService: WorkspaceService,
         private userService: UserService,
         @Inject(MAT_DIALOG_DATA) public data: any,

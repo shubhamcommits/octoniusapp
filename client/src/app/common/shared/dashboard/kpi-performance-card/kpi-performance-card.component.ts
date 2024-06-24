@@ -31,9 +31,9 @@ export class KpiPerformanceCardComponent implements OnChanges {
   public isLoading$ = new BehaviorSubject(false);
 
   constructor(
+    public utilityService: UtilityService,
     private columnService: ColumnService,
     private groupService: GroupService,
-    private utilityService: UtilityService,
     private injector: Injector
   ) { }
 

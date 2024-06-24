@@ -35,8 +35,8 @@ import { PublicFunctions } from 'modules/public.functions';
     // PUBLIC FUNCTIONS
     public publicFunctions = new PublicFunctions(this.injector);
     constructor(
+        public utilityService: UtilityService,
         private injector: Injector,
-        private utilityService: UtilityService,
         private groupService: GroupService,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private mdDialogRef: MatDialogRef<GroupRAGDialogComponent>

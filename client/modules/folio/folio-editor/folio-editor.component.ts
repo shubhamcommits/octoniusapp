@@ -158,7 +158,7 @@ export class FolioEditorComponent implements AfterViewInit {
     private _ActivatedRoute: ActivatedRoute,
     private folioService: FolioService,
     private filesService: FilesService,
-    private utilityService: UtilityService
+    public utilityService: UtilityService
   ) {
     this.folioService.follioSubject.subscribe(data => {
       if (data) {

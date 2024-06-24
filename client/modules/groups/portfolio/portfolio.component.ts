@@ -25,9 +25,9 @@ export class PortfolioComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    public utilityService: UtilityService,
     public injector: Injector,
     private router: Router,
-    private utilityService: UtilityService
   ) {
   }
 

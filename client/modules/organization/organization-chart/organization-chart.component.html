@@ -9,9 +9,9 @@
       <i class="material-icons" style="cursor: pointer; margin: 20px 65px;" (click)="selectParentLevel(levels[0].managerId)">more_horiz</i>
     </div>
 
-    <div *ngFor="let level of levels; let index = index" class="level" [ngClass]="(levels[index + 1]) ? 'has-next-level' : ''">
+    <div *ngFor="let level of levels; let index = index; trackBy: utilityService.trackByIndex" class="level" [ngClass]="(levels[index + 1]) ? 'has-next-level' : ''">
       <app-chart-person
-        *ngFor="let user of level?.members"
+        *ngFor="let user of level?.members; trackBy: utilityService.trackByIndex"
         [person]="user"
         [selected]="levels && levels[index + 1] && user._id == levels[index + 1].managerId"
         [level]="index"
@@ -36,7 +36,7 @@
                     [(ngModel)]="searchText" placeholder="Search member" autofocus>
                 </div>
                 <ul class="members-list">
-                  <li appHighlight class="members-list-item" *ngFor="let member of possibleMembers | appFilter: searchText"
+                  <li appHighlight class="members-list-item" *ngFor="let member of possibleMembers | appFilter: searchText; trackBy: utilityService.trackByIndex"
                       (click)="getMemberDetails(member, level?.managerId, index); searchText = ''"
                       [searchedWord]="searchText"
                       [content]="member"

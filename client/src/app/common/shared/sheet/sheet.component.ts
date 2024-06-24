@@ -16,57 +16,50 @@ type AOA = any[][]
   styleUrls: ['./sheet.component.scss']
 })
 export class SheetComponent implements OnInit {
-
-  constructor(
-    private _Injector: Injector
-  ) { }
-
+  
   // Raw Data of Sheet
   @Input('data') data: any = []
-
-  wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' }
-
-  fileName: string = 'SheetJS.xlsx'
-
+  
   // File
   @Input('file') file: any
-
+  
   // File URL
   @Input('fileUrl') fileUrl: any
-
+  
   // Is member
   @Input('isMember') isMember: boolean
-
-  // Loading Behaviour
-  isLoading$ = new BehaviorSubject(false)
-
-  // Columns
-  columns: any = []
-
-  // Selected Columns
-  selectedColumns: any = []
-
-  // Rows Counts for User View
-  rows_count = 0
-
-  // Datasource
-  dataSource = new MatTableDataSource([])
-
+  
   // Sort Table
   @ViewChild(MatSort, { static: true }) sort: MatSort
-
+  
   // Paginator
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator
-
+  
+  wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' }
+  
+  fileName: string = 'SheetJS.xlsx'
+  
+  // Columns
+  columns: any = []
+  
+  // Selected Columns
+  selectedColumns: any = []
+  
+  // Rows Counts for User View
+  rows_count = 0
+  
+  // Datasource
+  dataSource = new MatTableDataSource([])
+  
   // Subsink class
   subsink = new SubSink()
-
+  
   // Show Analytics
   showAnalytics = false
-
+  
   // Graphs count
   graphs = []
-
+  
   // Chart Data
   public chartLabels = [
     $localize`:@@seet.salesQ1:Sales Q1`,
@@ -76,7 +69,15 @@ export class SheetComponent implements OnInit {
   ];
   public chartData = [120, 150, 180, 90];
   public chartType = 'doughnut';
-
+  
+  // Loading Behaviour
+  isLoading$ = new BehaviorSubject(false)
+  
+  constructor(
+    public utilityService: UtilityService,
+    private _Injector: Injector
+  ) { }
+  
   ngOnInit(): void {
     if(this.file){
       this.selectedColumns = this.file._campaign_user_view.fields

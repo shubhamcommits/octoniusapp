@@ -36,7 +36,7 @@
       <td mat-cell *matCellDef="let task">
         <div>
           <div class="tags" *ngIf="task?.tags?.length <= 1">
-              <span class="badge" *ngFor="let tag of task?.tags">
+              <span class="badge" *ngFor="let tag of task?.tags; trackBy: utilityService.trackByIndex">
                   {{ tag }}
               </span>
           </div>
@@ -83,7 +83,7 @@
     </ng-container>
 
     <!-- CUSTOM FIELDS START -->
-    <ng-container [matColumnDef]="cf.name" *ngFor="let cf of customFieldsToShow">
+    <ng-container [matColumnDef]="cf.name" *ngFor="let cf of customFieldsToShow; trackBy: utilityService.trackByIndex">
       <th mat-header-cell *matHeaderCellDef>
         <div class="cf_cell" >
           {{ cf.title }}
@@ -127,7 +127,7 @@
                         (click)="$event.stopPropagation()"
                         [(ngModel)]="newColumnSelected"
                         name="new_column">
-                      <mat-option *ngFor="let f of customFields" [value]="f">{{ f.title }}</mat-option>
+                      <mat-option *ngFor="let f of customFields; trackBy: utilityService.trackByIndex" [value]="f">{{ f.title }}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>

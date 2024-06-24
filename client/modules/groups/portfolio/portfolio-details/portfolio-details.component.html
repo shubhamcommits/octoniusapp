@@ -20,7 +20,7 @@
                     <mat-form-field>
                         <mat-select ngDefaultControl (selectionChange)="periodSelected($event)" (click)="$event.stopPropagation()"
                             [(value)]="period" name="period">
-                            <mat-option *ngFor="let p of periods" [value]="p.key">{{ p.value }}</mat-option>
+                            <mat-option *ngFor="let p of periods; trackBy: utilityService.trackByIndex" [value]="p.key">{{ p.value }}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>

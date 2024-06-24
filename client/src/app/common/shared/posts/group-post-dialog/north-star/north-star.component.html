@@ -26,7 +26,7 @@
                 (click)="$event.stopPropagation()"
                 [(ngModel)]="northStar.type"
                 name="new_type">
-                  <mat-option *ngFor="let t of types" [value]="t">{{ t }}</mat-option>
+                  <mat-option *ngFor="let t of types; trackBy: utilityService.trackByIndex" [value]="t">{{ t }}</mat-option>
               </mat-select>
             </mat-form-field>
           </div>
@@ -44,7 +44,7 @@
                 (click)="$event.stopPropagation()"
                 [(ngModel)]="northStar.currency"
                 name="new_type">
-                  <mat-option *ngFor="let c of currencies" [value]="c.code">{{ c.name }}</mat-option>
+                  <mat-option *ngFor="let c of currencies; trackBy: utilityService.trackByIndex" [value]="c.code">{{ c.name }}</mat-option>
               </mat-select>
             </mat-form-field>
           </div>
@@ -108,7 +108,7 @@
             [(ngModel)]="newValue.status"
             (selectionChange)="changeStatus($event)"
             (click)="$event.stopPropagation()">
-              <mat-option *ngFor="let s of status_types" [value]="s">{{ s }}</mat-option>
+              <mat-option *ngFor="let s of status_types; trackBy: utilityService.trackByIndex" [value]="s">{{ s }}</mat-option>
           </mat-select>
         </mat-form-field>
 

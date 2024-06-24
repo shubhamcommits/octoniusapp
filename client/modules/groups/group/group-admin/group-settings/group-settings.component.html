@@ -78,7 +78,7 @@
           <mat-select
               (selectionChange)="selectShuttleSection($event.value)"
               [(value)]="groupData._shuttle_section">
-            <mat-option *ngFor="let section of groupSections; let j=index" [value]="section._id">{{ section.title }}</mat-option>
+            <mat-option *ngFor="let section of groupSections; let j=index; trackBy: utilityService.trackByIndex" [value]="section._id">{{ section.title }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>

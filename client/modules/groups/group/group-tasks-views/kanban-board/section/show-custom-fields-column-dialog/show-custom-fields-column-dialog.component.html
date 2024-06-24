@@ -5,7 +5,7 @@
     <p i18n="@@showCustomFieldsColumnDialog.cfToShowDescription">This will display statistics for selected Custom Fields in the header of the section.</p>
 
     <div class="content-box" *ngIf="!!customFields && customFields.length > 0">
-      <div *ngFor="let cf of customFields" style="display: flex; justify-content: space-between">
+      <div *ngFor="let cf of customFields; trackBy: utilityService.trackByIndex" style="display: flex; justify-content: space-between">
         <div> {{ cf.title }} </div>
         <div>
           <mat-slide-toggle color="primary"

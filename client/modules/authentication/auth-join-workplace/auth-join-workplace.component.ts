@@ -31,7 +31,7 @@ export class AuthJoinWorkplaceComponent implements OnInit {
   publicFunctions = new PublicFunctions(this._Injector);
 
   constructor(
-    private utilityService: UtilityService,
+    public utilityService: UtilityService,
     private authenticationService: AuthService,
     private storageService: StorageService,
     public router: Router,

@@ -8,7 +8,7 @@
                 (click)="$event.stopPropagation()"
                 [(value)]="period"
                 name="period">
-            <mat-option *ngFor="let p of periods" [value]="p.key">{{ p.value }}</mat-option>
+            <mat-option *ngFor="let p of periods; trackBy: utilityService.trackByIndex" [value]="p.key">{{ p.value }}</mat-option>
         </mat-select>
       </mat-form-field>
 
@@ -21,7 +21,7 @@
               (+{{filteringGroups.length - 1}} {{filteringGroups?.length === 2 ? 'other' : 'others'}})
             </span>
           </mat-select-trigger>
-          <mat-option *ngFor="let group of groupsList" [value]="group">{{ group.group_name }}</mat-option>
+          <mat-option *ngFor="let group of groupsList; trackBy: utilityService.trackByIndex" [value]="group">{{ group.group_name }}</mat-option>
         </mat-select>
       </mat-form-field>
 
@@ -107,7 +107,7 @@
               (+{{filteringProjects.length - 1}} {{filteringProjects?.length === 2 ? 'other' : 'others'}})
             </span>
           </mat-select-trigger>
-          <mat-option *ngFor="let project of projects" [value]="project">{{ project.title }}</mat-option>
+          <mat-option *ngFor="let project of projects; trackBy: utilityService.trackByIndex" [value]="project">{{ project.title }}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>

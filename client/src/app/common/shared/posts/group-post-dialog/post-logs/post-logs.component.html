@@ -1,5 +1,5 @@
 <div style="max-height: 600px;">
-  <div class="notification-item" *ngFor="let log of logs; let index = index">
+  <div class="notification-item" *ngFor="let log of logs; let index = index; trackBy: utilityService.trackByIndex">
     <div class="notification_actor">
       <app-secured-image
         [imgURL]="log?._actor?.profile_pic"

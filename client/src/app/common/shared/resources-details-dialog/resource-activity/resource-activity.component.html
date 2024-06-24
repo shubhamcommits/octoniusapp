@@ -20,7 +20,7 @@
       <div class="category mr-2" *ngIf="activityAddInventory!= null && !activityAddInventory">
         <mat-select ngDefaultControl appearance="fill" class="form-control" [(ngModel)]="activityProject"
           (selectionChange)="changeActivityProject($event)" [placeholder]="projectPlaceholder">
-          <mat-option *ngFor="let project of projects" [value]="project._id">{{ project.title }}</mat-option>
+          <mat-option *ngFor="let project of projects; trackBy: utilityService.trackByIndex" [value]="project._id">{{ project.title }}</mat-option>
         </mat-select>
       </div>
 

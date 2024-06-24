@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject, Injector } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-liked-by-dialog',
@@ -16,9 +17,10 @@ export class LikedByDialogComponent implements OnInit {
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
   constructor(
+      public utilityService: UtilityService,
       private injector: Injector,
+      private mdDialogRef: MatDialogRef<LikedByDialogComponent>,
       @Inject(MAT_DIALOG_DATA) public data: any,
-      private mdDialogRef: MatDialogRef<LikedByDialogComponent>
     ) {}
 
   async ngOnInit() {

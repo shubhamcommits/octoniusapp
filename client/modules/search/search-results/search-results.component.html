@@ -42,7 +42,7 @@
   <div class="mb-2" *ngIf="data?.tags && data?.tags.length > 0">
     <strong i18n="@@searchResult.tags">Tags: </strong>
 
-    <span *ngFor="let tag of data?.tags" class="label">{{ tag }}</span>
+    <span *ngFor="let tag of data?.tags; trackBy: utilityService.trackByIndex" class="label">{{ tag }}</span>
   </div>
 
   <div class="mb-2">
@@ -73,7 +73,7 @@
   <div *ngIf="customFields && customFields.length > 0 && (data?.custom_fields || data?.task?.custom_fields)" class="mb-2">
     <strong i18n="@@searchResult.customFields">Custom Fields: </strong>
 
-    <div *ngFor="let cf of customFields" class="label" [ngStyle]="{'background': (cf.badge_color) ? cf.badge_color : '#48CDC1' }">
+    <div *ngFor="let cf of customFields; trackBy: utilityService.trackByIndex" class="label" [ngStyle]="{'background': (cf.badge_color) ? cf.badge_color : '#48CDC1' }">
       <span *ngIf="type == 'file' && data?.custom_fields && data?.custom_fields[cf.name]">{{ cf.title }}: {{ data?.custom_fields[cf.name] }}</span>
       <span *ngIf="(type == 'post' || type=='task') && data?.task?.custom_fields && data?.task?.custom_fields[cf.name]">{{ cf.title }}: {{ data?.task?.custom_fields[cf.name] }}</span>
     </div>
@@ -111,13 +111,13 @@
 
   <div class="mb-2 mt-2">
     <strong i18n="@@searchResult.skills">Skills: </strong>
-      <span *ngFor="let skill of data.skills" class="label"> {{ skill }}</span>
+      <span *ngFor="let skill of data.skills; trackBy: utilityService.trackByIndex" class="label"> {{ skill }}</span>
   </div>
 
   <div *ngIf="customFields && customFields.length > 0 && data?.profile_custom_fields" class="mb-2">
     <strong i18n="@@searchResult.customFields">Custom Fields: </strong>
 
-    <div *ngFor="let cf of customFields" class="label" style="background: #48CDC1;">
+    <div *ngFor="let cf of customFields; trackBy: utilityService.trackByIndex" class="label" style="background: #48CDC1;">
       <span *ngIf="data?.profile_custom_fields && data?.profile_custom_fields[cf.name] && !cf.user_type">{{ cf.title }}: {{ data?.profile_custom_fields[cf.name] }}</span>
       <span *ngIf="data?.profile_custom_fields && data?.profile_custom_fields[cf.name] && cf.user_type">{{ cf.title }}: {{ data?.profile_custom_fields[cf.name].first_name + ' ' + data?.profile_custom_fields[cf.name].last_name }} </span>
     </div>

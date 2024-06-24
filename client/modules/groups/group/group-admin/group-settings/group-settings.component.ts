@@ -5,9 +5,7 @@ import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { GroupRAGDialogComponent } from '../group-rag-dialog/group-rag-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { environment } from 'src/environments/environment';
 import { ColorPickerDialogComponent } from 'src/app/common/shared/color-picker-dialog/color-picker-dialog.component';
-import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { GroupTimeTrackingCategoriesDialogComponent } from './time-tracking-categories-dialog/time-tracking-categories-dialog.component';
 
 @Component({
@@ -38,9 +36,8 @@ export class GroupSettingsComponent implements OnInit {
   publicFunctions = this.injector.get(PublicFunctions);
 
   constructor(
-    private utilityService: UtilityService,
+    public utilityService: UtilityService,
     private groupService: GroupService,
-    private managementPortalService: ManagementPortalService,
     public dialog: MatDialog,
     private injector: Injector,
     public router: Router

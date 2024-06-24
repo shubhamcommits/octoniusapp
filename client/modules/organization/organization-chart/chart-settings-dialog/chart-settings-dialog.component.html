@@ -27,7 +27,7 @@
           <div class="filter-label" i18n="@@chartSettingsDialog.selectManagerCF">Select the Manager Custom Field</div>
           <div class="filter-cell">
             <mat-select [(value)]="selectedManagerField" (selectionChange)="selectManagerField($event)" appearance="fill">
-              <mat-option [value]="cf.name" *ngFor="let cf of posibleManagerCF">{{ cf.title }}</mat-option>
+              <mat-option [value]="cf.name" *ngFor="let cf of posibleManagerCF; trackBy: utilityService.trackByIndex">{{ cf.title }}</mat-option>
             </mat-select>
           </div>
         </div>

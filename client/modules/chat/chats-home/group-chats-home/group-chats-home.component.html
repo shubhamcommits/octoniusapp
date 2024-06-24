@@ -20,7 +20,7 @@
     
       <mat-list *ngIf="chats?.length > 0">
         <!-- CHAT ITEM STARTS-->
-        <mat-list-item class="chat-item" *ngFor="let chat of chats; let index = index">
+        <mat-list-item class="chat-item" *ngFor="let chat of chats; let index = index; trackBy: utilityService.trackByIndex">
           <div (click)="openChat(chat?._id)" style="width: 100%; cursor: pointer;">
             <app-chat-avatar [chatData]="chat" [userData]="userData" style="float: left; margin-right: 20px;"></app-chat-avatar>
       

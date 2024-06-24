@@ -22,12 +22,12 @@ export class ChartSettingsDialogComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+      public utilityService: UtilityService,
       private injector: Injector,
-      private utilityService: UtilityService,
       private workspaceService: WorkspaceService,
+      private mdDialogRef: MatDialogRef<ChartSettingsDialogComponent>,
       @Inject(MAT_DIALOG_DATA) public data: any,
-      private mdDialogRef: MatDialogRef<ChartSettingsDialogComponent>
-      ) { }
+    ) { }
 
   async ngOnInit(): Promise<void> {
     this.workspaceData = this.data.workspaceData;

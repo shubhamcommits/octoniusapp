@@ -8,7 +8,7 @@
                 (click)="$event.stopPropagation()"
                 [(value)]="period"
                 name="period">
-            <mat-option *ngFor="let p of periods" [value]="p.key">{{ p.value }}</mat-option>
+            <mat-option *ngFor="let p of periods; trackBy: utilityService.trackByIndex" [value]="p.key">{{ p.value }}</mat-option>
         </mat-select>
       </mat-form-field>
 
@@ -48,7 +48,7 @@
 
   <!-- CF Widgets STARTS -->
   <div class="row d-none d-md-block" *ngIf="cfWidgets?.length > 0&& !isIndividualSubscription">
-    <div class="col-md-3 box" *ngFor="let cfWidget of cfWidgets">
+    <div class="col-md-3 box" *ngFor="let cfWidget of cfWidgets; trackBy: utilityService.trackByIndex">
       <app-custom-field-statistics-card [period]="period" [group]="groupData?._id" [customField]="getCustomField(cfWidget)"></app-custom-field-statistics-card>
     </div>
   </div>

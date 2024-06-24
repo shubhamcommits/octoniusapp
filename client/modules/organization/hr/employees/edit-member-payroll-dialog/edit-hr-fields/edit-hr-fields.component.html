@@ -79,13 +79,13 @@
                 </app-date-picker>
             </div>
 
-            <div *ngFor="let cf of hrCustomFields" class="mb-4">
+            <div *ngFor="let cf of hrCustomFields; trackBy: utilityService.trackByIndex" class="mb-4">
                 <label [for]="cf._id" class="cflabel">{{ cf.name }}</label>
                 
                 <mat-select ngDefaultControl *ngIf="cf.type == 'Select'" [(value)]="selectedHRCFValues[cf._id]"
                     (selectionChange)="onSelectEntityCustomFieldChange($event, cf._id)" appearance="fill">
                     <mat-select-trigger>{{ selectedHRCFValues[cf._id] }}</mat-select-trigger>
-                    <mat-option *ngFor="let val of cf.values" [value]="val">{{ val }}</mat-option>
+                    <mat-option *ngFor="let val of cf.values; trackBy: utilityService.trackByIndex" [value]="val">{{ val }}</mat-option>
                 </mat-select>
 
                 <input type="number" *ngIf="cf.type == 'Number'" [name]="cf.name" [(ngModel)]="selectedHRCFValues[cf._id]"
@@ -130,7 +130,7 @@
                     (blur)="saveProperty({'hr.hourly_rate': $event.target.value})" />
             </div>
 
-            <div *ngFor="let variable of hrVariables" class="mb-4">
+            <div *ngFor="let variable of hrVariables; trackBy: utilityService.trackByIndex" class="mb-4">
                 <label [for]="variable._id" class="cflabel">{{ variable.name }}</label>
 
                 <input type="number" [name]="variable.name" [(ngModel)]="selectedHRVariablesValues[variable._id]"
@@ -155,18 +155,18 @@
 
     <div class="col">
         <div class="form-group">
-            <div *ngFor="let benefit of hrBenefits" class="mb-3">
+            <div *ngFor="let benefit of hrBenefits; trackBy: utilityService.trackByIndex" class="mb-3">
                 <label [for]="benefit._id" class="cflabel">{{ benefit.name }}</label>
 
                 <mat-select ngDefaultControl *ngIf="benefit.type == 'Select'"
                     [(value)]="selectedHRBenefitValues[benefit._id]"
                     (selectionChange)="onSelectEntityBenefitChange($event, benefit._id)" appearance="fill">
                     <mat-select-trigger>{{ selectedHRBenefitValues[benefit._id] }}</mat-select-trigger>
-                    <mat-option *ngFor="let val of benefit.values" [value]="val">{{ val }}</mat-option>
+                    <mat-option *ngFor="let val of benefit.values; trackBy: utilityService.trackByIndex" [value]="val">{{ val }}</mat-option>
                 </mat-select>
 
                 <ul *ngIf="benefit.type == 'Multiselect'" class="benefitslist">
-                    <li *ngFor="let b of benefit.values">
+                    <li *ngFor="let b of benefit.values; trackBy: utilityService.trackByIndex">
                         <mat-checkbox [checked]="isSelected(selectedHRBenefitValues[benefit._id], b)"
                             (change)="onCheckedEntityBenefitChange(selectedHRBenefitValues[benefit._id], b, benefit._id)">
                             {{ b }}

@@ -25,7 +25,7 @@
         <div class="customFieldsList" *ngIf="customFields.length > 0">
 
             <div class="customFieldsBody">
-                <div class="field" *ngFor="let field of customFields">
+                <div class="field" *ngFor="let field of customFields; trackBy: utilityService.trackByIndex">
                     <div class="title">
                         <i class="material-icons" style="color: #005FD5">label</i>
                         {{ field.title }}
@@ -35,7 +35,7 @@
                     </div>
 
                     <div class="values" *ngIf="!field.user_type">
-                        <span class="badge" *ngFor="let value of field.values">
+                        <span class="badge" *ngFor="let value of field.values; trackBy: utilityService.trackByIndex">
                             {{ value }}
                             <i class="material-icons" *ngIf="field.name != 'priority'"
                                 (click)="removeValue(field, value)"

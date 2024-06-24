@@ -52,7 +52,7 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
       private changeDetectorRef: ChangeDetectorRef,
       private injector: Injector,
-      private utilityService: UtilityService,
+      public utilityService: UtilityService,
       private chatService: ChatService,
       private websocketService: SocketService
       ) {}

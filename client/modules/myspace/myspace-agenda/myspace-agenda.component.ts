@@ -32,7 +32,7 @@ export class MyspaceAgendaComponent implements OnInit {
   constructor(
     private userService: UserService,
     private injector: Injector,
-    private utilityService: UtilityService) {
+    public utilityService: UtilityService) {
 
   }
 

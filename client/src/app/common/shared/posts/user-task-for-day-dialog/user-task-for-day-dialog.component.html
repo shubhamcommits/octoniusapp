@@ -30,7 +30,7 @@
   <!-- Empty State of tasks ends -->
 
   <div *ngIf="!!tasksForTheDay && tasksForTheDay.length > 0">
-    <div *ngFor="let task of tasksForTheDay; let i = index;">
+    <div *ngFor="let task of tasksForTheDay; let i = index; trackBy: utilityService.trackByIndex">
       <a (click)="openModal(task)">
         <!-- My Space Today Tasks -->
         <div [class]="getTaskStatusClass(task)">

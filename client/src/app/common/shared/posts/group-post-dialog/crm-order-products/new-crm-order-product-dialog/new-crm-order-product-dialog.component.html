@@ -28,7 +28,7 @@
                                     (keydown)="$event.stopPropagation()" (keyup)="searchProduct()">
                         
                                 <ul *ngIf="!!productSearchResults && !!productSearchText" class="product-list dropdown-menu">
-                                    <li class="product-list-item pointer" *ngFor="let product of productSearchResults"
+                                    <li class="product-list-item pointer" *ngFor="let product of productSearchResults; trackBy: utilityService.trackByIndex"
                                         (click)="selectProduct(product)">
                                         {{ product.name }}
                                     </li>

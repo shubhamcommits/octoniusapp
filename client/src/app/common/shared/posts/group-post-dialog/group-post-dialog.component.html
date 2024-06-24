@@ -369,7 +369,7 @@
         <div class="content-box" *ngIf="postData && postData?.type === 'task' && postData?._group && customFields?.length > 0">
             <p class="box-title" i18n="@@groupCreatePostDialog.customFields">Custom fields</p>
 
-            <div *ngFor="let cf of customFields" class="d-flex custom-field justify-content-start mb-3 row">
+            <div *ngFor="let cf of customFields; trackBy: utilityService.trackByIndex" class="d-flex custom-field justify-content-start mb-3 row">
                 <p class="col">{{ cf.title }}</p>
                 <mat-select ngDefaultControl *ngIf="!cf.input_type"
                     [(value)]="selectedCFValues[cf.name]"
@@ -382,7 +382,7 @@
                     <input type="text" class="form-control" [id]="'search-text' + cf.name" [(ngModel)]="cfSearchText"
                       [placeholder]="cfSearchPlaceholder" autofocus
                       (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
-                    <mat-option *ngFor="let val of cf.values | appFilter: cfSearchText" [value]="val">{{ val }}</mat-option>
+                    <mat-option *ngFor="let val of cf.values | appFilter: cfSearchText; trackBy: utilityService.trackByIndex" [value]="val">{{ val }}</mat-option>
                 </mat-select>
 
                 <div *ngIf="cf.input_type && !cf.input_type_date" class="col" style="display: flex; float: left; width: 125px;">

@@ -49,9 +49,9 @@ export class KanbanArchivedSectionsComponent implements OnInit, OnChanges, After
   public isLoading$ = new BehaviorSubject(false);
 
   constructor(
-    private utilityService: UtilityService,
     private flowService: FlowService,
     private injector: Injector,
+    public utilityService: UtilityService,
     public dialog: MatDialog
   ) { }
 

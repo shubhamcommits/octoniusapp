@@ -2,7 +2,6 @@ import { Component, Input, Output, OnChanges, EventEmitter, ViewChild, ViewEncap
 import { MatMenuTrigger } from '@angular/material/menu';
 import { PublicFunctions } from 'modules/public.functions';
 import { GroupService } from 'src/shared/services/group-service/group.service';
-import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
@@ -46,10 +45,9 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
   subSink = new SubSink();
 
   constructor(
-    private utilityService: UtilityService,
+    public utilityService: UtilityService,
     private postService: PostService,
     private groupService: GroupService,
-    private managementPortalService: ManagementPortalService,
     private injector: Injector
   ) { }
 

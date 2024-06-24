@@ -85,7 +85,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
-    private utilityService: UtilityService,
+    public utilityService: UtilityService,
     private postService: PostService,
     private _router: Router,
     private injector: Injector,

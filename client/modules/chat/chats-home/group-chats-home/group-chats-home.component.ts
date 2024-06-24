@@ -2,6 +2,7 @@ import { Component, EventEmitter, Injector, Input, OnDestroy, Output } from '@an
 import { PublicFunctions } from 'modules/public.functions';
 import { ChatService } from 'src/shared/services/chat-service/chat.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-group-chats-home',
@@ -23,6 +24,7 @@ export class GroupChatsHomeComponent implements OnDestroy {
 
   constructor(
     private injector: Injector,
+    public utilityService: UtilityService
   ) {
     
   }

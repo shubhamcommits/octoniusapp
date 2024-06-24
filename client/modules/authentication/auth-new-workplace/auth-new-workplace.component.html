@@ -39,7 +39,7 @@
             </ng-template>
 
             <mat-select ngDefaultControl (selectionChange)="selectStripeProduct($event.value)" style="border:1px solid #ced4da; padding: 6px; border-radius: 4px;">
-              <mat-option *ngFor="let product of stripeProducts" [value]="product.id">{{ product.name }}</mat-option>
+              <mat-option *ngFor="let product of stripeProducts; trackBy: utilityService.trackByIndex" [value]="product.id">{{ product.name }}</mat-option>
             </mat-select>
           </div>
 

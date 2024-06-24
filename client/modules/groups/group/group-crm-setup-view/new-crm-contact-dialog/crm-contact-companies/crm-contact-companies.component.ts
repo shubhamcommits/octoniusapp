@@ -32,7 +32,7 @@ export class CRMContactCompaniesComponent implements OnChanges {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
-    private utilityService: UtilityService,
+    public utilityService: UtilityService,
     private crmGroupService: CRMGroupService,
     private injector: Injector,
   ) { }

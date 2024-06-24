@@ -48,9 +48,9 @@ export class ResourceActivityComponent implements OnChanges {
   publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    public utilityService: UtilityService,
     private resourcesGroupService: ResourcesGroupService,
     private userService: UserService,
-    private utilityService: UtilityService,
     private datesService: DatesService,
     private injector: Injector
   ) { }

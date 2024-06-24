@@ -12,7 +12,7 @@
         [(value)]="status"
         (selectionChange)="changeStatus($event)"
         (click)="$event.stopPropagation()">
-          <mat-option *ngFor="let s of status_types" [value]="s">{{ s }}</mat-option>
+          <mat-option *ngFor="let s of status_types; trackBy: utilityService.trackByIndex" [value]="s">{{ s }}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>

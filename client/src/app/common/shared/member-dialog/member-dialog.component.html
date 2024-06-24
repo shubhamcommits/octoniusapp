@@ -103,7 +103,7 @@
 
                   <!-- Iterate over all the skills present for a particular user starts -->
                   <ul class="skills">
-                      <li *ngFor="let skill of userData?.skills">
+                      <li *ngFor="let skill of userData?.skills; trackBy: utilityService.trackByIndex">
                           {{skill}}
                       </li>
                   </ul>
@@ -125,7 +125,7 @@
 
                   <!-- Iterate over all the profile fields present for a particular workspace starts -->
                   <ul class="skills">
-                      <li *ngFor="let pf of currentWorkspace?.profile_custom_fields">
+                      <li *ngFor="let pf of currentWorkspace?.profile_custom_fields; trackBy: utilityService.trackByIndex">
                         <span>{{ pf.title }}: &nbsp;</span>
                         <span *ngIf="userData.profile_custom_fields[pf.name] && !pf.user_type">{{ userData.profile_custom_fields[pf.name] }}</span>
                         <span *ngIf="userData.profile_custom_fields[pf.name] && pf.user_type">

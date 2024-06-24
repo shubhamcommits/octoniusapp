@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, Output, Input, Injector, EventEmitter } f
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs';
 import { LoungeService } from 'src/shared/services/lounge-service/lounge.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-lounge-new-element',
@@ -46,6 +47,7 @@ export class LoungeNewElementComponent implements OnInit, OnDestroy {
 
   constructor(
     public Injector: Injector,
+    public utilityService: UtilityService,
     private loungeService: LoungeService
   ) { }
 

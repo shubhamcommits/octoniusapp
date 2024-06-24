@@ -1,6 +1,6 @@
 <div *ngIf="comments && comments.length > 0">
 
-  <section *ngFor="let comment of comments; let index = index;">
+  <section *ngFor="let comment of comments; let index = index; trackBy: utilityService.trackByIndex">
       <post-comment [comment]="comment" [index]="index" [userData]="userData"
           [groupId]="groupId" (remove)="removeComment(comment._id)"></post-comment>
   </section>

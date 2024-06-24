@@ -27,7 +27,7 @@
             </div>
             
             <div style="padding: 20px;">
-                <app-page-row *ngFor="let page of collectionData?._pages"
+                <app-page-row *ngFor="let page of collectionData?._pages; trackBy: utilityService.trackByIndex"
                     [pageData]="page" [userData]="userData" [workspaceId]="workspaceData?._id" [canEdit]="canEdit"
                     (subpageDeletedEmitter)="initPages()"></app-page-row>
             </div>
@@ -79,7 +79,7 @@
                     <!-- Folder edit title name ends -->
                 </div>
 
-                <div class="row page" *ngFor="let folder of folders">
+                <div class="row page" *ngFor="let folder of folders; trackBy: utilityService.trackByIndex">
                 
                     <div class="page-info">
                         <a class="mt-0" style="cursor: pointer" (click)="openFolder(folder?._id)">
@@ -100,7 +100,7 @@
                                 </a>
                             
                                 <mat-menu #moveFolderMenu="matMenu">
-                                    <ng-container *ngFor="let folderMenu of folders; let index = index">
+                                    <ng-container *ngFor="let folderMenu of folders; let index = index; trackBy: utilityService.trackByIndex">
                                         <button mat-menu-item *ngIf="folderMenu._id != folderMenu._id"
                                             (click)="moveToFolder(folder._id, folderMenu?._id, 'folder')">{{ folderMenu?.folder_name }}</button>
                                     </ng-container>
@@ -115,7 +115,7 @@
                     </div>
                 </div>
 
-                <div class="row page" *ngFor="let file of files">
+                <div class="row page" *ngFor="let file of files; trackBy: utilityService.trackByIndex">
 
                     <div class="page-info">
                         <div class="page-title" style="cursor: pointer" (click)="openDocument(file)">
@@ -139,7 +139,7 @@
                             </a>
                             
                             <mat-menu #moveFolderMenu="matMenu">
-                                <ng-container *ngFor="let folder of folders; let index = index">
+                                <ng-container *ngFor="let folder of folders; let index = index; trackBy: utilityService.trackByIndex">
                                     <button mat-menu-item (click)="moveToFolder(file._id, folder?._id, 'file')">{{ folder?.folder_name }}</button>
                                 </ng-container>
                             </mat-menu>

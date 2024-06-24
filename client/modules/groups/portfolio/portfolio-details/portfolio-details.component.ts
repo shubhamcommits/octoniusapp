@@ -50,7 +50,7 @@ export class PortfolioDetailsComponent implements OnInit {
   constructor(
     public injector: Injector,
     public dialog: MatDialog,
-    private utilityService: UtilityService,
+    public utilityService: UtilityService,
     private portfolioService: PortfolioService
   ) {
   }

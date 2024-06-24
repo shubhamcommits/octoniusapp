@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
 import { UserService } from 'src/shared/services/user-service/user.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-select-language',
@@ -24,6 +25,7 @@ export class SelectLanguageComponent implements OnInit {
 
   constructor(
     @Inject(LOCALE_ID) public locale: string,
+    public utilityService: UtilityService,
     private userService: UserService,
     private injector: Injector,
     private _router: Router

@@ -31,10 +31,10 @@ export class UserTaskForDayDialogComponent implements OnInit, OnDestroy {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
-    private injector: Injector,
-    private utilityService: UtilityService,
-    private datesService: DatesService,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    public utilityService: UtilityService,
+    private injector: Injector,
+    private datesService: DatesService,
   ) {
   }
 

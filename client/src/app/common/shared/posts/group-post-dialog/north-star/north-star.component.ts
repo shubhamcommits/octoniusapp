@@ -3,6 +3,7 @@ import { CurrencyPipe } from '@angular/common';
 import { PublicFunctions } from 'modules/public.functions';
 import { CountryCurrencyService } from 'src/shared/services/country-currency/country-currency.service';
 import moment from 'moment';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-north-star',
@@ -42,6 +43,7 @@ export class NorthStarComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector)
 
   constructor(
+    public utilityService: UtilityService,
     private countryCurrencyService : CountryCurrencyService,
     private injector: Injector) { }
 

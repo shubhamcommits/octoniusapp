@@ -122,7 +122,7 @@
         <!-- Attached Files Starts -->
         <div *ngIf="post" class="ml-2 mt-2">
             <a href="{{ fileBaseUrl }}/{{ workspaceId }}/{{ file?.modified_name }}?authToken={{authToken}}" target="_blank"
-                *ngFor="let file of post.files; let index = index">
+                *ngFor="let file of post.files; let index = index; trackBy: utilityService.trackByIndex">
                 <span class="fileslabel">{{ file?.original_name }}</span>
             </a>
         </div>
@@ -130,7 +130,7 @@
         <!-- Tags Display -->
         <div class="col-md-auto mt-3" *ngIf="post.tags?.length>0">
 
-            <span *ngFor="let tag of post.tags" class="tagslabel">{{ tag }}</span>
+            <span *ngFor="let tag of post.tags; trackBy: utilityService.trackByIndex" class="tagslabel">{{ tag }}</span>
 
         </div>
         <!-- Tags Display ends -->

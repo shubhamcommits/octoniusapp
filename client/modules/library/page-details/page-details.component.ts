@@ -65,13 +65,13 @@ export class PageDetailsComponent implements OnInit {
 
   constructor(
     public injector: Injector,
+    public dialog: MatDialog,
+    public utilityService: UtilityService,
+    public storageService: StorageService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    public dialog: MatDialog,
     private _router: Router,
-    private utilityService: UtilityService,
     private libraryService: LibraryService,
-    public storageService: StorageService,
     private filesService: FilesService
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => {

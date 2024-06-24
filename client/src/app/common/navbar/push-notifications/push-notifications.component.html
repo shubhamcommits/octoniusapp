@@ -24,7 +24,7 @@
         <div class="notification-item" *ngIf="this.notificationsData?.unreadNotifications?.length != 0">
                 <button class="dropdown-item"
                     (click)="$event.stopPropagation()"
-                    *ngFor="let notifications of notificationsData?.unreadNotifications;">
+                    *ngFor="let notifications of notificationsData?.unreadNotifications; trackBy: utilityService.trackByIndex">
                         <app-secured-image
                             [imgURL]="notifications?._actor?.profile_pic"
                             [service]="'user'"
@@ -64,7 +64,8 @@
 
         <!-- NOTIFICATION ITEM STARTS-->
         <div class="notification-item" *ngIf="this.notificationsData?.readNotifications?.length != 0">
-                <button (click)="$event.stopPropagation()" class="dropdown-item notification-item" *ngFor="let notifications of notificationsData?.readNotifications;">
+                <button (click)="$event.stopPropagation()" class="dropdown-item notification-item"
+                    *ngFor="let notifications of notificationsData?.readNotifications; trackBy: utilityService.trackByIndex">
                         <app-secured-image
                             [imgURL]="notifications?._actor?.profile_pic"
                             [service]="'user'"

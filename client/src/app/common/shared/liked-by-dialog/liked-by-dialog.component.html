@@ -1,6 +1,6 @@
 <div class="customFieldsDialog">
   <h4 class="mb-4" i18n="@@likedByDialog.membersWhoLikedContent">Members who liked the content:</h4>
-  <div *ngFor="let user of usersList; let i = index;" class="row">
+  <div *ngFor="let user of usersList; let i = index; trackBy: utilityService.trackByIndex" class="row">
     <div class="col-md-2">
       <app-secured-image [imgURL]="user?.profile_pic" [service]="'user'"
         [workspaceId]="workspaceData?._id" [userData]="user"

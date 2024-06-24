@@ -33,7 +33,7 @@
       <div class="filter-label" i18n="@@searchHeader.tag">Tag</div>
       <div class="filter-cell">
 
-          <div *ngFor="let tag of advancedFilters?.tags; let i = index">
+          <div *ngFor="let tag of advancedFilters?.tags; let i = index; trackBy: utilityService.trackByIndex">
             <button class="btn tagslabel"
                 style="margin-right: 1rem;"
                 (click)="removeTag(i)">
@@ -56,7 +56,7 @@
       <div class="filter-label" i18n="@@searchHeader.skill">Skill</div>
       <div class="filter-cell">
 
-          <div *ngFor="let skill of advancedFilters?.skills; let i = index;">
+          <div *ngFor="let skill of advancedFilters?.skills; let i = index; trackBy: utilityService.trackByIndex">
 
               <button type="button" name="button" class="btn tagslabel" (click)="removeSkill(i)">
 
@@ -78,7 +78,7 @@
     <div class="advanced-filters" *ngIf="advancedFilters.type == 'file' || advancedFilters.type == 'post' || advancedFilters.type == 'task' || advancedFilters.type == 'page'">
       <div class="filter-label" i18n="@@searchHeader.owner">Owner</div>
       <div class="filter-cell">
-        <div class="useravatar" *ngFor="let member of advancedFilters.owners">
+        <div class="useravatar" *ngFor="let member of advancedFilters.owners; trackBy: utilityService.trackByIndex">
           <app-secured-image
             [imgURL]="member?.profile_pic"
             [service]="'user'"
@@ -141,7 +141,7 @@
       <div class="filter-label" i18n="@@searchHeader.userGroup">User's Group</div>
       <div class="filter-cell">
         <mat-select [(value)]="advancedFilters.group" (selectionChange)="selectGroup($event)" appearance="fill" style="width: 20%;">
-          <mat-option [value]="group._id" *ngFor="let group of userGroups">{{ group.group_name }}</mat-option>
+          <mat-option [value]="group._id" *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">{{ group.group_name }}</mat-option>
         </mat-select>
       </div>
     </div>
@@ -150,7 +150,7 @@
       <div class="filter-label" i18n="@@searchHeader.customFields">Custom Fields</div>
       <div class="filter-cell">
         <mat-select [(value)]="advancedFilters.cfName" (selectionChange)="selectCFName($event)" appearance="fill" style="width: 20%;">
-          <mat-option [value]="cf.name" *ngFor="let cf of customFields">{{ cf.title }}</mat-option>
+          <mat-option [value]="cf.name" *ngFor="let cf of customFields; trackBy: utilityService.trackByIndex">{{ cf.title }}</mat-option>
         </mat-select>
       </div>
     </div>
@@ -160,7 +160,7 @@
       <div class="filter-cell" *ngIf="selectedCustomField">
         <mat-select *ngIf="!selectedCustomField.input_type && !selectedCustomField.input_type_number && !selectedCustomField.input_type_text && !selectedCustomField.input_type_date"
             [(value)]="advancedFilters.cfValue" (selectionChange)="selectCFValue($event)" appearance="fill" style="width: 20%;">
-          <mat-option [value]="cfValue" *ngFor="let cfValue of selectedCustomField.values">{{ cfValue }}</mat-option>
+          <mat-option [value]="cfValue" *ngFor="let cfValue of selectedCustomField.values; trackBy: utilityService.trackByIndex">{{ cfValue }}</mat-option>
         </mat-select>
 
         <input *ngIf="selectedCustomField.input_type || selectedCustomField.input_type_number || selectedCustomField.input_type_text || selectedCustomField.input_type_date"
@@ -186,35 +186,35 @@
         <span class="material-icons">insert_drive_file</span>
         <span i18n="@@searchHeader.files">FILES</span>
       </p>
-      <a *ngFor="let file of searchedFiles"
+      <a *ngFor="let file of searchedFiles; trackBy: utilityService.trackByIndex"
         (click)="selected=file; selectedType='file'" class="octo-search-results">{{ file.original_name }}</a>
 
       <p *ngIf="searchedPosts.length > 0" class="octo-search-category">
         <span class="material-icons">message</span>
         <span i18n="@@searchHeader.posts">POSTS</span>
       </p>
-      <a *ngFor="let post of searchedPosts"
+      <a *ngFor="let post of searchedPosts; trackBy: utilityService.trackByIndex"
         (click)="selected=post; selectedType='post'" class="octo-search-results">{{ post.title }}</a>
 
       <p *ngIf="searchedTasks.length > 0" class="octo-search-category">
         <span class="material-icons">task</span>
         <span i18n="@@searchHeader.tasks">TASKS</span>
       </p>
-      <a *ngFor="let task of searchedTasks"
+      <a *ngFor="let task of searchedTasks; trackBy: utilityService.trackByIndex"
         (click)="selected=task; selectedType='task'" class="octo-search-results">{{ task.title }}</a>
 
       <p *ngIf="searchedPages.length > 0" class="octo-search-category">
         <span class="material-icons">task</span>
         <span i18n="@@searchHeader.pages">PAGES</span>
       </p>
-      <a *ngFor="let page of searchedPages"
+      <a *ngFor="let page of searchedPages; trackBy: utilityService.trackByIndex"
         (click)="selected=page; selectedType='page'" class="octo-search-results">{{ page.title }}</a>
 
       <p *ngIf="searchedUsers.length > 0" class="octo-search-category">
         <span class="material-icons">supervisor_account</span>
         <span i18n="@@searchHeader.users">USERS</span>
       </p>
-      <a *ngFor="let user of searchedUsers"
+      <a *ngFor="let user of searchedUsers; trackBy: utilityService.trackByIndex"
         (click)="selected=user; selectedType='user'" class="octo-search-results">{{ user.first_name }} {{ user.last_name }}</a>
     </div>
 

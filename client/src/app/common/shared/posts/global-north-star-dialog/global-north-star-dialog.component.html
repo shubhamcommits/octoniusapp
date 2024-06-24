@@ -114,7 +114,7 @@
 
 
         <div class="subtasks">
-          <div *ngFor="let task of subtasks; let i = index;">
+          <div *ngFor="let task of subtasks; let i = index; trackBy: utilityService.trackByIndex">
             <div class="media tile overview-task">
               <div class="row media-body">
                 <div class="col-md-1" (click)="openSubtask(task)">

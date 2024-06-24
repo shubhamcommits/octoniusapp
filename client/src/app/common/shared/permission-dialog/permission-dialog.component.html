@@ -26,7 +26,7 @@
     </div>
 
     <div *ngIf="!editMode">
-      <div *ngFor="let permission of permissionsList" class="rag">
+      <div *ngFor="let permission of permissionsList; trackBy: utilityService.trackByIndex" class="rag">
           <div class="">
             <span class="permission-label mr-3"> <i class="material-icons mr-1">vpn_lock</i>{{ permission?.right }}</span>
             
@@ -34,7 +34,7 @@
           </div>
 
           <div class="d-flex">
-            <div *ngFor="let member of permission._members">
+            <div *ngFor="let member of permission._members; trackBy: utilityService.trackByIndex">
                 <app-secured-image
                   [imgURL]="member?.profile_pic"
                   [service]="'user'"
@@ -44,7 +44,7 @@
                   [styleClass]="'feed-avatar'"></app-secured-image>
             </div>
 
-            <div *ngFor="let tag of permission.rags; let i = index" class="tagrow">
+            <div *ngFor="let tag of permission.rags; let i = index; trackBy: utilityService.trackByIndex" class="tagrow">
               
                 <span class="tag">
                   {{ tag }}
@@ -75,14 +75,14 @@
             <mat-label>Select permission</mat-label>
           <mat-select [(value)]="permissionToEdit.right"
               (selectionChange)="selectPermissionRight(permissionToEdit._id, $event.value)">
-            <mat-option *ngFor="let right of permissionRights" [value]="right._id">{{ right.title }}</mat-option>
+            <mat-option *ngFor="let right of permissionRights; trackBy: utilityService.trackByIndex" [value]="right._id">{{ right.title }}</mat-option>
           </mat-select>
         </mat-form-field>
           <span i18n="@@permissionDialog.for" *ngIf="permissionToEdit?._id" style="line-height: 50px;" class="ml-3">for</span>
         </div>
 
         <div class="d-flex" *ngIf="permissionToEdit?._id">
-          <div class="useravatar" *ngFor="let member of permissionToEdit?._members">
+          <div class="useravatar" *ngFor="let member of permissionToEdit?._members; trackBy: utilityService.trackByIndex">
               <app-secured-image
                 [imgURL]="member?.profile_pic"
                 [service]="'user'"
@@ -103,7 +103,7 @@
         </div>
 
         <div *ngIf="permissionToEdit?._id" class="d-flex">
-          <div *ngFor="let tag of permissionToEdit.rags; let i = index">
+          <div *ngFor="let tag of permissionToEdit.rags; let i = index; trackBy: utilityService.trackByIndex">
             <div>
               <span class="tag">
                 {{ tag }}

@@ -24,10 +24,10 @@
     </button>
 
     <mat-menu #transferMenu="matMenu">
-      <ng-container *ngFor="let group of userGroups; let index = index">
+      <ng-container *ngFor="let group of userGroups; let index = index; trackBy: utilityService.trackByIndex">
         <button mat-menu-item [matMenuTriggerFor]="columnsMenu">{{ group.group_name }}</button>
         <mat-menu #columnsMenu="matMenu">
-          <button *ngFor="let section of userGroups[index]?.sections" mat-menu-item (click)="transferToGroup(userGroups[index]?._id, section)">{{ section.title }}</button>
+          <button *ngFor="let section of userGroups[index]?.sections; trackBy: utilityService.trackByIndex" mat-menu-item (click)="transferToGroup(userGroups[index]?._id, section)">{{ section.title }}</button>
         </mat-menu>
       </ng-container>
     </mat-menu>
@@ -54,8 +54,10 @@
       <div>
         <div class="users-card" style="width: 200px">
           <ul class="assignee-list">
-            <button mat-menu-item  class="assignee-list-item" style="line-height: inherit;" *ngFor="let template of groupTemplates" (mouseover)="saveTemplateAction('')" (click)="selectTemplate(template._id)">
-              {{ template.task.template_name }}
+            <button mat-menu-item  class="assignee-list-item" style="line-height: inherit;"
+              (mouseover)="saveTemplateAction('')" (click)="selectTemplate(template._id)"
+              *ngFor="let template of groupTemplates; trackBy: utilityService.trackByIndex">
+                {{ template.task.template_name }}
             </button>
 
             <!-- <li class="assignee-list-item save-template" (click)="createTemplate()">Save as template</li> -->
@@ -82,7 +84,7 @@
               <div>
                 <div class="users-card">
                   <ul class="assignee-list">
-                    <li class="assignee-list-item" *ngFor="let template of groupTemplates" (click)="selectTemplate(template._id, template.task.template_name)">
+                    <li class="assignee-list-item" *ngFor="let template of groupTemplates; trackBy: utilityService.trackByIndex" (click)="selectTemplate(template._id, template.task.template_name)">
                       {{ template.task.template_name }}
                     </li>
 
@@ -110,7 +112,7 @@
     <!-- INPUT ENDS -->
     <div *ngIf="searchingOn === 'keyword'">
       <section id="results" *ngIf="!(isLoadingAction$ | async)" class="results" onfocusout="">
-        <div class="media task-item user-list mb-0" *ngFor=" let task of tasksList; let index = index;">
+        <div class="media task-item user-list mb-0" *ngFor=" let task of tasksList; let index = index; trackBy: utilityService.trackByIndex">
           <div class="media-body mt-2">
             <!-- Display full name of the member starts -->
             <h4 class="mt-0 full-name-text" (click)="setParentTask(task._id)">
@@ -133,7 +135,7 @@
   <div *ngIf="groupData && groupData?.project_type && !isChild && !isIndividualSubscription && !postData?.task?.is_crm_task" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
     <span i18n="@@taskActions.makeDependencyOf">Make dependency of...</span>
 
-    <button *ngFor="let task of dependencyTask; let i = index" class="btn dependencylabel" style="margin-right: 1rem;"
+    <button *ngFor="let task of dependencyTask; let i = index; trackBy: utilityService.trackByIndex" class="btn dependencylabel" style="margin-right: 1rem;"
        (click)="removeDependencyTask(i)">
       <b>X</b> {{ task.title | truncatetext: 50 }}
     </button>
@@ -143,7 +145,7 @@
     <!-- INPUT ENDS -->
     <div *ngIf="searchingOn === 'dependencyKeyword'">
     <section id="results" *ngIf="!(isLoadingAction$ | async)" class="results" onfocusout="">
-      <div class="media task-item user-list mb-0" *ngFor=" let task of tasksList; let index = index;">
+      <div class="media task-item user-list mb-0" *ngFor=" let task of tasksList; let index = index; trackBy: utilityService.trackByIndex">
         <div class="media-body mt-2" >
           <!-- Display full name of the member starts -->
           <h4 class="mt-0 full-name-text" (click)="setDependencyTask(task._id)">
@@ -230,7 +232,7 @@
 
     <mat-form-field appearance="fill" style="margin-left: 15px;">
       <mat-select (selectionChange)="shuttleTask($event.value)">
-        <mat-option *ngFor="let group of shuttleGroups; let j=index" [value]="group">{{ group?.group_name }}</mat-option>
+        <mat-option *ngFor="let group of shuttleGroups; let j=index; trackBy: utilityService.trackByIndex" [value]="group">{{ group?.group_name }}</mat-option>
       </mat-select>
     </mat-form-field>
 

@@ -78,7 +78,7 @@
                 <div *ngIf="pinnedPosts.length > 0"
                     style="width: 98%; margin-left: auto; margin-right: auto;"
                     [ngClass]="{'mt-3': this.globalFeed === false }">
-                  <ul class="list-group" *ngFor="let post of pinnedPosts">
+                  <ul class="list-group" *ngFor="let post of pinnedPosts; trackBy: utilityService.trackByIndex">
                     <app-post-view *ngIf="post && userData && checkDataExist(userData)"
                       [post]="post"
                       [userData]="userData"
@@ -98,7 +98,7 @@
             <app-infinite-scroll (scrolled)="onScroll()">
                 <div *ngIf="posts.length > 0" [ngClass]="{'mt-3': this.globalFeed === false }">
                     <ul class="list-group"
-                        *ngFor="let post of posts">
+                        *ngFor="let post of posts; trackBy: utilityService.trackByIndex">
                         <app-post-view *ngIf="post && userData && checkDataExist(userData)"
                             [post]="post"
                             [userData]="userData"

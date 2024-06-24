@@ -53,12 +53,12 @@ export class UserWorkloadCalendarComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    public dialog: MatDialog,
+    public utilityService: UtilityService,
     private userService: UserService,
     private hrService: HRService,
-    private utilityService: UtilityService,
     private datesService: DatesService,
     private injector: Injector,
-    public dialog: MatDialog
     ) { }
 
   async ngOnInit() {

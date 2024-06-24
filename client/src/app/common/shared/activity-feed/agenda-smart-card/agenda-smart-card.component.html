@@ -42,7 +42,7 @@
     </div>
 
 
-    <div *ngFor="let post of todayEvents; let i = index;">
+    <div *ngFor="let post of todayEvents; let i = index; trackBy: utilityService.trackByIndex">
         <div *ngIf="post.type == 'event' && i < 2" class="row media-body">
             <div class="col-3" style="padding-right: 0">
                 <div class="card-first-column blue">{{ post.event.due_to | date:'HH:mm' }}</div>

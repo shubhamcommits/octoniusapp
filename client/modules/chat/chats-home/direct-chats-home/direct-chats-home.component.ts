@@ -20,7 +20,7 @@ export class DirectChatsHomeComponent implements OnChanges, OnDestroy {
 
   constructor(
     private chatService: ChatService,
-    private utilityService: UtilityService
+    public utilityService: UtilityService
   ) {
     
   }

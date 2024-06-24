@@ -1,7 +1,7 @@
 <div *ngIf="contentTemplate || contentArray.length > 0">
   <div class="tooltip-conatiner">
     <ng-template #arrayTemplate>
-      <p *ngFor="let element of contentArray">{{ element }}</p>
+      <p *ngFor="let element of contentArray; trackBy: utilityService.trackByIndex">{{ element }}</p>
     </ng-template>
     <ng-container *ngTemplateOutlet="contentTemplate || arrayTemplate">
     </ng-container>

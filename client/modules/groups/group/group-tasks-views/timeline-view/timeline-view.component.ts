@@ -71,7 +71,7 @@ export class TimelineViewComponent implements OnChanges, AfterViewInit {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
-    private utilityService: UtilityService,
+    public utilityService: UtilityService,
     private postService: PostService,
     private datePipe: DatePipe,
     private renderer: Renderer2,

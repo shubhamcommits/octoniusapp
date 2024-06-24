@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-subtasks',
@@ -21,7 +22,9 @@ export class SubtasksComponent implements OnInit {
   percentageSubtasksCompleted = 0;
   completitionPercentageClass: string = 'badge';
 
-  constructor() { }
+  constructor(
+    public utilityService: UtilityService,
+  ) { }
 
   ngOnInit() {
     let doneTasksCount = 0;

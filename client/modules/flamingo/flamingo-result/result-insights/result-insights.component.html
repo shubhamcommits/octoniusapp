@@ -10,7 +10,7 @@
       </div>
   </div>
 
-  <div *ngFor="let question of questions; let index = index" class="row">
+  <div *ngFor="let question of questions; let index = index; trackBy: utilityService.trackByIndex" class="row">
     <div class="col" class="question">
       <div class="row">
         <h6 class="question-title">
@@ -33,13 +33,13 @@
             <app-scale-responses-graph [question]="question" [responses]="scaleResponses.get(question?._id)"></app-scale-responses-graph>
           </div>
           <div class="answer-dropdown" *ngIf="question?.type == 'Dropdown'">
-            <div *ngFor="let option of question?.options" class="row answer-response">
+            <div *ngFor="let option of question?.options; trackBy: utilityService.trackByIndex" class="row answer-response">
               <div class="col-md-5">{{ option }}</div>
               <div class="col response"> {{ getDropdawnResponsesStats(question?._id, option) }}&nbsp;<span i18n="@@flamingoResultInsights.numResponses">responses</span></div>
             </div>
           </div>
           <div class="answer-dropdown" *ngIf="question?.type == 'Multiple'">
-            <div *ngFor="let option of question?.options" class="row answer-response">
+            <div *ngFor="let option of question?.options; trackBy: utilityService.trackByIndex" class="row answer-response">
               <div class="col-md-5">{{ option }}</div>
               <div class="col response"> {{ getMultipleResponsesStats(question?._id, option) }}&nbsp;<span i18n="@@flamingoResultInsights.numResponses">responses</span></div>
             </div>

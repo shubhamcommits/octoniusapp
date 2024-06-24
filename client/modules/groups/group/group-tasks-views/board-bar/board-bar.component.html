@@ -128,7 +128,7 @@
         </a>
 
         <mat-menu #menuCustomFieldsSort="matMenu">
-          <a mat-menu-item *ngFor="let cf of groupData?.custom_fields" (click)="sortTasks('custom_field', cf)" style="margin: 10px;text-decoration: none;">
+          <a mat-menu-item *ngFor="let cf of groupData?.custom_fields; trackBy: utilityService.trackByIndex" (click)="sortTasks('custom_field', cf)" style="margin: 10px;text-decoration: none;">
             <span>{{ cf.title }}</span>
           </a>
         </mat-menu>

@@ -6,6 +6,6 @@
     <input #countryFilter type="text" class="form-control" (keyup)="onCountrySearch($event.target.value)"
       placeholder="Search country..."
       style="margin: 5px; width: 95%; position: -webkit-sticky; position: sticky; top: 0;">
-    <mat-option [value]="country?.code" *ngFor="let country of filteredCountries">{{ country?.name }}</mat-option>
+    <mat-option [value]="country?.code" *ngFor="let country of filteredCountries; trackBy: utilityService.trackByIndex">{{ country?.name }}</mat-option>
   </mat-select>
 </mat-form-field>

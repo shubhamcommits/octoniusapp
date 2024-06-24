@@ -15,7 +15,7 @@
         (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
     
       <ul class="task-list" *ngIf="!!searchText">
-        <li class="task-list-item" *ngFor="let task of tasks | appFilter: searchText"
+        <li class="task-list-item" *ngFor="let task of tasks | appFilter: searchText; trackBy: utilityService.trackByIndex"
           (click)="selectTaskToAssign(task)">
           {{ task.title }}
         </li>

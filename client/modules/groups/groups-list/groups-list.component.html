@@ -18,7 +18,7 @@
     <!-- STARTS USER GROUPS -->
     <div class="media-body">
         <div class="row">
-            <ng-container *ngFor="let group of userGroups">
+            <ng-container *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
                 <div class="cards-list">
                     <div *ngIf="group.group_name !== 'private'" class="card img-fluid"
                         (click)="goToGroup(group?._id)">
@@ -54,7 +54,7 @@
         <div *ngIf="agoraGroups?.length>0 && userData.role != 'guest'">
             <h2 class="section-title" i18n="@@groupList.agora">AGORA</h2>
             <div class="row">
-                <ng-container *ngFor="let group of agoraGroups">
+                <ng-container *ngFor="let group of agoraGroups; trackBy: utilityService.trackByIndex">
                     <div class="cards-list">
                         <div *ngIf="group.group_name !== 'private'" class="card img-fluid">
 

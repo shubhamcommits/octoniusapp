@@ -6,7 +6,7 @@
       <button class="btn tagslabel"
           style="margin-right: 1rem;"
           (click)="removeTag(i)"
-          *ngFor="let tag of tags; let i = index">
+          *ngFor="let tag of tags; let i = index; trackBy: utilityService.trackByIndex">
         <b>X</b>
         {{ tag }}
       </button>

@@ -7,7 +7,7 @@
       <hr />
 
       <!-- Iterate over all the skills present for a particular user starts -->
-      <div *ngFor="let cf of customFields" class="d-flex custom-field justify-content-start mb-3 row">
+      <div *ngFor="let cf of customFields; trackBy: utilityService.trackByIndex" class="d-flex custom-field justify-content-start mb-3 row">
         <p class="col">{{ cf.title }}</p>
 
         <div *ngIf="!cf.user_type" class="col">
@@ -17,7 +17,7 @@
               (selectionChange)="onCustomFieldChange($event, cf.name)"
               appearance="fill" class="col">
               <mat-select-trigger>{{ selectedCFValues[cf.name] }}</mat-select-trigger>
-              <mat-option *ngFor="let val of cf.values" [value]="val">{{ val }}</mat-option>
+              <mat-option *ngFor="let val of cf.values; trackBy: utilityService.trackByIndex" [value]="val">{{ val }}</mat-option>
           </mat-select>
 
           <span *ngIf="!currentUser">{{ selectedCFValues[cf.name] }}</span>

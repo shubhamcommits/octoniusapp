@@ -11,18 +11,22 @@ import { PublicFunctions } from 'modules/public.functions';
 })
 export class ProjectStatusComponent implements OnInit {
 
-  constructor(public injector: Injector) { }
-
+  
   // GroupId variable
   @Input() groupId: string;
-
+  
   status_types = ['NOT STARTED', 'ON TRACK', 'IN DANGER', 'ACHIEVED'];
-
+  
   private publicFunctions = new PublicFunctions(this.injector);
   // Status description variable
   status: string = '';
-
+  
   status_class = '';
+  
+  constructor(
+    public injector: Injector,
+    public utilityService: UtilityService,
+  ) { }
 
   async ngOnInit() {
     // Create Group Service Instance

@@ -16,7 +16,7 @@
 
 <!-- Members array template starts -->
 <app-infinite-scroll (scrolled)="onScroll()">
-    <div *ngFor="let member of activeMembers" class="media card-tile user-list">
+    <div *ngFor="let member of activeMembers; trackBy: utilityService.trackByIndex" class="media card-tile user-list">
         <!-- Avatar Image of the member -->
         <app-secured-image  *ngIf="member.active || type == 'group'"
             [imgURL]="member?.profile_pic"
@@ -128,7 +128,7 @@
             </mat-expansion-panel-header>
 
             <div class="media card-tile user-list"
-                *ngFor="let member of disabledMembers">
+                *ngFor="let member of disabledMembers; trackBy: utilityService.trackByIndex">
 
                 <!-- Avatar Image of the member -->
                 <app-secured-image *ngIf="!member.active"

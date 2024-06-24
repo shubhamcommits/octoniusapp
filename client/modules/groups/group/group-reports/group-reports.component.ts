@@ -1,9 +1,9 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-group-reports',
@@ -42,7 +42,7 @@ export class GroupReportsComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector)
 
   constructor(
-    private router: ActivatedRoute,
+    public utilityService: UtilityService,
     private injector: Injector,
     private storageService: StorageService
   ) { }
