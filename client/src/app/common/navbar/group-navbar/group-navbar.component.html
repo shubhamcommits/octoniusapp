@@ -10,16 +10,16 @@
       <li class="nav-item mr-3 d-none d-sm-block">
 
         <!-- Group Avatar starts -->
-        <app-secured-image *ngIf="groupData && !myWorkplace && isAdmin" [imgURL]="groupData?.group_avatar" [service]="'group'"
+        <app-secured-image *ngIf="objectExists(groupData) && !myWorkplace && isAdmin" [imgURL]="groupData?.group_avatar" [service]="'group'"
           [workspaceId]="(groupData?._workspace?._id || groupData?._workspace)" [tooltip]="'Change group avatar'" [placement]="'right'" [styleClass]="'mr-3 feed-avatar'"
           (click)="openDetails(content)"></app-secured-image>
 
-        <app-secured-image *ngIf="groupData && !myWorkplace && !isAdmin" [imgURL]="groupData?.group_avatar" [service]="'group'"
+        <app-secured-image *ngIf="objectExists(groupData) && !myWorkplace && !isAdmin" [imgURL]="groupData?.group_avatar" [service]="'group'"
           [workspaceId]="(groupData?._workspace?._id || groupData?._workspace)" [placement]="'right'" [styleClass]="'mr-3 feed-avatar'"></app-secured-image>
         <!-- Group Avatar ends -->
 
         <!-- My workplace avatar starts -->
-        <app-secured-image *ngIf="userData && (myWorkplace || !groupData)" [imgURL]="userData?.profile_pic"
+        <app-secured-image *ngIf="userData && (myWorkplace || !objectExists(groupData))" [imgURL]="userData?.profile_pic"
           [service]="'user'" [userData]="userData" [workspaceId]="(userData?._workspace?._id || userData?._workspace)" [tooltip]="'This is your workplace'" [placement]="'right'"
           [styleClass]="'mr-3 feed-avatar'"></app-secured-image>
         <!-- My Workplace avatar ends -->
@@ -29,18 +29,18 @@
           </app-group-image-details>
         </ng-template>
 
-        <h2 *ngIf="groupData && !myWorkplace && !isIndividualSubscription" (click)="saveFavoriteGroup()" placement="right"
+        <h2 *ngIf="objectExists(groupData) && !myWorkplace && !isIndividualSubscription" (click)="saveFavoriteGroup()" placement="right"
           ngbTooltip="Add shortcut to sidebar">
           <i class="material-icons" style="color: #FFAB00; cursor: pointer;" *ngIf="!isFavoriteGroup">star_outline</i>
           <i class="material-icons" style="color: #FFAB00; cursor: pointer;" *ngIf="isFavoriteGroup">star</i>
         </h2>
       </li>
 
-      <li *ngIf="groupData && !myWorkplace" class="nav-item mr-3">
+      <li *ngIf="objectExists(groupData) && !myWorkplace" class="nav-item mr-3">
        <span class="groupname muted"> {{ groupData.group_name | truncatetext:20 }}</span>
       </li>
 
-      <li class="nav-item" *ngIf="(myWorkplace || !groupData) && !isIndividualSubscription" >
+      <li class="nav-item" *ngIf="(myWorkplace || !objectExists(groupData)) && !isIndividualSubscription" >
         <a [ngClass]="activeState == 'myspace_inbox'?'nav-link active-nav':'nav-link'"
             (click)="changeState('myspace_inbox')"
             routerLink="/dashboard/myspace/inbox"
@@ -49,8 +49,8 @@
           </a>
       </li>
 
-      <li class="nav-item" *ngIf="myWorkplace || !groupData">
-        <a [ngClass]="activeState == 'myspace_tasks'?'nav-link active-nav':'nav-link'"
+      <li class="nav-item" *ngIf="myWorkplace || !objectExists(groupData)">
+        <a [ngClass]="activeState == 'myspace_tasks' ? 'nav-link active-nav' : 'nav-link'"
             (click)="changeState('myspace_tasks')"
             routerLink="/dashboard/myspace/tasks"
             routerLinkActive="active" i18n="@@groupNavbar.tasks">
