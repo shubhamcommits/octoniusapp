@@ -80,7 +80,7 @@ export class GroupSettingsComponent implements OnInit {
   * @param index
   */
   async removeImage() {
-    this.utilityService.getConfirmDialogAlert($localize`:@@groupSettings.pleaseWaitsavingSettings:Are you sure?`, $localize`:@@groupSettings.pleaseWaitsavingSettings:By doing this, the back-ground image of the group will be completely removed!`)
+    this.utilityService.getConfirmDialogAlert($localize`:@@groupSettings.areYouSure:Are you sure?`, $localize`:@@groupSettings.backgroundImageCompletelyRemoved:By doing this, the back-ground image of the group will be completely removed!`)
       .then((res) => {
         if (res.value) {
           this.utilityService.asyncNotification($localize`:@@groupSettings.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,

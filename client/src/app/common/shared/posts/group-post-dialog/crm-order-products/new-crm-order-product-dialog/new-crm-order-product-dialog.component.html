@@ -5,7 +5,7 @@
 
     <h2 mat-dialog-title style="margin: -50px 0 0 0 !important;">
         <span *ngIf="!!orderData && !!orderData?._id && !!orderData?._product && !!orderData?._product?.name">{{ orderData?._product?.name }}</span>
-        <span i18n="@@newCRMOrderProductDialogComponent.newContact" *ngIf="!orderData || !orderData?._id">New Order</span>
+        <span i18n="@@newCRMOrderProductDialog.newContact" *ngIf="!orderData || !orderData?._id">New Order</span>
     </h2>
 
     <div mat-dialog-content>
@@ -13,12 +13,12 @@
             <mat-tab-group mat-align-tabs="start">
                 <mat-tab>
                     <ng-template mat-tab-label>
-                        <span i18n="@@newCRMProductDialog.contactInformation">Order Information</span>
+                        <span i18n="@@newCRMOrderProductDialog.contactInformation">Order Information</span>
                     </ng-template>
             
                     <ng-template matTabContent>
                         <div class="row">
-                            <label for="product" i18n="@@newCRMOrderProductDialogComponent.product" class="muted">Product</label>
+                            <label for="product" i18n="@@newCRMOrderProductDialog.product" class="muted">Product</label>
                         </div>
                         
                         <div class="dropdown">
@@ -46,7 +46,7 @@
                         </div>
                         
                         <div class="row">
-                            <label for="quantity" i18n="@@newCRMOrderProductDialogComponent.quantity" class="muted">Quantity</label>
+                            <label for="quantity" i18n="@@newCRMOrderProductDialog.quantity" class="muted">Quantity</label>
                         </div>
                         
                         <div class="row">
@@ -73,11 +73,11 @@
 
     <div>
         <div style="margin-top: 20px;">
-            <button class="btn btn-danger" (click)="closeDialog()" i18n="@@newCRMOrderProductDialogComponent.cancel" style="margin: 0 10px">
+            <button class="btn btn-danger" (click)="closeDialog()" i18n="@@newCRMOrderProductDialog.cancel" style="margin: 0 10px">
                 Cancel
             </button>
 
-            <button class="btn btn-primary" (click)="saveOrder()" i18n="@@newCRMOrderProductDialogComponent.save" style="margin: 0 10px">
+            <button class="btn btn-primary" (click)="saveOrder()" i18n="@@newCRMOrderProductDialog.save" style="margin: 0 10px">
                 Save
             </button>
         </div>
