@@ -121,11 +121,7 @@ export class WorkspaceController {
      * @param next 
      */
     async getAllWorkspace(req: Request, res: Response, next: NextFunction) {
-
-        const { workspaceId } = req.params;
-
         try {
-
             // Find the workspace based on the workspaceId
             const workspaces: any = await Workspace.find().lean();
 
