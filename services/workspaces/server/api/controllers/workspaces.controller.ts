@@ -62,7 +62,6 @@ export class WorkspaceController {
         const { workspaceId } = req.params;
 
         try {
-
             // Find the workspace based on the workspaceId
             const workspace: any = await Workspace.findOne({
                 _id: workspaceId
@@ -78,6 +77,11 @@ export class WorkspaceController {
                 })
                 .lean()
                 .exec();
+
+            // If unable to find the workspace
+            if (!workspace) {
+                return sendError(res, new Error('Unable to fetch the workspace details, as the workspaceId was invalid!'), 'Unable to fetch the workspace details, as the workspaceId was invalid!', 404);
+            }
 
             // Workspace Company Members Count
             const membersCount: any = await User.find({
@@ -99,12 +103,6 @@ export class WorkspaceController {
 
             // Add company members count
             workspace.guests_count = guestsCount;
-
-
-            // If unable to find the workspace
-            if (!workspace) {
-                return sendError(res, new Error('Unable to fetch the workspace details, as the workspaceId was invalid!'), 'Unable to fetch the workspace details, as the workspaceId was invalid!', 404);
-            }
 
             // Send the status 200 response 
             return res.status(200).json({
