@@ -26,10 +26,10 @@ export class PortfolioGroupsListComponent implements OnInit {
 
   constructor(
     public injector: Injector,
-    private router: Router,
     public dialog: MatDialog,
+    public utilityService: UtilityService,
     private portfolioService: PortfolioService,
-    private utilityService: UtilityService
+    private router: Router,
   ) { }
 
   async ngOnInit() {

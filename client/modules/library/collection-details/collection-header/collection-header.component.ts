@@ -36,11 +36,11 @@ export class CollectionHeaderComponent implements OnInit, OnChanges {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    public storageService: StorageService,
+    public utilityService: UtilityService,
     public injector: Injector,
     public dialog: MatDialog,
     private router: Router,
-    public storageService: StorageService,
-    private utilityService: UtilityService,
     private libraryService: LibraryService
   ) { }
 

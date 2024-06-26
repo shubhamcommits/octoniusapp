@@ -61,11 +61,11 @@ export class CollectionDetailsComponent implements OnInit {
 
   constructor(
     public injector: Injector,
-    private activatedRoute: ActivatedRoute,
+    public utilityService: UtilityService,
     public dialog: MatDialog,
-    private _router: Router,
-    private utilityService: UtilityService,
     public storageService: StorageService,
+    private _router: Router,
+    private activatedRoute: ActivatedRoute,
     private filesService: FilesService,
     private libraryService: LibraryService,
     private foldersService: FoldersService,

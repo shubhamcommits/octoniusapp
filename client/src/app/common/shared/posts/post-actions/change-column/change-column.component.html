@@ -4,7 +4,7 @@
 
     <!-- Menu Drawer Starts -->
     <ul class="dropdown-menu">
-        <li *ngFor="let column of columns" class="dropdown-item column-title" class="dropdown-item"
+        <li *ngFor="let column of columns; trackBy: utilityService.trackByIndex" class="dropdown-item column-title" class="dropdown-item"
             (click)="sendMoveTaskMessage(sectionId, column?._id)">
           <span class="text-uppercase">{{column?.title}}</span>
         </li>

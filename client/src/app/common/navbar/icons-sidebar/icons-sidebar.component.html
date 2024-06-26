@@ -17,7 +17,7 @@
       </a>
     
       <ul class="collapse list-unstyled" id="pageWorkspacesSubmenu">
-        <li *ngFor="let workspace of userWorkspaces" style="margin-top: 15px;">
+        <li *ngFor="let workspace of userWorkspaces; trackBy: utilityService.trackByIndex" style="margin-top: 15px;">
           <a (click)="goToWorkspace(workspace?._id || workspace)" style="padding: 10px 0;" [matTooltip]="workspace?.workspace_name"
             [matBadge]="workspace.numNotifications" [matBadgeHidden]="workspace.numNotifications == 0" matBadgePosition="before" matBadgeColor="warn">
             <app-secured-image [imgURL]="workspace?.workspace_avatar" [service]="'workspace'" [workspaceId]="workspace?._id" [styleClass]="'avatar'">
@@ -51,7 +51,7 @@
         </a>
       
         <ul class="collapse list-unstyled show" id="pageSubmenuGroups">
-          <li *ngFor="let group of userGroups">
+          <li *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
             <a (click)="goToGroup(group)" routerLinkActive="active">
               <app-secured-image [imgURL]="group?.group_avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
                 [styleClass]="'avatar'"></app-secured-image>
@@ -68,7 +68,7 @@
         </a>
       
         <ul class="collapse list-unstyled show" id="pageSubmenuPortfolios">
-          <li *ngFor="let portfolio of userPortfolios">
+          <li *ngFor="let portfolio of userPortfolios; trackBy: utilityService.trackByIndex">
             <a (click)="goToPortfolio(portfolio)" routerLinkActive="active">
               <app-secured-image [imgURL]="portfolio?.portfolio_avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
                 [styleClass]="'avatar'"></app-secured-image>
@@ -85,7 +85,7 @@
         </a>
       
         <ul class="collapse list-unstyled show" id="pageSubmenuCollections">
-          <li *ngFor="let collection of userCollections">
+          <li *ngFor="let collection of userCollections; trackBy: utilityService.trackByIndex">
             <a (click)="goToCollection(collection)" routerLinkActive="active">
               <app-secured-image [imgURL]="collection?.collection_avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
                 [styleClass]="'avatar'"></app-secured-image>
@@ -96,7 +96,7 @@
       
       <li *ngIf="isIndividualSubscription">
         <ul class="collapse list-unstyled show" id="pageSubmenuGroups">
-          <li *ngFor="let group of userGroups">
+          <li *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
             <a (click)="goToGroup(group)" routerLinkActive="active">
               <app-secured-image [imgURL]="group?.group_avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
                 [styleClass]="'avatar'"></app-secured-image>

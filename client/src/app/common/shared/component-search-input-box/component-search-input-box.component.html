@@ -6,7 +6,7 @@
 
     <!-- ITEM LIST STARTS -->
     <section id="results" *ngIf="!(isLoading$ | async)" class="user-results" onfocusout="">
-        <div class="media card-tile user-list mb-0" *ngFor=" let item of itemList; let index = index;">
+        <div class="media card-tile user-list mb-0" *ngFor=" let item of itemList; let index = index; trackBy: utilityService.trackByIndex">
             <!-- User Profile Image for type 'group' and 'workspace' -->
             <app-secured-image *ngIf="type != 'skill' && type != 'tag' && type !== 'ragTag'"
                 [imgURL]="item?.profile_pic"

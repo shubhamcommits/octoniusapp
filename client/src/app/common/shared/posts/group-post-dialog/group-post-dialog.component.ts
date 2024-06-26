@@ -120,13 +120,13 @@ export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
   public isLoading$ = new BehaviorSubject(false);
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public utilityService: UtilityService,
     private postService: PostService,
     private groupService: GroupService,
-    private utilityService: UtilityService,
     private flowService: FlowService,
     private columnService: ColumnService,
     private injector: Injector,
-    @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<GroupPostDialogComponent>
     ) {}
 

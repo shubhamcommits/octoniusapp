@@ -39,8 +39,8 @@ export class EditHRFieldsComponent implements OnInit {
   publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    public utilityService: UtilityService,
     private hrService: HRService,
-    private utilityService: UtilityService,
     private datesService: DatesService,
     private userService: UserService,
     private injector: Injector

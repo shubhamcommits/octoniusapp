@@ -10,7 +10,7 @@
         (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()" (keyup)="searchCompany()">
         
       <ul *ngIf="!!companySearchResults && !!companySearchText" class="company-list dropdown-menu">
-        <li class="company-list-item pointer" *ngFor="let company of companySearchResults" (click)="selectCompany(company)">
+        <li class="company-list-item pointer" *ngFor="let company of companySearchResults; trackBy: utilityService.trackByIndex" (click)="selectCompany(company)">
           <!-- <app-secured-image [imgURL]="company.company_pic" [service]="'group'" [workspaceId]="this.userData?._workspace?._id || this.userData?._workspace"
             [styleClass]="'group-avatar'"></app-secured-image> -->
           {{ company.name }}
@@ -40,7 +40,7 @@
       (keydown)="$event.stopPropagation()" (keyup)="searchContact()">
   
     <ul *ngIf="!!contactSearchResults && !!contactSearchText" class="company-list dropdown-menu">
-      <li class="company-list-item pointer" *ngFor="let contact of contactSearchResults" (click)="selectContact(contact)">
+      <li class="company-list-item pointer" *ngFor="let contact of contactSearchResults; trackBy: utilityService.trackByIndex" (click)="selectContact(contact)">
         {{ contact.name }} - {{ contact.emails[0] }}
       </li>
     </ul>
@@ -90,7 +90,7 @@
         </ng-container> -->
       
         <!-- CUSTOM FIELDS START -->
-        <ng-container [matColumnDef]="cf.name" *ngFor="let cf of crmCustomFieldsToShow">
+        <ng-container [matColumnDef]="cf.name" *ngFor="let cf of crmCustomFieldsToShow; trackBy: utilityService.trackByIndex">
           <th mat-header-cell mat-sort-header *matHeaderCellDef>
             <div class="cf_cell">
               {{ cf.title }}

@@ -1,4 +1,4 @@
-<div *ngFor="let project of projects" class="smart-card">
+<div *ngFor="let project of projects; trackBy: utilityService.trackByIndex" class="smart-card">
   <div class="row" style="justify-content: space-between;">
     <div class="kpi_card">
       <div class="project_title">

@@ -42,7 +42,7 @@
       <span i18n="@@folioEditor.tableContent">Folio Outline</span>
     </h5>
 
-    <div (click)="highlight(heading.range)" *ngFor="let heading of headingsMetaData;let ind = index">
+    <div (click)="highlight(heading.range)" *ngFor="let heading of headingsMetaData;let ind = index; trackBy: utilityService.trackByIndex">
       <div class="heading level1" *ngIf="heading.headingLevel == 1">
         <span>{{ heading.text }}</span>
         <div>
@@ -90,7 +90,7 @@
     </h5>
 
     <div class="comment-area">
-      <div *ngFor="let meta of commentsMetaData;let ind = index" (click)="highlight(meta.range)"
+      <div *ngFor="let meta of commentsMetaData;let ind = index; trackBy: utilityService.trackByIndex" (click)="highlight(meta.range)"
           class="commentmsg" [ngClass]="{'commentmsg-highlight' : commentsToDisplay.includes(ind)}">
         <div class="comment-profile">
           <div class="profile">

@@ -37,7 +37,7 @@
       </div>
     </div>
 
-    <div class="card" *ngFor="let entity of workspaceEntities">
+    <div class="card" *ngFor="let entity of workspaceEntities; trackBy: utilityService.trackByIndex">
       <div class="img-fluid">
         <div class="card-title">
           <span>{{ entity.name }}</span>

@@ -1,5 +1,5 @@
 <div class="colors-box">
-  <div *ngFor="let color of colors"
+  <div *ngFor="let color of colors; trackBy: utilityService.trackByIndex"
     class="color" [ngClass]="colorSelected == color ? 'selected' : ''"
     style="background-color: {{ color }}"
     (click)="selectColor(color)"></div>

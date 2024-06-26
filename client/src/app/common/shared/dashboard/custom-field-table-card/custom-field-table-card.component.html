@@ -14,14 +14,14 @@
       <table>
         <thead>
           <tr>
-            <th *ngFor="let cf of selectTypeCustomFields" class="header"> {{ cf?.title }} </th>
-            <th *ngFor="let cf of inputTypeCustomFields" class="muted"> {{ cf?.title }} </th>
+            <th *ngFor="let cf of selectTypeCustomFields; trackBy: utilityService.trackByIndex" class="header"> {{ cf?.title }} </th>
+            <th *ngFor="let cf of inputTypeCustomFields; trackBy: utilityService.trackByIndex" class="muted"> {{ cf?.title }} </th>
           </tr>
         </thead>
 
         <tbody>
-          <tr *ngFor="let row of tableData">
-            <td *ngFor="let select of selectTypeCFs" style="background-color: {{getBackgroundColor(row, select)}}">
+          <tr *ngFor="let row of tableData; trackBy: utilityService.trackByIndex">
+            <td *ngFor="let select of selectTypeCFs; trackBy: utilityService.trackByIndex" style="background-color: {{getBackgroundColor(row, select)}}">
               <div class="member">
                 <div class="name">
                   {{ row[select] }}
@@ -29,7 +29,7 @@
               </div>
             </td>
 
-            <td *ngFor="let input of inputTypeCFs">
+            <td *ngFor="let input of inputTypeCFs; trackBy: utilityService.trackByIndex">
               {{ row[input] | number }}
             </td>
           </tr>

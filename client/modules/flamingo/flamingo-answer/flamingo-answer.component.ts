@@ -31,7 +31,7 @@ export class FlamingoAnswerComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this._Injector);
 
   constructor(
-    private utilityService: UtilityService,
+    public utilityService: UtilityService,
     private flamingoService: FlamingoService,
     private _ActivatedRoute: ActivatedRoute,
     private _Injector: Injector,

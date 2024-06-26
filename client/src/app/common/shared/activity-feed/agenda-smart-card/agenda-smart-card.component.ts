@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/shared/services/user-service/user.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-agenda-smart-card',
@@ -9,6 +10,7 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 export class AgendaSmartCardComponent implements OnInit {
 
   constructor(
+    public utilityService: UtilityService,
     private userService: UserService
   ) { }
 

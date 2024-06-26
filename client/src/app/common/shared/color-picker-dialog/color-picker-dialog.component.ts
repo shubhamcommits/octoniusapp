@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-color-picker-dialog',
@@ -16,6 +17,7 @@ export class ColorPickerDialogComponent implements OnInit {
   colors = [];
 
   constructor(
+    public utilityService: UtilityService,
     private mdDialogRef: MatDialogRef<ColorPickerDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
     ) {

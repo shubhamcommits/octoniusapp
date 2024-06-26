@@ -44,7 +44,7 @@
 
     <div class="category-body row">
       <div *ngIf="loungeData?.items && loungeData?.items.length > 0" class="cards-list">
-        <div *ngFor="let item of loungeData?.items" class="card img-fluid">
+        <div *ngFor="let item of loungeData?.items; trackBy: utilityService.trackByIndex" class="card img-fluid">
 
 
           <div *ngIf="item.type == 'lounge'" (click)="cleanStoredData()"

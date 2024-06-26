@@ -3,7 +3,7 @@
       <!-- ALL COLUMN DETAILS FOR MOBILE STARTS -->
       <div class="board-columns" *ngIf="columns">
 
-          <div class="board-column" *ngFor="let column of columns; let i = index;">
+          <div class="board-column" *ngFor="let column of columns; let i = index; trackBy: utilityService.trackByIndex">
               <!-- COLUMN TITLE AND EDIT/DELETE DETAILS STARTS -->
               <div class="column-title">
                   <p class="text-capitalize" [matTooltip]="column?.title">
@@ -48,7 +48,7 @@
               <!-- TASK CONTAINER STARTS -->
               <div class="tasks-container" [id]="column._id">
                   <!-- TASK DETAILS STARTS -->
-                  <app-kanban-task-card *ngFor="let task of column.tasks; let j = index;"
+                  <app-kanban-task-card *ngFor="let task of column.tasks; let j = index; trackBy: utilityService.trackByIndex"
                     (click)="openFullscreenModal(task)"
                     [isProject]="column?.project_type"
                     [isDelay]="isDelay(task?.task?.due_to, column?.due_date)"

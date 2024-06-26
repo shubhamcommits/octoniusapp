@@ -4,6 +4,7 @@ import { PublicFunctions } from 'modules/public.functions';
 import { WidgetSelectorDialogComponent } from 'src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -43,9 +44,11 @@ export class DashboardPageComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    public utilityService: UtilityService,
+    public dialog: MatDialog,
     private columnService: ColumnService,
     private injector: Injector,
-    public dialog: MatDialog) { }
+  ) { }
 
   async ngOnInit() {
     // Send Updates to router state

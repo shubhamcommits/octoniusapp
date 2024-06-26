@@ -103,7 +103,7 @@
             </th>
           </tr>
         
-          <tr *ngFor="let holiday of holidaysInYear">
+          <tr *ngFor="let holiday of holidaysInYear; trackBy: utilityService.trackByIndex">
             <td>{{ formateDate(holiday.start_date) }}</td>
             <td>{{ formateDate(holiday.end_date) }}</td>
             <td>{{ holiday.type }}</td>
@@ -159,7 +159,7 @@
             <th i18n="@@userWorkloadCalendar.comment">Comment</th>
           </tr>
         
-          <tr *ngFor="let holiday of pastHolidays">
+          <tr *ngFor="let holiday of pastHolidays; trackBy: utilityService.trackByIndex">
             <td>{{ formateDate(holiday.start_date) }}</td>
             <td>{{ formateDate(holiday.end_date) }}</td>
             <td>{{ holiday.type }}</td>
@@ -222,7 +222,7 @@
         appearance="fill"
         class="col form-control">
         <mat-select-trigger>{{ newHoliday?.type }}</mat-select-trigger>
-        <mat-option *ngFor="let val of outOfOfficeReason" [value]="val.toLowerCase()">{{ val }}</mat-option>
+        <mat-option *ngFor="let val of outOfOfficeReason; trackBy: utilityService.trackByIndex" [value]="val.toLowerCase()">{{ val }}</mat-option>
       </mat-select>
       
       <label i18n="@@userWorkloadCalendar.numberOfDays" style="float: left; width: 100%;">Number Of Days</label>

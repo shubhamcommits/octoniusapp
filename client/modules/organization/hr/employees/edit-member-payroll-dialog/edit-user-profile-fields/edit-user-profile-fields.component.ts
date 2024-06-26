@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { GroupsService } from 'src/shared/services/groups-service/groups.service';
-import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
@@ -41,10 +40,9 @@ export class EditUserProfileFieldsComponent implements OnInit {
   private subSink = new SubSink();
 
   constructor(
-    private injector: Injector,
     public dialog: MatDialog,
-    private managementPortalService: ManagementPortalService,
-    private utilityService: UtilityService,
+    public utilityService: UtilityService,
+    private injector: Injector,
     private workspaceService: WorkspaceService,
     private userService: UserService,
     private groupsService: GroupsService,

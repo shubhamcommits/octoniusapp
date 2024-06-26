@@ -1,7 +1,7 @@
 <!-- Assignee section for tasks starts -->
 <section>
   <div *ngIf="type != 'chat' && type != 'time-tracking'">
-    <app-secured-image *ngFor="let assignee of assigned_to"
+    <app-secured-image *ngFor="let assignee of assigned_to; trackBy: utilityService.trackByIndex"
       [imgURL]="assignee?.profile_pic"
       [service]="'user'"
       [userData]="assignee"
@@ -22,7 +22,7 @@
   </div>
 
   <div *ngIf="type == 'chat'" style="overflow: auto; overflow-y: hidden; float: left; min-height: 35px;">
-    <span *ngFor="let assignee of assigned_to">
+    <span *ngFor="let assignee of assigned_to; trackBy: utilityService.trackByIndex">
       <app-secured-image style="width: 24px; height: 24px; margin: 0 10px;"
         [imgURL]="(assignee?._user?.profile_pic || assignee?.profile_pic)" [service]="'user'"
         [workspaceId]="workspaceData?._id" [userData]="assignee"
@@ -67,7 +67,7 @@
             (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
         </div>
         <ul class="assignee-list">
-          <li appHighlight class="assignee-list-item" *ngFor="let member of members | appFilter: searchText"
+          <li appHighlight class="assignee-list-item" *ngFor="let member of members | appFilter: searchText; trackBy: utilityService.trackByIndex"
               (click)="getMemberDetails(member)"
               [searchedWord]="searchText"
               [content]="member"

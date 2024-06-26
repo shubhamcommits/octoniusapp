@@ -25,7 +25,7 @@
           <label for="unitPrice" i18n="@@resourcesDetailsDialog.unitPrice" class="muted">Unit Price</label>
           <input type="number" class="form-control" [(ngModel)]="newResource.unit_price" name="unitPrice">
 
-          <div *ngFor="let cf of customFields" class="">
+          <div *ngFor="let cf of customFields; trackBy: utilityService.trackByIndex" class="">
             <label [for]="cf.name" class="muted">{{ cf.title }}</label>
 
             <mat-select ngDefaultControl *ngIf="!cf.input_type" [(value)]="newResource?.custom_fields[cf.name]"
@@ -35,7 +35,7 @@
               <input type="text" class="form-control" [id]="'search-text' + cf.name" [(ngModel)]="cfSearchText"
                 [placeholder]="cfSearchPlaceholder" autofocus
                 (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
-              <mat-option *ngFor="let val of cf.values | appFilter: cfSearchText" [value]="val">{{ val }}</mat-option>
+              <mat-option *ngFor="let val of cf.values | appFilter: cfSearchText; trackBy: utilityService.trackByIndex" [value]="val">{{ val }}</mat-option>
             </mat-select>
     
             <input *ngIf="cf.input_type && !cf.input_type_date"
@@ -150,7 +150,7 @@
             </div>
 
             <div class="row" style="margin-top: 10px;">
-              <div *ngFor="let cf of customFields" class="d-flex custom-field justify-content-start mb-3 col-md-12">
+              <div *ngFor="let cf of customFields; trackBy: utilityService.trackByIndex" class="d-flex custom-field justify-content-start mb-3 col-md-12">
                 <p style="margin-right: 5px;">{{ cf.title }}:</p>
 
                 <div *ngIf="!editResource">
@@ -166,7 +166,7 @@
                     <input type="text" class="form-control" [id]="'search-text' + cf.name" [(ngModel)]="cfSearchText"
                       [placeholder]="cfSearchPlaceholder" autofocus (click)="$event.stopPropagation()"
                       (keydown)="$event.stopPropagation()">
-                    <mat-option *ngFor="let val of cf.values | appFilter: cfSearchText" [value]="val">{{ val }}</mat-option>
+                    <mat-option *ngFor="let val of cf.values | appFilter: cfSearchText; trackBy: utilityService.trackByIndex" [value]="val">{{ val }}</mat-option>
                   </mat-select>
                 
                   <div *ngIf="cf.input_type && !cf.input_type_date" class="form-control" style="display: flex; float: left; width: 125px;">

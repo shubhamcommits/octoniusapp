@@ -30,7 +30,7 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
   private subSink = new SubSink();
 
   constructor(
-    private utilityService: UtilityService,
+    public utilityService: UtilityService,
     private managementPortalService: ManagementPortalService,
     private authService: AuthService,
     private storageService: StorageService,

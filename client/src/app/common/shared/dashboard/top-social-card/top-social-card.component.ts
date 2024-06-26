@@ -2,6 +2,7 @@ import { Component, Injector, Input, OnChanges } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-top-social-card',
@@ -27,6 +28,7 @@ export class TopSocialCardComponent implements OnChanges {
   public isLoading$ = new BehaviorSubject(false);
 
   constructor(
+    public utilityService: UtilityService,
     private injector: Injector
   ) { }
 

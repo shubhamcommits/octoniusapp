@@ -42,8 +42,8 @@ export class WorkplaceGoogleFieldsMapperDialogComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    public utilityService: UtilityService,
     private injector: Injector,
-    private utilityService: UtilityService,
     private workspaceService: WorkspaceService,
     private userService: UserService,
     @Inject(MAT_DIALOG_DATA) public data: any,

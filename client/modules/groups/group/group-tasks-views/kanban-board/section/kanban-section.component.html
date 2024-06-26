@@ -72,7 +72,7 @@
   <!-- COLUMN PROJECT SECTION ENDS -->
 
   <!-- CUSTOM FIELDS STATS SECTION STARTS -->
-  <div class="project-container" *ngFor="let cfName of section.custom_fields_to_show_kanban">
+  <div class="project-container" *ngFor="let cfName of section.custom_fields_to_show_kanban; trackBy: utilityService.trackByIndex">
     {{ cfName }}
     <span class="float-right done">
       {{ calculateCFStatistics(cfName) | number }}
@@ -89,7 +89,7 @@
     <!-- CREATE TASK ENDS -->
 
     <!-- TASK DETAILS STARTS -->
-    <app-kanban-task-card cdkDrag *ngFor="let task of tasks; let j = index;" (click)="openFullscreenModal(task)"
+    <app-kanban-task-card cdkDrag *ngFor="let task of tasks; let j = index; trackBy: utilityService.trackByIndex" (click)="openFullscreenModal(task)"
       [isProject]="section?.project_type" [isDelay]="isDelay(task?.task?.due_to, section?.due_date)" [task]="task"
       [isIdeaModuleAvailable]="isIdeaModuleAvailable" [groupId]="groupData?._id">
       <div *cdkDragPlaceholder></div>

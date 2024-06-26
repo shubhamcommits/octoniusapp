@@ -34,7 +34,7 @@
         -->
 
         <div *ngIf="spaces && spaces.length > 0">
-            <div *ngFor="let space of spaces" class="form-group">
+            <div *ngFor="let space of spaces; trackBy: utilityService.trackByIndex" class="form-group">
                 <section class="example-section">
                     <p><mat-checkbox [name]="space?.key" [value]="space?.key" (change)="spaceSelected($event.source.value)">{{ space?.name }}</mat-checkbox></p>
                 </section>

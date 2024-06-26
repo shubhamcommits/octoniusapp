@@ -19,7 +19,7 @@
         <div class="clearfix"></div>
     </div>
 
-    <div class="content-box" *ngFor="let widget of availableWidgets">
+    <div class="content-box" *ngFor="let widget of availableWidgets; trackBy: utilityService.trackByIndex">
       <div *ngIf="widget.code != 'RESOURCE_MANAGEMENT' || (widget.code == 'RESOURCE_MANAGEMENT' && numGroupMembers <= 50)">
         <div style="display: flex; cursor: pointer;" (click)="selectWidget(widget)">
           <span class="material-icons-outlined mr-4 mt-3" style="color:#119b11;" *ngIf="isSelected(widget.code)">check_circle</span>
@@ -48,7 +48,7 @@
         <h4 class="ml-3 mt-4" i18n="@@widgetSelectorDialog.cfStatistics"> CF Statistics</h4>
       </div>
 
-      <div style="margin-left: 120px; margin-top: 30px;" *ngFor="let cf of custom_fields">
+      <div style="margin-left: 120px; margin-top: 30px;" *ngFor="let cf of custom_fields; trackBy: utilityService.trackByIndex">
         <mat-slide-toggle color="primary"
             [checked]="isSelected(cf.name)"
             [name]="'share_files'"

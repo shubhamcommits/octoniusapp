@@ -19,7 +19,7 @@
   <div class="content">
     <div class="integration">
       <div *ngIf="googleSchemas" class="integration-properties">
-        <div class="form-group" *ngFor="let schema of googleSchemas">
+        <div class="form-group" *ngFor="let schema of googleSchemas; trackBy: utilityService.trackByIndex">
           <div class="row" style="padding-left: 70px;">
             <h3>{{ schema.displayName }}</h3>
           </div>
@@ -38,7 +38,7 @@
               <th></th>
               <th></th>
             </tr>
-            <tr *ngFor="let field of schema.fields">
+            <tr *ngFor="let field of schema.fields; trackBy: utilityService.trackByIndex">
               <td><input [checked]="isPropertySelected(schema.schemaName, field.fieldName)" class="" type="checkbox" (click)="selectProperty(schema.displayName, field.fieldName)"></td>
               <td><span>{{ field.displayName }}</span></td>
               <td><span class="material-icons-outlined">sync_alt</span></td>
@@ -47,7 +47,7 @@
               <td *ngIf="isGlobal">
                 <mat-select ngDefaultControl appearance="fill"
                     (selectionChange)="changePropertyValue($event, schema.schemaName, field.fieldName)">
-                  <mat-option *ngFor="let profileCF of profileCustomFields" [value]="profileCF.name">{{ profileCF.title }}</mat-option>
+                  <mat-option *ngFor="let profileCF of profileCustomFields; trackBy: utilityService.trackByIndex" [value]="profileCF.name">{{ profileCF.title }}</mat-option>
                 </mat-select>
               </td>
 
@@ -94,7 +94,7 @@
                 <h4 i18n="@@workplaceGoogleFieldsMapperDialog.currentOctoniusValue">Current Octonius Value</h4>
               </th>
             </tr>
-            <tr *ngFor="let field of googleGenericProperties">
+            <tr *ngFor="let field of googleGenericProperties; trackBy: utilityService.trackByIndex">
               <td><input [checked]="isGenericPropertySelected(field)" class="" type="checkbox"
                   (click)="selectGenericProperty(field)"></td>
               <td><span>{{ field }}</span></td>
@@ -104,7 +104,7 @@
               <td *ngIf="isGlobal">
                 <mat-select ngDefaultControl appearance="fill"
                   (selectionChange)="changeGenericPropertyValue($event, field)">
-                  <mat-option *ngFor="let octoProp of octoGenericProperties" [value]="octoProp.name">{{ octoProp.title
+                  <mat-option *ngFor="let octoProp of octoGenericProperties; trackBy: utilityService.trackByIndex" [value]="octoProp.name">{{ octoProp.title
                     }}</mat-option>
                 </mat-select>
               </td>

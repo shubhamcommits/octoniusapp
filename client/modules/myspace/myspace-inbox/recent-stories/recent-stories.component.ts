@@ -2,6 +2,7 @@ import { Component, Injector, Input, OnInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
 import { LoungeService } from 'src/shared/services/lounge-service/lounge.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-recent-stories',
@@ -17,8 +18,9 @@ export class RecentStoriesComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    public utilityService: UtilityService,
     private injector: Injector,
-    private loungeService: LoungeService
+    private loungeService: LoungeService,
   ) { }
 
   async ngOnInit() {

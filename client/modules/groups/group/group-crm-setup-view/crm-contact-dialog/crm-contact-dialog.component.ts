@@ -36,7 +36,7 @@ export class CRMContactDialogComponent implements OnInit {
   publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
-    private utilityService: UtilityService,
+    public utilityService: UtilityService,
     private crmGroupService: CRMGroupService,
     private mdDialogRef: MatDialogRef<CRMContactDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,

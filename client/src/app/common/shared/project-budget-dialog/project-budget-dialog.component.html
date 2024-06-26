@@ -45,7 +45,7 @@
               <mat-form-field >
                 <mat-select ngDefaultControl (selectionChange)="saveBudget()" (click)="$event.stopPropagation()"
                   [(ngModel)]="budget.currency" name="new_type">
-                  <mat-option *ngFor="let currency of currencies" [value]="currency.code">{{ currency.name }}</mat-option>
+                  <mat-option *ngFor="let currency of currencies; trackBy: utilityService.trackByIndex" [value]="currency.code">{{ currency.name }}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -124,7 +124,7 @@
     <hr style="clear: both; border: none;" />
 
     <div style="margin-top: 30px;" *ngIf="budget?.expenses && budget?.expenses.length > 0">
-      <div class="expense content-box" *ngFor="let expense of budget?.expenses; let index = index">
+      <div class="expense content-box" *ngFor="let expense of budget?.expenses; let index = index; trackBy: utilityService.trackByIndex">
         <div *ngIf="!expense.isTT">
           <app-secured-image
             [imgURL]="expense?._user?.profile_pic"

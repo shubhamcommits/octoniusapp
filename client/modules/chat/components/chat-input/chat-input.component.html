@@ -1,11 +1,11 @@
 <div class="suggestions" *ngIf="(showSuggestMembers && suggestValues.length > 0) || (showSuggestFiles && suggestValues.length > 0)">
   <ul *ngIf="showSuggestMembers">
-    <li (click)="mentionMember(member)" *ngFor="let member of suggestValues">{{ member?.value }}</li>
+    <li (click)="mentionMember(member)" *ngFor="let member of suggestValues; trackBy: utilityService.trackByIndex">{{ member?.value }}</li>
   </ul>
 
   <!--
   <ul *ngIf="showSuggestFiles">
-    <li *ngFor="let file of suggestValues">{{ file?.value }}</li>
+    <li *ngFor="let file of suggestValues; trackBy: utilityService.trackByIndex">{{ file?.value }}</li>
   </ul>
   -->
 </div>

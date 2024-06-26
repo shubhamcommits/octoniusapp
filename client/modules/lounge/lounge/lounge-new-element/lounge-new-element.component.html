@@ -21,7 +21,7 @@
     </li>
 
     <mat-menu #categoriesMenu="matMenu">
-      <ng-container *ngFor="let category of categories; let index = index">
+      <ng-container *ngFor="let category of categories; let index = index; trackBy: utilityService.trackByIndex">
         <button mat-menu-item (click)="createStory(category)">{{ category.name }}</button>
       </ng-container>
     </mat-menu>
@@ -42,7 +42,7 @@
     </li>
 
     <mat-menu #categoriesEventMenu="matMenu">
-      <ng-container *ngFor="let category of categories; let index = index">
+      <ng-container *ngFor="let category of categories; let index = index; trackBy: utilityService.trackByIndex">
         <button mat-menu-item (click)="createEvent(category)">{{ category.name }}</button>
       </ng-container>
     </mat-menu>

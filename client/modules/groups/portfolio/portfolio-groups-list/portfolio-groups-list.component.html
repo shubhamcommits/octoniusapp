@@ -23,7 +23,7 @@
     <!-- STARTS USER GROUPS -->
     <div class="media-body">
         <div class="row">
-            <ng-container *ngFor="let group of portfolioData?._groups">
+            <ng-container *ngFor="let group of portfolioData?._groups; trackBy: utilityService.trackByIndex">
                 <div class="cards-list">
                     <div *ngIf="editGroups" class="card img-fluid" style="cursor: default;">
                         <app-secured-image [imgURL]="group?.group_avatar" [service]="'group'" [workspaceId]="workspaceData?._id" [styleClass]="'card-img-top'">

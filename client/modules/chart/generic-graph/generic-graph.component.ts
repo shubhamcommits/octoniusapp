@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 //import 'chartjs-plugin-labels'
 
 
@@ -43,6 +44,20 @@ export class GenericGraphComponent implements OnInit {
 
   // Sheet Data
   @Input('sheetData') sheetData = []
+  
+  constructor(
+    public utilityService: UtilityService
+    ) { }
+
+  ngOnInit() {
+  }
+
+  ngOnChanges() {
+    this.compute()
+  }
+
+  changeChartType(value) {
+  }
 
   /**
    * Format Number
@@ -65,16 +80,6 @@ export class GenericGraphComponent implements OnInit {
           ? Number(Math.abs(Number(labelValue)) / 1.0e+3).toFixed(2) + "K"
 
           : Number(Math.abs(Number(labelValue))).toFixed(2)
-  }
-
-  ngOnInit() {
-  }
-
-  ngOnChanges() {
-    this.compute()
-  }
-
-  changeChartType(value) {
   }
 
   compute() {

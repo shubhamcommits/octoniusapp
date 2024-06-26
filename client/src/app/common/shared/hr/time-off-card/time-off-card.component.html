@@ -5,7 +5,7 @@
 		</div>
 		
 		<div class="card-content">
-			<div *ngFor="let member of membersOff">
+			<div *ngFor="let member of membersOff; trackBy: utilityService.trackByIndex">
 				<div>
 					<app-secured-image [imgURL]="member?.profile_pic" [service]="'user'"
 						[workspaceId]="workspaceData?._id" [userData]="member"

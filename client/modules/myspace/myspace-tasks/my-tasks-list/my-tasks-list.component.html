@@ -12,7 +12,7 @@
       Today
   </h5>
 
-  <div *ngFor="let task of overdueAndTodayTasks; let i = index;">
+  <div *ngFor="let task of overdueAndTodayTasks; let i = index; trackBy: utilityService.trackByIndex">
     <a (click)="openModal(task)">
       <!-- My Space Today Tasks -->
       <div *ngIf="task.type== 'task'">
@@ -119,7 +119,7 @@
 
   <h5 class="title-overview" *ngIf="this.thisWeekTasks.length !=  0">This week</h5>
 
-  <div *ngFor="let task of thisWeekTasks; let i = index;">
+  <div *ngFor="let task of thisWeekTasks; let i = index; trackBy: utilityService.trackByIndex">
     <a (click)="openModal(task)">
       <!-- My Space This week Tasks -->
 
@@ -228,7 +228,7 @@
 
   <h5 class="title-overview" *ngIf="this.nextWeekTasks.length !=  0" i18n="@@mySpaceTasks.nextWeek">Next week</h5>
 
-  <div *ngFor="let task of nextWeekTasks; let i = index;">
+  <div *ngFor="let task of nextWeekTasks; let i = index; trackBy: utilityService.trackByIndex">
     <a (click)="openModal(task)">
       <!-- My Space This week Tasks -->
       <div *ngIf="task.type== 'task'">
@@ -336,7 +336,7 @@
 
   <h5 class="title-overview" *ngIf="this.futureTasks.length !=  0" i18n="@@mySpaceTasks.futureTasks">Future Tasks</h5>
 
-  <div *ngFor="let task of futureTasks; let i = index;">
+  <div *ngFor="let task of futureTasks; let i = index; trackBy: utilityService.trackByIndex">
     <a (click)="openModal(task)">
       <!-- My Space future Tasks -->
 

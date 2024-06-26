@@ -46,9 +46,9 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
   private subSink = new SubSink();
 
   constructor(
-    private injector: Injector,
+    public utilityService: UtilityService,
     public dialog: MatDialog,
-    private utilityService: UtilityService,
+    private injector: Injector,
     private hrService: HRService,
     private userService: UserService
   ) { }

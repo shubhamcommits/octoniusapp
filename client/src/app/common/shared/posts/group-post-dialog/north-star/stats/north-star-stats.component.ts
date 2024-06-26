@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Injector, OnChanges } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { PublicFunctions } from 'modules/public.functions';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-north-star-stats',
@@ -19,6 +20,7 @@ export class NorthStarStatsComponent implements OnInit, OnChanges {
   public publicFunctions = new PublicFunctions(this.injector)
 
   constructor(
+    public utilityService: UtilityService,
     private injector: Injector
     ) { }
 

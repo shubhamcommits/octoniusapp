@@ -29,7 +29,7 @@
       </ng-container>
 
       <!-- CUSTOM FIELDS START -->
-      <ng-container [matColumnDef]="cf.name" *ngFor="let cf of crmProductCustomFields">
+      <ng-container [matColumnDef]="cf.name" *ngFor="let cf of crmProductCustomFields; trackBy: utilityService.trackByIndex">
         <th mat-header-cell mat-sort-header *matHeaderCellDef>
           <div class="cf_cell">
             {{ cf.title }}

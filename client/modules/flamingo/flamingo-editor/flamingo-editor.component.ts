@@ -47,7 +47,8 @@ export class FlamingoEditorComponent implements OnInit {
     private router: Router,
     private _ActivatedRoute: ActivatedRoute,
     private _Injector: Injector,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public utilityService: UtilityService
   ) { }
 
   async ngOnInit() {

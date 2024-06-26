@@ -22,7 +22,7 @@
           Today
       </h5>
 
-      <div *ngFor="let task of overdueAndTodayTasks; let i = index;">
+      <div *ngFor="let task of overdueAndTodayTasks; let i = index; trackBy: utilityService.trackByIndex">
           <!-- My Space Today Tasks -->
           <div>
             <div class="media card-tile overview-task todo-bar" *ngIf="task.task.status === 'to do'" role="progressbar">
@@ -127,7 +127,7 @@
 
       <h5 class="title-overview" *ngIf="this.thisWeekTasks.length !=  0">This week</h5>
 
-      <div *ngFor="let task of thisWeekTasks; let i = index;">
+      <div *ngFor="let task of thisWeekTasks; let i = index; trackBy: utilityService.trackByIndex">
         
           <!-- My Space This week Tasks -->
 
@@ -236,7 +236,7 @@
 
       <h5 class="title-overview" *ngIf="this.nextWeekTasks.length !=  0" i18n="@@mySpaceTasks.nextWeek">Next week</h5>
 
-      <div *ngFor="let task of nextWeekTasks; let i = index;">
+      <div *ngFor="let task of nextWeekTasks; let i = index; trackBy: utilityService.trackByIndex">
         
           <!-- My Space This week Tasks -->
           <div>
@@ -344,7 +344,7 @@
 
       <h5 class="title-overview" *ngIf="this.futureTasks.length !=  0" i18n="@@mySpaceTasks.futureTasks">Future Tasks</h5>
 
-      <div *ngFor="let task of futureTasks; let i = index;">
+      <div *ngFor="let task of futureTasks; let i = index; trackBy: utilityService.trackByIndex">
         
           <!-- My Space future Tasks -->
 

@@ -9,7 +9,7 @@
       </div>
 
       <div class="category-body">
-        <div *ngFor="let collection of collections; let index = index" class="cards-list card img-fluid">
+        <div *ngFor="let collection of collections; let index = index; trackBy: utilityService.trackByIndex" class="cards-list card img-fluid">
           <div [routerLink]="['/dashboard', 'work', 'groups', 'library', 'collection']" [queryParams]="{ collection: collection?._id  }">
             <app-secured-image [imgURL]="collection?.collection_avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
               [styleClass]="'card-img-top'"></app-secured-image>

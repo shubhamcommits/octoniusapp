@@ -1,6 +1,7 @@
 import { Component, Input, Output, OnChanges, EventEmitter } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-comment-list',
@@ -26,6 +27,7 @@ export class CommentListComponent implements OnChanges {
   displayShowMore = false;
 
   constructor(
+    public utilityService: UtilityService,
     private commentService: CommentService) {
   }
 

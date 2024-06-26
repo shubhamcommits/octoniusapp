@@ -30,11 +30,11 @@ export class NewCRMOrderProductDialogComponent implements OnInit {
   publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
-    private utilityService: UtilityService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public utilityService: UtilityService,
     private postService: PostService,
     private crmGroupService: CRMGroupService,
     private mdDialogRef: MatDialogRef<NewCRMOrderProductDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
     private injector: Injector
   ) {}
 

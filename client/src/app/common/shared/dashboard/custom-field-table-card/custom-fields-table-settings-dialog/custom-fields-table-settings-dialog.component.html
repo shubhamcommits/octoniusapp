@@ -23,7 +23,7 @@
       <div class="col-md-6">
         <p class="mb-1 bold">CF select - text </p>
         <hr>
-        <div *ngFor="let cf of selectCustomFields">
+        <div *ngFor="let cf of selectCustomFields; trackBy: utilityService.trackByIndex">
           <mat-slide-toggle color="primary"
               [checked]="isSelectTypeChecked(cf.name)"
               [name]="cf.name"
@@ -36,7 +36,7 @@
       <div class="col-md-6">
         <p class="mb-1 bold">CF input - value.</p>
         <hr>
-        <div *ngFor="let cf of inputCustomFields">
+        <div *ngFor="let cf of inputCustomFields; trackBy: utilityService.trackByIndex">
           <mat-slide-toggle color="primary"
               [checked]="isChecked(cf.name)"
               [name]="cf.name"

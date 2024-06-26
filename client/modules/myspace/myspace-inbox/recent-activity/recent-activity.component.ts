@@ -59,13 +59,13 @@ export class RecentActivityComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    public utilityService: UtilityService,
+    public dialog: MatDialog,
     private _router: Router,
     private injector: Injector,
-    public dialog: MatDialog,
     private socketService: SocketService,
     private loungeService: LoungeService,
     private datesService: DatesService,
-    private utilityService: UtilityService,
     private userService: UserService,
     private hrService: HRService
   ) {

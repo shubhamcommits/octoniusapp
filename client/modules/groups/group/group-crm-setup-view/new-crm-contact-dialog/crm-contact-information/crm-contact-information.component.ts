@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Injector, Input, OnChanges, Output } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { CRMGroupService } from 'src/shared/services/crm-group-service/crm-group.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-crm-contact-information',
@@ -27,6 +28,7 @@ export class CRMContactInformationComponent implements OnChanges {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    public utilityService: UtilityService,
     private crmGroupService: CRMGroupService,
     private injector: Injector,
   ) { }

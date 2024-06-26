@@ -6,7 +6,7 @@
             [ngStyle]="{'border-right': '1px solid #E4EDF8','padding': '5px','height': questionListHeight,'overflow-y':'auto','overflow-x':'hidden'}">
 
             <!-- Questions list container start -->
-            <div *ngFor="let question of questions; let i = index;"
+            <div *ngFor="let question of questions; let i = index; trackBy: utilityService.trackByIndex"
                 [ngClass]="i==activeQuestionIndex?'questions-container-active':'questions-container'"
                 (click)="changeActiveIndex(i)" style="position: relative;">
                 <!-- question icon div -->
@@ -88,7 +88,7 @@
 
                     <!-- question dropdown option input fields start-->
                     <div *ngIf="question.type==='Dropdown' && i==activeQuestionIndex">
-                        <div *ngFor="let currentOption of question.options; let j=index">
+                        <div *ngFor="let currentOption of question.options; let j=index; trackBy: utilityService.trackByIndex">
                             -
                               <span *ngIf="flamingo?.publish">{{ currentOption }}</span>
                               <input *ngIf="!flamingo?.publish"
@@ -107,7 +107,7 @@
 
                     <!-- question multiselect option input fields start-->
                     <div *ngIf="question.type==='Multiple' && i==activeQuestionIndex">
-                        <div *ngFor="let currentOption of question.options; let j=index">
+                        <div *ngFor="let currentOption of question.options; let j=index; trackBy: utilityService.trackByIndex">
                             -
                               <span *ngIf="flamingo?.publish">{{ currentOption }}</span>
                               <input *ngIf="!flamingo?.publish"
@@ -393,14 +393,14 @@
                     <br *ngIf="activeQuestion?.type === 'Dropdown' || activeQuestion?.type === 'Multiple'"/>
                     <mat-form-field appearance="fill" *ngIf="activeQuestion?.type === 'Dropdown'">
                         <mat-select [(value)]="activeQuestion.answer">
-                          <mat-option *ngFor="let currentOption of activeQuestion?.options; let j=index" [value]="currentOption">{{ currentOption }}</mat-option>
+                          <mat-option *ngFor="let currentOption of activeQuestion?.options; let j=index; trackBy: utilityService.trackByIndex" [value]="currentOption">{{ currentOption }}</mat-option>
                         </mat-select>
                       </mat-form-field>
 
                     <mat-form-field appearance="fill" *ngIf="activeQuestion?.type === 'Multiple'">
                       <mat-select multiple
                           [(value)]="activeQuestion.answer_multiple">
-                        <mat-option *ngFor="let currentOption of activeQuestion?.options" [value]="currentOption">{{ currentOption }}</mat-option>
+                        <mat-option *ngFor="let currentOption of activeQuestion?.options; trackBy: utilityService.trackByIndex" [value]="currentOption">{{ currentOption }}</mat-option>
                       </mat-select>
                     </mat-form-field>
                 </div>

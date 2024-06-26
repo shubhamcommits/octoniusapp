@@ -1,5 +1,6 @@
 import { Component, OnChanges, Input, Output, EventEmitter, Injector, SimpleChanges } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-change-column',
@@ -24,7 +25,10 @@ export class ChangeColumnComponent implements OnChanges {
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
 
-  constructor(private injector: Injector) { }
+  constructor(
+    public utilityService: UtilityService,
+    private injector: Injector
+  ) { }
 
   async ngOnChanges() {
     this.selectColumn(this.sectionId);

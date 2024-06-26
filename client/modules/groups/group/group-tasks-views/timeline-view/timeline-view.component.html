@@ -5,7 +5,7 @@
       <div *ngIf="projectsdata?.length > 0" style="height: 100px;overflow: hidden;">
         <div id="hideScrollbar" [ngStyle]="{'height': '120px','width':'100%','overflow':'auto'}">
           <div  class="projects-row" [ngStyle]="{'height': '100px','width':timeline_header_width,'padding-bottom':'30px'}">
-            <div *ngFor="let item of projectsdata;let i = index" [ngClass]="i==selectedProjectIndex?'project-card is-clicked':'project-card'"
+            <div *ngFor="let item of projectsdata;let i = index; trackBy: utilityService.trackByIndex" [ngClass]="i==selectedProjectIndex?'project-card is-clicked':'project-card'"
               [ngStyle]="{'left': (i*333+30)+'px','cursor':'pointer'}" (click)="scroll(item.id,i)">
               <div style="position: relative;width: 293px;height: 75px;">
                 <p class="text-capitalize project-title" [matTooltip]="item?.title">
@@ -37,7 +37,7 @@
                 
                 <p [attr.width]="step" class="first_month">{{dates[0]?.month}}</p>
 
-                <div *ngFor="let item of dates; let i =index" [ngStyle]="{'left':(i*50)+'px','height':'30px','background-color' : item.isweekend?'#fff':'initial'}" class="date_div">
+                <div *ngFor="let item of dates; let i =index; trackBy: utilityService.trackByIndex" [ngStyle]="{'left':(i*50)+'px','height':'30px','background-color' : item.isweekend?'#fff':'initial'}" class="date_div">
                   <p *ngIf="item.day == 1" [ngStyle]="{'top':'-30px'}" [attr.width]="step" class="first_month">
                     {{item.month}}
                   </p>
@@ -56,24 +56,24 @@
             <div id="main_container" [attr.width]="timeline_container_width" [ngStyle]="{'height':timeline_container_height,'margin-top':'-76px'}">
               <div class="vl" [ngStyle]="{'left':(current_date_index*step+15)+'px'}"></div>
 
-              <div *ngFor="let item of dates; let i =index" [ngStyle]="{'left':(i*50)+'px','height':timeline_container_height,'background-color'
+              <div *ngFor="let item of dates; let i =index; trackBy: utilityService.trackByIndex" [ngStyle]="{'left':(i*50)+'px','height':timeline_container_height,'background-color'
                 : item.isweekend?'#fff':'initial'}" class="date_div">
               </div>
 
-              <div *ngFor="let item of projectsdata;let i = index" class="project-timeline"
+              <div *ngFor="let item of projectsdata;let i = index; trackBy: utilityService.trackByIndex" class="project-timeline"
                 [ngStyle]="{'top':item.startheight+'px','left': (item.startingIndex*step)+'px','position':'absolute','height':(60*item.tasks.length+100)+'px',
                 'border-left':'1px solid #26A69A','border-right':'1px dotted #005FD5','width':(item.differencedays*step+step)+'px'}">
                 <div *ngIf="item.taskAfterDueDate" [ngStyle]="{'position':'absolute',left:(item.differencedays*step+step)+'px','background-color':'red',
                 'height':(60*item.tasks.length+100)+'px','width':(item.taskAfterDueDate*step)+'px','border-right':'2px dashed #EB5757'}"></div>
               </div>
 
-              <div *ngFor="let item of projectsdata;let i = index">
+              <div *ngFor="let item of projectsdata;let i = index; trackBy: utilityService.trackByIndex">
                 <div *ngIf="i == selectedProjectIndex" class="pvl" [ngStyle]="{'left':(item.startingIndex*step)+'px','height':((item.startheight)+(60*item.tasks.length))+'px','border-left': i===0?'2px solid #26A69A':'1px solid #9D9FA2'}"></div>
                 <div *ngIf="i == selectedProjectIndex && i!==0" class="pvl" [ngStyle]="{'left':(item.taskAfterDueDateStart*step+step)+'px','height':((item.startheight)+(60*item.tasks.length))+'px','border-left':'1px solid #9D9FA2'}"></div>
                 <div *ngIf="i == selectedProjectIndex && i===0" class="pvl" [ngStyle]="{'left':(item.taskAfterDueDateStart*step+step-2)+'px','height':(item.startheight+50)+'px','border-left': '2px dashed #005FD5'}"></div>
               </div>
 
-              <div *ngFor="let item of projectsdata;let i = index" [attr.id]="item.id" [ngStyle]="{'top':(item.startheight)+'px','left': (item.startingIndex*50)+'px','position':'absolute','height':(60*item.tasks.length+100)+'px',
+              <div *ngFor="let item of projectsdata;let i = index; trackBy: utilityService.trackByIndex" [attr.id]="item.id" [ngStyle]="{'top':(item.startheight)+'px','left': (item.startingIndex*50)+'px','position':'absolute','height':(60*item.tasks.length+100)+'px',
                 'border-left':'2px solid #26A69A','border-right':'2px dashed #005FD5','width':(item.differencedays*step+step)+'px'}">
 
                 <div *ngIf="item.taskAfterDueDate" [ngStyle]="{'position':'absolute',left:(item.differencedays*step+step)+'px',
@@ -87,7 +87,7 @@
                   (post)="newTask($event, item.id)" [isIdeaModuleAvailable]="isIdeaModuleAvailable"></app-new-task>
                 </div>
 
-                <div *ngFor="let task of item.tasks; let j =index"  [ngStyle]="{'left':(-1*item.startingIndex*50)+'px','position':'absolute','top':(60*j+60)+'px',
+                <div *ngFor="let task of item.tasks; let j =index; trackBy: utilityService.trackByIndex"  [ngStyle]="{'left':(-1*item.startingIndex*50)+'px','position':'absolute','top':(60*j+60)+'px',
                   'board':'1px solid gray','width':timeline_container_width}" cdkDropList class="example-list"
                   (cdkDropListDropped)="drop($event)">
                   <div  [attr.taskIndex]="j" [attr.projectIndex]="i" [attr.id]="task.id" [ngStyle]="{'left':(task.index_date*step)+'px','top':'0px','width'
@@ -119,7 +119,7 @@
 
               </div>
               <!-- </div> -->
-              <div *ngFor="let task of tasksDataList; let i =index" [ngStyle]="{'left':'0px','position':'absolute','top':((tasksStartingHeight)+(60*i+100))+'px',
+              <div *ngFor="let task of tasksDataList; let i =index; trackBy: utilityService.trackByIndex" [ngStyle]="{'left':'0px','position':'absolute','top':((tasksStartingHeight)+(60*i+100))+'px',
               'board':'1px solid gray','width':timeline_container_width}" cdkDropList class="example-list"
                   (cdkDropListDropped)="drop($event)">
                   <div [attr.taskIndex]="i" [attr.id]="task.id" [ngStyle]="{'left':(task.index_date*step)+'px','top':'0px','width'

@@ -39,12 +39,12 @@ export class ShareCollectionDialogComponent implements OnInit {
   public subSink = new SubSink();
 
   constructor(
-    public injector: Injector,
-    private mdDialogRef: MatDialogRef<ShareCollectionDialogComponent>,
     @Inject(LOCALE_ID) public locale: string,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    public utilityService: UtilityService,
+    public injector: Injector,
+    private mdDialogRef: MatDialogRef<ShareCollectionDialogComponent>,
     private _router: Router,
-    private utilityService: UtilityService,
     private libraryService: LibraryService
     ) {
   }

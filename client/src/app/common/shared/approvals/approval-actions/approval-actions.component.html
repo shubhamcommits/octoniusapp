@@ -29,7 +29,7 @@
             (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
         </div>
         <ul class="assignee-list">
-          <li appHighlight class="assignee-list-item" *ngFor="let member of groupMembers | appFilter: searchText"
+          <li appHighlight class="assignee-list-item" *ngFor="let member of groupMembers | appFilter: searchText; trackBy: utilityService.trackByIndex"
               (click)="getMemberDetails(member)"
               [searchedWord]="searchText"
               [content]="member"
@@ -43,7 +43,7 @@
 
   <!-- LIST OF ASSIGNEE USERS TO APPROVE STARTS -->
   <div style="margin-top: 10px; margin-bottom: 10px;">
-    <div *ngFor="let approval of itemData?.approval_flow">
+    <div *ngFor="let approval of itemData?.approval_flow; trackBy: utilityService.trackByIndex">
       <div class="assignee-row">
         <div class="assignee">
           <app-secured-image

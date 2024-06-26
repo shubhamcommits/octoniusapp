@@ -75,13 +75,13 @@ export class GlobalNorthStarDialogComponent implements OnInit {
   public isLoading$ = new BehaviorSubject(false);
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public utilityService: UtilityService,
+    public dialog: MatDialog,
     private postService: PostService,
-    private utilityService: UtilityService,
     private columService: ColumnService,
     private injector: Injector,
-    public dialog: MatDialog,
     private changeDetectorRef: ChangeDetectorRef,
-    @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<GlobalNorthStarDialogComponent>
     ) {}
 

@@ -2,7 +2,7 @@
 <mat-form-field class="full-width" appearance="outline" *ngIf="!(isLoading$ | async) && isCurrentUserMember == false">
     <mat-label i18n="@@groupReports.yourCampaignFiles">Your Campaign Files</mat-label>
     <mat-select [(value)]="campaignFile" (valueChange)="changeValue($event)">
-      <mat-option *ngFor="let file of files" [value]="file">
+      <mat-option *ngFor="let file of files; trackBy: utilityService.trackByIndex" [value]="file">
         {{ file?.original_name || '-' }}
       </mat-option>
     </mat-select>

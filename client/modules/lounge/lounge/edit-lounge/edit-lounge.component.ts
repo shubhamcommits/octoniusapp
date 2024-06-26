@@ -35,7 +35,7 @@ export class EditLoungeComponent implements OnInit {
     private mdDialogRef: MatDialogRef<EditLoungeComponent>,
     private injector: Injector,
     private loungeService: LoungeService,
-    private utilityService: UtilityService
+    public utilityService: UtilityService,
     ) { }
 
   async ngOnInit() {

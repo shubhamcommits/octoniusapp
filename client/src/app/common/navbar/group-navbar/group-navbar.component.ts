@@ -116,7 +116,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
       this.groupData = await this.publicFunctions.getGroupDetails(this.userData?._private_group?._id || this.userData?._private_group);
     }
     */
-    if (!this.utilityService.objectExists(this.groupData)) {
+    if (!this.objectExists(this.groupData)) {
       this.groupData = await this.publicFunctions.getGroupDetails(this.userData?._private_group?._id || this.userData?._private_group);
       this.publicFunctions.sendUpdatesToGroupData(this.groupData);
     }
@@ -212,5 +212,9 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
         }
       }
     }))
+  }
+
+  objectExists(object: any) {
+    return this.utilityService.objectExists(object);
   }
 }

@@ -26,8 +26,8 @@ export class CRMContactCustomFieldsComponent implements OnChanges {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+		public utilityService: UtilityService,
     private crmGroupService: CRMGroupService,
-		private utilityService: UtilityService,
 		private datesService: DatesService,
     private injector: Injector,
   ) { }

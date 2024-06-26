@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { CustomFieldsTableSettingsDialogComponent } from './custom-fields-table-settings-dialog/custom-fields-table-settings-dialog.component';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-custom-field-table-card',
@@ -31,9 +32,10 @@ export class CustomFieldTableCardComponent implements OnChanges, OnInit {
   public publicFunctions = new PublicFunctions(this.injector)
 
   constructor(
+    public dialog: MatDialog,
+    public utilityService: UtilityService,
     private postService: PostService,
     private injector: Injector,
-    public dialog: MatDialog
   ) {}
 
   ngOnInit() {

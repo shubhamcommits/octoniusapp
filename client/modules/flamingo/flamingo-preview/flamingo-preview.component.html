@@ -102,7 +102,7 @@
                 <mat-select
                     (selectionChange)="answerQuestion($event.value); $event.stopPropagation()"
                     [(value)]="activeQuestion.answer">
-                    <mat-option *ngFor="let currentOption of activeQuestion?.options; let j=index" [value]="currentOption">{{ currentOption }}</mat-option>
+                    <mat-option *ngFor="let currentOption of activeQuestion?.options; let j=index; trackBy: utilityService.trackByIndex" [value]="currentOption">{{ currentOption }}</mat-option>
                 </mat-select>
               </mat-form-field>
 
@@ -111,7 +111,7 @@
                   (selectionChange)="answerQuestion($event.value); $event.stopPropagation()"
                   (closed)="nextQuestion()"
                   [(value)]="activeQuestion.answer_multiple">
-                <mat-option *ngFor="let currentOption of activeQuestion?.options" [value]="currentOption">{{ currentOption }}</mat-option>
+                <mat-option *ngFor="let currentOption of activeQuestion?.options; trackBy: utilityService.trackByIndex" [value]="currentOption">{{ currentOption }}</mat-option>
               </mat-select>
             </mat-form-field>
         </div>

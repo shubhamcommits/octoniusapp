@@ -31,11 +31,12 @@ export class SearchTaskDialogComponent implements OnInit {
   publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    public injector: Injector,
+    public utilityService: UtilityService,
     private searchService: SearchService,
     private postService: PostService,
-    public injector: Injector,
+    private mdDialogRef: MatDialogRef<SearchTaskDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private mdDialogRef: MatDialogRef<SearchTaskDialogComponent>
   ) {
     this.userId = this.data.userId;
     this.parentTaskId = this.data.parentTaskId;

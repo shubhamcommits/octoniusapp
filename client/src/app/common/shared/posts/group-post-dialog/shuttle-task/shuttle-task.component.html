@@ -5,7 +5,7 @@
   </p>
 
   <div>
-    <div *ngFor="let shuttle of postData?.task?.shuttles; let index = index">
+    <div *ngFor="let shuttle of postData?.task?.shuttles; let index = index; trackBy: utilityService.trackByIndex">
       <span *ngIf="index == 0" i18n="@@shuttleTask.currently"> Currently: </span>
       <span *ngIf="index > 0"> <span i18n="@@shuttleTask.shuttle">Shuttle</span> {{ postData?.task?.shuttles.length - index }}: </span>
 

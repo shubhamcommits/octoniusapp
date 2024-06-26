@@ -48,7 +48,7 @@
                     <input class="file-input" #file type="file" placeholder="File" multiple (change)="fileInput(file.files)" />
                 </div>
 
-                <div *ngFor="let file of pageData?._files">
+                <div *ngFor="let file of pageData?._files; trackBy: utilityService.trackByIndex">
                     <span class="btn" (click)="openDocument(file)">{{ file?.original_name | truncatetext: 20 }}</span>
 
                     <button *ngIf="canEdit" class="btn btn-link" data-toggle="dropdown">
@@ -70,7 +70,7 @@
                     <span i18n="@@pageDetails.authors">Authors</span>
                 </div>
 
-                <div *ngFor="let author of pageData?._updated_by">
+                <div *ngFor="let author of pageData?._updated_by; trackBy: utilityService.trackByIndex">
                     <app-secured-image *ngIf="isAuth"
                         [imgURL]="author?.profile_pic"
                         [service]="'user'"

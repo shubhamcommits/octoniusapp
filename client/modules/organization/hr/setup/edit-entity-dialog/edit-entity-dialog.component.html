@@ -58,7 +58,7 @@
                         <mat-form-field class="full-width" appearance="outline" style="width: 100%;">
                             <!-- <mat-label for="currency" i18n="@@editEntityDialog.currency">Currency</mat-label> -->
                             <mat-select [(value)]="entityData.currency_code" (valueChange)="changeCurrency($event)" name="currency">
-                                <mat-option [value]="currency?.code" *ngFor="let currency of currencies">{{ currency?.name }}</mat-option>
+                                <mat-option [value]="currency?.code" *ngFor="let currency of currencies; trackBy: utilityService.trackByIndex">{{ currency?.name }}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
@@ -126,11 +126,11 @@
                             <div class="actions title"></div>
                         </li>
 
-                        <li *ngFor="let cf of entityData?.payroll_custom_fields">
+                        <li *ngFor="let cf of entityData?.payroll_custom_fields; trackBy: utilityService.trackByIndex">
                             <div class="name"><span>{{ cf.name }}</span></div>
                             <div class="type"><span>{{ cf.type }}</span></div>
                             <div class="values">
-                                <span class="badge" *ngFor="let value of cf.values">{{ value }}</span>
+                                <span class="badge" *ngFor="let value of cf.values; trackBy: utilityService.trackByIndex">{{ value }}</span>
                             </div>
                             <div class="actions">
                                 <div style="cursor: pointer;" [matMenuTriggerFor]="menu">
@@ -159,13 +159,13 @@
                         <label i18n="@@editEntityDialog.type" style="float: left; width: 100%;">Type</label>
                         <mat-form-field class="full-width" appearance="outline" style="width: 100%;">
                             <mat-select [(value)]="newCF.type" (selectionChange)="changeCFType($event, newCF)">
-                                <mat-option [value]="type" *ngFor="let type of cfTypes">{{ type }}</mat-option>
+                                <mat-option [value]="type" *ngFor="let type of cfTypes; trackBy: utilityService.trackByIndex">{{ type }}</mat-option>
                             </mat-select>
                         </mat-form-field>
             
                         <label *ngIf="newCF.type == 'Select'" i18n="@@editEntityDialog.values">Values</label>
                         <div class="values" *ngIf="newCF.type == 'Select'">
-                            <span class="badge" *ngFor="let value of newCF.values">
+                            <span class="badge" *ngFor="let value of newCF.values; trackBy: utilityService.trackByIndex">
                                 {{ value }}
                                 <i class="material-icons" (click)="removeCFValue(newCF, value)" style="cursor: pointer;">highlight_off</i>
                             </span>
@@ -217,7 +217,7 @@
                             <div class="actions title"></div>
                         </li>
                     
-                        <li *ngFor="let variable of entityData?.payroll_variables">
+                        <li *ngFor="let variable of entityData?.payroll_variables; trackBy: utilityService.trackByIndex">
                             <div class="name"><span>{{ variable.name }}</span></div>
                             <div class="type"><span>{{ variable.type }}</span></div>
                             <div class="values"><span>{{ variable.value }}</span></div>
@@ -249,7 +249,7 @@
                         <mat-form-field class="full-width" appearance="outline" style="width: 100%;">
                             <!-- <mat-label i18n="@@editEntityDialog.type">Type</mat-label> -->
                             <mat-select [(value)]="newVariable.type">
-                                <mat-option [value]="type" *ngFor="let type of variableTypes">{{ type }}</mat-option>
+                                <mat-option [value]="type" *ngFor="let type of variableTypes; trackBy: utilityService.trackByIndex">{{ type }}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     
@@ -297,11 +297,11 @@
                             <div class="actions title"></div>
                         </li>
             
-                        <li *ngFor="let benefit of entityData?.payroll_benefits">
+                        <li *ngFor="let benefit of entityData?.payroll_benefits; trackBy: utilityService.trackByIndex">
                             <div class="name"><span>{{ benefit.name }}</span></div>
                             <div class="type"><span>{{ benefit.type }}</span></div>
                             <div class="values">
-                                <span class="badge" *ngFor="let value of benefit.values">{{ value }}</span>
+                                <span class="badge" *ngFor="let value of benefit.values; trackBy: utilityService.trackByIndex">{{ value }}</span>
                             </div>
                             <div class="actions">
                                 <div style="cursor: pointer;" [matMenuTriggerFor]="menuBenefits">
@@ -330,13 +330,13 @@
                         <label i18n="@@editEntityDialog.type" style="float: left; width: 100%;">Type</label>
                         <mat-form-field class="full-width" appearance="outline" style="width: 100%;">
                             <mat-select [(value)]="newBenefit.type" (selectionChange)="changeBenefitType($event, newBenefit)">
-                                <mat-option [value]="type" *ngFor="let type of benefitTypes">{{ type }}</mat-option>
+                                <mat-option [value]="type" *ngFor="let type of benefitTypes; trackBy: utilityService.trackByIndex">{{ type }}</mat-option>
                             </mat-select>
                         </mat-form-field>
             
                         <label *ngIf="newBenefit.type == 'Select' || newBenefit.type == 'Multiselect'" i18n="@@editEntityDialog.values">Values</label>
                         <div class="values" *ngIf="newBenefit.type == 'Select' || newBenefit.type == 'Multiselect'">
-                            <span class="badge" *ngFor="let value of newBenefit.values">
+                            <span class="badge" *ngFor="let value of newBenefit.values; trackBy: utilityService.trackByIndex">
                                 {{ value }}
                                 <i class="material-icons" (click)="removeBenefitValue(newBenefit, value)"
                                     style="cursor: pointer;">highlight_off</i>
@@ -399,7 +399,7 @@
                             <div class="actions title"></div>
                         </div> -->
             
-                        <div class="row" *ngFor="let daysOff of entityData?.payroll_days_off">
+                        <div class="row" *ngFor="let daysOff of entityData?.payroll_days_off; trackBy: utilityService.trackByIndex">
                             <div class="type"><span i18n="@@setup.year" class="bold">Year</span> <br> <span>{{ daysOff.year }}</span></div>
                             <div class="type"><span i18n="@@setup.holidays" class="bold">Holidays</span> <br> <span>{{ daysOff.holidays }}</span></div>
                             <div class="type"><span i18n="@@setup.sick" class="bold">Sick</span> <br><span>{{ daysOff.sick }}</span></div>
@@ -430,7 +430,7 @@
                                     Bank Holidays
                                 </li>
 
-                                <li *ngFor="let bh of daysOff.bank_holidays">
+                                <li *ngFor="let bh of daysOff.bank_holidays; trackBy: utilityService.trackByIndex">
                                     <span>{{ formateDate(bh) }}</span>
                                     <span (click)="removeBankHolidayDate(daysOff._id, bh)" class="material-icons-outlined" style="cursor: pointer;">delete</span>
                                 </li>
@@ -510,7 +510,7 @@
                             <div class="actions title"></div>
                         </li>
         
-                        <li *ngFor="let member of entityMembers">
+                        <li *ngFor="let member of entityMembers; trackBy: utilityService.trackByIndex">
                             <div class="avatar title">
                                 <app-secured-image [imgURL]="member?.profile_pic" [userData]="member" [service]="'user'" [workspaceId]="workspaceData?._id" [styleClass]="'feed-avatar-small'"></app-secured-image>
                             </div>

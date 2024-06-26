@@ -27,13 +27,13 @@
 
     <div class="flowStepsList" *ngIf="flowSteps.length > 0">
       <div class="flowStepsBody">
-        <div class="step" *ngFor="let step of flowSteps; let stepIndex = index">
+        <div class="step" *ngFor="let step of flowSteps; let stepIndex = index; trackBy: utilityService.trackByIndex">
 
           <div class="index">{{ stepIndex + 1 }}</div>
 
           <!-- TRIGGER SECTION -->
           <div class="values" *ngIf="step.trigger">
-            <div *ngFor="let trigger of step.trigger; let triggerIndex = index">
+            <div *ngFor="let trigger of step.trigger; let triggerIndex = index; trackBy: utilityService.trackByIndex">
               <div class="step-element">
                 <span style="margin-right: 10px;">
                   {{ trigger.name }}
@@ -60,7 +60,7 @@
                   </button>
                   <mat-menu #statusMenu="matMenu">
                     <ng-container>
-                      <button mat-menu-item *ngFor="let status of statusOptions" (click)="triggerSelected('status', status, stepIndex, triggerIndex)">{{ status.toUpperCase() }}</button>
+                      <button mat-menu-item *ngFor="let status of statusOptions; trackBy: utilityService.trackByIndex" (click)="triggerSelected('status', status, stepIndex, triggerIndex)">{{ status.toUpperCase() }}</button>
                     </ng-container>
                   </mat-menu>
                 </div>
@@ -76,7 +76,7 @@
                   </button>
                   <mat-menu #sectionTriggerMenu="matMenu">
                     <ng-container>
-                      <button mat-menu-item *ngFor="let section of groupSections" (click)="triggerSelected('section', section, stepIndex, triggerIndex)">{{ section.title }}</button>
+                      <button mat-menu-item *ngFor="let section of groupSections; trackBy: utilityService.trackByIndex" (click)="triggerSelected('section', section, stepIndex, triggerIndex)">{{ section.title }}</button>
                     </ng-container>
                   </mat-menu>
                 </div>
@@ -88,7 +88,7 @@
                   </button>
                   <mat-menu #customFieldNameMenu="matMenu">
                     <ng-container>
-                      <button mat-menu-item *ngFor="let cf of customFieldOptions" (click)="customFieldNameTriggerSelected(cf, stepIndex, triggerIndex)">{{ cf }}</button>
+                      <button mat-menu-item *ngFor="let cf of customFieldOptions; trackBy: utilityService.trackByIndex" (click)="customFieldNameTriggerSelected(cf, stepIndex, triggerIndex)">{{ cf }}</button>
                     </ng-container>
                   </mat-menu>
 
@@ -104,7 +104,7 @@
                       </button>
                       <mat-menu #customFieldValueMenu="matMenu">
                         <ng-container>
-                          <button mat-menu-item *ngFor="let cfv of getCustomFieldsValues(trigger?.custom_field?.name)" (click)="triggerSelected('cf', cfv, stepIndex, triggerIndex)">{{ cfv }}</button>
+                          <button mat-menu-item *ngFor="let cfv of getCustomFieldsValues(trigger?.custom_field?.name); trackBy: utilityService.trackByIndex" (click)="triggerSelected('cf', cfv, stepIndex, triggerIndex)">{{ cfv }}</button>
                         </ng-container>
                       </mat-menu>
                     </div>
@@ -129,7 +129,7 @@
                   </button>
                   <mat-menu #subtaskStatusMenu="matMenu">
                     <ng-container>
-                      <button mat-menu-item *ngFor="let status of statusOptions" (click)="triggerSelected('subtaskStatus', status, stepIndex, triggerIndex)">{{ status.toUpperCase() }}</button>
+                      <button mat-menu-item *ngFor="let status of statusOptions; trackBy: utilityService.trackByIndex" (click)="triggerSelected('subtaskStatus', status, stepIndex, triggerIndex)">{{ status.toUpperCase() }}</button>
                     </ng-container>
                   </mat-menu>
                 </div>
@@ -146,7 +146,7 @@
                 
                   <mat-menu #dueDateTriggerMenu="matMenu">
                     <ng-container>
-                      <button mat-menu-item *ngFor="let dd of dueDateTriggerOptions"
+                      <button mat-menu-item *ngFor="let dd of dueDateTriggerOptions; trackBy: utilityService.trackByIndex"
                         (click)="triggerSelected('set_due_date', dd.type, stepIndex, triggerIndex)">{{ dd.title }}</button>
                     </ng-container>
                   </mat-menu>
@@ -167,7 +167,7 @@
             </button>
             <mat-menu #triggerMenu="matMenu">
               <ng-container>
-                <button mat-menu-item *ngFor="let trigger of triggerOptions" (click)="selectTrigger(trigger, stepIndex)">{{ trigger }}</button>
+                <button mat-menu-item *ngFor="let trigger of triggerOptions; trackBy: utilityService.trackByIndex" (click)="selectTrigger(trigger, stepIndex)">{{ trigger }}</button>
               </ng-container>
             </mat-menu>
           </div>
@@ -178,7 +178,7 @@
 
           <!-- ACTION SECTION -->
           <div class="values" *ngIf="step.action">
-            <div *ngFor="let action of step.action; let actionIndex = index">
+            <div *ngFor="let action of step.action; let actionIndex = index; trackBy: utilityService.trackByIndex">
               <div class="step-element">
                 <span style="margin-right: 10px;">
                   {{ action.name }}
@@ -205,7 +205,7 @@
                   </button>
                   <mat-menu #sectionActionMenu="matMenu">
                     <ng-container>
-                      <button mat-menu-item *ngFor="let section of groupSections" (click)="actionSelected('section', section, stepIndex, actionIndex)">{{ section.title }}</button>
+                      <button mat-menu-item *ngFor="let section of groupSections; trackBy: utilityService.trackByIndex" (click)="actionSelected('section', section, stepIndex, actionIndex)">{{ section.title }}</button>
                     </ng-container>
                   </mat-menu>
                 </div>
@@ -221,7 +221,7 @@
                   </button>
                   <mat-menu #statusActionMenu="matMenu">
                     <ng-container>
-                      <button mat-menu-item *ngFor="let status of statusOptions" (click)="actionSelected('status', status, stepIndex, actionIndex)">{{ status.toUpperCase() }}</button>
+                      <button mat-menu-item *ngFor="let status of statusOptions; trackBy: utilityService.trackByIndex" (click)="actionSelected('status', status, stepIndex, actionIndex)">{{ status.toUpperCase() }}</button>
                     </ng-container>
                   </mat-menu>
                 </div>
@@ -233,7 +233,7 @@
                   </button>
                   <mat-menu #customFieldNameActionMenu="matMenu">
                     <ng-container>
-                      <button mat-menu-item *ngFor="let cf of customFieldOptions" (click)="customFieldNameActionSelected(cf, stepIndex, actionIndex)">{{ cf }}</button>
+                      <button mat-menu-item *ngFor="let cf of customFieldOptions; trackBy: utilityService.trackByIndex" (click)="customFieldNameActionSelected(cf, stepIndex, actionIndex)">{{ cf }}</button>
                     </ng-container>
                   </mat-menu>
 
@@ -249,7 +249,7 @@
                       </button>
                       <mat-menu #customFieldValueActionMenu="matMenu">
                         <ng-container>
-                          <button mat-menu-item *ngFor="let cfv of getCustomFieldsValues(action?.custom_field?.name)" (click)="actionSelected('cf', cfv, stepIndex, actionIndex)">{{ cfv }}</button>
+                          <button mat-menu-item *ngFor="let cfv of getCustomFieldsValues(action?.custom_field?.name); trackBy: utilityService.trackByIndex" (click)="actionSelected('cf', cfv, stepIndex, actionIndex)">{{ cfv }}</button>
                         </ng-container>
                       </mat-menu>
                     </div>
@@ -274,7 +274,7 @@
                   </button>
                   <mat-menu #shuttleActionMenu="matMenu">
                     <ng-container>
-                      <button mat-menu-item *ngFor="let group of shuttleGroups" (click)="actionSelected('shuttle', group, stepIndex, actionIndex)">{{ group.group_name.toUpperCase() }}</button>
+                      <button mat-menu-item *ngFor="let group of shuttleGroups; trackBy: utilityService.trackByIndex" (click)="actionSelected('shuttle', group, stepIndex, actionIndex)">{{ group.group_name.toUpperCase() }}</button>
                     </ng-container>
                   </mat-menu>
                 </div>
@@ -291,7 +291,7 @@
 
                   <mat-menu #dueDateNameActionMenu="matMenu">
                     <ng-container>
-                      <button mat-menu-item *ngFor="let dd of dueDateActionOptions"
+                      <button mat-menu-item *ngFor="let dd of dueDateActionOptions; trackBy: utilityService.trackByIndex"
                         (click)="actionSelected('set_due_date', dd.type, stepIndex, actionIndex)">{{ dd.title }}</button>
                     </ng-container>
                   </mat-menu>
@@ -322,7 +322,7 @@
             </button>
             <mat-menu #actionMenu="matMenu">
               <ng-container>
-                <button mat-menu-item *ngFor="let action of actionOptions" (click)="selectAction(action, stepIndex)">{{ action }}</button>
+                <button mat-menu-item *ngFor="let action of actionOptions; trackBy: utilityService.trackByIndex" (click)="selectAction(action, stepIndex)">{{ action }}</button>
               </ng-container>
             </mat-menu>
           </div>

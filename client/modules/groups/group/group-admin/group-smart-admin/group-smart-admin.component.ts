@@ -33,10 +33,11 @@ export class GroupSmartAdminComponent implements OnInit {
   private publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    public utilityService: UtilityService,
     private injector: Injector,
     private workspaceService: WorkspaceService,
     private groupService: GroupService,
-    private utilityService: UtilityService) {}
+  ) {}
 
   async ngOnInit() {
     this.rule = '';

@@ -36,9 +36,9 @@
 </mat-menu>
 
 <mat-menu #copyMenu="matMenu">
-  <button mat-menu-item *ngFor="let group of userGroups" (click)="copyToGroup(group)">{{ group.group_name }}</button>
+  <button mat-menu-item *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex" (click)="copyToGroup(group)">{{ group.group_name }}</button>
 </mat-menu>
 
 <mat-menu #moveMenu="matMenu">
-  <button mat-menu-item *ngFor="let group of userGroups" (click)="moveToGroup(group)">{{ group.group_name }}</button>
+  <button mat-menu-item *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex" (click)="moveToGroup(group)">{{ group.group_name }}</button>
 </mat-menu>

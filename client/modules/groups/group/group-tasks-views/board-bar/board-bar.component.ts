@@ -2,7 +2,6 @@ import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angul
 import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { AdvancedFilterDialogComponent } from './advanced-filter-dialog/advanced-filter-dialog.component';
 import { TimeTrackerDatesFilterDialogComponent } from './time-tracker-dates-filter-dialog/time-tracker-dates-filter-dialog.component';
 import { AutomationFlowsDialogComponent } from 'modules/groups/group/automation-flows-dialog/automation-flows-dialog.component';
@@ -58,8 +57,7 @@ export class BoardBarComponent implements OnInit {
   isIndividualSubscription = true;
 
   constructor(
-    private utilityService: UtilityService,
-    private managementPortalService: ManagementPortalService,
+    public utilityService: UtilityService,
     public dialog: MatDialog,
     private injector: Injector
   ) { }

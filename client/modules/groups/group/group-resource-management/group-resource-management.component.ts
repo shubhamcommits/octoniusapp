@@ -33,10 +33,10 @@ export class GroupResourceManagementComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
-    private resourcesGroupService: ResourcesGroupService,
-    private utilityService: UtilityService,
-    private datesService: DatesService,
     public dialog: MatDialog,
+    public utilityService: UtilityService,
+    private resourcesGroupService: ResourcesGroupService,
+    private datesService: DatesService,
     private _router: Router,
     private injector: Injector
     ) {

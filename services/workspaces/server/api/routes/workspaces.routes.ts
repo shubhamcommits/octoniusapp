@@ -37,9 +37,6 @@ routes.use(authsHelper.isLoggedIn);
 // GET - Get workspace details
 routes.get('/:workspaceId', workspaces.getWorkspace);
 
-// GET - Get All workspaces in the DB
-routes.get('/all', workspaces.getAllWorkspace);
-
 // PUT - Edit the workspace details
 routes.put('/:workspaceId', workspaceFileUploader, workspaces.updateWorkspace);
 
@@ -162,6 +159,9 @@ routes.get('/:workspaceId/organizationChartFirstLevel', workspaces.getOrganizati
 
 // GET - Get a list of the members with an specific manager
 routes.get('/:workspaceId/organizationChartNextLevel', workspaces.getOrganizationChartNextLevel);
+
+// GET - Get All workspaces in the DB
+routes.get('/:workspaceId/all', workspaces.getAllWorkspace);
 
 /*  ===================
  *  -- EXPORT ROUTES --

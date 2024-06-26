@@ -21,7 +21,7 @@
         <h3 class="text-center muted mt-3" i18n="@@groupRAGDialog.alwayseStriveTransparency">🎉 Always strive for transparency...</h3>
     </div>
 
-    <div class="rag" *ngFor="let rag of ragList">
+    <div class="rag" *ngFor="let rag of ragList; trackBy: utilityService.trackByIndex">
         <div class="d-flex" style="justify-content: space-between;">
             <p class="bold">RAG <span class="tag">{{rag.rag_tag}}</span> <span i18n="@@groupRAGDialog.tasksAreVisibleFor">settings</span>: </p>
             <button class="btn overdue" (click)="removeTag(rag.rag_tag)"> <i class="material-icons">delete</i> </button>
@@ -30,7 +30,7 @@
         <div style="justify-content: space-between;">
             <h6 class="mb-2 mt-3"><span class="material-icons muted">group</span>Members:</h6>
           <div class="d-flex">
-              <div class="useravatar" *ngFor="let member of rag._members">
+              <div class="useravatar" *ngFor="let member of rag._members; trackBy: utilityService.trackByIndex">
                   <app-secured-image
                     [imgURL]="member?.profile_pic"
                     [service]="'user'"

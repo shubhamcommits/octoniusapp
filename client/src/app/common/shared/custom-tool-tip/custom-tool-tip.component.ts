@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, TemplateRef } from '@angular/core';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 /**
  * This component will be used to show custom tooltip
@@ -41,7 +42,9 @@ export class CustomToolTipComponent implements OnInit {
    */
   @Input() contentArray: any[] = [];
 
-  constructor() { }
+  constructor(
+    public utilityService: UtilityService,
+  ) { }
 
   ngOnInit() {
     if (this.contentArray.length == 0 && this.text) {

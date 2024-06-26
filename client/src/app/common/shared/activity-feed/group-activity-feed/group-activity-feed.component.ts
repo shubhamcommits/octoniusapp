@@ -129,6 +129,8 @@ export class GroupActivityFeedComponent implements OnInit {
           closeEventSubs.unsubscribe();
         });
       }
+
+      this.utilityService.updateIsLoadingSpinnerSource(false);
     }
 
     // Fetch current group from the service

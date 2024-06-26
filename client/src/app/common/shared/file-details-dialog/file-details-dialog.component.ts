@@ -5,7 +5,6 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { BehaviorSubject } from 'rxjs';
 import { FilesService } from 'src/shared/services/files-service/files.service';
-import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({
   selector: 'app-file-details-dialog',
@@ -69,13 +68,12 @@ export class FileDetailsDialogComponent implements OnInit {
   publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    public utilityService: UtilityService,
     private filesService: FilesService,
     private groupService: GroupService,
-    private utilityService: UtilityService,
-    private managementPortalService: ManagementPortalService,
     private injector: Injector,
+    private mdDialogRef: MatDialogRef<FileDetailsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private mdDialogRef: MatDialogRef<FileDetailsDialogComponent>
     ) {}
 
   async ngOnInit() {

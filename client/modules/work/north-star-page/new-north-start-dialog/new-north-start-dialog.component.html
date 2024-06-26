@@ -19,7 +19,7 @@
         <label i18n="@@newNorthStarDialog.group">Group</label>
         <mat-form-field class="full-width" appearance="outline">
             <mat-select [(value)]="groupId" (valueChange)="changeGroup()">
-                <mat-option [value]="group?._id" *ngFor="let group of userGroups">{{ group?.group_name }}</mat-option>
+                <mat-option [value]="group?._id" *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">{{ group?.group_name }}</mat-option>
             </mat-select>
         </mat-form-field>
     </div>
@@ -28,7 +28,7 @@
         <label i18n="@@newNorthStarDialog.section" [ngClass]="(!groupSections || groupSections?.length == 0) ? 'muted' : ''">Section</label>
         <mat-form-field class="full-width" appearance="outline">
             <mat-select [(value)]="sectionId" [disabled]="!groupSections || groupSections?.length == 0">
-                <mat-option [value]="section?._id" *ngFor="let section of groupSections">{{ section?.title }}</mat-option>
+                <mat-option [value]="section?._id" *ngFor="let section of groupSections; trackBy: utilityService.trackByIndex">{{ section?.title }}</mat-option>
             </mat-select>
         </mat-form-field>
     </div>

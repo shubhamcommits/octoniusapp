@@ -42,10 +42,9 @@ export class PermissionDialogComponent implements OnInit {
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
   constructor(
-      private injector: Injector,
-      private utilityService: UtilityService,
       @Inject(MAT_DIALOG_DATA) public data: any,
-      private mdDialogRef: MatDialogRef<PermissionDialogComponent>
+      public utilityService: UtilityService,
+      private injector: Injector,
     ) {}
 
   ngOnInit(): void {

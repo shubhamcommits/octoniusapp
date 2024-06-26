@@ -84,7 +84,7 @@ const groupUploadFileUpload = async (req: Request, res: Response, next: NextFunc
                 });
             } else {
                 const group = await Group.findById(groupId).select('group_avatar background_image').lean();
-                if (!!group && isBackgroundImage && group?.group_avatar && !group?.group_avatar?.includes('assets/images/icon-new-group.svg')) {
+                if (!isBackgroundImage && !!group && !!group?.group_avatar && !group?.group_avatar?.includes('assets/images/icon-new-group.svg')) {
                     await minioClient.removeObject(workspaceId.toLowerCase(), group?.group_avatar, (error) => {
                         if (error) {
                             return res.status(500).json({
@@ -96,7 +96,7 @@ const groupUploadFileUpload = async (req: Request, res: Response, next: NextFunc
                     });
                 }
 
-                if (!!group && !isBackgroundImage && group?.background_image && !group?.background_image?.includes('assets/images/icon-new-group.svg')) {
+                if (isBackgroundImage && !!group && !!group?.background_image && !group?.background_image?.includes('assets/images/icon-new-group.svg')) {
                     await minioClient.removeObject(workspaceId.toLowerCase(), group?.background_image, (error) => {
                         if (error) {
                             return res.status(500).json({

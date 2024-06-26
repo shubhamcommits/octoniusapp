@@ -1,6 +1,7 @@
 import { OnInit, Component, EventEmitter, SimpleChanges,Injector, Input, OnDestroy, OnChanges, Output } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-member-list-menu',
@@ -30,6 +31,7 @@ export class MemberListMenuComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    public utilityService: UtilityService,
     private injector: Injector
     ) { }
   

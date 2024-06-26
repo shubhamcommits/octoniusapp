@@ -15,7 +15,7 @@
     <mat-form-field appearance="fill" *ngIf="lounge?.type == 'lounge' && categories">
       <mat-select
           [(value)]="lounge._parent._id">
-        <mat-option *ngFor="let category of categories; let j=index" [value]="category._id">{{ category.name }}</mat-option>
+        <mat-option *ngFor="let category of categories; let j=index; trackBy: utilityService.trackByIndex" [value]="category._id">{{ category.name }}</mat-option>
       </mat-select>
     </mat-form-field>
 

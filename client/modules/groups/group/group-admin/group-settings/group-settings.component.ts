@@ -5,9 +5,7 @@ import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { GroupRAGDialogComponent } from '../group-rag-dialog/group-rag-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { environment } from 'src/environments/environment';
 import { ColorPickerDialogComponent } from 'src/app/common/shared/color-picker-dialog/color-picker-dialog.component';
-import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { GroupTimeTrackingCategoriesDialogComponent } from './time-tracking-categories-dialog/time-tracking-categories-dialog.component';
 
 @Component({
@@ -38,9 +36,8 @@ export class GroupSettingsComponent implements OnInit {
   publicFunctions = this.injector.get(PublicFunctions);
 
   constructor(
-    private utilityService: UtilityService,
+    public utilityService: UtilityService,
     private groupService: GroupService,
-    private managementPortalService: ManagementPortalService,
     public dialog: MatDialog,
     private injector: Injector,
     public router: Router
@@ -80,17 +77,22 @@ export class GroupSettingsComponent implements OnInit {
   * @param index
   */
   async removeImage() {
-    this.utilityService.asyncNotification($localize`:@@groupSettings.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
-      new Promise((resolve, reject)=>{
-        this.groupService.saveSettings(this.groupData?._id, { background_image: null })
-          .then(()=> {
-            this.groupData.background_image = null;
-            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-            resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
-            window.location.reload();
-          })
-          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
-      }));
+    this.utilityService.getConfirmDialogAlert($localize`:@@groupSettings.areYouSure:Are you sure?`, $localize`:@@groupSettings.backgroundImageCompletelyRemoved:By doing this, the back-ground image of the group will be completely removed!`)
+      .then((res) => {
+        if (res.value) {
+          this.utilityService.asyncNotification($localize`:@@groupSettings.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
+            new Promise((resolve, reject)=>{
+              this.groupService.saveSettings(this.groupData?._id, { background_image: null })
+                .then(()=> {
+                  this.groupData.background_image = null;
+                  this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
+                  window.location.reload();
+                })
+                .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+            }));
+        }
+      });
   }
 
   /**

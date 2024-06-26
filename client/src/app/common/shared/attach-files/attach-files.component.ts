@@ -49,10 +49,10 @@ export class AttachFilesComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    public utilityService: UtilityService,
     private injector: Injector,
     private postService: PostService,
-    private utilityService: UtilityService,
-    public storageService: StorageService
+    private storageService: StorageService,
   ) { }
 
   async ngOnInit() {

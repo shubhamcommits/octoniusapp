@@ -24,7 +24,7 @@
   <!-- Empty State of tasks ends -->
 
 <div class="ns-wrapper">
-  <div *ngFor="let task of globalNorthStarTasks; let i = index;">
+  <div *ngFor="let task of globalNorthStarTasks; let i = index; trackBy: utilityService.trackByIndex">
     <a (click)="openGlobalNSModal(task?._id)">
       <!-- My Space Today Tasks -->
 

@@ -17,8 +17,8 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 export class ComponentSearchInputBoxComponent implements OnInit {
 
   constructor(
-    private utilityService: UtilityService,
-    private injector: Injector
+    public utilityService: UtilityService,
+    private injector: Injector,
     ) { }
 
   @Input('placeholder') placeholder: string = '';

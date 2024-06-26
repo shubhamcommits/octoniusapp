@@ -25,9 +25,9 @@ export class CRMProductCustomFieldsComponent implements OnChanges {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+		public utilityService: UtilityService,
     private crmGroupService: CRMGroupService,
-		private utilityService: UtilityService,
-    	private injector: Injector,
+    private injector: Injector,
   ) { }
 
   async ngOnChanges(): Promise<void> {

@@ -21,7 +21,7 @@ export class CountrySelectComponent implements OnInit {
   countries = [];
   filteredCountries = [];
   constructor(
-    private utilityService: UtilityService,
+    public utilityService: UtilityService,
     private countryCurrencyService: CountryCurrencyService
   ) { }
 

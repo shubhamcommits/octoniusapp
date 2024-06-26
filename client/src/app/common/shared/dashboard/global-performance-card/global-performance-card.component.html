@@ -6,7 +6,7 @@
     </div>
 
     <div>
-      <div *ngFor="let group of groups" class="pulse_card">
+      <div *ngFor="let group of groups; trackBy: utilityService.trackByIndex" class="pulse_card">
         <!-- GROUP DETAILS STARTS -->
         <div class="pulse_avatar">
           <app-secured-image

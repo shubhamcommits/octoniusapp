@@ -35,7 +35,7 @@
 
       <div class="flowsBody">
 
-        <mat-card class="field" *ngFor="let flow of automationFlows" (click)="openFlowDetailsDialog(flow._id)" style="cursor: pointer">
+        <mat-card class="field" *ngFor="let flow of automationFlows; trackBy: utilityService.trackByIndex" (click)="openFlowDetailsDialog(flow._id)" style="cursor: pointer">
           <mat-card-content class="text-left">
             <p>
               <i class="material-icons" style="color: #FFAB00">offline_bolt</i>

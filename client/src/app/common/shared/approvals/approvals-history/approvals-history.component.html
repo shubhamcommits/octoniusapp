@@ -1,4 +1,4 @@
-<div class="notification-item" *ngFor="let approval of itemData?.approval_history; let index = index">
+<div class="notification-item" *ngFor="let approval of itemData?.approval_history; let index = index; trackBy: utilityService.trackByIndex">
   <div class="notification_actor">
     <app-secured-image
       [imgURL]="approval?._actor?.profile_pic"

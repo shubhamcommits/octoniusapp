@@ -30,11 +30,11 @@
         <thead>
           <tr>
             <th class="header"> {{ currentMonth }} </th>
-            <th *ngFor="let date of dates" [ngClass]="{'today': date?.is_current_day,'muted': !date?.is_current_day, 'weekend': date?.is_weekend_day}"> {{ date | date: 'dd' }} </th>
+            <th *ngFor="let date of dates; trackBy: utilityService.trackByIndex" [ngClass]="{'today': date?.is_current_day,'muted': !date?.is_current_day, 'weekend': date?.is_weekend_day}"> {{ date | date: 'dd' }} </th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let member of groupMembers">
+          <tr *ngFor="let member of groupMembers; trackBy: utilityService.trackByIndex">
             <td>
               <div class="member">
                 <div>
@@ -51,7 +51,7 @@
                 </div>
               </div>
             </td>
-            <td *ngFor="let workload of member.workload" [ngClass]="workload?.outOfTheOfficeClass">
+            <td *ngFor="let workload of member.workload; trackBy: utilityService.trackByIndex" [ngClass]="workload?.outOfTheOfficeClass">
 
                  <span class="muted mr-2" i18n="@@membersWorkloadCard.totalTasks"> Total tasks</span>
                  <span class="badge">{{ workload.numTasks }}</span>

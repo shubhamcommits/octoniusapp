@@ -4,7 +4,7 @@
         <div class="list-columns" *ngIf="sections">
 
           <mat-accordion multi>
-            <app-table-section *ngFor="let section of sections; first as isFirst"
+            <app-table-section *ngFor="let section of sections; first as isFirst; trackBy: utilityService.trackByIndex"
               [groupData]="groupData"
               [userData]="userData"
               [section]="section"

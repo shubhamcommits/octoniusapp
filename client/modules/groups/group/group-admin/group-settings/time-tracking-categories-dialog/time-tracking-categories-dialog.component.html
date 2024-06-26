@@ -22,7 +22,7 @@
 
         <div class="categorysList" *ngIf="categories.length > 0">
             <div class="categorysBody">
-                <div class="field" *ngFor="let field of categories">
+                <div class="field" *ngFor="let field of categories; trackBy: utilityService.trackByIndex">
                     <div class="title">
                         <i class="material-icons" style="color: #005FD5">label</i>
                         {{ field.name }}

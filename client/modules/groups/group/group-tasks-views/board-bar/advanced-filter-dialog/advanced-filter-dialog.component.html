@@ -22,7 +22,7 @@
             [(value)]="cfName"
             name="names">
           <mat-option
-          *ngFor="let cf of customFields" [value]="cf.name">{{ cf.title }}</mat-option>
+          *ngFor="let cf of customFields; trackBy: utilityService.trackByIndex" [value]="cf.name">{{ cf.title }}</mat-option>
         </mat-select>
         <mat-label i18n="@@advancedFilterDialog.selectCF">Select Custom Field</mat-label>
 
@@ -36,7 +36,7 @@
             [(value)]="cfValue"
             [disabled]="cfValues.length <= 0"
             name="values">
-          <mat-option *ngFor="let value of cfValues" [value]="value">{{ value }}</mat-option>
+          <mat-option *ngFor="let value of cfValues; trackBy: utilityService.trackByIndex" [value]="value">{{ value }}</mat-option>
         </mat-select>
         <mat-label i18n="@@advancedFilterDialog.selectValue">Select Value</mat-label>
       </mat-form-field>

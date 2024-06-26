@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter, Injector, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { FilesSettingsDialogComponent } from '../files-settings-dialog/files-settings-dialog.component';
-import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { FilesCustomFieldsDialogComponent } from './files-custom-fields-dialog/files-custom-fields-dialog.component';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-files-bar',
@@ -47,7 +47,7 @@ export class FilesBarComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private injector: Injector,
-    private managementPortalService: ManagementPortalService,
+    public utilityService: UtilityService,
     private groupService: GroupService
   ) { }
 

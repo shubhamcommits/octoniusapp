@@ -18,7 +18,7 @@
 <!-- Attached Files Starts -->
 <div *ngIf="post && post.files && post.files.length > 0" class="ml-2 mt-2">
     <p><strong i18n="@@attachFiles.attachedFiles">Attached Files </strong></p>
-    <div *ngFor="let file of post.files; let index = index">
+    <div *ngFor="let file of post.files; let index = index; trackBy: utilityService.trackByIndex">
       <a href="{{ baseUrl }}/{{ workspaceData?._id }}/{{ file?.modified_name }}?authToken={{authToken}}" target="_blank">
           {{ file?.original_name }}
       </a>
@@ -32,7 +32,7 @@
 <!-- Attached Files Starts -->
 <div *ngIf="comment && comment.files && comment.files.length > 0" class="ml-2 mt-2">
   <p><strong i18n="@@attachFiles.attachedFiles">Attached Files </strong></p>
-  <div *ngFor="let file of comment.files; let index = index">
+  <div *ngFor="let file of comment.files; let index = index; trackBy: utilityService.trackByIndex">
     <a href="{{ baseUrl }}/{{ workspaceData?._id }}/{{ file?.modified_name }}?authToken={{authToken}}" target="_blank">
         {{ file?.original_name }}
     </a>
@@ -44,7 +44,7 @@
 
 <!-- Selected Files Starts -->
 <div *ngIf="(!post || !post.files) && (!comment || !comment.files)"  class="ml-2 mt-2">
-  <div *ngFor="let file of filesArray; let index = index">
+  <div *ngFor="let file of filesArray; let index = index; trackBy: utilityService.trackByIndex">
     <p>
       <strong i18n="@@attachFiles.selectedFile">Selected File: </strong>
       {{ file?.name }}

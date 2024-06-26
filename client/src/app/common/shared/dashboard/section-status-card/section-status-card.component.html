@@ -6,7 +6,7 @@
   </div>
 
   <div class="col-12 d-none d-sm-block" style="padding-top: 15px;">
-    <div *ngFor="let section of sections" class="section">
+    <div *ngFor="let section of sections; trackBy: utilityService.trackByIndex" class="section">
       <div class="section-title">
         {{ section?.title }}
       </div>

@@ -24,7 +24,7 @@
                 *ngIf="!(isLoading$ | async) && dataSource.data.length > 0">
                 <mat-label i18n="@@sheet.selectColumnsForView">Select Columns for User View</mat-label>
                 <mat-select placeholder="Select the base column for your chart" multiple [(value)]="selectedColumns">
-                    <mat-option *ngFor="let column of columns" [value]="column">
+                    <mat-option *ngFor="let column of columns; trackBy: utilityService.trackByIndex" [value]="column">
                         {{ column }}
                     </mat-option>
                 </mat-select>
@@ -65,7 +65,7 @@
         <!-- Generic Graph -->
         <div class="row" *ngIf="!(isLoading$ | async) && dataSource.data.length > 0 && isMember == false">
             <ng-container>
-                <span *ngFor="let graph of graphs" class="col-md-6">
+                <span *ngFor="let graph of graphs; trackBy: utilityService.trackByIndex" class="col-md-6">
                     <app-generic-graph *ngIf="chartData.length > 0 && chartLabels.length > 0 && data.length > 0"
                         [sheetData]="data" [columns]="columns" [data]="chartData" [labels]="chartLabels">
                     </app-generic-graph>
@@ -79,7 +79,7 @@
             <table mat-table [hidden]="!(!(isLoading$ | async) && dataSource.data.length > 0)" [dataSource]="dataSource"
                 matSort class="mat-elevation-z8">
 
-                <ng-container *ngFor="let disCol of columns; let colIndex = index" matColumnDef="{{disCol}}">
+                <ng-container *ngFor="let disCol of columns; let colIndex = index; trackBy: utilityService.trackByIndex" matColumnDef="{{disCol}}">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ disCol }}</th>
                     <td mat-cell *matCellDef="let element "> {{ element[disCol] || '-' }}
                     </td>

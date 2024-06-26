@@ -8,7 +8,7 @@
         <mat-select ngDefaultControl (selectionChange)="changeMonth($event.value)" (click)="$event.stopPropagation()"
           [(value)]="selectedDate" name="month">
           <mat-select-trigger>{{ displayMonth(selectedDate) }}</mat-select-trigger>
-          <mat-option *ngFor="let month of months" [value]="month">{{ displayMonth(month) }}</mat-option>
+          <mat-option *ngFor="let month of months; trackBy: utilityService.trackByIndex" [value]="month">{{ displayMonth(month) }}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
