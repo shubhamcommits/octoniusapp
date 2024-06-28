@@ -121,6 +121,10 @@
             "fa": {
               "localize": ["fa"],
               "i18nMissingTranslation": "warning"
+            },
+            "hu": {
+              "localize": ["hu"],
+              "i18nMissingTranslation": "warning"
             }
           },
           "defaultConfiguration": ""
@@ -145,6 +149,9 @@
             },
             "fa": {
               "browserTarget": "client:build:fa"
+            },
+            "hu": {
+              "browserTarget": "client:build:hu"
             }
           }
         },
@@ -197,6 +204,9 @@
           },
           "fa": {
             "translation": "src/locale/messages.fa.xlf"
+          },
+          "hu": {
+            "translation": "src/locale/messages.hu-HU.xlf"
           }
         }
       }

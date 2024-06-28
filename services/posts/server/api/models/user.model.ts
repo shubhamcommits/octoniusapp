@@ -191,7 +191,7 @@ const UserSchema = new Schema({
         locale: {
             type: String,
             default: 'en',
-            enum: ['es', 'en', 'de', 'fa']
+            enum: ['es', 'en', 'de', 'fa', 'hu']
         }
     },
     _private_group: {
