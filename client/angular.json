@@ -206,7 +206,7 @@
             "translation": "src/locale/messages.fa.xlf"
           },
           "hu": {
-            "translation": "src/locale/messages.hu-HU.xlf"
+            "translation": "src/locale/messages.hu.xlf"
           }
         }
       }

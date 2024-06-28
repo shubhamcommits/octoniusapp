@@ -22814,6 +22814,14 @@
           <context context-type="linenumber">46</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="selectLanguage.hungarian" datatype="html">
+        <source>hungarian</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/select-language/select-language.component.ts</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="shareCollectionDialog.shareCollection" datatype="html">
         <source>Sharing settings</source>
         <target state="translated">تنظیمات اشتراک گذاری</target>
