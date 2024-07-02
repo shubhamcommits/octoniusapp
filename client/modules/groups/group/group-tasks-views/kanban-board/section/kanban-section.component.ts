@@ -198,8 +198,8 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
       await this.publicFunctions.changeTaskColumn(task._id, sectionId, this.userData._id, this.groupData?._id);
     }
 
-    await this.publicFunctions.executedAutomationFlowsPropertiesFront(null, task, this.groupData?._id, false, shuttleIndex).then(res => {
-      this.columnService.triggerRefreshSection(sectionId);
+    await this.publicFunctions.executedAutomationFlowsPropertiesFront(null, task, this.groupData?._id, false, shuttleIndex).then(async res => {
+      await this.columnService.triggerRefreshSection(sectionId);
     });
   }
 
