@@ -188,7 +188,6 @@ console.log(this.tasks);
    * @param columnId
    */
   async moveTaskToSection(post: any, sectionId: string, oldSectionId: string/*, shuttleIndex: number, previousData, currentData, previousIndex, currentIndex*/) {
-
     const shuttleIndex = (post && post.task && post.task.shuttles) ? post.task.shuttles.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == this.groupData?._id) : -1;
     // Update the task column when changed with dropping events to reflect back in the task view modal
     if (post?.task?.shuttle_type && (shuttleIndex >= 0)) {
@@ -198,11 +197,32 @@ console.log(this.tasks);
     }
 
     if (post?.task?.shuttle_type && shuttleIndex >= 0) {
-      await this.publicFunctions.changeTaskShuttleSection(post?._id, this.groupData?._id, sectionId);
+      await this.publicFunctions.changeTaskShuttleSection(post?._id, this.groupData?._id, sectionId).then(async res => {
+        await this.updateFront(post, shuttleIndex, sectionId, oldSectionId);
+      });
     } else {
-      await this.publicFunctions.changeTaskColumn(post._id, sectionId, this.userData._id, this.groupData?._id);
+      // await this.publicFunctions.changeTaskColumn(post._id, sectionId, this.userData._id, this.groupData?._id)
+      //  .then(async res => {
+      //     await this.updateFront(post, shuttleIndex, sectionId, oldSectionId);
+      //  });
+      this.utilityService.asyncNotification($localize`:@@kanbanSection.pleaseWaitWeAreMovingTaskToSection:Please wait we are moving the task to a new section...`,
+        new Promise(async (resolve, reject) => {
+            const isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
+            const isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
+            // Call HTTP Request to change the request
+            await this.postService.changeTaskColumn(post._id, sectionId, this.userData._id, this.groupData?._id, isShuttleTasksModuleAvailable, isIndividualSubscription)
+                .then(async (res) => {
+                    await this.updateFront(post, shuttleIndex, sectionId, oldSectionId);
+                    resolve(this.utilityService.resolveAsyncPromise($localize`:@@kanbanSection.tasksMoved:Task moved`));
+                })
+                .catch(() => {
+                    reject(this.utilityService.rejectAsyncPromise($localize`:@@kanbanSection.unableToMoveTask:Unable to move the task, please try again!`));
+                });
+      }));
     }
+  }
 
+  async updateFront(post, shuttleIndex, sectionId, oldSectionId) {
     await this.publicFunctions.executedAutomationFlowsPropertiesFront(null, post, this.groupData?._id, false, shuttleIndex);
 
     await this.columnService.triggerRefreshSection({sectionId, oldSectionId});
@@ -234,15 +254,15 @@ console.log(this.tasks);
 
   makeColumnProjectDialog(column: any) {
     if (!column?.project_type) {
-      this.utilityService.asyncNotification($localize`:@@groupKanbanBoards.pleaseWaitWeCreateProject:Please wait we are creating a project from your section...`, new Promise((resolve, reject) => {
+      this.utilityService.asyncNotification($localize`:@@kanbanSection.pleaseWaitWeCreateProject:Please wait we are creating a project from your section...`, new Promise((resolve, reject) => {
         this.columnService.changeColumnProjectType(column._id, true)
           .then((res) => {
             column.project_type = true;
-            resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupKanbanBoards.sectionTypeChanged:Section type changed!`));
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@kanbanSection.sectionTypeChanged:Section type changed!`));
           })
           .catch((err) => {
             column.project_type = false;
-            reject(this.utilityService.rejectAsyncPromise($localize`:@@groupKanbanBoards.unableToChangeSectionType:Unable to change the section type at the moment, please try again!`))
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@kanbanSection.unableToChangeSectionType:Unable to change the section type at the moment, please try again!`))
           })
       }));
     }

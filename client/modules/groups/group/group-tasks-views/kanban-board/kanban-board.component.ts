@@ -57,36 +57,6 @@ export class KanbanBoardComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * Standard Angular CDK Event which monitors the drop functionality of tasks
-   * @param event
-   */
-  drop(event: CdkDragDrop<string[]>) {
-    const oldColumn = this.sections[this.sections.findIndex(col => col._id == event.previousContainer.id)];
-    const newColumn = this.sections[this.sections.findIndex(col => col._id == event.container.id)];
-    if (oldColumn && newColumn && oldColumn.canEdit && newColumn.canEdit) {
-      if (event.previousContainer === event.container) {
-
-        // Move items in array
-        moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-
-      } else {
-        var post: any = event.previousContainer.data[event.previousIndex];
-
-        const shuttleIndex = (post && post.task && post.task.shuttles) ? post.task.shuttles.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == this.groupData?._id) : -1;
-        // Update the task column when changed with dropping events to reflect back in the task view modal
-        if (post?.task?.shuttle_type && (shuttleIndex >= 0)) {
-          post.task.shuttles[shuttleIndex]._shuttle_section = event.container.id;
-        } else {
-          post.task._column = event.container.id;
-        }
-
-        // Call move task to a new column
-        this.moveTaskToNewColumn(post, event.previousContainer.id, event.container.id, shuttleIndex);
-      }
-    }
-  }
-
-  /**
    * Standard Angular CDK Event which monitors the drop functionality of different columns
    * @param event
    */
@@ -299,31 +269,6 @@ export class KanbanBoardComponent implements OnInit, AfterViewInit {
     post.canEdit = true;
     // Adding the post to column
     column.tasks.unshift(post)
-  }
-
-  /**
-   * This function handles the response of moving the task to another column
-   * @param task
-   * @param columnId
-   */
-  async moveTaskToNewColumn(task: any, oldColumnId: string, columnId: string, shuttleIndex: number) {
-
-    if (task?.task?.shuttle_type && shuttleIndex >= 0) {
-      await this.publicFunctions.changeTaskShuttleSection(task?._id, this.groupData?._id, columnId);
-    } else {
-      await this.publicFunctions.changeTaskColumn(task._id, columnId, this.userData._id, this.groupData?._id);
-    }
-
-    task = await this.publicFunctions.executedAutomationFlowsPropertiesFront(null, task, this.groupData?._id, false, shuttleIndex);
-
-    // Prepare Event
-    let columnEvent = {
-      post: task,
-      newColumn: columnId,
-      oldColumn: oldColumnId
-    }
-
-    this.moveTaskToColumnFront(columnEvent)
   }
 
   // Check if the data provided is not empty{}

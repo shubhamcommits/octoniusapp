@@ -28,7 +28,7 @@ import { DateTime } from 'luxon';
 import { DatesService } from 'src/shared/services/dates-service/dates.service';
 import { MS365CloudService } from './user/user-clouds/user-available-clouds/ms-365/services/ms-365-cloud.service';
 import { map, mergeMap } from 'rxjs/operators';
-import { forkJoin, from } from 'rxjs';
+import { from } from 'rxjs';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 
 @Injectable({
@@ -1334,10 +1334,8 @@ export class PublicFunctions {
      * @param status
      */
     async changeTaskStatus(postId: string, status: string, userId: string, groupId: string) {
-
         // Post Service Instance
         let postService = this.injector.get(PostService)
-        let managementPortalService = this.injector.get(ManagementPortalService)
 
         const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
         const isIndividualSubscription = await this.checkIsIndividualSubscription();
@@ -1354,22 +1352,20 @@ export class PublicFunctions {
     changeTaskColumn(postId: string, columnId: string, userId: string, groupId: string) {
         let postService = this.injector.get(PostService)
         let utilityService = this.injector.get(UtilityService)
-        let managementPortalService = this.injector.get(ManagementPortalService)
 
         utilityService.asyncNotification($localize`:@@publicFunctions.pleaseWaitWeAreMovingTaskToSection:Please wait we are moving the task to a new section...`,
             new Promise(async (resolve, reject) => {
                 const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
                 const isIndividualSubscription = await this.checkIsIndividualSubscription();
                 // Call HTTP Request to change the request
-                postService.changeTaskColumn(postId, columnId, userId, groupId, isShuttleTasksModuleAvailable, isIndividualSubscription)
+                await postService.changeTaskColumn(postId, columnId, userId, groupId, isShuttleTasksModuleAvailable, isIndividualSubscription)
                     .then((res) => {
                         resolve(utilityService.resolveAsyncPromise($localize`:@@publicFunctions.tasksMoved:Task moved`));
                     })
                     .catch(() => {
                         reject(utilityService.rejectAsyncPromise($localize`:@@publicFunctions.unableToMoveTask:Unable to move the task, please try again!`));
-                    })
-
-            }))
+                    });
+            }));
     }
 
     /**
@@ -1379,7 +1375,6 @@ export class PublicFunctions {
      */
     async changeTaskShuttleStatus(postId: string, groupId: string, status: string) {
         let postService = this.injector.get(PostService);
-        let managementPortalService = this.injector.get(ManagementPortalService);
 
         const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
         const isIndividualSubscription = await this.checkIsIndividualSubscription();
@@ -1396,7 +1391,6 @@ export class PublicFunctions {
     async changeTaskShuttleSection(postId: string, groupId: string, shuttleSectionId: string) {
         let postService = this.injector.get(PostService);
         let utilityService = this.injector.get(UtilityService);
-        let managementPortalService = this.injector.get(ManagementPortalService);
 
         const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
         const isIndividualSubscription = await this.checkIsIndividualSubscription();
