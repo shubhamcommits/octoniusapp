@@ -99,7 +99,7 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
   async initSection() {
     if (!!this.section && !!this.section._id) {
       this.tasks = await this.postService.getTasksBySectionPromise(this.section?._id);
-console.log(this.tasks);
+// console.log(this.tasks);
       if (this.groupData?.enabled_rights) {
         this.tasks = await this.postService.filterRAGTasks(this.unchangedTasks?.tasksList, this.groupData, this.userData);
       }
@@ -188,20 +188,18 @@ console.log(this.tasks);
    * @param columnId
    */
   async moveTaskToSection(post: any, sectionId: string, oldSectionId: string/*, shuttleIndex: number, previousData, currentData, previousIndex, currentIndex*/) {
-    const shuttleIndex = (post && post.task && post.task.shuttles) ? post.task.shuttles.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == this.groupData?._id) : -1;
+    const shuttleIndex = (!!post && !!post.task && !!post.task.shuttles) ? post.task.shuttles.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == this.groupData?._id) : -1;
     // Update the task column when changed with dropping events to reflect back in the task view modal
     if (post?.task?.shuttle_type && (shuttleIndex >= 0)) {
       post.task.shuttles[shuttleIndex]._shuttle_section = sectionId;
-    } else {
-      post.task._column = sectionId;
-    }
 
-    if (post?.task?.shuttle_type && shuttleIndex >= 0) {
       await this.publicFunctions.changeTaskShuttleSection(post?._id, this.groupData?._id, sectionId).then(async res => {
         await this.updateFront(post, shuttleIndex, sectionId, oldSectionId);
       });
     } else {
-      this.changeTaskColumn(post._id, sectionId, shuttleIndex, oldSectionId);
+      post.task._column = sectionId;
+    
+      this.changeTaskColumn(post, sectionId, shuttleIndex, oldSectionId);
     }
   }
   changeTaskColumn(post: any, sectionId: string, shuttleIndex: string, oldSectionId: string) {

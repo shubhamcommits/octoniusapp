@@ -1507,7 +1507,7 @@ export class PublicFunctions {
                 if (retValue) {
                     switch (trigger.name) {
                         case 'Assigned to':
-                            if (post.task._parent_task) {
+                            if (!!post?.task?._parent_task) {
                               retValue = false;
                             } else {
                               const usersMatch =
@@ -1520,14 +1520,14 @@ export class PublicFunctions {
                             }
                             return Promise.resolve({});
                         case 'Custom Field':
-                            if (post.task._parent_task) {
+                            if (!!post?.task?._parent_task) {
                                 retValue = false;
                             } else {
                               retValue = post.task.custom_fields[trigger.custom_field.name].toString() == trigger.custom_field.value.toString();
                             }
                             return Promise.resolve({});
                         case 'Section is':
-                            if (post.task._parent_task) {
+                            if (!!post?.task?._parent_task) {
                                 if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId) {
                                     const triggerSection = (trigger._section._id || trigger._section);
                                     const postSection = (post.task._shuttle_section._id || post.task._shuttle_section);
@@ -1549,7 +1549,7 @@ export class PublicFunctions {
                             }
                             return Promise.resolve({});
                         case 'Status is':
-                            if (post.task._parent_task) {
+                            if (!!post?.task?._parent_task) {
                                 if (post?.task?.shuttle_type && shuttleIndex >= 0) {
                                     retValue = trigger.status.toUpperCase() == post.task.shuttles[shuttleIndex].shuttle_status.toUpperCase();
                                 } else {
@@ -1559,12 +1559,12 @@ export class PublicFunctions {
                                 if (post?.task?.shuttle_type && shuttleIndex >= 0) {
                                     retValue = trigger.status.toUpperCase() == post.task.shuttles[shuttleIndex].shuttle_status.toUpperCase();
                                 } else {
-                                    retValue = trigger.status.toUpperCase() == post.task.status.toUpperCase();
+                                    retValue = trigger.status.toUpperCase() == post?.task?.status?.toUpperCase();
                                 }
                             }
                             return Promise.resolve({});
                         case 'Task is CREATED':
-                            if (!post.task._parent_task && isCreationTaskTrigger) {
+                            if (!post?.task?._parent_task && isCreationTaskTrigger) {
                                 retValue = true;
                             }
                             return Promise.resolve({});
