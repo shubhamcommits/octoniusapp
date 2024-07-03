@@ -28,7 +28,7 @@ import { DateTime } from 'luxon';
 import { DatesService } from 'src/shared/services/dates-service/dates.service';
 import { MS365CloudService } from './user/user-clouds/user-available-clouds/ms-365/services/ms-365-cloud.service';
 import { map, mergeMap } from 'rxjs/operators';
-import { forkJoin, from } from 'rxjs';
+import { from } from 'rxjs';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 
 @Injectable({
@@ -1334,10 +1334,8 @@ export class PublicFunctions {
      * @param status
      */
     async changeTaskStatus(postId: string, status: string, userId: string, groupId: string) {
-
         // Post Service Instance
         let postService = this.injector.get(PostService)
-        let managementPortalService = this.injector.get(ManagementPortalService)
 
         const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
         const isIndividualSubscription = await this.checkIsIndividualSubscription();
@@ -1354,22 +1352,20 @@ export class PublicFunctions {
     changeTaskColumn(postId: string, columnId: string, userId: string, groupId: string) {
         let postService = this.injector.get(PostService)
         let utilityService = this.injector.get(UtilityService)
-        let managementPortalService = this.injector.get(ManagementPortalService)
 
         utilityService.asyncNotification($localize`:@@publicFunctions.pleaseWaitWeAreMovingTaskToSection:Please wait we are moving the task to a new section...`,
             new Promise(async (resolve, reject) => {
                 const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
                 const isIndividualSubscription = await this.checkIsIndividualSubscription();
                 // Call HTTP Request to change the request
-                postService.changeTaskColumn(postId, columnId, userId, groupId, isShuttleTasksModuleAvailable, isIndividualSubscription)
+                await postService.changeTaskColumn(postId, columnId, userId, groupId, isShuttleTasksModuleAvailable, isIndividualSubscription)
                     .then((res) => {
                         resolve(utilityService.resolveAsyncPromise($localize`:@@publicFunctions.tasksMoved:Task moved`));
                     })
                     .catch(() => {
                         reject(utilityService.rejectAsyncPromise($localize`:@@publicFunctions.unableToMoveTask:Unable to move the task, please try again!`));
-                    })
-
-            }))
+                    });
+            }));
     }
 
     /**
@@ -1379,7 +1375,6 @@ export class PublicFunctions {
      */
     async changeTaskShuttleStatus(postId: string, groupId: string, status: string) {
         let postService = this.injector.get(PostService);
-        let managementPortalService = this.injector.get(ManagementPortalService);
 
         const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
         const isIndividualSubscription = await this.checkIsIndividualSubscription();
@@ -1396,7 +1391,6 @@ export class PublicFunctions {
     async changeTaskShuttleSection(postId: string, groupId: string, shuttleSectionId: string) {
         let postService = this.injector.get(PostService);
         let utilityService = this.injector.get(UtilityService);
-        let managementPortalService = this.injector.get(ManagementPortalService);
 
         const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
         const isIndividualSubscription = await this.checkIsIndividualSubscription();
@@ -1513,7 +1507,7 @@ export class PublicFunctions {
                 if (retValue) {
                     switch (trigger.name) {
                         case 'Assigned to':
-                            if (post.task._parent_task) {
+                            if (!!post?.task?._parent_task) {
                               retValue = false;
                             } else {
                               const usersMatch =
@@ -1526,14 +1520,14 @@ export class PublicFunctions {
                             }
                             return Promise.resolve({});
                         case 'Custom Field':
-                            if (post.task._parent_task) {
+                            if (!!post?.task?._parent_task) {
                                 retValue = false;
                             } else {
                               retValue = post.task.custom_fields[trigger.custom_field.name].toString() == trigger.custom_field.value.toString();
                             }
                             return Promise.resolve({});
                         case 'Section is':
-                            if (post.task._parent_task) {
+                            if (!!post?.task?._parent_task) {
                                 if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId) {
                                     const triggerSection = (trigger._section._id || trigger._section);
                                     const postSection = (post.task._shuttle_section._id || post.task._shuttle_section);
@@ -1555,7 +1549,7 @@ export class PublicFunctions {
                             }
                             return Promise.resolve({});
                         case 'Status is':
-                            if (post.task._parent_task) {
+                            if (!!post?.task?._parent_task) {
                                 if (post?.task?.shuttle_type && shuttleIndex >= 0) {
                                     retValue = trigger.status.toUpperCase() == post.task.shuttles[shuttleIndex].shuttle_status.toUpperCase();
                                 } else {
@@ -1565,12 +1559,12 @@ export class PublicFunctions {
                                 if (post?.task?.shuttle_type && shuttleIndex >= 0) {
                                     retValue = trigger.status.toUpperCase() == post.task.shuttles[shuttleIndex].shuttle_status.toUpperCase();
                                 } else {
-                                    retValue = trigger.status.toUpperCase() == post.task.status.toUpperCase();
+                                    retValue = trigger.status.toUpperCase() == post?.task?.status?.toUpperCase();
                                 }
                             }
                             return Promise.resolve({});
                         case 'Task is CREATED':
-                            if (!post.task._parent_task && isCreationTaskTrigger) {
+                            if (!post?.task?._parent_task && isCreationTaskTrigger) {
                                 retValue = true;
                             }
                             return Promise.resolve({});

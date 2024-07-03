@@ -55,7 +55,12 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
     public dialog: MatDialog
   ) {
     this.subSink.add(this.columnService.refresh$.subscribe((data) => {
-      this.initSection();
+      if (!!data && !!this.section && (data?.sectionId == this.section?._id || data?.oldSectionId == this.section?._id)) {
+// console.log('data.sectionId', data?.sectionId);
+// console.log('data.oldSectionId', data?.oldSectionId);
+// console.log(this.section?._id);
+        this.initSection();
+      }
     }));
   }
 
@@ -93,8 +98,8 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
 
   async initSection() {
     if (!!this.section && !!this.section._id) {
-      this.tasks = await this.postService.getTasksBySectionPromise(this.section?._id)
-      
+      this.tasks = await this.postService.getTasksBySectionPromise(this.section?._id);
+// console.log(this.tasks);
       if (this.groupData?.enabled_rights) {
         this.tasks = await this.postService.filterRAGTasks(this.unchangedTasks?.tasksList, this.groupData, this.userData);
       }
@@ -117,18 +122,10 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
         // Move items in array
         moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       } else {
-        var post: any = event.previousContainer.data[event.previousIndex];
-
-        const shuttleIndex = (post && post.task && post.task.shuttles) ? post.task.shuttles.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == this.groupData?._id) : -1;
-        // Update the task column when changed with dropping events to reflect back in the task view modal
-        if (post?.task?.shuttle_type && (shuttleIndex >= 0)) {
-          post.task.shuttles[shuttleIndex]._shuttle_section = event.container.id;
-        } else {
-          post.task._column = event.container.id;
-        }
+        // var post: any = event.previousContainer.data[event.previousIndex];
 
         // Call move task to a new column
-        this.moveTaskToSection(post, event.container.id, shuttleIndex/*, oldColumn._id, event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex*/);
+        this.moveTaskToSection(event.previousContainer.data[event.previousIndex], event.container.id, oldColumn._id/*, shuttleIndex, event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex*/);
       }
     }
   }
@@ -190,17 +187,42 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
    * @param task
    * @param columnId
    */
-  async moveTaskToSection(task: any, sectionId: string, shuttleIndex: number/*, oldSectionId: string, previousData, currentData, previousIndex, currentIndex*/) {
+  async moveTaskToSection(post: any, sectionId: string, oldSectionId: string/*, shuttleIndex: number, previousData, currentData, previousIndex, currentIndex*/) {
+    const shuttleIndex = (!!post && !!post.task && !!post.task.shuttles) ? post.task.shuttles.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == this.groupData?._id) : -1;
+    // Update the task column when changed with dropping events to reflect back in the task view modal
+    if (post?.task?.shuttle_type && (shuttleIndex >= 0)) {
+      post.task.shuttles[shuttleIndex]._shuttle_section = sectionId;
 
-    if (task?.task?.shuttle_type && shuttleIndex >= 0) {
-      await this.publicFunctions.changeTaskShuttleSection(task?._id, this.groupData?._id, sectionId);
+      await this.publicFunctions.changeTaskShuttleSection(post?._id, this.groupData?._id, sectionId).then(async res => {
+        await this.updateFront(post, shuttleIndex, sectionId, oldSectionId);
+      });
     } else {
-      await this.publicFunctions.changeTaskColumn(task._id, sectionId, this.userData._id, this.groupData?._id);
+      post.task._column = sectionId;
+    
+      this.changeTaskColumn(post, sectionId, shuttleIndex, oldSectionId);
     }
+  }
+  changeTaskColumn(post: any, sectionId: string, shuttleIndex: string, oldSectionId: string) {
+    this.utilityService.asyncNotification($localize`:@@kanbanSection.pleaseWaitWeAreMovingTaskToSection:Please wait we are moving the task to a new section...`,
+        new Promise(async (resolve, reject) => {
+            const isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
+            const isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
+            // Call HTTP Request to change the request
+            await this.postService.changeTaskColumn(post._id, sectionId, this.userData._id, this.groupData?._id, isShuttleTasksModuleAvailable, isIndividualSubscription)
+                .then(async (res) => {
+                    await this.updateFront(post, shuttleIndex, sectionId, oldSectionId);
+                    resolve(this.utilityService.resolveAsyncPromise($localize`:@@kanbanSection.tasksMoved:Task moved`));
+                })
+                .catch(() => {
+                    reject(this.utilityService.rejectAsyncPromise($localize`:@@kanbanSection.unableToMoveTask:Unable to move the task, please try again!`));
+                });
+      }));
+  }
 
-    await this.publicFunctions.executedAutomationFlowsPropertiesFront(null, task, this.groupData?._id, false, shuttleIndex).then(async res => {
-      await this.columnService.triggerRefreshSection(sectionId);
-    });
+  async updateFront(post, shuttleIndex, sectionId, oldSectionId) {
+    await this.publicFunctions.executedAutomationFlowsPropertiesFront(null, post, this.groupData?._id, false, shuttleIndex);
+
+    await this.columnService.triggerRefreshSection({sectionId, oldSectionId});
   }
 
   /**
@@ -229,15 +251,15 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
 
   makeColumnProjectDialog(column: any) {
     if (!column?.project_type) {
-      this.utilityService.asyncNotification($localize`:@@groupKanbanBoards.pleaseWaitWeCreateProject:Please wait we are creating a project from your section...`, new Promise((resolve, reject) => {
+      this.utilityService.asyncNotification($localize`:@@kanbanSection.pleaseWaitWeCreateProject:Please wait we are creating a project from your section...`, new Promise((resolve, reject) => {
         this.columnService.changeColumnProjectType(column._id, true)
           .then((res) => {
             column.project_type = true;
-            resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupKanbanBoards.sectionTypeChanged:Section type changed!`));
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@kanbanSection.sectionTypeChanged:Section type changed!`));
           })
           .catch((err) => {
             column.project_type = false;
-            reject(this.utilityService.rejectAsyncPromise($localize`:@@groupKanbanBoards.unableToChangeSectionType:Unable to change the section type at the moment, please try again!`))
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@kanbanSection.unableToChangeSectionType:Unable to change the section type at the moment, please try again!`))
           })
       }));
     }
