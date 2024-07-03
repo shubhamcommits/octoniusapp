@@ -268,7 +268,6 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   }
 
   onTaskClonned(data) {
-    // this.columnService.triggerRefreshSection(this.section._id);
     this.taskClonnedEvent.emit(data);
   }
 
