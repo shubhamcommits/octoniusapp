@@ -56,9 +56,9 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
   ) {
     this.subSink.add(this.columnService.refresh$.subscribe((data) => {
       if (!!data && !!this.section && (data?.sectionId == this.section?._id || data?.oldSectionId == this.section?._id)) {
-console.log('data.sectionId', data?.sectionId);
-console.log('data.oldSectionId', data?.oldSectionId);
-console.log(this.section?._id);
+// console.log('data.sectionId', data?.sectionId);
+// console.log('data.oldSectionId', data?.oldSectionId);
+// console.log(this.section?._id);
         this.initSection();
       }
     }));
@@ -201,11 +201,11 @@ console.log(this.tasks);
         await this.updateFront(post, shuttleIndex, sectionId, oldSectionId);
       });
     } else {
-      // await this.publicFunctions.changeTaskColumn(post._id, sectionId, this.userData._id, this.groupData?._id)
-      //  .then(async res => {
-      //     await this.updateFront(post, shuttleIndex, sectionId, oldSectionId);
-      //  });
-      this.utilityService.asyncNotification($localize`:@@kanbanSection.pleaseWaitWeAreMovingTaskToSection:Please wait we are moving the task to a new section...`,
+      this.changeTaskColumn(post._id, sectionId, shuttleIndex, oldSectionId);
+    }
+  }
+  changeTaskColumn(post: any, sectionId: string, shuttleIndex: string, oldSectionId: string) {
+    this.utilityService.asyncNotification($localize`:@@kanbanSection.pleaseWaitWeAreMovingTaskToSection:Please wait we are moving the task to a new section...`,
         new Promise(async (resolve, reject) => {
             const isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
             const isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
@@ -219,7 +219,6 @@ console.log(this.tasks);
                     reject(this.utilityService.rejectAsyncPromise($localize`:@@kanbanSection.unableToMoveTask:Unable to move the task, please try again!`));
                 });
       }));
-    }
   }
 
   async updateFront(post, shuttleIndex, sectionId, oldSectionId) {
