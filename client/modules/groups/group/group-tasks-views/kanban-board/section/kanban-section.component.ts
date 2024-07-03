@@ -199,8 +199,9 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
     }
 
     await this.publicFunctions.executedAutomationFlowsPropertiesFront(null, task, this.groupData?._id, false, shuttleIndex).then(async res => {
-      await this.columnService.triggerRefreshSection(sectionId);
+      task = res;
     });
+    await this.columnService.triggerRefreshSection(sectionId);
   }
 
   /**

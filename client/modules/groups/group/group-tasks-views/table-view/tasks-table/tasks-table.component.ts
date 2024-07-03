@@ -197,6 +197,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
       }
       // post = await this.publicFunctions.executedAutomationFlowsPropertiesFront(null, post, this.groupData?._id);
       await this.publicFunctions.executedAutomationFlowsPropertiesFront(null, post, this.groupData?._id).then(res => {
+        post = res;
         this.columnService.triggerRefreshSection(this.section._id);
       });
 
