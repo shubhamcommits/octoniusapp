@@ -2,7 +2,22 @@
   <div class="card-block">
       <h6><b>Settings</b></h6>
 
-      <div class="mt-5 mb-5 pt-3" *ngIf="!isIndividualSubscription && groupData?.type != 'resource'">
+      <div class="mt-5 mb-5 pt-3" style="padding-left: 44px;" *ngIf="!isIndividualSubscription">
+        <h6><b i18n="@@groupSettings.groupPages">Group pages</b></h6>
+        <p class="card-text" i18n="@@groupSettings.groupPagesDescription">This option allows you to select only the pages do you need to use in this group</p>
+      
+        <div class="pages">
+          <mat-checkbox [checked]="groupData?.pages_to_show?.activity" [name]="'activity'" (change)="savePagesToShow($event)" i18n="@@groupSettings.activity">Activity</mat-checkbox>
+          <mat-checkbox [checked]="groupData?.pages_to_show?.tasks" [name]="'tasks'" (change)="savePagesToShow($event)" i18n="@@groupSettings.tasks">Tasks</mat-checkbox>
+          <mat-checkbox [checked]="groupData?.pages_to_show?.crm_setup" [name]="'crm_setup'" (change)="savePagesToShow($event)" i18n="@@groupSettings.crmSetup">CRM Setup</mat-checkbox>
+          <mat-checkbox [checked]="groupData?.pages_to_show?.files" [name]="'files'" (change)="savePagesToShow($event)" i18n="@@groupSettings.files">Files</mat-checkbox>
+          <mat-checkbox [checked]="groupData?.pages_to_show?.library" [name]="'library'" (change)="savePagesToShow($event)" i18n="@@groupSettings.library">Library</mat-checkbox>
+          <mat-checkbox [checked]="groupData?.pages_to_show?.members" [name]="'members'" (change)="savePagesToShow($event)" i18n="@@groupSettings.members">Members</mat-checkbox>
+          <mat-checkbox [checked]="groupData?.pages_to_show?.dashboard" [name]="'dashboard'" (change)="savePagesToShow($event)" i18n="@@groupSettings.dashboard">Dashboard</mat-checkbox>
+        </div>
+      </div>
+
+      <div class="mb-5 pt-3" *ngIf="!isIndividualSubscription && groupData?.type != 'resource'">
         <mat-slide-toggle color="primary"
             [checked]="groupData.share_files"
             [name]="'share_files'"

@@ -228,6 +228,56 @@ export class GroupSettingsComponent implements OnInit {
       }));
   }
 
+  savePagesToShow(selected) {
+console.log(selected);
+    // Save the settings
+    this.utilityService.asyncNotification($localize`:@@groupSettings.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
+      new Promise((resolve, reject)=>{
+        let propertyToSave =  {};
+        if (!this.groupData.pages_to_show) {
+          this.groupData.pages_to_show = {};
+        }
+        switch (selected.source.name) {
+          case 'activity':
+            this.groupData.pages_to_show.activity = selected.checked;
+            propertyToSave =  { pages_to_show: { activity: selected.checked }};
+            break;
+          case 'tasks':
+            this.groupData.pages_to_show.tasks = selected.checked;
+            propertyToSave =  { pages_to_show: { tasks: selected.checked }};
+            break;
+          case 'crm_setup':
+            this.groupData.pages_to_show.crm_setup = selected.checked;
+            propertyToSave =  { pages_to_show: { crm_setup: selected.checked }};
+            break;
+          case 'files':
+            this.groupData.pages_to_show.files = selected.checked;
+            propertyToSave =  { pages_to_show: { files: selected.checked }};
+            break;
+          case 'library':
+            this.groupData.pages_to_show.library = selected.checked;
+            propertyToSave =  { pages_to_show: { library: selected.checked }};
+            break;
+          case 'members':
+            this.groupData.pages_to_show.members = selected.checked;
+            propertyToSave =  { pages_to_show: { members: selected.checked }};
+            break;
+          case 'dashboard':
+            this.groupData.pages_to_show.dashboard = selected.checked;
+            propertyToSave =  { pages_to_show: { dashboard: selected.checked }};
+            break;
+          default:
+            break;
+        }
+        this.groupService.saveSettings(this.groupData?._id, propertyToSave)
+          .then(()=> {
+            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
+          })
+          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+      }));
+  }
+
   selectShuttleSection(column: any) {
 
     this.utilityService.asyncNotification($localize`:@@groupSettings.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,

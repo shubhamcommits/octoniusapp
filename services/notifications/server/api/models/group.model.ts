@@ -360,6 +360,43 @@ const GroupSchema = new Schema({
             }
         }]
     },
+    pages_to_show: {
+        activity: {
+            type: Boolean,
+            required: true,
+            default: true,
+        },
+        tasks: {
+            type: Boolean,
+            required: true,
+            default: true,
+        },
+        crm_setup: {
+            type: Boolean,
+            required: true,
+            default: true,
+        },
+        files: {
+            type: Boolean,
+            required: true,
+            default: true,
+        },
+        library: {
+            type: Boolean,
+            required: true,
+            default: true,
+        },
+        members: {
+            type: Boolean,
+            required: true,
+            default: true,
+        },
+        dashboard: {
+            type: Boolean,
+            required: true,
+            default: true,
+        }
+    },
     records: {
         pulses: [{
             date: {
