@@ -229,7 +229,6 @@ export class GroupSettingsComponent implements OnInit {
   }
 
   savePagesToShow(selected) {
-console.log(selected);
     // Save the settings
     this.utilityService.asyncNotification($localize`:@@groupSettings.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
       new Promise((resolve, reject)=>{
@@ -258,9 +257,9 @@ console.log(selected);
             this.groupData.pages_to_show.library = selected.checked;
             propertyToSave =  { pages_to_show: { library: selected.checked }};
             break;
-          case 'members':
-            this.groupData.pages_to_show.members = selected.checked;
-            propertyToSave =  { pages_to_show: { members: selected.checked }};
+          case 'resource_management':
+            this.groupData.pages_to_show.resource_management = selected.checked;
+            propertyToSave =  { pages_to_show: { resource_management: selected.checked }};
             break;
           case 'dashboard':
             this.groupData.pages_to_show.dashboard = selected.checked;
@@ -270,8 +269,9 @@ console.log(selected);
             break;
         }
         this.groupService.saveSettings(this.groupData?._id, propertyToSave)
-          .then(()=> {
+          .then(async ()=> {
             this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+            await this.groupService.triggerUpdateGroupData(this.groupData);
             resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
           })
           .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))

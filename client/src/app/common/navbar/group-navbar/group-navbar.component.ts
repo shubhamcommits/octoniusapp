@@ -7,6 +7,7 @@ import { SubSink } from 'subsink';
 import { RouteStateService } from 'src/shared/services/router-service/route-state.service';
 import { Router } from '@angular/router';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
+import { GroupService } from 'src/shared/services/group-service/group.service';
 
 @Component({
   selector: 'app-group-navbar',
@@ -58,7 +59,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
   constructor(
     private injector: Injector,
     private utilityService: UtilityService,
-    private managementPortalService: ManagementPortalService,
+    private groupService: GroupService,
     private routeStateService: RouteStateService,
     private _router: Router,
   ) {
@@ -71,6 +72,10 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
         this.routerFromEvent = res;
         await this.ngOnInit();
       }
+    }));
+
+    this.subSink.add(this.groupService.refreshGroupPages$.subscribe(async (data) => {
+      this.groupData = await this.publicFunctions.getCurrentGroupDetails();
     }));
 
     // Check for all the settings

@@ -3,17 +3,25 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs/internal/Observable';
 import { UtilityService } from '../utility-service/utility.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GroupService {
 
+  private refreshGroupPages = new BehaviorSubject<any>(null);
+  refreshGroupPages$ = this.refreshGroupPages.asObservable();
+
   constructor(
     private _http: HttpClient,
     private utilityService: UtilityService) { }
 
   baseURL = environment.GROUPS_BASE_API_URL;
+
+  triggerUpdateGroupData(groupData: any) {
+    this.refreshGroupPages.next(groupData);
+  }
 
   /**
    * This function is responsible for fetching the group details

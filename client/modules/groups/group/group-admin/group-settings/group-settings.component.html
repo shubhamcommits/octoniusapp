@@ -12,7 +12,7 @@
           <mat-checkbox [checked]="groupData?.pages_to_show?.crm_setup" [name]="'crm_setup'" (change)="savePagesToShow($event)" i18n="@@groupSettings.crmSetup">CRM Setup</mat-checkbox>
           <mat-checkbox [checked]="groupData?.pages_to_show?.files" [name]="'files'" (change)="savePagesToShow($event)" i18n="@@groupSettings.files">Files</mat-checkbox>
           <mat-checkbox [checked]="groupData?.pages_to_show?.library" [name]="'library'" (change)="savePagesToShow($event)" i18n="@@groupSettings.library">Library</mat-checkbox>
-          <mat-checkbox [checked]="groupData?.pages_to_show?.members" [name]="'members'" (change)="savePagesToShow($event)" i18n="@@groupSettings.members">Members</mat-checkbox>
+          <mat-checkbox *ngIf="groupData?.type == 'resource'" [checked]="groupData?.pages_to_show?.resource_management" [name]="'resource_management'" (change)="savePagesToShow($event)" i18n="@@groupSettings.resourceManagement">Resource Management</mat-checkbox>
           <mat-checkbox [checked]="groupData?.pages_to_show?.dashboard" [name]="'dashboard'" (change)="savePagesToShow($event)" i18n="@@groupSettings.dashboard">Dashboard</mat-checkbox>
         </div>
       </div>

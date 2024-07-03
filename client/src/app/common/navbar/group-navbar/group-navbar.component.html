@@ -87,7 +87,7 @@
         </a>
       </li>
 
-      <li class="nav-item" *ngIf="!myWorkplace && groupData?.type != 'resource'">
+      <li class="nav-item" *ngIf="!myWorkplace && groupData?.type != 'resource' && (!groupData?.pages_to_show || groupData?.pages_to_show?.activity)">
         <a [ngClass]="activeState == 'groups_activity'?'nav-link active-nav':'nav-link'"
             (click)="changeState('groups_activity')"
             routerLink="/dashboard/work/groups/activity"
@@ -96,7 +96,7 @@
         </a>
       </li>
 
-      <li class="nav-item" *ngIf="!myWorkplace && groupData?.type == 'resource'">
+      <li class="nav-item" *ngIf="!myWorkplace && groupData?.type == 'resource' && (!groupData?.pages_to_show || groupData?.pages_to_show?.resource_management)">
         <a [ngClass]="activeState == 'groups_resource'?'nav-link active-nav':'nav-link'"
             (click)="changeState('groups_resource')"
             routerLink="/dashboard/work/groups/resource"
@@ -105,7 +105,7 @@
         </a>
       </li>
 
-      <li class="nav-item" *ngIf="!myWorkplace">
+      <li class="nav-item" *ngIf="!myWorkplace && (!groupData?.pages_to_show || groupData?.pages_to_show?.tasks)">
           <a [ngClass]="activeState == 'groups_tasks'?'nav-link active-nav':'nav-link'"
               (click)="changeState('groups_tasks')"
               routerLink="/dashboard/work/groups/tasks"
@@ -115,7 +115,7 @@
           </a>
       </li>
 
-      <li class="nav-item" *ngIf="!myWorkplace && groupData?.type == 'crm'">
+      <li class="nav-item" *ngIf="!myWorkplace && groupData?.type == 'crm' && (!groupData?.pages_to_show || groupData?.pages_to_show?.crm_setup)">
           <a [ngClass]="activeState == 'groups_crm'?'nav-link active-nav':'nav-link'"
               (click)="changeState('groups_crm')"
               routerLink="/dashboard/work/groups/crm"
@@ -125,7 +125,7 @@
           </a>
       </li>
 
-      <li class="nav-item" *ngIf="!myWorkplace && groupData?.type != 'resource'">
+      <li class="nav-item" *ngIf="!myWorkplace && groupData?.type != 'resource' && (!groupData?.pages_to_show || groupData?.pages_to_show?.files)">
           <a [ngClass]="activeState == 'groups_files'?'nav-link active-nav':'nav-link'"
               (click)="changeState('groups_files')"
               routerLink="/dashboard/work/groups/files"
@@ -135,7 +135,7 @@
           </a>
       </li>
 
-      <li class="nav-item" *ngIf="!myWorkplace && !isIndividualSubscription && groupData?.type != 'resource'">
+      <li class="nav-item" *ngIf="!myWorkplace && !isIndividualSubscription && groupData?.type != 'resource' && (!groupData?.pages_to_show || groupData?.pages_to_show?.library)">
         <a [ngClass]="activeState == 'groups_library'?'nav-link active-nav':'nav-link'"
           (click)="changeState('groups_library')" routerLink="/dashboard/work/groups/library" routerLinkActive="active"
           i18n="@@groupNavbar.library">
@@ -153,7 +153,7 @@
           </a>
       </li>
 
-      <li class="nav-item d-none d-md-block" *ngIf="!myWorkplace && isAdmin && !isCampaign">
+      <li class="nav-item d-none d-md-block" *ngIf="!myWorkplace && isAdmin && !isCampaign && (!groupData?.pages_to_show || groupData?.pages_to_show?.dashboard)">
           <a [ngClass]="activeState == 'groups_dashboard'?'nav-link active-nav':'nav-link'"
               (click)="changeState('groups_dashboard')"
               routerLink="/dashboard/work/groups/dashboard"

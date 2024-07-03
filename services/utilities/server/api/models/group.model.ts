@@ -387,7 +387,7 @@ const GroupSchema = new Schema({
             required: true,
             default: true,
         },
-        members: {
+        resource_management: {
             type: Boolean,
             required: true,
             default: true,
