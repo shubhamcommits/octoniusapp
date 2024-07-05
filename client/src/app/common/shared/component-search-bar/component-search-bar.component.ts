@@ -490,11 +490,7 @@ export class ComponentSearchBarComponent implements OnInit, OnDestroy {
    * @param groupId - current groupId
    */
   async changeGroupRole(user: any, role: string, groupId: string) {
-
-    // Create a new User Service Object
     let groupService = this.injector.get(GroupService);
-
-    // Create a new utility Service Object
     let utilityService = this.injector.get(UtilityService);
 
     let newRole = '';
@@ -519,8 +515,11 @@ export class ComponentSearchBarComponent implements OnInit, OnDestroy {
     // Instatiate the request to change the role
     utilityService.asyncNotification($localize`:@@componentSearchBar.pleaseWaitWeUpdatingUserRoleGroup:Please wait we are updating the role as per your request...`,
       new Promise((resolve, reject) => {
+        // TODO - with this method it is losing the members when returning the group
+        // groupService.changeUserRoleInGroup(groupId, role, user._id)
         groupService.updateGroup(groupId, this.groupData)
           .then((res) => {
+            // this.groupData = res['group'];
             // Send the data over the service and storage layer throughout the entire app
             this.publicFunctions.sendUpdatesToGroupData(this.groupData);
 

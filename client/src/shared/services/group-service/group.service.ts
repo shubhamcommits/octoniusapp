@@ -161,6 +161,22 @@ export class GroupService {
   }
 
   /**
+   * This function is responsible for adding a new user to the group
+   * @param groupId
+   * @param { _id, role } member
+   */
+  changeUserRoleInGroup(groupId: string, role: string, userId: string){
+    // Preparing the Request Body Data
+    let bodyData = {
+      groupId: groupId,
+      role: role,
+      userId: userId
+    }
+
+    return this._http.post(this.baseURL + `/members/changeUserRole`, bodyData).toPromise();
+  }
+
+  /**
    * This function is responsible for removing the user from the group
    * @param groupId
    * @param userId - of the user who needs to be removed
