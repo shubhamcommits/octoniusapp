@@ -82,7 +82,7 @@ export class UserTaskForDayDialogComponent implements OnInit, OnDestroy {
       let columns = [];
       const canOpen = !this.userData?._private_group?.enabled_rights || post?.canView || post?.canEdit;
       await this.publicFunctions.getAllColumns(this.groupData?._id).then((data: any) => columns = data);
-      const dialogRef = this.utilityService.openPostDetailsFullscreenModal(post._id, this.groupData?._id, canOpen, columns);
+      const dialogRef = this.utilityService.openPostDetailsFullscreenModal(post, this.groupData?._id, canOpen, columns);
       
       if (dialogRef) {
         const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {

@@ -8,10 +8,6 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 })
 export class IdeaActionsComponent implements OnInit {
 
-  constructor(
-    private _Injector: Injector
-  ) { }
-
   // Post Data
   @Input('post') post: any;
 
@@ -22,6 +18,10 @@ export class IdeaActionsComponent implements OnInit {
 
   votedPositiveIndex = -1;
   votedNegativeIndex = -1;
+
+  constructor(
+    private _Injector: Injector
+  ) { }
 
   ngOnInit() {
     if (!this.post.task.idea) {

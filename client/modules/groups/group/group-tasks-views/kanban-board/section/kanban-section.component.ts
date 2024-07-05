@@ -275,7 +275,7 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
       data: data,
       hasBackdrop: true
     });
-    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+    const closeEventSubs = dialogRef?.componentInstance?.closeEvent.subscribe((data) => {
       this.section = section;
     });
 
@@ -295,7 +295,7 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
       hasBackdrop: true
     });
 
-    const customFieldsUpdatedEventSubs = dialogRef.componentInstance.customFieldsUpdatedEvent.subscribe((data) => {
+    const customFieldsUpdatedEventSubs = dialogRef?.componentInstance?.customFieldsUpdatedEvent.subscribe((data) => {
       this.section = data;
     });
 
@@ -311,7 +311,7 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
     const dialogRef = this.utilityService.openPermissionModal(item, this.groupData, this.userData, 'section');
 
     if (dialogRef) {
-      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+      const closeEventSubs = dialogRef?.componentInstance?.closeEvent.subscribe((data) => {
 
       });
 
@@ -326,24 +326,24 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
    */
   openFullscreenModal(postData: any): void {
     const canOpen = !this.groupData?.enabled_rights || postData?.canView || postData?.canEdit;
-    const dialogRef = this.utilityService.openPostDetailsFullscreenModal(postData._id, this.groupData._id, canOpen, this.sections);
+    const dialogRef = this.utilityService.openPostDetailsFullscreenModal(postData, this.groupData._id, canOpen, this.sections);
     if (dialogRef) {
-      const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe(async (data) => {
+      const deleteEventSubs = dialogRef?.componentInstance?.deleteEvent?.subscribe(async (data) => {
         this.onDeleteEvent(data);
         this.tasks = await this.postService.sortTasks(this.tasks, this.sortingBit, this.sortingData);
       });
-      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+      const closeEventSubs = dialogRef?.componentInstance?.closeEvent?.subscribe((data) => {
         this.updateTask(data);
       });
-      const parentAssignEventSubs = dialogRef.componentInstance.parentAssignEvent.subscribe(async (data) => {
+      const parentAssignEventSubs = dialogRef?.componentInstance?.parentAssignEvent?.subscribe(async (data) => {
         this.onDeleteEvent(data._id);
         this.tasks = await this.postService.sortTasks(this.tasks, this.sortingBit, this.sortingData);
       });
-      const taskClonnedEventSubs = dialogRef.componentInstance.taskClonnedEvent.subscribe(async (data) => {
+      const taskClonnedEventSubs = dialogRef?.componentInstance?.taskClonnedEvent?.subscribe(async (data) => {
         this.onTaskClonned(data);
         this.tasks = await this.postService.sortTasks(this.tasks, this.sortingBit, this.sortingData);
       });
-      const datesChangeEventSub = dialogRef.componentInstance.datesChangeEvent.subscribe(async (data) => {
+      const datesChangeEventSub = dialogRef?.componentInstance?.datesChangeEvent?.subscribe(async (data) => {
         postData.task.start_date = data.start_date;
         postData.task.due_to = data.due_date;
         this.updateTask(postData);
@@ -352,11 +352,11 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
 
 
       dialogRef.afterClosed().subscribe(result => {
-        closeEventSubs.unsubscribe();
-        deleteEventSubs.unsubscribe();
-        parentAssignEventSubs.unsubscribe();
-        taskClonnedEventSubs.unsubscribe();
-        datesChangeEventSub.unsubscribe();
+        closeEventSubs?.unsubscribe();
+        deleteEventSubs?.unsubscribe();
+        parentAssignEventSubs?.unsubscribe();
+        taskClonnedEventSubs?.unsubscribe();
+        datesChangeEventSub?.unsubscribe();
       });
     }
   }

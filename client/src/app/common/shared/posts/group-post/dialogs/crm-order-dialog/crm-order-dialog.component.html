@@ -1,0 +1,280 @@
+<mat-dialog-actions align="end">
+  <div class="action-box">
+      <a (click)="onCloseDialog()" mat-dialog-close>
+        <i class="material-icons" style="cursor: pointer">close</i>
+      </a>
+  </div>
+</mat-dialog-actions>
+
+<div class="post-dialog-content" *ngIf="objectExists(postData) && postData._id">
+    <div class="post-content">
+        <div>
+          <div class="content-box">
+            <div class="modal-header">
+              <!-- Event Post Header starts -->
+              <h4 class="modal-title">
+                <!-- Post Title starts -->
+                <input name="postTitle" type="text" [ngModel]="title" (blur)="titleChange($event)" class="post-title"
+                  placeholder="✍🏻 Title" />
+                <!-- Post Title ends -->
+              </h4>
+        
+              <app-post-utils *ngIf="userData" [post]="postData" [userData]="userData" [groupData]="groupData"
+                [canEdit]="canEdit" mode="fullscreen" (delete)="deletePost()">
+              </app-post-utils>
+            </div>
+            <!-- Post Header Title ends -->
+        
+            <!-- Post Content starts -->
+            <app-quill-editor *ngIf="canEdit" [editorId]="'postbox-editor'" [toolbar]="canEdit" [readOnly]="!canEdit"
+              [contents]="postData?.content" [groupId]="groupId" (content)="quillContentChanged($event)">
+            </app-quill-editor>
+            <!-- Post Content ends -->
+        
+            <!-- Attach files starts -->
+            <div class="attach-files">
+              <app-attach-files [post]="postData" (files)="onAttach($event)" (cloudFiles)="onCloudFileAttach($event)">
+              </app-attach-files>
+            </div>
+            <!-- Attach files ends -->
+
+            <app-post-actions [post]="postData" [userData]="userData" [fullscreen]="true" [groupData]="groupData"
+              [canEdit]="canEdit" (newCommentEmitter)="newCommentAdded($event)">
+            </app-post-actions>
+          </div>
+        </div>
+
+        <div class="clearfix save-content">
+            <button *ngIf="canEdit" [disabled]="!contentChanged"
+              class="btn float-right btn-primary btn-md"
+              (click)="updateDetails('change_content')" i18n="@@crmOrderDialog.save">
+                Save
+            </button>
+        </div>
+
+        <div class="content-box">
+          <!-- TABS STARTS -->
+          <mat-tab-group mat-align-tabs="start" [selectedIndex]="selectedTab">
+            <!-- CRM Order STARTS-->
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <span i18n="@@crmOrderDialog.products">Products</span>
+              </ng-template>
+
+              <ng-template matTabContent>
+                <app-crm-order-products
+                  [orders]="postData?.crm?.orders"
+                  [postId]="postData?._id"
+                  [groupData]="groupData"></app-crm-order-products>
+              </ng-template>
+            </mat-tab>
+            <!-- CRM Order ENDS-->
+
+            <!-- comment-list STARTS-->
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <span i18n="@@crmOrderDialog.comments">Comments</span>
+              </ng-template>
+
+              <ng-template matTabContent>
+                <app-comment-list
+                  [postId]="postData?._id"
+                  [userData]="userData"
+                  [groupId]="postData?._group?._id || postData?._group"
+                  [length]="postData?.comments_count"
+                  [newComment]="newComment"></app-comment-list>
+              </ng-template>
+            </mat-tab>
+            <!-- comment-list ENDS-->
+
+            <!-- time-tracking STARTS-->
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <span i18n="@@crmOrderDialog.timeTracking">Time tracking</span>
+              </ng-template>
+
+              <ng-template matTabContent>
+                <app-task-time-tracking
+                  [userId]="userData?._id"
+                  [groupId]="groupData?._id"
+                  [postData]="postData">
+                </app-task-time-tracking>
+              </ng-template>
+            </mat-tab>
+            <!-- time-tracking ENDS-->
+
+            <!-- TASK CHANGES HISTORY STARTS-->
+            <mat-tab *ngIf="postData?.logs && postData?.logs?.length > 0">
+              <ng-template mat-tab-label>
+                <span i18n="@@crmOrderDialog.changeLog">Change Log</span>
+              </ng-template>
+
+              <ng-template matTabContent>
+                <app-post-logs [logs]="postData?.logs"></app-post-logs>
+              </ng-template>
+            </mat-tab>
+            <!-- TASK CHANGES HISTORY ENDS-->
+          </mat-tab-group>
+          <!-- TABS ENDS -->
+        </div>
+    </div>
+
+    <!-- Top Right Section starts -->
+    <div class="post-properties">
+        <!-- Status starts -->
+        <div class="content-box" *ngIf="postData && !postData?.task?.isNorthStar && postData?.type === 'task'">
+          <p class="box-title"i18n="@@crmOrderDialog.taskStatus"> Task Status</p>
+
+          <div class="shuttle-box mb-2">
+            <p class=" mt-1" style="width:70px" i18n="@@crmOrderDialog.status">Status</p>
+
+            <!-- Change task status starts -->
+            <app-task-status class="ml-2"
+                [postId]="postData?._id"
+                [groupId]="postData?._group?._id || postData?._group"
+                [userId]="userData?._id"
+                [status]="postData?.task?.status"
+                [disabled]="postData?.archived || !canEdit"
+                [shuttleType]="false"
+                (status)="changeTaskStatus($event)">
+            </app-task-status>
+            <!-- Change task status ends -->
+          </div>
+
+          <div class="shuttle-box" *ngIf="postData && columns">
+            <p class="mt-1" style="margin-top: 18px; width:70px" i18n="@@crmOrderDialog.section">
+              Section
+            </p>
+
+            <!-- Change task column starts -->
+            <app-change-column class="ml-2"
+                [sectionId]="(postData?.task?._column?._id || postData?.task?._column)"
+                [columns]="columns"
+                [disabled]="postData?.archived || !canEdit"
+                (moveTask)="moveTaskToColumn($event)">
+            </app-change-column>
+            <!-- Change task column ends -->
+          </div>
+        </div>
+        <!-- Status ends -->
+
+        <!-- Dates starts -->
+        <app-post-dates
+          [userData]="userData"
+          [postData]="postData"
+          [groupData]="groupData"
+          [canEdit]="canEdit"
+          (startDateEvent)="getStartDate($event)"
+          (dueDateEvent)="getDueDate($event)"></app-post-dates>
+        <!-- Dates ends -->
+
+        <!-- Assignee Modal starts -->
+        <div class="content-box" *ngIf="postData && postData?.type === 'task' || postData?.type === 'event'">
+            <p class="box-title" i18n="@@crmOrderDialog.assignee">Assignee</p>
+
+            <app-multiple-assignments
+              [canEdit]="canEdit"
+              [groupId]="groupId"
+              [post]="postData"
+              [type]="'post'"
+              (assigneeAddedEmiter)="onAssigned($event)"
+              (assigneeRemovedEmiter)="onAssigned($event)">
+            </app-multiple-assignments>
+
+            <div *ngIf="lastAssignedBy" id="avatar-assignee">
+              <p class="box-title" style="padding-top: 20px;" i18n="@@crmOrderDialog.assignedBy">Assigned by</p>
+
+              <app-secured-image
+                [imgURL]="lastAssignedBy.profile_pic"
+                [service]="'user'"
+                [userData]="lastAssignedBy"
+                [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
+                [styleClass]="'feed-avatar-small'"
+                style="float: left; cursor: auto;"></app-secured-image>
+
+              <div style="padding-top: 10px;" class="ml-1">
+                {{ lastAssignedBy?.first_name }}
+                {{ lastAssignedBy?.last_name }}
+              </div>
+            </div>
+
+            <div id="avatar-assignee" style="margin-bottom: 30px;">
+              <p class="box-title" style="padding-top: 20px;" i18n="@@crmOrderDialog.createdBy">Created by</p>
+
+              <app-secured-image *ngIf="postData && postData?._posted_by"
+                [imgURL]="postData?._posted_by?.profile_pic"
+                [service]="'user'"
+                [userData]="postData?._posted_by"
+                [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
+                [styleClass]="'feed-avatar-small'"
+                style="float: left; cursor: auto;"></app-secured-image>
+
+              <div style="padding-top: 10px;" class="ml-1">
+                {{ postData?._posted_by?.first_name }}
+                {{ postData?._posted_by?.last_name }}
+                <span class="muted" i18n="@@crmOrderDialog.on">on {{ postData?.created_date | date: 'MMM dd, yyyy'}}</span>
+              </div>
+            </div>
+        </div>
+
+        <!-- CRM Lead Card starts -->
+        <div class="content-box">
+          <app-crm-lead-card [postData]="postData" [userData]="userData"
+            [groupData]="groupData" [isAdmin]="canEdit"></app-crm-lead-card>
+        </div>
+        <!-- CRM Lead Card ends -->
+
+        <div class="content-box" *ngIf="postData?._group && customFields?.length > 0">
+            <p class="box-title" i18n="@@crmOrderDialog.customFields">Custom fields</p>
+
+            <div *ngFor="let cf of customFields; trackBy: utilityService.trackByIndex" class="d-flex custom-field justify-content-start mb-3 row">
+                <p class="col">{{ cf.title }}</p>
+                <mat-select ngDefaultControl *ngIf="!cf.input_type"
+                    [(value)]="selectedCFValues[cf.name]"
+                    [disabled]="!canEdit"
+                    (openedChange)="cfSearchText = ''"
+                    (selectionChange)="onCustomFieldChange($event, cf.name, cf.title)"
+                    appearance="fill"
+                    class="col">
+                    <mat-select-trigger>{{ selectedCFValues[cf.name] }}</mat-select-trigger>
+                    <input type="text" class="form-control" [id]="'search-text' + cf.name" [(ngModel)]="cfSearchText"
+                      [placeholder]="cfSearchPlaceholder" autofocus
+                      (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+                    <mat-option *ngFor="let val of cf.values | appFilter: cfSearchText; trackBy: utilityService.trackByIndex" [value]="val">{{ val }}</mat-option>
+                </mat-select>
+
+                <div *ngIf="cf.input_type && !cf.input_type_date" class="col" style="display: flex; float: left; width: 125px;">
+                  <input [type]="(cf.input_type_number) ? 'number': 'text'" [name]="cf.name" [(ngModel)]="selectedCFValues[cf.name]"
+                      [disabled]="!canEdit"
+                      class="col" style="width: 94px;" [value]="selectedCFValues[cf.name]"
+                      (keyup.enter)="saveInputCustomField($event, cf.name, cf.title)" />
+                  <i *ngIf="canEdit" (click)="saveCustomField(cf.name, cf.title, selectedCFValues[cf.name]);" class="material-icons muted mr-5"
+                    style="cursor: pointer; font-size: 14px; margin-left: 10px;color: #0bc6a0;">save</i>
+                </div>
+
+                <div *ngIf="cf.input_type && cf.input_type_date" >
+                  <!-- Date Picker starts -->
+                  <app-date-picker (date)="getCFDate($event, cf.name, cf.title)"
+                    [selectedDate]="selectedCFValues[cf.name]"
+                    [styleClass]="'btn-group input-date'"
+                    [canEdit]="canEdit">
+                  </app-date-picker>
+                  <!--Date Picker ends -->
+                </div>
+
+                <!-- Clean field starts -->
+                <i *ngIf="canEdit" (click)="saveCustomField(cf.name, cf.title, null);"
+                  class="material-icons muted mr-5"
+                  style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
+                <!-- Clean field ends -->
+            </div>
+        </div>
+    </div>
+    <!-- Top Right Section ends -->
+</div>
+
+<!-- Loading Spinner Starts -->
+<ng-container *ngIf="isLoading$ | async">
+  <app-loading-spinner class="media"></app-loading-spinner>
+</ng-container>
+<!-- Loading Spinner Ends -->

@@ -9,7 +9,7 @@ import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChang
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
-import { GroupPostDialogComponent } from '../group-post-dialog.component';
+import { TaskDialogComponent } from '../../dialogs/task-dialog/task-dialog.component';
 
 @Component({
   selector: 'app-task-actions',
@@ -89,7 +89,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
     private postService: PostService,
     private _router: Router,
     private injector: Injector,
-    private mdDialogRef: MatDialogRef<GroupPostDialogComponent>
+    private mdDialogRef: MatDialogRef<TaskDialogComponent>
   ) { }
 
   async ngOnChanges() {

@@ -15,7 +15,7 @@ export class PostActionsComponent implements OnInit {
   @Input() fullscreen: boolean = false;
   @Input() groupData: any;
   @Input() canEdit = true;
-  @Input() isIdeaModuleAvailable;
+  @Input() isIdeaModuleAvailable = false;
 
   @Output('delete') delete = new EventEmitter()
   @Output() pinEvent = new EventEmitter();

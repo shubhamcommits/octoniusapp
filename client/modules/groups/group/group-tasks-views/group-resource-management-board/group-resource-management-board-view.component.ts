@@ -261,7 +261,7 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
           await this.initTable();
         });
         const taskSelectedEventSubs = dialogRef.componentInstance.taskSelectedEvent.subscribe(async (data) => {
-          const dialogRef = this.utilityService.openPostDetailsFullscreenModal(data._id, this.groupData._id, canOpen, this.sections, selectedDay, selectedUser);
+          const dialogRef = this.utilityService.openPostDetailsFullscreenModal(data, this.groupData._id, canOpen, this.sections/*, selectedDay, selectedUser*/);
           if (dialogRef) {
             const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe(async (data) => {
               // Starts the spinner

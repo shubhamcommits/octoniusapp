@@ -135,7 +135,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
         this.sections = await this.publicFunctions.getAllColumns(this.groupData?._id);
       }
 
-      this.utilityService.openPostDetailsFullscreenModal(postId, this.groupData._id, canOpen, this.sections);
+      this.utilityService.openPostDetailsFullscreenModal(post, this.groupData._id, canOpen, this.sections);
 
       this.utilityService.updateIsLoadingSpinnerSource(false);
     }
