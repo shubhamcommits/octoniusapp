@@ -3,8 +3,8 @@
       <h6><b>Settings</b></h6>
 
       <div class="mt-5 mb-5 pt-3" style="padding-left: 44px;" *ngIf="!isIndividualSubscription">
-        <h6><b i18n="@@groupSettings.groupPages">Group pages</b></h6>
-        <p class="card-text" i18n="@@groupSettings.groupPagesDescription">This option allows you to select only the pages do you need to use in this group</p>
+        <h6><b i18n="@@groupSettings.groupPages">Group tabs</b></h6>
+        <p class="card-text" i18n="@@groupSettings.groupPagesDescription">Allows you to select the tabs you are using in this group(Example: you might not be using Activity, so you can hide it)</p>
       
         <div class="pages">
           <mat-checkbox [checked]="groupData?.pages_to_show?.activity" [name]="'activity'" (change)="savePagesToShow($event)" i18n="@@groupSettings.activity">Activity</mat-checkbox>
