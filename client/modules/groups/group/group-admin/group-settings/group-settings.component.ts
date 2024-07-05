@@ -7,6 +7,7 @@ import { GroupRAGDialogComponent } from '../group-rag-dialog/group-rag-dialog.co
 import { MatDialog } from '@angular/material/dialog';
 import { ColorPickerDialogComponent } from 'src/app/common/shared/color-picker-dialog/color-picker-dialog.component';
 import { GroupTimeTrackingCategoriesDialogComponent } from './time-tracking-categories-dialog/time-tracking-categories-dialog.component';
+import { Action } from 'rxjs/internal/scheduler/Action';
 
 @Component({
   selector: 'app-group-settings',
@@ -232,38 +233,49 @@ export class GroupSettingsComponent implements OnInit {
     // Save the settings
     this.utilityService.asyncNotification($localize`:@@groupSettings.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
       new Promise((resolve, reject)=>{
-        let propertyToSave =  {};
+        let propertyToSave =  {
+          pages_to_show: {
+            activity: (this.groupData.pages_to_show) ? this.groupData.pages_to_show.activity : true,
+            tasks: (this.groupData.pages_to_show) ? this.groupData.pages_to_show.tasks : true,
+            crm_setup: (this.groupData.pages_to_show) ? this.groupData.pages_to_show.crm_setup : ((this.groupData?.type == 'crm') ? true : false),
+            files: (this.groupData.pages_to_show) ? this.groupData.pages_to_show.files : true,
+            library: (this.groupData.pages_to_show) ? this.groupData.pages_to_show.library : true,
+            resource_management: (this.groupData.pages_to_show) ? this.groupData.pages_to_show.resource_management : ((this.groupData?.type == 'resource') ? true : false),
+            dashboard: (this.groupData.pages_to_show) ? this.groupData.pages_to_show.dashboard : true,
+          }
+        };
         if (!this.groupData.pages_to_show) {
           this.groupData.pages_to_show = {};
         }
+
         switch (selected.source.name) {
           case 'activity':
             this.groupData.pages_to_show.activity = selected.checked;
-            propertyToSave =  { pages_to_show: { activity: selected.checked }};
+            propertyToSave.pages_to_show.activity = selected.checked;
             break;
           case 'tasks':
             this.groupData.pages_to_show.tasks = selected.checked;
-            propertyToSave =  { pages_to_show: { tasks: selected.checked }};
+            propertyToSave.pages_to_show.tasks = selected.checked;
             break;
           case 'crm_setup':
             this.groupData.pages_to_show.crm_setup = selected.checked;
-            propertyToSave =  { pages_to_show: { crm_setup: selected.checked }};
+            propertyToSave.pages_to_show.crm_setup = selected.checked;
             break;
           case 'files':
             this.groupData.pages_to_show.files = selected.checked;
-            propertyToSave =  { pages_to_show: { files: selected.checked }};
+            propertyToSave.pages_to_show.files = selected.checked;
             break;
           case 'library':
             this.groupData.pages_to_show.library = selected.checked;
-            propertyToSave =  { pages_to_show: { library: selected.checked }};
+            propertyToSave.pages_to_show.library = selected.checked;
             break;
           case 'resource_management':
             this.groupData.pages_to_show.resource_management = selected.checked;
-            propertyToSave =  { pages_to_show: { resource_management: selected.checked }};
+            propertyToSave.pages_to_show.resource_management = selected.checked;
             break;
           case 'dashboard':
             this.groupData.pages_to_show.dashboard = selected.checked;
-            propertyToSave =  { pages_to_show: { dashboard: selected.checked }};
+            propertyToSave.pages_to_show.dashboard = selected.checked;
             break;
           default:
             break;
