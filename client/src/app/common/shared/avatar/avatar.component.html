@@ -13,7 +13,7 @@
 
 <span *ngIf="showInitials"
   [ngClass]="styleClass"
-  [ngStyle]="{'background-color' : backgroundColor}"
+  [ngStyle]="{'background-color' : backgroundColor, inlineStyle}"
   matTooltipPosition="{{ placement }}" matTooltip="{{ tooltip }}">
   {{ initials }}
 </span>
