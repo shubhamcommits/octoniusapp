@@ -50,8 +50,44 @@ export class NewTaskComponent implements OnInit {
       this.column = null;
     }
 
-    if (this.utilityService.objectExists(this.groupData) && this.groupData?.type == 'crm') {
-      this.changeTaskType(false, false, true, false);
+    if (this.utilityService.objectExists(this.groupData) && !!this.groupData?.default_board_card) {
+      switch (this.groupData?.default_board_card) {
+        case 'task':
+          this.changeTaskType(false, false, false, false);
+          break;
+        
+        case 'idea':
+          if (this.isIdeaModuleAvailable) {
+            this.changeTaskType(false, true, false, false);
+          } else {
+            this.changeTaskType(false, false, false, false);
+          }
+          break;
+        
+        case 'target':
+          this.changeTaskType(true, false, false, false);
+          break;
+        
+        case 'crm_lead':
+          if (this.groupData.type == 'crm') {
+            this.changeTaskType(false, false, true, false);
+          } else {
+            this.changeTaskType(false, false, false, false);
+          }
+          break;
+        
+        case 'crm_order':
+          if (this.groupData.type == 'crm') {
+            this.changeTaskType(false, false, false, true);
+          } else {
+            this.changeTaskType(false, false, false, false);
+          }
+          break;
+        
+        default:
+          this.changeTaskType(false, false, false, false);
+          break;
+      }
     }
 
     if (this.groupData && this.groupData._id) {
