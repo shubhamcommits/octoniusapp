@@ -259,6 +259,10 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  async changeState(state:string){
+    this.utilityService.handleActiveStateTopNavBar().emit(state);
+  }
+
   async changeToPersonalGroup() {
     await this.publicFunctions.sendUpdatesToGroupData({});
     this.router.navigate(['/dashboard', 'myspace', 'inbox']);

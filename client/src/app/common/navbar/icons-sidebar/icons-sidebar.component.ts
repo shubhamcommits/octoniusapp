@@ -264,6 +264,10 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
     this.router.navigate(['/dashboard', 'work', 'groups', 'library', 'collection'], {queryParams: { collection: group?._id }});
   }
 
+  async changeState(state:string) {
+    this.utilityService.handleActiveStateTopNavBar().emit(state);
+  }
+
   async changeToPersonalGroup() {
     await this.publicFunctions.sendUpdatesToGroupData({});
     this.router.navigate(['/dashboard', 'myspace', 'inbox']);
