@@ -49,9 +49,9 @@ export class GroupGuard implements CanActivate  {
       return false;
     }
 
-    const groupMembersIndex = (currentGroup) ? currentGroup?._members.findIndex((member: any) => member._id == userData._id) : -1;
-    const groupAdminsIndex = (currentGroup) ? currentGroup?._admins.findIndex((admin: any) => admin._id == userData._id) : -1;
-    const userGroupsIndex = (userData._groups) ? userData._groups.findIndex((group: any) => group == currentGroup?._id) : -1;
+    const groupMembersIndex = (!!currentGroup && !!currentGroup?._members) ? currentGroup?._members.findIndex((member: any) => member._id == userData._id) : -1;
+    const groupAdminsIndex = (!!currentGroup && !!currentGroup?._admins) ? currentGroup?._admins.findIndex((admin: any) => admin._id == userData._id) : -1;
+    const userGroupsIndex = (!!userData && !!userData._groups) ? userData._groups.findIndex((group: any) => group == currentGroup?._id) : -1;
 
     if (groupMembersIndex >= 0 || groupAdminsIndex >= 0 || userGroupsIndex >= 0 || userData?._private_group == currentGroup?._id) {
       return true;

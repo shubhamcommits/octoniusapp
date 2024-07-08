@@ -1,15 +1,23 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
+import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
+import { UtilityService } from '../utility-service/utility.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PortfolioService {
 
-  constructor(private _http: HttpClient) { }
-
   baseURL = environment.GROUPS_BASE_API_URL + '/portfolio';
+
+  private publicFunctions = new PublicFunctions(this.injector);
+  
+  constructor(
+    private _http: HttpClient,
+    private utilityService: UtilityService,
+    private injector: Injector) { }
 
   /**
    * This function create a new normal portfolio and makes the POST request
@@ -224,5 +232,15 @@ export class PortfolioService {
         endDate: endDate
       }
     }).toPromise();
+  }
+
+  async navigateToPortfolio(portfolio) {
+    let router = this.injector.get(Router);
+    
+    this.utilityService.handleActiveStateTopNavBar().emit('portfolio');
+    const newPortfolio = await this.publicFunctions.getPortfolioDetails(portfolio?._id);
+    await this.publicFunctions.sendUpdatesToPortfolioData(newPortfolio);
+    await this.publicFunctions.sendUpdatesToGroupData({});
+    router.navigate(['/dashboard', 'work', 'groups', 'portfolio']);
   }
 }

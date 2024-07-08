@@ -235,13 +235,13 @@ export class GroupSettingsComponent implements OnInit {
       new Promise((resolve, reject)=>{
         let propertyToSave =  {
           pages_to_show: {
-            activity: (this.groupData.pages_to_show) ? this.groupData.pages_to_show.activity : true,
-            tasks: (this.groupData.pages_to_show) ? this.groupData.pages_to_show.tasks : true,
-            crm_setup: (this.groupData.pages_to_show) ? this.groupData.pages_to_show.crm_setup : ((this.groupData?.type == 'crm') ? true : false),
-            files: (this.groupData.pages_to_show) ? this.groupData.pages_to_show.files : true,
-            library: (this.groupData.pages_to_show) ? this.groupData.pages_to_show.library : true,
-            resource_management: (this.groupData.pages_to_show) ? this.groupData.pages_to_show.resource_management : ((this.groupData?.type == 'resource') ? true : false),
-            dashboard: (this.groupData.pages_to_show) ? this.groupData.pages_to_show.dashboard : true,
+            activity: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.activity : true,
+            tasks: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.tasks : true,
+            crm_setup: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.crm_setup : ((this.groupData?.type == 'crm') ? true : false),
+            files: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.files : true,
+            library: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.library : true,
+            resource_management: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.resource_management : ((this.groupData?.type == 'resource') ? true : false),
+            dashboard: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.dashboard : true,
           }
         };
         if (!this.groupData.pages_to_show) {

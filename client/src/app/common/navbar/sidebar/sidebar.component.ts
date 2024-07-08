@@ -238,23 +238,11 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   async goToGroup(group: any) {
-    this.changeState('groups_activity');
-    const newGroup = await this.publicFunctions.getGroupDetails(group?._id);
-    await this.publicFunctions.sendUpdatesToGroupData(newGroup);
-    await this.publicFunctions.sendUpdatesToPortfolioData({});
-    if (group.type == 'resource') {
-      this.router.navigate(['dashboard', 'work', 'groups', 'resource']);
-    } else {
-      this.router.navigate(['dashboard', 'work', 'groups', 'activity']);
-    }
+    this.groupService.navigateToGroup(group);
   }
 
-  async goToPortfolio(group: any) {
-    this.changeState('portfolio');
-    const newPortfolio = await this.publicFunctions.getPortfolioDetails(group?._id);
-    await this.publicFunctions.sendUpdatesToPortfolioData(newPortfolio);
-    await this.publicFunctions.sendUpdatesToGroupData({});
-    this.router.navigate(['/dashboard', 'work', 'groups', 'portfolio']);
+  async goToPortfolio(portfolio: any) {
+    this.portfolioService.navigateToPortfolio(portfolio);
   }
 
   async goToCollection(group: any) {
@@ -269,10 +257,6 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
       console.log('There\'s some unexpected error occurred, please try again later!', err);
       this.utilityService.errorNotification($localize`:@@sidebar.unexpectedError:There\'s some unexpected error occurred, please try again later!`);
     }
-  }
-
-  async changeState(state:string){
-    this.utilityService.handleActiveStateTopNavBar().emit(state);
   }
 
   async changeToPersonalGroup() {
