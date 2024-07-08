@@ -18,14 +18,7 @@ import { TimePickerComponent } from './time-picker/time-picker.component';
 import { AttachFilesComponent } from './attach-files/attach-files.component';
 import { AttachCloudFilesComponent } from './attach-cloud-files/attach-cloud-files.component';
 import { PostViewComponent } from './posts/post-view/post-view.component';
-import { PostActionsComponent } from './posts/post-actions/post-actions.component';
-import { LikePostComponent } from './posts/post-actions/like-post/like-post.component';
-import { CommentOnPostComponent } from './posts/post-actions/comment-on-post/comment-on-post.component';
-import { FollowPostComponent } from './posts/post-actions/follow-post/follow-post.component';
-import { PostUtilsComponent } from './posts/post-actions/post-utils/post-utils.component';
 import { SelectAssigneeComponent } from './select-assignee/select-assignee.component';
-import { TaskStatusComponent } from './posts/post-actions/task-status/task-status.component';
-import { ChangeColumnComponent } from './posts/post-actions/change-column/change-column.component';
 import { TagsComponent } from './tags/tags.component';
 import { InfiniteScrollComponent } from './infinite-scroll/infinite-scroll.component';
 import { ProgressBarComponent } from './progress-bar/progress-bar.component';
@@ -45,8 +38,6 @@ import { GroupUpdateInformationComponent } from './activity-feed/group-informati
 import { CommentSectionComponent } from './comments/comment-section/comment-section.component';
 import { PostCommentComponent } from './comments/post-comment/post-comment.component';
 import { LikeCommentComponent } from './comments/post-comment/like-comment/like-comment.component';
-import { NorthStarComponent } from './posts/group-post-dialog/north-star/north-star.component';
-import { NorthStarStatsComponent } from './posts/group-post-dialog/north-star/stats/north-star-stats.component';
 
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -55,7 +46,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { PreviewFilesDialogComponent } from './preview-files-dialog/preview-files-dialog.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { InlineInputComponent } from './inline-input/inline-input.component';
-import { GroupPostDialogComponent } from './posts/group-post-dialog/group-post-dialog.component';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import { TruncateTextPipe } from 'src/shared/pipes/truncate-text.pipe';
 import { ChartsModule, ThemeService } from 'ng2-charts';
@@ -72,9 +62,7 @@ import { OrganizationalStructureCardComponent } from './dashboard/organizational
 import { EngagementCardComponent } from './dashboard/engagement-card/engagement-card.component';
 import { GlobalPerformanceCardComponent } from './dashboard/global-performance-card/global-performance-card.component';
 import { NewTaskComponent } from './posts/new-task/new-task.component';
-import { SubtasksComponent } from './posts/group-post-dialog/subtasks/subtasks.component';
-import { TaskActionsComponent } from './posts/group-post-dialog/task-actions/task-actions.component';
-import { MultipleAssignmentsComponent } from './posts/multiple-assignments/multiple-assignments.component';
+import { MultipleAssignmentsComponent } from './multiple-assignments/multiple-assignments.component';
 import { FilterPipe } from '../../../shared/pipes/filter.pipe';
 import { AssigneeAvatarComponent } from './assignee-avatar/assignee-avatar.component';
 import { CommentListComponent } from './comments/comment-list/comment-list.component';
@@ -95,7 +83,6 @@ import { CustomToolTipComponent } from './custom-tool-tip/custom-tool-tip.compon
 import { ToolTipRendererDirective } from './custom-tool-tip/tool-tip-renderer.directive';
 import { WidgetSelectorDialogComponent } from './dashboard/widget-selector-dialog/widget-selector-dialog.component';
 import { ColorPickerDialogComponent } from './color-picker-dialog/color-picker-dialog.component';
-import { IdeaActionsComponent } from './posts/post-actions/idea-actions/idea-actions.component';
 import { ActivityFiltersComponent } from './activity-feed/activity-filters/activity-filters.component';
 import { SheetComponent } from './sheet/sheet.component';
 
@@ -107,15 +94,12 @@ import { ChartModule } from 'modules/chart/chart.module';
 import { CustomFieldStatisticsCardComponent } from './dashboard/custom-field-statistics-card/custom-field-statistics-card.component';
 import { CustomFieldTableCardComponent } from './dashboard/custom-field-table-card/custom-field-table-card.component';
 import { CustomFieldsTableSettingsDialogComponent } from './dashboard/custom-field-table-card/custom-fields-table-settings-dialog/custom-fields-table-settings-dialog.component';
-import { ShuttleTaskComponent } from './posts/group-post-dialog/shuttle-task/shuttle-task.component';
 import { FileDetailsDialogComponent } from './file-details-dialog/file-details-dialog.component';
 import { ApprovalActionsComponent } from './approvals/approval-actions/approval-actions.component';
 import { ApprovalsHistoryComponent } from './approvals/approvals-history/approvals-history.component';
-import { PostDatesComponent } from './posts/group-post-dialog/post-dates/post-dates.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { FileVersionsComponent } from './file-versions/file-versions.component';
 import { SelectLanguageComponent } from './select-language/select-language.component';
-import { PostLogsComponent } from './posts/group-post-dialog/post-logs/post-logs.component';
 import { HighlightDirective } from 'src/shared/pipes/highlight.directive';
 import { DebounceClickDirective } from 'src/shared/pipes/debounce-click.directive';
 import { TopSocialCardComponent } from './dashboard/top-social-card/top-social-card.component';
@@ -135,9 +119,6 @@ import { ShareCollectionDialogComponent } from './share-collection-dialog/share-
 import { PasswordStrengthComponent } from './password-strength/password-strength.component';
 import { PricingTableComponent } from './pricing-table/pricing-table.component';
 import { HolidayRejectionDialogComponent } from './hr/holiday-rejection-dialog/holiday-rejection-dialog.component';
-import { CRMLeadCardComponent } from './posts/group-post-dialog/crm-lead-card/crm-lead-card.component';
-import { TaskTimeTrackingComponent } from './posts/group-post-dialog/task-time-tracking/task-time-tracking.component';
-import { TaskTimeTrackingListComponent } from './posts/group-post-dialog/task-time-tracking/task-time-tracking-list/task-time-tracking-list.component';
 import { NewTimeTrackingDialogComponent } from './new-time-tracking-dialog/new-time-tracking-dialog.component';
 import { TimeInputComponent } from './time-input/time-input.component';
 import { ResourcesDetailsDialogComponent } from './resources-details-dialog/resources-details-dialog.component';
@@ -146,10 +127,33 @@ import { ResourceActivityListComponent } from './resources-details-dialog/resour
 import { QRCodeModule } from 'angularx-qrcode';
 import { UserTaskForDayDialogComponent } from './posts/user-task-for-day-dialog/user-task-for-day-dialog.component';
 import { AvatarComponent } from './avatar/avatar.component';
-import { PostCRMOrderProductsComponent } from './posts/group-post-dialog/crm-order-products/crm-order-products.component';
-import { NewCRMOrderProductDialogComponent } from './posts/group-post-dialog/crm-order-products/new-crm-order-product-dialog/new-crm-order-product-dialog.component';
-import { CRMOrderCustomFieldsComponent } from './posts/group-post-dialog/crm-order-products/new-crm-order-product-dialog/crm-order-custom-fields/crm-order-custom-fields.component';
 import { PermissionDialogComponent } from './permission-dialog/permission-dialog.component';
+import { IdeaActionsComponent } from './posts/group-post/componentes/post-actions/idea-actions/idea-actions.component';
+import { TaskDialogComponent } from './posts/group-post/dialogs/task-dialog/task-dialog.component';
+import { PostCRMOrderProductsComponent } from './posts/group-post/componentes/crm-order-products/crm-order-products.component';
+import { NewCRMOrderProductDialogComponent } from './posts/group-post/componentes/crm-order-products/new-crm-order-product-dialog/new-crm-order-product-dialog.component';
+import { CRMOrderCustomFieldsComponent } from './posts/group-post/componentes/crm-order-products/new-crm-order-product-dialog/crm-order-custom-fields/crm-order-custom-fields.component';
+import { SubtasksComponent } from './posts/group-post/componentes/subtasks/subtasks.component';
+import { TaskTimeTrackingComponent } from './posts/group-post/componentes/task-time-tracking/task-time-tracking.component';
+import { TaskTimeTrackingListComponent } from './posts/group-post/componentes/task-time-tracking/task-time-tracking-list/task-time-tracking-list.component';
+import { CRMLeadCardComponent } from './posts/group-post/componentes/crm-lead-card/crm-lead-card.component';
+import { PostDatesComponent } from './posts/group-post/componentes/post-dates/post-dates.component';
+import { PostLogsComponent } from './posts/group-post/componentes/post-logs/post-logs.component';
+import { ShuttleTaskComponent } from './posts/group-post/componentes/shuttle-task/shuttle-task.component';
+import { TaskActionsComponent } from './posts/group-post/componentes/task-actions/task-actions.component';
+import { NorthStarComponent } from './posts/group-post/componentes/north-star/north-star.component';
+import { NorthStarStatsComponent } from './posts/group-post/componentes/north-star/stats/north-star-stats.component';
+import { ChangeColumnComponent } from './posts/group-post/componentes/post-actions/change-column/change-column.component';
+import { CommentOnPostComponent } from './posts/group-post/componentes/post-actions/comment-on-post/comment-on-post.component';
+import { FollowPostComponent } from './posts/group-post/componentes/post-actions/follow-post/follow-post.component';
+import { LikePostComponent } from './posts/group-post/componentes/post-actions/like-post/like-post.component';
+import { PostActionsComponent } from './posts/group-post/componentes/post-actions/post-actions.component';
+import { PostUtilsComponent } from './posts/group-post/componentes/post-actions/post-utils/post-utils.component';
+import { TaskStatusComponent } from './posts/group-post/componentes/post-actions/task-status/task-status.component';
+import { CRMTaskDialogComponent } from './posts/group-post/dialogs/crm-task-dialog/crm-task-dialog.component';
+import { NormalPostDialogComponent } from './posts/group-post/dialogs/normal-post-dialog/normal-post-dialog.component';
+import { CRMOrderDialogComponent } from './posts/group-post/dialogs/crm-order-dialog/crm-order-dialog.component';
+import { EventPostDialogComponent } from './posts/group-post/dialogs/event-post-dialog/event-post-dialog.component';
 
 @NgModule({
     declarations: [
@@ -210,7 +214,11 @@ import { PermissionDialogComponent } from './permission-dialog/permission-dialog
         InlineInputComponent,
         NorthStarComponent,
         NorthStarStatsComponent,
-        GroupPostDialogComponent,
+        TaskDialogComponent,
+        CRMTaskDialogComponent,
+        NormalPostDialogComponent,
+        CRMOrderDialogComponent,
+        EventPostDialogComponent,
         PostCRMOrderProductsComponent,
         NewCRMOrderProductDialogComponent,
         CRMOrderCustomFieldsComponent,
@@ -341,7 +349,11 @@ import { PermissionDialogComponent } from './permission-dialog/permission-dialog
         LikeCommentComponent,
         MatSidenavModule,
         InlineInputComponent,
-        GroupPostDialogComponent,
+        TaskDialogComponent,
+        CRMTaskDialogComponent,
+        NormalPostDialogComponent,
+        CRMOrderDialogComponent,
+        EventPostDialogComponent,
         PostCRMOrderProductsComponent,
         NewCRMOrderProductDialogComponent,
         CRMOrderCustomFieldsComponent,

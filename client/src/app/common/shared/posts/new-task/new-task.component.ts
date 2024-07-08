@@ -4,7 +4,6 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 import moment from 'moment';
-import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({
   selector: 'app-new-task',
@@ -42,12 +41,53 @@ export class NewTaskComponent implements OnInit {
 
   constructor(
     private flowService: FlowService,
+    private utilityService: UtilityService,
     public injector: Injector
   ) { }
 
   ngOnInit() {
     if (this.subtask) {
       this.column = null;
+    }
+
+    if (this.utilityService.objectExists(this.groupData) && !!this.groupData?.default_board_card) {
+      switch (this.groupData?.default_board_card) {
+        case 'task':
+          this.changeTaskType(false, false, false, false);
+          break;
+        
+        case 'idea':
+          if (this.isIdeaModuleAvailable) {
+            this.changeTaskType(false, true, false, false);
+          } else {
+            this.changeTaskType(false, false, false, false);
+          }
+          break;
+        
+        case 'target':
+          this.changeTaskType(true, false, false, false);
+          break;
+        
+        case 'crm_lead':
+          if (this.groupData.type == 'crm') {
+            this.changeTaskType(false, false, true, false);
+          } else {
+            this.changeTaskType(false, false, false, false);
+          }
+          break;
+        
+        case 'crm_order':
+          if (this.groupData.type == 'crm') {
+            this.changeTaskType(false, false, false, true);
+          } else {
+            this.changeTaskType(false, false, false, false);
+          }
+          break;
+        
+        default:
+          this.changeTaskType(false, false, false, false);
+          break;
+      }
     }
 
     if (this.groupData && this.groupData._id) {
@@ -207,6 +247,7 @@ export class NewTaskComponent implements OnInit {
     this.saveAsNorthStar = false;
     this.saveAsIdea = false;
     this.saveAsCRMLead = false;
+    this.saveAsCRMOrder = false;
   }
 
   /**

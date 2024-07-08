@@ -312,7 +312,7 @@ export class GlobalNorthStarDialogComponent implements OnInit {
       columns = await this.publicFunctions.getAllColumns(subtask?._group?._id)
     }
 
-    const dialogRef = this.utilityService.openPostDetailsFullscreenModal(subtask?._id, subtask?._group?._id, canOpen, columns);
+    const dialogRef = this.utilityService.openPostDetailsFullscreenModal(subtask, subtask?._group?._id, canOpen, columns);
 
     if (dialogRef) {
       const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {

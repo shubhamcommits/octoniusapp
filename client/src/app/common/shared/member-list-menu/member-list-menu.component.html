@@ -23,8 +23,14 @@
                     [(ngModel)]="searchText" placeholder="Search group member" autofocus>
             </div>
             <ul class="assignee-list">
-                <li appHighlight class="assignee-list-item" *ngFor="let member of groupMembers | appFilter: searchText; trackBy: utilityService.trackByIndex"
-                    (click)="getMemberDetails(member._id)" [searchedWord]="searchText" [content]="member" [workspaceId]="workspaceData?._id">
+                <li class="assignee-list-item" *ngFor="let member of groupMembers | appFilter: searchText; trackBy: utilityService.trackByIndex"
+                    (click)="getMemberDetails(member._id)">
+                    <app-avatar style="width:30px !important;height:30px !important;"
+                        [photoUrl]="member.profile_pic"
+                        [userData]="member"
+                        [styleClass]="'feed-avatar-small'"
+                        [noAuth]="true"></app-avatar>
+
                     {{ member.first_name }} {{ member.last_name }}
                 </li>
             </ul>

@@ -39,6 +39,9 @@ routes.get('/members-from-multiple-groups', members.getMembersFromMultipleGroups
 // POST - Add a new user to the group
 routes.post('/add', members.addNewUserInGroup);
 
+// POST - Change the role of a user in a group
+routes.post('/changeUserRole', members.changeUserRole);
+
 // DELETE - Removes a user from the group
 routes.post('/remove', members.removeUserFromGroup);
 

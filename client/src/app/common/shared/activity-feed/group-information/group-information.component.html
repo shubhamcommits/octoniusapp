@@ -10,7 +10,7 @@
                 <!-- Edit Group Details starts -->
                 <button *ngIf="userData.role != 'member' && groupData.group_name.toLowerCase() != 'global'"
                     type="button" name="button" class="btn btn-link-secondary" style="margin-top: -10px;"
-                    (click)="this.editGroupDetails(openModal('Update Group Information!', 'assets/images/user-professional-info.svg'))">
+                    (click)="openModal(groupInfoContent)">
                       <i class="material-icons-outlined">settings</i>
                 </button>
                 <!-- Edit Group Details ends -->
@@ -47,3 +47,8 @@
         </div>
     </div>
 </div>
+
+<ng-template #groupInfoContent let-modal>
+  <app-group-update-information [groupData]="groupData">
+  </app-group-update-information>
+</ng-template>

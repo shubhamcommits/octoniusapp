@@ -10,11 +10,11 @@ import moment from 'moment';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
 
 @Component({
-  selector: 'app-group-post-dialog',
-  templateUrl: './group-post-dialog.component.html',
-  styleUrls: ['./group-post-dialog.component.scss']
+  selector: 'app-task-dialog',
+  templateUrl: './task-dialog.component.html',
+  styleUrls: ['./task-dialog.component.scss']
 })
-export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, AfterViewInit*/ {
+export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterViewInit*/ {
 
   // Close Event Emitter - Emits when closing dialog
   @Output() closeEvent = new EventEmitter();
@@ -28,8 +28,6 @@ export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
   userData: any;
   groupId: string;
   columns: any;
-  selectedDate: any;
-  selectedUser: any;
 
   searchText: string = '';
 
@@ -111,7 +109,7 @@ export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
   myWorkplace = false;
 
   cfSearchText = '';
-  cfSearchPlaceholder = $localize`:@@groupCreatePostDialog.cfSearchPlaceholder:Search`;
+  cfSearchPlaceholder = $localize`:@@taskDialog.cfSearchPlaceholder:Search`;
 
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
@@ -127,7 +125,7 @@ export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
     private flowService: FlowService,
     private columnService: ColumnService,
     private injector: Injector,
-    private mdDialogRef: MatDialogRef<GroupPostDialogComponent>
+    private mdDialogRef: MatDialogRef<TaskDialogComponent>
     ) {}
 
   async ngOnInit() {
@@ -137,8 +135,6 @@ export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
     const postId = this.data.postId;
     this.groupId = this.data.groupId;
     this.columns = this.data.columns;
-    this.selectedDate = this.data.selectedDate;
-    this.selectedUser = this.data.selectedUser;
 
     this.userData = await this.publicFunctions.getCurrentUser();
 
@@ -183,65 +179,46 @@ export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
     this.dueDate = undefined;
     this.tags = [];
 
-    if (this.postData?.type === 'task') {
-      if (this.isShuttleTasksModuleAvailable && this.postData?.task?.shuttle_type && this.postData?.task?.shuttles) {
-        this.shuttleIndex = await this.postData?.task?.shuttles?.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == this.groupData?._id);
-        this.shuttle = this.postData?.task?.shuttles[this.shuttleIndex];
-      }
-
-      if (this.postData?.task?._parent_task && this.postData?.task?._parent_task?._group == undefined) {
-        this.postData.task._parent_task._group = null;
-      }
-
-      if((this.postData?.task?._parent_task && this.postData?.task?._parent_task?._group) && this.columns && (this.shuttle?._shuttle_group?._id || this.shuttle?._shuttle_group) != this.groupId){
-        this.columns = null;
-      }
-
-      // Set the taskAssignee
-      this.taskAssignee = this.postData?._assigned_to || [];
-
-      // Set the due date variable for task
-      if ((this.postData?.task.due_to && this.postData?.task.due_to != null)
-        || (this.postData?.event.due_to && this.postData?.event.due_to != null)) {
-        // Set the DueDate variable
-        this.dueDate = moment(this.postData?.task.due_to || this.postData?.event.due_to);
-      }
-
-      // Set the due date variable for task
-      if (this.postData?.task.start_date && this.postData?.task.start_date != null) {
-        // Set the DueDate variable
-        this.startDate = moment(this.postData?.task.start_date);
-      }
-
-      this.setAssignedBy();
-
-      await this.postService.getSubTasks(this.postData?._id).then((res) => {
-        this.subtasks = res['subtasks'];
-
-        if (this.subtasks && this.subtasks.length > 0) {
-          this.showSubtasks = true;
-        }
-      });
-
-      await this.sortNSValues();
+    if (this.isShuttleTasksModuleAvailable && this.postData?.task?.shuttle_type && this.postData?.task?.shuttles) {
+      this.shuttleIndex = await this.postData?.task?.shuttles?.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == this.groupData?._id);
+      this.shuttle = this.postData?.task?.shuttles[this.shuttleIndex];
     }
 
-    // If post type is event, set the dueTime
-    if (this.postData?.type === 'event') {
-
-      // Set the due date variable for both task and event type posts
-      if (this.postData?.event.due_to && this.postData?.event.due_to != null) {
-
-        // Set the DueDate variable
-        this.dueDate = moment(this.postData?.task.due_to || this.postData?.event.due_to);
-      }
-
-      if (this.dueDate) {
-        this.dueTime.hour = this.dueDate.getHours();
-        this.dueTime.minute = this.dueDate.getMinutes();
-      }
-      this.eventAssignedToCount = (this.postData?._assigned_to) ? this.postData?._assigned_to.size : 0;
+    if (this.postData?.task?._parent_task && this.postData?.task?._parent_task?._group == undefined) {
+      this.postData.task._parent_task._group = null;
     }
+
+    if((this.postData?.task?._parent_task && this.postData?.task?._parent_task?._group) && this.columns && (this.shuttle?._shuttle_group?._id || this.shuttle?._shuttle_group) != this.groupId){
+      this.columns = null;
+    }
+
+    // Set the taskAssignee
+    this.taskAssignee = this.postData?._assigned_to || [];
+
+    // Set the due date variable for task
+    if ((this.postData?.task.due_to && this.postData?.task.due_to != null)
+      || (this.postData?.event.due_to && this.postData?.event.due_to != null)) {
+      // Set the DueDate variable
+      this.dueDate = moment(this.postData?.task.due_to || this.postData?.event.due_to);
+    }
+
+    // Set the due date variable for task
+    if (this.postData?.task.start_date && this.postData?.task.start_date != null) {
+      // Set the DueDate variable
+      this.startDate = moment(this.postData?.task.start_date);
+    }
+
+    this.setAssignedBy();
+
+    await this.postService.getSubTasks(this.postData?._id).then((res) => {
+      this.subtasks = res['subtasks'];
+
+      if (this.subtasks && this.subtasks.length > 0) {
+        this.showSubtasks = true;
+      }
+    });
+
+    await this.sortNSValues();
 
     this.tags = this.postData?.tags;
 
@@ -351,16 +328,16 @@ export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
     if (newTitle !== this.title) {
       this.title = newTitle;
 
-      await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+      await this.utilityService.asyncNotification($localize`:@@taskDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
         this.postService.editTitle(this.postData?._id, newTitle)
           .then((res) => {
             this.postData = res['post'];
             this.contentChanged = false;
             // Resolve with success
-            resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskDialog.detailsUpdated:Details updated!`));
           })
           .catch(() => {
-            reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePostDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@taskDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
           });
       }));
       // this.updateDetails('change_title');
@@ -403,15 +380,6 @@ export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
   }
 
   /**
-   * This function is responsible for receiving the time from @module <app-post-dates></app-post-dates>
-   * @param timeObject
-   */
-  getTime(timeObject: any) {
-    this.dueTime = timeObject;
-    this.updateDetails('change_time');
-  }
-
-  /**
    * This function receives the output from the tags components
    * @param tags
    */
@@ -421,11 +389,6 @@ export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
     this.tags = tags;
 
     this.updateDetails('updated_tags');
-  }
-
-  // Check if the data provided is not empty{}
-  checkDataExist(object: Object) {
-    return !(JSON.stringify(object) === JSON.stringify({}))
   }
 
   onCloseDialog() {
@@ -475,7 +438,7 @@ export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
   }
 
   saveCustomField(customFieldName: string, customFieldTitle: string, customFieldValue: string) {
-    this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@taskDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
       this.postService.saveCustomField(this.postData?._id, customFieldName, customFieldTitle, customFieldValue, this.groupId, this.isShuttleTasksModuleAvailable, this.isIndividualSubscription)
         .then(async (res) => {
           this.selectedCFValues[customFieldName] = customFieldValue;
@@ -484,50 +447,13 @@ export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
           this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId, false, this.shuttleIndex);
 
           // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskDialog.detailsUpdated:Details updated!`));
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePostDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@taskDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
         });
     }));
   }
-
-  // async updateContent() {
-  //   if(this.quillData && this.quillData?.mention){
-  //     this._content_mentions = this.quillData.mention.users.map((user)=> user.insert.mention.id)
-  //   }
-
-  //   const post: any = {
-  //     content: this.quillData ? JSON.stringify(this.quillData.contents) : this.postData?.content,
-  //     _content_mentions: this._content_mentions,
-  //   };
-
-  //   // Create FormData Object
-  //   let formData = new FormData();
-
-  //   // Append Post Data
-  //   formData.append('post', JSON.stringify(post));
-
-  //   // Append all the file attachments
-  //   if (this.files && this.files.length != 0) {
-  //     for (let index = 0; index < this.files.length; index++) {
-  //       formData.append('attachments', this.files[index], this.files[index]['name']);
-  //     }
-  //   }
-
-  //   await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-  //     this.postService.editContent(this.postData?._id, formData)
-  //       .then((res) => {
-  //         this.postData = res['post'];
-  //         this.contentChanged = false;
-  //         // Resolve with success
-  //         resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
-  //       })
-  //       .catch(() => {
-  //         reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePostDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
-  //       });
-  //   }));
-  // }
 
   async updateDetails(logAction: string) {
     // Prepare the normal  object
@@ -552,48 +478,22 @@ export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
       assigned_to: this.postData?._assigned_to
     };
 
-    // If Post type is event, then add due_to property too
-    if (this.postData?.type === 'event') {
+    post.task = this.postData?.task;
 
-      var due_to;
+    // Task due date
+    post.date_due_to = this.dueDate;
 
-      if (this.dueDate == undefined || this.dueDate == null) {
-        const now = moment();
-        now.hours(this.dueTime.hour);
-        now.minute(this.dueTime.minute);
-        due_to = now;
-      } else {
-        // Create the due_to date
-        const now = moment(this.dueDate.getFullYear(),this.dueDate.getMonth(),this.dueDate.getDate());
-        now.hours(this.dueTime.hour);
-        now.minute(this.dueTime.minute);
-        due_to = now;
-      }
-
-      // Add event.due_to property to the postData and assignees
-      post.event = {
-        due_to: moment(due_to).format()
-      }
+    if (this.groupData && this.groupData.project_type) {
+      post.start_date = this.startDate;
     }
 
-    if (this.postData?.type === 'task') {
-      post.task = this.postData?.task;
-
-      // Task due date
-      post.date_due_to = this.dueDate;
-
-      if (this.groupData && this.groupData.project_type) {
-        post.start_date = this.startDate;
-      }
-
-      if (!this.postData?.task._parent_task) {
-        // Task column
-        post._column = this.postData?.task._column._id || this.postData?.task._column;
-      }
-
-      // Task status
-      post.status = this.postData?.task.status;
+    if (!this.postData?.task._parent_task) {
+      // Task column
+      post._column = this.postData?.task._column._id || this.postData?.task._column;
     }
+
+    // Task status
+    post.status = this.postData?.task.status;
 
     // Create FormData Object
     let formData = new FormData();
@@ -623,7 +523,7 @@ export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
   async changeShuttleTaskStatus(event) {
     // Set the status
     this.shuttle.shuttle_status = event;
-    await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise(async (resolve, reject) => {
+    await this.utilityService.asyncNotification($localize`:@@taskDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise(async (resolve, reject) => {
       await this.publicFunctions.changeTaskShuttleStatus(this.postData?._id, this.shuttle?._shuttle_group, event)
         .then(async (res) => {
           // Resolve with success
@@ -631,10 +531,10 @@ export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
 
           this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupData?._id, false, this.shuttleIndex);
 
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskDialog.detailsUpdated:Details updated!`));
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePostDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@taskDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
         });
     }));
   }
@@ -684,7 +584,7 @@ export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
    * Call the asynchronous function to change the column
    */
   async editPost(postId: any, formData: FormData) {
-    await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+    await this.utilityService.asyncNotification($localize`:@@taskDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
       this.postService.edit(postId, this.userData?._workspace?._id || this.userData?._workspace, formData)
         .then(async (res) => {
           this.postData = res['post'];
@@ -693,10 +593,10 @@ export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
 
           this.contentChanged = false;
           // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskDialog.detailsUpdated:Details updated!`));
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePostDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@taskDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
         });
     }));
   }
@@ -706,7 +606,7 @@ export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
    */
   deletePost() {
     const id = this.postData?._id;
-    this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.pleaseWaitWeAreDeleting:Please wait we are deleting the post...`, new Promise((resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@taskDialog.pleaseWaitWeAreDeleting:Please wait we are deleting the post...`, new Promise((resolve, reject) => {
       this.postService.deletePost(this.postData?._id)
         .then((res) => {
           // Emit the Deleted post to all the compoents in order to update the UI
@@ -714,15 +614,14 @@ export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
           // Close the modal
           this.mdDialogRef.close();
 
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.postDeleted:Post deleted!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskDialog.postDeleted:Post deleted!`));
         }).catch((err) => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePostDialog.unableToDeletePost:Unable to delete post, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@taskDialog.unableToDeletePost:Unable to delete post, please try again!`));
         });
     }));
   }
 
   transformToMileStone(data:any) {
-
     this.postData.task.is_milestone = data;
     const makeMilestoneLogAction = (this.postData.task.is_milestone) ? 'make_milestone' : 'make_no_milestone';
     this.updateDetails(makeMilestoneLogAction);
@@ -732,18 +631,6 @@ export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
     this.postData.task.is_idea = data;
     const makeIdeaLogAction = (this.postData.task.is_idea) ? 'make_idea' : 'make_no_idea';
     this.updateDetails(makeIdeaLogAction);
-  }
-
-  transformToCRMLead(data:any) {
-    this.postData.task.is_crm_task = data;
-    const makeCRMLeadLogAction = (this.postData.task.is_crm_task) ? 'make_crm_task' : 'make_no_crm_task';
-    this.updateDetails(makeCRMLeadLogAction);
-  }
-
-  transformToCRMOrder(data:any) {
-    this.postData.task.is_crm_order = data;
-    const makeCRMOrderLogAction = (this.postData.task.is_crm_order) ? 'make_crm_order' : 'make_no_crm_order';
-    this.updateDetails(makeCRMOrderLogAction);
   }
 
   async setShuttleGroup(data: any) {
@@ -870,45 +757,6 @@ export class GroupPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
       this.postData.task._column = res['section'];
       this.postData.task._column.addTask = false;
     });
-  }
-
-  /**
-   * This function is responsible for fetching the post
-   * @param post
-   * @param column
-   */
-  async createPost(post: any) {
-    post.canEdit = true;
-    const section = this.postData.task._column;
-    this.postData = post;
-    this.postData.task._column = section;
-    this.postData.task.due_to = this.selectedDate,
-    this.dueDate = this.postData.task.due_to;
-    this.postData._assigned_to = [this.selectedUser];
-
-    this.title = this.postData.title;
-
-    await this.updateDetails('created');
-  }
-
-  async selectTaskToAssign(task: any) {
-    this.postData = task;
-    this.searchText = '';
-
-    if (!this.postData._assigned_to) {
-      this.postData._assigned_to = [this.selectedUser];
-    } else {
-      this.postData._assigned_to.push(this.selectedUser);
-    }
-
-    this.postData._assigned_to = await this.utilityService.removeDuplicates(this.postData._assigned_to, '_id');
-
-    this.postData.task.due_to = moment(this.selectedDate).format(),
-    this.dueDate = this.postData.task.due_to;
-
-    this.title = this.postData.title;
-
-    await this.updateDetails('assigned_to');
   }
 
   objectExists(object: any) {

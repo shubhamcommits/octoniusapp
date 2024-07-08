@@ -36,11 +36,14 @@
                     [(ngModel)]="searchText" placeholder="Search member" autofocus>
                 </div>
                 <ul class="members-list">
-                  <li appHighlight class="members-list-item" *ngFor="let member of possibleMembers | appFilter: searchText; trackBy: utilityService.trackByIndex"
-                      (click)="getMemberDetails(member, level?.managerId, index); searchText = ''"
-                      [searchedWord]="searchText"
-                      [content]="member"
-                      [workspaceId]="workspaceData?._id">
+                  <li class="members-list-item" *ngFor="let member of possibleMembers | appFilter: searchText; trackBy: utilityService.trackByIndex"
+                      (click)="getMemberDetails(member, level?.managerId, index); searchText = ''">
+                    <app-avatar style="width:30px !important;height:30px !important;"
+                      [photoUrl]="member.profile_pic"
+                      [userData]="member"
+                      [styleClass]="'feed-avatar-small'"
+                      [noAuth]="true"></app-avatar>
+
                     {{ member.first_name }} {{ member.last_name }}
                   </li>
                 </ul>

@@ -25,6 +25,8 @@ import { CRMGuard } from 'src/shared/guards/crm-guard/crm.guard';
 import { GroupCRMSetupViewComponent } from './group/group-crm-setup-view/group-crm-setup-view.component';
 import { GroupResourceManagementComponent } from './group/group-resource-management/group-resource-management.component';
 import { GroupTasksViewsComponent } from './group/group-tasks-views/group-tasks-views.component';
+import { GroupPageGuard } from 'src/shared/guards/group-page-guard/group-page.guard';
+import { ResourceGuard } from 'src/shared/guards/resource-guard/resource.guard';
 
 
 /**
@@ -40,19 +42,19 @@ const routes: Routes = [
     path: '', component: GroupComponent, children: [
 
       // Group Activity
-      { path: 'activity', component: GroupActivityComponent },
+      { path: 'activity', component: GroupActivityComponent, canActivate: [GroupPageGuard] },
 
       // Group Resource Management
-      { path: 'resource', component: GroupResourceManagementComponent },
+      { path: 'resource', component: GroupResourceManagementComponent, canActivate: [ResourceGuard, GroupPageGuard] },
 
       // Group tasks
-      { path: 'tasks', component: GroupTasksViewsComponent },
+      { path: 'tasks', component: GroupTasksViewsComponent, canActivate: [GroupPageGuard] },
 
       // Group CRM Contacts
       {
         path: 'crm', 
         component: GroupCRMSetupViewComponent,
-        canActivate: [CRMGuard]
+        canActivate: [CRMGuard, GroupPageGuard]
       },
 
       // Group Files
@@ -62,7 +64,8 @@ const routes: Routes = [
           .then((module) => module.FilesModule),
         data: {
           preload: false
-        }
+        },
+        canActivate: [GroupPageGuard]
       },
 
       // Group Library
@@ -73,6 +76,7 @@ const routes: Routes = [
         data: {
           preload: false
         },
+        canActivate: [GroupPageGuard],
         canActivateChild: [LibraryGuard]
       },
 
@@ -93,10 +97,10 @@ const routes: Routes = [
       { path: 'admin', component: GroupAdminComponent },
 
       // Group Dashboards
-      { path: 'dashboard', component: GroupDashboardComponent },
+      { path: 'dashboard', component: GroupDashboardComponent, canActivate: [GroupPageGuard] },
 
       // Group Reports
-      { path: 'reports', component: GroupReportsComponent }
+      { path: 'reports', component: GroupReportsComponent, canActivate: [GroupPageGuard] }
     ],
     runGuardsAndResolvers: `always`, 
     canActivate: [GroupGuard]

@@ -2,7 +2,6 @@ import { Injectable, EventEmitter, Injector } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
-import { GroupPostDialogComponent } from 'src/app/common/shared/posts/group-post-dialog/group-post-dialog.component';
 import { MemberDialogComponent } from 'src/app/common/shared/member-dialog/member-dialog.component';
 import { PostService } from '../post-service/post.service';
 import { ColumnService } from '../column-service/column.service';
@@ -17,6 +16,11 @@ import { VideoCallDialog } from 'modules/chat/components/video-call-dialog/video
 import { DateTime } from 'luxon';
 import { DatesService } from '../dates-service/dates.service';
 import { PermissionDialogComponent } from 'src/app/common/shared/permission-dialog/permission-dialog.component';
+import { TaskDialogComponent } from 'src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component';
+import { CRMTaskDialogComponent } from 'src/app/common/shared/posts/group-post/dialogs/crm-task-dialog/crm-task-dialog.component';
+import { CRMOrderDialogComponent } from 'src/app/common/shared/posts/group-post/dialogs/crm-order-dialog/crm-order-dialog.component';
+import { NormalPostDialogComponent } from 'src/app/common/shared/posts/group-post/dialogs/normal-post-dialog/normal-post-dialog.component';
+import { EventPostDialogComponent } from 'src/app/common/shared/posts/group-post/dialogs/event-post-dialog/event-post-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -359,36 +363,139 @@ export class UtilityService {
   /**
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
-  openPostDetailsFullscreenModal(postId: string, groupId: string, canOpen: boolean, sections?: any, selectedDate?: DateTime, selectedUser?: any) {
+  openPostDetailsFullscreenModal(post: any, groupId: string, canOpen: boolean, sections?: any) {
     let dialogOpen;
 
     // !groupData?.enabled_rights || postData?.canView || postData?.canEdit
     if (canOpen) {
-      const data = (sections) ?
+      if (post.type == 'task') {
+        if (post.task.is_crm_task) {
+          dialogOpen = this.openCRMTaskDetailsFullscreenModal(post?._id, groupId, sections);
+        } else if (post.task.is_crm_order) {
+          dialogOpen = this.openCRMOrderDetailsFullscreenModal(post?._id, groupId, sections);
+        } else {
+          dialogOpen = this.openTaskDetailsFullscreenModal(post?._id, groupId, sections);
+        }
+      } else if (post.type == 'normal') {
+        dialogOpen = this.openNormalPostDetailsFullscreenModal(post?._id, groupId);
+      } else if (post.type == 'event') {
+        dialogOpen = this.openEventPostDetailsFullscreenModal(post?._id, groupId);
+      }
+    } else {
+      this.warningNotification($localize`:@@utilityService.noRightToOpenPost:You does not have rights to access the post. Contact with the Manager!`);
+    }
+    return dialogOpen;
+  }
+
+  /**
+   * This function is responsible for opening a fullscreen dialog to edit a task
+   */
+  private openEventPostDetailsFullscreenModal(postId: string, groupId: string) {
+    return this.dialog.open(EventPostDialogComponent, {
+      width: '100%',
+      height: '100%',
+      disableClose: true,
+      panelClass: 'groupCreatePostDialog',
+      data: {
+          postId: postId,
+          groupId: groupId
+        }
+    });
+  }
+
+  /**
+   * This function is responsible for opening a fullscreen dialog to edit a task
+   */
+  private openNormalPostDetailsFullscreenModal(postId: string, groupId: string) {
+    return this.dialog.open(NormalPostDialogComponent, {
+      width: '100%',
+      height: '100%',
+      disableClose: true,
+      panelClass: 'groupCreatePostDialog',
+      data: {
+          postId: postId,
+          groupId: groupId,
+        }
+    });
+  }
+
+  /**
+   * This function is responsible for opening a fullscreen dialog to edit a task
+   */
+  private openTaskDetailsFullscreenModal(postId: string, groupId: string, sections?: any) {
+    const data = (sections) ?
         {
           postId: postId,
           groupId: groupId,
-          columns: sections,
-          selectedDate: selectedDate,
-          selectedUser: selectedUser
+          columns: sections
         }
       :
         {
           postId: postId,
           groupId: groupId
-        }
+        };
 
-        dialogOpen = this.dialog.open(GroupPostDialogComponent, {
-          width: '100%',
-          height: '100%',
-          disableClose: true,
-          panelClass: 'groupCreatePostDialog',
-          data: data
-        });
-    } else {
-      this.warningNotification($localize`:@@utilityService.noRightToOpenPost:You does not have rights to access the post. Contact with the Manager!`);
-    }
-    return dialogOpen;
+    return this.dialog.open(TaskDialogComponent, {
+      width: '100%',
+      height: '100%',
+      disableClose: true,
+      panelClass: 'groupCreatePostDialog',
+      data: data
+    });
+  }
+
+  /**
+   * This function is responsible for opening a fullscreen dialog to edit a task
+   */
+  private openCRMTaskDetailsFullscreenModal(postId: string, groupId: string, sections?: any) {
+    const data = (sections) ?
+        {
+          postId: postId,
+          groupId: groupId,
+          columns: sections
+        }
+      :
+        {
+          postId: postId,
+          groupId: groupId
+        };
+
+    return this.dialog.open(CRMTaskDialogComponent, {
+      width: '100%',
+      height: '100%',
+      disableClose: true,
+      panelClass: 'groupCreatePostDialog',
+      data: data
+    });
+  }
+
+  /**
+   * This function is responsible for opening a fullscreen dialog to edit a task
+   */
+  private openCRMOrderDetailsFullscreenModal(postId: string, groupId: string, sections?: any) {
+    const data = (sections) ?
+        {
+          postId: postId,
+          groupId: groupId,
+          columns: sections
+        }
+      :
+        {
+          postId: postId,
+          groupId: groupId
+        };
+
+    return this.dialog.open(CRMOrderDialogComponent, {
+      width: '100%',
+      height: '100%',
+      disableClose: true,
+      panelClass: 'groupCreatePostDialog',
+      data: {
+          postId: postId,
+          groupId: groupId,
+          columns: sections
+        }
+    });
   }
 
   /**

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { GroupPostDialogComponent } from './group-post-dialog.component';
+import { NormalPostDialogComponent } from './normal-post-dialog.component';
 
-describe('GroupPostDialogComponent', () => {
-  let component: GroupPostDialogComponent;
-  let fixture: ComponentFixture<GroupPostDialogComponent>;
+describe('NormalPostDialogComponent', () => {
+  let component: NormalPostDialogComponent;
+  let fixture: ComponentFixture<NormalPostDialogComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ GroupPostDialogComponent ]
+      declarations: [ NormalPostDialogComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GroupPostDialogComponent);
+    fixture = TestBed.createComponent(NormalPostDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,7 +1,7 @@
 <div class="content-box">
   <p class="box-title" i18n="@@taskActions.actions">Actions</p>
 
-  <div *ngIf="!postData?.task?.is_crm_task" class="set-parent">
+  <div class="set-parent">
     <i class="material-icons">hourglass_top</i>
     <span i18n="@@taskActions.estimation" class="mr-2">Estimated time</span>
 
@@ -11,13 +11,13 @@
     <!-- INPUT ENDS -->
 </div>
 
-  <div *ngIf="!postData?.task?._parent_task && !isIndividualSubscription && !postData?.task?.is_crm_task">
-    <button *ngIf="postData?._group" mat-menu-item [matMenuTriggerFor]="transferMenu"
+  <div *ngIf="!postData?.task?._parent_task && !isIndividualSubscription && !!postData?._group">
+    <button mat-menu-item [matMenuTriggerFor]="transferMenu"
       (click)="saveTransferAction('copy')">
         <i  class="material-icons">content_copy</i>
         <span i18n="@@taskActions.copyToGroup">Copy to group</span>
     </button>
-    <button *ngIf="postData?._group" mat-menu-item [matMenuTriggerFor]="transferMenu"
+    <button mat-menu-item [matMenuTriggerFor]="transferMenu"
       (click)="saveTransferAction('move')">
         <i class="material-icons">arrow_forward</i>
         <span i18n="@@taskActions.moveToGroup">Move to group</span>
@@ -33,8 +33,8 @@
     </mat-menu>
   </div>
 
-  <div *ngIf="!postData?.task?.is_crm_task">
-    <app-member-list-menu *ngIf="postData?._group"
+  <div *ngIf="postData?._group">
+    <app-member-list-menu
       [groupMembers]="groupMembers"
       [menuLable]="menuLable"
       [menuFor]="menuFor"
@@ -44,7 +44,7 @@
   </div>
 
 
-  <div *ngIf="!postData?.task?._parent_task && postData?._group && !postData?.task?.is_crm_task">
+  <div *ngIf="!postData?.task?._parent_task && postData?._group">
     <button mat-menu-item [matMenuTriggerFor]="templateTaskMenu">
         <i class="material-icons-outlined">playlist_add</i>
         <span i18n="@@taskActions.templates">Templates</span>
@@ -103,7 +103,7 @@
     </mat-menu>
   </div>
 
-  <div *ngIf="!parentTask && !isDependent && !isMilestone && (groupData?.shuttle_type && (!postData?.task?._shuttle_group || (postData?.task?._shuttle_group?._id || postData?.task?._shuttle_group) != groupData?._id)) && !postData?.task?.is_crm_task" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
+  <div *ngIf="!parentTask && !isDependent && !isMilestone && (groupData?.shuttle_type && (!postData?.task?._shuttle_group || (postData?.task?._shuttle_group?._id || postData?.task?._shuttle_group) != groupData?._id))" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
    <span i18n="@@taskActions.makeSubtaskOf">Make subtask of...</span>
 
     <!-- INPUT STARTS -->
@@ -132,7 +132,7 @@
     </div>
   </div>
 
-  <div *ngIf="groupData && groupData?.project_type && !isChild && !isIndividualSubscription && !postData?.task?.is_crm_task" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
+  <div *ngIf="groupData && groupData?.project_type && !isChild && !isIndividualSubscription" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
     <span i18n="@@taskActions.makeDependencyOf">Make dependency of...</span>
 
     <button *ngFor="let task of dependencyTask; let i = index; trackBy: utilityService.trackByIndex" class="btn dependencylabel" style="margin-right: 1rem;"
@@ -198,21 +198,21 @@
           <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;">emoji_objects</i>
           <span i18n="@@taskActions.idea">Idea</span>
         </mat-option>
-        <mat-option value="crm" [disabled]="taskTypesSelection.includes('idea') || taskTypesSelection.includes('northStar') || taskTypesSelection.includes('crm_order')">
+        <!-- <mat-option value="crm" [disabled]="taskTypesSelection.includes('idea') || taskTypesSelection.includes('northStar') || taskTypesSelection.includes('crm_order')">
           <i _ngcontent-bbh-c36="" class="material-icons-outlined muted" style="vertical-align: middle;">attach_money</i>
           <span i18n="@@taskActions.crmLead">CRM Lead</span>
         </mat-option>
         <mat-option value="crm_order" [disabled]="taskTypesSelection.includes('idea') || taskTypesSelection.includes('northStar') || taskTypesSelection.includes('crm')">
           <i _ngcontent-bbh-c36="" class="material-icons-outlined muted" style="vertical-align: middle;">sell</i>
           <span i18n="@@taskActions.crmOrder">CRM Order</span>
-        </mat-option>
+        </mat-option> -->
       </mat-select>
     </mat-form-field>
   </div>
   <!-- Convert to ends -->
 
   <!-- Milestone Switch starts -->
-  <div *ngIf="groupData && groupData.project_type && !isIndividualSubscription && !postData?.task?.is_crm_task" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
+  <div *ngIf="groupData && groupData.project_type && !isIndividualSubscription" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
     <img src="assets/images/Icon/icon_milestone.svg" alt="Flag"/>
     <span i18n="@@taskActions.makeMilestone">Make milestone</span>
     <mat-slide-toggle color="primary" style=" margin-left: 15px;"
@@ -226,7 +226,7 @@
 
 
   <!-- Select Shuttle group starts -->
-  <div *ngIf="showShuttle() && !isIndividualSubscription && !postData?.task?.is_crm_task"
+  <div *ngIf="showShuttle() && !isIndividualSubscription"
       style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8; margin-left: 15px;">
     <img src="assets/images/icon-task-shuttle.svg" style="width: 24px">
 
@@ -236,9 +236,6 @@
       </mat-select>
     </mat-form-field>
 
-    <!-- Clean field starts -->
-    <!-- <i *ngIf="postData?.task?._shuttle_group && postData?.task?._shuttle_group != groupData._id" (click)="shuttleTask(null)" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i> -->
-    <!-- Clean field ends -->
     <p i18n="@@taskActions.withTaskShuttleYouCan">With Task Shuttle you can assign the task to another group.</p>
   </div>
   <!-- Select Shuttle group ends -->

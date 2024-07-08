@@ -450,6 +450,69 @@ export class MembersControllers {
         }
     }
 
+    /**
+     * This function is responsible for adding a new user to the group
+     * @param { body: { groupId, member: { _id, role, first_name, email  } } }req 
+     * @param res 
+     * @param next 
+     */
+    async changeUserRole(req: Request, res: Response, next: NextFunction) {
+        // Group and Member details from req.body
+        const { groupId, role, userId } = req.body
+
+        try {
+            let query = {}
+            // Update the group _members section and feed the memberId, and also increment the count of members by 1
+            if (role === 'member') {
+                query = {
+                        $addToSet: { _members: userId },
+                        $pull: { _admins: userId }
+                    };
+            } else if (role === 'manager') {
+                query = {
+                        $addToSet: { _admins: userId },
+                        $pull: { _members: userId }
+                    };
+            }
+
+            let groupData = await Group.findByIdAndUpdate({
+                    _id: groupId
+                }, query, {
+                    new: true
+                })
+                .populate({
+                    path: '_members',
+                    select: 'first_name last_name profile_pic role email',
+                    options: {
+                        limit: 10
+                    },
+                    match: {
+                        active: true
+                    }
+                })
+                .populate({
+                    path: '_admins',
+                    select: 'first_name last_name profile_pic role email',
+                    options: {
+                        limit: 10
+                    },
+                    match: {
+                        active: true
+                    }
+                })
+                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role hr_role email' })
+                .lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Member´s Role has been changed in the group!',
+                group: groupData
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
 
     /**
      * This function is responsible for removing a user from the group

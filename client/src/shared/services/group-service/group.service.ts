@@ -1,19 +1,32 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs/internal/Observable';
 import { UtilityService } from '../utility-service/utility.service';
+import { BehaviorSubject } from 'rxjs';
+import { PublicFunctions } from 'modules/public.functions';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GroupService {
 
+  baseURL = environment.GROUPS_BASE_API_URL;
+
+  private publicFunctions = new PublicFunctions(this.injector);
+
+  private refreshGroupPages = new BehaviorSubject<any>(null);
+  refreshGroupPages$ = this.refreshGroupPages.asObservable();
+
   constructor(
     private _http: HttpClient,
-    private utilityService: UtilityService) { }
+    private utilityService: UtilityService,
+    private injector: Injector) { }
 
-  baseURL = environment.GROUPS_BASE_API_URL;
+  triggerUpdateGroupData(groupData: any) {
+    this.refreshGroupPages.next(groupData);
+  }
 
   /**
    * This function is responsible for fetching the group details
@@ -150,6 +163,22 @@ export class GroupService {
 
     return this._http.post(this.baseURL + `/members/add`, bodyData)
     .toPromise()
+  }
+
+  /**
+   * This function is responsible for adding a new user to the group
+   * @param groupId
+   * @param { _id, role } member
+   */
+  changeUserRoleInGroup(groupId: string, role: string, userId: string){
+    // Preparing the Request Body Data
+    let bodyData = {
+      groupId: groupId,
+      role: role,
+      userId: userId
+    }
+
+    return this._http.post(this.baseURL + `/members/changeUserRole`, bodyData).toPromise();
   }
 
   /**
@@ -444,5 +473,47 @@ export class GroupService {
         endDate: endDate
       }
     }).toPromise()
+  }
+
+  async navigateToGroup(group: any) {
+    let router = this.injector.get(Router);
+
+    const newGroup: any = await this.publicFunctions.getGroupDetails(group?._id);
+    await this.publicFunctions.sendUpdatesToGroupData(newGroup);
+    await this.publicFunctions.sendUpdatesToPortfolioData({});
+
+    if (!newGroup.pages_to_show) {
+      if (group.type == 'resource') {
+        this.utilityService.handleActiveStateTopNavBar().emit('groups_resource');
+        router.navigate(['dashboard', 'work', 'groups', 'resource']);
+      } else {
+        this.utilityService.handleActiveStateTopNavBar().emit('groups_activity');
+        router.navigate(['dashboard', 'work', 'groups', 'activity']);
+      }
+    } else if (newGroup.pages_to_show.resource_management && newGroup?.type == 'resource') {
+      this.utilityService.handleActiveStateTopNavBar().emit('groups_resource');
+      router.navigate(['dashboard', 'work', 'groups', 'resource']);
+    } else if (newGroup.pages_to_show.activity) {
+      this.utilityService.handleActiveStateTopNavBar().emit('groups_activity');
+      router.navigate(['dashboard', 'work', 'groups', 'activity']);
+    } else if (newGroup.pages_to_show.tasks) {
+      this.utilityService.handleActiveStateTopNavBar().emit('groups_tasks');
+      router.navigate(['dashboard', 'work', 'groups', 'tasks']);
+    } else if (newGroup.pages_to_show.crm_setup && newGroup?.type == 'crm') {
+      this.utilityService.handleActiveStateTopNavBar().emit('groups_crm');
+      router.navigate(['dashboard', 'work', 'groups', 'crm']);
+    } else if (newGroup.pages_to_show.files) {
+      this.utilityService.handleActiveStateTopNavBar().emit('groups_files');
+      router.navigate(['dashboard', 'work', 'groups', 'files']);
+    } else if (newGroup.pages_to_show.library) {
+      this.utilityService.handleActiveStateTopNavBar().emit('groups_library');
+      router.navigate(['dashboard', 'work', 'groups', 'library']);
+    } else if (newGroup.pages_to_show.dashboard) {
+      this.utilityService.handleActiveStateTopNavBar().emit('groups_dashboard');
+      router.navigate(['dashboard', 'work', 'groups', 'dashboard']);
+    } else {
+      this.utilityService.handleActiveStateTopNavBar().emit('groups_admin');
+      router.navigate(['dashboard', 'work', 'groups', 'admin']);
+    }
   }
 }
