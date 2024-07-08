@@ -60,7 +60,7 @@ export class GroupInformationComponent implements OnInit {
   //             this.utilityService.handleDeleteGroupFavorite().emit(true);
   //             this.utilityService.handleUpdateGroupData().emit(true);
   //             // Resolve with success
-  //             resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupInformation.groupUpdatedSucessfully:Group updated sucessfully!`))
+  //             resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupInformation.groupUpdatedSucessfully:Group updated successfully!`))
   //           })
   //           .catch(() =>
   //             reject(this.utilityService.rejectAsyncPromise($localize`:@@groupInformation.unexpectedError:An unexpected error occurred while updating the group, please try again!`)))

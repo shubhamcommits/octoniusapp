@@ -50,7 +50,7 @@ export class GroupUpdateInformationComponent implements OnInit {
               this.utilityService.handleDeleteGroupFavorite().emit(true);
               this.utilityService.handleUpdateGroupData().emit(true);
               // Resolve with success
-              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupUpdateInformation.groupUpdatedSucessfully:Group updated sucessfully!`))
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupUpdateInformation.groupUpdatedSucessfully:Group updated successfully!`))
             })
             .catch(() =>
               reject(this.utilityService.rejectAsyncPromise($localize`:@@groupUpdateInformation.unexpectedError:An unexpected error occurred while updating the group, please try again!`)))
