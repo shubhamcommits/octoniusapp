@@ -9,11 +9,26 @@
         <div class="pages">
           <mat-checkbox [checked]="groupData?.pages_to_show?.activity" [name]="'activity'" (change)="savePagesToShow($event)" i18n="@@groupSettings.activity">Activity</mat-checkbox>
           <mat-checkbox [checked]="groupData?.pages_to_show?.tasks" [name]="'tasks'" (change)="savePagesToShow($event)" i18n="@@groupSettings.tasks">Tasks</mat-checkbox>
-          <mat-checkbox [checked]="groupData?.pages_to_show?.crm_setup" [name]="'crm_setup'" (change)="savePagesToShow($event)" i18n="@@groupSettings.crmSetup">CRM Setup</mat-checkbox>
+          <mat-checkbox *ngIf="groupData?.type == 'crm'" [checked]="groupData?.pages_to_show?.crm_setup" [name]="'crm_setup'" (change)="savePagesToShow($event)" i18n="@@groupSettings.crmSetup">CRM Setup</mat-checkbox>
           <mat-checkbox [checked]="groupData?.pages_to_show?.files" [name]="'files'" (change)="savePagesToShow($event)" i18n="@@groupSettings.files">Files</mat-checkbox>
           <mat-checkbox [checked]="groupData?.pages_to_show?.library" [name]="'library'" (change)="savePagesToShow($event)" i18n="@@groupSettings.library">Library</mat-checkbox>
           <mat-checkbox *ngIf="groupData?.type == 'resource'" [checked]="groupData?.pages_to_show?.resource_management" [name]="'resource_management'" (change)="savePagesToShow($event)" i18n="@@groupSettings.resourceManagement">Resource Management</mat-checkbox>
           <mat-checkbox [checked]="groupData?.pages_to_show?.dashboard" [name]="'dashboard'" (change)="savePagesToShow($event)" i18n="@@groupSettings.dashboard">Dashboard</mat-checkbox>
+        </div>
+      </div>
+
+      <div class="mt-5 mb-5 pt-3" style="padding-left: 44px;" *ngIf="!isIndividualSubscription && (!groupData?.pages_to_show || groupData?.pages_to_show?.tasks)">
+        <h6><b i18n="@@groupSettings.defaultCard">Default card</b></h6>
+        <p class="card-text" i18n="@@groupSettings.defaultCardDescription">Allows you to select the card you want to create as default in the task board.</p>
+      
+        <div class="pages">
+          <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="groupData.default_board_card" (change)="saveDefaultBoardCard($event.value)">
+            <mat-radio-button class="example-radio-button" [value]="'task'" i18n="@@groupSettings.task">Task</mat-radio-button>
+            <mat-radio-button *ngIf="isIdeaModuleAvailable" class="example-radio-button" [value]="'idea'" i18n="@@groupSettings.idea">Idea</mat-radio-button>
+            <mat-radio-button class="example-radio-button" [value]="'target'" i18n="@@groupSettings.target">Target</mat-radio-button>
+            <mat-radio-button *ngIf="groupData?.type == 'crm'" class="example-radio-button" [value]="'crm_lead'" i18n="@@groupSettings.crmLead">CRM Lead</mat-radio-button>
+            <mat-radio-button *ngIf="groupData?.type == 'crm'" class="example-radio-button" [value]="'crm_order'" i18n="@@groupSettings.crmOrder">CRM Order</mat-radio-button>
+          </mat-radio-group>
         </div>
       </div>
 

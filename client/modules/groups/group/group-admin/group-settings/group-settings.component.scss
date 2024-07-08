@@ -20,7 +20,9 @@
 
 .pages {
   margin-top: 10px;
-  mat-checkbox {
+
+  mat-checkbox,
+  mat-radio-button {
     margin-right: 20px;
   }
 }

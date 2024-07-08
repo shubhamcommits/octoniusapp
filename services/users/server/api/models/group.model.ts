@@ -387,7 +387,7 @@ const GroupSchema = new Schema({
             required: true,
             default: true,
         },
-        resource_management: {
+        members: {
             type: Boolean,
             required: true,
             default: true,
@@ -397,6 +397,12 @@ const GroupSchema = new Schema({
             required: true,
             default: true,
         }
+    },
+    default_board_card: {
+        type: String,
+        required: true,
+        enum: ['task', 'idea', 'target', 'crm_lead', 'crm_order'],
+        default: 'task'
     },
     records: {
         pulses: [{

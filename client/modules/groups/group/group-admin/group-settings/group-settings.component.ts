@@ -18,6 +18,7 @@ export class GroupSettingsComponent implements OnInit {
 
   // current group
   @Input() groupData: any;
+  @Input() isIdeaModuleAvailable: any;
   @Input() shuttleTasksModuleAvailable: any;
   @Input() campaignModuleAvailable: any;
 
@@ -282,6 +283,21 @@ export class GroupSettingsComponent implements OnInit {
         }
         this.groupService.saveSettings(this.groupData?._id, propertyToSave)
           .then(async ()=> {
+            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+            await this.groupService.triggerUpdateGroupData(this.groupData);
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
+          })
+          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+      }));
+  }
+
+  saveDefaultBoardCard(type: string) {
+    // Save the settings
+    this.utilityService.asyncNotification($localize`:@@groupSettings.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
+      new Promise((resolve, reject) => {
+        this.groupService.saveSettings(this.groupData?._id, { default_board_card: type })
+        .then(async ()=> {
+            this.groupData.default_board_card = type;
             this.publicFunctions.sendUpdatesToGroupData(this.groupData);
             await this.groupService.triggerUpdateGroupData(this.groupData);
             resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));

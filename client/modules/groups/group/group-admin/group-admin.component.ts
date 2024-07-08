@@ -25,6 +25,7 @@ export class GroupAdminComponent implements OnInit {
   myWorkplace = false;
 
   shuttleTasksModuleAvailable: boolean = false;
+  isIdeaModuleAvailable: boolean = false;
 
   // Campaign Module Available
   campaignModuleAvailable: boolean = false;
@@ -51,7 +52,8 @@ export class GroupAdminComponent implements OnInit {
 
     this.myWorkplace = await this.publicFunctions.isPersonalNavigation(this.groupData, this.userData);
 
-    this.shuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable()
+    this.shuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
+    this.isIdeaModuleAvailable = await this.publicFunctions.checkIdeaStatus();
 
     // Campaign Module Status
     this.campaignModuleAvailable = await this.publicFunctions.isCampaignModuleAvailable()
