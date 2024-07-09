@@ -23,6 +23,7 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
   @Output() taskClonnedEvent = new EventEmitter();
   @Output() pinEvent = new EventEmitter();
   @Output() datesChangeEvent = new EventEmitter();
+  @Output() sectionChangedEvent = new EventEmitter();
 
   postData: any;
   userData: any;
@@ -545,6 +546,8 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
     this.postData.task._column = columnId;
 
     this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId, false, this.shuttleIndex);
+
+    this.sectionChangedEvent.emit(this.postData);
   }
 
   async moveShuttleTaskToSection(event) {
