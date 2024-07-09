@@ -29,7 +29,8 @@ export class AssigneeAvatarComponent implements OnChanges {
     if (!this.utilityService.objectExists(this.userData)) {
       this.userData = await this.publicFunctions.getCurrentUser();
     }
-    if (this.post && this.post._assigned_to) {
+
+    if (this.utilityService.objectExists(this.post) && this.utilityService.arrayExists(this.post._assigned_to)) {
       this.numberAssignees = '+' + (this.post._assigned_to.length - 1);
 
       this.getAssignee(this.post?._assigned_to);
@@ -37,7 +38,7 @@ export class AssigneeAvatarComponent implements OnChanges {
   }
 
   async getAssignee(_assigned_to) {
-    if (_assigned_to.length > 0 && this.userData) {
+    if (this.utilityService.objectExists(this.userData)) {
       const index = _assigned_to.findIndex(assignee => (assignee._id || assignee) == this.userData._id);
       let assigneeTmp;
       if (index < 0) {
