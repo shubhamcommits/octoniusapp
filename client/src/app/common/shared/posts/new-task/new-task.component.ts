@@ -267,11 +267,14 @@ export class NewTaskComponent implements OnInit {
           let postData = res['post'];
 
           if (postData.type === 'task') {
-            postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, postData, this.groupData?._id, true);
+            await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, postData, this.groupData?._id, true).then((resFlow) => {
+              // Emit the Post to the other compoentns
+              post.emit(resFlow);
+            });
+          } else {
+            // Emit the Post to the other compoentns
+            post.emit(postData);
           }
-
-          // Emit the Post to the other compoentns
-          post.emit(postData);
 
           // Resolve with success
           resolve(utilityService.resolveAsyncPromise($localize`:@@newTask.taskCreated:Task Created!`))

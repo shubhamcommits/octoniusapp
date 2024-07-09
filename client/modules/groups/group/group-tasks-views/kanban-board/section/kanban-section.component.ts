@@ -56,9 +56,6 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
   ) {
     this.subSink.add(this.columnService.refresh$.subscribe((data) => {
       if (!!data && !!this.section && (data?.sectionId == this.section?._id || data?.oldSectionId == this.section?._id)) {
-// console.log('data.sectionId', data?.sectionId);
-// console.log('data.oldSectionId', data?.oldSectionId);
-// console.log(this.section?._id);
         this.initSection();
       }
     }));
@@ -99,7 +96,7 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
   async initSection() {
     if (!!this.section && !!this.section._id) {
       this.tasks = await this.postService.getTasksBySectionPromise(this.section?._id);
-// console.log(this.tasks);
+
       if (this.groupData?.enabled_rights) {
         this.tasks = await this.postService.filterRAGTasks(this.unchangedTasks?.tasksList, this.groupData, this.userData);
       }
@@ -177,7 +174,9 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
    * @param column
    */
   getPost(post: any) {
+    // this.initSection();
     post.canEdit = true;
+
     // Adding the post to column
     this.tasks.unshift(post)
   }
@@ -231,9 +230,9 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
    */
   async updateTask(post: any) {
     // Find the index of the tasks inside the column
-    const indexTask = (this.tasks) ? this.tasks.findIndex((task: any) => task._id === post._id) : -1;
+    const indexTask = (!!this.tasks && !!post && !!post._id) ? this.tasks.findIndex((task: any) => task._id === post._id) : -1;
     if (indexTask != -1) {
-      if ((post.task._column && this.section._id == (post.task._column._id || post.task._column)) || (post.task._shuttle_section && this.section._id == (post.task._shuttle_section._id || post.task._shuttle_section))) {
+      if ((!!post.task._column && !!this.section && this.section._id == (post.task._column._id || post.task._column)) || (post.task._shuttle_section && this.section._id == (post.task._shuttle_section._id || post.task._shuttle_section))) {
         // update the tasks from the array
         this.tasks[indexTask] = post;
       } else {
@@ -287,7 +286,6 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
   openShowCFDialog(column) {
     const data = {
       column: column,
-      // customFields: this.groupData?.custom_fields.filter(cf => !!cf.input_type)
     }
 
     const dialogRef = this.dialog.open(ShowCustomFieldsColumnDialogComponent, {

@@ -1624,6 +1624,7 @@ export class PublicFunctions {
           (!!flows && !!flows[flowIndex] && !!flows[flowIndex].steps && !!flows[flowIndex].steps[stepIndex] && !!flows[flowIndex].steps[stepIndex].action)
             ? flows[flowIndex].steps[stepIndex].action.findIndex(action => action.name == 'Shuttle task')
             : -1;
+
         const executeShuttleAction = (shuttleActinIndex < 0) || isShuttleTasksModuleAvailable;
         if (!childTasksUpdated && executeShuttleAction) {
             flows[flowIndex].steps[stepIndex].action.forEach(async action => {
@@ -1635,6 +1636,7 @@ export class PublicFunctions {
                                 if (!post._assigned_to) {
                                   post._assigned_to = [];
                                 }
+
                                 post._assigned_to.push(userAction);
                             }
                         });

@@ -18,7 +18,6 @@ export class ColumnService {
   refresh$ = this.refreshSection.asObservable();
 
   triggerRefreshSection(sectionId) {
-// console.log('sectionId', sectionId);
     this.refreshSection.next(sectionId);
   }
 

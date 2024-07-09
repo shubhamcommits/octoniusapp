@@ -1012,7 +1012,7 @@ export class PostService {
       }).lean();
 
       const group: any = await Group.findOne({ _id: post._group }).select('_admins').lean();
-      const adminIndex = group?._admins.findIndex((admin: any) => (admin._id || admin) == userId);
+      const adminIndex = (!!group?._admins) ? group?._admins.findIndex((admin: any) => (admin._id || admin) == userId) : -1;
       // Get user data
       const user: any = await User.findOne({ _id: userId });
 
@@ -3708,20 +3708,17 @@ export class PostService {
    */
   executeActionFlow(actions: any[], post: any, userId: string, groupId: string, isChildStatusTrigger: boolean) {
     actions.forEach(async action => {
-        let shuttleIndex = (post?.task?.shuttles) ? post?.task?.shuttles?.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == groupId) : -1;
+        let shuttleIndex = (!!post?.task?.shuttles) ? post?.task?.shuttles?.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == groupId) : -1;
         switch (action.name) {
             case 'Assign to':
                 action._user.forEach(async userAction => {
-                    let assigneeIndex = -1;
-                    if (post._assigned_to) {
-                        assigneeIndex = post._assigned_to.findIndex(assignee => { return (assignee._id || assignee) == (userAction._id || userAction) });
-                        if (assigneeIndex < 0) {
-                          if (isChildStatusTrigger && post.task._parent_task) {
-                            post = await this.addAssignee(post.task._parent_task._id || post.task._parent_task, userAction, userId);
-                          } else {
-                            post = await this.addAssignee(post._id, userAction, userId);
-                          }
-                        }
+                    const assigneeIndex = ((!!post._assigned_to)) ? post._assigned_to.findIndex(assignee => { return (assignee._id || assignee) == (userAction._id || userAction) }) : -1;
+                    if (assigneeIndex < 0) {
+                      if (isChildStatusTrigger && post.task._parent_task) {
+                        post = await this.addAssignee(post.task._parent_task._id || post.task._parent_task, userAction, userId);
+                      } else {
+                        post = await this.addAssignee(post._id, userAction, userId);
+                      }
                     }
                 });
 
@@ -3880,7 +3877,7 @@ export class PostService {
   async selectShuttleGroup(postId: string, shuttleGroupId: string, userId: string) {
       let post =  await Post.findById({ _id: postId }).select('task.shuttles _group').lean();
 
-      const shuttleIndex = await (post.task.shuttles) ? post.task.shuttles.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == shuttleGroupId) : -1;
+      const shuttleIndex = await (!!post.task.shuttles) ? post.task.shuttles.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == shuttleGroupId) : -1;
 
       if (shuttleGroupId && shuttleIndex < 0) {
         const group = await Group.findById({ _id: shuttleGroupId }).lean();
