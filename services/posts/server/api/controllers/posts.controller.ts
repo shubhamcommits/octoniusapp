@@ -1016,7 +1016,7 @@ export class PostController {
         const userId = req['userId'];
 
         if (!postId || !columnId || !userId) {
-            return sendErr(res, new Error('Please provide the post, title and user as parameters'), 'Please provide the post, title and user as paramaters!', 400);
+            return sendErr(res, new Error('Please provide the postId, sectionId and userId as parameters'), 'Please provide the postId, sectionId and userId as paramaters!', 400);
         }
 
         const post = this.changeTaskSection(postId, columnId, userId, groupId, isShuttleTasksModuleAvailable, isIndividualSubscription)

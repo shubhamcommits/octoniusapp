@@ -193,7 +193,7 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
       post.task.shuttles[shuttleIndex]._shuttle_section = sectionId;
 
       await this.publicFunctions.changeTaskShuttleSection(post?._id, this.groupData?._id, sectionId).then(async res => {
-        await this.updateFront(post, shuttleIndex, sectionId, oldSectionId);
+        await this.updateTaskSectionFront(post, shuttleIndex, sectionId, oldSectionId);
       });
     } else {
       post.task._column = sectionId;
@@ -209,7 +209,7 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
             // Call HTTP Request to change the request
             await this.postService.changeTaskColumn(post._id, sectionId, this.userData._id, this.groupData?._id, isShuttleTasksModuleAvailable, isIndividualSubscription)
                 .then(async (res) => {
-                    await this.updateFront(post, shuttleIndex, sectionId, oldSectionId);
+                    await this.updateTaskSectionFront(post, shuttleIndex, sectionId, oldSectionId);
                     resolve(this.utilityService.resolveAsyncPromise($localize`:@@kanbanSection.tasksMoved:Task moved`));
                 })
                 .catch(() => {
@@ -218,7 +218,7 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
       }));
   }
 
-  async updateFront(post, shuttleIndex, sectionId, oldSectionId) {
+  async updateTaskSectionFront(post, shuttleIndex, sectionId, oldSectionId) {
     await this.publicFunctions.executedAutomationFlowsPropertiesFront(null, post, this.groupData?._id, false, shuttleIndex);
 
     await this.columnService.triggerRefreshSection({sectionId, oldSectionId});
@@ -341,6 +341,9 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
         this.onTaskClonned(data);
         this.tasks = await this.postService.sortTasks(this.tasks, this.sortingBit, this.sortingData);
       });
+      const sectionChangedEventSubs = dialogRef?.componentInstance?.sectionChangedEvent?.subscribe(async (data) => {
+        await this.updateTaskSectionFront(data, -1, (data.task._column._id || data.task._column), (postData.task._column._id || postData.task._column));
+      });
       const datesChangeEventSub = dialogRef?.componentInstance?.datesChangeEvent?.subscribe(async (data) => {
         postData.task.start_date = data.start_date;
         postData.task.due_to = data.due_date;
@@ -355,6 +358,7 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
         parentAssignEventSubs?.unsubscribe();
         taskClonnedEventSubs?.unsubscribe();
         datesChangeEventSub?.unsubscribe();
+        sectionChangedEventSubs?.unsubscribe();
       });
     }
   }

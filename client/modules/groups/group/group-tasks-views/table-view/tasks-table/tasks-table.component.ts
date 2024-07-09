@@ -156,6 +156,11 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
       const taskClonnedEventSubs = dialogRef.componentInstance.taskClonnedEvent.subscribe((data) => {
         this.onTaskClonned(data);
       });
+      const sectionChangedEventSubs = dialogRef?.componentInstance?.sectionChangedEvent?.subscribe(async (data) => {
+        const sectionId = (data.task._column._id || data.task._column);
+        const oldSectionId = (postData.task._column._id || postData.task._column);
+        await this.columnService.triggerRefreshSection({sectionId, oldSectionId});
+      });
       const datesChangeEventSub = dialogRef.componentInstance.datesChangeEvent.subscribe(async (data) => {
         postData.task.start_date = data.start_date;
         postData.task.due_to = data.due_date;
@@ -170,6 +175,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
         closeEventSubs.unsubscribe();
         parentAssignEventSubs.unsubscribe();
         taskClonnedEventSubs.unsubscribe();
+        sectionChangedEventSubs.unsubscribe();
         datesChangeEventSub.unsubscribe();
       });
     }
