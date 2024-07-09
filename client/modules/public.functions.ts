@@ -1486,7 +1486,7 @@ export class PublicFunctions {
                 steps.forEach(async (step, stepIndex) => {
                   doTrigger = this.doesTriggersMatch(step.trigger, post, groupId, isCreationTaskTrigger || false, shuttleIndex)
                   if (doTrigger) {
-                    const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status'; });
+                    const childStatusTriggerIndex = (!!step.trigger) ? step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status'; }) : -1;
                     post = await this.executeActionFlow(flows, flowIndex, stepIndex, post, childStatusTriggerIndex != -1, groupId, shuttleIndex);
                   }
                 });
@@ -1512,9 +1512,9 @@ export class PublicFunctions {
                             } else {
                               const usersMatch =
                                   trigger._user.filter((triggerUser) => {
-                                      return post._assigned_to.findIndex(assignee => {
+                                      return ((!!post._assigned_to) ? post._assigned_to.findIndex(assignee => {
                                           return (assignee._id || assignee).toString() == (triggerUser._id || triggerUser).toString()
-                                      }) != -1
+                                      }) : -1) != -1
                                   });
                               retValue = (usersMatch && usersMatch.length > 0);
                             }
@@ -1620,15 +1620,21 @@ export class PublicFunctions {
 
     async executeActionFlow(flows: any[], flowIndex: number, stepIndex: number, post: any, childTasksUpdated: boolean, groupId: string, shuttleIndex: number) {
         const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
-        const shuttleActinIndex = flows[flowIndex].steps[stepIndex].action.findIndex(action => action.name == 'Shuttle task');
+        const shuttleActinIndex = 
+          (!!flows && !!flows[flowIndex] && !!flows[flowIndex].steps && !!flows[flowIndex].steps[stepIndex] && !!flows[flowIndex].steps[stepIndex].action)
+            ? flows[flowIndex].steps[stepIndex].action.findIndex(action => action.name == 'Shuttle task')
+            : -1;
         const executeShuttleAction = (shuttleActinIndex < 0) || isShuttleTasksModuleAvailable;
         if (!childTasksUpdated && executeShuttleAction) {
             flows[flowIndex].steps[stepIndex].action.forEach(async action => {
                 switch (action.name) {
                     case 'Assign to':
                         action._user.forEach(async userAction => {
-                            const indexAction = post._assigned_to.findIndex(assignee => (assignee._id || assignee) == (userAction._id || userAction));
+                            const indexAction = (!!post._assigned_to) ? post._assigned_to.findIndex(assignee => (assignee._id || assignee) == (userAction._id || userAction)) : -1;
                             if (indexAction < 0) {
+                                if (!post._assigned_to) {
+                                  post._assigned_to = [];
+                                }
                                 post._assigned_to.push(userAction);
                             }
                         });

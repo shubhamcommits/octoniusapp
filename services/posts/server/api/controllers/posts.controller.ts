@@ -792,8 +792,11 @@ export class PostController {
         post = await this.executeAutomationFlows(groupId, post, userId, false, isShuttleTasksModuleAvailable, isIndividualSubscription);
 
         if (post._assigned_to) {
-            const index = post._assigned_to.findIndex(assignee => (assignee?._id || assignee) == assigneeId);
+            const index = (!!post._assigned_to) ? post._assigned_to.findIndex(assignee => (assignee?._id || assignee) == assigneeId) : -1;
             if (index < 0) {
+                if (!post._assigned_to) {
+                    post._assigned_to = [];
+                }
                 post._assigned_to.push(assigneeId);
             }
         } else {
@@ -1541,12 +1544,12 @@ export class PostController {
 
                         if (steps && steps.length > 0) {
                             steps.forEach(async step => {
-                                const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status'; });
+                                const childStatusTriggerIndex = (!!step.trigger) ? step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status'; }) : -1;
                                 const isChildStatusTrigger = (childStatusTriggerIndex >= 0 && post.task._parent_task)
                                     ? await this.isChildTasksUpdated(step.trigger[childStatusTriggerIndex], (post.task._parent_task._id || post.task._parent_task))
                                     : false;
                                 doTrigger = await this.doesTriggersMatch(step.trigger, post, groupId, isCreationTaskTrigger, isChildStatusTrigger);
-                                const shuttleActionIndex = step.action.findIndex(action => action.name == 'Shuttle task');
+                                const shuttleActionIndex = (!!step.action) ? step.action.findIndex(action => action.name == 'Shuttle task') : -1;
                                 doTrigger = doTrigger && ((shuttleActionIndex < 0) || isShuttleTasksModuleAvailable);
                                 if (doTrigger) {
                                     post = await postService.executeActionFlow(step.action, post, userId, groupId, isChildStatusTrigger);
@@ -1576,7 +1579,7 @@ export class PostController {
      */
     doesTriggersMatch(triggers: any[], post: any, groupId: string, isCreationTaskTrigger: boolean, isChildStatusTrigger: boolean) {
         let retValue = true;
-        const shuttleIndex = post?.task?.shuttles?.findIndex(shuttle => (shuttle?._shuttle_group?._id || shuttle?._shuttle_group) == groupId);
+        const shuttleIndex = (!!post?.task?.shuttles) ? post?.task?.shuttles?.findIndex(shuttle => (shuttle?._shuttle_group?._id || shuttle?._shuttle_group) == groupId) : -1;
         if (triggers && triggers.length > 0) {
             triggers.forEach(async trigger => {
                 if (retValue) {
@@ -1587,9 +1590,9 @@ export class PostController {
                             } else {
                                 const usersMatch =
                                     trigger._user.filter((triggerUser) => {
-                                        return post._assigned_to.findIndex(assignee => {
+                                        return ((!!post._assigned_to) ? post._assigned_to.findIndex(assignee => {
                                             return (assignee._id || assignee).toString() == (triggerUser._id || triggerUser).toString()
-                                        }) != -1
+                                        }) : -1) != -1
                                     });
                                 retValue = (usersMatch && usersMatch.length > 0);
                             }
