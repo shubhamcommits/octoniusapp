@@ -3,10 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { GroupService } from 'src/shared/services/group-service/group.service';
 import { BehaviorSubject } from 'rxjs';
-import { FlowService } from 'src/shared/services/flow-service/flow.service';
-import { ColumnService } from 'src/shared/services/column-service/column.service';
 
 @Component({
   selector: 'app-normal-post-dialog',
@@ -70,9 +67,6 @@ export class NormalPostDialogComponent implements OnInit/*, AfterViewChecked, Af
     @Inject(MAT_DIALOG_DATA) public data: any,
     public utilityService: UtilityService,
     private postService: PostService,
-    private groupService: GroupService,
-    private flowService: FlowService,
-    private columnService: ColumnService,
     private injector: Injector,
     private mdDialogRef: MatDialogRef<NormalPostDialogComponent>
     ) {}
@@ -218,6 +212,7 @@ export class NormalPostDialogComponent implements OnInit/*, AfterViewChecked, Af
     const post: any = {
       title: this.title,
       type: this.postData?.type,
+      _group: this.groupId,
       content: this.quillData ? JSON.stringify(this.quillData.contents) : this.postData?.content,
       _content_mentions: this._content_mentions,
       tags: this.tags,

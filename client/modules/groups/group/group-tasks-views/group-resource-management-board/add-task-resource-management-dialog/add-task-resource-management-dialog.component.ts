@@ -111,6 +111,7 @@ export class AddTaskResourceManagementDialogComponent implements OnInit/*, After
       _content_mentions: [],
       tags: [],
       _read_by: this.postData?._read_by,
+      _group: this.groupData._id,
       isNorthStar: this.postData?.task?.isNorthStar || false,
       is_idea: this.postData?.task?.is_idea || false,
       is_crm_task: this.postData?.task?.is_crm_task || false,
@@ -144,6 +145,7 @@ export class AddTaskResourceManagementDialogComponent implements OnInit/*, After
     await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
       this.postService.edit(postId, this.userData?._workspace?._id || this.userData?._workspace, formData)
         .then(async (res) => {
+console.log(res['post']);
           this.taskSelectedEvent.emit(res['post']);
           this.mdDialogRef.close();
           // Resolve with success
@@ -168,10 +170,12 @@ export class AddTaskResourceManagementDialogComponent implements OnInit/*, After
    * @param column
    */
   async createPost(post: any) {
+console.log(post);
     post.canEdit = true;
     const section = this.postData.task._column;
     this.postData = post;
     this.postData.task._column = section;
+    this.postData._group = this.groupData._id,
     this.postData.task.due_to = this.selectedDate,
     this.postData._assigned_to = [this.selectedUser];
 

@@ -416,6 +416,7 @@ export class GroupPostComponent implements OnInit {
       type: this.type,
       content: this.quillData ? JSON.stringify(this.quillData.contents) : this.postData.content,
       _content_mentions: this._content_mentions,
+      _group: this.groupId,
       tags: this.tags,
       _read_by: []
     }

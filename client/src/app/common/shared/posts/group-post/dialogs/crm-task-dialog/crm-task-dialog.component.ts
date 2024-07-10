@@ -379,6 +379,7 @@ export class CRMTaskDialogComponent implements OnInit/*, AfterViewChecked, After
     const post: any = {
       title: this.title,
       type: this.postData?.type,
+      _group: this.groupId,
       content: this.quillData ? JSON.stringify(this.quillData.contents) : this.postData?.content,
       _content_mentions: this._content_mentions,
       tags: this.tags,
