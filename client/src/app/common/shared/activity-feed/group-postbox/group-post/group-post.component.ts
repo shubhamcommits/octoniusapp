@@ -226,7 +226,7 @@ export class GroupPostComponent implements OnInit {
 
   async moveTaskToColumn(event) {
     const columnId = event.newColumnId;
-    await this.publicFunctions.changeTaskColumn(this.postData._id, columnId, this.userData._id, this.groupId);
+    await this.publicFunctions.changeTaskColumn(this.postData._id, columnId, this.userData._id, this.groupId, this.postData.task._column);
     this.postData.task._column = columnId;
 
     this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId);

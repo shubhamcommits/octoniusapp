@@ -181,8 +181,10 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
     this.tags = [];
 
     if (this.isShuttleTasksModuleAvailable && this.postData?.task?.shuttle_type && this.postData?.task?.shuttles) {
-      this.shuttleIndex = await this.postData?.task?.shuttles?.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == this.groupData?._id);
-      this.shuttle = this.postData?.task?.shuttles[this.shuttleIndex];
+      this.shuttleIndex = await (this.utilityService.arrayExists(this.postData?.task?.shuttles)) ? this.postData?.task?.shuttles?.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == this.groupData?._id) : -1;
+      if (this.shuttleIndex >= 0) {
+        this.shuttle = this.postData?.task?.shuttles[this.shuttleIndex];
+      }
     }
 
     if (this.postData?.task?._parent_task && this.postData?.task?._parent_task?._group == undefined) {
@@ -541,13 +543,16 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
   }
 
   async moveTaskToColumn(event) {
-    const columnId = event.newColumnId;
-    await this.publicFunctions.changeTaskColumn(this.postData?._id, columnId, this.userData._id, this.groupId);
-    this.postData.task._column = columnId;
+    const sectionId = event.newColumnId;
+    const oldSectionId = (this.postData.task._column._id || this.postData.task._column);
+    await this.publicFunctions.changeTaskColumn(this.postData?._id, sectionId, this.userData._id, this.groupId, oldSectionId);
+    this.postData.task._column = sectionId;
 
     this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId, false, this.shuttleIndex);
 
-    this.sectionChangedEvent.emit(this.postData);
+    // await this.columnService.triggerRefreshSection({sectionId, oldSectionId});
+
+    // this.sectionChangedEvent.emit(this.postData);
   }
 
   async moveShuttleTaskToSection(event) {
