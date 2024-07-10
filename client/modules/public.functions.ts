@@ -1349,17 +1349,19 @@ export class PublicFunctions {
      * @param postId
      * @param title
      */
-    changeTaskColumn(postId: string, columnId: string, userId: string, groupId: string) {
+    changeTaskColumn(postId: string, sectionId: string, userId: string, groupId: string, oldSectionId: string) {
         let postService = this.injector.get(PostService)
         let utilityService = this.injector.get(UtilityService)
+        let columnService = this.injector.get(ColumnService)
 
         utilityService.asyncNotification($localize`:@@publicFunctions.pleaseWaitWeAreMovingTaskToSection:Please wait we are moving the task to a new section...`,
             new Promise(async (resolve, reject) => {
                 const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
                 const isIndividualSubscription = await this.checkIsIndividualSubscription();
                 // Call HTTP Request to change the request
-                await postService.changeTaskColumn(postId, columnId, userId, groupId, isShuttleTasksModuleAvailable, isIndividualSubscription)
-                    .then((res) => {
+                await postService.changeTaskColumn(postId, sectionId, userId, groupId, isShuttleTasksModuleAvailable, isIndividualSubscription)
+                    .then(async (res) => {
+                        await columnService.triggerRefreshSection({sectionId, oldSectionId});
                         resolve(utilityService.resolveAsyncPromise($localize`:@@publicFunctions.tasksMoved:Task moved`));
                     })
                     .catch(() => {

@@ -782,6 +782,7 @@ export class PostService {
         title: post.title,
         content: post.content,
         _content_mentions: post._content_mentions,
+        _group: post._group,
         tags: post.tags,
         _read_by: [],
         _assigned_to: post.assigned_to

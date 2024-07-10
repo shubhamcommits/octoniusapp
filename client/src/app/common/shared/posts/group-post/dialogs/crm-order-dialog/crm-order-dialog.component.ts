@@ -403,6 +403,7 @@ export class CRMOrderDialogComponent implements OnInit/*, AfterViewChecked, Afte
     const post: any = {
       title: this.title,
       type: this.postData?.type,
+      _group: this.groupId,
       content: this.quillData ? JSON.stringify(this.quillData.contents) : this.postData?.content,
       _content_mentions: this._content_mentions,
       tags: this.tags,
@@ -460,7 +461,7 @@ export class CRMOrderDialogComponent implements OnInit/*, AfterViewChecked, Afte
 
   async moveTaskToColumn(event) {
     const columnId = event.newColumnId;
-    await this.publicFunctions.changeTaskColumn(this.postData?._id, columnId, this.userData._id, this.groupId);
+    await this.publicFunctions.changeTaskColumn(this.postData?._id, columnId, this.userData._id, this.groupId, this.postData.task._column);
     this.postData.task._column = columnId;
 
     this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId, false);

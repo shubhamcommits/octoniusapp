@@ -245,6 +245,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges, On
       content: this.domainObject.quillData ? JSON.stringify(this.domainObject.quillData.contents) : this.domainObject.content,
       _content_mentions: this.domainObject._content_mentions,
       tags: this.domainObject.tags,
+      _group: this.groupId,
       _read_by: this.domainObject._read_by,
       task: this.domainObject.task,
       assigned_to: (this.domainObject._assigned_to) ? this.domainObject._assigned_to : [],

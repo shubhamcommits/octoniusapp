@@ -111,6 +111,7 @@ export class AddTaskResourceManagementDialogComponent implements OnInit/*, After
       _content_mentions: [],
       tags: [],
       _read_by: this.postData?._read_by,
+      _group: this.groupData._id,
       isNorthStar: this.postData?.task?.isNorthStar || false,
       is_idea: this.postData?.task?.is_idea || false,
       is_crm_task: this.postData?.task?.is_crm_task || false,
@@ -172,6 +173,7 @@ export class AddTaskResourceManagementDialogComponent implements OnInit/*, After
     const section = this.postData.task._column;
     this.postData = post;
     this.postData.task._column = section;
+    this.postData._group = this.groupData._id,
     this.postData.task.due_to = this.selectedDate,
     this.postData._assigned_to = [this.selectedUser];
 

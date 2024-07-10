@@ -342,7 +342,10 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
         this.tasks = await this.postService.sortTasks(this.tasks, this.sortingBit, this.sortingData);
       });
       const sectionChangedEventSubs = dialogRef?.componentInstance?.sectionChangedEvent?.subscribe(async (data) => {
-        await this.updateTaskSectionFront(data, -1, (data.task._column._id || data.task._column), (postData.task._column._id || postData.task._column));
+        const sectionId = (data.task._column._id || data.task._column);
+        const oldSectionId = (postData.task._column._id || postData.task._column);
+        await this.columnService.triggerRefreshSection({sectionId, oldSectionId});
+        // await this.updateTaskSectionFront(data, -1, (data.task._column._id || data.task._column), (postData.task._column._id || postData.task._column));
       });
       const datesChangeEventSub = dialogRef?.componentInstance?.datesChangeEvent?.subscribe(async (data) => {
         postData.task.start_date = data.start_date;
