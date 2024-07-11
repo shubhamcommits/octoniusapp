@@ -10,10 +10,21 @@
         (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()" (keyup)="searchCompany()">
         
       <ul *ngIf="!!companySearchResults && !!companySearchText" class="company-list dropdown-menu">
-        <li class="company-list-item pointer" *ngFor="let company of companySearchResults; trackBy: utilityService.trackByIndex" (click)="selectCompany(company)">
+        <li class="company-list-item pointer" *ngFor="let company of companySearchResults; trackBy: utilityService.trackByIndex">
           <!-- <app-secured-image [imgURL]="company.company_pic" [service]="'group'" [workspaceId]="this.userData?._workspace?._id || this.userData?._workspace"
             [styleClass]="'group-avatar'"></app-secured-image> -->
-          {{ company.name }}
+          <div *ngIf="company?._id" (click)="selectCompany(company)">
+            {{ company.name }}
+          </div>
+
+          <div *ngIf="!company?._id" style="display: flex; justify-content: space-between;">
+            <div>{{ company.name }}</div>
+            <section>
+              <button class="btn btn-primary btn-sm" i18n="@@crmLeadCard.create" (click)="createCompany(company)">
+                Create
+              </button>
+            </section>
+          </div>
         </li>
       </ul>
     </div>
@@ -40,8 +51,19 @@
       (keydown)="$event.stopPropagation()" (keyup)="searchContact()">
   
     <ul *ngIf="!!contactSearchResults && !!contactSearchText" class="company-list dropdown-menu">
-      <li class="company-list-item pointer" *ngFor="let contact of contactSearchResults; trackBy: utilityService.trackByIndex" (click)="selectContact(contact)">
-        {{ contact.name }} - {{ contact.emails[0] }}
+      <li class="company-list-item pointer" *ngFor="let contact of contactSearchResults; trackBy: utilityService.trackByIndex">
+        <div *ngIf="contact?._id" (click)="selectContact(contact)">
+          {{ contact.name }} - {{ contact.emails[0] }}
+        </div>
+        
+        <div *ngIf="!contact?._id" style="display: flex; justify-content: space-between;">
+          <div>{{ contact.name }}</div>
+          <section>
+            <button class="btn btn-primary btn-sm" i18n="@@crmLeadCard.create" (click)="createContact(contact)">
+              Create
+            </button>
+          </section>
+        </div>
       </li>
     </ul>
   </div>
