@@ -91,6 +91,9 @@ export class CRMOrderDialogComponent implements OnInit/*, AfterViewChecked, Afte
   cfSearchText = '';
   cfSearchPlaceholder = $localize`:@@crmOrderDialog.cfSearchPlaceholder:Search`;
 
+  // Show Comment Editor Variable
+  showCommentQuillEditor = false;
+
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
 
@@ -335,8 +338,9 @@ export class CRMOrderDialogComponent implements OnInit/*, AfterViewChecked, Afte
   }
 
   newCommentAdded(comment) {
-    // this.comments.unshift(comment);
+    this.postData.comments_count++;
     this.newComment = comment;
+    this.showCommentQuillEditor = !this.showCommentQuillEditor
   }
 
   /**

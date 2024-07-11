@@ -10,14 +10,15 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 })
 export class PostActionsComponent implements OnInit {
 
-  @Input('post') post: any;
-  @Input('userData') userData: any;
+  @Input() post: any;
+  @Input() userData: any;
   @Input() fullscreen: boolean = false;
   @Input() groupData: any;
   @Input() canEdit = true;
+  @Input() isCRMCard = false;
   @Input() isIdeaModuleAvailable = false;
 
-  @Output('delete') delete = new EventEmitter()
+  @Output() delete = new EventEmitter()
   @Output() pinEvent = new EventEmitter();
   @Output('showCommentEditor') showCommentEditorEmitter = new EventEmitter()
   @Output('comments') showCommentsEmitter = new EventEmitter();
