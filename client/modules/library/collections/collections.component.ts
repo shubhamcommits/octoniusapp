@@ -2,7 +2,7 @@ import { Component, OnInit, Injector, OnDestroy } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { LibraryService } from 'src/shared/services/library-service/library.service';
 
 @Component({

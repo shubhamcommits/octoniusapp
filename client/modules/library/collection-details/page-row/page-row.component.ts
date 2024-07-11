@@ -1,7 +1,7 @@
 import { Component, Injector, Input, OnInit, OnChanges, Output, EventEmitter } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { LibraryService } from 'src/shared/services/library-service/library.service';
 import { DateTime } from 'luxon';
 import { DatesService } from 'src/shared/services/dates-service/dates.service';

@@ -5,7 +5,7 @@ import { LoungeRoutingModule } from './lounge-routing.module';
 
 import { SharedModule } from 'src/app/common/shared/shared.module';
 
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MatSelectModule } from '@angular/material/select';
 import { LoungeComponent } from './lounge/lounge.component';
 import { LoungeNewElementComponent } from './lounge/lounge-new-element/lounge-new-element.component';
 import { EditLoungeComponent } from './lounge/edit-lounge/edit-lounge.component';

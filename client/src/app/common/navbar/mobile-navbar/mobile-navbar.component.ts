@@ -7,7 +7,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { SearchHeaderComponent } from 'modules/search/search-header/search-header.component';
 import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
 

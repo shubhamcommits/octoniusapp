@@ -1,6 +1,6 @@
 import { Component, OnInit, Injector, OnDestroy, AfterContentChecked } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
 import { UserService } from 'src/shared/services/user-service/user.service';

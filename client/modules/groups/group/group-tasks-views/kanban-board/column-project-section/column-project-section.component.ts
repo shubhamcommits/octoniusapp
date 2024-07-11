@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import moment from 'moment';
 import { ProjectBudgetDialogComponent } from 'src/app/common/shared/project-budget-dialog/project-budget-dialog.component';
 import { ColumnService } from 'src/shared/services/column-service/column.service';

@@ -1,5 +1,5 @@
 import { Component, Input, Output, OnChanges, EventEmitter, ViewChild, ViewEncapsulation, Injector, OnInit } from '@angular/core';
-import { MatLegacyMenuTrigger as MatMenuTrigger } from '@angular/material/legacy-menu';
+import { MatMenuTrigger } from '@angular/material/menu';
 import { PublicFunctions } from 'modules/public.functions';
 import { DateTime } from 'luxon';
 import { BehaviorSubject } from 'rxjs';

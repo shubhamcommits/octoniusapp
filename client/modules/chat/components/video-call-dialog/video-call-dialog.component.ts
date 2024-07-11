@@ -1,5 +1,5 @@
 import { /*AfterViewInit, */ChangeDetectorRef, Component, ComponentRef, ElementRef, EventEmitter, Inject, Injector, LOCALE_ID, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { io } from 'socket.io-client';

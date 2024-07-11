@@ -18,7 +18,7 @@ import { BoxCloudModule } from './user-clouds/user-available-clouds/box-cloud/bo
 import { TeamModule } from './user-clouds/user-available-clouds/team/team.module';
 import { ZapModule } from './user-clouds/user-available-clouds/zapier/zapier.module';
 import { UserWorkloadComponent } from './user-workload/user-workload.component';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MatSelectModule } from '@angular/material/select';
 import { UserPasswordUpdateComponent } from './user-profile/user-password-update/user-password-update.component';
 import { UserProfileCustomFieldsComponent } from './user-profile/user-profile-custom-fields/user-profile-custom-fields.component';
 import { FormsModule } from '@angular/forms';

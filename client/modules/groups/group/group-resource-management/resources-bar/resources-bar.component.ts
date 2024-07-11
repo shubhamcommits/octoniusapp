@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';

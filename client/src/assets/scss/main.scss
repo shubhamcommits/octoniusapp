@@ -892,6 +892,7 @@ input {
   width: 100% !important;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
 .mat-form-field-underline {
   height: 0 !important;
 }
@@ -999,7 +1000,8 @@ mat-expansion-panel{
   overflow-y: auto;
 }
 
-.mat-tab-group, .mat-tab-label{
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+.mat-mdc-tab-group, .mat-tab-label{
   font-family: $font-family-base !important;
 }
 

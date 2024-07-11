@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, Output, EventEmitter, OnDestroy, Injector } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 import { SubSink } from 'subsink';
 import { PublicFunctions } from 'modules/public.functions';

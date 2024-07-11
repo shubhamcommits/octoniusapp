@@ -9,7 +9,7 @@ import { retry } from 'rxjs/internal/operators/retry';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import moment from 'moment';
 import { GroupService } from 'src/shared/services/group-service/group.service';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivityFiltersComponent } from '../activity-filters/activity-filters.component';
 
 @Component({

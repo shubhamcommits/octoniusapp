@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, Injector, Input, OnDestroy, OnChanges, OnInit, Output } from '@angular/core';
-import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';

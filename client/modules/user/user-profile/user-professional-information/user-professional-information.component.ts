@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output,ChangeDetectionStrategy, Injector,EventEmitter } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { UserUpdateUserPersonalInformationDialogComponent } from 'src/app/common/shared/user-update-user-personal-information-dialog/user-update-user-personal-information-dialog.component';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-user-professional-information',

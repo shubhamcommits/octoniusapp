@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, Output, EventEmitter, Injector } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { LibraryService } from 'src/shared/services/library-service/library.service';
 import { BehaviorSubject } from 'rxjs';

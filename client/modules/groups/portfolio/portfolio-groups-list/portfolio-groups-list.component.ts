@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { PortfolioService } from 'src/shared/services/portfolio-service/portfolio.service';
 import { GroupSelectorDialogComponent } from '../group-selector-dialog/group-selector-dialog.component';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-portfolio-groups-list',

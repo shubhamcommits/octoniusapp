@@ -6,7 +6,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { CreateGroupDialogComponent } from './create-group-dialog/create-group-dialog.component';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-groups-list',

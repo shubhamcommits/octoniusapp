@@ -1,5 +1,5 @@
 import { Component, Injector, Input, OnInit, Output } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { GroupsService } from 'src/shared/services/groups-service/groups.service';

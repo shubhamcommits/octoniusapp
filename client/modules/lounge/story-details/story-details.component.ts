@@ -4,7 +4,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { environment } from 'src/environments/environment';
 import { LoungeService } from 'src/shared/services/lounge-service/lounge.service';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { LoungeImageUpdateComponent } from '../lounge-image-update/lounge-image-update.component';
 

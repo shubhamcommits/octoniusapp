@@ -1,7 +1,7 @@
 import { Injectable, EventEmitter, Injector } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MemberDialogComponent } from 'src/app/common/shared/member-dialog/member-dialog.component';
 import { PostService } from '../post-service/post.service';
 import { ColumnService } from '../column-service/column.service';

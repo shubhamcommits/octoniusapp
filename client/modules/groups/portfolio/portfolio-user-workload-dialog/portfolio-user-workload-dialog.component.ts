@@ -2,7 +2,7 @@ import { Component, OnInit, Injector, OnDestroy, Inject, AfterViewInit } from '@
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment/moment';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PortfolioService } from 'src/shared/services/portfolio-service/portfolio.service';
 import { SubSink } from 'subsink';
 import { BehaviorSubject } from 'rxjs';

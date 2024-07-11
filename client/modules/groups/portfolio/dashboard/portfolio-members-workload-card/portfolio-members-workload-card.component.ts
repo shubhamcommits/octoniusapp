@@ -1,5 +1,5 @@
 import { Component, Injector, Input, OnChanges } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs';
 import { PortfolioService } from 'src/shared/services/portfolio-service/portfolio.service';

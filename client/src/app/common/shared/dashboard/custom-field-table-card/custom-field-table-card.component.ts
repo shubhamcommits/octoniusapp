@@ -1,5 +1,5 @@
 import { Component, Injector, OnChanges, OnInit } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { CustomFieldsTableSettingsDialogComponent } from './custom-fields-table-settings-dialog/custom-fields-table-settings-dialog.component';

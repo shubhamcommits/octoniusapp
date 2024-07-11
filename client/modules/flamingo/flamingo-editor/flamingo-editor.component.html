@@ -130,8 +130,7 @@
                         <div class="form-group row">
                             <label for="Steps" class="col-sm-4 col-form-label" i18n="@@flamingoEditor.steps">Steps</label>
                             <div class="col-sm-8" style="padding-right: 20px;">
-                                <mat-slider [max]="11" [min]="5" [value]="question?.scale?.size || 5"
-                                    (change)="setScaleSize($event,i)" [disabled]="flamingo?.publish"></mat-slider>
+                                <mat-slider [max]="11" [min]="5" [disabled]="flamingo?.publish" #ngSlider><input matSliderThumb [value]="question?.scale?.size || 5" (change)="setScaleSize({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value},i)" #ngSliderThumb="matSliderThumb" /></mat-slider>
                             </div>
                         </div>
                         <div class="form-group row">

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { GroupService } from 'src/shared/services/group-service/group.service';

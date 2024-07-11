@@ -4,7 +4,7 @@ import { SubSink } from 'subsink';
 import { PublicFunctions } from 'modules/public.functions';
 import { CRMGroupService } from 'src/shared/services/crm-group-service/crm-group.service';
 import { Sort } from '@angular/material/sort';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { NewCRMContactDialogComponent } from './new-crm-contact-dialog/new-crm-contact-dialog.component';
 import { NewCRMCompanyDialogComponent } from './new-crm-company-dialog/new-crm-company-dialog.component';
 import { NewCRMProductDialogComponent } from './new-crm-product-dialog/new-crm-product-dialog.component';

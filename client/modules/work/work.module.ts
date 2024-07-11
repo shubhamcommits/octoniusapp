@@ -8,10 +8,10 @@ import { SharedModule } from 'src/app/common/shared/shared.module';
 import { NorthStarPageComponent } from './north-star-page/north-star-page.component';
 import { DashboardPageComponent } from './dashboard-page/dashboard-page.component';
 
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewNorthStarDialogComponent } from './north-star-page/new-north-start-dialog/new-north-start-dialog.component';
-import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { SearchTaskDialogComponent } from './north-star-page/search-task-dialog/search-task-dialog.component';
 
 @NgModule({
