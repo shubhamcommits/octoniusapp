@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, Injector } from '@angular/core';
 import { SearchService } from 'src/shared/services/search-service/search.service';
 import { PublicFunctions } from 'modules/public.functions';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({

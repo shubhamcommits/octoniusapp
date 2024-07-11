@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { ResourcesDetailsDialogComponent } from 'src/app/common/shared/resources-details-dialog/resources-details-dialog.component';
 import { ResourcesGroupService } from 'src/shared/services/resources-group-service /resources-group.service';

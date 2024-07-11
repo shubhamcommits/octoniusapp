@@ -2,7 +2,7 @@ import { Component, OnInit, OnChanges, Injector, Input, Output, EventEmitter } f
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { LoungeService } from 'src/shared/services/lounge-service/lounge.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Router } from '@angular/router';
 import { LoungeImageUpdateComponent } from '../../lounge-image-update/lounge-image-update.component';
 

@@ -10,7 +10,7 @@ import { SubSink } from 'subsink';
 import { DateTime } from 'luxon';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { HolidayRejectionDialogComponent } from 'src/app/common/shared/hr/holiday-rejection-dialog/holiday-rejection-dialog.component';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
 import { EditMemberPayrollDialogComponent } from 'modules/organization/hr/employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component';

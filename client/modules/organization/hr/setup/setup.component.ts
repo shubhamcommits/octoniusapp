@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, Injector, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';

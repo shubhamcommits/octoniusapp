@@ -5,7 +5,7 @@ import { LibraryRoutingModule } from './library-routing.module';
 
 import { SharedModule } from 'src/app/common/shared/shared.module';
 
-import { MatSelectModule } from '@angular/material/select';
+import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CollectionsComponent } from './collections/collections.component';
 import { CollectionNewElementComponent } from './collections/collection-new-element/collection-new-element.component';

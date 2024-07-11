@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Injector, Inject, EventEmitter, Output } from
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { LoungeService } from 'src/shared/services/lounge-service/lounge.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 
 @Component({
   selector: 'app-lounge-image-update',

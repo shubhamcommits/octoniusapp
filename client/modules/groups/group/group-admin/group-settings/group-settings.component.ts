@@ -4,7 +4,7 @@ import { GroupService } from 'src/shared/services/group-service/group.service';
 import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { GroupRAGDialogComponent } from '../group-rag-dialog/group-rag-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ColorPickerDialogComponent } from 'src/app/common/shared/color-picker-dialog/color-picker-dialog.component';
 import { GroupTimeTrackingCategoriesDialogComponent } from './time-tracking-categories-dialog/time-tracking-categories-dialog.component';
 import { Action } from 'rxjs/internal/scheduler/Action';

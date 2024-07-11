@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, Injector, Output, EventEmitter } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { UserService } from 'src/shared/services/user-service/user.service';

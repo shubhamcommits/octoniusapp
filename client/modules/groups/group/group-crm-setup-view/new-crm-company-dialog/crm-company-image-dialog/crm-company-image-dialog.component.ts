@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Injector } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { CRMGroupService } from 'src/shared/services/crm-group-service/crm-group.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';

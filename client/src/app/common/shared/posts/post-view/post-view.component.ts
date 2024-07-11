@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, Injector, OnChanges } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 ;
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';

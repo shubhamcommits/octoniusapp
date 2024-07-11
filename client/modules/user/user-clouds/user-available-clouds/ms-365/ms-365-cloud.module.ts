@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ConnectMS365CloudComponent } from './connect-ms-365-cloud/connect-ms-365-cloud.component';
 import { MS365AccountDetailsComponent } from './ms-365-account-details/ms-365-account-details.component';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatLegacySlideToggleModule as MatSlideToggleModule } from '@angular/material/legacy-slide-toggle';
 import { FormsModule } from '@angular/forms';
 
 

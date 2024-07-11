@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { PricingTableComponent } from 'src/app/common/shared/pricing-table/pricing-table.component';

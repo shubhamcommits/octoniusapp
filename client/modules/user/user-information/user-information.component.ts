@@ -6,7 +6,7 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { Router } from '@angular/router';
 import { UserUpdateUserInformationDialogComponent } from 'src/app/common/shared/user-update-user-information-dialog/user-update-user-information-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
 @Component({
   selector: 'app-user-information',

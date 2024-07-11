@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, Injector, Output, EventEmitter } from '@angu
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
 import { GroupService } from 'src/shared/services/group-service/group.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
 

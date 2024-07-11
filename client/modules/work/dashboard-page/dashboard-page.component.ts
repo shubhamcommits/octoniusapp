@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { WidgetSelectorDialogComponent } from 'src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component';
 import { ColumnService } from 'src/shared/services/column-service/column.service';

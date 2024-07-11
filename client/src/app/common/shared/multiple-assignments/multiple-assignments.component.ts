@@ -1,5 +1,5 @@
 import { Component, Input, Output, OnChanges, EventEmitter, ViewChild, ViewEncapsulation, Injector, OnInit } from '@angular/core';
-import { MatMenuTrigger } from '@angular/material/menu';
+import { MatLegacyMenuTrigger as MatMenuTrigger } from '@angular/material/legacy-menu';
 import { PublicFunctions } from 'modules/public.functions';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { PostService } from 'src/shared/services/post-service/post.service';

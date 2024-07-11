@@ -5,7 +5,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { environment } from 'src/environments/environment';
 import { LoungeService } from 'src/shared/services/lounge-service/lounge.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import moment from 'moment';
 import { EditLoungeComponent } from '../lounge/edit-lounge/edit-lounge.component';
 import { ActivatedRoute, Router } from '@angular/router';

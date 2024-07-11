@@ -39,9 +39,9 @@ import { CommentSectionComponent } from './comments/comment-section/comment-sect
 import { PostCommentComponent } from './comments/post-comment/post-comment.component';
 import { LikeCommentComponent } from './comments/post-comment/like-comment/like-comment.component';
 
-import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DEFAULT_OPTIONS as MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/legacy-dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 
 import { PreviewFilesDialogComponent } from './preview-files-dialog/preview-files-dialog.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
@@ -97,7 +97,7 @@ import { CustomFieldsTableSettingsDialogComponent } from './dashboard/custom-fie
 import { FileDetailsDialogComponent } from './file-details-dialog/file-details-dialog.component';
 import { ApprovalActionsComponent } from './approvals/approval-actions/approval-actions.component';
 import { ApprovalsHistoryComponent } from './approvals/approvals-history/approvals-history.component';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { FileVersionsComponent } from './file-versions/file-versions.component';
 import { SelectLanguageComponent } from './select-language/select-language.component';
 import { HighlightDirective } from 'src/shared/pipes/highlight.directive';

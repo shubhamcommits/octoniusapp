@@ -38,9 +38,9 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 */
 import { MyspaceRoutingModule } from './myspace-routing.module';
 import { SharedModule } from 'src/app/common/shared/shared.module';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { RecentActivityComponent } from './myspace-inbox/recent-activity/recent-activity.component';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
 import { MatBadgeModule } from '@angular/material/badge';
 import { RecentStoriesComponent } from './myspace-inbox/recent-stories/recent-stories.component';
 import { MyTasksListComponent } from './myspace-tasks/my-tasks-list/my-tasks-list.component';

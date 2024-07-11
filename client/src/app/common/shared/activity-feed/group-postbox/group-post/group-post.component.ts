@@ -5,7 +5,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment/moment';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({

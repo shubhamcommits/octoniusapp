@@ -13,13 +13,13 @@ import { GroupNewFileComponent } from './group-files/group-new-file/group-new-fi
  */
 import { FilesService } from 'src/shared/services/files-service/files.service';
 
-import { MatMenuModule } from '@angular/material/menu';
+import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { FolioModule } from 'modules/folio/folio.module';
 import { FoldersService } from 'src/shared/services/folders-service/folders.service';
 import { DragDropFilesDirective } from './group-files/drag-drop-files/drag-drop-files.directive';
 import { FilesBarComponent } from './group-files/files-bar/files-bar.component';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
+import { MatLegacySlideToggleModule as MatSlideToggleModule } from '@angular/material/legacy-slide-toggle';
 import { FilesSettingsDialogComponent } from './group-files/files-settings-dialog/files-settings-dialog.component';
 import { FilesCustomFieldsDialogComponent } from './group-files/files-bar/files-custom-fields-dialog/files-custom-fields-dialog.component';
 

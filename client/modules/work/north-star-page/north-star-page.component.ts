@@ -3,7 +3,7 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { NewNorthStarDialogComponent } from './new-north-start-dialog/new-north-start-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { GlobalNorthStarDialogComponent } from 'src/app/common/shared/posts/global-north-star-dialog/global-north-star-dialog.component';
 import { Router } from '@angular/router';
 

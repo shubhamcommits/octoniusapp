@@ -7,7 +7,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
 import moment from 'moment';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { UserTaskForDayDialogComponent } from 'src/app/common/shared/posts/user-task-for-day-dialog/user-task-for-day-dialog.component';
 import { DatesService } from 'src/shared/services/dates-service/dates.service';
 import { AddTaskResourceManagementDialogComponent } from './add-task-resource-management-dialog/add-task-resource-management-dialog.component';

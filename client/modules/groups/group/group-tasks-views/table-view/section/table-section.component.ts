@@ -1,7 +1,7 @@
 import { Component, OnChanges, Input, Injector, ViewChild, Output, EventEmitter, SimpleChanges, OnInit, OnDestroy } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MatAccordion } from '@angular/material/expansion';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
 import { PostService } from 'src/shared/services/post-service/post.service';

@@ -8,7 +8,7 @@ import { Subject } from 'rxjs/internal/Subject';
 import { SubSink } from 'subsink';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { UserUpdateProfileDialogComponent } from '../user-update-profile-dialog/user-update-profile-dialog.component';
 import { Router } from '@angular/router';
 

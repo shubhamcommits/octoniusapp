@@ -2,7 +2,7 @@ import { Component, OnInit, Injector, ViewChild, TemplateRef, Input, OnDestroy, 
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { DateTime } from 'luxon';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({

@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, Output, EventEmitter, Injector } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { ColorPickerDialogComponent } from 'src/app/common/shared/color-picker-dialog/color-picker-dialog.component';
 import { ResourcesGroupService } from 'src/shared/services/resources-group-service /resources-group.service';

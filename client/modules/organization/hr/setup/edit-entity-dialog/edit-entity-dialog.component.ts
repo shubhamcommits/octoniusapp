@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { CountryCurrencyService } from 'src/shared/services/country-currency/country-currency.service';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';

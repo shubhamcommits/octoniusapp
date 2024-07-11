@@ -21,9 +21,9 @@ import { TransferOwnershipComponent } from './admin-general/transfer-ownership/t
 import { ActivateBillingGuard } from 'src/shared/guards/activate-billing-guard/activate-billing.guard';
 import { WorkplaceProfileCustomFieldsComponent } from './admin-general/workplace-profile-custom-fields/workplace-profile-custom-fields.component';
 import { ProfileCustomFieldsDialogComponent } from './admin-general/workplace-profile-custom-fields/profile-custom-fields-dialog/profile-custom-fields-dialog.component';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { AdminGroupsComponent } from './admin-groups/admin-groups.component';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
 import { WorkspaceRolesInformationDialogComponent } from './admin-general/workspace-roles-information-dialog/workspace-roles-information-dialog.component';
 import { WorkplaceIntegrationsComponent } from './admin-general/workplace-integrations/workplace-integrations.component';
 import { WorkplaceIntegrationsDialogComponent } from './admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component';

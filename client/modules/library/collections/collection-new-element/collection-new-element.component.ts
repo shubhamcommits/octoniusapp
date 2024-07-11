@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Output, Input, Injector, EventEmitter } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { ThemeService } from 'ng2-charts';
 import { BehaviorSubject } from 'rxjs';

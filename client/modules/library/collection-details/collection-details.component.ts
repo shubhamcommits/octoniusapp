@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { LibraryService } from 'src/shared/services/library-service/library.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { FilesService } from 'src/shared/services/files-service/files.service';

@@ -1,5 +1,5 @@
 import { Component, OnInit, Injector } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { UserService } from 'src/shared/services/user-service/user.service';

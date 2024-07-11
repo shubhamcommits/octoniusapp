@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, ViewEncapsulation, Injector } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Sort } from '@angular/material/sort';
 import { CRMContactDialogComponent } from 'modules/groups/group/group-crm-setup-view/crm-contact-dialog/crm-contact-dialog.component';
 import { PublicFunctions } from 'modules/public.functions';

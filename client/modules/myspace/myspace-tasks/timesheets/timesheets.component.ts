@@ -6,7 +6,7 @@ import { DateTime, Interval } from 'luxon';
 import { BehaviorSubject } from 'rxjs';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { DOCUMENT } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { NewTimeTrackingDialogComponent } from 'src/app/common/shared/new-time-tracking-dialog/new-time-tracking-dialog.component';
 import { DatesService } from 'src/shared/services/dates-service/dates.service';
 // import * as Moment from 'moment';

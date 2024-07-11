@@ -5,7 +5,7 @@ import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, Cal
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment/moment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
 // Define Set of hexcodes of colors
 const colors: any = {

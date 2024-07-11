@@ -4,7 +4,7 @@ import { PublicFunctions } from 'modules/public.functions';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
 import { environment } from 'src/environments/environment';
 import moment from 'moment/moment';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 import { BehaviorSubject } from 'rxjs';
 

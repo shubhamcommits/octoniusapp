@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatSliderModule } from '@angular/material/slider';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
+import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
+import { MatLegacySlideToggleModule as MatSlideToggleModule } from '@angular/material/legacy-slide-toggle';
+import { MatLegacySliderModule as MatSliderModule } from '@angular/material/legacy-slider';
+import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
 import { SharedModule } from 'src/app/common/shared/shared.module';
 import { FlamingoEditorComponent } from './flamingo-editor/flamingo-editor.component';
 import { FlamingoHeaderComponent } from './flamingo-header/flamingo-header.component';
@@ -18,7 +18,7 @@ import { FlamingoResultComponent } from './flamingo-result/flamingo-result.compo
 import { ResultInsightsComponent } from './flamingo-result/result-insights/result-insights.component';
 import { ResultResponsesComponent } from './flamingo-result/result-responses/result-responses.component';
 import { ScaleResponsesGraphComponent } from './flamingo-result/result-insights/scale-responses-graph/scale-responses-graph.component';
-import { MatSelectModule } from '@angular/material/select';
+import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 
 @NgModule({
   declarations: [

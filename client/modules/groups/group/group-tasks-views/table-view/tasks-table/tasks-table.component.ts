@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, SimpleChanges, Injector, Input, OnChanges, Output, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { PublicFunctions } from 'modules/public.functions';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';

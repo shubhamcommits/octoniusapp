@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, Inject, Injector  } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { LoungeService } from 'src/shared/services/lounge-service/lounge.service';

@@ -1,5 +1,5 @@
 import { Component, Injector, Input, OnChanges } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { EditMemberPayrollDialogComponent } from 'modules/organization/hr/employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component';
 import { PublicFunctions } from 'modules/public.functions';
 import { HRService } from 'src/shared/services/hr-service/hr.service';

@@ -4,7 +4,7 @@ import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.s
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ColorPickerDialogComponent } from 'src/app/common/shared/color-picker-dialog/color-picker-dialog.component';
 
 @Component({

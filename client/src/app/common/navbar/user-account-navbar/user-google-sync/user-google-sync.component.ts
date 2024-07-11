@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy, Injector } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { WorkplaceGoogleFieldsMapperDialogComponent } from 'modules/admin/admin-general/workplace-integrations/workplace-google-sync/workplace-google-fields-mapper-dialog/workplace-google-fields-mapper-dialog.component';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
