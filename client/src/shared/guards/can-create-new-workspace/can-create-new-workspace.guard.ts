@@ -1,12 +1,12 @@
 import { Injectable ,Injector} from '@angular/core';
-import { ActivatedRouteSnapshot, RouterStateSnapshot, CanActivate, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CanCreateNewWorkspaceGuard implements CanActivate  {
+export class CanCreateNewWorkspaceGuard   {
 
   private publicFunctions = new PublicFunctions(this.injector);
 

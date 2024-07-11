@@ -1,15 +1,11 @@
 import { Injectable } from '@angular/core';
-import {
-  CanActivate,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot
-} from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { LoungeService } from 'src/shared/services/lounge-service/lounge.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class StoryGuard implements CanActivate  {
+export class StoryGuard   {
 
   constructor(
     private loungeService: LoungeService

@@ -1,5 +1,5 @@
 import {Injectable, Injector, } from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, Router, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { PublicFunctions } from 'modules/public.functions';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
@@ -7,7 +7,7 @@ import { ManagementPortalService } from 'src/shared/services/management-portal-s
 @Injectable({
   providedIn: 'root',
 })
-export class ActivateBillingGuard implements CanActivate {
+export class ActivateBillingGuard  {
 
   // PUBLIC FUNCTIONS
   private publicFunctions = new PublicFunctions(this.injector);

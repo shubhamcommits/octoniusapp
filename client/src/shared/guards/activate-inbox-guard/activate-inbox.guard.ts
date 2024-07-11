@@ -1,12 +1,12 @@
 import {Injectable, Injector } from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, Router, UrlTree } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ActivateInboxGuard implements CanActivate {
+export class ActivateInboxGuard  {
 
   private publicFunctions = new PublicFunctions(this.injector);
 

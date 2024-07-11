@@ -1,17 +1,12 @@
 import { Injectable ,Injector} from '@angular/core';
-import {
-  CanActivate,
-  Router,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PortfolioGuard implements CanActivate  {
+export class PortfolioGuard   {
 
   private publicFunctions = new PublicFunctions(this.injector);
 
