@@ -424,7 +424,7 @@ export class PulseController {
             let groups = [];
             
             if (period !== 'undefined') {
-                if (filteringGroups && filteringGroups != 'undefined' && filteringGroups.length > 0) {
+                if (!!filteringGroups && filteringGroups != 'undefined' && Number(filteringGroups.length) && Number(filteringGroups.length) > 0) {
                     groups = await Group.find({
                         $and: [
                             { _id: { $in: filteringGroups }},
@@ -454,7 +454,7 @@ export class PulseController {
                 }
 
             } else {
-                if (filteringGroups && filteringGroups != 'undefined' && filteringGroups.length > 0) {
+                if (!!filteringGroups && filteringGroups != 'undefined' && Number(filteringGroups.length) && Number(filteringGroups.length) > 0) {
                     numPulse = await Group.find({
                         $and: [
                             { _id: { $in: filteringGroups }},
