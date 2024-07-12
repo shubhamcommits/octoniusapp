@@ -43,7 +43,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler, LOCALE_ID } from '@angular/core';
 import { PathLocationStrategy, LocationStrategy } from '@angular/common';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
@@ -94,72 +94,58 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
  * 9. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
  */
 @NgModule({
-
-  declarations: [
-    // APP COMPONENT
-    AppComponent,
-
-    // PAGE NOT FOUND COMPONENT
-    PageNotFoundComponent,
-  ],
-
-  imports: [
-    // BROWSER MODULE
-    BrowserModule,
-
-    // BROWSER ANIMATION MODULE
-    BrowserAnimationsModule,
-
-    // APP ROUTING MODULE
-    AppRoutingModule,
-
-    // DASHBOARD MODULE
-    DashboardModule,
-
-    // HTTP CLIENT MODULE
-    HttpClientModule,
-
-    MatSidenavModule,
-
-    ChatModule,
-
-    // SSO Active Directory
-
-    MsalModule.forRoot( new PublicClientApplication({
-        auth: {
-          clientId: '',
-          authority: '',
-          redirectUri: environment.clientUrl
+    
+    declarations: [
+        // APP COMPONENT
+        AppComponent,
+        // PAGE NOT FOUND COMPONENT
+        PageNotFoundComponent,
+    ],
+    bootstrap: [AppComponent],
+    imports: [
+        // BROWSER MODULE
+        BrowserModule,
+        // BROWSER ANIMATION MODULE
+        BrowserAnimationsModule,
+        // APP ROUTING MODULE
+        AppRoutingModule,
+        // DASHBOARD MODULE
+        DashboardModule,
+        MatSidenavModule,
+        ChatModule,
+        // SSO Active Directory
+        MsalModule.forRoot(new PublicClientApplication({
+            auth: {
+                clientId: '',
+                authority: '',
+                redirectUri: environment.clientUrl
+            },
+            cache: {
+                cacheLocation: 'localStorage',
+                storeAuthStateInCookie: isIE, // Set to true for Internet Explorer 11
+            }
+        }), null, null)],
+        
+        providers: [
+        HttpCancelService,
+        // HASH LOCATION STRATEGY
+        {
+            provide: LocationStrategy,
+            useClass: PathLocationStrategy
         },
-        cache: {
-          cacheLocation: 'localStorage',
-          storeAuthStateInCookie: isIE, // Set to true for Internet Explorer 11
-        }
-      }), null, null)
-  ],
-
-  providers: [
-    HttpCancelService,
-    // HASH LOCATION STRATEGY
-    {
-      provide: LocationStrategy,
-      useClass: PathLocationStrategy
-    },
-    // ERROR HANDLERS
-    // {
-    //   provide: ErrorHandler,
-    //   useClass: GlobalErrorHandler
-    // },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ServerErrorInterceptor,
-      multi: true
-    },
-    { provide: HTTP_INTERCEPTORS, useClass: ManageHttpInterceptor, multi: true },
-    //{ provide: LOCALE_ID, useValue: getCurentLocale() }
-  ],
-  bootstrap: [AppComponent]
-})
+        // ERROR HANDLERS
+        // {
+        //   provide: ErrorHandler,
+        //   useClass: GlobalErrorHandler
+        // },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: ServerErrorInterceptor,
+            multi: true
+        },
+        { provide: HTTP_INTERCEPTORS, useClass: ManageHttpInterceptor, multi: true },
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule { }
 
 export function getCurentLocale(): string {
