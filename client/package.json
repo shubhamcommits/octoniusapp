@@ -54,7 +54,7 @@
     "@types/quill": "^2.0.3",
     "angular-calendar": "^0.31.1",
     "angular-resizable-element": "^7.0.2",
-    "angularx-qrcode": "^16.0.1",
+    "angularx-qrcode": "^17.0.1",
     "autolinker": "^3.14.1",
     "chart.js": "^4.4.3",
     "crypto-js": "^3.1.9-1",
