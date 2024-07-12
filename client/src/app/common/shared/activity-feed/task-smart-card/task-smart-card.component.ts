@@ -3,6 +3,7 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 import { SubSink } from 'subsink';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
+import { ChartData, ChartOptions, ChartType } from 'chart.js';
 
 @Component({
   selector: 'app-task-smart-card',
@@ -22,11 +23,14 @@ export class TaskSmartCardComponent implements OnInit, OnDestroy {
   todayTasks: any = [];
   overdueTasks: any = [];
 
-  doughnutChartLabels;
-  doughnutChartData;
-  doughnutChartType;
-  doughnutChartOptions;
-  doughnutChartColors;
+  // doughnutChartLabels;
+  // doughnutChartData;
+  // doughnutChartType;
+  
+  public doughnutChartType: ChartType = 'doughnut';
+  public doughnutChartLabels: string[] = ['To Do', 'In Progress', 'Done', 'Overdue'];
+  public doughnutChartData: ChartData<'doughnut'>;
+  doughnutChartOptions: ChartOptions<'doughnut'>;
   doughnutChartPlugins;
 
   userData;
@@ -59,29 +63,26 @@ export class TaskSmartCardComponent implements OnInit, OnDestroy {
     /* Chart Setup */
     const percentageDone = (this.todayTasks.length + this.overdueTasks.length > 0) ? (((this.done_task_count)*100)/(this.todayTasks.length + this.overdueTasks.length)) : 0;
     this.doughnutChartLabels = ['To Do', 'In Progress', 'Done', 'Overdue'];
-    this.doughnutChartData = [this.to_do_task_count, this.in_progress_task_count, this.done_task_count, this.overdueTasks.length];
-    this.doughnutChartType = 'doughnut';
-    this.doughnutChartOptions = {
-      cutoutPercentage: 75,
-      responsive: true,
-      legend: {
-        display: false
-      },
-      color: [
-        '#FFAB00',
-        '#0bc6a0',
-        '#4a90e2',
-        '#FF6584'
+    this.doughnutChartData = {
+      labels: this.doughnutChartLabels,
+      datasets: [
+        {
+          // data: [200, 100, 50, 150],
+          data: [this.to_do_task_count, this.in_progress_task_count, this.done_task_count, this.overdueTasks.length],
+          backgroundColor: [ '#FFAB00', '#0bc6a0', '#4a90e2', '#FF6584' ],
+        }
       ]
     };
-    this.doughnutChartColors = [{
-      backgroundColor: [
-        '#FFAB00',
-        '#0bc6a0',
-        '#4a90e2',
-        '#FF6584'
-      ]
-    }];
+    this.doughnutChartOptions = {
+      responsive: true,
+      cutout: 60,
+      plugins: {
+        legend: {
+          display: false
+        }
+      }
+    };
+    
     this.doughnutChartPlugins = [{
       beforeDraw(chart) {
         const ctx = chart.ctx;
