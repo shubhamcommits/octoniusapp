@@ -53,7 +53,10 @@ export class ProjectBudgetDialogComponent implements OnInit {
     responsive: true,
     legend: {
       display: false
-    }
+    },
+    backgroundColor: [
+      '#2AA578'
+    ]
   };
   doughnutChartColors = [{
     backgroundColor: [

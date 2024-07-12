@@ -181,7 +181,7 @@ export class GroupCalendarComponent implements OnInit {
     })
 
     // Update the status of subject to next()
-    this.refresh.next();
+    this.refresh.next(null);
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
@@ -292,7 +292,7 @@ export class GroupCalendarComponent implements OnInit {
           post: event
         });
         this.events.splice(index, 1);
-        this.refresh.next();
+        this.refresh.next(null);
         return;
       }
     });

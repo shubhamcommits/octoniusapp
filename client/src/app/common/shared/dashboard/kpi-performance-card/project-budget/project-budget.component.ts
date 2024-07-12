@@ -32,7 +32,10 @@ export class ProjectBudgetComponent implements OnChanges {
     responsive: true,
     legend: {
       display: false
-    }
+    },
+    color: [
+      '#2AA578'
+    ]
   };
   doughnutChartColors = [{
     backgroundColor: [

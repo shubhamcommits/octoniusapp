@@ -29,7 +29,7 @@
 
         <div class="d-md-none d-lg-block graph">
             <canvas *ngIf="chartReady" baseChart height="200" style="margin-bottom: 20px;" [data]="chartData"
-                [labels]="chartLabels" [chartType]="chartType" [options]="chartOptions" [colors]="chartColors"
+                [labels]="chartLabels" [type]="chartType" [options]="chartOptions"
                 [plugins]="chartPlugins"></canvas>
 
             <app-multiple-assignments [canEdit]="editContent" [userData]="userData" [portfolio]="portfolioData" [type]="'portfolio'"

@@ -64,6 +64,7 @@ export class ScaleResponsesGraphComponent implements OnChanges {
               }
           }]
       },
+      backgroundColor: ['#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3']
     };
     this.barChartColors = [{
         backgroundColor: ['#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3']

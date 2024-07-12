@@ -1,9 +1,6 @@
 import { Component, EventEmitter, Inject, Injector, OnInit, Output } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
-import { ThemeService } from 'ng2-charts';
-import { FlowService } from 'src/shared/services/flow-service/flow.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { SearchService } from 'src/shared/services/search-service/search.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';

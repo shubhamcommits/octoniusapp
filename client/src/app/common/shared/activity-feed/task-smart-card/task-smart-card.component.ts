@@ -66,7 +66,13 @@ export class TaskSmartCardComponent implements OnInit, OnDestroy {
       responsive: true,
       legend: {
         display: false
-      }
+      },
+      color: [
+        '#FFAB00',
+        '#0bc6a0',
+        '#4a90e2',
+        '#FF6584'
+      ]
     };
     this.doughnutChartColors = [{
       backgroundColor: [

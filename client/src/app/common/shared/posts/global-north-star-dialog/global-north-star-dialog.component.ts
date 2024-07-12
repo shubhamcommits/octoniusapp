@@ -58,7 +58,11 @@ export class GlobalNorthStarDialogComponent implements OnInit {
     responsive: true,
     legend: {
       display: false
-    }
+    },
+    backgroundColor: [
+      '#17B2E3',
+      '#F9FAFA'
+    ]
   };
   chartColors = [{
     backgroundColor: [

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { BaseChartDirective } from 'ng2-charts';
 //import 'chartjs-plugin-labels'
 
 @Component({

@@ -19,6 +19,7 @@ import { ResultInsightsComponent } from './flamingo-result/result-insights/resul
 import { ResultResponsesComponent } from './flamingo-result/result-responses/result-responses.component';
 import { ScaleResponsesGraphComponent } from './flamingo-result/result-insights/scale-responses-graph/scale-responses-graph.component';
 import { MatSelectModule } from '@angular/material/select';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatMenuModule,
     FormsModule,
     SharedModule,
+    NgChartsModule,
     MatSlideToggleModule,
     MatSliderModule,
     MatTabsModule,
