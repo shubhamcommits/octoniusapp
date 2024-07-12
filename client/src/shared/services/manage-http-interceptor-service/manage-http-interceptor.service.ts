@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
+import {
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+  HttpInterceptor
+} from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Router, ActivationEnd } from '@angular/router';
 
 import { takeUntil } from 'rxjs/operators';
 import { HttpCancelService } from '../httpcancel-service/httpcancel.service';
