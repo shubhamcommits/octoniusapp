@@ -391,6 +391,11 @@ const GroupSchema = new Schema({
             required: true,
             default: true,
         },
+        resource_management: {
+            type: Boolean,
+            required: true,
+            default: true,
+        },
         dashboard: {
             type: Boolean,
             required: true,
