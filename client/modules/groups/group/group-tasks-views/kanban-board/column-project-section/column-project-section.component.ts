@@ -115,8 +115,10 @@ export class ColumnProjectSectionComponent implements OnInit {
       const dialogRef = this.dialog.open(ProjectBudgetDialogComponent, {
         data: data,
         panelClass: 'groupCreatePostDialog',
-        width: '100%',
-        height: '100%',
+        minWidth: '100%',
+      width: '100%',
+        minHeight: '100%',
+      height: '100%',
         disableClose: true,
         hasBackdrop: true
       });

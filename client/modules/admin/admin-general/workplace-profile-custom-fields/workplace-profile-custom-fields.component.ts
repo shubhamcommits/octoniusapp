@@ -30,7 +30,9 @@ export class WorkplaceProfileCustomFieldsComponent implements OnInit {
 
   openProfileCustomFieldsDialog() {
     const dialogRef = this.dialog.open(ProfileCustomFieldsDialogComponent, {
+      minWidth: '100%',
       width: '100%',
+      minHeight: '100%',
       height: '100%',
       disableClose: true,
       data: { workspaceData: this.workspaceData }

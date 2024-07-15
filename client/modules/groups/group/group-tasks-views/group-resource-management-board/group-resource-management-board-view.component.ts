@@ -241,8 +241,10 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
     const canOpen = !this.groupData?.enabled_rights;
     if (canOpen) {
       const dialogRef = this.dialog.open(AddTaskResourceManagementDialogComponent, {
-        width: '100%',
-        height: '100%',
+        minWidth: '100%',
+      width: '100%',
+        minHeight: '100%',
+      height: '100%',
         disableClose: true,
         panelClass: 'groupCreatePostDialog',
         data: {

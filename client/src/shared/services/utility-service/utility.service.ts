@@ -392,7 +392,9 @@ export class UtilityService {
    */
   private openEventPostDetailsFullscreenModal(postId: string, groupId: string) {
     return this.dialog.open(EventPostDialogComponent, {
+      minWidth: '100%',
       width: '100%',
+      minHeight: '100%',
       height: '100%',
       disableClose: true,
       panelClass: 'groupCreatePostDialog',
@@ -408,7 +410,9 @@ export class UtilityService {
    */
   private openNormalPostDetailsFullscreenModal(postId: string, groupId: string) {
     return this.dialog.open(NormalPostDialogComponent, {
+      minWidth: '100%',
       width: '100%',
+      minHeight: '100%',
       height: '100%',
       disableClose: true,
       panelClass: 'groupCreatePostDialog',
@@ -436,7 +440,9 @@ export class UtilityService {
         };
 
     return this.dialog.open(TaskDialogComponent, {
+      minWidth: '100%',
       width: '100%',
+      minHeight: '100%',
       height: '100%',
       disableClose: true,
       panelClass: 'groupCreatePostDialog',
@@ -461,7 +467,9 @@ export class UtilityService {
         };
 
     return this.dialog.open(CRMTaskDialogComponent, {
+      minWidth: '100%',
       width: '100%',
+      minHeight: '100%',
       height: '100%',
       disableClose: true,
       panelClass: 'groupCreatePostDialog',
@@ -486,7 +494,9 @@ export class UtilityService {
         };
 
     return this.dialog.open(CRMOrderDialogComponent, {
+      minWidth: '100%',
       width: '100%',
+      minHeight: '100%',
       height: '100%',
       disableClose: true,
       panelClass: 'groupCreatePostDialog',
@@ -965,6 +975,19 @@ export class UtilityService {
     return (a < b ? -1 : 1) * isAsc;
   }
 
+  /**
+   * This function is used to check if a function is already strigified
+   * @param str
+   */
+  isJSON(str: string) {
+    try {
+      JSON.parse(str)
+    } catch (e) {
+      return false
+    }
+    return true
+  }
+
   openVideoChatDialog(chatData: any, canEdit: any) {
     const data = {
       chatData: chatData,
@@ -972,7 +995,9 @@ export class UtilityService {
     };
 
     return this.dialog.open(VideoCallDialog, {
+      minWidth: '100%',
       width: '100%',
+      minHeight: '100%',
       height: '100%',
       disableClose: true,
       // panelClass: 'groupCreatePostDialog',

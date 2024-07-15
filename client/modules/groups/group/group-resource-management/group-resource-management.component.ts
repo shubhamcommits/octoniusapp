@@ -109,7 +109,9 @@ export class GroupResourceManagementComponent implements OnInit {
 
   openResourceDetailsDialog(resource?: any) {
     const dialogRef = this.dialog.open(ResourcesDetailsDialogComponent, {
+      minWidth: '100%',
       width: '100%',
+      minHeight: '100%',
       height: '100%',
       disableClose: true,
       data: { resourceId: resource?._id || null }
