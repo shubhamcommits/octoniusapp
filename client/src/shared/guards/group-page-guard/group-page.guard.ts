@@ -80,7 +80,7 @@ export class GroupPageGuard implements CanActivate  {
         return true;
     
       case 'resource':
-        if (currentGroup?.pages_to_show && !currentGroup?.pages_to_show?.resource) {
+        if (currentGroup?.pages_to_show && !currentGroup?.pages_to_show?.resource_management) {
           this.utilityService.warningNotification($localize`:@@groupPageGuard.oopsNoPermissionForSection:Oops seems like you don\'t have the permission to access the section!`);
           this.groupService.navigateToGroup(currentGroup);
           return false;
