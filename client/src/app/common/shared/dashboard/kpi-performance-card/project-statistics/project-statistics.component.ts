@@ -1,4 +1,5 @@
 import { Component, Injector, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChartConfiguration, ChartData } from 'chart.js';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { PostService } from 'src/shared/services/post-service/post.service';
@@ -27,11 +28,10 @@ export class ProjectStatisticsComponent implements OnChanges {
   projectStatusClass = '';
 
   doughnutChartLabels;
-  doughnutChartData;
-  doughnutChartType;
-  doughnutChartOptions;
-  doughnutChartColors;
-  doughnutChartPlugins;
+  public doughnutChartData: ChartData<'doughnut'>;
+  public doughnutChartType = 'doughnut' as const;
+  public doughnutChartOptions: ChartConfiguration<'doughnut'>['options'];
+  public doughnutChartPlugins;
 
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector)
@@ -66,23 +66,30 @@ export class ProjectStatisticsComponent implements OnChanges {
     const tasksData = await this.getTasksData();
     const percentageDone = await this.getPercentageDone(tasksData[2]);
     this.doughnutChartLabels = [$localize`:@@projectStatistics.toDo:To Do`, $localize`:@@projectStatistics.inProgress:In Progress`, $localize`:@@projectStatistics.done:Done`, $localize`:@@projectStatistics.overdue:Overdue`];
-    this.doughnutChartData = tasksData;
-    this.doughnutChartType = 'doughnut';
+    this.doughnutChartData = {
+      labels: this.doughnutChartLabels,
+      datasets: [
+        {
+          // data: [200, 100, 50, 150],
+          data: tasksData,
+          backgroundColor: [
+            '#FFAB00',
+            '#0bc6a0',
+            '#4a90e2',
+            '#FF6584'
+          ],
+        }
+      ]
+    };
     this.doughnutChartOptions = {
-      cutoutPercentage: 75,
+      cutout: 45,
       responsive: true,
-      legend: {
-        display: false
+      plugins: {
+        legend: {
+          display: false
+        },
       }
     };
-    this.doughnutChartColors = [{
-      backgroundColor: [
-        '#FFAB00',
-        '#0bc6a0',
-        '#4a90e2',
-        '#FF6584'
-      ]
-    }];
     this.doughnutChartPlugins = [{
       beforeDraw(chart) {
         const ctx = chart.ctx;
