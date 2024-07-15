@@ -1,4 +1,5 @@
 import { Component, Injector, Input, OnChanges } from '@angular/core';
+import { ChartConfiguration, ChartData } from 'chart.js';
 import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
@@ -25,24 +26,27 @@ export class ProjectBudgetComponent implements OnChanges {
   projectStatusClass = '';
 
   doughnutChartLabels = ['Real cost'];
-  doughnutChartData = [0];
-  doughnutChartType = 'doughnut';
-  doughnutChartOptions = {
-    cutoutPercentage: 75,
-    responsive: true,
-    legend: {
-      display: false
-    },
-    color: [
-      '#2AA578'
-    ]
-  };
-  doughnutChartColors = [{
-    backgroundColor: [
-      '#2AA578'
-    ]
-  }];
-  doughnutChartPlugins = [];
+  // doughnutChartData = [0];
+  // doughnutChartType = 'doughnut';
+  // doughnutChartOptions = {
+  //   cutoutPercentage: 75,
+  //   responsive: true,
+  //   legend: {
+  //     display: false
+  //   },
+  //   color: [
+  //     '#2AA578'
+  //   ]
+  // };
+  // doughnutChartColors = [{
+  //   backgroundColor: [
+  //     '#2AA578'
+  //   ]
+  // }];
+  public doughnutChartData: ChartData<'doughnut'>;
+  public doughnutChartType = 'doughnut' as const;
+  public doughnutChartOptions: ChartConfiguration<'doughnut'>['options'];
+  public doughnutChartPlugins;
 
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector)
@@ -90,13 +94,28 @@ export class ProjectBudgetComponent implements OnChanges {
     /* Chart Setup */
     const balance = this.project?.budget?.amount_planned - this.project?.budget?.real_cost;
     this.doughnutChartLabels = [$localize`:@@projectBudget.cost:Cost`, $localize`:@@projectBudget.currentBalance:Current Balance`];
-    this.doughnutChartData = [this.project?.budget?.real_cost, balance];
-    this.doughnutChartColors = [{
-      backgroundColor: [
-        (balance >= 0) ? '#005FD5' : '#EB5757',
-        (balance >= 0) ? '#2AA578' : '#005FD5'
+    this.doughnutChartData = {
+      labels: this.doughnutChartLabels,
+      datasets: [
+        {
+          // data: [200, 100, 50, 150],
+          data: [this.project?.budget?.real_cost, balance],
+          backgroundColor: [
+            (balance >= 0) ? '#005FD5' : '#EB5757',
+            (balance >= 0) ? '#2AA578' : '#005FD5'
+          ],
+        }
       ]
-    }];
+    };
+    this.doughnutChartOptions = {
+      cutout: 60,
+      responsive: true,
+      plugins: {
+        legend: {
+          display: false
+        },
+      }
+    };
 
     this.chartReady = true;
   }
