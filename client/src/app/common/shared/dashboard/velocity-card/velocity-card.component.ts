@@ -1,4 +1,5 @@
 import { Component, Injector, Input, OnChanges, OnInit } from '@angular/core';
+import { ChartConfiguration, ChartType } from 'chart.js';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
@@ -19,13 +20,10 @@ export class VelocityCardComponent implements OnChanges {
 
   chartReady = false;
 
-  lineChartData;
-  lineChartType;
   lineChartLabels;
-  lineChartOptions;
-  lineChartColors;
-  lineChartLegend;
-  lineChartPlugins;
+  lineChartData: ChartConfiguration['data'];
+  lineChartType: ChartType = 'line';
+  lineChartOptions: ChartConfiguration['options'];
 
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector)
@@ -51,41 +49,54 @@ export class VelocityCardComponent implements OnChanges {
     const dates = this.getDates();
     const velocityData = await this.getData(dates);
 
-    this.lineChartData = velocityData;
     this.lineChartLabels = this.formatDates(dates);
-    this.lineChartOptions = {
-      responsive: true,
-      legend: {
-        display: false
-      },
-      scales: {
-          yAxes: [{
-              stacked: true,
-              display: false,
-              gridLines: {
-                  drawBorder: false,
-                  display: false,
-              },
-          }],
-          xAxes: [{
-              stacked: true,
-              display: false,
-              gridLines: {
-                  drawBorder: false,
-                  display: false,
-              }
-          }]
-      }
-    };
-    this.lineChartColors = [
-      {
+    this.lineChartData = {
+      datasets: [{
+        data: velocityData,
         borderColor: '#005FD5',
         backgroundColor: '#FFFFFF',
+        pointBorderColor: '#005FD5',
+        pointBackgroundColor: '#FFFFFF',
+        pointHoverBorderColor: '#005FD5',
+        pointHoverBackgroundColor: '#FFFFFF',
+      }],
+      labels: this.lineChartLabels
+    };
+    this.lineChartOptions = {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: false
+        },
       },
-    ];
-    this.lineChartLegend = true;
-    this.lineChartType = 'line';
-    this.lineChartPlugins = [];
+      scales: {
+          y: {
+              stacked: true,
+              display: false,
+              // gridLines: {
+              //     drawBorder: false,
+              //     display: false,
+              // },
+          },
+          x: {
+              stacked: true,
+              display: false,
+              // gridLines: {
+              //     drawBorder: false,
+              //     display: false,
+              // }
+          }
+      }
+    };
+    // this.lineChartColors = [
+    //   {
+    //     borderColor: '#005FD5',
+    //     backgroundColor: '#FFFFFF',
+    //   },
+    // ];
+    // this.lineChartLegend = true;
+    // this.lineChartType = 'line';
+    // this.lineChartPlugins = [];
 
     this.chartReady = true;
   }
