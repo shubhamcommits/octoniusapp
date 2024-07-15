@@ -1,4 +1,5 @@
 import { Component, Injector, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChartConfiguration, ChartData, ChartOptions } from 'chart.js';
 import { PublicFunctions } from 'modules/public.functions';
 import { PostService } from 'src/shared/services/post-service/post.service';
 
@@ -22,10 +23,9 @@ export class WorkStatisticsCardComponent implements OnChanges {
   task_count = 0;
 
   barChartLabels;
-  barChartData;
-  barChartType;
-  barChartOptions;
-  barChartColors;
+  barChartData: ChartData<'bar'>;
+  barChartType = 'bar' as const;
+  barChartOptions: ChartConfiguration<'bar'>['options'];
   barChartPlugins;
 
   // Public Functions Object
@@ -69,47 +69,74 @@ export class WorkStatisticsCardComponent implements OnChanges {
         $localize`:@@workStatisticsCard.done:Done`,
         $localize`:@@workStatisticsCard.overdue:Overdue`
       ];
-    this.barChartData = (this.northStar) ? await this.getNorthStarTasksData() : await this.getTasksData();
+    const barChartColors = (this.northStar) ? [ '#FFAB00', '#26A69A', '#EB5757', '#4A90E2', '#FF6584' ] : [ '#FFAB00', '#0bc6a0', '#4a90e2', '#FF6584' ];
+    this.barChartData = {
+      labels: this.barChartLabels,
+      datasets: [
+        {
+          data: (this.northStar) ? await this.getNorthStarTasksData() : await this.getTasksData(),
+          backgroundColor: barChartColors
+         }
+      ],
+    }
     this.barChartType = 'bar';
     this.barChartOptions = {
-      legend: {
-        display: false
-      },
+      // We use these empty structures as placeholders for dynamic theming.
       scales: {
-          yAxes: [{
-              stacked: true,
-              display: false,
-              gridLines: {
-                  drawBorder: false,
-                  display: false,
-              },
-          }],
-          xAxes: [{
-              stacked: true,
-              display: false,
-              gridLines: {
-                  drawBorder: false,
-                  display: false,
-              }
-          }]
+        x: {
+          display: false
+        },
+        y: {
+          display: false
+        },
+      },
+      plugins: {
+        legend: {
+          display: false,
+        }
       },
     };
-    this.barChartColors = (this.northStar) ? [{
-        backgroundColor: [
-          '#FFAB00',
-          '#26A69A',
-          '#EB5757',
-          '#4A90E2',
-          '#FF6584'
-        ]
-      }] : [{
-        backgroundColor: [
-          '#FFAB00',
-          '#0bc6a0',
-          '#4a90e2',
-          '#FF6584'
-        ]
-      }];
+    // this.barChartOptions = {
+    //   scales: {
+    //       y: {
+    //           stacked: true,
+    //           display: false,
+    //           gridLines: {
+    //               drawBorder: false,
+    //               display: false,
+    //           },
+    //       },
+    //       x: [{
+    //           stacked: true,
+    //           display: false,
+    //           gridLines: {
+    //               drawBorder: false,
+    //               display: false,
+    //           }
+    //       }]
+    //   },
+    //   plugins: {
+    //     legend: {
+    //       display: true,
+    //     }
+    //   },
+    // };
+    // this.barChartColors = (this.northStar) ? [{
+    //     backgroundColor: [
+    //       '#FFAB00',
+    //       '#26A69A',
+    //       '#EB5757',
+    //       '#4A90E2',
+    //       '#FF6584'
+    //     ]
+    //   }] : [{
+    //     backgroundColor: [
+    //       '#FFAB00',
+    //       '#0bc6a0',
+    //       '#4a90e2',
+    //       '#FF6584'
+    //     ]
+    //   }];
     this.barChartPlugins = [{
       beforeDraw(chart, options) {
 
