@@ -78,8 +78,7 @@ export class WorkStatisticsCardComponent implements OnChanges {
           backgroundColor: barChartColors
          }
       ],
-    }
-    this.barChartType = 'bar';
+    };
     this.barChartOptions = {
       // We use these empty structures as placeholders for dynamic theming.
       scales: {

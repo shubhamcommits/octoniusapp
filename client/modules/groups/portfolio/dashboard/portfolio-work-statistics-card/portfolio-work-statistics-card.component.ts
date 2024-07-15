@@ -1,4 +1,5 @@
 import { Component, Injector, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChartConfiguration, ChartData } from 'chart.js';
 import { PublicFunctions } from 'modules/public.functions';
 import { PortfolioService } from 'src/shared/services/portfolio-service/portfolio.service';
 
@@ -21,10 +22,9 @@ export class PortfolioWorkStatisticsCardComponent implements OnChanges {
   task_count = 0;
 
   chartLabels;
-  chartData;
-  chartType;
-  chartOptions;
-  chartColors;
+  chartData: ChartData<'bar'>;
+  chartType = 'bar';
+  chartOptions: ChartConfiguration<'bar'>['options'];
   chartPlugins;
 
   // Public Functions Object
@@ -59,39 +59,38 @@ export class PortfolioWorkStatisticsCardComponent implements OnChanges {
         $localize`:@@workStatisticsCard.done:Done`,
         $localize`:@@workStatisticsCard.overdue:Overdue`
       ];
-    this.chartData = await this.getTasksData();
+    this.chartData = {
+      labels: this.chartLabels,
+      datasets: [
+        {
+          data: await this.getTasksData(),
+          backgroundColor: [
+            '#FFAB00',
+            '#0bc6a0',
+            '#4a90e2',
+            '#FF6584'
+          ]
+        }
+      ],
+    }
     this.chartType = this.type;
     this.chartOptions = {
-      legend: {
-        display: false
-      },
+      // We use these empty structures as placeholders for dynamic theming.
       scales: {
-          yAxes: [{
-              stacked: true,
-              display: false,
-              gridLines: {
-                  drawBorder: false,
-                  display: false,
-              },
-          }],
-          xAxes: [{
-              stacked: true,
-              display: false,
-              gridLines: {
-                  drawBorder: false,
-                  display: false,
-              }
-          }]
+        x: {
+          display: false
+        },
+        y: {
+          display: false
+        },
+      },
+      plugins: {
+        legend: {
+          display: false,
+        }
       },
     };
-    this.chartColors = [{
-        backgroundColor: [
-          '#FFAB00',
-          '#0bc6a0',
-          '#4a90e2',
-          '#FF6584'
-        ]
-      }];
+
     this.chartPlugins = [{
       beforeDraw(chart, options) {
 

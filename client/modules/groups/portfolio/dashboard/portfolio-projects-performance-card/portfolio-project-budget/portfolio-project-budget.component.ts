@@ -1,4 +1,5 @@
 import { Component, Injector, Input, OnChanges } from '@angular/core';
+import { ChartConfiguration, ChartData } from 'chart.js';
 import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
@@ -24,21 +25,10 @@ export class PortfolioProjectBudgetComponent implements OnChanges {
   projectStatusClass = '';
 
   doughnutChartLabels = ['Real cost'];
-  doughnutChartData = [0];
-  doughnutChartType = 'doughnut';
-  doughnutChartOptions = {
-    cutoutPercentage: 75,
-    responsive: true,
-    legend: {
-      display: false
-    }
-  };
-  doughnutChartColors = [{
-    backgroundColor: [
-      '#2AA578'
-    ]
-  }];
-  doughnutChartPlugins = [];
+  public doughnutChartData: ChartData<'doughnut'>;
+  public doughnutChartType = 'doughnut' as const;
+  public doughnutChartOptions: ChartConfiguration<'doughnut'>['options'];
+  public doughnutChartPlugins;
 
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector)
@@ -86,22 +76,37 @@ export class PortfolioProjectBudgetComponent implements OnChanges {
     /* Chart Setup */
     if (this.completitionPercentage > 100) {
       this.doughnutChartLabels = [$localize`:@@projectBudget.realCost:Real cost`];
-      this.doughnutChartData = [this.project?.budget?.real_cost];
-      this.doughnutChartColors = [{
-        backgroundColor: [
-          '#EB5757'
+      this.doughnutChartData = {
+        labels: this.doughnutChartLabels,
+        datasets: [
+          {
+            data: [this.project?.budget?.real_cost],
+            backgroundColor: ['#EB5757'],
+          }
         ]
-      }];
+      };
     } else if(!noBudget) {
       this.doughnutChartLabels = [$localize`:@@projectBudget.budgetLeft:Budget left`, $localize`:@@projectBudget.realCost:Real cost`];
-      this.doughnutChartData = [this.project?.budget?.amount_planned - this.project?.budget?.real_cost, this.project?.budget?.real_cost];
-      this.doughnutChartColors = [{
-        backgroundColor: [
-          '#E4EDF8',
-          '#2AA578'
+      this.doughnutChartData = {
+        labels: this.doughnutChartLabels,
+        datasets: [
+          {
+            data: [this.project?.budget?.amount_planned - this.project?.budget?.real_cost, this.project?.budget?.real_cost],
+            backgroundColor: ['#E4EDF8', '#2AA578'],
+          }
         ]
-      }];
+      };
     }
+
+    this.doughnutChartOptions = {
+      cutout: 60,
+      responsive: true,
+      plugins: {
+        legend: {
+          display: false
+        },
+      }
+    };
 
     this.chartReady = true;
   }

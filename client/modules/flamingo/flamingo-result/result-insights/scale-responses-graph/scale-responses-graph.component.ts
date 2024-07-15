@@ -1,4 +1,5 @@
 import { Component, Injector, Input, OnChanges } from '@angular/core';
+import { ChartConfiguration, ChartData } from 'chart.js';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
@@ -18,10 +19,9 @@ export class ScaleResponsesGraphComponent implements OnChanges {
   percentages = [];
 
   barChartLabels;
-  barChartData;
-  barChartType;
-  barChartOptions;
-  barChartColors;
+  barChartData: ChartData<'bar'>;
+  barChartType = 'bar' as const;
+  barChartOptions: ChartConfiguration<'bar'>['options'];
   barChartPlugins;
 
   constructor(
@@ -40,35 +40,59 @@ export class ScaleResponsesGraphComponent implements OnChanges {
     await this.getPercentagesData();
 
     this.barChartLabels = this.sizes;
-    this.barChartData = this.countsData;
+    this.barChartData = {
+      labels: this.barChartLabels,
+      datasets: [
+        {
+          data: this.countsData,
+          backgroundColor: ['#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3']
+         }
+      ],
+    }
     this.barChartType = 'bar';
+    // this.barChartOptions = {
+    //   legend: {
+    //     display: false
+    //   },
+    //   scales: {
+    //       yAxes: [{
+    //           stacked: true,
+    //           display: false,
+    //           gridLines: {
+    //               drawBorder: false,
+    //               display: false,
+    //           },
+    //       }],
+    //       xAxes: [{
+    //           stacked: true,
+    //           display: true,
+    //           gridLines: {
+    //               drawBorder: false,
+    //               display: false,
+    //           }
+    //       }]
+    //   },
+    //   backgroundColor: ['#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3']
+    // };
     this.barChartOptions = {
-      legend: {
-        display: false
-      },
+      // We use these empty structures as placeholders for dynamic theming.
       scales: {
-          yAxes: [{
-              stacked: true,
-              display: false,
-              gridLines: {
-                  drawBorder: false,
-                  display: false,
-              },
-          }],
-          xAxes: [{
-              stacked: true,
-              display: true,
-              gridLines: {
-                  drawBorder: false,
-                  display: false,
-              }
-          }]
+        x: {
+          display: true
+        },
+        y: {
+          display: false
+        },
       },
-      backgroundColor: ['#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3']
+      plugins: {
+        legend: {
+          display: false,
+        }
+      },
     };
-    this.barChartColors = [{
-        backgroundColor: ['#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3']
-      }];
+    // this.barChartColors = [{
+    //     backgroundColor: ['#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3', '#17B2E3']
+    //   }];
     this.barChartPlugins = [{
       beforeDraw(chart, options) {
 

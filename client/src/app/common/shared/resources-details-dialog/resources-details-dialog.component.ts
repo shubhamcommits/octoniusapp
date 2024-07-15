@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { ResourcesGroupService } from 'src/shared/services/resources-group-service /resources-group.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { DatesService } from 'src/shared/services/dates-service/dates.service';
+import { ChartConfiguration, ChartType } from 'chart.js';
 
 @Component({
   selector: 'app-resources-details-dialog',
@@ -41,12 +42,10 @@ export class ResourcesDetailsDialogComponent implements OnInit {
 
   chartReady = false;
 
-  chartData;
-  chartType;
   chartLabels;
-  chartOptions;
-  chartColors;
-  chartLegend;
+  chartData: ChartConfiguration['data'];
+  chartType: ChartType = 'line';
+  chartOptions: ChartConfiguration['options'];
   chartPlugins;
 
   qrCodeUrl = environment.clientUrl;
@@ -126,8 +125,8 @@ export class ResourcesDetailsDialogComponent implements OnInit {
     let customFieldsTmp = this.groupData?.resources_custom_fields;
 
     if (!customFieldsTmp) {
-      await this.resourcesGroupService.getGroupResourcesCustomFields(this.resourceData?._group?._id || this.resourceData?._group).then((res) => {
-
+      const groupId = (!!this.resourceData?._group) ? (this.resourceData?._group?._id || this.resourceData?._group) : this.groupData?._id;
+      await this.resourcesGroupService.getGroupResourcesCustomFields(groupId).then((res) => {
         if (!!res['group']['resources_custom_fields']) {
           res['group']['resources_custom_fields'].forEach(field => {
             if (!field.input_type) {
@@ -165,45 +164,56 @@ export class ResourcesDetailsDialogComponent implements OnInit {
   async initGraphic() {
     if (!!this.resourceData) {
       const dates = await this.getDates();
-
-      this.chartData = await this.getGraphData(dates);
-      this.chartLabels = this.formatDates(dates.reverse());
-      this.chartOptions = {
-        responsive: true,
-        legend: {
-          display: false
-        },
-        scales: {
-            yAxes: [{
-                stacked: true,
-                display: true,
-                gridLines: {
-                    drawBorder: true,
-                    display: true,
-                },
-            }],
-            xAxes: [{
-                stacked: true,
-                display: true,
-                gridLines: {
-                    drawBorder: true,
-                    display: true,
-                }
-            }]
-        }
-      };
-      this.chartColors = [
-        {
+      const chartValues = await this.getGraphData(dates);
+      this.chartData = {
+        datasets: [{
+          data: chartValues[0],
           borderColor: (!this.resourceData.stock || (this.resourceData.stock <= 5)) ? '#ee5d5d' : (this.resourceData.stock <= 20) ? '#fbb732' : '#2aa578',
           backgroundColor: '#FFFFFF',
+          pointBorderColor: (!this.resourceData.stock || (this.resourceData.stock <= 5)) ? '#ee5d5d' : (this.resourceData.stock <= 20) ? '#fbb732' : '#2aa578',
+          pointBackgroundColor: '#FFFFFF',
+          pointHoverBorderColor: (!this.resourceData.stock || (this.resourceData.stock <= 5)) ? '#ee5d5d' : (this.resourceData.stock <= 20) ? '#fbb732' : '#2aa578',
+          pointHoverBackgroundColor: '#FFFFFF',
         },
         {
+          data: chartValues[1],
           borderColor: '#ee5d5d',
           backgroundColor: '#FFFFFF',
+          pointBorderColor: '#ee5d5d',
+          pointBackgroundColor: '#FFFFFF',
+          pointHoverBorderColor: '#ee5d5d',
+          pointHoverBackgroundColor: '#FFFFFF',
+        }],
+        labels: this.formatDates(dates.reverse())
+      };
+
+      this.chartOptions = {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false
+          },
+        },
+        scales: {
+            y: {
+                stacked: true,
+                display: true,
+                // gridLines: {
+                //     drawBorder: false,
+                //     display: false,
+                // },
+            },
+            x: {
+                stacked: true,
+                display: true,
+                // gridLines: {
+                //     drawBorder: false,
+                //     display: false,
+                // }
+            }
         }
-      ];
-      this.chartLegend = true;
-      this.chartType = 'line';
+      };
+
       this.chartPlugins = [{
         beforeLayout: (chart) => {
           chart.data.datasets.forEach(
@@ -229,7 +239,7 @@ export class ResourcesDetailsDialogComponent implements OnInit {
     return datesRet;
   }
 
-  getGraphData(dates) {
+  getGraphData(dates): any {
     let velocity = [];
     let stock = [];
     const interval = Interval.fromDateTimes(dates[0], dates[dates.length - 1]);
@@ -253,9 +263,7 @@ export class ResourcesDetailsDialogComponent implements OnInit {
       stock.push(stockValue);
     });
 
-    const ret = [velocity, stock.reverse()];
-// console.log(ret);
-    return ret;
+    return [velocity, stock.reverse()];
   }
 
   createResource() {

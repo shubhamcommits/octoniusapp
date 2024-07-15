@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Inject, Injector, OnInit, Output } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ChartConfiguration, ChartData } from 'chart.js';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
@@ -45,25 +46,20 @@ export class ProjectBudgetDialogComponent implements OnInit {
   completitionPercentage = 0;
   completitionPercentageClass = '';
   projectStatusClass = '';
-  doughnutChartLabels = [];
-  doughnutChartData = [0];
-  doughnutChartType = 'doughnut';
-  doughnutChartOptions = {
-    cutoutPercentage: 75,
+
+  doughnutChartLabels;
+  public doughnutChartData: ChartData<'doughnut'>;
+  public doughnutChartType = 'doughnut' as const;
+  public doughnutChartOptions: ChartConfiguration<'doughnut'>['options'] = {
+    cutout: 45,
     responsive: true,
-    legend: {
-      display: false
-    },
-    backgroundColor: [
-      '#2AA578'
-    ]
+    plugins: {
+      legend: {
+        display: false
+      },
+    }
   };
-  doughnutChartColors = [{
-    backgroundColor: [
-      '#2AA578'
-    ]
-  }];
-  doughnutChartPlugins = [];
+  public doughnutChartPlugins;
 
   timeTrackingEntities = [];
   timeTrackingEntitiesMapped = [];
@@ -142,13 +138,18 @@ export class ProjectBudgetDialogComponent implements OnInit {
     const spent = this.totalSpent;
     const balance = this.budget?.amount_planned - this.totalSpent;
     this.doughnutChartLabels = [$localize`:@@projectBudgetDialog.cost:Cost`, $localize`:@@projectBudgetDialog.currentBalance:Current Balance`];
-    this.doughnutChartData = [spent, balance];
-    this.doughnutChartColors = [{
-      backgroundColor: [
-        (balance >= 0) ? '#005FD5' : '#EB5757',
-        (balance >= 0) ? '#2AA578' : '#005FD5'
+    this.doughnutChartData = {
+      labels: this.doughnutChartLabels,
+      datasets: [
+        {
+          data: [spent, balance],
+          backgroundColor: [
+            (balance >= 0) ? '#005FD5' : '#EB5757',
+            (balance >= 0) ? '#2AA578' : '#005FD5'
+          ]
+        }
       ]
-    }];
+    };
 
     this.chartReady = true;
   }

@@ -10,6 +10,7 @@ import { NewNorthStarDialogComponent } from 'modules/work/north-star-page/new-no
 import { ColorPickerDialogComponent } from '../../color-picker-dialog/color-picker-dialog.component';
 import { SearchTaskDialogComponent } from 'modules/work/north-star-page/search-task-dialog/search-task-dialog.component';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
+import { ChartConfiguration, ChartData } from 'chart.js';
 
 @Component({
   selector: 'app-global-north-star-dialog',
@@ -49,28 +50,29 @@ export class GlobalNorthStarDialogComponent implements OnInit {
 
   myWorkplace = false;
 
-  chartLabels = [$localize`:@@globalNorthStarDialog.completed:Completed`, $localize`:@@globalNorthStarDialog.goalsPending:Targets pending`];
   chartReady = false;
-  chartData = [0];
-  chartType = 'doughnut';
-  chartOptions = {
-    cutoutPercentage: 50,
-    responsive: true,
-    legend: {
-      display: false
-    },
-    backgroundColor: [
-      '#17B2E3',
-      '#F9FAFA'
-    ]
-  };
-  chartColors = [{
-    backgroundColor: [
-      '#17B2E3',
-      '#F9FAFA'
-    ]
-  }];
-  chartPlugins = [];
+  chartLabels = [$localize`:@@globalNorthStarDialog.completed:Completed`, $localize`:@@globalNorthStarDialog.goalsPending:Targets pending`];
+  // chartOptions = {
+  //   cutoutPercentage: 50,
+  //   responsive: true,
+  //   legend: {
+  //     display: false
+  //   },
+  //   backgroundColor: [
+  //     '#17B2E3',
+  //     '#F9FAFA'
+  //   ]
+  // };
+  // chartColors = [{
+  //   backgroundColor: [
+  //     '#17B2E3',
+  //     '#F9FAFA'
+  //   ]
+  // }];
+  public chartData: ChartData<'doughnut'>;
+  public chartType = 'doughnut' as const;
+  public chartOptions: ChartConfiguration<'doughnut'>['options'];
+  public chartPlugins;
 
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
@@ -181,7 +183,26 @@ export class GlobalNorthStarDialogComponent implements OnInit {
           || (!st?.task?.isNorthStar && st?.task?.status?.toUpperCase() == 'DONE')
       });
       const numCompleted = (!!completed) ? completed.length : 0;
-      this.chartData = [numCompleted, this.subtasks.length - numCompleted];
+      this.chartData = {
+        labels: this.chartLabels,
+        datasets: [
+          {
+            data: [numCompleted, this.subtasks.length - numCompleted],
+            backgroundColor: [ '#17B2E3', '#F9FAFA' ],
+          }
+        ]
+      };
+
+      this.chartOptions = {
+        cutout: 80,
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false
+          },
+        }
+      };
+
       this.chartReady = true;
     }
   }
