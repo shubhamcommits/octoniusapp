@@ -397,7 +397,6 @@ export class UtilityService {
       minHeight: '100%',
       height: '100%',
       disableClose: true,
-      panelClass: 'groupCreatePostDialog',
       data: {
           postId: postId,
           groupId: groupId
@@ -415,7 +414,6 @@ export class UtilityService {
       minHeight: '100%',
       height: '100%',
       disableClose: true,
-      panelClass: 'groupCreatePostDialog',
       data: {
           postId: postId,
           groupId: groupId,
@@ -445,7 +443,6 @@ export class UtilityService {
       minHeight: '100%',
       height: '100%',
       disableClose: true,
-      panelClass: 'groupCreatePostDialog',
       data: data
     });
   }
@@ -472,7 +469,6 @@ export class UtilityService {
       minHeight: '100%',
       height: '100%',
       disableClose: true,
-      panelClass: 'groupCreatePostDialog',
       data: data
     });
   }
@@ -499,7 +495,6 @@ export class UtilityService {
       minHeight: '100%',
       height: '100%',
       disableClose: true,
-      panelClass: 'groupCreatePostDialog',
       data: {
           postId: postId,
           groupId: groupId,
@@ -527,7 +522,6 @@ export class UtilityService {
       height: '75%',
       disableClose: false,
       hasBackdrop: true,
-      panelClass: 'groupCreatePostDialog',
       data: data
     });
   }
@@ -1000,7 +994,6 @@ export class UtilityService {
       minHeight: '100%',
       height: '100%',
       disableClose: true,
-      // panelClass: 'groupCreatePostDialog',
       data: data
     });
   }

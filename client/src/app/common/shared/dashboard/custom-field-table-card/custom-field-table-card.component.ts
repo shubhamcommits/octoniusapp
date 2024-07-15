@@ -174,7 +174,6 @@ export class CustomFieldTableCardComponent implements OnChanges, OnInit {
 
     const dialogRef = this.dialog.open(CustomFieldsTableSettingsDialogComponent, {
       data: data,
-      panelClass: 'groupCreatePostDialog',
       width: '50%',
       disableClose: true,
       hasBackdrop: true
