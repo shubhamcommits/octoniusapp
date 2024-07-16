@@ -31,7 +31,7 @@ export class DatesService {
       if (day1 instanceof DateTime && day2 instanceof DateTime) {
         return day1.startOf('day').toMillis() < day2.startOf('day').toMillis();
       } else {
-        return DateTime.fromISO(day1).startOf('day').toMillis() > DateTime.fromISO(day2).startOf('day').toMillis();
+        return DateTime.fromISO(day1).startOf('day').toMillis() < DateTime.fromISO(day2).startOf('day').toMillis();
       }
     } else if ((!day1 && !!day2) || (!!day1 && !day2) || (!day1 && !day2)) {
       return false;
