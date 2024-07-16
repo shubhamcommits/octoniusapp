@@ -146,10 +146,10 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
       useClass: PathLocationStrategy
     },
     // ERROR HANDLERS
-    // {
-    //   provide: ErrorHandler,
-    //   useClass: GlobalErrorHandler
-    // },
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ServerErrorInterceptor,
