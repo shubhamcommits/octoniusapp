@@ -1,11 +1,10 @@
 import { Component, EventEmitter, Inject, Injector, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-edit-member-payroll-dialog',
@@ -40,6 +39,7 @@ export class EditMemberPayrollDialogComponent implements OnInit {
     private hrService: HRService,
     private utilityService: UtilityService,
     private userService: UserService,
+    private datesService: DatesService,
     private injector: Injector,
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -299,6 +299,6 @@ export class EditMemberPayrollDialogComponent implements OnInit {
   }
 
   formateDate(date) {
-    return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
+    return this.datesService.formateDate(date);
   }
 }

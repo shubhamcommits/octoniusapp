@@ -175,14 +175,12 @@ export class CRMTaskDialogComponent implements OnInit/*, AfterViewChecked, After
     if ((this.postData?.task.due_to && this.postData?.task.due_to != null)
       || (this.postData?.event.due_to && this.postData?.event.due_to != null)) {
       // Set the DueDate variable
-      // this.dueDate = moment(this.postData?.task.due_to || this.postData?.event.due_to);
       this.dueDate = DateTime.fromISO(this.postData?.task.due_to || this.postData?.event.due_to);
     }
 
     // Set the due date variable for task
     if (this.postData?.task.start_date && this.postData?.task.start_date != null) {
       // Set the DueDate variable
-      // this.startDate = moment(this.postData?.task.start_date);
       this.startDate = DateTime.fromISO(this.postData?.task.start_date);
     }
 

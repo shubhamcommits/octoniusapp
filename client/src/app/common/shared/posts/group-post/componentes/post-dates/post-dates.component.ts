@@ -39,36 +39,36 @@ export class PostDatesComponent implements OnInit, OnChanges {
     private injector: Injector) { }
 
   ngOnInit() {
-    if (this.postData?.type === 'task') {
-      // Set the due date variable for task
-      if ((this.postData?.task.due_to && this.postData?.task.due_to != null)
-        || (this.postData?.event.due_to && this.postData?.event.due_to != null)) {
-        // Set the DueDate variable
-        // this.dueDate = moment(this.postData?.task.due_to || this.postData?.event.due_to);
-      }
+    // if (this.postData?.type === 'task') {
+    //   // Set the due date variable for task
+    //   if ((this.postData?.task.due_to && this.postData?.task.due_to != null)
+    //     || (this.postData?.event.due_to && this.postData?.event.due_to != null)) {
+    //     // Set the DueDate variable
+    //     this.dueDate = moment(this.postData?.task.due_to || this.postData?.event.due_to);
+    //   }
 
-      // Set the due date variable for task
-      if (this.postData?.task.start_date && this.postData?.task.start_date != null) {
-        // Set the DueDate variable
-        // this.startDate = moment(this.postData?.task.start_date);
-      }
-    }
+    //   // Set the due date variable for task
+    //   if (this.postData?.task.start_date && this.postData?.task.start_date != null) {
+    //     // Set the DueDate variable
+    //     this.startDate = moment(this.postData?.task.start_date);
+    //   }
+    // }
 
-    // If post type is event, set the dueTime
-    if (this.postData?.type === 'event') {
+    // // If post type is event, set the dueTime
+    // if (this.postData?.type === 'event') {
 
-      // Set the due date variable for both task and event type posts
-      if (this.postData?.event.due_to && this.postData?.event.due_to != null) {
+    //   // Set the due date variable for both task and event type posts
+    //   if (this.postData?.event.due_to && this.postData?.event.due_to != null) {
 
-        // Set the DueDate variable
-        // this.dueDate = moment(this.postData?.task.due_to || this.postData?.event.due_to);
-      }
+    //     // Set the DueDate variable
+    //     this.dueDate = moment(this.postData?.task.due_to || this.postData?.event.due_to);
+    //   }
 
-      // if (this.dueDate) {
-      //   this.dueTime.hour = this.dueDate.getHours();
-      //   this.dueTime.minute = this.dueDate.getMinutes();
-      // }
-    }
+    //   if (this.dueDate) {
+    //     this.dueTime.hour = this.dueDate.getHours();
+    //     this.dueTime.minute = this.dueDate.getMinutes();
+    //   }
+    // }
   }
 
   async ngOnChanges() {

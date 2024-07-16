@@ -9,11 +9,6 @@ import { DOCUMENT } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { NewTimeTrackingDialogComponent } from 'src/app/common/shared/new-time-tracking-dialog/new-time-tracking-dialog.component';
 import { DatesService } from 'src/shared/services/dates-service/dates.service';
-// import * as Moment from 'moment';
-// import { extendMoment } from 'moment-range';
-
-// const moment = extendMoment(Moment);
-
 
 @Component({
   selector: 'app-timesheets',

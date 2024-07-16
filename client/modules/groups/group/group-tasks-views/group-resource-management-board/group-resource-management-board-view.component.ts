@@ -6,7 +6,6 @@ import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
-import moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 import { UserTaskForDayDialogComponent } from 'src/app/common/shared/posts/user-task-for-day-dialog/user-task-for-day-dialog.component';
 import { DatesService } from 'src/shared/services/dates-service/dates.service';

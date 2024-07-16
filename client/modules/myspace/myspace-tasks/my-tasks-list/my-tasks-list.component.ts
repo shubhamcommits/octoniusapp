@@ -2,7 +2,7 @@ import { Component, OnInit, Injector, ViewChild, TemplateRef, Input, OnDestroy }
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment/moment';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-my-tasks-list',
@@ -32,6 +32,7 @@ export class MyTasksListComponent implements OnInit, OnDestroy {
 
   constructor(
     public utilityService: UtilityService,
+    private datesService: DatesService,
     private injector: Injector,
   ) { }
 
@@ -242,7 +243,7 @@ export class MyTasksListComponent implements OnInit, OnDestroy {
   }
 
   formateDate(date) {
-    return (date) ? moment.utc(date).format("MMM D, YYYY") : '';
+    return this.datesService.formateDate(date, "MMM D, YYYY");
   }
 
   // Check if the data provided is not empty{}

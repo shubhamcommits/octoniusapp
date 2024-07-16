@@ -1,7 +1,6 @@
 import { Injectable, Injector, LOCALE_ID } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { DateTime } from 'luxon';
-import moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +20,6 @@ export class DatesService {
       } else if (date instanceof Date) {
         return DateTime.fromJSDate(date).setLocale(this.injector.get(LOCALE_ID)).toLocaleString(format || DateTime.DATE_MED);
       } else  {
-      // } else if (date instanceof moment) {
         return DateTime.fromISO(date).setLocale(this.injector.get(LOCALE_ID)).toLocaleString(format || DateTime.DATE_MED);
       }
     }

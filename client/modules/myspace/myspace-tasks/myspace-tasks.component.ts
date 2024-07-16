@@ -1,8 +1,6 @@
-import { Component, OnInit, Injector, ViewChild, TemplateRef, Input, OnDestroy } from '@angular/core';
-import { UserService } from 'src/shared/services/user-service/user.service';
+import { Component, OnInit, Injector, ViewChild, TemplateRef, OnDestroy } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment/moment';
 
 @Component({
   selector: 'app-myspace-tasks',
