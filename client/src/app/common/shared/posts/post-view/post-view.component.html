@@ -87,7 +87,7 @@
                 <!-- <app-quill-editor *ngIf="post.content && showFullContent" [editorId]="('editor_' + post._id) || 'editor'"
                     [toolbar]="false" [readOnly]="true" [contents]="post.content"></app-quill-editor> -->
 
-                <div *ngIf="post.content" [innerHTML]="postContent | safe: 'html'" style="text-align: left;"></div>
+                <div *ngIf="post.content" [innerHTML]="postContent | safe: 'html'" class="htmlContent"></div>
 
                 <div style="text-align:center">
                     <button *ngIf="!showFullContent" (click)="showHideFullContent()" class="btn btn-light mt-4" i18n="@@postView.readMore">
@@ -102,7 +102,7 @@
         <!-- <app-quill-editor *ngIf="post.content && showFullContent && post.type != 'event'" [editorId]="('editor_' + post._id) || 'editor'"
             [toolbar]="false" [readOnly]="true" [contents]="post.content"></app-quill-editor> -->
 
-        <div *ngIf="post.content" [innerHTML]="postContent | safe: 'html'"></div>
+        <div *ngIf="post.content" [innerHTML]="postContent | safe: 'html'" class="htmlContent"></div>
 
         <div style="text-align:center">
             <button *ngIf="!showFullContent" (click)="showHideFullContent()" class="btn btn-light mt-4" i18n="@@postView.readMore">
