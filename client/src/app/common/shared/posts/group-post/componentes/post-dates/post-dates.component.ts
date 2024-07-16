@@ -88,9 +88,9 @@ export class PostDatesComponent implements OnInit, OnChanges {
     return (this.canEdit && !this.groupData?.freeze_dates) || (this.canEdit && this.groupData?.freeze_dates && (isGroupManager || isPostOwner));
   }
 
-  formateDate(date) {
-    return this.datesService.formateDate(date);
-  }
+  // formateDate(date) {
+  //   return this.datesService.formateDate(date);
+  // }
 
   /**
    * This function checks the task board if a particular task is overdue or not
@@ -130,7 +130,7 @@ export class PostDatesComponent implements OnInit, OnChanges {
         const isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
         const isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
 
-        this.postService.changeTaskDueDate(this.postData?._id, date?this.formateDate(date):null, isShuttleTasksModuleAvailable, isIndividualSubscription)
+        this.postService.changeTaskDueDate(this.postData?._id, date, isShuttleTasksModuleAvailable, isIndividualSubscription)
         .then((res) => {
           this.postData = res['post'];
           // this.dueDate = moment(this.postData?.task?.due_to);
@@ -143,7 +143,7 @@ export class PostDatesComponent implements OnInit, OnChanges {
         });
 
       } else if(property === 'start_date') {
-        this.postService.saveTaskDates(this.postData?._id, date?this.formateDate(date):null, property)
+        this.postService.saveTaskDates(this.postData?._id, date, property)
           .then((res) => {
             this.postData = res['post'];
             // this.startDate = moment(this.postData?.task?.start_date);

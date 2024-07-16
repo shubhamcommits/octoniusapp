@@ -1,4 +1,4 @@
-import moment from 'moment';
+const { DateTime } = require("luxon");
 import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
@@ -84,11 +84,11 @@ const UserSchema = new Schema({
     },
     company_join_date: {
         type: Date,
-        default: moment().format()
+        default: DateTime.now()
     },
     created_date: {
         type: Date,
-        default: moment().format()
+        default: DateTime.now()
     },
     skills: [{
         type: String,

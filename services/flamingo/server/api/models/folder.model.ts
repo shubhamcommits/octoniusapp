@@ -1,4 +1,4 @@
-import moment from 'moment';
+const { DateTime } = require("luxon");
 import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
@@ -10,7 +10,7 @@ const FolderSchema = new Schema({
     },
     created_date: {
         type: Date,
-        default: moment().format()
+        default: DateTime.now()
     },
     _created_by: {
         type: Schema.Types.ObjectId,

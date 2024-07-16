@@ -166,8 +166,7 @@ const minio = require('minio');
               $set: {
                 content: comment.content,
                 _content_mentions: comment._content_mentions,
-                files: comment.files//,
-                //created_date: moment.utc().format()
+                files: comment.files
               }
             }, {
               new: true

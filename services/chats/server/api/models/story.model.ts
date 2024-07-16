@@ -1,4 +1,4 @@
-import moment from 'moment';
+const { DateTime } = require("luxon");
 import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
@@ -74,7 +74,7 @@ const StorySchema = new Schema({
     }],
     event_date: {
         type: Date,
-        default: moment().format()
+        default: DateTime.now()
     },
     event_time: {
         type: String,
@@ -94,7 +94,7 @@ const StorySchema = new Schema({
     created_date: {
         type: Date,
         required: true,
-        default: moment().format()
+        default: DateTime.now()
     }
 });
 

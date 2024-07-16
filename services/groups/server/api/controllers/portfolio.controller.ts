@@ -1,7 +1,7 @@
 import { Column, Group, Portfolio, Post, TimeTrackingEntity, User } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError } from '../../utils';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 
 /*  ===================
  *  -- Portfolio METHODS --
@@ -619,8 +619,8 @@ export class PortfolioController {
 
         const { params: { portfolioId }, query: { numDays } } = req;
 
-        const comparingDate = moment().local().subtract(+numDays, 'days').format('YYYY-MM-DD');
-        const today = moment().subtract(1, 'days').endOf('day').format();
+        const today = DateTime.now();
+        const comparingDate = today.minus({ days: +numDays });
 
         // Only groups where user is manager
         const portfolio = await Portfolio.findOne({ _id: portfolioId })
@@ -631,7 +631,7 @@ export class PortfolioController {
             $and: [
                 { _group: { $in: portfolio?._groups } },
                 { type: 'task' },
-                { 'task.due_to': { $gte: comparingDate } }
+                { 'task.due_to': { $gte: comparingDate.toJSDate() } }
             ]
             })
             .select('task.status')
@@ -705,10 +705,7 @@ export class PortfolioController {
             }
 
             // Generate the actual time
-            const startOfDay = moment().startOf('day').format('YYYY-MM-DD');
-
-            // Generate the +24h time
-            const endOfDay = moment().endOf('day').format('YYYY-MM-DD');
+            const today = DateTime.now();
 
             // Only groups where user is manager
             const portfolio = await Portfolio.findOne({ _id: portfolioId })
@@ -721,7 +718,7 @@ export class PortfolioController {
                         { _assigned_to: userId },
                         { _group: { $in: portfolio?._groups }},
                         { type: 'task' },
-                        { 'task.due_to': { $gte: startOfDay, $lte: endOfDay }},
+                        { 'task.due_to': { $eq: today.toJSDate() }},
                         { 'task.is_template': { $ne: true }},
                         {
                             $or: [
@@ -762,7 +759,7 @@ export class PortfolioController {
             }
 
             // Generate the actual time
-            const today = moment().format('YYYY-MM-DD');
+            const today = DateTime.now();
 
             // Only groups where user is manager
             const portfolio = await Portfolio.findOne({ _id: portfolioId })
@@ -775,7 +772,7 @@ export class PortfolioController {
                         { _assigned_to: userId },
                         { _group: { $in: portfolio?._groups }},
                         { type: 'task' },
-                        { 'task.due_to': { $lt: today }},
+                        { 'task.due_to': { $lt: today.toJSDate() }},
                         { 'task.is_template': { $ne: true }},
                         {
                             $or: [
@@ -817,10 +814,10 @@ export class PortfolioController {
 
             // Fetch this week's task
             // Generate the today
-            const tomorrow = moment().add(1, 'days').startOf('day').format('YYYY-MM-DD');
+            const tomorrow = DateTime.now().pus({ days: 1 });
 
             // Generate the date for the end of the week
-            const endOfWeek = moment().add(1, 'days').endOf('day').endOf('isoWeek').format('YYYY-MM-DD');
+            const endOfWeek = tomorrow.endOf('week');
 
             // Only groups where user is manager
             const portfolio = await Portfolio.findOne({ _id: portfolioId })
@@ -833,7 +830,7 @@ export class PortfolioController {
                         { _assigned_to: userId },
                         { _group: { $in: portfolio?._groups }},
                         { type: 'task' },
-                        { 'task.due_to': { $gte: tomorrow, $lte: endOfWeek }},
+                        { 'task.due_to': { $gte: tomorrow.toJSDate(), $lte: endOfWeek.toJSDate() }},
                         { 'task.is_template': { $ne: true }},
                         {
                             $or: [
@@ -875,10 +872,10 @@ export class PortfolioController {
             }
 
             // Generate the date for the end of the week
-            const endOfWeek = moment().add(1, 'days').endOf('day').endOf('isoWeek').format('YYYY-MM-DD');
+            const endOfWeek = DateTime.now().endOf('week');
 
             // Generate the date for the end of the next week
-            const endOfNextWeek = moment().endOf('isoWeek').add(1, 'days').endOf('day').endOf('isoWeek').format('YYYY-MM-DD');
+            const endOfNextWeek = endOfWeek.plus({ weeks: 1 });
 
             // Only groups where user is manager
             const portfolio = await Portfolio.findOne({ _id: portfolioId })
@@ -891,7 +888,7 @@ export class PortfolioController {
                         { _assigned_to: userId },
                         { _group: { $in: portfolio?._groups }},
                         { type: 'task' },
-                        {'task.due_to': { $gt: endOfWeek, $lte: endOfNextWeek }},
+                        {'task.due_to': { $gt: endOfWeek.toJSDate(), $lte: endOfNextWeek.toJSDate() }},
                         { 'task.is_template': { $ne: true }},
                         {
                             $or: [
@@ -933,7 +930,7 @@ export class PortfolioController {
             }
 
             // Generate the +14days from today time
-            const todayPlus14Days = moment().add(14, 'days').endOf('day').format('YYYY-MM-DD');
+            const todayPlus14Days = DateTime.now().plus({ days: 14 });
 
             const portfolio = await Portfolio.findOne({ _id: portfolioId })
                 .select('_groups')
@@ -948,7 +945,7 @@ export class PortfolioController {
                         { 'task.is_template': { $ne: true }},
                         {
                             $or: [
-                                { 'task.due_to': { $gte: todayPlus14Days }},
+                                { 'task.due_to': { $gte: todayPlus14Days.toJSDate() }},
                                 { 'task.due_to': null }
                             ]
                             

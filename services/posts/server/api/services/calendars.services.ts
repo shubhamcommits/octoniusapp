@@ -1,5 +1,5 @@
 import { Post } from '../models';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 
 /*  =======================
  *  -- Calendar Service --
@@ -21,7 +21,7 @@ export class CalendarService {
     async getMonthTasks(month: any, year: any, groupId: any, userId?: any) {
 
         // current date in view
-        const date = moment().month(parseInt(month)).year(parseInt(year))
+        const date = DateTime.fromObject({ year: parseInt(year), month: parseInt(month)});
 
         // Generate the actual time
         const startOfMonth = date.startOf('month').format();
@@ -76,7 +76,7 @@ export class CalendarService {
     async getMonthEvents(month: any, year: any, groupId: any, userId?: any) {
 
         // current date in view
-        const date = moment().month(parseInt(month)).year(parseInt(year))
+        const date = DateTime.fromObject({ year: parseInt(year), month: parseInt(month)})
 
         // Generate the actual time
         const startOfMonth = date.startOf('month').format();

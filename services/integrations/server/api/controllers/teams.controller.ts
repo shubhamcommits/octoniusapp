@@ -195,7 +195,6 @@ export class TeamsController {
             "task": {
                 "status": "to do",
                 "_column": columnSelection,
-                // "due_to": moment(dueDate).format("YYYY-MM-DD")
                 "due_to": dueDate
             }
         };

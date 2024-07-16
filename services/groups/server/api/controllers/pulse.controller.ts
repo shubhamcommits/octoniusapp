@@ -1,7 +1,7 @@
-import moment from 'moment';
 import { Group, Post } from '../models';
 import { sendError } from '../../utils';
 import { Request, Response, NextFunction } from 'express';
+import { DateTime } from 'luxon';
 
 /*  ===================
  *  -- PULSE METHODS --
@@ -48,7 +48,7 @@ export class PulseController {
                         pulse_description: pulse_description
                     },
                     $push: { "records.pulses": {
-                            date: moment().format(),
+                            date: DateTime.now(),
                             description: pulse_description
                         }
                     }
@@ -145,10 +145,10 @@ export class PulseController {
             const { groupId, status } = req.query;
 
             // Defining Start of week
-            const start = moment().local().startOf('week').format('YYYY-MM-DD');
+            const start = DateTime.now().startOf('week');
 
             // Calculating End date of week
-            const end = moment().local().endOf('week').format('YYYY-MM-DD');
+            const end = DateTime.now().endOf('week');
 
             // Posts array
             let numTasks = 0;
@@ -168,7 +168,7 @@ export class PulseController {
                                     { 'task.status': 'completed' },
                                 ]
                             },
-                            { 'task.due_to': { $gte: start, $lte: end } }
+                            { 'task.due_to': { $gte: start.toJSDate(), $lte: end.toJSDate() } }
                         ]
                     }).countDocuments()
                 }
@@ -179,7 +179,7 @@ export class PulseController {
                             { type: 'task' },
                             { _group: groupId },
                             { 'task.status': status },
-                            { 'task.due_to': { $gte: start, $lte: end } }
+                            { 'task.due_to': { $gte: start.toJSDate(), $lte: end.toJSDate() } }
                         ]
                     }).countDocuments()
                 }
@@ -197,7 +197,7 @@ export class PulseController {
                     $and: [
                         { type: 'task' },
                         { _group: groupId },
-                        { 'task.due_to': { $gte: start, $lte: end } }
+                        { 'task.due_to': { $gte: start.toJSDate(), $lte: end.toJSDate() } }
                     ]
                 }).countDocuments()
 
@@ -226,10 +226,10 @@ export class PulseController {
         try {
 
             // Defining Start of week
-            const start = moment().local().startOf('week').subtract(1, 'weeks').format('YYYY-MM-DD');
+            const start = DateTime.now().startOf('week').minus({ weeks: 1 });
 
             // Calculating End date of week
-            const end = moment().local().endOf('week').subtract(1, 'weeks').format('YYYY-MM-DD');
+            const end = DateTime.now().endOf('week').minus({ weeks: 1 });
 
             // If status is not 'done' then fetch the respectives
             const numTasks = await Post.find({
@@ -237,7 +237,7 @@ export class PulseController {
                     { type: 'task' },
                     { _group: groupId },
                     { $or: [{ 'task.status': 'to do' }, { 'task.status': 'in progress' }] },
-                    { 'task.due_to': { $gte: start, $lte: end } }
+                    { 'task.due_to': { $gte: start.toJSDate(), $lte: end.toJSDate() } }
                 ]
             }).countDocuments()
 
@@ -262,7 +262,7 @@ export class PulseController {
         try {
             const { workspaceId, period } = req.query;
             
-            const comparingDate = moment().local().subtract(+period, 'days').format('YYYY-MM-DD');
+            const comparingDate = DateTime.now().minus({ days: +period });
 
             const groups = await Group.find({
                 $and: [
@@ -270,7 +270,7 @@ export class PulseController {
                     { group_name: { $ne: 'private' } },
                     { project_type: true },
                     { _workspace: workspaceId },
-                    { created_date: { $gte: comparingDate } }
+                    { created_date: { $gte: comparingDate.toJSDate() } }
                 ]
             })
                 .sort('_id')
@@ -304,7 +304,7 @@ export class PulseController {
         try {
             const { groupId, period, status } = req.query;
 
-            const comparingDate = moment().local().subtract(+period, 'days').format('YYYY-MM-DD');
+            const comparingDate = DateTime.now().minus({ days: +period });
 
             // Posts array
             let numTasks = 0;
@@ -321,7 +321,7 @@ export class PulseController {
                                     { 'task.status': 'completed' },
                                 ]
                             },
-                            { 'task.due_to': { $gte: comparingDate } }
+                            { 'task.due_to': { $gte: comparingDate.toJSDate() } }
                         ]
                     }).countDocuments()
                 } else {
@@ -330,7 +330,7 @@ export class PulseController {
                             { type: 'task' },
                             { 'task.status': status },
                             { _group: groupId },
-                            { 'task.due_to': { $gte: comparingDate } }
+                            { 'task.due_to': { $gte: comparingDate.toJSDate() } }
                         ]
                     }).countDocuments();
                 }
@@ -339,7 +339,7 @@ export class PulseController {
                     $and: [
                         { type: 'task' },
                         { _group: groupId },
-                        { 'task.due_to': { $gte: comparingDate } }
+                        { 'task.due_to': { $gte: comparingDate.toJSDate() } }
                     ]
                 }).countDocuments()
             }
@@ -417,7 +417,7 @@ export class PulseController {
        try {
             const { workspaceId, filteringGroups, period } = req.query;
 
-            const comparingDate = moment().local().subtract(+period, 'days').toDate();
+            const comparingDate = DateTime.now().minus({ days: +period });
 
             let numPulse = 0;
 
@@ -447,7 +447,7 @@ export class PulseController {
 
                 for (let group of groups) {
                     for (let pulse of group['records']['pulses']) {
-                        if (pulse['date'].getTime() >= comparingDate.getTime()) {
+                        if (DateTime.fromISO(pulse['date']).toMillis() >= comparingDate.toMillis()) {
                             numPulse++;
                         }
                     }
