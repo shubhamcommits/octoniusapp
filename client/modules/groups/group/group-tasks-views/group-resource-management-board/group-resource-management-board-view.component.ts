@@ -217,7 +217,7 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
     if (type == 'add') {
       this.currentDate = this.currentDate.plus({ days: numDays })
     } else if (type == 'sub') {
-      this.currentDate = this.currentDate.plus({ days: -numDays })
+      this.currentDate = this.currentDate.minus({ days: numDays })
     } else if (type == 'today') {
       this.currentDate = DateTime.now();
     }

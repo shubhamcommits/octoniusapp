@@ -257,7 +257,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
       if (type == 'add') {
         this.currentDate = this.currentDate.plus({ days: 7 })
       } else if (type == 'sub') {
-        this.currentDate = this.currentDate.plus({ days: -7 })
+        this.currentDate = this.currentDate.minus({ days: 7 })
       } else if (type == 'today') {
         this.currentDate = DateTime.now();
       }
@@ -265,7 +265,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
       if (type == 'add') {
         this.currentDate = this.currentDate.plus({ days: 30 })
       } else if (type == 'sub') {
-        this.currentDate = this.currentDate.plus({ days: -30 })
+        this.currentDate = this.currentDate.minus({ days: 30 })
       } else if (type == 'today') {
         this.currentDate = DateTime.now();
       }

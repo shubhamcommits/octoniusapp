@@ -233,7 +233,7 @@ export class ResourcesDetailsDialogComponent implements OnInit {
     
     let datesRet = [];
     for (let i = 6; i >= 0; i--) {
-      datesRet.push(currentDate.plus({ days: -i }));
+      datesRet.push(currentDate.minus({ days: i }));
     }
 
     return datesRet;
