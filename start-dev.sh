@@ -4,29 +4,29 @@
 
 echo -e "\n \t ============================ |- Welcome to Octonius Development Server -| ========================== \n"
 echo -e "\t Kindly choose the package manager below to start the application locally(type the option number)..."
-echo "  1) npm"
-echo "  2) yarn"
+echo "  1) yarn"
+echo "  2) npm"
 
 read n
 
 case $n in
-  1) echo "You have selected npm as your package manager";;
-  2) echo "You have selected yarn as your package manager";;
-  *) echo "Default option 'npm' is selected";;
+  1) echo "You have selected yarn as your package manager";;
+  2) echo "You have selected npm as your package manager";;
+  *) echo "Default option 'yarn' is selected";;
 esac
 
 # Package Manager Variable
-packageManager="npm"
+packageManager="yarn"
 
 # Checking if Selected package manager is npm
 if [ "$n" == 2 ]
 
 then
-    packageManager="yarn"
+    packageManager="npm"
 
 # Else package manager is npm
 else
-    packageManager="npm"
+    packageManager="yarn"
 
 fi
     # Assign Current workdir
