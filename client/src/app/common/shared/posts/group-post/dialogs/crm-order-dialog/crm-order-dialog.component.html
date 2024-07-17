@@ -19,108 +19,137 @@
                 <!-- Post Title ends -->
               </h4>
         
+              <app-post-actions [post]="postData" [userData]="userData" [fullscreen]="true" [groupData]="groupData"
+                [canEdit]="canEdit" [isCRMCard]="true">
+              </app-post-actions>
+        
               <app-post-utils *ngIf="userData" [post]="postData" [userData]="userData" [groupData]="groupData"
                 [canEdit]="canEdit" mode="fullscreen" (delete)="deletePost()">
               </app-post-utils>
             </div>
             <!-- Post Header Title ends -->
+
+            <!-- TABS STARTS -->
+            <mat-tab-group mat-align-tabs="start" [selectedIndex]="selectedTab">
+              <!-- CRM Order STARTS-->
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <span i18n="@@crmOrderDialog.products">Products</span>
+                </ng-template>
+
+                <ng-template matTabContent>
+                  <app-crm-order-products
+                    [orders]="postData?.crm?.orders"
+                    [postId]="postData?._id"
+                    [groupData]="groupData"></app-crm-order-products>
+                </ng-template>
+              </mat-tab>
+              <!-- CRM Order ENDS-->
+
+              <!-- comment-list STARTS-->
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <span i18n="@@crmOrderDialog.comments">Comments</span>
+                </ng-template>
+
+                <ng-template matTabContent>
+                  <div class="row">
+                    <button class="btn btn-primary" (click)="showCommentQuillEditor = !showCommentQuillEditor"
+                    [disabled]="!canEdit">
+                      <i class="material-icons-outlined">add</i>
+                      <span i18n="@@crmOrderDialog.newComment">New Comment</span>
+                    </button>
+                  </div>
+                  
+                  <comment-section *ngIf="showCommentQuillEditor && userData" [userData]="userData" [editorId]="postData._id"
+                    [postId]="postData?._id" [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
+                    [groupId]="(postData?._group || postData._group._id)" (comment)="newCommentAdded($event)"
+                    (close)="showCommentQuillEditor = !showCommentQuillEditor">
+                  </comment-section>
+
+                  <app-comment-list
+                    [postId]="postData?._id"
+                    [userData]="userData"
+                    [groupId]="postData?._group?._id || postData?._group"
+                    [length]="postData?.comments_count"
+                    [newComment]="newComment"></app-comment-list>
+                </ng-template>
+              </mat-tab>
+              <!-- comment-list ENDS-->
+            
+              <!-- content STARTS-->
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <span i18n="@@crmOrderDialog.timeTracking">Content</span>
+                </ng-template>
+            
+                <ng-template matTabContent>
+                  <!-- Post Content starts -->
+                  <app-quill-editor *ngIf="canEdit" [editorId]="'postbox-editor'" [toolbar]="canEdit" [readOnly]="!canEdit"
+                    [contents]="postData?.content" [groupId]="groupId" (content)="quillContentChanged($event)">
+                  </app-quill-editor>
+                  <!-- Post Content ends -->
+                </ng-template>
+              </mat-tab>
+              <!-- content ENDS-->
+
+              <!-- time-tracking STARTS-->
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <span i18n="@@crmOrderDialog.timeTracking">Time tracking</span>
+                </ng-template>
+
+                <ng-template matTabContent>
+                  <app-task-time-tracking
+                    [userId]="userData?._id"
+                    [groupId]="groupData?._id"
+                    [postData]="postData">
+                  </app-task-time-tracking>
+                </ng-template>
+              </mat-tab>
+              <!-- time-tracking ENDS-->
+
+              <!-- TASK CHANGES HISTORY STARTS-->
+              <mat-tab *ngIf="postData?.logs && postData?.logs?.length > 0">
+                <ng-template mat-tab-label>
+                  <span i18n="@@crmOrderDialog.changeLog">Change Log</span>
+                </ng-template>
+
+                <ng-template matTabContent>
+                  <app-post-logs [logs]="postData?.logs"></app-post-logs>
+                </ng-template>
+              </mat-tab>
+              <!-- TASK CHANGES HISTORY ENDS-->
+            </mat-tab-group>
+            <!-- TABS ENDS -->
         
-            <!-- Post Content starts -->
-            <app-quill-editor *ngIf="canEdit" [editorId]="'postbox-editor'" [toolbar]="canEdit" [readOnly]="!canEdit"
-              [contents]="postData?.content" [groupId]="groupId" (content)="quillContentChanged($event)">
-            </app-quill-editor>
-            <!-- Post Content ends -->
-        
-            <!-- Attach files starts -->
             <div class="attach-files">
+              <!-- Attach files starts -->
               <app-attach-files [post]="postData" (files)="onAttach($event)" (cloudFiles)="onCloudFileAttach($event)">
               </app-attach-files>
+              <!-- Attach files ends -->
+
+              <div class="clearfix save-content">
+                <button *ngIf="canEdit" [disabled]="!contentChanged"
+                  class="btn float-right btn-primary btn-md"
+                  (click)="updateDetails('change_content')" i18n="@@crmOrderDialog.save">
+                    Save
+                </button>
             </div>
-            <!-- Attach files ends -->
-
-            <app-post-actions [post]="postData" [userData]="userData" [fullscreen]="true" [groupData]="groupData"
-              [canEdit]="canEdit" (newCommentEmitter)="newCommentAdded($event)">
-            </app-post-actions>
+            </div>
           </div>
-        </div>
-
-        <div class="clearfix save-content">
-            <button *ngIf="canEdit" [disabled]="!contentChanged"
-              class="btn float-right btn-primary btn-md"
-              (click)="updateDetails('change_content')" i18n="@@crmOrderDialog.save">
-                Save
-            </button>
-        </div>
-
-        <div class="content-box">
-          <!-- TABS STARTS -->
-          <mat-tab-group mat-align-tabs="start" [selectedIndex]="selectedTab">
-            <!-- CRM Order STARTS-->
-            <mat-tab>
-              <ng-template mat-tab-label>
-                <span i18n="@@crmOrderDialog.products">Products</span>
-              </ng-template>
-
-              <ng-template matTabContent>
-                <app-crm-order-products
-                  [orders]="postData?.crm?.orders"
-                  [postId]="postData?._id"
-                  [groupData]="groupData"></app-crm-order-products>
-              </ng-template>
-            </mat-tab>
-            <!-- CRM Order ENDS-->
-
-            <!-- comment-list STARTS-->
-            <mat-tab>
-              <ng-template mat-tab-label>
-                <span i18n="@@crmOrderDialog.comments">Comments</span>
-              </ng-template>
-
-              <ng-template matTabContent>
-                <app-comment-list
-                  [postId]="postData?._id"
-                  [userData]="userData"
-                  [groupId]="postData?._group?._id || postData?._group"
-                  [length]="postData?.comments_count"
-                  [newComment]="newComment"></app-comment-list>
-              </ng-template>
-            </mat-tab>
-            <!-- comment-list ENDS-->
-
-            <!-- time-tracking STARTS-->
-            <mat-tab>
-              <ng-template mat-tab-label>
-                <span i18n="@@crmOrderDialog.timeTracking">Time tracking</span>
-              </ng-template>
-
-              <ng-template matTabContent>
-                <app-task-time-tracking
-                  [userId]="userData?._id"
-                  [groupId]="groupData?._id"
-                  [postData]="postData">
-                </app-task-time-tracking>
-              </ng-template>
-            </mat-tab>
-            <!-- time-tracking ENDS-->
-
-            <!-- TASK CHANGES HISTORY STARTS-->
-            <mat-tab *ngIf="postData?.logs && postData?.logs?.length > 0">
-              <ng-template mat-tab-label>
-                <span i18n="@@crmOrderDialog.changeLog">Change Log</span>
-              </ng-template>
-
-              <ng-template matTabContent>
-                <app-post-logs [logs]="postData?.logs"></app-post-logs>
-              </ng-template>
-            </mat-tab>
-            <!-- TASK CHANGES HISTORY ENDS-->
-          </mat-tab-group>
-          <!-- TABS ENDS -->
         </div>
     </div>
 
     <!-- Top Right Section starts -->
     <div class="post-properties">
+        <!-- CRM Lead Card starts -->
+        <div class="content-box">
+          <app-crm-lead-card [postData]="postData" [userData]="userData"
+            [groupData]="groupData" [isAdmin]="canEdit"></app-crm-lead-card>
+        </div>
+        <!-- CRM Lead Card ends -->
+
         <!-- Status starts -->
         <div class="content-box" *ngIf="postData && !postData?.task?.isNorthStar && postData?.type === 'task'">
           <p class="box-title"i18n="@@crmOrderDialog.taskStatus"> Task Status</p>
@@ -216,13 +245,6 @@
               </div>
             </div>
         </div>
-
-        <!-- CRM Lead Card starts -->
-        <div class="content-box">
-          <app-crm-lead-card [postData]="postData" [userData]="userData"
-            [groupData]="groupData" [isAdmin]="canEdit"></app-crm-lead-card>
-        </div>
-        <!-- CRM Lead Card ends -->
 
         <div class="content-box" *ngIf="postData?._group && customFields?.length > 0">
             <p class="box-title" i18n="@@crmOrderDialog.customFields">Custom fields</p>

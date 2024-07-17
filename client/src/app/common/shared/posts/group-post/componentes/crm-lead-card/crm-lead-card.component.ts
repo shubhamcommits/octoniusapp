@@ -163,8 +163,14 @@ export class CRMLeadCardComponent implements OnChanges {
 
   searchCompany() {
     this.crmGroupService.searchCRMCompanies(this.groupData._id, this.companySearchText).then(res => {
-        this.companySearchResults = res['companies'];
-      });
+      this.companySearchResults = res['companies'];
+      const index = (!!this.companySearchResults) ? this.companySearchResults.findIndex(comp => comp.name === this.companySearchText) : -1;
+      if (index < 0) {
+        this.companySearchResults.unshift({
+          name: this.companySearchText
+        });
+      }
+    });
   }
 
   searchContact() {
@@ -173,6 +179,13 @@ export class CRMLeadCardComponent implements OnChanges {
           const index = this.postData.crm._contacts.findIndex((c: any) => c._id === contact._id);
           return index < 0;
         });
+
+        const index = (!!this.contactSearchResults) ? this.contactSearchResults.findIndex(cont => cont.name === this.contactSearchText) : -1;
+        if (index < 0 && !!this.postData.crm._company) {
+          this.contactSearchResults.unshift({
+            name: this.contactSearchText
+          });
+        }
       });
   }
 	
@@ -195,6 +208,50 @@ export class CRMLeadCardComponent implements OnChanges {
         .catch(() => {
           reject(this.utilityService.rejectAsyncPromise($localize`:@@crmLeadCard.unableToUpdateDetails:Unable to update the details, please try again!`));
         });
+    }));
+  }
+
+  async createCompany(company: any) {
+    await this.utilityService.asyncNotification($localize`:@@crmLeadCard.plesaeWaitWeAreCreatingCompany:Please wait we are creating the company and updating the contents...`, new Promise((resolve, reject) => {
+      let companyToCreate = {
+          name: company.name,
+          description: '',
+          _group: this.groupData?._id
+        };
+
+        this.crmGroupService.createCRMCompany(companyToCreate).then(res => {
+          this.selectCompany(res['company']);
+
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@crmLeadCard.detailsUpdated:Details updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@crmLeadCard.unableToUpdateDetails:Unable to update the details, please try again!`));
+        });
+    }));
+  }
+
+  async createContact(contact: any) {
+    await this.utilityService.asyncNotification($localize`:@@crmLeadCard.plesaeWaitWeAreCreatingContact:Please wait we are creating the contact and updating the contents...`, new Promise((resolve, reject) => {
+      let contactToSave: any = {
+        name: contact?.name,
+        _group: this.groupData?._id,
+        _company: this.postData.crm._company,
+        phones: [],
+        emails: [],
+        links: [],
+        position: ''
+      };
+
+      this.crmGroupService.createCRMContact(contactToSave).then(res => {
+        this.selectContact(res['contact']);
+
+        // Resolve with success
+        resolve(this.utilityService.resolveAsyncPromise($localize`:@@crmLeadCard.detailsUpdated:Details updated!`));
+      })
+      .catch(() => {
+        reject(this.utilityService.rejectAsyncPromise($localize`:@@crmLeadCard.unableToUpdateDetails:Unable to update the details, please try again!`));
+      });
     }));
   }
 

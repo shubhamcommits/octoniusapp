@@ -6,8 +6,8 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { BehaviorSubject } from 'rxjs';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
-import moment from 'moment';
-import { ColumnService } from 'src/shared/services/column-service/column.service';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-crm-task-dialog',
@@ -94,6 +94,9 @@ export class CRMTaskDialogComponent implements OnInit/*, AfterViewChecked, After
   cfSearchText = '';
   cfSearchPlaceholder = $localize`:@@crmTaskDialog.cfSearchPlaceholder:Search`;
 
+  // Show Comment Editor Variable
+  showCommentQuillEditor = false;
+
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
 
@@ -106,7 +109,7 @@ export class CRMTaskDialogComponent implements OnInit/*, AfterViewChecked, After
     private postService: PostService,
     private groupService: GroupService,
     private flowService: FlowService,
-    private columnService: ColumnService,
+    private datesService: DatesService,
     private injector: Injector,
     private mdDialogRef: MatDialogRef<CRMTaskDialogComponent>
     ) {}
@@ -172,13 +175,15 @@ export class CRMTaskDialogComponent implements OnInit/*, AfterViewChecked, After
     if ((this.postData?.task.due_to && this.postData?.task.due_to != null)
       || (this.postData?.event.due_to && this.postData?.event.due_to != null)) {
       // Set the DueDate variable
-      this.dueDate = moment(this.postData?.task.due_to || this.postData?.event.due_to);
+      // this.dueDate = moment(this.postData?.task.due_to || this.postData?.event.due_to);
+      this.dueDate = DateTime.fromISO(this.postData?.task.due_to || this.postData?.event.due_to);
     }
 
     // Set the due date variable for task
     if (this.postData?.task.start_date && this.postData?.task.start_date != null) {
       // Set the DueDate variable
-      this.startDate = moment(this.postData?.task.start_date);
+      // this.startDate = moment(this.postData?.task.start_date);
+      this.startDate = DateTime.fromISO(this.postData?.task.start_date);
     }
 
     this.setAssignedBy();
@@ -310,8 +315,9 @@ export class CRMTaskDialogComponent implements OnInit/*, AfterViewChecked, After
   }
 
   newCommentAdded(comment) {
-    // this.comments.unshift(comment);
+    this.postData.comments_count++;
     this.newComment = comment;
+    this.showCommentQuillEditor = !this.showCommentQuillEditor
   }
 
   /**
@@ -457,7 +463,7 @@ export class CRMTaskDialogComponent implements OnInit/*, AfterViewChecked, After
     if (this.postData?.logs && this.postData?.logs?.length > 0) {
       const logs = this.postData?.logs
         .filter(log => (log.action == 'assigned_to' || log.action == 'removed_assignee') && log?._actor)
-        .sort((l1, l2) => (moment(l1.action_date).isBefore(l2.action_date)) ? 1 : -1);
+        .sort((l1, l2) => (this.datesService.isBefore(l1.action_date, l2.action_date)) ? 1 : -1);
 
       if (logs[0]) {
         this.lastAssignedBy = await this.publicFunctions.getOtherUser(logs[0]._actor?._id);
