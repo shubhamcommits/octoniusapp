@@ -7,10 +7,10 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { retry } from 'rxjs/internal/operators/retry';
 import { PostService } from 'src/shared/services/post-service/post.service';
-import moment from 'moment';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivityFiltersComponent } from '../activity-filters/activity-filters.component';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-group-activity-feed',
@@ -68,6 +68,7 @@ export class GroupActivityFeedComponent implements OnInit {
     public utilityService: UtilityService,
     private socketService: SocketService,
     private postService: PostService,
+    private datesService: DatesService,
     public dialog: MatDialog
   ) {
 
@@ -429,12 +430,12 @@ export class GroupActivityFeedComponent implements OnInit {
       }
     }
     this.pinnedPosts.sort((p1, p2) => {
-        return (moment.utc(p1.created_date).isBefore(p2.created_date)) ? -1 : 1;
+        return (this.datesService.isBefore(p1.created_date, p2.created_date)) ? -1 : 1;
       });
 
     if (!(this.filters && this.filters['numLikes'] && +(this.filters['numLikes']) > 0)) {
       this.posts = this.posts.sort((p1, p2) => {
-        return (moment.utc(p1['created_date']).isBefore(p2['created_date'])) ? -1 : 1;
+        return (this.datesService.isBefore(p1['created_date'], p2['created_date'])) ? -1 : 1;
       });
     }
   }

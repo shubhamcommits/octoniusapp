@@ -5,7 +5,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { io } from 'socket.io-client';
 import { environment } from 'src/environments/environment';
 import { ChatService } from 'src/shared/services/chat-service/chat.service';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import { RemoteVideoComponent } from '../remote-video/remote-video.component';
 
 @Component({
@@ -149,7 +149,7 @@ export class VideoCallDialog implements OnInit {//, AfterViewInit {
 
     this.chatData.members.push({
       _user: member,
-      joined_on: moment(),
+      joined_on: DateTime.now(),
       is_admin: false
     });
 

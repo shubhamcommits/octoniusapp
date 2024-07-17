@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Inject, Injector, OnInit, Output } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
@@ -62,7 +62,7 @@ export class NewNorthStarDialogComponent implements OnInit {
     if (this.postTitle &&  this.postTitle != '') {
       // Prepare Post Data
       let postData: any;
-      const today = moment().format();
+      const today = DateTime.now();
 
       postData = {
         title: this.postTitle,

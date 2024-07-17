@@ -59,7 +59,7 @@
               "chart.js",
               "file-saver",
               "sweetalert2",
-              "moment",
+              "luxon",
               "quill",
               "quill-image-compress",
               "quill-to-pdf",

@@ -13,15 +13,9 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { MAT_DATE_FORMATS, DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
-import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
-
-import * as _moment from 'moment';
-// tslint:disable-next-line:no-duplicate-imports
-import {default as _rollupMoment} from 'moment';
+import { LuxonDateAdapter, MAT_LUXON_DATE_ADAPTER_OPTIONS } from '@angular/material-luxon-adapter';
 import { PublicFunctions } from 'modules/public.functions';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
-
-const moment = _rollupMoment || _moment;
 
 const INLINE_EDIT_CONTROL_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -48,8 +42,8 @@ export const MY_FORMATS = {
     INLINE_EDIT_CONTROL_VALUE_ACCESSOR,
     {
       provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [ MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS ]
+      useClass: LuxonDateAdapter,
+      deps: [ MAT_DATE_LOCALE, MAT_LUXON_DATE_ADAPTER_OPTIONS ]
     },
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ],
@@ -111,7 +105,6 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges, On
     private renderer: Renderer2,
     public utilityService: UtilityService,
     private postService: PostService,
-    private managementPortalService: ManagementPortalService,
     private injector: Injector
     ) {
   }
@@ -181,7 +174,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges, On
   async updateDate(date, property) {
     await this.utilityService.asyncNotification($localize`:@@inlineInput.pleaseWaitUpdatingContent:Please wait we are updating the contents...`, new Promise(async (resolve, reject) => {
       if (property === 'due_date') {
-        this.postService.changeTaskDueDate(this.domainObject._id, moment(date).format('YYYY-MM-DD'), this.isShuttleTasksModuleAvailable, this.isIndividualSubscription)
+        this.postService.changeTaskDueDate(this.domainObject._id, date.toJSDate(), this.isShuttleTasksModuleAvailable, this.isIndividualSubscription)
           .then((res) => {
             // Emit the post to other components
             this.post.emit({post: res['post']});
@@ -193,7 +186,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges, On
             reject(this.utilityService.rejectAsyncPromise($localize`:@@inlineInput.unableToUpdateDate:Unable to update the date, please try again!`));
           });
       } else if(property === 'start_date') {
-        this.postService.saveTaskDates(this.domainObject._id, moment(date).format('YYYY-MM-DD'), property)
+        this.postService.saveTaskDates(this.domainObject._id, date.toJSDate(), property)
           .then((res) => {
             this.domainObject = res['post'];
             // Resolve with success

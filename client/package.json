@@ -42,7 +42,7 @@
     "@angular/core": "^17.3.11",
     "@angular/forms": "^17.3.11",
     "@angular/material": "^17.3.10",
-    "@angular/material-moment-adapter": "^17.3.10",
+    "@angular/material-luxon-adapter": "^17.3.10",
     "@angular/platform-browser": "^17.3.11",
     "@angular/platform-browser-dynamic": "^17.3.11",
     "@angular/router": "^17.3.11",
@@ -63,7 +63,6 @@
     "highlight.js": "^11.2.0",
     "leader-line": "^1.0.5",
     "luxon": "^3.1.0",
-    "moment": "^2.24.0",
     "ng2-charts": "^5.0.0",
     "ngx-doc-viewer": "^2.1.2",
     "ngx-image-cropper": "^6.1.0",
@@ -115,7 +114,6 @@
     "typescript": "5.4.5"
   },
   "resolutions": {
-    "@babel/preset-env": "~7.24.8",
-    "moment": "2.24.0"
+    "@babel/preset-env": "~7.24.8"
   }
 }

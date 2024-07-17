@@ -46,7 +46,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { PreviewFilesDialogComponent } from './preview-files-dialog/preview-files-dialog.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { InlineInputComponent } from './inline-input/inline-input.component';
-import { MomentDateModule } from '@angular/material-moment-adapter';
+import { LuxonDateModule } from '@angular/material-luxon-adapter';
 import { TruncateTextPipe } from 'src/shared/pipes/truncate-text.pipe';
 import { NgChartsModule, ThemeService } from 'ng2-charts';
 
@@ -291,7 +291,7 @@ import { EventPostDialogComponent } from './posts/group-post/dialogs/event-post-
         ImageCropperModule,
         RouterModule,
         NgxDocViewerModule,
-        MomentDateModule,
+        LuxonDateModule,
         NgChartsModule,
         ResizableModule,
         MatMenuModule,

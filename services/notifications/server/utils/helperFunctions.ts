@@ -89,7 +89,6 @@ function sendNewMessageNotification(message: any, userId: string, chatId: string
  */
 async function notifyRelatedUsers(io: any, socket: any, data: any) {
     try {
-
         let post: any = data, comment: any;
         // we had a problem that the flow got interrupted because of the db search
         //  by adding type property (at the moment post or comment) to data  we can specify which database to search through

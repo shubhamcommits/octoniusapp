@@ -52,7 +52,7 @@ export class PostCRMOrderProductsComponent implements OnInit, OnDestroy, AfterCo
 		// this.userData = await this.publicFunctions.getCurrentUser();
 
 		await this.crmGroupService.getGroupCRMInformation(this.groupData?._id).then(res => {
-			this.crmProductCustomFields = res['crm_custom_fields'].filter(cf => cf.type == 'product');
+			this.crmProductCustomFields = res['crm_custom_fields']?.filter(cf => cf.type == 'product');
 		});
 
 		await this.initOrderTable();

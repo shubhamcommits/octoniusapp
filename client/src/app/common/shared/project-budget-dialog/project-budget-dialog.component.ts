@@ -2,10 +2,11 @@ import { Component, EventEmitter, Inject, Injector, OnInit, Output } from '@angu
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ChartConfiguration, ChartData } from 'chart.js';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
 import { CountryCurrencyService } from 'src/shared/services/country-currency/country-currency.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-project-budget-dialog',
@@ -22,7 +23,7 @@ export class ProjectBudgetDialogComponent implements OnInit {
   expense: any = {
     amount: 0,
     reason: '',
-    date: moment().format(),
+    date: DateTime.now(),
     _user: null
   };
 
@@ -70,6 +71,7 @@ export class ProjectBudgetDialogComponent implements OnInit {
   constructor(
     public utilityService: UtilityService,
     private columnService: ColumnService,
+    private datesService: DatesService,
     private countryCurrencyService: CountryCurrencyService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<ProjectBudgetDialogComponent>,
@@ -257,7 +259,7 @@ export class ProjectBudgetDialogComponent implements OnInit {
     this.expense = {
       amount: 0,
       reason: '',
-      date: moment().format(),
+      date: DateTime.now(),
       _user: this.currentUser
     };
 
@@ -289,7 +291,7 @@ export class ProjectBudgetDialogComponent implements OnInit {
   }
 
   formateDate(date: any, format: string) {
-    return date ? moment.utc(date).format(format) : '';
+    return this.datesService.formateDate(date, format);
   }
 
   calculateTotalSpent() {

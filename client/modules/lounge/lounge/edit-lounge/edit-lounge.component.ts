@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter, Inject, Injector  } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Inject, Injector  } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import { LoungeService } from 'src/shared/services/lounge-service/lounge.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
@@ -98,7 +98,7 @@ export class EditLoungeComponent implements OnInit {
         _parent: parent,
         _workspace: this.workspaceData._id,
         _posted_by: this.userData._id,
-        created_date: moment().format()
+        created_date: DateTime.now()
       }
 
       this.utilityService.asyncNotification($localize`:@@editLounge.pleaseWaitWeAddLounge:Please wait we are adding the lounge...`,

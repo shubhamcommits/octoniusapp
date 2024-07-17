@@ -6,10 +6,10 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { environment } from 'src/environments/environment';
 import { LoungeService } from 'src/shared/services/lounge-service/lounge.service';
 import { MatDialog } from '@angular/material/dialog';
-import moment from 'moment';
 import { EditLoungeComponent } from '../lounge/edit-lounge/edit-lounge.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoungeImageUpdateComponent } from '../lounge-image-update/lounge-image-update.component';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-lounge-details',
@@ -46,9 +46,10 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private injector: Injector,
     public dialog: MatDialog,
-    private router: ActivatedRoute,
     private _router: Router,
-    private loungeService: LoungeService
+    private router: ActivatedRoute,
+    private loungeService: LoungeService,
+    private datesService: DatesService
   ) {
     this.loungeId = this.router.snapshot.queryParamMap.get('lounge');
   }
@@ -98,7 +99,7 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
     }
 
     this.loungeData.items.sort((t1, t2) => {
-      if (moment.utc(t1.created_date).isBefore(t2.created_date)) {
+      if (this.datesService.isBefore(t1.created_date, t2.created_date)) {
         return 1;
       } else {
         return -1;

@@ -1,6 +1,6 @@
 import { Component, Injector, Input, OnDestroy, OnChanges, OnInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
 
@@ -27,6 +27,7 @@ export class ShuttleTaskComponent implements OnChanges, OnInit, OnDestroy {
 
   constructor(
     public utilityService: UtilityService,
+    private datesService: DatesService,
     private injector: Injector,
   ) { }
 
@@ -43,7 +44,7 @@ export class ShuttleTaskComponent implements OnChanges, OnInit, OnDestroy {
 
       // order shuttles based on the date shuttled
       this.postData.task.shuttles = await this.postData?.task?.shuttles.sort((s1, s2) => {
-          return (moment.utc(s1?.shuttled_at).isBefore(s2.shuttled_at)) ? 1 : -1;
+          return (this.datesService.isBefore(s1?.shuttled_at, s2.shuttled_at)) ? 1 : -1;
         });
 
     } else {

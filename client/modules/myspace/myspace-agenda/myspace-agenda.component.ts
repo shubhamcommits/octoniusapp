@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild, TemplateRef, Injector, Input } from '@angular/core';
 import { UserService } from 'src/shared/services/user-service/user.service';
-import moment from 'moment/moment';
+import { DateTime } from 'luxon';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-myspace-agenda',
@@ -18,7 +19,7 @@ export class MyspaceAgendaComponent implements OnInit {
 
   thisWeekTimelineEvents: any = [];
 
-  now: string = moment().format();
+  now: DateTime = DateTime.now();
 
   userData: any;
 
@@ -32,6 +33,7 @@ export class MyspaceAgendaComponent implements OnInit {
   constructor(
     private userService: UserService,
     private injector: Injector,
+    private datesService: DatesService,
     public utilityService: UtilityService) {
 
   }
@@ -107,15 +109,16 @@ export class MyspaceAgendaComponent implements OnInit {
   }
 
   isTimelineEventExpired(eventDueTo) {
-    return moment(moment(eventDueTo)).isBefore(moment(this.now));
+    return this.datesService.isBefore(DateTime.fromISO(eventDueTo), this.now);
   }
 
   isTimelineEventInFuture(eventDueTo) {
-    return moment(moment(eventDueTo)).isAfter(moment(this.now));
+    return this.datesService.isBefore(eventDueTo, this.now);
   }
 
   isTimelineEventInPresent(eventDueTo) {
-    return moment(moment(eventDueTo)).isBetween(moment(this.now), moment(this.now).add(moment(eventDueTo).minute(), 'minutes'));
+    return this.datesService.isSameDay(DateTime.fromISO(eventDueTo), this.now);
+    // return moment(moment(eventDueTo)).isBetween(moment(this.now), moment(this.now).add(moment(eventDueTo).minute(), 'minutes'));
   }
 
   updateEvent(post) {

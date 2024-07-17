@@ -6,8 +6,9 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { BehaviorSubject } from 'rxjs';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-task-dialog',
@@ -125,6 +126,7 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
     private groupService: GroupService,
     private flowService: FlowService,
     private columnService: ColumnService,
+    private datesService: DatesService,
     private injector: Injector,
     private mdDialogRef: MatDialogRef<TaskDialogComponent>
     ) {}
@@ -202,13 +204,13 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
     if ((this.postData?.task.due_to && this.postData?.task.due_to != null)
       || (this.postData?.event.due_to && this.postData?.event.due_to != null)) {
       // Set the DueDate variable
-      this.dueDate = moment(this.postData?.task.due_to || this.postData?.event.due_to);
+      this.dueDate = DateTime.fromISO(this.postData?.task.due_to || this.postData?.event.due_to);
     }
 
     // Set the due date variable for task
     if (this.postData?.task.start_date && this.postData?.task.start_date != null) {
       // Set the DueDate variable
-      this.startDate = moment(this.postData?.task.start_date);
+      this.startDate = DateTime.fromISO(this.postData?.task.start_date);
     }
 
     this.setAssignedBy();
@@ -281,7 +283,7 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
 
   sortNSValues() {
     if (!!this.postData?.task?.northStar?.values) {
-      this.postData.task.northStar.values = this.postData?.task?.northStar?.values?.sort((v1, v2) => (moment.utc(v1.date).isBefore(moment.utc(v2.date))) ? 1 : -1)
+      this.postData.task.northStar.values = this.postData?.task?.northStar?.values?.sort((v1, v2) => (this.datesService.isBefore(v1.date, v2.date)) ? 1 : -1)
     }
   }
 
@@ -581,7 +583,7 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
     if (this.postData?.logs && this.postData?.logs?.length > 0) {
       const logs = this.postData?.logs
         .filter(log => (log.action == 'assigned_to' || log.action == 'removed_assignee') && log?._actor)
-        .sort((l1, l2) => (moment(l1.action_date).isBefore(l2.action_date)) ? 1 : -1);
+        .sort((l1, l2) => (this.datesService.isBefore(l1.action_date, l2.action_date)) ? 1 : -1);
 
       if (logs[0]) {
         this.lastAssignedBy = await this.publicFunctions.getOtherUser(logs[0]._actor?._id);

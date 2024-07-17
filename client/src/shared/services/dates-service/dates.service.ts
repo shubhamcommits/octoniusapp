@@ -54,4 +54,16 @@ export class DatesService {
       return false;
     }
   }
+
+  isSameMonth(day1: any, day2: any) {
+    if (!!day1 && !!day2) {
+      if (day1 instanceof DateTime && day2 instanceof DateTime) {
+        return day1.month == day2.month;
+      } else {
+        return DateTime.fromISO(day1).month == DateTime.fromISO(day2).month;
+      }
+    } else if ((!day1 && !!day2) || (!!day1 && !day2) || (!day1 && !day2)) {
+      return false;
+    }
+  }
 }

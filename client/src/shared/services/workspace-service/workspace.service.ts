@@ -5,6 +5,8 @@ import { Observable } from 'rxjs/internal/Observable';
 import { GroupService } from '../group-service/group.service';
 import { GroupsService } from '../groups-service/groups.service';
 import { UtilityService } from '../utility-service/utility.service';
+import { DateTime } from 'luxon';
+import { DatesService } from '../dates-service/dates.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +21,9 @@ export class WorkspaceService {
     private _http: HttpClient,
     private groupsService: GroupsService,
     private groupService: GroupService,
-    private utilityService: UtilityService) { }
+    private utilityService: UtilityService,
+    private datesService: DatesService
+  ) { }
 
   /**
    * This function is responsible for fetching the workspace details
@@ -243,21 +247,16 @@ export class WorkspaceService {
     return groupsVelocities;
   }
 
-  private getVelocityCounterPerDates(fromDate: any, toDate: any, groups: any[]) {
+  private getVelocityCounterPerDates(fromDate: DateTime, toDate: DateTime, groups: any[]) {
     let returnCounter = 0;
-
-    fromDate = fromDate.format('YYYY-MM-DD');
-    if (toDate) {
-      toDate = toDate.format('YYYY-MM-DD');
-    }
 
     groups.forEach(group => {
       if (group.records && group.records.done_tasks_count) {
         let doneTasksCount = group.records.done_tasks_count;
         if (toDate) {
-          doneTasksCount = doneTasksCount.filter(counter => counter.date >= fromDate && counter.date < toDate);
+          doneTasksCount = doneTasksCount.filter(counter => this.datesService.isBefore(fromDate, DateTime.fromISO(counter.date)) && this.datesService.isBefore(DateTime.fromISO(counter.date), toDate));
         } else {
-          doneTasksCount = doneTasksCount.filter(counter => counter.date >= fromDate);
+          doneTasksCount = doneTasksCount.filter(counter => this.datesService.isBefore(fromDate, DateTime.fromISO(counter.date)));
         }
 
         doneTasksCount.forEach(counter => {

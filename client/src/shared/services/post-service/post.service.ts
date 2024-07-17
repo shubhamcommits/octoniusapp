@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { DateTime } from 'luxon';
 import { DatesService } from 'src/shared/services/dates-service/dates.service';
 import { UtilityService } from '../utility-service/utility.service';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import { GroupService } from '../group-service/group.service';
 
 @Injectable({
@@ -14,7 +13,9 @@ export class PostService {
 
   constructor(
     private _http: HttpClient,
-    private injector: Injector,) { }
+    private injector: Injector,
+    private datesService: DatesService
+  ) { }
 
   // BaseUrl of the Post MicroService
   baseURL = environment.POST_BASE_API_URL;
@@ -803,18 +804,16 @@ export class PostService {
         }
         return bit;
       } else if (filteringBit == 'due_before_today') {
-        return (task?.task?.due_to) ? moment.utc(task?.task?.due_to).isBefore(moment().add(-1,'days')) : false;
-      } else if (filteringBit == 'due_today'){
-        return (task?.task?.due_to) ? moment.utc(task?.task?.due_to).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD') : false;
-      } else if (filteringBit == 'due_today'){
-        return (task?.task?.due_to) ? moment.utc(task?.task?.due_to).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD') : false;
-      } else if (filteringBit == 'due_tomorrow'){
-        return (task?.task?.due_to) ? moment.utc(task?.task?.due_to).format('YYYY-MM-DD') == moment().add(1,'days').format('YYYY-MM-DD') : false;
-      } else if (filteringBit == 'due_week'){
-        const first = moment().startOf('week').format();
-        const last = moment().endOf('week').add(1,'days').format();
-        if(task?.task?.due_to){
-          if((moment.utc(task?.task?.due_to).isAfter(first)) && (moment.utc(task?.task?.due_to).isBefore(last))){
+        return (task?.task?.due_to) ? this.datesService.isBefore(DateTime.fromISO(task?.task?.due_to), DateTime.now()) : false;
+      } else if (filteringBit == 'due_today') {
+        return (task?.task?.due_to) ? this.datesService.isSameDay(DateTime.fromISO(task?.task?.due_to), DateTime.now()) : false;
+      } else if (filteringBit == 'due_tomorrow') {
+        return (task?.task?.due_to) ? this.datesService.isSameDay(DateTime.fromISO(task?.task?.due_to), DateTime.now().plus({ days: 1 })) : false;
+      } else if (filteringBit == 'due_week') {
+        const first = DateTime.now().startOf('week');
+        const last = DateTime.now().endOf('week').plus({ days: 1 });
+        if (task?.task?.due_to) {
+          if (this.datesService.isBefore(first, DateTime.fromISO(task?.task?.due_to)) && this.datesService.isBefore(DateTime.fromISO(task?.task?.due_to), last)) {
             return true;
           }else{
             return false;
@@ -822,23 +821,23 @@ export class PostService {
         } else {
           return false;
         }
-      } else if (filteringBit == 'due_next_week'){
-        const first = moment().endOf('week').add(1,'days').format();
-        const last = moment().endOf('week').add(9,'days').format();
-        if(task?.task?.due_to){
-          if((moment.utc(task?.task?.due_to).isAfter(first)) && (moment.utc(task?.task?.due_to).isBefore(last))){
+      } else if (filteringBit == 'due_next_week') {
+        const first = DateTime.now().endOf('week').plus({ days: 1 });
+        const last = DateTime.now().endOf('week').plus({ days: 9 });
+        if (task?.task?.due_to) {
+          if (this.datesService.isBefore(first, DateTime.fromISO(task?.task?.due_to)) && this.datesService.isBefore(DateTime.fromISO(task?.task?.due_to), last)) {
             return true;
-          }else{
+          } else {
             return false;
           }
         } else {
           return false;
         }
       } else if (filteringBit == 'due_14_days'){
-        const first = moment().format();
-        const last = moment().add(14,'days').format();
+        const first = DateTime.now();
+        const last = DateTime.now().endOf('week').plus({ days: 14 });
         if (task?.task?.due_to) {
-          if ((moment.utc(task?.task?.due_to).isAfter(first)) && (moment.utc(task?.task?.due_to).isBefore(last))) {
+          if (this.datesService.isBefore(first, DateTime.fromISO(task?.task?.due_to)) && this.datesService.isBefore(DateTime.fromISO(task?.task?.due_to), last)) {
             return true;
           } else {
             return false;
@@ -905,70 +904,70 @@ export class PostService {
 
     let exportTasks = [];
     for (let i = 0; i < sections.length; i++) {
-		let section = sections[i];
+      let section = sections[i];
 
-		section.tasks = await this.getTasksBySectionPromise(section?._id);
+      section.tasks = await this.getTasksBySectionPromise(section?._id);
 
-		if (groupData?.enabled_rights) {
-			section.tasks = await this.filterRAGTasks(section.tasks, groupData, userData);
-		}
+      if (groupData?.enabled_rights) {
+        section.tasks = await this.filterRAGTasks(section.tasks, groupData, userData);
+      }
 
-		for (let j = 0; j < section.tasks.length; j++) {
+      for (let j = 0; j < section.tasks.length; j++) {
 
-			let post = section.tasks[j];
+        let post = section.tasks[j];
 
-			let task: any = {
-			title: post.title || '',
-			posted_by: (post && post._posted_by) ? (post?._posted_by?.first_name + ' ' + post?._posted_by?.last_name) : '',
-			created_date: (post?.created_date) ? moment.utc(post?.created_date).format("MMM D, YYYY HH:mm") : '',
-			tags: post.tags || '',
-			status: post.task.status || '',
-			};
+        let task: any = {
+          title: post.title || '',
+          posted_by: (post && post._posted_by) ? (post?._posted_by?.first_name + ' ' + post?._posted_by?.last_name) : '',
+          created_date: (post?.created_date) ? this.datesService.formateDate(DateTime.fromISO(post?.created_date), "MMM D, YYYY HH:mm") : '',
+          tags: post.tags || '',
+          status: post.task.status || '',
+        };
 
-			if (post.task.start_date) {
-			task.due_to = (post.task.start_date) ? moment.utc(post.task.start_date).format("MMM D, YYYY") : '';
-			}
-			task.due_to = (post.task.due_to) ? moment.utc(post.task.due_to).format("MMM D, YYYY") : '';
+        if (post.task.start_date) {
+          task.due_to = (post.task.start_date) ? this.datesService.formateDate(post.task.start_date, "MMM D, YYYY") : '';
+        }
+        task.due_to = (post.task.due_to) ? this.datesService.formateDate(post.task.due_to, "MMM D, YYYY") : '';
 
-			if (post.task._parent_task) {
-			task.section = '';
-			task.parent_task = post.task._parent_task.title || '';
-			} else {
-			task.section = section.title || '';
-			task.parent_task = '';
-			}
+        if (post.task._parent_task) {
+          task.section = '';
+          task.parent_task = post.task._parent_task.title || '';
+        } else {
+          task.section = section.title || '';
+          task.parent_task = '';
+        }
 
-			let assignedTo = '';
-			if (post._assigned_to && post._assigned_to.length > 0) {
-			post._assigned_to.forEach(user => {
-				if (user) {
-				assignedTo += user?.first_name + ' ' + user?.last_name + '; ';
-				}
-			});
+        let assignedTo = '';
+        if (post._assigned_to && post._assigned_to.length > 0) {
+          post._assigned_to.forEach(user => {
+            if (user) {
+              assignedTo += user?.first_name + ' ' + user?.last_name + '; ';
+            }
+          });
 
-			task.assigned_to = assignedTo;
-			}
+          task.assigned_to = assignedTo;
+        }
 
-			if (isIdeaModuleAvailable && post.task.is_idea && post.task.idea) {
-			task.idea_positive = post?.task?.idea?.positive_votes?.length || 0;
-			task.idea_negative = post?.task?.idea?.negative_votes?.length || 0;
-			task.idea_count = task.idea_positive - task.idea_negative;
-			}
+        if (isIdeaModuleAvailable && post.task.is_idea && post.task.idea) {
+          task.idea_positive = post?.task?.idea?.positive_votes?.length || 0;
+          task.idea_negative = post?.task?.idea?.negative_votes?.length || 0;
+          task.idea_count = task.idea_positive - task.idea_negative;
+        }
 
-			if (post.task.isNorthStar && post.task.northStar) {
-			task.northStar_targetValue = post.task.northStar.target_value || 0;
-			let sum = 0;
-			if (post.task.northStar.values) {
-				for (let k = 0; k < post.task.northStar.values.length; k++) {
-				sum += post.task.northStar.values[k];
-				}
-			}
-			task.northStar_currentValue = sum;
-			task.northStar_type = post.task.northStar.type;
-			}
+        if (post.task.isNorthStar && post.task.northStar) {
+          task.northStar_targetValue = post.task.northStar.target_value || 0;
+          let sum = 0;
+          if (post.task.northStar.values) {
+            for (let k = 0; k < post.task.northStar.values.length; k++) {
+              sum += post.task.northStar.values[k];
+            }
+          }
+          task.northStar_currentValue = sum;
+          task.northStar_type = post.task.northStar.type;
+        }
 
-			exportTasks.push(task);
-		}
+        exportTasks.push(task);
+      }
 		}
 
     groupService.exportTasksToFile(exportType, exportTasks, groupData?.group_name + '_tasks');

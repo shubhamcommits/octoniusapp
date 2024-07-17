@@ -2489,27 +2489,27 @@ export class PostService {
 
     // We assume that by default it will be 'this_week'
     // Generate the date for the start of the week
-    let startingDate = DateTime.now().plus({ days: 1 }).endOf('day').startOf('week').format();
+    let startingDate = DateTime.now().plus({ days: 1 }).endOf('day').startOf('week');
     // Generate the date for the end of the week
-    let endDate = DateTime.now().plus({ days: 1 }).endOf('day').endOf('week').format();
+    let endDate = DateTime.now().plus({ days: 1 }).endOf('day').endOf('week');
 
     if (period == 'next_week') {
       // Generate the date for the start of the next week
-      startingDate = DateTime.now().plus({ weeks: 1 }).endOf('day').startOf('week').format();
+      startingDate = DateTime.now().plus({ weeks: 1 }).endOf('day').startOf('week');
       // Generate the date for the end of the next week
-      endDate = DateTime.now().plus({ weeks: 1 }).endOf('day').endOf('week').format();
+      endDate = DateTime.now().plus({ weeks: 1 }).endOf('day').endOf('week');
 
     } else if (period == 'this_month') {
       // Generate the date for the start of the month
-      startingDate = DateTime.now().plus({ days: 1 }).endOf('day').startOf('month').format();
+      startingDate = DateTime.now().plus({ days: 1 }).endOf('day').startOf('month');
       // Generate the date for the end of the month
-      endDate = DateTime.now().plus({ days: 1 }).endOf('day').endOf('month').format();
+      endDate = DateTime.now().plus({ days: 1 }).endOf('day').endOf('month');
 
     } else if (period == 'next_month') {
       // Generate the date for the start of the next month
-      startingDate = DateTime.now().plus({ months: 1 }).endOf('day').startOf('month').format();
+      startingDate = DateTime.now().plus({ months: 1 }).endOf('day').startOf('month');
       // Generate the date for the end of the next month
-      endDate = DateTime.now().plus({ months: 1 }).endOf('day').endOf('month').format();
+      endDate = DateTime.now().plus({ months: 1 }).endOf('day').endOf('month');
     }
 
     if (period == 'this_week') {

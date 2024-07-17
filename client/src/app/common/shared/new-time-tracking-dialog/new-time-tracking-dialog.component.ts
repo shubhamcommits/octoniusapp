@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Inject, Injector, OnInit, Output } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-new-time-tracking-dialog',
@@ -53,6 +53,7 @@ export class NewTimeTrackingDialogComponent implements OnInit {
     public utilityService: UtilityService,
     private groupService: GroupService,
     private userService: UserService,
+    private datesService: DatesService,
     private injector: Injector,
     private mdDialogRef: MatDialogRef<NewTimeTrackingDialogComponent>
   ) {
@@ -229,15 +230,10 @@ export class NewTimeTrackingDialogComponent implements OnInit {
   }
 
   isSameDay(day1: any, day2: any) {
-    if (!day1 && !day2) {
-      return true;
-    } else if ((!!day1 && !day2) || (!!day2 && !day1)) {
-      return true;
-    }
-    return moment.utc(day1).isSame(moment.utc(day2), 'day');
+    return this.datesService.isSameDay(day1, day2);
   }
 
   formateDate(date) {
-    return (date) ? moment.utc(date).add('1', 'day').format("MMM D, YYYY") : '';
+    return this.datesService.formateDate(date, "MMM D, YYYY");
   }
 }

@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import moment from 'moment';
 import { ProjectBudgetDialogComponent } from 'src/app/common/shared/project-budget-dialog/project-budget-dialog.component';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
@@ -25,6 +25,7 @@ export class ColumnProjectSectionComponent implements OnInit {
     public utilityService: UtilityService,
     private columnService: ColumnService,
     private groupService: GroupService,
+    private datesService: DatesService,
     public dialog: MatDialog
   ) { }
 
@@ -74,7 +75,7 @@ export class ColumnProjectSectionComponent implements OnInit {
     });
 
     this.column.budget.expenses = await this.utilityService.removeDuplicates([...this.column.budget.expenses], '_id');
-    this.column.budget.expenses.sort((e1, e2) => (moment(e1.date).isAfter(moment(e2.date))) ? -1 : 1);
+    this.column.budget.expenses.sort((e1, e2) => (this.datesService.isBefore(e2.date, e1.date)) ? -1 : 1);
   }
 
   calculateTotalSpent() {
@@ -143,10 +144,10 @@ export class ColumnProjectSectionComponent implements OnInit {
   }
 
   formateDate(date: any, format: string) {
-    return date ? moment.utc(date).format(format) : '';
+    return this.datesService.formateDate(date, format);
   }
 
   isDelay(realDueDate: any, dueDate: any) {
-    return moment(realDueDate).isAfter(moment(dueDate), 'day');
+    return this.datesService.isBefore(dueDate, realDueDate);
   }
 }

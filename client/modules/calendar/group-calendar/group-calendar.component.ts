@@ -3,9 +3,10 @@ import { isSameDay, isSameMonth } from 'date-fns';
 import { Subject } from 'rxjs';
 import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment/moment';
+import { DateTime } from 'luxon';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { MatDialog } from '@angular/material/dialog';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 // Define Set of hexcodes of colors
 const colors: any = {
@@ -56,7 +57,7 @@ export class GroupCalendarComponent implements OnInit {
   CalendarView = CalendarView
 
   // View Date
-  viewDate: Date = moment().toDate()
+  viewDate: Date = DateTime.now().toJSDate();
 
   // Modal Data to add the event and action
   modalData: {
@@ -92,6 +93,7 @@ export class GroupCalendarComponent implements OnInit {
   constructor(
     private injector: Injector,
     private utilityService: UtilityService,
+    private datesService: DatesService,
     public dialog: MatDialog) { }
 
   async ngOnInit() {
@@ -109,7 +111,7 @@ export class GroupCalendarComponent implements OnInit {
 
   async loadTimeline() {
     // Fetch Posts from the server
-    this.posts = await this.publicFunctions.getCalendarPosts(moment(this.viewDate).year(), moment(this.viewDate).month(), this.groupData?._id);
+    this.posts = await this.publicFunctions.getCalendarPosts(this.viewDate.getFullYear(), this.viewDate.getMonth() + 1, this.groupData?._id);
 
     // Timeline array
     this.timeline = [...this.posts.events, ...this.posts.tasks];
@@ -165,29 +167,36 @@ export class GroupCalendarComponent implements OnInit {
       // Evaluate color for the post
       let color = this.selectColor(post);
 
-      // Adding to calendar events
-      this.events.push({
-        start: moment(post.event.due_to || post.task.due_to).toDate(),
-        title: `${post.title}`,
-        color: color,
-        allDay: true,
-        resizable: {
-          beforeStart: true,
-          afterEnd: true
-        },
-        draggable: false,
-        post: post
-      })
-    })
+      if (!this.events) {
+        this.events = [];
+      }
+
+      const index = (!!this.events) ? this.events.findIndex(e => e._id == post._id) : -1;
+      if (index < 0) {// Adding to calendar events
+        this.events.push({
+          start: DateTime.fromISO(post.event.due_to || post.task.due_to),
+          title: `${post.title}`,
+          color: color,
+          allDay: true,
+          resizable: {
+            beforeStart: true,
+            afterEnd: true
+          },
+          draggable: false,
+          post: post,
+          _id: post._id
+        });
+      }
+    });
 
     // Update the status of subject to next()
     this.refresh.next(null);
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
-    if (isSameMonth(date, this.viewDate)) {
+    if (this.datesService.isSameMonth(DateTime.fromJSDate(date), DateTime.fromJSDate(this.viewDate))) {
       if (
-        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
+        (this.datesService.isSameDay(DateTime.fromJSDate(this.viewDate), DateTime.fromJSDate(date)) && this.activeDayIsOpen === true) ||
         events.length === 0
       ) {
         this.activeDayIsOpen = false;
@@ -256,8 +265,8 @@ export class GroupCalendarComponent implements OnInit {
       ...this.events,
       {
         title: $localize`:@@groupCalendar.newEvent:New event`,
-        start: moment().startOf('day').toDate(),
-        end: moment().endOf('day').toDate(),
+        start: DateTime.now().toJSDate(),
+        end: DateTime.now().toJSDate(),
         color: colors.red,
         draggable: false,
         resizable: {
@@ -278,9 +287,13 @@ export class GroupCalendarComponent implements OnInit {
         // Evaluate color for the event
         let color = this.selectColor(event);
 
+        if (!this.events) {
+          this.events = [];
+        }
+
         // Adding to calendar events
         this.events.push({
-          start: moment(event.event.due_to || event.task.due_to).toDate(),
+          start: DateTime.fromISO(event.event.due_to || event.task.due_to),
           title: `${event.title}`,
           color: color,
           allDay: true,
@@ -289,7 +302,8 @@ export class GroupCalendarComponent implements OnInit {
             afterEnd: true
           },
           draggable: false,
-          post: event
+          post: event,
+          _id: event._id
         });
         this.events.splice(index, 1);
         this.refresh.next(null);
@@ -303,7 +317,9 @@ export class GroupCalendarComponent implements OnInit {
     this.view = view;
   }
 
-  closeOpenMonthViewDay() {
+  closeOpenMonthViewDay(date) {
+    this.viewDate = DateTime.fromJSDate(date).toJSDate();
+    this.loadTimeline();
     this.activeDayIsOpen = false;
   }
 
@@ -370,8 +386,8 @@ export class GroupCalendarComponent implements OnInit {
       ...this.events,
       {
         title: post.title,
-        start: moment(post.event.due_to).startOf('day').toDate(),
-        end: moment(post.event.due_to).endOf('day').toDate(),
+        start: DateTime.fromISO(post.event.due_to).startOf('day'),
+        end: DateTime.fromISO(post.event.due_to).endOf('day'),
         color: colors.red,
         draggable: false,
         resizable: {

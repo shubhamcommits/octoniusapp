@@ -1,11 +1,9 @@
 import { Component, OnChanges, Output, EventEmitter, Input, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR} from '@angular/forms';
 import { MAT_DATE_FORMATS, DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
-import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import { LuxonDateAdapter, MAT_LUXON_DATE_ADAPTER_OPTIONS } from '@angular/material-luxon-adapter';
 import { DateTime } from 'luxon';
 import { DatesService } from 'src/shared/services/dates-service/dates.service';
-
-// const moment = _rollupMoment || _moment;
 
 const INLINE_EDIT_CONTROL_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -32,8 +30,8 @@ export const MY_FORMATS = {
     INLINE_EDIT_CONTROL_VALUE_ACCESSOR,
     {
       provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [ MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS ]
+      useClass: LuxonDateAdapter,
+      deps: [ MAT_DATE_LOCALE, MAT_LUXON_DATE_ADAPTER_OPTIONS ]
     },
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ],
@@ -41,9 +39,9 @@ export const MY_FORMATS = {
 })
 export class DatePickerComponent implements OnChanges {
 
-  @Input('selectedDate') selectedDate: any;
-  @Input() upperLimit: any;
-  @Input() lowerLimit: any;
+  @Input('selectedDate') selectedDate: DateTime;
+  @Input() upperLimit: Date;
+  @Input() lowerLimit: Date;
   @Input() styleClass;
   @Input() canEdit = true;
   @Input() showInput = true;
@@ -83,9 +81,9 @@ export class DatePickerComponent implements OnChanges {
    * @param dateObject
    */
   emitDate(dateObject: any) {
-    this.value = this.datesService.formateDate(dateObject.value.toDate());
+    this.value = this.datesService.formateDate(dateObject.value);
     // Emit the date to the other components
-    this.date.emit(DateTime.fromJSDate(dateObject.value.toDate()))
+    this.date.emit(dateObject.value);
   }
 
   /**
