@@ -41,7 +41,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 // ANGULAR MODULES
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ErrorHandler, LOCALE_ID } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { PathLocationStrategy, LocationStrategy } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
