@@ -1,5 +1,5 @@
 import { Post } from '../models';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 
 /*  =======================
  *  -- Calendar Service --
@@ -21,13 +21,13 @@ export class CalendarService {
     async getMonthTasks(month: any, year: any, groupId: any, userId?: any) {
 
         // current date in view
-        const date = moment().month(parseInt(month)).year(parseInt(year))
+        const date = DateTime.fromObject({ year: parseInt(year), month: parseInt(month)});
 
         // Generate the actual time
-        const startOfMonth = date.startOf('month').format();
+        const startOfMonth = date.startOf('month');
 
         // Generate the 30 days time
-        const endOfMonth = date.endOf('month').format();
+        const endOfMonth = date.endOf('month');
 
         // Tasks List
         let tasks: any = []
@@ -35,10 +35,10 @@ export class CalendarService {
         // Fetch the tasks posts
         if(userId === undefined)
             tasks = await Post.find({
-                '_group': groupId,
-                'type': 'task',
-                'task.due_to': { $gte: startOfMonth, $lte: endOfMonth }
-            })
+                    '_group': groupId,
+                    'type': 'task',
+                    'task.due_to': { $gte: startOfMonth, $lte: endOfMonth }
+                })
                 .sort('-task.due_to')
                 .populate('_group', this.groupFields)
                 .populate('_posted_by', this.userFields)
@@ -50,14 +50,14 @@ export class CalendarService {
         // Find user's month tasks
         else
             tasks = await Post.find({
-                '_assigned_to': userId,
-                'task.due_to': { $gte: startOfMonth, $lte: endOfMonth },
-                $or: [
-                    { 'task.status': 'to do' },
-                    { 'task.status': 'in progress' },
-                    { 'task.status': 'done' }
-                ]
-            })
+                    '_assigned_to': userId,
+                    'task.due_to': { $gte: startOfMonth, $lte: endOfMonth },
+                    $or: [
+                        { 'task.status': 'to do' },
+                        { 'task.status': 'in progress' },
+                        { 'task.status': 'done' }
+                    ]
+                })
                 .sort('-task.due_to')
                 .populate('_group', this.groupFields)
                 .populate('_posted_by', this.userFields)
@@ -76,13 +76,13 @@ export class CalendarService {
     async getMonthEvents(month: any, year: any, groupId: any, userId?: any) {
 
         // current date in view
-        const date = moment().month(parseInt(month)).year(parseInt(year))
+        const date = DateTime.fromObject({ year: parseInt(year), month: parseInt(month)})
 
         // Generate the actual time
-        const startOfMonth = date.startOf('month').format();
+        const startOfMonth = date.startOf('month');
 
         // Generate the 30 days time
-        const endOfMonth = date.endOf('month').format();
+        const endOfMonth = date.endOf('month');
 
         // Events list object
         let events: any = [];

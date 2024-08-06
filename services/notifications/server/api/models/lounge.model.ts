@@ -1,4 +1,4 @@
-import moment from 'moment';
+const { DateTime } = require("luxon");
 import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
@@ -43,7 +43,7 @@ const LoungeSchema = new Schema({
     created_date: {
         type: Date,
         required: true,
-        default: moment().format()
+        default: DateTime.now()
     },
     _lounges: [{
         type: Schema.Types.ObjectId,

@@ -732,7 +732,9 @@ export class GroupFilesComponent implements OnInit {
 
   openFileDetailsDialog(file: any) {
     const dialogRef = this.dialog.open(FileDetailsDialogComponent, {
+      minWidth: '100%',
       width: '100%',
+      minHeight: '100%',
       height: '100%',
       disableClose: true,
       hasBackdrop: true,

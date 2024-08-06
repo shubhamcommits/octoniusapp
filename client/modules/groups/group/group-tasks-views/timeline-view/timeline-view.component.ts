@@ -306,20 +306,22 @@ export class TimelineViewComponent implements OnChanges, AfterViewInit {
   onResizeEnd(event: ResizeEvent, Taskid: string, Taskindex:number,projectIndex?:number): void {
 
     if (event.edges?.right) {
-      var mod = Number(event.edges?.right) % 50;
+      let right = Number(event.edges?.right);
+      let left = Number(event.edges?.left);
+      var mod = right % 50;
 
-      if (event.edges?.left > 0) {
+      if (left > 0) {
         if (mod > 30) {
-          var multiple = Math.ceil(Number(event.edges?.right) / 50);
+          var multiple = Math.ceil(right / 50);
         } else {
-          var multiple = Math.floor(Number(event.edges?.right) / 50);
+          var multiple = Math.floor(right / 50);
         }
       } else {
 
         if (mod > -30) {
-          var multiple = Math.ceil(Number(event.edges?.right) / 50);
+          var multiple = Math.ceil(right / 50);
         } else {
-          var multiple = Math.floor(Number(event.edges?.right) / 50);
+          var multiple = Math.floor(right / 50);
         }
       }
       var result = multiple * 50;
@@ -341,22 +343,22 @@ export class TimelineViewComponent implements OnChanges, AfterViewInit {
 
 
     } else if (event.edges?.left) {
-      var mod = Number(event.edges?.left) % 50;
-
-      if (event.edges?.left > 0) {
+      let left = Number(event.edges?.left);
+      var mod = left % 50;
+      if (left > 0) {
 
         if (mod > 30) {
-          var multiple = Math.ceil(Number(event.edges?.left) / 50);
+          var multiple = Math.ceil(left / 50);
         } else {
-          var multiple = Math.floor(Number(event.edges?.left) / 50);
+          var multiple = Math.floor(left / 50);
         }
       } else {
 
         if (mod > -30) {
-          var multiple = Math.ceil(Number(event.edges?.left) / 50);
+          var multiple = Math.ceil(left / 50);
 
         } else {
-          var multiple = Math.floor(Number(event.edges?.left) / 50);
+          var multiple = Math.floor(left / 50);
         }
       }
       var result = multiple * 50;

@@ -2,11 +2,11 @@ import { Component, OnInit, Injector, Input, OnChanges, AfterViewInit, SimpleCha
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
-import { environment } from 'src/environments/environment';
-import moment from 'moment/moment';
+import { DateTime } from 'luxon';
 import { MatDialog } from '@angular/material/dialog';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 import { BehaviorSubject } from 'rxjs';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-kanban-archived-sections',
@@ -35,7 +35,7 @@ export class KanbanArchivedSectionsComponent implements OnInit, OnChanges, After
   public publicFunctions = new PublicFunctions(this.injector);
 
   // Today's date object
-  today = moment().startOf('day').format('YYYY-MM-DD');
+  today = DateTime.now();
 
   flows = [];
 
@@ -52,6 +52,7 @@ export class KanbanArchivedSectionsComponent implements OnInit, OnChanges, After
     private flowService: FlowService,
     private injector: Injector,
     public utilityService: UtilityService,
+    public datesService: DatesService,
     public dialog: MatDialog
   ) { }
 
@@ -152,7 +153,7 @@ export class KanbanArchivedSectionsComponent implements OnInit, OnChanges, After
   }
 
   formateDate(date: any, format: string) {
-    return date ? moment.utc(date).format(format) : '';
+    return this.datesService.formateDate(date, format);
   }
 
   /**
@@ -446,7 +447,7 @@ export class KanbanArchivedSectionsComponent implements OnInit, OnChanges, After
   }
 
   isDelay(realDueDate: any, dueDate: any) {
-    return moment(realDueDate).isAfter(moment(dueDate), 'day');
+    return this.datesService.isBefore(dueDate, realDueDate);
   }
 
   calculateCFStatistics(cfName: string, tasks: any) {

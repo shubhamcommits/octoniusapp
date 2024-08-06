@@ -3,7 +3,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-new-task',
@@ -125,7 +125,7 @@ export class NewTaskComponent implements OnInit {
 
     // Prepare Post Data
     var postData: any;
-    const today = moment().format();
+    const today = DateTime.now();
 
     if (this.subtask) {
       postData = {

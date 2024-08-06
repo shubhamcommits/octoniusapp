@@ -129,7 +129,7 @@ export class QuillEditorComponent implements OnInit, OnChanges, AfterViewInit {
   ngOnChanges() {
     if (this.quill) {
       // Fetch the delta ops from the JSON string
-      let delta = (this.isJSON(this.contents) && JSON.parse(this.contents))
+      let delta = (this.utilityService.isJSON(this.contents) && JSON.parse(this.contents))
         ? JSON.parse(this.contents)['ops']
         : this.quill.clipboard.convert(this.contents);
 
@@ -139,7 +139,35 @@ export class QuillEditorComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   async ngOnInit() {
+    if (!this.utilityService.objectExists(this.workspaceData)) {
+      this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    }
+    this.initQuillModules();
+  }
 
+  ngAfterViewInit() {
+    // this.initQuillModules();
+
+    // Initialise quill editor
+    this.quill = this.quillEditor(this.modules)
+
+    // Set contents to the quill
+    if (this.contents) {
+      // Fetch the delta ops from the JSON string
+      let delta = (this.utilityService.isJSON(this.contents))
+        ? JSON.parse(this.contents)['ops']
+        : this.quill.clipboard.convert(this.contents);
+
+      // Set the content inside quill container
+      this.setContents(this.quill, delta);
+    }
+
+
+    // Turn on the quill text change event handler
+    this.quillContentChanges(this.quill);
+  }
+
+  initQuillModules() {
     // Set the Status of the toolbar
     this.modules.toolbar = (this.toolbar === false) ? false : this.quillFullToolbar()
 
@@ -161,44 +189,6 @@ export class QuillEditorComponent implements OnInit, OnChanges, AfterViewInit {
       // Set Image Compression Module
       this.modules.imageCompress = this.quillImageCompress()
     }
-
-    if (!this.utilityService.objectExists(this.workspaceData)) {
-      this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-    }
-  }
-
-  ngAfterViewInit() {
-
-    // Initialise quill editor
-    this.quill = this.quillEditor(this.modules)
-
-    // Set contents to the quill
-    if (this.contents) {
-      // Fetch the delta ops from the JSON string
-      let delta = (this.isJSON(this.contents))
-        ? JSON.parse(this.contents)['ops']
-        : this.quill.clipboard.convert(this.contents);
-
-      // Set the content inside quill container
-      this.setContents(this.quill, delta);
-    }
-
-
-    // Turn on the quill text change event handler
-    this.quillContentChanges(this.quill);
-  }
-
-  /**
-   * This function is used to check if a function is already strigified
-   * @param str
-   */
-  isJSON(str: string) {
-    try {
-      JSON.parse(str)
-    } catch (e) {
-      return false
-    }
-    return true
   }
 
   /**

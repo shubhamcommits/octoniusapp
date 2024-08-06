@@ -78,20 +78,17 @@
       (onShowCommentsActionEvent)="showCommentsAction($event)"></app-story-actions-bar>
 
     <div class="media-body">
-      <div class="category-body row">
-        <app-quill-editor *ngIf="storyData.content && !canEditStory"
-          [editorId]="'story_viewer'"
-          [toolbar]="false"
-          [readOnly]="true"
-          [contents]="storyData.content">
-        </app-quill-editor>
 
+        <div class="row">
           <button type="button" *ngIf="canEditStory" class="btn btn-primary"(click)="saveStory()">
             <span class="material-icons-outlined">history_edu</span>
             <span i18n="@@storyDetails.save">Save</span>
           </button>
+        </div>
+      <div class="category-body row">
+        <div *ngIf="storyData.content && !canEditStory" [innerHTML]="(htmlContent) | safe: 'html'" class="col-12" style="margin: 30px 0;"></div>
 
-        <app-quill-editor style="margin-bottom: 30px;" *ngIf="canEditStory"
+        <app-quill-editor class="col-12" style="margin-bottom: 30px;" *ngIf="canEditStory"
           [editorId]="'story_editor'"
           [toolbar]="true"
           [readOnly]="false"

@@ -1,10 +1,9 @@
 import { Component, Inject,EventEmitter ,Output,Injector, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
-import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { UserService } from "src/shared/services/user-service/user.service";
-import moment from 'moment/moment';
+
 @Component({
   selector: 'app-user-update-user-personal-information-dialog',
   templateUrl: './user-update-user-personal-information-dialog.component.html',
@@ -33,15 +32,11 @@ export class UserUpdateUserPersonalInformationDialogComponent implements OnInit 
 
   ngOnInit(): void {
     this.userData = this.data.userData;
-    // this.postion = this.userData?.current_position || '';
-    // this.joinDate = moment(this.userData?.company_join_date).format("YYYY-MM-DD");
     this.bio = this.userData?.bio || '';
   }
 
   updateInfo() {
     const data ={
-      // current_position: this.postion,
-      // company_join_date: this.joinDate,
       bio: this.bio
     }
     this.utilityService.asyncNotification($localize`:@@userUpdateUserPersonalInformationDialog.pleseWaitUpdatingInformation:Please wait we are updating your information...`, new Promise((resolve, reject) => {

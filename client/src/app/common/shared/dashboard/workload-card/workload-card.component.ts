@@ -1,4 +1,5 @@
 import { Component, Injector, Input, OnChanges, OnInit } from '@angular/core';
+import { ChartConfiguration, ChartData } from 'chart.js';
 import { PublicFunctions } from 'modules/public.functions';
 import { PostService } from 'src/shared/services/post-service/post.service';
 
@@ -20,12 +21,17 @@ export class WorkloadCardComponent implements OnChanges {
 
   task_count = 0;
 
-  doughnutChartLabels;
-  doughnutChartData;
-  doughnutChartType;
-  doughnutChartOptions;
-  doughnutChartColors;
-  doughnutChartPlugins;
+  public doughnutChartLabels: string[] = [
+    $localize`:@@workloadCard.toDo:To Do`,
+    $localize`:@@workloadCard.inProgress:In Progress`,
+    $localize`:@@workloadCard.done:Done`,
+    $localize`:@@workloadCard.overdue:Overdue`
+  ]
+  public doughnutChartData: ChartData<'doughnut'>;
+  public doughnutChartType = 'doughnut' as const;
+  public doughnutChartOptions: ChartConfiguration<'doughnut'>['options'];
+  public doughnutChartPlugins;
+  // doughnutChartColors;
 
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector)
@@ -51,44 +57,48 @@ export class WorkloadCardComponent implements OnChanges {
     /* Chart Setup */
     const tasksData = await this.getTasksData();
     const percentageDone = await this.getPercentageDone(tasksData[2]);
-    this.doughnutChartLabels = [
-      $localize`:@@workloadCard.toDo:To Do`,
-      $localize`:@@workloadCard.inProgress:In Progress`,
-      $localize`:@@workloadCard.done:Done`,
-      $localize`:@@workloadCard.overdue:Overdue`
-    ];
-    this.doughnutChartData = tasksData;
-    this.doughnutChartType = 'doughnut';
+    this.doughnutChartData = {
+      labels: this.doughnutChartLabels,
+      datasets: [
+        {
+          // data: [200, 100, 50, 150],
+          data: tasksData,
+          backgroundColor: [ '#FFAB00', '#0bc6a0', '#4a90e2', '#FF6584' ],
+        }
+      ]
+    };
     this.doughnutChartOptions = {
-      cutoutPercentage: 75,
+      cutout: 75,
       responsive: true,
-      legend: {
-        display: false
+      plugins: {
+        legend: {
+          display: false
+        }
       }
     };
-    this.doughnutChartColors = [{
-      backgroundColor: [
-        '#FFAB00',
-        '#0bc6a0',
-        '#4a90e2',
-        '#FF6584'
-      ]
-    }];
     this.doughnutChartPlugins = [{
       beforeDraw(chart) {
         const ctx = chart.ctx;
-
+        
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
         const centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
-
+        
         ctx.font = '25px Nunito';
         ctx.fillStyle = '#262628';
-
+        
         ctx.fillText(Math.round(percentageDone) + '%', centerX, centerY);
       }
     }];
+    // this.doughnutChartColors = [{
+    //   backgroundColor: [
+    //     '#FFAB00',
+    //     '#0bc6a0',
+    //     '#4a90e2',
+    //     '#FF6584'
+    //   ]
+    // }];
 
     this.chartReady = true;
   }

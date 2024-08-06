@@ -4,14 +4,14 @@
             <div class="col-md-4">
                 <div class="btn-group">
                     <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
-                        (viewDateChange)="closeOpenMonthViewDay()" i18n="@@groupCalendar.previous">
+                        (viewDateChange)="closeOpenMonthViewDay($event)" i18n="@@groupCalendar.previous">
                         Previous
                     </div>
                     <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate" i18n="@@groupCalendar.today">
                         Today
                     </div>
                     <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
-                        (viewDateChange)="closeOpenMonthViewDay()" i18n="@@groupCalendar.next">
+                        (viewDateChange)="closeOpenMonthViewDay($event)" i18n="@@groupCalendar.next">
                         Next
                     </div>
                 </div>

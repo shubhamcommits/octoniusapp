@@ -1,8 +1,8 @@
 import { Component, Input, OnChanges, ViewEncapsulation, Injector, OnInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-post-logs',
@@ -25,6 +25,7 @@ export class PostLogsComponent implements OnChanges, OnInit {
 
   constructor(
     public utilityService: UtilityService,
+    private datesService: DatesService,
     private injector: Injector
   ) { }
 
@@ -49,7 +50,7 @@ export class PostLogsComponent implements OnChanges, OnInit {
   sortLogs() {
     this.logs?.sort((a1, a2) => {
       if (a1.action_date && a2.action_date) {
-        if (moment.utc(a1.action_date).isBefore(a2.action_date)) {
+        if (this.datesService.isBefore(a1.action_date, a2.action_date)) {
           return 1;
         } else {
           return -1;

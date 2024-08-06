@@ -1,5 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
-import { CanActivate, CanActivateChild, CanLoad, ActivatedRouteSnapshot, RouterStateSnapshot, Router, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, Router, UrlTree } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { Observable } from 'rxjs';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -7,7 +7,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 @Injectable({
   providedIn: 'root'
 })
-export class LoungeModuleAvailableGuard implements CanActivate, CanActivateChild {
+export class LoungeModuleAvailableGuard  {
 
   // PUBLIC FUNCTIONS
   private publicFunctions = new PublicFunctions(this.injector);

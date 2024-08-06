@@ -1,4 +1,4 @@
-import moment from 'moment';
+const { DateTime } = require("luxon");
 import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
@@ -128,7 +128,7 @@ const workspaceSchema = new Schema({
     }],
     created_date: {
         type: Date,
-        default: moment().format()
+        default: DateTime.now()
     },
     management_private_api_key: {
         type: String,

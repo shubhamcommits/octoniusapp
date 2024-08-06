@@ -61,7 +61,7 @@ export class ManagementService {
                 return new Promise((resolve, reject) => {
                     resolve({
                         data: {
-                            message: 'You have a in a DEVELOPMENT environment',
+                            message: 'You are in a DEVELOPMENT environment',
                             status: true,
                             onPremise: false
                         }
@@ -153,7 +153,7 @@ export class ManagementService {
                 return new Promise((resolve, reject) => {
                     resolve({
                         data: {
-                            message: 'You have a in a DEVELOPMENT environment',
+                            message: 'You are in a DEVELOPMENT environment',
                             customer: {}
                         }
                     });

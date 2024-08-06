@@ -118,7 +118,9 @@ export class BoardBarComponent implements OnInit {
 
   openCustomFieldsDialog(): void {
     const dialogRef = this.dialog.open(CustomFieldsDialogComponent, {
+      minWidth: '100%',
       width: '100%',
+      minHeight: '100%',
       height: '100%',
       disableClose: true,
       data: { groupData: this.groupData, workspaceId: this.groupData._workspace }
@@ -133,7 +135,9 @@ export class BoardBarComponent implements OnInit {
 
   openAutomatorDialog() {
     const dialogRef = this.dialog.open(AutomationFlowsDialogComponent, {
+      minWidth: '100%',
       width: '100%',
+      minHeight: '100%',
       height: '100%',
       disableClose: true,
       data: {

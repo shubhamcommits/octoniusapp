@@ -1,4 +1,4 @@
-import moment from 'moment';
+const { DateTime } = require("luxon");
 import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
@@ -21,7 +21,7 @@ const TimeTrackingEntitySchema = new Schema({
     times: [{
         date: {
             type: Date,
-            default: moment().format()
+            default: DateTime.now()
         },
         hours: {
             type: String,
@@ -42,7 +42,7 @@ const TimeTrackingEntitySchema = new Schema({
     }],
     created_date: {
         type: Date,
-        default: moment().format(),
+        default: DateTime.now(),
         required: true
     },
     _created_by: {

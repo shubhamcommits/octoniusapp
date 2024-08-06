@@ -96,6 +96,7 @@ import { ResourcesCustomFieldsDialogComponent } from './group/group-resource-man
 import { GroupTimeTrackingCategoriesDialogComponent } from './group/group-admin/group-settings/time-tracking-categories-dialog/time-tracking-categories-dialog.component';
 import { AutomationFlowDetailsDialogComponent } from './group/automation-flows-dialog/automation-flow-details-dialog/automation-flow-details-dialog.component';
 import { AddTaskResourceManagementDialogComponent } from './group/group-tasks-views/group-resource-management-board/add-task-resource-management-dialog/add-task-resource-management-dialog.component';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
     declarations: [
@@ -191,6 +192,7 @@ import { AddTaskResourceManagementDialogComponent } from './group/group-tasks-vi
         MatSortModule,
         MatDatepickerModule,
         ResizableModule,
+        NgChartsModule,
         Calendar.forRoot({
             provide: DateAdapter,
             useFactory: adapterFactory

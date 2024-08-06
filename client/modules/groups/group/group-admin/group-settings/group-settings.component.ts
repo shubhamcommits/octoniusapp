@@ -321,7 +321,9 @@ export class GroupSettingsComponent implements OnInit {
 
   openRAGModal(){
     const dialogRef = this.dialog.open(GroupRAGDialogComponent, {
+      minWidth: '100%',
       width: '100%',
+      minHeight: '100%',
       height: '100%',
       disableClose: true,
       hasBackdrop: true,

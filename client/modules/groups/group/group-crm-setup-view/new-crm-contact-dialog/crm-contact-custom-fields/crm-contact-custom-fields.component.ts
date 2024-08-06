@@ -120,6 +120,5 @@ export class CRMContactCustomFieldsComponent implements OnChanges {
 
   formateDate(date) {
     return this.datesService.formateDate(date);
-    // return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
   }
 }

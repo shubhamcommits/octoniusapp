@@ -226,8 +226,10 @@ export class GroupsListComponent implements OnInit {
 		const dialogRef = this.dialog.open(CreateGroupDialogComponent, {
 			disableClose: true,
 			hasBackdrop: true,
-			width: '100%',
-			height: '100%',
+			minWidth: '100%',
+      width: '100%',
+			minHeight: '100%',
+      height: '100%',
 			data: {
 				userData: this.userData,
 				workspaceData: this.workspaceData

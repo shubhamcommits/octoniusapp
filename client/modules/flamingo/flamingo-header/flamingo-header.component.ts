@@ -5,10 +5,10 @@ import { FilesService } from 'src/shared/services/files-service/files.service';
 import { Title } from "@angular/platform-browser";
 import { PublicFunctions } from 'modules/public.functions';
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
-import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import * as XLSX from 'xlsx';
 import * as fileSaver from 'file-saver';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-flamingo-header',
@@ -41,7 +41,7 @@ export class FlamingoHeaderComponent implements OnInit {
 
   constructor(
     private flamingoService: FlamingoService,
-    private utilityService: UtilityService,
+    private datesService: DatesService,
     private router: Router,
     private _ActivatedRoute: ActivatedRoute,
     private _Injector: Injector,
@@ -292,6 +292,6 @@ export class FlamingoHeaderComponent implements OnInit {
     const workbook: XLSX.WorkBook = { Sheets: { 'responses': responsesWorksheet, 'insights': insightsWorksheet }, SheetNames: ['responses', 'insights'] };
     const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
     const data: Blob = new Blob([excelBuffer], {type: EXCEL_TYPE});
-    fileSaver.saveAs(data, fileName + '_export_' + moment(moment().utc(), "YYYY-MM-DD") + EXCEL_EXTENSION);
+    fileSaver.saveAs(data, fileName + '_export_' + this.datesService.formateDate(DateTime.now(), "YYYY-MM-DD") + EXCEL_EXTENSION);
   }
 }

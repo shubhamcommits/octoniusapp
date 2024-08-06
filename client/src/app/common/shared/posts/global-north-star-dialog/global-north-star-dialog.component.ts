@@ -3,13 +3,13 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dial
 import { PublicFunctions } from 'modules/public.functions';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
 import { NewNorthStarDialogComponent } from 'modules/work/north-star-page/new-north-start-dialog/new-north-start-dialog.component';
-;
 import { ColorPickerDialogComponent } from '../../color-picker-dialog/color-picker-dialog.component';
 import { SearchTaskDialogComponent } from 'modules/work/north-star-page/search-task-dialog/search-task-dialog.component';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
+import { ChartConfiguration, ChartData } from 'chart.js';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-global-north-star-dialog',
@@ -49,24 +49,29 @@ export class GlobalNorthStarDialogComponent implements OnInit {
 
   myWorkplace = false;
 
-  chartLabels = [$localize`:@@globalNorthStarDialog.completed:Completed`, $localize`:@@globalNorthStarDialog.goalsPending:Targets pending`];
   chartReady = false;
-  chartData = [0];
-  chartType = 'doughnut';
-  chartOptions = {
-    cutoutPercentage: 50,
-    responsive: true,
-    legend: {
-      display: false
-    }
-  };
-  chartColors = [{
-    backgroundColor: [
-      '#17B2E3',
-      '#F9FAFA'
-    ]
-  }];
-  chartPlugins = [];
+  chartLabels = [$localize`:@@globalNorthStarDialog.completed:Completed`, $localize`:@@globalNorthStarDialog.goalsPending:Targets pending`];
+  // chartOptions = {
+  //   cutoutPercentage: 50,
+  //   responsive: true,
+  //   legend: {
+  //     display: false
+  //   },
+  //   backgroundColor: [
+  //     '#17B2E3',
+  //     '#F9FAFA'
+  //   ]
+  // };
+  // chartColors = [{
+  //   backgroundColor: [
+  //     '#17B2E3',
+  //     '#F9FAFA'
+  //   ]
+  // }];
+  public chartData: ChartData<'doughnut'>;
+  public chartType = 'doughnut' as const;
+  public chartOptions: ChartConfiguration<'doughnut'>['options'];
+  public chartPlugins;
 
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
@@ -80,6 +85,7 @@ export class GlobalNorthStarDialogComponent implements OnInit {
     public dialog: MatDialog,
     private postService: PostService,
     private columService: ColumnService,
+    private datesService: DatesService,
     private injector: Injector,
     private changeDetectorRef: ChangeDetectorRef,
     private mdDialogRef: MatDialogRef<GlobalNorthStarDialogComponent>
@@ -128,7 +134,7 @@ export class GlobalNorthStarDialogComponent implements OnInit {
         this.subtasks.forEach(st => {
           let lastNSValues: any = {};
           if (st.task.isNorthStar) {
-            st.task.northStar.values = st?.task?.northStar?.values?.sort((v1, v2) => (moment.utc(v1.date).isBefore(moment.utc(v2.date))) ? 1 : -1)
+            st.task.northStar.values = st?.task?.northStar?.values?.sort((v1, v2) => (this.datesService.isBefore(v1.date, v2.date)) ? 1 : -1)
             const nsValues = this.mapNSValues(st);
             this.northStarValues = this.northStarValues.concat(nsValues);
 
@@ -158,7 +164,7 @@ export class GlobalNorthStarDialogComponent implements OnInit {
 
         this.postData.northStarValues = northStarValues;
 
-        this.northStarValues = this.northStarValues.sort((v1, v2) => (moment.utc(v1.date).isBefore(v2.date)) ? 1 : -1);
+        this.northStarValues = this.northStarValues.sort((v1, v2) => (this.datesService.isBefore(v1.date, v2.date)) ? 1 : -1);
         this.showSubtasks = true;
       }
     });
@@ -177,7 +183,26 @@ export class GlobalNorthStarDialogComponent implements OnInit {
           || (!st?.task?.isNorthStar && st?.task?.status?.toUpperCase() == 'DONE')
       });
       const numCompleted = (!!completed) ? completed.length : 0;
-      this.chartData = [numCompleted, this.subtasks.length - numCompleted];
+      this.chartData = {
+        labels: this.chartLabels,
+        datasets: [
+          {
+            data: [numCompleted, this.subtasks.length - numCompleted],
+            backgroundColor: [ '#17B2E3', '#F9FAFA' ],
+          }
+        ]
+      };
+
+      this.chartOptions = {
+        cutout: 80,
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false
+          },
+        }
+      };
+
       this.chartReady = true;
     }
   }
@@ -498,6 +523,6 @@ export class GlobalNorthStarDialogComponent implements OnInit {
   }
 
   formateDate(date) {
-    return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
+    return this.datesService.formateDate(date, "YYYY-MM-DD");
   }
 }

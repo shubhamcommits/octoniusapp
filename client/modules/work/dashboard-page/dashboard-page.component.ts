@@ -118,7 +118,6 @@ export class DashboardPageComponent implements OnInit {
 
     const dialogRef = this.dialog.open(WidgetSelectorDialogComponent, {
       data: data,
-      panelClass: 'groupCreatePostDialog',
       width: '50%',
       disableClose: true,
       hasBackdrop: true

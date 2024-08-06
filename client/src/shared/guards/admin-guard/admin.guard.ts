@@ -1,5 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
-import { CanActivate, CanActivateChild, CanLoad, Router, Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { Router, Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { Observable } from 'rxjs/internal/Observable';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
@@ -8,7 +8,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 @Injectable({
   providedIn: 'root'
 })
-export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
+export class AdminGuard  {
 
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector);

@@ -1,6 +1,7 @@
 import { Component, Injector, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChartConfiguration, ChartData } from 'chart.js';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 
 @Component({
@@ -27,21 +28,21 @@ export class ProjectStatisticsComponent implements OnChanges {
   projectStatusClass = '';
 
   doughnutChartLabels;
-  doughnutChartData;
-  doughnutChartType;
-  doughnutChartOptions;
-  doughnutChartColors;
-  doughnutChartPlugins;
+  public doughnutChartData: ChartData<'doughnut'>;
+  public doughnutChartType = 'doughnut' as const;
+  public doughnutChartOptions: ChartConfiguration<'doughnut'>['options'];
+  public doughnutChartPlugins;
 
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector)
 
   constructor(
     private postService: PostService,
+    private datesService: DatesService,
     private injector: Injector
     ) { }
 
-  async ngOnChanges(changes: SimpleChanges) {
+  async ngOnChanges() {
     await this.initView();
   }
 
@@ -66,23 +67,30 @@ export class ProjectStatisticsComponent implements OnChanges {
     const tasksData = await this.getTasksData();
     const percentageDone = await this.getPercentageDone(tasksData[2]);
     this.doughnutChartLabels = [$localize`:@@projectStatistics.toDo:To Do`, $localize`:@@projectStatistics.inProgress:In Progress`, $localize`:@@projectStatistics.done:Done`, $localize`:@@projectStatistics.overdue:Overdue`];
-    this.doughnutChartData = tasksData;
-    this.doughnutChartType = 'doughnut';
+    this.doughnutChartData = {
+      labels: this.doughnutChartLabels,
+      datasets: [
+        {
+          // data: [200, 100, 50, 150],
+          data: tasksData,
+          backgroundColor: [
+            '#FFAB00',
+            '#0bc6a0',
+            '#4a90e2',
+            '#FF6584'
+          ],
+        }
+      ]
+    };
     this.doughnutChartOptions = {
-      cutoutPercentage: 75,
+      cutout: 45,
       responsive: true,
-      legend: {
-        display: false
+      plugins: {
+        legend: {
+          display: false
+        },
       }
     };
-    this.doughnutChartColors = [{
-      backgroundColor: [
-        '#FFAB00',
-        '#0bc6a0',
-        '#4a90e2',
-        '#FF6584'
-      ]
-    }];
     this.doughnutChartPlugins = [{
       beforeDraw(chart) {
         const ctx = chart.ctx;
@@ -120,7 +128,6 @@ export class ProjectStatisticsComponent implements OnChanges {
     const percentageDone = (this.task_count + this.overdue_task_count > 0) ? ((this.done_task_count*100)/(this.task_count + this.overdue_task_count)) : 0;
     this.completitionPercentage = Math.round(percentageDone);
 
-    //this.project.estimation_due_date = moment(Math.max(...tasks.map(post => moment(post.task.due_to))));
     const allTasks = tasks.concat(overdueTasks);
     this.project.estimation_due_date = (allTasks && allTasks.length > 0) ? this.publicFunctions.getHighestDate(allTasks) : this.project?.due_date;
 
@@ -176,6 +183,6 @@ export class ProjectStatisticsComponent implements OnChanges {
   }
 
   formateDate(date: any, format: string) {
-    return date ? moment.utc(date).format(format) : '';
+    return this.datesService.formateDate(date, format);
   }
 }

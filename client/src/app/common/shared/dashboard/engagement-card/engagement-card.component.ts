@@ -1,10 +1,11 @@
 import { Component, Injector, Input, OnChanges, OnInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { GroupsService } from 'src/shared/services/groups-service/groups.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-engagement-card',
@@ -36,6 +37,7 @@ export class EngagementCardComponent implements OnChanges {
     private groupService: GroupService,
     private postService: PostService,
     private commentService: CommentService,
+    private datesService: DatesService,
     private injector: Injector
   ) { }
 
@@ -66,10 +68,10 @@ export class EngagementCardComponent implements OnChanges {
     } else {
       this.groups = await this.getGroups();
 
-      const comparingDate = moment().local().subtract(this.period, 'days').toDate();
+      const comparingDate = DateTime.now().minus({ days: this.period }).toJSDate();
 
       for (let group of this.groups) {
-        if (group.type === 'agora' && (moment(group.created_date).add(-1,'days')).isAfter(comparingDate)) {
+        if (group.type === 'agora' && this.datesService.isBefore(comparingDate, DateTime.fromISO(group.created_date).minus({ days: 1 }))) {
           this.num_agoras++;
         }
 

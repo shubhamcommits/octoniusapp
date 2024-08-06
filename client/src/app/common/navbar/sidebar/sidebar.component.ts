@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Injector,SimpleChanges,Input, EventEmitter, Output, OnChanges } from '@angular/core';
-import { NavigationEnd, RouteConfigLoadEnd, Router } from '@angular/router';
+import { NavigationEnd,  Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';

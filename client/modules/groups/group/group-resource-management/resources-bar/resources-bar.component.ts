@@ -115,7 +115,9 @@ export class ResourcesBarComponent implements OnInit {
 
   openCustomFieldsDialog(): void {
     const dialogRef = this.dialog.open(ResourcesCustomFieldsDialogComponent, {
+      minWidth: '100%',
       width: '100%',
+      minHeight: '100%',
       height: '100%',
       disableClose: true,
       data: { groupData: this.groupData, workspaceId: this.groupData._workspace }
@@ -130,8 +132,10 @@ export class ResourcesBarComponent implements OnInit {
 
   // openAutomatorDialog() {
   //   const dialogRef = this.dialog.open(AutomationFlowsDialogComponent, {
-  //     width: '100%',
-  //     height: '100%',
+  //     minWidth: '100%',
+  //    width: '100%',
+  //     minHeight: '100%',
+  //    height: '100%',
   //     disableClose: true,
   //     data: {
   //       groupId: this.groupData._id,

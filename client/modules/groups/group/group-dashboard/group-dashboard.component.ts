@@ -112,7 +112,6 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
 
     const dialogRef = this.dialog.open(WidgetSelectorDialogComponent, {
       data: data,
-      panelClass: 'groupCreatePostDialog',
       width: '50%',
       disableClose: true,
       hasBackdrop: true

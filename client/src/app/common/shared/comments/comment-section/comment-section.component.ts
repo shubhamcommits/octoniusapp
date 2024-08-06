@@ -1,7 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import moment from 'moment/moment';
+import { DateTime } from 'luxon';
+
 @Component({
   selector: 'comment-section',
   templateUrl: './comment-section.component.html',
@@ -70,7 +71,7 @@ export class CommentSectionComponent implements OnInit {
     let commentData = {
       _id: null,
       content: content,
-      created_date: moment().format(),
+      created_date: DateTime.now(),
       likes_count: 0,
       _liked_by: [],
       _commented_by:{

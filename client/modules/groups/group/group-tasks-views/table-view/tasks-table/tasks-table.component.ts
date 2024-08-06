@@ -4,9 +4,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { PublicFunctions } from 'modules/public.functions';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-
-import moment from 'moment';
 import { PostService } from 'src/shared/services/post-service/post.service';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-tasks-table',
@@ -45,6 +44,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
     public utilityService: UtilityService,
     private columnService: ColumnService,
     private postService: PostService,
+    private datesService: DatesService,
     private injector: Injector
   ) { }
 
@@ -79,7 +79,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   sortNSValues() {
     this.tasks?.forEach(post => {
       if (!!post?.task?.northStar?.values) {
-        post.task.northStar.values = post?.task?.northStar?.values?.sort((v1, v2) => (moment.utc(v1.date).isBefore(moment.utc(v2.date))) ? 1 : -1)
+        post.task.northStar.values = post?.task?.northStar?.values?.sort((v1, v2) => (this.datesService.isBefore(v1.date, v2.date)) ? 1 : -1)
       }
     });
   }
@@ -101,7 +101,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   }
 
   getProgressPercent(northStar) {
-    northStar.values = northStar?.values?.sort((v1, v2) => (moment.utc(v1.date).isBefore(moment.utc(v2.date))) ? 1 : -1)
+    northStar.values = northStar?.values?.sort((v1, v2) => (this.datesService.isBefore(v1.date, v2.date)) ? 1 : -1)
     if (northStar.type !== 'Percent') {
       return (northStar.values[0].value) / northStar.target_value;
     }

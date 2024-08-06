@@ -1,10 +1,11 @@
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import { ChatService } from 'src/shared/services/chat-service/chat.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-chats-home',
@@ -37,6 +38,7 @@ export class ChatsHomeComponent implements OnInit, OnDestroy {
     public injector: Injector,
     private chatService: ChatService,
     private utilityService: UtilityService,
+    private datesService: DatesService,
     private socketService: SocketService
     ) {
       this.enableChatNotificationsSocket();
@@ -171,7 +173,7 @@ export class ChatsHomeComponent implements OnInit, OnDestroy {
         members: [
           {
             _user: this.userData,
-            joined_on: moment(),
+            joined_on: DateTime.now(),
             is_admin: true
           }],
         messages: []
@@ -211,11 +213,11 @@ export class ChatsHomeComponent implements OnInit, OnDestroy {
   }
 
   sortDirectChats() {
-    this.directChats.sort((c1, c2) => (moment(c1.last_message_on).isAfter(moment(c2.last_message_on))) ? -1 : 1);
+    this.directChats.sort((c1, c2) => (this.datesService.isBefore(c2.last_message_on, c1.last_message_on)) ? -1 : 1);
   }
 
   sortGroupChats() {
-    this.groupChats.sort((c1, c2) => (moment(c1.last_message_on).isAfter(moment(c2.last_message_on))) ? -1 : 1);
+    this.groupChats.sort((c1, c2) => (this.datesService.isBefore(c2.last_message_on, c1.last_message_on)) ? -1 : 1);
   }
   
   deleteChat(chatId: string) {

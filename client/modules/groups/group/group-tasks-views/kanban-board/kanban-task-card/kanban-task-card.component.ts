@@ -50,7 +50,6 @@ export class KanbanTaskCardComponent {
 
   formateDate(date: any, format: string) {
     return this.datesService.formateDate(date, DateTime.DATE_MED);
-    // return date ? moment.utc(date).format(format) : '';
   }
 
   getPriorityClass(priority: string) {

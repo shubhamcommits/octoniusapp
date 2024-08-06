@@ -1,8 +1,10 @@
 import { Response, Request, NextFunction } from "express";
 import { FlowService, PostService, TagsService } from '../services';
-import moment from "moment/moment";
+import { DateTime } from 'luxon';
+
 import { sendErr } from '../utils/sendError';
 import { Post, TimeTrackingEntity } from "../models";
+import { isSameDay } from "../utils";
 
 const ObjectId = require('mongoose').Types.ObjectId;
 
@@ -911,9 +913,9 @@ export class PostController {
                         for( var i=0;i<post?.task?._dependent_child.length;i++){
                             const childpost = await postService.get(post?.task?._dependent_child[i]);
                             if(childpost){
-                                var newEndDate = moment(childpost?.task?.due_to).add(e_day,'days');
-                                var newStartDate = moment(childpost?.task?.start_date).add(e_day,'days');
-                                await update(post?.task?._dependent_child[i],moment(newEndDate).format(),moment(newStartDate).format(),e_day,e_day,true);
+                                var newEndDate = DateTime.fromISO(childpost?.task?.due_to).plus({ days: e_day });
+                                var newStartDate = DateTime.fromISO(childpost?.task?.start_date).plus({ days: e_day });
+                                await update(post?.task?._dependent_child[i], newEndDate, newStartDate, e_day, e_day, true);
                             }
                         }
     
@@ -1655,10 +1657,10 @@ export class PostController {
                             }
                             break;
                         case 'Due date is':
-                            const today = moment().startOf('day').format('YYYY-MM-DD');
-                            if (((trigger?.due_date_value == 'overdue') && (post?.task?.status != 'done') && (moment.utc(post?.task?.due_to).format('YYYY-MM-DD') < today))
-                                    || ((trigger?.due_date_value == 'today') && (moment.utc(post?.task?.due_to).isSame(today)))
-                                    || ((trigger?.due_date_value == 'tomorrow') && (moment.utc(post?.task?.due_to).isSame(moment().startOf('day').add(1, 'days'))))) {
+                            const today = DateTime.now();
+                            if (((trigger?.due_date_value == 'overdue') && (post?.task?.status != 'done') && (DateTime.fromISO(post?.task?.due_to).toMillis() < today.toMillis()))
+                                    || ((trigger?.due_date_value == 'today') && isSameDay(DateTime.fromISO(post?.task?.due_to), today))
+                                    || ((trigger?.due_date_value == 'tomorrow') && isSameDay(DateTime.fromISO(post?.task?.due_to), DateTime.now().plus({ days: 1 })))) {
                                 retValue = true;
                             }
                             break;

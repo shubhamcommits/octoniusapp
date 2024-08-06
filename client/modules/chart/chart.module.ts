@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // Charts Module
-import { ChartsModule, ThemeService } from 'ng2-charts';
+import { NgChartsModule, ThemeService } from 'ng2-charts';
 
 // Bar Graph Component
 import { BarGraphComponent } from './bar-graph/bar-graph.component';
@@ -20,7 +20,7 @@ import { MaterialModule } from 'src/app/common/material-module/material-module.m
   ],
   imports: [
     CommonModule,
-    ChartsModule,
+    NgChartsModule,
     MaterialModule
   ],
   exports: [

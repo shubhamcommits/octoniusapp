@@ -1,10 +1,12 @@
 import http from 'axios';
-import moment from 'moment';
+import axios from 'axios';
+
+import { DateTime } from 'luxon';
+
 import { Comment, Group, Post, User, Notification } from '../models';
 import { CommentsService } from './comments.services';
 import { GroupsService } from './groups.services';
-import axios from 'axios';
-import { DateTime } from 'luxon';
+import { isBefore } from '../utils';
 
 const fs = require('fs');
 const minio = require('minio');
@@ -578,7 +580,7 @@ export class PostService {
           $push: {
             "logs": {
               action: 'created',
-              action_date: moment().format(),
+              action_date: DateTime.now(),
               _actor: userId
             }
           }
@@ -630,7 +632,7 @@ export class PostService {
             $push: {
               "logs": {
                 action: 'change_title',
-                action_date: moment().format(),
+                action_date: DateTime.now(),
                 _actor: userId
               }
             }
@@ -683,7 +685,7 @@ export class PostService {
   //           $push: {
   //             "logs": {
   //               action: 'change_content',
-  //               action_date: moment().format(),
+  //               action_date: DateTime.now(),
   //               _actor: userId
   //             }
   //           }
@@ -742,7 +744,7 @@ export class PostService {
           $push: {
             "logs": {
               action: 'attach_file',
-              action_date: moment().format(),
+              action_date: DateTime.now(),
               _actor: userId
             }
           }
@@ -792,8 +794,8 @@ export class PostService {
         case 'task':
           // Add task property details
           postData.task = {
-            due_to: (post.date_due_to) ? moment(post.date_due_to).format() : null,
-            start_date: (post.start_date) ? moment(post.start_date).format() : null,
+            due_to: (post.date_due_to) ? DateTime.fromISO(post.date_due_to) : null,
+            start_date: (post.start_date) ? DateTime.fromISO(post.start_date) : null,
             status: post.status,
             _column: post._column,
             custom_fields: post.task.custom_fields,
@@ -823,7 +825,7 @@ export class PostService {
 
         case 'event':
           // transform due_to time to UTC
-          post.date_due_to = moment.utc(post.date_due_to).format();
+          post.date_due_to = DateTime.fromISO(post.date_due_to);
 
           // Add Event property details
           postData.event = {
@@ -885,7 +887,7 @@ export class PostService {
             $push: {
               "logs": {
                 action: logAction,
-                action_date: moment().format(),
+                action_date: DateTime.now(),
                 _actor: userId
               }
             }
@@ -938,7 +940,7 @@ export class PostService {
           $push: {
             "logs": {
               action: 'updated_tags',
-              action_date: moment().format(),
+              action_date: DateTime.now(),
               _actor: userId
             }
           }
@@ -1312,7 +1314,7 @@ export class PostService {
           $push: {
             "logs": {
               action: 'removed_assignee',
-              action_date: moment().format(),
+              action_date: DateTime.now(),
               _actor: userId,
               _assignee: assigneeId
             }
@@ -1371,7 +1373,7 @@ export class PostService {
           $push: {
             "logs": {
               action: 'assigned_to',
-              action_date: moment().format(),
+              action_date: DateTime.now(),
               _actor: userId,
               _assignee: assigneeId
             }
@@ -1425,7 +1427,7 @@ export class PostService {
         $push: {
           "logs": {
             action: 'assigned_to',
-            action_date: moment().format(),
+            action_date: DateTime.now(),
             _actor: userId,
             _assignee: assigneeId
           }
@@ -1466,7 +1468,7 @@ export class PostService {
       var post: any = await Post.findOneAndUpdate({
         _id: postId
       }, {
-        "task.due_to": date_due_to ? moment(date_due_to).hours(12).format('YYYY-MM-DD') : null,
+        "task.due_to": date_due_to ? DateTime.fromISO(date_due_to) : null,
       }, {
         new: true
       });
@@ -1477,9 +1479,9 @@ export class PostService {
         $push: {
           "logs": {
             action: 'new_due_date',
-            action_date: moment().format(),
+            action_date: DateTime.now(),
             _actor: userId,
-            new_date: date_due_to ? moment(date_due_to).hours(12).format('YYYY-MM-DD') : null
+            new_date: date_due_to ? DateTime.fromISO(date_due_to) : null
           }
         }
       }, {
@@ -1508,31 +1510,31 @@ export class PostService {
     try {
       let field = {};
       if (date_field === 'start_date') {
-        field = { "task.start_date":newDate? moment(newDate).hours(12).format('YYYY-MM-DD'):null }
+        field = { "task.start_date": !!newDate ? DateTime.fromISO(newDate) : null }
       }
 
       // Get post data
       var post: any = await Post.findOneAndUpdate({
-        _id: postId
-      }, field, {
-        new: true
-      });
+          _id: postId
+        }, field, {
+          new: true
+        });
 
       if (date_field === 'start_date') {
         post = await Post.findOneAndUpdate({
-          _id: post._id
-        }, {
-          $push: {
-            "logs": {
-              action: 'new_start_date',
-              action_date: moment().format(),
-              _actor: userId,
-              new_date: newDate ? moment(newDate).hours(12).format('YYYY-MM-DD') : null
+            _id: post._id
+          }, {
+            $push: {
+              "logs": {
+                action: 'new_start_date',
+                action_date: DateTime.now(),
+                _actor: userId,
+                new_date: newDate ? DateTime.fromISO(newDate) : null
+              }
             }
-          }
-        }, {
-          new: true
-        });
+          }, {
+            new: true
+          });
       }
 
       // Populate the post properties
@@ -1567,7 +1569,7 @@ export class PostService {
         $push: {
           "logs": {
             action: 'change_status',
-            action_date: moment().format(),
+            action_date: DateTime.now(),
             _actor: userId,
             new_status: status ? status : 'to do'
           }
@@ -1632,7 +1634,7 @@ export class PostService {
         $push: {
           "logs": {
             action: 'change_section',
-            action_date: moment().format(),
+            action_date: DateTime.now(),
             _actor: userId,
             _new_section: columnId
           }
@@ -1658,18 +1660,16 @@ export class PostService {
    */
   async getThisMonthTasks(userId) {
     try {
+      const today = DateTime.now();
 
       // Generate the actual time
-      const todayForTask = moment().local().add(1, 'days').startOf('day').format();
-
-      const today = moment().local().add(1, 'days').format('YYYY-MM-DD');
-
+      const todayForTask = today.plus({ days: 1 });
       // Generate the +24h time
-      const todayPlus30DaysForTask = moment().local().add(30, 'days').endOf('day').format();
+      const todayPlus30DaysForTask = today.plus({ days: 30 });
 
       const tasks = await Post.find({
         '_assigned_to': userId,
-        'task.due_to': { $gte: todayForTask, $lte: todayPlus30DaysForTask },
+        'task.due_to': { $gte: todayForTask.toJSDate(), $lte: todayPlus30DaysForTask.toJSDate() },
         $or: [
           { 'task.status': 'to do' },
           { 'task.status': 'in progress' },
@@ -1705,31 +1705,29 @@ export class PostService {
    */
   async getThisWeekTasks(userId) {
     try {
+      const today = DateTime.now();
 
       // Generate the actual time
-      const todayForTask = moment().local().add(1, 'days').startOf('day').format();
-
-      const today = moment().local().add(1, 'days').format('YYYY-MM-DD');
-
+      const todayForTask = today.plus({ days: 1 });
       // Generate the +24h time
-      const todayPlus7DaysForTask = moment().local().add(7, 'days').endOf('day').format();
+      const todayPlus7DaysForTask = today.plus({ days: 7 });
 
       const tasks = await Post.find({
-        '_assigned_to': userId,
-        'task.due_to': { $gte: todayForTask, $lte: todayPlus7DaysForTask },
-        $or: [
-          { 'task.status': 'to do' },
-          { 'task.status': 'in progress' },
-          { 'task.status': 'done' }
-        ]
-      })
+          '_assigned_to': userId,
+          'task.due_to': { $gte: todayForTask.toJSDate(), $lte: todayPlus7DaysForTask.toJSDate() },
+          $or: [
+            { 'task.status': 'to do' },
+            { 'task.status': 'in progress' },
+            { 'task.status': 'done' }
+          ]
+        })
         .sort('-task.due_to')
         .limit(10)
         .populate('_group', 'group_name')
         .populate('_posted_by', 'first_name last_name profile_pic')
         .populate('_assigned_to', 'first_name last_name profile_pic')
         .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
-            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+        .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .populate({ path: 'permissions._members', select: this.userFields })
@@ -1754,25 +1752,23 @@ export class PostService {
    */
   async getNextTasks(userId, lastTaskId) {
     try {
+      const today = DateTime.now();
 
       // Generate the actual time
-      const todayForTask = moment().local().add(1, 'days').startOf('day').format();
-
-      const today = moment().local().add(1, 'days').format('YYYY-MM-DD');
-
+      const todayForTask = today.plus({ days: 1 });
       // Generate the +24h time
-      const todayPlus7DaysForTask = moment().local().add(7, 'days').endOf('day').format();
+      const todayPlus7DaysForTask = today.plus({ days: 7 });
 
       const tasks = await Post.find({
-        '_assigned_to': userId,
-        'task.due_to': { $gte: todayForTask, $lte: todayPlus7DaysForTask },
-        '_id': { $gte: lastTaskId },
-        $or: [
-          { 'task.status': 'to do' },
-          { 'task.status': 'in progress' },
-          { 'task.status': 'done' }
-        ]
-      })
+          '_assigned_to': userId,
+          'task.due_to': { $gte: todayForTask.toJSDate(), $lte: todayPlus7DaysForTask.toJSDate() },
+          '_id': { $gte: lastTaskId },
+          $or: [
+            { 'task.status': 'to do' },
+            { 'task.status': 'in progress' },
+            { 'task.status': 'done' }
+          ]
+        })
         .sort('-task.due_to')
         .limit(5)
         .populate('_group', 'group_name')
@@ -1803,33 +1799,31 @@ export class PostService {
    */
   async getThisMonthsEvents(userId) {
     try {
+      const today = DateTime.now();
 
       // Generate the actual time
-      const todayForEvent = moment().local().add(1, 'days').startOf('day').format();
-
-      const today = moment().local().add(1, 'days').format('YYYY-MM-DD');
-
+      const todayForEvent = today.plus({ days: 1 });
       // Generate the +24h time
-      const todayPlus7DaysForEvent = moment().local().add(30, 'days').endOf('day').format();
+      const todayPlus30DaysForEvent = today.plus({ days: 30 });
 
       // Get the group(s) that the user belongs to
       const groups = await User.findById(userId).select('_groups');
 
       // find the user's today agenda events
       const events = await Post.find({
-        $or: [{
-          $and: [
-            // Find events due to today
-            { '_assigned_to': userId },
-            { 'event.due_to': { $gte: todayForEvent, $lte: todayPlus7DaysForEvent } }
-          ]
-        }]
-      }).sort('event.due_to')
-      .populate('_assigned_to', 'first_name last_name')
-      .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
-      .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-      .populate('_group', 'group_name')
-      .populate({ path: 'permissions._members', select: this.userFields }).lean();
+          $or: [{
+            $and: [
+              // Find events due to today
+              { '_assigned_to': userId },
+              { 'event.due_to': { $gte: todayForEvent.toJSDate(), $lte: todayPlus30DaysForEvent.toJSDate() } }
+            ]
+          }]
+        }).sort('event.due_to')
+        .populate('_assigned_to', 'first_name last_name')
+        .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
+        .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+        .populate('_group', 'group_name')
+        .populate({ path: 'permissions._members', select: this.userFields }).lean();
 
       return {
         today: today,
@@ -1850,35 +1844,33 @@ export class PostService {
    */
   async getThisWeekEvents(userId) {
     try {
+      const today = DateTime.now();
 
       // Generate the actual time
-      const todayForEvent = moment().local().add(1, 'days').startOf('day').format();
-
-      const today = moment().local().add(1, 'days').format('YYYY-MM-DD');
-
+      const todayForEvent = today.plus({ days: 1 });
       // Generate the +24h time
-      const todayPlus7DaysForEvent = moment().local().add(7, 'days').endOf('day').format();
+      const todayPlus7DaysForEvent = today.plus({ days: 7 });
 
       // Get the group(s) that the user belongs to
       const groups = await User.findById(userId).select('_groups');
 
       // find the user's today agenda events
       const events = await Post.find({
-        $or: [{
-          $and: [
-            // Find events due to today
-            { '_assigned_to': userId },
-            { 'event.due_to': { $gte: todayForEvent, $lte: todayPlus7DaysForEvent } }
-          ]
-        }]
-      }).sort('event.due_to')
-      .limit(10)
-      .populate('_assigned_to', 'first_name last_name')
-      .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
-      .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-      .populate('_group', 'group_name')
-      .populate({ path: 'permissions._members', select: this.userFields })
-      .lean();
+          $or: [{
+            $and: [
+              // Find events due to today
+              { '_assigned_to': userId },
+              { 'event.due_to': { $gte: todayForEvent.toJSDate(), $lte: todayPlus7DaysForEvent.toJSDate() } }
+            ]
+          }]
+        }).sort('event.due_to')
+        .limit(10)
+        .populate('_assigned_to', 'first_name last_name')
+        .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
+        .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+        .populate('_group', 'group_name')
+        .populate({ path: 'permissions._members', select: this.userFields })
+        .lean();
 
       return {
         today: today,
@@ -1900,36 +1892,34 @@ export class PostService {
    */
   async getNextEvents(userId, lastEventId) {
     try {
+      const today = DateTime.now();
 
       // Generate the actual time
-      const todayForEvent = moment().local().add(1, 'days').startOf('day').format();
-
-      const today = moment().local().add(1, 'days').format('YYYY-MM-DD');
-
+      const todayForEvent = today.plus({ days: 1 });
       // Generate the +24h time
-      const todayPlus7DaysForEvent = moment().local().add(7, 'days').endOf('day').format();
+      const todayPlus7DaysForEvent = today.plus({ days: 7 });
 
       // Get the group(s) that the user belongs to
       const groups = await User.findById(userId).select('_groups');
 
       // find the user's today agenda events
       const events = await Post.find({
-        '_id': { $gte: lastEventId },
-        $or: [{
-          $and: [
-            // Find events due to today
-            { '_assigned_to': userId },
-            { 'event.due_to': { $gte: todayForEvent, $lte: todayPlus7DaysForEvent } }
-          ]
-        }]
-      }).sort('event.due_to')
-      .limit(5)
-      .populate('_assigned_to', 'first_name last_name')
-      .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
-      .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-      .populate('_group', 'group_name')
-      .populate({ path: 'permissions._members', select: this.userFields })
-      .lean();
+          '_id': { $gte: lastEventId },
+          $or: [{
+            $and: [
+              // Find events due to today
+              { '_assigned_to': userId },
+              { 'event.due_to': { $gte: todayForEvent.toJSDate(), $lte: todayPlus7DaysForEvent.toJSDate() } }
+            ]
+          }]
+        }).sort('event.due_to')
+        .limit(5)
+        .populate('_assigned_to', 'first_name last_name')
+        .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
+        .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+        .populate('_group', 'group_name')
+        .populate({ path: 'permissions._members', select: this.userFields })
+        .lean();
 
       return {
         today: today,
@@ -1952,11 +1942,11 @@ export class PostService {
     try {
       var groupList: any = await User.find({ '_id': userId }).select("_groups");
       groupList = groupList[0]['_groups'];
-      const today = moment().local().startOf('day').format();
+      const today = DateTime.now();
       if (groupList.length > 0) {
         var posts: any = await Post.find({
           '_group': { $in: groupList },
-          $and: [{ 'created_date': { $gte: today } }]
+          $and: [{ 'created_date': { $gte: today.toJSDate() } }]
         }).sort('-created_date').limit(10);
         return posts;
       }
@@ -1978,15 +1968,16 @@ export class PostService {
     try {
       var groupList: any = await User.find({ '_id': userId }).select("_groups");
       groupList = groupList[0]['_groups'];
-      const todayMinus7Days = moment().local().subtract(7, 'days').endOf('day').format();
+      const today = DateTime.now();
+      const todayMinus7Days = today.minus({ days: 7 });
       if (groupList.length > 0) {
         var posts: any = await Post.find({
-          '_group': { $in: groupList },
-          $and: [
-            { '_id': { $lt: lastPostId } },
-            { 'created_date': { $gte: todayMinus7Days } }
-          ]
-        }).sort('-created_date').limit(5);
+            '_group': { $in: groupList },
+            $and: [
+              { '_id': { $lt: lastPostId } },
+              { 'created_date': { $gte: todayMinus7Days.toJSDate() } }
+            ]
+          }).sort('-created_date').limit(5);
         return posts;
       }
       else {
@@ -2057,7 +2048,7 @@ export class PostService {
         $push: {
           "logs": {
             action: 'change_cf',
-            action_date: moment().format(),
+            action_date: DateTime.now(),
             _actor: userId,
             cf_title: customFieldTitle,
             cf_value: customFieldValue
@@ -2125,7 +2116,7 @@ export class PostService {
         if (subtasks && subtasks.length > 0) {
           let northStarValues = [];
           subtasks.forEach(st => {
-            st.task.northStar.values = st?.task?.northStar?.values?.sort((v1, v2) => (moment.utc(v1.date).isBefore(moment.utc(v2.date))) ? 1 : -1)
+            st.task.northStar.values = st?.task?.northStar?.values?.sort((v1, v2) => (isBefore(DateTime.fromISO(v1.date), DateTime.fromISO(v2.date))) ? 1 : -1)
             let nsValues:any = {};
             if (st?.task?.isNorthStar) {
               const value = st?.task?.northStar?.values[0];
@@ -2214,7 +2205,7 @@ export class PostService {
 
   async getWorspacePostsResults(workspaceId: any, type: any, numDays: number, overdue: boolean, filteringGroups: any) {
 
-    const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');
+    const comparingDate = DateTime.now().minus({ days: numDays });
 
     let groups = [];
     if (filteringGroups && filteringGroups != 'undefined' && filteringGroups.length > 0) {
@@ -2229,14 +2220,14 @@ export class PostService {
     if (overdue) {
 
       // Generate the actual time
-      const today = moment().subtract(1, 'days').endOf('day').format()
+      const today = DateTime.now();
 
       // Fetch the tasks posts
       posts = await Post.find({
           $and: [
             { _group: { $in: groups } },
             { type: type },
-            { 'task.due_to': { $gte: comparingDate, $lt: today } },
+            { 'task.due_to': { $gte: comparingDate.toISODate(), $lt: today.toISODate() } },
             {
               $or: [
                 { 'task.status': 'to do' },
@@ -2261,7 +2252,7 @@ export class PostService {
           $and: [
             { _group: { $in: groups } },
             { type: type },
-            { 'task.due_to': { $gte: comparingDate } }
+            { 'task.due_to': { $gte: comparingDate.toISODate() } }
           ]
         })
         .sort('-task.due_to')
@@ -2282,7 +2273,7 @@ export class PostService {
 
   async getWorspaceNorthStars(workspaceId: any, type: any, numDays: number, overdue: boolean, isNorthStar: boolean, filteringGroups: any) {
 
-    const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');
+    const comparingDate = DateTime.now().minus({ days: numDays });
 
     let groups = [];
     if (filteringGroups && filteringGroups != 'undefined' && filteringGroups.length > 0) {
@@ -2297,7 +2288,7 @@ export class PostService {
     if (overdue) {
 
       // Generate the actual time
-      const today = moment().subtract(1, 'days').endOf('day').format();
+      const today = DateTime.now().minus({ days: 1 });
 
       // Fetch the tasks posts
       posts = await Post.find({
@@ -2305,7 +2296,7 @@ export class PostService {
             { _group: { $in: groups } },
             { type: type },
             { 'task.isNorthStar': isNorthStar },
-            { 'task.due_to': { $gte: comparingDate, $lt: today } }
+            { 'task.due_to': { $gte: comparingDate.toJSDate(), $lt: today.toJSDate() } }
           ]
         })
         .sort('-task.due_to')
@@ -2325,7 +2316,7 @@ export class PostService {
             { _group: { $in: groups } },
             { type: type },
             { 'task.isNorthStar': isNorthStar },
-            { 'task.due_to': { $gte: comparingDate } }
+            { 'task.due_to': { $gte: comparingDate.toJSDate() } }
           ]
         })
         .sort('-task.due_to')
@@ -2349,25 +2340,25 @@ export class PostService {
     let posts = [];
 
     if (!isNaN(numDays)) {
-      const comparingDate = moment().local().subtract(+numDays, 'days').format('YYYY-MM-DD');
+      const today = DateTime.now();
+      const comparingDate = today.minus({ days: +numDays });
       // Generate the actual time
-      const today = moment().subtract(1, 'days').endOf('day').format();
 
       if (overdue) {
         // Fetch the tasks posts
         posts = await Post.find({
-          $and: [
-            { _group: groupId },
-            { type: type },
-            { 'task.due_to': { $gte: comparingDate, $lt: today } },
-            {
-              $or: [
-                { 'task.status': 'to do' },
-                { 'task.status': 'in progress' }
-              ]
-            }
-          ]
-        })
+            $and: [
+              { _group: groupId },
+              { type: type },
+              { 'task.due_to': { $gte: comparingDate.toJSDate(), $lt: today.toJSDate() } },
+              {
+                $or: [
+                  { 'task.status': 'to do' },
+                  { 'task.status': 'in progress' }
+                ]
+              }
+            ]
+          })
           .sort('-task.due_to')
           .populate('_group', this.groupFields)
           .populate('_posted_by', this.userFields)
@@ -2381,18 +2372,18 @@ export class PostService {
 
       } else {
         posts = await Post.find({
-          $and: [
-            { _group: groupId },
-            { type: type },
-            { 'task.due_to': { $gte: comparingDate } },
-            {
-              $or: [
-                { 'task.due_to': { $gte: today } },
-                { 'task.status': 'done' }
-              ]
-            }
-          ]
-        })
+            $and: [
+              { _group: groupId },
+              { type: type },
+              { 'task.due_to': { $gte: comparingDate.toJSDate() } },
+              {
+                $or: [
+                  { 'task.due_to': { $gte: today } },
+                  { 'task.status': 'done' }
+                ]
+              }
+            ]
+          })
           .sort('-task.due_to')
           .populate({ path: '_group', select: this.groupFields })
           .populate({ path: '_posted_by', select: this.userFields })
@@ -2407,11 +2398,11 @@ export class PostService {
       }
     } else {
         posts = await Post.find({
-          $and: [
-            { _group: groupId },
-            { type: type }
-          ]
-        })
+            $and: [
+              { _group: groupId },
+              { type: type }
+            ]
+          })
           .sort('-task.due_to')
           .populate({ path: '_group', select: this.groupFields })
           .populate({ path: '_posted_by', select: this.userFields })
@@ -2433,24 +2424,24 @@ export class PostService {
     let posts = [];
 
     // Generate the actual time
-    const today = moment().subtract(1, 'days').endOf('day').format()
+    const today = DateTime.now()
 
     if (overdue) {
 
       // Fetch the tasks posts
       posts = await Post.find({
-        $and: [
-          { 'task._column': columnId },
-          { type: 'task' },
-          { 'task.due_to': { $lt: today } },
-          {
-            $or: [
-              { 'task.status': 'to do' },
-              { 'task.status': 'in progress' }
-            ]
-          }
-        ]
-      })
+          $and: [
+            { 'task._column': columnId },
+            { type: 'task' },
+            { 'task.due_to': { $lt: today.toJSDate() } },
+            {
+              $or: [
+                { 'task.status': 'to do' },
+                { 'task.status': 'in progress' }
+              ]
+            }
+          ]
+        })
         .sort('-task.due_to')
         .populate('_group', this.groupFields)
         .populate('_posted_by', this.userFields)
@@ -2464,23 +2455,23 @@ export class PostService {
 
     } else {
       posts = await Post.find({
-        $and: [
-          { 'task._column': columnId },
-          { type: 'task' },
-          {
-            $or: [
-              { 'task.due_to': { $gte: today } },
-              { 'task.status': 'done' }
-            ]
-          }
-        ]
-      })
+          $and: [
+            { 'task._column': columnId },
+            { type: 'task' },
+            {
+              $or: [
+                { 'task.due_to': { $gte: today.toJSDate() } },
+                { 'task.status': 'done' }
+              ]
+            }
+          ]
+        })
         .sort('-task.due_to')
         .populate({ path: '_group', select: this.groupFields })
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
         .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
-            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+        .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
@@ -2498,27 +2489,27 @@ export class PostService {
 
     // We assume that by default it will be 'this_week'
     // Generate the date for the start of the week
-    let startingDate = moment().add(1, 'days').endOf('day').startOf('week').format();
+    let startingDate = DateTime.now().plus({ days: 1 }).endOf('day').startOf('week');
     // Generate the date for the end of the week
-    let endDate = moment().add(1, 'days').endOf('day').endOf('week').format();
+    let endDate = DateTime.now().plus({ days: 1 }).endOf('day').endOf('week');
 
     if (period == 'next_week') {
       // Generate the date for the start of the next week
-      startingDate = moment().add(1, 'weeks').endOf('day').startOf('week').format();
+      startingDate = DateTime.now().plus({ weeks: 1 }).endOf('day').startOf('week');
       // Generate the date for the end of the next week
-      endDate = moment().add(1, 'weeks').endOf('day').endOf('week').format();
+      endDate = DateTime.now().plus({ weeks: 1 }).endOf('day').endOf('week');
 
     } else if (period == 'this_month') {
       // Generate the date for the start of the month
-      startingDate = moment().add(1, 'days').endOf('day').startOf('month').format();
+      startingDate = DateTime.now().plus({ days: 1 }).endOf('day').startOf('month');
       // Generate the date for the end of the month
-      endDate = moment().add(1, 'days').endOf('day').endOf('month').format();
+      endDate = DateTime.now().plus({ days: 1 }).endOf('day').endOf('month');
 
     } else if (period == 'next_month') {
       // Generate the date for the start of the next month
-      startingDate = moment().add(1, 'months').endOf('day').startOf('month').format();
+      startingDate = DateTime.now().plus({ months: 1 }).endOf('day').startOf('month');
       // Generate the date for the end of the next month
-      endDate = moment().add(1, 'months').endOf('day').endOf('month').format();
+      endDate = DateTime.now().plus({ months: 1 }).endOf('day').endOf('month');
     }
 
     if (period == 'this_week') {
@@ -2529,10 +2520,10 @@ export class PostService {
           { 'task.is_template': { $ne: true }},
           {
             $or: [
-              { 'task.due_to': { $gte: startingDate, $lte: endDate }},
+              { 'task.due_to': { $gte: startingDate.toJSDate(), $lte: endDate.toJSDate() }},
               {
                 $and:[
-                  { 'task.due_to': { $lte: moment().local().add(1, 'days').format('YYYY-MM-DD') }},
+                  { 'task.due_to': { $lte: DateTime.now().plus({ days: 1 }).toJSDate() }},
                   { 'task.status': { $ne: 'done' }}
                 ]
               }
@@ -2546,7 +2537,7 @@ export class PostService {
           { _group: groupId },
           { type: 'task' },
           { 'task.is_template': { $ne: true }},
-          { 'task.due_to': { $gte: startingDate, $lte: endDate }}
+          { 'task.due_to': { $gte: startingDate.toJSDate(), $lte: endDate.toJSDate() }}
         ]
       };
     }
@@ -2571,22 +2562,22 @@ export class PostService {
     if (overdue) {
 
       // Generate the actual time
-      const today = moment().subtract(1, 'days').endOf('day').format()
+      const today = DateTime.now()
 
       // Fetch the tasks posts
       posts = await Post.find({
-        $and: [
-          { _group: groupId },
-          { type: 'task' },
-          { 'task.due_to': { $lt: today } },
-          {
-            $or: [
-              { 'task.status': 'to do' },
-              { 'task.status': 'in progress' }
-            ]
-          }
-        ]
-      })
+          $and: [
+            { _group: groupId },
+            { type: 'task' },
+            { 'task.due_to': { $lt: today.toJSDate() } },
+            {
+              $or: [
+                { 'task.status': 'to do' },
+                { 'task.status': 'in progress' }
+              ]
+            }
+          ]
+        })
         .sort('-task.due_to')
         .populate('_group', this.groupFields)
         .populate('_posted_by', this.userFields)
@@ -2600,11 +2591,11 @@ export class PostService {
 
     } else {
       posts = await Post.find({
-        $and: [
-          { _group: groupId },
-          { type: 'task' }
-        ]
-      })
+          $and: [
+            { _group: groupId },
+            { type: 'task' }
+          ]
+        })
         .sort('-task.due_to')
         .populate({ path: '_group', select: this.groupFields })
         .populate({ path: '_posted_by', select: this.userFields })
@@ -2623,17 +2614,17 @@ export class PostService {
 
   async getGroupPostsResults(groupId: any, numDays: any) {
 
-    const comparingDate = moment().local().subtract(+numDays, 'days').format('YYYY-MM-DD');
+    const comparingDate = DateTime.now().minus({ days: +numDays });
 
     let posts = [];
 
     posts = await Post.find({
-      $and: [
-        { _group: groupId },
-        { type: { $ne: 'task' } },
-        { 'created_date': { $gte: comparingDate } }
-      ]
-    })
+        $and: [
+          { _group: groupId },
+          { type: { $ne: 'task' } },
+          { 'created_date': { $gte: comparingDate.toJSDate() } }
+        ]
+      })
       .lean();
 
     return posts;
@@ -2687,7 +2678,7 @@ export class PostService {
         $push: {
           "logs": {
             action: 'moved_to',
-            action_date: moment().format(),
+            action_date: DateTime.now(),
             _actor: userId,
             _group: groupId
           }
@@ -2699,7 +2690,7 @@ export class PostService {
         $push: {
           "logs": {
             action: 'moved_to',
-            action_date: moment().format(),
+            action_date: DateTime.now(),
             _actor: userId,
             _group: groupId
           }
@@ -2729,7 +2720,7 @@ export class PostService {
         $push: {
           "logs": {
             action: 'moved_to',
-            action_date: moment().format(),
+            action_date: DateTime.now(),
             _actor: userId,
             _group: groupId
           }
@@ -2771,7 +2762,7 @@ export class PostService {
 
       newPost._group = groupId;
       newPost.comments_count = 0;
-      newPost.created_date = moment().format();
+      newPost.created_date = DateTime.now();
       if (!isTemplate) {
         newPost._assigned_to = [];
       }
@@ -2873,7 +2864,7 @@ export class PostService {
           $push: {
             "logs": {
               action: 'copy_to',
-              action_date: moment().format(),
+              action_date: DateTime.now(),
               _actor: userId,
               _group: groupId
             }
@@ -3007,7 +2998,7 @@ export class PostService {
           $push: {
             "logs": {
               action: 'set_parent',
-              action_date: moment().format(),
+              action_date: DateTime.now(),
               _actor: userId,
               _task: parentTaskId
             }
@@ -3040,7 +3031,7 @@ export class PostService {
           "task._dependency_task": dependecyTaskId,
           "logs": {
             action: 'make_dependent',
-            action_date: moment().format(),
+            action_date: DateTime.now(),
             _actor: userId,
             _task: dependecyTaskId
           }
@@ -3056,7 +3047,7 @@ export class PostService {
           "task._dependent_child": postId,
           "logs": {
             action: 'make_dependency',
-            action_date: moment().format(),
+            action_date: DateTime.now(),
             _actor: userId,
             _task: postId
           }
@@ -3094,7 +3085,7 @@ export class PostService {
         $push: {
           "logs": {
             action: 'remove_dependency',
-            action_date: moment().format(),
+            action_date: DateTime.now(),
             _actor: userId,
             _task: postId
           }
@@ -3115,7 +3106,7 @@ export class PostService {
         $push: {
           "logs": {
             action: 'remove_dependent',
-            action_date: moment().format(),
+            action_date: DateTime.now(),
             _actor: userId,
             _task: dependecyTaskId
           }
@@ -3157,7 +3148,7 @@ export class PostService {
       newPost._assigned_to = [assigneeId];
       newPost.task.status = 'to do';
       newPost.comments_count = 0;
-      newPost.created_date = moment().format();
+      newPost.created_date = DateTime.now();
 
       if (parentId) {
         newPost.task._parent_task = parentId;
@@ -3315,7 +3306,7 @@ export class PostService {
 
       template._group = groupId;
       template.comments_count = 0;
-      template.created_date = moment().format();
+      template.created_date = DateTime.now();
       if (parentId) {
         template.task._parent_task = parentId;
       }
@@ -3617,7 +3608,7 @@ export class PostService {
         $push: {
           "logs": {
             action: 'save_estimation',
-            action_date: moment().format(),
+            action_date: DateTime.now(),
             _actor: userId,
             estimation: estimation
           }
@@ -3770,13 +3761,13 @@ export class PostService {
                 if (shuttleIndex < 0) {
                   let newDueDate;
                   if (action?.due_date_value == 'tomorrow') {
-                    newDueDate = moment().add(1,'days');
+                    newDueDate = DateTime.now().plus({ days: 1 });
                   } else if (action?.due_date_value == 'end_of_week') {
-                    newDueDate = moment().endOf('week').subtract(1,'days');
+                    newDueDate = DateTime.now().endOf('week').minus({ days: 1 });
                   } else if (action?.due_date_value == 'end_of_next_week') {
-                    newDueDate = moment().add(1,'weeks').endOf('week').subtract(1,'days');
+                    newDueDate = DateTime.now().plus({ weeks: 1 }).endOf('week').minus({ days: 1 });
                   } else if (action?.due_date_value == 'end_of_month') {
-                    newDueDate = moment().endOf('month');
+                    newDueDate = DateTime.now().endOf('month');
                   }
 
                   if (newDueDate) {
@@ -3891,7 +3882,7 @@ export class PostService {
               },
               $addToSet: {
                 "task.shuttles": {
-                  shuttled_at: moment().format(),
+                  shuttled_at: DateTime.now(),
                   shuttle_status: 'to do',
                   _shuttle_section: group._shuttle_section,
                   _shuttle_group: shuttleGroupId
@@ -3939,7 +3930,7 @@ export class PostService {
           $push: {
             "logs": {
               action: 'update_crm_info',
-              action_date: moment().format(),
+              action_date: DateTime.now(),
               _actor: userId
             }
           }

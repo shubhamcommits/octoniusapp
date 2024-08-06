@@ -68,10 +68,6 @@ export class PostsService {
      */
     async getTodayTasks(userId: string) {
 
-        // Generate the actual time
-        // const startOfDay = moment().startOf('day').format('YYYY-MM-DD');
-        // Generate the +24h time
-        // const endOfDay = moment().endOf('day').format('YYYY-MM-DD');
         const today = DateTime.now();
 
         const user = await User.findById(userId).select('_private_group');
@@ -180,11 +176,9 @@ export class PostsService {
         const user = await User.findById(userId).select('_private_group');
 
         // Generate the today
-        // const tomorrow = moment().add(1, 'days').startOf('day').format('YYYY-MM-DD');
         const tomorrow = DateTime.now().plus({ days: 1 });
 
         // Generate the date for the end of the week
-        // const endOfWeek = moment().add(1, 'days').endOf('day').endOf('isoWeek').format('YYYY-MM-DD');
         const endOfWeek = DateTime.now().plus({ weeks: 1 }).endOf('week');
 
         // Fetch the tasks posts
@@ -238,11 +232,9 @@ export class PostsService {
         const user = await User.findById(userId).select('_private_group');
 
         // Generate the date for the end of the week
-        // const endOfWeek = moment().add(1, 'days').endOf('day').endOf('isoWeek').format('YYYY-MM-DD');
         const endOfWeek = DateTime.now().endOf('week');
 
         // Generate the date for the end of the next week
-        // const endOfNextWeek = moment().endOf('isoWeek').add(1, 'days').endOf('day').endOf('isoWeek').format('YYYY-MM-DD');
         const endOfNextWeek = DateTime.now().plus({ weeks: 1 }).endOf('week');
 
         // Fetch the tasks posts
@@ -296,7 +288,6 @@ export class PostsService {
         const user = await User.findById(userId).select('_private_group');
 
         // Generate the +14days from today time
-        // const todayPlus14Days = moment().add(14, 'days').endOf('day').format('YYYY-MM-DD');
         const todayPlus14Days = DateTime.now().plus({ days: 14 })
 
         // Fetch the tasks posts
@@ -360,11 +351,6 @@ export class PostsService {
 
         const user = await User.findById(userId).select('_private_group');
 
-        // Generate the actual time
-        // const startOfDay = moment().startOf('day').format();
-        // Generate the +24h time
-        // const endOfDay = moment().endOf('day').format();
-
         const today = DateTime.now();
 
         // Find the user's today agenda events
@@ -399,10 +385,8 @@ export class PostsService {
         const user = await User.findById(userId).select('_private_group');
 
         // Generate the actual time
-        // const todayForEvent = moment().add(1, 'days').startOf('day').format();
         const todayForEvent = DateTime.now();
         // Generate the +24h time
-        // const todayPlus7Days = moment().add(7, 'days').endOf('day').format();
         const todayPlus7Days = DateTime.now().plus({ days: 7 });
 
         // Find the user's today agenda events
@@ -429,11 +413,9 @@ export class PostsService {
     async getRecentPosts(userId: string) {
 
         // Generate the actual time
-        // const today = moment().startOf('day').format('YYYY-MM-DD');
         const today = DateTime.now();
 
         // Generate the +24h time
-        // const tomorrow = moment().endOf('day').format('YYYY-MM-DD');
         const tomorrow = DateTime.now().plus({ days: 1 });
         // Get the group(s) that the user belongs to
         let user: any = await User.findById(userId)

@@ -5,7 +5,8 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { SubSink } from 'subsink';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
-import moment from 'moment';
+import { DateTime } from 'luxon';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-user-hive',
@@ -50,6 +51,7 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
     public dialog: MatDialog,
     private injector: Injector,
     private hrService: HRService,
+    private datesService: DatesService,
     private userService: UserService
   ) { }
 
@@ -63,8 +65,6 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
     this.userData = await this.publicFunctions.getCurrentUser();
     // force to reload the userData because the previous line will take the data from storage, and may not have some changes
     this.userData = await this.publicFunctions.getOtherUser(this.userData?._id);
-
-    // this.joinDate = moment(this.userData?.company_join_date).format("YYYY-MM-DD");
 
     this.isCurrentUser = true;
     if (!this.userData.hr) {
@@ -244,6 +244,6 @@ export class UserHiveComponent implements OnInit, AfterContentChecked, OnDestroy
   }
 
   formateDate(date) {
-    return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
+    return this.datesService.formateDate(date, "YYYY-MM-DD");
   }
 }

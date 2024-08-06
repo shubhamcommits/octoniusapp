@@ -108,7 +108,7 @@ export class SearchService {
     if (advancedFilters.from_date) {
       from_date = DateTime.fromISO(advancedFilters.from_date).startOf('day').toISODate();
     } else {
-      from_date = DateTime.now().plus({ years: -40 }).toISODate();
+      from_date = DateTime.now().minus({ years: 40 }).toISODate();
     }
 
     if (advancedFilters.to_date) {
@@ -252,7 +252,7 @@ export class SearchService {
     if (advancedFilters.from_date) {
       from_date = DateTime.fromISO(advancedFilters.from_date).startOf('day').toISODate();
     } else {
-      from_date = DateTime.now().plus({ years: -40 }).toISODate();
+      from_date = DateTime.now().minus({ years: 40 }).toISODate();
     }
 
     if (advancedFilters.to_date) {
@@ -397,7 +397,7 @@ export class SearchService {
     if (advancedFilters.from_date) {
       from_date = DateTime.fromISO(advancedFilters.from_date).startOf('day').toISODate();
     } else {
-      from_date = DateTime.now().plus({ years: -40 }).toISODate();
+      from_date = DateTime.now().minus({ years: 40 }).toISODate();
     }
 
     if (advancedFilters.to_date) {
@@ -597,7 +597,7 @@ export class SearchService {
     if (advancedFilters.from_date) {
       from_date = DateTime.fromISO(advancedFilters.from_date).startOf('day').toISODate();
     } else {
-      from_date = DateTime.now().plus({ years: -40 }).toISODate();
+      from_date = DateTime.now().minus({ years: 40 }).toISODate();
     }
 
     if (advancedFilters.to_date) {

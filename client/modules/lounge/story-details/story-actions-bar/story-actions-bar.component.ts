@@ -49,12 +49,6 @@ export class StoryActionsBarComponent implements OnInit, OnChanges {
   canEditAction() {
     this.canEditStory = true;
 
-    // if (this.storyData.event_date) {
-    //   const eventMoment = moment(this.storyData.event_date);
-    //   this.eventTime.hour = eventMoment.hours();
-    //   this.eventTime.minute = eventMoment.minutes();
-    // }
-
     this.onEditActionEvent.emit();
   }
 

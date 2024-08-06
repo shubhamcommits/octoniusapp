@@ -182,10 +182,11 @@ export class NorthStarPageComponent implements OnInit {
    */
   openGlobalNSModal(postId: string, parentTaskId?: string): void {
     const dialogRef = this.dialog.open(GlobalNorthStarDialogComponent, {
+          minWidth: '100%',
           width: '100%',
+          minHeight: '100%',
           height: '100%',
           disableClose: true,
-          panelClass: 'groupCreatePostDialog',
           data: {
             postId: postId,
             parentTaskId: parentTaskId
