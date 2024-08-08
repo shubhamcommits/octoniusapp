@@ -3,11 +3,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { GroupService } from 'src/shared/services/group-service/group.service';
 import { BehaviorSubject } from 'rxjs';
-import { FlowService } from 'src/shared/services/flow-service/flow.service';
-import moment from 'moment';
-import { ColumnService } from 'src/shared/services/column-service/column.service';
+import { DateTime } from 'luxon';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-event-post-dialog',
@@ -65,7 +63,7 @@ export class EventPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
   startDate: any;
 
   // Date Object to map the due dates
-  dueDate: any;
+  dueDate: DateTime;
   dueTime: any = {
     hour: 1,
     minute: 30
@@ -100,9 +98,7 @@ export class EventPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
     @Inject(MAT_DIALOG_DATA) public data: any,
     public utilityService: UtilityService,
     private postService: PostService,
-    private groupService: GroupService,
-    private flowService: FlowService,
-    private columnService: ColumnService,
+    private datesService: DatesService,
     private injector: Injector,
     private mdDialogRef: MatDialogRef<EventPostDialogComponent>
     ) {}
@@ -148,12 +144,12 @@ export class EventPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
     if (this.postData?.event.due_to && this.postData?.event.due_to != null) {
 
       // Set the DueDate variable
-      this.dueDate = moment(this.postData?.task.due_to || this.postData?.event.due_to);
+      this.dueDate = DateTime.fromISO(this.postData?.task.due_to || this.postData?.event.due_to);
     }
 
     if (this.dueDate) {
-      this.dueTime.hour = this.dueDate.getHours();
-      this.dueTime.minute = this.dueDate.getMinutes();
+      this.dueTime.hour = this.dueDate.hours;
+      this.dueTime.minute = this.dueDate.minutes;
     }
     this.eventAssignedToCount = (this.postData?._assigned_to) ? this.postData?._assigned_to.size : 0;
 
@@ -340,13 +336,13 @@ export class EventPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
     var due_to;
 
     if (this.dueDate == undefined || this.dueDate == null) {
-      const now = moment();
+      const now = DateTime.now();
       now.hours(this.dueTime.hour);
       now.minute(this.dueTime.minute);
       due_to = now;
     } else {
       // Create the due_to date
-      const now = moment(this.dueDate.getFullYear(),this.dueDate.getMonth(),this.dueDate.getDate());
+      const now = DateTime.fromObject(this.dueDate.year, this.dueDate.month, this.dueDate.day);
       now.hours(this.dueTime.hour);
       now.minute(this.dueTime.minute);
       due_to = now;
@@ -354,7 +350,7 @@ export class EventPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
 
     // Add event.due_to property to the postData and assignees
     post.event = {
-      due_to: moment(due_to).format()
+      due_to: DateTime.fromISO(due_to).toJSDate()
     }
 
     // Create FormData Object
@@ -384,7 +380,7 @@ export class EventPostDialogComponent implements OnInit/*, AfterViewChecked, Aft
     if (this.postData?.logs && this.postData?.logs?.length > 0) {
       const logs = this.postData?.logs
         .filter(log => (log.action == 'assigned_to' || log.action == 'removed_assignee') && log?._actor)
-        .sort((l1, l2) => (moment(l1.action_date).isBefore(l2.action_date)) ? 1 : -1);
+        .sort((l1, l2) => (this.datesService.isBefore(l1.action_date, l2.action_date)) ? 1 : -1);
 
       if (logs[0]) {
         this.lastAssignedBy = await this.publicFunctions.getOtherUser(logs[0]._actor?._id);

@@ -1,10 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
-import {
-  CanActivate,
-  Router,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot
-} from '@angular/router';
+import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { PublicFunctions } from 'modules/public.functions';
@@ -12,7 +7,7 @@ import { PublicFunctions } from 'modules/public.functions';
 @Injectable({
   providedIn: 'root',
 })
-export class FlamingoGuard implements CanActivate  {
+export class FlamingoGuard   {
 
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector);

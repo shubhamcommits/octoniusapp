@@ -250,7 +250,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   openSearchModal() {
     const dialogRef = this.dialog.open(SearchHeaderComponent, {
+      minWidth: '100%',
       width: '100%',
+      minHeight: '100%',
       height: '100%',
       disableClose: true
     });

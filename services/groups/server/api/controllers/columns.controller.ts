@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { Column, Group, Post, TimeTrackingEntity } from '../models';
 import { sendError } from '../../utils';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 
 export class ColumnsController {
 
@@ -358,8 +358,8 @@ export class ColumnsController {
                 _id: columnId
             }, {
                 "$set": {
-                    start_date: startDate ? moment(startDate).hours(12).format('YYYY-MM-DD') : null,
-                    due_date: dueDate ? moment(dueDate).hours(12).format('YYYY-MM-DD') : null,
+                    start_date: startDate ? DateTime.fromISO(startDate).set({ hour: 12 }).toJSDate() : null,
+                    due_date: dueDate ? DateTime.fromISO(dueDate).set({ hour: 12 }).toJSDate() : null,
                 }
             }, {
                 new: true
@@ -600,7 +600,7 @@ export class ColumnsController {
                 let newColumn = column;
                 delete newColumn._id;
                 newColumn.archived = true;
-                newColumn.title = column.title + ' ' + moment().format('YYYY-MM-DD');
+                newColumn.title = column.title + ' ' + DateTime.now();
                 newColumn = await Column.create(newColumn);
 
                 // Update the post to the new duplicated section

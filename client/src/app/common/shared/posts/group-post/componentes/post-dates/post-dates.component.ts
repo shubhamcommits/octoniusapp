@@ -39,36 +39,36 @@ export class PostDatesComponent implements OnInit, OnChanges {
     private injector: Injector) { }
 
   ngOnInit() {
-    if (this.postData?.type === 'task') {
-      // Set the due date variable for task
-      if ((this.postData?.task.due_to && this.postData?.task.due_to != null)
-        || (this.postData?.event.due_to && this.postData?.event.due_to != null)) {
-        // Set the DueDate variable
-        // this.dueDate = moment(this.postData?.task.due_to || this.postData?.event.due_to);
-      }
+    // if (this.postData?.type === 'task') {
+    //   // Set the due date variable for task
+    //   if ((this.postData?.task.due_to && this.postData?.task.due_to != null)
+    //     || (this.postData?.event.due_to && this.postData?.event.due_to != null)) {
+    //     // Set the DueDate variable
+    //     this.dueDate = moment(this.postData?.task.due_to || this.postData?.event.due_to);
+    //   }
 
-      // Set the due date variable for task
-      if (this.postData?.task.start_date && this.postData?.task.start_date != null) {
-        // Set the DueDate variable
-        // this.startDate = moment(this.postData?.task.start_date);
-      }
-    }
+    //   // Set the due date variable for task
+    //   if (this.postData?.task.start_date && this.postData?.task.start_date != null) {
+    //     // Set the DueDate variable
+    //     this.startDate = moment(this.postData?.task.start_date);
+    //   }
+    // }
 
-    // If post type is event, set the dueTime
-    if (this.postData?.type === 'event') {
+    // // If post type is event, set the dueTime
+    // if (this.postData?.type === 'event') {
 
-      // Set the due date variable for both task and event type posts
-      if (this.postData?.event.due_to && this.postData?.event.due_to != null) {
+    //   // Set the due date variable for both task and event type posts
+    //   if (this.postData?.event.due_to && this.postData?.event.due_to != null) {
 
-        // Set the DueDate variable
-        // this.dueDate = moment(this.postData?.task.due_to || this.postData?.event.due_to);
-      }
+    //     // Set the DueDate variable
+    //     this.dueDate = moment(this.postData?.task.due_to || this.postData?.event.due_to);
+    //   }
 
-      // if (this.dueDate) {
-      //   this.dueTime.hour = this.dueDate.getHours();
-      //   this.dueTime.minute = this.dueDate.getMinutes();
-      // }
-    }
+    //   if (this.dueDate) {
+    //     this.dueTime.hour = this.dueDate.getHours();
+    //     this.dueTime.minute = this.dueDate.getMinutes();
+    //   }
+    // }
   }
 
   async ngOnChanges() {
@@ -88,9 +88,9 @@ export class PostDatesComponent implements OnInit, OnChanges {
     return (this.canEdit && !this.groupData?.freeze_dates) || (this.canEdit && this.groupData?.freeze_dates && (isGroupManager || isPostOwner));
   }
 
-  formateDate(date) {
-    return this.datesService.formateDate(date);
-  }
+  // formateDate(date) {
+  //   return this.datesService.formateDate(date);
+  // }
 
   /**
    * This function checks the task board if a particular task is overdue or not
@@ -130,7 +130,7 @@ export class PostDatesComponent implements OnInit, OnChanges {
         const isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
         const isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
 
-        this.postService.changeTaskDueDate(this.postData?._id, date?this.formateDate(date):null, isShuttleTasksModuleAvailable, isIndividualSubscription)
+        this.postService.changeTaskDueDate(this.postData?._id, date, isShuttleTasksModuleAvailable, isIndividualSubscription)
         .then((res) => {
           this.postData = res['post'];
           // this.dueDate = moment(this.postData?.task?.due_to);
@@ -143,7 +143,7 @@ export class PostDatesComponent implements OnInit, OnChanges {
         });
 
       } else if(property === 'start_date') {
-        this.postService.saveTaskDates(this.postData?._id, date?this.formateDate(date):null, property)
+        this.postService.saveTaskDates(this.postData?._id, date, property)
           .then((res) => {
             this.postData = res['post'];
             // this.startDate = moment(this.postData?.task?.start_date);

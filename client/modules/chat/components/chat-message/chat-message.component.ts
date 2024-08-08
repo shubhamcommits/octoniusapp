@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import { ChatService } from 'src/shared/services/chat-service/chat.service';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 
@@ -23,7 +24,8 @@ export class ChatMessageComponent implements OnInit {
 
   constructor(
     public utilityService: UtilityService,
-    private chatService: ChatService
+    private chatService: ChatService,
+    private datesService: DatesService
     ) { }
 
   async ngOnInit() {
@@ -37,7 +39,7 @@ export class ChatMessageComponent implements OnInit {
 
     if (!this.previousMessage || (this.previousMessage && this.previousMessage?.posted_on
         && this.message && this.message?.posted_on
-        && !moment(this.message?.posted_on).isSame(moment(this.previousMessage?.posted_on), 'day'))) {
+        && !this.datesService.isSameDay(this.message?.posted_on, this.previousMessage?.posted_on))) {
       this.showDay = true;
     } else {
       this.showDay = false;
@@ -50,11 +52,11 @@ export class ChatMessageComponent implements OnInit {
   }
 
   formateDate(date: any) {
-    return (date) ? moment(moment.utc(date)).format("MM/DD/YYYY") : '';
+    return this.datesService.formateDate(date, "MM/DD/YYYY");
   }
 
   formateHour(date: any) {
-    return (date) ? moment(moment.utc(date)).format("HH:mm") : '';
+    return this.datesService.formateDate(date, "HH:mm");
   }
 
   // Check if the data provided is not empty{}

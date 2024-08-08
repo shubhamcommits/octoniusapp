@@ -1,5 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
-import { CanActivate, CanActivateChild, CanLoad, Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
+import { Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { Observable } from 'rxjs';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
@@ -7,7 +7,7 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 @Injectable({
   providedIn: 'root'
 })
-export class RoutingGuard implements CanActivate, CanActivateChild, CanLoad {
+export class RoutingGuard  {
 
   private publicFunctions = new PublicFunctions(this.injector);
 

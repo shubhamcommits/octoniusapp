@@ -11,12 +11,8 @@
     <div class="mt-12 d-none d-sm-block" *ngIf="chartReady">
       <canvas baseChart
         [data]="lineChartData"
-        [labels]="lineChartLabels"
         [options]="lineChartOptions"
-        [colors]="lineChartColors"
-        [legend]="lineChartLegend"
-        [chartType]="lineChartType"
-        [plugins]="lineChartPlugins">
+        [type]="lineChartType">
       </canvas>
     </div>
 </div>

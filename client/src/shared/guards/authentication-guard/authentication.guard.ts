@@ -1,5 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
-import { CanActivate, CanActivateChild, CanLoad, Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
+import { Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -9,7 +9,7 @@ import { retry } from 'rxjs/internal/operators/retry';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthenticationGuard implements CanActivate, CanActivateChild, CanLoad {
+export class AuthenticationGuard  {
 
   constructor(
     private storageService: StorageService,

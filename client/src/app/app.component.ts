@@ -261,7 +261,8 @@ export class AppComponent implements OnInit, OnDestroy {
    * This function checks for the active internet connection
    */
   createOnline$() {
-    return merge<boolean>(
+    // return merge<boolean>(
+    return merge<any>(
       fromEvent(window, 'offline').pipe(map(() => false)),
       fromEvent(window, 'online').pipe(map(() => true)),
       new Observable((sub: Observer<boolean>) => {

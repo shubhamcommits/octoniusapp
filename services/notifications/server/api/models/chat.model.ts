@@ -1,4 +1,4 @@
-import moment from 'moment';
+const { DateTime } = require("luxon");
 import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
@@ -14,7 +14,7 @@ const ChatSchema = new Schema({
         joined_on: {
             type: Date,
             required: true,
-            default: moment().format()
+            default: DateTime.now()
         },
         is_admin: {
             type: Boolean,
@@ -42,7 +42,7 @@ const ChatSchema = new Schema({
     last_message_on: {
         type: Date,
         required: false,
-        default: moment().format()
+        default: DateTime.now()
     }
 });
 

@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Injector, Input, OnChanges, Output } from '@angular/core';
-import moment, { isMoment } from 'moment';
 import { CRMGroupService } from 'src/shared/services/crm-group-service/crm-group.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { DateTime } from 'luxon';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-crm-contact-companies',
@@ -20,8 +21,8 @@ export class CRMContactCompaniesComponent implements OnChanges {
   companyHistoryData = {
     _company: null,
     position: '',
-    start_date: moment(),
-    end_date: moment()
+    start_date: DateTime.now(),
+    end_date: DateTime.now()
   };
 
   companySearchResults = [];
@@ -34,6 +35,7 @@ export class CRMContactCompaniesComponent implements OnChanges {
   constructor(
     public utilityService: UtilityService,
     private crmGroupService: CRMGroupService,
+    private datesService: DatesService,
     private injector: Injector,
   ) { }
 
@@ -84,8 +86,8 @@ export class CRMContactCompaniesComponent implements OnChanges {
     this.companyHistoryData = {
       _company: null,
       position: '',
-      start_date: moment(),
-      end_date: moment()
+      start_date: DateTime.now(),
+      end_date: DateTime.now()
     };
   }
 
@@ -103,10 +105,6 @@ export class CRMContactCompaniesComponent implements OnChanges {
   }
 
   formateDate(date: any) {
-    return (date) ? moment(moment.utc(date), "MMM D, YYYY").toDate() : '';
-  }
-
-  formateStrDate(date: any) {
-    return (date) ? moment.utc(date).format("MMM D, YYYY") : '';
+    return this.datesService.formateDate(date);
   }
 }

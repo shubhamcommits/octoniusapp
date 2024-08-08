@@ -52,7 +52,7 @@ export class AuthsService {
               return new Promise((resolve, reject) => {
                 resolve({
                   data: {
-                    message: 'You have a in a DEVELOPMENT environment',
+                    message: 'You are in a DEVELOPMENT environment',
                     products: [
                       {
                         id: process.env.STRIPE_TEAM_PRODUCT_ID,

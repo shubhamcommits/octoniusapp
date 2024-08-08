@@ -4,14 +4,14 @@
           <div class="col-md-4">
               <div class="btn-group">
                   <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
-                      (viewDateChange)="closeOpenMonthViewDay()" i18n="@@groupCalendarView.previous">
+                      (viewDateChange)="closeOpenMonthViewDay($event)" i18n="@@groupCalendarView.previous">
                       Previous
                   </div>
                   <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate" i18n="@@groupCalendarView.today">
                       Today
                   </div>
                   <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
-                      (viewDateChange)="closeOpenMonthViewDay()" i18n="@@groupCalendarView.next">
+                      (viewDateChange)="closeOpenMonthViewDay($event)" i18n="@@groupCalendarView.next">
                       Next
                   </div>
               </div>
@@ -49,10 +49,12 @@
               [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)"
               (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
           </mwl-calendar-month-view>
+
           <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events"
               [refresh]="refresh" (eventClicked)="handleEvent('Clicked', $event.event)"
               (eventTimesChanged)="eventTimesChanged($event)">
           </mwl-calendar-week-view>
+
           <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events"
               [refresh]="refresh" (eventClicked)="handleEvent('Clicked', $event.event)"
               (eventTimesChanged)="eventTimesChanged($event)">

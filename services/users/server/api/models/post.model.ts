@@ -1,4 +1,4 @@
-import moment from 'moment';
+const { DateTime } = require("luxon");
 import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
@@ -68,7 +68,7 @@ const PostSchema = new Schema({
     ],
     created_date: {
         type: Date,
-        default: moment().format()
+        default: DateTime.now()
     },
     files: [{
         original_name: {
@@ -146,7 +146,7 @@ const PostSchema = new Schema({
             },
             confirmation_date: {
                 type: Date,
-                default: moment().format()
+                default: DateTime.now()
             },
             signature_code: {
                 type: String,
@@ -174,7 +174,7 @@ const PostSchema = new Schema({
             },
             approval_date: {
                 type: Date,
-                default: moment().format()
+                default: DateTime.now()
             }
         }
     ],
@@ -216,7 +216,7 @@ const PostSchema = new Schema({
             },
             action_date: {
                 type: Date,
-                default: moment().format()
+                default: DateTime.now()
             },
             new_status: {
                 type: String
@@ -231,7 +231,7 @@ const PostSchema = new Schema({
             },
             new_date: {
                 type: Date,
-                default: moment().format()
+                default: DateTime.now()
             },
             tag: {
                 type: String
@@ -337,7 +337,7 @@ const PostSchema = new Schema({
             values: [{
                 date: {
                     type: Date,
-                    default: moment().format()
+                    default: DateTime.now()
                 },
                 value: {
                     type: Number,
@@ -420,7 +420,7 @@ const PostSchema = new Schema({
             shuttled_at: {
                 type: Date,
                 required: true,
-                default: moment().format()
+                default: DateTime.now()
             }
         }]
     },

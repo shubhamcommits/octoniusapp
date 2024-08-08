@@ -37,13 +37,14 @@
                 (content)="quillContentChanged($event)">
             </app-quill-editor>
 
-            <app-quill-editor
+            <!-- <app-quill-editor
                 *ngIf="!canEdit"
                 [editorId]="'postbox-editor'"
                 [toolbar]="false"
                 [readOnly]="true"
                 [contents]="fileData.description"
-                [groupId]="groupData?._id"></app-quill-editor>
+                [groupId]="groupData?._id"></app-quill-editor> -->
+            <div *ngIf="!canEdit" [innerHTML]="(htmlContent) | safe: 'html'" class="col-12" style="margin: 30px 0;"></div>
             <!-- Post Content ends -->
         </div>
 

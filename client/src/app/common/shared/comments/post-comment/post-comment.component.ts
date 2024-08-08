@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, Injector } from '@angul
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment/moment'
+import { DateTime } from 'luxon'
 
 @Component({
   selector: 'post-comment',
@@ -33,7 +33,7 @@ export class PostCommentComponent implements OnInit {
     },
     files: [],
     _content_mentions: [],
-    created_date: moment().format()
+    created_date: DateTime.now()
   }
 
   // Remove Comment Event Emitter
@@ -56,6 +56,8 @@ export class PostCommentComponent implements OnInit {
   // Cloud files
   cloudFiles: any = [];
 
+  htmlContent = '';
+
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
 
@@ -66,6 +68,8 @@ export class PostCommentComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    await this.initContent();
+
     await this.commentService.getLikedByUsers(this.comment?._id).then(res => {
       this.likedByUsers = res['likedBy'];
     });
@@ -97,6 +101,12 @@ export class PostCommentComponent implements OnInit {
     this.displayCommentEditor = false;
   }
 
+  async initContent() {
+    if (this.comment?.content) {
+      this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.comment?.content)['ops']);
+    }
+  }
+
   /**
    * This function is responsible for feeding the quill data from current instance
    * @param quillData
@@ -105,7 +115,7 @@ export class PostCommentComponent implements OnInit {
     this.quillData = quillData;
   }
 
-  saveCommentData() {
+  async saveCommentData() {
     if (this.quillData) {
       this.comment.content = JSON.stringify(this.quillData.contents)
       this._content_mentions = this.quillData.mention.users.map((user)=> user.insert.mention.id)
@@ -134,6 +144,8 @@ export class PostCommentComponent implements OnInit {
 
       this.commentService.edit(formData, this.comment._id);
     }
+
+    await this.initContent();
 
     this.displayCommentEditor = false;
   }

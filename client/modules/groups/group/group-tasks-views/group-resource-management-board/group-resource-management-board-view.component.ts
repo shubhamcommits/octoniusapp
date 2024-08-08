@@ -6,7 +6,6 @@ import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
-import moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 import { UserTaskForDayDialogComponent } from 'src/app/common/shared/posts/user-task-for-day-dialog/user-task-for-day-dialog.component';
 import { DatesService } from 'src/shared/services/dates-service/dates.service';
@@ -218,7 +217,7 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
     if (type == 'add') {
       this.currentDate = this.currentDate.plus({ days: numDays })
     } else if (type == 'sub') {
-      this.currentDate = this.currentDate.plus({ days: -numDays })
+      this.currentDate = this.currentDate.minus({ days: numDays })
     } else if (type == 'today') {
       this.currentDate = DateTime.now();
     }
@@ -241,10 +240,11 @@ export class GroupResourceManagementBoardViewComponent implements OnInit {
     const canOpen = !this.groupData?.enabled_rights;
     if (canOpen) {
       const dialogRef = this.dialog.open(AddTaskResourceManagementDialogComponent, {
+        minWidth: '100%',
         width: '100%',
+        minHeight: '100%',
         height: '100%',
         disableClose: true,
-        panelClass: 'groupCreatePostDialog',
         data: {
           groupId: this.groupData._id,
           columns: this.sections,

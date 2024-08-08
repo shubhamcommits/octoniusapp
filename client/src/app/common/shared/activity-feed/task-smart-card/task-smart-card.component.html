@@ -48,15 +48,13 @@
         </ul>
       </div>
 
-        <div class="col-6 d-none d-sm-block" style="padding-top: 15px;">
+        <div class="col-6 d-none d-sm-block" style="padding-top: 15px; height: 180px;">
           <canvas
             baseChart
-            height="200"
             [data]="doughnutChartData"
             [labels]="doughnutChartLabels"
-            [chartType]="doughnutChartType"
+            [type]="doughnutChartType"
             [options]="doughnutChartOptions"
-            [colors]="doughnutChartColors"
             [plugins]="doughnutChartPlugins"></canvas>
         </div>
       </div>

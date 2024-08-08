@@ -1,12 +1,11 @@
 .post-dialog-content {
-    // padding: 10px;
-    // background-color: #F3F4F6;
-    // height: 95%;
     width: 100%;
     padding-bottom: 1px;
     display: flex;
     flex-direction: row;
     gap: 12px;
+    justify-content: space-evenly;
+
     .modal-header {
         border: none;
     }
@@ -99,6 +98,7 @@
             display: table-cell;
             vertical-align: middle;
         }
+        /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
         mat-select{
             background-color: rgba(0,0,0,0.04);
             border-radius: 4px 4px 0 0;

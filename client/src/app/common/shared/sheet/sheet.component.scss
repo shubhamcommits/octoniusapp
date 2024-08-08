@@ -59,8 +59,8 @@ th.mat-sort-header-sorted {
   }
 }
 
-.mat-cell,
-.mat-header-cell {
+.mat-mdc-cell,
+.mat-mdc-header-cell {
   word-wrap: initial;
   display: table-cell;
   padding: 0px 10px;
@@ -71,8 +71,8 @@ th.mat-sort-header-sorted {
   text-align: start;
   justify-content:center;
 }
-.mat-row,
-.mat-header-row {
+.mat-mdc-row,
+.mat-mdc-header-row {
   display: table-row;
   position: sticky;
   top: 1;
@@ -83,6 +83,7 @@ th.mat-sort-header-sorted {
   z-index: 100000 !important;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of paginator that may no longer apply for the MDC version.*/
 mat-paginator{
   position: fixed;
   left: 0;

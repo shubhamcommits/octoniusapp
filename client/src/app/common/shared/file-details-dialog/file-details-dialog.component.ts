@@ -61,6 +61,8 @@ export class FileDetailsDialogComponent implements OnInit {
   cfSearchText = '';
   cfSearchPlaceholder = $localize`:@@fileDetailsDialog.cfSearchPlaceholder:Search`;
 
+  htmlContent = '';
+
   // IsLoading behaviou subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
 
@@ -114,6 +116,8 @@ export class FileDetailsDialogComponent implements OnInit {
     // Set the due date to be undefined
     this.tags = [];
 
+    await this.initContent();
+
     this.customFields = [];
     this.selectedCFValues = [];
     this.groupService.getGroupFilesCustomFields(this.groupData?._id).then((res) => {
@@ -136,6 +140,12 @@ export class FileDetailsDialogComponent implements OnInit {
     });
 
     this.tags = this.fileData.tags;
+  }
+
+  async initContent() {
+    if (this.fileData?.description) {
+      this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.fileData?.description)['ops']);
+    }
   }
 
   /**
@@ -227,9 +237,10 @@ export class FileDetailsDialogComponent implements OnInit {
 
     await this.utilityService.asyncNotification($localize`:@@fileDetailsDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
       this.filesService.edit(this.fileData?._id, file)
-        .then((res) => {
+        .then(async (res) => {
           this.fileData = res['file'];
           this.contentChanged = false;
+          await this.initContent();
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@fileDetailsDialog.detailsUpdated:Details updated!`));
         })

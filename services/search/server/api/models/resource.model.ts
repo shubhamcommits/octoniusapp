@@ -1,4 +1,4 @@
-import moment from 'moment';
+const { DateTime } = require("luxon");
 import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
@@ -31,7 +31,7 @@ const ResourceSchema = new Schema({
     },
     created_date: {
         type: Date,
-        default: moment().format()
+        default: DateTime.now()
     },
     _created_by: {
         type: Schema.Types.ObjectId,
@@ -40,7 +40,7 @@ const ResourceSchema = new Schema({
     },
     last_updated_date: {
         type: Date,
-        default: moment().format()
+        default: DateTime.now()
     },
     activity: [{
         quantity: {
@@ -57,7 +57,7 @@ const ResourceSchema = new Schema({
         },
         date: {
             type: Date,
-            default: moment().format()
+            default: DateTime.now()
         },
         _user: {
             type: Schema.Types.ObjectId,
@@ -79,7 +79,7 @@ const ResourceSchema = new Schema({
         },
         edited_date: {
             type: Date,
-            default: moment().format()
+            default: DateTime.now()
         }
     }]
 });

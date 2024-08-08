@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, ViewEncapsulation, Injector, OnInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
 
@@ -27,6 +27,7 @@ export class ApprovalsHistoryComponent implements OnChanges, OnInit {
 
   constructor(
     public utilityService: UtilityService,
+    private datesService: DatesService,
     private injector: Injector
   ) { }
 
@@ -51,7 +52,7 @@ export class ApprovalsHistoryComponent implements OnChanges, OnInit {
   sortHistory() {
     this.itemData?.approval_history?.sort((a1, a2) => {
       if (a1.approval_date && a2.approval_date) {
-        if (moment.utc(a1.approval_date).isBefore(a2.approval_date)) {
+        if (this.datesService.isBefore(a1.approval_date, a2.approval_date)) {
           return 1;
         } else {
           return -1;

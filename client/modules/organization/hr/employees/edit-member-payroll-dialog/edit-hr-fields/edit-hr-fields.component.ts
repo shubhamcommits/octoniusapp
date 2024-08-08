@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
 import { DatesService } from 'src/shared/services/dates-service/dates.service';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
@@ -50,7 +49,7 @@ export class EditHRFieldsComponent implements OnInit {
   async ngOnInit() {
     this.memberData = await this.publicFunctions.getOtherUser(this.memberId);
     if (this.memberData) {
-      this.joinDate = moment(this.memberData?.company_join_date).format("YYYY-MM-DD");
+      this.joinDate = this.datesService.formateDate(this.memberData?.company_join_date);
 
       this.initPayrollProperties();
 
@@ -346,6 +345,5 @@ export class EditHRFieldsComponent implements OnInit {
 
   formateDate(date) {
     return this.datesService.formateDate(date);
-    // return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
   }
 }

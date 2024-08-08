@@ -57,9 +57,8 @@
               <canvas *ngIf="chartReady" baseChart height="200" style="margin-bottom: 20px;"
                 [data]="chartData"
                 [labels]="chartLabels"
-                [chartType]="chartType"
+                [type]="chartType"
                 [options]="chartOptions"
-                [colors]="chartColors"
                 [plugins]="chartPlugins"></canvas>
 
               <app-multiple-assignments

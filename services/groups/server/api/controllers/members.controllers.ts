@@ -2,7 +2,7 @@ import { axios, sendError } from '../../utils';
 import { User, Group, Workspace, Post, Comment, Page } from '../models';
 import { Request, Response, NextFunction } from 'express';
 import http from 'axios';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 
 export class MembersControllers {
 
@@ -166,20 +166,12 @@ export class MembersControllers {
 
             numDays = +numDays;
 
-            const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');
-            const today = moment().subtract(1, 'days').endOf('day').format();
+            const today = DateTime.now();
+            const comparingDate = today.minus({ days: numDays });
 
             let retUsers = [];
             let users = [];
-            // const users = await User.find({
-            //         $and: [
-            //             { _groups: groupId },
-            //             { active: true }
-            //         ]
-            //     })
-            //     .sort('_id')
-            //     .select('first_name last_name email role profile_pic active integrations current_position')
-            //     .lean() || [];
+
             const group = await Group.findById({ _id: groupId })
                 .populate({
                     path: '_members',

@@ -1,9 +1,10 @@
 import { Component, OnInit, Injector, ViewChild, OnDestroy, ElementRef, Input, EventEmitter, Output, OnChanges, SimpleChanges, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
 import { ChatService } from 'src/shared/services/chat-service/chat.service';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { DateTime } from 'luxon';
 import { SubSink } from 'subsink';
 
 @Component({
@@ -54,6 +55,7 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
       private injector: Injector,
       public utilityService: UtilityService,
       private chatService: ChatService,
+      private datesService: DatesService,
       private websocketService: SocketService
       ) {}
 
@@ -102,7 +104,7 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
         members: [
           {
             _user: this.userData,
-            joined_on: moment(),
+            joined_on: DateTime.now(),
             is_admin: true
           }],
         messages: []
@@ -160,7 +162,7 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.chatData.members.push({
       _user: member,
-      joined_on: moment(),
+      joined_on: DateTime.now(),
       is_admin: false
     });
 
@@ -200,7 +202,7 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
 
       const newMessage = {
         _chat: this.chatData?._id,
-        posted_on: moment(),
+        posted_on: DateTime.now(),
         _posted_by: this.userData?._id,
         content: messageContent.message, // JSON.stringify(this.messageContent.contents),
         _content_mentions: _content_mentions,
@@ -255,7 +257,7 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.chatService.sendMessage(newMessage)
       .then(() => {
         this.pushMessage(newMessage);
-        this.chatData.last_message_on = moment().format();
+        this.chatData.last_message_on = DateTime.now();
       })
       .catch((err) => {
         this.utilityService.errorNotification('Unable to send the message, please try again!');
@@ -263,7 +265,7 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private unshiftMessages(messages: any) {
-    messages.sort((m1, m2) => (moment.utc(m1.posted_on).isBefore(m2.posted_on)) ? 1 : -1)
+    messages.sort((m1, m2) => (this.datesService.isBefore(m1.posted_on, m2.posted_on)) ? 1 : -1)
       .forEach(m => this.messages.unshift(m));
   }
 
@@ -358,7 +360,7 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   formateDate(date) {
-    return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
+    return this.datesService.formateDate(date, "YYYY-MM-DD");
   }
 
   closeModal() {

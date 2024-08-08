@@ -2,7 +2,7 @@ import { AfterViewInit, Component, EventEmitter, Injector, Input, OnDestroy, OnC
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/internal/operators/debounceTime';
 import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
@@ -640,7 +640,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
               _shuttle_group: group,
               _shuttle_section: shuttle._shuttle_section,
               shuttle_status: 'to do',
-              shuttled_at: moment().format()
+              shuttled_at: DateTime.now()
             });
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskActions.taskSave:👍 Task saved!`));
         })

@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { FilesSettingsDialogComponent } from '../files-settings-dialog/files-settings-dialog.component';
 import { FilesCustomFieldsDialogComponent } from './files-custom-fields-dialog/files-custom-fields-dialog.component';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-files-bar',
@@ -48,6 +48,7 @@ export class FilesBarComponent implements OnInit {
     public dialog: MatDialog,
     private injector: Injector,
     public utilityService: UtilityService,
+    public datesService: DatesService,
     private groupService: GroupService
   ) { }
 
@@ -69,7 +70,9 @@ export class FilesBarComponent implements OnInit {
 
   openCustomFieldsDialog(): void {
     const dialogRef = this.dialog.open(FilesCustomFieldsDialogComponent, {
+      minWidth: '100%',
       width: '100%',
+      minHeight: '100%',
       height: '100%',
       disableClose: true,
       data: { groupData: this.groupData }
@@ -159,6 +162,6 @@ export class FilesBarComponent implements OnInit {
   }
 
   formateCFDate(date){
-    return moment(moment.utc(date), "YYYY-MM-DD").toDate();
+    return this.datesService.formateDate(date, "YYYY-MM-DD");
   }
 }

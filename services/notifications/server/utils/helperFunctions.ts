@@ -1,7 +1,7 @@
 import { NotificationsService } from "../api/service"
 import { User } from "../api/models";
 import { Readable } from 'stream';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 
 const ObjectId = require('mongoose').Types.ObjectId;
 
@@ -89,7 +89,6 @@ function sendNewMessageNotification(message: any, userId: string, chatId: string
  */
 async function notifyRelatedUsers(io: any, socket: any, data: any) {
     try {
-
         let post: any = data, comment: any;
         // we had a problem that the flow got interrupted because of the db search
         //  by adding type property (at the moment post or comment) to data  we can specify which database to search through
@@ -179,9 +178,21 @@ function sortPendingApprovals(notifications: any) {
         let n1Date = (n1._origin_post) ? n1._origin_post.approval_due_date : (n1._origin_folio) ? n1._origin_folio.approval_due_date : n1.created_date;
         let n2Date = (n2._origin_post) ? n2._origin_post.approval_due_date : (n2._origin_folio) ? n2._origin_folio.approval_due_date : n2.created_date;
         return (n1Date && n2Date)
-            ? (moment.utc(n1Date).isBefore(n2Date)) ? -1 : 1
+            ? (isBefore(n1Date, n2Date)) ? -1 : 1
             : (n1Date && !n2Date) ? -1 : 1;
       });
+}
+
+function isBefore(day1: any, day2: any) {
+    if (!!day1 && !!day2) {
+        if (day1 instanceof DateTime && day2 instanceof DateTime) {
+        return day1.startOf('day').toMillis() < day2.startOf('day').toMillis();
+        } else {
+        return DateTime.fromISO(day1).startOf('day').toMillis() < DateTime.fromISO(day2).startOf('day').toMillis();
+        }
+    } else if ((!day1 && !!day2) || (!!day1 && !day2) || (!day1 && !day2)) {
+        return false;
+    }
 }
 
 

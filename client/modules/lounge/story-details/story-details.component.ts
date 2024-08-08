@@ -44,6 +44,8 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
   editTime = false;
   editAMPM = false;
 
+  htmlContent = '';
+
   // IsLoading behaviou subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
 
@@ -75,6 +77,7 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
         this.storyData = res['story'] || {};
         await this.initStoryHeaderImage();
         await this.initTime();
+        await this.initContent();
         this.publicFunctions.sendUpdatesToStoryData(this.storyData);
       });
     }
@@ -114,6 +117,12 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  async initContent() {
+    if (this.storyData?.content) {
+      this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.storyData?.content)['ops']);
+    }
+  }
+
   /**
    * Edit the lounge in the proper array with the new values
    */
@@ -121,6 +130,7 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
     this.storyData = story;
     await this.initStoryHeaderImage();
     await this.initTime();
+    await this.initContent();
     this.publicFunctions.sendUpdatesToStoryData(this.storyData);
   }
 
@@ -186,6 +196,7 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
             this.storyData = res['story'];
             await this.initStoryHeaderImage();
             await this.initTime();
+            await this.initContent();
             this.canEditStory = !this.canEditStory;
             resolve(this.utilityService.resolveAsyncPromise($localize`:@@storyDetails.storyUpdated:Story updated`))
           })

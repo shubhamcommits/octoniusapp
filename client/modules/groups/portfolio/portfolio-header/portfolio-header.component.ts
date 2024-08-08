@@ -7,6 +7,7 @@ import { PortfolioService } from 'src/shared/services/portfolio-service/portfoli
 import { ColorPickerDialogComponent } from 'src/app/common/shared/color-picker-dialog/color-picker-dialog.component';
 ;
 import { Router } from '@angular/router';
+import { ChartConfiguration, ChartData } from 'chart.js';
 
 @Component({
   selector: 'app-portfolio-header',
@@ -28,22 +29,25 @@ export class PortfolioHeaderComponent implements OnInit {
 
   chartLabels = [$localize`:@@portfolioHeader.completed:Completed`, $localize`:@@portfolioHeader.goalsPending:Targets pending`];
   chartReady = false;
-  chartData = [0];
-  chartType = 'doughnut';
-  chartOptions = {
-    cutoutPercentage: 50,
-    responsive: true,
-    legend: {
-      display: false
-    }
-  };
-  chartColors = [{
-    backgroundColor: [
-      '#17B2E3',
-      '#F9FAFA'
-    ]
-  }];
-  chartPlugins = [];
+  // chartData = [0];
+  // chartType = 'doughnut';
+  // chartOptions = {
+  //   cutoutPercentage: 50,
+  //   responsive: true,
+  //   legend: {
+  //     display: false
+  //   }
+  // };
+  // chartColors = [{
+  //   backgroundColor: [
+  //     '#17B2E3',
+  //     '#F9FAFA'
+  //   ]
+  // }];
+  public chartData: ChartData<'doughnut'>;
+  public chartType = 'doughnut' as const;
+  public chartOptions: ChartConfiguration<'doughnut'>['options'];
+  public chartPlugins;
 
   // Public functions
   public publicFunctions = new PublicFunctions(this.injector);
@@ -100,7 +104,25 @@ export class PortfolioHeaderComponent implements OnInit {
 
     await this.portfolioService.getAllPortfolioTasksStats(this.portfolioData._id)
       .then((res) => {
-        this.chartData = [res['completed'], res['numTasks'] - res['completed']];
+        this.chartData = {
+          labels: this.chartLabels,
+          datasets: [
+            {
+              data: [res['completed'], res['numTasks'] - res['completed']],
+              backgroundColor: ['#17B2E3', '#F9FAFA'],
+            }
+          ]
+        };
+
+        this.chartOptions = {
+          cutout: 80,
+          responsive: true,
+          plugins: {
+            legend: {
+              display: false
+            },
+          }
+        };
 
         this.chartReady = true;
       });

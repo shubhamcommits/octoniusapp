@@ -1,4 +1,4 @@
-import moment from 'moment';
+const { DateTime } = require("luxon");
 import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
@@ -12,7 +12,7 @@ const MessageSchema = new Schema({
     posted_on: {
         type: Date,
         required: true,
-        default: moment().format()
+        default: DateTime.now()
     },
     _posted_by: {
         type: Schema.Types.ObjectId,

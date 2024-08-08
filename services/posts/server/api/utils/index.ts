@@ -1,5 +1,6 @@
 import { Auths } from './auth';
 import { sendErr } from './sendError';
+import { isSameDay, isBefore } from './datesUtils';
 import { fileHandler, postFileUploader } from "./filehandler";
 import { commentFileUploader } from './commentFileHandler';
 
@@ -17,5 +18,8 @@ export {
     // COMMENT FILEHANDLER
     commentFileUploader as commentFileUploader,
 
-    fileHandler as filehandler
+    fileHandler as filehandler,
+
+    isSameDay as isSameDay,
+    isBefore as isBefore
 }

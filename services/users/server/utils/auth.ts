@@ -23,7 +23,7 @@ export class Auths {
 
             // Split the authorization header
             const token = req.headers.authorization.split(' ')[1];
-
+console.log(token);
             // Token is not present on authorization header
             if (!token) {
                 return res.status(401).json({
@@ -56,6 +56,7 @@ export class Auths {
      */
     async isLoggedIn(req: Request, res: Response, next: NextFunction) {
         try {
+console.log(req['userId']);
             const auth = await Auth.findOne({
                 _user: req['userId'],
                 isLoggedIn: true,

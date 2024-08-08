@@ -46,9 +46,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { PreviewFilesDialogComponent } from './preview-files-dialog/preview-files-dialog.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { InlineInputComponent } from './inline-input/inline-input.component';
-import { MomentDateModule } from '@angular/material-moment-adapter';
+import { LuxonDateModule } from '@angular/material-luxon-adapter';
 import { TruncateTextPipe } from 'src/shared/pipes/truncate-text.pipe';
-import { ChartsModule, ThemeService } from 'ng2-charts';
+import { NgChartsModule, ThemeService } from 'ng2-charts';
 
 import { ResizableModule } from 'angular-resizable-element';
 import { ProjectStatusComponent } from './activity-feed/project-status/project-status.component';
@@ -291,8 +291,8 @@ import { EventPostDialogComponent } from './posts/group-post/dialogs/event-post-
         ImageCropperModule,
         RouterModule,
         NgxDocViewerModule,
-        MomentDateModule,
-        ChartsModule,
+        LuxonDateModule,
+        NgChartsModule,
         ResizableModule,
         MatMenuModule,
         MaterialModule,
@@ -359,7 +359,6 @@ import { EventPostDialogComponent } from './posts/group-post/dialogs/event-post-
         CRMOrderCustomFieldsComponent,
         GlobalNorthStarDialogComponent,
         GlobalNorthStarStatsComponent,
-        ChartsModule,
         WorkStatisticsCardComponent,
         WorkloadCardComponent,
         VelocityCardComponent,

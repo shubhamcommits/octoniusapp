@@ -1,11 +1,11 @@
 import { Injectable ,Injector} from '@angular/core';
-import { ActivatedRouteSnapshot, RouterStateSnapshot, CanActivate } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CRMGuard implements CanActivate  {
+export class CRMGuard   {
 
   private publicFunctions = new PublicFunctions(this.injector);
 

@@ -2,7 +2,6 @@ import { Component, OnInit, Input, EventEmitter, Output, Injector } from '@angul
 import { CurrencyPipe } from '@angular/common';
 import { PublicFunctions } from 'modules/public.functions';
 import { CountryCurrencyService } from 'src/shared/services/country-currency/country-currency.service';
-import moment from 'moment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({

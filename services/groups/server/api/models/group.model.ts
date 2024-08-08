@@ -1,4 +1,4 @@
-import moment from 'moment';
+const { DateTime } = require("luxon");
 import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
@@ -94,7 +94,7 @@ const GroupSchema = new Schema({
     },
     created_date: {
         type: Date,
-        default: moment().format()
+        default: DateTime.now()
     },
     files: [{
         type: String,
@@ -414,7 +414,7 @@ const GroupSchema = new Schema({
             date: {
                 type: Date,
                 required: true,
-                default: moment().format()
+                default: DateTime.now()
             },
             description: {
                 type: String,
@@ -426,7 +426,7 @@ const GroupSchema = new Schema({
             date: {
                 type: Date,
                 required: true,
-                default: moment().format()
+                default: DateTime.now()
             },
             project_status: {
                 type: String,
@@ -437,7 +437,7 @@ const GroupSchema = new Schema({
             date: {
                 type: Date,
                 required: true,
-                default: moment().format('YYYY-MM-DD')
+                default: DateTime.now()
             },
             count: {
                 type: Number,

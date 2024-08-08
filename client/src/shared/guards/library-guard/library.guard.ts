@@ -1,10 +1,5 @@
 import { Injectable ,Injector} from '@angular/core';
-import {
-  Router,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-  CanActivateChild,
-} from '@angular/router';
+import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { LibraryService } from 'src/shared/services/library-service/library.service';
@@ -13,7 +8,7 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 @Injectable({
   providedIn: 'root',
 })
-export class LibraryGuard implements CanActivateChild  {
+export class LibraryGuard   {
 
   collectionId: string;
   pageId: string;

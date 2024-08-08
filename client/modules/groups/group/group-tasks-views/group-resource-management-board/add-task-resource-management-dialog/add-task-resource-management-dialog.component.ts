@@ -5,7 +5,7 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { BehaviorSubject } from 'rxjs';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-add-task-resource-management-dialog',
@@ -77,7 +77,7 @@ export class AddTaskResourceManagementDialogComponent implements OnInit/*, After
       content: '',
       type: 'task',
       _posted_by: this.userData._id,
-      created_date:  moment().format(),
+      created_date:  DateTime.now(),
       _group: this.groupData._id,
       _content_mentions: [],
       _assigned_to: [this.selectedUser],
@@ -194,7 +194,7 @@ export class AddTaskResourceManagementDialogComponent implements OnInit/*, After
 
     this.postData._assigned_to = await this.utilityService.removeDuplicates(this.postData._assigned_to, '_id');
 
-    this.postData.task.due_to = moment(this.selectedDate).format(),
+    this.postData.task.due_to = DateTime.fromISO(this.selectedDate),
 
     this.title = this.postData.title;
 

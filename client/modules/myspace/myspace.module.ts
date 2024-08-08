@@ -46,7 +46,6 @@ import { RecentStoriesComponent } from './myspace-inbox/recent-stories/recent-st
 import { MyTasksListComponent } from './myspace-tasks/my-tasks-list/my-tasks-list.component';
 import { TimesheetsComponent } from './myspace-tasks/timesheets/timesheets.component';
 import { FormsModule } from '@angular/forms';
-// import { MomentModule } from "ngx-moment";
 
 /**
 * 4. !===== IMPORTS & DECLARATIONS =====!

@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { DateTime } from 'luxon';
 import { File, Group, Flamingo } from '../models';
 import { Question } from '../models/questions.model';
@@ -293,14 +292,13 @@ export class FilesService {
         let query = {};
 
         if (filterBit == 'created_today') {
-            const todayStartDay = moment().local().startOf('day').format();
-            const todayEndDay = moment().local().endOf('day').format();
+            const today = DateTime.now();
             if (folderId) {
                 query = {
                     $and: [
                         { _group: groupId },
                         { _folder: folderId },
-                        { created_date:  { $gte: todayStartDay, $lte: todayEndDay }},
+                        { created_date:  { $eq: today.toJSDate() }},
                         { _parent: null }
                     ]
                 };
@@ -308,15 +306,16 @@ export class FilesService {
                 query = {
                     $and: [
                         { _group: groupId },
-                        { created_date:  { $gte: todayStartDay, $lte: todayEndDay }},
+                        { created_date: { $eq: today.toJSDate() } },
                         { _folder: null },
                         { _parent: null }
                     ]
                 };
             }
         } else if (filterBit == 'created_last_week') {
-            const todayForFiles = moment().local().endOf('day').format();
-            const todayMinus7DaysForFiles = moment().local().subtract(7, 'days').endOf('day').format();
+            const todayForFiles = DateTime.now();
+            const todayMinus7DaysForFiles = DateTime.now().minus({ weeks: 1 }).endOf('day');
+
             if (folderId) {
                 query = {
                     $and: [
@@ -337,8 +336,8 @@ export class FilesService {
                 };
             }
         } else if (filterBit == 'created_14_days') {
-            const todayForFiles = moment().local().endOf('day').format();
-            const todayMinus7DaysForFiles = moment().local().subtract(14, 'days').endOf('day').format();
+            const todayForFiles = DateTime.now();
+            const todayMinus7DaysForFiles = DateTime.now().minus({ weeks: 1 }).endOf('day');
             if (folderId) {
                 query = {
                     $and: [
@@ -413,13 +412,10 @@ export class FilesService {
                 .lean();
 
             if (cf.input_type_date) {
-                const todayStartDay = moment(cfValue).local().startOf('day').format();
-                const todayEndDay = moment(cfValue).local().endOf('day').format();
                 files = files.filter(file => {
                     return (file.custom_fields && file.custom_fields != undefined && file.custom_fields != 'undefined'
-                    && moment(file.custom_fields[cf.name]).isSameOrAfter(todayStartDay)
-                    && moment(file.custom_fields[cf.name]).isSameOrBefore(todayEndDay))
-                    
+                        && this.isBeforeOrAfter(file.custom_fields[cf.name], cfValue)
+                        && this.isBeforeOrAfter(cfValue, file.custom_fields[cf.name]));
                 });
             } else {
                 files = files.filter(file => file.custom_fields && file.custom_fields[cf.name] && file.custom_fields[cf.name] == cfValue);
@@ -775,5 +771,17 @@ export class FilesService {
       } catch (error) {
         throw (error);
       }
+    }
+
+    private isBeforeOrAfter(day1: any, day2: any) {
+        if (!!day1 && !!day2) {
+            if (day1 instanceof DateTime && day2 instanceof DateTime) {
+                return day1.startOf('day').toMillis() <= day2.startOf('day').toMillis();
+            } else {
+                return DateTime.fromISO(day1).startOf('day').toMillis() <= DateTime.fromISO(day2).startOf('day').toMillis();
+            }
+        } else if ((!day1 && !!day2) || (!!day1 && !day2) || (!day1 && !day2)) {
+            return false;
+        }
     }
 }

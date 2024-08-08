@@ -30,15 +30,13 @@
     </div>
   </div>
 
-  <div class="d-none d-lg-block" *ngIf="chartReady">
+  <div class="d-none d-lg-block" style="padding-left: 30px; height: 150px;" *ngIf="chartReady">
     <canvas
       baseChart
-      height="100"
       [data]="doughnutChartData"
       [labels]="doughnutChartLabels"
-      [chartType]="doughnutChartType"
+      [type]="doughnutChartType"
       [options]="doughnutChartOptions"
-      [colors]="doughnutChartColors"
       [plugins]="doughnutChartPlugins"></canvas>
   </div>
 </div>

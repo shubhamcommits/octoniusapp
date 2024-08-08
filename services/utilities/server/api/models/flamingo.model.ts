@@ -1,5 +1,5 @@
 import { text } from 'body-parser';
-import moment from 'moment';
+const { DateTime } = require("luxon");
 import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
@@ -45,12 +45,12 @@ const FlamingoSchema = new Schema({
       }],
       created_date: {
           type: Date,
-          default: moment().format()
+          default: DateTime.now()
       }
     }],
     created_date: {
         type: Date,
-        default: moment().format()
+        default: DateTime.now()
     }
 });
 

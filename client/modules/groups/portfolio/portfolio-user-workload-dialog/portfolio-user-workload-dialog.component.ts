@@ -1,11 +1,11 @@
 import { Component, OnInit, Injector, OnDestroy, Inject, AfterViewInit } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment/moment';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PortfolioService } from 'src/shared/services/portfolio-service/portfolio.service';
 import { SubSink } from 'subsink';
 import { BehaviorSubject } from 'rxjs';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
   selector: 'app-portfolio-user-workload-dialog',
@@ -42,6 +42,7 @@ export class PortfolioUserWorkloadDialogComponent implements OnInit, OnDestroy {
     private injector: Injector,
     private portfolioService: PortfolioService,
     public utilityService: UtilityService,
+    private datesService: DatesService
   ) {
   }
 
@@ -101,7 +102,7 @@ export class PortfolioUserWorkloadDialogComponent implements OnInit, OnDestroy {
   }
 
   formateDate(date) {
-    return (date) ? moment.utc(date).format("MMM D, YYYY") : '';
+    return this.datesService.formateDate(date, "MMM D, YYYY");
   }
 
   // Check if the data provided is not empty{}

@@ -72,7 +72,6 @@ export class PortfolioGroupsListComponent implements OnInit {
 
     const dialogRef = this.dialog.open(GroupSelectorDialogComponent, {
       data: data,
-      panelClass: 'groupCreatePostDialog',
       width: '50%',
       disableClose: true,
       hasBackdrop: true

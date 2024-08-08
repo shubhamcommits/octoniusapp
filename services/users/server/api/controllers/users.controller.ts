@@ -25,37 +25,37 @@ export class UsersControllers {
     async get(req: Request, res: Response, next: NextFunction) {
 
         const userId = req['userId'];
-
+console.log(userId);
         try {
 
             // Find the user based on the userId
             const user = await User.findOne({
-                $and: [
-                    { _id: userId },
-                    { active: true }
-                ]
-            })
-            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr hr_role')
-            .populate({
-                path: 'stats.favorite_groups',
-                select: '_id group_name group_avatar'
-            })
-            .populate({
-                path: 'stats.favorite_portfolios',
-                select: '_id portfolio_name portfolio_avatar'
-            })
-            .populate({
-                path: 'stats.favorite_collections',
-                select: '_id name collection_avatar'
-            })
-            .populate({
-                path: '_groups',
-                select: '_id group_name group_avatar'
-            })
-            .populate({
-                path: '_account',
-                select: '_id email _workspaces first_name last_name created_date'
-            });
+                    $and: [
+                        { _id: userId },
+                        { active: true }
+                    ]
+                })
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr hr_role')
+                .populate({
+                    path: 'stats.favorite_groups',
+                    select: '_id group_name group_avatar'
+                })
+                .populate({
+                    path: 'stats.favorite_portfolios',
+                    select: '_id portfolio_name portfolio_avatar'
+                })
+                .populate({
+                    path: 'stats.favorite_collections',
+                    select: '_id name collection_avatar'
+                })
+                .populate({
+                    path: '_groups',
+                    select: '_id group_name group_avatar'
+                })
+                .populate({
+                    path: '_account',
+                    select: '_id email _workspaces first_name last_name created_date'
+                });
 
             // If user not found
             if (!user) {

@@ -1,6 +1,6 @@
 import Swal from 'sweetalert2';
 import {Injectable, Injector, } from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanDeactivate, Router, UrlTree, CanActivateChild} from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, Router, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AdminBillingComponent } from 'modules/admin/admin-billing/admin-billing.component';
 import { PublicFunctions } from 'modules/public.functions';
@@ -13,7 +13,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 @Injectable({
   providedIn: 'root',
 })
-export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDeactivate<AdminBillingComponent> {
+export class DenyNavigationGuard  {
 
   workspaceId;
 

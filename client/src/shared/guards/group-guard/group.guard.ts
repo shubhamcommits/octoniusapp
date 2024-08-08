@@ -1,10 +1,5 @@
 import { Injectable ,Injector} from '@angular/core';
-import {
-  CanActivate,
-  Router,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
@@ -12,7 +7,7 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 @Injectable({
   providedIn: 'root',
 })
-export class GroupGuard implements CanActivate  {
+export class GroupGuard   {
 
   private publicFunctions = new PublicFunctions(this.injector);
 

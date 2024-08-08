@@ -1,4 +1,4 @@
-import moment from 'moment';
+const { DateTime } = require("luxon");
 import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
@@ -48,7 +48,7 @@ const ColumnSchema = new Schema({
             },
             date: {
                 type: Date,
-                default: moment().format()
+                default: DateTime.now()
             },
             _user: {
                 type: Schema.Types.ObjectId,
