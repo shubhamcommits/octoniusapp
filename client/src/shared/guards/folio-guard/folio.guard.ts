@@ -35,7 +35,7 @@ export class FolioGuard   {
     if (docIndex > -1) {
       fileId = urlSegments[docIndex+1];
       const readOnlyIndex = (!!fileId) ? fileId.indexOf('?') : -1;
-      if (docIndex > -1) {
+      if (readOnlyIndex > -1) {
         fileId = fileId.substring(0, readOnlyIndex);
       }
     } else {
