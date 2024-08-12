@@ -50,9 +50,6 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
 
-  // IsLoading behaviou subject maintains the state for loading spinner
-  public isLoading$ = new BehaviorSubject(false);
-
   constructor(
     private groupService: GroupService,
     private datesService: DatesService,
@@ -75,8 +72,8 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
       this.endDate = changes.endDate.currentValue;
     }
 
-    if (!!changes.filterUserData && !!changes.filterUserData.currentValue) {
-      this.filterUserId = changes.filterUserData.currentValue;
+    if (!!changes.filterUserId && !!changes.filterUserId.currentValue) {
+      this.filterUserId = changes.filterUserId.currentValue;
     }
 
     if (!!changes.exportData && changes.exportData.currentValue != changes.exportData.previousValue) {
@@ -91,7 +88,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
 
   async initView() {
     // Starts the spinner
-    this.isLoading$.next(true);
+    this.utilityService.updateIsLoadingSpinnerSource(true);
 
     this.userData = await this.publicFunctions.getCurrentUser();
     this.groupData = await this.publicFunctions.getCurrentGroupDetails();
@@ -103,7 +100,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
     await this.generateNavDates(false);
 
     // Return the function via stopping the loader
-    return this.isLoading$.next(false);
+    return this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 
   async generateNavDates(change: boolean) {
@@ -111,6 +108,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
     await this.getLastDay(change);
 
     let timeTrackingEntities = [];
+
     await this.groupService.getGroupTimeTrackingEntites(this.groupData._id, this.startDate, this.endDate, this.filterUserId).then(async res => {
       timeTrackingEntities = res['timeTrackingEntities'].filter(tte => !!tte.times && tte.times.length > 0);
     });
@@ -139,6 +137,7 @@ export class GroupTimeTrackingViewComponent implements OnInit, OnChanges, OnDest
         this.timeTrackingEntitiesMapped.push(tteMapped);
       });
     });
+
     this.timeTrackingEntitiesMapped = [...this.timeTrackingEntitiesMapped];
     this.timeTrackingEntitiesMapped = this.timeTrackingEntitiesMapped.filter(tte => (tte.hours !== '00' || tte.minutes !== '00') && interval.contains(DateTime.fromISO(tte.date)));
 

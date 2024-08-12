@@ -35,6 +35,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
   filteringData: any;
   filterStartDate;
   filterEndDate;
+  filterUserId;
   
   // unchangedColumns: any;
 
@@ -109,6 +110,8 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
 
     if (this.viewType != 'time_tracking') {
       await this.initTaskView();
+    } else {
+      this.setDefaultFilterUserId();
     }
 
     this.utilityService.updateIsLoadingSpinnerSource(false);
@@ -257,6 +260,24 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
       if (!!this.filteringData.endDate) {
         this.filterEndDate = DateTime.fromJSDate(this.filteringData.endDate);
       }
+
+      if (!!this.filteringBit && (this.filteringBit == 'users' || this.filteringBit == 'mytask' || this.filteringBit == 'none')) {
+        if (this.filteringBit == 'mytask') {
+          this.filterUserId = this.userData._id;
+        } else if (this.filteringBit == 'none') {
+          this.setDefaultFilterUserId();
+        } else if (!!this.filteringData) {
+          this.filterUserId = this.filteringData;
+        }
+      }
+    }
+  }
+
+  setDefaultFilterUserId() {
+    if (!this.isAdmin) {
+      this.filterUserId = this.userData?._id;
+    } else {
+      this.filterUserId = null;
     }
   }
 

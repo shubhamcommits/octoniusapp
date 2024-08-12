@@ -64,7 +64,7 @@
   </app-kanban-archived-sections>
 
   <app-group-time-tracking-view *ngIf="viewType === 'time_tracking'"
-      [filterUserId]="userData._id"
+      [filterUserId]="filterUserId"
       [startDate]="filterStartDate"
       [endDate]="filterEndDate"
       [exportData]="exportData"
