@@ -1,8 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
-import { Location } from '@angular/common';
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { GroupService } from 'src/shared/services/group-service/group.service';
 import { PublicFunctions } from 'modules/public.functions';
 
 @Injectable({
@@ -16,9 +14,7 @@ export class FolioGuard   {
   constructor(
     private injector: Injector,
     private router: Router,
-    private groupService: GroupService,
-    private utilityService: UtilityService,
-    private location: Location
+    private utilityService: UtilityService
   ) {
 
   }
@@ -33,7 +29,23 @@ export class FolioGuard   {
     let publicFunctions = this.injector.get(PublicFunctions);
 
     let userData = await this.publicFunctions.getCurrentUser();
-    const fileId = next['_urlSegment'].segments[1].path;
+    const urlSegments = next['_routerState'].url.split('/');
+    const docIndex = (!!urlSegments) ? urlSegments.findIndex(segment => segment == 'document') : -1;
+    let fileId;
+    if (docIndex > -1) {
+      fileId = urlSegments[docIndex+1];
+      const readOnlyIndex = (!!fileId) ? fileId.indexOf('?') : -1;
+      if (docIndex > -1) {
+        fileId = fileId.substring(0, readOnlyIndex);
+      }
+    } else {
+      this.utilityService.warningNotification($localize`:@@folioGuard.oopsNoPermissionForGroup:Oops seems like you don\'t have the permission to access the group, kindly contact your superior to provide you the proper access!`);
+      await this.publicFunctions.sendUpdatesToGroupData({});
+      this.router.navigate(['dashboard', 'myspace', 'inbox']);
+      return false;
+    }
+    
+    // const fileId = next['_urlSegment'].segments[1].path;
     let file: any = await this.publicFunctions.getFile(fileId);
 
     let currentGroup: any = await publicFunctions.getCurrentGroupDetails();
