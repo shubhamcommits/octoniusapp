@@ -70,8 +70,11 @@ export class FlamingoHeaderComponent implements OnInit {
     // Change the title of the tab
     this.titleService.setTitle('Octonius | Flamingo - ' + (this.file.original_name || 'New Flamingo'));
 
-    const segments = this._ActivatedRoute?.snapshot['_urlSegment']?.segments;
-    this.activeState = segments[2]?.path ? segments[2]?.path : 'create_form';
+    // const segments = this._ActivatedRoute?.snapshot['_urlSegment']?.segments;
+    // this.activeState = segments[2]?.path ? segments[2]?.path : 'create_form';
+    const segments = this._ActivatedRoute['_routerState'].snapshot.url.split('/');
+    const index = (!!segments) ? segments.findIndex(segment => segment == 'result' || segment == 'publish') : -1;
+    this.activeState = (index > -1) ? segments[index] : 'create_form';
   }
 
   /**
