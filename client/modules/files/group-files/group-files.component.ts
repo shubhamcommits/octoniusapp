@@ -951,7 +951,7 @@ export class GroupFilesComponent implements OnInit {
       const quillElement = document.createElement("quillElement");
       const quillInstance = new Quill(quillElement);
       quillInstance.setContents(folio?.data?.data?.delta);
-      const blob = await pdfExporter.generatePdf(quillInstance.getContents());
+      const blob = await this.utilityService.generatePdf(quillInstance.getContents());
       const pdfDoc = await PDFDocument.load(await blob.arrayBuffer());
 
       if (fileData

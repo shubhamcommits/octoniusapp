@@ -68,7 +68,7 @@
         </div>
       </div>
       <div class="heading level3" *ngIf="heading.headingLevel == 3">
-        <span [innerHTML]="heading.text"></span>
+        <span [innerHTML]="sanitizer.bypassSecurityTrustHtml(heading.text)"></span>
         <div>
           <i class="material-icons-outlined" style="cursor: pointer;" (click)="deleteHeading(heading)">delete</i>
           <i class="material-icons-outlined" style="cursor: pointer;" (click)="createLink(heading.range)">link</i>
@@ -127,7 +127,7 @@
           </a>
         </div>
 
-        <div [innerHTML]="meta.comment"></div>
+        <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(meta.comment)"></div>
       </div>
     </div>
   </div>

@@ -1,7 +1,8 @@
 import { Injector, Input, AfterViewInit, Component, ElementRef, ViewChild, LOCALE_ID, Inject } from '@angular/core';
-import { PublicFunctions } from "modules/public.functions";
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from "@angular/router";
 import { SubSink } from "subsink";
+import { PublicFunctions } from "modules/public.functions";
 import { FilesService } from "src/shared/services/files-service/files.service";
 import { FolioService } from 'src/shared/services/folio-service/folio.service';
 import { environment } from "src/environments/environment";
@@ -10,10 +11,6 @@ import { UtilityService } from "src/shared/services/utility-service/utility.serv
 import ReconnectingWebSocket from "reconnecting-websocket";
 import * as ShareDB from "sharedb/lib/client";
 
-import { debounceTime, switchMap } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-
-import { pdfExporter } from "quill-to-pdf";
 import * as quillToWord from "quill-to-word";
 import { saveAs } from "file-saver";
 
@@ -241,7 +238,8 @@ export class FolioEditorComponent implements AfterViewInit {
     private _ActivatedRoute: ActivatedRoute,
     private folioService: FolioService,
     private filesService: FilesService,
-    public utilityService: UtilityService
+    public utilityService: UtilityService,
+    public sanitizer: DomSanitizer
   ) {
     // this.folioService.follioSubject.subscribe((data: any) => {
     //   if (data) {
@@ -1082,12 +1080,10 @@ export class FolioEditorComponent implements AfterViewInit {
   async exportPdf() {
     // we retrieve the delta object from the Quill instance
     // the delta is the raw content of your Quill editor
-    const delta = this.quillEditor.getContents();
-
     // we pass the delta object to the generatePdf function of the pdfExporter
     // be sure to AWAIT the result, because it returns a Promise
     // it will resolve to a Blob of the PDF document
-    const blob = await pdfExporter.generatePdf(delta);
+    const blob = await this.utilityService.generatePdf(this.quillEditor.getContents());
 
     // we use saveAs from the file-saver package to download the blob
     saveAs(blob as Blob, this.fileData?.original_name + ".pdf");

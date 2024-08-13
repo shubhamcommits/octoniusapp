@@ -21,6 +21,7 @@ import { CRMTaskDialogComponent } from 'src/app/common/shared/posts/group-post/d
 import { CRMOrderDialogComponent } from 'src/app/common/shared/posts/group-post/dialogs/crm-order-dialog/crm-order-dialog.component';
 import { NormalPostDialogComponent } from 'src/app/common/shared/posts/group-post/dialogs/normal-post-dialog/normal-post-dialog.component';
 import { EventPostDialogComponent } from 'src/app/common/shared/posts/group-post/dialogs/event-post-dialog/event-post-dialog.component';
+import { Config, pdfExporter } from 'quill-to-pdf';
 
 @Injectable({
   providedIn: 'root'
@@ -932,6 +933,38 @@ export class UtilityService {
     const data: Blob = new Blob([excelBuffer], {type: EXCEL_TYPE});
     let datesService = this.injector.get(DatesService);
     fileSaver.saveAs(data, fileName + '_export_' + datesService.formateDate(DateTime.now(), "YYYY-MM-DD") + EXCEL_EXTENSION);
+  }
+
+  async generatePdf(quillContents: any, config?: Config) {
+
+    let content = { ops: []}
+    for (let i = 0; i < quillContents.ops.length; i++) {
+      let rawDelta = quillContents.ops[i];
+      if (!!rawDelta?.insert['octonius-folio-mention']) {
+        let data = rawDelta?.insert['octonius-folio-mention'];
+        // if (!!data && data.denotationChar == '#') {
+        content.ops.push({
+          attributes: {
+            background: data.color,
+            link: data.link
+          },
+          insert: data.value
+        });
+        // } else if (!!data && data.denotationChar == '@') {
+        //   content.ops.push({
+        //     attributes: {
+        //       background: data.color,
+        //       link: ''
+        //     },
+        //     insert: data.value
+        //   });
+        // }
+      } else {
+        content.ops.push(rawDelta);
+      }
+    }
+
+    return await pdfExporter.generatePdf(content, config);
   }
 
   /**
