@@ -4,7 +4,7 @@
 </div> -->
 
 <quill-editor *ngIf="editorId" ngDefaultControl
-  [ngClass]="'normal-editor'" [(ngModel)]="quillContent" [modules]="modules"
+  [(ngModel)]="quillContent" [modules]="modules" [theme]="theme"
   (onContentChanged)="onContentChanged($event)" (onEditorCreated)="onEditorCreated($event)">
 </quill-editor>
 <!-- Quill Editor Component Ends -->

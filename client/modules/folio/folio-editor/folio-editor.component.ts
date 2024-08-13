@@ -667,32 +667,39 @@ export class FolioEditorComponent implements AfterViewInit {
       selectKeys: ['Enter'],
       //This function is called when a mention has been selected
       onSelect: (item, insertItem) => {
-        // // If the item value is a span, User has selected a command
-        // if (item.value.split(' ')[0] === '<span') {
-        //   let selection = this.quillEditor.getSelection(true)
-        //   let index = selection.index;
-          
-        //   // Insert the text for the command into the quill
-        //   if (item.index == Command.file) {
-        //     this.quillEditor.insertText(index, 'file')
-        //   } else if (item.index == Command.post) {
-        //     this.quillEditor.insertText(index, 'post')
-        //   } else if (item.index == Command.col) {
-        //     this.quillEditor.insertText(index, 'col')
-        //   } else if (item.index == Command.colpage) {
-        //     this.quillEditor.insertText(index, 'colpage')
-        //   }
-          
-        //   // Set the cursor to where the text has been inserted
-        //   index += Command[item.index].length
-        //   this.quillEditor.setSelection(index)
-        //   this.quillEditor.focus();
+        enum Command { file, post, col, colpage };
 
-        // // If it is not a command, insert the selected mention item
-        // } else {
-        //   insertItem(item)
-        // }
-        insertItem(item);
+        // If the item value is a span, User has selected a command
+        // if (item.value.split(' ')[0] === '<span') {
+        if (item.denotationChar === '#'
+            && (item.id === 'file'
+              || item.id === 'post'
+              || item.id === 'col'
+              || item.id === 'colpage')) {
+          let selection = this.quillEditor.getSelection(true)
+          let index = selection.index;
+
+          // Insert the text for the command into the quill
+          if (item.index == Command.file) {
+            this.quillEditor.insertText(index, 'file ')
+          } else if (item.index == Command.post) {
+            this.quillEditor.insertText(index, 'post ')
+          } else if (item.index == Command.col) {
+            this.quillEditor.insertText(index, 'col ')
+          } else if (item.index == Command.colpage) {
+            this.quillEditor.insertText(index, 'colpage ')
+          }
+          
+          // Set the cursor to where the text has been inserted
+          index += Command[item.index].length + 1;
+          this.quillEditor.setSelection(index)
+          this.quillEditor.focus();
+
+        // If it is not a command, insert the selected mention item
+        } else {
+         insertItem(item);
+        }
+        // insertItem(item);
       },
       source: async (searchTerm, renderList, mentionChar) => {
         // Value of the mention list
@@ -704,7 +711,7 @@ export class FolioEditorComponent implements AfterViewInit {
           // Initialise values with list of members
           values = await this.publicFunctions.suggestMembers(searchTerm, this.groupData?._id, this.workspaceData, this.mentionAll);
 
-          // // Adding All Object to mention all the members
+          // Adding All Object to mention all the members
           // if (this.mentionAll) {
           //   values.unshift({
           //     id: 'all',
@@ -718,7 +725,7 @@ export class FolioEditorComponent implements AfterViewInit {
 
           // this.mentionSubject.pipe(
           //   debounceTime(300),
-          //   switchMap((val: string) => this.publicFunctions.suggestMembers(val, this.groupData?._id, this.workspaceData, this.mentionAll))
+          //   switchMap((val: string) => this.publicFunctions.suggestMembers(val, this.groupId, this.workspaceData, this.mentionAll))
           // ).subscribe(values => this.renderResult(searchTerm, values, renderList));
 
         // If User types "#" then trigger the list for files mentioning
@@ -726,14 +733,14 @@ export class FolioEditorComponent implements AfterViewInit {
           // Initialise values with list of collection pages
           if (searchTerm.slice(0, 8) === 'colpage ') {
             searchVal = searchTerm.split(' ')[1];
-            values = await this.publicFunctions.suggestCollectionPages(searchVal, this.groupData?._id, this.workspaceData);
+            values = await this.publicFunctions.suggestCollectionPages(searchVal, this.groupData?._id, this.workspaceData)
             this.renderResult(searchVal, values, renderList);
 
             // this.mentionSubject.next(searchVal);
 
             // this.mentionSubject.pipe(
             //   debounceTime(300),
-            //   switchMap((val: string) => this.publicFunctions.suggestCollectionPages(val, this.groupData?._id, this.workspaceData))
+            //   switchMap((val: string) => this.publicFunctions.suggestCollectionPages(val, this.groupId, this.workspaceData))
             // ).subscribe(values => this.renderResult(searchVal, values, renderList));
 
           // Initialise values with list of collections
@@ -746,7 +753,7 @@ export class FolioEditorComponent implements AfterViewInit {
 
             // this.mentionSubject.pipe(
             //   debounceTime(300),
-            //   switchMap((val: string) => this.publicFunctions.suggestCollection(this.groupData?._id, val))
+            //   switchMap((val: string) => this.publicFunctions.suggestCollection(this.groupId, val))
             // ).subscribe(values => this.renderResult(searchVal, values, renderList));
 
           // Initialise values with list of files
@@ -755,6 +762,7 @@ export class FolioEditorComponent implements AfterViewInit {
             this.publicFunctions.suggestFiles(searchVal, this.groupData?._id, this.workspaceData).then(
               response => {
                 values = response;
+
                 this.renderResult(searchVal, values, renderList);
               }
             );
@@ -763,7 +771,7 @@ export class FolioEditorComponent implements AfterViewInit {
 
             // this.mentionSubject.pipe(
             //   debounceTime(300),
-            //   switchMap((val: string) => this.publicFunctions.suggestFiles(val, this.groupData?._id, this.workspaceData))
+            //   switchMap((val: string) => this.publicFunctions.suggestFiles(val, this.groupId, this.workspaceData))
             // ).subscribe(values => this.renderResult(searchVal, values, renderList));
   
           // Initialise values with list of posts
@@ -776,34 +784,34 @@ export class FolioEditorComponent implements AfterViewInit {
 
             // this.mentionSubject.pipe(
             //   debounceTime(300),
-            //   switchMap((val: string) => this.publicFunctions.suggestPosts(val, this.groupData?._id))
+            //   switchMap((val: string) => this.publicFunctions.suggestPosts(val, this.groupId))
             // ).subscribe(values => this.renderResult(searchVal, values, renderList));
             
             // If none of the filters are used, initialise values with all entities
-          // } else if (searchTerm.length === 0) {
-          } else {
+          } else if (searchTerm.length === 0) {
+          // } else {
             /**
              * The following code triggers a list to display all the assets when no filter has been provided
              */
-            searchVal = searchTerm;
-            const collections = await this.publicFunctions.suggestCollection(this.groupData?._id, searchVal);
-            const collectionPages = await this.publicFunctions.suggestCollectionPages(searchVal, this.groupData?._id, this.workspaceData);
-            const files = await this.publicFunctions.suggestFiles(searchTerm, this.groupData?._id, this.workspaceData);
-            const posts = await this.publicFunctions.suggestPosts(searchVal, this.groupData?._id);
-            values = [...collections, ...collectionPages, ...files, ...posts]
+            // searchVal = searchTerm;
+            // const collections = await this.publicFunctions.suggestCollection(this.groupId, searchVal);
+            // const collectionPages = await this.publicFunctions.suggestCollectionPages(searchVal, this.groupId, this.workspaceData);
+            // const files = await this.publicFunctions.suggestFiles(searchTerm, this.groupId, this.workspaceData);
+            // const posts = await this.publicFunctions.suggestPosts(searchVal, this.groupId);
+            // values = [...collections, ...collectionPages, ...files, ...posts]
               
             // This is the list of command suggestions that displays when User types "#"
-            // let cmdSuggestions = [
-            //   // { value: '<span >#file <em>filename</em> <p style="color: #9D9D9D" i18n="@@quillEditor.findAFileToTag"> find a file to tag</p> </span>' },
-            //   // { value: '<span >#post <em>posttitle</em> <p style="color: #9D9D9D" i18n="@@quillEditor.findAPostToTag"> find a post to tag </p> </span>' },
-            //   // { value: '<span >#col <em>collectionname</em> <p style="color: #9D9D9D" i18n="@@quillEditor.findACollectionToTag"> find a collection to tag </p> </span>' },
-            //   // { value: '<span >#colpage <em>collectionpage</em> <p style="color: #9D9D9D" i18n="@@quillEditor.findAPageFromACollectionToTag"> find a page from a collection to tag </p> </span>' },
-            //   { value: 'file' },
-            //   { value: 'post' },
-            //   { value: 'col' },
-            //   { value: 'colpage' },
-            // ]
-            // values = cmdSuggestions;
+            let cmdSuggestions = [
+              // { value: '<span >#file <em>filename</em> <p style="color: #9D9D9D" i18n="@@quillEditor.findAFileToTag"> find a file to tag</p> </span>' },
+              // { value: '<span >#post <em>posttitle</em> <p style="color: #9D9D9D" i18n="@@quillEditor.findAPostToTag"> find a post to tag </p> </span>' },
+              // { value: '<span >#col <em>collectionname</em> <p style="color: #9D9D9D" i18n="@@quillEditor.findACollectionToTag"> find a collection to tag </p> </span>' },
+              // { value: '<span >#colpage <em>collectionpage</em> <p style="color: #9D9D9D" i18n="@@quillEditor.findAPageFromACollectionToTag"> find a page from a collection to tag </p> </span>' },
+              { id: 'file', value: `#file - ${this.findAFileToTag}` },
+              { id: 'post', value: `#post - ${this.findAPostToTag}` },
+              { id: 'col', value: `#col - ${this.findACollectionToTag}` },
+              { id: 'colpage', value: `#colpage - ${this.findAPageFromACollectionToTag}` },
+            ]
+            values = cmdSuggestions;
 
             this.renderResult(searchVal, values, renderList);
           }
