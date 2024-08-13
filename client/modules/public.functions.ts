@@ -2231,7 +2231,6 @@ export class PublicFunctions {
      * @param workspaceData: any
      */
     async suggestMembers(searchTerm: string, groupId: string, workspaceData: any, mentionAll: boolean) {
-
       // Fetch the users list from the server
       let usersList: any = [];
       if (groupId) {

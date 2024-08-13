@@ -7,49 +7,50 @@ import { FolioService } from 'src/shared/services/folio-service/folio.service';
 import { environment } from "src/environments/environment";
 import { UtilityService } from "src/shared/services/utility-service/utility.service";
 
-// Highlight.js
-import hljs from 'highlight.js';
-
-// Highlight.js sublime css
-//import 'highlight.js/styles/monokai-sublime.css';
-
-// Configure hljs for languages
-hljs.configure({
-  languages: ['javascript', 'ruby', 'bash', 'cpp', 'cs', 'css', 'dart', 'dockerfile', 'dos', 'excel', 'fortran', 'go', 'java', 'nginx', 'python', 'objectivec', 'yaml', 'yml']
-});
-
-// Quill Image Resize
-import ImageResize from 'src/shared/utilities/quill-image-resize/ImageResize.js';
-
-import QuillClipboard from 'src/app/common/shared/quill-modules/quill-clipboard';
-
-// Image Drop Module
-import ImageDrop from './quill-image-drop/quill.image-drop.js';
-
-// Quill Image Compress
-//import ImageCompress from 'quill-image-compress';
-
 import ReconnectingWebSocket from "reconnecting-websocket";
 import * as ShareDB from "sharedb/lib/client";
+
+import { debounceTime, switchMap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 import { pdfExporter } from "quill-to-pdf";
 import * as quillToWord from "quill-to-word";
 import { saveAs } from "file-saver";
-import { debounceTime, switchMap } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+
+import Quill from "quill";
+import { Mention } from "quill-mention";
+import { OctoniusFolioMentionBlot } from './quill-modules/quill-mention-blot';
+import ImageResizor from 'quill-image-resizor'
+import hljs from 'highlight.js'
+
+hljs.configure({
+  languages: ['javascript', 'ruby', 'bash', 'cpp', 'cs', 'css', 'dart', 'dockerfile', 'dos', 'excel', 'fortran', 'go', 'java', 'nginx', 'python', 'objectivec', 'yaml', 'yml']
+});
+
+// import ImageResize from 'src/shared/utilities/quill-image-resize/ImageResize.js';
+// import QuillClipboard from 'src/app/common/shared/quill-modules/quill-clipboard';
+// import ImageDrop from './quill-image-drop/quill.image-drop.js';
+// import ImageCompress from 'quill-image-compress';
+
+Quill.register({
+  "blots/mention": OctoniusFolioMentionBlot,
+  // "blots/mention": MentionBlot,
+  "modules/mention": Mention
+});
+Quill.register('modules/imageResizor', ImageResizor)
 
 // Register the Types of the Sharedb
 ShareDB.types.register(require('rich-text').type);
 
-declare const Quill2: any;
-declare const quillBetterTable: any;
-Quill2.register({
-  'modules/imageResize': ImageResize,
-  'modules/better-table': quillBetterTable,
-  'modules/imageDrop': ImageDrop
-}, true);
-
-Quill2.register('modules/clipboard', QuillClipboard, true);
+// declare const Quill: any;
+// declare const quillBetterTable: any;
+// Quill.register({
+//   'modules/imageResize': ImageResize,
+//   'modules/better-table': quillBetterTable,
+//   'modules/imageDrop': ImageDrop
+// }, true);
+// Quill.register('modules/mention', Mention, true);
+// Quill.register('modules/clipboard', QuillClipboard, true);
 
 @Component({
   selector: "app-folio-editor",
@@ -58,58 +59,55 @@ Quill2.register('modules/clipboard', QuillClipboard, true);
 })
 export class FolioEditorComponent implements AfterViewInit {
 
-  @ViewChild('editable', { static: true }) editRef!: ElementRef;
-
-  @ViewChild('editable2', { static: true }) editRef2!: ElementRef;
+  // @ViewChild(QuillEditorComponent, { static: true }) editor: QuillEditorComponent;
+  @ViewChild('editable', { static: true }) editable!: ElementRef;
 
   @Input() mentionAll = true;
 
-  // Quill instance variable
-  quill: any;
-  quill2: any;
-  // Quill modules variable
-  modules: any;
-
+  quillEditor: Quill;
+  
+  quillContent;
+  
   //Comments to Display
   commentsToDisplay = [];
-
+  
   //Comments MetaData
   commentsMetaData = [];
-
+  
   // Table of content
   headingsMetaData = [];
-
+  
   //Range for selected text
   range : {index : number, length : number};
-
+  
   //To bind selected text
   selectedText: string;
-
+  
   //To bind entered comment
-  enteredComment: string;
-
+  enteredComment: Quill;
+  
   //Comment modal boolean
   commentBool: boolean = false;
   //Comment modal type. this will be use to re-use the modal for comments and headings
   commentType: string = 'comment';
-
+  
   // Table modal boolean
   tableShow: boolean = false;
-
+  
   //resize percentafe
   percentage : string;
-
+  
   //image alignment
   alignment : string;
-
+  
   // User Data Variable
   userData: any;
-
+  
   groupData: any;
-
+  
   // ShareDB Variable
   shareDBSocket: any;
-
+  
   // Websocket Options
   webSocketOptions = {
     // WebSocket: undefined,
@@ -122,68 +120,29 @@ export class FolioEditorComponent implements AfterViewInit {
     // debug: false,
     //startClosed: false
   };
-
+  
   // Folio Variable
   folio: any;
-
+  
   fileData: any;
-
+  
   // Folio ID Variable
   folioId = this._ActivatedRoute.snapshot.paramMap.get("id");
-
+  
   // Read Only State of the folio
   readOnly = true;
-
+  
   // Range in the URL
   urlRange: any;
-
+  
   workspaceData: any;
-
-  mentionSubject = new Subject<string>();
-
-  // SubSink Variable
-  subSink = new SubSink();
-
-  // Public functions class member
-  publicFunctions = new PublicFunctions(this._Injector);
-
-  findAFileToTag = $localize`:@@folioEditor.findAFileToTag:find a file to tag`;
-  findAPostToTag = $localize`:@@folioEditor.findAPostToTag:find a post to tag`;
-  findACollectionToTag = $localize`:@@folioEditor.findACollectionToTag:find a collection to tag`;
-  findAPageFromACollectionToTag = $localize`:@@folioEditor.findAPageFromACollectionToTag:find a page from a collection to tag`;
-
-  constructor(
-    @Inject(LOCALE_ID) public locale: string,
-    private _Injector: Injector,
-    private _ActivatedRoute: ActivatedRoute,
-    private folioService: FolioService,
-    private filesService: FilesService,
-    public utilityService: UtilityService
-  ) {
-    this.folioService.follioSubject.subscribe(data => {
-      if (data) {
-        this.clearEditor();
-        this.quill.clipboard.dangerouslyPasteHTML(data);
-        this.saveQuillData();
-      }
-    });
-
-    // Get the State of the ReadOnly
-    this.readOnly = this._ActivatedRoute.snapshot.queryParamMap.get("readOnly") == "true" || false;
-
-    const urlIndex = this._ActivatedRoute.snapshot.queryParamMap.get("index");
-    const urlLength = this._ActivatedRoute.snapshot.queryParamMap.get("index");
-    if (urlIndex && urlLength) {
-      this.urlRange = {
-        index: urlIndex,
-        length: urlLength
-      };
-    }
-
-    // Initialise the modules in constructor
-    this.modules = {
+  
+  // mentionSubject = new Subject<string>();
+  
+  // Quill modules variable
+  modules: any = {
       //imageModule: true,
-      syntax: true,
+      syntax: { hljs },
       toolbar: {
         container :[
           [{ 'font': [] }, { 'size': [] }],
@@ -194,7 +153,7 @@ export class FolioEditorComponent implements AfterViewInit {
           [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
           ['direction', { 'align': [] }],
           ['link', 'image', 'video', 'formula'],
-          ['comment', 'comment_display'],['tables'],['clear'],['export-pdf'/*, 'export-doc'*/]
+          ['comment', 'comment_display'],/*['tables'],*/['clear'],['export-pdf'/*, 'export-doc'*/]
         ],
         handlers : {
           'comment': () => {
@@ -204,9 +163,9 @@ export class FolioEditorComponent implements AfterViewInit {
           'comment_display': () => {
             this.displayComments();
           },
-          'tables': () => {
-            this.openTableOptions();
-          },
+          // 'tables': () => {
+          //   this.openTableOptions();
+          // },
           'clear': () => {
             this.clearFolioContent();
           },
@@ -238,35 +197,74 @@ export class FolioEditorComponent implements AfterViewInit {
           */
         }},
       table: true,
-      'better-table': {
-        operationMenu: {
-          items: {
-            unmergeCells: {
-              text: 'Another unmerge cells name'
-            }
-          },
-          color: {
-            colors: ['#808080', '#e7e6e6', 'red', '#b90000','green' , 'yellow', 'blue', 'white'],
-            text: 'Background Colors:'
-          }
-        }
-      },
+      // 'better-table': {
+      //   operationMenu: {
+      //     items: {
+      //       unmergeCells: {
+      //         text: 'Another unmerge cells name'
+      //       }
+      //     },
+      //     color: {
+      //       colors: ['#808080', '#e7e6e6', 'red', '#b90000','green' , 'yellow', 'blue', 'white'],
+      //       text: 'Background Colors:'
+      //     }
+      //   }
+      // },
       keyboard: {
-        bindings: quillBetterTable.keyboardBindings
+        // bindings: quillBetterTable.keyboardBindings
       },
       history: {
         delay: 2500,
         userOnly: true,
       },
       mention: this.mentionModule(),
+      imageResizor: {},
       // imageResize: this.quillImageResize(),
-      imageResize: true,
-      imageDrop: true,
+      // imageResize: true,
+      // imageDrop: true,
     };
+  
+  // SubSink Variable
+  subSink = new SubSink();
+  
+  // Public functions class member
+  publicFunctions = new PublicFunctions(this._Injector);
+  
+  findAFileToTag = $localize`:@@folioEditor.findAFileToTag:find a file to tag`;
+  findAPostToTag = $localize`:@@folioEditor.findAPostToTag:find a post to tag`;
+  findACollectionToTag = $localize`:@@folioEditor.findACollectionToTag:find a collection to tag`;
+  findAPageFromACollectionToTag = $localize`:@@folioEditor.findAPageFromACollectionToTag:find a page from a collection to tag`;
+  
+  constructor(
+    @Inject(LOCALE_ID) public locale: string,
+    private _Injector: Injector,
+    private _ActivatedRoute: ActivatedRoute,
+    private folioService: FolioService,
+    private filesService: FilesService,
+    public utilityService: UtilityService
+  ) {
+    // this.folioService.follioSubject.subscribe((data: any) => {
+    //   if (data) {
+    //     this.clearEditor();
+    //     this.quillEditor.clipboard.dangerouslyPasteHTML(data);
+    //     this.saveQuillData();
+    //   }
+    // });
+
+    // Get the State of the ReadOnly
+    this.readOnly = this._ActivatedRoute.snapshot.queryParamMap.get("readOnly") == "true" || false;
+
+    const urlIndex = this._ActivatedRoute.snapshot.queryParamMap.get("index");
+    const urlLength = this._ActivatedRoute.snapshot.queryParamMap.get("index");
+    if (urlIndex && urlLength) {
+      this.urlRange = {
+        index: urlIndex,
+        length: urlLength
+      };
+    }
   }
 
   async ngAfterViewInit() {
-
     if (!this.readOnly) {
       this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     }
@@ -276,15 +274,6 @@ export class FolioEditorComponent implements AfterViewInit {
     // Fetch User Data
     if (!this.readOnly) {
       this.userData = await this.publicFunctions.getCurrentUser();
-
-      /*
-      // check if the user is part of the group of the folio
-      const groupIndex = await this.userData?._groups?.findIndex((group) => {
-        return (group._id || group) == this.groupId;
-      });
-
-      let groupData: any = this.userData?._groups[groupIndex];
-      */
       this.groupData = await this.publicFunctions.getCurrentGroupDetails();
 
       // check if the user is part of the group of the folio
@@ -297,8 +286,9 @@ export class FolioEditorComponent implements AfterViewInit {
 
       this.readOnly = this.readOnly || (groupIndex < 0 && !isAdmin) || !canEdit;
     }
+
     this.initEditor();
-    this.initializeFolio(this.folio, this.quill);
+    this.initializeFolio();
   }
 
   ngOnDestroy() {
@@ -306,28 +296,23 @@ export class FolioEditorComponent implements AfterViewInit {
     this.shareDBSocket?.close();
   }
 
+  // onEditorCreated(editor: any) {
+  //   this.quillEditor = editor;
+  //   this.initializeFolio();
+  // }
+
   initEditor(): void {
-    this.quill = new Quill2(this.editRef.nativeElement, {
+    this.quillEditor = new Quill(this.editable.nativeElement, {
       theme: this.readOnly ? 'bubble' : 'snow',
       modules: this.modules,
       readOnly: this.readOnly
-    });
-
-    this.quill2 = new Quill2(this.editRef2.nativeElement,{
-      theme: 'snow',
-      modules: {
-        toolbar: [
-          ['bold', 'italic', 'underline']
-        ],
-        mention : this.mentionModule()
-      }
     });
 
     document.querySelector(".ql-comment").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">comment</span>';
     document.querySelector(".ql-comment_display").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">forum</span>';
     document.querySelector(".ql-clear").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">auto_fix_high</span>';
     document.querySelector('.ql-outline').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">list</span>';
-    document.querySelector('.ql-tables').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">table_chart</span>';
+    // document.querySelector('.ql-tables').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">table_chart</span>';
     document.querySelector('.ql-content').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">list_alt</span>';
     document.querySelector(".ql-export-pdf").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">picture_as_pdf</span>';
     // document.querySelector('.ql-export-doc').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">file_download</span>';
@@ -348,29 +333,30 @@ export class FolioEditorComponent implements AfterViewInit {
     return shareDBConnection.get("documents", this.folioId);
   }
 
-  initializeFolio(folio: any, quill: any) {
-
+  initializeFolio() {
     // Subscribe to the folio data and update the quill instance with the data
-    folio.subscribe(async () => {
+    this.folio.subscribe(async () => {
       // Convert existing rich text documents to json0
-      this.richtextToJson0(folio, quill);
-      if (!folio.type) {
-        folio.create({ data: { comment: [], delta: [{ insert: "\n" }] } });
+      this.richtextToJson0();
+      if (!this.folio.type) {
+        this.folio.create({ data: { comment: [], delta: [{ insert: "\n" }] } });
       }
 
       // update editors contents
-      quill.setContents(folio?.data?.data?.delta);
-      // quill.setContents(folio?.data);
-      this.quill2.setContents([{ insert: "\n" }]);
+      // if (!!this.folio?.data?.data?.delta) {
+      this.quillEditor.setContents(this.folio?.data?.data?.delta);
+      // } else {
+      //   this.quillEditor.setText(this.folio?.data);
+      // }
 
-      this.commentsMetaData = folio?.data?.data?.comment;
+      this.commentsMetaData = this.folio?.data?.data?.comment;
       this.commentsMetaData = await this.sortComments();
 
-      this.headingsMetaData = folio?.data?.data?.headings;
+      this.headingsMetaData = this.folio?.data?.data?.headings;
       this.headingsMetaData = await this.sortHeaders();
 
       // local -> server
-      quill.on("text-change", (delta, oldDelta, source) => {
+      this.quillEditor.on("text-change", (delta, oldDelta, source) => {
         if (delta.ops.length > 1) {
           delta.ops.forEach(op => {
             if (op.insert) {
@@ -389,7 +375,7 @@ export class FolioEditorComponent implements AfterViewInit {
         }
       });
 
-      quill.on("selection-change",(range, oldRange, source) => {
+      this.quillEditor.on("selection-change",(range, oldRange, source) => {
         if(range != null) {
           this.commentsToDisplay = [];
           this.mapComments(range.index, range.length);
@@ -397,15 +383,15 @@ export class FolioEditorComponent implements AfterViewInit {
       });
 
       // server -> local
-      folio.on("op", (op, source) => {
-        if (source === quill) return;
+      this.folio.on("op", (op, source) => {
+        if (source === this.quillEditor) return;
         // quill.updateContents(op);
         /**
          * Disabling update contents and
          * using setcontents because other plugins do not have
          * proper support for update contents
          */
-        quill.setContents(op[0].oi.delta);
+        this.quillEditor.setContents(op[0].oi.delta);
         this.commentsMetaData = op[0].oi.comment;
         this.commentsMetaData = this.sortComments();
 
@@ -419,11 +405,11 @@ export class FolioEditorComponent implements AfterViewInit {
     });
   }
 
-  richtextToJson0(folio: any, quill: any) {
-    if (folio?.type?.name === 'rich-text') {
-      quill.setContents(folio?.data);
-      folio.del();
-      folio.create({ data: { comment: [], delta: [{ insert: "\n" }] } });
+  richtextToJson0() {
+    if (this.folio?.type?.name === 'rich-text') {
+      this.quillEditor.setText(this.folio?.data);
+      this.folio.del();
+      this.folio.create({ data: { comment: [], delta: [{ insert: "\n" }] } });
       this.saveQuillData();
     }
   }
@@ -467,7 +453,7 @@ export class FolioEditorComponent implements AfterViewInit {
             try {
               if (this.commentsMetaData) {
                 var commentData = this.commentsMetaData[index];
-                this.quill.formatText(commentData.range.index, commentData.range.length, {
+                this.quillEditor.formatText(commentData.range.index, commentData.range.length, {
                   background: "white",
                 });
 
@@ -488,14 +474,14 @@ export class FolioEditorComponent implements AfterViewInit {
     var toSend = {
       p: ["data"],
       // In json0 the required data is inside data.data
-      od: this.folio.data.data,
-      oi: { comment: this.commentsMetaData, delta: this.quill.getContents().ops, headings: this.headingsMetaData },
+      od: this.folio.data,
+      oi: { comment: this.commentsMetaData, delta: this.quillEditor.getContents().ops, headings: this.headingsMetaData },
     };
 
     this.folio.submitOp(
       toSend,
       {
-        source: this.quill,
+        source: this.quillEditor,
       },
       (err: Error) => {
         return;
@@ -507,22 +493,22 @@ export class FolioEditorComponent implements AfterViewInit {
   openComment() {
     this.commentBool = true;
     this.commentType = 'comment';
-    this.range = this.quill.getSelection(true);
-    this.selectedText = this.quill.getText(this.range.index, this.range.length);
+    this.range = this.quillEditor.getSelection(true);
+    this.selectedText = this.quillEditor.getText(this.range.index, this.range.length);
   }
 
   generateHeadingOutline() {
     this.commentBool = true;
     this.commentType = 'heading';
-    this.range = this.quill.getSelection(true);
-    this.selectedText = this.quill.getText(this.range.index, this.range.length);
+    this.range = this.quillEditor.getSelection(true);
+    this.selectedText = this.quillEditor.getText(this.range.index, this.range.length);
   }
 
   //Validates comment content and adds the comment
-  async submitComment() {
-
-    this.enteredComment = this.quill2.root.innerHTML;
-
+  async submitComment(content: Quill) {
+    // this.enteredComment = this.quill2.root.innerHTML;
+    this.enteredComment = content;
+    let enteredCommentHTML = this.enteredComment.getSemanticHTML();
     if (this.selectedText == null || this.selectedText == "") {
       await this.utilityService.getConfirmDialogAlert($localize`:@@folioEditor.areYouSure:Are you sure?`, $localize`:@@folioEditor.noContentSelected:No content is selected`).then(res => {
         if (res.value) {
@@ -533,7 +519,7 @@ export class FolioEditorComponent implements AfterViewInit {
           }
         }
       });
-    } else if (this.enteredComment == null || this.enteredComment == "" || this.enteredComment == "<p><br></p>") {
+    } else if (!!enteredCommentHTML || enteredCommentHTML == "<p><br></p>") {
       await this.utilityService.getConfirmDialogAlert($localize`:@@folioEditor.areYouSure:Are you sure?`, $localize`:@@folioEditor.pleaseEnterComment:Please enter the comment`).then(res => {
         if (res.value) {
           if (this.commentType == 'comment') {
@@ -554,7 +540,8 @@ export class FolioEditorComponent implements AfterViewInit {
 
   async saveComment() {
     var userName = this.userData.first_name + ' ' + this.userData.last_name;
-    this.quill2.getContents().ops.map((value) => {
+    // this.quill2.getContents().ops.map((value) => {
+    this.enteredComment.getContents().ops.map((value: any) => {
       if (value.insert.mention) {
         var mentionMap = value.insert;
         if (mentionMap.mention && mentionMap.mention.denotationChar === "@") {
@@ -566,9 +553,9 @@ export class FolioEditorComponent implements AfterViewInit {
     if (!this.commentsMetaData) {
       this.commentsMetaData = [];
     }
-    this.commentsMetaData.push({ range: this.range, comment: this.enteredComment, userData: this.userData, userId: this.userData._id, user_name : userName, profile_pic : this.userData.profile_pic });
+    this.commentsMetaData.push({ range: this.range, comment: this.enteredComment.getSemanticHTML(), userData: this.userData, userId: this.userData._id, user_name : userName, profile_pic : this.userData.profile_pic });
     this.commentsMetaData = await this.sortComments();
-    this.quill.formatText(this.range.index, this.range.length, {
+    this.quillEditor.formatText(this.range.index, this.range.length, {
       background: "#fff72b",
     });
 
@@ -583,8 +570,8 @@ export class FolioEditorComponent implements AfterViewInit {
     }
 
     const headingIndex = this.headingsMetaData.findIndex(heading => {
-      let [line1, offset1] = this.quill.getLine(heading.range.index);
-      let [line2, offset2] = this.quill.getLine(this.range.index);
+      let [line1, offset1] = this.quillEditor.getLine(heading.range.index);
+      let [line2, offset2] = this.quillEditor.getLine(this.range.index);
       return line1 == line2;
     });
 
@@ -593,15 +580,15 @@ export class FolioEditorComponent implements AfterViewInit {
       if (header.headingLevel == 3) {
         this.headingsMetaData.splice(headingIndex, 1);
       } else {
-        header.text = this.enteredComment,
+        header.text = this.enteredComment.getSemanticHTML(),
         header.range = this.range,
         header.headingLevel = 3;
         this.headingsMetaData[headingIndex] = header;
       }
-      this.quill.formatLine(this.range.index, this.range.length, 'header', 0);
+      this.quillEditor.formatLine(this.range.index, this.range.length, 'header', 0);
     } else {
       this.headingsMetaData.push({
-        text: this.enteredComment,
+        text: this.enteredComment.getSemanticHTML(),
         range: this.range,
         headingLevel: 3
       });
@@ -614,7 +601,6 @@ export class FolioEditorComponent implements AfterViewInit {
 
   //Closes the comment dialog box
   closeComment() {
-    this.quill2.deleteText(0, this.quill2.getLength());
     this.commentBool = false;
     this.selectedText = null;
     this.enteredComment = null;
@@ -638,10 +624,10 @@ export class FolioEditorComponent implements AfterViewInit {
 
   //Clears the entire editor
   clearEditor() {
-    if (!this.quill) {
-      this.initEditor();
-    }
-    this.quill.deleteText(0, this.quill.getLength());
+    // if (!this.quillEditor) {
+    //   this.initEditor();
+    // }
+    this.quillEditor.deleteText(0, this.quillEditor.getLength());
     this.commentsMetaData = [];
     this.headingsMetaData = [];
     this.saveQuillData();
@@ -649,27 +635,27 @@ export class FolioEditorComponent implements AfterViewInit {
 
   //Highlights the text in given range
   highlight(range: any) {
-    this.quill.setSelection(range.index, range.length);
+    this.quillEditor.setSelection(range.index, range.length);
   }
 
   // Open Table input options dialoge
-  openTableOptions() {
-    this.tableShow= true;
-  }
+  // openTableOptions() {
+  //   this.tableShow= true;
+  // }
 
   // Get user's input from the create-table modal
-  dataFromTableModal(data:any){
-    this.tableShow = false;
-    if(data){
-      this.createTable(data.rowCount,data.columnCount)
-    }
-  }
+  // dataFromTableModal(data:any){
+  //   this.tableShow = false;
+  //   if(data){
+  //     this.createTable(data.rowCount,data.columnCount)
+  //   }
+  // }
 
   // Create table with specific values
-  createTable(rowCount:number,columnCount:number ){
-    const tableModule = this.quill.getModule('better-table');
-    tableModule.insertTable(rowCount, columnCount);
-  }
+  // createTable(rowCount:number,columnCount:number ){
+  //   const tableModule: any = this.quillEditor.getModule('better-table');
+  //   tableModule.insertTable(rowCount, columnCount);
+  // }
 
   mentionModule() {
     // Available commands - the order needs to match the index of cmdSuggestions
@@ -678,37 +664,39 @@ export class FolioEditorComponent implements AfterViewInit {
     return {
       allowedChars: /^[A-Za-z\sÅÄÖåäö0123456789]*$/,
       mentionDenotationChars: ["@", "#"],
-      selectKeys: ['Enter'], 
+      blotName: 'octonius-folio-mention',
+      dataAttributes: ['id', 'value', 'denotationChar', 'link', 'target', 'disabled', 'color'],
+      selectKeys: ['Enter'],
       //This function is called when a mention has been selected
       onSelect: (item, insertItem) => {
-        // If the item value is a span, User has selected a command
-        if (item.value.split(' ')[0] === '<span') {
-          let selection = this.quill.getSelection(true)
-          let index = selection.index;
+        // // If the item value is a span, User has selected a command
+        // if (item.value.split(' ')[0] === '<span') {
+        //   let selection = this.quillEditor.getSelection(true)
+        //   let index = selection.index;
           
-          // Insert the text for the command into the quill
-          if (item.index == Command.file) {
-            this.quill.insertText(index, 'file')
-          } else if (item.index == Command.post) {
-            this.quill.insertText(index, 'post')
-          } else if (item.index == Command.col) {
-            this.quill.insertText(index, 'col')
-          } else if (item.index == Command.colpage) {
-            this.quill.insertText(index, 'colpage')
-          }
+        //   // Insert the text for the command into the quill
+        //   if (item.index == Command.file) {
+        //     this.quillEditor.insertText(index, 'file')
+        //   } else if (item.index == Command.post) {
+        //     this.quillEditor.insertText(index, 'post')
+        //   } else if (item.index == Command.col) {
+        //     this.quillEditor.insertText(index, 'col')
+        //   } else if (item.index == Command.colpage) {
+        //     this.quillEditor.insertText(index, 'colpage')
+        //   }
           
-          // Set the cursor to where the text has been inserted
-          index += Command[item.index].length
-          this.quill.setSelection(index)
-          this.quill.focus();
+        //   // Set the cursor to where the text has been inserted
+        //   index += Command[item.index].length
+        //   this.quillEditor.setSelection(index)
+        //   this.quillEditor.focus();
 
-        // If it is not a command, insert the selected mention item
-        } else {
-          insertItem(item)
-        }
+        // // If it is not a command, insert the selected mention item
+        // } else {
+        //   insertItem(item)
+        // }
+        insertItem(item);
       },
       source: async (searchTerm, renderList, mentionChar) => {
-
         // Value of the mention list
         let values: any;
         let searchVal: any;
@@ -716,7 +704,7 @@ export class FolioEditorComponent implements AfterViewInit {
         // If User types "@" then trigger the list for user mentioning
         if (mentionChar === "@") {
           // Initialise values with list of members
-          // values = await this.publicFunctions.suggestMembers(searchTerm, this.groupData?._id, this.workspaceData);
+          values = await this.publicFunctions.suggestMembers(searchTerm, this.groupData?._id, this.workspaceData, this.mentionAll);
 
           // // Adding All Object to mention all the members
           // if (this.mentionAll) {
@@ -726,95 +714,98 @@ export class FolioEditorComponent implements AfterViewInit {
           //   });
           // }
 
-          // this.renderResult(searchVal, values, renderList);
+          this.renderResult(searchVal, values, renderList);
 
-          this.mentionSubject.next(searchTerm);
+          // this.mentionSubject.next(searchTerm);
 
-          this.mentionSubject.pipe(
-            debounceTime(300),
-            switchMap((val: string) => this.publicFunctions.suggestMembers(val, this.groupData?._id, this.workspaceData, this.mentionAll))
-          ).subscribe(values => this.renderResult(searchTerm, values, renderList));
+          // this.mentionSubject.pipe(
+          //   debounceTime(300),
+          //   switchMap((val: string) => this.publicFunctions.suggestMembers(val, this.groupData?._id, this.workspaceData, this.mentionAll))
+          // ).subscribe(values => this.renderResult(searchTerm, values, renderList));
 
         // If User types "#" then trigger the list for files mentioning
         } else if (mentionChar === "#") {
           // Initialise values with list of collection pages
           if (searchTerm.slice(0, 8) === 'colpage ') {
             searchVal = searchTerm.split(' ')[1];
-            // values = await this.publicFunctions.suggestCollectionPages(searchVal, this.groupData?._id, this.workspaceData);
-            // this.renderResult(searchVal, values, renderList);
+            values = await this.publicFunctions.suggestCollectionPages(searchVal, this.groupData?._id, this.workspaceData);
+            this.renderResult(searchVal, values, renderList);
 
-            this.mentionSubject.next(searchVal);
+            // this.mentionSubject.next(searchVal);
 
-            this.mentionSubject.pipe(
-              debounceTime(300),
-              switchMap((val: string) => this.publicFunctions.suggestCollectionPages(val, this.groupData?._id, this.workspaceData))
-            ).subscribe(values => this.renderResult(searchVal, values, renderList));
+            // this.mentionSubject.pipe(
+            //   debounceTime(300),
+            //   switchMap((val: string) => this.publicFunctions.suggestCollectionPages(val, this.groupData?._id, this.workspaceData))
+            // ).subscribe(values => this.renderResult(searchVal, values, renderList));
 
           // Initialise values with list of collections
           } else if (searchTerm.slice(0, 4) === 'col ') {
             searchVal = searchTerm.replace('col ', '');
-            // values = await this.publicFunctions.suggestCollection(this.groupData?._id, searchVal);
-            // this.renderResult(searchVal, values, renderList);
+            values = await this.publicFunctions.suggestCollection(this.groupData?._id, searchVal);
+            this.renderResult(searchVal, values, renderList);
 
-            this.mentionSubject.next(searchVal);
+            // this.mentionSubject.next(searchVal);
 
-            this.mentionSubject.pipe(
-              debounceTime(300),
-              switchMap((val: string) => this.publicFunctions.suggestCollection(this.groupData?._id, val))
-            ).subscribe(values => this.renderResult(searchVal, values, renderList));
+            // this.mentionSubject.pipe(
+            //   debounceTime(300),
+            //   switchMap((val: string) => this.publicFunctions.suggestCollection(this.groupData?._id, val))
+            // ).subscribe(values => this.renderResult(searchVal, values, renderList));
 
           // Initialise values with list of files
           } else if (searchTerm.slice(0, 5) === 'file ') {
             searchVal = searchTerm.replace('file ', '');
-            // this.publicFunctions.suggestFiles(searchVal, this.groupData?._id, this.workspaceData).subscribe(
-            //   response => {
-            //     values = response;
-            //     this.renderResult(searchVal, values, renderList);
-            //   }
-            // );
+            this.publicFunctions.suggestFiles(searchVal, this.groupData?._id, this.workspaceData).then(
+              response => {
+                values = response;
+                this.renderResult(searchVal, values, renderList);
+              }
+            );
 
-            this.mentionSubject.next(searchVal);
+            // this.mentionSubject.next(searchVal);
 
-            this.mentionSubject.pipe(
-              debounceTime(300),
-              switchMap((val: string) => this.publicFunctions.suggestFiles(val, this.groupData?._id, this.workspaceData))
-            ).subscribe(values => this.renderResult(searchVal, values, renderList));
+            // this.mentionSubject.pipe(
+            //   debounceTime(300),
+            //   switchMap((val: string) => this.publicFunctions.suggestFiles(val, this.groupData?._id, this.workspaceData))
+            // ).subscribe(values => this.renderResult(searchVal, values, renderList));
   
           // Initialise values with list of posts
           } else if (searchTerm.slice(0, 5) === 'post ') {
             searchVal = searchTerm.replace('post ', '');
-            // values = await this.publicFunctions.suggestPosts(searchVal, this.groupData?._id);
-            // this.renderResult(searchVal, values, renderList);
+            values = await this.publicFunctions.suggestPosts(searchVal, this.groupData?._id);
+            this.renderResult(searchVal, values, renderList);
 
-            this.mentionSubject.next(searchVal);
+            // this.mentionSubject.next(searchVal);
 
-            this.mentionSubject.pipe(
-              debounceTime(300),
-              switchMap((val: string) => this.publicFunctions.suggestPosts(val, this.groupData?._id))
-            ).subscribe(values => this.renderResult(searchVal, values, renderList));
+            // this.mentionSubject.pipe(
+            //   debounceTime(300),
+            //   switchMap((val: string) => this.publicFunctions.suggestPosts(val, this.groupData?._id))
+            // ).subscribe(values => this.renderResult(searchVal, values, renderList));
             
             // If none of the filters are used, initialise values with all entities
-          } else if (searchTerm.length === 0) {
-            
-          /**
-           * The following code triggers a list to display all the assets when no filter has been provided
-           *
+          // } else if (searchTerm.length === 0) {
+          } else {
+            /**
+             * The following code triggers a list to display all the assets when no filter has been provided
+             */
             searchVal = searchTerm;
             const collections = await this.publicFunctions.suggestCollection(this.groupData?._id, searchVal);
             const collectionPages = await this.publicFunctions.suggestCollectionPages(searchVal, this.groupData?._id, this.workspaceData);
             const files = await this.publicFunctions.suggestFiles(searchTerm, this.groupData?._id, this.workspaceData);
             const posts = await this.publicFunctions.suggestPosts(searchVal, this.groupData?._id);
             values = [...collections, ...collectionPages, ...files, ...posts]
-          */
-            
-          // This is the list of command suggestions that displays when User types "#"
-            let cmdSuggestions = [
-              { value: '<span >#file <em>filename</em> <p style="color: #9D9D9D" i18n="@@folioEditor.findAFileToTag"> find a file to tag</p> </span>' },
-              { value: '<span >#post <em>posttitle</em> <p style="color: #9D9D9D" i18n="@@folioEditor.findAPostToTag"> find a post to tag </p> </span>' },
-              { value: '<span >#col <em>collectionname</em> <p style="color: #9D9D9D" i18n="@@folioEditor.findACollectionToTag"> find a collection to tag </p> </span>' },
-              { value: '<span >#colpage <em>collectionpage</em> <p style="color: #9D9D9D" i18n="@@folioEditor.findAPageFromACollectionToTag"> find a page from a collection to tag </p> </span>' },                
-            ]
-            values = cmdSuggestions  
+              
+            // This is the list of command suggestions that displays when User types "#"
+            // let cmdSuggestions = [
+            //   // { value: '<span >#file <em>filename</em> <p style="color: #9D9D9D" i18n="@@quillEditor.findAFileToTag"> find a file to tag</p> </span>' },
+            //   // { value: '<span >#post <em>posttitle</em> <p style="color: #9D9D9D" i18n="@@quillEditor.findAPostToTag"> find a post to tag </p> </span>' },
+            //   // { value: '<span >#col <em>collectionname</em> <p style="color: #9D9D9D" i18n="@@quillEditor.findACollectionToTag"> find a collection to tag </p> </span>' },
+            //   // { value: '<span >#colpage <em>collectionpage</em> <p style="color: #9D9D9D" i18n="@@quillEditor.findAPageFromACollectionToTag"> find a page from a collection to tag </p> </span>' },
+            //   { value: 'file' },
+            //   { value: 'post' },
+            //   { value: 'col' },
+            //   { value: 'colpage' },
+            // ]
+            // values = cmdSuggestions;
 
             this.renderResult(searchVal, values, renderList);
           }
@@ -893,30 +884,30 @@ export class FolioEditorComponent implements AfterViewInit {
       this.displayHeadings();
     }
 
-    this.range = this.quill.getSelection(true);
-    let [leaf, offsetLeaf] = this.quill.getLeaf(this.range.index);
+    this.range = this.quillEditor.getSelection(true);
+    let [leaf, offsetLeaf] = this.quillEditor.getLeaf(this.range.index);
 
     const headingIndex = this.headingsMetaData.findIndex(heading => {
-      let [line1, offset1] = this.quill.getLine(heading.range.index);
-      let [line2, offset2] = this.quill.getLine(this.range.index);
+      let [line1, offset1] = this.quillEditor.getLine(heading.range.index);
+      let [line2, offset2] = this.quillEditor.getLine(this.range.index);
       return line1 == line2;
     });
 
-    this.quill.formatLine(this.range.index, this.range.length, 'header', value);
+    this.quillEditor.formatLine(this.range.index, this.range.length, 'header', value);
 
     if (headingIndex >= 0) {
       let header = this.headingsMetaData[headingIndex];
       if (!value || header.headingLevel == value) {
         this.headingsMetaData.splice(headingIndex, 1);
       } else {
-        header.text = leaf.text,
+        header.text = leaf['text'],
         header.range = this.range,
         header.headingLevel = value;
         this.headingsMetaData[headingIndex] = header;
       }
     } else {
       this.headingsMetaData.push({
-        text: leaf.text,
+        text: leaf['text'],
         range: this.range,
         headingLevel: value
       });
@@ -928,13 +919,13 @@ export class FolioEditorComponent implements AfterViewInit {
 
   deleteHeading(heading: any) {
     const headingIndex = this.headingsMetaData.findIndex(h => {
-      let [line1, offset1] = this.quill.getLine(h.range.index);
-      let [line2, offset2] = this.quill.getLine(heading.range.index);
+      let [line1, offset1] = this.quillEditor.getLine(h.range.index);
+      let [line2, offset2] = this.quillEditor.getLine(heading.range.index);
       return line1 == line2;
     });
 
     if ((heading.headingLevel == 1 || heading.headingLevel == 2) && headingIndex >= 0) {
-      this.quill.formatLine(heading.range.index, heading.range.length, 'header', false);
+      this.quillEditor.formatLine(heading.range.index, heading.range.length, 'header', false);
     }
 
     if (headingIndex >= 0) {
@@ -1000,9 +991,8 @@ export class FolioEditorComponent implements AfterViewInit {
    */
   /*
    generateList(value: any) {
-    this.range = this.quill.getSelection(true);
-console.log(value);
-    this.quill.formatLine(this.range.index, this.range.length, 'list', value);
+    this.range = this.quillEditor.getSelection(true);
+    this.quillEditor.formatLine(this.range.index, this.range.length, 'list', value);
 
     this.saveQuillData();
   }
@@ -1014,13 +1004,13 @@ console.log(value);
     this.headingsMetaData = [];
 
     let root: any = document.createElement('div');
-    root.innerHTML = this.quill.root.innerHTML;
+    root.innerHTML = this.quillEditor.root.innerHTML;
 
     // Search for H1 elementes
     const h1s = root.querySelectorAll('h1');
     h1s.forEach(h1 => {
       const h1String = '<h1>' + h1.innerText +'</h1>';
-      const indices = this.getIndicesOf(h1String, this.quill.root.innerHTML, false);
+      const indices = this.getIndicesOf(h1String, this.quillEditor.root.innerHTML, false);
       indices.forEach(index => {
         let header = {
           text: h1.innerText,
@@ -1029,8 +1019,8 @@ console.log(value);
         };
 
         const headingIndex = this.headingsMetaData.findIndex(heading => {
-          let [line1, offset1] = this.quill.getLine(heading.range.index);
-          let [line2, offset2] = this.quill.getLine(header.range.index);
+          let [line1, offset1] = this.quillEditor.getLine(heading.range.index);
+          let [line2, offset2] = this.quillEditor.getLine(header.range.index);
           return line1 == line2;
         });
 
@@ -1046,7 +1036,7 @@ console.log(value);
     const h2s = root.querySelectorAll('h2');
     h2s.forEach(h2 => {
       const h2String = '<h2>' + h2.innerText +'</h2>';
-      const indices = this.getIndicesOf(h2String, this.quill.root.innerHTML, false);
+      const indices = this.getIndicesOf(h2String, this.quillEditor.root.innerHTML, false);
       indices.forEach(index => {
         let header = {
           text: h2.innerText,
@@ -1055,8 +1045,8 @@ console.log(value);
         };
 
         const headingIndex = this.headingsMetaData.findIndex(heading => {
-          let [line1, offset1] = this.quill.getLine(heading.range.index);
-          let [line2, offset2] = this.quill.getLine(header.range.index);
+          let [line1, offset1] = this.quillEditor.getLine(heading.range.index);
+          let [line2, offset2] = this.quillEditor.getLine(header.range.index);
           return line1 == line2;
         });
 
@@ -1092,7 +1082,7 @@ console.log(value);
   async exportPdf() {
     // we retrieve the delta object from the Quill instance
     // the delta is the raw content of your Quill editor
-    const delta = this.quill.getContents();
+    const delta = this.quillEditor.getContents();
 
     // we pass the delta object to the generatePdf function of the pdfExporter
     // be sure to AWAIT the result, because it returns a Promise
@@ -1104,7 +1094,7 @@ console.log(value);
   }
 
   async exportDoc() {
-    const delta = this.quill.getContents();
+    const delta = this.quillEditor.getContents();
     const blob = await quillToWord.generateWord(delta, { exportAs: "blob" });
     saveAs(blob, this.fileData?.original_name + ".docx");
   }

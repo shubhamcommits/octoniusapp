@@ -51,6 +51,7 @@ export class OctoQuillEditorComponent implements OnInit {
       mentionDenotationChars: ["@", "#"],
       blotName: 'octonius-mention',
       dataAttributes: ['id', 'value', 'denotationChar', 'link', 'target', 'disabled', 'color'],
+      selectKeys: ['Enter'],
       onSelect: (item: any, insertItem: any) => {
 console.log(item);
 console.log(this.editor);
@@ -93,7 +94,7 @@ console.log(this.editor);
         // If User types "@" then trigger the list for user mentioning
         if (mentionChar === "@") {
           // Initialise values with list of members
-          values = await this.publicFunctions.suggestMembers(searchTerm, this.groupId, this.workspaceData, this.mentionAll);
+          // values = await this.publicFunctions.suggestMembers(searchTerm, this.groupId, this.workspaceData, this.mentionAll);
 
           // Adding All Object to mention all the members
           // if (this.mentionAll) {
@@ -103,76 +104,73 @@ console.log(this.editor);
           //   });
           // }
 
-          this.renderResult(searchVal, values, renderList);
+          // this.renderResult(searchVal, values, renderList);
 
-          // this.mentionSubject.next(searchTerm);
+          this.mentionSubject.next(searchTerm);
 
-          // this.mentionSubject.pipe(
-          //   debounceTime(300),
-          //   switchMap((val: string) => this.publicFunctions.suggestMembers(val, this.groupId, this.workspaceData, this.mentionAll))
-          // ).subscribe(values => this.renderResult(searchTerm, values, renderList));
+          this.mentionSubject.pipe(
+            debounceTime(300),
+            switchMap((val: string) => this.publicFunctions.suggestMembers(val, this.groupId, this.workspaceData, this.mentionAll))
+          ).subscribe(values => this.renderResult(searchTerm, values, renderList));
 
         // If User types "#" then trigger the list for files mentioning
         } else if (mentionChar === "#") {
           // Initialise values with list of collection pages
           if (searchTerm.slice(0, 8) === 'colpage ') {
             searchVal = searchTerm.split(' ')[1];
-            values = await this.publicFunctions.suggestCollectionPages(searchVal, this.groupId, this.workspaceData);
+            // values = await this.publicFunctions.suggestCollectionPages(searchVal, this.groupId, this.workspaceData)
+            // this.renderResult(searchVal, values, renderList);
 
-            this.renderResult(searchVal, values, renderList);
+            this.mentionSubject.next(searchVal);
 
-            // this.mentionSubject.next(searchVal);
-
-            // this.mentionSubject.pipe(
-            //   debounceTime(300),
-            //   switchMap((val: string) => this.publicFunctions.suggestCollectionPages(val, this.groupId, this.workspaceData))
-            // ).subscribe(values => this.renderResult(searchVal, values, renderList));
+            this.mentionSubject.pipe(
+              debounceTime(300),
+              switchMap((val: string) => this.publicFunctions.suggestCollectionPages(val, this.groupId, this.workspaceData))
+            ).subscribe(values => this.renderResult(searchVal, values, renderList));
 
           // Initialise values with list of collections
           } else if (searchTerm.slice(0, 4) === 'col ') {
             searchVal = searchTerm.replace('col ', '');
-            values = await this.publicFunctions.suggestCollection(this.groupId, searchVal);
+            // values = await this.publicFunctions.suggestCollection(this.groupId, searchVal);
+            // this.renderResult(searchVal, values, renderList);
 
-            this.renderResult(searchVal, values, renderList);
+            this.mentionSubject.next(searchVal);
 
-            // this.mentionSubject.next(searchVal);
-
-            // this.mentionSubject.pipe(
-            //   debounceTime(300),
-            //   switchMap((val: string) => this.publicFunctions.suggestCollection(this.groupId, val))
-            // ).subscribe(values => this.renderResult(searchVal, values, renderList));
+            this.mentionSubject.pipe(
+              debounceTime(300),
+              switchMap((val: string) => this.publicFunctions.suggestCollection(this.groupId, val))
+            ).subscribe(values => this.renderResult(searchVal, values, renderList));
 
           // Initialise values with list of files
           } else if (searchTerm.slice(0, 5) === 'file ') {
             searchVal = searchTerm.replace('file ', '');
-            this.publicFunctions.suggestFiles(searchVal, this.groupId, this.workspaceData).then(
-              response => {
-                values = response;
+            // this.publicFunctions.suggestFiles(searchVal, this.groupId, this.workspaceData).then(
+            //   response => {
+            //     values = response;
 
-                this.renderResult(searchVal, values, renderList);
-              }
-            );
+            //     this.renderResult(searchVal, values, renderList);
+            //   }
+            // );
 
-            // this.mentionSubject.next(searchVal);
+            this.mentionSubject.next(searchVal);
 
-            // this.mentionSubject.pipe(
-            //   debounceTime(300),
-            //   switchMap((val: string) => this.publicFunctions.suggestFiles(val, this.groupId, this.workspaceData))
-            // ).subscribe(values => this.renderResult(searchVal, values, renderList));
+            this.mentionSubject.pipe(
+              debounceTime(300),
+              switchMap((val: string) => this.publicFunctions.suggestFiles(val, this.groupId, this.workspaceData))
+            ).subscribe(values => this.renderResult(searchVal, values, renderList));
   
           // Initialise values with list of posts
           } else if (searchTerm.slice(0, 5) === 'post ') {
             searchVal = searchTerm.replace('post ', '');
-            values = await this.publicFunctions.suggestPosts(searchVal, this.groupId);
+            // values = await this.publicFunctions.suggestPosts(searchVal, this.groupId);
+            // this.renderResult(searchVal, values, renderList);
 
-            this.renderResult(searchVal, values, renderList);
+            this.mentionSubject.next(searchVal);
 
-            // this.mentionSubject.next(searchVal);
-
-            // this.mentionSubject.pipe(
-            //   debounceTime(300),
-            //   switchMap((val: string) => this.publicFunctions.suggestPosts(val, this.groupId))
-            // ).subscribe(values => this.renderResult(searchVal, values, renderList));
+            this.mentionSubject.pipe(
+              debounceTime(300),
+              switchMap((val: string) => this.publicFunctions.suggestPosts(val, this.groupId))
+            ).subscribe(values => this.renderResult(searchVal, values, renderList));
             
             // If none of the filters are used, initialise values with all entities
           // } else if (searchTerm.length === 0) {
@@ -209,7 +207,7 @@ console.log(this.editor);
     toolbar: (this.toolbar) ? this.quillFullToolbar() : false
   };
 
-  // mentionSubject = new Subject<string>();
+  mentionSubject = new Subject<string>();
 
   // Uploads url for Files
   filesBaseUrl = environment.UTILITIES_BASE_API_URL;
@@ -231,27 +229,9 @@ console.log(this.editor);
     if (!this.utilityService.objectExists(this.workspaceData)) {
       this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     }
-    // this.initQuillModules();
 
     this.quillContent = (this.utilityService.isJSON(this.quillContent)) ? this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.quillContent)['ops']) : this.quillContent;
   }
-
-  // ngAfterViewInit() {
-  //   // Set contents to the quill
-  //   if (this.contents) {
-  //     Fetch the delta ops from the JSON string
-  //     let delta = (this.utilityService.isJSON(this.contents))
-  //       ? JSON.parse(this.contents)['ops']
-  //       : this.quill.clipboard.convert(this.contents);
-
-  //     // Set the content inside quill container
-  //     this.setContents(delta);
-  //   }
-
-
-  //   // Turn on the quill text change event handler
-  //   this.quillContentChanges(this.quill);
-  // }
 
   /**
    * This function return the full toolbar for quilleditor
@@ -267,42 +247,6 @@ console.log(this.editor);
       ['direction', { 'align': [] }],
       ['link', 'image', 'video', 'formula']
     ]
-  }
-
-  /**
-   * This function is returns the configuration for quill image and compress it if required
-   */
-  // quillImageCompress() {
-  //   return {
-  //     quality: 0.9,
-  //     maxWidth: 1000,
-  //     maxHeight: 1000,
-  //     imageType: 'image/jpeg'
-  //   }
-  // }
-
-  /**
-   * This function is returns the configuration for quill image resize module
-   */
-  quillImageResize() {
-    return {
-      displaySize: true,
-      handleStyles: {
-        backgroundColor: 'black',
-        border: 'none',
-        color: 'white',
-        zIndex: '1000'
-      },
-      toolbarStyles: {
-        backgroundColor: 'black',
-        border: 'none',
-        color: 'white',
-        zIndex: '1000'
-      },
-      displayStyles: {
-        zIndex: '1000'
-      }
-    }
   }
 
   private renderResult(searchVal, values, renderList) {
@@ -334,53 +278,6 @@ console.log(this.editor);
   }
 
   /**
-   * This function is resposible for detecting the changes in quill contents
-   * @param quill
-   */
-  // quillContentChanges(quill: Quill) {
-  //   return quill.on('text-change', (delta, oldDelta, source) => {
-  //     if (source == 'api') {
-
-  //     } else if (source == 'user') {
-
-  //       // let driveDivision = document.getElementById('google-drive-file')['innerHTML']
-
-  //       // let driveDivisionDelta = this.quill.clipboard.convert(driveDivision)
-
-  //       // Get the quill cotents from the editor
-  //       let quillData: any = this.getQuillContents(quill)
-
-  //       // Get Quill Contents
-  //       // let quillContents = quillData.contents;
-  //       let quillContents = this.quillContent;
-
-  //       // Get Quill HTML
-  //       let quillHTML = quillData.html;
-
-  //       // Get Quill Text
-  //       let quillText = quillData.text;
-
-  //       // quillData.driveDivisionDelta = driveDivisionDelta
-
-  //       // Set the Mentioned list property
-  //       quillData['mention'] = this.getMentionList(quillContents)
-
-  //       // Emit the quill data to other components
-  //       this.contentEmitter.emit(quillData);
-  //     }
-  //   })
-  // }
-
-  /**
-   * This function is responsible for setting the contents in the quill container
-   * @param quill
-   * @param contents of type Delta
-   */
-  // setContents(quill: Quill, contents: any) {
-  //   quill?.setContents(contents);
-  // }
-
-  /**
    * This function is resposible for fetching the list of the mentions
    * @param content
    */
@@ -394,18 +291,6 @@ console.log(this.editor);
       files: mention.filter((object) => object.insert.mention.denotationChar === "#"),
     }
   }
-
-  /**
-   * This function is responsible for sanitising the links attached
-   */
-  // sanitizeLink() {
-  //   Link.sanitize = (url) => {
-  //     if (url.indexOf("http") <= -1) {
-  //       url = "https://" + url;
-  //     }
-  //     return url;
-  //   }
-  // }
 
   onContentChanged(content: any) {
     content.mention = this.getMentionList(content)

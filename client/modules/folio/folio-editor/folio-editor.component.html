@@ -1,7 +1,16 @@
  <!-- Folio wrapper starts here -->
 
-<app-create-table *ngIf="tableShow" (dataToSubmit)="dataFromTableModal($event)"></app-create-table>
+<!-- <app-create-table *ngIf="tableShow" (dataToSubmit)="dataFromTableModal($event)"></app-create-table> -->
 
+<app-folio-comment-editor *ngIf="commentBool"
+  [mentionAll]="mentionAll"
+  [userData]="userData"
+  [groupData]="groupData"
+  [workspaceData]="workspaceData"
+  [selectedText]="selectedText"
+  (commentEmitter)="submitComment($event)"
+  (closeEmitter)="closeComment()"></app-folio-comment-editor>
+<!--
 <div [ngClass]="{'hide-modal' : !commentBool}" class="comment-modal center">
   <div class="comment-container">
     <a class="close" (click)="closeComment()">
@@ -27,6 +36,7 @@
     </button>
   </div>
 </div>
+-->
 
 <div class="folio-container">
   <!-- Table of Content Starts -->
@@ -72,6 +82,15 @@
   <!-- Quill Editor Component Starts -->
   <div class="editor-section">
     <div #editable class="folio"></div>
+    <!-- <div [id]="folioId" class="folio"></div> -->
+    <!-- <quill-editor *ngIf="folioId"
+      class="folio"
+      [name]="folioId"
+      [modules]="modules"
+      [readOnly]="readOnly"
+      (onEditorCreated)="onEditorCreated($event)">
+    </quill-editor> -->
+    <!-- (onEditorChanged)="handleChange($event)" -->
   </div>
   <!-- Quill Editor Component Ends -->
 
