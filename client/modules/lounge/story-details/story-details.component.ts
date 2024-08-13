@@ -119,7 +119,8 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
 
   async initContent() {
     if (this.storyData?.content) {
-      this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.storyData?.content)['ops']);
+      // this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.storyData?.content)['ops']);
+      this.htmlContent = (this.utilityService.isJSON(this.storyData?.content)) ? await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.storyData?.content)['ops']) : this.storyData?.content;
     }
   }
 
@@ -190,7 +191,8 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
     if (this.quillData) {
       this.utilityService.asyncNotification($localize`:@@storyDetails.pleaseWaitWeUpdateStory:Please wait we are updating the story...`,
       new Promise(async (resolve, reject) => {
-        const content = JSON.stringify(this.quillData.contents);
+        // const content = JSON.stringify(this.quillData.content);
+        const content = (!!this.quillData && this.quillData.html) ? this.quillData.html : '';
         // Call HTTP Request to change the assignee
         this.loungeService.editStory(this.storyData?._id, { 'content': content, '_content_mentions': this._content_mentions }).then(async res => {
             this.storyData = res['story'];

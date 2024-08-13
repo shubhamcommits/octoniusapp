@@ -123,7 +123,8 @@ export class GlobalNorthStarDialogComponent implements OnInit {
     this.title = this.postData?.title;
 
     if (this.postData?.content){
-      this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.postData?.content)['ops']);
+      // this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.postData?.content)['ops']);
+      this.htmlContent = (this.utilityService.isJSON(this.postData?.content)) ? await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.postData?.content)['ops']) : this.postData?.content;
     }
 
     await this.postService.getSubTasks(this.postData?._id).then((res) => {
@@ -252,7 +253,8 @@ export class GlobalNorthStarDialogComponent implements OnInit {
     const post: any = {
       title: this.title,
       type: this.postData?.type,
-      content: this.quillData ? JSON.stringify(this.quillData.contents) : this.postData?.content,
+      // content: this.quillData ? JSON.stringify(this.quillData.content) : this.postData?.content,
+      content: (!!this.quillData && this.quillData.html) ? this.quillData.html : this.postData?.content,
       _content_mentions: this._content_mentions,
       _read_by: this.postData?._read_by,
       isNorthStar: this.postData?.task?.isNorthStar,

@@ -55,7 +55,8 @@ export class CommentSectionComponent implements OnInit {
   async create(userId: string){
     let content = '';
     if (this.quillData) {
-      content = JSON.stringify(this.quillData.contents);
+      // content = JSON.stringify(this.quillData.content);
+      content = this.quillData.html;
 
       // Filter the Mention users content and map them into arrays of Ids
       this._content_mentions = this.quillData.mention.users.map((user)=> user.insert.mention.id)

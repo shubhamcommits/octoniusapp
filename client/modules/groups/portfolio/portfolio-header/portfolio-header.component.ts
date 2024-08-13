@@ -99,7 +99,7 @@ export class PortfolioHeaderComponent implements OnInit {
       //   // Convert into html
       //   this.htmlContent = converter.convert();
       // }
-      this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.portfolioData?.content)['ops']);
+      this.htmlContent = (this.utilityService.isJSON(this.portfolioData?.content)) ? await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.portfolioData?.content)['ops']) : this.portfolioData?.content;
     }
 
     await this.portfolioService.getAllPortfolioTasksStats(this.portfolioData._id)
@@ -196,7 +196,8 @@ export class PortfolioHeaderComponent implements OnInit {
     if (this.quillData && this.quillData?.mention) {
       this.portfolioData._content_mentions = this.quillData.mention.users.map((user)=> user.insert.mention.id)
     }
-    this.portfolioData.content = this.quillData ? JSON.stringify(this.quillData.contents) : this.portfolioData?.content
+    // this.portfolioData.content = this.quillData ? JSON.stringify(this.quillData.content) : this.portfolioData?.content
+    this.portfolioData.content = (!!this.quillData && this.quillData.html) ? this.quillData.html : this.portfolioData?.content
 
     const portfolio = {
       content: this.portfolioData?.content,
@@ -211,7 +212,8 @@ export class PortfolioHeaderComponent implements OnInit {
     await this.utilityService.asyncNotification($localize`:@@portfolioHeader.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
         this.portfolioService.updatePortfolioContent(this.portfolioData?._id, formData)
           .then(async (res) => {
-            this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.portfolioData?.content)['ops']);
+            // this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.portfolioData?.content)['ops']);
+            this.htmlContent = (this.utilityService.isJSON(this.portfolioData?.content)) ? await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.portfolioData?.content)['ops']) : this.portfolioData?.content;
 
             this.contentChanged = false;
             this.editContent = false;

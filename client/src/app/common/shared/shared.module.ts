@@ -12,7 +12,7 @@ import { ComponentSearchBarComponent } from './component-search-bar/component-se
 import { RouterModule } from '@angular/router';
 import { SectionSeparatorComponent } from './section-separator/section-separator.component';
 import { ComponentSearchInputBoxComponent } from './component-search-input-box/component-search-input-box.component';
-import { QuillEditorComponent } from './quill-editor/quill-editor.component';
+import { OctoQuillEditorComponent } from './quill-editor/quill-editor.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { TimePickerComponent } from './time-picker/time-picker.component';
 import { AttachFilesComponent } from './attach-files/attach-files.component';
@@ -154,6 +154,7 @@ import { CRMTaskDialogComponent } from './posts/group-post/dialogs/crm-task-dial
 import { NormalPostDialogComponent } from './posts/group-post/dialogs/normal-post-dialog/normal-post-dialog.component';
 import { CRMOrderDialogComponent } from './posts/group-post/dialogs/crm-order-dialog/crm-order-dialog.component';
 import { EventPostDialogComponent } from './posts/group-post/dialogs/event-post-dialog/event-post-dialog.component';
+import { QuillEditorComponent } from 'ngx-quill';
 
 @NgModule({
     declarations: [
@@ -175,7 +176,7 @@ import { EventPostDialogComponent } from './posts/group-post/dialogs/event-post-
         SecuredImageComponent,
         ComponentSearchInputBoxComponent,
         CountrySelectComponent,
-        QuillEditorComponent,
+        OctoQuillEditorComponent,
         TimePickerComponent,
         TimeInputComponent,
         PostViewComponent,
@@ -286,6 +287,7 @@ import { EventPostDialogComponent } from './posts/group-post/dialogs/event-post-
         PermissionDialogComponent,
     ],
     imports: [
+        QuillEditorComponent,
         CommonModule,
         FormsModule,
         ImageCropperModule,
@@ -324,7 +326,7 @@ import { EventPostDialogComponent } from './posts/group-post/dialogs/event-post-
         SectionSeparatorComponent,
         SecuredImageComponent,
         SelectAssigneeComponent,
-        QuillEditorComponent,
+        OctoQuillEditorComponent,
         TimePickerComponent,
         TimeInputComponent,
         TaskStatusComponent,

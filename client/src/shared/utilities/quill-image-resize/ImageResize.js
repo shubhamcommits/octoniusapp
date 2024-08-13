@@ -2,10 +2,10 @@ import Quill from "quill";
 import defaultsDeep from 'lodash/defaultsDeep';
 import DefaultOptions from './DefaultOptions';
 import { DisplaySize } from './modules/DisplaySize';
-import { Toolbar } from './modules/Toolbar';
+// import { Toolbar } from './modules/Toolbar';
 import { Resize } from './modules/Resize';
 
-const knownModules = { DisplaySize, Resize, Toolbar };
+const knownModules = { DisplaySize, Resize/*, Toolbar*/ };
 
 /**
  * Custom module for quilljs to allow user to resize <img> elements

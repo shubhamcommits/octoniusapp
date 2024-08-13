@@ -23,7 +23,7 @@
 
         <!-- Portfolio Content starts -->
         <app-quill-editor *ngIf="editContent" class="portfolio-content" [editorId]="'global-ns-editor'" [toolbar]="true"
-            [readOnly]="false" [contents]="portfolioData?.content" (content)="quillContentChanged($event)">
+            [readOnly]="false" [quillContent]="portfolioData?.content" (contentEmitter)="quillContentChanged($event)">
         </app-quill-editor>
         <!-- Portfolio Content ends -->
 

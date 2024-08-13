@@ -95,17 +95,19 @@ export class SearchResultsComponent implements OnChanges {
     let cfg = {};
     let converter;
     let html;
-    let contentOps;
+    let content;
     if (this.type == 'post' && this.data && this.data.content && this.data.content != "") {
       // Initiate the converter
       // converter = new QuillDeltaToHtmlConverter(JSON.parse(this.data.content)['ops'], cfg);
-      contentOps = JSON.parse(this.data.content)['ops'];
+      // content = JSON.parse(this.data.content)['ops'];
+      content = (this.utilityService.isJSON(this.data.content)) ? await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.data.content)['ops']) : this.data.content;
     }
 
     if (this.type == 'file' && this.data && this.data.description && this.data.description != "") {
       // Initiate the converter
       // converter = new QuillDeltaToHtmlConverter(JSON.parse(this.data.description)['ops'], cfg);
-      contentOps = JSON.parse(this.data.description)['ops'];
+      // content = JSON.parse(this.data.description)['ops'];
+      content = (this.utilityService.isJSON(this.data.description)) ? await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.data.description)['ops']) : this.data.description;
     }
 
     // if (converter) {
@@ -133,7 +135,7 @@ export class SearchResultsComponent implements OnChanges {
     //   // Convert into html
     //   html = converter.convert();
     // }
-    html = await this.publicFunctions.convertQuillToHTMLContent(contentOps);
+    html = content;
 
     if (html) {
       this.data.html = html

@@ -136,7 +136,8 @@ export class PageDetailsComponent implements OnInit {
     }
 
     if (this.pageData?.content) {
-      this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.pageData?.content)['ops']);
+      // this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.pageData?.content)['ops']);
+      this.htmlContent = (this.utilityService.isJSON(this.pageData?.content)) ? await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.pageData?.content)['ops']) : this.pageData?.content;
     }
 
     await this.initPages();
@@ -193,13 +194,15 @@ export class PageDetailsComponent implements OnInit {
     if (this.quillData) {
       this.utilityService.asyncNotification($localize`:@@pageDetails.pleaseWaitWeUpdatePage:Please wait we are updating the page...`,
       new Promise(async (resolve, reject) => {
-        const content = JSON.stringify(this.quillData.contents);
+        // const content = JSON.stringify(this.quillData.content);
+        const content = (!!this.quillData && this.quillData.html) ? this.quillData.html : '';
         // Call HTTP Request to change the assignee
         this.libraryService.editPage(this.pageData?._id, { 'content': content, '_content_mentions': this._content_mentions }).then(async res => {
             this.pageData = res['page'];
             this.canEditPage = !this.canEditPage;
 
-            this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.pageData?.content)['ops']);
+            // this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.pageData?.content)['ops']);
+            this.htmlContent = (this.utilityService.isJSON(this.pageData?.content)) ? await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.pageData?.content)['ops']) : this.pageData?.content;
             resolve(this.utilityService.resolveAsyncPromise($localize`:@@pageDetails.pageUpdated:Page updated`))
           })
           .catch(() => {

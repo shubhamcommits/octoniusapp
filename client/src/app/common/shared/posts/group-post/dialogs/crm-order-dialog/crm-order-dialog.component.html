@@ -86,7 +86,7 @@
                 <ng-template matTabContent>
                   <!-- Post Content starts -->
                   <app-quill-editor *ngIf="canEdit" [editorId]="'postbox-editor'" [toolbar]="canEdit" [readOnly]="!canEdit"
-                    [contents]="postData?.content" [groupId]="groupId" (content)="quillContentChanged($event)">
+                    [quillContent]="postData?.content" [groupId]="groupId" (contentEmitter)="quillContentChanged($event)">
                   </app-quill-editor>
                   <!-- Post Content ends -->
                 </ng-template>

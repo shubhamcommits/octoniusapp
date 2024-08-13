@@ -144,7 +144,8 @@ export class FileDetailsDialogComponent implements OnInit {
 
   async initContent() {
     if (this.fileData?.description) {
-      this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.fileData?.description)['ops']);
+      // this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.fileData?.description)['ops']);
+      this.htmlContent = (this.utilityService.isJSON(this.fileData?.description)) ? await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.fileData?.description)['ops']) : this.fileData?.description;
     }
   }
 
@@ -230,7 +231,8 @@ export class FileDetailsDialogComponent implements OnInit {
 
     const file: any = {
       original_name: this.original_name,
-      description: this.quillData ? JSON.stringify(this.quillData.contents) : this.fileData.content,
+      // description: this.quillData ? JSON.stringify(this.quillData.content) : this.fileData.content,
+      description: (!!this.quillData && this.quillData.html) ? this.quillData.html : this.fileData.content,
       _description_mentions: this._content_mentions,
       tags: this.tags
     };

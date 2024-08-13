@@ -103,7 +103,8 @@ export class PostCommentComponent implements OnInit {
 
   async initContent() {
     if (this.comment?.content) {
-      this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.comment?.content)['ops']);
+      // this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.comment?.content)['ops']);
+      this.htmlContent = (this.utilityService.isJSON(this.comment?.content)) ? await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.comment?.content)['ops']) : this.comment?.content;
     }
   }
 
@@ -117,7 +118,8 @@ export class PostCommentComponent implements OnInit {
 
   async saveCommentData() {
     if (this.quillData) {
-      this.comment.content = JSON.stringify(this.quillData.contents)
+      // this.comment.content = JSON.stringify(this.quillData.content)
+      this.comment.content = (!!this.quillData && this.quillData.html) ? this.quillData.html : ''
       this._content_mentions = this.quillData.mention.users.map((user)=> user.insert.mention.id)
 
       // If content mentions has 'all' then only pass 'all' inside the array
