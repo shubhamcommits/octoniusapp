@@ -1,5 +1,10 @@
 <!-- Quill Editor Component Starts -->
-<div *ngIf="editorId" [id]="editorId"
+<!-- <div *ngIf="editorId" [id]="editorId"
   [ngClass]="(editorId === 'postbox-editor')?'normal-editor': 'postbox-editor'">
-</div>
+</div> -->
+
+<quill-editor *ngIf="editorId" ngDefaultControl
+  [(ngModel)]="quillContent" [modules]="modules" [theme]="theme"
+  (onContentChanged)="onContentChanged($event)" (onEditorCreated)="onEditorCreated($event)">
+</quill-editor>
 <!-- Quill Editor Component Ends -->

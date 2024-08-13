@@ -109,7 +109,8 @@ export class CollectionHeaderComponent implements OnInit, OnChanges {
 
   async updateHTMLContent() {
     if (this.collectionData?.content){
-      this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.collectionData?.content)['ops']);
+      // this.htmlContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.collectionData?.content)['ops']);
+      this.htmlContent = (this.utilityService.isJSON(this.collectionData?.content)) ? await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.collectionData?.content)['ops']) : this.collectionData?.content;
     }
   }
 
@@ -145,7 +146,8 @@ export class CollectionHeaderComponent implements OnInit, OnChanges {
     if (this.quillData && this.quillData?.mention) {
       this.collectionData._content_mentions = this.quillData.mention.users.map((user)=> user.insert.mention.id)
     }
-    this.collectionData.content = this.quillData ? JSON.stringify(this.quillData.contents) : this.collectionData?.content
+    // this.collectionData.content = this.quillData ? JSON.stringify(this.quillData.content) : this.collectionData?.content
+    this.collectionData.content = (!!this.quillData && this.quillData.html) ? this.quillData.html : this.collectionData?.content
 
     const collection = {
       content: this.collectionData?.content,

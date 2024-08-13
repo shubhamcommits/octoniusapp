@@ -31,7 +31,7 @@
                 <app-quill-editor
                     [editorId]="('comment_edit_'+ index + comment?._id) || 'editor'"
                     [toolbar]="true" [readOnly]="false"
-                    [contents]="comment.content" [groupId]="groupId" (content)="getQuillData($event)">
+                    [quillContent]="comment.content" [groupId]="groupId" (contentEmitter)="getQuillData($event)">
                 </app-quill-editor>
             </div>
             <!-- Comment Edit ends -->
@@ -44,7 +44,7 @@
             <!-- <app-quill-editor
                 [editorId]="('comment_view_'+ index + comment?._id) || 'editor'"
                 [toolbar]="false" [readOnly]="true"
-                [contents]="comment.content" [groupId]="groupId">
+                [quillContent]="comment.content" [groupId]="groupId">
             </app-quill-editor> -->
             <div *ngIf="comment.content" [innerHTML]="htmlContent | safe: 'html'"></div>
         </div>

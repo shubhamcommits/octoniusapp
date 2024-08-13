@@ -48,8 +48,8 @@
                 [editorId]="'global-ns-editor'"
                 [toolbar]="true"
                 [readOnly]="!canEdit"
-                [contents]="postData?.content"
-                (content)="quillContentChanged($event)">
+                [quillContent]="postData?.content"
+                (contentEmitter)="quillContentChanged($event)">
             </app-quill-editor>
             <!-- Post Content ends -->
 

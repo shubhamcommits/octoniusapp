@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, Input } from '@angular/core';
+import { Component, OnInit, Injector, Input, ViewChild } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs';
 import { GroupService } from 'src/shared/services/group-service/group.service';
@@ -6,6 +6,9 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { DateTime, Interval } from 'luxon';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-members-workload-card',
@@ -15,27 +18,34 @@ import { HRService } from 'src/shared/services/hr-service/hr.service';
 export class MembersWorkloadCardComponent implements OnInit {
 
   @Input() groupId: string;
-
-  public publicFunctions = new PublicFunctions(this.injector);
+  
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  // @ViewChild(MatSort, { static: true }) sort: MatSort;
+  
+  dataSource: MatTableDataSource<any>;
+  displayedColumns = ['member'];
 
   userData;
   groupData;
   groupMembers = [];
   groupTasks;
-
+  
   //date for calendar Nav
   dates: any = [];
   currentDate: any = DateTime.now();
   currentMonth = '';
+  
+  public publicFunctions = new PublicFunctions(this.injector);
 
   // IsLoading behavior subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
 
   constructor(
     private userService: UserService,
-    private injector: Injector,
     private groupService: GroupService,
     public utilityService: UtilityService,
+    public datesService: DatesService,
+    private injector: Injector,
     private hrService: HRService
   ) { }
 
@@ -52,7 +62,7 @@ export class MembersWorkloadCardComponent implements OnInit {
     this.isLoading$.next(false);
   }
 
-  async initTable() {
+  initTable() {
     this.groupService.getAllGroupMembers(this.groupData?._id).then(res => {
       this.groupMembers = res['users'];
     });
@@ -110,8 +120,8 @@ export class MembersWorkloadCardComponent implements OnInit {
       this.dates.forEach(async date => {
         let workloadDay = {
           date: date,
-          is_current_day: this.isCurrentDay(date),
-          is_weekend_day: this.isWeekend(date),
+          is_current_day: this.datesService.isCurrentDay(date),
+          is_weekend_day: this.datesService.isWeekend(date),
           numTasks: 0,
           numDoneTasks: 0,
           // allocation: 0,
@@ -124,7 +134,7 @@ export class MembersWorkloadCardComponent implements OnInit {
           inprogress_tasks: 0
         };
 
-        if (this.isCurrentDay(date)) {
+        if (this.datesService.isCurrentDay(date)) {
           this.userService.getWorkloadOverdueTasks(member?._id, this.groupId)
             .then((res) => {
               workloadDay.overdue_tasks = res['tasks'].length;
@@ -134,12 +144,12 @@ export class MembersWorkloadCardComponent implements OnInit {
             });
         }
 
-        const tasksTmp = await memberTasks.filter(post => this.isSameDay(new DateTime(date), DateTime.fromISO(post.task.due_to)));
+        const tasksTmp = await memberTasks.filter(post => this.datesService.isSameDay(new DateTime(date), DateTime.fromISO(post.task.due_to)));
         workloadDay.numTasks = tasksTmp.length;
 
         let hours = 0;
         let minutes = 0;
-        const tteMappedFiltered = timeTrackingEntitiesMapped.filter(tte => tte?._user?._id == member?._id && this.isSameDay(new DateTime(date), DateTime.fromISO(tte.date)));
+        const tteMappedFiltered = timeTrackingEntitiesMapped.filter(tte => tte?._user?._id == member?._id && this.datesService.isSameDay(new DateTime(date), DateTime.fromISO(tte.date)));
         tteMappedFiltered.forEach(tte => {
           hours += parseInt(tte.hours) || 0;
           minutes += parseInt(tte.minutes) || 0;
@@ -181,15 +191,26 @@ export class MembersWorkloadCardComponent implements OnInit {
 
       member.workload = member.workload.sort((w1, w2) => (w1.date < w2.date) ? -1 : 1);
     });
+
+    this.dataSource = new MatTableDataSource(this.groupMembers);
+    this.dataSource.paginator = this.paginator;
+    // this.dataSource.sort = this.sort;
   }
 
   getRangeDates(firstDay) {
     let dates = [];
     for (var i = 0; i < 7; i++) {
       let date = firstDay.plus({ days: i });
-      date.is_current_day = this.isCurrentDay(date);
-      date.is_weekend_day = this.isWeekend(date);
+      date.is_current_day = this.datesService.isCurrentDay(date);
+      date.is_weekend_day = this.datesService.isWeekend(date);
       dates.push(date);
+
+      if (!!this.displayedColumns) {
+        const index = this.displayedColumns.indexOf(date.day + '');
+        if (index < 0) {
+          this.displayedColumns.push(this.datesService.formateDate(date));
+        }
+      }
     }
 
     if (this.dates[0]?.month == this.dates[this.dates?.length -1]?.month) {
@@ -211,19 +232,6 @@ export class MembersWorkloadCardComponent implements OnInit {
     }
     
     this.generateNavDates();
-  }
-
-  isCurrentDay(day) {
-    return this.isSameDay(day, DateTime.now());
-  }
-
-  isSameDay(day1: DateTime, day2: DateTime) {
-    return day1.startOf('day').toMillis() === day2.startOf('day').toMillis();
-  }
-
-  isWeekend(date) {
-    var day = date.toFormat('d');
-    return (day == '6') || (day == '0');
   }
 
   /**

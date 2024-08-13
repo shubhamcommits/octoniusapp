@@ -409,7 +409,8 @@ export class CRMOrderDialogComponent implements OnInit/*, AfterViewChecked, Afte
       title: this.title,
       type: this.postData?.type,
       _group: this.groupId,
-      content: this.quillData ? JSON.stringify(this.quillData.contents) : this.postData?.content,
+      // content: this.quillData ? JSON.stringify(this.quillData.content) : this.postData?.content,
+      content: (!!this.quillData && this.quillData.html) ? this.quillData.html : this.postData?.content,
       _content_mentions: this._content_mentions,
       tags: this.tags,
       _read_by: this.postData?._read_by,
@@ -482,12 +483,11 @@ export class CRMOrderDialogComponent implements OnInit/*, AfterViewChecked, Afte
   }
 
   async setAssignedBy() {
-    if (this.postData?.logs && this.postData?.logs?.length > 0) {
-      const logs = this.postData?.logs
-        .filter(log => (log.action == 'assigned_to' || log.action == 'removed_assignee') && log?._actor)
+    if (!!this.postData?.logs && this.postData?.logs?.length > 0) {
+      const logs = this.postData?.logs?.filter(log => (log.action == 'assigned_to' || log.action == 'removed_assignee') && log?._actor)
         .sort((l1, l2) => (this.datesService.isBefore(l1.action_date, l2.action_date)) ? 1 : -1);
 
-      if (logs[0]) {
+      if (!!logs[0]) {
         this.lastAssignedBy = await this.publicFunctions.getOtherUser(logs[0]._actor?._id);
       }
     }

@@ -89,12 +89,12 @@ tbody tr td:first-of-type {
 }
 
 .weekend {
-  background-color: $weekend-bg;
+  background-color: $weekend-bg !important;
 }
 
-.today{
+.today {
   color: #fff;
-  background-color: $brand-primary;
+  background-color: $brand-primary !important;
 }
 
 .out-of-the-office {

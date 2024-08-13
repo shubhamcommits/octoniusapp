@@ -25,7 +25,7 @@
         <app-quill-editor *ngIf="editContent && canEdit" [groupId]="groupData?._id"
             [workspaceId]="workspaceData?._id" [workspaceData]="workspaceData"
             [editorId]="'collection_content'" [toolbar]="true" [readOnly]="false"
-            [mentionAll]="false" [contents]="collectionData?.content" (content)="quillContentChanged($event)">
+            [mentionAll]="false" [quillContent]="collectionData?.content" (contentEmitter)="quillContentChanged($event)">
         </app-quill-editor>
         <!-- Collection Content ends -->
 

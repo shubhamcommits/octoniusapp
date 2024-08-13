@@ -15,7 +15,7 @@
     <!-- Message Content starts -->
     <!--
     <app-quill-editor [editorId]="'chat-message-editor'" [toolbar]="true" [readOnly]="false"
-      [chat]="true" (content)="getQuillData($event)"></app-quill-editor>
+      [chat]="true" (contentEmitter)="getQuillData($event)"></app-quill-editor>
     -->
     <input #inputField class="form-control" type="text" placeholder="Write message..." [(ngModel)]="newMessage"
       (keyup.enter)="sendMessage()" (keyup)="suggest($event)" />

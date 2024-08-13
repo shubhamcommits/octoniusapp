@@ -2231,7 +2231,6 @@ export class PublicFunctions {
      * @param workspaceData: any
      */
     async suggestMembers(searchTerm: string, groupId: string, workspaceData: any, mentionAll: boolean) {
-
       // Fetch the users list from the server
       let usersList: any = [];
       if (groupId) {
@@ -2263,31 +2262,37 @@ export class PublicFunctions {
      * @param groupId: string
      * @param workspaceData: any
      */
-    suggestFiles(searchVal: string, groupId: string, workspaceData: any) {
+    async suggestFiles(searchVal: string, groupId: string, workspaceData: any) {
       // Convert promises to observables
-      const serviceGoogle$ = from(this.getGoogleSuggestedFiles(searchVal, workspaceData?.integrations?.is_google_connected));
-      const serviceBox$ = from(this.getBoxSuggestedFiles(searchVal, workspaceData?.integrations));
-      const serviceMS365$ = from(this.getMS365SuggestedFiles(searchVal, workspaceData?.integrations?.is_ms_365_connected));
-      const serviceOctonius$ = from(this.getOctoniusSuggestedFiles(searchVal, groupId, workspaceData?._id));
+      // const serviceGoogle$ = from(this.getGoogleSuggestedFiles(searchVal, workspaceData?.integrations?.is_google_connected));
+      // const serviceBox$ = from(this.getBoxSuggestedFiles(searchVal, workspaceData?.integrations));
+      // const serviceMS365$ = from(this.getMS365SuggestedFiles(searchVal, workspaceData?.integrations?.is_ms_365_connected));
+      // const serviceOctonius$ = from(this.getOctoniusSuggestedFiles(searchVal, groupId, workspaceData?._id));
 
-      // Merge the observables to emit results as they come
-      return serviceGoogle$.pipe(
-        mergeMap(serviceGoogleResult => {
-          return serviceBox$.pipe(
-            mergeMap(serviceBoxResult => {
-              return serviceMS365$.pipe(
-                mergeMap(serviceMS365Result => {
-                  return serviceOctonius$.pipe(
-                    map(serviceOctoniusResult => {
-                      return [...serviceGoogleResult, ...serviceBoxResult, ...serviceMS365Result, ...serviceOctoniusResult];
-                    })
-                  );
-                })
-              );
-            })
-          );
-        })
-      );
+      // // Merge the observables to emit results as they come
+      // return serviceGoogle$.pipe(
+      //   mergeMap(serviceGoogleResult => {
+      //     return serviceBox$.pipe(
+      //       mergeMap(serviceBoxResult => {
+      //         return serviceMS365$.pipe(
+      //           mergeMap(serviceMS365Result => {
+      //             return serviceOctonius$.pipe(
+      //               map(serviceOctoniusResult => {
+      //                 return [...serviceGoogleResult, ...serviceBoxResult, ...serviceMS365Result, ...serviceOctoniusResult];
+      //               })
+      //             );
+      //           })
+      //         );
+      //       })
+      //     );
+      //   })
+      // );
+      const serviceGoogleResult = await this.getGoogleSuggestedFiles(searchVal, workspaceData?.integrations?.is_google_connected);
+      const serviceBoxResult = await this.getBoxSuggestedFiles(searchVal, workspaceData?.integrations);
+      const serviceMS365Result = await this.getMS365SuggestedFiles(searchVal, workspaceData?.integrations?.is_ms_365_connected);
+      const serviceOctoniusResult = await this.getOctoniusSuggestedFiles(searchVal, groupId, workspaceData?._id);
+
+      return Array.from(new Set([...serviceGoogleResult, ...serviceBoxResult, ...serviceMS365Result, ...serviceOctoniusResult]))
     }
 
     private async getGoogleSuggestedFiles(searchVal: string, isGoogleConnected: boolean) {
@@ -2310,10 +2315,19 @@ export class PublicFunctions {
 
           // Google File List
           if (googleFilesList.length > 0) {
-            googleFilesList = googleFilesList.map((file: any) => ({
-              id: '5b9649d1f5acc923a497d1da',
-              value: '<a style="color:inherit;" target="_blank" href="' + file.embedLink + '"' + '>' + file.title + '</a>'
-            }));
+            googleFilesList = googleFilesList.map((file: any) => (
+              // {
+              //   id: 'googlefile',
+              //   value: '<a style="color:inherit;" target="_blank" href="' + file.embedLink + '"' + '>' + file.title + '</a>'
+              // }
+              {
+                id: 'googlefile',
+                value: file.title,
+                denotationChar: '#',
+                link: file.embedLink,
+                target: '_blank'
+              }
+            ));
           }
         }
       }
@@ -2342,10 +2356,19 @@ export class PublicFunctions {
           if (boxFilesList.length > 0) {
             boxFilesList = boxFilesList
                 .filter(file => file && file.shared_link && file.shared_link.url)
-                .map((file: any) => ({
+                .map((file: any) => (
+                  // {
+                  //   id: 'boxfile',
+                  //   value: '<a style="color:inherit;" target="_blank" href="' + file.shared_link.url + '"' + '>' + file.name + '</a>'
+                  // }
+                  {
                     id: 'boxfile',
-                    value: '<a style="color:inherit;" target="_blank" href="' + file.shared_link.url + '"' + '>' + file.name + '</a>'
-                  }));
+                    value: file.name,
+                    denotationChar: '#',
+                    link: file.shared_link.url,
+                    target: '_blank'
+                  }
+                ));
           }
         }
       }
@@ -2369,10 +2392,19 @@ export class PublicFunctions {
 
           // MS365 File List
           if (ms365FilesList.length > 0) {
-            ms365FilesList = ms365FilesList.map((file: any) => ({
-              id: file.id,
-              value: '<a style="color:inherit;" target="_blank" href="' + file.searchResult.onClickTelemetryUrl + '"' + '>' + file.name + '</a>'
-            }));
+            ms365FilesList = ms365FilesList.map((file: any) => (
+              // {
+              //   id: file.id,
+              //   value: '<a style="color:inherit;" target="_blank" href="' + file.searchResult.onClickTelemetryUrl + '"' + '>' + file.name + '</a>'
+              // }
+              {
+                id: 'boxfile',
+                value: file.name,
+                denotationChar: '#',
+                link: file.searchResult.onClickTelemetryUrl,
+                target: '_blank'
+              }
+            ));
           }
         }
       }
@@ -2395,29 +2427,27 @@ export class PublicFunctions {
         const file = filesList[i];
         const url = await this.getFileUrl(file, workspaceId);
         if (!!url) {
-          retFileList.push({
-            id: file._id,
-            value: `<a href="${url}" style="color: inherit" target="_blank">${file.original_name}</a>`
-              // (file.type == 'folio')
-              //   ? `<a href="/document/${file._id}?readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
-              //   : (file.type == "flamingo")
-              //     ? `<a href="/document/flamingo/${file._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
-              //     : `<a href="${environment.UTILITIES_FILES_UPLOADS}/${workspaceData._id}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
-          });
+          retFileList.push(
+            // {
+            //   id: file._id,
+            //   value: `<a href="${url}" style="color: inherit" target="_blank">${file.original_name}</a>`
+            //     // (file.type == 'folio')
+            //     //   ? `<a href="/document/${file._id}?readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
+            //     //   : (file.type == "flamingo")
+            //     //     ? `<a href="/document/flamingo/${file._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
+            //     //     : `<a href="${environment.UTILITIES_FILES_UPLOADS}/${workspaceData._id}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
+            // }
+            {
+              id: file._id,
+              value: file.original_name,
+              denotationChar: '#',
+              link: url,
+              target: '_blank'
+            }
+          );
         }
       }
       filesList = retFileList;
-//       filesList = filesList.map((file: any) => {
-//         return {
-//           id: file._id,
-//           value: `<a href="${file.url}" style="color: inherit" target="_blank">${file.original_name}</a>`
-//             // (file.type == 'folio')
-//             //   ? `<a href="/document/${file._id}?readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
-//             //   : (file.type == "flamingo")
-//             //     ? `<a href="/document/flamingo/${file._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
-//             //     : `<a href="${environment.UTILITIES_FILES_UPLOADS}/${workspaceData._id}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
-//         }
-//       });
 
       return filesList;
     }
@@ -2431,10 +2461,19 @@ export class PublicFunctions {
       let pagesList: any = await this.searchPages(groupId, searchVal, workspaceData._id);
       
       // Map the users list
-      pagesList = pagesList.map((file: any) => ({
-        id: file._id,
-        value: `<a href="/dashboard/work/groups/library/collection/page?page=${file._id}" style="color: inherit" target="_blank">${file.title}</a>`
-      }));
+      pagesList = pagesList.map((file: any) => (
+        // {
+        //   id: file._id,
+        //   value: `<a href="/dashboard/work/groups/library/collection/page?page=${file._id}" style="color: inherit" target="_blank">${file.title}</a>`
+        // }
+        {
+          id: file._id,
+          value: file.title,
+          denotationChar: '#',
+          link: `/dashboard/work/groups/library/collection/page?page=${file._id}`,
+          target: '_blank'
+        }
+      ));
 
       return Array.from(new Set([...pagesList]));
   }
@@ -2453,13 +2492,31 @@ export class PublicFunctions {
       if (searchVal) {
         collectionList = collectionList
           .filter((collection: any) => collection.name.toLowerCase().includes(searchVal.toLowerCase()))
-          .map((collection: any) => ({
-          value: `<a href="/dashboard/work/groups/library/collection?collection=${collection._id}" style="color: inherit" target="_blank">${collection.name}</a>`
-        }))
+          .map((collection: any) => (
+            // {
+            //   value: `<a href="/dashboard/work/groups/library/collection?collection=${collection._id}" style="color: inherit" target="_blank">${collection.name}</a>`
+            // }
+            {
+              id: collection._id,
+              value: collection.name,
+              denotationChar: '#',
+              link: `/dashboard/work/groups/library/collection?collection=${collection._id}`,
+              target: '_blank'
+            }
+          ));
       } else {
-        collectionList = collectionList.map((collection: any) => ({
-        value: `<a href="/dashboard/work/groups/library/collection?collection=${collection._id}" style="color: inherit" target="_blank">${collection.name}</a>`
-      }))
+        collectionList = collectionList.map((collection: any) => (
+          // {
+          //   value: `<a href="/dashboard/work/groups/library/collection?collection=${collection._id}" style="color: inherit" target="_blank">${collection.name}</a>`
+          // }
+          {
+            id: collection._id,
+            value: collection.name,
+            denotationChar: '#',
+            link: `/dashboard/work/groups/library/collection?collection=${collection._id}`,
+            target: '_blank'
+          }
+        ));
       }
 
       return Array.from(new Set([...collectionList]))
@@ -2475,9 +2532,18 @@ export class PublicFunctions {
       // Map the post list
       postList = postList
         .filter((post: any) => post.title.toLowerCase().includes(searchVal.toLowerCase()))
-        .map((post: any) => ({
-        value: `<a href="/dashboard/work/groups/activity?postId=${post._id}" style="color: inherit" target="_blank">${post.title? `${post.title} - ${post._posted_by.first_name} ${post._posted_by.last_name.slice(0,1)}.` : `untitled - ${post._posted_by.first_name} ${post._posted_by.last_name.slice(0,1)}.`}</a>`
-      }))
+        .map((post: any) => (
+          // {
+          //   value: `<a href="/dashboard/work/groups/activity?postId=${post._id}" style="color: inherit" target="_blank">${post.title? `${post.title} - ${post._posted_by.first_name} ${post._posted_by.last_name.slice(0,1)}.` : `untitled - ${post._posted_by.first_name} ${post._posted_by.last_name.slice(0,1)}.`}</a>`
+          // }
+          {
+            id: post._id,
+            value: `${post.title ? `${post.title} - ${post._posted_by.first_name} ${post._posted_by.last_name.slice(0,1) }.` : `untitled - ${post._posted_by.first_name} ${post._posted_by.last_name.slice(0,1)}.`}`,
+            denotationChar: '#',
+            link: `/dashboard/work/groups/activity?postId=${post._id}`,
+            target: '_blank'
+          }
+        ));
 
       return Array.from(new Set([...postList]))
     }

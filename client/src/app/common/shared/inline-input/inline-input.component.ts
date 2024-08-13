@@ -235,7 +235,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges, On
     const postToUpdate: any = {
       title: this.domainObject.title,
       type: this.domainObject.type,
-      content: this.domainObject.quillData ? JSON.stringify(this.domainObject.quillData.contents) : this.domainObject.content,
+      content: this.domainObject.quillData ? JSON.stringify(this.domainObject.quillData.content) : this.domainObject.content,
       _content_mentions: this.domainObject._content_mentions,
       tags: this.domainObject.tags,
       _group: this.groupId,

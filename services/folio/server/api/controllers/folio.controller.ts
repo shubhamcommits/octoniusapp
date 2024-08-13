@@ -60,14 +60,14 @@ async function displayHeadings(req: Request, res: Response, next: NextFunction) 
 async function displayComments(req: Request, res: Response, next: NextFunction) {
   try {
     // Fetch the publish From the request
-    let { body: { showHeadings } } = req;
-    
+    let { body: { showComments } } = req;
+
     // Fetch the fileId From the request
     const { fileId } = req.params;
 
     let folioUpdated = await File.findOneAndUpdate(
       { _id: fileId },
-      { $set: {show_comments: showHeadings }},
+      { $set: {show_comments: showComments }},
       { new: true}).lean();
 
     // Send Status 200 response

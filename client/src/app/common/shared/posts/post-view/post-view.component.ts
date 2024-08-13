@@ -57,42 +57,47 @@ export class PostViewComponent implements OnInit, OnChanges {
   }
 
   async ngOnChanges() {
-    if (this.post.content) {
-      // Initiate the converter
-      // let converter = new QuillDeltaToHtmlConverter(JSON.parse(this.post.content)['ops'], {});
-      // if (converter) {
-      //   converter.renderCustomWith((customOp) => {
-      //     // Conditionally renders blot of mention type
-      //     if(customOp.insert.type === 'mention'){
-      //       // Get Mention Blot Data
-      //       const mention = customOp.insert.value;
+    // if (this.post.content) {
+    //   // Initiate the converter
+    //   let converter = new QuillDeltaToHtmlConverter(JSON.parse(this.post.content)['ops'], {});
+    //   if (converter) {
+    //     converter.renderCustomWith((customOp) => {
+    //       // Conditionally renders blot of mention type
+    //       if(customOp.insert.type === 'mention'){
+    //         // Get Mention Blot Data
+    //         const mention = customOp.insert.value;
 
-      //       // Template Return Data
-      //       return (
-      //         `<span
-      //           class="mention"
-      //           data-index="${mention.index}"
-      //           data-denotation-char="${mention.denotationChar}"
-      //           data-link="${mention.link}"
-      //           data-value='${mention.value}'>
-      //           <span contenteditable="false">
-      //             ${mention.value}
-      //           </span>
-      //         </span>`
-      //       )
-      //     }
-      //   });
-      //   // Convert into html
-      //   this.postContent = converter.convert();
-      // }
-      this.postContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.post?.content)['ops']);
-    }
+    //         // Template Return Data
+    //         return (
+    //           `<span
+    //             class="mention"
+    //             data-index="${mention.index}"
+    //             data-denotation-char="${mention.denotationChar}"
+    //             data-link="${mention.link}"
+    //             data-value='${mention.value}'>
+    //             <span contenteditable="false">
+    //               ${mention.value}
+    //             </span>
+    //           </span>`
+    //         )
+    //       }
+    //     });
+    //     // Convert into html
+    //     this.postContent = converter.convert();
+    //   }
+    //   this.postContent = await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.post?.content)['ops']);
+    // }
+    
+    this.setPostContent(false);
+  }
 
-    if (this.postContent.length > 250) {
+  async setPostContent(showAll: boolean) {
+    this.postContent = (this.utilityService.isJSON(this.post?.content)) ? await this.publicFunctions.convertQuillToHTMLContent(JSON.parse(this.post?.content)['ops']) : this.post?.content;
+    if (!showAll && !!this.postContent && this.postContent?.length > 250) {
       this.postContent = this.postContent.substring(0, 250) + '...';
-      this.showFullContent = false;
+      this.showFullContent = showAll;
     } else {
-      this.showFullContent = true;
+      this.showFullContent = showAll;
     }
   }
 
@@ -145,7 +150,7 @@ export class PostViewComponent implements OnInit, OnChanges {
     this.pinEvent.emit({pin: pin, _id: this.post._id});
   }
 
-  showHideFullContent() {
-    this.showFullContent = !this.showFullContent;
+  async showHideFullContent() {
+    this.setPostContent(true);
   }
 }

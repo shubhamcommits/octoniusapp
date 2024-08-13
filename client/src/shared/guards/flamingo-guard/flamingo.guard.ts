@@ -25,8 +25,22 @@ export class FlamingoGuard   {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ) {
-
-    const fileId = next['_urlSegment']?.segments[2].path;
+    // const fileId = next['_urlSegment']?.segments[2].path;
+    const urlSegments = next['_routerState'].url.split('/');
+    const docIndex = (!!urlSegments) ? urlSegments.findIndex(segment => segment == 'flamingo') : -1;
+    let fileId;
+    if (docIndex > -1) {
+      fileId = urlSegments[docIndex+1];
+      const readOnlyIndex = (!!fileId) ? fileId.indexOf('?') : -1;
+      if (readOnlyIndex > -1) {
+        fileId = fileId.substring(0, readOnlyIndex);
+      }
+    } else {
+      this.utilityService.warningNotification($localize`:@@folioGuard.oopsNoPermissionForGroup:Oops seems like you don\'t have the permission to access the group, kindly contact your superior to provide you the proper access!`);
+      await this.publicFunctions.sendUpdatesToGroupData({});
+      this.router.navigate(['dashboard', 'myspace', 'inbox']);
+      return false;
+    }
 
     // Public Functions Instance
     let publicFunctions = this.injector.get(PublicFunctions);

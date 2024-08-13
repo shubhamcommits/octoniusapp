@@ -93,8 +93,8 @@
           [toolbar]="true"
           [readOnly]="false"
           [workspaceId]="storyData._workspace._id || storyData._workspace"
-          [contents]="storyData.content"
-          (content)="getQuillData($event)">
+          [quillContent]="storyData.content"
+          (contentEmitter)="getQuillData($event)">
         </app-quill-editor>
       </div>
 

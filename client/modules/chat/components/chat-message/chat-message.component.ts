@@ -29,12 +29,6 @@ export class ChatMessageComponent implements OnInit {
     ) { }
 
   async ngOnInit() {
-    // let converter = new QuillDeltaToHtmlConverter(JSON.parse(this.message?.content)['ops'], {});
-    // if (converter) {
-    //   // Convert into html
-    //   this.htmlContent = converter.convert();
-    // }
-
     this.htmlContent = await this.convertToHTML();
 
     if (!this.previousMessage || (this.previousMessage && this.previousMessage?.posted_on

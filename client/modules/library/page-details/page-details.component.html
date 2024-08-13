@@ -129,7 +129,7 @@
         
                 <app-quill-editor style="margin-bottom: 30px;" *ngIf="canEditPage && canEdit" [editorId]="'page_editor'" [toolbar]="true"
                     [groupId]="groupData?._id" [workspaceId]="workspaceData?._id" [workspaceData]="workspaceData"
-                    [readOnly]="!canEdit" [mentionAll]="false" [contents]="pageData?.content" (content)="getQuillData($event)">
+                    [readOnly]="!canEdit" [mentionAll]="false" [quillContent]="pageData?.content" (contentEmitter)="getQuillData($event)">
                 </app-quill-editor>
 
                 <div style="width: 100%; text-align: right;" *ngIf="canEdit">

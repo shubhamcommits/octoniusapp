@@ -234,7 +234,7 @@
         (member)="selectManager($event)"></app-select-assignee>
 
       <label i18n="@@userWorkloadCalendar.description" style="float: left; width: 100%;">Description</label>
-      <input type="text" autocomplete="off" class="form-control" [(ngModel)]="newHoliday.description" />
+      <input type="text" autocomplete="off" class="form-control" [(ngModel)]="newHoliday.description" name="newHolidayDescription" />
 
       <div class="card-footer">
         <p *ngIf="!!errorCode">

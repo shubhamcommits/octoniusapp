@@ -39,8 +39,18 @@ export class DatesService {
   }
 
   isWeekend(date: DateTime) {
-    var day = date.toFormat('d');
-    return (day == '6') || (day == '0');
+    if (!!date){
+      let day;
+      if (date instanceof DateTime) {
+        day = date;
+      } else {
+        day = DateTime.fromISO(date);
+      }
+
+      return !!day && (day.localWeekday == 6 || day.localWeekday == 7);
+    } 
+
+    return false;
   }
 
   isSameDay(day1: any, day2: any) {
@@ -65,5 +75,18 @@ export class DatesService {
     } else if ((!day1 && !!day2) || (!!day1 && !day2) || (!day1 && !day2)) {
       return false;
     }
+  }
+
+  isCurrentDay(day) {
+    let date;
+    if (!!day) {
+      if (day instanceof DateTime) {
+        date = day;
+      } else {
+        date = DateTime.fromISO(day);
+      }
+    }
+
+    return !!date && this.isSameDay(date, DateTime.now());
   }
 }

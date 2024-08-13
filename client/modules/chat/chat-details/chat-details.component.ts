@@ -204,7 +204,7 @@ export class ChatDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
         _chat: this.chatData?._id,
         posted_on: DateTime.now(),
         _posted_by: this.userData?._id,
-        content: messageContent.message, // JSON.stringify(this.messageContent.contents),
+        content: messageContent.message, // JSON.stringify(this.messageContent.content),
         _content_mentions: _content_mentions,
         edited: false
       };

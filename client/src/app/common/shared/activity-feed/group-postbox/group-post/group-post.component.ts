@@ -204,7 +204,8 @@ export class GroupPostComponent implements OnInit {
     this._content_mentions = Array.from(new Set(this._content_mentions))
 
     if (this.edit) {
-      if (this.postData.content === JSON.stringify(this.quillData.contents)) {
+      // if (this.postData.content === JSON.stringify(this.quillData.content)) {
+      if (this.postData.content === this.quillData.html) {
         this.showUpdateDetails = false
       } else {
         this.showUpdateDetails = true
@@ -318,7 +319,8 @@ export class GroupPostComponent implements OnInit {
     // Prepare Post Data
     let postData: any = {
       title: this.title,
-      content: this.quillData ? JSON.stringify(this.quillData.contents) : "",
+      // content: this.quillData ? JSON.stringify(this.quillData.content) : "",
+      content: (!!this.quillData && !!this.quillData.html) ? this.quillData.html : "",
       type: this.type,
       _posted_by: this.userData._id,
       created_date: today,
@@ -412,7 +414,8 @@ export class GroupPostComponent implements OnInit {
     const post: any = {
       title: this.title,
       type: this.type,
-      content: this.quillData ? JSON.stringify(this.quillData.contents) : this.postData.content,
+      // content: this.quillData ? JSON.stringify(this.quillData.content) : this.postData.content,
+      content: (!!this.quillData && !!this.quillData.html) ? this.quillData.html : "",
       _content_mentions: this._content_mentions,
       _group: this.groupId,
       tags: this.tags,
