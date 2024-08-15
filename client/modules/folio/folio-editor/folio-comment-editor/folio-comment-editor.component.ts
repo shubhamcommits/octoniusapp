@@ -1,30 +1,14 @@
 import { Injector, Input, AfterViewInit, Component, ElementRef, ViewChild, LOCALE_ID, Inject, Output, EventEmitter } from '@angular/core';
 import { PublicFunctions } from "modules/public.functions";
-import { ActivatedRoute } from "@angular/router";
 import { SubSink } from "subsink";
-import { FilesService } from "src/shared/services/files-service/files.service";
-import { FolioService } from 'src/shared/services/folio-service/folio.service';
 import { UtilityService } from "src/shared/services/utility-service/utility.service";
 
-import { debounceTime, switchMap } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-
 import Quill from "quill";
-// import { Mention } from "quill-mention";
-// import { OctoniusFolioMentionBlot } from '../quill-modules/quill-mention-blot';
-// import ImageResizor from 'quill-image-resizor'
 import hljs from 'highlight.js'
 
 hljs.configure({
   languages: ['javascript', 'ruby', 'bash', 'cpp', 'cs', 'css', 'dart', 'dockerfile', 'dos', 'excel', 'fortran', 'go', 'java', 'nginx', 'python', 'objectivec', 'yaml', 'yml']
 });
-
-// Quill.register({
-//   "blots/mention": OctoniusFolioMentionBlot,
-//   // "blots/mention": MentionBlot,
-//   "modules/mention": Mention
-// });
-// Quill.register('modules/imageResizor', ImageResizor)
 
 @Component({
   selector: "app-folio-comment-editor",
