@@ -3,7 +3,7 @@
         <!-- <i class="material-icons" (click)="closeDialog()" style="cursor: pointer">close</i> -->
     </mat-dialog-actions>
 
-    <h2 mat-dialog-title style="margin: -50px 0 0 0 !important;">
+    <h2 mat-dialog-title style="margin: -50px 50px 0 50px !important;">
         <span *ngIf="!!orderData && !!orderData?._id && !!orderData?._product && !!orderData?._product?.name">{{ orderData?._product?.name }}</span>
         <span i18n="@@newCRMOrderProductDialog.newContact" *ngIf="!orderData || !orderData?._id">New Order</span>
     </h2>
