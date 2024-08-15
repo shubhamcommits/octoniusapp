@@ -1,8 +1,8 @@
 {
   "name": "folio-server",
   "version": "1.0.0",
+  "license": "UNLICENSED",
   "main": "index.ts",
-  "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev server.ts",
     "build": "tsc",

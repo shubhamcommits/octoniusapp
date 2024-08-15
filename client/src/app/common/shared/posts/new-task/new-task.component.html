@@ -2,7 +2,7 @@
   <div class="task-box" *ngIf="!column || !column.addTask">
     <button class="btn btn-block task muted" (click)="column.addTask = true" [disabled]="!canEdit">
       <i class="material-icons-outlined">add</i>
-      <span *ngIf="!saveAsNorthStar && !saveAsIdea && !saveAsCRMLead" i18n="@@newTask.newTask">New Task</span>
+      <span *ngIf="!saveAsNorthStar && !saveAsIdea && !saveAsCRMLead && !saveAsCRMOrder" i18n="@@newTask.newTask">New Task</span>
       <span *ngIf="saveAsNorthStar" i18n="@@newTask.newNorthStar">New Target</span>
       <span *ngIf="saveAsIdea" i18n="@@newTask.newIdea">New Idea</span>
       <span *ngIf="saveAsCRMLead" i18n="@@newTask.newLead">New Lead</span>
