@@ -1,9 +1,9 @@
-<div class="container">
-    <mat-dialog-actions class="d-flex justify-content-end" align="end">
-        <i class="material-icons" (click)="closeDialog()" style="cursor: pointer">close</i>
-    </mat-dialog-actions>
+<mat-dialog-actions class="d-flex justify-content-end" align="end">
+    <i class="material-icons" (click)="closeDialog()" style="cursor: pointer">close</i>
+</mat-dialog-actions>
 
-    <h2 mat-dialog-title style="margin: -50px 50px 0 50px !important;">
+<div class="container">
+    <h2 mat-dialog-title style="margin: -50px 0 0 0 !important;">
         <span *ngIf="!!contactData._id && !!contactData.name">{{ contactData?.name }}</span>
         <span i18n="@@crmContactDialog.newContact" *ngIf="!contactData._id">New Contact</span>
     </h2>
