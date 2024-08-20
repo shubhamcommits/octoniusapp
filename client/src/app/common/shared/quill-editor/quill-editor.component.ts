@@ -2,8 +2,6 @@ import { Component, OnInit, Output, EventEmitter, Input, Injector } from '@angul
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { debounceTime, switchMap } from 'rxjs/operators';
-import { Subject } from 'rxjs';
 import Quill from "quill";
 import { Mention } from "quill-mention";
 import { OctoniusMentionBlot } from '../quill-modules/quill-mention-blot';
