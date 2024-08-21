@@ -104,7 +104,7 @@
             </li>
 
             <li>
-                <a *ngIf="!editContent" mat-menu-item [matMenuTriggerFor]="moveMenu2" class="btn btn-warning btn-block">
+                <a *ngIf="!editContent && (!!userGroups || userGroups.length == 0)" mat-menu-item [matMenuTriggerFor]="moveMenu2" class="btn btn-warning btn-block">
                     <span i18n="@@collectionHeader.moveToGroupLink">Move To Group</span>
                 </a>
             </li>

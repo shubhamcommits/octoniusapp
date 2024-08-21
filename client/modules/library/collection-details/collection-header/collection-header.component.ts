@@ -18,9 +18,10 @@ export class CollectionHeaderComponent implements OnInit, OnChanges {
 
   @Input() collectionData;
   @Input() userData;
-  @Input() workspaceData;
   @Input() groupData;
   @Input() canEdit;
+
+  workspaceData;
 
   editTitle = false;
   title: string = '';
@@ -47,15 +48,22 @@ export class CollectionHeaderComponent implements OnInit, OnChanges {
   async ngOnInit() {
     const isAuth = this.storageService.existData('authToken');
 
+    if (!this.objectExists(this.workspaceData) && !!isAuth) {
+      // Fetch the current workspace data
+      this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    } else if (!this.objectExists(this.workspaceData) && this.objectExists(this.collectionData)) {
+      await this.libraryService.getWorkspaceByCollection(this.collectionData?._id).then(res => {
+        this.workspaceData = res['workspace'];
+      });
+    }
+
     // Fetch the current loggedIn user data
     if (this.objectExists(this.workspaceData) && !!isAuth) {
       await this.publicFunctions.getAllUserGroups(this.workspaceData?._id)
         .then((groups: any) => {
-
           groups.splice(groups.findIndex(group => group._id == this.groupData?._id), 1);
 
           this.userGroups = groups;
-
           this.userGroups.sort((g1, g2) => (g1.group_name > g2.group_name) ? 1 : -1);
           this.utilityService.removeDuplicates(this.userGroups, '_id').then((groups)=>{
             this.userGroups = groups;
@@ -68,7 +76,7 @@ export class CollectionHeaderComponent implements OnInit, OnChanges {
     }
   }
 
-  async ngOnChanges(changes: SimpleChanges) {
+  async ngOnChanges() {
     this.title = this.collectionData?.name;
 
     this.updateHTMLContent();
