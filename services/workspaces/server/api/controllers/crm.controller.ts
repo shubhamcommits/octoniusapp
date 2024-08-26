@@ -903,7 +903,6 @@ export class CRMController {
                 }).select('_workspace crm_custom_fields crm_custom_fields_to_show').lean());
 
             await stream.on('data', async (group: any) => {
-console.log('GROUP: ', group._id);
                 const workspaceId = group._workspace;
                 await Contact.updateMany({
                         _group: group._id
@@ -940,10 +939,8 @@ console.log('GROUP: ', group._id);
                 }
 
                 if (!!group.crm_custom_fields_to_show) {
-console.log(workspace.crm_custom_fields_to_show);
                     group.crm_custom_fields_to_show?.forEach(async cf => {
                         const index = (!!workspace.crm_custom_fields_to_show) ? workspace.crm_custom_fields_to_show.findIndex(crmcfts => {
-console.log(crmcfts, cf);
                             return crmcfts == cf}) : -1;
                         if (index < 0) {
                             workspace = await Workspace.findOneAndUpdate({

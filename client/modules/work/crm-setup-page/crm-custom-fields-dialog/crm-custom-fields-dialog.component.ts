@@ -122,9 +122,9 @@ export class CRMCustomFieldsDialogComponent implements OnInit {
                   // Remove the field from the list
                   this.customFields.splice(index, 1);
 
-                  this.workspaceData.crm_custom_fields = res['group'].crm_custom_fields;
-                  // this.workspaceData.custom_fields_table_widget.selectTypeCFs = res['group'].custom_fields_table_widget.selectTypeCFs;
-                  // this.workspaceData.custom_fields_table_widget.inputTypeCFs = res['group'].custom_fields_table_widget.inputTypeCFs;
+                  this.workspaceData.crm_custom_fields = res['workspace'].crm_custom_fields;
+                  // this.workspaceData.custom_fields_table_widget.selectTypeCFs = res['workspace'].custom_fields_table_widget.selectTypeCFs;
+                  // this.workspaceData.custom_fields_table_widget.inputTypeCFs = res['workspace'].custom_fields_table_widget.inputTypeCFs;
                   this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
 
                   resolve(this.utilityService.resolveAsyncPromise($localize`:@@crmCustomFieldDialog.fieldDeleted:Field deleted!`));
@@ -153,7 +153,7 @@ export class CRMCustomFieldsDialogComponent implements OnInit {
 
         // Save the new value
         this.crmService.addCRMCustomFieldNewValue(newValue, field._id).then(res => {
-          this.workspaceData.crm_custom_fields = res['group'].crm_custom_fields;
+          this.workspaceData.crm_custom_fields = res['workspace'].crm_custom_fields;
           this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
         });
 
@@ -165,7 +165,7 @@ export class CRMCustomFieldsDialogComponent implements OnInit {
   // setDisplayInKanbanCard(field) {
   //   this.utilityService.asyncNotification($localize`:@@crmCustomFieldDialog.pleaseWaitUpdatingCF:Please wait we are updating the custom field...`, new Promise((resolve, reject) => {
   //     this.crmService.setCRMCustomFieldDisplayKanbanCard(!field.display_in_kanban_card, field._id).then(res => {
-  //       this.workspaceData.crm_custom_fields = res['group'].crm_custom_fields;
+  //       this.workspaceData.crm_custom_fields = res['workspace'].crm_custom_fields;
   //       this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
 
   //       resolve(this.utilityService.resolveAsyncPromise($localize`:@@crmCustomFieldDialog.fieldUpdated:Field updated!`));
@@ -178,7 +178,7 @@ export class CRMCustomFieldsDialogComponent implements OnInit {
   setCFType(type: string, fieldId: string) {
     this.utilityService.asyncNotification($localize`:@@crmCustomFieldDialog.pleaseWaitUpdatingCF:Please wait we are updating the custom field...`, new Promise((resolve, reject) => {
       this.crmService.setCRMCustomFieldType(type, fieldId).then(res => {
-        this.workspaceData.crm_custom_fields = res['group'].crm_custom_fields;
+        this.workspaceData.crm_custom_fields = res['workspace'].crm_custom_fields;
         this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
 
         resolve(this.utilityService.resolveAsyncPromise($localize`:@@crmCustomFieldDialog.fieldUpdated:Field updated!`));
@@ -197,7 +197,7 @@ export class CRMCustomFieldsDialogComponent implements OnInit {
         .then((res) => {
           field.values.splice(index, 1);
 
-          this.workspaceData.crm_custom_fields = res['group'].crm_custom_fields;
+          this.workspaceData.crm_custom_fields = res['workspace'].crm_custom_fields;
           this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
         });
     }
@@ -229,7 +229,7 @@ export class CRMCustomFieldsDialogComponent implements OnInit {
         this.crmService.setCRMCustomFieldColor(data, field._id).then(res => {
 
           this.customFields[index].badge_color = data;
-          this.workspaceData.crm_custom_fields = res['group'].crm_custom_fields;
+          this.workspaceData.crm_custom_fields = res['workspace'].crm_custom_fields;
 
           this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
 
@@ -250,7 +250,7 @@ export class CRMCustomFieldsDialogComponent implements OnInit {
 
     this.utilityService.asyncNotification($localize`:@@crmCustomFieldDialog.pleaseWaitUpdatingCF:Please wait we are updating the custom field...`, new Promise((resolve, reject) => {
       this.crmService.setCRMCustomFieldColor('', field._id).then(res => {
-        this.workspaceData.crm_custom_fields = res['group'].crm_custom_fields;
+        this.workspaceData.crm_custom_fields = res['workspace'].crm_custom_fields;
 
         this.customFields[index].badge_color = '';
         this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
