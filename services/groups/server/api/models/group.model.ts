@@ -372,11 +372,11 @@ const GroupSchema = new Schema({
             required: true,
             default: true,
         },
-        crm_setup: {
-            type: Boolean,
-            required: true,
-            default: true,
-        },
+        // crm_setup: {
+        //     type: Boolean,
+        //     required: true,
+        //     default: true,
+        // },
         files: {
             type: Boolean,
             required: true,

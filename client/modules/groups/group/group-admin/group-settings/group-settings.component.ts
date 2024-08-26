@@ -238,7 +238,8 @@ export class GroupSettingsComponent implements OnInit {
           pages_to_show: {
             activity: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.activity : true,
             tasks: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.tasks : true,
-            crm_setup: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.crm_setup : ((this.groupData?.type == 'crm') ? true : false),
+            // crm_setup: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.crm_setup : ((this.groupData?.type == 'crm') ? true : false),
+            crm_setup: false,
             files: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.files : true,
             library: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.library : true,
             resource_management: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.resource_management : ((this.groupData?.type == 'resource') ? true : false),

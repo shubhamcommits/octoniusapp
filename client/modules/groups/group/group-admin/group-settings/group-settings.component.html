@@ -9,7 +9,7 @@
         <div class="pages">
           <mat-checkbox [checked]="groupData?.pages_to_show?.activity" [name]="'activity'" (change)="savePagesToShow($event)" i18n="@@groupSettings.activity">Activity</mat-checkbox>
           <mat-checkbox [checked]="groupData?.pages_to_show?.tasks" [name]="'tasks'" (change)="savePagesToShow($event)" i18n="@@groupSettings.tasks">Tasks</mat-checkbox>
-          <mat-checkbox *ngIf="groupData?.type == 'crm'" [checked]="groupData?.pages_to_show?.crm_setup" [name]="'crm_setup'" (change)="savePagesToShow($event)" i18n="@@groupSettings.crmSetup">CRM Setup</mat-checkbox>
+          <!-- <mat-checkbox *ngIf="groupData?.type == 'crm'" [checked]="groupData?.pages_to_show?.crm_setup" [name]="'crm_setup'" (change)="savePagesToShow($event)" i18n="@@groupSettings.crmSetup">CRM Setup</mat-checkbox> -->
           <mat-checkbox [checked]="groupData?.pages_to_show?.files" [name]="'files'" (change)="savePagesToShow($event)" i18n="@@groupSettings.files">Files</mat-checkbox>
           <mat-checkbox [checked]="groupData?.pages_to_show?.library" [name]="'library'" (change)="savePagesToShow($event)" i18n="@@groupSettings.library">Library</mat-checkbox>
           <mat-checkbox *ngIf="groupData?.type == 'resource'" [checked]="groupData?.pages_to_show?.resource_management" [name]="'resource_management'" (change)="savePagesToShow($event)" i18n="@@groupSettings.resourceManagement">Resource Management</mat-checkbox>

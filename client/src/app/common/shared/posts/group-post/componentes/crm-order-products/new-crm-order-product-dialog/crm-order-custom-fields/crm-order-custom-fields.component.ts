@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Injector, Input, OnChanges, Output } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import { CRMGroupService } from 'src/shared/services/crm-group-service/crm-group.service';
+import { CRMService } from 'src/shared/services/crm-service/crm.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
@@ -11,9 +11,10 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 export class CRMOrderCustomFieldsComponent implements OnChanges {
 
   @Input() orderData;
-  @Input() groupData;
-
+  
   @Output() orderCFEdited = new EventEmitter();
+  
+  workspaceData;
 
   crmProductCustomFields;
   selectedCFValues = [];
@@ -26,23 +27,23 @@ export class CRMOrderCustomFieldsComponent implements OnChanges {
 
   constructor(
 		public utilityService: UtilityService,
-    private crmGroupService: CRMGroupService,
+    private crmService: CRMService,
     private injector: Injector,
   ) { }
 
   async ngOnChanges(): Promise<void> {
-    if (!this.utilityService.objectExists(this.groupData)) {
-			this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+    if (!this.utilityService.objectExists(this.workspaceData)) {
+			this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 		}
   
     this.initCustomFields();
   }
 
   async initCustomFields() {
-    let customFieldsTmp = this.groupData?.crm_custom_fields;
+    let customFieldsTmp = this.workspaceData?.crm_custom_fields;
 
     if (!customFieldsTmp) {
-      await this.crmGroupService.getCRMGroupCustomFields(this.groupData?._id).then((res) => {
+      await this.crmService.getCRMCustomFields().then((res) => {
         if (res['crm_custom_fields']) {
           customFieldsTmp = res['crm_custom_fields'];
         }

@@ -112,7 +112,7 @@
         </ng-container> -->
       
         <!-- CUSTOM FIELDS START -->
-        <ng-container [matColumnDef]="cf.name" *ngFor="let cf of crmCustomFieldsToShow; trackBy: utilityService.trackByIndex">
+        <!-- <ng-container [matColumnDef]="cf.name" *ngFor="let cf of crmCustomFieldsToShow; trackBy: utilityService.trackByIndex">
           <th mat-header-cell mat-sort-header *matHeaderCellDef>
             <div class="cf_cell">
               {{ cf.title }}
@@ -124,7 +124,7 @@
               {{ contact?.crm_custom_fields[cf.name] }}
             </div>
           </td>
-        </ng-container>
+        </ng-container> -->
         <!-- CUSTOM FIELDS ENDS -->
       
         <ng-container matColumnDef="star">

@@ -1,9 +1,9 @@
 import { Component, Input, OnChanges, ViewEncapsulation, Injector } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
-import { CRMContactDialogComponent } from 'modules/groups/group/group-crm-setup-view/crm-contact-dialog/crm-contact-dialog.component';
 import { PublicFunctions } from 'modules/public.functions';
-import { CRMGroupService } from 'src/shared/services/crm-group-service/crm-group.service';
+import { CRMContactDialogComponent } from 'modules/work/crm-setup-page/crm-contact-dialog/crm-contact-dialog.component';
+import { CRMService } from 'src/shared/services/crm-service/crm.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
@@ -18,9 +18,10 @@ export class CRMLeadCardComponent implements OnChanges {
 
   @Input() postData;
   @Input() userData;
-  @Input() groupData;
+  // @Input() groupData;
   @Input() isAdmin: boolean = false;
 
+  workspaceData;
 
   companySearchResults = [];
   companySearchText = '';
@@ -30,7 +31,7 @@ export class CRMLeadCardComponent implements OnChanges {
 
   sortedData;
 	displayedColumns: string[] = ['name', 'position', /*'phone', 'email', 'link',*/ 'star'];
-	crmCustomFieldsToShow = [];
+	// crmCustomFieldsToShow = [];
 	crmContactCustomFields = [];
 
   // Public Functions class object
@@ -40,7 +41,7 @@ export class CRMLeadCardComponent implements OnChanges {
   subSink = new SubSink();
 
   constructor(
-    private crmGroupService: CRMGroupService,
+    private crmService: CRMService,
     private postService: PostService,
     public utilityService: UtilityService,
     public dialog: MatDialog,
@@ -48,6 +49,10 @@ export class CRMLeadCardComponent implements OnChanges {
   ) { }
 
   async ngOnChanges() {
+    if (!this.utilityService.objectExists(this.workspaceData)) {
+			this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+		}
+
     await this.initTable();
   }
 
@@ -58,7 +63,7 @@ export class CRMLeadCardComponent implements OnChanges {
   }
 
 	async initTable() {
-		await this.loadCustomFieldsToShow();
+		// await this.loadCustomFieldsToShow();
 
     if (!!this.postData.crm) {
       this.postData.crm._contacts = [...this.postData.crm._contacts];
@@ -67,29 +72,29 @@ export class CRMLeadCardComponent implements OnChanges {
     }
 	}
 
-	loadCustomFieldsToShow() {
-		if (!!this.groupData && !!this.groupData.crm_custom_fields_to_show) {
-			if (!this.crmCustomFieldsToShow) {
-				this.crmCustomFieldsToShow = [];
-			}
+	// loadCustomFieldsToShow() {
+	// 	if (!!this.groupData && !!this.groupData.crm_custom_fields_to_show) {
+	// 		if (!this.crmCustomFieldsToShow) {
+	// 			this.crmCustomFieldsToShow = [];
+	// 		}
 			
-			this.groupData.crm_custom_fields_to_show.forEach(field => {
-				const cf = this.getCustomField(field);
-				const indexCRMCFToShow = (!!this.crmCustomFieldsToShow) ? this.crmCustomFieldsToShow.findIndex(cf => cf.name === field) : -1;
-				// Push the Column
-				if (cf && indexCRMCFToShow < 0 && cf.type == 'contact') {
-					this.crmCustomFieldsToShow.push(cf);
+	// 		this.groupData.crm_custom_fields_to_show.forEach(field => {
+	// 			const cf = this.getCustomField(field);
+	// 			const indexCRMCFToShow = (!!this.crmCustomFieldsToShow) ? this.crmCustomFieldsToShow.findIndex(cf => cf.name === field) : -1;
+	// 			// Push the Column
+	// 			if (cf && indexCRMCFToShow < 0 && cf.type == 'contact') {
+	// 				this.crmCustomFieldsToShow.push(cf);
 			
-					if (this.displayedColumns.length - 1 >= 0) {
-						const indexDisplayedColumns = (!!this.displayedColumns) ? this.displayedColumns.findIndex(col => col === field.name) : -1;
-						if (indexDisplayedColumns < 0) {
-							this.displayedColumns.splice(this.displayedColumns.length - 1, 0, field);
-						}
-					}
-				}
-			});
-		}
-	}
+	// 				if (this.displayedColumns.length - 1 >= 0) {
+	// 					const indexDisplayedColumns = (!!this.displayedColumns) ? this.displayedColumns.findIndex(col => col === field.name) : -1;
+	// 					if (indexDisplayedColumns < 0) {
+	// 						this.displayedColumns.splice(this.displayedColumns.length - 1, 0, field);
+	// 					}
+	// 				}
+	// 			}
+	// 		});
+	// 	}
+	// }
 
 	getCustomField(fieldName: string) {
 		const index = (this.crmContactCustomFields) ? this.crmContactCustomFields.findIndex((f: any) => f.name === fieldName) : -1;
@@ -162,7 +167,7 @@ export class CRMLeadCardComponent implements OnChanges {
   }
 
   searchCompany() {
-    this.crmGroupService.searchCRMCompanies(this.groupData._id, this.companySearchText).then(res => {
+    this.crmService.searchCRMCompanies(this.companySearchText).then(res => {
       this.companySearchResults = res['companies'];
       const index = (!!this.companySearchResults) ? this.companySearchResults.findIndex(comp => comp.name === this.companySearchText) : -1;
       if (index < 0) {
@@ -174,7 +179,7 @@ export class CRMLeadCardComponent implements OnChanges {
   }
 
   searchContact() {
-    this.crmGroupService.searchCRMContacts(this.groupData?._id, this.postData?.crm?._company?._id, this.contactSearchText).then(res => {
+    this.crmService.searchCRMContacts(this.postData?.crm?._company?._id, this.contactSearchText).then(res => {
         this.contactSearchResults = res['contacts'].filter(contact => {
           const index = this.postData.crm._contacts.findIndex((c: any) => c._id === contact._id);
           return index < 0;
@@ -216,10 +221,10 @@ export class CRMLeadCardComponent implements OnChanges {
       let companyToCreate = {
           name: company.name,
           description: '',
-          _group: this.groupData?._id
+          _workspace: this.workspaceData?._id
         };
 
-        this.crmGroupService.createCRMCompany(companyToCreate).then(res => {
+        this.crmService.createCRMCompany(companyToCreate).then(res => {
           this.selectCompany(res['company']);
 
           // Resolve with success
@@ -235,7 +240,7 @@ export class CRMLeadCardComponent implements OnChanges {
     await this.utilityService.asyncNotification($localize`:@@crmLeadCard.plesaeWaitWeAreCreatingContact:Please wait we are creating the contact and updating the contents...`, new Promise((resolve, reject) => {
       let contactToSave: any = {
         name: contact?.name,
-        _group: this.groupData?._id,
+        _workspace: this.workspaceData?._id,
         _company: this.postData.crm._company,
         phones: [],
         emails: [],
@@ -243,7 +248,7 @@ export class CRMLeadCardComponent implements OnChanges {
         position: ''
       };
 
-      this.crmGroupService.createCRMContact(contactToSave).then(res => {
+      this.crmService.createCRMContact(contactToSave).then(res => {
         this.selectContact(res['contact']);
 
         // Resolve with success

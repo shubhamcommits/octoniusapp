@@ -25,7 +25,6 @@ export class UsersControllers {
     async get(req: Request, res: Response, next: NextFunction) {
 
         const userId = req['userId'];
-console.log(userId);
         try {
 
             // Find the user based on the userId
