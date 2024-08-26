@@ -1,0 +1,157 @@
+<div class="container">
+    <mat-dialog-actions class="d-flex justify-content-end" align="end">
+        <i class="material-icons" (click)="closeDialog()" style="cursor: pointer">close</i>
+    </mat-dialog-actions>
+
+    <h2 mat-dialog-title style="margin: -50px 50px 0 50px !important;">
+        <span *ngIf="!!contactData._id && !!contactData.name">{{ contactData?.name }}</span>
+        <span i18n="@@crmContactDialog.newContact" *ngIf="!contactData._id">New Contact</span>
+    </h2>
+
+    <div mat-dialog-content>
+        <mat-tab-group mat-align-tabs="start">
+            <!-- subtasks STARTS-->
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <span i18n="@@crmContactDialog.contactInformation">Contact Information</span>
+                </ng-template>
+        
+                <ng-template matTabContent>
+                    <div class="block">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span i18n="@@crmContactDialog.name">Name</span>
+                            </div>
+                    
+                            <div class="col-md-8">
+                                {{ contactData?.name }}
+                            </div>
+                        </div>
+                    
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span i18n="@@crmContactDialog.description">Description</span>
+                            </div>
+                    
+                            <div class="col-md-8">
+                                {{ contactData?.description }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="block" *ngIf="!!contactData?._company">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span i18n="@@crmContactDialog.job">Job</span>
+                            </div>
+                    
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <label for="company" i18n="@@crmContactDialog.company" class="muted">Company</label>:&nbsp;
+                    
+                                    <div style="text-align: left;">
+                                        <!-- <app-secured-image [imgURL]="contactData._company.company_pic" [service]="'group'"
+                                            [workspaceId]="workspaceData?._id" [styleClass]="'group-avatar'"></app-secured-image> -->
+
+                                        <span>{{ contactData._company.name }}</span>
+                                    </div>
+                                </div>
+                    
+                                <div class="row">
+                                    <label for="position" i18n="@@crmContactDialog.position" class="muted">Position</label>:&nbsp;
+
+                                    {{ contactData?.position }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="block" *ngIf="!!contactData && !!contactData.phones">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span i18n="@@crmContactDialog.phones">Phones</span>
+                            </div>
+                    
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-12" *ngFor="let phone of contactData.phones; trackBy: utilityService.trackByIndex">{{ phone }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="block" *ngIf="!!contactData && !!contactData.emails">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span i18n="@@crmContactDialog.emails">E-Mails</span>
+                            </div>
+                    
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-12" *ngFor="let email of contactData.emails; trackBy: utilityService.trackByIndex">{{ email }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="block" *ngIf="!!contactData && !!contactData.links">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span i18n="@@crmContactDialog.links">Links</span>
+                            </div>
+                    
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-12" *ngFor="let link of contactData.links; trackBy: utilityService.trackByIndex">{{ link }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </mat-tab>
+
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <span i18n="@@crmContactDialog.customFields">Custom Fields</span>
+                </ng-template>
+
+                <ng-template matTabContent>
+                    <div class="block">
+                        <div class="row" *ngFor="let cf of crmContactCustomFields; trackBy: utilityService.trackByIndex">
+                            <div class="col-md-4">
+                                <span>{{ cf.title }}</span>
+                            </div>
+                    
+                            <div class="col-md-8">
+                                <mat-select ngDefaultControl *ngIf="!cf.input_type" [(value)]="selectedCFValues[cf.name]"
+                                    [disabled]="true" appearance="fill" class="col" (openedChange)="cfSearchText = ''">
+                                    <mat-select-trigger>{{ selectedCFValues[cf.name] }}</mat-select-trigger>
+                                    <input type="text" class="form-control" [id]="'search-text' + cf.name" [(ngModel)]="cfSearchText"
+                                        [placeholder]="cfSearchPlaceholder" autofocus
+                                        (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+                                    <mat-option *ngFor="let val of cf.values | appFilter: cfSearchText; trackBy: utilityService.trackByIndex" [value]="val">{{ val }}</mat-option>
+                                </mat-select>
+                    
+                                <div *ngIf="cf.input_type && !cf.input_type_date" class="col"
+                                    style="display: flex; float: left; width: 125px;">
+                                    <input [type]="(cf.input_type_number) ? 'number': 'text'" [name]="cf.name" [(ngModel)]="selectedCFValues[cf.name]" [disabled]="true"
+                                        class="col" style="width: 94px;" [value]="selectedCFValues[cf.name]" />
+                                </div>
+                    
+                                <div *ngIf="cf.input_type && cf.input_type_date">
+                                    <!-- Date Picker starts -->
+                                    <app-date-picker
+                                        [selectedDate]="selectedCFValues[cf.name]" [styleClass]="'btn-group input-date'"
+                                        [canEdit]="false">
+                                    </app-date-picker>
+                                    <!--Date Picker ends -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </ng-template>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

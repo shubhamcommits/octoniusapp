@@ -1,0 +1,48 @@
+<div class="container">
+    <mat-dialog-actions class="d-flex justify-content-end" align="end">
+        <i class="material-icons" (click)="closeDialog()" style="cursor: pointer">close</i>
+    </mat-dialog-actions>
+
+    <h2 mat-dialog-title style="margin: -50px 50px 0 50px !important;">
+        <span *ngIf="!!contactData._id && !!contactData.name">{{ contactData?.name }}</span>
+        <span i18n="@@newCRMContactDialog.newContact" *ngIf="!contactData._id">New Contact</span>
+    </h2>
+
+    <div mat-dialog-content>
+        <mat-tab-group mat-align-tabs="start">
+            <!-- subtasks STARTS-->
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <span i18n="@@newCRMContactDialog.contactInformation">Contact Information</span>
+                </ng-template>
+        
+                <ng-template matTabContent>
+                    <app-crm-contact-information [contactData]="contactData" (contactInfoEdited)="onContactInfoEdited($event)"></app-crm-contact-information>
+                </ng-template>
+            </mat-tab>
+
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <span i18n="@@newCRMContactDialog.customFields">Custom Fields</span>
+                </ng-template>
+
+                <ng-template matTabContent>
+                    <app-crm-contact-custom-fields [contactData]="contactData" [groupData]="groupData"
+                        (contactCFEdited)="onContactCFEdited($event)"></app-crm-contact-custom-fields>
+                </ng-template>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+
+    <div>
+        <div style="margin-top: 20px;">
+            <button class="btn btn-danger" (click)="closeDialog()" i18n="@@newCRMContactDialog.cancel" style="margin: 0 10px">
+                Cancel
+            </button>
+
+            <button class="btn btn-primary" (click)="saveContact()" i18n="@@newCRMContactDialog.save" style="margin: 0 10px">
+                Save
+            </button>
+        </div>
+    </div>
+</div>

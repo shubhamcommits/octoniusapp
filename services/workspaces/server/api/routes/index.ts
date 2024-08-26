@@ -6,29 +6,19 @@ import { mgmtRoutes } from './mgmt.routes';
 import { storiesRoutes } from './stories.routes';
 import { loungesRoutes } from './lounges.routes';
 import { hrRoutes } from './hr.routes';
+import { crmRoutes } from './crm.routes';
 
 /*  =====================
  *  -- EXPORTS ROUTES --
  *  =====================
  * */
 export {
-
-    // MEMBERS
+    crmRoutes as crmRoutes,
     memberRoutes as memberRoutes,
-
-    // DOMAINS
     domainRoutes as domainRoutes,
-
-    // WORKSPACES
     workspaceRoutes as workspaceRoutes,
-
-    // MODULES
     mgmtRoutes as mgmtRoutes,
-
-    // Lounges
     loungesRoutes as loungesRoutes,
-
-    // Lounges
     storiesRoutes as storiesRoutes,
 
     hrRoutes as hrRoutes
