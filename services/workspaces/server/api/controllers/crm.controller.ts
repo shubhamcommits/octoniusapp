@@ -900,27 +900,62 @@ export class CRMController {
         try {
             let stream = Readable.from(await Group.find({
                     type: 'crm'
-                }).select('_workspace').lean());
+                }).select('_workspace crm_custom_fields crm_custom_fields_to_show').lean());
 
             await stream.on('data', async (group: any) => {
 console.log('GROUP: ', group._id);
+                const workspaceId = group._workspace;
                 await Contact.updateMany({
                         _group: group._id
                     }, {
-                        $set: { _workspace: group._workspace }
+                        $set: { _workspace: workspaceId }
                     });
 
                 await Company.updateMany({
                         _group: group._id
                     }, {
-                        $set: { _workspace: group._workspace }
+                        $set: { _workspace: workspaceId }
                     });
 
                 await Product.updateMany({
                         _group: group._id
                     }, {
-                        $set: { _workspace: group._workspace }
+                        $set: { _workspace: workspaceId }
                     });
+
+                let workspace = await Workspace.findById(workspaceId).select('crm_custom_fields crm_custom_fields_to_show').lean()
+                if (!!group.crm_custom_fields) {
+                    group.crm_custom_fields?.forEach(async cf => {
+                        const index = (!!workspace.crm_custom_fields) ? workspace.crm_custom_fields.findIndex(crmcf => crmcf.name == cf.name) : -1;
+                        if (index < 0) {
+                            workspace = await Workspace.findOneAndUpdate({
+                                _id: workspaceId
+                            }, {
+                                $addToSet: {
+                                    crm_custom_fields: cf
+                                }
+                            }).select('crm_custom_fields crm_custom_fields_to_show').lean();
+                        }
+                    });
+                }
+
+                if (!!group.crm_custom_fields_to_show) {
+console.log(workspace.crm_custom_fields_to_show);
+                    group.crm_custom_fields_to_show?.forEach(async cf => {
+                        const index = (!!workspace.crm_custom_fields_to_show) ? workspace.crm_custom_fields_to_show.findIndex(crmcfts => {
+console.log(crmcfts, cf);
+                            return crmcfts == cf}) : -1;
+                        if (index < 0) {
+                            workspace = await Workspace.findOneAndUpdate({
+                                _id: workspaceId
+                            }, {
+                                $addToSet: {
+                                    crm_custom_fields_to_show: cf
+                                }
+                            }).select('crm_custom_fields crm_custom_fields_to_show').lean();
+                        }
+                    });
+                }
             });
 
             // Send status 200 response

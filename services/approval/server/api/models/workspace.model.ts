@@ -187,6 +187,11 @@ const workspaceSchema = new Schema({
             }
         }]
     },
+    crm_custom_fields_to_show: [{
+        type: String,
+        required: true,
+        default: []
+    }],
     management_private_api_key: {
         type: String,
         required: true,

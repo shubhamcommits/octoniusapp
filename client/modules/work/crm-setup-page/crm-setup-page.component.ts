@@ -615,8 +615,6 @@ console.log(this.storageService.getLocalData('authToken'));
 	isAdminUser() {
 		// const index = this.workspaceData._admins.findIndex((admin: any) => admin._id === this.userData._id);
 		// return index >= 0;
-console.log(this.userData.role);
-console.log(['owner', 'admin', 'manager'].includes(this.userData.role));
 		return ['owner', 'admin', 'manager'].includes(this.userData.role)
 	}
 }
