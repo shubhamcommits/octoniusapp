@@ -9,7 +9,6 @@ import { GroupService } from 'src/shared/services/group-service/group.service';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
 import { DatesService } from 'src/shared/services/dates-service/dates.service';
-import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
 
 @Component({
   selector: 'app-north-star-dialog',
@@ -129,7 +128,7 @@ export class NorthStarDialogComponent implements OnInit/*, AfterViewChecked, Aft
     private columnService: ColumnService,
     private datesService: DatesService,
     private injector: Injector,
-    private mdDialogRef: MatDialogRef<TaskDialogComponent>
+    private mdDialogRef: MatDialogRef<NorthStarDialogComponent>
     ) {}
 
   async ngOnInit() {
@@ -655,20 +654,14 @@ export class NorthStarDialogComponent implements OnInit/*, AfterViewChecked, Aft
   }
 
   transformToNorthStart(data) {
-    this.postData.task.isNorthStar = data;
-    this.postData.task.northStar = {
-      target_value: 0,
-      values: [{
-        date: Date.now(),
-        value: 0,
-        status: 'NOT STARTED',
-        _user: this.userData?._id
-      }],
-      type: 'Currency',
-      currency: 'USD'
-    };
-    const makeNSLogAction = (this.postData.task.isNorthStar) ? 'make_ns' : 'make_no_ns';
-    this.updateDetails(makeNSLogAction);
+    if (!data) {
+      this.postData.task.isNorthStar = data;
+      this.updateDetails('make_no_ns');
+      
+      this.mdDialogRef.close();
+      
+      this.utilityService.openPostDetailsFullscreenModal(this.postData, this.groupId, true, this.columns)
+    }
   }
 
   saveNorthStar(newNorthStar) {
