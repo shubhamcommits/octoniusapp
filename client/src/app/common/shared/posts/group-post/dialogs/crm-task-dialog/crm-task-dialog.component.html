@@ -118,11 +118,10 @@
     </div>
 
     <!-- Top Right Section starts -->
-    <div *ngIf="!!groupData && ((!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.CRMLead
+    <div *ngIf="!!groupData && (!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.CRMLead
             && (groupData?.dialog_properties_to_show?.CRMLead?.includes('crm_setup') || groupData?.dialog_properties_to_show?.CRMLead?.includes('status')
               || groupData?.dialog_properties_to_show?.CRMLead?.includes('date') || groupData?.dialog_properties_to_show?.CRMLead?.includes('assignee')
-              || groupData?.dialog_properties_to_show?.CRMLead?.includes('custom_fields') || groupData?.dialog_properties_to_show?.CRMLead?.includes('tags')))
-          || !groupData.dialog_properties_to_show || !groupData.dialog_properties_to_show.CRMLead)"
+              || groupData?.dialog_properties_to_show?.CRMLead?.includes('custom_fields') || groupData?.dialog_properties_to_show?.CRMLead?.includes('tags')))"
       class="post-properties">
         <!-- CRM Lead Card starts -->
         <div class="content-box" *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.CRMLead && groupData?.dialog_properties_to_show?.CRMLead?.includes('crm_setup')">

@@ -167,13 +167,12 @@
     </div>
 
     <!-- Top Right Section starts -->
-    <div  *ngIf="!!groupData && ((!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.task
+    <div  *ngIf="!!groupData && (!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.task
             && (groupData?.dialog_properties_to_show?.northStar?.includes('north_star') || groupData?.dialog_properties_to_show?.northStar?.includes('date')
               || groupData?.dialog_properties_to_show?.northStar?.includes('assignee')
               || groupData?.dialog_properties_to_show?.northStar?.includes('tags') || groupData?.dialog_properties_to_show?.northStar?.includes('custom_fields')
               || groupData?.dialog_properties_to_show?.northStar?.includes('actions') || groupData?.dialog_properties_to_show?.northStar?.includes('approvals')
-              || groupData?.dialog_properties_to_show?.northStar?.includes('shuttle_task') || groupData?.dialog_properties_to_show?.northStar?.includes('parent_task')))
-          || !groupData.dialog_properties_to_show || !groupData.dialog_properties_to_show.task)"
+              || groupData?.dialog_properties_to_show?.northStar?.includes('shuttle_task') || groupData?.dialog_properties_to_show?.northStar?.includes('parent_task')))"
       class="post-properties">
         <!-- Is North Start starts -->
         <app-north-star *ngIf="(!!groupData.dialog_properties_to_show && !!groupData?.dialog_properties_to_show?.northStar && groupData?.dialog_properties_to_show?.northStar?.includes('north_star'))"
