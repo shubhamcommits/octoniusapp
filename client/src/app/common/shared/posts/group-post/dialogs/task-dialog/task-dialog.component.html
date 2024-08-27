@@ -153,13 +153,12 @@
     </div>
 
     <!-- Top Right Section starts -->
-    <div  *ngIf="!!groupData && ((!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.task
+    <div  *ngIf="!!groupData && (!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.task
             && (groupData?.dialog_properties_to_show?.task?.includes('status') || groupData?.dialog_properties_to_show?.task?.includes('date')
               || groupData?.dialog_properties_to_show?.task?.includes('crm_setup') || groupData?.dialog_properties_to_show?.task?.includes('assignee')
               || groupData?.dialog_properties_to_show?.task?.includes('tags') || groupData?.dialog_properties_to_show?.task?.includes('custom_fields')
               || groupData?.dialog_properties_to_show?.task?.includes('actions') || groupData?.dialog_properties_to_show?.task?.includes('approvals')
-              || groupData?.dialog_properties_to_show?.task?.includes('shuttle_task') || groupData?.dialog_properties_to_show?.task?.includes('parent_task')))
-          || !groupData.dialog_properties_to_show || !groupData.dialog_properties_to_show.task)"
+              || groupData?.dialog_properties_to_show?.task?.includes('shuttle_task') || groupData?.dialog_properties_to_show?.task?.includes('parent_task')))"
       class="post-properties">
 
         <!-- Parent Task starts -->

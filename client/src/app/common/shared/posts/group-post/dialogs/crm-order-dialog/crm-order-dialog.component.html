@@ -142,11 +142,10 @@
     </div>
 
     <!-- Top Right Section starts -->
-    <div *ngIf="!!groupData && ((!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.CRMOrder
+    <div *ngIf="!!groupData && (!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.CRMOrder
             && (groupData?.dialog_properties_to_show?.CRMOrder?.includes('crm_setup') || groupData?.dialog_properties_to_show?.CRMOrder?.includes('status')
               || groupData?.dialog_properties_to_show?.CRMOrder?.includes('date') || groupData?.dialog_properties_to_show?.CRMOrder?.includes('assignee')
-              || groupData?.dialog_properties_to_show?.CRMOrder?.includes('custom_fields')))
-          || !groupData.dialog_properties_to_show || !groupData.dialog_properties_to_show.CRMOrder)"
+              || groupData?.dialog_properties_to_show?.CRMOrder?.includes('custom_fields')))"
       class="post-properties">
         <!-- CRM Lead Card starts -->
         <div class="content-box" *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.CRMOrder && groupData?.dialog_properties_to_show?.CRMOrder?.includes('crm_setup')">

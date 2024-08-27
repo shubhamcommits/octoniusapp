@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { CreateGroupDialogComponent } from './create-group-dialog/create-group-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { GroupService } from 'src/shared/services/group-service/group.service';
 
 @Component({
   selector: 'app-groups-list',
@@ -46,7 +47,7 @@ export class GroupsListComponent implements OnInit {
 
   constructor(
     public injector: Injector,
-    private router: Router,
+    private groupService: GroupService,
     public dialog: MatDialog,
     public utilityService: UtilityService
   ) { }
@@ -212,14 +213,15 @@ export class GroupsListComponent implements OnInit {
 
   }
 
-  async goToGroup(groupId: string) {
-    const newGroup: any = await this.publicFunctions.getGroupDetails(groupId);
-    await this.publicFunctions.sendUpdatesToGroupData(newGroup);
-    if (newGroup.type == 'resource') {
-      this.router.navigate(['dashboard', 'work', 'groups', 'resource']);
-    } else {
-      this.router.navigate(['dashboard', 'work', 'groups', 'activity']);
-    }
+  async goToGroup(group: any) {
+    // const newGroup: any = await this.publicFunctions.getGroupDetails(groupId);
+    // await this.publicFunctions.sendUpdatesToGroupData(newGroup);
+    // if (newGroup.type == 'resource') {
+    //   this.router.navigate(['dashboard', 'work', 'groups', 'resource']);
+    // } else {
+    //   this.router.navigate(['dashboard', 'work', 'groups', 'activity']);
+    // }
+    this.groupService.navigateToGroup(group);
   }
 
   openNewGroupDialog() {

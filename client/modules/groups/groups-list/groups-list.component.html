@@ -21,7 +21,7 @@
             <ng-container *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
                 <div class="cards-list">
                     <div *ngIf="group.group_name !== 'private'" class="card img-fluid"
-                        (click)="goToGroup(group?._id)">
+                        (click)="goToGroup(group)">
 
                         <app-secured-image [imgURL]="group?.group_avatar" [service]="'group'"
                             [workspaceId]="workspaceData?._id" [styleClass]="'card-img-top'"></app-secured-image>
