@@ -63,7 +63,7 @@
             </div>
           </div>
 
-          <div class="col-10">
+          <div class="col-10" *ngIf="!!groupData && !!groupData?.dialog_properties_to_show">
             <div class="pages" *ngIf="selectedCard == 'task'">
               <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('actions')" [name]="'actions'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.actions">Actions</mat-checkbox>
               <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('approvals')" [name]="'approvals'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.approvals">Approvals</mat-checkbox>
