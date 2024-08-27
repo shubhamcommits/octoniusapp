@@ -960,7 +960,7 @@ export class CRMController {
                         $set: {
                             dialog_properties_to_show: {
                                 task: ['status', 'date', 'assignee', 'tags', 'custom_fields', 'actions', 'approvals', 'shuttle_task', 'parent_task'],
-                                northStar: ['north_star', 'shuttle_task', 'date', 'assignee', 'tags', 'custom_fields', 'crm_setup', 'actions', 'approvals'],
+                                northStar: ['north_star', 'shuttle_task', 'date', 'assignee', 'tags', 'custom_fields', 'actions', 'approvals'],
                                 CRMOrder: ['crm_setup', 'status', 'date', 'assignee', 'custom_fields'],
                                 CRMLead: ['crm_setup', 'status', 'date', 'assignee', 'tags', 'custom_fields']
                             }

@@ -54,11 +54,22 @@ export class GroupSettingsComponent implements OnInit {
       this.groupData = await this.publicFunctions.getCurrentGroupDetails();
     }
 
+    // if (!this.groupData.dialog_properties_to_show) {
+    //   this.groupData.dialog_properties_to_show = {
+    //     task: ['status', 'date', 'assignee', 'tags', 'custom_fields', 'actions', 'approvals', 'shuttle_task', 'parent_task'],
+    //     northStar: ['north_star', 'shuttle_task', 'date', 'assignee', 'tags', 'custom_fields', 'actions', 'approvals'],
+    //     CRMOrder: ['crm_setup', 'status', 'date', 'assignee', 'custom_fields'],
+    //     CRMLead: ['crm_setup', 'status', 'date', 'assignee', 'tags', 'custom_fields']
+    //   };
+
+    //   this.groupService.saveSettings(this.groupData?._id, { dialog_properties_to_show: this.groupData.dialog_properties_to_show })
+    //     .then(async ()=> {
+    //       this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+    //       await this.groupService.triggerUpdateGroupData(this.groupData);
+    //     }).catch(() => this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`));
+    // }
+
     // Fetch the setting status
-    // this.enabledRights = this.groupData.enabled_rights;
-    // this.enabledProjectType = this.groupData.project_type;
-    // this.enabledShuttleType = this.groupData.shuttle_type;
-    // this.enabledCampaign = this.groupData.enabled_campaign
     this.switchAgora = this.groupData.type == 'agora';
     this.freezeDates = this.groupData.freeze_dates;
 

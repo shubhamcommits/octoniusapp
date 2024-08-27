@@ -404,7 +404,7 @@ const GroupSchema = new Schema({
         northStar: {
             type: [String],
             enum: ['north_star', 'shuttle_task', 'date', 'assignee', 'tags', 'custom_fields', 'crm_setup', 'actions', 'approvals'],
-            default: ['north_star', 'shuttle_task', 'date', 'assignee', 'tags', 'custom_fields', 'crm_setup', 'actions', 'approvals']
+            default: ['north_star', 'shuttle_task', 'date', 'assignee', 'tags', 'custom_fields', 'actions', 'approvals']
         },
         CRMOrder: {
             type: [String],
