@@ -1668,7 +1668,6 @@ export class GroupController {
         let { body: { settingsData } } = req;
 
         try {
-
             // Find the group and update their respective group avatar
             const group = await Group.findByIdAndUpdate({
                     _id: groupId

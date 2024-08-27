@@ -398,8 +398,24 @@ const GroupSchema = new Schema({
     dialog_properties_to_show: {
         task: {
             type: [String],
-            enum: ['status', 'date', 'crm_setup', 'assignee', 'tags', 'custom_fields', 'actions', 'approvals', 'shuttle_task', 'parent_task']
+            enum: ['status', 'date', 'crm_setup', 'assignee', 'tags', 'custom_fields', 'actions', 'approvals', 'shuttle_task', 'parent_task'],
+            default: ['status', 'date', 'assignee', 'tags', 'custom_fields', 'actions', 'approvals', 'shuttle_task', 'parent_task']
         },
+        northStar: {
+            type: [String],
+            enum: ['north_star', 'shuttle_task', 'date', 'assignee', 'tags', 'custom_fields', 'crm_setup', 'actions', 'approvals'],
+            default: ['north_star', 'shuttle_task', 'date', 'assignee', 'tags', 'custom_fields', 'crm_setup', 'actions', 'approvals']
+        },
+        CRMOrder: {
+            type: [String],
+            enum: ['crm_setup', 'status', 'date', 'assignee', 'custom_fields'],
+            default: ['crm_setup', 'status', 'date', 'assignee', 'custom_fields']
+        },
+        CRMLead: {
+            type: [String],
+            enum: ['crm_setup', 'status', 'date', 'assignee', 'tags', 'custom_fields'],
+            default: ['crm_setup', 'status', 'date', 'assignee', 'tags', 'custom_fields']
+        }
     },
     default_board_card: {
         type: String,

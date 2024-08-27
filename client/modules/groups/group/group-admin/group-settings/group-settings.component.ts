@@ -7,7 +7,6 @@ import { GroupRAGDialogComponent } from '../group-rag-dialog/group-rag-dialog.co
 import { MatDialog } from '@angular/material/dialog';
 import { ColorPickerDialogComponent } from 'src/app/common/shared/color-picker-dialog/color-picker-dialog.component';
 import { GroupTimeTrackingCategoriesDialogComponent } from './time-tracking-categories-dialog/time-tracking-categories-dialog.component';
-import { Action } from 'rxjs/internal/scheduler/Action';
 
 @Component({
   selector: 'app-group-settings',
@@ -31,6 +30,8 @@ export class GroupSettingsComponent implements OnInit {
   // enableAllocation: boolean = false;
 
   groupSections: any = [];
+
+  selectedCard = 'task'; // task/northStar/CRMOrder/CRMLead
 
   isIndividualSubscription = false;
 
@@ -292,73 +293,38 @@ export class GroupSettingsComponent implements OnInit {
       }));
   }
 
-  saveTaskPropertiesToShow(selected) {
+  saveDialogsPropertiesToShow(selected) {
     // Save the settings
     this.utilityService.asyncNotification($localize`:@@groupSettings.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
       new Promise((resolve, reject)=>{
 
         if (!this.groupData.dialog_properties_to_show) {
-          this.groupData.dialog_properties_to_show = {
-            task: []
-          };
+          this.groupData.dialog_properties_to_show = {};
         }
 
-        let propertyToSave =  {
-          dialog_properties_to_show: {
-            task: []
-          }
-        };
-        if (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show?.task && this.groupData.dialog_properties_to_show?.task?.includes('status')) {
-          propertyToSave.dialog_properties_to_show.task.push('status')
+        if (!this.groupData.dialog_properties_to_show[this.selectedCard]) {
+          this.groupData.dialog_properties_to_show[this.selectedCard] = [];
         }
-        if (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show?.task && this.groupData.dialog_properties_to_show?.task?.includes('date')) {
-          propertyToSave.dialog_properties_to_show.task.push('date')
+
+        if (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show[this.selectedCard] && this.groupData.dialog_properties_to_show[this.selectedCard]?.includes(selected.source.name)) {
+          this.groupData.dialog_properties_to_show[this.selectedCard].push(selected.source.name)
         }
-        if (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show?.task && this.groupData.dialog_properties_to_show?.task?.includes('crm_setup')) {
-          propertyToSave.dialog_properties_to_show.task.push('crm_setup')
-        }
-        if (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show?.task && this.groupData.dialog_properties_to_show?.task?.includes('assignee')) {
-          propertyToSave.dialog_properties_to_show.task.push('assignee')
-        }
-        if (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show?.task && this.groupData.dialog_properties_to_show?.task?.includes('tags')) {
-          propertyToSave.dialog_properties_to_show.task.push('tags')
-        }
-        if (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show?.task && this.groupData.dialog_properties_to_show?.task?.includes('custom_fields')) {
-          propertyToSave.dialog_properties_to_show.task.push('custom_fields')
-        }
-        if (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show?.task && this.groupData.dialog_properties_to_show?.task?.includes('actions')) {
-          propertyToSave.dialog_properties_to_show.task.push('actions')
-        }
-        if (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show?.task && this.groupData.dialog_properties_to_show?.task?.includes('approvals')) {
-          propertyToSave.dialog_properties_to_show.task.push('approvals')
-        }
-        if (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show?.task && this.groupData.dialog_properties_to_show?.task?.includes('shuttle_task')) {
-          propertyToSave.dialog_properties_to_show.task.push('shuttle_task')
-        }
-        if (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show?.task && this.groupData.dialog_properties_to_show?.task?.includes('parent_task')) {
-          propertyToSave.dialog_properties_to_show.task.push('parent_task')
-        }
+
+        const indexInGroup = (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show[this.selectedCard])
+          ? this.groupData.dialog_properties_to_show[this.selectedCard].findIndex(prop => prop == selected.source.name)
+          : -1;
 
         if (selected.checked) {
-          this.groupData.dialog_properties_to_show.task.push(selected.source.name);
-          propertyToSave.dialog_properties_to_show.task.push(selected.source.name);
-        } else {
-          let index = (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show.task)
-            ? this.groupData.dialog_properties_to_show.task.findIndex(prop => prop == selected.source.name)
-            : -1;
-          if (index >= 0) {
-            this.groupData.dialog_properties_to_show.task.splice(index, 1)
+          if (indexInGroup < 0) {
+            this.groupData.dialog_properties_to_show[this.selectedCard].push(selected.source.name);
           }
-
-          index = (!!propertyToSave.dialog_properties_to_show && !!propertyToSave.dialog_properties_to_show.task)
-            ? propertyToSave.dialog_properties_to_show.task.findIndex(prop => prop == selected.source.name)
-            : -1;
-          if (index >= 0) {
-            propertyToSave.dialog_properties_to_show.task.splice(index, 1)
+        } else {
+          if (indexInGroup >= 0) {
+            this.groupData.dialog_properties_to_show[this.selectedCard].splice(indexInGroup, 1)
           }
         }
 
-        this.groupService.saveSettings(this.groupData?._id, propertyToSave)
+        this.groupService.saveSettings(this.groupData?._id, { dialog_properties_to_show: this.groupData.dialog_properties_to_show })
           .then(async ()=> {
             this.publicFunctions.sendUpdatesToGroupData(this.groupData);
             await this.groupService.triggerUpdateGroupData(this.groupData);

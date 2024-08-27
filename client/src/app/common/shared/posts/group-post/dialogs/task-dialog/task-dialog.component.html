@@ -258,7 +258,7 @@
         <!-- Dates ends -->
 
         <!-- Assignee Modal starts -->
-        <div class="content-box" *ngIf="postData?.type === 'task' && (!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.task && groupData?.dialog_properties_to_show?.task?.includes('assignee'))">
+        <div class="content-box" *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.task && groupData?.dialog_properties_to_show?.task?.includes('assignee')">
           <p class="box-title" i18n="@@taskDialog.assignee">Assignee</p>
           
           <app-multiple-assignments
