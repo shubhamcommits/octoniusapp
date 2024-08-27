@@ -953,6 +953,19 @@ export class CRMController {
                         }
                     });
                 }
+
+                group = await Group.findOneAndUpdate({
+                        _id: group._id
+                    }, {
+                        $set: {
+                            dialog_properties_to_show: {
+                                task: ['status', 'date', 'assignee', 'tags', 'custom_fields', 'actions', 'approvals', 'shuttle_task', 'parent_task'],
+                                northStar: ['north_star', 'shuttle_task', 'date', 'assignee', 'tags', 'custom_fields', 'crm_setup', 'actions', 'approvals'],
+                                CRMOrder: ['crm_setup', 'status', 'date', 'assignee', 'custom_fields'],
+                                CRMLead: ['crm_setup', 'status', 'date', 'assignee', 'tags', 'custom_fields']
+                            }
+                        }
+                    }).lean()
             });
 
             // Send status 200 response
