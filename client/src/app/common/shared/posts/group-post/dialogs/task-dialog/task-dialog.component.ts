@@ -654,20 +654,25 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
   }
 
   transformToNorthStart(data) {
-    this.postData.task.isNorthStar = data;
-    this.postData.task.northStar = {
-      target_value: 0,
-      values: [{
-        date: Date.now(),
-        value: 0,
-        status: 'NOT STARTED',
-        _user: this.userData?._id
-      }],
-      type: 'Currency',
-      currency: 'USD'
-    };
-    const makeNSLogAction = (this.postData.task.isNorthStar) ? 'make_ns' : 'make_no_ns';
-    this.updateDetails(makeNSLogAction);
+    if (data) {
+      this.postData.task.isNorthStar = data;
+      this.postData.task.northStar = {
+        target_value: 0,
+        values: [{
+          date: Date.now(),
+          value: 0,
+          status: 'NOT STARTED',
+          _user: this.userData?._id
+        }],
+        type: 'Currency',
+        currency: 'USD'
+      };
+      this.updateDetails('make_ns');
+      
+      this.mdDialogRef.close();
+      
+      this.utilityService.openPostDetailsFullscreenModal(this.postData, this.groupId, true, this.columns)
+    }
   }
 
   saveNorthStar(newNorthStar) {

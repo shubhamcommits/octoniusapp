@@ -18,6 +18,11 @@ const ProductSchema = new Schema({
         ref: 'Group',
         required: true
     },
+    _workspace: {
+        type: Schema.Types.ObjectId,
+        ref: 'Workspace',
+        required: true
+    },
     // Custom Fields
     crm_custom_fields: {
         type: Map,

@@ -52,12 +52,13 @@ export class GroupPageGuard   {
         return true;
     
       case 'crm':
-        if (currentGroup?.pages_to_show && !currentGroup?.pages_to_show?.crm_setup) {
-          this.utilityService.warningNotification($localize`:@@groupPageGuard.oopsNoPermissionForSection:Oops seems like you don\'t have the permission to access the section!`);
-          this.groupService.navigateToGroup(currentGroup);
-          return false;
-        }
-        return true;
+        // if (currentGroup?.pages_to_show && !currentGroup?.pages_to_show?.crm_setup) {
+        //   this.utilityService.warningNotification($localize`:@@groupPageGuard.oopsNoPermissionForSection:Oops seems like you don\'t have the permission to access the section!`);
+        //   this.groupService.navigateToGroup(currentGroup);
+        //   return false;
+        // }
+        // return true;
+        return false;
     
       case 'files':
         if (currentGroup?.pages_to_show && !currentGroup?.pages_to_show?.files) {

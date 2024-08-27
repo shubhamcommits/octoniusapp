@@ -7,7 +7,6 @@ import { GroupRAGDialogComponent } from '../group-rag-dialog/group-rag-dialog.co
 import { MatDialog } from '@angular/material/dialog';
 import { ColorPickerDialogComponent } from 'src/app/common/shared/color-picker-dialog/color-picker-dialog.component';
 import { GroupTimeTrackingCategoriesDialogComponent } from './time-tracking-categories-dialog/time-tracking-categories-dialog.component';
-import { Action } from 'rxjs/internal/scheduler/Action';
 
 @Component({
   selector: 'app-group-settings',
@@ -32,6 +31,8 @@ export class GroupSettingsComponent implements OnInit {
 
   groupSections: any = [];
 
+  selectedCard = 'task'; // task/northStar/CRMOrder/CRMLead
+
   isIndividualSubscription = false;
 
   // Public Functions Instancr
@@ -53,11 +54,26 @@ export class GroupSettingsComponent implements OnInit {
       this.groupData = await this.publicFunctions.getCurrentGroupDetails();
     }
 
+    if (!this.groupData.dialog_properties_to_show) {
+      this.groupData.dialog_properties_to_show = {
+        task: [],
+        northStar: [],
+        CRMOrder: [],
+        CRMLead: []
+    //     task: ['status', 'date', 'assignee', 'tags', 'custom_fields', 'actions', 'approvals', 'shuttle_task', 'parent_task'],
+    //     northStar: ['north_star', 'shuttle_task', 'date', 'assignee', 'tags', 'custom_fields', 'actions', 'approvals'],
+    //     CRMOrder: ['crm_setup', 'status', 'date', 'assignee', 'custom_fields'],
+    //     CRMLead: ['crm_setup', 'status', 'date', 'assignee', 'tags', 'custom_fields']
+      };
+
+    //   this.groupService.saveSettings(this.groupData?._id, { dialog_properties_to_show: this.groupData.dialog_properties_to_show })
+    //     .then(async ()=> {
+    //       this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+    //       await this.groupService.triggerUpdateGroupData(this.groupData);
+    //     }).catch(() => this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`));
+    }
+
     // Fetch the setting status
-    // this.enabledRights = this.groupData.enabled_rights;
-    // this.enabledProjectType = this.groupData.project_type;
-    // this.enabledShuttleType = this.groupData.shuttle_type;
-    // this.enabledCampaign = this.groupData.enabled_campaign
     this.switchAgora = this.groupData.type == 'agora';
     this.freezeDates = this.groupData.freeze_dates;
 
@@ -238,7 +254,8 @@ export class GroupSettingsComponent implements OnInit {
           pages_to_show: {
             activity: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.activity : true,
             tasks: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.tasks : true,
-            crm_setup: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.crm_setup : ((this.groupData?.type == 'crm') ? true : false),
+            // crm_setup: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.crm_setup : ((this.groupData?.type == 'crm') ? true : false),
+            crm_setup: false,
             files: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.files : true,
             library: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.library : true,
             resource_management: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.resource_management : ((this.groupData?.type == 'resource') ? true : false),
@@ -282,6 +299,47 @@ export class GroupSettingsComponent implements OnInit {
             break;
         }
         this.groupService.saveSettings(this.groupData?._id, propertyToSave)
+          .then(async ()=> {
+            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+            await this.groupService.triggerUpdateGroupData(this.groupData);
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
+          })
+          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+      }));
+  }
+
+  saveDialogsPropertiesToShow(selected) {
+    // Save the settings
+    this.utilityService.asyncNotification($localize`:@@groupSettings.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
+      new Promise((resolve, reject)=>{
+
+        if (!this.groupData.dialog_properties_to_show) {
+          this.groupData.dialog_properties_to_show = {};
+        }
+
+        if (!this.groupData.dialog_properties_to_show[this.selectedCard]) {
+          this.groupData.dialog_properties_to_show[this.selectedCard] = [];
+        }
+
+        if (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show[this.selectedCard] && this.groupData.dialog_properties_to_show[this.selectedCard]?.includes(selected.source.name)) {
+          this.groupData.dialog_properties_to_show[this.selectedCard].push(selected.source.name)
+        }
+
+        const indexInGroup = (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show[this.selectedCard])
+          ? this.groupData.dialog_properties_to_show[this.selectedCard].findIndex(prop => prop == selected.source.name)
+          : -1;
+
+        if (selected.checked) {
+          if (indexInGroup < 0) {
+            this.groupData.dialog_properties_to_show[this.selectedCard].push(selected.source.name);
+          }
+        } else {
+          if (indexInGroup >= 0) {
+            this.groupData.dialog_properties_to_show[this.selectedCard].splice(indexInGroup, 1)
+          }
+        }
+
+        this.groupService.saveSettings(this.groupData?._id, { dialog_properties_to_show: this.groupData.dialog_properties_to_show })
           .then(async ()=> {
             this.publicFunctions.sendUpdatesToGroupData(this.groupData);
             await this.groupService.triggerUpdateGroupData(this.groupData);

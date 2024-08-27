@@ -52,25 +52,10 @@ import { PortfolioProjectBudgetComponent } from './portfolio/dashboard/portfolio
 import { PortfolioHeaderComponent } from './portfolio/portfolio-header/portfolio-header.component';
 import { PortfolioUserWorkloadDialogComponent } from './portfolio/portfolio-user-workload-dialog/portfolio-user-workload-dialog.component';
 import { CRMGroupService } from 'src/shared/services/crm-group-service/crm-group.service';
-import { CRMSetupBoardBarComponent } from './group/group-crm-setup-view/crm-setup-board-bar/crm-setup-board-bar.component';
-import { GroupCRMSetupViewComponent } from './group/group-crm-setup-view/group-crm-setup-view.component';
-import { NewCRMContactDialogComponent } from './group/group-crm-setup-view/new-crm-contact-dialog/new-crm-contact-dialog.component';
-import { CRMContactInformationComponent } from './group/group-crm-setup-view/new-crm-contact-dialog/crm-contact-information/crm-contact-information.component';
-import { CRMContactCompaniesComponent } from './group/group-crm-setup-view/new-crm-contact-dialog/crm-contact-companies/crm-contact-companies.component';
-import { NewCRMCompanyDialogComponent } from './group/group-crm-setup-view/new-crm-company-dialog/new-crm-company-dialog.component';
-import { CRMCompanyInformationComponent } from './group/group-crm-setup-view/new-crm-company-dialog/crm-company-information/crm-company-information.component';
-import { CRMCustomFieldsDialogComponent } from './group/group-crm-setup-view/crm-custom-fields-dialog/crm-custom-fields-dialog.component';
-import { CRMContactCustomFieldsComponent } from './group/group-crm-setup-view/new-crm-contact-dialog/crm-contact-custom-fields/crm-contact-custom-fields.component';
 import { CreateGroupDialogComponent } from './groups-list/create-group-dialog/create-group-dialog.component';
-import { CRMCompanyCustomFieldsComponent } from './group/group-crm-setup-view/new-crm-company-dialog/crm-company-custom-fields/crm-company-custom-fields.component';
-import { CRMCompanyImageDialogComponent } from './group/group-crm-setup-view/new-crm-company-dialog/crm-company-image-dialog/crm-company-image-dialog.component';
-import { CRMContactDialogComponent } from './group/group-crm-setup-view/crm-contact-dialog/crm-contact-dialog.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { GroupResourceManagementComponent } from './group/group-resource-management/group-resource-management.component';
 import { ResourcesBarComponent } from './group/group-resource-management/resources-bar/resources-bar.component';
-import { NewCRMProductDialogComponent } from './group/group-crm-setup-view/new-crm-product-dialog/new-crm-product-dialog.component';
-import { CRMProductCustomFieldsComponent } from './group/group-crm-setup-view/new-crm-product-dialog/crm-product-custom-fields/crm-product-custom-fields.component';
-import { CRMProductInformationComponent } from './group/group-crm-setup-view/new-crm-product-dialog/crm-product-information/crm-product-information.component';
 import { TableViewComponent } from './group/group-tasks-views/table-view/table-view.component';
 import { CreateSectionComponent } from './group/group-tasks-views/create-section/create-section.component';
 import { TasksTableComponent } from './group/group-tasks-views/table-view/tasks-table/tasks-table.component';
@@ -126,11 +111,8 @@ import { NgChartsModule } from 'ng2-charts';
         DeleteGroupComponent,
         TableViewComponent,
         CreateSectionComponent,
-        CRMSetupBoardBarComponent,
         InviteUserComponent,
-        GroupCRMSetupViewComponent,
         CustomFieldsDialogComponent,
-        CRMCustomFieldsDialogComponent,
         ResourcesCustomFieldsDialogComponent,
         GroupTimeTrackingCategoriesDialogComponent,
         GroupDashboardComponent,
@@ -140,19 +122,7 @@ import { NgChartsModule } from 'ng2-charts';
         GroupReportsComponent,
         GroupSettingsComponent,
         GroupBackgroundImageDetailsComponent,
-        NewCRMContactDialogComponent,
-        CRMContactDialogComponent,
-        CRMContactInformationComponent,
-        CRMContactCustomFieldsComponent,
-        CRMCompanyCustomFieldsComponent,
-        CRMContactCompaniesComponent,
-        NewCRMCompanyDialogComponent,
-        CRMCompanyInformationComponent,
-        CRMCompanyImageDialogComponent,
         ResourcesBarComponent,
-        NewCRMProductDialogComponent,
-        CRMProductCustomFieldsComponent,
-        CRMProductInformationComponent,
         GroupResourceManagementBoardViewComponent,
         AddTaskResourceManagementDialogComponent,
         GroupTasksViewsComponent,

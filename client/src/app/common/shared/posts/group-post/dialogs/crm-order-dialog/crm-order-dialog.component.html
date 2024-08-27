@@ -80,7 +80,7 @@
               <!-- content STARTS-->
               <mat-tab>
                 <ng-template mat-tab-label>
-                  <span i18n="@@crmOrderDialog.timeTracking">Content</span>
+                  <span i18n="@@crmOrderDialog.content">Content</span>
                 </ng-template>
             
                 <ng-template matTabContent>
@@ -142,16 +142,21 @@
     </div>
 
     <!-- Top Right Section starts -->
-    <div class="post-properties">
+    <div *ngIf="!!groupData && ((!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.CRMOrder
+            && (groupData?.dialog_properties_to_show?.CRMOrder?.includes('crm_setup') || groupData?.dialog_properties_to_show?.CRMOrder?.includes('status')
+              || groupData?.dialog_properties_to_show?.CRMOrder?.includes('date') || groupData?.dialog_properties_to_show?.CRMOrder?.includes('assignee')
+              || groupData?.dialog_properties_to_show?.CRMOrder?.includes('custom_fields')))
+          || !groupData.dialog_properties_to_show || !groupData.dialog_properties_to_show.CRMOrder)"
+      class="post-properties">
         <!-- CRM Lead Card starts -->
-        <div class="content-box">
+        <div class="content-box" *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.CRMOrder && groupData?.dialog_properties_to_show?.CRMOrder?.includes('crm_setup')">
           <app-crm-lead-card [postData]="postData" [userData]="userData"
             [groupData]="groupData" [isAdmin]="canEdit"></app-crm-lead-card>
         </div>
         <!-- CRM Lead Card ends -->
 
         <!-- Status starts -->
-        <div class="content-box" *ngIf="postData && !postData?.task?.isNorthStar && postData?.type === 'task'">
+        <div class="content-box" *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.CRMOrder && groupData?.dialog_properties_to_show?.CRMOrder?.includes('status')">
           <p class="box-title"i18n="@@crmOrderDialog.taskStatus"> Task Status</p>
 
           <div class="shuttle-box mb-2">
@@ -170,7 +175,7 @@
             <!-- Change task status ends -->
           </div>
 
-          <div class="shuttle-box" *ngIf="postData && columns">
+          <div class="shuttle-box" *ngIf="columns">
             <p class="mt-1" style="margin-top: 18px; width:70px" i18n="@@crmOrderDialog.section">
               Section
             </p>
@@ -188,7 +193,7 @@
         <!-- Status ends -->
 
         <!-- Dates starts -->
-        <app-post-dates
+        <app-post-dates *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.CRMOrder && groupData?.dialog_properties_to_show?.CRMOrder?.includes('date')"
           [userData]="userData"
           [postData]="postData"
           [groupData]="groupData"
@@ -198,7 +203,7 @@
         <!-- Dates ends -->
 
         <!-- Assignee Modal starts -->
-        <div class="content-box" *ngIf="postData && postData?.type === 'task' || postData?.type === 'event'">
+        <div class="content-box" *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.CRMOrder && groupData?.dialog_properties_to_show?.CRMOrder?.includes('assignee')">
             <p class="box-title" i18n="@@crmOrderDialog.assignee">Assignee</p>
 
             <app-multiple-assignments
@@ -230,7 +235,7 @@
             <div id="avatar-assignee" style="margin-bottom: 30px;">
               <p class="box-title" style="padding-top: 20px;" i18n="@@crmOrderDialog.createdBy">Created by</p>
 
-              <app-secured-image *ngIf="postData && postData?._posted_by"
+              <app-secured-image *ngIf="postData?._posted_by"
                 [imgURL]="postData?._posted_by?.profile_pic"
                 [service]="'user'"
                 [userData]="postData?._posted_by"
@@ -246,7 +251,7 @@
             </div>
         </div>
 
-        <div class="content-box" *ngIf="postData?._group && customFields?.length > 0">
+        <div class="content-box" *ngIf="postData?._group && customFields?.length > 0 && !!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.CRMOrder && groupData?.dialog_properties_to_show?.CRMOrder?.includes('custom_fields')">
             <p class="box-title" i18n="@@crmOrderDialog.customFields">Custom fields</p>
 
             <div *ngFor="let cf of customFields; trackBy: utilityService.trackByIndex" class="d-flex custom-field justify-content-start mb-3 row">

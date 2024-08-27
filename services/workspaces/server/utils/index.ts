@@ -1,7 +1,7 @@
 import { Auths } from './auth';
 import { Password } from './password';
 import { sendErr } from './sendError';
-import { fileHandler, loungeImageFileUploader, workspaceFileUploader } from "./filehandler";
+import { companyFileUploader, fileHandler, loungeImageFileUploader, workspaceFileUploader } from "./filehandler";
 import { axios } from './proxy'
 
 /*  =====================
@@ -15,5 +15,6 @@ export {
     workspaceFileUploader as workspaceFileUploader,
     loungeImageFileUploader as loungeImageFileUploader,
     fileHandler as fileHandler,
+    companyFileUploader as companyFileUploader,
     axios as axios
 }

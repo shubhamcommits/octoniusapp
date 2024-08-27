@@ -10,6 +10,7 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
 import { TaskDialogComponent } from '../../dialogs/task-dialog/task-dialog.component';
+import { NorthStarDialogComponent } from '../../dialogs/north-star-dialog/north-star-dialog.component';
 
 @Component({
   selector: 'app-task-actions',
@@ -89,7 +90,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
     private postService: PostService,
     private _router: Router,
     private injector: Injector,
-    private mdDialogRef: MatDialogRef<TaskDialogComponent>
+    private mdDialogRef: MatDialogRef<TaskDialogComponent | NorthStarDialogComponent>
   ) { }
 
   async ngOnChanges() {
@@ -596,27 +597,27 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
     }
   }
 
-  transformToNorthStart() {
-    this.isNorthStar = !this.isNorthStar;
-    this.transformIntoNorthStarEmitter.emit(this.isNorthStar);
-  }
+  // transformToNorthStart() {
+  //   this.isNorthStar = !this.isNorthStar;
+  //   this.transformIntoNorthStarEmitter.emit(this.isNorthStar);
+  // }
 
-  transformToIdea() {
-    this.isIdea = !this.isIdea;
-    this.transformIntoIdeaEmitter.emit(this.isIdea);
-  }
+  // transformToIdea() {
+  //   this.isIdea = !this.isIdea;
+  //   this.transformIntoIdeaEmitter.emit(this.isIdea);
+  // }
 
-  transformToCRMLead() {
-    this.isCRMLead = !this.isCRMLead;
-    this.postData.task.is_crm_task = this.isCRMLead;
-    this.transformIntoCRMLeadEmitter.emit(this.isCRMLead);
-  }
+  // transformToCRMLead() {
+  //   this.isCRMLead = !this.isCRMLead;
+  //   this.postData.task.is_crm_task = this.isCRMLead;
+  //   this.transformIntoCRMLeadEmitter.emit(this.isCRMLead);
+  // }
 
-  transformToCRMOrder() {
-    this.isCRMOrder = !this.isCRMOrder;
-    this.postData.task.is_crm_order = this.isCRMOrder;
-    this.transformIntoCRMOrderEmitter.emit(this.isCRMOrder);
-  }
+  // transformToCRMOrder() {
+  //   this.isCRMOrder = !this.isCRMOrder;
+  //   this.postData.task.is_crm_order = this.isCRMOrder;
+  //   this.transformIntoCRMOrderEmitter.emit(this.isCRMOrder);
+  // }
 
   transformToMilestone() {
     this.isMilestone = !this.isMilestone;

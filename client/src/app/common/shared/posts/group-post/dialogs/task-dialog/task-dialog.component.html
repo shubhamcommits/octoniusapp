@@ -55,22 +55,16 @@
                 Save
             </button>
 
-            <button *ngIf="!showSubtasks && !postData?.task?._parent_task && postData?.type === 'task' && !postData?.task?.isNorthStar && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id) && canEdit"
+            <button *ngIf="!showSubtasks && !postData?.task?._parent_task && postData?.type === 'task' && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id) && canEdit"
               class="btn float-left btn-warning btn-md"
               (click)="prepareToAddSubtasks()"
               i18n="@@taskDialog.addSubtask">
                 + Add Subtasks
             </button>
-
-            <button
-              *ngIf="!showSubtasks && !postData?.task?._parent_task && postData?.type === 'task' && postData?.task?.isNorthStar && !postData?._group && canEdit"
-              class="btn float-left new-ns-button" (click)="prepareToAddSubtasks()" i18n="@@taskDialog.addTarget">
-              + Add Target
-            </button>
         </div>
 
         <div class="content-box" *ngIf="(showSubtasks && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id))
-            || (postData?.comments_count > 0) || (postData?.task?.isNorthStar) || (postData?.logs && postData?.logs?.length > 0)
+            || (postData?.comments_count > 0) || (postData?.logs && postData?.logs?.length > 0)
             || (postData?.type === 'task' && postData?.approval_active && postData?.approval_history && postData?.approval_history?.length > 0)
             || (postData?.type === 'task')">
           <!-- TABS STARTS -->
@@ -87,7 +81,7 @@
                   [groupData]="groupData"
                   [userData]="userData"
                   [parentId]="postData?._id"
-                  [parentNS]="postData?.task?.isNorthStar"
+                  [parentNS]="false"
                   (openSubtaskEmitter)="onOpenSubtask($event)"></app-subtasks>
               </ng-template>
             </mat-tab>
@@ -109,21 +103,6 @@
               </ng-template>
             </mat-tab>
             <!-- comment-list ENDS-->
-
-            <!-- north-star-stats STARTS-->
-            <mat-tab *ngIf="postData?.task?.isNorthStar">
-              <ng-template mat-tab-label>
-                <span i18n="@@taskDialog.northStarStats">North Star Stats</span>
-              </ng-template>
-
-              <ng-template matTabContent>
-                <app-north-star-stats
-                  [isNorthStar]="(postData?.task?.isNorthStar) ? true : false"
-                  [northStar]="postData?.task?.northStar">
-                </app-north-star-stats>
-              </ng-template>
-            </mat-tab>
-            <!-- north-star-stats ENDS-->
 
             <!-- time-tracking STARTS-->
             <mat-tab *ngIf="postData?.type == 'task'">
@@ -174,12 +153,20 @@
     </div>
 
     <!-- Top Right Section starts -->
-    <div class="post-properties">
+    <div  *ngIf="!!groupData && ((!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.task
+            && (groupData?.dialog_properties_to_show?.task?.includes('status') || groupData?.dialog_properties_to_show?.task?.includes('date')
+              || groupData?.dialog_properties_to_show?.task?.includes('crm_setup') || groupData?.dialog_properties_to_show?.task?.includes('assignee')
+              || groupData?.dialog_properties_to_show?.task?.includes('tags') || groupData?.dialog_properties_to_show?.task?.includes('custom_fields')
+              || groupData?.dialog_properties_to_show?.task?.includes('actions') || groupData?.dialog_properties_to_show?.task?.includes('approvals')
+              || groupData?.dialog_properties_to_show?.task?.includes('shuttle_task') || groupData?.dialog_properties_to_show?.task?.includes('parent_task')))
+          || !groupData.dialog_properties_to_show || !groupData.dialog_properties_to_show.task)"
+      class="post-properties">
+
         <!-- Parent Task starts -->
-        <div class="content-box" *ngIf="postData && postData?.task?._parent_task && postData?.type === 'task'
-            && (postData?._group && groupData?._id == postData?._group?._id)
-              && (!postData?.task?._parent_task?.task?.isNorthStar || postData?.task?._parent_task?._group)">
-          <p class="box-title"i18n="@@taskDialog.parentTask"> Parent task</p>
+        <div class="content-box" *ngIf="(postData?.task?._parent_task && (postData?._group && groupData?._id == postData?._group?._id)
+              && (!postData?.task?._parent_task?.task?.isNorthStar || postData?.task?._parent_task?._group))
+          && (!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.task && !!groupData?.dialog_properties_to_show?.task && groupData?.dialog_properties_to_show?.task?.includes('parent_task'))">
+          <p class="box-title" i18n="@@taskDialog.parentTask"> Parent task</p>
 
           <div class="parent-task">
             <div style="display: flex; flex-direction: row; justify-content: space-between; width: 100%;" (click)="openParentTask(postData?.task?._parent_task._id)">
@@ -193,17 +180,8 @@
         </div>
         <!-- Parent Task ends -->
 
-        <!-- Is North Start starts -->
-        <app-north-star *ngIf="postData && postData?.type === 'task'"
-          [isNorthStar]="(postData?.task?.isNorthStar) ? true : false"
-          [northStar]="postData?.task.northStar"
-          (saveInitialNorthStarEmitter)="saveNorthStar($event)"
-          (addProgressNorthStarEmitter)="saveNorthStar($event)">
-        </app-north-star>
-        <!-- Is North Start ends -->
-
         <!-- Status starts -->
-        <div class="content-box" *ngIf="postData && !postData?.task?.isNorthStar && postData?.type === 'task'">
+        <div class="content-box" *ngIf="(!!groupData.dialog_properties_to_show && groupData?.dialog_properties_to_show?.task?.includes('status'))">
           <p class="box-title"i18n="@@taskDialog.taskStatus"> Task Status</p>
 
           <div class="shuttle-box mb-2">
@@ -234,7 +212,7 @@
             <!-- Change task status ends -->
           </div>
 
-          <div class="shuttle-box" *ngIf="postData && columns">
+          <div class="shuttle-box" *ngIf="columns">
             <p class="mt-1" *ngIf="(((shuttle?._shuttle_group?._id || shuttle?._shuttle_group) != groupId) && (!postData?.task?._parent_task || !this.postData?.task?._parent_task?._group)) || ((shuttle?._shuttle_group?._id || shuttle?._shuttle_group) == groupId)"
                 style="margin-top: 18px; width:70px" i18n="@@taskDialog.section">
               Section
@@ -262,7 +240,7 @@
         <!-- Status ends -->
 
         <!-- Shuttle Task starts -->
-        <app-shuttle-task *ngIf="isShuttleTasksModuleAvailable && groupData?.shuttle_type && postData && postData?.task?.shuttle_type && !postData?.task?.is_crm_task && !postData?.task?.is_crm_order"
+        <app-shuttle-task *ngIf="isShuttleTasksModuleAvailable && groupData?.shuttle_type && postData?.task?.shuttle_type && (!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.task && groupData?.dialog_properties_to_show?.task?.includes('shuttle_task'))"
           [postData]="postData"
           [groupData]="groupData"
           [userData]="userData"
@@ -270,7 +248,7 @@
         <!-- Shuttle Task ends -->
 
         <!-- Dates starts -->
-        <app-post-dates
+        <app-post-dates *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.task && groupData?.dialog_properties_to_show?.task?.includes('date')"
           [userData]="userData"
           [postData]="postData"
           [groupData]="groupData"
@@ -280,59 +258,67 @@
         <!-- Dates ends -->
 
         <!-- Assignee Modal starts -->
-        <div class="content-box" *ngIf="postData && postData?.type === 'task' || postData?.type === 'event'">
-            <p class="box-title" i18n="@@taskDialog.assignee">Assignee</p>
-
-            <app-multiple-assignments
-              [canEdit]="canEdit"
-              [groupId]="groupId"
-              [post]="postData"
-              [type]="'post'"
-              (assigneeAddedEmiter)="onAssigned($event)"
-              (assigneeRemovedEmiter)="onAssigned($event)">
-            </app-multiple-assignments>
-
-            <div *ngIf="lastAssignedBy" id="avatar-assignee">
-              <p class="box-title" style="padding-top: 20px;" i18n="@@taskDialog.assignedBy">Assigned by</p>
-
-              <app-secured-image
-                [imgURL]="lastAssignedBy.profile_pic"
-                [service]="'user'"
-                [userData]="lastAssignedBy"
-                [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
-                [styleClass]="'feed-avatar-small'"
-                style="float: left; cursor: auto;"></app-secured-image>
-
-              <div style="padding-top: 10px;" class="ml-1">
-                {{ lastAssignedBy?.first_name }}
-                {{ lastAssignedBy?.last_name }}
-              </div>
+        <div class="content-box" *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.task && groupData?.dialog_properties_to_show?.task?.includes('assignee')">
+          <p class="box-title" i18n="@@taskDialog.assignee">Assignee</p>
+          
+          <app-multiple-assignments
+            [canEdit]="canEdit"
+            [groupId]="groupId"
+            [post]="postData"
+            [type]="'post'"
+            (assigneeAddedEmiter)="onAssigned($event)"
+            (assigneeRemovedEmiter)="onAssigned($event)">
+          </app-multiple-assignments>
+          
+          <div *ngIf="lastAssignedBy" id="avatar-assignee">
+            <p class="box-title" style="padding-top: 20px;" i18n="@@taskDialog.assignedBy">Assigned by</p>
+            
+            <app-secured-image
+              [imgURL]="lastAssignedBy.profile_pic"
+              [service]="'user'"
+              [userData]="lastAssignedBy"
+              [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
+              [styleClass]="'feed-avatar-small'"
+              style="float: left; cursor: auto;"></app-secured-image>
+            
+            <div style="padding-top: 10px;" class="ml-1">
+              {{ lastAssignedBy?.first_name }}
+              {{ lastAssignedBy?.last_name }}
             </div>
-
-            <div id="avatar-assignee" style="margin-bottom: 30px;">
-              <p class="box-title" style="padding-top: 20px;" i18n="@@taskDialog.createdBy">Created by</p>
-
-              <app-secured-image *ngIf="postData && postData?._posted_by"
-                [imgURL]="postData?._posted_by?.profile_pic"
-                [service]="'user'"
-                [userData]="postData?._posted_by"
-                [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
-                [styleClass]="'feed-avatar-small'"
-                style="float: left; cursor: auto;"></app-secured-image>
-
-              <div style="padding-top: 10px;" class="ml-1">
-                {{ postData?._posted_by?.first_name }}
-                {{ postData?._posted_by?.last_name }}
-                <span class="muted" i18n="@@taskDialog.on">on {{ postData?.created_date | date: 'MMM dd, yyyy'}}</span>
-              </div>
+          </div>
+          
+          <div id="avatar-assignee" style="margin-bottom: 30px;">
+            <p class="box-title" style="padding-top: 20px;" i18n="@@taskDialog.createdBy">Created by</p>
+            
+            <app-secured-image *ngIf="postData?._posted_by"
+              [imgURL]="postData?._posted_by?.profile_pic"
+              [service]="'user'"
+              [userData]="postData?._posted_by"
+              [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
+              [styleClass]="'feed-avatar-small'"
+              style="float: left; cursor: auto;"></app-secured-image>
+            
+            <div style="padding-top: 10px;" class="ml-1">
+              {{ postData?._posted_by?.first_name }}
+              {{ postData?._posted_by?.last_name }}
+              <span class="muted" i18n="@@taskDialog.on">on {{ postData?.created_date | date: 'MMM dd, yyyy'}}</span>
             </div>
-
+          </div>
+          
         </div>
+        <!-- Assignee Modal ends -->
 
-        <div class="content-box">
+        <!-- CRM Lead Card starts -->
+        <div class="content-box" *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.task && groupData?.dialog_properties_to_show?.task?.includes('crm_setup')">
+          <app-crm-lead-card [postData]="postData" [userData]="userData" [groupData]="groupData"
+            [isAdmin]="canEdit"></app-crm-lead-card>
+        </div>
+        <!-- CRM Lead Card ends -->
+
+        <!-- Post Tags starts -->
+        <div class="content-box" *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.task && groupData?.dialog_properties_to_show?.task?.includes('tags')">
             <p class="box-title" i18n="@@taskDialog.tags">Tags</p>
 
-            <!-- Post Tags starts -->
             <app-tags
                 [canEdit]="canEdit"
                 [item]="postData"
@@ -340,10 +326,10 @@
                 [groupId]="groupId"
                 (tags)="getTags($event)">
             </app-tags>
-            <!-- Post Tags ends -->
         </div>
+        <!-- Post Tags ends -->
 
-        <div class="content-box" *ngIf="postData && postData?.type === 'task' && postData?._group && customFields?.length > 0">
+        <div class="content-box" *ngIf="postData?.type === 'task' && postData?._group && customFields?.length > 0 && (!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.task && groupData?.dialog_properties_to_show?.task?.includes('custom_fields'))">
             <p class="box-title" i18n="@@taskDialog.customFields">Custom fields</p>
 
             <div *ngFor="let cf of customFields; trackBy: utilityService.trackByIndex" class="d-flex custom-field justify-content-start mb-3 row">
@@ -389,12 +375,12 @@
             </div>
         </div>
 
-        <app-task-actions *ngIf="postData && userData && postData?.type === 'task' && canEdit"
+        <app-task-actions *ngIf="userData && canEdit && (!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.task && groupData?.dialog_properties_to_show?.task?.includes('actions'))"
           [postData]="postData"
           [groupData]="groupData"
           [userData]="userData"
           [tasks]="tasks"
-          [isNorthStar]="(postData?.task?.isNorthStar) ? postData?.task?.isNorthStar : false"
+          [isNorthStar]="false"
           [isIdea]="(postData?.task?.is_idea) ? postData?.task?.is_idea : false"
           [isIdeaModuleAvailable]="isIdeaModuleAvailable"
           [isCRMLead]="(postData?.task?.is_crm_task) ? postData?.task?.is_crm_task : false"
@@ -414,7 +400,7 @@
         </app-task-actions>
 
         <!-- APPROVAL STARTS -->
-        <div class="content-box" *ngIf="postData && postData?.type === 'task' &&  isBusinessSubscription && !postData?.task?.is_crm_task && !postData?.task?.is_crm_order">
+        <div class="content-box" *ngIf="isBusinessSubscription && (!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.task && groupData?.dialog_properties_to_show?.task?.includes('approvals'))">
           <app-approval-actions
             [groupId]="groupData?._id"
             [userData]="userData"

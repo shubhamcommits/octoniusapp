@@ -21,8 +21,6 @@ import { PortfolioGuard } from 'src/shared/guards/portfolio-guard/portfolio.guar
 import { PortfolioDetailsComponent } from './portfolio/portfolio-details/portfolio-details.component';
 import { LibraryGuard } from 'src/shared/guards/library-guard/library.guard';
 import { IndivicualSubscriptionGuard } from 'src/shared/guards/indivicual-subscription-guard/indivicual-subscription.guard';
-import { CRMGuard } from 'src/shared/guards/crm-guard/crm.guard';
-import { GroupCRMSetupViewComponent } from './group/group-crm-setup-view/group-crm-setup-view.component';
 import { GroupResourceManagementComponent } from './group/group-resource-management/group-resource-management.component';
 import { GroupTasksViewsComponent } from './group/group-tasks-views/group-tasks-views.component';
 import { GroupPageGuard } from 'src/shared/guards/group-page-guard/group-page.guard';
@@ -50,12 +48,12 @@ const routes: Routes = [
       // Group tasks
       { path: 'tasks', component: GroupTasksViewsComponent, canActivate: [GroupPageGuard] },
 
-      // Group CRM Contacts
-      {
-        path: 'crm', 
-        component: GroupCRMSetupViewComponent,
-        canActivate: [CRMGuard, GroupPageGuard]
-      },
+      // // Group CRM Contacts
+      // {
+      //   path: 'crm', 
+      //   component: GroupCRMSetupViewComponent,
+      //   canActivate: [CRMGuard, GroupPageGuard]
+      // },
 
       // Group Files
       {

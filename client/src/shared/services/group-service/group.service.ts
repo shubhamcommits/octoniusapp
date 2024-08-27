@@ -499,9 +499,9 @@ export class GroupService {
     } else if (newGroup.pages_to_show.tasks) {
       this.utilityService.handleActiveStateTopNavBar().emit('groups_tasks');
       router.navigate(['dashboard', 'work', 'groups', 'tasks']);
-    } else if (newGroup.pages_to_show.crm_setup && newGroup?.type == 'crm') {
-      this.utilityService.handleActiveStateTopNavBar().emit('groups_crm');
-      router.navigate(['dashboard', 'work', 'groups', 'crm']);
+    // } else if (newGroup.pages_to_show.crm_setup && newGroup?.type == 'crm') {
+    //   this.utilityService.handleActiveStateTopNavBar().emit('groups_crm');
+    //   router.navigate(['dashboard', 'work', 'groups', 'crm']);
     } else if (newGroup.pages_to_show.files) {
       this.utilityService.handleActiveStateTopNavBar().emit('groups_files');
       router.navigate(['dashboard', 'work', 'groups', 'files']);

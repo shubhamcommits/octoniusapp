@@ -18,11 +18,12 @@ export class CRMGuard   {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ) {
-    return this.checkIsCRMGroup();
+    return this.checkCanUserOpenCRM();
   }
 
-  async checkIsCRMGroup() {
-    const currentGroup: any = await this.publicFunctions.getCurrentGroupDetails();
-    return !!currentGroup && !!currentGroup.type && currentGroup.type == 'crm';
+  async checkCanUserOpenCRM() {
+    // const currentGroup: any = await this.publicFunctions.getCurrentGroupDetails();
+    // return !!currentGroup && !!currentGroup.type && currentGroup.type == 'crm';
+    return true
   }
 }

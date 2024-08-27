@@ -37,7 +37,7 @@
                 </ng-template>
             
                 <ng-template matTabContent>
-                  <div class="row">
+                  <div class="row p-3">
                     <button class="btn btn-primary" (click)="showCommentQuillEditor = !showCommentQuillEditor" [disabled]="!canEdit">
                       <i class="material-icons-outlined">add</i>
                       <span i18n="@@crmTaskDialog.newUpdate">New Update</span>
@@ -60,7 +60,7 @@
               <!-- content STARTS-->
               <mat-tab>
                 <ng-template mat-tab-label>
-                  <span i18n="@@crmTaskDialog.timeTracking">Content</span>
+                  <span i18n="@@crmTaskDialog.content">Content</span>
                 </ng-template>
             
                 <ng-template matTabContent>
@@ -118,16 +118,21 @@
     </div>
 
     <!-- Top Right Section starts -->
-    <div class="post-properties">
+    <div *ngIf="!!groupData && ((!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.CRMLead
+            && (groupData?.dialog_properties_to_show?.CRMLead?.includes('crm_setup') || groupData?.dialog_properties_to_show?.CRMLead?.includes('status')
+              || groupData?.dialog_properties_to_show?.CRMLead?.includes('date') || groupData?.dialog_properties_to_show?.CRMLead?.includes('assignee')
+              || groupData?.dialog_properties_to_show?.CRMLead?.includes('custom_fields') || groupData?.dialog_properties_to_show?.CRMLead?.includes('tags')))
+          || !groupData.dialog_properties_to_show || !groupData.dialog_properties_to_show.CRMLead)"
+      class="post-properties">
         <!-- CRM Lead Card starts -->
-        <div class="content-box" *ngIf="postData && postData?.type === 'task' && (postData?.task?.is_crm_task || postData?.task?.is_crm_order) && groupData?.type == 'crm'">
+        <div class="content-box" *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.CRMLead && groupData?.dialog_properties_to_show?.CRMLead?.includes('crm_setup')">
           <app-crm-lead-card [postData]="postData" [userData]="userData"
             [groupData]="groupData" [isAdmin]="canEdit"></app-crm-lead-card>
         </div>
         <!-- CRM Lead Card ends -->
 
         <!-- Status starts -->
-        <div class="content-box">
+        <div class="content-box" *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.CRMLead && groupData?.dialog_properties_to_show?.CRMLead?.includes('status')">
           <p class="box-title"i18n="@@crmTaskDialog.taskStatus"> Task Status</p>
 
           <div class="shuttle-box mb-2">
@@ -164,7 +169,7 @@
         <!-- Status ends -->
 
         <!-- Dates starts -->
-        <app-post-dates
+        <app-post-dates *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.CRMLead && groupData?.dialog_properties_to_show?.CRMLead?.includes('date')"
           [userData]="userData"
           [postData]="postData"
           [groupData]="groupData"
@@ -174,7 +179,7 @@
         <!-- Dates ends -->
 
         <!-- Assignee Modal starts -->
-        <div class="content-box" *ngIf="postData && postData?.type === 'task' || postData?.type === 'event'">
+        <div class="content-box" *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.CRMLead && groupData?.dialog_properties_to_show?.CRMLead?.includes('assignee')">
             <p class="box-title" i18n="@@crmTaskDialog.assignee">Assignee</p>
 
             <app-multiple-assignments
@@ -206,7 +211,7 @@
             <div id="avatar-assignee" style="margin-bottom: 30px;">
               <p class="box-title" style="padding-top: 20px;" i18n="@@crmTaskDialog.createdBy">Created by</p>
 
-              <app-secured-image *ngIf="postData && postData?._posted_by"
+              <app-secured-image *ngIf="postData?._posted_by"
                 [imgURL]="postData?._posted_by?.profile_pic"
                 [service]="'user'"
                 [userData]="postData?._posted_by"
@@ -223,7 +228,7 @@
 
         </div>
 
-        <div class="content-box">
+        <div class="content-box" *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.CRMLead && groupData?.dialog_properties_to_show?.CRMLead?.includes('tags')">
             <p class="box-title" i18n="@@crmTaskDialog.tags">Tags</p>
 
             <!-- Post Tags starts -->
@@ -237,7 +242,7 @@
             <!-- Post Tags ends -->
         </div>
 
-        <div class="content-box" *ngIf="postData && postData?.type === 'task' && postData?._group && customFields?.length > 0">
+        <div class="content-box" *ngIf="postData?._group && customFields?.length > 0 && !!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.CRMLead && groupData?.dialog_properties_to_show?.CRMLead?.includes('custom_fields')">
             <p class="box-title" i18n="@@crmTaskDialog.customFields">Custom fields</p>
 
             <div *ngFor="let cf of customFields; trackBy: utilityService.trackByIndex" class="d-flex custom-field justify-content-start mb-3 row">

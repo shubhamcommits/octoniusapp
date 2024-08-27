@@ -5,6 +5,8 @@ import { DashboardPageComponent } from './dashboard-page/dashboard-page.componen
 import { AdminGuard } from 'src/shared/guards/admin-guard/admin.guard';
 import { OrganizationModuleAvailableGuard } from 'src/shared/guards/organization-module-available-guard/organization-module-available.guard';
 import { LoungeModuleAvailableGuard } from 'src/shared/guards/lounge-module-available-guard/lounge-module-available.guard';
+import { CRMGuard } from 'src/shared/guards/crm-guard/crm.guard';
+import { CRMSetupPageComponent } from './crm-setup-page/crm-setup-page.component';
 
 const routes: Routes = [
 
@@ -21,6 +23,13 @@ const routes: Routes = [
 
   // North Star
   { path: 'northstar', component: NorthStarPageComponent },
+
+  // Group CRM Contacts
+  {
+    path: 'crm', 
+    component: CRMSetupPageComponent,
+    canActivate: [CRMGuard]
+  },
 
   // Dashboard Page
   { path: 'dashboard', component: DashboardPageComponent, canActivate: [AdminGuard] },

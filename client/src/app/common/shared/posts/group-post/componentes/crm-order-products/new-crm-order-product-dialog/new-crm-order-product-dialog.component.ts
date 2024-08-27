@@ -2,6 +2,7 @@ import { Component, EventEmitter, Inject, Injector, OnInit, Output } from '@angu
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { CRMGroupService } from 'src/shared/services/crm-group-service/crm-group.service';
+import { CRMService } from 'src/shared/services/crm-service/crm.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
@@ -34,6 +35,7 @@ export class NewCRMOrderProductDialogComponent implements OnInit {
     public utilityService: UtilityService,
     private postService: PostService,
     private crmGroupService: CRMGroupService,
+    private crmService: CRMService,
     private mdDialogRef: MatDialogRef<NewCRMOrderProductDialogComponent>,
     private injector: Injector
   ) {}
@@ -70,7 +72,7 @@ export class NewCRMOrderProductDialogComponent implements OnInit {
   }
 
   searchProduct() {
-    this.crmGroupService.searchCRMProducts(this.groupData._id, this.productSearchText).then(res => {
+    this.crmService.searchCRMProducts(this.productSearchText).then(res => {
         this.productSearchResults = res['products'];
       });
   }

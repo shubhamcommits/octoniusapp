@@ -115,7 +115,7 @@
           </a>
       </li>
 
-      <li class="nav-item" *ngIf="!myWorkplace && groupData?.type == 'crm' && (!groupData?.pages_to_show || groupData?.pages_to_show?.crm_setup)">
+      <!-- <li class="nav-item" *ngIf="!myWorkplace && groupData?.type == 'crm' && (!groupData?.pages_to_show || groupData?.pages_to_show?.crm_setup)">
           <a [ngClass]="activeState == 'groups_crm'?'nav-link active-nav':'nav-link'"
               (click)="changeState('groups_crm')"
               routerLink="/dashboard/work/groups/crm"
@@ -123,7 +123,7 @@
               i18n="@@groupNavbar.crmSetup">
                 CRM Setup
           </a>
-      </li>
+      </li> -->
 
       <li class="nav-item" *ngIf="!myWorkplace && (!groupData?.pages_to_show || groupData?.pages_to_show?.files)">
           <a [ngClass]="activeState == 'groups_files'?'nav-link active-nav':'nav-link'"

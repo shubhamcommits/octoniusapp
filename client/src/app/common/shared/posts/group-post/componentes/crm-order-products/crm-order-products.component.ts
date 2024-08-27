@@ -2,10 +2,11 @@ import { Component, OnInit, OnDestroy, Injector, AfterContentChecked, Input } fr
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
 import { PublicFunctions } from 'modules/public.functions';
-import { CRMGroupService } from 'src/shared/services/crm-group-service/crm-group.service';
 import { Sort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { NewCRMOrderProductDialogComponent } from './new-crm-order-product-dialog/new-crm-order-product-dialog.component';
+import { CRMService } from 'src/shared/services/crm-service/crm.service';
+import { CRMGroupService } from 'src/shared/services/crm-group-service/crm-group.service';
 
 @Component({
   selector: 'app-crm-order-products',
@@ -39,6 +40,7 @@ export class PostCRMOrderProductsComponent implements OnInit, OnDestroy, AfterCo
 	constructor(
 		public utilityService: UtilityService,
 		private crmGroupService: CRMGroupService,
+		private crmService: CRMService,
 		public dialog: MatDialog,
 		private injector: Injector) { }
 
@@ -51,7 +53,7 @@ export class PostCRMOrderProductsComponent implements OnInit, OnDestroy, AfterCo
 		// this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 		// this.userData = await this.publicFunctions.getCurrentUser();
 
-		await this.crmGroupService.getGroupCRMInformation(this.groupData?._id).then(res => {
+		await this.crmService.getCRMInformation().then(res => {
 			this.crmProductCustomFields = res['crm_custom_fields']?.filter(cf => cf.type == 'product');
 		});
 
@@ -88,27 +90,6 @@ export class PostCRMOrderProductsComponent implements OnInit, OnDestroy, AfterCo
 	}
 
 	loadOrderCustomFieldsToShow() {
-		// if (!!this.groupData && !!this.groupData.crm_custom_fields_to_show) {
-		// 	if (!this.crmProductCustomFieldsToShow) {
-		// 		this.crmProductCustomFieldsToShow = [];
-		// 	}
-			
-		// 	this.groupData.crm_custom_fields_to_show.forEach(field => {
-		// 		const cf = this.getOrderCustomField(field);
-		// 		const indexCRMCFToShow = (!!this.crmProductCustomFieldsToShow) ? this.crmProductCustomFieldsToShow.findIndex(cf => cf.name === field) : -1;
-		// 		// Push the Column
-		// 		if (cf && indexCRMCFToShow < 0 && cf.type == 'product') {
-		// 			this.crmProductCustomFieldsToShow.push(cf);
-			
-		// 			if (this.displayedOrderColumns.length - 1 >= 0) {
-		// 				const indexDisplayedColumns = (!!this.displayedOrderColumns) ? this.displayedOrderColumns.findIndex(col => col === field.name) : -1;
-		// 				if (indexDisplayedColumns < 0) {
-		// 					this.displayedOrderColumns.splice(this.displayedOrderColumns.length - 1, 0, field);
-		// 				}
-		// 			}
-		// 		}
-		// 	});
-		// }
 		if (!!this.groupData && !!this.groupData.crm_custom_fields_to_show) {
 			if (!this.crmProductCustomFields) {
 				this.crmProductCustomFields = [];

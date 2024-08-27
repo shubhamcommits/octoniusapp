@@ -21,6 +21,11 @@ const ContactSchema = new Schema({
         ref: 'Group',
         required: true
     },
+    _workspace: {
+        type: Schema.Types.ObjectId,
+        ref: 'Workspace',
+        required: true
+    },
     phones: [{
         type: String,
     }],

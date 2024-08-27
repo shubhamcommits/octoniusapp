@@ -364,11 +364,11 @@ const GroupSchema = new Schema({
             required: true,
             default: true,
         },
-        crm_setup: {
-            type: Boolean,
-            required: true,
-            default: true,
-        },
+        // crm_setup: {
+        //     type: Boolean,
+        //     required: true,
+        //     default: true,
+        // },
         files: {
             type: Boolean,
             required: true,
@@ -393,6 +393,28 @@ const GroupSchema = new Schema({
             type: Boolean,
             required: true,
             default: true,
+        }
+    },
+    dialog_properties_to_show: {
+        task: {
+            type: [String],
+            enum: ['status', 'date', 'crm_setup', 'assignee', 'tags', 'custom_fields', 'actions', 'approvals', 'shuttle_task', 'parent_task'],
+            default: ['status', 'date', 'assignee', 'tags', 'custom_fields', 'actions', 'approvals', 'shuttle_task', 'parent_task']
+        },
+        northStar: {
+            type: [String],
+            enum: ['north_star', 'shuttle_task', 'date', 'assignee', 'tags', 'custom_fields', 'crm_setup', 'actions', 'approvals'],
+            default: ['north_star', 'shuttle_task', 'date', 'assignee', 'tags', 'custom_fields', 'actions', 'approvals']
+        },
+        CRMOrder: {
+            type: [String],
+            enum: ['crm_setup', 'status', 'date', 'assignee', 'custom_fields'],
+            default: ['crm_setup', 'status', 'date', 'assignee', 'custom_fields']
+        },
+        CRMLead: {
+            type: [String],
+            enum: ['crm_setup', 'status', 'date', 'assignee', 'tags', 'custom_fields'],
+            default: ['crm_setup', 'status', 'date', 'assignee', 'tags', 'custom_fields']
         }
     },
     default_board_card: {
