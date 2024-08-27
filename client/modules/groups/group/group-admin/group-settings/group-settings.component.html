@@ -32,6 +32,24 @@
         </div>
       </div>
 
+      <div class="mt-5 mb-5 pt-3" style="padding-left: 44px;" *ngIf="!isIndividualSubscription && (!groupData?.pages_to_show || groupData?.pages_to_show?.tasks)">
+        <h6><b i18n="@@groupSettings.taskPropertiesConfiguration">Task Properties Configuration</b></h6>
+        <p class="card-text" i18n="@@groupSettings.taskPropertiesConfigurationDescription">Allows you to select the boxes you need to display in the tasks.</p>
+      
+        <div class="pages">
+          <mat-checkbox [checked]="groupData?.dialog_properties_to_show?.task?.includes('actions')" [name]="'actions'" (change)="saveTaskPropertiesToShow($event)" i18n="@@groupSettings.actions">Actions</mat-checkbox>
+          <mat-checkbox [checked]="groupData?.dialog_properties_to_show?.task?.includes('approvals')" [name]="'approvals'" (change)="saveTaskPropertiesToShow($event)" i18n="@@groupSettings.approvals">Approvals</mat-checkbox>
+          <mat-checkbox [checked]="groupData?.dialog_properties_to_show?.task?.includes('assignee')" [name]="'assignee'" (change)="saveTaskPropertiesToShow($event)" i18n="@@groupSettings.assignee">Assignee</mat-checkbox>
+          <mat-checkbox [checked]="groupData?.dialog_properties_to_show?.task?.includes('crm_setup')" [name]="'crm_setup'" (change)="saveTaskPropertiesToShow($event)" i18n="@@groupSettings.crmSetup">CRM Setup</mat-checkbox>
+          <mat-checkbox [checked]="groupData?.dialog_properties_to_show?.task?.includes('custom_fields')" [name]="'custom_fields'" (change)="saveTaskPropertiesToShow($event)" i18n="@@groupSettings.custom_fields">Custom Fields</mat-checkbox>
+          <mat-checkbox [checked]="groupData?.dialog_properties_to_show?.task?.includes('date')" [name]="'date'" (change)="saveTaskPropertiesToShow($event)" i18n="@@groupSettings.date">Date</mat-checkbox>
+          <mat-checkbox [checked]="groupData?.dialog_properties_to_show?.task?.includes('parent_task')" [name]="'parent_task'" (change)="saveTaskPropertiesToShow($event)" i18n="@@groupSettings.parent_task">Parent Task</mat-checkbox>
+          <mat-checkbox [checked]="groupData?.dialog_properties_to_show?.task?.includes('shuttle_task')" [name]="'shuttle_task'" (change)="saveTaskPropertiesToShow($event)" i18n="@@groupSettings.shuttleTask">Shuttle Task</mat-checkbox>
+          <mat-checkbox [checked]="groupData?.dialog_properties_to_show?.task?.includes('status')" [name]="'status'" (change)="saveTaskPropertiesToShow($event)" i18n="@@groupSettings.status">Status</mat-checkbox>
+          <mat-checkbox [checked]="groupData?.dialog_properties_to_show?.task?.includes('tags')" [name]="'tags'" (change)="saveTaskPropertiesToShow($event)" i18n="@@groupSettings.tags">Tags</mat-checkbox>
+        </div>
+      </div>
+
       <div class="mb-5 pt-3" *ngIf="!isIndividualSubscription && groupData?.type != 'resource'">
         <mat-slide-toggle color="primary"
             [checked]="groupData.share_files"

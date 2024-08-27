@@ -292,6 +292,82 @@ export class GroupSettingsComponent implements OnInit {
       }));
   }
 
+  saveTaskPropertiesToShow(selected) {
+    // Save the settings
+    this.utilityService.asyncNotification($localize`:@@groupSettings.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
+      new Promise((resolve, reject)=>{
+
+        if (!this.groupData.dialog_properties_to_show) {
+          this.groupData.dialog_properties_to_show = {
+            task: []
+          };
+        }
+
+        let propertyToSave =  {
+          dialog_properties_to_show: {
+            task: []
+          }
+        };
+        if (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show?.task && this.groupData.dialog_properties_to_show?.task?.includes('status')) {
+          propertyToSave.dialog_properties_to_show.task.push('status')
+        }
+        if (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show?.task && this.groupData.dialog_properties_to_show?.task?.includes('date')) {
+          propertyToSave.dialog_properties_to_show.task.push('date')
+        }
+        if (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show?.task && this.groupData.dialog_properties_to_show?.task?.includes('crm_setup')) {
+          propertyToSave.dialog_properties_to_show.task.push('crm_setup')
+        }
+        if (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show?.task && this.groupData.dialog_properties_to_show?.task?.includes('assignee')) {
+          propertyToSave.dialog_properties_to_show.task.push('assignee')
+        }
+        if (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show?.task && this.groupData.dialog_properties_to_show?.task?.includes('tags')) {
+          propertyToSave.dialog_properties_to_show.task.push('tags')
+        }
+        if (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show?.task && this.groupData.dialog_properties_to_show?.task?.includes('custom_fields')) {
+          propertyToSave.dialog_properties_to_show.task.push('custom_fields')
+        }
+        if (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show?.task && this.groupData.dialog_properties_to_show?.task?.includes('actions')) {
+          propertyToSave.dialog_properties_to_show.task.push('actions')
+        }
+        if (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show?.task && this.groupData.dialog_properties_to_show?.task?.includes('approvals')) {
+          propertyToSave.dialog_properties_to_show.task.push('approvals')
+        }
+        if (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show?.task && this.groupData.dialog_properties_to_show?.task?.includes('shuttle_task')) {
+          propertyToSave.dialog_properties_to_show.task.push('shuttle_task')
+        }
+        if (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show?.task && this.groupData.dialog_properties_to_show?.task?.includes('parent_task')) {
+          propertyToSave.dialog_properties_to_show.task.push('parent_task')
+        }
+
+        if (selected.checked) {
+          this.groupData.dialog_properties_to_show.task.push(selected.source.name);
+          propertyToSave.dialog_properties_to_show.task.push(selected.source.name);
+        } else {
+          let index = (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show.task)
+            ? this.groupData.dialog_properties_to_show.task.findIndex(prop => prop == selected.source.name)
+            : -1;
+          if (index >= 0) {
+            this.groupData.dialog_properties_to_show.task.splice(index, 1)
+          }
+
+          index = (!!propertyToSave.dialog_properties_to_show && !!propertyToSave.dialog_properties_to_show.task)
+            ? propertyToSave.dialog_properties_to_show.task.findIndex(prop => prop == selected.source.name)
+            : -1;
+          if (index >= 0) {
+            propertyToSave.dialog_properties_to_show.task.splice(index, 1)
+          }
+        }
+
+        this.groupService.saveSettings(this.groupData?._id, propertyToSave)
+          .then(async ()=> {
+            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+            await this.groupService.triggerUpdateGroupData(this.groupData);
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
+          })
+          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+      }));
+  }
+
   saveDefaultBoardCard(type: string) {
     // Save the settings
     this.utilityService.asyncNotification($localize`:@@groupSettings.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,

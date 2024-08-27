@@ -130,6 +130,7 @@ import { AvatarComponent } from './avatar/avatar.component';
 import { PermissionDialogComponent } from './permission-dialog/permission-dialog.component';
 import { IdeaActionsComponent } from './posts/group-post/componentes/post-actions/idea-actions/idea-actions.component';
 import { TaskDialogComponent } from './posts/group-post/dialogs/task-dialog/task-dialog.component';
+import { NorthStarDialogComponent } from './posts/group-post/dialogs/north-star-dialog/north-star-dialog.component';
 import { PostCRMOrderProductsComponent } from './posts/group-post/componentes/crm-order-products/crm-order-products.component';
 import { NewCRMOrderProductDialogComponent } from './posts/group-post/componentes/crm-order-products/new-crm-order-product-dialog/new-crm-order-product-dialog.component';
 import { CRMOrderCustomFieldsComponent } from './posts/group-post/componentes/crm-order-products/new-crm-order-product-dialog/crm-order-custom-fields/crm-order-custom-fields.component';
@@ -216,6 +217,7 @@ import { QuillEditorComponent } from 'ngx-quill';
         NorthStarComponent,
         NorthStarStatsComponent,
         TaskDialogComponent,
+        NorthStarDialogComponent,
         CRMTaskDialogComponent,
         NormalPostDialogComponent,
         CRMOrderDialogComponent,
@@ -352,6 +354,7 @@ import { QuillEditorComponent } from 'ngx-quill';
         MatSidenavModule,
         InlineInputComponent,
         TaskDialogComponent,
+        NorthStarDialogComponent,
         CRMTaskDialogComponent,
         NormalPostDialogComponent,
         CRMOrderDialogComponent,

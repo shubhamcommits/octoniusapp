@@ -395,6 +395,12 @@ const GroupSchema = new Schema({
             default: true,
         }
     },
+    dialog_properties_to_show: {
+        task: {
+            type: [String],
+            enum: ['status', 'date', 'crm_setup', 'assignee', 'tags', 'custom_fields', 'actions', 'approvals', 'shuttle_task', 'parent_task']
+        },
+    },
     default_board_card: {
         type: String,
         required: true,

@@ -22,6 +22,7 @@ import { CRMOrderDialogComponent } from 'src/app/common/shared/posts/group-post/
 import { NormalPostDialogComponent } from 'src/app/common/shared/posts/group-post/dialogs/normal-post-dialog/normal-post-dialog.component';
 import { EventPostDialogComponent } from 'src/app/common/shared/posts/group-post/dialogs/event-post-dialog/event-post-dialog.component';
 import { Config, pdfExporter } from 'quill-to-pdf';
+import { NorthStarDialogComponent } from 'src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -374,6 +375,8 @@ export class UtilityService {
           dialogOpen = this.openCRMTaskDetailsFullscreenModal(post?._id, groupId, sections);
         } else if (post.task.is_crm_order) {
           dialogOpen = this.openCRMOrderDetailsFullscreenModal(post?._id, groupId, sections);
+        } else if (post.task.isNorthStar) {
+          dialogOpen = this.openNorthStarDetailsFullscreenModal(post?._id, groupId, sections);
         } else {
           dialogOpen = this.openTaskDetailsFullscreenModal(post?._id, groupId, sections);
         }
@@ -419,6 +422,32 @@ export class UtilityService {
           postId: postId,
           groupId: groupId,
         }
+    });
+  }
+
+  /**
+   * This function is responsible for opening a fullscreen dialog to edit a task
+   */
+  private openNorthStarDetailsFullscreenModal(postId: string, groupId: string, sections?: any) {
+    const data = (sections) ?
+        {
+          postId: postId,
+          groupId: groupId,
+          columns: sections
+        }
+      :
+        {
+          postId: postId,
+          groupId: groupId
+        };
+
+    return this.dialog.open(NorthStarDialogComponent, {
+      minWidth: '100%',
+      width: '100%',
+      minHeight: '100%',
+      height: '100%',
+      disableClose: true,
+      data: data
     });
   }
 
