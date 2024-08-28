@@ -408,6 +408,11 @@ const GroupSchema = new Schema({
             enum: ['status', 'date', 'crm_setup', 'assignee', 'tags', 'custom_fields', 'actions', 'approvals', 'shuttle_task', 'parent_task'],
             default: ['status', 'date', 'assignee', 'tags', 'custom_fields', 'actions', 'approvals', 'shuttle_task', 'parent_task']
         },
+        normal: {
+            type: [String],
+            enum: ['tags'],
+            default: ['tags']
+        },
         northStar: {
             type: [String],
             enum: ['north_star', 'shuttle_task', 'date', 'assignee', 'tags', 'custom_fields', 'crm_setup', 'actions', 'approvals'],

@@ -45,6 +45,11 @@
               </button>
             </div>
             <div class="row mt-1">
+              <button mat-button class="btn btn-primary" [ngClass]="selectedCard == 'normal' ? 'active' : ''" (click)="selectedCard='normal'">
+                <span i18n="@@groupSettings.normalPost">Normal Post</span>
+              </button>
+            </div>
+            <div class="row mt-1">
               <button mat-button class="btn btn-primary" [ngClass]="selectedCard == 'northStar' ? 'active' : ''" (click)="selectedCard='northStar'">
                 <i class="material-icons-outlined mr-2" style="color: #5E2FE5; line-height: 38px;">explore</i>
                 <span i18n="@@groupSettings.northStar">North Star</span>
@@ -75,6 +80,10 @@
               <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('parent_task')" [name]="'parent_task'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.parent_task">Parent Task</mat-checkbox>
               <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('shuttle_task')" [name]="'shuttle_task'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.shuttleTask">Shuttle Task</mat-checkbox>
               <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('status')" [name]="'status'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.status">Status</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('tags')" [name]="'tags'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.tags">Tags</mat-checkbox>
+            </div>
+
+            <div class="pages" *ngIf="selectedCard == 'normal'">
               <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('tags')" [name]="'tags'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.tags">Tags</mat-checkbox>
             </div>
 
