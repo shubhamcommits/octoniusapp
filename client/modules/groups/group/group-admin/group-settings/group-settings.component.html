@@ -35,8 +35,9 @@
       <div class="mt-5 mb-5 pt-3" style="padding-left: 44px;" *ngIf="!isIndividualSubscription && (!groupData?.pages_to_show || groupData?.pages_to_show?.tasks)">
         <h6><b i18n="@@groupSettings.taskPropertiesConfiguration">Task Properties Configuration</b></h6>
         <p class="card-text" i18n="@@groupSettings.taskPropertiesConfigurationDescription">Allows you to select the boxes you need to display in the tasks.</p>
-        <div class="row">
-          <div class="col-2">
+
+        <div class="row m-3">
+          <div class="col-2 p-4" style="border: 1px solid;">
             <div class="row mt-1">
               <button mat-button class="btn btn-primary" [ngClass]="selectedCard == 'task' ? 'active' : ''" (click)="selectedCard='task'">
                 <!-- <i class="material-icons" style="line-height: 38px;">add_circle</i> -->
@@ -49,13 +50,13 @@
                 <span i18n="@@groupSettings.northStar">North Star</span>
               </button>
             </div>
-            <div class="row mt-1">
+            <div class="row mt-1" *ngIf="groupData.type == 'crm'">
               <button mat-button class="btn btn-primary" [ngClass]="selectedCard == 'CRMOrder' ? 'active' : ''" (click)="selectedCard='CRMOrder'">
                 <i class="material-icons-outlined mr-2" style="line-height: 38px;">sell</i>
                 <span i18n="@@groupSettings.CRMOrder">Order</span>
               </button>
             </div>
-            <div class="row mt-1">
+            <div class="row mt-1" *ngIf="groupData.type == 'crm'">
               <button mat-button class="btn btn-primary" [ngClass]="selectedCard == 'CRMLead' ? 'active' : ''" (click)="selectedCard='CRMLead'">
                 <i class="material-icons-outlined mr-2" style="line-height: 38px;">attach_money</i>
                 <span i18n="@@groupSettings.CRMLead">Lead</span>
@@ -63,7 +64,7 @@
             </div>
           </div>
 
-          <div class="col-10" *ngIf="!!groupData && !!groupData?.dialog_properties_to_show">
+          <div class="col-9 p-4" style="border: 1px solid;" *ngIf="!!groupData && !!groupData?.dialog_properties_to_show">
             <div class="pages" *ngIf="selectedCard == 'task'">
               <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('actions')" [name]="'actions'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.actions">Actions</mat-checkbox>
               <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('approvals')" [name]="'approvals'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.approvals">Approvals</mat-checkbox>
