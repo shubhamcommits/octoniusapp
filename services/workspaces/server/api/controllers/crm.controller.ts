@@ -896,84 +896,84 @@ export class CRMController {
         }
     };
 
-    async migrateCRMFromGroupToGlobal(req: Request, res: Response, next: NextFunction) {
-        try {
-            let stream = Readable.from(await Group.find({
-                    type: 'crm'
-                }).select('_workspace crm_custom_fields crm_custom_fields_to_show').lean());
+    // async migrateCRMFromGroupToGlobal(req: Request, res: Response, next: NextFunction) {
+    //     try {
+    //         let stream = Readable.from(await Group.find({
+    //                 type: 'crm'
+    //             }).select('_workspace crm_custom_fields crm_custom_fields_to_show').lean());
 
-            await stream.on('data', async (group: any) => {
-                const workspaceId = group._workspace;
-                await Contact.updateMany({
-                        _group: group._id
-                    }, {
-                        $set: { _workspace: workspaceId }
-                    });
+    //         await stream.on('data', async (group: any) => {
+    //             const workspaceId = group._workspace;
+    //             await Contact.updateMany({
+    //                     _group: group._id
+    //                 }, {
+    //                     $set: { _workspace: workspaceId }
+    //                 });
 
-                await Company.updateMany({
-                        _group: group._id
-                    }, {
-                        $set: { _workspace: workspaceId }
-                    });
+    //             await Company.updateMany({
+    //                     _group: group._id
+    //                 }, {
+    //                     $set: { _workspace: workspaceId }
+    //                 });
 
-                await Product.updateMany({
-                        _group: group._id
-                    }, {
-                        $set: { _workspace: workspaceId }
-                    });
+    //             await Product.updateMany({
+    //                     _group: group._id
+    //                 }, {
+    //                     $set: { _workspace: workspaceId }
+    //                 });
 
-                let workspace = await Workspace.findById(workspaceId).select('crm_custom_fields crm_custom_fields_to_show').lean()
-                if (!!group.crm_custom_fields) {
-                    group.crm_custom_fields?.forEach(async cf => {
-                        const index = (!!workspace.crm_custom_fields) ? workspace.crm_custom_fields.findIndex(crmcf => crmcf.name == cf.name) : -1;
-                        if (index < 0) {
-                            workspace = await Workspace.findOneAndUpdate({
-                                _id: workspaceId
-                            }, {
-                                $addToSet: {
-                                    crm_custom_fields: cf
-                                }
-                            }).select('crm_custom_fields crm_custom_fields_to_show').lean();
-                        }
-                    });
-                }
+    //             let workspace = await Workspace.findById(workspaceId).select('crm_custom_fields crm_custom_fields_to_show').lean()
+    //             if (!!group.crm_custom_fields) {
+    //                 group.crm_custom_fields?.forEach(async cf => {
+    //                     const index = (!!workspace.crm_custom_fields) ? workspace.crm_custom_fields.findIndex(crmcf => crmcf.name == cf.name) : -1;
+    //                     if (index < 0) {
+    //                         workspace = await Workspace.findOneAndUpdate({
+    //                             _id: workspaceId
+    //                         }, {
+    //                             $addToSet: {
+    //                                 crm_custom_fields: cf
+    //                             }
+    //                         }).select('crm_custom_fields crm_custom_fields_to_show').lean();
+    //                     }
+    //                 });
+    //             }
 
-                if (!!group.crm_custom_fields_to_show) {
-                    group.crm_custom_fields_to_show?.forEach(async cf => {
-                        const index = (!!workspace.crm_custom_fields_to_show) ? workspace.crm_custom_fields_to_show.findIndex(crmcfts => {
-                            return crmcfts == cf}) : -1;
-                        if (index < 0) {
-                            workspace = await Workspace.findOneAndUpdate({
-                                _id: workspaceId
-                            }, {
-                                $addToSet: {
-                                    crm_custom_fields_to_show: cf
-                                }
-                            }).select('crm_custom_fields crm_custom_fields_to_show').lean();
-                        }
-                    });
-                }
+    //             if (!!group.crm_custom_fields_to_show) {
+    //                 group.crm_custom_fields_to_show?.forEach(async cf => {
+    //                     const index = (!!workspace.crm_custom_fields_to_show) ? workspace.crm_custom_fields_to_show.findIndex(crmcfts => {
+    //                         return crmcfts == cf}) : -1;
+    //                     if (index < 0) {
+    //                         workspace = await Workspace.findOneAndUpdate({
+    //                             _id: workspaceId
+    //                         }, {
+    //                             $addToSet: {
+    //                                 crm_custom_fields_to_show: cf
+    //                             }
+    //                         }).select('crm_custom_fields crm_custom_fields_to_show').lean();
+    //                     }
+    //                 });
+    //             }
 
-                group = await Group.findOneAndUpdate({
-                        _id: group._id
-                    }, {
-                        $set: {
-                            dialog_properties_to_show: {
-                                task: ['status', 'date', 'assignee', 'tags', 'custom_fields', 'actions', 'approvals', 'shuttle_task', 'parent_task'],
-                                northStar: ['north_star', 'shuttle_task', 'date', 'assignee', 'tags', 'custom_fields', 'actions', 'approvals'],
-                                CRMOrder: ['crm_setup', 'status', 'date', 'assignee', 'custom_fields'],
-                                CRMLead: ['crm_setup', 'status', 'date', 'assignee', 'tags', 'custom_fields']
-                            }
-                        }
-                    }).lean()
-            });
+    //             group = await Group.findOneAndUpdate({
+    //                     _id: group._id
+    //                 }, {
+    //                     $set: {
+    //                         dialog_properties_to_show: {
+    //                             task: ['status', 'date', 'assignee', 'tags', 'custom_fields', 'actions', 'approvals', 'shuttle_task', 'parent_task'],
+    //                             northStar: ['north_star', 'shuttle_task', 'date', 'assignee', 'tags', 'custom_fields', 'actions', 'approvals'],
+    //                             CRMOrder: ['crm_setup', 'status', 'date', 'assignee', 'custom_fields'],
+    //                             CRMLead: ['crm_setup', 'status', 'date', 'assignee', 'tags', 'custom_fields']
+    //                         }
+    //                     }
+    //                 }).lean()
+    //         });
 
-            // Send status 200 response
-            return res.status(200).json({
-                message: 'CRM Migrated!'
-            });
-        } catch (err) {
-            return sendError(res, err, 'Internal Server Error!', 500);
-        }
-    };
+    //         // Send status 200 response
+    //         return res.status(200).json({
+    //             message: 'CRM Migrated!'
+    //         });
+    //     } catch (err) {
+    //         return sendError(res, err, 'Internal Server Error!', 500);
+    //     }
+    // };
 }

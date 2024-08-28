@@ -4523,6 +4523,10 @@
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
           <context context-type="linenumber">26</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="groupSettings.idea" datatype="html">
         <source>Idea</source>
@@ -4552,148 +4556,348 @@
           <context context-type="linenumber">30</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="groupSettings.digalogsPropertiesConfiguration" datatype="html">
+        <source>Dialogs Properties Configuration</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.dialogPropertiesConfigurationDescription" datatype="html">
+        <source>Allows you to select the property boxes you need to display in the dialogs.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.normalPost" datatype="html">
+        <source>Normal Post</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.northStar" datatype="html">
+        <source>North Star</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">65</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">115</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.CRMOrder" datatype="html">
+        <source>Order</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">72</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.CRMLead" datatype="html">
+        <source>Lead</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">79</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.actions" datatype="html">
+        <source>Actions</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">86</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">109</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.approvals" datatype="html">
+        <source>Approvals</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">87</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">110</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.assignee" datatype="html">
+        <source>Assignee</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">88</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">103</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">111</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">121</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">129</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.crmSetup" datatype="html">
+        <source>CRM Setup</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">89</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">122</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">130</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.custom_fields" datatype="html">
+        <source>Custom Fields</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">90</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">113</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">123</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">131</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.date" datatype="html">
+        <source>Date</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">91</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">104</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">114</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">124</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">132</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.parent_task" datatype="html">
+        <source>Parent Task</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">92</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.shuttleTask" datatype="html">
+        <source>Shuttle Task</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">93</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">116</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.status" datatype="html">
+        <source>Status</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">94</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">125</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">133</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.tags" datatype="html">
+        <source>Tags</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">95</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">99</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">105</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">117</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">134</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="groupSettings.shareFiles" datatype="html">
         <source>Share files with the organization</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
-          <context context-type="linenumber">40</context>
+          <context context-type="linenumber">145</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupSettings.makesAllFilesAccessible" datatype="html">
         <source>This option makes all the files from this group accessible to the entire organization</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
-          <context context-type="linenumber">41</context>
+          <context context-type="linenumber">146</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupSettings.enableRAG" datatype="html">
         <source>Enable restricted access groups</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
-          <context context-type="linenumber">51</context>
+          <context context-type="linenumber">156</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupSettings.RAGAllowAdminsToChose" datatype="html">
         <source>RAG is the option for creating special bulks of users inside a group, in order to give them fine-grained control over something.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> If you want only a certain group of users to see a task, or to edit a board section, or view/edit/delete a file etc.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
-          <context context-type="linenumber">52</context>
+          <context context-type="linenumber">157</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupSettings.manageRAG" datatype="html">
         <source>Manage RAG</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
-          <context context-type="linenumber">53</context>
+          <context context-type="linenumber">158</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupSettings.enableProjectFeatures" datatype="html">
         <source>Enable Project Features</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
-          <context context-type="linenumber">63</context>
+          <context context-type="linenumber">168</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupSettings.enableAdvancedProjectFunctionalities" datatype="html">
         <source> This will enable all advanced project related functionalities like: timeline, project planning etc.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
-          <context context-type="linenumber">64</context>
+          <context context-type="linenumber">169</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupSettings.enableTaskShuttle" datatype="html">
         <source>Enable Task Shuttle</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
-          <context context-type="linenumber">99</context>
+          <context context-type="linenumber">204</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupSettings.taskShuttleAllowYourGroup" datatype="html">
         <source>Task Shuttle allows your group to receive tasks from other groups. Select the section that will receive all Shuttle Tasks.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
-          <context context-type="linenumber">101</context>
+          <context context-type="linenumber">206</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupSettings.freezeDueDate" datatype="html">
         <source>FREEZE Date change for other members?</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
-          <context context-type="linenumber">137</context>
+          <context context-type="linenumber">242</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupSettings.freezeDueDateDescription" datatype="html">
         <source> When this is ON, only GM and task creator will be able to change the dates of a task.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
-          <context context-type="linenumber">138</context>
+          <context context-type="linenumber">243</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupSettings.backgroundImage" datatype="html">
         <source>Select an image to be used as background in the group.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
-          <context context-type="linenumber">145</context>
+          <context context-type="linenumber">250</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupSettings.selectImageº" datatype="html">
         <source> Select Image </source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
-          <context context-type="linenumber">148,150</context>
+          <context context-type="linenumber">253,255</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupSettings.backgroundColor" datatype="html">
         <source>Select a color to be used as background in the group.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
-          <context context-type="linenumber">167</context>
+          <context context-type="linenumber">272</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupSettings.selectColor" datatype="html">
         <source>Select Color</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
-          <context context-type="linenumber">170</context>
+          <context context-type="linenumber">275</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupSettings.timeTrackingCategories" datatype="html">
         <source>Manage the categories for time tracking.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
-          <context context-type="linenumber">187</context>
+          <context context-type="linenumber">292</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupSettings.manageCategories" datatype="html">
         <source> Manage Categories </source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
-          <context context-type="linenumber">190,192</context>
+          <context context-type="linenumber">295,297</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupSettings.areYouSure" datatype="html">
         <source>Are you sure?</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">82</context>
+          <context context-type="linenumber">98</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupSettings.backgroundImageCompletelyRemoved" datatype="html">
         <source>By doing this, the back-ground image of the group will be completely removed!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">82</context>
+          <context context-type="linenumber">98</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupSettings.pleaseWaitsavingSettings" datatype="html">
         <source>Please wait we are saving the new setting...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">85</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">126</context>
+          <context context-type="linenumber">101</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
@@ -4701,77 +4905,85 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">235</context>
+          <context context-type="linenumber">158</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">297</context>
+          <context context-type="linenumber">251</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">312</context>
+          <context context-type="linenumber">313</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">350</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">365</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupSettings.settingsSaved" datatype="html">
         <source>Settings saved to your group!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">91</context>
+          <context context-type="linenumber">107</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">132</context>
+          <context context-type="linenumber">148</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">149</context>
+          <context context-type="linenumber">165</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">160</context>
+          <context context-type="linenumber">176</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">171</context>
+          <context context-type="linenumber">187</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">182</context>
+          <context context-type="linenumber">198</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">204</context>
+          <context context-type="linenumber">220</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">215</context>
+          <context context-type="linenumber">231</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">226</context>
+          <context context-type="linenumber">242</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">289</context>
+          <context context-type="linenumber">305</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">304</context>
+          <context context-type="linenumber">342</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">317</context>
+          <context context-type="linenumber">357</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">370</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupSettings.unableToSaveGroupSettings" datatype="html">
         <source>Unable to save the settings to your group, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">94</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">135</context>
+          <context context-type="linenumber">110</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
@@ -4779,39 +4991,47 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">162</context>
+          <context context-type="linenumber">167</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">173</context>
+          <context context-type="linenumber">178</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">184</context>
+          <context context-type="linenumber">189</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">206</context>
+          <context context-type="linenumber">200</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">217</context>
+          <context context-type="linenumber">222</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">228</context>
+          <context context-type="linenumber">233</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">291</context>
+          <context context-type="linenumber">244</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">306</context>
+          <context context-type="linenumber">307</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">319</context>
+          <context context-type="linenumber">344</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">359</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">372</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCFDialog.categorys" datatype="html">
@@ -7074,11 +7294,11 @@
         <source>Unable to connect to the server, please try again later!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/groups-list/groups-list.component.ts</context>
-          <context context-type="linenumber">79</context>
+          <context context-type="linenumber">80</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/groups-list/groups-list.component.ts</context>
-          <context context-type="linenumber">86</context>
+          <context context-type="linenumber">87</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groups.groups" datatype="html">
@@ -18868,317 +19088,317 @@
         <source>Search task</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">73</context>
+          <context context-type="linenumber">74</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.unableToConnectToServer" datatype="html">
         <source>Unable to connect to the server, please try again later!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">119</context>
+          <context context-type="linenumber">120</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">130</context>
+          <context context-type="linenumber">131</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.pleaseWaitWeAreCloning" datatype="html">
         <source>Please wait we are cloning the task...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">244</context>
+          <context context-type="linenumber">245</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.taskCloned" datatype="html">
         <source>👍 Task cloned!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">251</context>
+          <context context-type="linenumber">252</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.errorCliningTask" datatype="html">
         <source>Error while cloning the task!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">254</context>
+          <context context-type="linenumber">255</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.areYouSure" datatype="html">
         <source>Are you sure?</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">283</context>
+          <context context-type="linenumber">284</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">301</context>
+          <context context-type="linenumber">302</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">369</context>
+          <context context-type="linenumber">370</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">388</context>
+          <context context-type="linenumber">389</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">433</context>
+          <context context-type="linenumber">434</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">464</context>
+          <context context-type="linenumber">465</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">481</context>
+          <context context-type="linenumber">482</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">495</context>
+          <context context-type="linenumber">496</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.taskWillBeCopied" datatype="html">
         <source>By doing this the task will be copied to the selected group!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">283</context>
+          <context context-type="linenumber">284</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.pleaseWaitWeAreCopy" datatype="html">
         <source>Please wait we are copy the task...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">286</context>
+          <context context-type="linenumber">287</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.taskCopied" datatype="html">
         <source>👍 Task Copied!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">289</context>
+          <context context-type="linenumber">290</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.errorWhileCopyingTask" datatype="html">
         <source>Error while copying the task!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">292</context>
+          <context context-type="linenumber">293</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.taskWillBeMoved" datatype="html">
         <source>By doing this the task will be moved to the selected group!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">301</context>
+          <context context-type="linenumber">302</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.pleaseWaitWeMoveTask" datatype="html">
         <source>Please wait we are move the task...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">304</context>
+          <context context-type="linenumber">305</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.taskMoved" datatype="html">
         <source>👍 Task moved!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">308</context>
+          <context context-type="linenumber">309</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.errorWhilemovingTask" datatype="html">
         <source>Error while moving the task!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">311</context>
+          <context context-type="linenumber">312</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.taskWillBeChangeToParentTask" datatype="html">
         <source>By doing this the task will change its parent task!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">369</context>
+          <context context-type="linenumber">370</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.taskWillBeChangeToDependencyTask" datatype="html">
         <source>By doing this the task will change its dependency task!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">388</context>
+          <context context-type="linenumber">389</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.taskWillBeRemoveItsDependencyTask" datatype="html">
         <source>By doing this the task will remove its dependency task!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">433</context>
+          <context context-type="linenumber">434</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.taskWillChangeContentTemplate" datatype="html">
         <source>By doing this the task will change the content of the template!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">464</context>
+          <context context-type="linenumber">465</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.pleaseWaitUpdetingTemplate" datatype="html">
         <source>Please wait, while we are updating the template for you...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">467</context>
+          <context context-type="linenumber">468</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.templateUpdated" datatype="html">
         <source>Template updated!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">474</context>
+          <context context-type="linenumber">475</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.unexpectedErrorOccuredWhileUpdatingTemplate" datatype="html">
         <source>An unexpected error occurred while updating the template, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">476</context>
+          <context context-type="linenumber">477</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.templateWillBeDeleted" datatype="html">
         <source>By doing this the template will be deleted!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">481</context>
+          <context context-type="linenumber">482</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.pleaseWaitDeletingTemplate" datatype="html">
         <source>Please wait, while we are deleting the template for you...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">484</context>
+          <context context-type="linenumber">485</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.templateDeleted" datatype="html">
         <source>Template deleted!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">488</context>
+          <context context-type="linenumber">489</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.unexpectedErrorOccuredWhileDeletingTemplate" datatype="html">
         <source>An unexpected error occurred while deleting the template, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">490</context>
+          <context context-type="linenumber">491</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.taskWillBeChanged" datatype="html">
         <source>By doing this the task will change the content of the task!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">495</context>
+          <context context-type="linenumber">496</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.pleaseWaitUpdatingTask" datatype="html">
         <source>Please wait, while we are updating the task for you...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">498</context>
+          <context context-type="linenumber">499</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.taskUpdated" datatype="html">
         <source>Task updated!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">502</context>
+          <context context-type="linenumber">503</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.connectionError" datatype="html">
         <source>Sorry, we are having a hard time connecting to the server. You have a poor connection. The task can&apos;t be created.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">507</context>
+          <context context-type="linenumber">508</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.unableToCreatePost" datatype="html">
         <source>Unable to create task, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">509</context>
+          <context context-type="linenumber">510</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.createTemplate" datatype="html">
         <source>Create Template</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">524</context>
+          <context context-type="linenumber">525</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.pleaseWaitCreatingTemplate" datatype="html">
         <source>Please wait, while we are creating the template for you...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">526</context>
+          <context context-type="linenumber">527</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.templateCreated" datatype="html">
         <source>Template created!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">531</context>
+          <context context-type="linenumber">532</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.unexpectedErrorOccuredWhileCreatingTemplate" datatype="html">
         <source>An unexpected error occurred while creating the template, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">533</context>
+          <context context-type="linenumber">534</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.templateNameCannotBeEmpty" datatype="html">
         <source>Template name can&apos;t be empty!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">536</context>
+          <context context-type="linenumber">537</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.tryToAddName" datatype="html">
         <source>Try to add a name</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">549</context>
+          <context context-type="linenumber">550</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.pleaseWaitWeAreSavingTask" datatype="html">
         <source>Please wait we are saving the task...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">569</context>
+          <context context-type="linenumber">570</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">633</context>
+          <context context-type="linenumber">634</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.taskSave" datatype="html">
         <source>👍 Task saved!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">574</context>
+          <context context-type="linenumber">575</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">645</context>
+          <context context-type="linenumber">646</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.errorWhileSavingTask" datatype="html">
         <source>Error while saving the task!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">577</context>
+          <context context-type="linenumber">578</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">648</context>
+          <context context-type="linenumber">649</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTimeTrackingList.name" datatype="html">
@@ -19360,56 +19580,56 @@
         <source> Task Status</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/crm-order-dialog/crm-order-dialog.component.html</context>
-          <context context-type="linenumber">155</context>
+          <context context-type="linenumber">159</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmOrderDialog.status" datatype="html">
         <source>Status</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/crm-order-dialog/crm-order-dialog.component.html</context>
-          <context context-type="linenumber">158</context>
+          <context context-type="linenumber">162</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmOrderDialog.section" datatype="html">
         <source> Section </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/crm-order-dialog/crm-order-dialog.component.html</context>
-          <context context-type="linenumber">174,176</context>
+          <context context-type="linenumber">178,180</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmOrderDialog.assignee" datatype="html">
         <source>Assignee</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/crm-order-dialog/crm-order-dialog.component.html</context>
-          <context context-type="linenumber">202</context>
+          <context context-type="linenumber">206</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmOrderDialog.assignedBy" datatype="html">
         <source>Assigned by</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/crm-order-dialog/crm-order-dialog.component.html</context>
-          <context context-type="linenumber">214</context>
+          <context context-type="linenumber">218</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmOrderDialog.createdBy" datatype="html">
         <source>Created by</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/crm-order-dialog/crm-order-dialog.component.html</context>
-          <context context-type="linenumber">231</context>
+          <context context-type="linenumber">235</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmOrderDialog.on" datatype="html">
         <source>on <x id="INTERPOLATION" equiv-text="{{ postData?.created_date | date: &apos;MMM dd, yyyy&apos;}}"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/crm-order-dialog/crm-order-dialog.component.html</context>
-          <context context-type="linenumber">244,245</context>
+          <context context-type="linenumber">248,249</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmOrderDialog.customFields" datatype="html">
         <source>Custom fields</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/crm-order-dialog/crm-order-dialog.component.html</context>
-          <context context-type="linenumber">250</context>
+          <context context-type="linenumber">254</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmOrderDialog.cfSearchPlaceholder" datatype="html">
@@ -19531,63 +19751,63 @@
         <source> Task Status</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/crm-task-dialog/crm-task-dialog.component.html</context>
-          <context context-type="linenumber">131</context>
+          <context context-type="linenumber">135</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmTaskDialog.status" datatype="html">
         <source>Status</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/crm-task-dialog/crm-task-dialog.component.html</context>
-          <context context-type="linenumber">134</context>
+          <context context-type="linenumber">138</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmTaskDialog.section" datatype="html">
         <source> Section </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/crm-task-dialog/crm-task-dialog.component.html</context>
-          <context context-type="linenumber">150,152</context>
+          <context context-type="linenumber">154,156</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmTaskDialog.assignee" datatype="html">
         <source>Assignee</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/crm-task-dialog/crm-task-dialog.component.html</context>
-          <context context-type="linenumber">178</context>
+          <context context-type="linenumber">182</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmTaskDialog.assignedBy" datatype="html">
         <source>Assigned by</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/crm-task-dialog/crm-task-dialog.component.html</context>
-          <context context-type="linenumber">190</context>
+          <context context-type="linenumber">194</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmTaskDialog.createdBy" datatype="html">
         <source>Created by</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/crm-task-dialog/crm-task-dialog.component.html</context>
-          <context context-type="linenumber">207</context>
+          <context context-type="linenumber">211</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmTaskDialog.on" datatype="html">
         <source>on <x id="INTERPOLATION" equiv-text="{{ postData?.created_date | date: &apos;MMM dd, yyyy&apos;}}"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/crm-task-dialog/crm-task-dialog.component.html</context>
-          <context context-type="linenumber">220,221</context>
+          <context context-type="linenumber">224,225</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmTaskDialog.tags" datatype="html">
         <source>Tags</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/crm-task-dialog/crm-task-dialog.component.html</context>
-          <context context-type="linenumber">227</context>
+          <context context-type="linenumber">231</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmTaskDialog.customFields" datatype="html">
         <source>Custom fields</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/crm-task-dialog/crm-task-dialog.component.html</context>
-          <context context-type="linenumber">241</context>
+          <context context-type="linenumber">245</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmTaskDialog.cfSearchPlaceholder" datatype="html">
@@ -19688,35 +19908,35 @@
         <source>Assignee</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/event-post-dialog/event-post-dialog.component.html</context>
-          <context context-type="linenumber">107</context>
+          <context context-type="linenumber">112</context>
         </context-group>
       </trans-unit>
       <trans-unit id="eventPostDialog.assignedBy" datatype="html">
         <source>Assigned by</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/event-post-dialog/event-post-dialog.component.html</context>
-          <context context-type="linenumber">119</context>
+          <context context-type="linenumber">124</context>
         </context-group>
       </trans-unit>
       <trans-unit id="eventPostDialog.createdBy" datatype="html">
         <source>Created by</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/event-post-dialog/event-post-dialog.component.html</context>
-          <context context-type="linenumber">136</context>
+          <context context-type="linenumber">141</context>
         </context-group>
       </trans-unit>
       <trans-unit id="eventPostDialog.on" datatype="html">
         <source>on <x id="INTERPOLATION" equiv-text="{{ postData?.created_date | date: &apos;MMM dd, yyyy&apos;}}"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/event-post-dialog/event-post-dialog.component.html</context>
-          <context context-type="linenumber">149,150</context>
+          <context context-type="linenumber">154,155</context>
         </context-group>
       </trans-unit>
       <trans-unit id="eventPostDialog.tags" datatype="html">
         <source>Tags</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/event-post-dialog/event-post-dialog.component.html</context>
-          <context context-type="linenumber">155</context>
+          <context context-type="linenumber">160</context>
         </context-group>
       </trans-unit>
       <trans-unit id="eventPostDialog.plesaeWaitWeAreUpdaing" datatype="html">
@@ -19798,7 +20018,7 @@
         <source>Tags</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/normal-post-dialog/normal-post-dialog.component.html</context>
-          <context context-type="linenumber">94</context>
+          <context context-type="linenumber">95</context>
         </context-group>
       </trans-unit>
       <trans-unit id="normalPostDialog.plesaeWaitWeAreUpdaing" datatype="html">
@@ -19858,138 +20078,155 @@
       <trans-unit id="taskDialog.save" datatype="html">
         <source> Save </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.html</context>
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.html</context>
           <context context-type="linenumber">54,56</context>
         </context-group>
-      </trans-unit>
-      <trans-unit id="taskDialog.addSubtask" datatype="html">
-        <source> + Add Subtasks </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.html</context>
-          <context context-type="linenumber">61,63</context>
+          <context context-type="linenumber">54,56</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskDialog.addTarget" datatype="html">
         <source> + Add Target </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.html</context>
-          <context context-type="linenumber">67,69</context>
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.html</context>
+          <context context-type="linenumber">60,62</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskDialog.subtasks" datatype="html">
         <source>Subtasks</source>
         <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.html</context>
+          <context context-type="linenumber">74</context>
+        </context-group>
+        <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.html</context>
-          <context context-type="linenumber">81</context>
+          <context context-type="linenumber">75</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskDialog.comments" datatype="html">
         <source>Comments</source>
         <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.html</context>
+          <context context-type="linenumber">92</context>
+        </context-group>
+        <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.html</context>
-          <context context-type="linenumber">99</context>
+          <context context-type="linenumber">93</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskDialog.northStarStats" datatype="html">
         <source>North Star Stats</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.html</context>
-          <context context-type="linenumber">116</context>
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.html</context>
+          <context context-type="linenumber">109</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskDialog.timeTracking" datatype="html">
         <source>Time tracking</source>
         <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.html</context>
+          <context context-type="linenumber">124</context>
+        </context-group>
+        <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.html</context>
-          <context context-type="linenumber">131</context>
+          <context context-type="linenumber">110</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskDialog.approvalsHistory" datatype="html">
         <source>Approvals History</source>
         <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.html</context>
+          <context context-type="linenumber">140</context>
+        </context-group>
+        <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.html</context>
-          <context context-type="linenumber">147</context>
+          <context context-type="linenumber">126</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskDialog.changeLog" datatype="html">
         <source>Change Log</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.html</context>
-          <context context-type="linenumber">163</context>
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.html</context>
+          <context context-type="linenumber">156</context>
         </context-group>
-      </trans-unit>
-      <trans-unit id="taskDialog.parentTask" datatype="html">
-        <source> Parent task</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.html</context>
-          <context context-type="linenumber">182</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="taskDialog.taskStatus" datatype="html">
-        <source> Task Status</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.html</context>
-          <context context-type="linenumber">207</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="taskDialog.status" datatype="html">
-        <source>Status</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.html</context>
-          <context context-type="linenumber">210</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="taskDialog.section" datatype="html">
-        <source> Section </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.html</context>
-          <context context-type="linenumber">239,241</context>
+          <context context-type="linenumber">142</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskDialog.assignee" datatype="html">
         <source>Assignee</source>
         <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.html</context>
+          <context context-type="linenumber">206</context>
+        </context-group>
+        <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.html</context>
-          <context context-type="linenumber">284</context>
+          <context context-type="linenumber">261</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskDialog.assignedBy" datatype="html">
         <source>Assigned by</source>
         <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.html</context>
+          <context context-type="linenumber">218</context>
+        </context-group>
+        <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.html</context>
-          <context context-type="linenumber">296</context>
+          <context context-type="linenumber">273</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskDialog.createdBy" datatype="html">
         <source>Created by</source>
         <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.html</context>
+          <context context-type="linenumber">235</context>
+        </context-group>
+        <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.html</context>
-          <context context-type="linenumber">313</context>
+          <context context-type="linenumber">290</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskDialog.on" datatype="html">
         <source>on <x id="INTERPOLATION" equiv-text="{{ postData?.created_date | date: &apos;MMM dd, yyyy&apos;}}"/></source>
         <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.html</context>
+          <context context-type="linenumber">248,249</context>
+        </context-group>
+        <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.html</context>
-          <context context-type="linenumber">326,327</context>
+          <context context-type="linenumber">303,304</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskDialog.tags" datatype="html">
         <source>Tags</source>
         <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.html</context>
+          <context context-type="linenumber">255</context>
+        </context-group>
+        <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.html</context>
-          <context context-type="linenumber">333</context>
+          <context context-type="linenumber">319</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskDialog.customFields" datatype="html">
         <source>Custom fields</source>
         <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.html</context>
+          <context context-type="linenumber">269</context>
+        </context-group>
+        <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.html</context>
-          <context context-type="linenumber">347</context>
+          <context context-type="linenumber">332</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskDialog.cfSearchPlaceholder" datatype="html">
         <source>Search</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.ts</context>
+          <context context-type="linenumber">114</context>
+        </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.ts</context>
           <context context-type="linenumber">114</context>
@@ -19997,6 +20234,22 @@
       </trans-unit>
       <trans-unit id="taskDialog.plesaeWaitWeAreUpdaing" datatype="html">
         <source>Please wait we are updating the contents...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.ts</context>
+          <context context-type="linenumber">336</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.ts</context>
+          <context context-type="linenumber">446</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.ts</context>
+          <context context-type="linenumber">533</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.ts</context>
+          <context context-type="linenumber">599</context>
+        </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.ts</context>
           <context context-type="linenumber">336</context>
@@ -20017,6 +20270,22 @@
       <trans-unit id="taskDialog.detailsUpdated" datatype="html">
         <source>Details updated!</source>
         <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.ts</context>
+          <context context-type="linenumber">342</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.ts</context>
+          <context context-type="linenumber">455</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.ts</context>
+          <context context-type="linenumber">541</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.ts</context>
+          <context context-type="linenumber">608</context>
+        </context-group>
+        <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.ts</context>
           <context context-type="linenumber">342</context>
         </context-group>
@@ -20035,6 +20304,22 @@
       </trans-unit>
       <trans-unit id="taskDialog.unableToUpdateDetails" datatype="html">
         <source>Unable to update the details, please try again!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.ts</context>
+          <context context-type="linenumber">345</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.ts</context>
+          <context context-type="linenumber">458</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.ts</context>
+          <context context-type="linenumber">544</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.ts</context>
+          <context context-type="linenumber">611</context>
+        </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.ts</context>
           <context context-type="linenumber">345</context>
@@ -20055,12 +20340,20 @@
       <trans-unit id="taskDialog.pleaseWaitWeAreDeleting" datatype="html">
         <source>Please wait we are deleting the post...</source>
         <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.ts</context>
+          <context context-type="linenumber">621</context>
+        </context-group>
+        <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.ts</context>
           <context context-type="linenumber">621</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskDialog.postDeleted" datatype="html">
         <source>Post deleted!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.ts</context>
+          <context context-type="linenumber">629</context>
+        </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.ts</context>
           <context context-type="linenumber">629</context>
@@ -20069,8 +20362,47 @@
       <trans-unit id="taskDialog.unableToDeletePost" datatype="html">
         <source>Unable to delete post, please try again!</source>
         <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/north-star-dialog/north-star-dialog.component.ts</context>
+          <context context-type="linenumber">631</context>
+        </context-group>
+        <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.ts</context>
           <context context-type="linenumber">631</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="taskDialog.addSubtask" datatype="html">
+        <source> + Add Subtasks </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.html</context>
+          <context context-type="linenumber">61,63</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="taskDialog.parentTask" datatype="html">
+        <source> Parent task</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.html</context>
+          <context context-type="linenumber">168</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="taskDialog.taskStatus" datatype="html">
+        <source> Task Status</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.html</context>
+          <context context-type="linenumber">184</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="taskDialog.status" datatype="html">
+        <source>Status</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.html</context>
+          <context context-type="linenumber">187</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="taskDialog.section" datatype="html">
+        <source> Section </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/posts/group-post/dialogs/task-dialog/task-dialog.component.html</context>
+          <context context-type="linenumber">216,218</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newTask.newTask" datatype="html">
@@ -24228,42 +24560,42 @@
         <source>Subscription pending</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/utility-service/utility.service.ts</context>
-          <context context-type="linenumber">307</context>
+          <context context-type="linenumber">308</context>
         </context-group>
       </trans-unit>
       <trans-unit id="utilityService.daysTrialLeft" datatype="html">
         <source><x id="PH" equiv-text="timeRemaining"/> days trial left.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/utility-service/utility.service.ts</context>
-          <context context-type="linenumber">308</context>
+          <context context-type="linenumber">309</context>
         </context-group>
       </trans-unit>
       <trans-unit id="utilityService.noRightToOpenPost" datatype="html">
         <source>You does not have rights to access the post. Contact with the Manager!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/utility-service/utility.service.ts</context>
-          <context context-type="linenumber">386</context>
+          <context context-type="linenumber">389</context>
         </context-group>
       </trans-unit>
       <trans-unit id="utilityService.areYouSure" datatype="html">
         <source>Are you sure?</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/utility-service/utility.service.ts</context>
-          <context context-type="linenumber">628</context>
+          <context context-type="linenumber">657</context>
         </context-group>
       </trans-unit>
       <trans-unit id="utilityService.youWontRevert" datatype="html">
         <source>You won&apos;t be able to revert this!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/utility-service/utility.service.ts</context>
-          <context context-type="linenumber">629</context>
+          <context context-type="linenumber">658</context>
         </context-group>
       </trans-unit>
       <trans-unit id="utilityService.yesSure" datatype="html">
         <source>Yes, I am sure!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/utility-service/utility.service.ts</context>
-          <context context-type="linenumber">634</context>
+          <context context-type="linenumber">663</context>
         </context-group>
       </trans-unit>
     </body>

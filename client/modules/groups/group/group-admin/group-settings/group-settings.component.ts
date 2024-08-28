@@ -31,7 +31,7 @@ export class GroupSettingsComponent implements OnInit {
 
   groupSections: any = [];
 
-  selectedCard = 'task'; // task/northStar/CRMOrder/CRMLead
+  selectedCard = 'task'; // task/normal/event/northStar/CRMOrder/CRMLead
 
   isIndividualSubscription = false;
 
@@ -321,10 +321,6 @@ export class GroupSettingsComponent implements OnInit {
           this.groupData.dialog_properties_to_show[this.selectedCard] = [];
         }
 
-        if (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show[this.selectedCard] && this.groupData.dialog_properties_to_show[this.selectedCard]?.includes(selected.source.name)) {
-          this.groupData.dialog_properties_to_show[this.selectedCard].push(selected.source.name)
-        }
-
         const indexInGroup = (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show[this.selectedCard])
           ? this.groupData.dialog_properties_to_show[this.selectedCard].findIndex(prop => prop == selected.source.name)
           : -1;
@@ -335,7 +331,7 @@ export class GroupSettingsComponent implements OnInit {
           }
         } else {
           if (indexInGroup >= 0) {
-            this.groupData.dialog_properties_to_show[this.selectedCard].splice(indexInGroup, 1)
+            this.groupData.dialog_properties_to_show[this.selectedCard].splice(indexInGroup, 1);
           }
         }
 

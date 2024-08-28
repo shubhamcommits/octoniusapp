@@ -90,9 +90,14 @@
     </div>
 
     <!-- Top Right Section starts -->
-    <div class="post-properties">
+    <div *ngIf="!!groupData
+        && (!!groupData.dialog_properties_to_show
+            && !!groupData.dialog_properties_to_show.normal
+            && (groupData?.dialog_properties_to_show?.normal?.includes('date') || groupData?.dialog_properties_to_show?.normal?.includes('assignee')
+                 || groupData?.dialog_properties_to_show?.normal?.includes('tags')))"
+      class="post-properties">
         <!-- Dates starts -->
-        <app-post-dates
+        <app-post-dates *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.normal && groupData?.dialog_properties_to_show?.normal?.includes('date')"
           [userData]="userData"
           [postData]="postData"
           [groupData]="groupData"
@@ -103,7 +108,7 @@
         <!-- Dates ends -->
 
         <!-- Assignee Modal starts -->
-        <div class="content-box">
+        <div class="content-box" *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.normal && groupData?.dialog_properties_to_show?.normal?.includes('assignee')">
             <p class="box-title" i18n="@@eventPostDialog.assignee">Assignee</p>
 
             <app-multiple-assignments
@@ -151,7 +156,7 @@
             </div>
         </div>
 
-        <div class="content-box">
+        <div class="content-box" *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.normal && groupData?.dialog_properties_to_show?.normal?.includes('tags')">
             <p class="box-title" i18n="@@eventPostDialog.tags">Tags</p>
 
             <!-- Post Tags starts -->
