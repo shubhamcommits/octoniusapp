@@ -101,7 +101,7 @@ routes.put('/crmCustomFieldsToShow', crm.updateCRMCustomFieldsToShow);
 
 //////////////
 // PUT - migrateCRM
-routes.put('/migrateCRM', crm.migrateCRMFromGroupToGlobal);
+// routes.put('/migrateCRM', crm.migrateCRMFromGroupToGlobal);
 
 /*  ===================
  *  -- EXPORT ROUTES --
