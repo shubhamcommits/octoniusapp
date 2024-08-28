@@ -74,7 +74,7 @@ export class CRMSetupPageComponent implements OnInit, OnDestroy, AfterContentChe
 	async ngOnInit() {
 		// Start the loading spinner
 		this.utilityService.updateIsLoadingSpinnerSource(true);
-console.log(this.storageService.getLocalData('authToken'));
+
 		// Send Updates to router state
 		this.publicFunctions.sendUpdatesToRouterState({
 			state: 'work'
