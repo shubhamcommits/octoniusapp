@@ -44,23 +44,35 @@
                 <span i18n="@@groupSettings.task">Task</span>
               </button>
             </div>
+
             <div class="row mt-1">
               <button mat-button class="btn btn-primary" [ngClass]="selectedCard == 'normal' ? 'active' : ''" (click)="selectedCard='normal'">
                 <span i18n="@@groupSettings.normalPost">Normal Post</span>
               </button>
             </div>
+
+            <!--
+            <div class="row mt-1">
+              <button mat-button class="btn btn-primary" [ngClass]="selectedCard == 'event' ? 'active' : ''" (click)="selectedCard='event'">
+                <span i18n="@@groupSettings.event">Event</span>
+              </button>
+            </div>
+            -->
+
             <div class="row mt-1">
               <button mat-button class="btn btn-primary" [ngClass]="selectedCard == 'northStar' ? 'active' : ''" (click)="selectedCard='northStar'">
                 <i class="material-icons-outlined mr-2" style="color: #5E2FE5; line-height: 38px;">explore</i>
                 <span i18n="@@groupSettings.northStar">North Star</span>
               </button>
             </div>
+
             <div class="row mt-1" *ngIf="groupData.type == 'crm'">
               <button mat-button class="btn btn-primary" [ngClass]="selectedCard == 'CRMOrder' ? 'active' : ''" (click)="selectedCard='CRMOrder'">
                 <i class="material-icons-outlined mr-2" style="line-height: 38px;">sell</i>
                 <span i18n="@@groupSettings.CRMOrder">Order</span>
               </button>
             </div>
+
             <div class="row mt-1" *ngIf="groupData.type == 'crm'">
               <button mat-button class="btn btn-primary" [ngClass]="selectedCard == 'CRMLead' ? 'active' : ''" (click)="selectedCard='CRMLead'">
                 <i class="material-icons-outlined mr-2" style="line-height: 38px;">attach_money</i>
@@ -84,6 +96,12 @@
             </div>
 
             <div class="pages" *ngIf="selectedCard == 'normal'">
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('tags')" [name]="'tags'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.tags">Tags</mat-checkbox>
+            </div>
+
+            <div class="pages" *ngIf="selectedCard == 'event'">
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('assignee')" [name]="'assignee'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.assignee">Assignee</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('date')" [name]="'date'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.date">Date</mat-checkbox>
               <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('tags')" [name]="'tags'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.tags">Tags</mat-checkbox>
             </div>
 

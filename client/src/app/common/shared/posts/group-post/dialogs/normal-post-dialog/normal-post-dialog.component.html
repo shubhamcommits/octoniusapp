@@ -89,7 +89,8 @@
     </div>
 
     <!-- Top Right Section starts -->
-    <div class="post-properties" *ngIf="!!groupData && (!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.normal && (groupData?.dialog_properties_to_show?.normal?.includes('tags')))">
+    <div *ngIf="!!groupData && (!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.normal && (groupData?.dialog_properties_to_show?.normal?.includes('tags')))"
+       class="post-properties">
         <div class="content-box" *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.normal && groupData?.dialog_properties_to_show?.normal?.includes('tags')">
             <p class="box-title" i18n="@@normalPostDialog.tags">Tags</p>
 

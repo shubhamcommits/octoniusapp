@@ -31,7 +31,7 @@ export class GroupSettingsComponent implements OnInit {
 
   groupSections: any = [];
 
-  selectedCard = 'task'; // task/normal/northStar/CRMOrder/CRMLead
+  selectedCard = 'task'; // task/normal/event/northStar/CRMOrder/CRMLead
 
   isIndividualSubscription = false;
 
