@@ -23,7 +23,7 @@ const ResourceSchema = new Schema({
     _group: {
         type: Schema.Types.ObjectId,
         ref: 'Group',
-        required: true
+        required: false
     },
     custom_fields: {
         type: Map,

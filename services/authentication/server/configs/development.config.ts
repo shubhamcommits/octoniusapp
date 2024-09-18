@@ -105,7 +105,7 @@ function devConfigInit() {
 
   process.env.STRIPE_TEAM_PRODUCT_ID = process.env.STRIPE_TEAM_PRODUCT_ID || 'prod_QGaSakpdFcDSCm'
   process.env.STRIPE_BUSINESS_PRODUCT_ID = process.env.STRIPE_BUSINESS_PRODUCT_ID || 'prod_QGaXyUXflYGnf6'
-  process.env.STRIPE_BUSINESS_PRODUCT_ID = process.env.STRIPE_ONPREMISE_PRODUCT_ID || 'prod_QGcUdQO22vzE7d'
+  process.env.STRIPE_ONPREMISE_PRODUCT_ID = process.env.STRIPE_ONPREMISE_PRODUCT_ID || 'prod_QGcUdQO22vzE7d'
 };
 
 export { devConfigInit as developmentConfig }
