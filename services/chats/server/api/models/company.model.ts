@@ -20,7 +20,7 @@ const CompanySchema = new Schema({
     _group: {
         type: Schema.Types.ObjectId,
         ref: 'Group',
-        required: true
+        required: false
     },
     _workspace: {
         type: Schema.Types.ObjectId,
