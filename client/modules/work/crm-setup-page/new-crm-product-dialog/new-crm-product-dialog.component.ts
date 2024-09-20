@@ -17,8 +17,10 @@ export class NewCRMProductDialogComponent implements OnInit {
   productData: any = {
     name: '',
     description: '',
-    _group: null
+    _workspace: null
   };
+
+  enableSave = false;
 
   imageToUpload: File;
 
@@ -46,27 +48,35 @@ export class NewCRMProductDialogComponent implements OnInit {
         this.productData = res['product'];
       });
     }
+
+    this.setEnableSave();
   }
 
   onProductInfoEdited(newProductDetails: any) {
     this.productData = newProductDetails;
+
+    this.setEnableSave();
   }
 
   onProductImageEdited(newProductImage: any) {
     this.imageToUpload = newProductImage;
+
+    this.setEnableSave();
   }
 
   saveProduct() {
-    if (!!this.productData?._id) {
-      this.crmService.updateCRMProduct(this.productData).then(res => {
-        this.productData = res['product'];
-        this.productEdited.emit(this.productData);
-      });
-    } else {
-      this.crmService.createCRMProduct(this.productData).then(res => {
-        this.productData = res['product'];
-        this.productCreated.emit(this.productData);
-      });
+    if (this.enableSave) {
+      if (!!this.productData?._id) {
+        this.crmService.updateCRMProduct(this.productData).then(res => {
+          this.productData = res['product'];
+          this.productEdited.emit(this.productData);
+        });
+      } else {
+        this.crmService.createCRMProduct(this.productData).then(res => {
+          this.productData = res['product'];
+          this.productCreated.emit(this.productData);
+        });
+      }
     }
 
     this.mdDialogRef.close();
@@ -78,6 +88,10 @@ export class NewCRMProductDialogComponent implements OnInit {
     */
   async openUploadImageDetails(content) {
    this.utilityService.openModal(content, {});
+  }
+
+  setEnableSave() {
+    this.enableSave = (!!this.productData && !!this.productData?.name && !!this.productData?._workspace);
   }
 
   closeDialog() {

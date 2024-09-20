@@ -251,7 +251,6 @@
           </ng-container>
     
           <!-- CUSTOM FIELDS START -->
-          <!--
           <ng-container [matColumnDef]="cf.name" *ngFor="let cf of crmProductCustomFieldsToShow; trackBy: utilityService.trackByIndex">
             <th mat-header-cell mat-sort-header *matHeaderCellDef>
               <div class="cf_cell">
@@ -266,12 +265,10 @@
               </div>
             </td>
           </ng-container>
-          -->
           <!-- CUSTOM FIELDS ENDS -->
     
           <ng-container matColumnDef="star">
             <th mat-header-cell *matHeaderCellDef style="text-align: right;">
-              <!--
               <div class="">
                 <i class="material-icons-outlined" style="cursor: pointer;" *ngIf="isAdmin"
                   [matMenuTriggerFor]="addColumn">add</i>
@@ -288,7 +285,6 @@
                   </mat-form-field>
                 </div>
               </mat-menu>
-              -->
             </th>
     
             <td mat-cell *matCellDef="let product" style="text-align: right;">

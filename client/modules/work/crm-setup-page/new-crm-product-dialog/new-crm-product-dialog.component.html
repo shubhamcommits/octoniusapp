@@ -55,7 +55,7 @@
                 Cancel
             </button>
 
-            <button class="btn btn-primary" (click)="saveProduct()" i18n="@@newCRMProductDialog.save" style="margin: 0 10px">
+            <button class="btn btn-primary" [disabled]="!enableSave" (click)="saveProduct()" i18n="@@newCRMProductDialog.save" style="margin: 0 10px">
                 Save
             </button>
         </div>

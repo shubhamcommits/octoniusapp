@@ -40,7 +40,7 @@
                 Cancel
             </button>
 
-            <button class="btn btn-primary" (click)="saveContact()" i18n="@@newCRMContactDialog.save" style="margin: 0 10px">
+            <button class="btn btn-primary" [disabled]="!enableSave" (click)="saveContact()" i18n="@@newCRMContactDialog.save" style="margin: 0 10px">
                 Save
             </button>
         </div>
