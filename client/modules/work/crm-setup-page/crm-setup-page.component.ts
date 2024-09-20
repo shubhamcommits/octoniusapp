@@ -115,231 +115,231 @@ export class CRMSetupPageComponent implements OnInit, OnDestroy, AfterContentChe
 		this.subSink.unsubscribe();
 	}
 
-		async initContactTable() {
-			await this.loadContactCustomFieldsToShow();
+	async initContactTable() {
+		await this.loadContactCustomFieldsToShow();
 
-			this.contacts = [...this.contacts];
+		this.contacts = [...this.contacts];
 
-			this.sortedContacts = this.contacts.slice();
-		}
+		this.sortedContacts = this.contacts.slice();
+	}
 
-		async initCompanyTable() {
-			await this.loadCompanyCustomFieldsToShow();
+	async initCompanyTable() {
+		await this.loadCompanyCustomFieldsToShow();
 
-			this.companies = [...this.companies];
+		this.companies = [...this.companies];
 
-			this.sortedCompanyData = this.companies.slice();
-		}
+		this.sortedCompanyData = this.companies.slice();
+	}
 
-		async initProductTable() {
-			await this.loadProductCustomFieldsToShow();
+	async initProductTable() {
+		await this.loadProductCustomFieldsToShow();
 
-			this.products = [...this.products];
+		this.products = [...this.products];
 
-			this.sortedProductData = this.products.slice();
-		}
+		this.sortedProductData = this.products.slice();
+	}
 
-		getContactCustomField(fieldName: string) {
-			const index = (this.crmContactCustomFields) ? this.crmContactCustomFields.findIndex((f: any) => f.name === fieldName) : -1;
-			return (index >= 0) ? this.crmContactCustomFields[index] : null;
-		}
+	getContactCustomField(fieldName: string) {
+		const index = (this.crmContactCustomFields) ? this.crmContactCustomFields.findIndex((f: any) => f.name === fieldName) : -1;
+		return (index >= 0) ? this.crmContactCustomFields[index] : null;
+	}
 
-		getCompanyCustomField(fieldName: string) {
-			const index = (this.crmCompanyCustomFields) ? this.crmCompanyCustomFields.findIndex((f: any) => f.name === fieldName) : -1;
-			return (index >= 0) ? this.crmCompanyCustomFields[index] : null;
-		}
+	getCompanyCustomField(fieldName: string) {
+		const index = (this.crmCompanyCustomFields) ? this.crmCompanyCustomFields.findIndex((f: any) => f.name === fieldName) : -1;
+		return (index >= 0) ? this.crmCompanyCustomFields[index] : null;
+	}
 
-		getProductCustomField(fieldName: string) {
-			const index = (this.crmProductCustomFields) ? this.crmProductCustomFields.findIndex((f: any) => f.name === fieldName) : -1;
-			return (index >= 0) ? this.crmProductCustomFields[index] : null;
-		}
+	getProductCustomField(fieldName: string) {
+		const index = (this.crmProductCustomFields) ? this.crmProductCustomFields.findIndex((f: any) => f.name === fieldName) : -1;
+		return (index >= 0) ? this.crmProductCustomFields[index] : null;
+	}
 
-		loadContactCustomFieldsToShow() {
-			if (!!this.workspaceData && !!this.workspaceData.crm_custom_fields_to_show) {
-				if (!this.crmContactsCustomFieldsToShow) {
-					this.crmContactsCustomFieldsToShow = [];
-				}
-				
-				this.workspaceData.crm_custom_fields_to_show.forEach(field => {
-					const cf = this.getContactCustomField(field);
-					const indexCRMCFToShow = (!!this.crmContactsCustomFieldsToShow) ? this.crmContactsCustomFieldsToShow.findIndex(cf => cf.name === field) : -1;
-					// Push the Column
-					if (cf && indexCRMCFToShow < 0 && cf.type == 'contact') {
-						this.crmContactsCustomFieldsToShow.push(cf);
-				
-						if (this.displayedContactsColumns.length - 1 >= 0) {
-							const indexDisplayedColumns = (!!this.displayedContactsColumns) ? this.displayedContactsColumns.findIndex(col => col === field.name) : -1;
-							if (indexDisplayedColumns < 0) {
-								this.displayedContactsColumns.splice(this.displayedContactsColumns.length - 1, 0, field);
-							}
+	loadContactCustomFieldsToShow() {
+		if (!!this.workspaceData && !!this.workspaceData.crm_custom_fields_to_show) {
+			if (!this.crmContactsCustomFieldsToShow) {
+				this.crmContactsCustomFieldsToShow = [];
+			}
+			
+			this.workspaceData.crm_custom_fields_to_show.forEach(field => {
+				const cf = this.getContactCustomField(field);
+				const indexCRMCFToShow = (!!this.crmContactsCustomFieldsToShow) ? this.crmContactsCustomFieldsToShow.findIndex(cf => cf.name === field) : -1;
+				// Push the Column
+				if (cf && indexCRMCFToShow < 0 && cf.type == 'contact') {
+					this.crmContactsCustomFieldsToShow.push(cf);
+			
+					if (this.displayedContactsColumns.length - 1 >= 0) {
+						const indexDisplayedColumns = (!!this.displayedContactsColumns) ? this.displayedContactsColumns.findIndex(col => col === field.name) : -1;
+						if (indexDisplayedColumns < 0) {
+							this.displayedContactsColumns.splice(this.displayedContactsColumns.length - 1, 0, field);
 						}
 					}
-				});
-			}
-		}
-
-		loadCompanyCustomFieldsToShow() {
-			if (!!this.workspaceData && !!this.workspaceData.crm_custom_fields_to_show) {
-				if (!this.crmCompanyCustomFieldsToShow) {
-					this.crmCompanyCustomFieldsToShow = [];
 				}
-				
-				this.workspaceData.crm_custom_fields_to_show.forEach(field => {
-					const cf = this.getCompanyCustomField(field);
-					const indexCRMCFToShow = (!!this.crmCompanyCustomFieldsToShow) ? this.crmCompanyCustomFieldsToShow.findIndex(cf => cf.name === field) : -1;
-					// Push the Column
-					if (cf && indexCRMCFToShow < 0 && cf.type == 'company') {
-						this.crmCompanyCustomFieldsToShow.push(cf);
-				
-						if (this.displayedCompanyColumns.length - 1 >= 0) {
-							const indexDisplayedColumns = (!!this.displayedCompanyColumns) ? this.displayedCompanyColumns.findIndex(col => col === field.name) : -1;
-							if (indexDisplayedColumns < 0) {
-								this.displayedCompanyColumns.splice(this.displayedCompanyColumns.length - 1, 0, field);
-							}
+			});
+		}
+	}
+
+	loadCompanyCustomFieldsToShow() {
+		if (!!this.workspaceData && !!this.workspaceData.crm_custom_fields_to_show) {
+			if (!this.crmCompanyCustomFieldsToShow) {
+				this.crmCompanyCustomFieldsToShow = [];
+			}
+			
+			this.workspaceData.crm_custom_fields_to_show.forEach(field => {
+				const cf = this.getCompanyCustomField(field);
+				const indexCRMCFToShow = (!!this.crmCompanyCustomFieldsToShow) ? this.crmCompanyCustomFieldsToShow.findIndex(cf => cf.name === field) : -1;
+				// Push the Column
+				if (cf && indexCRMCFToShow < 0 && cf.type == 'company') {
+					this.crmCompanyCustomFieldsToShow.push(cf);
+			
+					if (this.displayedCompanyColumns.length - 1 >= 0) {
+						const indexDisplayedColumns = (!!this.displayedCompanyColumns) ? this.displayedCompanyColumns.findIndex(col => col === field.name) : -1;
+						if (indexDisplayedColumns < 0) {
+							this.displayedCompanyColumns.splice(this.displayedCompanyColumns.length - 1, 0, field);
 						}
 					}
-				});
-			}
-		}
-
-		loadProductCustomFieldsToShow() {
-			if (!!this.workspaceData && !!this.workspaceData.crm_custom_fields_to_show) {
-				if (!this.crmProductCustomFieldsToShow) {
-					this.crmProductCustomFieldsToShow = [];
 				}
-				
-				this.workspaceData.crm_custom_fields_to_show.forEach(field => {
-					const cf = this.getProductCustomField(field);
-					const indexCRMCFToShow = (!!this.crmProductCustomFieldsToShow) ? this.crmProductCustomFieldsToShow.findIndex(cf => cf.name === field) : -1;
-					// Push the Column
-					if (cf && indexCRMCFToShow < 0 && cf.type == 'product') {
-						this.crmProductCustomFieldsToShow.push(cf);
-				
-						if (this.displayedProductColumns.length - 1 >= 0) {
-							const indexDisplayedColumns = (!!this.displayedProductColumns) ? this.displayedProductColumns.findIndex(col => col === field.name) : -1;
-							if (indexDisplayedColumns < 0) {
-								this.displayedProductColumns.splice(this.displayedProductColumns.length - 1, 0, field);
-							}
+			});
+		}
+	}
+
+	loadProductCustomFieldsToShow() {
+		if (!!this.workspaceData && !!this.workspaceData.crm_custom_fields_to_show) {
+			if (!this.crmProductCustomFieldsToShow) {
+				this.crmProductCustomFieldsToShow = [];
+			}
+			
+			this.workspaceData.crm_custom_fields_to_show.forEach(field => {
+				const cf = this.getProductCustomField(field);
+				const indexCRMCFToShow = (!!this.crmProductCustomFieldsToShow) ? this.crmProductCustomFieldsToShow.findIndex(cf => cf.name === field) : -1;
+				// Push the Column
+				if (cf && indexCRMCFToShow < 0 && cf.type == 'product') {
+					this.crmProductCustomFieldsToShow.push(cf);
+			
+					if (this.displayedProductColumns.length - 1 >= 0) {
+						const indexDisplayedColumns = (!!this.displayedProductColumns) ? this.displayedProductColumns.findIndex(col => col === field.name) : -1;
+						if (indexDisplayedColumns < 0) {
+							this.displayedProductColumns.splice(this.displayedProductColumns.length - 1, 0, field);
 						}
 					}
-				});
-			}
-		}
-
-		sortContactData(sort: Sort) {
-			const direction = sort.direction;
-			let property = sort.active;
-			let directionValue = (direction == 'asc') ? 1 : -1;
-
-			const data = this.contacts.slice();
-			if (!property || direction === '') {
-				this.sortedContacts = data;
-				return;
-			}
-
-			this.sortedContacts = data.sort((a, b) => {
-				switch (property) {
-					case 'company':
-						return this.utilityService.compare(a?._company.name, b?._company.name, directionValue);
-					
-					case 'phone':
-					case 'email':
-					case 'link':
-						property += 's';
-						return this.utilityService.compare(a[property][0], b[property][0], directionValue);
-					default:
-						const index = (this.crmContactCustomFields) ? this.crmContactCustomFields.findIndex((f: any) => f.name === property) : -1;
-						return (index < 0) ? 
-							this.utilityService.compare(a[property], b[property], directionValue) :
-							this.utilityService.compare(a.crm_custom_fields[property], b.crm_custom_fields[property], directionValue);
 				}
 			});
 		}
+	}
 
-		sortCompanyData(sort: Sort) {
-			const direction = sort.direction;
-			let property = sort.active;
-			let directionValue = (direction == 'asc') ? 1 : -1;
+	sortContactData(sort: Sort) {
+		const direction = sort.direction;
+		let property = sort.active;
+		let directionValue = (direction == 'asc') ? 1 : -1;
 
-			const data = this.companies.slice();
-			if (!property || direction === '') {
-				this.sortedCompanyData = data;
-				return;
-			}
-
-			this.sortedCompanyData = data.sort((a, b) => {
-				switch (property) {
-					case 'name':
-					case 'description':
-						return this.utilityService.compare(a[property], b[property], directionValue);
-					default:
-						const index = (this.crmCompanyCustomFields) ? this.crmCompanyCustomFields.findIndex((f: any) => f.name === property) : -1;
-						return (index < 0) ? 
-							this.utilityService.compare(a[property], b[property], directionValue) :
-							this.utilityService.compare(a.crm_custom_fields[property], b.crm_custom_fields[property], directionValue);
-				}
-			});
+		const data = this.contacts.slice();
+		if (!property || direction === '') {
+			this.sortedContacts = data;
+			return;
 		}
 
-		sortProductData(sort: Sort) {
-			const direction = sort.direction;
-			let property = sort.active;
-			let directionValue = (direction == 'asc') ? 1 : -1;
-
-			const data = this.companies.slice();
-			if (!property || direction === '') {
-				this.sortedProductData = data;
-				return;
-			}
-
-			this.sortedProductData = data.sort((a, b) => {
-				switch (property) {
-					case 'name':
-					case 'description':
-						return this.utilityService.compare(a[property], b[property], directionValue);
-					default:
-						const index = (this.crmProductCustomFields) ? this.crmProductCustomFields.findIndex((f: any) => f.name === property) : -1;
-						return (index < 0) ? 
-							this.utilityService.compare(a[property], b[property], directionValue) :
-							this.utilityService.compare(a.crm_custom_fields[property], b.crm_custom_fields[property], directionValue);
-				}
-			});
-		}
-
-		openContactDialog(contactId?: string) {
-			const dialogRef = this.dialog.open(NewCRMContactDialogComponent, {
-			disableClose: true,
-			hasBackdrop: true,
-			width: '75%',
-			height: '85%',
-			data: {
-				contactId: contactId
-			}
-			});
-
-			const contactEditedSubs = dialogRef.componentInstance.contactEdited.subscribe(async (data) => {
-				const index = (this.contacts) ? this.contacts.findIndex(c => c._id == data._id) : -1;
-				if (index >= 0) {
-					this.contacts[index] = data;
-				}
+		this.sortedContacts = data.sort((a, b) => {
+			switch (property) {
+				case 'company':
+					return this.utilityService.compare(a?._company.name, b?._company.name, directionValue);
 				
-				await this.initContactTable();
-			});
+				case 'phone':
+				case 'email':
+				case 'link':
+					property += 's';
+					return this.utilityService.compare(a[property][0], b[property][0], directionValue);
+				default:
+					const index = (this.crmContactCustomFields) ? this.crmContactCustomFields.findIndex((f: any) => f.name === property) : -1;
+					return (index < 0) ? 
+						this.utilityService.compare(a[property], b[property], directionValue) :
+						this.utilityService.compare(a.crm_custom_fields[property], b.crm_custom_fields[property], directionValue);
+			}
+		});
+	}
 
-			const contactCreatedSubs = dialogRef.componentInstance.contactCreated.subscribe(async (data) => {
-				if (!this.contacts) {
-					this.contacts = []
-				}
+	sortCompanyData(sort: Sort) {
+		const direction = sort.direction;
+		let property = sort.active;
+		let directionValue = (direction == 'asc') ? 1 : -1;
 
-				this.contacts.unshift(data);
+		const data = this.companies.slice();
+		if (!property || direction === '') {
+			this.sortedCompanyData = data;
+			return;
+		}
 
-				await this.initContactTable();
-			});
+		this.sortedCompanyData = data.sort((a, b) => {
+			switch (property) {
+				case 'name':
+				case 'description':
+					return this.utilityService.compare(a[property], b[property], directionValue);
+				default:
+					const index = (this.crmCompanyCustomFields) ? this.crmCompanyCustomFields.findIndex((f: any) => f.name === property) : -1;
+					return (index < 0) ? 
+						this.utilityService.compare(a[property], b[property], directionValue) :
+						this.utilityService.compare(a.crm_custom_fields[property], b.crm_custom_fields[property], directionValue);
+			}
+		});
+	}
 
-			dialogRef.afterClosed().subscribe(async result => {
-				contactEditedSubs.unsubscribe();
-				contactCreatedSubs.unsubscribe();
-			});
+	sortProductData(sort: Sort) {
+		const direction = sort.direction;
+		let property = sort.active;
+		let directionValue = (direction == 'asc') ? 1 : -1;
+
+		const data = this.companies.slice();
+		if (!property || direction === '') {
+			this.sortedProductData = data;
+			return;
+		}
+
+		this.sortedProductData = data.sort((a, b) => {
+			switch (property) {
+				case 'name':
+				case 'description':
+					return this.utilityService.compare(a[property], b[property], directionValue);
+				default:
+					const index = (this.crmProductCustomFields) ? this.crmProductCustomFields.findIndex((f: any) => f.name === property) : -1;
+					return (index < 0) ? 
+						this.utilityService.compare(a[property], b[property], directionValue) :
+						this.utilityService.compare(a.crm_custom_fields[property], b.crm_custom_fields[property], directionValue);
+			}
+		});
+	}
+
+	openContactDialog(contactId?: string) {
+		const dialogRef = this.dialog.open(NewCRMContactDialogComponent, {
+		disableClose: true,
+		hasBackdrop: true,
+		width: '75%',
+		height: '85%',
+		data: {
+			contactId: contactId
+		}
+		});
+
+		const contactEditedSubs = dialogRef.componentInstance.contactEdited.subscribe(async (data) => {
+			const index = (this.contacts) ? this.contacts.findIndex(c => c._id == data._id) : -1;
+			if (index >= 0) {
+				this.contacts[index] = data;
+			}
+
+			await this.initContactTable();
+		});
+
+		const contactCreatedSubs = dialogRef.componentInstance.contactCreated.subscribe(async (data) => {
+			if (!this.contacts) {
+				this.contacts = []
+			}
+
+			this.contacts.unshift(data);
+
+			await this.initContactTable();
+		});
+
+		dialogRef.afterClosed().subscribe(async result => {
+			contactEditedSubs.unsubscribe();
+			contactCreatedSubs.unsubscribe();
+		});
 	}
 
 	addNewContactColumn($event: Event) {
