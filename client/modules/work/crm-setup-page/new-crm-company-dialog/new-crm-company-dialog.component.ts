@@ -17,8 +17,10 @@ export class NewCRMCompanyDialogComponent implements OnInit {
   companyData: any = {
     name: '',
     description: '',
-    _group: null
+    _workspace: null
   };
+
+  enableSave = false;
 
   imageToUpload: File;
 
@@ -46,27 +48,35 @@ export class NewCRMCompanyDialogComponent implements OnInit {
         this.companyData = res['company'];
       });
     }
+
+    this.setEnableSave();
   }
 
   onCompanyInfoEdited(newCompanyDetails: any) {
     this.companyData = newCompanyDetails;
+
+    this.setEnableSave();
   }
 
   onCompanyImageEdited(newCompanyImage: any) {
     this.imageToUpload = newCompanyImage;
+
+    this.setEnableSave();
   }
 
   saveCompany() {
-    if (!!this.companyData?._id) {
-      this.crmService.updateCRMCompany(this.companyData, this.imageToUpload).then(res => {
-        this.companyData = res['company'];
-        this.companyEdited.emit(this.companyData);
-      });
-    } else {
-      this.crmService.createCRMCompany(this.companyData).then(res => {
-        this.companyData = res['company'];
-        this.companyCreated.emit(this.companyData);
-      });
+    if (this.enableSave) {
+      if (!!this.companyData?._id) {
+        this.crmService.updateCRMCompany(this.companyData, this.imageToUpload).then(res => {
+          this.companyData = res['company'];
+          this.companyEdited.emit(this.companyData);
+        });
+      } else {
+        this.crmService.createCRMCompany(this.companyData).then(res => {
+          this.companyData = res['company'];
+          this.companyCreated.emit(this.companyData);
+        });
+      }
     }
 
     this.mdDialogRef.close();
@@ -78,6 +88,10 @@ export class NewCRMCompanyDialogComponent implements OnInit {
     */
   async openUploadImageDetails(content) {
    this.utilityService.openModal(content, {});
+  }
+
+  setEnableSave() {
+    this.enableSave = (!!this.companyData && !!this.companyData?.name && !!this.companyData?._workspace);
   }
 
   closeDialog() {

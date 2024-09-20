@@ -54,7 +54,7 @@
                 Cancel
             </button>
 
-            <button class="btn btn-primary" (click)="saveCompany()" i18n="@@newCRMCompanyDialog.save" style="margin: 0 10px">
+            <button class="btn btn-primary" [disabled]="!enableSave" (click)="saveCompany()" i18n="@@newCRMCompanyDialog.save" style="margin: 0 10px">
                 Save
             </button>
         </div>

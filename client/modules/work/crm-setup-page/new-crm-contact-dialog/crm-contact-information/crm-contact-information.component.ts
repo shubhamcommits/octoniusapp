@@ -100,5 +100,7 @@ export class CRMContactInformationComponent implements OnChanges {
   selectCompany(company: any) {
     this.contactData._company = company;
     this.companySearchText = '';
+
+    this.contactInfoEdited.emit(this.contactData);
   }
 }

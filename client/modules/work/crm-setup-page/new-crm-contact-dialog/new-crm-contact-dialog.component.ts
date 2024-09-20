@@ -16,7 +16,7 @@ export class NewCRMContactDialogComponent implements OnInit {
 
   contactData: any = {
     name: '',
-    _group: null,
+    _workspace: null,
     phones: [],
     emails: [],
     links: [],
@@ -24,7 +24,10 @@ export class NewCRMContactDialogComponent implements OnInit {
     position: ''
   };
 
+  enableSave = false;
+
   groupData: any;
+  workspaceData: any;
 
   publicFunctions = new PublicFunctions(this.injector);
 
@@ -41,37 +44,51 @@ export class NewCRMContactDialogComponent implements OnInit {
       this.groupData = await this.publicFunctions.getCurrentGroupDetails();
     }
 
-    this.contactData._group = this.groupData;
+    if (!this.utilityService.objectExists(this.workspaceData)) {
+      this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    }
+
+    this.contactData._workspace = this.workspaceData;
 
     if (!!this.data && !!this.data.contactId) {
       await this.crmService.getCRMContact(this.data.contactId).then(res => {
         this.contactData = res['contact'];
       });
     }
+
+    this.setEnableSave();
   }
 
   onContactInfoEdited(newContactDetails: any) {
     this.contactData = newContactDetails;
+    this.setEnableSave();
   }
 
   onContactCFEdited(newContactDetails: any) {
     this.contactData = newContactDetails;
+    this.setEnableSave();
   }
 
   saveContact() {
-    if (!!this.contactData._id) {
-      this.crmService.updateCRMContact(this.contactData).then(res => {
-        this.contactData = res['contact'];
-        this.contactEdited.emit(this.contactData);
-      });
-    } else {
-      this.crmService.createCRMContact(this.contactData).then(res => {
-        this.contactData = res['contact'];
-        this.contactCreated.emit(this.contactData);
-      });
-    }
+    if (this.enableSave) {
+      if (!!this.contactData._id) {
+        this.crmService.updateCRMContact(this.contactData).then(res => {
+          this.contactData = res['contact'];
+          this.contactEdited.emit(this.contactData);
+        });
+      } else {
+        this.crmService.createCRMContact(this.contactData).then(res => {
+          this.contactData = res['contact'];
+          this.contactCreated.emit(this.contactData);
+        });
+      }
 
-    this.mdDialogRef.close();
+      this.mdDialogRef.close();
+    }
+  }
+
+  setEnableSave() {
+    this.enableSave = (!!this.contactData && !!this.contactData?.name && !!this.contactData?._workspace && !!this.contactData?._company);
   }
 
   closeDialog() {
