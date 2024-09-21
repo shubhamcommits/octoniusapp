@@ -114,5 +114,10 @@
   },
   "resolutions": {
     "@babel/preset-env": "~7.24.8"
+  },
+  "overrides": {
+    "web3-providers-ws": {
+      "@types/ws": "8.5.4"
+    }
   }
 }
