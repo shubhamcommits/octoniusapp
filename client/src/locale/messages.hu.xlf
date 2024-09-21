@@ -6089,6 +6089,10 @@
           <context context-type="sourcefile">modules/work/crm-setup-page/crm-setup-page.component.html</context>
           <context context-type="linenumber">191</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/crm-setup-page/crm-setup-page.component.html</context>
+          <context context-type="linenumber">278</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="asksTableView.selectOption" datatype="html">
         <source>Select an option</source>
@@ -6108,6 +6112,10 @@
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/crm-setup-page/crm-setup-page.component.html</context>
           <context context-type="linenumber">193</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/crm-setup-page/crm-setup-page.component.html</context>
+          <context context-type="linenumber">280</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupResourceManagement.viewDetails" datatype="html">
@@ -15310,7 +15318,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/crm-setup-page/crm-setup-page.component.html</context>
-          <context context-type="linenumber">298</context>
+          <context context-type="linenumber">294</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/crm-order-products/crm-order-products.component.html</context>
@@ -15326,7 +15334,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/crm-setup-page/crm-setup-page.component.html</context>
-          <context context-type="linenumber">301</context>
+          <context context-type="linenumber">297</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-post/componentes/crm-order-products/crm-order-products.component.html</context>
@@ -15577,12 +15585,52 @@
           <context context-type="linenumber">57,59</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="newCRMCompanyDialogComponent.pleaseWaitWeSave" datatype="html">
+        <source>Please wait we are saving the company...</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/crm-setup-page/new-crm-company-dialog/new-crm-company-dialog.component.ts</context>
+          <context context-type="linenumber">69</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newCRMCompanyDialogComponent.companyUpdated" datatype="html">
+        <source>Company updated!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/crm-setup-page/new-crm-company-dialog/new-crm-company-dialog.component.ts</context>
+          <context context-type="linenumber">74</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newCRMCompanyDialogComponent.unableToUpdateCompany" datatype="html">
+        <source>Unable to update company, please try again!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/crm-setup-page/new-crm-company-dialog/new-crm-company-dialog.component.ts</context>
+          <context context-type="linenumber">77</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newCRMCompanyDialogComponent.companyCreated" datatype="html">
+        <source>Company created!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/crm-setup-page/new-crm-company-dialog/new-crm-company-dialog.component.ts</context>
+          <context context-type="linenumber">83</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newCRMCompanyDialogComponent.unableToCreated" datatype="html">
+        <source>Unable to create company, please try again!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/crm-setup-page/new-crm-company-dialog/new-crm-company-dialog.component.ts</context>
+          <context context-type="linenumber">86</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="newCRMCompanyDialog.areYouSure" datatype="html">
         <source>Are you sure?</source>
         <target state="translated">biztos vagy ebben?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/crm-setup-page/new-crm-company-dialog/new-crm-company-dialog.component.ts</context>
-          <context context-type="linenumber">84</context>
+          <context context-type="linenumber">108</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newCRMCompanyDialog.loseData" datatype="html">
@@ -15590,7 +15638,7 @@
         <target state="translated">Ezzel a cégben hozzáadott összes információt elveszíti!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/crm-setup-page/new-crm-company-dialog/new-crm-company-dialog.component.ts</context>
-          <context context-type="linenumber">84</context>
+          <context context-type="linenumber">108</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmContactCompanies.company" datatype="html">
@@ -15809,12 +15857,52 @@
           <context context-type="linenumber">43,45</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="newCRMContactDialogComponent.pleaseWaitWeSave" datatype="html">
+        <source>Please wait we are saving the contact...</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/crm-setup-page/new-crm-contact-dialog/new-crm-contact-dialog.component.ts</context>
+          <context context-type="linenumber">74</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newCRMContactDialogComponent.contactUpdated" datatype="html">
+        <source>Contact updated!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/crm-setup-page/new-crm-contact-dialog/new-crm-contact-dialog.component.ts</context>
+          <context context-type="linenumber">79</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newCRMContactDialogComponent.unableToUpdateContact" datatype="html">
+        <source>Unable to update contact, please try again!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/crm-setup-page/new-crm-contact-dialog/new-crm-contact-dialog.component.ts</context>
+          <context context-type="linenumber">82</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newCRMContactDialogComponent.contactCreated" datatype="html">
+        <source>Contact created!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/crm-setup-page/new-crm-contact-dialog/new-crm-contact-dialog.component.ts</context>
+          <context context-type="linenumber">88</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newCRMContactDialogComponent.unableToCreated" datatype="html">
+        <source>Unable to create contact, please try again!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/crm-setup-page/new-crm-contact-dialog/new-crm-contact-dialog.component.ts</context>
+          <context context-type="linenumber">91</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="newCRMContactDialog.areYouSure" datatype="html">
         <source>Are you sure?</source>
         <target state="translated">biztos vagy ebben?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/crm-setup-page/new-crm-contact-dialog/new-crm-contact-dialog.component.ts</context>
-          <context context-type="linenumber">78</context>
+          <context context-type="linenumber">105</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newCRMContactDialog.loseData" datatype="html">
@@ -15822,7 +15910,7 @@
         <target state="translated">Ezzel elveszíti a névjegyhez hozzáadott összes információt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/crm-setup-page/new-crm-contact-dialog/new-crm-contact-dialog.component.ts</context>
-          <context context-type="linenumber">78</context>
+          <context context-type="linenumber">105</context>
         </context-group>
       </trans-unit>
       <trans-unit id="crmProductCustomFields.cfSearchPlaceholder" datatype="html">
@@ -15869,12 +15957,52 @@
           <context context-type="linenumber">58,60</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="newCRMProductDialogComponent.pleaseWaitWeSave" datatype="html">
+        <source>Please wait we are saving the product...</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/crm-setup-page/new-crm-product-dialog/new-crm-product-dialog.component.ts</context>
+          <context context-type="linenumber">69</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newCRMProductDialogComponent.productUpdated" datatype="html">
+        <source>Product updated!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/crm-setup-page/new-crm-product-dialog/new-crm-product-dialog.component.ts</context>
+          <context context-type="linenumber">74</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newCRMProductDialogComponent.unableToUpdateProduct" datatype="html">
+        <source>Unable to update product, please try again!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/crm-setup-page/new-crm-product-dialog/new-crm-product-dialog.component.ts</context>
+          <context context-type="linenumber">77</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newCRMProductDialogComponent.productCreated" datatype="html">
+        <source>Product created!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/crm-setup-page/new-crm-product-dialog/new-crm-product-dialog.component.ts</context>
+          <context context-type="linenumber">83</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newCRMProductDialogComponent.unableToCreated" datatype="html">
+        <source>Unable to create product, please try again!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/work/crm-setup-page/new-crm-product-dialog/new-crm-product-dialog.component.ts</context>
+          <context context-type="linenumber">86</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="newCRMProductDialog.areYouSure" datatype="html">
         <source>Are you sure?</source>
         <target state="translated">biztos vagy ebben?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/crm-setup-page/new-crm-product-dialog/new-crm-product-dialog.component.ts</context>
-          <context context-type="linenumber">84</context>
+          <context context-type="linenumber">123</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newCRMProductDialog.loseData" datatype="html">
@@ -15882,7 +16010,7 @@
         <target state="translated">Ezzel a termékhez hozzáadott összes információt elveszíti!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/crm-setup-page/new-crm-product-dialog/new-crm-product-dialog.component.ts</context>
-          <context context-type="linenumber">84</context>
+          <context context-type="linenumber">123</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dashboardPage.everythingHappening" datatype="html">
