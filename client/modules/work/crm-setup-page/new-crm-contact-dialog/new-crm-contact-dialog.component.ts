@@ -71,17 +71,27 @@ export class NewCRMContactDialogComponent implements OnInit {
 
   saveContact() {
     if (this.enableSave) {
-      if (!!this.contactData._id) {
-        this.crmService.updateCRMContact(this.contactData).then(res => {
-          this.contactData = res['contact'];
-          this.contactEdited.emit(this.contactData);
-        });
-      } else {
-        this.crmService.createCRMContact(this.contactData).then(res => {
-          this.contactData = res['contact'];
-          this.contactCreated.emit(this.contactData);
-        });
-      }
+      this.utilityService.asyncNotification($localize`:@@newCRMContactDialogComponent.pleaseWaitWeSave:Please wait we are saving the contact...`, new Promise((resolve, reject) => {
+        if (!!this.contactData._id) {
+          this.crmService.updateCRMContact(this.contactData).then(res => {
+            this.contactData = res['contact'];
+            this.contactEdited.emit(this.contactData);
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@newCRMContactDialogComponent.contactUpdated:Contact updated!`));
+          })
+          .catch(() => {
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@newCRMContactDialogComponent.unableToUpdateContact:Unable to update contact, please try again!`));
+          });
+        } else {
+          this.crmService.createCRMContact(this.contactData).then(res => {
+            this.contactData = res['contact'];
+            this.contactCreated.emit(this.contactData);
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@newCRMContactDialogComponent.contactCreated:Contact created!`));
+          })
+          .catch(() => {
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@newCRMContactDialogComponent.unableToCreated:Unable to create contact, please try again!`));
+          });
+        }
+      }));
 
       this.mdDialogRef.close();
     }

@@ -66,20 +66,30 @@ export class NewCRMCompanyDialogComponent implements OnInit {
 
   saveCompany() {
     if (this.enableSave) {
-      if (!!this.companyData?._id) {
-        this.crmService.updateCRMCompany(this.companyData, this.imageToUpload).then(res => {
-          this.companyData = res['company'];
-          this.companyEdited.emit(this.companyData);
-        });
-      } else {
-        this.crmService.createCRMCompany(this.companyData).then(res => {
-          this.companyData = res['company'];
-          this.companyCreated.emit(this.companyData);
-        });
-      }
+      this.utilityService.asyncNotification($localize`:@@newCRMCompanyDialogComponent.pleaseWaitWeSave:Please wait we are saving the company...`, new Promise((resolve, reject) => {
+        if (!!this.companyData._id) {
+          this.crmService.updateCRMCompany(this.companyData, this.imageToUpload).then(res => {
+            this.companyData = res['company'];
+            this.companyEdited.emit(this.companyData);
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@newCRMCompanyDialogComponent.companyUpdated:Company updated!`));
+          })
+          .catch(() => {
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@newCRMCompanyDialogComponent.unableToUpdateCompany:Unable to update company, please try again!`));
+          });
+        } else {
+          this.crmService.createCRMCompany(this.companyData).then(res => {
+            this.companyData = res['company'];
+            this.companyCreated.emit(this.companyData);
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@newCRMCompanyDialogComponent.companyCreated:Company created!`));
+          })
+          .catch(() => {
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@newCRMCompanyDialogComponent.unableToCreated:Unable to create company, please try again!`));
+          });
+        }
+      }));
+      
+      this.mdDialogRef.close();
     }
-
-    this.mdDialogRef.close();
   }
 
   /**
