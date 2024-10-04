@@ -11,7 +11,7 @@ import { UtilityService } from "src/shared/services/utility-service/utility.serv
 import ReconnectingWebSocket from "reconnecting-websocket";
 import * as ShareDB from "sharedb/lib/client";
 
-import * as quillToWord from "quill-to-word";
+// import * as quillToWord from "quill-to-word";
 import { saveAs } from "file-saver";
 
 import Quill from "quill";
@@ -1097,11 +1097,11 @@ export class FolioEditorComponent implements AfterViewInit {
     saveAs(blob as Blob, this.fileData?.original_name + ".pdf");
   }
 
-  async exportDoc() {
-    const delta = this.quillEditor.getContents();
-    const blob = await quillToWord.generateWord(delta, { exportAs: "blob" });
-    saveAs(blob, this.fileData?.original_name + ".docx");
-  }
+  // async exportDoc() {
+  //   const delta = this.quillEditor.getContents();
+  //   const blob = await quillToWord.generateWord(delta, { exportAs: "blob" });
+  //   saveAs(blob, this.fileData?.original_name + ".docx");
+  // }
 
   isAdminUser(groupData: any) {
     const index = (groupData && groupData._admins) ? groupData._admins.findIndex((admin: any) => admin._id === this.userData._id) : -1;

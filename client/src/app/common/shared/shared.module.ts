@@ -156,6 +156,7 @@ import { NormalPostDialogComponent } from './posts/group-post/dialogs/normal-pos
 import { CRMOrderDialogComponent } from './posts/group-post/dialogs/crm-order-dialog/crm-order-dialog.component';
 import { EventPostDialogComponent } from './posts/group-post/dialogs/event-post-dialog/event-post-dialog.component';
 import { QuillEditorComponent } from 'ngx-quill';
+import { ShuttleTaskActionComponent } from './posts/group-post/componentes/shuttle-task-action/shuttle-task-action.component';
 
 @NgModule({
     declarations: [
@@ -249,6 +250,7 @@ import { QuillEditorComponent } from 'ngx-quill';
         TaskTimeTrackingListComponent,
         TaskActionsComponent,
         ShuttleTaskComponent,
+        ShuttleTaskActionComponent,
         MultipleAssignmentsComponent,
         AssigneeAvatarComponent,
         CommentListComponent,
@@ -386,6 +388,7 @@ import { QuillEditorComponent } from 'ngx-quill';
         TaskTimeTrackingListComponent,
         TaskActionsComponent,
         ShuttleTaskComponent,
+        ShuttleTaskActionComponent,
         MultipleAssignmentsComponent,
         AssigneeAvatarComponent,
         CommentListComponent,

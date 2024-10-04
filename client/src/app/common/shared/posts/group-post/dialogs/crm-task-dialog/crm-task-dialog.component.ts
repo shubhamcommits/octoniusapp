@@ -35,6 +35,7 @@ export class CRMTaskDialogComponent implements OnInit/*, AfterViewChecked, After
   // Title of the Post
   title: string = '';
   
+  isShuttleTasksModuleAvailable = true; 
   isIndividualSubscription = true;
   isBusinessSubscription = false;
 
@@ -141,6 +142,7 @@ export class CRMTaskDialogComponent implements OnInit/*, AfterViewChecked, After
         });
       }
 
+      this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
       this.isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
       this.isBusinessSubscription = await this.publicFunctions.checkIsBusinessSubscription();
 
@@ -356,8 +358,7 @@ export class CRMTaskDialogComponent implements OnInit/*, AfterViewChecked, After
 
   saveCustomField(customFieldName: string, customFieldTitle: string, customFieldValue: string) {
     this.utilityService.asyncNotification($localize`:@@crmTaskDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise(async (resolve, reject) => {
-      const isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
-      this.postService.saveCustomField(this.postData?._id, customFieldName, customFieldTitle, customFieldValue, this.groupId, isShuttleTasksModuleAvailable, this.isIndividualSubscription)
+      this.postService.saveCustomField(this.postData?._id, customFieldName, customFieldTitle, customFieldValue, this.groupId, this.isShuttleTasksModuleAvailable, this.isIndividualSubscription)
         .then(async (res) => {
           this.selectedCFValues[customFieldName] = customFieldValue;
           this.postData.task.custom_fields[customFieldName] = customFieldValue;
@@ -371,6 +372,14 @@ export class CRMTaskDialogComponent implements OnInit/*, AfterViewChecked, After
           reject(this.utilityService.rejectAsyncPromise($localize`:@@crmTaskDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
         });
     }));
+  }
+
+  onShuttleGroupEmitter(data) {
+    this.postData.task.shuttle_type = true;
+    if (!this.postData?.task.shuttles) {
+      this.postData.task.shuttles = [];
+    }
+    this.postData?.task.shuttles.unshift(data);
   }
 
   async updateDetails(logAction: string) {

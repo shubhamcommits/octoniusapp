@@ -1,0 +1,13 @@
+<div *ngIf="showShuttle() && !isIndividualSubscription"
+  style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8; margin-left: 15px;">
+  <img src="assets/images/icon-task-shuttle.svg" style="width: 24px">
+
+  <mat-form-field appearance="fill" style="margin-left: 15px;">
+    <mat-select (selectionChange)="shuttleTask($event.value)">
+      <mat-option *ngFor="let group of shuttleGroups; let j=index; trackBy: utilityService.trackByIndex"
+        [value]="group">{{ group?.group_name }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <p i18n="@@shuttleTaskAction.withTaskShuttleYouCan">With Task Shuttle you can assign the task to another group.</p>
+</div>
