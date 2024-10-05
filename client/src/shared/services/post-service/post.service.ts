@@ -163,8 +163,8 @@ export class PostService {
    * @param { groupId, type, lastPostId } query
    * @param lastPostId - optional
    */
-  getTasksBySection(sectionId: string) {
-    return this._http.get(this.baseURL + `/tasksBySection/${sectionId}`, {});
+  getTasksBySection(sectionId: string, isShuttleTasksModuleAvailable: boolean) {
+    return this._http.get(this.baseURL + `/tasksBySection/${sectionId}`, {params:{isShuttleTasksModuleAvailable}});
   }
 
 	/**
@@ -172,9 +172,9 @@ export class PostService {
 	 * @param { groupId, type, lastPostId } query
 	 * @param lastPostId - optional
 	 */
-	getTasksBySectionPromise(sectionId: string) {
+	getTasksBySectionPromise(sectionId: string, isShuttleTasksModuleAvailable: boolean) {
 			return new Promise(async (resolve) => {
-				this.getTasksBySection(sectionId)
+				this.getTasksBySection(sectionId, isShuttleTasksModuleAvailable)
 					.subscribe((res) => resolve(res['posts']));
 			});
 	}
@@ -897,7 +897,7 @@ export class PostService {
     return tasksTmp;
   }
 
-  async exportTasksTo(exportType: any, sections: any, groupData: any, userData: any, isIdeaModuleAvailable: any) {
+  async exportTasksTo(exportType: any, sections: any, groupData: any, userData: any, isIdeaModuleAvailable: any, isShuttleTasksModuleAvailable: boolean) {
 
     // const utilityService = this.injector.get(UtilityService);
     const groupService = this.injector.get(GroupService);
@@ -906,7 +906,7 @@ export class PostService {
     for (let i = 0; i < sections.length; i++) {
       let section = sections[i];
 
-      section.tasks = await this.getTasksBySectionPromise(section?._id);
+      section.tasks = await this.getTasksBySectionPromise(section?._id, isShuttleTasksModuleAvailable);
 
       if (groupData?.enabled_rights) {
         section.tasks = await this.filterRAGTasks(section.tasks, groupData, userData);

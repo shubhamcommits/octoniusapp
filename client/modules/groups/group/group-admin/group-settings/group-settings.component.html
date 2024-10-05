@@ -123,6 +123,7 @@
               <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('custom_fields')" [name]="'custom_fields'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.custom_fields">Custom Fields</mat-checkbox>
               <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('date')" [name]="'date'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.date">Date</mat-checkbox>
               <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('status')" [name]="'status'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.status">Status</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('shuttle_task')" [name]="'shuttle_task'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.shuttleTask">Shuttle Task</mat-checkbox>
             </div>
 
             <div class="pages" *ngIf="selectedCard == 'CRMLead'">
@@ -132,6 +133,7 @@
               <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('date')" [name]="'date'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.date">Date</mat-checkbox>
               <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('status')" [name]="'status'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.status">Status</mat-checkbox>
               <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('tags')" [name]="'date'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.tags">Tags</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('shuttle_task')" [name]="'shuttle_task'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.shuttleTask">Shuttle Task</mat-checkbox>
             </div>
           </div>
         </div>

@@ -191,6 +191,13 @@
         </div>
         <!-- Status ends -->
 
+        <!-- Shuttle Task starts -->
+        <app-shuttle-task
+          *ngIf="isShuttleTasksModuleAvailable && groupData?.shuttle_type && postData?.task?.shuttle_type && (!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.CRMOrder && groupData?.dialog_properties_to_show?.CRMOrder?.includes('shuttle_task'))"
+          [postData]="postData" [groupData]="groupData" [userData]="userData"
+          [isShuttleTasksModuleAvailable]="isShuttleTasksModuleAvailable"></app-shuttle-task>
+        <!-- Shuttle Task ends -->
+
         <!-- Dates starts -->
         <app-post-dates *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.CRMOrder && groupData?.dialog_properties_to_show?.CRMOrder?.includes('date')"
           [userData]="userData"
@@ -295,6 +302,16 @@
                 <!-- Clean field ends -->
             </div>
         </div>
+
+        <!-- Select Shuttle group starts -->
+        <div class="content-box" *ngIf="postData?._group && customFields?.length > 0 && !!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.CRMLead && groupData?.dialog_properties_to_show?.CRMLead?.includes('shuttle_task')">
+          <p class="box-title" i18n="@@crmOrderDialog.shuttle">Shuttle</p>
+
+          <app-shuttle-task-action [postData]="postData" [groupData]="groupData" [userData]="userData"
+            [isShuttleTasksModuleAvailable]="isShuttleTasksModuleAvailable" [isIndividualSubscription]="isIndividualSubscription"
+            (shuttleGroupEmitter)="onShuttleGroupEmitter($event)"></app-shuttle-task-action>
+        </div>
+        <!-- Select Shuttle group ends -->
     </div>
     <!-- Top Right Section ends -->
 </div>

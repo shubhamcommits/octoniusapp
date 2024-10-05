@@ -324,7 +324,7 @@ export class PostController {
     async getTasksBySection(req: Request, res: Response, next: NextFunction) {
 
         // Fetch groupId and lastPostId from request
-        const { params: { sectionId } } = req;
+        const { params: { sectionId}, query: { isShuttleTasksModuleAvailable } } = req;
 
         // If sectionId is not present, then return error
         if (!sectionId) {
@@ -332,7 +332,7 @@ export class PostController {
         }
 
         // Fetch the next 5 recent posts
-        await postService.getTasksBySection(sectionId)
+        await postService.getTasksBySection(sectionId, isShuttleTasksModuleAvailable == 'true')
             .then((posts) => {
                 return res.status(200).json({
                     message: `Tasks found successfully!`,

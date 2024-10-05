@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { DateTime } from 'luxon';
 
-import { Comment, Group, Post, User, Notification } from '../models';
+import { Comment, Group, Post, User, Notification, Column } from '../models';
 import { CommentsService } from './comments.services';
 import { GroupsService } from './groups.services';
 import { isBefore } from '../utils';
@@ -254,20 +254,47 @@ export class PostService {
    * @param groupId
    * @param lastPostId
    */
-  async getTasksBySection(sectionId: string) {
+  async getTasksBySection(sectionId: string, isShuttleTasksModuleAvailable: boolean) {
 
     try {
       // Posts Variable
       var posts = [];
 
-      posts = await this.filterGroupPosts(
-        Post.find({
-          $and: [
-            { 'task._column': sectionId },
-            { type: 'task' },
-            { archived: { $ne: true }}
-          ]
-        }), 'task')
+      const section = await Column.findById({ _id: sectionId })
+        .populate({ path: '_group', select: '_id shuttle_type' });
+
+      if (isShuttleTasksModuleAvailable && section?._group?.shuttle_type) {
+        posts = await this.filterGroupPosts(
+          Post.find({
+            $or: [
+              {
+                $and: [
+                  { 'task._column': sectionId },
+                  { type: 'task' },
+                  { archived: { $ne: true }}
+                ]
+              },
+              {
+                $and: [
+                  { type: 'task' },
+                  { 'task.shuttles._shuttle_group': section?._group?._id },
+                  { 'task.shuttles._shuttle_section': sectionId },
+                  { 'task.shuttle_type': true },
+                  { archived: { $ne: true }}
+              ]
+              }
+            ]
+          }), 'task');
+      } else {
+        posts = await this.filterGroupPosts(
+          Post.find({
+            $and: [
+              { 'task._column': sectionId },
+              { type: 'task' },
+              { archived: { $ne: true }}
+            ]
+          }), 'task');
+      }
 
       // Return set of posts
       return posts;
@@ -307,7 +334,6 @@ export class PostService {
    * @param posts
    */
   filterGroupPosts(posts: any, type?: string, numLikes?: number) {
-
     // Filtered posts array
     var filteredPosts = posts;
 

@@ -398,6 +398,14 @@ export class CRMOrderDialogComponent implements OnInit/*, AfterViewChecked, Afte
     }));
   }
 
+  onShuttleGroupEmitter(data) {
+    this.postData.task.shuttle_type = true;
+    if (!this.postData?.task.shuttles) {
+      this.postData.task.shuttles = [];
+    }
+    this.postData?.task.shuttles.unshift(data);
+  }
+
   async updateDetails(logAction: string) {
     // Prepare the normal  object
 
