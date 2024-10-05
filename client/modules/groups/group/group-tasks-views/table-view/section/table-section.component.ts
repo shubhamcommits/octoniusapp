@@ -96,7 +96,7 @@ export class TableSectionComponent implements OnChanges, OnDestroy {
 
   async initSection() {
     if (!!this.section && !!this.section._id) {
-      this.tasks = await this.postService.getTasksBySectionPromise(this.section?._id)
+      this.tasks = await this.postService.getTasksBySectionPromise(this.section?._id, this.isShuttleTasksModuleAvailable)
       
       if (this.groupData?.enabled_rights) {
         this.tasks = await this.postService.filterRAGTasks(this.unchangedTasks?.tasksList, this.groupData, this.userData);

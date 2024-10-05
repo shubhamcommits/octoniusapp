@@ -288,7 +288,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContent
 
   async onExportToEmitter(exportType: any) {
     if (this.viewType !== 'time_tracking') {
-      await this.postService.exportTasksTo(exportType, this.sections, this.groupData, this.userData, this.isIdeaModuleAvailable);
+      await this.postService.exportTasksTo(exportType, this.sections, this.groupData, this.userData, this.isIdeaModuleAvailable, this.isShuttleTasksModuleAvailable);
 
       this.utilityService.updateIsLoadingSpinnerSource(false);
     } else {
