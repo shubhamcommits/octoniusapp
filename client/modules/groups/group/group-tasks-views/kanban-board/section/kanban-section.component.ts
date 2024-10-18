@@ -231,12 +231,22 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
   async updateTask(post: any) {
     // Find the index of the tasks inside the column
     const indexTask = (!!this.tasks && !!post && !!post._id) ? this.tasks.findIndex((task: any) => task._id === post._id) : -1;
-    if (indexTask != -1) {
-      if ((!!post.task._column && !!this.section && this.section._id == (post.task._column._id || post.task._column)) || (post.task._shuttle_section && this.section._id == (post.task._shuttle_section._id || post.task._shuttle_section))) {
+    if (indexTask >= 0) {
+      if ((!!post.task._column
+          && !!this.section
+          && this.section._id == (post.task._column._id || post.task._column))
+        ) {
         // update the tasks from the array
         this.tasks[indexTask] = post;
       } else {
-        this.tasks.splice(indexTask, 1);
+        const indexShuttle = post.task.shuttles.findIndex(shuttle => (this.section._id == (shuttle._shuttle_section._id || shuttle._shuttle_section)));
+        if (indexShuttle >= 0) {
+          // update the tasks from the array
+          this.tasks[indexTask] = post;
+        } else {
+          // remove task from section
+          this.tasks.splice(indexTask, 1);
+        }
       }
 
       // Calculate number of done tasks
