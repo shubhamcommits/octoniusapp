@@ -56,7 +56,7 @@ export class GroupAdminComponent implements OnInit {
     this.isIdeaModuleAvailable = await this.publicFunctions.checkIdeaStatus();
 
     // Campaign Module Status
-    this.campaignModuleAvailable = await this.publicFunctions.isCampaignModuleAvailable()
+    this.campaignModuleAvailable = await this.publicFunctions.isCampaignModuleAvailable();
   }
 
   // Check if the data provided is not empty{}

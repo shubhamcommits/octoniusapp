@@ -36,6 +36,7 @@ Quill.register({
 });
 Quill.register('modules/imageResizor', ImageResizor)
 
+declare var require: any
 // Register the Types of the Sharedb
 ShareDB.types.register(require('rich-text').type);
 

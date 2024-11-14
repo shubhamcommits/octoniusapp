@@ -25,6 +25,7 @@ import { FormsModule } from '@angular/forms';
 import { UserHiveComponent } from './user-hive/user-hive.component';
 import { OrganizationHRModule } from 'modules/organization/hr/organization-hr.module';
 import { MS365CloudModule } from './user-clouds/user-available-clouds/ms-365/ms-365-cloud.module';
+import { UserMyGroupSettingsComponent } from './user-my-group-settings/user-my-group-settings.component';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { MS365CloudModule } from './user-clouds/user-available-clouds/ms-365/ms-
         UserAvailableCloudsComponent,
         UserConnectedCloudsComponent,
         UserWorkloadComponent,
+        UserMyGroupSettingsComponent,
         UserPasswordUpdateComponent,
         UserProfileCustomFieldsComponent
     ],
