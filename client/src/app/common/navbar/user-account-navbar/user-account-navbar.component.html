@@ -93,6 +93,17 @@
                 <span class="sr-only">(current)</span>
           </a>
       </li>
+
+      <li class="nav-item">
+          <a class="nav-link"
+              [routerLink]="['/dashboard', 'user', 'myGroupSettings']"
+              routerLinkActive="active"
+              [ngClass]="activeState == 'workload'?'nav-link active-nav':'nav-link'"
+              (click)="changeState('myGroupSettings')">
+                <span i18n="@@userAccountNavbar.timeOff">My Group Settings</span>
+                <span class="sr-only">(current)</span>
+          </a>
+      </li>
     </ul>
   </div>
 </nav>
