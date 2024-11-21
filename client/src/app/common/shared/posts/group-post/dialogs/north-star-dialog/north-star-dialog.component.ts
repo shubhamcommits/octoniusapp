@@ -559,17 +559,6 @@ export class NorthStarDialogComponent implements OnInit/*, AfterViewChecked, Aft
     // this.sectionChangedEvent.emit(this.postData);
   }
 
-  async moveShuttleTaskToSection(event) {
-    const shuttleSectionId = event.newColumnId;
-
-    await this.publicFunctions.changeTaskShuttleSection(this.postData?._id, this.groupId, shuttleSectionId);
-
-    // Resolve with success
-    this.postData.task._shuttle_section = shuttleSectionId;
-
-    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupData?._id, false, this.shuttleIndex);
-  }
-
   async onAssigned(res) {
     this.postData = res['post'];
     this.setAssignedBy();

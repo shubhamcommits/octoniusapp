@@ -51,6 +51,18 @@
     border-bottom: 1px solid #242d3a;
     background-color: transparent;
 }
+.textarea-answer {
+    width: 100%;
+    height: 38px;
+    font-family: Nunito;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 24px;
+    line-height: 33px;
+    border: none;
+    border-bottom: 1px solid #242d3a;
+    background-color: transparent;
+}
 input:focus {
     outline: none;
     border-bottom: 1px solid #005fd5;
@@ -230,6 +242,33 @@ input:focus {
     display: block !important;
 }
 .hovered-short {
+    display: none;
+    position: absolute;
+    left: 190px;
+    top: -8px;
+    min-width: 231px;
+    min-height: 361px;
+    background: #F3F4F6;
+    font-family: Nunito;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 19px;
+    color: #000000;
+    border-radius: 0px 4px 4px 0px;
+}
+
+// long text
+.long-text{
+    min-height: 50px;
+    cursor: pointer;
+}
+.long-text:hover{
+   background-color: #F3F4F6;
+}
+.long-text:hover .hovered-long {
+    display: block !important;
+}
+.hovered-long {
     display: none;
     position: absolute;
     left: 190px;

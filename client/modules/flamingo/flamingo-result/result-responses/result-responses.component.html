@@ -25,6 +25,9 @@
               <p class="answer-short-text" *ngIf="answer?._question?.type == 'ShortText'">
                 {{ answer?.text_answer }}
               </p>
+              <p class="answer-long-text" *ngIf="answer?._question?.type == 'LongText'">
+                {{ answer?.text_answer }}
+              </p>
               <div class="answer-yes-no" *ngIf="answer?._question?.type == 'Yes/No'">
                 <span *ngIf="answer?.positive_answer">{{ answer?._question?.positive_option_text }}</span>
                 <span *ngIf="answer?.negative_answer">{{ answer?._question?.negative_option_text }}</span>

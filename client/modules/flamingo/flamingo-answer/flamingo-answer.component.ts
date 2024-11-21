@@ -133,6 +133,13 @@ export class FlamingoAnswerComponent implements OnInit {
             text_answer: question.answer
           });
           break;
+        
+        case 'LongText':
+          responses.push({
+            _question: question._id,
+            text_answer: question.answer
+          });
+          break;
 
         case 'Yes/No':
           if (question.answer == 'positive') {

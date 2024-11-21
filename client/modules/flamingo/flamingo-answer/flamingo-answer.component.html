@@ -70,6 +70,13 @@
                 (keyup)="enableNextButton($event.target.value)"
                 (change)="answerQuestion($event.target.value); $event.stopPropagation()" />
 
+            <!-- LongText text input field -->
+            <textarea style="margin-top: 50px;" *ngIf="activeQuestion?.type==='LongText'" placeholder="Type your answer here..."
+                class="textarea-answer" [(ngModel)]="activeQuestion.answer"
+                (keyup)="enableNextButton($event.target.value)"
+                (change)="answerQuestion($event.target.value); $event.stopPropagation()">
+            </textarea>
+
             <!-- yes/no buttons -->
             <div style="margin-top: 50px;" *ngIf="activeQuestion?.type==='Yes/No'">
                 <button class="btn btn-success" (click)="answerQuestion('positive'); $event.stopPropagation()">{{activeQuestion?.positive_option_text || 'Positive'}}</button>

@@ -50,6 +50,8 @@ export class ResultResponsesComponent implements OnChanges {
     switch (questionType) {
       case 'ShortText':
         return 'sort-text';
+      case 'LongText':
+        return 'long-text';
       case 'Yes/No':
         return 'yes-no';
       case 'Scale':
@@ -68,6 +70,8 @@ export class ResultResponsesComponent implements OnChanges {
   getQuestionTypeIcon(questionType: string) {
     switch (questionType) {
       case 'ShortText':
+        return 'text_snippet';
+      case 'LongText':
         return 'text_snippet';
       case 'Yes/No':
         return 'rule';

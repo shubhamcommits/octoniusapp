@@ -252,6 +252,19 @@
                                 </p>
                             </div>
                         </div>
+                        <div class="long-text" (click)="createQuestion('LongText')">
+                            <div class="btn-icon">
+                              <span class="material-icons">text_snippet</span>
+                            </div>
+                            <div class="btn-txt" i18n="@@flamingoEditor.longText">Long text</div>
+                            <div class="hovered-long">
+                                <p style="margin-left: 10%;margin-top: 25%;">
+                                    <strong i18n="@@flamingoEditor.longText">Long text</strong>
+                                    <br />
+                                    <span i18n="@@flamingoEditor.simpleQuestionLongAnswer">A simple question with a long answer.</span>
+                                </p>
+                            </div>
+                        </div>
                         <div class="yes-no" (click)="createQuestion('Yes/No')">
                             <div class="btn-icon">
                               <span class="material-icons">rule</span>
@@ -358,7 +371,12 @@
                     <!-- short question input field -->
                     <input style="margin-top: 50px;" *ngIf="activeQuestion?.type==='ShortText'" placeholder="Type your answer here..."
                         class="input-answer" />
-                    <!-- yes/no question button -->
+                    <!-- long question input field -->
+                    <textarea style="margin-top: 50px;" *ngIf="activeQuestion?.type==='LongText'" placeholder="Type your answer here..."
+                        class="textarea-answer" >
+                    </textarea>
+
+                        <!-- yes/no question button -->
                     <div style="margin-top: 50px;" *ngIf="activeQuestion?.type==='Yes/No'">
                         <button class="btn btn-success">{{activeQuestion?.positive_option_text || 'Positive'}}</button>
                         <br />
