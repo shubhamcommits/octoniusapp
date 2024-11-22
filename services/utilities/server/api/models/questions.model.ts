@@ -7,7 +7,7 @@ const QuestionSchema = new Schema({
     type: {
         type : String,
         required: true,
-        enum: ['Welcome', 'Thanks', 'ShortText', 'Yes/No', 'Scale', 'Dropdown', 'Multiple']
+        enum: ['Welcome', 'Thanks', 'ShortText', 'LongText', 'Yes/No', 'Scale', 'Dropdown', 'Multiple']
     },
     text: {
         type : String,

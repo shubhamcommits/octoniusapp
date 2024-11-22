@@ -181,7 +181,7 @@ export class FlamingoHeaderComponent implements OnInit {
       });
 
       await flamingo?._questions?.forEach(async question => {
-        if (question.type != 'ShortText') {
+        if (question.type != 'ShortText' || question.type != 'LongText') {
           let response: any = {
             text: question?.text,
             type: question?.type,
@@ -242,6 +242,10 @@ export class FlamingoHeaderComponent implements OnInit {
           //activeResponse.type = answer?._question?.type;
 
           if (answer?._question?.type == 'ShortText') {
+            activeResponse[answer?._question?.text] = answer?.text_answer;
+          }
+
+          if (answer?._question?.type == 'LongText') {
             activeResponse[answer?._question?.text] = answer?.text_answer;
           }
 
