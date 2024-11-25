@@ -105,7 +105,7 @@ export class CRMService {
   updateCRMCompany(companyData: any, fileToUpload: File) {
     let formData = new FormData();
     formData.append('companyImage', fileToUpload);
-    return this._http.put(this.baseURL + `/${companyData._id}/updateCompany`, { formData, companyData }).toPromise()
+    return this._http.put(this.baseURL + `/${companyData._id}/updateCompany/${companyData?._workspace?._id || companyData?._workspace}`, { formData, companyData }).toPromise()
   }
 
   /**
