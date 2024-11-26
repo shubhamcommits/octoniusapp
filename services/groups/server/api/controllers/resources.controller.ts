@@ -580,7 +580,7 @@ export class ResourcesController {
     async addActivityEntity(req: Request, res: Response, next: NextFunction) {
 
         const { body: { newActivity }, params: { resourceId } } = req;
-        
+
         try {
             const project = newActivity._project || null;
             const activityId = new mongoose.Types.ObjectId();
@@ -597,7 +597,7 @@ export class ResourcesController {
                             _user: newActivity._user,
                             file: newActivity.file,
                             comment: newActivity.comment,
-                            edited_date: DateTime.now().toISODate()
+                            edited_date: DateTime.now()
                         }
                     }
                 }, {
@@ -611,7 +611,7 @@ export class ResourcesController {
                         "stock": (newActivity.add_inventory)
                             ? resource.stock + newActivity.quantity
                             : resource.stock - newActivity.quantity,
-                        "last_updated_date": DateTime.now().toISODate()
+                        "last_updated_date": DateTime.now()
                     }
                 }, {
                     new: true
