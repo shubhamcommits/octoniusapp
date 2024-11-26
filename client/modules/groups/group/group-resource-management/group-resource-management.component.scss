@@ -23,3 +23,9 @@
 .newColumnMatMenu{
   padding: 8px 20px;
 }
+
+.itemrow{
+  &:hover{
+    background: #efefef;
+  }
+}
