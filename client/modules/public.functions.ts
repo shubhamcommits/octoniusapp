@@ -1678,7 +1678,7 @@ export class PublicFunctions {
                             _shuttle_group: action?._shuttle_group,
                             _shuttle_section: action?._shuttle_group?._shuttle_section,
                             shuttle_status: 'to do',
-                            shuttled_at: DateTime.now().toISODate()
+                            shuttled_at: DateTime.now()
                           });
                         }
                         return Promise.resolve({});

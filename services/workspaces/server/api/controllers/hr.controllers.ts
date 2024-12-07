@@ -24,7 +24,7 @@ export class HRControllers {
                     name: entityName,
                     _workspace: workspaceId,
                     _posted_by: req['userId'],
-                    created_date: DateTime.now().toISODate()
+                    created_date: DateTime.now()
                 });
 
             // Send the status 200 response 

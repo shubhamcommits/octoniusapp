@@ -394,7 +394,7 @@ export class SlackController {
                                     "type": "input",
                                     "element": {
                                         "type": "datepicker",
-                                        "initial_date": DateTime.now().toISODate(),
+                                        "initial_date": DateTime.now(),
                                         "placeholder": {
                                             "type": "plain_text",
                                             "text": "Select a date",

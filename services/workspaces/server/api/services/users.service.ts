@@ -31,7 +31,7 @@ export class UsersService {
             let invited_user: any = {
                 email: email,
                 type: type,
-                invited_date: DateTime.now().toISODate()
+                invited_date: DateTime.now()
             };
 
             let query = {};

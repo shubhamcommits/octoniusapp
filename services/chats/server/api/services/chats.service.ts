@@ -202,7 +202,7 @@ export class ChatService {
         }, {
           $addToSet: { members: {
             _user: memberId,
-            joined_on: DateTime.now().toISODate(),
+            joined_on: DateTime.now(),
             is_admin: false
           } }
         }, {
@@ -312,7 +312,7 @@ export class ChatService {
           _id: (newMessage._chat._id || newMessage._chat)
         }, {
           $set: {
-            last_message_on: DateTime.now().toISODate()
+            last_message_on: DateTime.now()
 
           }
         });

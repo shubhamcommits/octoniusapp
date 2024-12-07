@@ -227,7 +227,7 @@ export class FlamingoService {
                 $push: {
                     responses: {
                         answers: responses,
-                        created_date: DateTime.now().toISODate()
+                        created_date: DateTime.now()
                     }
                 }
             },
@@ -248,7 +248,7 @@ export class FlamingoService {
             delete newFlamingo._id;
             delete newFlamingo.responses;
             newFlamingo.publish = false;
-            newFlamingo.created_date = DateTime.now().toISODate();
+            newFlamingo.created_date = DateTime.now();
 
             // Duplicate questions
             newFlamingo._questions = [];
@@ -258,7 +258,7 @@ export class FlamingoService {
 
                 delete newQuestion._id;
 
-                newQuestion.created_date = DateTime.now().toISODate();
+                newQuestion.created_date = DateTime.now();
 
                 newQuestion = await Question.create(newQuestion);
                 newFlamingo._questions.push(newQuestion);
