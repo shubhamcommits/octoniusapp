@@ -239,7 +239,7 @@ export class LibraryService {
               _members: [userId],
               _created_by: (user) ? user?._id : userId,
               content: this.htmlToDelta(space?.body?.view?.value),
-              created_date: DateTime.now().toISODate()
+              created_date: DateTime.now()
             });
 
             await this.exportSpaceConfluencePages(domain, space?.id, email, userId, collection?._id, workspaceId, groupId);
@@ -325,7 +325,7 @@ export class LibraryService {
               content: this.htmlToDelta(comment?.body?.view?.value),
               _commented_by: (user) ? user?._id : userId,
               _page: pageId,
-              created_date: DateTime.now().toISODate()
+              created_date: DateTime.now()
             });
 
             if (comment.children && comment.children.attachment && comment.children.attachment.results) {

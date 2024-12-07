@@ -385,7 +385,7 @@ export class WorkspaceController {
                 type: 'category',
                 _workspace: workspaceUpdate._id,
                 _posted_by: user,
-                created_date: DateTime.now().toISODate()
+                created_date: DateTime.now()
             });
 
             notificationsService.createNewEntityNotificationForHR(user?._id, workspaceUpdate?._id);

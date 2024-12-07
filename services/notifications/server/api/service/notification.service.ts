@@ -246,7 +246,7 @@ export class NotificationsService {
                 _origin_post: postId,
                 message: ' mentioned you on',
                 type: 'mention',
-                created_date: DateTime.now().toISODate()
+                created_date: DateTime.now()
             });
 
             // Send the notification to firebase for mobile notify
@@ -292,7 +292,7 @@ export class NotificationsService {
                         _origin_post: postId,
                         message: ' assigned you on',
                         type: 'assignment',
-                        created_date: DateTime.now().toISODate()
+                        created_date: DateTime.now()
                     });
 
                     // Send the notification to firebase for mobile notify
@@ -323,7 +323,7 @@ export class NotificationsService {
                 _origin_post: postId,
                 message: ' mentioned you on',
                 type: 'mention',
-                created_date: DateTime.now().toISODate()
+                created_date: DateTime.now()
             });
 
             // Send the notification to firebase for mobile notify
@@ -375,7 +375,7 @@ export class NotificationsService {
                         _origin_folio: file,
                         message: ' mentioned you on',
                         type: 'mention_folio',
-                        created_date: DateTime.now().toISODate()
+                        created_date: DateTime.now()
                     });
 
                     if (process.env.DOMAIN == 'app.octonius.com') {
@@ -406,7 +406,7 @@ export class NotificationsService {
                 _origin_post: postId,
                 message: ' assigned you on',
                 type: 'assignment',
-                created_date: DateTime.now().toISODate()
+                created_date: DateTime.now()
             });
 
             if (process.env.DOMAIN == 'app.octonius.com') {
@@ -436,7 +436,7 @@ export class NotificationsService {
                 _origin_post: postId,
                 message: ' assigned you on',
                 type: 'assignment',
-                created_date: DateTime.now().toISODate()
+                created_date: DateTime.now()
             });
 
             if (process.env.DOMAIN == 'app.octonius.com') {
@@ -467,7 +467,7 @@ export class NotificationsService {
                     _origin_post: postId,
                     message: status,
                     type: status,
-                    created_date: DateTime.now().toISODate()
+                    created_date: DateTime.now()
                 });
 
                 if (process.env.DOMAIN == 'app.octonius.com') {
@@ -501,7 +501,7 @@ export class NotificationsService {
                 _origin_post: postId,
                 message: 'commented on',
                 type: 'comment',
-                created_date: DateTime.now().toISODate()
+                created_date: DateTime.now()
             });
 
             if (process.env.DOMAIN == 'app.octonius.com') {
@@ -531,7 +531,7 @@ export class NotificationsService {
                 _origin_post: comment._post,
                 message: 'liked your comment on',
                 type: 'like_comment',
-                created_date: DateTime.now().toISODate()
+                created_date: DateTime.now()
             });
 
             if (process.env.DOMAIN == 'app.octonius.com') {
@@ -559,7 +559,7 @@ export class NotificationsService {
                 _origin_post: postId,
                 message: 'follows',
                 type: 'follow',
-                created_date: DateTime.now().toISODate()
+                created_date: DateTime.now()
             });
 
             if (process.env.DOMAIN == 'app.octonius.com') {
@@ -585,7 +585,7 @@ export class NotificationsService {
                 _origin_post: postId,
                 message: 'likes',
                 type: 'likes',
-                created_date: DateTime.now().toISODate()
+                created_date: DateTime.now()
             });
 
             if (process.env.DOMAIN == 'app.octonius.com') {
@@ -624,7 +624,7 @@ export class NotificationsService {
                         _origin_group: groupId,
                         message: 'posted',
                         type: 'new-post',
-                        created_date: DateTime.now().toISODate()
+                        created_date: DateTime.now()
                     });
 
                     if (process.env.DOMAIN == 'app.octonius.com') {
@@ -660,7 +660,7 @@ export class NotificationsService {
                 _origin_group: groupId,
                 message: 'edited',
                 type: 'post-edited',
-                created_date: DateTime.now().toISODate()
+                created_date: DateTime.now()
             });
 
             if (process.env.DOMAIN == 'app.octonius.com') {
@@ -693,7 +693,7 @@ export class NotificationsService {
                 _origin_group: groupId,
                 message: 'added you to',
                 type: 'join-group',
-                created_date: DateTime.now().toISODate()
+                created_date: DateTime.now()
             });
 
             if (process.env.DOMAIN == 'app.octonius.com') {
@@ -726,7 +726,7 @@ export class NotificationsService {
                 _origin_group: groupId,
                 message: 'removed you from',
                 type: 'leave-group',
-                created_date: DateTime.now().toISODate()
+                created_date: DateTime.now()
             });
 
             if (process.env.DOMAIN == 'app.octonius.com') {
@@ -760,7 +760,7 @@ export class NotificationsService {
                     _origin_post: item._id,
                     message: 'launched the approval flow',
                     type: 'launch-approval-flow',
-                    created_date: DateTime.now().toISODate()
+                    created_date: DateTime.now()
                 });
 
                 if (item.approval_due_date) {
@@ -770,7 +770,7 @@ export class NotificationsService {
                         _origin_post: item._id,
                         message: 'launched the approval flow',
                         type: 'launch-approval-flow-due-date',
-                        created_date: DateTime.now().toISODate()
+                        created_date: DateTime.now()
                     });
                 }
             } else {
@@ -780,7 +780,7 @@ export class NotificationsService {
                     _origin_folio: item._id,
                     message: 'launched the approval flow',
                     type: 'launch-approval-flow',
-                    created_date: DateTime.now().toISODate()
+                    created_date: DateTime.now()
                 });
 
                 if (item.approval_due_date) {
@@ -790,7 +790,7 @@ export class NotificationsService {
                         _origin_folio: item._id,
                         message: 'launched the approval flow',
                         type: 'launch-approval-flow-due-date',
-                        created_date: DateTime.now().toISODate()
+                        created_date: DateTime.now()
                     });
                 }
             }
@@ -846,7 +846,7 @@ export class NotificationsService {
                     _origin_post: item._id,
                     message: 'rejected the item',
                     type: 'reject-item',
-                    created_date: DateTime.now().toISODate()
+                    created_date: DateTime.now()
                 });
             } else {
                 await Notification.create({
@@ -855,7 +855,7 @@ export class NotificationsService {
                     _origin_folio: item._id,
                     message: 'rejected the item',
                     type: 'reject-item',
-                    created_date: DateTime.now().toISODate()
+                    created_date: DateTime.now()
                 });
             }
 
@@ -906,7 +906,7 @@ export class NotificationsService {
                     _origin_post: item._id,
                     message: 'the item has been approved by all assignees',
                     type: 'approved-item',
-                    created_date: DateTime.now().toISODate()
+                    created_date: DateTime.now()
                 });
             } else {
                 await Notification.create({
@@ -914,7 +914,7 @@ export class NotificationsService {
                     _origin_folio: item._id,
                     message: 'the item has been approved by all assignees',
                     type: 'approved-item',
-                    created_date: DateTime.now().toISODate()
+                    created_date: DateTime.now()
                 });
             }
 
@@ -983,7 +983,7 @@ export class NotificationsService {
                         _shuttle_group: shuttleGroupId,
                         message: ' assigned to your group',
                         type: 'shuttleTask',
-                        created_date: DateTime.now().toISODate()
+                        created_date: DateTime.now()
                     });
 
                     if (process.env.DOMAIN == 'app.octonius.com') {
@@ -1027,7 +1027,7 @@ export class NotificationsService {
 
     async getAttendingEvents(workspaceId: string, userId: string, limit?: number) {
         try {
-            const today = DateTime.now().toISODate();
+            const today = DateTime.now();
 
             // Find the story
             let stories: any
@@ -1108,7 +1108,7 @@ export class NotificationsService {
                         _collection: collectionId,
                         message: ' mentioned you on',
                         type: 'mention_collection',
-                        created_date: DateTime.now().toISODate()
+                        created_date: DateTime.now()
                     });
 
                     await helperFunctions.sendNotificationsFeedFromService(user._id, io, true);
@@ -1149,7 +1149,7 @@ export class NotificationsService {
                         _page: pageId,
                         message: ' mentioned you on',
                         type: 'mention_page',
-                        created_date: DateTime.now().toISODate()
+                        created_date: DateTime.now()
                     });
 
                     await helperFunctions.sendNotificationsFeedFromService(user._id, io, true);

@@ -2262,7 +2262,7 @@ export class GroupController {
                 },
                 $push: {
                     "records.status": {
-                        date: DateTime.now().toISODate(),
+                        date: DateTime.now(),
                         project_status: status
                     }
                 }

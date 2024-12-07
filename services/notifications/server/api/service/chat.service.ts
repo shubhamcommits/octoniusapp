@@ -52,7 +52,7 @@ export class ChatService {
                         _owner: user._id || user,
                         _message: messageId,
                         _chat: chatId,
-                        created_date: DateTime.now().toISODate(),
+                        created_date: DateTime.now(),
                         text: 'sent you a message',
                         type: 'new-chat-message'
                     });
@@ -118,7 +118,7 @@ export class ChatService {
                 }, {
                     $set: {
                         read: true,
-                        read_date: DateTime.now().toISODate()
+                        read_date: DateTime.now()
                     }
                 });
             return countReadMessages;

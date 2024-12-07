@@ -685,7 +685,7 @@ export class StoriesController {
                 })
             }
             
-            const today = DateTime.now().toISODate();
+            const today = DateTime.now();
 
             // Find the story
             const stories: any = await Story.find({

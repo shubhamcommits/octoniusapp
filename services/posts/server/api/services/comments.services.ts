@@ -38,9 +38,10 @@ const minio = require('minio');
             _story: storyId,
             _page: pageId,
             files: comment.files,
-            created_date: DateTime.now().toISODate()
+            created_date: DateTime.now()
           };
-
+console.log(DateTime.now());
+console.log(DateTime.now());
           // Create comment
           let newComment:any = await Comment.create(commentData);
 
@@ -57,7 +58,7 @@ const minio = require('minio');
                   comments: newComment._id,
                   "logs": {
                     action: 'commented',
-                    action_date: DateTime.now().toISODate(),
+                    action_date: DateTime.now(),
                     _actor: userId
                   }
                 },
@@ -396,7 +397,7 @@ const minio = require('minio');
                 $push: {
                   "logs": {
                     action: 'comment_removed',
-                    action_date: DateTime.now().toISODate(),
+                    action_date: DateTime.now(),
                     _actor: userId
                   }
                 },

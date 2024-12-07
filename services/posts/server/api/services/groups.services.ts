@@ -15,7 +15,7 @@ export class GroupsService {
     let group: any = await Group.findOne({
       $and: [
           { _id: groupId },
-          {'records.done_tasks_count.date': DateTime.now().toISODate() }
+          {'records.done_tasks_count.date': DateTime.now() }
       ]
     }).select('_id');
 
@@ -23,15 +23,15 @@ export class GroupsService {
       if (status === 'done') {
         group = await Group.findOneAndUpdate({
           _id: groupId,
-          'records.done_tasks_count.date': {$ne: DateTime.now().toISODate() }
-        }, { $push: { 'records.done_tasks_count': { date: DateTime.now().toISODate(), count: 1 }}}
+          'records.done_tasks_count.date': {$ne: DateTime.now() }
+        }, { $push: { 'records.done_tasks_count': { date: DateTime.now(), count: 1 }}}
         )
         .select('_id');
       }
     } else {
       group = await Group.findOneAndUpdate({
           _id: groupId,
-          "records.done_tasks_count.date": DateTime.now().toISODate()
+          "records.done_tasks_count.date": DateTime.now()
       }, {
           $inc: { "records.done_tasks_count.$.count": +increase }
       }, {

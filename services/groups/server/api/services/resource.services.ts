@@ -15,7 +15,7 @@ export class ResourceService {
           'budget.expenses': {
             amount: activity.quantity * resource.unit_price,
             reason: activity.comment,
-            date: DateTime.now().toISODate(),
+            date: DateTime.now(),
             _user: activity._user,
             _resource: resource._id,
             _resource_activity: activity._id,
