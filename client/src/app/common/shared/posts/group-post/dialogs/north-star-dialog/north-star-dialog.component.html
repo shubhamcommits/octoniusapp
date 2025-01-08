@@ -167,15 +167,15 @@
     </div>
 
     <!-- Top Right Section starts -->
-    <div  *ngIf="!!groupData && (!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.task
+    <div  *ngIf="(!!groupData && (!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.task
             && (groupData?.dialog_properties_to_show?.northStar?.includes('north_star') || groupData?.dialog_properties_to_show?.northStar?.includes('date')
               || groupData?.dialog_properties_to_show?.northStar?.includes('assignee')
               || groupData?.dialog_properties_to_show?.northStar?.includes('tags') || groupData?.dialog_properties_to_show?.northStar?.includes('custom_fields')
               || groupData?.dialog_properties_to_show?.northStar?.includes('actions') || groupData?.dialog_properties_to_show?.northStar?.includes('approvals')
-              || groupData?.dialog_properties_to_show?.northStar?.includes('shuttle_task') || groupData?.dialog_properties_to_show?.northStar?.includes('parent_task')))"
+              || groupData?.dialog_properties_to_show?.northStar?.includes('shuttle_task') || groupData?.dialog_properties_to_show?.northStar?.includes('parent_task')))) || !postData?._group"
       class="post-properties">
         <!-- Is North Start starts -->
-        <app-north-star *ngIf="(!!groupData.dialog_properties_to_show && !!groupData?.dialog_properties_to_show?.northStar && groupData?.dialog_properties_to_show?.northStar?.includes('north_star'))"
+        <app-north-star *ngIf="(!!groupData && !!groupData.dialog_properties_to_show && !!groupData?.dialog_properties_to_show?.northStar && groupData?.dialog_properties_to_show?.northStar?.includes('north_star')) || !postData?._group"
           [isNorthStar]="true"
           [northStar]="postData?.task.northStar"
           (saveInitialNorthStarEmitter)="saveNorthStar($event)"
@@ -184,7 +184,7 @@
         <!-- Is North Start ends -->
 
         <!-- Shuttle Task starts -->
-        <app-shuttle-task *ngIf="isShuttleTasksModuleAvailable && groupData?.shuttle_type && postData && postData?.northStar?.shuttle_type && (!!groupData.dialog_properties_to_show && !!groupData?.dialog_properties_to_show?.northStar && groupData?.dialog_properties_to_show?.northStar?.includes('shuttle_task'))"
+        <app-shuttle-task *ngIf="isShuttleTasksModuleAvailable && ((!!groupData && groupData?.shuttle_type && !!postData && postData?.northStar?.shuttle_type && (!!groupData.dialog_properties_to_show && !!groupData?.dialog_properties_to_show?.northStar && groupData?.dialog_properties_to_show?.northStar?.includes('shuttle_task'))))"
           [postData]="postData"
           [groupData]="groupData"
           [userData]="userData"
@@ -192,7 +192,7 @@
         <!-- Shuttle Task ends -->
 
         <!-- Dates starts -->
-        <app-post-dates *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.northStar && groupData?.dialog_properties_to_show?.northStar?.includes('date')"
+        <app-post-dates *ngIf="(!!groupData && !!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.northStar && groupData?.dialog_properties_to_show?.northStar?.includes('date')) || !postData?._group"
           [userData]="userData"
           [postData]="postData"
           [groupData]="groupData"
@@ -202,7 +202,7 @@
         <!-- Dates ends -->
 
         <!-- Assignee Modal starts -->
-        <div class="content-box" *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.northStar && groupData?.dialog_properties_to_show?.northStar?.includes('assignee')">
+        <div class="content-box" *ngIf="(!!groupData && !!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.northStar && groupData?.dialog_properties_to_show?.northStar?.includes('assignee')) || !postData?._group">
             <p class="box-title" i18n="@@taskDialog.assignee">Assignee</p>
 
             <app-multiple-assignments
@@ -251,7 +251,7 @@
 
         </div>
 
-        <div class="content-box" *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.northStar && groupData?.dialog_properties_to_show?.northStar?.includes('tags')">
+        <div class="content-box" *ngIf="(!!groupData && !!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.northStar && groupData?.dialog_properties_to_show?.northStar?.includes('tags')) || !postData?._group">
             <p class="box-title" i18n="@@taskDialog.tags">Tags</p>
 
             <!-- Post Tags starts -->
@@ -265,7 +265,7 @@
             <!-- Post Tags ends -->
         </div>
 
-        <div class="content-box" *ngIf="postData?._group && customFields?.length > 0 && (!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.northStar && groupData?.dialog_properties_to_show?.northStar?.includes('custom_fields'))">
+        <div class="content-box" *ngIf="!!postData?._group && customFields?.length > 0 && (!!groupData && !!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.northStar && groupData?.dialog_properties_to_show?.northStar?.includes('custom_fields'))">
             <p class="box-title" i18n="@@taskDialog.customFields">Custom fields</p>
 
             <div *ngFor="let cf of customFields; trackBy: utilityService.trackByIndex" class="d-flex custom-field justify-content-start mb-3 row">
@@ -311,7 +311,7 @@
             </div>
         </div>
 
-        <app-task-actions *ngIf="userData && canEdit && (!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.northStar && groupData?.dialog_properties_to_show?.northStar?.includes('actions'))"
+        <app-task-actions *ngIf="!!userData && canEdit && (!!groupData &&  !!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.northStar && groupData?.dialog_properties_to_show?.northStar?.includes('actions'))"
           [postData]="postData"
           [groupData]="groupData"
           [userData]="userData"
@@ -336,7 +336,7 @@
         </app-task-actions>
 
         <!-- APPROVAL STARTS -->
-        <div class="content-box" *ngIf="isBusinessSubscription && (!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.northStar && groupData?.dialog_properties_to_show?.northStar?.includes('approvals'))">
+        <div class="content-box" *ngIf="isBusinessSubscription && ((!!groupData &&  !!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.northStar && groupData?.dialog_properties_to_show?.northStar?.includes('approvals')) || !postData?._group)">
           <app-approval-actions
             [groupId]="groupData?._id"
             [userData]="userData"
