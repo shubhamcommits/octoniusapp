@@ -490,7 +490,7 @@ export class NorthStarDialogComponent implements OnInit/*, AfterViewChecked, Aft
     // Task due date
     post.date_due_to = this.dueDate;
 
-    if (this.groupData && this.groupData.project_type) {
+    if (!!this.groupData && this.groupData?.project_type) {
       post.start_date = this.startDate;
     }
 
