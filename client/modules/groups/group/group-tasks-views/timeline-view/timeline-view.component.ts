@@ -393,9 +393,10 @@ export class TimelineViewComponent implements OnChanges, AfterViewInit {
   //Update Dates
   async dateupdate(task, start, end, sday, eday, groupid) {
     const isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
+    const isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
     const startdate = this.datePipe.transform(start, "yyyy-MM-dd");
     const enddate = this.datePipe.transform(end, "yyyy-MM-dd");
-    this.postService.updateGanttTasksDates(task['id'], groupid, enddate, startdate, sday, eday, isShuttleTasksModuleAvailable)
+    this.postService.updateGanttTasksDates(task['id'], groupid, enddate, startdate, sday, eday, isShuttleTasksModuleAvailable, isIndividualSubscription)
       .then((res) => {
         this.tasks = res['posts'];
 
@@ -496,11 +497,11 @@ export class TimelineViewComponent implements OnChanges, AfterViewInit {
     this.screen_height = screenHeight + 'px';
     document.getElementsByTagName("body")[0].style.overflow = 'hidden';
 
-    this.lineRemove();
+    await this.lineRemove();
 
-    this.renderer.listen(this.el.nativeElement, 'load', () => {
-      this.linesGenetate();
-    });
+    // this.renderer.listen(this.el.nativeElement, 'load', () => {
+      await this.linesGenetate();
+    // });
   }
 
   //Generate the dates for Nav

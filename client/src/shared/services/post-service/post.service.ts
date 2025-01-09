@@ -296,7 +296,7 @@ export class PostService {
    * @param postId
    * @param dateDueTo
    */
-  updateGanttTasksDates(postId: string, groupId: string, dateDueTo: string, startdate: string, startdays: number, enddays: number, isShuttleTasksModuleAvailable: boolean) {
+  updateGanttTasksDates(postId: string, groupId: string, dateDueTo: string, startdate: string, startdays: number, enddays: number, isShuttleTasksModuleAvailable: boolean, isIndividualSubscription: boolean) {
 
     // Call the HTTP Request
     return this._http.post(this.baseURL + `/${postId}/timeline-task-dates-update`, {
@@ -305,7 +305,8 @@ export class PostService {
       s_days: startdays,
       e_days: enddays,
       group_id:groupId,
-      isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable
+      isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable,
+      isIndividualSubscription: isIndividualSubscription
     }).
       toPromise()
   }
