@@ -9,17 +9,12 @@ export class ProgressBarComponent implements OnInit, AfterViewInit {
 
   constructor() { }
 
-  // Id of the element
-  @Input('id') id: any
-
-  // data-preset attribute
-  @Input('preset') preset: any;
-
-  // data-value attribute
-  @Input('value') value: any;
-
-  // data-stroke attribute
-  @Input('stroke') stroke: any;
+  // @Input('id') id: any
+  // @Input('preset') preset: any;
+  // @Input('value') value: any;
+  // @Input('stroke') stroke: any;
+  @Input() color: any = "#005fd5";
+  @Input() value: any;
 
   // DOM element div
   @ViewChild('progressbar') progressBar: ElementRef;
@@ -28,14 +23,14 @@ export class ProgressBarComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    //  Set the data-preset attribute
-    this.progressBar.nativeElement.setAttribute('data-preset', this.preset)
+    // //  Set the data-preset attribute
+    // this.progressBar.nativeElement.setAttribute('data-preset', this.preset)
 
-    //  Set the data-value attribute
-    this.progressBar.nativeElement.setAttribute('data-value', this.value);
+    // //  Set the data-value attribute
+    // this.progressBar.nativeElement.setAttribute('data-value', this.value);
 
-    //  Set the data-value attribute
-    this.progressBar.nativeElement.setAttribute('data-stroke', this.stroke);
+    // //  Set the data-value attribute
+    // this.progressBar.nativeElement.setAttribute('data-stroke', this.stroke);
 
   }
 }
