@@ -128,10 +128,15 @@
 
                   {{ getProgressPercent(task?.task?.northStar) | percent: '.2-2'}}
 
+                  <!--
                   <mat-progress-bar mode="determinate"
                     [appProgressBarColor]="getNSStatusColor(task?.task?.northStar?.values[0].status)"
                     [value]="getProgressPercent(task?.task?.northStar) * 100" style="height: 10px; border-radius: 20px;">
                   </mat-progress-bar>
+                  -->
+                  <app-progress-bar
+                    [value]="getProgressPercent(task?.task?.northStar) * 100"
+                    [color]="getNSStatusColor(task?.task?.northStar?.values[0].status)"></app-progress-bar>
                 </div>
 
                 <div (click)="openSubtask(task)" *ngIf="!task?.task?.isNorthStar" class="col-md-2">

@@ -40,11 +40,14 @@
 
               {{ getProgressPercent(task?.northStarValues) | percent: '.2-2'}}
 
-              <mat-progress-bar
+              <!-- <mat-progress-bar
                 mode="determinate"
                 [appProgressBarColor]="getNSStatusColor(task?.northStarValues)"
                 [value]="getProgressPercent(task?.northStarValues) * 100"
-                style="height: 10px; border-radius: 20px;"></mat-progress-bar>
+                style="height: 10px; border-radius: 20px;"></mat-progress-bar> -->
+              <app-progress-bar
+                [value]="getProgressPercent(task?.northStarValues) * 100"
+                [color]="getNSStatusColor(task?.northStarValues)"></app-progress-bar>
             </div>
 
             <div class="col-md-2" *ngIf="task?._group">

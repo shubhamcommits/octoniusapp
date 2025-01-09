@@ -40,8 +40,7 @@ const minio = require('minio');
             files: comment.files,
             created_date: DateTime.now()
           };
-console.log(DateTime.now());
-console.log(DateTime.now());
+
           // Create comment
           let newComment:any = await Comment.create(commentData);
 
