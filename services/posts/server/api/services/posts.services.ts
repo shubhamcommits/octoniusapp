@@ -6,7 +6,8 @@ import { DateTime } from 'luxon';
 import { Comment, Group, Post, User, Notification, Column } from '../models';
 import { CommentsService } from './comments.services';
 import { GroupsService } from './groups.services';
-import { isBefore } from '../utils';
+import { isBefore, isSameDay } from '../utils';
+import { FlowService } from './flows.services';
 
 const fs = require('fs');
 const minio = require('minio');
@@ -27,6 +28,8 @@ export class PostService {
   groupsService = new GroupsService();
 
   commentsService = new CommentsService();
+
+  flowService = new FlowService();
 
   /**
    * This service is responsible for fetching recent 5 posts based on the @lastPostId and @groupId
@@ -4081,4 +4084,184 @@ export class PostService {
   async calculateTimeEntityCost(userRate: number, time: any) {
     return (userRate * time.hours + (time.minutes/60)*userRate);
   }
+
+    /**
+     * This function runs the automator flows
+     * 
+     * @param groupId 
+     * @param post 
+     * @param userId 
+     * @param isCreationTaskTrigger 
+     */
+    async executeAutomationFlows(groupId: string, post: any, userId: string, isCreationTaskTrigger: boolean, isShuttleTasksModuleAvailable: boolean, isIndividualSubscription: boolean) {
+        try {
+            if (!isIndividualSubscription) {
+                const flows = await this.flowService.getAutomationFlows(groupId);
+                if (flows && flows.length > 0) {
+                    let doTrigger = true;
+                    await flows.forEach(flow => {
+                        const steps = flow['steps'];
+
+                        if (steps && steps.length > 0) {
+                            steps.forEach(async step => {
+                                const childStatusTriggerIndex = (!!step.trigger) ? step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status'; }) : -1;
+                                const isChildStatusTrigger = (childStatusTriggerIndex >= 0 && post.task._parent_task)
+                                    ? await this.isChildTasksUpdated(step.trigger[childStatusTriggerIndex], (post.task._parent_task._id || post.task._parent_task))
+                                    : false;
+                                doTrigger = await this.doesTriggersMatch(step.trigger, post, groupId, isCreationTaskTrigger, isChildStatusTrigger);
+                                const shuttleActionIndex = (!!step.action) ? step.action.findIndex(action => action.name == 'Shuttle task') : -1;
+                                doTrigger = doTrigger && ((shuttleActionIndex < 0) || isShuttleTasksModuleAvailable);
+                                if (doTrigger) {
+                                    post = await this.executeActionFlow(step.action, post, userId, groupId, isChildStatusTrigger);
+                                }
+                            });
+                        } else {
+                            doTrigger = false;
+                        }
+                    });
+                }
+            }
+            return post;
+        } catch (error) {
+            console.log(`\n⛔️ Error:\n ${error}`);
+            throw error;
+        }
+    }
+
+    /**
+     * This method is used to check if the child tasks has been updated.
+     * In case one of the triggers is to check the status of all subtasks
+     * 
+     * @param trigger 
+     * @param parentTaskId 
+     */
+    private async isChildTasksUpdated(trigger: any, parentTaskId: string) {
+      let retValue = true;
+        if (trigger && parentTaskId) {
+            let subtasks = await this.getSubtasks(parentTaskId);
+            subtasks.forEach(subtask => {
+                if (retValue) {
+                    retValue = trigger.subtaskStatus.toUpperCase() == subtask.task.status.toUpperCase();
+                }
+            });
+        } else {
+          retValue = false;
+        }
+        return retValue;
+    }
+
+    /**
+     * This method is used to check if the task match the automator triggers
+     * 
+     * @param triggers
+     * @param post
+     * @param groupId
+     * @param isCreationTaskTrigger
+     * @param isChildStatusTrigger
+     */
+    private doesTriggersMatch(triggers: any[], post: any, groupId: string, isCreationTaskTrigger: boolean, isChildStatusTrigger: boolean) {
+        let retValue = true;
+        const shuttleIndex = (!!post?.task?.shuttles) ? post?.task?.shuttles?.findIndex(shuttle => (shuttle?._shuttle_group?._id || shuttle?._shuttle_group) == groupId) : -1;
+        if (triggers && triggers.length > 0) {
+            triggers.forEach(async trigger => {
+                if (retValue) {
+                    switch (trigger.name) {
+                        case 'Assigned to':
+                            if (post.task._parent_task) {
+                                retValue = false;
+                            } else {
+                                const usersMatch =
+                                    trigger._user.filter((triggerUser) => {
+                                        return ((!!post._assigned_to) ? post._assigned_to.findIndex(assignee => {
+                                            return (assignee._id || assignee).toString() == (triggerUser._id || triggerUser).toString()
+                                        }) : -1) != -1
+                                    });
+                                retValue = (usersMatch && usersMatch.length > 0);
+                            }
+                            break;
+                        case 'Custom Field':
+                            if (post.task._parent_task) {
+                                retValue = false;
+                            } else {
+                                retValue = post.task.custom_fields[trigger.custom_field.name].toString() == trigger.custom_field.value.toString();
+                            }
+                            break;
+                        case 'Section is':
+                            if (post.task._parent_task) {
+                                if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId){
+                                    const triggerSection = (trigger._section._id || trigger._section);
+                                    const postSection = (post.task._shuttle_section._id || post.task._shuttle_section);
+                                    retValue = triggerSection.toString() == postSection.toString();
+                                } else {
+                                    retValue = false;
+                                }
+                            } else {
+                                const triggerSection = (trigger._section._id || trigger._section);
+                                let postSection;
+                                if (post?.task?.shuttle_type && shuttleIndex >= 0) {
+                                    postSection = (post.task.shuttles[shuttleIndex]._shuttle_section._id || post.task.shuttles[shuttleIndex]._shuttle_section);
+                                } else {
+                                    postSection = (post.task._column._id || post.task._column);
+                                }
+                                retValue = triggerSection.toString() == postSection.toString();
+                            }
+                            break;
+                        case 'Status is':
+                            if (post.task._parent_task) {
+                                if (post?.task?.shuttle_type && shuttleIndex >= 0) {
+                                    retValue = trigger.status.toUpperCase() == post.task.shuttles[shuttleIndex].shuttle_status.toUpperCase();
+                                } else {
+                                    retValue = false;
+                                }
+                            } else {
+                                if (post?.task?.shuttle_type && shuttleIndex >= 0) {
+                                    retValue = trigger.status.toUpperCase() == post.task.shuttles[shuttleIndex].shuttle_status.toUpperCase();
+                                } else {
+                                    retValue = trigger.status.toUpperCase() == post.task.status.toUpperCase();
+                                }
+                            }
+                            break;
+                        case 'Subtasks Status':
+                            retValue = isChildStatusTrigger;
+                            break;
+                        case 'Task is CREATED':
+                            if (!post.task._parent_task && isCreationTaskTrigger) {
+                                retValue = true;
+                            }
+                            break;
+                        case 'Approval Flow is Completed':
+                            if (post.approval_active && post.approval_flow_launched) {
+                                retValue = await this.isApprovalFlowCompleted(post.approval_flow);
+                            } else {
+                                retValue = false;
+                            }
+                            break;
+                        case 'Due date is':
+                            const today = DateTime.now();
+                            if (((trigger?.due_date_value == 'overdue') && (post?.task?.status != 'done') && (DateTime.fromISO(post?.task?.due_to).toMillis() < today.toMillis()))
+                                    || ((trigger?.due_date_value == 'today') && isSameDay(DateTime.fromISO(post?.task?.due_to), today))
+                                    || ((trigger?.due_date_value == 'tomorrow') && isSameDay(DateTime.fromISO(post?.task?.due_to), DateTime.now().plus({ days: 1 })))) {
+                                retValue = true;
+                            }
+                            break;
+                        default:
+                            retValue = true;
+                            break;
+                    }
+                }
+            });
+        } else {
+          retValue = false;
+        }
+        return retValue;
+    }
+    
+    private isApprovalFlowCompleted(flow) {
+        for (let i = 0; i < flow.length; i++) {
+            if (!flow[i].confirmed || !flow[i].confirmation_date) {
+                return false;
+            }
+        }
+        return true
+    }
 }
