@@ -497,11 +497,11 @@ export class TimelineViewComponent implements OnChanges, AfterViewInit {
     this.screen_height = screenHeight + 'px';
     document.getElementsByTagName("body")[0].style.overflow = 'hidden';
 
-    this.lineRemove();
+    await this.lineRemove();
 
-    this.renderer.listen(this.el.nativeElement, 'load', () => {
-      this.linesGenetate();
-    });
+    // this.renderer.listen(this.el.nativeElement, 'load', () => {
+      await this.linesGenetate();
+    // });
   }
 
   //Generate the dates for Nav
