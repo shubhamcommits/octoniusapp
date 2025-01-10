@@ -7,7 +7,7 @@
         </button>-->
         <!-- MENU BUTTON ENDS -->
 
-        <div *ngIf="userWorkspaces?.length > 0" class="components" style="margin-top: -25px; width: 78%;">
+        <div *ngIf="userWorkspaces?.length > 0" class="components">
             <a href="#pageWorkspacesSubmenu" data-toggle="collapse" aria-expanded="true" style="padding: 10px 0;" (click)="toggleCollapsed()"
                 [matTooltip]="workspaceData?.workspace_name" [matBadge]="(!isExpanded) ? totalNotifications : workspaceData?.numNotifications" [matBadgeHidden]="totalNotifications == 0" matBadgePosition="before" matBadgeColor="warn">
                 <app-secured-image [imgURL]="workspaceData?.workspace_avatar" [service]="'workspace'" [workspaceId]="workspaceData?._id" [styleClass]="'avatar'" style="float: left;">
@@ -16,7 +16,7 @@
                 <i class="material-icons-outlined carret" style="line-height: 40px;">keyboard_arrow_down</i>
             </a>
 
-            <ul class="collapse list-unstyled" id="pageWorkspacesSubmenu">
+           <!-- <ul class="collapse list-unstyled" id="pageWorkspacesSubmenu">
                 <li *ngFor="let workspace of userWorkspaces; trackBy: utilityService.trackByIndex" style="margin-top: 15px;">
                     <a (click)="goToWorkspace(workspace?._id || workspace)" style="padding: 10px 0;"
                         [matBadge]="workspace.numNotifications" [matBadgeHidden]="workspace.numNotifications == 0" matBadgePosition="before" matBadgeColor="warn">
@@ -25,9 +25,9 @@
                         {{ workspace?.workspace_name | truncatetext: 16 }}
                     </a>
                 </li>
-            </ul>
+            </ul>-->
         </div>
-        <div *ngIf="userWorkspaces?.length <= 0" class="components" style="margin-top: -25px; width: 78%;">
+        <div *ngIf="userWorkspaces?.length <= 0" class="components">
             <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active" style="padding: 10px 0;"
                 [matTooltip]="workspaceData?.workspace_name" [matBadge]="workspaceData?.numNotifications" [matBadgeHidden]="workspaceData?.numNotifications == 0" matBadgePosition="before" matBadgeColor="warn">
                 <app-secured-image [imgURL]="workspaceData?.workspace_avatar" [service]="'workspace'" [workspaceId]="workspaceData?._id" [styleClass]="'avatar'">
@@ -46,16 +46,28 @@
               </a>
             </li>
 
+   <li *ngIf="!isIndividualSubscription" [ngClass]="isWorkspacePage ? 'active' : ''">
+              <a routerLinkActive="active"
+                  routerLink="/dashboard/work/groups/all">
+                    <i class="material-icons">groups</i>
+                    <span i18n="@@sidebar.exploreWork">Workplace</span>
+              </a>
+            </li>
+            <li class="divider-line"></li>
+            <li><span style="font-weight:700"><i class="material-icons">star</i> Shortcuts</span></li>
 
+            <li *ngIf="!isIndividualSubscription && userGroups && userGroups.length > 0" style="margin-top:-20px">
 
-            <li *ngIf="!isIndividualSubscription && userGroups && userGroups.length > 0">
-           <span style="padding:10px; font-weight:700"><i class="material-icons">star</i> Shortcuts</span>
 
 
                 <ul class="collapse list-unstyled show" id="pageSubmenuGroups">
                     <li *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
-                        <a (click)="goToGroup(group)" routerLinkActive="active" class="favorite">
-                           <i class="material-icons">group</i>
+                        <a (click)="goToGroup(group)" routerLinkActive="active">
+                         <app-secured-image
+                              [imgURL]="group?.group_avatar"
+                              [service]="'group'"
+                              [workspaceId]="workspaceData?._id"
+                              [styleClass]="'avt'"></app-secured-image>
                             {{ group?.group_name | truncatetext: 16 }}
                         </a>
                     </li>
@@ -68,7 +80,7 @@
             
                 <ul class="collapse list-unstyled show" id="pageSubmenuPortfolios">
                     <li *ngFor="let portfolio of userPortfolios; trackBy: utilityService.trackByIndex">
-                        <a (click)="goToPortfolio(portfolio)" routerLinkActive="active" class="favorite">
+                        <a (click)="goToPortfolio(portfolio)" routerLinkActive="active" >
                             <app-secured-image [imgURL]="portfolio?.portfolio_avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
                                 [styleClass]="'avatar'"></app-secured-image>
                             {{ portfolio?.portfolio_name | truncatetext: 16 }}
@@ -78,13 +90,14 @@
             </li>
 
 
-            <li *ngIf="!isIndividualSubscription && userCollections && userCollections.length > 0">
-
+            <li *ngIf="!isIndividualSubscription && userCollections && userCollections.length > 0" style="margin-top:-20px">
                 <ul class="collapse list-unstyled show" id="pageSubmenuCollections">
                     <li *ngFor="let collection of userCollections; trackBy: utilityService.trackByIndex">
                         <a (click)="goToCollection(collection)" routerLinkActive="active" class="favorite">
-                           <i class="material-icons">book</i>
+                           <app-secured-image [imgURL]="collection?.collection_avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
+                                [styleClass]="'avt'"></app-secured-image>
                             {{ collection?.name | truncatetext: 16 }}
+
                         </a>
                     </li>
                 </ul>
@@ -106,16 +119,10 @@
             </li>
 
 
-            <li *ngIf="!isIndividualSubscription" [ngClass]="isWorkspacePage ? 'active' : ''">
-              <a routerLinkActive="active"
-                  routerLink="/dashboard/work/groups/all">
-                    <i class="material-icons">groups</i>
-                    <span i18n="@@sidebar.exploreWork">Workplace</span>
-              </a>
-            </li>
+<li class="divider-line"></li>
 
 
-            <li *ngIf="this.userData?.role === 'admin' || this.userData?.role === 'owner'">
+            <li *ngIf="this.userData?.role === 'admin' || this.userData?.role === 'owner'" style="margin-top:-20px">
                 <a (click)="changeState('general')"
                     class="nav-link"
                     [routerLink]="['/dashboard', 'admin', 'general']"
@@ -126,7 +133,7 @@
                 </a>
             </li>
 
-            <li>
+            <li style="margin-left:-8px; margin-top:-20px" >
                 <!-- USER PROFILE BADGE STARTS -->
                 <a class="nav-link" *ngIf="userData"
                   [routerLink]="['/dashboard', 'user', 'profile']"
@@ -143,7 +150,7 @@
                 <!-- USER PROFILE BADGE ENDS -->
             </li>
 
-            <li>
+            <li style="margin-top:-20px">
                 <!-- LOGOUT FUNCTION STARTS-->
                 <a class="nav-link"
                     [routerLink]="['/']"
