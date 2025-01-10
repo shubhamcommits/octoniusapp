@@ -68,7 +68,7 @@
             || (postData?.type === 'task' && postData?.approval_active && postData?.approval_history && postData?.approval_history?.length > 0)
             || (postData?.type === 'task')">
           <!-- TABS STARTS -->
-          <mat-tab-group mat-align-tabs="start" [selectedIndex]="selectedTab">
+          <mat-tab-group mat-align-tabs="start" [selectedIndex]="selectedTab" animationDuration="0ms">
             <!-- subtasks STARTS-->
             <mat-tab *ngIf="showSubtasks && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id)">
               <ng-template mat-tab-label>

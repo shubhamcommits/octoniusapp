@@ -1,5 +1,5 @@
 <div class="container-fluid">
-    <mat-tab-group *ngIf="userIsManager" [selectedIndex]="selectedTab">
+    <mat-tab-group *ngIf="userIsManager" [selectedIndex]="selectedTab" animationDuration="0ms">
         <mat-tab [label]="groupsLabel">
             <app-groups-list [userData]="userData" [workspaceData]="workspaceData"></app-groups-list>
         </mat-tab>

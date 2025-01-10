@@ -61,6 +61,9 @@
             line-height: 35px;
         }
     }
+    li{
+      margin:15px auto;
+    }
 }
 
 
@@ -82,9 +85,9 @@ ul ul a {
     margin-right: 8px;
 }
 
-.carret{
-   vertical-align: text-bottom;
-}
+// .carret{
+//    vertical-align: text-bottom;
+// }
 
 
 .dismiss {
@@ -128,8 +131,13 @@ ul ul{
    border-top: 1px solid rgba(0, 28, 71, 0.07);
 }
 
-.active a {
-    background: #e4edf8;
-    color: #005fd5 !important;
-    border-radius: 4px;
-}
+// .active a {
+//     background: #e4edf8;
+//     color: #005fd5 !important;
+//     border-radius: 4px;
+//     &:hover{
+//       background: #e4edf8;
+//       color: #005fd5 !important;
+//       border-radius: 4px;
+//     }
+// }

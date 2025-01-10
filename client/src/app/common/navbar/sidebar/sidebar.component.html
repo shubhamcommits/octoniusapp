@@ -1,10 +1,10 @@
 <nav id="sidebar">
     <div class="sidebar-header" [ngStyle]="{'top': (isMobile) ? 0 : 'none', 'left': (isMobile) ? 0 : 'none'}">
         <!-- MENU BUTTON STARTS -->
-        <button *ngIf="!isMobile" type="button" id="sidebarCollapse" class="btn dismiss" (click)="switchSideBar()" >
+    <!--    <button *ngIf="!isMobile" type="button" id="sidebarCollapse" class="btn dismiss" (click)="switchSideBar()" >
             <i class="material-icons">menu_open</i>
-            <!-- <i class="material-icons">left_panel_close</i> -->
-        </button>
+
+        </button>-->
         <!-- MENU BUTTON ENDS -->
 
         <div *ngIf="userWorkspaces?.length > 0" class="components" style="margin-top: -25px; width: 78%;">
@@ -39,48 +39,36 @@
 
     <div class="menu-options">
         <ul class="list-unstyled components">
-            <li [ngClass]="isMySpacePage ? 'active' : ''">
+            <li>
               <a (click)="changeToPersonalGroup()" routerLinkActive="active">
-                    <i class="material-icons-outlined carret">home</i>
+                    <i class="material-icons">inbox</i>
                     <span i18n="@@sidebar.mySpace">My Space</span>
               </a>
             </li>
 
-            <li> <hr class="divider-line"></li>
+
 
             <li *ngIf="!isIndividualSubscription && userGroups && userGroups.length > 0">
-                <a href="#pageSubmenuGroups" data-toggle="collapse" aria-expanded="true">
-                    <i class="material-icons-outlined carret">account_balance</i>
-                    <span i18n="@@sidebar.groups">Groups</span>
-                    <i class="material-icons-outlined carret">keyboard_arrow_down</i>
-                </a>
+           <span style="padding:10px; font-weight:700"><i class="material-icons">star</i> Shortcuts</span>
+
 
                 <ul class="collapse list-unstyled show" id="pageSubmenuGroups">
                     <li *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
-                        <a (click)="goToGroup(group)" routerLinkActive="active">
-                            <app-secured-image
-                              [imgURL]="group?.group_avatar"
-                              [service]="'group'"
-                              [workspaceId]="workspaceData?._id"
-                              [styleClass]="'avatar'"></app-secured-image>
+                        <a (click)="goToGroup(group)" routerLinkActive="active" class="favorite">
+                           <i class="material-icons">group</i>
                             {{ group?.group_name | truncatetext: 16 }}
                         </a>
                     </li>
                 </ul>
             </li>
 
-            <li *ngIf="!isIndividualSubscription && userPortfolios && userPortfolios.length > 0"><hr class="divider-line"></li>
 
             <li *ngIf="!isIndividualSubscription && userPortfolios && userPortfolios.length > 0">
-                <a href="#pageSubmenuPortfolios" data-toggle="collapse" aria-expanded="true">
-                    <i class="material-icons-outlined carret">bookmarks</i>
-                    <span i18n="@@sidebar.portfolios">Portfolios</span>
-                    <i class="material-icons-outlined carret">keyboard_arrow_down</i>
-                </a>
+
             
                 <ul class="collapse list-unstyled show" id="pageSubmenuPortfolios">
                     <li *ngFor="let portfolio of userPortfolios; trackBy: utilityService.trackByIndex">
-                        <a (click)="goToPortfolio(portfolio)" routerLinkActive="active">
+                        <a (click)="goToPortfolio(portfolio)" routerLinkActive="active" class="favorite">
                             <app-secured-image [imgURL]="portfolio?.portfolio_avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
                                 [styleClass]="'avatar'"></app-secured-image>
                             {{ portfolio?.portfolio_name | truncatetext: 16 }}
@@ -89,20 +77,13 @@
                 </ul>
             </li>
 
-            <li *ngIf="!isIndividualSubscription && userCollections && userCollections.length > 0"><hr class="divider-line"></li>
 
             <li *ngIf="!isIndividualSubscription && userCollections && userCollections.length > 0">
-                <a href="#pageSubmenuCollections" data-toggle="collapse" aria-expanded="true">
-                    <i class="material-icons-outlined carret">book</i>
-                    <span i18n="@@sidebar.collections">Collections</span>
-                    <i class="material-icons-outlined carret">keyboard_arrow_down</i>
-                </a>
-            
+
                 <ul class="collapse list-unstyled show" id="pageSubmenuCollections">
                     <li *ngFor="let collection of userCollections; trackBy: utilityService.trackByIndex">
-                        <a (click)="goToCollection(collection)" routerLinkActive="active">
-                            <app-secured-image [imgURL]="collection?.collection_avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
-                                [styleClass]="'avatar'"></app-secured-image>
+                        <a (click)="goToCollection(collection)" routerLinkActive="active" class="favorite">
+                           <i class="material-icons">book</i>
                             {{ collection?.name | truncatetext: 16 }}
                         </a>
                     </li>
@@ -112,7 +93,7 @@
             <li *ngIf="isIndividualSubscription">
                 <ul class="collapse list-unstyled show" id="pageSubmenuGroups">
                     <li *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
-                        <a (click)="goToGroup(group)" routerLinkActive="active">
+                        <a (click)="goToGroup(group)" routerLinkActive="active" class="favorite">
                             <app-secured-image
                                 [imgURL]="group?.group_avatar"
                                 [service]="'group'"
@@ -124,25 +105,22 @@
                 </ul>
             </li>
 
-            <li *ngIf="!isIndividualSubscription"><hr class="divider-line"></li>
 
             <li *ngIf="!isIndividualSubscription" [ngClass]="isWorkspacePage ? 'active' : ''">
               <a routerLinkActive="active"
-                  routerLink="/dashboard/work/groups/all"
-                  class="explore-work">
-                    <i class="material-icons-outlined carret">groups</i>
+                  routerLink="/dashboard/work/groups/all">
+                    <i class="material-icons">groups</i>
                     <span i18n="@@sidebar.exploreWork">Workplace</span>
               </a>
             </li>
 
-            <li> <hr class="divider-line"></li>
 
             <li *ngIf="this.userData?.role === 'admin' || this.userData?.role === 'owner'">
                 <a (click)="changeState('general')"
                     class="nav-link"
                     [routerLink]="['/dashboard', 'admin', 'general']"
                     routerLinkActive="active">
-                      <i class="material-icons-outlined">settings</i>
+                      <i class="material-icons">settings</i>
                       <span i18n="@@sidebar.settings">Settings</span>
                       <span class="sr-only">(current)</span>
                 </a>
@@ -171,7 +149,7 @@
                     [routerLink]="['/']"
                     routerLinkActive="router-link-active"
                     (click)="logout()">
-                      <i class="material-icons-outlined carret">logout</i>
+                      <i class="material-icons">logout</i>
                       <span i18n="@@sidebar.signOut">Sign Out</span>
                       <span class="sr-only">(current)</span>
                 </a>
