@@ -7,7 +7,7 @@
         </button>-->
         <!-- MENU BUTTON ENDS -->
 
-        <div *ngIf="userWorkspaces?.length > 0" class="components">
+       <!-- <div *ngIf="userWorkspaces?.length > 0" class="components">
             <a href="#pageWorkspacesSubmenu" data-toggle="collapse" aria-expanded="true" style="padding: 10px 0;" (click)="toggleCollapsed()"
                 [matTooltip]="workspaceData?.workspace_name" [matBadge]="(!isExpanded) ? totalNotifications : workspaceData?.numNotifications" [matBadgeHidden]="totalNotifications == 0" matBadgePosition="before" matBadgeColor="warn">
                 <app-secured-image [imgURL]="workspaceData?.workspace_avatar" [service]="'workspace'" [workspaceId]="workspaceData?._id" [styleClass]="'avatar'" style="float: left;">
@@ -16,7 +16,7 @@
                 <i class="material-icons-outlined carret" style="line-height: 40px;">keyboard_arrow_down</i>
             </a>
 
-           <!-- <ul class="collapse list-unstyled" id="pageWorkspacesSubmenu">
+            <ul class="collapse list-unstyled" id="pageWorkspacesSubmenu">
                 <li *ngFor="let workspace of userWorkspaces; trackBy: utilityService.trackByIndex" style="margin-top: 15px;">
                     <a (click)="goToWorkspace(workspace?._id || workspace)" style="padding: 10px 0;"
                         [matBadge]="workspace.numNotifications" [matBadgeHidden]="workspace.numNotifications == 0" matBadgePosition="before" matBadgeColor="warn">
@@ -25,11 +25,11 @@
                         {{ workspace?.workspace_name | truncatetext: 16 }}
                     </a>
                 </li>
-            </ul>-->
-        </div>
-        <div *ngIf="userWorkspaces?.length <= 0" class="components">
+            </ul>
+        </div>-->
+        <div class="components">
             <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active" style="padding: 10px 0;"
-                [matTooltip]="workspaceData?.workspace_name" [matBadge]="workspaceData?.numNotifications" [matBadgeHidden]="workspaceData?.numNotifications == 0" matBadgePosition="before" matBadgeColor="warn">
+                [matTooltip]="workspaceData?.workspace_name">
                 <app-secured-image [imgURL]="workspaceData?.workspace_avatar" [service]="'workspace'" [workspaceId]="workspaceData?._id" [styleClass]="'avatar'">
                 </app-secured-image>
                 <span>{{ workspaceData?.workspace_name | truncatetext: 16 }}</span>
