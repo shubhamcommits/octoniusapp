@@ -1,0 +1,21 @@
+<div class="block">
+    <div class="row">
+        <span i18n="@@crmCompanyUpdates.updates">Updates</span>
+    
+        <button class="btn btn-warning" (click)="addNewUpdate()">
+            <i class="material-icons-outlined">add</i>
+            <span i18n="@@crmCompanyUpdates.newUpdate">New Update</span>
+        </button>
+    </div>
+
+    <div class="row pointer" *ngFor="let update of companyData?.updates; trackBy: utilityService.trackByIndex" (click)="openUpdateDialog(update)">
+        <app-secured-image [imgURL]="update._created_user.profile_pic" [service]="'user'" [userData]="update._created_user"
+            [workspaceId]="(userData?._workspace?._id || userData?._workspace)" [styleClass]="'assignee-avatar'"
+            [tooltip]="update._created_user.first_name + ' ' + update._created_user.last_name"></app-secured-image>
+        <span>{{ update?.description }}</span>
+        <span>{{ formateDate(update?.date) }}</span>
+        <span (click)="$event.stopPropagation(); deleteUpdate(update?._id)">
+            <i class="material-icons-outlined" style="color: red;">delete</i>
+        </span>
+    </div>
+</div>

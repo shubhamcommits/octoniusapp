@@ -1,0 +1,18 @@
+<div class="block">
+    <div class="row">
+        <div class="col-md-5">
+            <h2 class="row">
+                <span *ngIf="!!companyData._id && !!companyData.name">{{ companyData?.name }}</span>
+            </h2>
+
+            <div class="row" *ngFor="let cf of companyData?.crm_custom_fields | keyvalue; trackBy: utilityService.trackByIndex">
+                <span><strong>{{ getCompanyCustomField(cf.key)?.title }}: </strong></span>
+                <span>{{ cf.value }}</span>
+            </div>
+        </div>
+    
+        <div class="col-md-7">
+            <p>{{ companyData?.description }}</p>
+        </div>
+    </div>
+</div>

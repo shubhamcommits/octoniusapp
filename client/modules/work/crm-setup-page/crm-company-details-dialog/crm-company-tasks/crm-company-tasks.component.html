@@ -1,0 +1,21 @@
+<div class="block">
+    <div class="row">
+        <span i18n="@@crmCompanyTasks.tasks">Tasks</span>
+    
+        <button class="btn btn-warning" (click)="addNewTask()">
+            <i class="material-icons-outlined">add</i>
+            <span i18n="@@crmCompanyTasks.newTask">New Task</span>
+        </button>
+    </div>
+
+    <div class="row pointer" *ngFor="let task of companyData?.tasks; trackBy: utilityService.trackByIndex" (click)="openTaskDialog(task)">
+        <mat-checkbox [checked]="task?.completed" [name]="'activity'" (change)="changeCompletedStatus(task)" (click)="$event.stopPropagation()"></mat-checkbox>
+        <app-assignee-avatar
+            [post]="task" [userData]="userData" style="margin-right: 10px;"></app-assignee-avatar>
+        <span [ngClass]="task?.completed ? 'task-completed' : ''">{{ task?.description }}</span>
+        <span [ngClass]="task?.completed ? 'task-completed' : ''">{{ formateDate(task?.date) }}</span>
+        <span (click)="$event.stopPropagation(); deleteTask(task?._id)">
+            <i class="material-icons-outlined" style="color: red;">delete</i>
+        </span>
+    </div>
+</div>

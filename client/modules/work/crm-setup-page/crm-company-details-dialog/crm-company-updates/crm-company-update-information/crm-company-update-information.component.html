@@ -1,0 +1,25 @@
+<div class="block">
+    <div class="row">
+        <div class="col-md-4">
+            <span i18n="@@crmCompanyTaskInformation.description">Description</span>
+        </div>
+    
+        <div class="col-md-8">
+            <textarea rows="5" [(ngModel)]="description" class="form-control" (blur)="fieldEdited('description')" name="description"></textarea>
+        </div>
+    </div>
+
+    <div>
+        <div style="margin-top: 20px;">
+            <button class="btn btn-danger" (click)="closeDialog()" i18n="@@crmCompanyTaskInformation.cancel"
+                style="margin: 0 10px">
+                Cancel
+            </button>
+    
+            <button class="btn btn-primary" (click)="saveUpdate()"
+                i18n="@@crmCompanyTaskInformation.save" style="margin: 0 10px">
+                Save
+            </button>
+        </div>
+    </div>
+</div>
