@@ -6,8 +6,8 @@
             </h2>
 
             <div class="row" *ngFor="let cf of companyData?.crm_custom_fields | keyvalue; trackBy: utilityService.trackByIndex">
-                <span><strong>{{ getCompanyCustomField(cf.key)?.title }}: </strong></span>
-                <span>{{ cf.value }}</span>
+                <span *ngIf="!!getCompanyCustomField(cf.key)"><strong>{{ getCompanyCustomField(cf.key)?.title }}: </strong></span>
+                <span *ngIf="!!getCompanyCustomField(cf.key)">{{ cf.value }}</span>
             </div>
         </div>
     
