@@ -54,7 +54,7 @@
 
         <div class="content-box" *ngIf="(postData?.comments_count > 0) || (!!postData?.logs && postData?.logs?.length > 0)">
           <!-- TABS STARTS -->
-          <mat-tab-group mat-align-tabs="start" [selectedIndex]="selectedTab">
+          <mat-tab-group mat-align-tabs="start" [selectedIndex]="selectedTab" animationDuration="0ms">
             <!-- comment-list STARTS-->
             <mat-tab *ngIf="postData?.comments_count > 0">
               <ng-template mat-tab-label>

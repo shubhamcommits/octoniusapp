@@ -110,7 +110,7 @@
               <!-- time-tracking ENDS-->
 
               <!-- TASK CHANGES HISTORY STARTS-->
-              <mat-tab *ngIf="postData?.logs && postData?.logs?.length > 0">
+              <mat-tab *ngIf="postData?.logs && postData?.logs?.length > 0" animationDuration="0ms">
                 <ng-template mat-tab-label>
                   <span i18n="@@crmOrderDialog.changeLog">Change Log</span>
                 </ng-template>
