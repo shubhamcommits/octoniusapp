@@ -53,8 +53,9 @@ export class CRMSetupPageComponent
   ///////// COMPANY TABLE STARTS /////////
   sortedCompanyData;
   displayedCompanyColumns: string[] = [
-    /*'image', */ "name",
-    "description",
+    //'image',
+    "name",
+    //"description",
     "star",
   ];
   crmCompanyCustomFieldsToShow = [];
