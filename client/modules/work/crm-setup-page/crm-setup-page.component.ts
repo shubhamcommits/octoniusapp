@@ -56,6 +56,8 @@ export class CRMSetupPageComponent
     //'image',
     "name",
     //"description",
+    "contacts",
+    "tasks",
     "star",
   ];
   crmCompanyCustomFieldsToShow = [];
@@ -153,6 +155,19 @@ export class CRMSetupPageComponent
     await this.loadCompanyCustomFieldsToShow();
 
     this.companies = [...this.companies];
+
+    this.companies.forEach((company) => {
+      company.numPendingTasks = !!company.tasks
+        ? company.tasks.filter((task) => !task.completed)?.length || 0
+        : 0;
+
+      company.numContacts = !!this.contacts
+        ? this.contacts.filter(
+            (contact) =>
+              (contact?._company?._id || contact?._company) == company?._id
+          )?.length || 0
+        : 0;
+    });
 
     this.sortedCompanyData = this.companies.slice();
   }

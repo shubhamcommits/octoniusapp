@@ -21,6 +21,20 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-4">
+            <span i18n="@@crmCompanyTaskInformation.dueDate">Due date</span>
+        </div>
+    
+        <div class="col-md-8">
+            <!-- Date Picker starts -->
+            <app-date-picker (date)="getDate($event)" [selectedDate]="this.taskData?.date"
+                [styleClass]="'btn-group input-date due'" [canEdit]="true">
+            </app-date-picker>
+            <!--Date Picker ends -->
+        </div>
+    </div>
+
     <div>
         <div style="margin-top: 20px;">
             <button class="btn btn-danger" (click)="closeDialog()" i18n="@@crmCompanyTaskInformation.cancel"

@@ -131,4 +131,13 @@ export class CRMCompanyTaskInformationComponent implements OnInit {
         this.companyTaskInfoEdited.emit(res["company"]);
       });
   }
+
+  getDate(dateObject: any) {
+    this.taskData.date = dateObject.toISODate();
+    this.crmService
+      .updateCompanyTask(this.companyId, this.taskData)
+      .then((res) => {
+        this.companyTaskInfoEdited.emit(res["company"]);
+      });
+  }
 }

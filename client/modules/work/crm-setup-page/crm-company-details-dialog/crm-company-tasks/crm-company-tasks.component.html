@@ -30,7 +30,7 @@
     <span [ngClass]="task?.completed ? 'task-completed' : ''">{{
       task?.description
     }}</span>
-    <span [ngClass]="task?.completed ? 'task-completed' : ''">{{
+    <span [ngClass]="task?.completed ? 'task-completed' : ''">Due on {{
       formateDate(task?.date)
     }}</span>
     <span (click)="$event.stopPropagation(); deleteTask(task?._id)">
