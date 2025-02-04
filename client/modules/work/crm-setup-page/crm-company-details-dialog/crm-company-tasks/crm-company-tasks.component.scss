@@ -9,8 +9,10 @@
     }
 }
 
-.row {
+.header {
     margin: 10px;
+    justify-content: space-between;
+    align-items: baseline;
 }
 
 .task-completed {

@@ -1,7 +1,6 @@
 .block {
     padding: 10px;
     margin: 10px;
-    border: 1px dashed #E4EDF8;
 
     .block-title {
         display: flex;
@@ -9,6 +8,12 @@
     }
 }
 
-.row {
+.header {
+    justify-content: space-between;
     margin: 10px;
+    align-items: baseline;
+}
+
+.updates{
+    text-align: left;
 }
