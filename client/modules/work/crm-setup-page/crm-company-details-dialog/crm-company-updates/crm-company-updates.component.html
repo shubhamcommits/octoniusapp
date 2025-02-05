@@ -16,8 +16,8 @@
     "
     (click)="openUpdateDialog(update)"
   >
-    <div class="col-md-11">
-     <div style="display: flex; align-items: center;">
+    <div class="col-md-11" style="display: flex;">
+     
         <app-secured-image
         [imgURL]="update._created_user.profile_pic"
         [service]="'user'"
@@ -28,15 +28,22 @@
           update._created_user.first_name + ' ' + update._created_user.last_name
         "
       ></app-secured-image>
-      <span>{{ update?.description }}</span>
-     </div>
-     <div class="small lightgray date" style="padding-left: 42px;">{{ formateDate(update?.date) }}</div>
+      <div>
+        <span>{{ update?.description }}</span>
+        <div class="small lightgray date" >{{ formateDate(update?.date) }}</div>
+  
+
+      </div>
+      
+    </div>
+     
+      
       
      
-    </div>
-    <div class="col">
+    
+    <div class="col-md-1" style="display: flex; align-items: center;">
       <span (click)="$event.stopPropagation(); deleteUpdate(update?._id)">
-        <i class="material-icons-outlined text-danger">delete</i>
+        <i class="material-icons-outlined muted">delete</i>
       </span>
     </div>
   </div>

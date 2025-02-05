@@ -9,32 +9,45 @@
   </div>
 
   <div
-    class="row pointer"
+    class="row pointer updates"
     *ngFor="
       let task of companyData?.tasks;
       trackBy: utilityService.trackByIndex
     "
     (click)="openTaskDialog(task)"
   >
-    <mat-checkbox
+    
+    <div class="col-md-11" style="display: flex;">
+      <mat-checkbox
       [checked]="task?.completed"
       [name]="'activity'"
       (change)="changeCompletedStatus(task)"
       (click)="$event.stopPropagation()"
     ></mat-checkbox>
-    <app-assignee-avatar
-      [post]="task"
-      [userData]="userData"
-      style="margin-right: 10px"
-    ></app-assignee-avatar>
-    <span [ngClass]="task?.completed ? 'task-completed' : ''">{{
-      task?.description
-    }}</span>
-    <span [ngClass]="task?.completed ? 'task-completed' : ''">Due on {{
-      formateDate(task?.date)
-    }}</span>
+      
+        <app-assignee-avatar
+        [post]="task"
+        [userData]="userData"
+        style="margin-right: 10px"
+      ></app-assignee-avatar>
+      <div>
+      <span [ngClass]="task?.completed ? 'task-completed' : ''">{{
+        task?.description
+      }}</span>
+      <div class="small text-danger date" > 
+        <span [ngClass]="task?.completed ? 'task-completed' : ''">Due on {{
+          formateDate(task?.date)
+        }}</span>
+      </div>
+    
+
+      </div>
+
+    </div>
+    <div class="col-md-1" style="display: flex; align-items: center;">
     <span (click)="$event.stopPropagation(); deleteTask(task?._id)">
-      <i class="material-icons-outlined" style="color: red">delete</i>
+      <i class="material-icons-outlined muted">delete</i>
     </span>
+  </div>
   </div>
 </div>
