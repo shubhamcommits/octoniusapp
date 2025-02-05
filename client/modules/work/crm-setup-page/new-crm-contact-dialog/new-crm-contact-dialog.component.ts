@@ -1,27 +1,33 @@
-import { Component, EventEmitter, Inject, Injector, OnInit, Output } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { PublicFunctions } from 'modules/public.functions';
-import { CRMService } from 'src/shared/services/crm-service/crm.service';
-import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Injector,
+  OnInit,
+  Output,
+} from "@angular/core";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { PublicFunctions } from "modules/public.functions";
+import { CRMService } from "src/shared/services/crm-service/crm.service";
+import { UtilityService } from "src/shared/services/utility-service/utility.service";
 
 @Component({
-  selector: 'app-new-crm-contact-dialog',
-  templateUrl: './new-crm-contact-dialog.component.html',
-  styleUrls: ['./new-crm-contact-dialog.component.scss']
+  selector: "app-new-crm-contact-dialog",
+  templateUrl: "./new-crm-contact-dialog.component.html",
+  styleUrls: ["./new-crm-contact-dialog.component.scss"],
 })
 export class NewCRMContactDialogComponent implements OnInit {
-
   @Output() contactCreated = new EventEmitter();
   @Output() contactEdited = new EventEmitter();
 
   contactData: any = {
-    name: '',
+    name: "",
     _workspace: null,
     phones: [],
     emails: [],
     links: [],
-    _company: '',
-    position: ''
+    _company: "",
+    position: "",
   };
 
   enableSave = false;
@@ -37,7 +43,7 @@ export class NewCRMContactDialogComponent implements OnInit {
     private mdDialogRef: MatDialogRef<NewCRMContactDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private injector: Injector
-  ) { }
+  ) {}
 
   async ngOnInit(): Promise<void> {
     if (!this.utilityService.objectExists(this.groupData)) {
@@ -51,9 +57,13 @@ export class NewCRMContactDialogComponent implements OnInit {
     this.contactData._workspace = this.workspaceData;
 
     if (!!this.data && !!this.data.contactId) {
-      await this.crmService.getCRMContact(this.data.contactId).then(res => {
-        this.contactData = res['contact'];
+      await this.crmService.getCRMContact(this.data.contactId).then((res) => {
+        this.contactData = res["contact"];
       });
+    }
+
+    if (!!this.data && !!this.data.companyData) {
+      this.contactData._company = this.data.companyData;
     }
 
     this.setEnableSave();
@@ -71,38 +81,69 @@ export class NewCRMContactDialogComponent implements OnInit {
 
   saveContact() {
     if (this.enableSave) {
-      this.utilityService.asyncNotification($localize`:@@newCRMContactDialogComponent.pleaseWaitWeSave:Please wait we are saving the contact...`, new Promise((resolve, reject) => {
-        if (!!this.contactData._id) {
-          this.crmService.updateCRMContact(this.contactData).then(res => {
-            this.contactData = res['contact'];
-            this.contactEdited.emit(this.contactData);
-            resolve(this.utilityService.resolveAsyncPromise($localize`:@@newCRMContactDialogComponent.contactUpdated:Contact updated!`));
-          })
-          .catch(() => {
-            reject(this.utilityService.rejectAsyncPromise($localize`:@@newCRMContactDialogComponent.unableToUpdateContact:Unable to update contact, please try again!`));
-          });
-        } else {
-          this.crmService.createCRMContact(this.contactData).then(res => {
-            this.contactData = res['contact'];
-            this.contactCreated.emit(this.contactData);
-            resolve(this.utilityService.resolveAsyncPromise($localize`:@@newCRMContactDialogComponent.contactCreated:Contact created!`));
-          })
-          .catch(() => {
-            reject(this.utilityService.rejectAsyncPromise($localize`:@@newCRMContactDialogComponent.unableToCreated:Unable to create contact, please try again!`));
-          });
-        }
-      }));
+      this.utilityService.asyncNotification(
+        $localize`:@@newCRMContactDialogComponent.pleaseWaitWeSave:Please wait we are saving the contact...`,
+        new Promise((resolve, reject) => {
+          if (!!this.contactData._id) {
+            this.crmService
+              .updateCRMContact(this.contactData)
+              .then((res) => {
+                this.contactData = res["contact"];
+                this.contactEdited.emit(this.contactData);
+                resolve(
+                  this.utilityService.resolveAsyncPromise(
+                    $localize`:@@newCRMContactDialogComponent.contactUpdated:Contact updated!`
+                  )
+                );
+              })
+              .catch(() => {
+                reject(
+                  this.utilityService.rejectAsyncPromise(
+                    $localize`:@@newCRMContactDialogComponent.unableToUpdateContact:Unable to update contact, please try again!`
+                  )
+                );
+              });
+          } else {
+            this.crmService
+              .createCRMContact(this.contactData)
+              .then((res) => {
+                this.contactData = res["contact"];
+                this.contactCreated.emit(this.contactData);
+                resolve(
+                  this.utilityService.resolveAsyncPromise(
+                    $localize`:@@newCRMContactDialogComponent.contactCreated:Contact created!`
+                  )
+                );
+              })
+              .catch(() => {
+                reject(
+                  this.utilityService.rejectAsyncPromise(
+                    $localize`:@@newCRMContactDialogComponent.unableToCreated:Unable to create contact, please try again!`
+                  )
+                );
+              });
+          }
+        })
+      );
 
       this.mdDialogRef.close();
     }
   }
 
   setEnableSave() {
-    this.enableSave = (!!this.contactData && !!this.contactData?.name && !!this.contactData?._workspace && !!this.contactData?._company);
+    this.enableSave =
+      !!this.contactData &&
+      !!this.contactData?.name &&
+      !!this.contactData?._workspace &&
+      !!this.contactData?._company;
   }
 
   closeDialog() {
-    this.utilityService.getConfirmDialogAlert($localize`:@@newCRMContactDialog.areYouSure:Are you sure?`, $localize`:@@newCRMContactDialog.loseData:By doing this, you will lose all the information added in the contact!`)
+    this.utilityService
+      .getConfirmDialogAlert(
+        $localize`:@@newCRMContactDialog.areYouSure:Are you sure?`,
+        $localize`:@@newCRMContactDialog.loseData:By doing this, you will lose all the information added in the contact!`
+      )
       .then((res) => {
         if (res.value) {
           this.mdDialogRef.close();

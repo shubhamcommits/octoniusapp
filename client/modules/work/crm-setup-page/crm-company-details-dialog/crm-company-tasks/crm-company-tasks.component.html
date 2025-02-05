@@ -1,0 +1,53 @@
+<div style="margin-top: 40px">
+  <div class="row header">
+    <h4 i18n="@@crmCompanyTasks.tasks">Tasks</h4>
+
+    <button class="btn btn-warning btn-sm" (click)="addNewTask()">
+      <i class="material-icons-outlined">add</i>
+      <span i18n="@@crmCompanyTasks.newTask">Add</span>
+    </button>
+  </div>
+
+  <div
+    class="row pointer updates"
+    *ngFor="
+      let task of companyData?.tasks;
+      trackBy: utilityService.trackByIndex
+    "
+    (click)="openTaskDialog(task)"
+  >
+    
+    <div class="col-md-11" style="display: flex;">
+      <mat-checkbox
+      [checked]="task?.completed"
+      [name]="'activity'"
+      (change)="changeCompletedStatus(task)"
+      (click)="$event.stopPropagation()"
+    ></mat-checkbox>
+      
+        <app-assignee-avatar
+        [post]="task"
+        [userData]="userData"
+        style="margin-right: 10px"
+      ></app-assignee-avatar>
+      <div>
+      <span [ngClass]="task?.completed ? 'task-completed' : ''">{{
+        task?.description
+      }}</span>
+      <div class="small text-danger date" > 
+        <span [ngClass]="task?.completed ? 'task-completed' : ''">Due on {{
+          formateDate(task?.date)
+        }}</span>
+      </div>
+    
+
+      </div>
+
+    </div>
+    <div class="col-md-1" style="display: flex; align-items: center;">
+    <span (click)="$event.stopPropagation(); deleteTask(task?._id)">
+      <i class="material-icons-outlined muted">delete</i>
+    </span>
+  </div>
+  </div>
+</div>

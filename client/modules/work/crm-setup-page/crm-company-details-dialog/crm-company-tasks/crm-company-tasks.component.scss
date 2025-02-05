@@ -1,0 +1,24 @@
+.block {
+    padding: 10px;
+    margin: 10px;
+    border: 1px dashed #E4EDF8;
+
+    .block-title {
+        display: flex;
+        margin-bottom: 20px;
+    }
+}
+
+.header {
+    margin: 10px;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.task-completed {
+    text-decoration: line-through;
+    color: #969696;
+}
+.updates{
+    text-align: left;
+}

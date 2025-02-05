@@ -1,32 +1,31 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, OnChanges, Input, Injector } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { PublicFunctions } from 'modules/public.functions';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
+import { HttpClient, HttpParams } from "@angular/common/http";
+import { Component, OnChanges, Input, Injector } from "@angular/core";
+import { DomSanitizer } from "@angular/platform-browser";
+import { PublicFunctions } from "modules/public.functions";
+import { BehaviorSubject, Observable } from "rxjs";
+import { map, switchMap } from "rxjs/operators";
+import { environment } from "src/environments/environment";
 
 @Component({
-  selector: 'app-avatar',
-  templateUrl: './avatar.component.html',
-  styleUrls: ['./avatar.component.scss']
+  selector: "app-avatar",
+  templateUrl: "./avatar.component.html",
+  styleUrls: ["./avatar.component.scss"],
 })
 export class AvatarComponent implements OnChanges {
-
-  @Input() public photoUrl: string = '';
+  @Input() public photoUrl: string = "";
   @Input() public userData;
   @Input() public styleClass: string;
-  @Input() tooltip: string = ''; // tooltip
-  @Input() placement: string = 'right'; // placement
-  @Input() alt: string = ''; // alternative text
-  @Input() inlineStyle: string = ''; // inline styles
+  @Input() tooltip: string = ""; // tooltip
+  @Input() placement: string = "right"; // placement
+  @Input() alt: string = ""; // alternative text
+  @Input() inlineStyle: string = ""; // inline styles
   @Input() noAuth: boolean = false; // in case we need a work around for security (only valid for selecting workplace because the user is not logged in yet)
 
   workspaceData;
 
   backgroundColor;
 
-  onErrorUrl: string = '';
+  onErrorUrl: string = "";
 
   private src$ = new BehaviorSubject<string>(this.photoUrl);
 
@@ -47,30 +46,42 @@ export class AvatarComponent implements OnChanges {
   constructor(
     private injector: Injector,
     private httpClient: HttpClient,
-    private domSanitizer: DomSanitizer) {
-  }
+    private domSanitizer: DomSanitizer
+  ) {}
 
   async ngOnChanges() {
-
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-    this.isLocalImg = !!this.photoUrl && this.photoUrl.indexOf('assets/images') != -1;
+    this.isLocalImg =
+      !!this.photoUrl && this.photoUrl.indexOf("assets/images") != -1;
 
     if (!this.styleClass) {
-      this.styleClass = 'circle-default-size';
+      this.styleClass = "circle-default-size";
     }
-    this.styleClass += ' circle';
+    this.styleClass += " circle";
 
-    if(!this.photoUrl || this.photoUrl == 'undefined' || this.isLocalImg) {
+    if (!this.photoUrl || this.photoUrl == "undefined" || this.isLocalImg) {
       this.photoUrl = "assets/images/user.png";
       this.isLocalImg = true;
     }
 
-    if (!this.isLocalImg && this.photoUrl.indexOf(environment.UTILITIES_USERS_UPLOADS) == -1) {
-      this.src$.next(environment.UTILITIES_USERS_UPLOADS + '/' + this.workspaceData._id + '/' + this.photoUrl);
+    if (
+      !this.isLocalImg &&
+      this.photoUrl.indexOf(environment.UTILITIES_USERS_UPLOADS) == -1
+    ) {
+      this.src$.next(
+        environment.UTILITIES_USERS_UPLOADS +
+          "/" +
+          this.workspaceData._id +
+          "/" +
+          this.photoUrl
+      );
       this.showInitials = false;
     } else if (!!this.userData) {
       this.showInitials = true;
-      const name = (this.userData?.first_name || '') + ' ' + (this.userData?.last_name || '')
+      const name =
+        (this.userData?.first_name || "") +
+        " " +
+        (this.userData?.last_name || "");
       this.tooltip = name;
 
       await this.createInititals(name);
@@ -82,24 +93,36 @@ export class AvatarComponent implements OnChanges {
 
     this.onErrorUrl = "assets/images/user.png";
 
-    this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
+    this.dataUrl$ = this.src$.pipe(switchMap((url) => this.loadImage(url)));
   }
 
   private loadImage(url: string): Observable<any> {
     try {
       if (this.noAuth) {
-        let params = new HttpParams().set('noAuth', this.noAuth.toString());
-        return this.httpClient
-          // load the image as a blob
-          .get(url, { responseType: 'blob', params: params })
-          // create an object url of that blob that we can use in the src attribute
-          .pipe(map(e => this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(e))));
+        let params = new HttpParams().set("noAuth", this.noAuth.toString());
+        return (
+          this.httpClient
+            // load the image as a blob
+            .get(url, { responseType: "blob", params: params })
+            // create an object url of that blob that we can use in the src attribute
+            .pipe(
+              map((e) =>
+                this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(e))
+              )
+            )
+        );
       } else {
-        return this.httpClient
-          // load the image as a blob
-          .get(url, { responseType: 'blob' })
-          // create an object url of that blob that we can use in the src attribute
-          .pipe(map(e => this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(e))));
+        return (
+          this.httpClient
+            // load the image as a blob
+            .get(url, { responseType: "blob" })
+            // create an object url of that blob that we can use in the src attribute
+            .pipe(
+              map((e) =>
+                this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(e))
+              )
+            )
+        );
       }
     } catch (err) {
       // this.publicFunctions.sendError(err);
@@ -107,14 +130,14 @@ export class AvatarComponent implements OnChanges {
       this.photoUrl = "assets/images/user.png";
       this.isLocalImg = true;
       this.src$.next(this.photoUrl);
-      return this.dataUrl$ = null;
+      return (this.dataUrl$ = null);
     }
   }
 
   private createInititals(name: string): void {
     let initials = "";
     for (let i = 0; i < name.length; i++) {
-      if (name.charAt(i) === ' ') {
+      if (name.charAt(i) === " ") {
         continue;
       }
 
@@ -158,11 +181,13 @@ export class AvatarComponent implements OnChanges {
 
   hslToHex(h, s, l) {
     l /= 100;
-    const a = s * Math.min(l, 1 - l) / 100;
-    const f = n => {
+    const a = (s * Math.min(l, 1 - l)) / 100;
+    const f = (n) => {
       const k = (n + h / 30) % 12;
       const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-      return Math.round(255 * color).toString(16).padStart(2, '0');   // convert to Hex and prefix "0" if needed
+      return Math.round(255 * color)
+        .toString(16)
+        .padStart(2, "0"); // convert to Hex and prefix "0" if needed
     };
     return `#${f(0)}${f(8)}${f(4)}`;
   }
