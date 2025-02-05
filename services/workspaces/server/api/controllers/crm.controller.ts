@@ -323,6 +323,10 @@ export class CRMController {
                     path: "tasks._created_user",
                     select: "_id first_name last_name profile_pic",
                 })
+                .populate({
+                    path: "updates._created_user",
+                    select: "_id first_name last_name profile_pic",
+                })
                 .lean();
 
             if (!company) {
@@ -460,6 +464,10 @@ export class CRMController {
                     path: "tasks._created_user",
                     select: "_id first_name last_name profile_pic",
                 })
+                .populate({
+                    path: "updates._created_user",
+                    select: "_id first_name last_name profile_pic",
+                })
                 .sort("name")
                 .lean();
 
@@ -511,6 +519,10 @@ export class CRMController {
                 })
                 .populate({
                     path: "tasks._created_user",
+                    select: "_id first_name last_name profile_pic",
+                })
+                .populate({
+                    path: "updates._created_user",
                     select: "_id first_name last_name profile_pic",
                 })
                 .lean();

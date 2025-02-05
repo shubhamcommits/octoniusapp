@@ -17,22 +17,12 @@
     (click)="openUpdateDialog(update)"
   >
     <div class="col-md-11" style="display: flex;">
-     
-        <app-secured-image
-        [imgURL]="update._created_user.profile_pic"
-        [service]="'user'"
-        [userData]="update._created_user"
-        [workspaceId]="userData?._workspace?._id || userData?._workspace"
-        [styleClass]="'assignee-avatar'"
-        [tooltip]="
-          update._created_user.first_name + ' ' + update._created_user.last_name
-        "
-      ></app-secured-image>
+      <app-avatar [photoUrl]="update?._created_user?.profile_pic" [userData]="userData" [tooltip]="update._created_user.first_name + ' ' + update._created_user.last_name"
+        [alt]="update._created_user.first_name + ' ' + update._created_user.last_name" [styleClass]="'assignee-avatar'"
+        ></app-avatar>
       <div>
         <span>{{ update?.description }}</span>
         <div class="small lightgray date" >{{ formateDate(update?.date) }}</div>
-  
-
       </div>
       
     </div>

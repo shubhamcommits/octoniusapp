@@ -101,7 +101,6 @@ export class CRMCompanyUpdateInformationComponent implements OnInit {
     this.crmService
       .updateCompanyUpdate(this.companyId, this.updateData)
       .then((res) => {
-        console.log(res["company"]);
         this.companyUpdateInfoEdited.emit(res["company"]);
       });
   }

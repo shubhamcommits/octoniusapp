@@ -24,6 +24,8 @@ export class CRMCompanyDetailsDialogComponent implements OnInit {
     name: "",
     description: "",
     _workspace: null,
+    tasks: [],
+    updates: [],
   };
 
   contacts;

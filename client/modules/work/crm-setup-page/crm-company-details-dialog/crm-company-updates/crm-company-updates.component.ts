@@ -4,6 +4,7 @@ import {
   Component,
   Injector,
   Input,
+  OnChanges,
   OnInit,
 } from "@angular/core";
 import { PublicFunctions } from "modules/public.functions";
@@ -20,7 +21,7 @@ import { CRMCompanyUpdateInformationComponent } from "./crm-company-update-infor
   styleUrls: ["./crm-company-updates.component.scss"],
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class CRMCompanyUpdatesComponent implements OnInit {
+export class CRMCompanyUpdatesComponent implements OnInit, OnChanges {
   @Input() companyData;
 
   userData;
@@ -40,14 +41,18 @@ export class CRMCompanyUpdatesComponent implements OnInit {
   async ngOnInit() {
     this.userData = await this.publicFunctions.getCurrentUser();
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+
+    console.log(this.companyData);
+  }
+
+  async ngOnChanges() {
+    console.log(this.companyData);
   }
 
   addNewUpdate() {
     this.openUpdateDialog({
       description: "",
       date: DateTime.now(),
-      completed: false,
-      _assigned_to: [],
       _created_by: this.userData,
     });
   }
