@@ -771,7 +771,7 @@ export class CRMSetupPageComponent
         crmCompanyCustomFields: this.crmCompanyCustomFields,
         crmContactCustomFields: this.crmContactCustomFields,
         contacts: this.contacts.filter(
-          (c) => companyId == (c._company._id || c._company)
+          (c) => companyId == (c?._company?._id || c?._company)
         ),
       },
     });
