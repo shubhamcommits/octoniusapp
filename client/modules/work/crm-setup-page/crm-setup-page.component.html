@@ -176,11 +176,8 @@
             (click)="openCompanyDetailsDialog(company?._id)"
           ></tr>
         </table>
-        <mat-paginator
-          [pageSizeOptions]="[5, 10]"
-          showFirstLastButtons
-          aria-label="Select page of periodic elements"
-        >
+
+        <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons aria-label="Select page of periodic elements">
         </mat-paginator>
       </div>
     </mat-tab>
@@ -385,6 +382,9 @@
             *matRowDef="let contact; columns: displayedContactsColumns"
           ></tr>
         </table>
+
+        <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons aria-label="Select page of periodic elements">
+        </mat-paginator>
       </div>
     </mat-tab>
 
@@ -528,6 +528,9 @@
             *matRowDef="let product; columns: displayedProductColumns"
           ></tr>
         </table>
+
+        <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons aria-label="Select page of periodic elements">
+        </mat-paginator>
       </div>
     </mat-tab>
   </mat-tab-group>
