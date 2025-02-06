@@ -20,6 +20,8 @@ import { NewCRMProductDialogComponent } from "./new-crm-product-dialog/new-crm-p
 import { CRMService } from "src/shared/services/crm-service/crm.service";
 import { CRMCompanyDetailsDialogComponent } from "./crm-company-details-dialog/crm-company-details-dialog.component";
 
+import { Subscription } from 'rxjs';
+
 @Component({
   selector: "app-crm-setup-page",
   templateUrl: "./crm-setup-page.component.html",
@@ -30,7 +32,9 @@ export class CRMSetupPageComponent
 {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  
+
+  private subscription: Subscription;
+
   contacts = [];
   companies = [];
   products = [];
@@ -100,6 +104,10 @@ export class CRMSetupPageComponent
     this.sortedCompanyData.filterPredicate = (data, filter) => {
       return data.name.toLowerCase().includes(filter);
     };
+
+    this.subscription = this.crmService.subjectCrm$.subscribe(() => {
+      this.ngOnInit();
+    });
   }
 
   async ngOnInit() {
@@ -156,6 +164,7 @@ export class CRMSetupPageComponent
    */
   ngOnDestroy() {
     this.subSink.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
   applyFilter(event: Event) {

@@ -131,6 +131,8 @@ export class CRMCompanyContactsComponent implements OnInit {
               this.contacts.splice(index, 1);
 
               await this.initContactTable();
+
+              this.crmService.triggerFunc();
             }
           });
         }
@@ -278,6 +280,7 @@ export class CRMCompanyContactsComponent implements OnInit {
         }
 
         await this.initContactTable();
+        this.crmService.triggerFunc();
       });
 
     const contactCreatedSubs =
@@ -287,8 +290,9 @@ export class CRMCompanyContactsComponent implements OnInit {
         }
 
         this.contacts.unshift(data);
-
+        
         await this.initContactTable();
+        this.crmService.triggerFunc();
       });
 
     dialogRef.afterClosed().subscribe(async (result) => {
