@@ -96,7 +96,11 @@ export class CRMSetupPageComponent
     private crmService: CRMService,
     public dialog: MatDialog,
     private injector: Injector
-  ) {}
+  ) {
+    this.sortedCompanyData.filterPredicate = (data, filter) => {
+      return data.name.toLowerCase().includes(filter);
+    };
+  }
 
   async ngOnInit() {
     // Start the loading spinner
@@ -152,6 +156,11 @@ export class CRMSetupPageComponent
    */
   ngOnDestroy() {
     this.subSink.unsubscribe();
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.sortedCompanyData.filter = filterValue.trim().toLowerCase();
   }
 
   async initContactTable() {
