@@ -108,6 +108,9 @@
           <tr mat-row *matRowDef="let company; columns: displayedCompanyColumns;" class="pointer" (click)="openCompanyDetailsDialog(company?._id)">
           </tr>
         </table>
+
+        <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons aria-label="Select page of periodic elements">
+        </mat-paginator>
       </div>
     </mat-tab>
     
@@ -228,6 +231,9 @@
           <tr mat-header-row *matHeaderRowDef="displayedContactsColumns"></tr>
           <tr mat-row *matRowDef="let contact; columns: displayedContactsColumns;"></tr>
         </table>
+
+        <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons aria-label="Select page of periodic elements">
+        </mat-paginator>
       </div>
     </mat-tab>
   
@@ -314,6 +320,9 @@
           <tr mat-header-row *matHeaderRowDef="displayedProductColumns"></tr>
           <tr mat-row *matRowDef="let product; columns: displayedProductColumns;"></tr>
         </table>
+
+        <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons aria-label="Select page of periodic elements">
+        </mat-paginator>
       </div>
     </mat-tab>
   </mat-tab-group>
