@@ -13,3 +13,18 @@
     border-radius: 4px;
     background: #F5F5F5;
 }
+
+td {
+    max-width: 200px;
+    overflow: hidden;
+    white-space: nowrap;
+
+    span {
+        display: inline-block;
+        max-width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: calc(100% - 5px);
+    }
+}
