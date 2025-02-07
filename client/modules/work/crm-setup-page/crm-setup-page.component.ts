@@ -28,7 +28,9 @@ import { CRMCompanyDetailsDialogComponent } from "./crm-company-details-dialog/c
 export class CRMSetupPageComponent
   implements OnInit, OnDestroy, AfterContentChecked
 {
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild("companyPaginator") companyPaginator: MatPaginator;
+  @ViewChild("contactPaginator") contactPaginator: MatPaginator;
+  @ViewChild("productPaginator") productPaginator: MatPaginator;
 
   contacts = [];
   companies = [];
@@ -147,7 +149,9 @@ export class CRMSetupPageComponent
   }
 
   ngAfterViewInit() {
-    this.sortedCompanyData.paginator = this.paginator; // Attach paginator
+    this.sortedCompanyData.paginator = this.companyPaginator;
+    this.sortedContacts.paginator = this.contactPaginator;
+    this.sortedProductData.paginator = this.productPaginator;
   }
 
   ngAfterContentChecked() {
