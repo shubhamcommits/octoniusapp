@@ -116,6 +116,8 @@ export class CRMCompanyUpdatesComponent implements OnInit, OnChanges {
                 this.companyData.updates.splice(index, 1);
               }
               this.cdRef.detectChanges();
+
+              this.crmService.updateCrmData();
             });
         }
       });

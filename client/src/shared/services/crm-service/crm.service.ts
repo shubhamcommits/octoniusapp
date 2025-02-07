@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "src/environments/environment";
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: "root",
@@ -9,6 +10,16 @@ export class CRMService {
   constructor(private _http: HttpClient) {}
 
   baseURL = environment.WORKSPACE_BASE_API_URL + "/crm";
+
+  /**
+   * CRM status is updated whenever details change
+   */
+  private crmDataSource = new Subject<void>();
+  
+  currentCrmData = this.crmDataSource.asObservable();
+  updateCrmData(crmData?: any) {
+    this.crmDataSource.next(crmData);
+  }
 
   /**
    * This function is responsible for fetching all the crm information

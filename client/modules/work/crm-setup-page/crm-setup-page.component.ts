@@ -81,7 +81,7 @@ export class CRMSetupPageComponent
   crmProductCustomFields = [];
   ///////// PRODUCT TABLE STARTS /////////
 
-  searchPlaceHolder: string = $localize`:@@crmCompanyList.searchCompany:🔍 Search company`;
+  searchPlaceHolder: string = $localize`:@@crmCompanyList.searchCompany:Search company`;
 
   // IsLoading behaviou subject maintains the state for loading spinner
   isLoading$;
@@ -101,6 +101,12 @@ export class CRMSetupPageComponent
     this.sortedCompanyData.filterPredicate = (data, filter) => {
       return data.name.toLowerCase().includes(filter);
     };
+
+    this.subSink.add(
+      this.crmService.currentCrmData.subscribe(() => {
+        this.ngOnInit();
+      })
+    );
   }
 
   async ngOnInit() {

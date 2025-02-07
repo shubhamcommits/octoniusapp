@@ -118,6 +118,8 @@ export class CRMCompanyTasksComponent implements OnInit {
                 this.companyData.tasks.splice(index, 1);
               }
               this.cdRef.detectChanges();
+              
+              this.crmService.updateCrmData();
             });
         }
       });
