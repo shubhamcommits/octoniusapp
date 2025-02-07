@@ -14,11 +14,11 @@ export class CRMService {
   /**
    * CRM status is updated whenever details change
    */
-  private subjectCrm = new Subject<void>();
+  private crmDataSource = new Subject<void>();
   
-  subjectCrm$ = this.subjectCrm.asObservable();
-  triggerFunc() {
-    this.subjectCrm.next();
+  currentCrmData = this.crmDataSource.asObservable();
+  updateCrmData(crmData?: any) {
+    this.crmDataSource.next(crmData);
   }
 
   /**

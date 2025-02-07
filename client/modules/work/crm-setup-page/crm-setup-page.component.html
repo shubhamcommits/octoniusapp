@@ -20,11 +20,11 @@
 
         <table mat-table matSort [dataSource]="sortedCompanyData" (matSortChange)="sortCompanyData($event)">
           <ng-container matColumnDef="name">
-            <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@crmCompanyList.name">
-              Name 
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+              <span i18n="@@crmCompanyList.name">Name</span> 
               <!-- Search Input -->
                <div class="position-relative search-field">
-                 <input class="form-control ml-2" matInput (keyup)="applyFilter($event)" (click)="$event.stopPropagation()" placeholder="Search company" />
+                 <input class="form-control ml-2" matInput (keyup)="applyFilter($event)" (click)="$event.stopPropagation()" [placeholder]="searchPlaceHolder" />
                  <span class="material-icons position-absolute">search</span>
                </div>     
             </th>

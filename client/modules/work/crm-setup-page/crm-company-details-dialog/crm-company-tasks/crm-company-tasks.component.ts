@@ -119,7 +119,7 @@ export class CRMCompanyTasksComponent implements OnInit {
               }
               this.cdRef.detectChanges();
               
-              this.crmService.triggerFunc();
+              this.crmService.updateCrmData();
             });
         }
       });

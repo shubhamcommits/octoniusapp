@@ -11,16 +11,14 @@ import { SubSink } from "subsink";
 import { PublicFunctions } from "modules/public.functions";
 import { Sort } from "@angular/material/sort";
 import { MatDialog } from "@angular/material/dialog";
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from "@angular/material/table";
+import { MatPaginator } from "@angular/material/paginator";
 
 import { NewCRMContactDialogComponent } from "./new-crm-contact-dialog/new-crm-contact-dialog.component";
 import { NewCRMCompanyDialogComponent } from "./new-crm-company-dialog/new-crm-company-dialog.component";
 import { NewCRMProductDialogComponent } from "./new-crm-product-dialog/new-crm-product-dialog.component";
 import { CRMService } from "src/shared/services/crm-service/crm.service";
 import { CRMCompanyDetailsDialogComponent } from "./crm-company-details-dialog/crm-company-details-dialog.component";
-
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: "app-crm-setup-page",
@@ -30,10 +28,7 @@ import { Subscription } from 'rxjs';
 export class CRMSetupPageComponent
   implements OnInit, OnDestroy, AfterContentChecked
 {
-
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
-  private subscription: Subscription;
 
   contacts = [];
   companies = [];
@@ -45,7 +40,7 @@ export class CRMSetupPageComponent
   workspaceData: any;
 
   ///////// CONTACT TABLE STARTS /////////
-  sortedContacts = new MatTableDataSource<any>([]);;
+  sortedContacts = new MatTableDataSource<any>([]);
   displayedContactsColumns: string[] = [
     "name",
     "company",
@@ -78,13 +73,15 @@ export class CRMSetupPageComponent
   ///////// COMPANY TABLE STARTS /////////
 
   ///////// PRODUCT TABLE STARTS /////////
-  sortedProductData = new MatTableDataSource<any>([]);;
+  sortedProductData = new MatTableDataSource<any>([]);
   displayedProductColumns: string[] = ["name", "description", "star"];
   crmProductCustomFieldsToShow = [];
 
   newProductColumnSelected;
   crmProductCustomFields = [];
   ///////// PRODUCT TABLE STARTS /////////
+
+  searchPlaceHolder: string = $localize`:@@crmCompanyList.searchCompany:Search company`;
 
   // IsLoading behaviou subject maintains the state for loading spinner
   isLoading$;
@@ -105,9 +102,11 @@ export class CRMSetupPageComponent
       return data.name.toLowerCase().includes(filter);
     };
 
-    this.subscription = this.crmService.subjectCrm$.subscribe(() => {
-      this.ngOnInit();
-    });
+    this.subSink.add(
+      this.crmService.currentCrmData.subscribe(() => {
+        this.ngOnInit();
+      })
+    );
   }
 
   async ngOnInit() {
@@ -164,7 +163,6 @@ export class CRMSetupPageComponent
    */
   ngOnDestroy() {
     this.subSink.unsubscribe();
-    this.subscription.unsubscribe();
   }
 
   applyFilter(event: Event) {
@@ -197,7 +195,7 @@ export class CRMSetupPageComponent
           )?.length || 0
         : 0;
     });
-    
+
     this.sortedCompanyData.data = this.companies.slice();
   }
 
