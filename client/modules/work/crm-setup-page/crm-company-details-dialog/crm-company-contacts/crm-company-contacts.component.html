@@ -55,7 +55,7 @@
                 <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@crmCompanyContacts.link"> Link </th>
         
                 <td mat-cell *matCellDef="let contact">
-                    <span>{{ contact?.links[0] }}</span>
+                    <a class="nav-link" target="_blank" [href]="contact?.links[0]" routerLinkActive="active"><span>{{ contact?.links[0] }}</span></a>
                 </td>
             </ng-container>
         

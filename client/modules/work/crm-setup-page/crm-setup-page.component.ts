@@ -28,7 +28,9 @@ import { CRMCompanyDetailsDialogComponent } from "./crm-company-details-dialog/c
 export class CRMSetupPageComponent
   implements OnInit, OnDestroy, AfterContentChecked
 {
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild("companyPaginator") companyPaginator: MatPaginator;
+  @ViewChild("contactPaginator") contactPaginator: MatPaginator;
+  @ViewChild("productPaginator") productPaginator: MatPaginator;
 
   contacts = [];
   companies = [];
@@ -81,7 +83,7 @@ export class CRMSetupPageComponent
   crmProductCustomFields = [];
   ///////// PRODUCT TABLE STARTS /////////
 
-  searchPlaceHolder: string = $localize`:@@crmCompanyList.searchCompany:🔍 Search company`;
+  searchPlaceHolder: string = $localize`:@@crmCompanyList.searchCompany:Search company`;
 
   // IsLoading behaviou subject maintains the state for loading spinner
   isLoading$;
@@ -101,6 +103,12 @@ export class CRMSetupPageComponent
     this.sortedCompanyData.filterPredicate = (data, filter) => {
       return data.name.toLowerCase().includes(filter);
     };
+
+    this.subSink.add(
+      this.crmService.currentCrmData.subscribe(() => {
+        this.ngOnInit();
+      })
+    );
   }
 
   async ngOnInit() {
@@ -141,7 +149,9 @@ export class CRMSetupPageComponent
   }
 
   ngAfterViewInit() {
-    this.sortedCompanyData.paginator = this.paginator; // Attach paginator
+    this.sortedCompanyData.paginator = this.companyPaginator;
+    this.sortedContacts.paginator = this.contactPaginator;
+    this.sortedProductData.paginator = this.productPaginator;
   }
 
   ngAfterContentChecked() {
