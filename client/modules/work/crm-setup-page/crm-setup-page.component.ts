@@ -3,6 +3,7 @@ import {
   OnInit,
   OnDestroy,
   Injector,
+  ViewChild,
   AfterContentChecked,
 } from "@angular/core";
 import { UtilityService } from "src/shared/services/utility-service/utility.service";
@@ -10,6 +11,9 @@ import { SubSink } from "subsink";
 import { PublicFunctions } from "modules/public.functions";
 import { Sort } from "@angular/material/sort";
 import { MatDialog } from "@angular/material/dialog";
+import { MatTableDataSource } from "@angular/material/table";
+import { MatPaginator } from "@angular/material/paginator";
+
 import { NewCRMContactDialogComponent } from "./new-crm-contact-dialog/new-crm-contact-dialog.component";
 import { NewCRMCompanyDialogComponent } from "./new-crm-company-dialog/new-crm-company-dialog.component";
 import { NewCRMProductDialogComponent } from "./new-crm-product-dialog/new-crm-product-dialog.component";
@@ -24,6 +28,8 @@ import { CRMCompanyDetailsDialogComponent } from "./crm-company-details-dialog/c
 export class CRMSetupPageComponent
   implements OnInit, OnDestroy, AfterContentChecked
 {
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   contacts = [];
   companies = [];
   products = [];
@@ -34,7 +40,7 @@ export class CRMSetupPageComponent
   workspaceData: any;
 
   ///////// CONTACT TABLE STARTS /////////
-  sortedContacts;
+  sortedContacts = new MatTableDataSource<any>([]);
   displayedContactsColumns: string[] = [
     "name",
     "company",
@@ -51,7 +57,7 @@ export class CRMSetupPageComponent
   ///////// CONTACT TABLE ENDS /////////
 
   ///////// COMPANY TABLE STARTS /////////
-  sortedCompanyData;
+  sortedCompanyData = new MatTableDataSource<any>([]);
   displayedCompanyColumns: string[] = [
     //'image',
     "name",
@@ -67,13 +73,15 @@ export class CRMSetupPageComponent
   ///////// COMPANY TABLE STARTS /////////
 
   ///////// PRODUCT TABLE STARTS /////////
-  sortedProductData;
+  sortedProductData = new MatTableDataSource<any>([]);
   displayedProductColumns: string[] = ["name", "description", "star"];
   crmProductCustomFieldsToShow = [];
 
   newProductColumnSelected;
   crmProductCustomFields = [];
   ///////// PRODUCT TABLE STARTS /////////
+
+  searchPlaceHolder: string = $localize`:@@crmCompanyList.searchCompany:🔍 Search company`;
 
   // IsLoading behaviou subject maintains the state for loading spinner
   isLoading$;
@@ -89,7 +97,11 @@ export class CRMSetupPageComponent
     private crmService: CRMService,
     public dialog: MatDialog,
     private injector: Injector
-  ) {}
+  ) {
+    this.sortedCompanyData.filterPredicate = (data, filter) => {
+      return data.name.toLowerCase().includes(filter);
+    };
+  }
 
   async ngOnInit() {
     // Start the loading spinner
@@ -128,6 +140,10 @@ export class CRMSetupPageComponent
     this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 
+  ngAfterViewInit() {
+    this.sortedCompanyData.paginator = this.paginator; // Attach paginator
+  }
+
   ngAfterContentChecked() {
     this.subSink.add(
       this.utilityService.isLoadingSpinner.subscribe((res) => {
@@ -143,12 +159,17 @@ export class CRMSetupPageComponent
     this.subSink.unsubscribe();
   }
 
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.sortedCompanyData.filter = filterValue.trim().toLowerCase();
+  }
+
   async initContactTable() {
     await this.loadContactCustomFieldsToShow();
 
     this.contacts = [...this.contacts];
 
-    this.sortedContacts = this.contacts.slice();
+    this.sortedContacts.data = this.contacts.slice();
   }
 
   async initCompanyTable() {
@@ -169,7 +190,7 @@ export class CRMSetupPageComponent
         : 0;
     });
 
-    this.sortedCompanyData = this.companies.slice();
+    this.sortedCompanyData.data = this.companies.slice();
   }
 
   async initProductTable() {
@@ -177,7 +198,7 @@ export class CRMSetupPageComponent
 
     this.products = [...this.products];
 
-    this.sortedProductData = this.products.slice();
+    this.sortedProductData.data = this.products.slice();
   }
 
   getContactCustomField(fieldName: string) {
@@ -325,11 +346,11 @@ export class CRMSetupPageComponent
 
     const data = this.contacts.slice();
     if (!property || direction === "") {
-      this.sortedContacts = data;
+      this.sortedContacts.data = data;
       return;
     }
 
-    this.sortedContacts = data.sort((a, b) => {
+    this.sortedContacts.data = data.sort((a, b) => {
       switch (property) {
         case "company":
           return this.utilityService.compare(
@@ -375,11 +396,11 @@ export class CRMSetupPageComponent
 
     const data = this.companies.slice();
     if (!property || direction === "") {
-      this.sortedCompanyData = data;
+      this.sortedCompanyData.data = data;
       return;
     }
 
-    this.sortedCompanyData = data.sort((a, b) => {
+    this.sortedCompanyData.data = data.sort((a, b) => {
       switch (property) {
         case "name":
         case "description":
@@ -416,11 +437,11 @@ export class CRMSetupPageComponent
 
     const data = this.companies.slice();
     if (!property || direction === "") {
-      this.sortedProductData = data;
+      this.sortedProductData.data = data;
       return;
     }
 
-    this.sortedProductData = data.sort((a, b) => {
+    this.sortedProductData.data = data.sort((a, b) => {
       switch (property) {
         case "name":
         case "description":
