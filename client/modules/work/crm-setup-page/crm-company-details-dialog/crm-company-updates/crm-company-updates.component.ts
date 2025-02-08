@@ -74,21 +74,23 @@ export class CRMCompanyUpdatesComponent implements OnInit, OnChanges {
           if (!this.companyData.updates) {
             this.companyData.updates = [];
           }
-
+          
           this.companyData.updates = data.updates;
           this.cdRef.detectChanges();
+          this.crmService.updateCrmData();
         }
       );
     const companyUpdateEditedSubs =
       dialogRef.componentInstance.companyUpdateInfoEdited.subscribe(
         async (data) => {
           const index = this.companyData.updates
-            ? this.companyData.updates.findIndex((p) => p._id == data._id)
-            : -1;
+          ? this.companyData.updates.findIndex((p) => p._id == data._id)
+          : -1;
           if (index >= 0) {
             this.companyData.updates[index] = data;
           }
           this.cdRef.detectChanges();
+          this.crmService.updateCrmData();
         }
       );
 
@@ -116,7 +118,6 @@ export class CRMCompanyUpdatesComponent implements OnInit, OnChanges {
                 this.companyData.updates.splice(index, 1);
               }
               this.cdRef.detectChanges();
-
               this.crmService.updateCrmData();
             });
         }

@@ -199,7 +199,9 @@
             </th>
 
             <td mat-cell *matCellDef="let contact">
-              <span>{{ contact?.links[0] }}</span>
+              <a class="nav-link" target="_blank" [href]="contact?.links[0]" routerLinkActive="active">
+                <span class="d-inline-block text-truncate" style="max-width: 200px;">{{ contact?.links[0] }}</span>
+              </a>
             </td>
           </ng-container>
 

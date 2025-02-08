@@ -90,18 +90,16 @@ export class CRMCompanyTaskInformationComponent implements OnInit {
         .addCompanyTask(this.companyId, this.taskData)
         .then((res) => {
           this.companyTaskInfoCreated.emit(res["company"]);
-          this.crmService.updateCrmData();
+          this.closeDialog();
         });
     } else {
       this.crmService
         .updateCompanyTask(this.companyId, this.taskData)
         .then((res) => {
           this.companyTaskInfoEdited.emit(this.taskData);
-          this.crmService.updateCrmData();
+          this.closeDialog();
         });
     }
-
-    this.closeDialog();
   }
 
   onAssignedAdded(data: any) {
