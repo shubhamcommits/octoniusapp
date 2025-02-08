@@ -72,6 +72,7 @@ export class NewCRMCompanyDialogComponent implements OnInit {
             this.companyData = res['company'];
             this.companyEdited.emit(this.companyData);
             resolve(this.utilityService.resolveAsyncPromise($localize`:@@newCRMCompanyDialogComponent.companyUpdated:Company updated!`));
+            this.mdDialogRef.close();
           })
           .catch(() => {
             reject(this.utilityService.rejectAsyncPromise($localize`:@@newCRMCompanyDialogComponent.unableToUpdateCompany:Unable to update company, please try again!`));
@@ -81,14 +82,13 @@ export class NewCRMCompanyDialogComponent implements OnInit {
             this.companyData = res['company'];
             this.companyCreated.emit(this.companyData);
             resolve(this.utilityService.resolveAsyncPromise($localize`:@@newCRMCompanyDialogComponent.companyCreated:Company created!`));
+            this.mdDialogRef.close();
           })
           .catch(() => {
             reject(this.utilityService.rejectAsyncPromise($localize`:@@newCRMCompanyDialogComponent.unableToCreated:Unable to create company, please try again!`));
           });
         }
       }));
-      
-      this.mdDialogRef.close();
     }
   }
 
