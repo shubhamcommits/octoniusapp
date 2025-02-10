@@ -41,13 +41,9 @@ export class CRMCompanyUpdatesComponent implements OnInit, OnChanges {
   async ngOnInit() {
     this.userData = await this.publicFunctions.getCurrentUser();
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-
-    console.log(this.companyData);
   }
 
-  async ngOnChanges() {
-    console.log(this.companyData);
-  }
+  async ngOnChanges() {}
 
   addNewUpdate() {
     this.openUpdateDialog({
