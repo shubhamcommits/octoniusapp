@@ -80,18 +80,16 @@ export class CRMCompanyUpdateInformationComponent implements OnInit {
         .addCompanyUpdate(this.companyId, this.updateData)
         .then((res) => {
           this.companyUpdateInfoCreated.emit(res["company"]);
-          this.crmService.updateCrmData();
+          this.closeDialog();
         });
     } else {
       this.crmService
         .updateCompanyUpdate(this.companyId, this.updateData)
         .then((res) => {
           this.companyUpdateInfoEdited.emit(this.updateData);
-          this.crmService.updateCrmData();
+          this.closeDialog();
         });
     }
-
-    this.closeDialog();
   }
 
   onAssignedAdded(data: any) {

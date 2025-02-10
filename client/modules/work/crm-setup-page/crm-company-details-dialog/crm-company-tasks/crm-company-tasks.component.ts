@@ -56,7 +56,9 @@ export class CRMCompanyTasksComponent implements OnInit {
     task.completed = !task.completed;
     this.crmService
       .updateCompanyTask(this.companyData?._id, task)
-      .then((res) => {});
+      .then((res) => {
+        this.crmService.updateCrmData();
+      });
   }
 
   openTaskDialog(task) {
@@ -79,18 +81,20 @@ export class CRMCompanyTasksComponent implements OnInit {
 
           this.companyData.tasks = data.tasks;
           this.cdRef.detectChanges();
+          this.crmService.updateCrmData();
         }
       );
     const companyTaskEditedSubs =
       dialogRef.componentInstance.companyTaskInfoEdited.subscribe(
         async (data) => {
           const index = this.companyData.tasks
-            ? this.companyData.tasks.findIndex((p) => p._id == data._id)
-            : -1;
+          ? this.companyData.tasks.findIndex((p) => p._id == data._id)
+          : -1;
           if (index >= 0) {
             this.companyData.tasks[index] = data;
           }
           this.cdRef.detectChanges();
+          this.crmService.updateCrmData();
         }
       );
 

@@ -95,6 +95,7 @@ export class NewCRMContactDialogComponent implements OnInit {
                     $localize`:@@newCRMContactDialogComponent.contactUpdated:Contact updated!`
                   )
                 );
+                this.mdDialogRef.close();
               })
               .catch(() => {
                 reject(
@@ -114,6 +115,7 @@ export class NewCRMContactDialogComponent implements OnInit {
                     $localize`:@@newCRMContactDialogComponent.contactCreated:Contact created!`
                   )
                 );
+                this.mdDialogRef.close();
               })
               .catch(() => {
                 reject(
@@ -125,8 +127,6 @@ export class NewCRMContactDialogComponent implements OnInit {
           }
         })
       );
-
-      this.mdDialogRef.close();
     }
   }
 

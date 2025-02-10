@@ -72,6 +72,7 @@ export class NewCRMProductDialogComponent implements OnInit {
             this.productData = res['product'];
             this.productEdited.emit(this.productData);
             resolve(this.utilityService.resolveAsyncPromise($localize`:@@newCRMProductDialogComponent.productUpdated:Product updated!`));
+            this.mdDialogRef.close();
           })
           .catch(() => {
             reject(this.utilityService.rejectAsyncPromise($localize`:@@newCRMProductDialogComponent.unableToUpdateProduct:Unable to update product, please try again!`));
@@ -81,30 +82,29 @@ export class NewCRMProductDialogComponent implements OnInit {
             this.productData = res['product'];
             this.productCreated.emit(this.productData);
             resolve(this.utilityService.resolveAsyncPromise($localize`:@@newCRMProductDialogComponent.productCreated:Product created!`));
+            this.mdDialogRef.close();
           })
           .catch(() => {
             reject(this.utilityService.rejectAsyncPromise($localize`:@@newCRMProductDialogComponent.unableToCreated:Unable to create product, please try again!`));
           });
         }
       }));
-      
-      this.mdDialogRef.close();
     }
     if (this.enableSave) {
       if (!!this.productData?._id) {
         this.crmService.updateCRMProduct(this.productData).then(res => {
           this.productData = res['product'];
           this.productEdited.emit(this.productData);
+          this.mdDialogRef.close();
         });
       } else {
         this.crmService.createCRMProduct(this.productData).then(res => {
           this.productData = res['product'];
           this.productCreated.emit(this.productData);
+          this.mdDialogRef.close();
         });
       }
     }
-
-    this.mdDialogRef.close();
   }
 
   /**
