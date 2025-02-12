@@ -83,6 +83,14 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
           email: "",
         });
       });
+    } else if (this.type == "crm") {
+      this.members = await this.workspaceData?.members;
+      this.members = await this.members?.filter((member, index) => {
+        return (
+          this.members?.findIndex((m) => m._id == member._id) == index &&
+          member.active
+        );
+      });
     } else if (this.type != "portfolio") {
       this.members = await this.workspaceData?.members;
       this.members = await this.members?.filter((member) => {

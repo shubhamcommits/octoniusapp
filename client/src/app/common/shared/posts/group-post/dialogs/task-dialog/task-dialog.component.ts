@@ -1,22 +1,30 @@
-import { Component, OnInit, EventEmitter, Output, Inject, Injector } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { PublicFunctions } from 'modules/public.functions';
-import { PostService } from 'src/shared/services/post-service/post.service';
-import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { GroupService } from 'src/shared/services/group-service/group.service';
-import { BehaviorSubject } from 'rxjs';
-import { FlowService } from 'src/shared/services/flow-service/flow.service';
-import { DateTime } from 'luxon';
-import { ColumnService } from 'src/shared/services/column-service/column.service';
-import { DatesService } from 'src/shared/services/dates-service/dates.service';
+import {
+  Component,
+  OnInit,
+  EventEmitter,
+  Output,
+  Inject,
+  Injector,
+} from "@angular/core";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { PublicFunctions } from "modules/public.functions";
+import { PostService } from "src/shared/services/post-service/post.service";
+import { UtilityService } from "src/shared/services/utility-service/utility.service";
+import { GroupService } from "src/shared/services/group-service/group.service";
+import { BehaviorSubject } from "rxjs";
+import { FlowService } from "src/shared/services/flow-service/flow.service";
+import { DateTime } from "luxon";
+import { ColumnService } from "src/shared/services/column-service/column.service";
+import { DatesService } from "src/shared/services/dates-service/dates.service";
 
 @Component({
-  selector: 'app-task-dialog',
-  templateUrl: './task-dialog.component.html',
-  styleUrls: ['./task-dialog.component.scss']
+  selector: "app-task-dialog",
+  templateUrl: "./task-dialog.component.html",
+  styleUrls: ["./task-dialog.component.scss"],
 })
-export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterViewInit*/ {
-
+export class TaskDialogComponent
+  implements OnInit /*, AfterViewChecked, AfterViewInit*/
+{
   // Close Event Emitter - Emits when closing dialog
   @Output() closeEvent = new EventEmitter();
   @Output() deleteEvent = new EventEmitter();
@@ -31,17 +39,17 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
   groupId: string;
   columns: any;
 
-  searchText: string = '';
+  searchText: string = "";
 
   // shuttleColumns: any;
-  tasks:any;
+  tasks: any;
   customFields;
   selectedCFValues = [];
   groupData: any;
   shuttleIndex = -1;
   shuttle: any;
   // Title of the Post
-  title: string = '';
+  title: string = "";
   //ragTags = [];
   isIdeaModuleAvailable;
   isShuttleTasksModuleAvailable;
@@ -66,11 +74,11 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
 
   // Task Assignee Variable
   taskAssignee = {
-    profile_pic: '',
-    role: '',
-    first_name: '',
-    last_name: '',
-    email: ''
+    profile_pic: "",
+    role: "",
+    first_name: "",
+    last_name: "",
+    email: "",
   };
 
   // Assigned State of Task
@@ -82,7 +90,7 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
   dueDate: any;
   dueTime: any = {
     hour: 1,
-    minute: 30
+    minute: 30,
   };
 
   // Files Variable
@@ -97,7 +105,7 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
   eventAssignedToCount;
 
   showSubtasks = false;
-  subtasks: any =  [];
+  subtasks: any = [];
   percentageSubtasksCompleted = 0;
 
   lastAssignedBy: any;
@@ -110,7 +118,7 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
 
   myWorkplace = false;
 
-  cfSearchText = '';
+  cfSearchText = "";
   cfSearchPlaceholder = $localize`:@@taskDialog.cfSearchPlaceholder:Search`;
 
   // Public Functions class object
@@ -129,7 +137,7 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
     private datesService: DatesService,
     private injector: Injector,
     private mdDialogRef: MatDialogRef<TaskDialogComponent>
-    ) {}
+  ) {}
 
   async ngOnInit() {
     // Start the loading spinner
@@ -145,26 +153,36 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
       this.postData = await this.publicFunctions.getPost(postId);
 
       if (!this.groupId) {
-        this.groupId = (this.postData._group) ? (this.postData._group._id || this.postData._group) : null;
+        this.groupId = this.postData._group
+          ? this.postData._group._id || this.postData._group
+          : null;
         this.myWorkplace = false;
       }
 
       if (!!this.groupId) {
-        this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
+        this.tasks = await this.publicFunctions.getPosts(this.groupId, "task");
 
-        this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
+        this.groupData = await this.publicFunctions.getGroupDetails(
+          this.groupId
+        );
 
-        this.myWorkplace = this.publicFunctions.isPersonalNavigation(this.groupData, this.userData);
+        this.myWorkplace = this.publicFunctions.isPersonalNavigation(
+          this.groupData,
+          this.userData
+        );
 
-        this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
-          this.flows = res['flows'];
+        this.flowService.getGroupAutomationFlows(this.groupId).then((res) => {
+          this.flows = res["flows"];
         });
       }
 
-      this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
+      this.isShuttleTasksModuleAvailable =
+        await this.publicFunctions.isShuttleTasksModuleAvailable();
       this.isIdeaModuleAvailable = await this.publicFunctions.checkIdeaStatus();
-      this.isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
-      this.isBusinessSubscription = await this.publicFunctions.checkIsBusinessSubscription();
+      this.isIndividualSubscription =
+        await this.publicFunctions.checkIsIndividualSubscription();
+      this.isBusinessSubscription =
+        await this.publicFunctions.checkIsBusinessSubscription();
 
       await this.initPostData();
     }
@@ -182,18 +200,39 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
     this.dueDate = undefined;
     this.tags = [];
 
-    if (this.isShuttleTasksModuleAvailable && this.postData?.task?.shuttle_type && this.postData?.task?.shuttles) {
-      this.shuttleIndex = await (this.utilityService.arrayExists(this.postData?.task?.shuttles)) ? this.postData?.task?.shuttles?.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == this.groupData?._id) : -1;
+    if (
+      this.isShuttleTasksModuleAvailable &&
+      this.postData?.task?.shuttle_type &&
+      this.postData?.task?.shuttles
+    ) {
+      this.shuttleIndex = (await this.utilityService.arrayExists(
+        this.postData?.task?.shuttles
+      ))
+        ? this.postData?.task?.shuttles?.findIndex(
+            (shuttle) =>
+              (shuttle._shuttle_group._id || shuttle._shuttle_group) ==
+              this.groupData?._id
+          )
+        : -1;
       if (this.shuttleIndex >= 0) {
         this.shuttle = this.postData?.task?.shuttles[this.shuttleIndex];
       }
     }
 
-    if (this.postData?.task?._parent_task && this.postData?.task?._parent_task?._group == undefined) {
+    if (
+      this.postData?.task?._parent_task &&
+      this.postData?.task?._parent_task?._group == undefined
+    ) {
       this.postData.task._parent_task._group = null;
     }
 
-    if((this.postData?.task?._parent_task && this.postData?.task?._parent_task?._group) && this.columns && (this.shuttle?._shuttle_group?._id || this.shuttle?._shuttle_group) != this.groupId){
+    if (
+      this.postData?.task?._parent_task &&
+      this.postData?.task?._parent_task?._group &&
+      this.columns &&
+      (this.shuttle?._shuttle_group?._id || this.shuttle?._shuttle_group) !=
+        this.groupId
+    ) {
       this.columns = null;
     }
 
@@ -201,14 +240,21 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
     this.taskAssignee = this.postData?._assigned_to || [];
 
     // Set the due date variable for task
-    if ((this.postData?.task.due_to && this.postData?.task.due_to != null)
-      || (this.postData?.event.due_to && this.postData?.event.due_to != null)) {
+    if (
+      (this.postData?.task.due_to && this.postData?.task.due_to != null) ||
+      (this.postData?.event.due_to && this.postData?.event.due_to != null)
+    ) {
       // Set the DueDate variable
-      this.dueDate = DateTime.fromISO(this.postData?.task.due_to || this.postData?.event.due_to);
+      this.dueDate = DateTime.fromISO(
+        this.postData?.task.due_to || this.postData?.event.due_to
+      );
     }
 
     // Set the due date variable for task
-    if (this.postData?.task.start_date && this.postData?.task.start_date != null) {
+    if (
+      this.postData?.task.start_date &&
+      this.postData?.task.start_date != null
+    ) {
       // Set the DueDate variable
       this.startDate = DateTime.fromISO(this.postData?.task.start_date);
     }
@@ -216,7 +262,7 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
     this.setAssignedBy();
 
     await this.postService.getSubTasks(this.postData?._id).then((res) => {
-      this.subtasks = res['subtasks'];
+      this.subtasks = res["subtasks"];
 
       if (this.subtasks && this.subtasks.length > 0) {
         this.showSubtasks = true;
@@ -227,19 +273,34 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
 
     this.tags = this.postData?.tags;
 
-    this.canEdit = await this.utilityService.canUserDoTaskAction(this.postData, this.groupData, this.userData, 'edit');
+    this.canEdit = await this.utilityService.canUserDoTaskAction(
+      this.postData,
+      this.groupData,
+      this.userData,
+      "edit"
+    );
     if (!this.canEdit) {
-      const hide = await this.utilityService.canUserDoTaskAction(this.postData, this.groupData, this.userData, 'hide');
-      this.canView = await this.utilityService.canUserDoTaskAction(this.postData, this.groupData, this.userData, 'view') || !hide;
+      const hide = await this.utilityService.canUserDoTaskAction(
+        this.postData,
+        this.groupData,
+        this.userData,
+        "hide"
+      );
+      this.canView =
+        (await this.utilityService.canUserDoTaskAction(
+          this.postData,
+          this.groupData,
+          this.userData,
+          "view"
+        )) || !hide;
     } else {
       this.canView = true;
     }
 
     if (this.groupId) {
-
       this.customFields = null;
       this.selectedCFValues = [];
-  
+
       this.initCustomFields();
     }
 
@@ -252,18 +313,18 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
 
     if (!customFieldsTmp) {
       await this.groupService.getGroupCustomFields(this.groupId).then((res) => {
-        if (res['group']['custom_fields']) {
-          customFieldsTmp = res['group']['custom_fields'];
+        if (res["group"]["custom_fields"]) {
+          customFieldsTmp = res["group"]["custom_fields"];
         }
       });
     }
 
     if (customFieldsTmp) {
       this.customFields = [];
-      
-      customFieldsTmp.forEach(field => {
+
+      customFieldsTmp.forEach((field) => {
         if (!field.input_type) {
-          field.values.sort((v1, v2) => (v1 > v2) ? 1 : -1);
+          field.values.sort((v1, v2) => (v1 > v2 ? 1 : -1));
         }
         this.customFields.push(field);
 
@@ -272,10 +333,11 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
         }
 
         if (!this.postData?.task.custom_fields[field.name]) {
-          this.postData.task.custom_fields[field.name] = '';
-          this.selectedCFValues[field.name] = '';
+          this.postData.task.custom_fields[field.name] = "";
+          this.selectedCFValues[field.name] = "";
         } else {
-          this.selectedCFValues[field.name] = this.postData?.task.custom_fields[field.name];
+          this.selectedCFValues[field.name] =
+            this.postData?.task.custom_fields[field.name];
         }
       });
     }
@@ -283,7 +345,10 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
 
   sortNSValues() {
     if (!!this.postData?.task?.northStar?.values) {
-      this.postData.task.northStar.values = this.postData?.task?.northStar?.values?.sort((v1, v2) => (this.datesService.isBefore(v1.date, v2.date)) ? 1 : -1)
+      this.postData.task.northStar.values =
+        this.postData?.task?.northStar?.values?.sort((v1, v2) =>
+          this.datesService.isBefore(v1.date, v2.date) ? 1 : -1
+        );
     }
   }
 
@@ -333,22 +398,34 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
     if (newTitle !== this.title) {
       this.title = newTitle;
 
-      await this.utilityService.asyncNotification($localize`:@@taskDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-        this.postService.editTitle(this.postData?._id, newTitle)
-          .then((res) => {
-            this.postData = res['post'];
-            this.contentChanged = false;
-            // Resolve with success
-            resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskDialog.detailsUpdated:Details updated!`));
-          })
-          .catch(() => {
-            reject(this.utilityService.rejectAsyncPromise($localize`:@@taskDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
-          });
-      }));
+      await this.utilityService.asyncNotification(
+        $localize`:@@taskDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`,
+        new Promise((resolve, reject) => {
+          this.postService
+            .editTitle(this.postData?._id, newTitle)
+            .then((res) => {
+              this.postData = res["post"];
+              this.contentChanged = false;
+              // Resolve with success
+              resolve(
+                this.utilityService.resolveAsyncPromise(
+                  $localize`:@@taskDialog.detailsUpdated:Details updated!`
+                )
+              );
+            })
+            .catch(() => {
+              reject(
+                this.utilityService.rejectAsyncPromise(
+                  $localize`:@@taskDialog.unableToUpdateDetails:Unable to update the details, please try again!`
+                )
+              );
+            });
+        })
+      );
       // this.updateDetails('change_title');
 
       if (this.subtasks && this.subtasks.length > 0) {
-        this.subtasks.forEach(subtask => {
+        this.subtasks.forEach((subtask) => {
           subtask.task._parent_task.title = this.title;
         });
       }
@@ -366,20 +443,20 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
    * This function is responsible for receiving the start date from @module <app-post-dates></app-post-dates>
    * @param timeObject
    */
-   getStartDate(dateObject: any) {
+  getStartDate(dateObject: any) {
     this.startDate = dateObject;
     this.postData.task.start_date = dateObject;
     this.datesChangeEvent.emit({
-        start_date: this.startDate,
-        due_date: this.dueDate
-      });
+      start_date: this.startDate,
+      due_date: this.dueDate,
+    });
   }
 
   /**
    * This function is responsible for receiving the due date from @module <app-post-dates></app-post-dates>
    * @param timeObject
    */
-   getDueDate(dateObject: any) {
+  getDueDate(dateObject: any) {
     this.dueDate = dateObject;
     this.postData.task.due_to = dateObject;
   }
@@ -389,11 +466,10 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
    * @param tags
    */
   getTags(tags: any) {
-
     // Set the tags value
     this.tags = tags;
 
-    this.updateDetails('updated_tags');
+    this.updateDetails("updated_tags");
   }
 
   onCloseDialog() {
@@ -407,7 +483,7 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
 
   onPostPin(pin: any) {
     this.postData.pin_to_top = pin;
-    this.pinEvent.emit({pin: pin, _id: this.postData?._id});
+    this.pinEvent.emit({ pin: pin, _id: this.postData?._id });
   }
 
   /**
@@ -415,10 +491,9 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
    * @param files
    */
   onAttach(files: any) {
-
     // Set the current files variable to the output of the module
     this.files = files;
-    this.updateDetails('attach_file');
+    this.updateDetails("attach_file");
   }
 
   /**
@@ -429,42 +504,84 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
     // Set the current files variable to the output of the module
     this.cloudFiles = cloudFiles;
 
-    this.updateDetails('attach_file_cloud');
+    this.updateDetails("attach_file_cloud");
   }
 
-  onCustomFieldChange(event: Event, customFieldName: string, customFieldTitle: string) {
-    const customFieldValue = event['value'];
+  onCustomFieldChange(
+    event: Event,
+    customFieldName: string,
+    customFieldTitle: string
+  ) {
+    const customFieldValue = event["value"];
     this.saveCustomField(customFieldName, customFieldTitle, customFieldValue);
   }
 
-  saveInputCustomField(event: Event, customFieldName: string, customFieldTitle: string) {
-    const customFieldValue = event.target['value'];
+  saveInputCustomField(
+    event: Event,
+    customFieldName: string,
+    customFieldTitle: string
+  ) {
+    const customFieldValue = event.target["value"];
     this.saveCustomField(customFieldName, customFieldTitle, customFieldValue);
   }
 
-  saveCustomField(customFieldName: string, customFieldTitle: string, customFieldValue: string) {
-    this.utilityService.asyncNotification($localize`:@@taskDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.postService.saveCustomField(this.postData?._id, customFieldName, customFieldTitle, customFieldValue, this.groupId, this.isShuttleTasksModuleAvailable, this.isIndividualSubscription)
-        .then(async (res) => {
-          this.selectedCFValues[customFieldName] = customFieldValue;
-          this.postData.task.custom_fields[customFieldName] = customFieldValue;
+  saveCustomField(
+    customFieldName: string,
+    customFieldTitle: string,
+    customFieldValue: string
+  ) {
+    this.utilityService.asyncNotification(
+      $localize`:@@taskDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`,
+      new Promise((resolve, reject) => {
+        this.postService
+          .saveCustomField(
+            this.postData?._id,
+            customFieldName,
+            customFieldTitle,
+            customFieldValue,
+            this.groupId,
+            this.isShuttleTasksModuleAvailable,
+            this.isIndividualSubscription
+          )
+          .then(async (res) => {
+            this.selectedCFValues[customFieldName] = customFieldValue;
+            this.postData.task.custom_fields[customFieldName] =
+              customFieldValue;
 
-          this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId, false, this.shuttleIndex);
+            this.postData =
+              await this.publicFunctions.executedAutomationFlowsPropertiesFront(
+                this.flows,
+                this.postData,
+                this.groupId,
+                false,
+                this.shuttleIndex
+              );
 
-          // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskDialog.detailsUpdated:Details updated!`));
-        })
-        .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@taskDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
-        });
-    }));
+            // Resolve with success
+            resolve(
+              this.utilityService.resolveAsyncPromise(
+                $localize`:@@taskDialog.detailsUpdated:Details updated!`
+              )
+            );
+          })
+          .catch(() => {
+            reject(
+              this.utilityService.rejectAsyncPromise(
+                $localize`:@@taskDialog.unableToUpdateDetails:Unable to update the details, please try again!`
+              )
+            );
+          });
+      })
+    );
   }
 
   async updateDetails(logAction: string) {
     // Prepare the normal  object
 
-    if(this.quillData && this.quillData?.mention){
-      this._content_mentions = this.quillData.mention.users.map((user)=> user.insert.mention.id)
+    if (this.quillData && this.quillData?.mention) {
+      this._content_mentions = this.quillData.mention.users.map(
+        (user) => user.insert.mention.id
+      );
     }
 
     const post: any = {
@@ -472,7 +589,10 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
       type: this.postData?.type,
       _group: this.groupId,
       // content: this.quillData ? JSON.stringify(this.quillData.content) : this.postData?.content,
-      content: (!!this.quillData && this.quillData.html) ? this.quillData.html : this.postData?.content,
+      content:
+        !!this.quillData && this.quillData.html
+          ? this.quillData.html
+          : this.postData?.content,
       _content_mentions: this._content_mentions,
       tags: this.tags,
       _read_by: this.postData?._read_by,
@@ -482,7 +602,7 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
       is_crm_order: this.postData?.task?.is_crm_order || false,
       is_milestone: this.postData?.task?.is_milestone || false,
       northStar: this.postData?.task?.northStar || false,
-      assigned_to: this.postData?._assigned_to
+      assigned_to: this.postData?._assigned_to,
     };
 
     post.task = this.postData?.task;
@@ -496,7 +616,8 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
 
     if (!this.postData?.task._parent_task) {
       // Task column
-      post._column = this.postData?.task._column._id || this.postData?.task._column;
+      post._column =
+        this.postData?.task._column._id || this.postData?.task._column;
     }
 
     // Task status
@@ -506,13 +627,17 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
     let formData = new FormData();
 
     // Append Post Data
-    formData.append('post', JSON.stringify(post));
-    formData.append('logAction', logAction);
+    formData.append("post", JSON.stringify(post));
+    formData.append("logAction", logAction);
 
     // Append all the file attachments
     if (this.files && this.files.length != 0) {
       for (let index = 0; index < this.files.length; index++) {
-        formData.append('attachments', this.files[index], this.files[index]['name']);
+        formData.append(
+          "attachments",
+          this.files[index],
+          this.files[index]["name"]
+        );
       }
     }
 
@@ -524,35 +649,80 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
     // Set the status
     this.postData.task.status = event;
 
-    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId, false, this.shuttleIndex);
+    this.postData =
+      await this.publicFunctions.executedAutomationFlowsPropertiesFront(
+        this.flows,
+        this.postData,
+        this.groupId,
+        false,
+        this.shuttleIndex
+      );
   }
 
   async changeShuttleTaskStatus(event) {
     // Set the status
     this.shuttle.shuttle_status = event;
-    await this.utilityService.asyncNotification($localize`:@@taskDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise(async (resolve, reject) => {
-      await this.publicFunctions.changeTaskShuttleStatus(this.postData?._id, this.shuttle?._shuttle_group, event)
-        .then(async (res) => {
-          // Resolve with success
-          this.postData.task.shuttles[this.shuttleIndex].shuttle_status = event;
+    await this.utilityService.asyncNotification(
+      $localize`:@@taskDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`,
+      new Promise(async (resolve, reject) => {
+        await this.publicFunctions
+          .changeTaskShuttleStatus(
+            this.postData?._id,
+            this.shuttle?._shuttle_group,
+            event
+          )
+          .then(async (res) => {
+            // Resolve with success
+            this.postData.task.shuttles[this.shuttleIndex].shuttle_status =
+              event;
 
-          this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupData?._id, false, this.shuttleIndex);
+            this.postData =
+              await this.publicFunctions.executedAutomationFlowsPropertiesFront(
+                this.flows,
+                this.postData,
+                this.groupData?._id,
+                false,
+                this.shuttleIndex
+              );
 
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskDialog.detailsUpdated:Details updated!`));
-        })
-        .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@taskDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
-        });
-    }));
+            resolve(
+              this.utilityService.resolveAsyncPromise(
+                $localize`:@@taskDialog.detailsUpdated:Details updated!`
+              )
+            );
+          })
+          .catch(() => {
+            reject(
+              this.utilityService.rejectAsyncPromise(
+                $localize`:@@taskDialog.unableToUpdateDetails:Unable to update the details, please try again!`
+              )
+            );
+          });
+      })
+    );
   }
 
   async moveTaskToColumn(event) {
     const sectionId = event.newColumnId;
-    const oldSectionId = (this.postData.task._column._id || this.postData.task._column);
-    await this.publicFunctions.changeTaskColumn(this.postData?._id, sectionId, this.userData._id, this.groupId, oldSectionId);
+    const oldSectionId =
+      this.postData.task._column._id || this.postData.task._column;
+    await this.publicFunctions.changeTaskColumn(
+      this.postData?._id,
+      sectionId,
+      this.userData._id,
+      this.groupId,
+      oldSectionId
+    );
     this.postData.task._column = sectionId;
 
-    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId, false, this.shuttleIndex);
+    this.postData =
+      await this.publicFunctions.executedAutomationFlowsPropertiesFront(
+        this.flows,
+        this.postData,
+        this.groupId,
+        false,
+        this.shuttleIndex
+      );
 
     // await this.columnService.triggerRefreshSection({sectionId, oldSectionId});
 
@@ -562,32 +732,66 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
   async moveShuttleTaskToSection(event) {
     const shuttleSectionId = event.newColumnId;
 
-    await this.publicFunctions.changeTaskShuttleSection(this.postData?._id, this.groupId, shuttleSectionId);
+    await this.publicFunctions.changeTaskShuttleSection(
+      this.postData?._id,
+      this.groupId,
+      shuttleSectionId
+    );
 
     // Resolve with success
-    this.postData.task._shuttle_section = shuttleSectionId;
+    const shuttleIndex = !!this.postData.task.shuttles
+      ? this.postData.task.shuttles.findIndex(
+          (s) =>
+            (s._shuttle_group._id || s._shuttle_group) == this.groupData._id
+        )
+      : -1;
+    if (shuttleIndex >= 0) {
+      this.postData.task.shuttles[shuttleIndex]._shuttle_section =
+        shuttleSectionId;
+    }
 
-    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupData?._id, false, this.shuttleIndex);
+    this.postData =
+      await this.publicFunctions.executedAutomationFlowsPropertiesFront(
+        this.flows,
+        this.postData,
+        this.groupData?._id,
+        false,
+        this.shuttleIndex
+      );
   }
 
   async onAssigned(res) {
-    this.postData = res['post'];
+    this.postData = res["post"];
     this.setAssignedBy();
 
-    if (this.postData?.type === 'task') {
-      this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId, false, this.shuttleIndex);
+    if (this.postData?.type === "task") {
+      this.postData =
+        await this.publicFunctions.executedAutomationFlowsPropertiesFront(
+          this.flows,
+          this.postData,
+          this.groupId,
+          false,
+          this.shuttleIndex
+        );
     }
   }
 
   async setAssignedBy() {
-
     if (this.postData?.logs && this.postData?.logs?.length > 0) {
       const logs = this.postData?.logs
-        .filter(log => (log.action == 'assigned_to' || log.action == 'removed_assignee') && log?._actor)
-        .sort((l1, l2) => (this.datesService.isBefore(l1.action_date, l2.action_date)) ? 1 : -1);
+        .filter(
+          (log) =>
+            (log.action == "assigned_to" || log.action == "removed_assignee") &&
+            log?._actor
+        )
+        .sort((l1, l2) =>
+          this.datesService.isBefore(l1.action_date, l2.action_date) ? 1 : -1
+        );
 
       if (logs[0]) {
-        this.lastAssignedBy = await this.publicFunctions.getOtherUser(logs[0]._actor?._id);
+        this.lastAssignedBy = await this.publicFunctions.getOtherUser(
+          logs[0]._actor?._id
+        );
       }
     }
   }
@@ -596,21 +800,37 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
    * Call the asynchronous function to change the column
    */
   async editPost(postId: any, formData: FormData) {
-    await this.utilityService.asyncNotification($localize`:@@taskDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.postService.edit(postId, this.userData?._workspace?._id || this.userData?._workspace, formData)
-        .then(async (res) => {
-          this.postData = res['post'];
+    await this.utilityService.asyncNotification(
+      $localize`:@@taskDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`,
+      new Promise((resolve, reject) => {
+        this.postService
+          .edit(
+            postId,
+            this.userData?._workspace?._id || this.userData?._workspace,
+            formData
+          )
+          .then(async (res) => {
+            this.postData = res["post"];
 
-          await this.initPostData();
+            await this.initPostData();
 
-          this.contentChanged = false;
-          // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskDialog.detailsUpdated:Details updated!`));
-        })
-        .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@taskDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
-        });
-    }));
+            this.contentChanged = false;
+            // Resolve with success
+            resolve(
+              this.utilityService.resolveAsyncPromise(
+                $localize`:@@taskDialog.detailsUpdated:Details updated!`
+              )
+            );
+          })
+          .catch(() => {
+            reject(
+              this.utilityService.rejectAsyncPromise(
+                $localize`:@@taskDialog.unableToUpdateDetails:Unable to update the details, please try again!`
+              )
+            );
+          });
+      })
+    );
   }
 
   /**
@@ -618,30 +838,47 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
    */
   deletePost() {
     const id = this.postData?._id;
-    this.utilityService.asyncNotification($localize`:@@taskDialog.pleaseWaitWeAreDeleting:Please wait we are deleting the post...`, new Promise((resolve, reject) => {
-      this.postService.deletePost(this.postData?._id)
-        .then((res) => {
-          // Emit the Deleted post to all the compoents in order to update the UI
-          this.deleteEvent.emit(id);
-          // Close the modal
-          this.mdDialogRef.close();
+    this.utilityService.asyncNotification(
+      $localize`:@@taskDialog.pleaseWaitWeAreDeleting:Please wait we are deleting the post...`,
+      new Promise((resolve, reject) => {
+        this.postService
+          .deletePost(this.postData?._id)
+          .then((res) => {
+            // Emit the Deleted post to all the compoents in order to update the UI
+            this.deleteEvent.emit(id);
+            // Close the modal
+            this.mdDialogRef.close();
 
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskDialog.postDeleted:Post deleted!`));
-        }).catch((err) => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@taskDialog.unableToDeletePost:Unable to delete post, please try again!`));
-        });
-    }));
+            resolve(
+              this.utilityService.resolveAsyncPromise(
+                $localize`:@@taskDialog.postDeleted:Post deleted!`
+              )
+            );
+          })
+          .catch((err) => {
+            reject(
+              this.utilityService.rejectAsyncPromise(
+                $localize`:@@taskDialog.unableToDeletePost:Unable to delete post, please try again!`
+              )
+            );
+          });
+      })
+    );
   }
 
-  transformToMileStone(data:any) {
+  transformToMileStone(data: any) {
     this.postData.task.is_milestone = data;
-    const makeMilestoneLogAction = (this.postData.task.is_milestone) ? 'make_milestone' : 'make_no_milestone';
+    const makeMilestoneLogAction = this.postData.task.is_milestone
+      ? "make_milestone"
+      : "make_no_milestone";
     this.updateDetails(makeMilestoneLogAction);
   }
 
-  transformToIdea(data:any) {
+  transformToIdea(data: any) {
     this.postData.task.is_idea = data;
-    const makeIdeaLogAction = (this.postData.task.is_idea) ? 'make_idea' : 'make_no_idea';
+    const makeIdeaLogAction = this.postData.task.is_idea
+      ? "make_idea"
+      : "make_no_idea";
     this.updateDetails(makeIdeaLogAction);
   }
 
@@ -658,27 +895,34 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
       this.postData.task.isNorthStar = data;
       this.postData.task.northStar = {
         target_value: 0,
-        values: [{
-          date: Date.now(),
-          value: 0,
-          status: 'NOT STARTED',
-          _user: this.userData?._id
-        }],
-        type: 'Currency',
-        currency: 'USD'
+        values: [
+          {
+            date: Date.now(),
+            value: 0,
+            status: "NOT STARTED",
+            _user: this.userData?._id,
+          },
+        ],
+        type: "Currency",
+        currency: "USD",
       };
-      this.updateDetails('make_ns');
-      
+      this.updateDetails("make_ns");
+
       this.mdDialogRef.close();
-      
-      this.utilityService.openPostDetailsFullscreenModal(this.postData, this.groupId, true, this.columns)
+
+      this.utilityService.openPostDetailsFullscreenModal(
+        this.postData,
+        this.groupId,
+        true,
+        this.columns
+      );
     }
   }
 
   saveNorthStar(newNorthStar) {
     this.postData.task.northStar = newNorthStar;
 
-    this.updateDetails('update_ns');
+    this.updateDetails("update_ns");
   }
 
   prepareToAddSubtasks() {
@@ -686,7 +930,6 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
   }
 
   async onOpenSubtask(subtask: any) {
-
     // Start the loading spinner
     this.isLoading$.next(true);
 
@@ -701,11 +944,10 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
   }
 
   async openParentTask(taskId: string) {
-
     // Start the loading spinner
     this.isLoading$.next(true);
 
-    await this.publicFunctions.getPost(taskId).then(post => {
+    await this.publicFunctions.getPost(taskId).then((post) => {
       this.postData = post;
     });
 
@@ -713,7 +955,7 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
 
     this.comments = [];
 
-     /**
+    /**
      * Here we fetch all the columns available in a group, and if null we initialise them with the default one
      */
     if (this.groupId) {
@@ -743,7 +985,7 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
     await this.initPostData();
   }
 
-  onTaskClonned ($event) {
+  onTaskClonned($event) {
     this.taskClonnedEvent.emit($event);
   }
 
@@ -765,13 +1007,20 @@ export class TaskDialogComponent implements OnInit/*, AfterViewChecked, AfterVie
 
   async onApprovalFlowLaunchedEmiter(itemData: any) {
     this.postData = itemData;
-    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId, false, this.shuttleIndex);
+    this.postData =
+      await this.publicFunctions.executedAutomationFlowsPropertiesFront(
+        this.flows,
+        this.postData,
+        this.groupId,
+        false,
+        this.shuttleIndex
+      );
     this.canEdit = !this.postData?.approval_flow_launched;
   }
 
   async onNewTaskColumnSelected(newColumnId: string) {
-    await this.columnService.getSection(newColumnId).then(async res => {
-      this.postData.task._column = res['section'];
+    await this.columnService.getSection(newColumnId).then(async (res) => {
+      this.postData.task._column = res["section"];
       this.postData.task._column.addTask = false;
     });
   }

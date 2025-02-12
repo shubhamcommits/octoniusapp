@@ -41,13 +41,9 @@ export class CRMCompanyUpdatesComponent implements OnInit, OnChanges {
   async ngOnInit() {
     this.userData = await this.publicFunctions.getCurrentUser();
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-
-    console.log(this.companyData);
   }
 
-  async ngOnChanges() {
-    console.log(this.companyData);
-  }
+  async ngOnChanges() {}
 
   addNewUpdate() {
     this.openUpdateDialog({
@@ -74,7 +70,7 @@ export class CRMCompanyUpdatesComponent implements OnInit, OnChanges {
           if (!this.companyData.updates) {
             this.companyData.updates = [];
           }
-          
+
           this.companyData.updates = data.updates;
           this.cdRef.detectChanges();
           this.crmService.updateCrmData();
@@ -84,8 +80,8 @@ export class CRMCompanyUpdatesComponent implements OnInit, OnChanges {
       dialogRef.componentInstance.companyUpdateInfoEdited.subscribe(
         async (data) => {
           const index = this.companyData.updates
-          ? this.companyData.updates.findIndex((p) => p._id == data._id)
-          : -1;
+            ? this.companyData.updates.findIndex((p) => p._id == data._id)
+            : -1;
           if (index >= 0) {
             this.companyData.updates[index] = data;
           }
