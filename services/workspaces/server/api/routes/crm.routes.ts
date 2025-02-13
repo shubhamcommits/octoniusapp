@@ -121,6 +121,9 @@ routes.put("/crmCompanyUpdate/update", crm.updateCRMCompanyUpdate);
 // PUT - Delete a company task
 routes.put("/crmCompanyUpdate/delete", crm.removeCRMCompanyUpdate);
 
+// GET - get all company tasks assigned to a user
+routes.get("/crmCompanyDueTasks", crm.getCRMCompanyDueTasks);
+
 //////////////
 // PUT - migrateCRM
 // routes.put('/migrateCRM', crm.migrateCRMFromGroupToGlobal);
