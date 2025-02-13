@@ -296,4 +296,10 @@ export class CRMService {
       })
       .toPromise();
   }
+
+  getCompanyDueTasks() {
+    return this._http
+    .get(this.baseURL + `/crmCompanyDueTasks`)
+    .toPromise();
+  }
 }

@@ -3,6 +3,11 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { DatesService } from 'src/shared/services/dates-service/dates.service';
+import { CRMService } from 'src/shared/services/crm-service/crm.service';
+import { MatDialog } from '@angular/material/dialog';
+
+import { CRMCompanyDetailsDialogComponent } from "modules/work/crm-setup-page/crm-company-details-dialog/crm-company-details-dialog.component";
+import { SubSink } from "subsink";
 
 @Component({
   selector: 'app-my-tasks-list',
@@ -22,19 +27,35 @@ export class MyTasksListComponent implements OnInit, OnDestroy {
   futureTasks: any = [];
   overdueTasks: any = [];
   overdueAndTodayTasks: any = [];
+  companyDueTasks: any = [];
 
   post: any;
 
   columns;
 
+  contacts = [];
+  companies = [];
+  crmCompanyCustomFields = [];
+  crmContactCustomFields = [];
+
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector);
+
+  subSink = new SubSink();
 
   constructor(
     public utilityService: UtilityService,
     private datesService: DatesService,
     private injector: Injector,
-  ) { }
+    public dialog: MatDialog,
+    private crmService: CRMService,
+  ) { 
+    this.subSink.add(
+      this.crmService.currentCrmData.subscribe(() => {
+        this.ngOnInit();
+      })
+    );
+  }
 
   async ngOnInit() {
 
@@ -44,6 +65,16 @@ export class MyTasksListComponent implements OnInit, OnDestroy {
     await this.loadTasks();
     this.overdueAndTodayTasks = this.sortTasksByPriority(this.overdueTasks.concat(this.todayTasks));
 
+    await this.crmService.getCRMInformation().then((res) => {
+      this.contacts = res["contacts"];
+      this.companies = res["companies"];
+      this.crmContactCustomFields = res["crm_custom_fields"]?.filter(
+        (cf) => cf.type == "contact"
+      );
+      this.crmCompanyCustomFields = res["crm_custom_fields"]?.filter(
+        (cf) => cf.type == "company"
+      );
+    });
     // Send Updates to router state
     this.publicFunctions.sendUpdatesToRouterState({
       state: 'home'
@@ -52,6 +83,7 @@ export class MyTasksListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.utilityService.closeAllModals();
+    this.subSink.unsubscribe();
   }
 
   async loadTasks() {
@@ -60,8 +92,22 @@ export class MyTasksListComponent implements OnInit, OnDestroy {
     this.overdueTasks = await this.publicFunctions.filterRAGTasks(await this.getUserOverdueTasks(), this.userData);
     this.nextWeekTasks = await this.publicFunctions.filterRAGTasks(await this.getUserNextWeekTasks(), this.userData);
     this.futureTasks = await this.publicFunctions.filterRAGTasks(await this.getUserFutureTasks(), this.userData);
-
+    this.companyDueTasks = await this.getCompanyDueTasks();    
+    
     this.markOverdueTasks();
+  }
+
+  async getCompanyDueTasks() {
+    return new Promise((resolve, reject) => {
+      let crmService = this.injector.get(CRMService);
+      crmService.getCompanyDueTasks()
+        .then((res) => {   
+          resolve(res['crm_due_tasks']);
+        })
+        .catch(() => {
+          reject([]);
+        })
+    })
   }
 
   async getUserTodayTasks() {
@@ -184,6 +230,25 @@ export class MyTasksListComponent implements OnInit, OnDestroy {
         deleteEventSubs.unsubscribe();
       });
     }
+  }
+
+  openCompanyDetailsDialog(companyId?: string) {
+    const dialogRef = this.dialog.open(CRMCompanyDetailsDialogComponent, {
+      disableClose: true,
+      hasBackdrop: true,
+      minWidth: "100%",
+      width: "100%",
+      minHeight: "100%",
+      height: "100%",
+      data: {
+        companyId: companyId,
+        crmCompanyCustomFields: this.crmCompanyCustomFields,
+        crmContactCustomFields: this.crmContactCustomFields,
+        contacts: this.contacts.filter(
+          (c) => companyId == (c?._company?._id || c?._company)
+        ),
+      },
+    });
   }
 
   updateTask(task) {
