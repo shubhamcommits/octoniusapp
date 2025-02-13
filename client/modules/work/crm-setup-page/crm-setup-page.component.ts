@@ -203,24 +203,24 @@ export class CRMSetupPageComponent
 
     this.sortedCompanyData.data = this.companies.slice();
 
-    this.sortedCompanyData.data.forEach((company) => {
-      let assignee_ids = [];
-      company.tasks.forEach((task) => {
-        task._assigned_to.forEach((assignee) => {
-          if (assignee_ids.indexOf(assignee) === -1)
-            assignee_ids.push(assignee);
-        });
-      });
-      company['numAssignees'] = assignee_ids.length;
-      if (assignee_ids.indexOf(this.userData._id) === -1) {
-        this.workspaceData.members.every(member => {
-          if (assignee_ids.indexOf(member._id) > -1)
-            return company['assignee_pic'] = member.profile_pic;
-        });
-      } else {
-        company['assignee_pic'] = this.userData.profile_pic;
-      }
-    });
+    // this.sortedCompanyData.data.forEach((company) => {
+    //   let assignee_ids = [];
+    //   company.tasks.forEach((task) => {
+    //     task._assigned_to.forEach((assignee) => {
+    //       if (assignee_ids.indexOf(assignee) === -1)
+    //         assignee_ids.push(assignee);
+    //     });
+    //   });
+    //   company['numAssignees'] = assignee_ids.length;
+    //   if (assignee_ids.indexOf(this.userData._id) === -1) {
+    //     this.workspaceData.members.every(member => {
+    //       if (assignee_ids.indexOf(member._id) > -1)
+    //         return company['assignee_pic'] = member.profile_pic;
+    //     });
+    //   } else {
+    //     company['assignee_pic'] = this.userData.profile_pic;
+    //   }
+    // });
   }
 
   async initProductTable() {
