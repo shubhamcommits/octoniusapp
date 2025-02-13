@@ -66,7 +66,7 @@ export class CRMSetupPageComponent
     //"description",
     "contacts",
     "tasks",
-    "assignee",
+    // "assignee",
     "star",
   ];
   crmCompanyCustomFieldsToShow = [];
