@@ -1441,7 +1441,7 @@ export class CRMController {
               },
               {
                 $project: {
-                  _id: 0,
+                  company_id: "$_id",
                   company_name: "$name",
                   task_description: "$tasks.description",
                 }

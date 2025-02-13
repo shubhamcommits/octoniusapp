@@ -114,12 +114,15 @@
   </div>
 
   <div *ngFor="let task of companyDueTasks; let i = index; trackBy: utilityService.trackByIndex">
-    <a href="javascript:void(0)">
+    <a (click)="openCompanyDetailsDialog(task.company_id)">
       <!-- My Space Today Tasks -->
         <div class="media card-tile overview-task todo-bar" role="progressbar">
           <div class="row media-body">
             <div class="col-md-6">
-              <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.task_description"></div> 
+              <div class="overview-item title-nowrap pl-0">
+                <b>{{ task?.company_name }}</b>:
+                <span> {{ task?.task_description }}</span>
+              </div> 
             </div>
             <div class="col-md-1"></div>
             <div class="col-md-3">
