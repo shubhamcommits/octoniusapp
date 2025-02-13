@@ -6,11 +6,7 @@
   </div>
   <!-- Empty State of tasks ends -->
 
-  <h5 class="title-overview"
-    *ngIf="this.overdueAndTodayTasks.length != 0"
-    i18n="@@mySpaceTasks.today">
-      Today
-  </h5>
+  <h5 class="title-overview" *ngIf="this.overdueAndTodayTasks.length > 0 || this.companyDueTasks.length > 0" i18n="@@mySpaceTasks.today">Today</h5>
 
   <div *ngFor="let task of overdueAndTodayTasks; let i = index; trackBy: utilityService.trackByIndex">
     <a (click)="openModal(task)">
@@ -114,6 +110,29 @@
         </div>
 
       </div>
+    </a>
+  </div>
+
+  <div *ngFor="let task of companyDueTasks; let i = index; trackBy: utilityService.trackByIndex">
+    <a href="javascript:void(0)">
+      <!-- My Space Today Tasks -->
+        <div class="media card-tile overview-task todo-bar" role="progressbar">
+          <div class="row media-body">
+            <div class="col-md-6">
+              <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.task_description"></div> 
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-3">
+              <div class=" grouplabel">CRM</div>
+            </div>
+
+            <div class="col-md-2">
+              <div class="overview-item small text-right overdue" i18n="@@mySpaceTasks.overdue">
+                OVERDUE
+              </div>
+            </div>
+          </div>
+        </div>
     </a>
   </div>
 

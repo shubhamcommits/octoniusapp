@@ -1,6 +1,8 @@
 import { Company, Contact, Product, User, Workspace } from "../models";
 import { Response, Request, NextFunction } from "express";
 import { sendError } from "../../utils";
+import { DateTime } from 'luxon';
+import { ObjectID } from "mongodb";
 
 /*  ===================
  *  -- CRM METHODS --
@@ -1405,6 +1407,56 @@ export class CRMController {
             return sendError(res, err, "Internal Server Error!", 500);
         }
     }
+
+    async getCRMCompanyDueTasks(
+        req: Request,
+        res: Response
+    ) {
+        const userId = req["userId"];
+
+        try {
+            // Get the current time in UTC
+            const now = DateTime.now();
+            
+            // Define time ranges using Luxon
+            const todayStart = now.startOf("day").toJSDate();
+
+            const tasks = await Company.aggregate([
+              { $unwind: "$tasks" }, // Expand the tasks array
+              {
+                $match: {
+                    "tasks._assigned_to": {
+                        $elemMatch: {
+                          $eq: new ObjectID(userId)
+                        }
+                    }
+                }
+              },
+              {
+                $match: {
+                  $or: [
+                    { "tasks.date": { $lt: todayStart } }, // Overdue tasks
+                  ]
+                }
+              },
+              {
+                $project: {
+                  _id: 0,
+                  company_name: "$name",
+                  task_description: "$tasks.description",
+                }
+              },            
+            ]);
+             
+            return res.status(200).json({
+                message: 'Company tasks found!',
+                crm_due_tasks: tasks
+            });       
+          } catch (err) {
+            console.log(err);
+            return sendError(res, err, "Internal Server Error!", 500);
+          }
+        };        
 
     // async migrateCRMFromGroupToGlobal(req: Request, res: Response, next: NextFunction) {
     //     try {

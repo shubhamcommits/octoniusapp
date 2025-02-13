@@ -3,6 +3,7 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { DatesService } from 'src/shared/services/dates-service/dates.service';
+import { CRMService } from 'src/shared/services/crm-service/crm.service';
 
 @Component({
   selector: 'app-my-tasks-list',
@@ -22,6 +23,7 @@ export class MyTasksListComponent implements OnInit, OnDestroy {
   futureTasks: any = [];
   overdueTasks: any = [];
   overdueAndTodayTasks: any = [];
+  companyDueTasks: any = [];
 
   post: any;
 
@@ -60,8 +62,22 @@ export class MyTasksListComponent implements OnInit, OnDestroy {
     this.overdueTasks = await this.publicFunctions.filterRAGTasks(await this.getUserOverdueTasks(), this.userData);
     this.nextWeekTasks = await this.publicFunctions.filterRAGTasks(await this.getUserNextWeekTasks(), this.userData);
     this.futureTasks = await this.publicFunctions.filterRAGTasks(await this.getUserFutureTasks(), this.userData);
+    this.companyDueTasks = await this.getCompanyDueTasks();
 
     this.markOverdueTasks();
+  }
+
+  async getCompanyDueTasks() {
+    return new Promise((resolve, reject) => {
+      let crmService = this.injector.get(CRMService);
+      crmService.getCompanyDueTasks()
+        .then((res) => {   
+          resolve(res['crm_due_tasks']);
+        })
+        .catch(() => {
+          reject([]);
+        })
+    })
   }
 
   async getUserTodayTasks() {
