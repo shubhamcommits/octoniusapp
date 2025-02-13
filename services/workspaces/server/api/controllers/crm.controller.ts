@@ -1416,41 +1416,110 @@ export class CRMController {
 
         try {
             // Get the current time in UTC
-            const now = DateTime.now();
+            const now = DateTime.utc().startOf("day");
             
             // Define time ranges using Luxon
-            const todayStart = now.startOf("day").toJSDate();
+            const today = now.toJSDate();
+          
+            const tomorrow = now.plus({ days: 1 }).toJSDate();
+          
+            const endOfWeek = now.endOf("week").toJSDate();
+          
+            const endOfNextWeek = now.plus({ weeks: 1 }).endOf("week").toJSDate();
 
             const tasks = await Company.aggregate([
               { $unwind: "$tasks" }, // Expand the tasks array
               {
                 $match: {
-                    "tasks._assigned_to": {
-                        $elemMatch: {
-                          $eq: new ObjectID(userId)
-                        }
-                    }
+                    $and: [
+                        { "tasks._assigned_to": { $elemMatch: { $eq: new ObjectID(userId) } } },
+                        { "tasks.completed": { $eq: false } },
+                    ]
                 }
               },
-              {
-                $match: {
-                  $or: [
-                    { "tasks.date": { $lt: todayStart } }, // Overdue tasks
-                  ]
-                }
-              },
+            //   {
+            //     $match: {
+            //       $or: [
+            //         { "tasks.date": { $lte: today } }, // Overdue and Today tasks
+            //         { "tasks.date": { $eq: tomorrow } }, // Tomorrow
+            //         { "tasks.date": { $gt: tomorrow, $lte: endOfWeek } }, // This week
+            //         { "tasks.date": { $gt: endOfWeek, $lte: endOfNextWeek } }, // Next week        
+            //         { "tasks.date": { $gt: endOfNextWeek } } // Future tasks        
+            //       ]
+            //     }
+            //   },
               {
                 $project: {
                   company_id: "$_id",
                   company_name: "$name",
                   task_description: "$tasks.description",
+                  task_date: "$tasks.date",
                 }
-              },            
+              },           
+              {
+                $group: {
+                  _id: null,
+                  overdue_today: {
+                    $push: {
+                      $cond: [
+                        { $and: [{ $lte: ["$task_date", today] }] },
+                        "$$ROOT",
+                        null
+                      ]
+                    }
+                  },
+                  tomorrow: {
+                    $push: {
+                      $cond: [
+                        { $and: [{ $eq: ["$task_date", tomorrow] }] },
+                        "$$ROOT",
+                        null
+                      ]
+                    }
+                  },
+                  this_week: {
+                    $push: {
+                      $cond: [
+                        { $and: [{ $gt: ["$task_date", tomorrow] }, { $lte: ["$task_date", endOfWeek] }] },
+                        "$$ROOT",
+                        null
+                      ]
+                    }
+                  },
+                  next_week: {
+                    $push: {
+                      $cond: [
+                        { $and: [{ $gt: ["$task_date", endOfWeek] }, { $lte: ["$task_date", endOfNextWeek] }] },
+                        "$$ROOT",
+                        null
+                      ]
+                    }
+                  },
+                  future: {
+                    $push: {
+                      $cond: [
+                        { $and: [{ $gt: ["$task_date", endOfNextWeek] }] },
+                        "$$ROOT",
+                        null
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                $project: {
+                  overdue_today: { $filter: { input: "$overdue_today", as: "task", cond: { $ne: ["$$task", null] } } },
+                  tomorrow: { $filter: { input: "$tomorrow", as: "task", cond: { $ne: ["$$task", null] } } },
+                  this_week: { $filter: { input: "$this_week", as: "task", cond: { $ne: ["$$task", null] } } },
+                  next_week: { $filter: { input: "$next_week", as: "task", cond: { $ne: ["$$task", null] } } },
+                  future: { $filter: { input: "$future", as: "task", cond: { $ne: ["$$task", null] } } }
+                }
+              } 
             ]);
-             
+            
             return res.status(200).json({
                 message: 'Company tasks found!',
-                crm_due_tasks: tasks
+                crm_due_tasks: tasks.length > 0 ? tasks[0] : { overdue_today: [], tomorrow: [], this_week: [], next_week: [], future: [] }
             });       
           } catch (err) {
             console.log(err);

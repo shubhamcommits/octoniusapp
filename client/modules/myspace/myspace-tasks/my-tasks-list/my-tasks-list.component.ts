@@ -92,7 +92,7 @@ export class MyTasksListComponent implements OnInit, OnDestroy {
     this.overdueTasks = await this.publicFunctions.filterRAGTasks(await this.getUserOverdueTasks(), this.userData);
     this.nextWeekTasks = await this.publicFunctions.filterRAGTasks(await this.getUserNextWeekTasks(), this.userData);
     this.futureTasks = await this.publicFunctions.filterRAGTasks(await this.getUserFutureTasks(), this.userData);
-    this.companyDueTasks = await this.getCompanyDueTasks();
+    this.companyDueTasks = await this.getCompanyDueTasks();    
     
     this.markOverdueTasks();
   }

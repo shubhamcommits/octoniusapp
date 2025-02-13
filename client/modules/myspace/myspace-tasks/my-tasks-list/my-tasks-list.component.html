@@ -6,7 +6,7 @@
   </div>
   <!-- Empty State of tasks ends -->
 
-  <h5 class="title-overview" *ngIf="this.overdueAndTodayTasks.length > 0 || this.companyDueTasks.length > 0" i18n="@@mySpaceTasks.today">Today</h5>
+  <h5 class="title-overview" *ngIf="this.overdueAndTodayTasks.length > 0 || this.companyDueTasks['overdue_today'].length > 0" i18n="@@mySpaceTasks.today">Today</h5>
 
   <div *ngFor="let task of overdueAndTodayTasks; let i = index; trackBy: utilityService.trackByIndex">
     <a (click)="openModal(task)">
@@ -113,7 +113,7 @@
     </a>
   </div>
 
-  <div *ngFor="let task of companyDueTasks; let i = index; trackBy: utilityService.trackByIndex">
+  <div *ngFor="let task of companyDueTasks['overdue_today']; let i = index; trackBy: utilityService.trackByIndex">
     <a (click)="openCompanyDetailsDialog(task.company_id)">
       <!-- My Space Today Tasks -->
         <div class="media card-tile overview-task todo-bar" role="progressbar">
@@ -139,7 +139,34 @@
     </a>
   </div>
 
-  <h5 class="title-overview" *ngIf="this.thisWeekTasks.length !=  0">This week</h5>
+  <h5 class="title-overview" *ngIf="this.companyDueTasks['tomorrow'].length > 0" i18n="@@mySpaceTasks.tomorrow">Tomorrow</h5>
+
+  <div *ngFor="let task of companyDueTasks['tomorrow']; let i = index; trackBy: utilityService.trackByIndex">
+    <a (click)="openCompanyDetailsDialog(task.company_id)">
+      <!-- My Space Today Tasks -->
+        <div class="media card-tile overview-task todo-bar" role="progressbar">
+          <div class="row media-body">
+            <div class="col-md-6">
+              <div class="overview-item title-nowrap pl-0">
+                <b>{{ task?.company_name }}</b>:
+                <span> {{ task?.task_description }}</span>
+              </div> 
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-3">
+              <div class=" grouplabel">CRM</div>
+            </div>
+
+            <div class="col-md-2">
+              <div class="overview-item small text-muted text-right">{{ formateDate(task?.task_date) }}</div>
+            </div>
+          </div>
+        </div>
+    </a>
+  </div>
+
+
+  <h5 class="title-overview" *ngIf="this.thisWeekTasks.length != 0 || this.companyDueTasks['this_week'].length > 0">This week</h5>
 
   <div *ngFor="let task of thisWeekTasks; let i = index; trackBy: utilityService.trackByIndex">
     <a (click)="openModal(task)">
@@ -247,8 +274,31 @@
 
     </a>
   </div>
+  <div *ngFor="let task of companyDueTasks['this_week']; let i = index; trackBy: utilityService.trackByIndex">
+    <a (click)="openCompanyDetailsDialog(task.company_id)">
+      <!-- My Space Today Tasks -->
+        <div class="media card-tile overview-task todo-bar" role="progressbar">
+          <div class="row media-body">
+            <div class="col-md-6">
+              <div class="overview-item title-nowrap pl-0">
+                <b>{{ task?.company_name }}</b>:
+                <span> {{ task?.task_description }}</span>
+              </div> 
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-3">
+              <div class=" grouplabel">CRM</div>
+            </div>
 
-  <h5 class="title-overview" *ngIf="this.nextWeekTasks.length !=  0" i18n="@@mySpaceTasks.nextWeek">Next week</h5>
+            <div class="col-md-2">
+              <div class="overview-item small text-right text-muted">{{ formateDate(task?.task_date) }}</div>
+            </div>
+          </div>
+        </div>
+    </a>
+  </div>
+
+  <h5 class="title-overview" *ngIf="this.nextWeekTasks.length != 0 || this.companyDueTasks['next_week'].length > 0" i18n="@@mySpaceTasks.nextWeek">Next week</h5>
 
   <div *ngFor="let task of nextWeekTasks; let i = index; trackBy: utilityService.trackByIndex">
     <a (click)="openModal(task)">
@@ -353,10 +403,32 @@
       </div>
     </a>
   </div>
+  <div *ngFor="let task of companyDueTasks['next_week']; let i = index; trackBy: utilityService.trackByIndex">
+    <a (click)="openCompanyDetailsDialog(task.company_id)">
+      <!-- My Space Today Tasks -->
+        <div class="media card-tile overview-task todo-bar" role="progressbar">
+          <div class="row media-body">
+            <div class="col-md-6">
+              <div class="overview-item title-nowrap pl-0">
+                <b>{{ task?.company_name }}</b>:
+                <span> {{ task?.task_description }}</span>
+              </div> 
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-3">
+              <div class=" grouplabel">CRM</div>
+            </div>
+
+            <div class="col-md-2">
+              <div class="overview-item small text-right text-muted">{{ formateDate(task?.task_date) }}</div>
+            </div>
+          </div>
+        </div>
+    </a>
+  </div>
 
 
-
-  <h5 class="title-overview" *ngIf="this.futureTasks.length !=  0" i18n="@@mySpaceTasks.futureTasks">Future Tasks</h5>
+  <h5 class="title-overview" *ngIf="this.futureTasks.length > 0 || this.companyDueTasks['future'].length > 0" i18n="@@mySpaceTasks.futureTasks">Future Tasks</h5>
 
   <div *ngFor="let task of futureTasks; let i = index; trackBy: utilityService.trackByIndex">
     <a (click)="openModal(task)">
@@ -465,4 +537,30 @@
 
     </a>
   </div>
+
+  <div *ngFor="let task of companyDueTasks['future']; let i = index; trackBy: utilityService.trackByIndex">
+    <a (click)="openCompanyDetailsDialog(task.company_id)">
+      <!-- My Space Today Tasks -->
+        <div class="media card-tile overview-task todo-bar" role="progressbar">
+          <div class="row media-body">
+            <div class="col-md-6">
+              <div class="overview-item title-nowrap pl-0">
+                <b>{{ task?.company_name }}</b>:
+                <span> {{ task?.task_description }}</span>
+              </div> 
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-3">
+              <div class=" grouplabel">CRM</div>
+            </div>
+
+            <div class="col-md-2">
+              <div class="overview-item small text-right text-muted">{{ formateDate(task?.task_date) }}</div>
+            </div>
+          </div>
+        </div>
+    </a>
+  </div>
+
+
 </div>
