@@ -1,13 +1,15 @@
 <div class="container">
   <!-- Empty State of tasks starts -->
-  <div *ngIf="groupDueTasks?.overdue_today?.length == 0 && groupDueTasks?.tomorrow?.length == 0 && groupDueTasks?.this_week?.length == 0 && groupDueTasks?.next_week?.length == 0 && groupDueTasks?.future?.length == 0 && companyDueTasks?.overdue_today?.length == 0 && companyDueTasks?.tomorrow?.length == 0 && companyDueTasks?.this_week?.length == 0 && companyDueTasks?.next_week?.length == 0 && companyDueTasks?.future?.length == 0">
+  <div
+    *ngIf="groupDueTasks?.overdue_today?.length == 0 && groupDueTasks?.tomorrow?.length == 0 && groupDueTasks?.this_week?.length == 0 && groupDueTasks?.next_week?.length == 0 && groupDueTasks?.future?.length == 0 && companyDueTasks?.overdue_today?.length == 0 && companyDueTasks?.tomorrow?.length == 0 && companyDueTasks?.this_week?.length == 0 && companyDueTasks?.next_week?.length == 0 && companyDueTasks?.future?.length == 0">
     <img src='assets/images/placeholder_activity3.png' class="placeholder-img">
     <p class="muted text-center" i18n="@@mySpaceTasks.done">Done. That's a wrap! </p>
   </div>
 
   <!----------------------------------------------  Today  -------------------------------------------->
 
-  <h5 class="title-overview" *ngIf="groupDueTasks?.overdue_today?.length > 0 || companyDueTasks?.overdue_today?.length > 0"
+  <h5 class="title-overview"
+    *ngIf="groupDueTasks?.overdue_today?.length > 0 || companyDueTasks?.overdue_today?.length > 0"
     i18n="@@mySpaceTasks.today">Today</h5>
 
   <div *ngFor="let task of groupDueTasks.overdue_today; let i = index; trackBy: utilityService.trackByIndex">
@@ -32,8 +34,12 @@
             <div class=" grouplabel " [innerHTML]="task?._group?.group_name"></div>
           </div>
           <div class="col-md-2">
-            <div class="overview-item small text-right" [ngClass]="{'overdue': formateDate(task?.task?.due_to) != formateDate(today)}" i18n="@@mySpaceTasks.overdue">
-              {{ formateDate(task?.task?.due_to) == formateDate(today) ? formateDate(task?.task?.due_to) : 'OVERDUE' }}
+            <div *ngIf="formateDate(task?.task?.due_to) != formateDate(today)" class="overview-item small text-right overdue" i18n="@@mySpaceTasks.overdue">
+              OVERDUE
+            </div>
+            <div *ngIf="formateDate(task?.task?.due_to) == formateDate(today)"
+              class="overview-item small text-muted text-right">
+              {{ formateDate(task?.task?.due_to) }}
             </div>
           </div>
         </div>
@@ -57,8 +63,12 @@
             <div class=" grouplabel">CRM</div>
           </div>
           <div class="col-md-2">
-            <div class="overview-item small text-right" [ngClass]="{'overdue': formateDate(task?.task_date) != formateDate(today)}">
-              {{ formateDate(task?.task_date) == formateDate(today) ? formateDate(task?.task_date) : 'OVERDUE' }}
+            <div *ngIf="formateDate(task?.task_date) != formateDate(today)" class="overview-item small text-right overdue" i18n="@@mySpaceTasks.overdue">
+              OVERDUE
+            </div>
+            <div *ngIf="formateDate(task?.task_date) == formateDate(today)"
+              class="overview-item small text-muted text-right">
+              {{ formateDate(task?.task_date) }}
             </div>
           </div>
         </div>
