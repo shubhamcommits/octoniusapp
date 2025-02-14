@@ -111,23 +111,16 @@ export class PostsService {
                 }
             },
             {
-                $project: {
-                    title: "$title",
-                    type: "$type",
-                    task: "$task",
-                    _group: "$_group",
-                    canView: '$canView',
-                    canEdit: '$canEdit'
-                }
-            },
-            {
                 $lookup: {
                   from: 'groups',
                   localField: '_group',
                   foreignField: '_id',
                   as: '_group',
                 },
-              },
+            },
+            {
+                "$unwind": "$_group"
+            },
             {
                 $group: {
                     _id: null,

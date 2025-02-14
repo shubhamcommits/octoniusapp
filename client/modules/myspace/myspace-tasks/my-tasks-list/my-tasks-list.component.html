@@ -29,7 +29,7 @@
           <div class="col-md-1" *ngIf="!task?.task?.custom_fields || !task?.task?.custom_fields['priority']">
           </div>
           <div class="col-md-3">
-            <div class=" grouplabel " [innerHTML]="task?._group[0]?.group_name"></div>
+            <div class=" grouplabel " [innerHTML]="task?._group?.group_name"></div>
           </div>
           <div class="col-md-2">
             <div class="overview-item small text-right" [ngClass]="{'overdue': formateDate(task?.task?.due_to) != formateDate(today)}">
@@ -90,7 +90,7 @@
           <div class="col-md-1" *ngIf="!task?.task?.custom_fields || !task?.task?.custom_fields['priority']">
           </div>
           <div class="col-md-3">
-            <div class=" grouplabel " [innerHTML]="task?._group[0]?.group_name"></div>
+            <div class=" grouplabel " [innerHTML]="task?._group?.group_name"></div>
           </div>
           <div class="col-md-2">
             <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
@@ -149,7 +149,7 @@
           <div class="col-md-1" *ngIf="!task?.task?.custom_fields || !task?.task?.custom_fields['priority']">
           </div>
           <div class="col-md-3">
-            <div class="overview-item grouplabel" [innerHTML]="task?._group[0]?.group_name"></div>
+            <div class="overview-item grouplabel" [innerHTML]="task?._group?.group_name"></div>
           </div>
           <div class="col-md-2">
             <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
@@ -207,7 +207,7 @@
           <div class="col-md-1" *ngIf="!task?.task?.custom_fields || !task?.task?.custom_fields['priority']">
           </div>
           <div class="col-md-3">
-            <div class="overview-item grouplabel" [innerHTML]="task?._group[0]?.group_name"></div>
+            <div class="overview-item grouplabel" [innerHTML]="task?._group?.group_name"></div>
           </div>
           <div class="col-md-2">
             <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
@@ -265,7 +265,7 @@
           <div class="col-md-1" *ngIf="!task?.task?.custom_fields || !task?.task?.custom_fields['priority']">
           </div>
           <div class="col-md-3">
-            <div class="overview-item grouplabel" [innerHTML]="task?._group[0]?.group_name"></div>
+            <div class="overview-item grouplabel" [innerHTML]="task?._group?.group_name"></div>
           </div>
           <div class="col-md-2">
             <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">

@@ -87,6 +87,12 @@ export class MyTasksListComponent implements OnInit, OnDestroy {
 
   async loadTasks() {
     this.groupDueTasks = await this.getGroupDueTasks();
+    this.groupDueTasks['overdue_today'] = await this.publicFunctions.filterRAGTasks(this.groupDueTasks['overdue_today'], this.userData);
+    this.groupDueTasks['tomorrow'] = await this.publicFunctions.filterRAGTasks(this.groupDueTasks['tomorrow'], this.userData);
+    this.groupDueTasks['this_week'] = await this.publicFunctions.filterRAGTasks(this.groupDueTasks['this_week'], this.userData);
+    this.groupDueTasks['next_week'] = await this.publicFunctions.filterRAGTasks(this.groupDueTasks['next_week'], this.userData);
+    this.groupDueTasks['future'] = await this.publicFunctions.filterRAGTasks(this.groupDueTasks['future'], this.userData);
+    
     this.companyDueTasks = await this.getCompanyDueTasks();
   }
 
@@ -124,7 +130,7 @@ export class MyTasksListComponent implements OnInit, OnDestroy {
     let dialogRef;
     const canOpen = !this.userData?._private_group?.enabled_rights || this.post?.canView || this.post?.canEdit;
     if (this.post.type === 'task' && !this.post.task._parent_task) {
-      await this.publicFunctions.getAllColumns(this.post._group[0]._id).then(data => this.columns = data);
+      await this.publicFunctions.getAllColumns(this.post._group._id).then(data => this.columns = data);
       dialogRef = this.utilityService.openPostDetailsFullscreenModal(this.post, this.userData?._private_group?._id, canOpen, this.columns);
     } else {
       // for subtasks it is not returning the parent information, so need to make a workaround
