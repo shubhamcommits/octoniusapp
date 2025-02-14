@@ -103,8 +103,7 @@ export class PostsService {
                         {
                             $or: [
                                 { 'task.status': 'to do' },
-                                { 'task.status': 'in progress' },
-                                { 'task.status': 'done' }
+                                { 'task.status': 'in progress' }
                             ]
                         }
                     ]    
