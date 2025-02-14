@@ -32,7 +32,7 @@
             <div class=" grouplabel " [innerHTML]="task?._group?.group_name"></div>
           </div>
           <div class="col-md-2">
-            <div class="overview-item small text-right" [ngClass]="{'overdue': formateDate(task?.task?.due_to) != formateDate(today)}">
+            <div class="overview-item small text-right" [ngClass]="{'overdue': formateDate(task?.task?.due_to) != formateDate(today)}" i18n="@@mySpaceTasks.overdue">
               {{ formateDate(task?.task?.due_to) == formateDate(today) ? formateDate(task?.task?.due_to) : 'OVERDUE' }}
             </div>
           </div>
