@@ -1,5 +1,6 @@
 import { Portfolio, Post, User } from "../models";
 import { DateTime } from 'luxon';
+import { ObjectID } from "mongodb";
 
 export class PostsService {
 
@@ -61,6 +62,129 @@ export class PostsService {
         // Return Tasks
         return tasks
     }
+
+    async getAllGroupTasks(userId: string) {
+        // Get the current time in UTC
+        const now = DateTime.utc().startOf("day");
+
+        // Define time ranges using Luxon
+        const today = now.toJSDate();
+
+        const tomorrow = now.plus({ days: 1 }).toJSDate();
+
+        const endOfWeek = now.endOf("week").toJSDate();
+
+        const endOfNextWeek = now.plus({ weeks: 1 }).endOf("week").toJSDate();
+
+        const user = await User.findById(userId).select('_private_group');
+
+        const tasks = await Post.aggregate([
+            {
+                $match: {
+                    $and: [
+                        { $or: [
+                                { '_assigned_to': new ObjectID(userId) },
+                                { '_group': new ObjectID(user._private_group) }
+                            ]
+                        },
+                        { 'task.is_template': { $ne: true }},
+                        { 'type': 'task' },
+                        { $or: [
+                                { 
+                                    $and: [
+                                        { '_group': null },
+                                        { 'task.isNorthStar': true },
+                                        { 'task._parent_task': null }
+                                    ]
+                                },
+                                { '_group': { $ne: null }}
+                            ]
+                        },
+                        {
+                            $or: [
+                                { 'task.status': 'to do' },
+                                { 'task.status': 'in progress' },
+                                { 'task.status': 'done' }
+                            ]
+                        }
+                    ]    
+                }
+            },
+            {
+                $lookup: {
+                  from: 'groups',
+                  localField: '_group',
+                  foreignField: '_id',
+                  as: '_group',
+                },
+            },
+            {
+                "$unwind": "$_group"
+            },
+            {
+                $group: {
+                    _id: null,
+                    overdue_today: {
+                        $push: {
+                            $cond: [
+                                { $and: [{ $lte: ["$task.due_to", today] }] },
+                                "$$ROOT",
+                                null
+                            ]
+                        }
+                    },
+                    tomorrow: {
+                        $push: {
+                            $cond: [
+                                { $and: [{ $eq: ["$task.due_to", tomorrow] }] },
+                                "$$ROOT",
+                                null
+                            ]
+                        }
+                    },
+                    this_week: {
+                        $push: {
+                            $cond: [
+                                { $and: [{ $gt: ["$task.due_to", tomorrow] }, { $lte: ["$task.due_to", endOfWeek] }] },
+                                "$$ROOT",
+                                null
+                            ]
+                        }
+                    },
+                    next_week: {
+                        $push: {
+                            $cond: [
+                                { $and: [{ $gt: ["$task.due_to", endOfWeek] }, { $lte: ["$task.due_to", endOfNextWeek] }] },
+                                "$$ROOT",
+                                null
+                            ]
+                        }
+                    },
+                    future: {
+                        $push: {
+                            $cond: [
+                                { $and: [{ $gt: ["$task.due_to", endOfNextWeek] }] },
+                                "$$ROOT",
+                                null
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                $project: {
+                    overdue_today: { $filter: { input: "$overdue_today", as: "task", cond: { $ne: ["$$task", null] } } },
+                    tomorrow: { $filter: { input: "$tomorrow", as: "task", cond: { $ne: ["$$task", null] } } },
+                    this_week: { $filter: { input: "$this_week", as: "task", cond: { $ne: ["$$task", null] } } },
+                    next_week: { $filter: { input: "$next_week", as: "task", cond: { $ne: ["$$task", null] } } },
+                    future: { $filter: { input: "$future", as: "task", cond: { $ne: ["$$task", null] } } }
+                }
+            }
+        ]);
+        
+        return tasks.length > 0 ? tasks[0] : { overdue_today: [], tomorrow: [], this_week: [], next_week: [], future: [] }
+    }
+
 
     /**
      * This function is responsible for fetching todays task for the user

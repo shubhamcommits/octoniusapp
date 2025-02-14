@@ -48,6 +48,9 @@ routes.delete('/skills/:skill', skill.removeSkill);
 // GET - Fetches all user's tasks
 routes.get('/tasks', post.getAllUserTasks);
 
+// GET - Fetches all user's tasks grouped by date
+routes.get('/tasksbygroup', post.getAllGroupTasks);
+
 // GET - Fetches the today's tasks
 routes.get('/tasks/today', post.getTodayTasks);
 
