@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CRMCompanyDetailsDialogComponent } from "modules/work/crm-setup-page/crm-company-details-dialog/crm-company-details-dialog.component";
 import { SubSink } from "subsink";
 
+import { DateTime } from 'luxon';
 @Component({
   selector: 'app-my-tasks-list',
   templateUrl: './my-tasks-list.component.html',
@@ -21,22 +22,18 @@ export class MyTasksListComponent implements OnInit, OnDestroy {
   // Modal Content
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
 
-  todayTasks: any = [];
-  thisWeekTasks: any = [];
-  nextWeekTasks: any = [];
-  futureTasks: any = [];
-  overdueTasks: any = [];
-  overdueAndTodayTasks: any = [];
   companyDueTasks: any = [];
+  groupDueTasks: any = [];
 
   post: any;
-
+  today = '';
   columns;
 
   contacts = [];
   companies = [];
   crmCompanyCustomFields = [];
   crmContactCustomFields = [];
+
 
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector);
@@ -55,6 +52,8 @@ export class MyTasksListComponent implements OnInit, OnDestroy {
         this.ngOnInit();
       })
     );
+
+    this.today = DateTime.utc().startOf("day").toJSDate();    
   }
 
   async ngOnInit() {
@@ -63,7 +62,7 @@ export class MyTasksListComponent implements OnInit, OnDestroy {
     this.userData = await this.publicFunctions.getCurrentUser();
 
     await this.loadTasks();
-    this.overdueAndTodayTasks = this.sortTasksByPriority(this.overdueTasks.concat(this.todayTasks));
+    // this.groupDueTasks = this.sortTasksByPriority(this.groupDueTasks);
 
     await this.crmService.getCRMInformation().then((res) => {
       this.contacts = res["contacts"];
@@ -87,14 +86,14 @@ export class MyTasksListComponent implements OnInit, OnDestroy {
   }
 
   async loadTasks() {
-    this.todayTasks = await this.publicFunctions.filterRAGTasks(await this.getUserTodayTasks(), this.userData);
-    this.thisWeekTasks = await this.publicFunctions.filterRAGTasks(await this.getUserThisWeekTasks(), this.userData);
-    this.overdueTasks = await this.publicFunctions.filterRAGTasks(await this.getUserOverdueTasks(), this.userData);
-    this.nextWeekTasks = await this.publicFunctions.filterRAGTasks(await this.getUserNextWeekTasks(), this.userData);
-    this.futureTasks = await this.publicFunctions.filterRAGTasks(await this.getUserFutureTasks(), this.userData);
-    this.companyDueTasks = await this.getCompanyDueTasks();    
+    this.groupDueTasks = await this.getGroupDueTasks();
+    this.groupDueTasks['overdue_today'] = await this.publicFunctions.filterRAGTasks(this.groupDueTasks['overdue_today'], this.userData);
+    this.groupDueTasks['tomorrow'] = await this.publicFunctions.filterRAGTasks(this.groupDueTasks['tomorrow'], this.userData);
+    this.groupDueTasks['this_week'] = await this.publicFunctions.filterRAGTasks(this.groupDueTasks['this_week'], this.userData);
+    this.groupDueTasks['next_week'] = await this.publicFunctions.filterRAGTasks(this.groupDueTasks['next_week'], this.userData);
+    this.groupDueTasks['future'] = await this.publicFunctions.filterRAGTasks(this.groupDueTasks['future'], this.userData);
     
-    this.markOverdueTasks();
+    this.companyDueTasks = await this.getCompanyDueTasks();
   }
 
   async getCompanyDueTasks() {
@@ -110,92 +109,17 @@ export class MyTasksListComponent implements OnInit, OnDestroy {
     })
   }
 
-  async getUserTodayTasks() {
+  async getGroupDueTasks() {
     return new Promise((resolve, reject) => {
       let userService = this.injector.get(UserService);
-      userService.getUserTodayTasks()
+      userService.getGroupDueTasks()
         .then((res) => {
-          res['tasks'] = res['tasks'].filter((task)=> {
-            return task._group != null;
-          });
-
           resolve(res['tasks']);
         })
         .catch(() => {
           reject([]);
         })
     })
-  }
-
-  async getUserThisWeekTasks() {
-    return new Promise((resolve, reject) => {
-      let userService = this.injector.get(UserService);
-      userService.getUserThisWeekTasks()
-        .then((res) => {
-          res['tasks'] = this.sortTasksByPriority(res['tasks'].filter((task)=> {
-            return task._group != null
-          }));
-          resolve(res['tasks'])
-        })
-        .catch(() => {
-          reject([])
-        })
-    })
-  }
-
-  async getUserNextWeekTasks() {
-    return new Promise((resolve, reject) => {
-      let userService = this.injector.get(UserService);
-      userService.getUserNextWeekTasks()
-        .then((res) => {
-          res['tasks'] = this.sortTasksByPriority(res['tasks'].filter((task)=> {
-            return task._group != null
-          }));
-          resolve(res['tasks'])
-        })
-        .catch(() => {
-          reject([])
-        })
-    })
-  }
-
-  async getUserFutureTasks() {
-    return new Promise((resolve, reject) => {
-      let userService = this.injector.get(UserService);
-      userService.getUserFutureTasks()
-        .then((res) => {
-          res['tasks'] = this.sortTasksByPriority(res['tasks'].filter((task)=> {
-            return task._group != null
-          }));
-          resolve(res['tasks'])
-        })
-        .catch(() => {
-          reject([])
-        })
-    })
-  }
-
-  async getUserOverdueTasks() {
-    return new Promise((resolve, reject) => {
-      let userService = this.injector.get(UserService);
-      userService.getUserOverdueTasks()
-        .then((res) => {
-          res['tasks'] = res['tasks'].filter((task)=> {
-            return task._group != null
-          })
-          resolve(res['tasks'])
-        })
-        .catch(() => {
-          reject([])
-        })
-    })
-  }
-
-  private markOverdueTasks() {
-    this.overdueTasks = this.overdueTasks.map(task => {
-      task.overdue = true;
-      return task;
-    });
   }
 
   async openModal(task) {
@@ -219,15 +143,8 @@ export class MyTasksListComponent implements OnInit, OnDestroy {
     }
 
     if (dialogRef) {
-      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-        this.updateTask(data);
-      });
-      const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
-        this.onDeleteTask(data);
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        closeEventSubs.unsubscribe();
-        deleteEventSubs.unsubscribe();
+      dialogRef.afterClosed().subscribe(async result => {
+        this.groupDueTasks = await this.getGroupDueTasks();
       });
     }
   }
@@ -251,46 +168,6 @@ export class MyTasksListComponent implements OnInit, OnDestroy {
     });
   }
 
-  updateTask(task) {
-    let index = this.overdueAndTodayTasks.findIndex((t: any) => t._id === task._id);
-    if (index !== -1) {
-      this.overdueAndTodayTasks[index] = task;
-    }
-
-    index = this.thisWeekTasks.findIndex((t: any) => t._id === task._id);
-    if (index !== -1) {
-      this.thisWeekTasks[index] = task;
-    }
-    this.markOverdueTasks();
-  }
-
-  onDeleteTask(deletedTaskId) {
-      // Find the index of the tasks inside the section
-      let indexTask = this.overdueAndTodayTasks.findIndex((task: any) => task._id === deletedTaskId);
-      if (indexTask != -1) {
-        this.overdueAndTodayTasks.splice(indexTask, 1);
-        return;
-      }
-
-      indexTask = this.thisWeekTasks.findIndex((task: any) => task._id === deletedTaskId);
-      if (indexTask != -1) {
-        this.thisWeekTasks.splice(indexTask, 1);
-        return;
-      }
-
-      indexTask = this.nextWeekTasks.findIndex((task: any) => task._id === deletedTaskId);
-      if (indexTask != -1) {
-        this.nextWeekTasks.splice(indexTask, 1);
-        return;
-      }
-
-      indexTask = this.futureTasks.findIndex((task: any) => task._id === deletedTaskId);
-      if (indexTask != -1) {
-        this.futureTasks.splice(indexTask, 1);
-        return;
-      }
-  }
-
   getPriorityClass(priority: string) {
     return 'label-priority ' + priority.toLocaleLowerCase();
   }
@@ -309,10 +186,5 @@ export class MyTasksListComponent implements OnInit, OnDestroy {
 
   formateDate(date) {
     return this.datesService.formateDate(date, "MMM D, YYYY");
-  }
-
-  // Check if the data provided is not empty{}
-  checkDataExist(object: Object) {
-    return !(JSON.stringify(object) === JSON.stringify({}))
   }
 }

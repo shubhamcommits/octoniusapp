@@ -41,6 +41,37 @@ export class PostsControllers {
         }
     }
 
+    async getAllGroupTasks(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Fetch the userId from the request query
+            let userId: any = req.query.userId
+
+            // If userId is not there in query, then use the current loggedIn userId
+            if(!userId || userId == "undefined"){
+                userId = req['userId']
+            }
+
+            // If userId is not found
+            if(!userId){
+                return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
+            }
+
+            // Fetch today's task
+            const tasks: any = await postsService.getAllGroupTasks(userId);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'All User´s Tasks!',
+                tasks: tasks
+            });
+
+        } catch (err) {
+            return sendError(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+
     async getTodayTasks(req: Request, res: Response, next: NextFunction) {
         try {
 

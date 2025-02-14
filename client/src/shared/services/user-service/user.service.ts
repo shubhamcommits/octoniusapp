@@ -234,6 +234,9 @@ export class UserService {
     return this._http.get<any>(this.BASE_API_URL + `/followedPostsCount`);
   }
 
+  getGroupDueTasks() {
+    return this._http.get(this.BASE_API_URL + `/tasksbygroup`).toPromise();
+  }
   /**
    * USER TODAY'S TASKS
    */
