@@ -135,7 +135,7 @@
 
   <!----------------------------------------------  This week  -------------------------------------------->
 
-  <h5 class="title-overview" *ngIf="groupDueTasks?.this_week?.length > 0 || companyDueTasks?.this_week?.length > 0">
+  <h5 class="title-overview" *ngIf="groupDueTasks?.this_week?.length > 0 || companyDueTasks?.this_week?.length > 0" i18n="@@mySpaceTasks.thisWeek">
     This week</h5>
 
   <div *ngFor="let task of groupDueTasks.this_week; let i = index; trackBy: utilityService.trackByIndex">
@@ -249,7 +249,7 @@
 
   <!----------------------------------------------  Future  -------------------------------------------->
 
-  <h5 class="title-overview" *ngIf="groupDueTasks?.this_week?.length > 0 || companyDueTasks?.future?.length > 0"
+  <h5 class="title-overview" *ngIf="groupDueTasks?.future?.length > 0 || companyDueTasks?.future?.length > 0"
     i18n="@@mySpaceTasks.futureTasks">Future Tasks</h5>
 
   <div *ngFor="let task of groupDueTasks.future; let i = index; trackBy: utilityService.trackByIndex">
