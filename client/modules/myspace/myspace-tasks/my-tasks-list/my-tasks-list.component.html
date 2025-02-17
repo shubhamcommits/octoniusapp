@@ -78,7 +78,7 @@
 
   <!----------------------------------------------  Tomorrow  -------------------------------------------->
 
-  <h5 class="title-overview" *ngIf="companyDueTasks?.tomorrow?.length > 0" i18n="@@mySpaceTasks.tomorrow">Tomorrow</h5>
+  <h5 class="title-overview" *ngIf="groupDueTasks?.tomorrow?.length > 0 || companyDueTasks?.tomorrow?.length > 0" i18n="@@mySpaceTasks.tomorrow">Tomorrow</h5>
 
   <div *ngFor="let task of groupDueTasks.tomorrow; let i = index; trackBy: utilityService.trackByIndex">
     <a (click)="openModal(task)">
