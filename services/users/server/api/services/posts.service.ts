@@ -65,19 +65,15 @@ export class PostsService {
 
     async getAllGroupTasks(userId: string) {
         // Get the current time in UTC
-        const now = DateTime.utc().startOf("day");
-
+        const now = DateTime.now().endOf("day");
         // Define time ranges using Luxon
-        const today = now.toJSDate();
-
-        const tomorrow = now.plus({ days: 1 }).toJSDate();
-
-        const endOfWeek = now.endOf("week").toJSDate();
-
-        const endOfNextWeek = now.plus({ weeks: 1 }).endOf("week").toJSDate();
+        const today = now.toUTC();
+        const tomorrow = now.plus({ days: 1 }).endOf("day").toUTC();
+        const endOfWeek = now.endOf("week").toUTC();
+        const endOfNextWeek = now.plus({ weeks: 1 }).endOf("week").toUTC();
 
         const user = await User.findById(userId).select('_private_group');
-
+        
         const tasks = await Post.aggregate([
             {
                 $match: {
@@ -126,7 +122,7 @@ export class PostsService {
                     overdue_today: {
                         $push: {
                             $cond: [
-                                { $and: [{ $lte: ["$task.due_to", today] }] },
+                                { $and: [{ $lte: ["$task.due_to", today] }, { $ne: ["$task.due_to", null] }] },
                                 "$$ROOT",
                                 null
                             ]
@@ -135,7 +131,7 @@ export class PostsService {
                     tomorrow: {
                         $push: {
                             $cond: [
-                                { $and: [{ $eq: ["$task.due_to", tomorrow] }] },
+                                { $and: [{ $gt: ["$task.due_to", today] }, { $lt: ["$task.due_to", tomorrow] }] },
                                 "$$ROOT",
                                 null
                             ]
@@ -144,7 +140,7 @@ export class PostsService {
                     this_week: {
                         $push: {
                             $cond: [
-                                { $and: [{ $gt: ["$task.due_to", tomorrow] }, { $lte: ["$task.due_to", endOfWeek] }] },
+                                { $and: [{ $gte: ["$task.due_to", tomorrow] }, { $lte: ["$task.due_to", endOfWeek] }] },
                                 "$$ROOT",
                                 null
                             ]
@@ -162,7 +158,7 @@ export class PostsService {
                     future: {
                         $push: {
                             $cond: [
-                                { $and: [{ $gt: ["$task.due_to", endOfNextWeek] }] },
+                                { $or: [{ $gt: ["$task.due_to", endOfNextWeek] }, { $eq: ["$task.due_to", null] }] },
                                 "$$ROOT",
                                 null
                             ]
@@ -183,7 +179,6 @@ export class PostsService {
         
         return tasks.length > 0 ? tasks[0] : { overdue_today: [], tomorrow: [], this_week: [], next_week: [], future: [] }
     }
-
 
     /**
      * This function is responsible for fetching todays task for the user
