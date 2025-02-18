@@ -77,6 +77,7 @@
             &nbsp;
 
             <span class="notification_post_title" *ngIf="(notification?.type !== 'mention_folio' && notification?.type !== 'shuttleTask') && notification?._origin_post">{{ notification?._origin_post?.title | truncatetext: 20 }}</span>
+            <span class="notification_post_title" *ngIf="(notification?.type !== 'mention_folio' && notification?.type !== 'shuttleTask') && notification?.task_info">{{ notification?.company_name + ': ' + notification?.task_info?.description | truncatetext: 20 }}</span>
             <span class="notification_post_title" *ngIf="notification?.type === 'mention_folio' && notification?._origin_folio">{{ notification?._origin_folio?.original_name | truncatetext: 20 }}</span>
             <span class="notification_post_title" *ngIf="notification?.type === 'mention_collection' && notification?._collection">{{ notification?._collection?.name | truncatetext: 20 }}</span>
             <span class="notification_post_title" *ngIf="notification?.type === 'mention_page' && notification?._page">{{ notification?._page?.title | truncatetext: 20 }}</span>
@@ -110,6 +111,9 @@
               <span class="badge">
                 {{ notification?._origin_group?.group_name | truncatetext: 20 }}
               </span>
+            </div>
+            <div *ngIf="notification?.task_info">
+              <span class="badge" i18n="@@recentActivity.crmGroup">CRM</span>
             </div>
           </div>
 
