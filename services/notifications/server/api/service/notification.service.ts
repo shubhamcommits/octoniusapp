@@ -62,6 +62,7 @@ export class NotificationsService {
                     .limit(limit)
                     .populate('_actor', 'first_name last_name profile_pic')
                     .populate({ path: '_origin_post', populate: { path: '_group' } })
+                    .populate('_company_task._company', 'name tasks')
                     .populate('_origin_comment')
                     .populate('_owner', 'first_name last_name profile_pic')
                     .populate('_origin_group', 'group_name group_avatar')
@@ -82,6 +83,7 @@ export class NotificationsService {
                     .sort('-created_date')
                     .populate('_actor', 'first_name last_name profile_pic')
                     .populate({ path: '_origin_post', populate: { path: '_group' } })
+                    .populate('_company_task._company', 'name tasks')
                     .populate('_origin_comment')
                     .populate('_owner', 'first_name last_name profile_pic')
                     .populate('_origin_group', 'group_name group_avatar')
@@ -93,7 +95,33 @@ export class NotificationsService {
                     .lean();
             }
 
-            return notifications;
+            const temp = notifications.map((notification) => {
+                if (notification._company_task && notification._company_task._company) {
+                  const company = notification._company_task._company;
+            
+                  // Find the matching task in the company's tasks array
+                  const task = company.tasks.find(
+                    (task) => task._id.toString() === notification._company_task._task.toString()
+                  );
+            
+                  return {
+                    ...notification,
+                    task_info: task
+                      ? {
+                          _id: task._id,
+                          date: task.date,
+                          completed: task.completed,
+                          description: task.description,
+                          _assigned_to: task._assigned_to,
+                        }
+                      : null,
+                    company_name: company.name,
+                  };
+                }
+                return notification; // If no company or task found, return null
+              })
+
+            return temp;
         } catch (err) {
             throw err;
         }
@@ -406,6 +434,40 @@ export class NotificationsService {
                 _origin_post: postId,
                 message: ' assigned you on',
                 type: 'assignment',
+                created_date: DateTime.now()
+            });
+
+            if (process.env.DOMAIN == 'app.octonius.com') {
+                const owner = await User.findById({ _id: ownerId }).select('_workspace integrations.firebase_token').lean();
+                const actor = await User.findById({ _id: actorId }).select('first_name last_name').lean();
+
+                if (owner.integrations.firebase_token) {
+                    // Send the notification to firebase for mobile notify
+                    firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Assignment', actor?.first_name + ' ' + actor?.last_name + ' assigned you a task.');
+                }
+            }
+        } catch (err) {
+            throw err;
+        }
+    };
+
+    /**
+     * This function is responsible to notifying all the user on assigning of a new task to them
+     * @param { postId, assigned_to, groupId, posted_by } post 
+     */
+    async newCRMTaskNotification(ownerId: string, actorId: string, companyId: string, taskId: string, type: string) {
+
+        try {
+            await Notification.create({
+                _actor: actorId,
+                _owner: ownerId,
+                _origin_post: null,
+                _company_task: {
+                    _company: companyId,
+                    _task: taskId
+                },
+                message: 'crm message',
+                type: type,
                 created_date: DateTime.now()
             });
 

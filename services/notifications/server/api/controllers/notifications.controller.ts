@@ -245,6 +245,38 @@ export class NotificationsController {
         }
     };
 
+    /**
+     * This function is responsible to notifying all the user on re-assigning of a new CRM task to them
+     * @param { _id, _assigned_to, _posted_by } post
+     */
+    async newCRMTaskNotification(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch Data from request
+        const { assigneeId, _assigned_from, companyId, taskId, type, io } = req.body;
+        try {
+            if (_assigned_from != assigneeId) {
+                // Call Service function for newTaskReassignment
+                await notificationService.newCRMTaskNotification(assigneeId, _assigned_from, companyId, taskId, type);
+
+                await helperFunctions.sendNotificationsFeedFromService(assigneeId, io, true);
+                // await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
+                //     userid: assigneeId,
+                //     postId,
+                //     assigneeId,
+                //     _assigned_from,
+                //     type: "TASKASSIGNED"
+                // });
+            }
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'New Task Assignment Succeeded!'
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    };
 
     async taskStatusChanged(req: Request, res: Response, next: NextFunction) {
         let { postId, userId, assigned_to, status, followers, posted_by, io } = req.body;

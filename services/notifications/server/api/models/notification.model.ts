@@ -21,6 +21,15 @@ const NotificationSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Post'
     },
+    _company_task: {
+        _company: {
+            type: Schema.Types.ObjectId,
+            ref: 'Company'
+        },
+        _task: {
+            type: Schema.Types.ObjectId,
+        },
+    },
     _origin_group: {
         type: Schema.Types.ObjectId,
         ref: 'Group'
@@ -69,5 +78,12 @@ const NotificationSchema = new Schema({
 });
 
 const Notification = mongoose.model('Notification', NotificationSchema);
+
+NotificationSchema.virtual("task_info", {
+    ref: "Company",
+    localField: "_company_task",
+    foreignField: "tasks._id",
+    justOne: false // Since it's an array inside Company
+});
 
 export { Notification }
