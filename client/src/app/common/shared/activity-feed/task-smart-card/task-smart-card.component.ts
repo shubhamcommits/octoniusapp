@@ -88,7 +88,7 @@ export class TaskSmartCardComponent implements OnInit, OnDestroy {
       if (task.completed == false) this.to_do_task_count++;
       else if (task.completed == true) this.done_task_count++;
     }
-    this.today_task_count = this.to_do_task_count + this.in_progress_task_count + this.companyOverdueTasks.length + this.overdueTasks.length;
+    this.today_task_count = this.done_task_count + this.to_do_task_count + this.in_progress_task_count + this.companyOverdueTasks.length + this.overdueTasks.length;
     this.overdue_task_count = this.overdueTasks.length + this.companyOverdueTasks.length;
     /* Chart Setup */
     const percentageDone = this.today_task_count > 0 ? (((this.done_task_count)*100)/(this.today_task_count)) : 0;

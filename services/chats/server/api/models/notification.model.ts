@@ -13,7 +13,7 @@ const NotificationSchema = new Schema({
         ref: 'User',
         required: true
     },
-    _to_all: {
+    to_all: {
         type: String,
     },
     _origin_comment: {
@@ -24,8 +24,8 @@ const NotificationSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Post'
     },
-    _company: {
-        _company_id: {
+    company: {
+        _company: {
             type: Schema.Types.ObjectId,
             ref: 'Company'
         },

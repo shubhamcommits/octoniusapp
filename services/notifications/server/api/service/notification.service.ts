@@ -53,7 +53,7 @@ export class NotificationsService {
             if (limit) {
                 notifications = await Notification.find({
                         $and: [
-                            { $or: [ {_owner: userId }, { _to_all: 'all' } ] },
+                            { $or: [ {_owner: userId }, { to_all: 'all' } ] },
                             { read: false },
                             { type: { $nin: ["new-post", "launch-approval-flow-due-date", "hive", "hive_new_entity"] }}
                         ]
@@ -62,7 +62,7 @@ export class NotificationsService {
                     .limit(limit)
                     .populate('_actor', 'first_name last_name profile_pic')
                     .populate({ path: '_origin_post', populate: { path: '_group' } })
-                    .populate('_company._company_id', 'name tasks updates')
+                    .populate('company._company', 'name tasks updates')
                     .populate('_origin_comment')
                     .populate('_owner', 'first_name last_name profile_pic')
                     .populate('_origin_group', 'group_name group_avatar')
@@ -75,7 +75,7 @@ export class NotificationsService {
             } else {
                 notifications = await Notification.find({
                         $and: [
-                            { $or: [ {_owner: userId }, { _to_all: 'all' } ] },
+                            { $or: [ {_owner: userId }, { to_all: 'all' } ] },
                             { read: false },
                             { type: { $nin: ["new-post", "launch-approval-flow-due-date", "hive", "hive_new_entity"] }}
                         ]
@@ -83,7 +83,7 @@ export class NotificationsService {
                     .sort('-created_date')
                     .populate('_actor', 'first_name last_name profile_pic')
                     .populate({ path: '_origin_post', populate: { path: '_group' } })
-                    .populate('_company._company_id', 'name tasks updates')
+                    .populate('company._company', 'name tasks updates')
                     .populate('_origin_comment')
                     .populate('_owner', 'first_name last_name profile_pic')
                     .populate('_origin_group', 'group_name group_avatar')
@@ -96,16 +96,16 @@ export class NotificationsService {
             }
 
             const temp = notifications.map((notification) => {
-                if (notification._company && notification._company._company_id) {
-                  const company = notification._company._company_id;
+                if (notification.company && notification.company._company) {
+                  const company = notification.company._company;
             
                   // Find the matching task in the company's tasks array
                   const task = company.tasks.find(
-                    (task) => task._id.toString() === notification._company._task?.toString()
+                    (task) => task._id.toString() === notification.company._task?.toString()
                   );
                   // Find the matching update in the company's updates array
                   const update = company.updates.find(
-                    (update) => update._id.toString() === notification._company._update?.toString()
+                    (update) => update._id.toString() === notification.company._update?.toString()
                   );
             
                   return {
@@ -477,8 +477,8 @@ export class NotificationsService {
                 _actor: actorId,
                 _owner: ownerId,
                 _origin_post: null,
-                _company: {
-                    _company_id: companyId,
+                company: {
+                    _company: companyId,
                     _task: taskId
                 },
                 message: 'crm message',
@@ -511,9 +511,9 @@ export class NotificationsService {
                 _actor: actorId,
                 _owner: ownerId,
                 _origin_post: null,
-                _to_all: 'all',
-                _company: {
-                    _company_id: companyId,
+                to_all: 'all',
+                company: {
+                    _company: companyId,
                     _update: updateId
                 },
                 type: 'crm-update-assignment',
