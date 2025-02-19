@@ -94,6 +94,11 @@ export class MyTasksListComponent implements OnInit, OnDestroy {
     this.groupDueTasks['future'] = await this.publicFunctions.filterRAGTasks(this.groupDueTasks['future'], this.userData);
     
     this.companyDueTasks = await this.getCompanyDueTasks();
+    this.companyDueTasks['overdue_today'] = this.companyDueTasks['overdue_today'].filter(task => task.completed == false);
+    this.companyDueTasks['tomorrow'] = this.companyDueTasks['tomorrow'].filter(task => task.completed == false);
+    this.companyDueTasks['this_week'] = this.companyDueTasks['this_week'].filter(task => task.completed == false);
+    this.companyDueTasks['next_week'] = this.companyDueTasks['next_week'].filter(task => task.completed == false);
+    this.companyDueTasks['future'] = this.companyDueTasks['future'].filter(task => task.completed == false);
   }
 
   async getCompanyDueTasks() {

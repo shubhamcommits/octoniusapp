@@ -4,6 +4,8 @@ import { SubSink } from 'subsink';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { ChartData, ChartOptions, ChartType } from 'chart.js';
+import { CRMService } from 'src/shared/services/crm-service/crm.service';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-task-smart-card',
@@ -19,10 +21,13 @@ export class TaskSmartCardComponent implements OnInit, OnDestroy {
   to_do_task_count = 0;
   in_progress_task_count = 0;
   done_task_count = 0
+  overdue_task_count = 0
 
   todayTasks: any = [];
   overdueTasks: any = [];
-
+  companyOverdueTasks: any = [];
+  companyTodayTasks: any = [];
+  
   // doughnutChartLabels;
   // doughnutChartData;
   // doughnutChartType;
@@ -41,34 +46,59 @@ export class TaskSmartCardComponent implements OnInit, OnDestroy {
   constructor(
     private userService: UserService,
     private utilityService: UtilityService,
-    private injector: Injector
+    private injector: Injector,
   ) { }
 
   async ngOnInit() {
 
     this.userData = await this.publicFunctions.getCurrentUser();
     
-    this.todayTasks = await this.publicFunctions.filterRAGTasks(await this.getUserTodayTasks(), this.userData);
-    this.overdueTasks = await this.publicFunctions.filterRAGTasks(await this.getUserOverdueTasks(), this.userData);
+    
+    let companyDueTasks = await this.getCompanyDueTasks();    
+    let companyOverdueToday = companyDueTasks['overdue_today'];    
+    
+    let groupDueTasks = await this.getGroupDueTasks();    
+    let groupOverdueToday = await this.publicFunctions.filterRAGTasks(groupDueTasks['overdue_today'], this.userData);
 
-    this.markOverdueTasks();
+    const today = DateTime.utc().toISODate();
+    // Filter tasks where task_date is today
+    this.companyTodayTasks = companyOverdueToday.filter(task => 
+        DateTime.fromISO(task.task_date, { zone: 'utc' }).toISODate() === today
+    );
+    this.todayTasks = groupOverdueToday.filter(task => 
+      DateTime.fromISO(task.task?.due_to, { zone: 'utc' }).toLocal().toISODate() === today
+    );
+
+    // Filter tasks where task_date is before today
+    this.companyOverdueTasks = companyOverdueToday.filter(task => 
+      DateTime.fromISO(task.task_date, { zone: 'utc' }).toISODate() < today
+    );
+    this.overdueTasks = groupOverdueToday.filter(task => 
+      DateTime.fromISO(task.task?.due_to, { zone: 'utc' }).toLocal().toISODate() < today
+    );
+    
+    // this.markOverdueTasks();
 
     for (let task of this.todayTasks){
       if (task.task.status=='to do') this.to_do_task_count++;
       else if (task.task.status=='in progress') this.in_progress_task_count++;
       else if (task.task.status=='done') this.done_task_count++;
     }
-    this.today_task_count = this.todayTasks.length;
-
+    for (let task of this.companyTodayTasks){
+      if (task.completed == false) this.to_do_task_count++;
+      else if (task.completed == true) this.done_task_count++;
+    }
+    this.today_task_count = this.done_task_count + this.to_do_task_count + this.in_progress_task_count + this.companyOverdueTasks.length + this.overdueTasks.length;
+    this.overdue_task_count = this.overdueTasks.length + this.companyOverdueTasks.length;
     /* Chart Setup */
-    const percentageDone = (this.todayTasks.length + this.overdueTasks.length > 0) ? (((this.done_task_count)*100)/(this.todayTasks.length + this.overdueTasks.length)) : 0;
+    const percentageDone = this.today_task_count > 0 ? (((this.done_task_count)*100)/(this.today_task_count)) : 0;
     this.doughnutChartLabels = ['To Do', 'In Progress', 'Done', 'Overdue'];
     this.doughnutChartData = {
       labels: this.doughnutChartLabels,
       datasets: [
         {
           // data: [200, 100, 50, 150],
-          data: [this.to_do_task_count, this.in_progress_task_count, this.done_task_count, this.overdueTasks.length],
+          data: [this.to_do_task_count, this.in_progress_task_count, this.done_task_count, this.overdue_task_count],
           backgroundColor: [ '#FFAB00', '#0bc6a0', '#4a90e2', '#FF6584' ],
         }
       ]
@@ -119,14 +149,28 @@ export class TaskSmartCardComponent implements OnInit, OnDestroy {
     })
   }
 
-  async getUserOverdueTasks() {
+  async getGroupDueTasks() {
     return new Promise((resolve, reject) => {
-      this.userService.getUserOverdueTasks()
+      let userService = this.injector.get(UserService);
+      userService.getGroupDueTasks()
         .then((res) => {
-          resolve(res['tasks'])
+          resolve(res['tasks']);
         })
         .catch(() => {
-          reject([])
+          reject([]);
+        })
+    })
+  }
+
+  async getCompanyDueTasks() {
+    return new Promise((resolve, reject) => {
+      let crmService = this.injector.get(CRMService);
+      crmService.getCompanyDueTasks()
+        .then((res) => {   
+          resolve(res['crm_due_tasks']);
+        })
+        .catch(() => {
+          reject([]);
         })
     })
   }

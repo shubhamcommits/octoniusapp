@@ -28,8 +28,10 @@ routes.post('/new-folio-mention', notificationFunctions.newFolioMention);
 //This route is responsible to notifying all the user on assigning of a new task to them
 routes.post('/new-task', notificationFunctions.newTaskAssignment);
 
-//This route is responsible to notifying all the user on assigning of a new task to them
+//This route is responsible to notifying all the user on assigning of a new crm task to them
 routes.post('/new-crm-task', notificationFunctions.newCRMTaskNotification);
+//This route is responsible to notifying all the user on assigning of a new update to them
+routes.post('/new-crm-update', notificationFunctions.newCRMUpdateNotification);
 
 //This route is responsible to notifying all the user on re-assigning of a new task to them
 routes.post('/task-reassign', notificationFunctions.newTaskReassignment);
