@@ -13,6 +13,9 @@ const NotificationSchema = new Schema({
         ref: 'User',
         required: true
     },
+    _to_all: {
+        type: String,
+    },
     _origin_comment: {
         type: Schema.Types.ObjectId,
         ref: 'Comment'
@@ -21,12 +24,15 @@ const NotificationSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Post'
     },
-    _company_task: {
-        _company: {
+    _company: {
+        _company_id: {
             type: Schema.Types.ObjectId,
             ref: 'Company'
         },
         _task: {
+            type: Schema.Types.ObjectId,
+        },
+        _update: {
             type: Schema.Types.ObjectId,
         },
     },
@@ -73,17 +79,10 @@ const NotificationSchema = new Schema({
     type: {
         type: String,
         required: true,
-        enum: ['assignment', 'mention', 'mention_folio', 'started', 'completed', 'comment', 'like_comment', 'follow', 'likes', 'new-post', 'join-group', 'leave-group', 'launch-approval-flow', 'approved-item', 'reject-item', 'launch-approval-flow-due-date', 'shuttleTask', 'mention_collection', 'mention_page', 'hive', 'hive_new_entity', 'post-edited']
+        enum: ['assignment', 'mention', 'mention_folio', 'started', 'completed', 'comment', 'like_comment', 'follow', 'likes', 'new-post', 'join-group', 'leave-group', 'launch-approval-flow', 'approved-item', 'reject-item', 'launch-approval-flow-due-date', 'shuttleTask', 'mention_collection', 'mention_page', 'hive', 'hive_new_entity', 'post-edited', 'crm-task-assignment', 'crm-update-assignment']
     }
 });
 
 const Notification = mongoose.model('Notification', NotificationSchema);
-
-NotificationSchema.virtual("task_info", {
-    ref: "Company",
-    localField: "_company_task",
-    foreignField: "tasks._id",
-    justOne: false // Since it's an array inside Company
-});
 
 export { Notification }

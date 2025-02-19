@@ -1162,20 +1162,20 @@ export class CRMController {
 
             company = await Company.findById({
                     _id: companyId,
-                })
-                .populate({
-                    path: "tasks._assigned_to",
-                    select: "_id first_name last_name profile_pic",
-                })
-                .populate({
-                    path: "tasks._created_user",
-                    select: "_id first_name last_name profile_pic",
-                })
-                .populate({
-                    path: "updates._created_user",
-                    select: "_id first_name last_name profile_pic",
-                })
-                .lean();
+            })
+            .populate({
+                path: "tasks._assigned_to",
+                select: "_id first_name last_name profile_pic",
+            })
+            .populate({
+                path: "tasks._created_user",
+                select: "_id first_name last_name profile_pic",
+            })
+            .populate({
+                path: "updates._created_user",
+                select: "_id first_name last_name profile_pic",
+            })
+            .lean();
 
             const addedTask = company.tasks[company.tasks.length - 1];                            
             taskData._assigned_to.forEach(async function(assignee) { 
@@ -1187,7 +1187,7 @@ export class CRMController {
                             _assigned_from: req['userId'],
                             companyId: companyId,
                             taskId: addedTask._id,
-                            type: 'assignment'
+                            type: 'crm-task-assignment'
                         }
                     )
                     .catch((err) => {
@@ -1236,19 +1236,19 @@ export class CRMController {
                         $set: { tasks: company.tasks },
                     }
                 )
-                    .populate({
-                        path: "tasks._assigned_to",
-                        select: "_id first_name last_name profile_pic",
-                    })
-                    .populate({
-                        path: "tasks._created_user",
-                        select: "_id first_name last_name profile_pic",
-                    })
-                    .populate({
-                        path: "updates._created_user",
-                        select: "_id first_name last_name profile_pic",
-                    })
-                    .lean();
+                .populate({
+                    path: "tasks._assigned_to",
+                    select: "_id first_name last_name profile_pic",
+                })
+                .populate({
+                    path: "tasks._created_user",
+                    select: "_id first_name last_name profile_pic",
+                })
+                .populate({
+                    path: "updates._created_user",
+                    select: "_id first_name last_name profile_pic",
+                })
+                .lean();
                 
                 taskData._assigned_to.forEach(async (assignee) => {
                     if (assignee._id != req["userId"] && taskData.completed == true) {
@@ -1333,20 +1333,39 @@ export class CRMController {
             company = await Company.findById({
                 _id: companyId,
             })
-                .populate({
-                    path: "tasks._assigned_to",
-                    select: "_id first_name last_name profile_pic",
-                })
-                .populate({
-                    path: "tasks._created_user",
-                    select: "_id first_name last_name profile_pic",
-                })
-                .populate({
-                    path: "updates._created_user",
-                    select: "_id first_name last_name profile_pic",
-                })
-                .lean();
+            .populate({
+                path: "tasks._assigned_to",
+                select: "_id first_name last_name profile_pic",
+            })
+            .populate({
+                path: "tasks._created_user",
+                select: "_id first_name last_name profile_pic",
+            })
+            .populate({
+                path: "updates._created_user",
+                select: "_id first_name last_name profile_pic",
+            })
+            .lean();
 
+            const addedUpdate = company.updates[company.updates.length - 1];      
+                                  
+            // updateData._assigned_to.forEach(async function(assignee) { 
+            //     if (assignee._id != req["userId"]) {                                        
+                    http.post(
+                        `${process.env.NOTIFICATIONS_SERVER_API}/new-crm-update`,
+                        {
+                            assigneeId: req['userId'],
+                            _assigned_from: req['userId'],
+                            companyId: companyId,
+                            updateId: addedUpdate._id,
+                        }
+                    )
+                    .catch((err) => {
+                        console.log(`\n⛔️ Error:\n ${err}`);
+                    });
+            //     }
+            // });
+    
             // Send status 200 response
             return res.status(200).json({
                 message: "Company crm update added!",
@@ -1387,19 +1406,19 @@ export class CRMController {
                         $set: { updates: company.updates },
                     }
                 )
-                    .populate({
-                        path: "tasks._assigned_to",
-                        select: "_id first_name last_name profile_pic",
-                    })
-                    .populate({
-                        path: "tasks._created_user",
-                        select: "_id first_name last_name profile_pic",
-                    })
-                    .populate({
-                        path: "updates._created_user",
-                        select: "_id first_name last_name profile_pic",
-                    })
-                    .lean();
+                .populate({
+                    path: "tasks._assigned_to",
+                    select: "_id first_name last_name profile_pic",
+                })
+                .populate({
+                    path: "tasks._created_user",
+                    select: "_id first_name last_name profile_pic",
+                })
+                .populate({
+                    path: "updates._created_user",
+                    select: "_id first_name last_name profile_pic",
+                })
+                .lean();
             }
 
             // Send status 200 response
@@ -1455,20 +1474,20 @@ export class CRMController {
 
         try {
             // Get the current time in UTC
-            const now = DateTime.utc().startOf("day");
+            const now = DateTime.utc();
             // Define time ranges using Luxon
-            const today = now.toJSDate();
-            const tomorrow = now.plus({ days: 1 }).toJSDate();
+            const today = now.endOf("day").toJSDate();
+            const tomorrow = now.startOf("day").plus({ days: 1 }).toJSDate();
             const endOfWeek = now.endOf("week").toJSDate();
             const endOfNextWeek = now.plus({ weeks: 1 }).endOf("week").toJSDate();
-
+            
             const tasks = await Company.aggregate([
               { $unwind: "$tasks" }, // Expand the tasks array
               {
                 $match: {
                     $and: [
                         { "tasks._assigned_to": { $elemMatch: { $eq: new ObjectID(userId) } } },
-                        { "tasks.completed": { $eq: false } },
+                        // { "tasks.completed": { $eq: false } },
                     ]
                 }
               },
@@ -1489,6 +1508,7 @@ export class CRMController {
                   company_name: "$name",
                   task_description: "$tasks.description",
                   task_date: "$tasks.date",
+                  completed: "$tasks.completed"
                 }
               },           
               {

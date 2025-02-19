@@ -51,6 +51,7 @@ export class CRMCompanyUpdateInformationComponent implements OnInit {
         _assigned_to: [],
       };
     }
+    this.updateData._assigned_to = [];
 
     if (!!this.data && !!this.data.companyId) {
       this.companyId = this.data.companyId;
