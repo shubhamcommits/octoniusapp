@@ -75,6 +75,14 @@ const CompanySchema = new Schema({
                 ref: "User",
                 required: true,
             },
+            _assigned_to: [
+                {
+                    type: Schema.Types.ObjectId,
+                    ref: "User",
+                    required: false,
+                    default: [],
+                },
+            ]
         },
     ],
 });

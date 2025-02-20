@@ -53,7 +53,7 @@ export class NotificationsService {
             if (limit) {
                 notifications = await Notification.find({
                         $and: [
-                            { _owner: userId },
+                            { $or: [ {_owner: userId }, { to_all: 'all' } ] },
                             { read: false },
                             { type: { $nin: ["new-post", "launch-approval-flow-due-date", "hive", "hive_new_entity"] }}
                         ]
@@ -62,6 +62,7 @@ export class NotificationsService {
                     .limit(limit)
                     .populate('_actor', 'first_name last_name profile_pic')
                     .populate({ path: '_origin_post', populate: { path: '_group' } })
+                    .populate('company._company', 'name tasks updates')
                     .populate('_origin_comment')
                     .populate('_owner', 'first_name last_name profile_pic')
                     .populate('_origin_group', 'group_name group_avatar')
@@ -74,7 +75,7 @@ export class NotificationsService {
             } else {
                 notifications = await Notification.find({
                         $and: [
-                            { _owner: userId },
+                            { $or: [ {_owner: userId }, { to_all: 'all' } ] },
                             { read: false },
                             { type: { $nin: ["new-post", "launch-approval-flow-due-date", "hive", "hive_new_entity"] }}
                         ]
@@ -82,6 +83,7 @@ export class NotificationsService {
                     .sort('-created_date')
                     .populate('_actor', 'first_name last_name profile_pic')
                     .populate({ path: '_origin_post', populate: { path: '_group' } })
+                    .populate('company._company', 'name tasks updates')
                     .populate('_origin_comment')
                     .populate('_owner', 'first_name last_name profile_pic')
                     .populate('_origin_group', 'group_name group_avatar')
@@ -93,7 +95,48 @@ export class NotificationsService {
                     .lean();
             }
 
-            return notifications;
+            const temp = notifications.map((notification) => {
+                if (notification.company && notification.company._company) {
+                  const company = notification.company._company;
+            
+                  // Find the matching task in the company's tasks array
+                  const task = company.tasks.find(
+                    (task) => task._id.toString() === notification.company._task?.toString()
+                  );
+                  // Find the matching update in the company's updates array
+                  const update = company.updates.find(
+                    (update) => update._id.toString() === notification.company._update?.toString()
+                  );
+            
+                  return {
+                    ...notification,
+                    task_info: task
+                      ? {
+                          _id: task._id,
+                          date: task.date,
+                          completed: task.completed,
+                          description: task.description,
+                          _assigned_to: task._assigned_to,
+                        }
+                      : null,
+                      update_info: update
+                      ? {
+                          _id: update._id,
+                          date: update.date,
+                          completed: update.completed,
+                          description: update.description,
+                          _assigned_to: update._assigned_to,
+                        }
+                      : null,
+                    company_name: company.name,
+                  };
+                }
+                
+                return notification; // If no company or task found, return null
+            })
+            console.log(temp);
+
+            return temp;
         } catch (err) {
             throw err;
         }
@@ -423,6 +466,75 @@ export class NotificationsService {
         }
     };
 
+    /**
+     * This function is responsible to notifying all the user on assigning of a new crm task to them
+     * @param { postId, assigned_to, groupId, posted_by } post 
+     */
+    async newCRMTaskNotification(ownerId: string, actorId: string, companyId: string, taskId: string, type: string) {
+
+        try {
+            await Notification.create({
+                _actor: actorId,
+                _owner: ownerId,
+                _origin_post: null,
+                company: {
+                    _company: companyId,
+                    _task: taskId
+                },
+                message: 'crm message',
+                type: type,
+                created_date: DateTime.now()
+            });
+
+            if (process.env.DOMAIN == 'app.octonius.com') {
+                const owner = await User.findById({ _id: ownerId }).select('_workspace integrations.firebase_token').lean();
+                const actor = await User.findById({ _id: actorId }).select('first_name last_name').lean();
+
+                if (owner.integrations.firebase_token) {
+                    // Send the notification to firebase for mobile notify
+                    firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Assignment', actor?.first_name + ' ' + actor?.last_name + ' assigned you a task.');
+                }
+            }
+        } catch (err) {
+            throw err;
+        }
+    };
+
+    /**
+     * This function is responsible to notifying all the user on assigning of a new crm update to them
+     * @param { postId, assigned_to, groupId, posted_by } post 
+     */
+    async newCRMUpdateNotification(ownerId: string, actorId: string, companyId: string, updateId: string) {
+        
+        try {
+            await Notification.create({
+                _actor: actorId,
+                _owner: ownerId,
+                _origin_post: null,
+                to_all: 'all',
+                company: {
+                    _company: companyId,
+                    _update: updateId
+                },
+                type: 'crm-update-assignment',
+                message: 'crm message',
+                created_date: DateTime.now()
+            });
+            
+            if (process.env.DOMAIN == 'app.octonius.com') {
+                const owner = await User.findById({ _id: ownerId }).select('_workspace integrations.firebase_token').lean();
+                const actor = await User.findById({ _id: actorId }).select('first_name last_name').lean();
+
+                if (owner.integrations.firebase_token) {
+                    // Send the notification to firebase for mobile notify
+                    firebaseNotifications.sendFirebaseNotification(owner._workspace._id || owner._workspace, owner.integrations.firebase_token, 'Octonius - New Assignment', actor?.first_name + ' ' + actor?.last_name + ' assigned you a task.');
+                }
+            }
+        } catch (err) {
+            throw err;
+        }
+    };
+    
     /**
      * This function is responsible to notifying all the user on re-assigning of a new task to them
      * @param { _id, _assigned_to, _posted_by } post
