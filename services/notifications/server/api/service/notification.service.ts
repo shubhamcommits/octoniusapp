@@ -481,7 +481,7 @@ export class NotificationsService {
                     _company: companyId,
                     _task: taskId
                 },
-                message: 'crm message',
+                message: 'assigned',
                 type: type,
                 created_date: DateTime.now()
             });
@@ -517,7 +517,7 @@ export class NotificationsService {
                     _update: updateId
                 },
                 type: 'crm-update-assignment',
-                message: 'crm message',
+                message: 'updated',
                 created_date: DateTime.now()
             });
             

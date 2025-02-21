@@ -47,12 +47,17 @@ export class SocketService {
       this.socket.on(eventName, (data: any) => {
         observer.next(data);
         if (eventName === 'notificationsFeed' && data.new) {
-          const notify = data['unreadNotifications'][0];
+          const notify = data['unreadNotifications'][0];          
           let notifyData: Array<any> = [];
           if (notify?.type === 'mention_folio') {
             notifyData.push({
               'title': $localize`:@@socketService.notification:Notification`,
               'alertContent': `${notify?._actor?.first_name || 'Deleted'} ${notify?._actor?.last_name || 'User'} ${notify?.message} ${notify?._origin_folio?.original_name}`,
+            });
+          } else if (notify?.type === 'crm-task-assignment' || notify?.type === 'crm-update-assignment') {
+            notifyData.push({
+              'title': $localize`:@@socketService.notification:Notification`,
+              'alertContent': `${notify?._actor?.first_name || 'Deleted'} ${notify?._actor?.last_name || 'User'} ${notify?.message} ${notify?.company_name}`,
             });
           } else {
             notifyData.push({
