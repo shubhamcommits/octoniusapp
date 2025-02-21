@@ -81,7 +81,7 @@
             <span class="notification_post_title" *ngIf="(notification?.type !== 'mention_folio' && notification?.type !== 'shuttleTask') && notification?._origin_post">{{ notification?._origin_post?.title | truncatetext: 20 }}</span>
             <span class="notification_post_title" *ngIf="notification?.type === 'completed' && notification?.task_info">{{ notification?.task_info?.description + ' on ' + notification?.company_name + ' in CRM' | truncatetext: 40 }}</span>
             <span class="notification_post_title" *ngIf="notification?.type === 'crm-task-assignment' && notification?.task_info">{{ notification?.task_info?.description + ' to you on ' + notification?.company_name + ' in CRM' | truncatetext: 40 }}</span>
-            <span class="notification_post_title" *ngIf="notification?.type === 'crm-update-assignment' && notification?.update_info">{{ notification?.update_info?.description + ' on ' + notification?.company_name + ' in CRM' | truncatetext: 40 }}</span>
+            <span class="notification_post_title" *ngIf="notification?.type === 'crm-update-assignment' && notification?.update_info">{{ notification?.company_name | truncatetext: 40 }}</span>
             <span class="notification_post_title" *ngIf="notification?.type === 'mention_folio' && notification?._origin_folio">{{ notification?._origin_folio?.original_name | truncatetext: 20 }}</span>
             <span class="notification_post_title" *ngIf="notification?.type === 'mention_collection' && notification?._collection">{{ notification?._collection?.name | truncatetext: 20 }}</span>
             <span class="notification_post_title" *ngIf="notification?.type === 'mention_page' && notification?._page">{{ notification?._page?.title | truncatetext: 20 }}</span>
@@ -116,7 +116,7 @@
                 {{ notification?._origin_group?.group_name | truncatetext: 20 }}
               </span>
             </div>
-            <div *ngIf="notification?.task_info">
+            <div *ngIf="notification?.task_info || notification?.update_info">
               <span class="badge" i18n="@@recentActivity.crmGroup">CRM</span>
             </div>
           </div>
@@ -124,8 +124,13 @@
           <div class="notification_more">
             <i class="material-icons-outlined ml-2 muted pointer" [matMenuTriggerFor]="menu">more_horiz</i>
             <mat-menu #menu="matMenu">
-              <a mat-menu-item *ngIf="notification?.type !== 'mention_folio' && notification?.type !== 'join-group' && notification?.type !== 'leave-group' && (notification?.type != 'approved-item' && notification?.type != 'reject-item' && notification?.type != 'launch-approval-flow' && notification?.type != 'mention_collection' && notification?.type != 'mention_page')"
+              <a mat-menu-item *ngIf="notification?.type !== 'mention_folio' && notification?.type !== 'join-group' && notification?.type !== 'leave-group' && (notification?.type != 'approved-item' && notification?.type != 'reject-item' && notification?.type != 'launch-approval-flow' && notification?.type != 'mention_collection' && notification?.type != 'mention_page' && notification?.type != 'crm-task-assignment' && notification?.type != 'crm-update-assignment')"
                 (click)="viewNotification(notification, index)">
+                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
+                <span i18n="@@recentActivity.view">View</span>
+              </a>
+              <a mat-menu-item *ngIf="notification?.type === 'crm-task-assignment' || notification?.type === 'crm-update-assignment'"
+                (click)="viewCRMNotification(notification, index)">
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                 <span i18n="@@recentActivity.view">View</span>
               </a>
