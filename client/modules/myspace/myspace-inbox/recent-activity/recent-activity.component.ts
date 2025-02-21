@@ -10,11 +10,12 @@ import { SubSink } from 'subsink';
 import { DateTime } from 'luxon';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
+import { CRMService } from 'src/shared/services/crm-service/crm.service';
 import { MatDialog } from '@angular/material/dialog';
 import { HolidayRejectionDialogComponent } from 'src/app/common/shared/hr/holiday-rejection-dialog/holiday-rejection-dialog.component';
 import { HRService } from 'src/shared/services/hr-service/hr.service';
 import { EditMemberPayrollDialogComponent } from 'modules/organization/hr/employees/edit-member-payroll-dialog/edit-member-payroll-dialog.component';
-// import { MemberApprovalHolidaysAvailabilityDialogComponent } from 'src/app/common/shared/member-approval-holidays-availability-dialog/member-approval-holidays-availability-dialog.component';
+import { CRMCompanyDetailsDialogComponent } from "modules/work/crm-setup-page/crm-company-details-dialog/crm-company-details-dialog.component";
 import { DatesService } from 'src/shared/services/dates-service/dates.service';
 
 @Component({
@@ -49,6 +50,11 @@ export class RecentActivityComponent implements OnInit {
   isOrganizationModuleAvailable = false;
   isBusinessSubscription = false;
 
+  contacts = [];
+  companies = [];
+  crmCompanyCustomFields = [];
+  crmContactCustomFields = [];
+
   // IsLoading behaviou subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
 
@@ -67,7 +73,8 @@ export class RecentActivityComponent implements OnInit {
     private loungeService: LoungeService,
     private datesService: DatesService,
     private userService: UserService,
-    private hrService: HRService
+    private hrService: HRService,
+    private crmService: CRMService
   ) {
     // Subscribe to the change in notifications data from the server
     this.subSink.add(this.socketService.currentData.subscribe((res) => {
@@ -110,6 +117,16 @@ export class RecentActivityComponent implements OnInit {
       }
     }
 
+    await this.crmService.getCRMInformation().then((res) => {
+      this.contacts = res["contacts"];
+      this.companies = res["companies"];
+      this.crmContactCustomFields = res["crm_custom_fields"]?.filter(
+        (cf) => cf.type == "contact"
+      );
+      this.crmCompanyCustomFields = res["crm_custom_fields"]?.filter(
+        (cf) => cf.type == "company"
+      );
+    });
     // Return the function via stopping the loader
     this.isLoading$.next(false);
   }
@@ -200,6 +217,30 @@ export class RecentActivityComponent implements OnInit {
     } else {
       this.notificationsData.unreadPosts[index]['read'] = true
       this.notificationsData.unreadPosts.splice(index, 1)
+    }
+  }
+
+  async viewCRMNotification(notification: any, index: any) {
+
+    this.markNotificationAsRead(notification?._id, this.userData?._id, index, notification?.type);
+    if (notification?.company?._company?._id) {
+      let companyId = notification?.company?._company?._id;
+      const dialogRef = this.dialog.open(CRMCompanyDetailsDialogComponent, {
+        disableClose: true,
+        hasBackdrop: true,
+        minWidth: "100%",
+        width: "100%",
+        minHeight: "100%",
+        height: "100%",
+        data: {
+          companyId: companyId,
+          crmCompanyCustomFields: this.crmCompanyCustomFields,
+          crmContactCustomFields: this.crmContactCustomFields,
+          contacts: this.contacts.filter(
+            (c) => companyId == (c?._company?._id || c?._company)
+          ),
+        },
+      });
     }
   }
 
