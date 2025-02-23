@@ -27,8 +27,6 @@ import { LibreofficeService } from "src/shared/services/libreoffice-service/libr
 import { DateTime } from "luxon";
 import { DatesService } from "src/shared/services/dates-service/dates.service";
 import { MS365CloudService } from "./user/user-clouds/user-available-clouds/ms-365/services/ms-365-cloud.service";
-import { map, mergeMap } from "rxjs/operators";
-import { from } from "rxjs";
 import { FlowService } from "src/shared/services/flow-service/flow.service";
 
 @Injectable({
@@ -1761,7 +1759,7 @@ export class PublicFunctions {
                 groupId,
                 isCreationTaskTrigger || false,
                 shuttleIndex
-              );
+              );              
               if (doTrigger) {
                 const childStatusTriggerIndex = !!step.trigger
                   ? step.trigger.findIndex((trigger) => {
@@ -1978,6 +1976,8 @@ export class PublicFunctions {
     groupId: string,
     shuttleIndex: number
   ) {
+    let columnService = this.injector.get(ColumnService);
+
     const isShuttleTasksModuleAvailable =
       await this.isShuttleTasksModuleAvailable();
     const shuttleActinIndex =
@@ -2018,7 +2018,7 @@ export class PublicFunctions {
             post.task.custom_fields[action.custom_field.name] =
               action.custom_field.value;
             return post;
-          case "Move to":
+          case "Move to":                      
             if (post.task._parent_task) {
               if (post?.task?.shuttle_type && shuttleIndex >= 0) {
                 post.task.shuttles[shuttleIndex]._shuttle_section =
@@ -2029,7 +2029,10 @@ export class PublicFunctions {
                 post.task.shuttles[shuttleIndex]._shuttle_section =
                   action._section;
               } else {
+                console.log("=l=l=l=l=l=l=l");
+                
                 if (!post.task._parent_task) {
+                  await columnService.triggerRefreshSection({sectionId: action._section._id, oldSectionId: post.task._column._id});
                   post.task._column = action._section;
                 }
               }
