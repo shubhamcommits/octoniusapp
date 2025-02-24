@@ -2028,9 +2028,7 @@ export class PublicFunctions {
               if (post?.task?.shuttle_type && shuttleIndex >= 0) {
                 post.task.shuttles[shuttleIndex]._shuttle_section =
                   action._section;
-              } else {
-                console.log("=l=l=l=l=l=l=l");
-                
+              } else {                
                 if (!post.task._parent_task) {
                   await columnService.triggerRefreshSection({sectionId: action._section._id, oldSectionId: post.task._column._id});
                   post.task._column = action._section;
