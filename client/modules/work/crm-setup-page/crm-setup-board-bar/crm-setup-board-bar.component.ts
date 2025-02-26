@@ -2,7 +2,6 @@ import { Component, OnInit, Input, Injector, Output, EventEmitter } from '@angul
 import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { CRMCustomFieldsDialogComponent } from '../crm-custom-fields-dialog/crm-custom-fields-dialog.component';
-
 @Component({
   selector: 'app-crm-setup-board-bar',
   templateUrl: './crm-setup-board-bar.component.html',

@@ -57,7 +57,7 @@ export class MembersControllers {
         return await User.find(mongoQuery)
             .sort('_id')
             //.limit(10)
-            .select('first_name last_name email role profile_pic active integrations hr_role')
+            .select('first_name last_name email role profile_pic active integrations hr_role crm_role')
             .lean() || [];
     }
 
