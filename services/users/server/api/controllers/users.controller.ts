@@ -341,7 +341,7 @@ export class UsersControllers {
                 }, {
                     $set: propertyToSave
                 })
-                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr hr_role')
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields hr hr_role crm_role')
                 .populate({
                     path: 'stats.favorite_groups',
                     select: '_id group_name group_avatar'
@@ -775,43 +775,6 @@ export class UsersControllers {
         }
     }
 
-    /**
-     * This function is responsible for updating the HR role of the user
-     * @param { memberId }req 
-     * @param res 
-     */
-    async changeCRMRole(req: Request, res: Response, next: NextFunction) {
-
-        const { memberId, crm_role } = req.body;
-        try {
-
-            // find the user
-            let user: any = await User.findOneAndUpdate({
-                    $and: [
-                        { _id: memberId },
-                        { active: true }
-                    ]
-                }, 
-                { 
-                    $set: { crm_role: crm_role }
-                }, {
-                    new: true
-                }).select('first_name last_name profile_pic role _workspace _account integrations crm_role');
-
-            // Error updating the user
-            if (!user) {
-                return sendError(res, new Error('Unable to update the user, some unexpected error occurred!'), 'Unable to update the user, some unexpected error occurred!', 500);
-            }
-
-            // Send status 200 response
-            return res.status(200).json({
-                message: `Role updated for user ${user.first_name}`,
-                user: user
-            });
-        } catch (err) {
-            return sendError(res, err, 'Internal Server Error!', 500);
-        }
-    }
     /**
      * This function is responsible for updating the image for the particular user
      * @param { userId, fileName }req 

@@ -27,7 +27,7 @@ export class CRMGuard {
   async checkCanUserOpenCRM() {
     const userData: any = await this.publicFunctions.getCurrentUser();
     const role = (userData?.role) ? userData?.role?.trim() : '';
-    if (!!userData?.crm_role || role == 'admin' || role == 'owner' || role == 'manager') {
+    if (userData?.crm_role == true || role == 'owner' ) {
       return true;
     } else {
       this.router.navigate(['dashboard', 'work', 'groups', 'all']);

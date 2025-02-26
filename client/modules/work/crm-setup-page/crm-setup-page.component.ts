@@ -37,6 +37,7 @@ export class CRMSetupPageComponent
   products = [];
 
   isAdmin = false;
+  isCRMManager = false;
 
   userData: any;
   workspaceData: any;
@@ -125,6 +126,7 @@ export class CRMSetupPageComponent
     this.userData = await this.publicFunctions.getCurrentUser();
 
     this.isAdmin = this.isAdminUser();    
+    this.isCRMManager = this.isCRMManagerUser();    
 
     await this.crmService.getCRMInformation().then((res) => {
       this.contacts = res["contacts"];
@@ -911,8 +913,10 @@ export class CRMSetupPageComponent
   }
 
   isAdminUser() {
-    // const index = this.workspaceData._admins.findIndex((admin: any) => admin._id === this.userData._id);
-    // return index >= 0;
     return ["owner", "admin", "manager"].includes(this.userData.role);
+  }
+
+  isCRMManagerUser() {
+    return this.userData.role == 'owner' || (this.userData?.crm_role == true && this.userData.role != 'member');
   }
 }

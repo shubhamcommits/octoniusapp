@@ -2,8 +2,6 @@ import { Component, OnInit, Input, Injector, Output, EventEmitter } from '@angul
 import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { CRMCustomFieldsDialogComponent } from '../crm-custom-fields-dialog/crm-custom-fields-dialog.component';
-import { CRMSettingsDialogComponent } from '../crm-settings-dialog/crm-settings-dialog.component';
-
 @Component({
   selector: 'app-crm-setup-board-bar',
   templateUrl: './crm-setup-board-bar.component.html',
@@ -48,16 +46,6 @@ export class CRMSetupBoardBarComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       sub.unsubscribe();
-    });
-  }
-
-  openSettingsDialog() {
-    const dialogRef = this.dialog.open(CRMSettingsDialogComponent, {
-      minWidth: '100%',
-      width: '100%',
-      minHeight: '100%',
-      height: '100%',
-      disableClose: false,
     });
   }
 }

@@ -214,7 +214,7 @@ export class WorkNavbarComponent implements OnInit, AfterContentChecked, OnDestr
   }
 
   isCRMUser() {    
-    return this.isUserManager || (this.userData.role == 'member' && this.userData.crm_role == true);
+    return this.userData.role == 'owner' || this.userData?.crm_role == true;
   }
 
   existsElement(element: any) {

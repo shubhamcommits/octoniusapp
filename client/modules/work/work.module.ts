@@ -28,7 +28,6 @@ import { CRMProductCustomFieldsComponent } from "./crm-setup-page/new-crm-produc
 import { CRMProductInformationComponent } from "./crm-setup-page/new-crm-product-dialog/crm-product-information/crm-product-information.component";
 import { MatDialogModule } from "@angular/material/dialog";
 import { CRMCustomFieldsDialogComponent } from "./crm-setup-page/crm-custom-fields-dialog/crm-custom-fields-dialog.component";
-import { CRMSettingsDialogComponent } from "./crm-setup-page/crm-settings-dialog/crm-settings-dialog.component";
 import { CRMSetupBoardBarComponent } from "./crm-setup-page/crm-setup-board-bar/crm-setup-board-bar.component";
 import { CRMCompanyDetailsDialogComponent } from "./crm-setup-page/crm-company-details-dialog/crm-company-details-dialog.component";
 import { CRMCompanyDetailsComponent } from "./crm-setup-page/crm-company-details-dialog/crm-company-details/crm-company-details.component";
@@ -66,7 +65,6 @@ import { CRMCompanyUpdateInformationComponent } from "./crm-setup-page/crm-compa
     CRMProductInformationComponent,
     CRMSetupBoardBarComponent,
     CRMCustomFieldsDialogComponent,
-    CRMSettingsDialogComponent,
     NewNorthStarDialogComponent,
     SearchTaskDialogComponent,
     DashboardPageComponent,

@@ -62,6 +62,10 @@
                                 i18n="@@componentSearchBar.addToHRTeam">Add to HR Team</li>
                             <li class="dropdown-item" *ngIf="!!member.hr_role && member.role != 'guest'" (click)="changeHRRole(member._id, false)"
                                 i18n="@@componentSearchBar.removeFromHRTeam">Remove from HR Team</li>
+                            <li class="dropdown-item" *ngIf="!member.crm_role && member.role != 'guest'" (click)="changeCRMRole(member._id, true)"
+                                i18n="@@componentSearchBar.addToCRMTeam">Add to CRM Team</li>
+                            <li class="dropdown-item" *ngIf="!!member.crm_role && member.role != 'guest'" (click)="changeCRMRole(member._id, false)"
+                                i18n="@@componentSearchBar.removeFromCRMTeam">Remove from CRM Team</li>
                             <li class="dropdown-divider"></li>
                             <li class="dropdown-item">
                                 <button type="button" class="btn btn-danger btn-sm"
