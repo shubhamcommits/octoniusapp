@@ -2315,35 +2315,4 @@ export class UsersControllers {
             return sendError(res, err);
         }
     };
-
-    async assignCRMUsers(req: Request, res: Response) {
-        // Find the custom field in a workspace and remove the value
-        const assign_to = req.body["assign_to"];
-        const selected_role = req.body["selected_role"];
-
-        try {
-            assign_to.forEach(async assignee => {                    
-                await User.findByIdAndUpdate(
-                    {
-                        _id: assignee._id,
-                    },
-                    {
-                        $set: {
-                            crm_role: true,
-                            role: selected_role
-                        },
-                    }
-                ).lean();
-            });
-
-            // Send status 200 response
-            return res.status(200).json({
-                message: "crm users are assigned!",
-            });
-        } catch (err) {
-            console.log(err);
-            return sendError(res, err, "Internal Server Error!", 500);
-        }
-    }
-
 }
