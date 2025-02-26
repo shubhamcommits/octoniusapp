@@ -16,7 +16,7 @@ export class WorkNavbarComponent implements OnInit, AfterContentChecked, OnDestr
   // USER DATA
   userData: any;
   isUserManager: boolean = true;
-  isCRMManger: boolean = true;
+  isCRMUser: boolean = true;
 
   isOrganizationModuleAvailable: boolean = false;
   isLoungeModuleAvailable: boolean = false;
@@ -65,7 +65,7 @@ export class WorkNavbarComponent implements OnInit, AfterContentChecked, OnDestr
     this.userData = await this.publicFunctions.getCurrentUser();    
 
     this.isUserManager = this.isManagerUser();
-    this.isCRMManger = this.isCRMUser();
+    this.isCRMUser = this.isUserCRM();
 
     // INITIALISE THE WORKSPACE DATA FROM SHARED SERVICE, STORED LOCAL DATA OR FROM SERVER USING PUBLIC FUNCTIONS
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
@@ -213,7 +213,7 @@ export class WorkNavbarComponent implements OnInit, AfterContentChecked, OnDestr
     return this.userData.role == 'manager' || this.userData.role == 'admin' || this.userData.role == 'owner';
   }
 
-  isCRMUser() {    
+  isUserCRM() {    
     return this.userData.role == 'owner' || this.userData?.crm_role == true;
   }
 
