@@ -107,6 +107,10 @@ export class UserService {
     return this._http.put(this.BASE_API_URL + '/change-hr-role', { memberId, hr_role }).toPromise();
   }
 
+  updateUserCRMRole(memberId: string, crm_role: boolean) {
+    return this._http.put(this.BASE_API_URL + '/change-crm-role', { memberId, crm_role }).toPromise();
+  }
+
   /**
    * This function updates the password of currently loggedIn user
    * @param userData { password: password }

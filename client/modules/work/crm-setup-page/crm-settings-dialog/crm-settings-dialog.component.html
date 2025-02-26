@@ -1,0 +1,38 @@
+<div class="crmSettingDialog">
+    <mat-dialog-actions align="end">
+        <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
+    </mat-dialog-actions>
+
+    <!-- <div>
+        <button class="btn btn-warning btn-sm" (click)="saveCRMUsers()">
+            <i class="material-icons-outlined">save</i>
+            <span i18n="@@crmCompanyTasks.newTask">Save</span>
+        </button>
+    </div> -->
+
+    <table mat-table [dataSource]="dataSource">
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.first_name + " " + element.last_name}} </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="role">
+            <th mat-header-cell *matHeaderCellDef> Role </th>
+            <td mat-cell *matCellDef="let element"> {{element.role}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="crm_role">
+            <th mat-header-cell *matHeaderCellDef> CRM Role </th>
+            <td mat-cell *matCellDef="let element"> 
+                <mat-checkbox [checked]="element.isAdmin ? true : element.crm_role" (change)="setCRMUser(element._id, $event.checked)" [disabled]="element.isAdmin"></mat-checkbox>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>

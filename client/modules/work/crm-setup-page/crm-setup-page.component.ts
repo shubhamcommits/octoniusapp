@@ -124,7 +124,7 @@ export class CRMSetupPageComponent
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     this.userData = await this.publicFunctions.getCurrentUser();
 
-    this.isAdmin = this.isAdminUser();
+    this.isAdmin = this.isAdminUser();    
 
     await this.crmService.getCRMInformation().then((res) => {
       this.contacts = res["contacts"];
