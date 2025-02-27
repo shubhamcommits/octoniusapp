@@ -71,7 +71,7 @@ export class TaskSmartCardComponent implements OnInit, OnDestroy {
 
     // Filter tasks where task_date is before today
     this.companyOverdueTasks = companyOverdueToday.filter(task => 
-      DateTime.fromISO(task.task_date, { zone: 'utc' }).toISODate() < today
+      (DateTime.fromISO(task.task_date, { zone: 'utc' }).toISODate() < today) && (task.completed == false)
     );
     this.overdueTasks = groupOverdueToday.filter(task => 
       DateTime.fromISO(task.task?.due_to, { zone: 'utc' }).toLocal().toISODate() < today
