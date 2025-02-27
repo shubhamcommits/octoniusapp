@@ -37,6 +37,7 @@
                     <span *ngIf="member?.role != 'manager'">{{ member?.role }}</span>
                     <span *ngIf="isGroupManager(member._id)">, <span i18n="@@componentSearchBar.groupManager">Group Manager</span></span> (<a href="mailto:{{member?.email}}" style="text-transform: lowercase;">{{member?.email}}</a>)
                     <span *ngIf="member.hr_role">, <span i18n="@@componentSearchBar.hrMember">HR Member</span></span>
+                    <span *ngIf="member.crm_role">, <span i18n="@@componentSearchBar.crmMember">CRM Member</span></span>
                 </p>
             </div>
             <!-- Member Details Ends -->
@@ -62,6 +63,10 @@
                                 i18n="@@componentSearchBar.addToHRTeam">Add to HR Team</li>
                             <li class="dropdown-item" *ngIf="!!member.hr_role && member.role != 'guest'" (click)="changeHRRole(member._id, false)"
                                 i18n="@@componentSearchBar.removeFromHRTeam">Remove from HR Team</li>
+                            <li class="dropdown-item" *ngIf="!member.crm_role && member.role != 'guest'" (click)="changeCRMRole(member._id, true)"
+                                i18n="@@componentSearchBar.addToCRMTeam">Add to CRM Team</li>
+                            <li class="dropdown-item" *ngIf="!!member.crm_role && member.role != 'guest'" (click)="changeCRMRole(member._id, false)"
+                                i18n="@@componentSearchBar.removeFromCRMTeam">Remove from CRM Team</li>
                             <li class="dropdown-divider"></li>
                             <li class="dropdown-item">
                                 <button type="button" class="btn btn-danger btn-sm"

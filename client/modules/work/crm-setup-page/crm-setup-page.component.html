@@ -123,7 +123,7 @@
                 <a mat-menu-item (click)="openCompanyDialog(company?._id)">
                   <span i18n="@@crmCompanyList.edit">Edit</span>
                 </a>
-                <a mat-menu-item (click)="deleteCompany(company?._id)">
+                <a mat-menu-item (click)="deleteCompany(company?._id)" *ngIf="isAdmin">
                   <span i18n="@@crmCompanyList.delete">Delete</span>
                 </a>
               </mat-menu>
@@ -266,7 +266,7 @@
                 <a mat-menu-item (click)="openContactDialog(contact?._id)">
                   <span i18n="@@groupCrmSetupView.edit">Edit</span>
                 </a>
-                <a mat-menu-item (click)="deleteContact(contact?._id)">
+                <a mat-menu-item (click)="deleteContact(contact?._id)" *ngIf="isAdmin">
                   <span i18n="@@groupCrmSetupView.delete">Delete</span>
                 </a>
               </mat-menu>
@@ -366,7 +366,7 @@
                 <a mat-menu-item (click)="openProductDialog(product?._id)">
                   <span i18n="@@groupCrmSetupView.edit">Edit</span>
                 </a>
-                <a mat-menu-item (click)="deleteProduct(product?._id)">
+                <a mat-menu-item (click)="deleteProduct(product?._id)" *ngIf="isAdmin">
                   <span i18n="@@groupCrmSetupView.delete">Delete</span>
                 </a>
               </mat-menu>

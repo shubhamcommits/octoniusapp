@@ -57,6 +57,10 @@ const UserSchema = new Schema({
         type: Boolean,
         default: false
     },
+    crm_role: {
+        type: Boolean,
+        default: false
+    },
     phone_number: {
         type: String,
         default: null

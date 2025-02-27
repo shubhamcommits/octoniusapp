@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "src/environments/environment";
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: "root",
@@ -14,7 +14,7 @@ export class CRMService {
   /**
    * CRM status is updated whenever details change
    */
-  private crmDataSource = new Subject<void>();
+  private crmDataSource = new BehaviorSubject<void>(null);
   
   currentCrmData = this.crmDataSource.asObservable();
   updateCrmData(crmData?: any) {
