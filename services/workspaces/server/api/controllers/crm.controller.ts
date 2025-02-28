@@ -9,7 +9,6 @@ import http from "axios";
  *  -- CRM METHODS --
  *  ===================
  * */
-
 export class CRMController {
     /**
      * This function fetches all the crm contacts of a workspace corresponding to the @constant workspaceId
@@ -1347,14 +1346,19 @@ export class CRMController {
             })
             .lean();
 
-            const addedUpdate = company.updates[company.updates.length - 1];      
-                                  
-            // updateData._assigned_to.forEach(async function(assignee) { 
-            //     if (assignee._id != req["userId"]) {                                        
+            const addedUpdate = company.updates[company.updates.length - 1];    
+            const crmUsers = await User.find({
+                $and: [
+                    { active: true },
+                    { crm_role: true }
+                ]}).lean() || [];
+                 
+            crmUsers.forEach(async function(user) { 
+                if (user._id != req["userId"]) {                                        
                     http.post(
                         `${process.env.NOTIFICATIONS_SERVER_API}/new-crm-update`,
                         {
-                            assigneeId: req['userId'],
+                            assigneeId: user._id,
                             _assigned_from: req['userId'],
                             companyId: companyId,
                             updateId: addedUpdate._id,
@@ -1363,8 +1367,8 @@ export class CRMController {
                     .catch((err) => {
                         console.log(`\n⛔️ Error:\n ${err}`);
                     });
-            //     }
-            // });
+                }
+            });
     
             // Send status 200 response
             return res.status(200).json({
