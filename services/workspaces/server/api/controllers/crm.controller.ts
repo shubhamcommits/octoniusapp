@@ -4,11 +4,13 @@ import { sendError } from "../../utils";
 import { DateTime } from 'luxon';
 import { ObjectID } from "mongodb";
 import http from "axios";
+import { UsersService } from "../services";
 
 /*  ===================
  *  -- CRM METHODS --
  *  ===================
  * */
+const usersService = new UsersService();
 
 export class CRMController {
     /**
@@ -195,6 +197,23 @@ export class CRMController {
             return res.status(200).json({
                 message: "Contact found!",
                 contact: contact,
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    }
+
+    /**
+     * This function fetches a crm users
+     */
+    async getCRMUsers(req: Request, res: Response) {
+        try {
+            const users = await usersService.getCRMUsers();
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: "Contact found!",
+                users: users,
             });
         } catch (err) {
             return sendError(res, err);
@@ -1347,14 +1366,15 @@ export class CRMController {
             })
             .lean();
 
-            const addedUpdate = company.updates[company.updates.length - 1];      
-                                  
-            // updateData._assigned_to.forEach(async function(assignee) { 
-            //     if (assignee._id != req["userId"]) {                                        
+            const addedUpdate = company.updates[company.updates.length - 1];     
+            const crmUsers = await usersService.getCRMUsers();             
+            
+            crmUsers.forEach(async function(user) { 
+                if (user._id != req["userId"]) {                                        
                     http.post(
                         `${process.env.NOTIFICATIONS_SERVER_API}/new-crm-update`,
                         {
-                            assigneeId: req['userId'],
+                            assigneeId: user._id,
                             _assigned_from: req['userId'],
                             companyId: companyId,
                             updateId: addedUpdate._id,
@@ -1363,8 +1383,8 @@ export class CRMController {
                     .catch((err) => {
                         console.log(`\n⛔️ Error:\n ${err}`);
                     });
-            //     }
-            // });
+                }
+            });
     
             // Send status 200 response
             return res.status(200).json({

@@ -4,6 +4,16 @@ import { DateTime } from 'luxon';
 export class UsersService {
 
     /**
+     * This function fetches a crm users
+     */
+    async getCRMUsers() {
+        return await User.find({
+            $and: [
+                { active: true },
+                { crm_role: true }
+            ]}).lean() || [];
+    }
+    /**
      * This function is responsible for inviting a user to a workplace
      * @param {string} email 
      * @param {string} workspaceId 

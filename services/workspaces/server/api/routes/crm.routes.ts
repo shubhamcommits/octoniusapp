@@ -28,6 +28,9 @@ routes.get("/searchContacts/:companyId", crm.searchCRMContacts);
 // GET - Get a crm contact details
 routes.get("/:contactId/contact", crm.getCRMContact);
 
+// GET - Get a crm users
+routes.get("/users", crm.getCRMUsers);
+
 // DELETE - Delete an contract
 routes.delete("/:contactId/contact", crm.removeCRMContact);
 

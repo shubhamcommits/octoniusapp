@@ -53,7 +53,7 @@ export class NotificationsService {
             if (limit) {
                 notifications = await Notification.find({
                         $and: [
-                            { $or: [ {_owner: userId }, { to_all: 'all' } ] },
+                            { $or: [ {_owner: userId } ] },
                             { read: false },
                             { type: { $nin: ["new-post", "launch-approval-flow-due-date", "hive", "hive_new_entity"] }}
                         ]
@@ -75,7 +75,7 @@ export class NotificationsService {
             } else {
                 notifications = await Notification.find({
                         $and: [
-                            { $or: [ {_owner: userId }, { to_all: 'all' } ] },
+                            { $or: [ {_owner: userId } ] },
                             { read: false },
                             { type: { $nin: ["new-post", "launch-approval-flow-due-date", "hive", "hive_new_entity"] }}
                         ]
@@ -511,7 +511,7 @@ export class NotificationsService {
                 _actor: actorId,
                 _owner: ownerId,
                 _origin_post: null,
-                to_all: 'all',
+                // to_all: 'all',
                 company: {
                     _company: companyId,
                     _update: updateId

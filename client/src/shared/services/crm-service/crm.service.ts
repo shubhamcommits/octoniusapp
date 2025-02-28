@@ -59,6 +59,14 @@ export class CRMService {
   }
 
   /**
+   * This function is responsible for fetching users of a crm
+   * @param workspaceId
+   */
+  getCRMUsers() {
+    return this._http.get(this.baseURL + `/users`).toPromise()
+  }
+  
+  /**
    * This function is responsible for deleting a crm contact
    * @param contactId
    */
