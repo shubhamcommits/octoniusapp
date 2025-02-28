@@ -4,14 +4,11 @@ import { sendError } from "../../utils";
 import { DateTime } from 'luxon';
 import { ObjectID } from "mongodb";
 import http from "axios";
-import { UsersService } from "../services";
 
 /*  ===================
  *  -- CRM METHODS --
  *  ===================
  * */
-const usersService = new UsersService();
-
 export class CRMController {
     /**
      * This function fetches all the crm contacts of a workspace corresponding to the @constant workspaceId
@@ -197,23 +194,6 @@ export class CRMController {
             return res.status(200).json({
                 message: "Contact found!",
                 contact: contact,
-            });
-        } catch (err) {
-            return sendError(res, err);
-        }
-    }
-
-    /**
-     * This function fetches a crm users
-     */
-    async getCRMUsers(req: Request, res: Response) {
-        try {
-            const users = await usersService.getCRMUsers();
-
-            // Send the status 200 response
-            return res.status(200).json({
-                message: "Contact found!",
-                users: users,
             });
         } catch (err) {
             return sendError(res, err);
@@ -1366,9 +1346,13 @@ export class CRMController {
             })
             .lean();
 
-            const addedUpdate = company.updates[company.updates.length - 1];     
-            const crmUsers = await usersService.getCRMUsers();             
-            
+            const addedUpdate = company.updates[company.updates.length - 1];    
+            const crmUsers = await User.find({
+                $and: [
+                    { active: true },
+                    { crm_role: true }
+                ]}).lean() || [];
+                 
             crmUsers.forEach(async function(user) { 
                 if (user._id != req["userId"]) {                                        
                     http.post(
