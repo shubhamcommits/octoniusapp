@@ -1,8 +1,9 @@
 import { Company, Contact, Product, User, Workspace } from "../models";
 import { Response, Request, NextFunction } from "express";
 import { sendError } from "../../utils";
-import { DateTime } from 'luxon';
+import { DateTime } from "luxon";
 import { ObjectID } from "mongodb";
+import { Readable } from "stream";
 import http from "axios";
 
 /*  ===================
@@ -1160,36 +1161,35 @@ export class CRMController {
             );
 
             company = await Company.findById({
-                    _id: companyId,
+                _id: companyId,
             })
-            .populate({
-                path: "tasks._assigned_to",
-                select: "_id first_name last_name profile_pic",
-            })
-            .populate({
-                path: "tasks._created_user",
-                select: "_id first_name last_name profile_pic",
-            })
-            .populate({
-                path: "updates._created_user",
-                select: "_id first_name last_name profile_pic",
-            })
-            .lean();
+                .populate({
+                    path: "tasks._assigned_to",
+                    select: "_id first_name last_name profile_pic",
+                })
+                .populate({
+                    path: "tasks._created_user",
+                    select: "_id first_name last_name profile_pic",
+                })
+                .populate({
+                    path: "updates._created_user",
+                    select: "_id first_name last_name profile_pic",
+                })
+                .lean();
 
-            const addedTask = company.tasks[company.tasks.length - 1];                            
-            taskData._assigned_to.forEach(async function(assignee) { 
-                if (assignee._id != req["userId"]) {                                        
+            const addedTask = company.tasks[company.tasks.length - 1];
+            taskData._assigned_to.forEach(async function (assignee) {
+                if (assignee._id != req["userId"]) {
                     http.post(
                         `${process.env.NOTIFICATIONS_SERVER_API}/new-crm-task`,
                         {
                             assigneeId: assignee._id,
-                            _assigned_from: req['userId'],
+                            _assigned_from: req["userId"],
                             companyId: companyId,
                             taskId: addedTask._id,
-                            type: 'crm-task-assignment'
+                            type: "crm-task-assignment",
                         }
-                    )
-                    .catch((err) => {
+                    ).catch((err) => {
                         console.log(`\n⛔️ Error:\n ${err}`);
                     });
                 }
@@ -1223,7 +1223,7 @@ export class CRMController {
                 .lean();
             const taskIndex = company?.tasks?.findIndex(
                 (task) => task._id == taskData._id
-            );            
+            );
 
             if (taskIndex >= 0) {
                 company.tasks[taskIndex] = taskData;
@@ -1235,34 +1235,35 @@ export class CRMController {
                         $set: { tasks: company.tasks },
                     }
                 )
-                .populate({
-                    path: "tasks._assigned_to",
-                    select: "_id first_name last_name profile_pic",
-                })
-                .populate({
-                    path: "tasks._created_user",
-                    select: "_id first_name last_name profile_pic",
-                })
-                .populate({
-                    path: "updates._created_user",
-                    select: "_id first_name last_name profile_pic",
-                })
-                .lean();
-                
+                    .populate({
+                        path: "tasks._assigned_to",
+                        select: "_id first_name last_name profile_pic",
+                    })
+                    .populate({
+                        path: "tasks._created_user",
+                        select: "_id first_name last_name profile_pic",
+                    })
+                    .populate({
+                        path: "updates._created_user",
+                        select: "_id first_name last_name profile_pic",
+                    })
+                    .lean();
+
                 taskData._assigned_to.forEach(async (assignee) => {
-                    if (assignee._id != req["userId"] && taskData.completed == true) {
-                        
+                    if (
+                        assignee._id != req["userId"] &&
+                        taskData.completed == true
+                    ) {
                         http.post(
                             `${process.env.NOTIFICATIONS_SERVER_API}/new-crm-task`,
                             {
                                 assigneeId: assignee._id,
-                                _assigned_from: req['userId'],
+                                _assigned_from: req["userId"],
                                 companyId: companyId,
                                 taskId: taskData._id,
-                                type: 'completed'
+                                type: "completed",
                             }
-                        )
-                        .catch((err) => {
+                        ).catch((err) => {
                             console.log(`\n⛔️ Error:\n ${err}`);
                         });
                     }
@@ -1332,44 +1333,45 @@ export class CRMController {
             company = await Company.findById({
                 _id: companyId,
             })
-            .populate({
-                path: "tasks._assigned_to",
-                select: "_id first_name last_name profile_pic",
-            })
-            .populate({
-                path: "tasks._created_user",
-                select: "_id first_name last_name profile_pic",
-            })
-            .populate({
-                path: "updates._created_user",
-                select: "_id first_name last_name profile_pic",
-            })
-            .lean();
+                .populate({
+                    path: "tasks._assigned_to",
+                    select: "_id first_name last_name profile_pic",
+                })
+                .populate({
+                    path: "tasks._created_user",
+                    select: "_id first_name last_name profile_pic",
+                })
+                .populate({
+                    path: "updates._created_user",
+                    select: "_id first_name last_name profile_pic",
+                })
+                .lean();
 
-            const addedUpdate = company.updates[company.updates.length - 1];    
-            const crmUsers = await User.find({
-                $and: [
-                    { active: true },
-                    { crm_role: true }
-                ]}).lean() || [];
-                 
-            crmUsers.forEach(async function(user) { 
-                if (user._id != req["userId"]) {                                        
-                    http.post(
-                        `${process.env.NOTIFICATIONS_SERVER_API}/new-crm-update`,
-                        {
-                            assigneeId: user._id,
-                            _assigned_from: req['userId'],
-                            companyId: companyId,
-                            updateId: addedUpdate._id,
-                        }
-                    )
-                    .catch((err) => {
-                        console.log(`\n⛔️ Error:\n ${err}`);
-                    });
-                }
+            const addedUpdate = company.updates[company.updates.length - 1];
+
+            let usersStream = Readable.from(
+                await User.find({
+                    $and: [
+                        { active: true },
+                        { crm_role: true },
+                        { _id: { $ne: req["userId"] } },
+                    ],
+                }).lean()
+            );
+            await usersStream.on("data", async (user: any) => {
+                http.post(
+                    `${process.env.NOTIFICATIONS_SERVER_API}/new-crm-update`,
+                    {
+                        assigneeId: user._id,
+                        _assigned_from: req["userId"],
+                        companyId: companyId,
+                        updateId: addedUpdate._id,
+                    }
+                ).catch((err) => {
+                    console.log(`\n⛔️ Error:\n ${err}`);
+                });
             });
-    
+
             // Send status 200 response
             return res.status(200).json({
                 message: "Company crm update added!",
@@ -1410,19 +1412,19 @@ export class CRMController {
                         $set: { updates: company.updates },
                     }
                 )
-                .populate({
-                    path: "tasks._assigned_to",
-                    select: "_id first_name last_name profile_pic",
-                })
-                .populate({
-                    path: "tasks._created_user",
-                    select: "_id first_name last_name profile_pic",
-                })
-                .populate({
-                    path: "updates._created_user",
-                    select: "_id first_name last_name profile_pic",
-                })
-                .lean();
+                    .populate({
+                        path: "tasks._assigned_to",
+                        select: "_id first_name last_name profile_pic",
+                    })
+                    .populate({
+                        path: "tasks._created_user",
+                        select: "_id first_name last_name profile_pic",
+                    })
+                    .populate({
+                        path: "updates._created_user",
+                        select: "_id first_name last_name profile_pic",
+                    })
+                    .lean();
             }
 
             // Send status 200 response
@@ -1470,10 +1472,7 @@ export class CRMController {
         }
     }
 
-    async getCRMCompanyDueTasks(
-        req: Request,
-        res: Response
-    ) {
+    async getCRMCompanyDueTasks(req: Request, res: Response) {
         const userId = req["userId"];
 
         try {
@@ -1483,108 +1482,182 @@ export class CRMController {
             const today = now.endOf("day").toJSDate();
             const tomorrow = now.startOf("day").plus({ days: 1 }).toJSDate();
             const endOfWeek = now.endOf("week").toJSDate();
-            const endOfNextWeek = now.plus({ weeks: 1 }).endOf("week").toJSDate();
-            
+            const endOfNextWeek = now
+                .plus({ weeks: 1 })
+                .endOf("week")
+                .toJSDate();
+
             const tasks = await Company.aggregate([
-              { $unwind: "$tasks" }, // Expand the tasks array
-              {
-                $match: {
-                    $and: [
-                        { "tasks._assigned_to": { $elemMatch: { $eq: new ObjectID(userId) } } },
-                        // { "tasks.completed": { $eq: false } },
-                    ]
-                }
-              },
-            //   {
-            //     $match: {
-            //       $or: [
-            //         { "tasks.date": { $lte: today } }, // Overdue and Today tasks
-            //         { "tasks.date": { $eq: tomorrow } }, // Tomorrow
-            //         { "tasks.date": { $gt: tomorrow, $lte: endOfWeek } }, // This week
-            //         { "tasks.date": { $gt: endOfWeek, $lte: endOfNextWeek } }, // Next week        
-            //         { "tasks.date": { $gt: endOfNextWeek } } // Future tasks        
-            //       ]
-            //     }
-            //   },
-              {
-                $project: {
-                  company_id: "$_id",
-                  company_name: "$name",
-                  task_description: "$tasks.description",
-                  task_date: "$tasks.date",
-                  completed: "$tasks.completed"
-                }
-              },           
-              {
-                $group: {
-                  _id: null,
-                  overdue_today: {
-                    $push: {
-                      $cond: [
-                        { $and: [{ $lte: ["$task_date", today] }] },
-                        "$$ROOT",
-                        null
-                      ]
-                    }
-                  },
-                  tomorrow: {
-                    $push: {
-                      $cond: [
-                        { $and: [{ $eq: ["$task_date", tomorrow] }] },
-                        "$$ROOT",
-                        null
-                      ]
-                    }
-                  },
-                  this_week: {
-                    $push: {
-                      $cond: [
-                        { $and: [{ $gt: ["$task_date", tomorrow] }, { $lte: ["$task_date", endOfWeek] }] },
-                        "$$ROOT",
-                        null
-                      ]
-                    }
-                  },
-                  next_week: {
-                    $push: {
-                      $cond: [
-                        { $and: [{ $gt: ["$task_date", endOfWeek] }, { $lte: ["$task_date", endOfNextWeek] }] },
-                        "$$ROOT",
-                        null
-                      ]
-                    }
-                  },
-                  future: {
-                    $push: {
-                      $cond: [
-                        { $and: [{ $gt: ["$task_date", endOfNextWeek] }] },
-                        "$$ROOT",
-                        null
-                      ]
-                    }
-                  }
-                }
-              },
-              {
-                $project: {
-                  overdue_today: { $filter: { input: "$overdue_today", as: "task", cond: { $ne: ["$$task", null] } } },
-                  tomorrow: { $filter: { input: "$tomorrow", as: "task", cond: { $ne: ["$$task", null] } } },
-                  this_week: { $filter: { input: "$this_week", as: "task", cond: { $ne: ["$$task", null] } } },
-                  next_week: { $filter: { input: "$next_week", as: "task", cond: { $ne: ["$$task", null] } } },
-                  future: { $filter: { input: "$future", as: "task", cond: { $ne: ["$$task", null] } } }
-                }
-              } 
+                { $unwind: "$tasks" }, // Expand the tasks array
+                {
+                    $match: {
+                        $and: [
+                            {
+                                "tasks._assigned_to": {
+                                    $elemMatch: { $eq: new ObjectID(userId) },
+                                },
+                            },
+                            // { "tasks.completed": { $eq: false } },
+                        ],
+                    },
+                },
+                //   {
+                //     $match: {
+                //       $or: [
+                //         { "tasks.date": { $lte: today } }, // Overdue and Today tasks
+                //         { "tasks.date": { $eq: tomorrow } }, // Tomorrow
+                //         { "tasks.date": { $gt: tomorrow, $lte: endOfWeek } }, // This week
+                //         { "tasks.date": { $gt: endOfWeek, $lte: endOfNextWeek } }, // Next week
+                //         { "tasks.date": { $gt: endOfNextWeek } } // Future tasks
+                //       ]
+                //     }
+                //   },
+                {
+                    $project: {
+                        company_id: "$_id",
+                        company_name: "$name",
+                        task_description: "$tasks.description",
+                        task_date: "$tasks.date",
+                        completed: "$tasks.completed",
+                    },
+                },
+                {
+                    $group: {
+                        _id: null,
+                        overdue_today: {
+                            $push: {
+                                $cond: [
+                                    { $and: [{ $lte: ["$task_date", today] }] },
+                                    "$$ROOT",
+                                    null,
+                                ],
+                            },
+                        },
+                        tomorrow: {
+                            $push: {
+                                $cond: [
+                                    {
+                                        $and: [
+                                            { $eq: ["$task_date", tomorrow] },
+                                        ],
+                                    },
+                                    "$$ROOT",
+                                    null,
+                                ],
+                            },
+                        },
+                        this_week: {
+                            $push: {
+                                $cond: [
+                                    {
+                                        $and: [
+                                            { $gt: ["$task_date", tomorrow] },
+                                            { $lte: ["$task_date", endOfWeek] },
+                                        ],
+                                    },
+                                    "$$ROOT",
+                                    null,
+                                ],
+                            },
+                        },
+                        next_week: {
+                            $push: {
+                                $cond: [
+                                    {
+                                        $and: [
+                                            { $gt: ["$task_date", endOfWeek] },
+                                            {
+                                                $lte: [
+                                                    "$task_date",
+                                                    endOfNextWeek,
+                                                ],
+                                            },
+                                        ],
+                                    },
+                                    "$$ROOT",
+                                    null,
+                                ],
+                            },
+                        },
+                        future: {
+                            $push: {
+                                $cond: [
+                                    {
+                                        $and: [
+                                            {
+                                                $gt: [
+                                                    "$task_date",
+                                                    endOfNextWeek,
+                                                ],
+                                            },
+                                        ],
+                                    },
+                                    "$$ROOT",
+                                    null,
+                                ],
+                            },
+                        },
+                    },
+                },
+                {
+                    $project: {
+                        overdue_today: {
+                            $filter: {
+                                input: "$overdue_today",
+                                as: "task",
+                                cond: { $ne: ["$$task", null] },
+                            },
+                        },
+                        tomorrow: {
+                            $filter: {
+                                input: "$tomorrow",
+                                as: "task",
+                                cond: { $ne: ["$$task", null] },
+                            },
+                        },
+                        this_week: {
+                            $filter: {
+                                input: "$this_week",
+                                as: "task",
+                                cond: { $ne: ["$$task", null] },
+                            },
+                        },
+                        next_week: {
+                            $filter: {
+                                input: "$next_week",
+                                as: "task",
+                                cond: { $ne: ["$$task", null] },
+                            },
+                        },
+                        future: {
+                            $filter: {
+                                input: "$future",
+                                as: "task",
+                                cond: { $ne: ["$$task", null] },
+                            },
+                        },
+                    },
+                },
             ]);
-            
+
             return res.status(200).json({
-                message: 'Company tasks found!',
-                crm_due_tasks: tasks.length > 0 ? tasks[0] : { overdue_today: [], tomorrow: [], this_week: [], next_week: [], future: [] }
-            });       
-          } catch (err) {
+                message: "Company tasks found!",
+                crm_due_tasks:
+                    tasks.length > 0
+                        ? tasks[0]
+                        : {
+                              overdue_today: [],
+                              tomorrow: [],
+                              this_week: [],
+                              next_week: [],
+                              future: [],
+                          },
+            });
+        } catch (err) {
             console.log(err);
             return sendError(res, err, "Internal Server Error!", 500);
-          }
-        };        
+        }
+    }
 
     // async migrateCRMFromGroupToGlobal(req: Request, res: Response, next: NextFunction) {
     //     try {
