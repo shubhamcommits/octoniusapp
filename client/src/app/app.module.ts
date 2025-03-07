@@ -143,10 +143,10 @@ const isIE =
       useClass: PathLocationStrategy,
     },
     // ERROR HANDLERS
-    // {
-    //   provide: ErrorHandler,
-    //   useClass: GlobalErrorHandler,
-    // },
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler,
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ServerErrorInterceptor,
