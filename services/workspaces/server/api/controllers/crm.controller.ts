@@ -1321,6 +1321,11 @@ export class CRMController {
         const updateData = req.body["updateData"];
         updateData._created_user = req["userId"];
         try {
+            const user = await User.findOne({ _id: req["userId"] })
+                .select("_workspace")
+                .lean();
+            const workspaceId = user._workspace._id || user._workspace;
+
             let company = await Company.findByIdAndUpdate(
                 {
                     _id: companyId,
@@ -1354,6 +1359,7 @@ export class CRMController {
                     $and: [
                         { active: true },
                         { crm_role: true },
+                        { _workspace: workspaceId },
                         { _id: { $ne: req["userId"] } },
                     ],
                 }).lean()
