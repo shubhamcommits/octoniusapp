@@ -1319,13 +1319,20 @@ export class CRMController {
         // Find the custom field in a workspace and remove the value
         const companyId = req.body["companyId"];
         const updateData = req.body["updateData"];
-        updateData._created_user = req["userId"];
-        try {
-            const user = await User.findOne({ _id: req["userId"] })
-                .select("_workspace")
-                .lean();
-            const workspaceId = user._workspace._id || user._workspace;
+        if (!updateData || !companyId) {
+            return sendError(
+                res,
+                new Error(
+                    "Please provide the updateData and companyId properties!"
+                ),
+                "Please provide the updateData and companyId properties!",
+                500
+            );
+        }
 
+        updateData._created_user = req["userId"];
+
+        try {
             let company = await Company.findByIdAndUpdate(
                 {
                     _id: companyId,
@@ -1353,6 +1360,11 @@ export class CRMController {
                 .lean();
 
             const addedUpdate = company.updates[company.updates.length - 1];
+
+            const user = await User.findOne({ _id: req["userId"] })
+                .select("_workspace")
+                .lean();
+            const workspaceId = user._workspace._id || user._workspace;
 
             let usersStream = Readable.from(
                 await User.find({
