@@ -1,40 +1,39 @@
-import { Component, OnInit, Injector, Input, ViewChild } from '@angular/core';
-import { PublicFunctions } from 'modules/public.functions';
-import { BehaviorSubject } from 'rxjs';
-import { GroupService } from 'src/shared/services/group-service/group.service';
-import { UserService } from 'src/shared/services/user-service/user.service';
-import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { DateTime, Interval } from 'luxon';
-import { HRService } from 'src/shared/services/hr-service/hr.service';
-import { MatTableDataSource } from '@angular/material/table';
-import { DatesService } from 'src/shared/services/dates-service/dates.service';
-import { MatPaginator } from '@angular/material/paginator';
+import { Component, OnInit, Injector, Input, ViewChild } from "@angular/core";
+import { PublicFunctions } from "modules/public.functions";
+import { BehaviorSubject } from "rxjs";
+import { GroupService } from "src/shared/services/group-service/group.service";
+import { UserService } from "src/shared/services/user-service/user.service";
+import { UtilityService } from "src/shared/services/utility-service/utility.service";
+import { DateTime, Interval } from "luxon";
+import { HRService } from "src/shared/services/hr-service/hr.service";
+import { MatTableDataSource } from "@angular/material/table";
+import { DatesService } from "src/shared/services/dates-service/dates.service";
+import { MatPaginator } from "@angular/material/paginator";
 
 @Component({
-  selector: 'app-members-workload-card',
-  templateUrl: './members-workload-card.component.html',
-  styleUrls: ['./members-workload-card.component.scss']
+  selector: "app-members-workload-card",
+  templateUrl: "./members-workload-card.component.html",
+  styleUrls: ["./members-workload-card.component.scss"],
 })
 export class MembersWorkloadCardComponent implements OnInit {
-
   @Input() groupId: string;
-  
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   // @ViewChild(MatSort, { static: true }) sort: MatSort;
-  
+
   dataSource: MatTableDataSource<any>;
-  displayedColumns = ['member'];
+  displayedColumns = ["member"];
 
   userData;
   groupData;
   groupMembers = [];
   groupTasks;
-  
+
   //date for calendar Nav
   dates: any = [];
   currentDate: any = DateTime.now();
-  currentMonth = '';
-  
+  currentMonth = "";
+
   public publicFunctions = new PublicFunctions(this.injector);
 
   // IsLoading behavior subject maintains the state for loading spinner
@@ -47,7 +46,7 @@ export class MembersWorkloadCardComponent implements OnInit {
     public datesService: DatesService,
     private injector: Injector,
     private hrService: HRService
-  ) { }
+  ) {}
 
   async ngOnInit() {
     // Starts the spinner
@@ -63,8 +62,8 @@ export class MembersWorkloadCardComponent implements OnInit {
   }
 
   initTable() {
-    this.groupService.getAllGroupMembers(this.groupData?._id).then(res => {
-      this.groupMembers = res['users'];
+    this.groupService.getAllGroupMembers(this.groupData?._id).then((res) => {
+      this.groupMembers = res["users"];
     });
 
     this.generateNavDates();
@@ -76,22 +75,47 @@ export class MembersWorkloadCardComponent implements OnInit {
     this.dates = await this.getRangeDates(firstDay);
 
     let tasks = [];
-    await this.groupService.getGroupTasksBetweenDays(this.groupData._id, this.dates[0].toISODate(), this.dates[this.dates.length -1].toISODate()).then(res => {
-      tasks = res['posts'];
-    });
+    await this.groupService
+      .getGroupTasksBetweenDays(
+        this.groupData._id,
+        this.dates[0].toISODate(),
+        this.dates[this.dates.length - 1].toISODate()
+      )
+      .then((res) => {
+        tasks = res["posts"];
+      });
 
-    const membersIds = this.groupMembers.map(member => {return member._id});
-    let holidays = [];
-    await this.hrService.getMembersOff(membersIds, this.dates[0], this.dates[this.dates.length - 1], false).then(res => {
-      holidays = res['holidays'];
+    const membersIds = this.groupMembers.map((member) => {
+      return member._id;
     });
+    let holidays = [];
+    await this.hrService
+      .getMembersOff(
+        membersIds,
+        this.dates[0],
+        this.dates[this.dates.length - 1],
+        false
+      )
+      .then((res) => {
+        holidays = res["holidays"];
+      });
 
     let timeTrackingEntitiesMapped = [];
-    await this.groupService.getGroupTimeTrackingEntites(this.groupId, this.dates[0].toISODate(), this.dates[this.dates.length -1].toISODate(), null).then(async res => {
-      timeTrackingEntitiesMapped = [];
-        const interval = Interval.fromDateTimes(this.dates[0], this.dates[this.dates.length -1]);
-        res['timeTrackingEntities'].forEach(tte => {
-          tte?.times?.forEach(time => {
+    await this.groupService
+      .getGroupTimeTrackingEntites(
+        this.groupId,
+        this.dates[0].toISODate(),
+        this.dates[this.dates.length - 1].toISODate(),
+        null
+      )
+      .then(async (res) => {
+        timeTrackingEntitiesMapped = [];
+        const interval = Interval.fromDateTimes(
+          this.dates[0],
+          this.dates[this.dates.length - 1]
+        );
+        res["timeTrackingEntities"].forEach((tte) => {
+          tte?.times?.forEach((time) => {
             let tteMapped = {
               _id: tte._id,
               _user: tte._user,
@@ -108,16 +132,27 @@ export class MembersWorkloadCardComponent implements OnInit {
           });
         });
         timeTrackingEntitiesMapped = [...timeTrackingEntitiesMapped];
-        timeTrackingEntitiesMapped = timeTrackingEntitiesMapped.filter(tte => (tte.hours !== '00' || tte.minutes !== '00') && interval.contains(DateTime.fromISO(tte.date)));
-    });
+        timeTrackingEntitiesMapped = timeTrackingEntitiesMapped.filter(
+          (tte) =>
+            (tte.hours !== "00" || tte.minutes !== "00") &&
+            interval.contains(DateTime.fromISO(tte.date))
+        );
+      });
 
-    this.groupMembers.forEach(async member => {
+    this.groupMembers.forEach(async (member) => {
       member.workload = [];
 
       // filter member´s tasks
-      const memberTasks = tasks.filter(post => post._assigned_to.includes(member?._id));
+      const memberTasks = tasks.filter((post) => {
+        const index = !!post._assigned_to
+          ? post._assigned_to.findIndex(
+              (a) => (a._id || a) == (member._id || member)
+            )
+          : -1;
+        return index >= 0;
+      });
 
-      this.dates.forEach(async date => {
+      this.dates.forEach(async (date) => {
         let workloadDay = {
           date: date,
           is_current_day: this.datesService.isCurrentDay(date),
@@ -125,32 +160,45 @@ export class MembersWorkloadCardComponent implements OnInit {
           numTasks: 0,
           numDoneTasks: 0,
           // allocation: 0,
-          hours: '0',
-          minutes: '0',
-          outOfTheOfficeClass: '',
+          hours: "0",
+          minutes: "0",
+          outOfTheOfficeClass: "",
           overdue_tasks: 0,
           done_tasks: 0,
           todo_tasks: 0,
-          inprogress_tasks: 0
+          inprogress_tasks: 0,
         };
 
         if (this.datesService.isCurrentDay(date)) {
-          this.userService.getWorkloadOverdueTasks(member?._id, this.groupId)
+          this.userService
+            .getWorkloadOverdueTasks(member?._id, this.groupId)
             .then((res) => {
-              workloadDay.overdue_tasks = res['tasks'].length;
+              workloadDay.overdue_tasks = res["tasks"].length;
             })
             .catch(() => {
               workloadDay.overdue_tasks = 0;
             });
         }
 
-        const tasksTmp = await memberTasks.filter(post => this.datesService.isSameDay(new DateTime(date), DateTime.fromISO(post.task.due_to)));
+        const tasksTmp = await memberTasks.filter((post) =>
+          this.datesService.isSameDay(
+            new DateTime(date),
+            DateTime.fromISO(post.task.due_to)
+          )
+        );
         workloadDay.numTasks = tasksTmp.length;
 
         let hours = 0;
         let minutes = 0;
-        const tteMappedFiltered = timeTrackingEntitiesMapped.filter(tte => tte?._user?._id == member?._id && this.datesService.isSameDay(new DateTime(date), DateTime.fromISO(tte.date)));
-        tteMappedFiltered.forEach(tte => {
+        const tteMappedFiltered = timeTrackingEntitiesMapped.filter(
+          (tte) =>
+            tte?._user?._id == member?._id &&
+            this.datesService.isSameDay(
+              new DateTime(date),
+              DateTime.fromISO(tte.date)
+            )
+        );
+        tteMappedFiltered.forEach((tte) => {
           hours += parseInt(tte.hours) || 0;
           minutes += parseInt(tte.minutes) || 0;
 
@@ -160,36 +208,54 @@ export class MembersWorkloadCardComponent implements OnInit {
           }
         });
 
-        workloadDay.hours = hours + '';
-        workloadDay.minutes = minutes + '';
+        workloadDay.hours = hours + "";
+        workloadDay.minutes = minutes + "";
 
         if (tasksTmp && tasksTmp.length > 0) {
           // filter done/to do/in progress tasks count
-          workloadDay.numDoneTasks = tasksTmp.filter(post => { return post.task.status == 'done'; }).length;
-          workloadDay.todo_tasks = tasksTmp.filter(post => { return post?.task?.status == 'to do'}).length;
-          workloadDay.inprogress_tasks = tasksTmp.filter(post => { return post?.task?.status == 'in progress'}).length;
+          workloadDay.numDoneTasks = tasksTmp.filter((post) => {
+            return post.task.status == "done";
+          }).length;
+          workloadDay.todo_tasks = tasksTmp.filter((post) => {
+            return post?.task?.status == "to do";
+          }).length;
+          workloadDay.inprogress_tasks = tasksTmp.filter((post) => {
+            return post?.task?.status == "in progress";
+          }).length;
         } else {
           workloadDay.numDoneTasks = 0;
           workloadDay.todo_tasks = 0;
           workloadDay.inprogress_tasks = 0;
         }
 
-        holidays.forEach(outOfficeDay => {
-          if ((outOfficeDay._user._id == member._id) && (workloadDay.date >= DateTime.fromISO(outOfficeDay.start_date)) && (workloadDay.date <= DateTime.fromISO(outOfficeDay.end_date))) {
-            workloadDay.outOfTheOfficeClass = (outOfficeDay.type == 'holidays')
-              ? 'cal-day-holidays'
-              : ((outOfficeDay.type == 'personal')
-                ? 'cal-day-personal'
-                : ((outOfficeDay.type == 'sick') ? 'cal-day-sick' : ''));
+        holidays.forEach((outOfficeDay) => {
+          if (
+            outOfficeDay._user._id == member._id &&
+            workloadDay.date >= DateTime.fromISO(outOfficeDay.start_date) &&
+            workloadDay.date <= DateTime.fromISO(outOfficeDay.end_date)
+          ) {
+            workloadDay.outOfTheOfficeClass =
+              outOfficeDay.type == "holidays"
+                ? "cal-day-holidays"
+                : outOfficeDay.type == "personal"
+                ? "cal-day-personal"
+                : outOfficeDay.type == "sick"
+                ? "cal-day-sick"
+                : "";
 
-            workloadDay.outOfTheOfficeClass += (workloadDay.outOfTheOfficeClass != '' && outOfficeDay.approved) ? '-approved' : '';
+            workloadDay.outOfTheOfficeClass +=
+              workloadDay.outOfTheOfficeClass != "" && outOfficeDay.approved
+                ? "-approved"
+                : "";
           }
         });
 
         member.workload.push(workloadDay);
       });
 
-      member.workload = member.workload.sort((w1, w2) => (w1.date < w2.date) ? -1 : 1);
+      member.workload = member.workload.sort((w1, w2) =>
+        w1.date < w2.date ? -1 : 1
+      );
     });
 
     this.dataSource = new MatTableDataSource(this.groupMembers);
@@ -206,31 +272,34 @@ export class MembersWorkloadCardComponent implements OnInit {
       dates.push(date);
 
       if (!!this.displayedColumns) {
-        const index = this.displayedColumns.indexOf(date.day + '');
+        const index = this.displayedColumns.indexOf(date.day + "");
         if (index < 0) {
           this.displayedColumns.push(this.datesService.formateDate(date));
         }
       }
     }
 
-    if (this.dates[0]?.month == this.dates[this.dates?.length -1]?.month) {
-      this.currentMonth = this.dates[0]?.toFormat('LLLL');
+    if (this.dates[0]?.month == this.dates[this.dates?.length - 1]?.month) {
+      this.currentMonth = this.dates[0]?.toFormat("LLLL");
     } else {
-      this.currentMonth = this.dates[0]?.toFormat('LLLL') + ' / ' + this.dates[this.dates?.length -1]?.toFormat('LLLL');
+      this.currentMonth =
+        this.dates[0]?.toFormat("LLLL") +
+        " / " +
+        this.dates[this.dates?.length - 1]?.toFormat("LLLL");
     }
 
     return dates;
   }
 
   changeDates(numDays: number, type: string) {
-    if (type == 'add') {
-      this.currentDate = this.currentDate.plus({ days: numDays })
-    } else if (type == 'sub') {
-      this.currentDate = this.currentDate.minus({ days: numDays })
-    } else if (type == 'today') {
+    if (type == "add") {
+      this.currentDate = this.currentDate.plus({ days: numDays });
+    } else if (type == "sub") {
+      this.currentDate = this.currentDate.minus({ days: numDays });
+    } else if (type == "today") {
       this.currentDate = DateTime.now();
     }
-    
+
     this.generateNavDates();
   }
 
