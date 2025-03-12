@@ -44,7 +44,7 @@
 
             <div class="btn-group mr-3 float-right">
                 <!-- Changing role functionality starts -->
-                <div class="dropdown" *ngIf="member.role != 'owner' && type == 'workspace'">
+                <div class="dropdown" *ngIf="type == 'workspace'">
                     <button class="btn btn-primary btn-sm dropdown-toggle"
                         type="button" data-toggle="dropdown">
                         <span i18n="@@componentSearchBar.manageUser">Manage User</span>
@@ -53,11 +53,11 @@
 
                     <!-- Menu Drawer Starts -->
                     <ul class="dropdown-menu">
-                            <li class="dropdown-item" *ngIf="member.role != 'admin'"
+                            <li class="dropdown-item" *ngIf="member.role != 'owner' && member.role != 'admin'"
                                 (click)="changeRole(member._id, 'admin')" i18n="@@componentSearchBar.changeToAdmin">Change to Admin</li>
-                            <li class="dropdown-item" *ngIf="member.role != 'manager'"
+                            <li class="dropdown-item" *ngIf="member.role != 'owner' && member.role != 'manager'"
                                 (click)="changeRole(member._id, 'manager')" i18n="@@componentSearchBar.changeToManager">Change to Work Manager</li>
-                            <li class="dropdown-item" *ngIf="member.role != 'member'"
+                            <li class="dropdown-item" *ngIf="member.role != 'owner' && member.role != 'member'"
                                 (click)="changeRole(member._id, 'member')" i18n="@@componentSearchBar.changeToMember">Change to Member</li>
                             <li class="dropdown-item" *ngIf="!member.hr_role && member.role != 'guest'" (click)="changeHRRole(member._id, true)"
                                 i18n="@@componentSearchBar.addToHRTeam">Add to HR Team</li>
@@ -68,7 +68,7 @@
                             <li class="dropdown-item" *ngIf="!!member.crm_role && member.role != 'guest'" (click)="changeCRMRole(member._id, false)"
                                 i18n="@@componentSearchBar.removeFromCRMTeam">Remove from CRM Team</li>
                             <li class="dropdown-divider"></li>
-                            <li class="dropdown-item">
+                            <li class="dropdown-item" *ngIf="member.role != 'owner'">
                                 <button type="button" class="btn btn-danger btn-sm"
                                 (click)="disableUserInWorkplace(member._id, workspaceData?._id)" i18n="@@componentSearchBar.deactivateUser">Deactivate user</button>
                             </li>
