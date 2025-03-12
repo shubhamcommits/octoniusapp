@@ -8,16 +8,16 @@
         <span i18n="@@groupCrmSetupView.companies">Companies</span>
       </ng-template>
 
-      <div class="block">
-        <div class="row">
-          <button class="btn btn-warning" (click)="openCompanyDialog()">
-            <i class="material-icons-outlined">add</i>
-            <span i18n="@@groupCrmSetupView.newCompany">New Company</span>
-          </button>
-        </div>
+      <div class="row">
+        <button class="btn btn-warning" (click)="openCompanyDialog()">
+          <i class="material-icons-outlined">add</i>
+          <span i18n="@@groupCrmSetupView.newCompany">New Company</span>
+        </button>
+      </div>
 
+      <div class="block overflow-auto">
         <table mat-table matSort [dataSource]="sortedCompanyData" (matSortChange)="sortCompanyData($event)">
-          <ng-container matColumnDef="name">
+          <ng-container matColumnDef="name" sticky>
             <th mat-header-cell mat-sort-header *matHeaderCellDef>
               <span i18n="@@crmCompanyList.name">Name</span>
               <!-- Search Input -->
@@ -94,7 +94,7 @@
           </ng-container>
           <!-- CUSTOM FIELDS ENDS -->
 
-          <ng-container matColumnDef="star">
+          <ng-container matColumnDef="star" stickyEnd>
             <th mat-header-cell *matHeaderCellDef style="text-align: right">
               <div class="">
                 <i class="material-icons-outlined" style="cursor: pointer" *ngIf="isAdmin"
@@ -134,11 +134,11 @@
           <tr mat-row *matRowDef="let company; columns: displayedCompanyColumns" class="pointer"
             (click)="openCompanyDetailsDialog(company?._id)"></tr>
         </table>
-
-        <mat-paginator #companyPaginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons
-          aria-label="Select page of periodic elements">
-        </mat-paginator>
       </div>
+
+      <mat-paginator #companyPaginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons
+        aria-label="Select page of periodic elements">
+      </mat-paginator>
     </mat-tab>
 
     <mat-tab>
@@ -146,16 +146,16 @@
         <span i18n="@@groupCrmSetupView.contacts">Contacts</span>
       </ng-template>
 
-      <div class="block">
-        <div class="row">
-          <button class="btn btn-warning" (click)="openContactDialog()">
-            <i class="material-icons-outlined">add</i>
-            <span i18n="@@groupCrmSetupView.newContact">New Contact</span>
-          </button>
-        </div>
+      <div class="row">
+        <button class="btn btn-warning" (click)="openContactDialog()">
+          <i class="material-icons-outlined">add</i>
+          <span i18n="@@groupCrmSetupView.newContact">New Contact</span>
+        </button>
+      </div>
 
+      <div class="block overflow-auto">
         <table mat-table matSort [dataSource]="sortedContacts" (matSortChange)="sortContactData($event)" class="">
-          <ng-container matColumnDef="name">
+          <ng-container matColumnDef="name" sticky>
             <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@groupCrmSetupView.name">
               Name
             </th>
@@ -237,7 +237,7 @@
           </ng-container>
           <!-- CUSTOM FIELDS ENDS -->
 
-          <ng-container matColumnDef="star">
+          <ng-container matColumnDef="star" stickyEnd>
             <th mat-header-cell *matHeaderCellDef style="text-align: right">
               <div class="">
                 <i class="material-icons-outlined" style="cursor: pointer" *ngIf="isAdmin"
@@ -276,11 +276,11 @@
           <tr mat-header-row *matHeaderRowDef="displayedContactsColumns"></tr>
           <tr mat-row *matRowDef="let contact; columns: displayedContactsColumns"></tr>
         </table>
-
-        <mat-paginator #contactPaginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons
-          aria-label="Select page of periodic elements">
-        </mat-paginator>
       </div>
+
+      <mat-paginator #contactPaginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons
+        aria-label="Select page of periodic elements">
+      </mat-paginator>
     </mat-tab>
 
     <mat-tab>
@@ -288,16 +288,16 @@
         <span i18n="@@groupCrmSetupView.products">Products</span>
       </ng-template>
 
-      <div class="block">
-        <div class="row">
-          <button class="btn btn-warning" (click)="openProductDialog()">
-            <i class="material-icons-outlined">add</i>
-            <span i18n="@@groupCrmSetupView.newProduct">New Product</span>
-          </button>
-        </div>
+      <div class="row">
+        <button class="btn btn-warning" (click)="openProductDialog()">
+          <i class="material-icons-outlined">add</i>
+          <span i18n="@@groupCrmSetupView.newProduct">New Product</span>
+        </button>
+      </div>
 
+      <div class="block overflow-auto">
         <table mat-table matSort [dataSource]="sortedProductData" (matSortChange)="sortProductData($event)" class="">
-          <ng-container matColumnDef="name">
+          <ng-container matColumnDef="name" sticky>
             <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@groupCrmSetupView.name">
               Name
             </th>
@@ -337,7 +337,7 @@
           </ng-container>
           <!-- CUSTOM FIELDS ENDS -->
 
-          <ng-container matColumnDef="star">
+          <ng-container matColumnDef="star" stickyEnd>
             <th mat-header-cell *matHeaderCellDef style="text-align: right">
               <div class="">
                 <i class="material-icons-outlined" style="cursor: pointer" *ngIf="isAdmin"
@@ -376,11 +376,11 @@
           <tr mat-header-row *matHeaderRowDef="displayedProductColumns"></tr>
           <tr mat-row *matRowDef="let product; columns: displayedProductColumns"></tr>
         </table>
-
-        <mat-paginator #productPaginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons
-          aria-label="Select page of periodic elements">
-        </mat-paginator>
       </div>
+      
+      <mat-paginator #productPaginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons
+        aria-label="Select page of periodic elements">
+      </mat-paginator>
     </mat-tab>
   </mat-tab-group>
 </div>

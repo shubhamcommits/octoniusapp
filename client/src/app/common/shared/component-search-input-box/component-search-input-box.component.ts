@@ -1,66 +1,72 @@
-import { Component, OnInit, Input, Injector, Output, EventEmitter } from '@angular/core';
-import { PublicFunctions } from 'modules/public.functions';
-import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
-import { Subject } from 'rxjs/internal/Subject';
-import { SubSink } from 'subsink';
-import { debounceTime } from 'rxjs/internal/operators/debounceTime';
-import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
-import { UserService } from 'src/shared/services/user-service/user.service';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import {
+  Component,
+  OnInit,
+  Input,
+  Injector,
+  Output,
+  EventEmitter,
+} from "@angular/core";
+import { PublicFunctions } from "modules/public.functions";
+import { WorkspaceService } from "src/shared/services/workspace-service/workspace.service";
+import { Subject } from "rxjs/internal/Subject";
+import { SubSink } from "subsink";
+import { debounceTime } from "rxjs/internal/operators/debounceTime";
+import { distinctUntilChanged } from "rxjs/internal/operators/distinctUntilChanged";
+import { UserService } from "src/shared/services/user-service/user.service";
+import { BehaviorSubject } from "rxjs/internal/BehaviorSubject";
+import { UtilityService } from "src/shared/services/utility-service/utility.service";
 
 @Component({
-  selector: 'app-component-search-input-box',
-  templateUrl: './component-search-input-box.component.html',
-  styleUrls: ['./component-search-input-box.component.scss']
+  selector: "app-component-search-input-box",
+  templateUrl: "./component-search-input-box.component.html",
+  styleUrls: ["./component-search-input-box.component.scss"],
 })
 export class ComponentSearchInputBoxComponent implements OnInit {
-
   constructor(
     public utilityService: UtilityService,
-    private injector: Injector,
-    ) { }
+    private injector: Injector
+  ) {}
 
-  @Input('placeholder') placeholder: string = '';
+  @Input("placeholder") placeholder: string = "";
 
   // Type are 'task', 'event', 'group', 'skill', 'tag', 'ragTag', 'ragMembers', 'workspaceMembers', 'holidays'
-  @Input('type') type: string;
+  @Input("type") type: string;
 
   // Incase the type is 'workspace'
-  @Input('workspaceId') workspaceId?: string;
+  @Input("workspaceId") workspaceId?: string;
 
   // Incase the type is 'group'
-  @Input('groupId') groupId?: string;
+  @Input("groupId") groupId?: string;
 
   // User Data Object
-  @Input('userData') userData: any = {};
+  @Input("userData") userData: any = {};
 
-  @Input('groupData') groupData: any = {};
+  @Input("groupData") groupData: any = {};
 
-  @Input('workspaceData') workspaceData:any = {};
+  @Input("workspaceData") workspaceData: any = {};
 
-  @Input('rag') rag: string;
+  @Input("rag") rag: string;
 
-  @Input('ragMemberList') ragMemberList: any = [];
+  @Input("ragMemberList") ragMemberList: any = [];
 
-  @Input('tagList') tagList: any = [];
+  @Input("tagList") tagList: any = [];
 
   // Skill Emitter which emits the skill object on creation
-  @Output('skill') skillEmitter = new EventEmitter();
+  @Output("skill") skillEmitter = new EventEmitter();
 
   // Member Emitter which emits the member object on creation
-  @Output('member') memberEmitter = new EventEmitter();
+  @Output("member") memberEmitter = new EventEmitter();
 
   // Tag Emitter which emits the tag object on creation
-  @Output('tag') tagEmitter = new EventEmitter();
+  @Output("tag") tagEmitter = new EventEmitter();
 
-  @Output('ragTag') ragTagEmitter = new EventEmitter();
+  @Output("ragTag") ragTagEmitter = new EventEmitter();
 
   // Public Functions class
   private publicFunctions = new PublicFunctions(this.injector);
 
   // Item value variable mapped with search field
-  itemValue: string
+  itemValue: string;
 
   // This observable is mapped with item field to recieve updates on change value
   itemValueChanged: Subject<Event> = new Subject<Event>();
@@ -78,162 +84,213 @@ export class ComponentSearchInputBoxComponent implements OnInit {
   selectedMembers: any = new Map();
 
   // Members array
-  members: any = []
+  members: any = [];
 
   // Tags array
-  tags: any = []
+  tags: any = [];
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   /**
    * This function handles of sending the data to the user(of skills or members)
    * Uses Debounce time and subscribe to the itemValueChanged Observable
    */
   ngAfterViewInit(): void {
-    if (this.itemValue == "")
-      this.itemList = []
+    if (this.itemValue == "") this.itemList = [];
     // Adding the service function to the subsink(), so that we can unsubscribe the observable when the component gets destroyed
-    this.subSink.add(this.itemValueChanged
-      .pipe(distinctUntilChanged(), debounceTime(500))
-      .subscribe(async () => {
-        if (this.type == 'skill' || this.type == 'group' || this.type == 'task' || this.type == 'event' || this.type === 'tag' || this.type === 'ragTag' || this.type === 'ragMembers' || this.type === 'workspaceMembers' || this.type === 'holidays') {
+    this.subSink.add(
+      this.itemValueChanged
+        .pipe(distinctUntilChanged(), debounceTime(500))
+        .subscribe(async () => {
+          if (
+            this.type == "skill" ||
+            this.type == "group" ||
+            this.type == "task" ||
+            this.type == "event" ||
+            this.type === "tag" ||
+            this.type === "ragTag" ||
+            this.type === "ragMembers" ||
+            this.type === "workspaceMembers" ||
+            this.type === "holidays"
+          ) {
+            // If value is null then empty the array
+            if (this.itemValue == "") {
+              this.itemList = [];
+            } else {
+              if (this.type === "ragTag") {
+                this.itemList = this.groupData.rags;
+                this.itemList = this.itemList.filter((item) =>
+                  item.rag_tag.includes(this.itemValue)
+                );
 
-          // If value is null then empty the array
-          if (this.itemValue == "") {
-            this.itemList = []
-          } else {
-            if (this.type === 'ragTag') {
-              this.itemList = this.groupData.rags;
-              this.itemList = this.itemList.filter( item => item.rag_tag.includes(this.itemValue));
-
-              this.itemList.forEach(item => {
-                const index = (this.tagList) ? this.tagList.findIndex(rag => rag == item.rag_tag) : -1;
-                if (index >= 0) {
-                  item.showAddButton =false;
-                } else {
-                  item.showAddButton = true;
-                }
-              });
-            }
-
-            if(this.type === 'ragMembers') {
-              this.itemList = this.groupData._members.filter( member => {
-                let item = member.first_name.toLowerCase() + ' ' + member.last_name.toLowerCase();
-                return item.includes(this.itemValue.toLowerCase());
-              });
-
-              this.itemList.forEach(item => {
-                const index = (this.ragMemberList) ? this.ragMemberList.findIndex(member => member._id == item._id) : -1;
-                if(index >= 0) {
-                  item.showAddMem = true;
-                } else {
-                  item.showAddMem = false;
-                }
-              });
-            }
-
-            if(this.type === 'workspaceMembers') {
-              if (JSON.stringify(this.workspaceData) == JSON.stringify({})) {
-                this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-              }
-
-              this.itemList = this.workspaceData.members.filter( member => {
-                if (!!member && !!member.first_name && !!member.last_name) {
-                  let item = member.first_name.toLowerCase() + ' ' + member.last_name.toLowerCase();
-                  return item.includes(this.itemValue.toLowerCase());
-                } else {
-                  return false;
-                }
-              });
-              this.itemList.forEach(item => {
-                const index = (this.ragMemberList) ? this.ragMemberList.findIndex(member => member._id == item._id) : -1;
-                if(index >= 0) {
-                  item.showAddMem = true;
-                } else {
-                  item.showAddMem = false;
-                }
-              });
-            }
-
-            if(this.type === 'holidays') {
-              if (!this.utilityService.objectExists(this.workspaceData)) {
-                this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-              }
-
-              if (!this.utilityService.objectExists(this.userData)) {
-                this.userData = await this.publicFunctions.getCurrentUser();
-              }
-
-              this.itemList = this.workspaceData.members.filter( member => {
-                if (!!member && (!!member.first_name && !!member.last_name)) {
-                  if (this.userData.role != 'manager' && this.userData.role != 'owner' && member._id == this.userData?._id) {
-                    return false;
+                this.itemList.forEach((item) => {
+                  const index = this.tagList
+                    ? this.tagList.findIndex((rag) => rag == item.rag_tag)
+                    : -1;
+                  if (index >= 0) {
+                    item.showAddButton = false;
                   } else {
-                    let item = member.first_name.toLowerCase() + ' ' + member.last_name.toLowerCase();
-                    return item.includes(this.itemValue.toLowerCase());
+                    item.showAddButton = true;
                   }
-                } else {
-                  return false;
+                });
+              }
+
+              if (this.type === "ragMembers") {
+                this.itemList = this.groupData._members.filter((member) => {
+                  let item =
+                    member.first_name.toLowerCase() +
+                    " " +
+                    member.last_name.toLowerCase();
+                  return item.includes(this.itemValue.toLowerCase());
+                });
+
+                this.itemList.forEach((item) => {
+                  const index = this.ragMemberList
+                    ? this.ragMemberList.findIndex(
+                        (member) => member._id == item._id
+                      )
+                    : -1;
+                  if (index >= 0) {
+                    item.showAddMem = true;
+                  } else {
+                    item.showAddMem = false;
+                  }
+                });
+              }
+
+              if (this.type === "workspaceMembers") {
+                if (JSON.stringify(this.workspaceData) == JSON.stringify({})) {
+                  this.workspaceData =
+                    await this.publicFunctions.getCurrentWorkspace();
                 }
-              });
-              this.itemList.forEach(item => {
-                const index = (this.ragMemberList) ? this.ragMemberList.findIndex(member => member._id == item._id) : -1;
-                if(index >= 0) {
-                  item.showAddMem = true;
-                } else {
-                  item.showAddMem = false;
+
+                this.itemList = this.workspaceData.members.filter((member) => {
+                  if (!!member) {
+                    let item = member.first_name + " " + member.last_name;
+                    return item
+                      .toLocaleLowerCase()
+                      .includes(this.itemValue.toLowerCase());
+                  } else {
+                    return false;
+                  }
+                });
+                this.itemList.forEach((item) => {
+                  const index = this.ragMemberList
+                    ? this.ragMemberList.findIndex(
+                        (member) => member._id == item._id
+                      )
+                    : -1;
+                  if (index >= 0) {
+                    item.showAddMem = true;
+                  } else {
+                    item.showAddMem = false;
+                  }
+                });
+              }
+
+              if (this.type === "holidays") {
+                if (!this.utilityService.objectExists(this.workspaceData)) {
+                  this.workspaceData =
+                    await this.publicFunctions.getCurrentWorkspace();
                 }
-              });
-            }
 
-            // Update the itemList with the skill set
-            if (this.type === 'skill')
-              this.itemList = await this.searchSkills(this.itemValue);
+                if (!this.utilityService.objectExists(this.userData)) {
+                  this.userData = await this.publicFunctions.getCurrentUser();
+                }
 
-            // Update the itemList with tags set
-            if (this.type === 'tag')
-              this.itemList = await this.publicFunctions.getTags(this.groupId, this.itemValue) || []
+                this.itemList = this.workspaceData.members.filter((member) => {
+                  if (!!member && !!member.first_name && !!member.last_name) {
+                    if (
+                      this.userData.role != "manager" &&
+                      this.userData.role != "owner" &&
+                      member._id == this.userData?._id
+                    ) {
+                      return false;
+                    } else {
+                      let item =
+                        member.first_name.toLowerCase() +
+                        " " +
+                        member.last_name.toLowerCase();
+                      return item.includes(this.itemValue.toLowerCase());
+                    }
+                  } else {
+                    return false;
+                  }
+                });
+                this.itemList.forEach((item) => {
+                  const index = this.ragMemberList
+                    ? this.ragMemberList.findIndex(
+                        (member) => member._id == item._id
+                      )
+                    : -1;
+                  if (index >= 0) {
+                    item.showAddMem = true;
+                  } else {
+                    item.showAddMem = false;
+                  }
+                });
+              }
 
+              // Update the itemList with the skill set
+              if (this.type === "skill")
+                this.itemList = await this.searchSkills(this.itemValue);
 
-            if (this.type === 'task' || this.type === 'event') {
-              this.itemList = await this.publicFunctions.searchGroupMembers(this.groupId, this.itemValue) || []
+              // Update the itemList with tags set
+              if (this.type === "tag")
+                this.itemList =
+                  (await this.publicFunctions.getTags(
+                    this.groupId,
+                    this.itemValue
+                  )) || [];
 
-              // Update the itemList
-              this.itemList = Array.from(new Set(this.itemList['users']))
+              if (this.type === "task" || this.type === "event") {
+                this.itemList =
+                  (await this.publicFunctions.searchGroupMembers(
+                    this.groupId,
+                    this.itemValue
+                  )) || [];
 
-              // If type is event, then we should give an option of adding all team as the assignee too
-              if (this.type === 'event') {
-                this.itemList.unshift({
-                  _id: 'all',
-                  first_name: 'all',
-                  last_name: 'team'
-                })
+                // Update the itemList
+                this.itemList = Array.from(new Set(this.itemList["users"]));
+
+                // If type is event, then we should give an option of adding all team as the assignee too
+                if (this.type === "event") {
+                  this.itemList.unshift({
+                    _id: "all",
+                    first_name: "all",
+                    last_name: "team",
+                  });
+                }
+              }
+
+              if (this.type === "group") {
+                // Fetch the Items from the group search list
+                this.itemList = await this.publicFunctions.membersNotInGroup(
+                  this.workspaceId,
+                  this.itemValue,
+                  this.groupId
+                );
+
+                // Update the itemList
+                this.itemList = Array.from(new Set(this.itemList["users"]));
+              }
+
+              // Don't add the null or existing skills value to the list
+              if (this.type === "skill" || this.type === "tag") {
+                if (
+                  !this.itemList.includes(this.itemValue) &&
+                  this.itemValue != ""
+                ) {
+                  this.itemList = [this.itemValue, ...this.itemList];
+                }
               }
             }
 
-            if (this.type === 'group') {
-
-              // Fetch the Items from the group search list
-              this.itemList = await this.publicFunctions.membersNotInGroup(this.workspaceId, this.itemValue, this.groupId)
-
-              // Update the itemList
-              this.itemList = Array.from(new Set(this.itemList['users']))
-
-            }
-
-            // Don't add the null or existing skills value to the list
-            if (this.type === 'skill' || this.type === 'tag') {
-              if (!this.itemList.includes(this.itemValue) && this.itemValue != "") {
-                this.itemList = [this.itemValue, ...this.itemList];
-              }
-            }
+            // Stop the loading state once the values are loaded
+            this.isLoading$.next(false);
           }
-
-          // Stop the loading state once the values are loaded
-          this.isLoading$.next(false);
-        }
-      }));
+        })
+    );
   }
 
   /**
@@ -243,7 +300,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
   modelChange($event: any) {
     this.itemValue = $event;
     if ($event == "" || $event === null || $event === undefined)
-      this.itemList = []
+      this.itemList = [];
   }
 
   /**
@@ -260,7 +317,10 @@ export class ComponentSearchInputBoxComponent implements OnInit {
 
   async userSearchQuery(query: Event) {
     try {
-      let results = await this.searchWorkspaceMembers(this.workspaceId, query.target['value']);
+      let results = await this.searchWorkspaceMembers(
+        this.workspaceId,
+        query.target["value"]
+      );
     } catch (err) {
       this.publicFunctions.sendError(err);
     }
@@ -270,44 +330,42 @@ export class ComponentSearchInputBoxComponent implements OnInit {
     try {
       return new Promise(async (resolve) => {
         let workspaceService = this.injector.get(WorkspaceService);
-        let test = await workspaceService.searchWorkspaceMembers(workspaceId, query)
-      })
-
+        let test = await workspaceService.searchWorkspaceMembers(
+          workspaceId,
+          query
+        );
+      });
     } catch (err) {
       this.publicFunctions.sendError(err);
     }
   }
 
-  async isGroupMember(item: any) {
-
-  }
+  async isGroupMember(item: any) {}
 
   removeMemberFromMap(item: any) {
-
     // If all team members are removed
-    if(item._id === 'all'){
-
+    if (item._id === "all") {
       // Empty the members array
-      this.members = []
+      this.members = [];
 
       // Empty the members map
-      this.selectedMembers.clear()
+      this.selectedMembers.clear();
 
       // Set all the other items to be as not Assigned
       this.itemList.forEach((element: any) => {
-        element.showAddMem = true
-      })
-
+        element.showAddMem = true;
+      });
     }
 
     if (this.members.length >= 0 && this.selectedMembers.size >= 0) {
-
-      const memberIndex = (this.members) ? this.members.findIndex((member) => item._id === member) : -1;
+      const memberIndex = this.members
+        ? this.members.findIndex((member) => item._id === member)
+        : -1;
       // Removing the user from array
       this.members.splice(memberIndex, 1);
 
       // Enable the user so that it can be added again
-      item.showAddMem = true
+      item.showAddMem = true;
 
       // Removing the user from map
       this.selectedMembers.delete(item._id);
@@ -315,18 +373,15 @@ export class ComponentSearchInputBoxComponent implements OnInit {
       // Emit the selectedMembers map to the other components
       this.memberEmitter.emit(this.selectedMembers);
     }
-
   }
 
   memberJustAddedToMap(item: any) {
-    return this.selectedMembers.has(item._id)
+    return this.selectedMembers.has(item._id);
   }
 
   addToSelectedMember(item: any) {
-
     // If We have all team selected as the assignee for the event
-    if (item._id === 'all') {
-
+    if (item._id === "all") {
       // Empty the members array
       this.members = [];
 
@@ -345,16 +400,17 @@ export class ComponentSearchInputBoxComponent implements OnInit {
       this.members.push(item);
 
       // Map the array and return a map without duplicates
-      this.selectedMembers = new Map(this.members.map((member: any) => [member._id, member]));
+      this.selectedMembers = new Map(
+        this.members.map((member: any) => [member._id, member])
+      );
 
       // Emit the selectedMembers map to the other components
       this.memberEmitter.emit(this.selectedMembers);
     }
 
     // If we don'y have all team selected as the assignee
-    if (!this.selectedMembers.has('all')) {
-      if (this.type === 'task') {
-
+    if (!this.selectedMembers.has("all")) {
+      if (this.type === "task") {
         // Mark all the other items on the UI to be as not assigned
         this.itemList.forEach((element: any) => {
           element.showAddMem = true;
@@ -371,31 +427,33 @@ export class ComponentSearchInputBoxComponent implements OnInit {
       this.members.push(item);
 
       // Map the array and return a map without duplicates
-      this.selectedMembers = new Map(this.members.map((member: any) => [member._id, member]));
+      this.selectedMembers = new Map(
+        this.members.map((member: any) => [member._id, member])
+      );
 
       // Emit the selectedMembers map to the other components
       this.memberEmitter.emit(this.selectedMembers);
     }
 
     // Clear search input after assigning
-    this.itemValue = '';
+    this.itemValue = "";
 
     // Close the list after assigning
     this.itemList = [];
   }
 
   onAddNewMember(item: any) {
-    if(item.rags === undefined){
+    if (item.rags === undefined) {
       item.rags = [];
     }
     item.rags.push(this.rag);
     // Set the Add Member state to false
-    item.showAddMem = false
+    item.showAddMem = false;
 
     // Emit the message to add the member
     this.memberEmitter.emit(item);
     // Clear search input after assigning
-    this.itemValue = '';
+    this.itemValue = "";
     // Close the list after assigning
     this.itemList = [];
   }
@@ -406,18 +464,19 @@ export class ComponentSearchInputBoxComponent implements OnInit {
    */
   async searchSkills(skill: string) {
     return new Promise((resolve, reject) => {
-
       // Define userService class object
       let userService = this.injector.get(UserService);
 
       // Search for skills in the database
-      userService.searchSkills(skill)
+      userService
+        .searchSkills(skill)
         .then((res) => {
-          resolve(res['skills'].map((skill: any) => skill.skills))
+          resolve(res["skills"].map((skill: any) => skill.skills));
         })
-        .catch(() => { reject([]) })
-    })
-
+        .catch(() => {
+          reject([]);
+        });
+    });
   }
 
   /**
@@ -425,7 +484,6 @@ export class ComponentSearchInputBoxComponent implements OnInit {
    * @param skill
    */
   async onAddSkill(skill: any) {
-
     // Emit the message to add the skill
     this.skillEmitter.emit(skill);
 
@@ -446,11 +504,13 @@ export class ComponentSearchInputBoxComponent implements OnInit {
    * @param skill
    */
   hasSkill(skill: string) {
-
     // Check if the skill exist in the users' skills array
-    const index = (this.userData && this.userData.skills)
-      ? this.userData.skills.findIndex(s => s == skill)
-      : ((this.tagList) ? this.tagList.findIndex(s => s == skill) : -1);
+    const index =
+      this.userData && this.userData.skills
+        ? this.userData.skills.findIndex((s) => s == skill)
+        : this.tagList
+        ? this.tagList.findIndex((s) => s == skill)
+        : -1;
     if (index >= 0) {
       return true;
     } else {
@@ -463,12 +523,10 @@ export class ComponentSearchInputBoxComponent implements OnInit {
    * @param tag
    */
   async onAddTag(tag: any) {
-
     // Emit the message to add the tag
-    if (this.type === 'tag') {
+    if (this.type === "tag") {
       this.tagEmitter.emit(tag);
-    }
-    else if (this.type === 'ragTag') {
+    } else if (this.type === "ragTag") {
       this.ragTagEmitter.emit(tag);
     }
 
@@ -487,21 +545,17 @@ export class ComponentSearchInputBoxComponent implements OnInit {
    * @param tag
    */
   hasTag(tag: string) {
-
     // Check if the tag exist in the tags array
-    if (this.tags.includes(tag))
-      return true;
-
-    else
-      return false
+    if (this.tags.includes(tag)) return true;
+    else return false;
   }
 
   /**
    * Unsubscribe all the observables on destroying the component
    */
   ngOnDestroy() {
-    this.subSink.unsubscribe()
-    this.isLoading$.complete()
+    this.subSink.unsubscribe();
+    this.isLoading$.complete();
   }
 
   focusOut() {
