@@ -43,7 +43,7 @@
         </div>
       </div>
 
-      <app-transfer-ownership *ngIf="!isIndividualSubscription" [workspaceData]="workspaceData" [userData]="userData"></app-transfer-ownership>
+      <app-transfer-ownership *ngIf="!isIndividualSubscription && (userData?.role == 'owner' || userData?.role == 'admin')" [workspaceData]="workspaceData" [userData]="userData"></app-transfer-ownership>
 
       <app-delete-workspace [workspaceData]="workspaceData" (workspaceDeletedEmiter)="removeWorkspace()"></app-delete-workspace>
     </div>
