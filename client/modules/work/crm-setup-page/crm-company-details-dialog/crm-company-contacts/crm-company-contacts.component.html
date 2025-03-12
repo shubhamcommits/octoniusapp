@@ -9,9 +9,9 @@
        
     </div>
 
-    <div class="row">
+    <div class="row overflow-auto">
         <table mat-table matSort [dataSource]="sortedContacts" (matSortChange)="sortContactData($event)" class="">
-            <ng-container matColumnDef="name">
+            <ng-container matColumnDef="name" sticky>
                 <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@crmCompanyContacts.name"> Name </th>
         
                 <td mat-cell *matCellDef="let contact">
@@ -79,7 +79,7 @@
             </ng-container>
             <!-- CUSTOM FIELDS ENDS -->
         
-            <ng-container matColumnDef="star">
+            <ng-container matColumnDef="star" stickyEnd>
                 <th mat-header-cell *matHeaderCellDef style="text-align: right;">
                     <div class="">
                         <i class="material-icons-outlined" style="cursor: pointer;" *ngIf="isAdmin"
