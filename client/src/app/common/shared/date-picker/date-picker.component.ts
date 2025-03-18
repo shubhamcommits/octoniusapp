@@ -70,10 +70,14 @@ export class DatePickerComponent implements OnChanges {
   constructor(private datesService: DatesService) {}
 
   ngOnChanges() {
-    this._value = this.datesService.formateDate(
-      this.selectedDate,
-      this.customDateFormat
-    );
+    if (!!this.selectedDate && !!this.customDateFormat) {
+      this._value = this.datesService.formateDate(
+        this.selectedDate,
+        this.customDateFormat
+      );
+    } else if (!!this.selectedDate) {
+      this._value = this.datesService.formateDate(this.selectedDate);
+    }
   }
 
   // Control Value Accessors for ngModel

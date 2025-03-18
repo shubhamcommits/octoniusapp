@@ -158,6 +158,7 @@ import { EventPostDialogComponent } from "./posts/group-post/dialogs/event-post-
 import { QuillEditorComponent } from "ngx-quill";
 import { ShuttleTaskActionComponent } from "./posts/group-post/componentes/shuttle-task-action/shuttle-task-action.component";
 import { PostRecurrencyComponent } from "./posts/group-post/componentes/post-recurrency/post-recurrency.component";
+import { CalendarPickerComponent } from "./calendar-picker/calendar-picker.component";
 
 @NgModule({
   declarations: [
@@ -171,6 +172,7 @@ import { PostRecurrencyComponent } from "./posts/group-post/componentes/post-rec
     AttachFilesComponent,
     AttachCloudFilesComponent,
     CropImageComponent,
+    CalendarPickerComponent,
     DatePickerComponent,
     EmailInputComponent,
     LoadingSpinnerComponent,
@@ -320,6 +322,7 @@ import { PostRecurrencyComponent } from "./posts/group-post/componentes/post-rec
     FilterPipe,
     AttachFilesComponent,
     AttachCloudFilesComponent,
+    CalendarPickerComponent,
     CropImageComponent,
     ComponentSearchBarComponent,
     ComponentSearchInputBoxComponent,

@@ -42,166 +42,68 @@ export class PostRecurrencyComponent implements OnInit, OnChanges {
     { value: "periodically", title: "Periodically" },
   ];
 
-  canEditDates: boolean = false;
-
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
     public utilityService: UtilityService,
-    private postService: PostService,
-    private datesService: DatesService,
+    public postService: PostService,
     private injector: Injector
   ) {}
 
   ngOnInit() {}
 
-  async ngOnChanges() {
-    // this.canEditDates = await this.canUserEditDates();
-  }
-
-  // canUserEditDates() {
-  //   const isGroupManager =
-  //     this.groupData && this.groupData._admins
-  //       ? this.groupData?._admins.findIndex(
-  //           (admin: any) => (admin?._id || admin) == this.userData?._id
-  //         ) >= 0
-  //       : false;
-  //   const isPostOwner =
-  //     this.postData &&
-  //     this.postData?._posted_by &&
-  //     this.postData?._posted_by?._id
-  //       ? this.postData?._posted_by?._id == this.userData?._id
-  //       : this.postData?._posted_by &&
-  //         this.postData?._posted_by == this.userData?._id
-  //       ? true
-  //       : false;
-
-  //   return (
-  //     (this.canEdit && !this.groupData?.freeze_dates) ||
-  //     (this.canEdit &&
-  //       this.groupData?.freeze_dates &&
-  //       (isGroupManager || isPostOwner))
-  //   );
-  // }
+  async ngOnChanges() {}
 
   /**
    * This function is responsible for receiving the date from @module <app-date-picker></app-date-picker>
    * @param dateObject
    */
   getDate(dateObject: any, property: string) {
+    console.log(dateObject);
     if (property === "end_date") {
       this.postData.recurrent.end_date = dateObject.toISODate();
-      console.log(
-        "Recurrent task end date set to: ",
-        this.postData?.recurrent?.end_date
-      );
     } else if (property === "recurrency_on") {
       this.postData.recurrent.recurrency_on = dateObject.toISODate();
-      console.log(
-        "Recurrent task recurrency_on set to: ",
-        this.postData?.recurrent?.recurrency_on
-      );
     } else if (property === "periodically_on") {
-      const index = this.postData.recurrent.specific_days.findIndex(
-        (day) => day === dateObject.toISODate()
+      if (!this.postData?.recurrent?.specific_days) {
+        this.postData.recurrent.specific_days = [];
+      }
+      const index = this.postData?.recurrent?.specific_days?.findIndex(
+        (day) => day === dateObject
       );
       if (index >= 0) {
         this.postData.recurrent.specific_days.splice(index, 1);
       } else {
-        this.postData.recurrent.specific_days.push(dateObject.toISODate());
+        this.postData.recurrent.specific_days.push(dateObject);
       }
-
-      console.log(
-        "Recurrent task periodically_on set to: ",
-        this.postData?.recurrent?.periodically_on
-      );
     }
+
+    this.saveRecurrency();
   }
-
-  /**
-   * This function is responsible to update the date if the date is valid.
-   * @param date
-   * @param property
-   */
-  // async updateDate(date, property) {
-  //   await this.utilityService.asyncNotification(
-  //     $localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`,
-  //     new Promise(async (resolve, reject) => {
-  //       if (property === "due_date") {
-  //         const isShuttleTasksModuleAvailable =
-  //           await this.publicFunctions.isShuttleTasksModuleAvailable();
-  //         const isIndividualSubscription =
-  //           await this.publicFunctions.checkIsIndividualSubscription();
-
-  //         this.postService
-  //           .changeTaskDueDate(
-  //             this.postData?._id,
-  //             date,
-  //             isShuttleTasksModuleAvailable,
-  //             isIndividualSubscription
-  //           )
-  //           .then((res) => {
-  //             this.postData = res["post"];
-  //             // this.dueDate = moment(this.postData?.task?.due_to);
-  //             this.dueDateEvent.emit(date);
-  //             // Resolve with success
-  //             resolve(
-  //               this.utilityService.resolveAsyncPromise(
-  //                 $localize`:@@groupCreatePostDialog.dateUpdated:Date updated!`
-  //               )
-  //             );
-  //           })
-  //           .catch(() => {
-  //             reject(
-  //               this.utilityService.rejectAsyncPromise(
-  //                 $localize`:@@groupCreatePostDialog.unableToUpdateDetails:Unable to update the details, please try again!`
-  //               )
-  //             );
-  //           });
-  //       } else if (property === "start_date") {
-  //         this.postService
-  //           .saveTaskDates(this.postData?._id, date, property)
-  //           .then((res) => {
-  //             this.postData = res["post"];
-  //             // this.startDate = moment(this.postData?.task?.start_date);
-  //             this.startDateEvent.emit(date);
-  //             // Resolve with success
-  //             resolve(
-  //               this.utilityService.resolveAsyncPromise(
-  //                 $localize`:@@groupCreatePostDialog.dateUpdated:Date updated!`
-  //               )
-  //             );
-  //           })
-  //           .catch(() => {
-  //             reject(
-  //               this.utilityService.rejectAsyncPromise(
-  //                 $localize`:@@groupCreatePostDialog.unableToUpdateDetails:Unable to update the details, please try again!`
-  //               )
-  //             );
-  //           });
-  //       }
-  //     })
-  //   );
-  // }
 
   transformToRecurrent() {
     this.postData.is_recurrent = !this.postData.is_recurrent;
     if (this.postData.is_recurrent && !this.postData.recurrent) {
-      this.postData.recurrent = {
-        frequency: "",
-        days_of_week: [],
-      };
+      this.resetRecurrency();
     }
-    console.log("Recurrent task set to: ", this.postData?.is_recurrent);
+    this.saveRecurrency();
   }
 
-  updateRecurrentFrequency(event: any): void {
+  async updateRecurrentFrequency(event: any): Promise<void> {
+    await this.resetRecurrency();
     this.postData.recurrent.frequency = event.value;
-    console.log(
-      "Recurrent task frecuency set to: ",
-      this.postData?.recurrent?.frequency
-    );
+    this.saveRecurrency();
+  }
+  resetRecurrency() {
+    this.postData.recurrent = {
+      frequency: "",
+      // _parent_post: this.postData._id,
+      days_of_week: [],
+      end_date: null,
+      recurrency_on: null,
+      specific_days: [],
+    };
   }
 
   onTheseDaysSelected($event) {
@@ -213,10 +115,7 @@ export class PostRecurrencyComponent implements OnInit, OnChanges {
           (day) => day !== $event.source.name
         );
     }
-    console.log(
-      "Recurrent task days set to: ",
-      this.postData.recurrent.days_of_week
-    );
+    this.saveRecurrency();
   }
 
   isDaySelected(day: string): boolean {
@@ -230,4 +129,33 @@ export class PostRecurrencyComponent implements OnInit, OnChanges {
   // getTime(timeObject: any) {
   //   this.timeEvent.emit(timeObject);
   // }
+
+  async saveRecurrency() {
+    await this.utilityService.asyncNotification(
+      $localize`:@@postRecurrency.plesaeWaitWeAreUpdaing:Please wait we are updating the post...`,
+      new Promise(async (resolve, reject) => {
+        this.postService
+          .saveRecurrency(
+            this.postData?._id,
+            this.postData?.is_recurrent,
+            this.postData?.recurrent
+          )
+          .then((res) => {
+            console.log(res);
+            resolve(
+              this.utilityService.resolveAsyncPromise(
+                $localize`:@@postRecurrency.postUpdated:Post updated!`
+              )
+            );
+          })
+          .catch(() => {
+            reject(
+              this.utilityService.rejectAsyncPromise(
+                $localize`:@@postRecurrency.unableToUpdateDetails:Unable to update the details, please try again!`
+              )
+            );
+          });
+      })
+    );
+  }
 }
