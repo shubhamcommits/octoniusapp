@@ -1,459 +1,577 @@
 const { DateTime } = require("luxon");
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
 const PostSchema = new Schema({
-
     // POST DETAILS
     title: {
         type: String,
-        trim: true
+        trim: true,
     },
     content: {
         type: String,
-        trim: true
+        trim: true,
     },
-    _content_mentions: [{
-        type: Schema.Types.Mixed,
-        ref: 'User'
-    }],
+    _content_mentions: [
+        {
+            type: Schema.Types.Mixed,
+            ref: "User",
+        },
+    ],
     type: {
         type: String,
         required: true,
-        enum: ['normal', 'event', 'task', 'performance_task', 'document']
+        enum: ["normal", "event", "task", "performance_task", "document"],
     },
-    likes_count:{
+    likes_count: {
         type: Number,
-        default: 0
+        default: 0,
     },
-    _liked_by: [{
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    }],
+    _liked_by: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+        },
+    ],
     pin_to_top: {
         type: Boolean,
-        default: false
+        default: false,
     },
     comments_count: {
         type: Number,
-        default: 0
+        default: 0,
     },
-    comments: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Comment'
-    }],
+    comments: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Comment",
+        },
+    ],
     _group: {
         type: Schema.Types.ObjectId,
-        ref: 'Group',
-        required: false
+        ref: "Group",
+        required: false,
     },
     _posted_by: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+        ref: "User",
+        required: true,
     },
     permissions: [
         {
             right: {
                 type: String,
-                enum: ['view', 'edit', 'hide']
+                enum: ["view", "edit", "hide"],
             },
             rags: [],
-            _members: [{
-                type: Schema.Types.ObjectId,
-                ref: 'User'
-            }]
-        }
+            _members: [
+                {
+                    type: Schema.Types.ObjectId,
+                    ref: "User",
+                },
+            ],
+        },
     ],
     created_date: {
         type: Date,
-        default: DateTime.now()
+        default: DateTime.now(),
     },
-    files: [{
-        original_name: {
-            type: String,
-            default: null
+    files: [
+        {
+            original_name: {
+                type: String,
+                default: null,
+            },
+            modified_name: {
+                type: String,
+                default: null,
+            },
         },
-        modified_name: {
+    ],
+    tags: [
+        {
             type: String,
-            default: null
-        }
-    }],
-    tags: [{
-        type: String,
-        default: []
-    }],
-    read_count:{
+            default: [],
+        },
+    ],
+    read_count: {
         type: Number,
-        default: 0
+        default: 0,
     },
-    _read_by: [{
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        default: []
-    }],
-    followers_count:{
+    _read_by: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+            default: [],
+        },
+    ],
+    followers_count: {
         type: Number,
-        default: 0
+        default: 0,
     },
-    _followers: [{
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    }],
-    _assigned_to: [{
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true,
-        default: []
-    }],
+    _followers: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+        },
+    ],
+    _assigned_to: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+            default: [],
+        },
+    ],
     archived: {
         type: Boolean,
-        default: false
+        default: false,
+    },
+    is_recurrent: {
+        type: Boolean,
+        default: false,
+    },
+    recurrent: {
+        frequency: {
+            type: String,
+            enum: ["daily", "weekly", "monthly", "yearly", "periodically"],
+        },
+        _parent_post: {
+            type: Schema.Types.ObjectId,
+            ref: "Post",
+        },
+        end_date: {
+            type: Date,
+            default: null,
+        },
+        days_of_week: [
+            {
+                type: String,
+                enum: [
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday",
+                    "Saturday",
+                    "Sunday",
+                ],
+            },
+        ],
+        recurrency_on: {
+            type: Date,
+            default: null,
+        },
+        specific_days: [
+            {
+                type: Date,
+            },
+        ],
     },
     approval_active: {
         type: Boolean,
         required: true,
-        default: false
+        default: false,
     },
     approval_flow_launched: {
         type: Boolean,
         required: true,
-        default: false
+        default: false,
     },
     approval_due_date: {
         type: Date,
-        default: null
+        default: null,
     },
     approval_envelope: {
         type: String,
-        required: false
+        required: false,
     },
     approval_flow: [
         {
             _assigned_to: {
                 type: Schema.Types.ObjectId,
-                ref: 'User',
-                required: true
+                ref: "User",
+                required: true,
             },
             confirmation_code: {
-                type: String
+                type: String,
             },
             confirmed: {
                 type: Boolean,
                 required: true,
-                default: false
+                default: false,
             },
             confirmation_date: {
                 type: Date,
-                default: DateTime.now()
+                default: DateTime.now(),
             },
             signature_code: {
                 type: String,
-                required: false
+                required: false,
             },
             description: {
-                type: String
-            }
-        }
+                type: String,
+            },
+        },
     ],
     approval_history: [
         {
             _actor: {
                 type: Schema.Types.ObjectId,
-                ref: 'User',
-                required: true
+                ref: "User",
+                required: true,
             },
             description: {
-                type: String
+                type: String,
             },
             action: {
                 type: String,
                 required: true,
-                enum: ['created', 'deleted', 'launch', 'rejected', 'approved']
+                enum: ["created", "deleted", "launch", "rejected", "approved"],
             },
             approval_date: {
                 type: Date,
-                default: DateTime.now()
-            }
-        }
+                default: DateTime.now(),
+            },
+        },
     ],
     crm: {
         _company: {
             type: Schema.Types.ObjectId,
-            ref: 'Company',
+            ref: "Company",
         },
-        _contacts: [{
-            type: Schema.Types.ObjectId,
-            ref: 'Contact',
-        }],
-        orders: [{
-            _product: {
+        _contacts: [
+            {
                 type: Schema.Types.ObjectId,
-                ref: 'Product',
+                ref: "Contact",
             },
-            quantity: {
-                type: Number
+        ],
+        orders: [
+            {
+                _product: {
+                    type: Schema.Types.ObjectId,
+                    ref: "Product",
+                },
+                quantity: {
+                    type: Number,
+                },
+                // Custom Fields
+                crm_custom_fields: {
+                    type: Map,
+                    of: String,
+                },
             },
-            // Custom Fields
-            crm_custom_fields: {
-                type: Map,
-                of: String
-            }
-        }]
+        ],
     },
     logs: [
         {
             action: {
                 type: String,
                 required: true,
-                enum: ['created', 'change_content', 'change_status', 'change_section', 'assigned_to', 'removed_assignee', 'new_due_date', 'new_start_date', 'commented', 'change_cf', 'copy_to', 'moved_to', 'make_dependency', 'make_dependent', 'remove_dependency', 'remove_dependent', 'make_ns', 'make_no_ns', 'update_ns', 'make_idea', 'make_no_idea', 'make_crm_task', 'make_no_crm_task', 'make_crm_order', 'make_no_crm_order', 'make_milestone', 'make_no_milestone', 'set_parent', 'save_allocation', 'save_estimation', 'change_title', 'change_time', 'updated_tags', 'attach_file', 'attach_file_cloud', 'update_crm_info']
+                enum: [
+                    "created",
+                    "change_content",
+                    "change_status",
+                    "change_section",
+                    "assigned_to",
+                    "removed_assignee",
+                    "new_due_date",
+                    "new_start_date",
+                    "commented",
+                    "change_cf",
+                    "copy_to",
+                    "moved_to",
+                    "make_dependency",
+                    "make_dependent",
+                    "remove_dependency",
+                    "remove_dependent",
+                    "make_ns",
+                    "make_no_ns",
+                    "update_ns",
+                    "make_idea",
+                    "make_no_idea",
+                    "make_crm_task",
+                    "make_no_crm_task",
+                    "make_crm_order",
+                    "make_no_crm_order",
+                    "make_milestone",
+                    "make_no_milestone",
+                    "set_parent",
+                    "save_allocation",
+                    "save_estimation",
+                    "change_title",
+                    "change_time",
+                    "updated_tags",
+                    "attach_file",
+                    "attach_file_cloud",
+                    "update_crm_info",
+                ],
             },
             _actor: {
                 type: Schema.Types.ObjectId,
-                ref: 'User',
-                required: true
+                ref: "User",
+                required: true,
             },
             action_date: {
                 type: Date,
-                default: DateTime.now()
+                default: DateTime.now(),
             },
             new_status: {
-                type: String
+                type: String,
             },
             _new_section: {
                 type: Schema.Types.ObjectId,
-                ref: 'Column'
+                ref: "Column",
             },
             _assignee: {
                 type: Schema.Types.ObjectId,
-                ref: 'User'
+                ref: "User",
             },
             new_date: {
                 type: Date,
-                default: DateTime.now()
+                default: DateTime.now(),
             },
             tag: {
-                type: String
+                type: String,
             },
             cf_title: {
-                type: String
+                type: String,
             },
             cf_value: {
-                type: String
+                type: String,
             },
             _group: {
                 type: Schema.Types.ObjectId,
-                ref: 'Group'
+                ref: "Group",
             },
             _task: {
                 type: Schema.Types.ObjectId,
-                ref: 'Post'
+                ref: "Post",
             },
             allocation: {
-                type: Number
+                type: Number,
             },
             estimation: {
                 hours: {
                     type: String,
-                    default: null
+                    default: null,
                 },
                 minutes: {
                     type: String,
-                    default: null
-                }
-            }
-        }
+                    default: null,
+                },
+            },
+        },
     ],
 
     // TASK
     task: {
         due_to: {
             type: Date,
-            default: null
+            default: null,
         },
         status: {
             type: String,
-            default: 'to do'
+            default: "to do",
         },
         completed_at: {
             type: Date,
-            default: null
+            default: null,
         },
         _column: {
             type: Schema.Types.ObjectId,
-            ref: 'Column'
+            ref: "Column",
         },
         allocation: {
             type: Number,
-            default: 0
+            default: 0,
         },
         estimation: {
             hours: {
                 type: String,
-                default: null
+                default: null,
             },
             minutes: {
                 type: String,
-                default: null
-            }
+                default: null,
+            },
         },
         // Custom Fields
         custom_fields: {
             type: Map,
-            of: String
+            of: String,
         },
 
         isNorthStar: {
             type: Boolean,
-            default: false
+            default: false,
         },
 
         is_idea: {
             type: Boolean,
-            default: false
+            default: false,
         },
 
         is_milestone: {
             type: Boolean,
-            default: false
+            default: false,
         },
 
         is_crm_task: {
             type: Boolean,
-            default: false
+            default: false,
         },
 
         is_crm_order: {
             type: Boolean,
-            default: false
+            default: false,
         },
 
         northStar: {
             target_value: {
                 type: Number,
-                default: 0
+                default: 0,
             },
-            values: [{
-                date: {
-                    type: Date,
-                    default: DateTime.now()
+            values: [
+                {
+                    date: {
+                        type: Date,
+                        default: DateTime.now(),
+                    },
+                    value: {
+                        type: Number,
+                        default: 0,
+                    },
+                    status: {
+                        type: String,
+                        enum: [
+                            "NOT STARTED",
+                            "ON TRACK",
+                            "IN DANGER",
+                            "ACHIEVED",
+                        ],
+                    },
+                    _user: {
+                        type: Schema.Types.ObjectId,
+                        ref: "User",
+                    },
                 },
-                value: {
-                    type: Number,
-                    default: 0
-                },
-                status: {
-                    type: String,
-                    enum: ['NOT STARTED', 'ON TRACK', 'IN DANGER', 'ACHIEVED']
-                },
-                _user: {
-                    type: Schema.Types.ObjectId,
-                    ref: 'User'
-                }
-            }],
+            ],
             type: {
                 type: String,
-                enum: ['Currency', 'Percent', 'Number']
+                enum: ["Currency", "Percent", "Number"],
             },
             currency: {
-                type: String
+                type: String,
             },
             header_background_color: {
-                type: String
-            }
+                type: String,
+            },
         },
 
         idea: {
-            negative_votes: [{
-                type: String,
-                default: null
-            }],
-            positive_votes: [{
-                type: String,
-                default: null
-            }]
+            negative_votes: [
+                {
+                    type: String,
+                    default: null,
+                },
+            ],
+            positive_votes: [
+                {
+                    type: String,
+                    default: null,
+                },
+            ],
         },
-        
+
         start_date: {
             type: Date,
-            default: null
+            default: null,
         },
 
         _parent_task: {
             type: Schema.Types.ObjectId,
-            ref: 'Post'
+            ref: "Post",
         },
         is_template: {
             type: Boolean,
-            default: false
+            default: false,
         },
         template_name: {
             type: String,
-            default: null
+            default: null,
         },
-        _dependency_task:[{
-            type: Schema.Types.ObjectId,
-            ref: 'Post'
-        }],
-        _dependent_child:[{
-            type: Schema.Types.ObjectId,
-            ref: 'Post'
-        }],
+        _dependency_task: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Post",
+            },
+        ],
+        _dependent_child: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Post",
+            },
+        ],
         shuttle_type: {
             type: Boolean,
-            default: false
+            default: false,
         },
-        shuttles: [{
-            _shuttle_group: {
-                type: Schema.Types.ObjectId,
-                ref: 'Group'
+        shuttles: [
+            {
+                _shuttle_group: {
+                    type: Schema.Types.ObjectId,
+                    ref: "Group",
+                },
+                _shuttle_section: {
+                    type: Schema.Types.ObjectId,
+                    ref: "Column",
+                },
+                shuttle_status: {
+                    type: String,
+                    default: "to do",
+                },
+                shuttled_at: {
+                    type: Date,
+                    required: true,
+                    default: DateTime.now(),
+                },
             },
-            _shuttle_section: {
-                type: Schema.Types.ObjectId,
-                ref: 'Column'
-            },
-            shuttle_status: {
-                type: String,
-                default: 'to do'
-            },
-            shuttled_at: {
-                type: Date,
-                required: true,
-                default: DateTime.now()
-            }
-        }]
+        ],
     },
 
     // PERFORMANCE TASK
     performance_task: {
         _assigned_to: {
             type: Schema.Types.ObjectId,
-            ref: 'User'
+            ref: "User",
         },
-        skills: [{
-            type: String,
-            default: null
-        }],
+        skills: [
+            {
+                type: String,
+                default: null,
+            },
+        ],
         status: {
             type: String,
-            enum: ['to do', 'in progress', 'done']
+            enum: ["to do", "in progress", "done"],
         },
         completed_at: {
             type: Date,
-            default: null
-        }
+            default: null,
+        },
     },
 
     // EVENT
     event: {
         due_to: {
             type: String,
-            default: null
-        }
-    }
+            default: null,
+        },
+    },
 });
 
-const Post = mongoose.model('Post', PostSchema);
+const Post = mongoose.model("Post", PostSchema);
 
-export { Post }
+export { Post };
