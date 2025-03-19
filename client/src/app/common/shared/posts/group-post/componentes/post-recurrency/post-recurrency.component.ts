@@ -118,7 +118,7 @@ export class PostRecurrencyComponent implements OnInit, OnChanges {
     this.saveRecurrency();
   }
 
-  isDaySelected(day: string): boolean {
+  isDaySelected(day: number): boolean {
     return this.postData?.recurrent?.days_of_week.includes(day);
   }
 

@@ -24,13 +24,13 @@
 	<p *ngIf="postData?.is_recurrent && (postData?.recurrent?.frequency == 'weekly' || postData?.recurrent?.frequency == 'daily')">
 		<span i18n="@@postRecurrency.onTheseDays" class="box-title">On these days</span>
 		<br/>
-		<mat-checkbox [checked]="isDaySelected('Sunday')" (change)="onTheseDaysSelected($event)" [name]="'Sunday'" class="inline-checkbox" i18n="@@postRecurrency.su">S</mat-checkbox>
-		<mat-checkbox [checked]="isDaySelected('Monday')" (change)="onTheseDaysSelected($event)" [name]="'Monday'" class="inline-checkbox" i18n="@@postRecurrency.m">M</mat-checkbox>
-		<mat-checkbox [checked]="isDaySelected('Tuesday')" (change)="onTheseDaysSelected($event)" [name]="'Tuesday'" class="inline-checkbox" i18n="@@postRecurrency.tu">T</mat-checkbox>
-		<mat-checkbox [checked]="isDaySelected('Wednesday')" (change)="onTheseDaysSelected($event)" [name]="'Wednesday'" class="inline-checkbox" i18n="@@postRecurrency.w">W</mat-checkbox>
-		<mat-checkbox [checked]="isDaySelected('Thursday')" (change)="onTheseDaysSelected($event)" [name]="'Thursday'" class="inline-checkbox" i18n="@@postRecurrency.th">T</mat-checkbox>
-		<mat-checkbox [checked]="isDaySelected('Friday')" (change)="onTheseDaysSelected($event)" [name]="'Friday'" class="inline-checkbox" i18n="@@postRecurrency.f">F</mat-checkbox>
-		<mat-checkbox [checked]="isDaySelected('Saturday')" (change)="onTheseDaysSelected($event)" [name]="'Saturday'" class="inline-checkbox" i18n="@@postRecurrency.sa">S</mat-checkbox>
+		<mat-checkbox [checked]="isDaySelected(6)" (change)="onTheseDaysSelected($event)" [name]="6" class="inline-checkbox" i18n="@@postRecurrency.su">S</mat-checkbox>
+		<mat-checkbox [checked]="isDaySelected(0)" (change)="onTheseDaysSelected($event)" [name]="0" class="inline-checkbox" i18n="@@postRecurrency.m">M</mat-checkbox>
+		<mat-checkbox [checked]="isDaySelected(1)" (change)="onTheseDaysSelected($event)" [name]="1" class="inline-checkbox" i18n="@@postRecurrency.tu">T</mat-checkbox>
+		<mat-checkbox [checked]="isDaySelected(2)" (change)="onTheseDaysSelected($event)" [name]="2" class="inline-checkbox" i18n="@@postRecurrency.w">W</mat-checkbox>
+		<mat-checkbox [checked]="isDaySelected(3)" (change)="onTheseDaysSelected($event)" [name]="3" class="inline-checkbox" i18n="@@postRecurrency.th">T</mat-checkbox>
+		<mat-checkbox [checked]="isDaySelected(4)" (change)="onTheseDaysSelected($event)" [name]="4" class="inline-checkbox" i18n="@@postRecurrency.f">F</mat-checkbox>
+		<mat-checkbox [checked]="isDaySelected(5)" (change)="onTheseDaysSelected($event)" [name]="5" class="inline-checkbox" i18n="@@postRecurrency.sa">S</mat-checkbox>
 	</p>
 	<!-- Frequency ends -->
 
