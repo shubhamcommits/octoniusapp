@@ -135,7 +135,14 @@ const PostSchema = new Schema({
     recurrent: {
         frequency: {
             type: String,
-            enum: ["daily", "weekly", "monthly", "yearly", "periodically"],
+            enum: [
+                "daily",
+                "weekly",
+                "monthly",
+                "yearly",
+                "custom",
+                "periodically",
+            ],
         },
         _parent_post: {
             type: Schema.Types.ObjectId,
