@@ -12,13 +12,13 @@
       <!-- Empty State of tasks starts -->
       <div *ngIf="this.overdueAndTodayTasks.length == 0 && this.thisWeekTasks.length == 0">
         <img src='assets/images/placeholder_activity3.png' class="placeholder-img">
-        <p class="muted text-center" i18n="@@mySpaceTasks.done">Done. That's a wrap! </p>
+        <p class="muted text-center" i18n="@@portfolioUserWorkloadDialog.done">Done. That's a wrap! </p>
       </div>
       <!-- Empty State of tasks ends -->
 
       <h5 class="title-overview"
         *ngIf="this.overdueAndTodayTasks.length != 0"
-        i18n="@@mySpaceTasks.today">
+        i18n="@@portfolioUserWorkloadDialog.today">
           Today
       </h5>
 
@@ -42,7 +42,7 @@
                 </div>
 
                 <div class="col-md-2">
-                  <div *ngIf="task.overdue" class="overview-item small text-right overdue" i18n="@@mySpaceTasks.overdue">
+                  <div *ngIf="task.overdue" class="overview-item small text-right overdue" i18n="@@portfolioUserWorkloadDialog.overdue">
                     OVERDUE
                   </div>
                   <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
@@ -80,7 +80,7 @@
                 </div>
 
                 <div class="col-md-2">
-                  <div *ngIf="task.overdue" class="overview-item small text-right overdue" i18n="@@mySpaceTasks.overdue">
+                  <div *ngIf="task.overdue" class="overview-item small text-right overdue" i18n="@@portfolioUserWorkloadDialog.overdue">
                     OVERDUE
                   </div>
                   <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
@@ -111,7 +111,7 @@
                 </div>
 
                 <div class="col-md-2">
-                  <div *ngIf="task.overdue" class="overview-item small text-right overdue" i18n="@@mySpaceTasks.overdue">
+                  <div *ngIf="task.overdue" class="overview-item small text-right overdue" i18n="@@portfolioUserWorkloadDialog.overdue">
                     OVERDUE
                   </div>
                   <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
@@ -150,7 +150,7 @@
                 </div>
 
                 <div class="col-md-2">
-                  <div *ngIf="task.overdue" class="overview-item small text-right overdue" i18n="@@mySpaceTasks.overdue">
+                  <div *ngIf="task.overdue" class="overview-item small text-right overdue" i18n="@@portfolioUserWorkloadDialog.overdue">
                     OVERDUE
                   </div>
                   <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
@@ -188,7 +188,7 @@
                 </div>
 
                 <div class="col-md-2">
-                  <div *ngIf="task.overdue" class="overview-item small text-right overdue" i18n="@@mySpaceTasks.overdue">
+                  <div *ngIf="task.overdue" class="overview-item small text-right overdue" i18n="@@portfolioUserWorkloadDialog.overdue">
                     OVERDUE
                   </div>
                   <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
@@ -219,7 +219,7 @@
                 </div>
 
                 <div class="col-md-2">
-                  <div *ngIf="task.overdue" class="overview-item small text-right overdue" i18n="@@mySpaceTasks.overdue">
+                  <div *ngIf="task.overdue" class="overview-item small text-right overdue" i18n="@@portfolioUserWorkloadDialog.overdue">
                     OVERDUE
                   </div>
                   <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
@@ -234,7 +234,7 @@
         
       </div>
 
-      <h5 class="title-overview" *ngIf="this.nextWeekTasks.length !=  0" i18n="@@mySpaceTasks.nextWeek">Next week</h5>
+      <h5 class="title-overview" *ngIf="this.nextWeekTasks.length !=  0" i18n="@@portfolioUserWorkloadDialog.nextWeek">Next week</h5>
 
       <div *ngFor="let task of nextWeekTasks; let i = index; trackBy: utilityService.trackByIndex">
         
@@ -258,7 +258,7 @@
                 </div>
 
                 <div class="col-md-2">
-                  <div *ngIf="task.overdue" class="overview-item small text-right overdue" i18n="@@mySpaceTasks.overdue">
+                  <div *ngIf="task.overdue" class="overview-item small text-right overdue" i18n="@@portfolioUserWorkloadDialog.overdue">
                     OVERDUE
                   </div>
                   <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
@@ -296,7 +296,7 @@
                 </div>
 
                 <div class="col-md-2">
-                  <div *ngIf="task.overdue" class="overview-item small text-right overdue" i18n="@@mySpaceTasks.overdue">
+                  <div *ngIf="task.overdue" class="overview-item small text-right overdue" i18n="@@portfolioUserWorkloadDialog.overdue">
                     OVERDUE
                   </div>
                   <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
@@ -342,7 +342,7 @@
 
 
 
-      <h5 class="title-overview" *ngIf="this.futureTasks.length !=  0" i18n="@@mySpaceTasks.futureTasks">Future Tasks</h5>
+      <h5 class="title-overview" *ngIf="this.futureTasks.length !=  0" i18n="@@portfolioUserWorkloadDialog.futureTasks">Future Tasks</h5>
 
       <div *ngFor="let task of futureTasks; let i = index; trackBy: utilityService.trackByIndex">
         
@@ -367,7 +367,7 @@
                 </div>
 
                 <div class="col-md-2">
-                  <div *ngIf="task.overdue" class="overview-item small text-right overdue" i18n="@@mySpaceTasks.overdue">
+                  <div *ngIf="task.overdue" class="overview-item small text-right overdue" i18n="@@portfolioUserWorkloadDialog.overdue">
                     OVERDUE
                   </div>
                   <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
@@ -405,7 +405,7 @@
                 </div>
 
                 <div class="col-md-2">
-                  <div *ngIf="task.overdue" class="overview-item small text-right overdue" i18n="@@mySpaceTasks.overdue">
+                  <div *ngIf="task.overdue" class="overview-item small text-right overdue" i18n="@@portfolioUserWorkloadDialog.overdue">
                     OVERDUE
                   </div>
                   <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
@@ -437,7 +437,7 @@
                 </div>
 
                 <div class="col-md-2">
-                  <div *ngIf="task.overdue" class="overview-item small text-right overdue" i18n="@@mySpaceTasks.overdue">
+                  <div *ngIf="task.overdue" class="overview-item small text-right overdue" i18n="@@portfolioUserWorkloadDialog.overdue">
                     OVERDUE
                   </div>
                   <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
