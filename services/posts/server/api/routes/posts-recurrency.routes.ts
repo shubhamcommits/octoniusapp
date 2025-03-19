@@ -10,7 +10,7 @@ import { Auths, postFileUploader } from "../utils";
 const routes = express.Router();
 
 /**
- * Posts Controller Class Object
+ * Posts Recurrency Controller Class Object
  */
 const recurrencyController = new RecurrencyController();
 
