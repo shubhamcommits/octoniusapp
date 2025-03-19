@@ -38,7 +38,7 @@
 	<p *ngIf="postData?.is_recurrent && postData?.recurrent?.frequency == 'weekly'">
 		<span i18n="@@postRecurrency.onTheseDays" class="box-title">On these days</span>
 		<br/>
-		<mat-radio-group (change)="onTheseDaysRadioSelected($event)">
+		<mat-radio-group (change)="onTheseDaysRadioSelected($event)" [value]="getWeeklyDaySelected()">
 			<mat-radio-button [value]="7" class="inline-checkbox" i18n="@@postRecurrency.su">S</mat-radio-button>
 			<mat-radio-button [value]="1" class="inline-checkbox" i18n="@@postRecurrency.m">M</mat-radio-button>
 			<mat-radio-button [value]="2" class="inline-checkbox" i18n="@@postRecurrency.tu">T</mat-radio-button>
@@ -50,8 +50,8 @@
 	</p>
 	<!-- Weekly Frequency ends -->
 
-	<!-- Periodically Date Picker starts -->
-	<div *ngIf="postData?.is_recurrent && (postData?.recurrent?.frequency == 'monthly' ||  postData?.recurrent?.frequency == 'yearly' ||  postData?.recurrent?.frequency == 'periodically')">
+	<!-- Custom Date Picker starts -->
+	<div *ngIf="postData?.is_recurrent && (postData?.recurrent?.frequency == 'monthly' ||  postData?.recurrent?.frequency == 'yearly' ||  postData?.recurrent?.frequency == 'custom')">
 		<span i18n="@@postRecurrency.on" class="box-title">On</span>
 		<app-date-picker *ngIf="postData?.recurrent?.frequency == 'monthly' ||  postData?.recurrent?.frequency == 'yearly'"
 			(date)="getDate($event, 'recurrency_on')" [selectedDate]="postData?.recurrent?.recurrency_on"
@@ -59,18 +59,18 @@
 			class="btn-group input-date" [canEdit]="canEdit" [customDateFormat]="(postData?.recurrent?.frequency == 'yearly') ? 'dd LLLL' : 'dd'">
 		</app-date-picker>
 
-		<app-calendar-picker *ngIf="postData?.recurrent?.frequency == 'periodically'"
+		<app-calendar-picker *ngIf="postData?.recurrent?.frequency == 'custom'"
 			[selectedDates]="postData?.recurrent?.specific_days"
 			[lowerLimit]="postData?.task?.due_to" [upperLimit]="(!!postData?.recurrent?.end_date) ? postData?.recurrent?.end_date : ''"
 			[canEdit]="canEdit"
-			(dateSelected)="getDate($event, 'periodically_on')">
-			<!-- (selectedDatesChange)="getDate($event, 'periodically_on')" -->
+			(dateSelected)="getDate($event, 'custom_on')">
+			<!-- (selectedDatesChange)="getDate($event, 'custom_on')" -->
 		</app-calendar-picker>
 	</div>
-	<!-- Periodically Date Picker ends -->
+	<!-- Custom Date Picker ends -->
 
 	<!-- Date Picker starts -->
-	<div *ngIf="postData?.is_recurrent && postData?.recurrent?.frequency != 'periodically'">
+	<div *ngIf="postData?.is_recurrent && postData?.recurrent?.frequency != 'custom'">
 		<span i18n="@@postRecurrency.endsOn" class="box-title">Ends on</span>
 		<app-date-picker (date)="getDate($event, 'end_date')" [selectedDate]="postData?.recurrent?.end_date"
 			[lowerLimit]=" postData?.task?.due_to"

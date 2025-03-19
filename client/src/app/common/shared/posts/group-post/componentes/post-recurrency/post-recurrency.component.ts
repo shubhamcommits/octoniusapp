@@ -1,16 +1,8 @@
-import {
-  Component,
-  EventEmitter,
-  Injector,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-} from "@angular/core";
+import { Component, Injector, Input, OnChanges, OnInit } from "@angular/core";
 import { PublicFunctions } from "modules/public.functions";
 import { PostService } from "src/shared/services/post-service/post.service";
 import { UtilityService } from "src/shared/services/utility-service/utility.service";
-import { DatesService } from "src/shared/services/dates-service/dates.service";
+import { DateTime } from "luxon";
 
 @Component({
   selector: "app-post-recurrency",
@@ -23,23 +15,16 @@ export class PostRecurrencyComponent implements OnInit, OnChanges {
   @Input() groupData: any;
   @Input() canEdit;
 
-  // @Output() startDateEvent = new EventEmitter();
-  // @Output() dueDateEvent = new EventEmitter();
-  // @Output() timeEvent = new EventEmitter();
-
-  // startDate: any;
-  // dueDate: any;
-  // dueTime: any = {
-  //   hour: 1,
-  //   minute: 30,
-  // };
-
   frequencies = [
-    { value: "daily", title: "Daily" },
-    { value: "weekly", title: "Weekly" },
-    { value: "monthly", title: "Monthly" },
-    { value: "yearly", title: "Yearly" },
-    { value: "periodically", title: "Periodically" },
+    { value: "daily", title: $localize`:@@postRecurrency.daily:Daily` },
+    { value: "weekly", title: $localize`:@@postRecurrency.weekly:Weekly` },
+    { value: "monthly", title: $localize`:@@postRecurrency.monthly:Monthly` },
+    { value: "yearly", title: $localize`:@@postRecurrency.yearly:Yearly` },
+    {
+      value: "custom",
+      title: $localize`:@@postRecurrency.especificDays:Especific Days`,
+    },
+    // { value: "periodically", title: $localize`:@@postRecurrency.periodically:Periodically`" },
   ];
 
   // Public Functions class object
@@ -65,7 +50,7 @@ export class PostRecurrencyComponent implements OnInit, OnChanges {
       this.postData.recurrent.end_date = dateObject.toISODate();
     } else if (property === "recurrency_on") {
       this.postData.recurrent.recurrency_on = dateObject.toISODate();
-    } else if (property === "periodically_on") {
+    } else if (property === "custom_on") {
       if (!this.postData?.recurrent?.specific_days) {
         this.postData.recurrent.specific_days = [];
       }
@@ -93,6 +78,13 @@ export class PostRecurrencyComponent implements OnInit, OnChanges {
   async updateRecurrentFrequency(event: any): Promise<void> {
     await this.resetRecurrency();
     this.postData.recurrent.frequency = event.value;
+    if (event.value == "daily") {
+      this.postData.recurrent.days_of_week = [1, 2, 3, 4, 5, 6, 7];
+    } else if (event.value == "weekly") {
+      this.postData.recurrent.days_of_week = [DateTime.now().weekday];
+    } else {
+      this.postData.recurrent.days_of_week = [];
+    }
     this.saveRecurrency();
   }
   resetRecurrency() {
@@ -131,13 +123,9 @@ export class PostRecurrencyComponent implements OnInit, OnChanges {
     return this.postData?.recurrent?.days_of_week.includes(day);
   }
 
-  /**
-   * This function is responsible for receiving the time from @module <app-time-picker></app-time-picker>
-   * @param timeObject
-   */
-  // getTime(timeObject: any) {
-  //   this.timeEvent.emit(timeObject);
-  // }
+  getWeeklyDaySelected(): number {
+    return this.postData?.recurrent?.days_of_week[0];
+  }
 
   async saveRecurrency() {
     await this.utilityService.asyncNotification(
@@ -150,7 +138,6 @@ export class PostRecurrencyComponent implements OnInit, OnChanges {
             this.postData?.recurrent
           )
           .then((res) => {
-            console.log(res);
             resolve(
               this.utilityService.resolveAsyncPromise(
                 $localize`:@@postRecurrency.postUpdated:Post updated!`
