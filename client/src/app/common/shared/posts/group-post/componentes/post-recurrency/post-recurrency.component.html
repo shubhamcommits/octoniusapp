@@ -20,19 +20,35 @@
 	</p>
 	<!-- Frequency ends -->
 
-	<!-- Frequency starts -->
-	<p *ngIf="postData?.is_recurrent && (postData?.recurrent?.frequency == 'weekly' || postData?.recurrent?.frequency == 'daily')">
+	<!-- Daily Frequency starts -->
+	<p *ngIf="postData?.is_recurrent && postData?.recurrent?.frequency == 'daily'">
 		<span i18n="@@postRecurrency.onTheseDays" class="box-title">On these days</span>
 		<br/>
-		<mat-checkbox [checked]="isDaySelected(7)" (change)="onTheseDaysSelected($event)" [name]="7" class="inline-checkbox" i18n="@@postRecurrency.su">S</mat-checkbox>
-		<mat-checkbox [checked]="isDaySelected(1)" (change)="onTheseDaysSelected($event)" [name]="1" class="inline-checkbox" i18n="@@postRecurrency.m">M</mat-checkbox>
-		<mat-checkbox [checked]="isDaySelected(2)" (change)="onTheseDaysSelected($event)" [name]="2" class="inline-checkbox" i18n="@@postRecurrency.tu">T</mat-checkbox>
-		<mat-checkbox [checked]="isDaySelected(3)" (change)="onTheseDaysSelected($event)" [name]="3" class="inline-checkbox" i18n="@@postRecurrency.w">W</mat-checkbox>
-		<mat-checkbox [checked]="isDaySelected(4)" (change)="onTheseDaysSelected($event)" [name]="4" class="inline-checkbox" i18n="@@postRecurrency.th">T</mat-checkbox>
-		<mat-checkbox [checked]="isDaySelected(5)" (change)="onTheseDaysSelected($event)" [name]="5" class="inline-checkbox" i18n="@@postRecurrency.f">F</mat-checkbox>
-		<mat-checkbox [checked]="isDaySelected(6)" (change)="onTheseDaysSelected($event)" [name]="6" class="inline-checkbox" i18n="@@postRecurrency.sa">S</mat-checkbox>
+		<mat-checkbox [checked]="isDaySelected(7)" (change)="onTheseDaysCheckSelected($event)" [name]="7" class="inline-checkbox" i18n="@@postRecurrency.su">S</mat-checkbox>
+		<mat-checkbox [checked]="isDaySelected(1)" (change)="onTheseDaysCheckSelected($event)" [name]="1" class="inline-checkbox" i18n="@@postRecurrency.m">M</mat-checkbox>
+		<mat-checkbox [checked]="isDaySelected(2)" (change)="onTheseDaysCheckSelected($event)" [name]="2" class="inline-checkbox" i18n="@@postRecurrency.tu">T</mat-checkbox>
+		<mat-checkbox [checked]="isDaySelected(3)" (change)="onTheseDaysCheckSelected($event)" [name]="3" class="inline-checkbox" i18n="@@postRecurrency.w">W</mat-checkbox>
+		<mat-checkbox [checked]="isDaySelected(4)" (change)="onTheseDaysCheckSelected($event)" [name]="4" class="inline-checkbox" i18n="@@postRecurrency.th">T</mat-checkbox>
+		<mat-checkbox [checked]="isDaySelected(5)" (change)="onTheseDaysCheckSelected($event)" [name]="5" class="inline-checkbox" i18n="@@postRecurrency.f">F</mat-checkbox>
+		<mat-checkbox [checked]="isDaySelected(6)" (change)="onTheseDaysCheckSelected($event)" [name]="6" class="inline-checkbox" i18n="@@postRecurrency.sa">S</mat-checkbox>
 	</p>
-	<!-- Frequency ends -->
+	<!-- Daily Frequency ends -->
+
+	<!-- Weekly Frequency starts -->
+	<p *ngIf="postData?.is_recurrent && postData?.recurrent?.frequency == 'weekly'">
+		<span i18n="@@postRecurrency.onTheseDays" class="box-title">On these days</span>
+		<br/>
+		<mat-radio-group (change)="onTheseDaysRadioSelected($event)">
+			<mat-radio-button [value]="7" class="inline-checkbox" i18n="@@postRecurrency.su">S</mat-radio-button>
+			<mat-radio-button [value]="1" class="inline-checkbox" i18n="@@postRecurrency.m">M</mat-radio-button>
+			<mat-radio-button [value]="2" class="inline-checkbox" i18n="@@postRecurrency.tu">T</mat-radio-button>
+			<mat-radio-button [value]="3" class="inline-checkbox" i18n="@@postRecurrency.w">W</mat-radio-button>
+			<mat-radio-button [value]="4" class="inline-checkbox" i18n="@@postRecurrency.th">T</mat-radio-button>
+			<mat-radio-button [value]="5" class="inline-checkbox" i18n="@@postRecurrency.f">F</mat-radio-button>
+			<mat-radio-button [value]="6" class="inline-checkbox" i18n="@@postRecurrency.sa">S</mat-radio-button>
+		</mat-radio-group>
+	</p>
+	<!-- Weekly Frequency ends -->
 
 	<!-- Periodically Date Picker starts -->
 	<div *ngIf="postData?.is_recurrent && (postData?.recurrent?.frequency == 'monthly' ||  postData?.recurrent?.frequency == 'yearly' ||  postData?.recurrent?.frequency == 'periodically')">

@@ -106,7 +106,7 @@ export class PostRecurrencyComponent implements OnInit, OnChanges {
     };
   }
 
-  onTheseDaysSelected($event) {
+  onTheseDaysCheckSelected($event) {
     if ($event.checked) {
       this.postData.recurrent.days_of_week.push($event.source.name);
     } else {
@@ -114,6 +114,15 @@ export class PostRecurrencyComponent implements OnInit, OnChanges {
         this.postData.recurrent.days_of_week.filter(
           (day) => day !== $event.source.name
         );
+    }
+    this.saveRecurrency();
+  }
+
+  onTheseDaysRadioSelected($event) {
+    if (!!$event.value) {
+      this.postData.recurrent.days_of_week = [$event.value];
+    } else {
+      this.postData.recurrent.days_of_week = [];
     }
     this.saveRecurrency();
   }
