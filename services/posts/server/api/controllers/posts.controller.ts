@@ -1385,7 +1385,8 @@ export class PostController {
                 throw err;
             });
         post.task.status = status;
-
+        // console.log("status", status);
+        // console.log("recurrent: ", post.is_recurrent);
         if (status == "done" && post.is_recurrent) {
             recurrencyController.executeRecurrency(post, userId);
         }

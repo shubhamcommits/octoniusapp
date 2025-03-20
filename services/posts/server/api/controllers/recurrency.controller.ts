@@ -178,17 +178,40 @@ export class RecurrencyController {
             //     query.push({ _id: postId });
             // }
 
-            let postsStream = Readable.from(
-                await Post.find({ $and: query }).lean()
-            );
+            const posts = await Post.find({ $and: query }).lean();
 
-            await postsStream.on("data", async (post: any) => {
+            posts.forEach(async (post) => {
+                // console.log("postStream._id: ", post._id);
+                // console.log("postStream.duedate: ", post.task.due_to);
+                // console.log(
+                //     "postStream.recurrent._parent_post: ",
+                //     post.recurrent._parent_post
+                // );
+                // console.log(
+                //     "postStream.recurrent.frequency: ",
+                //     post.recurrent.frequency
+                // );
+                // console.log(
+                //     "postStream.recurrent.recurrency_on: ",
+                //     post.recurrent.recurrency_on
+                // );
+                // console.log(
+                //     "postStream.recurrent.end_date: ",
+                //     post.recurrent.end_date
+                // );
+                // console.log(
+                //     "postStream.recurrent.days_of_week: ",
+                //     post.recurrent.days_of_week
+                // );
+                // console.log(
+                //     "postStream.recurrent.specific_days: ",
+                //     post.recurrent.specific_days
+                // );
                 const tmpPost = await Post.findById(
                     post.recurrent._parent_post
                 ).lean();
-                console.log("tmpPost: ", tmpPost?._id);
+
                 if (!tmpPost) {
-                    console.log("post: ", post._id);
                     this.clonePost(
                         post,
                         post._posted_by._id || post._posted_by,
@@ -202,59 +225,91 @@ export class RecurrencyController {
     }
 
     async executeRecurrency(post, userId) {
-        const tmpPost = await Post.findById(post.recurrent._parent_post).lean();
+        const clonedPost = await Post.findById(
+            post.recurrent._parent_post
+        ).lean();
+        console.log("tmpPost: ", clonedPost?._id);
 
-        if (!tmpPost) {
-            const today = DateTime.now();
-            // const tomorrow = today.plus({ days: 1 });
-            let dueDate = DateTime.now();
-            dueDate.weekday;
+        if (!clonedPost) {
+            const originalDueDate = DateTime.fromISO(post.task.due_to); // Obtener la fecha de vencimiento original
+            let dueDate;
+
             switch (post.recurrent.frequency) {
                 case "daily":
+                    if (
+                        post.recurrent.days_of_week.includes(
+                            originalDueDate.weekday
+                        )
+                    ) {
+                        dueDate = originalDueDate.plus({ days: 1 });
+                    } else {
+                        console.log(
+                            "Original due date is not in the specified days of the week."
+                        );
+                        return;
+                    }
+                    break;
+
                 case "weekly":
                     if (
-                        // (post.recurrent.days_of_week.includes(today.weekday) ||
-                        //     )
-                        // &&
-                        DateTime.fromIso(post.recurrent.end_date) >= today ||
-                        !post.recurrent.end_date
+                        post.recurrent.days_of_week.length === 1 &&
+                        post.recurrent.days_of_week[0] ===
+                            originalDueDate.weekday
                     ) {
-                        if (post.recurrent.frequency === "daily") {
-                            dueDate = dueDate.plus({ days: 1 });
-                        } else if (post.recurrent.frequency === "weekly") {
-                            dueDate = dueDate.plus({ weeks: 1 });
-                        }
-                        this.clonePost(post, userId, dueDate);
+                        dueDate = originalDueDate.plus({ weeks: 1 });
+                    } else {
+                        console.log(
+                            "Original due date does not match the specified day of the week for weekly recurrence."
+                        );
+                        return;
                     }
                     break;
+
                 case "monthly":
-                    if (
-                        today.day ===
-                        DateTime.fromIso(post.recurrent.recurrency_on).day
-                    ) {
-                        dueDate = dueDate.plus({ months: 1 });
-                        this.clonePost(post, userId, dueDate);
-                    }
+                    const recurrencyDay = DateTime.fromISO(
+                        post.recurrent.recurrency_on
+                    ); // Usar recurrency_on
+                    dueDate = recurrencyDay.plus({ months: 1 }); // Calcular el próximo mes
                     break;
+
                 case "yearly":
-                    if (
-                        today.day ===
-                            DateTime.fromIso(post.recurrent.recurrency_on)
-                                .day &&
-                        today.month ===
-                            DateTime.fromIso(post.recurrent.recurrency_on).month
-                    ) {
-                        dueDate = dueDate.plus({ years: 1 });
-                        this.clonePost(post, userId, dueDate);
-                    }
+                    const recurrencyDate = DateTime.fromISO(
+                        post.recurrent.recurrency_on
+                    ); // Usar recurrency_on
+                    dueDate = recurrencyDate.plus({ years: 1 }); // Calcular el próximo año
                     break;
+
                 case "custom":
-                    if (
-                        post.recurrent.recurrency_on.includes(today.toISODate())
-                    ) {
-                        this.clonePost(post, userId, today);
+                    const specificDays = post.recurrent.specific_days
+                        .map((date) => DateTime.fromISO(date))
+                        .filter((date) => date > originalDueDate) // Filtrar fechas posteriores a originalDueDate
+                        .sort((a, b) => a.toMillis() - b.toMillis()); // Ordenar por fecha más cercana
+                    if (specificDays.length > 0) {
+                        dueDate = specificDays[0]; // Tomar la próxima fecha
+                    } else {
+                        console.log(
+                            "No future dates found in the specified custom recurrence days."
+                        );
+                        return;
                     }
                     break;
+
+                default:
+                    console.log(
+                        "Unknown recurrence frequency:",
+                        post.recurrent.frequency
+                    );
+                    return;
+            }
+
+            // Validar si el dueDate está dentro del rango permitido o si no hay fecha de fin
+            if (
+                !post.recurrent.end_date ||
+                DateTime.fromISO(post.recurrent.end_date) >= dueDate
+            ) {
+                this.clonePost(post, userId, dueDate);
+            } else {
+                console.log("Recurrence has ended or due date is invalid.");
             }
         }
     }
@@ -262,7 +317,7 @@ export class RecurrencyController {
     async clonePost(post, userId, dueDate?) {
         // Crear una copia completa del objeto post
         const postCopy = JSON.parse(JSON.stringify(post));
-
+        delete postCopy._id;
         postCopy.recurrent._parent_post = post._id;
         postCopy.task.status = "to do";
         postCopy.task.due_to = !!dueDate ? dueDate : DateTime.now();
