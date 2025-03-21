@@ -75,9 +75,7 @@ export class PostRecurrencyComponent implements OnInit, OnChanges {
     }
 
     this.postData.is_recurrent = !this.postData.is_recurrent;
-    if (this.postData.is_recurrent && !this.postData.recurrent) {
-      this.resetRecurrency();
-    }
+    this.resetRecurrency();
     this.saveRecurrency();
   }
 
@@ -93,10 +91,10 @@ export class PostRecurrencyComponent implements OnInit, OnChanges {
     }
     this.saveRecurrency();
   }
+
   resetRecurrency() {
     this.postData.recurrent = {
       frequency: "",
-      // _parent_post: this.postData._id,
       days_of_week: [],
       end_date: null,
       recurrency_on: null,
