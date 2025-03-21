@@ -3,14 +3,14 @@
 	<p class="box-title">
 		<span i18n="@@postRecurrency.recurrent">Recurrent task</span>
 		<mat-slide-toggle color="primary" style=" margin-left: 15px;" [checked]="postData?.is_recurrent" [name]="'recurrent'"
-			(change)="transformToRecurrent($event)" [disabled]="!canEdit || !postData?.task?.due_to || checkOverdue()">
+			(change)="transformToRecurrent($event)" [disabled]="!canEdit">
 		</mat-slide-toggle>
 	</p>
 
 	<!-- Frequency starts -->
 	<p *ngIf="postData?.is_recurrent" class="box-title">
 		<span i18n="@@postRecurrency.frequency">Frequency</span>
-		<mat-select [(value)]="postData.recurrent.frequency" (selectionChange)="updateRecurrentFrequency($event)">
+		<mat-select [(value)]="postData.recurrent.frequency" (selectionChange)="updateRecurrentFrequency($event)" [disabled]="!canEdit">
 			@for (frequency of frequencies; track frequency; let i = $index) {
 			<mat-option [value]="frequency.value">
 				{{ frequency.title }}
@@ -24,13 +24,13 @@
 	<p *ngIf="postData?.is_recurrent && postData?.recurrent?.frequency == 'daily'">
 		<span i18n="@@postRecurrency.onTheseDays" class="box-title">On these days</span>
 		<br/>
-		<mat-checkbox [checked]="isDaySelected(7)" (change)="onTheseDaysCheckSelected($event)" [name]="7" class="inline-checkbox" i18n="@@postRecurrency.su">S</mat-checkbox>
-		<mat-checkbox [checked]="isDaySelected(1)" (change)="onTheseDaysCheckSelected($event)" [name]="1" class="inline-checkbox" i18n="@@postRecurrency.m">M</mat-checkbox>
-		<mat-checkbox [checked]="isDaySelected(2)" (change)="onTheseDaysCheckSelected($event)" [name]="2" class="inline-checkbox" i18n="@@postRecurrency.tu">T</mat-checkbox>
-		<mat-checkbox [checked]="isDaySelected(3)" (change)="onTheseDaysCheckSelected($event)" [name]="3" class="inline-checkbox" i18n="@@postRecurrency.w">W</mat-checkbox>
-		<mat-checkbox [checked]="isDaySelected(4)" (change)="onTheseDaysCheckSelected($event)" [name]="4" class="inline-checkbox" i18n="@@postRecurrency.th">T</mat-checkbox>
-		<mat-checkbox [checked]="isDaySelected(5)" (change)="onTheseDaysCheckSelected($event)" [name]="5" class="inline-checkbox" i18n="@@postRecurrency.f">F</mat-checkbox>
-		<mat-checkbox [checked]="isDaySelected(6)" (change)="onTheseDaysCheckSelected($event)" [name]="6" class="inline-checkbox" i18n="@@postRecurrency.sa">S</mat-checkbox>
+		<mat-checkbox [checked]="isDaySelected(7)" [disabled]="!canEdit" (change)="onTheseDaysCheckSelected($event)" [name]="7" class="inline-checkbox" i18n="@@postRecurrency.su">S</mat-checkbox>
+		<mat-checkbox [checked]="isDaySelected(1)" [disabled]="!canEdit" (change)="onTheseDaysCheckSelected($event)" [name]="1" class="inline-checkbox" i18n="@@postRecurrency.m">M</mat-checkbox>
+		<mat-checkbox [checked]="isDaySelected(2)" [disabled]="!canEdit" (change)="onTheseDaysCheckSelected($event)" [name]="2" class="inline-checkbox" i18n="@@postRecurrency.tu">T</mat-checkbox>
+		<mat-checkbox [checked]="isDaySelected(3)" [disabled]="!canEdit" (change)="onTheseDaysCheckSelected($event)" [name]="3" class="inline-checkbox" i18n="@@postRecurrency.w">W</mat-checkbox>
+		<mat-checkbox [checked]="isDaySelected(4)" [disabled]="!canEdit" (change)="onTheseDaysCheckSelected($event)" [name]="4" class="inline-checkbox" i18n="@@postRecurrency.th">T</mat-checkbox>
+		<mat-checkbox [checked]="isDaySelected(5)" [disabled]="!canEdit" (change)="onTheseDaysCheckSelected($event)" [name]="5" class="inline-checkbox" i18n="@@postRecurrency.f">F</mat-checkbox>
+		<mat-checkbox [checked]="isDaySelected(6)" [disabled]="!canEdit" (change)="onTheseDaysCheckSelected($event)" [name]="6" class="inline-checkbox" i18n="@@postRecurrency.sa">S</mat-checkbox>
 	</p>
 	<!-- Daily Frequency ends -->
 
@@ -38,7 +38,7 @@
 	<p *ngIf="postData?.is_recurrent && postData?.recurrent?.frequency == 'weekly'">
 		<span i18n="@@postRecurrency.onTheseDays" class="box-title">On these days</span>
 		<br/>
-		<mat-radio-group (change)="onTheseDaysRadioSelected($event)" [value]="getWeeklyDaySelected()">
+		<mat-radio-group (change)="onTheseDaysRadioSelected($event)" [value]="getWeeklyDaySelected()" [disabled]="!canEdit">
 			<mat-radio-button [value]="7" class="inline-checkbox" i18n="@@postRecurrency.su">S</mat-radio-button>
 			<mat-radio-button [value]="1" class="inline-checkbox" i18n="@@postRecurrency.m">M</mat-radio-button>
 			<mat-radio-button [value]="2" class="inline-checkbox" i18n="@@postRecurrency.tu">T</mat-radio-button>

@@ -11,6 +11,7 @@ export class DatesService {
   constructor(private injector: Injector) {}
 
   ensureDateTime(dateObject: any): DateTime {
+    // TODO - Change all dates transformation (DateTime.fromISO(),DateTime.fromJSDate(),...) to use this method
     if (!dateObject) return null as any;
 
     if (DateTime.isDateTime(dateObject)) {

@@ -1759,7 +1759,7 @@ export class PublicFunctions {
                 groupId,
                 isCreationTaskTrigger || false,
                 shuttleIndex
-              );              
+              );
               if (doTrigger) {
                 const childStatusTriggerIndex = !!step.trigger
                   ? step.trigger.findIndex((trigger) => {
@@ -1929,17 +1929,17 @@ export class PublicFunctions {
                 (trigger?.due_date_value == "overdue" &&
                   post?.task?.status != "done" &&
                   datesService.isBefore(
-                    DateTime.fromISO(post?.task?.due_to),
+                    datesService.ensureDateTime(post?.task?.due_to),
                     today
                   )) ||
                 (trigger?.due_date_value == "today" &&
                   datesService.isSameDay(
-                    DateTime.fromISO(post?.task?.due_to),
+                    datesService.ensureDateTime(post?.task?.due_to),
                     today
                   )) ||
                 (trigger?.due_date_value == "tomorrow" &&
                   datesService.isSameDay(
-                    DateTime.fromISO(post?.task?.due_to),
+                    datesService.ensureDateTime(post?.task?.due_to),
                     today.plus({ days: 1 })
                   ))
               ) {
@@ -2018,7 +2018,7 @@ export class PublicFunctions {
             post.task.custom_fields[action.custom_field.name] =
               action.custom_field.value;
             return post;
-          case "Move to":                      
+          case "Move to":
             if (post.task._parent_task) {
               if (post?.task?.shuttle_type && shuttleIndex >= 0) {
                 post.task.shuttles[shuttleIndex]._shuttle_section =
@@ -2028,9 +2028,12 @@ export class PublicFunctions {
               if (post?.task?.shuttle_type && shuttleIndex >= 0) {
                 post.task.shuttles[shuttleIndex]._shuttle_section =
                   action._section;
-              } else {                
+              } else {
                 if (!post.task._parent_task) {
-                  await columnService.triggerRefreshSection({sectionId: action._section._id, oldSectionId: post.task._column._id});
+                  await columnService.triggerRefreshSection({
+                    sectionId: action._section._id,
+                    oldSectionId: post.task._column._id,
+                  });
                   post.task._column = action._section;
                 }
               }
@@ -2117,8 +2120,11 @@ export class PublicFunctions {
    * @returns
    */
   getHighestDate(posts: any) {
-    const highestDate = DateTime.fromISO(
-      Math.max(...posts.map((post) => DateTime.fromISO(post.task.due_to)))
+    let datesService = this.injector.get(DatesService);
+    const highestDate = datesService.ensureDateTime(
+      Math.max(
+        ...posts.map((post) => datesService.ensureDateTime(post.task.due_to))
+      )
     );
     return !highestDate || !highestDate.isValid ? null : highestDate;
   }
@@ -2451,7 +2457,10 @@ export class PublicFunctions {
     const today = DateTime.now().startOf("day");
     return (
       taskPost?.task?.status != "done" &&
-      datesService.isBefore(DateTime.fromISO(taskPost?.task?.due_to), today)
+      datesService.isBefore(
+        datesService.ensureDateTime(taskPost?.task?.due_to),
+        today
+      )
     );
   }
 

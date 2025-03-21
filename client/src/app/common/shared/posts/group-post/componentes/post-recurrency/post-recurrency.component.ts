@@ -40,7 +40,10 @@ export class PostRecurrencyComponent implements OnInit, OnChanges {
 
   ngOnInit() {}
 
-  async ngOnChanges() {}
+  async ngOnChanges() {
+    this.canEdit =
+      this.canEdit && !!this.postData?.task?.due_to && !this.checkOverdue();
+  }
 
   /**
    * This function is responsible for receiving the date from @module <app-date-picker></app-date-picker>
