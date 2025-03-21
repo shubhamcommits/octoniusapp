@@ -1,9 +1,9 @@
 <!-- Recurring tasks starts -->
-<div>
+<div *ngIf="postData?.is_recurrent || !checkOverdue()">
 	<p class="box-title">
 		<span i18n="@@postRecurrency.recurrent">Recurrent task</span>
 		<mat-slide-toggle color="primary" style=" margin-left: 15px;" [checked]="postData?.is_recurrent" [name]="'recurrent'"
-			(change)="transformToRecurrent()">
+			(change)="transformToRecurrent($event)" [disabled]="!canEdit || !postData?.task?.due_to || checkOverdue()">
 		</mat-slide-toggle>
 	</p>
 

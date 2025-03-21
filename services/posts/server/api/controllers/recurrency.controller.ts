@@ -4,6 +4,7 @@ import { Post } from "../models";
 import { DateTime } from "luxon";
 import { Readable } from "stream";
 import { PostService } from "../services";
+import { ensureDateTime } from "../utils";
 
 const postService = new PostService();
 
@@ -22,7 +23,7 @@ export class RecurrencyController {
             } = req;
 
             let recurrent = req.body.recurrent;
-            recurrent._parent_post = postId;
+            // recurrent._parent_post = postId;
             const post = await Post.findByIdAndUpdate(
                 { _id: postId },
                 {
@@ -207,11 +208,11 @@ export class RecurrencyController {
                 //     "postStream.recurrent.specific_days: ",
                 //     post.recurrent.specific_days
                 // );
-                const tmpPost = await Post.findById(
-                    post.recurrent._parent_post
-                ).lean();
+                const clonedPosts = await Post.find({
+                    "recurrent._parent_post": post._id,
+                }).lean();
 
-                if (!tmpPost) {
+                if (!clonedPosts || clonedPosts.length === 0) {
                     this.clonePost(
                         post,
                         post._posted_by._id || post._posted_by,
@@ -225,15 +226,17 @@ export class RecurrencyController {
     }
 
     async executeRecurrency(post, userId) {
-        const clonedPost = await Post.findById(
-            post.recurrent._parent_post
-        ).lean();
-        console.log("tmpPost: ", clonedPost?._id);
+        const clonedPosts = await Post.find({
+            "recurrent._parent_post": post._id,
+        }).lean();
+        console.log("tmpPost: ", clonedPosts);
 
-        if (!clonedPost) {
-            const originalDueDate = DateTime.fromISO(post.task.due_to); // Obtener la fecha de vencimiento original
+        if (!clonedPosts || clonedPosts.length === 0) {
+            const originalDueDate = ensureDateTime(post.task.due_to); // Obtener la fecha de vencimiento original
             let dueDate;
-
+            // console.log("post.task.due_to: ", post.task.due_to);
+            // console.log("originalDueDate: ", originalDueDate);
+            // console.log("originalDueDate.weekday: ", originalDueDate.weekday);
             switch (post.recurrent.frequency) {
                 case "daily":
                     if (
@@ -266,14 +269,14 @@ export class RecurrencyController {
                     break;
 
                 case "monthly":
-                    const recurrencyDay = DateTime.fromISO(
+                    const recurrencyDay = ensureDateTime(
                         post.recurrent.recurrency_on
                     ); // Usar recurrency_on
                     dueDate = recurrencyDay.plus({ months: 1 }); // Calcular el próximo mes
                     break;
 
                 case "yearly":
-                    const recurrencyDate = DateTime.fromISO(
+                    const recurrencyDate = ensureDateTime(
                         post.recurrent.recurrency_on
                     ); // Usar recurrency_on
                     dueDate = recurrencyDate.plus({ years: 1 }); // Calcular el próximo año
@@ -281,7 +284,7 @@ export class RecurrencyController {
 
                 case "custom":
                     const specificDays = post.recurrent.specific_days
-                        .map((date) => DateTime.fromISO(date))
+                        .map((date) => ensureDateTime(date))
                         .filter((date) => date > originalDueDate) // Filtrar fechas posteriores a originalDueDate
                         .sort((a, b) => a.toMillis() - b.toMillis()); // Ordenar por fecha más cercana
                     if (specificDays.length > 0) {
@@ -301,11 +304,11 @@ export class RecurrencyController {
                     );
                     return;
             }
-
+            // console.log("dueDate: ", dueDate);
             // Validar si el dueDate está dentro del rango permitido o si no hay fecha de fin
             if (
                 !post.recurrent.end_date ||
-                DateTime.fromISO(post.recurrent.end_date) >= dueDate
+                ensureDateTime(post.recurrent.end_date) >= dueDate
             ) {
                 this.clonePost(post, userId, dueDate);
             } else {

@@ -27,6 +27,8 @@ export class PostRecurrencyComponent implements OnInit, OnChanges {
     // { value: "periodically", title: $localize`:@@postRecurrency.periodically:Periodically`" },
   ];
 
+  today = DateTime.now();
+
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
 
@@ -67,7 +69,11 @@ export class PostRecurrencyComponent implements OnInit, OnChanges {
     this.saveRecurrency();
   }
 
-  transformToRecurrent() {
+  transformToRecurrent($event) {
+    if ($event.source.disabled) {
+      return;
+    }
+
     this.postData.is_recurrent = !this.postData.is_recurrent;
     if (this.postData.is_recurrent && !this.postData.recurrent) {
       this.resetRecurrency();
@@ -153,5 +159,9 @@ export class PostRecurrencyComponent implements OnInit, OnChanges {
           });
       })
     );
+  }
+
+  checkOverdue() {
+    return this.publicFunctions.checkOverdue(this.postData);
   }
 }
