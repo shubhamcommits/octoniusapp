@@ -1,0 +1,57 @@
+<mat-dialog-actions align="end" style="float: right;">
+    <div class="action-box">
+        <a (click)="closeDialog()" mat-dialog-close>
+            <i class="material-icons" style="cursor: pointer">close</i>
+        </a>
+    </div>
+</mat-dialog-actions>
+
+<div style="margin-top: 20px; width: 50%;">
+    <h4 i18n="entityAddMembers.workspaceMembers">Workspace members</h4>
+</div>
+
+<div class="modal-body">
+    <div class="row">
+        <div class="col">
+            <div class="col-description">
+                <!--
+                <h4 i18n="@@entityAddMembersDialog.entityMembers">Entity Members</h4>
+                <p class="block-description" i18n="@@entityAddMembersDialog.payrollVariablesDescription">
+
+                </p> 
+                -->
+                <button (click)="addAllMembers()" class="btn btn-primary" i18n="@@entityAddMembersDialog.addAllMembers">Add All Members</button>
+            </div>
+            <hr />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <ul class="members">
+                <li class="titles">
+                    <div class="avatar title"></div>
+                    <div class="name title"><span i18n="@@entityaddmembersdialog.name">Name</span></div>
+                    <div class="email title"><span i18n="@@entityaddmembersdialog.email">E-Mail</span></div>
+                    <div class="actions title"></div>
+                </li>
+
+                <li *ngFor="let member of workspaceMembers; trackBy: utilityService.trackByIndex">
+                    <div class="avatar title">
+                        <app-secured-image [imgURL]="member?.profile_pic" [service]="'user'"
+                            [userData]="member"
+                            [workspaceId]="workspaceData?._id" [styleClass]="'feed-avatar-small'"></app-secured-image>
+                    </div>
+                    <div class="name"><span>{{ member.first_name }} {{ member.last_name }}</span></div>
+                    <div class="email"><span>{{ member.type }}</span></div>
+                    <div class="actions">
+                        <button class="btn btn-primary btn-sm" *ngIf="!isUserInEntity(member?._id)" (click)="addMemberToEntity(member)">
+                            <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">add</i>
+                            <span i18n="@@entityaddmembersdialog.add">Add</span>
+                        </button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,75 @@
+<div class="board">
+    <div class="board-wrapper" *ngIf="!isMobile && canEdit"
+        cdkDropList [cdkDropListData]="sections" cdkDropListOrientation="horizontal" (cdkDropListDropped)="dropSection($event)">
+
+        <!-- ALL COLUMN DETAILS FOR NO-MOBILE STARTS -->
+        <div class="board-columns" cdkDropListGroup *ngIf="sections">
+
+            <div class="board-column" id="column._id" cdkDrag *ngFor="let section of sections; let i = index; trackBy: utilityService.trackByIndex">
+                <app-kanban-section
+                  [section]=section
+                  [sections]="sections"
+                  [groupData]="groupData"
+                  [userData]="userData"
+                  [sortingBit]="sortingBit"
+                  [sortingData]="sortingData"
+                  [filteringBit]="filteringBit"
+                  [filteringData]="filteringData"
+                  [isMobile]="isMobile"
+                  [canEdit]="canEdit"
+                  [isIdeaModuleAvailable]="isIdeaModuleAvailable"
+                  [isShuttleTasksModuleAvailable]="isShuttleTasksModuleAvailable"
+                  [isIndividualSubscription]="isIndividualSubscription"
+                  (editSectionEvent)="onEditSection($event)"
+                  (deleteSectionEvent)="onDeleteSection($event)"
+                  (archiveSectionEvent)="onArchiveSection($event)"
+                  ></app-kanban-section>
+                  <!-- (taskClonnedEvent)="onTaskClonned($event)" -->
+            </div>
+
+            <!-- CREATE NEW SECTION START -->
+            <app-create-section (sectionEmitter)="addColumn($event)"></app-create-section>
+            <!-- CREATE NEW SECTION ENDS -->
+
+        </div>
+        <!-- ALL COLUMN DETAILS FOR NO-MOBILE ENDS -->
+      </div>
+
+      <div class="board-wrapper" *ngIf="isMobile || !canEdit">
+        <!-- ALL COLUMN DETAILS FOR MOBILE STARTS -->
+        <div class="board-columns" *ngIf="sections">
+
+            <div class="board-column" *ngFor="let section of sections; let i = index; trackBy: utilityService.trackByIndex">
+                <app-kanban-section
+                  [section]=section
+                  [sections]="sections"
+                  [groupData]="groupData"
+                  [userData]="userData"
+                  [sortingBit]="sortingBit"
+                  [sortingData]="sortingData"
+                  [isMobile]="isMobile"
+                  [canEdit]="canEdit"
+                  [isIdeaModuleAvailable]="isIdeaModuleAvailable"
+                  [isShuttleTasksModuleAvailable]="isShuttleTasksModuleAvailable"
+                  [isIndividualSubscription]="isIndividualSubscription"
+                  (editSectionEvent)="onEditSection($event)"
+                  (deleteSectionEvent)="onDeleteSection($event)"
+                  (archiveSectionEvent)="onArchiveSection($event)"
+                  ></app-kanban-section>
+            </div>
+
+            <!-- CREATE NEW SECTION START -->
+            <app-create-section (sectionEmitter)="addColumn($event)"></app-create-section>
+            <!-- CREATE NEW SECTION ENDS -->
+
+        </div>
+        <!-- ALL COLUMN DETAILS FOR MOBILE ENDS -->
+    </div>
+
+    <!-- placeholder for empty board starts -->
+    <div *ngIf="!sections || sections.length == 0" style="text-align: center;">
+      <img src='assets/images/placeholder_activity3.png' class="placeholder-img">
+      <p class="muted text-center" i18n="@@groupDashboard.boardEmpty">This board is empty. Create a section to add tasks. </p>
+    </div>
+    <!-- placeholder for empty board ends -->
+</div>

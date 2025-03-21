@@ -1,0 +1,31 @@
+<div class="comment-modal center">
+  <div class="comment-container">
+    <a class="close" (click)="closeComment()">
+      <i  class="material-icons" style="cursor: pointer">close</i>
+    </a>
+
+    <div class="to-comment-text">
+      <h2><span i18n="@@folioCommentEditor.selectedText">Selected Text</span>: </h2>
+      <textarea readonly cols="30" rows="4">
+        {{ selectedText }}
+      </textarea>
+    </div>
+
+    <h2><span i18n="@@folioCommentEditor.comment">Comment</span>:</h2>
+
+    <div style="border: 1px solid #7e7b7b; padding: 10px; margin-bottom: 10px;">
+      <div #editable></div>
+      <!-- 
+      <quill-editor ngDefaultControl [id]="'comment_editor'"
+        [(ngModel)]="quillContent" [modules]="modules"
+        (onContentChanged)="onContentChanged($event)" (onEditorCreated)="onEditorCreated($event)">
+      </quill-editor>
+    -->
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-block btn_login"
+        (click)="submitComment()" i18n="@@folioCommentEditor.submit">
+      Submit
+    </button>
+  </div>
+</div>

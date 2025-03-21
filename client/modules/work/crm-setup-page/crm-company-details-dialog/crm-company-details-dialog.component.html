@@ -1,0 +1,19 @@
+<div class="container">
+    <mat-dialog-actions class="d-flex justify-content" align="start">
+        <i class="material-icons pointer" (click)="closeDialog()">arrow_back</i>
+        <span i18n="@@CRMCompanyDetailsDialog.companies">Companies</span>
+    </mat-dialog-actions>
+
+    <div mat-dialog-content>
+        <app-crm-company-details *ngIf="!!companyData && !!crmCompanyCustomFields" [companyData]="companyData" [crmCompanyCustomFields]="crmCompanyCustomFields"></app-crm-company-details>
+        
+        <app-crm-company-contacts *ngIf="!!companyData && !!crmCompanyCustomFields"
+            [companyData]="companyData"
+            [crmContactCustomFields]="crmContactCustomFields"
+            [contacts]="contacts"></app-crm-company-contacts>
+                
+        <app-crm-company-tasks *ngIf="!!companyData" [companyData]="companyData"></app-crm-company-tasks>
+
+        <app-crm-company-updates *ngIf="!!companyData" [companyData]="companyData"></app-crm-company-updates>
+    </div>
+</div>

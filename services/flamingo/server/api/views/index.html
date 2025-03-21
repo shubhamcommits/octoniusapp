@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> Octonius - Sockets Server Microservice</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta content="IE=7, IE=9" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width" name="viewport">
+    <link rel="icon" type="image/x-icon" href="http://octoni.us/favicon.ico">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,600' rel='stylesheet' type='text/css'>
+    <style type="text/css">
+        body {
+            font: 14px 'Open Sans';
+            min-width: 400px;
+            margin: 0;
+            padding: 75px 0 0 0;
+            text-align: center;
+        }
+
+        h1 {
+            font-weight: normal;
+            font-size: 32px;
+            line-height: 40px;
+            margin-bottom: 10px;
+            padding: 0;
+            margin-top: 0;
+        }
+
+        p {
+            padding: 0 0 10px 0;
+            color: #666666
+        }
+
+        a {
+            color: #336699;
+        }
+
+        textarea {
+            font: 12px/18px 'Helvetica', Arial, sans-serif;
+        }
+
+        .header {
+            padding-bottom: 15px;
+            text-align: center
+        }
+
+        .header span {
+            font-size: 22px;
+            text-align: center
+        }
+
+        .wrapper {
+            width: 540px;
+            margin: 0 auto 80px auto;
+            text-align: left;
+        }
+
+        .container {
+            position: relative;
+            margin: 0;
+            text-align: left;
+            background-color: #ffffff;
+            background: rgba(255, 255, 255, .9);
+            padding: 60px;
+            line-height: 150%;
+            border-bottom: 1px solid #ececec;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        /* Form */
+        form {
+            font: 14px/20px 'Open Sans';
+            display: block;
+            padding: 15px 0 10px 0;
+            margin-top: 15px;
+            border-top: 1px solid #ccc;
+        }
+
+        label {
+            clear: both;
+            display: block;
+            margin: 8px 0;
+            font-weight: bold;
+            position: relative;
+            line-height: 150%;
+            font-family: 'Open Sans';
+            font-size: 14px;
+            color: #333333;
+        }
+
+        .email-group input {
+            display: block;
+            float: left;
+            width: 60%;
+            margin: 0 10px 0 0;
+            min-width: 200px;
+            padding: 12px 10px 11px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            box-shadow: none;
+        }
+
+        .email-group .button {
+            margin: 0;
+            min-width: 75px;
+        }
+
+        .error,
+        .errorText {
+            margin: 5px 0 0 0;
+            padding: 10px;
+            font-size: 14px;
+            color: #6b0505;
+            background-color: #f4bfbf;
+        }
+
+        .formstatus {
+            margin-bottom: 10px;
+        }
+
+        .success {
+            background: #e4f3d4;
+            font-size: 14px;
+            color: #5ca000;
+            margin: 10px 0;
+            padding: 10px;
+            font-family: 'Open Sans';
+        }
+
+        .success a {
+            color: #5ca000;
+            text-decoration: underline;
+        }
+
+        .rounded {
+            border-radius: 4px;
+            -moz-border-radius: 4px;
+            -webkit-border-radius: 4px;
+        }
+
+        .button,
+        .button-small {
+            display: inline-block;
+            white-space: nowrap;
+            height: 40px;
+            line-height: 42px;
+            margin: 0 5px 0 0;
+            padding: 0 22px;
+            text-decoration: none;
+            text-transform: uppercase;
+            text-align: center;
+            font-weight: bold;
+            font-style: normal;
+            font-size: 14px;
+            cursor: pointer;
+            border: 0;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            -webkit-border-radius: 4px;
+            vertical-align: top;
+        }
+
+        .button-small {
+            float: none;
+            display: inline-block;
+            height: auto;
+            line-height: 18px !important;
+            padding: 2px 15px !important;
+            font-size: 11px !important;
+        }
+
+        .button:hover,
+        .button-small:hover {
+            opacity: .8;
+        }
+
+        .details-item {
+            padding: 0;
+            margin: 5px 0;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .task-content {
+            font-size: 12px;
+        }
+
+        .dividing-line {
+            margin: 15px auto;
+            width: 100%;
+            display: block;
+            border-top: none;
+            border-bottom: 1px solid #E4EDF8;
+        }
+
+        .task-button {
+            padding: 5px;
+            background-color: #FF6584;
+            border-radius: 5px;
+            width: 150px;
+            margin: 0 auto;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .task-link {
+            text-decoration: none;
+            color: #fff !important;
+        }
+
+        /* Mobile Tweaks */
+        body {
+            -webkit-text-size-adjust: none;
+        }
+
+        input {
+            -webkit-appearance: none;
+        }
+
+        input[type=checkbox] {
+            -webkit-appearance: checkbox;
+        }
+
+        input[type=radio] {
+            -webkit-appearance: radio;
+        }
+
+        /* Customizable Theme Bits */
+        body {
+            background-color: #fff;
+        }
+
+        h1.title {
+            font-family: 'Open Sans';
+            color: #2b2b2b;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold
+        }
+
+        .byline {
+            font-family: 'Open Sans';
+            color: #FF6584;
+            text-align: center;
+            font-size: 16px
+        }
+
+        .description,
+        label,
+        .fake-label {
+            font-family: 'Open Sans';
+            color: #666666;
+        }
+
+        .button {
+            font-family: Helvetica, Arial, sans-serif;
+            color: #FFFFFF;
+            background-color: #ee3d58;
+        }
+
+        /* apply a natural box layout model to all elements */
+        *,
+        *:before,
+        *:after {
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        @media only screen and (max-width:64em) {
+            body {
+                padding-top: 30px;
+                min-width: 100%;
+            }
+
+            .wrapper {
+                width: 96%
+            }
+
+            .container {
+                padding: 30px 15px
+            }
+        }
+
+        @media only screen and (max-width:40em) {
+            body {
+                background-image: none !important;
+            }
+
+            .email-group input {
+                float: none;
+                width: 100%;
+                margin: 0 0 12px 0;
+                min-width: inherit;
+            }
+
+            .email-group .button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <div class="header">
+                <h1 class="title"> <img src="https://www.octonius.com/octonius-icon.png" alt="user avatar"
+                        style="width: 42px; height: 42px; border-radius: 24px" /> <br></h1>
+                <span class="byline"> Welcome to Flamingo Server! </span>
+            </div>
+            <div class="description">
+                <p class="task-content"> This view confirms that Flamingo microservice is up and running!.</p>
+                <p style="text-align: center">
+                    <img src="https://www.octonius.com/emptytask.png" alt="user avatar" style="width: 150px;" />
+                </p>
+                <p style="text-align: center">
+                    Team Octonius
+                </p>
+            </div>
+        </div>
+        <p style="text-align:center">
+
+            <span style="font-size: 10px; text-align:center"> Octonius, Inc. |
+                950 Page Mill Road
+                Palo Alto, CA 94304 USA
+            </span>
+        </p>
+    </div>
+</body>
+
+</html>

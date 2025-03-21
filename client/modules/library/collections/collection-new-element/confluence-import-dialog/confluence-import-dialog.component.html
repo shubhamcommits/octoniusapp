@@ -1,0 +1,56 @@
+<div class="confluenceImportDialog">
+
+    <mat-dialog-actions align="end">
+        <i mat-dialog-close class="material-icons" (click)="closeDialog()" style="cursor: pointer">close</i>
+    </mat-dialog-actions>
+
+    <h2 mat-dialog-title>
+        <span class="badge badge-cf">
+            <i class="material-icons">label</i>
+        </span>
+        <span i18n="@@confluenceImportDialog.confluenceSpaces">Confluence Spaces</span>
+    </h2>
+
+    <mat-dialog-content>
+        <!--
+        <div>
+            <div class="form-group">
+                <label for="domain" i18n="@@confluenceImportDialog.domain">Domain:</label>
+                <input type="text" class="form-control" name="domain"
+                    [(ngModel)]="domain" placeholder="Please provide the Confluence Domain">
+            </div>
+
+            <div class="form-group">
+                <label for="token" i18n="@@confluenceImportDialog.domain">API Token:</label>
+                <input type="text" class="form-control" name="token" [(ngModel)]="token"
+                    placeholder="Please provide the Confluence API Token">
+            </div>
+
+            <button [disabled]="!domain || domain == '' || !token || token == ''" class="btn float-right btn-primary btn-md"
+                style="margin-left: 10px;" (click)="getUserConfluenceSpaces()" i18n="@@collectionHeader.getSpaces">
+                Get Spaces
+            </button>
+        </div>
+        -->
+
+        <div *ngIf="spaces && spaces.length > 0">
+            <div *ngFor="let space of spaces; trackBy: utilityService.trackByIndex" class="form-group">
+                <section class="example-section">
+                    <p><mat-checkbox [name]="space?.key" [value]="space?.key" (change)="spaceSelected($event.source.value)">{{ space?.name }}</mat-checkbox></p>
+                </section>
+            </div>
+
+            <button  class="btn float-right btn-primary btn-md" style="margin-left: 10px;" (click)="exportSelectedSpaces()" 
+                [disabled]="!this.workspaceData?.integrations?.is_atlassia_connected
+                    || !this.workspaceData?.integrations?.atlassia_url || this.workspaceData?.integrations?.atlassia_url == ''
+                    || !this.workspaceData?.integrations?.atlassia_token || this.workspaceData?.integrations?.atlassia_token == ''
+                    || !this.spacesToExport || this.spacesToExport.length == 0" i18n="@@collectionHeader.export">
+                Export
+            </button>
+        </div>
+    </mat-dialog-content>
+</div>
+
+<ng-container *ngIf="isLoading$ | async">
+  <app-loading-spinner></app-loading-spinner>
+</ng-container>

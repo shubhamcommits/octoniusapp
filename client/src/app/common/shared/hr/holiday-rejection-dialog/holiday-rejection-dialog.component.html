@@ -1,0 +1,20 @@
+<div class="customFieldsDialog">
+  <h4 class="mb-4" i18n="@@holidayRejectionDialog.reason">Reason to reject:</h4>
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <input type="text" [(ngModel)]="rejectionDescription" class="form-control" [value]="rejectionDescription" />
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 20px;">
+    <button class="btn btn-secondary" style="margin-right: 20px;" (click)="closeDialog()" i18n="@@holidayRejectionDialog.cancel">
+      Cancel
+    </button>
+
+    <button class="btn btn-primary" style="margin-left: 20px;" (click)="confirmHoliday()" i18n="@@holidayRejectionDialog.confirm">
+      Confirm
+    </button>
+  </div>
+</div>

@@ -1,0 +1,89 @@
+<div class="container">
+  <div class="row" style="justify-content: space-between;">
+    <div><p i18n="@@groupDashboard.everythingHappeningYourTeam">Everything happening in your team</p></div>
+    <div>
+      <mat-form-field>
+        <mat-select ngDefaultControl
+                (selectionChange)="periodSelected($event)"
+                (click)="$event.stopPropagation()"
+                [(value)]="period"
+                name="period">
+            <mat-option *ngFor="let p of periods; trackBy: utilityService.trackByIndex" [value]="p.key">{{ p.value }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <span class="material-icons muted" style="margin-left: 30px; cursor: pointer;" (click)="openWidgetSelectorDialog()">settings</span>
+    </div>
+  </div>
+
+  <div *ngIf="!groupData?.selected_widgets || groupData?.selected_widgets?.length == 0 || (!groupData?.project_type && groupData?.selected_widgets?.length <= 1 && groupData?.selected_widgets?.includes('KPI_PERFORMANCE'))" style="width: 100%; text-align: center;">
+    <img src='assets/images/widgets/placeholder-dashboard.svg' style="width: 390px; text-align: center;">
+  </div>
+
+  <div class="row">
+    <div class="col-md-3 box" *ngIf="groupData?.selected_widgets?.includes('WORK_STATISTICS')">
+      <!-- Work Statistics Card Starts -->
+      <app-work-statistics-card [period]="period" [northStar]="false" [group]="groupData?._id"></app-work-statistics-card>
+      <!-- Work Statistics Card Ends -->
+    </div>
+
+    <div class="col-md-3 box" *ngIf="groupData?.selected_widgets?.includes('WORKLOAD')">
+      <!-- Workload Card Starts -->
+      <app-workload-card [period]="period" [group]="groupData?._id"></app-workload-card>
+      <!-- Workload Card Ends -->
+    </div>
+
+    <div class="col-md-3 box" *ngIf="groupData?.selected_widgets?.includes('VELOCITY')">
+      <!-- Velocity Card Starts -->
+      <app-velocity-card [period]="period" [group]="groupData?._id"></app-velocity-card>
+      <!-- Velocity Card Ends -->
+    </div>
+
+    <div class="col-md-3 box" *ngIf="groupData?.selected_widgets?.includes('ENGAGEMENT')">
+      <!-- Engagement Card Starts -->
+      <app-engagement-card [period]="period" [group]="groupData?._id"></app-engagement-card>
+      <!-- Engagement Card Ends -->
+    </div>
+  </div>
+
+  <!-- CF Widgets STARTS -->
+  <div class="row d-none d-md-block" *ngIf="cfWidgets?.length > 0&& !isIndividualSubscription">
+    <div class="col-md-3 box" *ngFor="let cfWidget of cfWidgets; trackBy: utilityService.trackByIndex">
+      <app-custom-field-statistics-card [period]="period" [group]="groupData?._id" [customField]="getCustomField(cfWidget)"></app-custom-field-statistics-card>
+    </div>
+  </div>
+  <!-- CF Widgets ENDS -->
+
+  <div class="row d-none d-md-block" *ngIf="groupData?.selected_widgets?.includes('CF_TABLE') && !isIndividualSubscription">
+    <div class="col-md-12 box">
+      <!-- CF Table Card Starts -->
+      <app-custom-field-table-card></app-custom-field-table-card>
+      <!-- CF Table Card Ends -->
+    </div>
+  </div>
+
+  <div class="row d-none d-md-block" *ngIf="groupData?.project_type && groupData?.selected_widgets?.includes('KPI_PERFORMANCE')">
+    <div class="col-md-12 box">
+      <!-- KPI Performance Card Starts -->
+      <app-kpi-performance-card [parentId]="groupData?._id" [type]="'group'"></app-kpi-performance-card>
+      <!-- KPI Performance Card Ends -->
+    </div>
+  </div>
+
+  <div class="row d-none d-md-block" *ngIf="(((groupData?._admins?.length || 0) + (groupData?._members?.length || 0)) <= 50) && groupData?.selected_widgets?.includes('RESOURCE_MANAGEMENT') && !isIndividualSubscription">
+    <div class="col-md-12 box">
+      <!-- Members Workload Card Starts -->
+      <app-members-workload-card [groupId]="groupData?._id"></app-members-workload-card>
+      <!-- Members Workload Card Ends -->
+    </div>
+  </div>
+
+  <div class="row" *ngIf="groupData?.selected_widgets?.includes('TOP_SOCIAL') && !isIndividualSubscription">
+    <div class="col-md-12 box">
+      <!-- Work Statistics Card Starts -->
+      <app-top-social-card [period]="period" [type]="'group'" [parentId]="groupData?._id"></app-top-social-card>
+      <!-- Work Statistics Card Ends -->
+    </div>
+  </div>
+</div>
+

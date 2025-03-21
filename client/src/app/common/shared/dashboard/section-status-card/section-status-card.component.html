@@ -1,0 +1,27 @@
+<div class="smart-card" style="padding: 10px;">
+  <div class="row" style="margin: 0 0 20px; justify-content: space-between;">
+    <div class="card-title mt-1" i18n="@@sectionStatusCard.realTimeStauts">
+      Real time status by section
+    </div>
+  </div>
+
+  <div class="col-12 d-none d-sm-block" style="padding-top: 15px;">
+    <div *ngFor="let section of sections; trackBy: utilityService.trackByIndex" class="section">
+      <div class="section-title">
+        {{ section?.title }}
+      </div>
+      <div class="section-percentage">
+        {{ section?.percentage }} %
+      </div>
+      <div class="section-tasks">
+        {{ section?.numTasks }} <span i18n="@@sectionStatusCard.tasks">tasks</span>
+      </div>
+      <div class="section-estimation">
+        {{ section?.estimation }}
+      </div>
+      <div class="section-cost">
+        {{ section?.cost | currency }}
+      </div>
+    </div>
+  </div>
+</div>

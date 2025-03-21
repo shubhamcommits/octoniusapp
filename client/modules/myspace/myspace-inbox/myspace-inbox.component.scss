@@ -1,0 +1,24 @@
+@import "src/assets/scss/variables";
+
+.box {
+  margin: 0;
+  display: inline-block;
+  padding: 5px;
+  margin-bottom: 20px;
+}
+
+.small{
+  font-size: 12px;
+}
+
+.container{
+  margin-top: 30px;
+}
+
+.card-title{
+  font-style: normal;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  line-height: 24px;
+  color: #242D3A;
+}

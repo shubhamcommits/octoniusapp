@@ -1,0 +1,23 @@
+.row {
+    padding: 8px;
+    align-items: center;
+    transition: box-shadow 0.3s ease-in-out;
+    padding: 0;
+    align-items: center;
+    border-radius: 8px;
+    border: 1px solid #E4EDF8;
+    background: #ffffff;
+    margin-bottom: 5px;
+
+    &:hover {
+        box-shadow: 0 4px 24px 0 rgba(37, 38, 94, 0.1);
+    }
+}
+
+.customFieldsDialog{
+  width: 360px;
+  padding: 32px;
+  max-height: 500px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}

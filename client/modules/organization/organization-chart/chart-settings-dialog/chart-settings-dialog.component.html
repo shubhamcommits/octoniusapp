@@ -1,0 +1,47 @@
+<div class="integrationsDialog">
+  <mat-dialog-actions class="d-flex justify-content-end" align="end">
+    <i mat-dialog-close class="material-icons" (click)="closeDialog()" style="cursor: pointer">close</i>
+  </mat-dialog-actions>
+
+  <h2 mat-dialog-title class="text-center">
+    <span class="badge badge-cf">
+      <i class="material-icons">settings</i>
+    </span>
+    <span i18n="@@chartSettingsDialog.chartSettings">Chart Settings</span>
+  </h2>
+
+  <div class="description text-center">
+
+    <img src="assets/images/placeholder_workplace_integrations.svg" alt="" style="width: 180px; margin: 14px">
+
+    <p i18n="@@chartSettingsDialog.chartSettingsDescription" class="text-descr">
+      Manage the settings for the chart.
+    </p>
+  </div>
+
+  <div class="content">
+    <!-- Only for Admins STARTS -->
+    <div class="integration">
+      <div class="mt-2 mb-2 pt-3">
+        <div class="advanced-filters">
+          <div class="filter-label" i18n="@@chartSettingsDialog.selectManagerCF">Select the Manager Custom Field</div>
+          <div class="filter-cell">
+            <mat-select [(value)]="selectedManagerField" (selectionChange)="selectManagerField($event)" appearance="fill">
+              <mat-option [value]="cf.name" *ngFor="let cf of posibleManagerCF; trackBy: utilityService.trackByIndex">{{ cf.title }}</mat-option>
+            </mat-select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Only for Admins ENDS -->
+  </div>
+
+  <div class="content-box">
+    <button
+        class="btn btn-danger btn-md"
+        (click)="closeDialog()"
+        i18n="@@chartSettingsDialog.close">
+      Close
+    </button>
+  </div>
+</div>

@@ -1,0 +1,1843 @@
+import {
+    Notification,
+    User,
+    File,
+    Workspace,
+    Group,
+    Post,
+    Story,
+} from "../models";
+import { Readable } from "stream";
+import { helperFunctions, axios, firebaseNotifications } from "../../utils";
+import { DateTime } from "luxon";
+
+/*  ===============================
+ *  -- NOTIFICATIONS Service --
+ *  ===============================
+ */
+export class NotificationsService {
+    /**
+     * This function is responsible for fetching the latest first 5 read notifications
+     * @param userId
+     */
+    async getRead(userId: string) {
+        try {
+            const notifications = await Notification.find({
+                $and: [
+                    { _owner: userId },
+                    { read: true },
+                    {
+                        type: {
+                            $nin: ["new-post", "launch-approval-flow-due-date"],
+                        },
+                    },
+                ],
+            })
+                .limit(5)
+                .sort("-created_date")
+                .populate("_actor", "first_name last_name profile_pic")
+                .populate({
+                    path: "_origin_post",
+                    populate: { path: "_group" },
+                })
+                .populate("_origin_comment")
+                .populate("_owner", "first_name last_name profile_pic")
+                .populate("_origin_group", "group_name group_avatar")
+                .populate("_shuttle_group", "group_name group_avatar")
+                .populate("_origin_folio")
+                .populate("_collection", "name")
+                .populate("_page", "title")
+                .populate({
+                    path: "_origin_folio",
+                    populate: { path: "_group" },
+                })
+                .lean();
+
+            return notifications;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * This function is responsible for fetching the latest first 5 un-read notifications
+     * @param userId
+     */
+    async getUnread(userId: string, limit?: number) {
+        try {
+            let notifications = [];
+
+            if (limit) {
+                notifications = await Notification.find({
+                    $and: [
+                        { $or: [{ _owner: userId }] },
+                        { read: false },
+                        {
+                            type: {
+                                $nin: [
+                                    "new-post",
+                                    "launch-approval-flow-due-date",
+                                    "hive",
+                                    "hive_new_entity",
+                                ],
+                            },
+                        },
+                    ],
+                })
+                    .sort("-created_date")
+                    .limit(limit)
+                    .populate("_actor", "first_name last_name profile_pic")
+                    .populate({
+                        path: "_origin_post",
+                        populate: { path: "_group" },
+                    })
+                    .populate("company._company", "name tasks updates")
+                    .populate("_origin_comment")
+                    .populate("_owner", "first_name last_name profile_pic")
+                    .populate("_origin_group", "group_name group_avatar")
+                    .populate("_shuttle_group", "group_name group_avatar")
+                    .populate("_origin_folio")
+                    .populate("_collection", "name")
+                    .populate("_page", "title")
+                    .populate({
+                        path: "_origin_folio",
+                        populate: { path: "_group" },
+                    })
+                    .lean();
+            } else {
+                notifications = await Notification.find({
+                    $and: [
+                        { $or: [{ _owner: userId }] },
+                        { read: false },
+                        {
+                            type: {
+                                $nin: [
+                                    "new-post",
+                                    "launch-approval-flow-due-date",
+                                    "hive",
+                                    "hive_new_entity",
+                                ],
+                            },
+                        },
+                    ],
+                })
+                    .sort("-created_date")
+                    .populate("_actor", "first_name last_name profile_pic")
+                    .populate({
+                        path: "_origin_post",
+                        populate: { path: "_group" },
+                    })
+                    .populate("company._company", "name tasks updates")
+                    .populate("_origin_comment")
+                    .populate("_owner", "first_name last_name profile_pic")
+                    .populate("_origin_group", "group_name group_avatar")
+                    .populate("_shuttle_group", "group_name group_avatar")
+                    .populate("_origin_folio")
+                    .populate("_collection", "name")
+                    .populate("_page", "title")
+                    .populate({
+                        path: "_origin_folio",
+                        populate: { path: "_group" },
+                    })
+                    .lean();
+            }
+
+            const temp = notifications.map((notification) => {
+                if (notification.company && notification.company._company) {
+                    const company = notification.company._company;
+
+                    // Find the matching task in the company's tasks array
+                    const task = company.tasks.find(
+                        (task) =>
+                            task._id.toString() ===
+                            notification.company._task?.toString()
+                    );
+                    // Find the matching update in the company's updates array
+                    const update = company.updates.find(
+                        (update) =>
+                            update._id.toString() ===
+                            notification.company._update?.toString()
+                    );
+
+                    return {
+                        ...notification,
+                        task_info: task
+                            ? {
+                                  _id: task._id,
+                                  date: task.date,
+                                  completed: task.completed,
+                                  description: task.description,
+                                  _assigned_to: task._assigned_to,
+                              }
+                            : null,
+                        update_info: update
+                            ? {
+                                  _id: update._id,
+                                  date: update.date,
+                                  completed: update.completed,
+                                  description: update.description,
+                                  _assigned_to: update._assigned_to,
+                              }
+                            : null,
+                        company_name: company.name,
+                    };
+                }
+
+                return notification; // If no company or task found, return null
+            });
+
+            return temp;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * This function is responsible for fetching the latest new post notifications
+     * @param userId
+     */
+    async getNewPost(userId: string, limit?: number) {
+        try {
+            let notifications = [];
+
+            if (limit) {
+                notifications = await Notification.find({
+                    $and: [
+                        { _owner: userId },
+                        { read: false },
+                        { type: "new-post" },
+                    ],
+                })
+                    .sort("-created_date")
+                    .limit(limit)
+                    .populate("_actor", "first_name last_name profile_pic")
+                    .populate({
+                        path: "_origin_post",
+                        populate: { path: "_group" },
+                    })
+                    .populate("_origin_comment")
+                    .populate("_owner", "first_name last_name profile_pic")
+                    .populate("_origin_group", "group_name group_avatar")
+                    .populate("_shuttle_group", "group_name group_avatar")
+                    .populate("_origin_folio")
+                    .populate("_collection", "name")
+                    .populate("_page", "title")
+                    .populate({
+                        path: "_origin_folio",
+                        populate: { path: "_group" },
+                    })
+                    .lean();
+            } else {
+                notifications = await Notification.find({
+                    $and: [
+                        { _owner: userId },
+                        { read: false },
+                        { type: "new-post" },
+                    ],
+                })
+                    .sort("-created_date")
+                    .populate("_actor", "first_name last_name profile_pic")
+                    .populate({
+                        path: "_origin_post",
+                        populate: { path: "_group" },
+                    })
+                    .populate("_origin_comment")
+                    .populate("_owner", "first_name last_name profile_pic")
+                    .populate("_origin_group", "group_name group_avatar")
+                    .populate("_shuttle_group", "group_name group_avatar")
+                    .populate("_origin_folio")
+                    .populate("_collection", "name")
+                    .populate("_page", "title")
+                    .populate({
+                        path: "_origin_folio",
+                        populate: { path: "_group" },
+                    })
+                    .lean();
+            }
+
+            return notifications;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * This function is responsible for fetching the latest new post notifications
+     * @param userId
+     */
+    async getPendingApprovals(userId: string, limit?: number) {
+        try {
+            let notifications = [];
+
+            if (limit) {
+                notifications = await Notification.find({
+                    $and: [
+                        { _owner: userId },
+                        { read: false },
+                        {
+                            type: {
+                                $in: [
+                                    "launch-approval-flow",
+                                    "launch-approval-flow-due-date",
+                                ],
+                            },
+                        },
+                    ],
+                })
+                    .sort("-created_date")
+                    .limit(limit)
+                    .populate("_actor", "first_name last_name profile_pic")
+                    .populate({
+                        path: "_origin_post",
+                        populate: { path: "_group" },
+                    })
+                    .populate("_origin_comment")
+                    .populate("_owner", "first_name last_name profile_pic")
+                    .populate("_origin_group", "group_name group_avatar")
+                    .populate("_shuttle_group", "group_name group_avatar")
+                    .populate("_origin_folio")
+                    .populate("_collection", "name")
+                    .populate("_page", "title")
+                    .populate({
+                        path: "_origin_folio",
+                        populate: { path: "_group" },
+                    })
+                    .lean();
+            } else {
+                notifications = await Notification.find({
+                    $and: [
+                        { _owner: userId },
+                        { read: false },
+                        {
+                            type: {
+                                $in: [
+                                    "launch-approval-flow",
+                                    "launch-approval-flow-due-date",
+                                ],
+                            },
+                        },
+                    ],
+                })
+                    .sort("-created_date")
+                    .populate("_actor", "first_name last_name profile_pic")
+                    .populate({
+                        path: "_origin_post",
+                        populate: { path: "_group" },
+                    })
+                    .populate("_origin_comment")
+                    .populate("_owner", "first_name last_name profile_pic")
+                    .populate("_origin_group", "group_name group_avatar")
+                    .populate("_shuttle_group", "group_name group_avatar")
+                    .populate("_origin_folio")
+                    .populate("_collection", "name")
+                    .populate("_page", "title")
+                    .populate({
+                        path: "_origin_folio",
+                        populate: { path: "_group" },
+                    })
+                    .lean();
+            }
+
+            return notifications;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * This function is responsible for fetching the marking the notifications to read
+     * @param topListId
+     */
+    async markRead(topListId: string) {
+        try {
+            const markRead = await Notification.findOneAndUpdate(
+                {
+                    _id: topListId,
+                },
+                {
+                    $set: {
+                        read: true,
+                    },
+                }
+            );
+
+            return true;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * This function is responsible for notifying the user on mention on new comment
+     * @param { _id, _content_mentions, _commented_by, _post } comment
+     */
+    async newCommentMentions(
+        actorId: string,
+        ownerId: string,
+        commentId: string,
+        postId: string
+    ) {
+        try {
+            const notification = await Notification.create({
+                _actor: actorId,
+                _owner: ownerId,
+                _origin_comment: commentId,
+                _origin_post: postId,
+                message: " mentioned you on",
+                type: "mention",
+                created_date: DateTime.now(),
+            });
+
+            // Send the notification to firebase for mobile notify
+            if (process.env.DOMAIN == "app.octonius.com") {
+                const owner = await User.findById({ _id: ownerId })
+                    .select("_workspace integrations.firebase_token")
+                    .lean();
+                const actor = await User.findById({ _id: actorId })
+                    .select("first_name last_name")
+                    .lean();
+
+                if (owner.integrations.firebase_token) {
+                    firebaseNotifications.sendFirebaseNotification(
+                        owner._workspace._id || owner._workspace,
+                        owner.integrations.firebase_token,
+                        "Octonius - New Mention in Comment",
+                        actor?.first_name +
+                            " " +
+                            actor?.last_name +
+                            " mentioned you on a comment."
+                    );
+                }
+            }
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * This function is responsible to notifying all the user on assigning of a new event to them
+     * @param { _id, event._assigned_to, _posted_by } post
+     */
+    async newEventAssignments(postId, assigned_to, groupId, posted_by, userId) {
+        try {
+            // Let usersStream
+            let userStream: any;
+
+            // If all members are selected
+            if (assigned_to.includes("all")) {
+                // Create Readble Stream from the Event Assignee
+                userStream = Readable.from(
+                    await User.find({
+                        _groups: groupId,
+                    }).select("first_name email")
+                );
+            } else {
+                // Create Readble Stream from the Event Assignee
+                userStream = Readable.from(assigned_to);
+            }
+
+            await userStream.on("data", async (user: any) => {
+                if (posted_by != user._id) {
+                    const notification = await Notification.create({
+                        _actor: userId,
+                        _owner: user._id,
+                        _origin_post: postId,
+                        message: " assigned you on",
+                        type: "assignment",
+                        created_date: DateTime.now(),
+                    });
+
+                    // Send the notification to firebase for mobile notify
+                    if (process.env.DOMAIN == "app.octonius.com") {
+                        const owner = await User.findById({ _id: user._id })
+                            .select("_workspace integrations.firebase_token")
+                            .lean();
+                        const actor = await User.findById({ _id: userId })
+                            .select("first_name last_name")
+                            .lean();
+
+                        if (owner.integrations.firebase_token) {
+                            firebaseNotifications.sendFirebaseNotification(
+                                owner._workspace._id || owner._workspace,
+                                owner.integrations.firebase_token,
+                                "Octonius - New Assignment",
+                                actor?.first_name +
+                                    " " +
+                                    actor?.last_name +
+                                    " assigned you a event."
+                            );
+                        }
+                    }
+                }
+            });
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * This function is responsible for notifying the user on mention on new post
+     * @param { _id, _posted_by, _content_mentions } post
+     */
+    async newPostMentions(actorId: string, ownerId: string, postId: string) {
+        try {
+            const notification = await Notification.create({
+                _actor: actorId,
+                _owner: ownerId,
+                _origin_post: postId,
+                message: " mentioned you on",
+                type: "mention",
+                created_date: DateTime.now(),
+            });
+
+            // Send the notification to firebase for mobile notify
+            if (process.env.DOMAIN == "app.octonius.com") {
+                const owner = await User.findById({ _id: ownerId })
+                    .select("_workspace integrations.firebase_token")
+                    .lean();
+                const actor = await User.findById({ _id: actorId })
+                    .select("first_name last_name")
+                    .lean();
+
+                if (owner.integrations.firebase_token) {
+                    firebaseNotifications.sendFirebaseNotification(
+                        owner._workspace._id || owner._workspace,
+                        owner.integrations.firebase_token,
+                        "Octonius - New Mention",
+                        actor?.first_name +
+                            " " +
+                            actor?.last_name +
+                            " mentioned you on a post."
+                    );
+                }
+            }
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * This function is responsible for notifying the user on mention on new Folio
+     * @param { _id, _posted_by, _content_mentions } post
+     */
+    async newFolioMentions(file: string, actorId: string, ownerId: string) {
+        try {
+            let fileData: any = await File.findById(file).select("_group");
+
+            // Let usersStream
+            let userStream: any;
+
+            // If all members are selected
+            if (ownerId.includes("all")) {
+                // Create Readble Stream from the Event Assignee
+                userStream = Readable.from(
+                    await User.find({
+                        _groups: fileData._group,
+                    }).select(
+                        "_workspace first_name email integrations.firebase_token"
+                    )
+                );
+            } else {
+                // Create Readble Stream from the Event Assignee
+                userStream = Readable.from(
+                    await User.find({
+                        _id: ownerId,
+                    }).select(
+                        "_workspace first_name email integrations.firebase_token"
+                    )
+                );
+            }
+
+            await userStream.on("data", async (user: any) => {
+                if (actorId != ownerId) {
+                    const notification = await Notification.create({
+                        _actor: actorId,
+                        _owner: user,
+                        _origin_folio: file,
+                        message: " mentioned you on",
+                        type: "mention_folio",
+                        created_date: DateTime.now(),
+                    });
+
+                    if (process.env.DOMAIN == "app.octonius.com") {
+                        const actor = await User.findById({ _id: actorId })
+                            .select("first_name last_name")
+                            .lean();
+
+                        if (user.integrations.firebase_token) {
+                            // Send the notification to firebase for mobile notify
+                            firebaseNotifications.sendFirebaseNotification(
+                                user._workspace._id || user._workspace,
+                                user.integrations.firebase_token,
+                                "Octonius - New Mention",
+                                actor?.first_name +
+                                    " " +
+                                    actor?.last_name +
+                                    " mentioned you on a folio."
+                            );
+                        }
+                    }
+                }
+            });
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * This function is responsible to notifying all the user on assigning of a new task to them
+     * @param { postId, assigned_to, groupId, posted_by } post
+     */
+    async newTaskAssignment(postId: string, ownerId: string, actorId: string) {
+        try {
+            const notification = await Notification.create({
+                _actor: actorId,
+                _owner: ownerId,
+                _origin_post: postId,
+                message: " assigned you on",
+                type: "assignment",
+                created_date: DateTime.now(),
+            });
+
+            if (process.env.DOMAIN == "app.octonius.com") {
+                const owner = await User.findById({ _id: ownerId })
+                    .select("_workspace integrations.firebase_token")
+                    .lean();
+                const actor = await User.findById({ _id: actorId })
+                    .select("first_name last_name")
+                    .lean();
+
+                if (owner.integrations.firebase_token) {
+                    // Send the notification to firebase for mobile notify
+                    firebaseNotifications.sendFirebaseNotification(
+                        owner._workspace._id || owner._workspace,
+                        owner.integrations.firebase_token,
+                        "Octonius - New Assignment",
+                        actor?.first_name +
+                            " " +
+                            actor?.last_name +
+                            " assigned you a task."
+                    );
+                }
+            }
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * This function is responsible to notifying all the user on assigning of a new crm task to them
+     * @param { postId, assigned_to, groupId, posted_by } post
+     */
+    async newCRMTaskNotification(
+        ownerId: string,
+        actorId: string,
+        companyId: string,
+        taskId: string,
+        type: string
+    ) {
+        try {
+            await Notification.create({
+                _actor: actorId,
+                _owner: ownerId,
+                _origin_post: null,
+                company: {
+                    _company: companyId,
+                    _task: taskId,
+                },
+                message: "assigned",
+                type: type,
+                created_date: DateTime.now(),
+            });
+
+            if (process.env.DOMAIN == "app.octonius.com") {
+                const owner = await User.findById({ _id: ownerId })
+                    .select("_workspace integrations.firebase_token")
+                    .lean();
+                const actor = await User.findById({ _id: actorId })
+                    .select("first_name last_name")
+                    .lean();
+
+                if (owner.integrations.firebase_token) {
+                    // Send the notification to firebase for mobile notify
+                    firebaseNotifications.sendFirebaseNotification(
+                        owner._workspace._id || owner._workspace,
+                        owner.integrations.firebase_token,
+                        "Octonius - New Assignment",
+                        actor?.first_name +
+                            " " +
+                            actor?.last_name +
+                            " assigned you a task."
+                    );
+                }
+            }
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * This function is responsible to notifying all the user on assigning of a new crm update to them
+     * @param { postId, assigned_to, groupId, posted_by } post
+     */
+    async newCRMUpdateNotification(
+        ownerId: string,
+        actorId: string,
+        companyId: string,
+        updateId: string
+    ) {
+        try {
+            await Notification.create({
+                _actor: actorId,
+                _owner: ownerId,
+                _origin_post: null,
+                // to_all: 'all',
+                company: {
+                    _company: companyId,
+                    _update: updateId,
+                },
+                type: "crm-update-assignment",
+                message: "updated",
+                created_date: DateTime.now(),
+            });
+
+            if (process.env.DOMAIN == "app.octonius.com") {
+                const owner = await User.findById({ _id: ownerId })
+                    .select("_workspace integrations.firebase_token")
+                    .lean();
+                const actor = await User.findById({ _id: actorId })
+                    .select("first_name last_name")
+                    .lean();
+
+                if (owner.integrations.firebase_token) {
+                    // Send the notification to firebase for mobile notify
+                    firebaseNotifications.sendFirebaseNotification(
+                        owner._workspace._id || owner._workspace,
+                        owner.integrations.firebase_token,
+                        "Octonius - New Assignment",
+                        actor?.first_name +
+                            " " +
+                            actor?.last_name +
+                            " assigned you a task."
+                    );
+                }
+            }
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * This function is responsible to notifying all the user on re-assigning of a new task to them
+     * @param { _id, _assigned_to, _posted_by } post
+     */
+    async newTaskReassignment(
+        postId,
+        ownerId: string,
+        actorId: string,
+        io: any
+    ) {
+        try {
+            const notification = await Notification.create({
+                _actor: actorId,
+                _owner: ownerId,
+                _origin_post: postId,
+                message: " assigned you on",
+                type: "assignment",
+                created_date: DateTime.now(),
+            });
+
+            if (process.env.DOMAIN == "app.octonius.com") {
+                const owner = await User.findById({ _id: ownerId })
+                    .select("_workspace integrations.firebase_token")
+                    .lean();
+                const actor = await User.findById({ _id: actorId })
+                    .select("first_name last_name")
+                    .lean();
+
+                if (owner.integrations.firebase_token) {
+                    // Send the notification to firebase for mobile notify
+                    firebaseNotifications.sendFirebaseNotification(
+                        owner._workspace._id || owner._workspace,
+                        owner.integrations.firebase_token,
+                        "Octonius - New Assignment",
+                        actor?.first_name +
+                            " " +
+                            actor?.last_name +
+                            " assigned you a task."
+                    );
+                }
+            }
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * This function is responsible to notifying the creator of the post when the task changed the status
+     * @param { _id, _assigned_to, _posted_by } post
+     * @param status
+     */
+    async taskStatusChanged(
+        postId: String,
+        status: string,
+        actorId: string,
+        ownerId: string,
+        io: any
+    ) {
+        try {
+            if (ownerId) {
+                const notification = await Notification.create({
+                    _actor: actorId,
+                    _owner: ownerId,
+                    _origin_post: postId,
+                    message: status,
+                    type: status,
+                    created_date: DateTime.now(),
+                });
+
+                if (process.env.DOMAIN == "app.octonius.com") {
+                    const owner = await User.findById({ _id: ownerId })
+                        .select("_workspace integrations.firebase_token")
+                        .lean();
+                    const actor = await User.findById({ _id: actorId })
+                        .select("first_name last_name")
+                        .lean();
+                    const task = await Post.findById({ _id: postId })
+                        .select("title")
+                        .lean();
+
+                    if (owner.integrations.firebase_token) {
+                        // Send the notification to firebase for mobile notify
+                        firebaseNotifications.sendFirebaseNotification(
+                            owner._workspace._id || owner._workspace,
+                            owner.integrations.firebase_token,
+                            "Octonius - Task Status Changed",
+                            actor?.first_name +
+                                " " +
+                                actor?.last_name +
+                                " changed the task " +
+                                task?.title +
+                                " to " +
+                                status
+                        );
+                    }
+                }
+
+                await helperFunctions.sendNotificationsFeedFromService(
+                    ownerId,
+                    io
+                );
+            }
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * This function is responsible for notifying the user getting a new comment
+     * @param { _id, _commented_by, _post, _posted_by } comment
+     */
+    async newComment(
+        commentId: string,
+        postId: string,
+        actorId: string,
+        ownerId: string
+    ) {
+        try {
+            const notification = await Notification.create({
+                _actor: actorId,
+                _owner: ownerId,
+                _origin_comment: commentId,
+                _origin_post: postId,
+                message: "commented on",
+                type: "comment",
+                created_date: DateTime.now(),
+            });
+
+            if (process.env.DOMAIN == "app.octonius.com") {
+                const owner = await User.findById({ _id: ownerId })
+                    .select("_workspace integrations.firebase_token")
+                    .lean();
+                const actor = await User.findById({ _id: actorId })
+                    .select("first_name last_name")
+                    .lean();
+
+                if (owner.integrations.firebase_token) {
+                    // Send the notification to firebase for mobile notify
+                    firebaseNotifications.sendFirebaseNotification(
+                        owner._workspace._id || owner._workspace,
+                        owner.integrations.firebase_token,
+                        "Octonius - New Comment",
+                        actor?.first_name +
+                            " " +
+                            actor?.last_name +
+                            " commented on "
+                    );
+                }
+            }
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * This function is responsible for notifying the user´s comment is liked
+     * @param { _id, _commented_by, _post, _posted_by } comment
+     */
+    async likeComment(comment: any, ownerId: string, actorId: string) {
+        try {
+            const notification = await Notification.create({
+                _actor: actorId,
+                _owner: ownerId,
+                _origin_comment: comment._id,
+                _origin_post: comment._post,
+                message: "liked your comment on",
+                type: "like_comment",
+                created_date: DateTime.now(),
+            });
+
+            if (process.env.DOMAIN == "app.octonius.com") {
+                const owner = await User.findById({ _id: ownerId })
+                    .select("_workspace integrations.firebase_token")
+                    .lean();
+                const actor = await User.findById({ _id: actorId })
+                    .select("first_name last_name")
+                    .lean();
+
+                if (owner.integrations.firebase_token) {
+                    // Send the notification to firebase for mobile notify
+                    firebaseNotifications.sendFirebaseNotification(
+                        owner._workspace._id || owner._workspace,
+                        owner.integrations.firebase_token,
+                        "Octonius - New Like on a Post",
+                        actor?.first_name +
+                            " " +
+                            actor?.last_name +
+                            " liked your comment on " +
+                            comment._post.title
+                    );
+                }
+            }
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * This function is responsible to notifying all the user on a new follower
+     */
+    async followPost(postId: string, ownerId: string, actorId: string) {
+        try {
+            const notification = await Notification.create({
+                _actor: actorId,
+                _owner: ownerId,
+                _origin_post: postId,
+                message: "follows",
+                type: "follow",
+                created_date: DateTime.now(),
+            });
+
+            if (process.env.DOMAIN == "app.octonius.com") {
+                const owner = await User.findById({ _id: ownerId })
+                    .select("_workspace integrations.firebase_token")
+                    .lean();
+                const actor = await User.findById({ _id: actorId })
+                    .select("first_name last_name")
+                    .lean();
+                const post = await Post.findById({ _id: postId })
+                    .select("title")
+                    .lean();
+
+                if (owner.integrations.firebase_token) {
+                    // Send the notification to firebase for mobile notify
+                    firebaseNotifications.sendFirebaseNotification(
+                        owner._workspace._id || owner._workspace,
+                        owner.integrations.firebase_token,
+                        "Octonius - New Follow on a Post",
+                        actor?.first_name +
+                            " " +
+                            actor?.last_name +
+                            " follows " +
+                            post.title
+                    );
+                }
+            }
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async likePost(postId, ownerId: string, actorId: string) {
+        try {
+            const notification = await Notification.create({
+                _actor: actorId,
+                _owner: ownerId,
+                _origin_post: postId,
+                message: "likes",
+                type: "likes",
+                created_date: DateTime.now(),
+            });
+
+            if (process.env.DOMAIN == "app.octonius.com") {
+                const owner = await User.findById({ _id: ownerId })
+                    .select("_workspace integrations.firebase_token")
+                    .lean();
+                const actor = await User.findById({ _id: actorId })
+                    .select("first_name last_name")
+                    .lean();
+                const post = await Post.findById({ _id: postId })
+                    .select("title")
+                    .lean();
+
+                if (owner.integrations.firebase_token) {
+                    // Send the notification to firebase for mobile notify
+                    firebaseNotifications.sendFirebaseNotification(
+                        owner._workspace._id || owner._workspace,
+                        owner.integrations.firebase_token,
+                        "Octonius - New Like on a Post",
+                        actor?.first_name +
+                            " " +
+                            actor?.last_name +
+                            " likes " +
+                            post.title
+                    );
+                }
+            }
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * This function is responsible for notifying the user getting a new post in one of his/her groups
+     * @param { postId, groupId, posted_by } comment
+     */
+    async newPost(postId: any, groupId: any, actorId: string, io: any) {
+        try {
+            // Let usersStream
+            let userStream = Readable.from(
+                await User.find({
+                    _groups: groupId,
+                }).select(
+                    "_workspace first_name email integrations.firebase_token"
+                )
+            );
+
+            await userStream.on("data", async (user: any) => {
+                if (user._id != actorId) {
+                    const notification = await Notification.create({
+                        _actor: actorId,
+                        _owner: user._id,
+                        _origin_post: postId,
+                        _origin_group: groupId,
+                        message: "posted",
+                        type: "new-post",
+                        created_date: DateTime.now(),
+                    });
+
+                    if (process.env.DOMAIN == "app.octonius.com") {
+                        const actor = await User.findById({ _id: actorId })
+                            .select("_workspace first_name last_name")
+                            .lean();
+                        const post = await Post.findById({ _id: postId })
+                            .select("title")
+                            .lean();
+
+                        if (user.integrations.firebase_token) {
+                            // Send the notification to firebase for mobile notify
+                            firebaseNotifications.sendFirebaseNotification(
+                                user._workspace._id || user._workspace,
+                                user.integrations.firebase_token,
+                                "Octonius - New Post",
+                                actor?.first_name +
+                                    " " +
+                                    actor?.last_name +
+                                    " posted " +
+                                    post.title
+                            );
+                        }
+                    }
+
+                    await helperFunctions.sendNotificationsFeedFromService(
+                        user,
+                        io,
+                        true
+                    );
+                }
+            });
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * This function is responsible for notifying the user getting a new post in one of his/her groups
+     * @param { postId, groupId, actorId } comment
+     */
+    async postEdited(
+        postId: any,
+        groupId: any,
+        actorId: string,
+        ownerId: string,
+        io: any
+    ) {
+        try {
+            const notification = await Notification.create({
+                _actor: actorId,
+                _owner: ownerId,
+                _origin_post: postId,
+                _origin_group: groupId,
+                message: "edited",
+                type: "post-edited",
+                created_date: DateTime.now(),
+            });
+
+            if (process.env.DOMAIN == "app.octonius.com") {
+                const actor = await User.findById({ _id: actorId })
+                    .select("_workspace first_name last_name")
+                    .lean();
+                const owner = await User.findById({ _id: ownerId })
+                    .select("_workspace integrations.firebase_token")
+                    .lean();
+                const post = await Post.findById({ _id: postId })
+                    .select("title")
+                    .lean();
+
+                if (owner.integrations.firebase_token) {
+                    // Send the notification to firebase for mobile notify
+                    firebaseNotifications.sendFirebaseNotification(
+                        owner._workspace._id || owner._workspace,
+                        owner.integrations.firebase_token,
+                        "Octonius - New Post",
+                        actor?.first_name +
+                            " " +
+                            actor?.last_name +
+                            " posted " +
+                            post.title
+                    );
+                }
+            }
+
+            await helperFunctions.sendNotificationsFeedFromService(
+                ownerId,
+                io,
+                true
+            );
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * This function is responsible for notifying the user is added to a groups
+     * @param { userId, groupId, posted_by } comment
+     */
+    async joinGroup(ownerId: any, groupId: any, actorId: string, io: any) {
+        try {
+            const notification = await Notification.create({
+                _actor: actorId,
+                _owner: ownerId,
+                _origin_group: groupId,
+                message: "added you to",
+                type: "join-group",
+                created_date: DateTime.now(),
+            });
+
+            if (process.env.DOMAIN == "app.octonius.com") {
+                const owner = await User.findById({ _id: ownerId })
+                    .select("_workspace integrations.firebase_token")
+                    .lean();
+                const actor = await User.findById({ _id: actorId })
+                    .select("first_name last_name")
+                    .lean();
+                const group = await Group.findById({ _id: groupId })
+                    .select("group_name")
+                    .lean();
+
+                if (owner.integrations.firebase_token) {
+                    // Send the notification to firebase for mobile notify
+                    firebaseNotifications.sendFirebaseNotification(
+                        owner._workspace._id || owner._workspace,
+                        owner.integrations.firebase_token,
+                        "Octonius - Joined Group",
+                        actor?.first_name +
+                            " " +
+                            actor?.last_name +
+                            " added you to group " +
+                            group.group_name
+                    );
+                }
+            }
+
+            await helperFunctions.sendNotificationsFeedFromService(
+                ownerId,
+                io,
+                true
+            );
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * This function is responsible for notifying the user is removed from a groups
+     * @param { userId, groupId, posted_by } comment
+     */
+    async leaveGroup(ownerId: any, groupId: any, actorId: string, io: any) {
+        try {
+            const notification = await Notification.create({
+                _actor: actorId,
+                _owner: ownerId,
+                _origin_group: groupId,
+                message: "removed you from",
+                type: "leave-group",
+                created_date: DateTime.now(),
+            });
+
+            if (process.env.DOMAIN == "app.octonius.com") {
+                const owner = await User.findById({ _id: ownerId })
+                    .select("_workspace integrations.firebase_token")
+                    .lean();
+                const actor = await User.findById({ _id: actorId })
+                    .select("first_name last_name")
+                    .lean();
+                const group = await Group.findById({ _id: groupId })
+                    .select("group_name")
+                    .lean();
+
+                if (owner.integrations.firebase_token) {
+                    // Send the notification to firebase for mobile notify
+                    firebaseNotifications.sendFirebaseNotification(
+                        owner._workspace._id || owner._workspace,
+                        owner.integrations.firebase_token,
+                        "Octonius - Leave Group",
+                        actor?.first_name +
+                            " " +
+                            actor?.last_name +
+                            " removed you from group " +
+                            group.group_name
+                    );
+                }
+            }
+
+            await helperFunctions.sendNotificationsFeedFromService(
+                ownerId,
+                io,
+                true
+            );
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * This function is responsible to notifying all the user on assigning of a new event to them
+     * @param { _id, event._assigned_to, _posted_by } post
+     */
+    async launchApprovalFlow(item, assigned, posted_by, io) {
+        try {
+            if (item.type == "task") {
+                await Notification.create({
+                    _actor: posted_by,
+                    _owner: assigned._id,
+                    _origin_post: item._id,
+                    message: "launched the approval flow",
+                    type: "launch-approval-flow",
+                    created_date: DateTime.now(),
+                });
+
+                if (item.approval_due_date) {
+                    await Notification.create({
+                        _actor: posted_by,
+                        _owner: assigned._id,
+                        _origin_post: item._id,
+                        message: "launched the approval flow",
+                        type: "launch-approval-flow-due-date",
+                        created_date: DateTime.now(),
+                    });
+                }
+            } else {
+                await Notification.create({
+                    _actor: posted_by,
+                    _owner: assigned._id,
+                    _origin_folio: item._id,
+                    message: "launched the approval flow",
+                    type: "launch-approval-flow",
+                    created_date: DateTime.now(),
+                });
+
+                if (item.approval_due_date) {
+                    await Notification.create({
+                        _actor: posted_by,
+                        _owner: assigned._id,
+                        _origin_folio: item._id,
+                        message: "launched the approval flow",
+                        type: "launch-approval-flow-due-date",
+                        created_date: DateTime.now(),
+                    });
+                }
+            }
+
+            if (process.env.DOMAIN == "app.octonius.com") {
+                const owner = await User.findById({ _id: assigned._id })
+                    .select("_workspace integrations.firebase_token")
+                    .lean();
+                const actor = await User.findById({
+                    _id: posted_by._id || posted_by,
+                })
+                    .select("first_name last_name")
+                    .lean();
+                let itemDB;
+                if (item.type == "task") {
+                    itemDB = await Post.findById({ _id: item._id })
+                        .select("title")
+                        .lean();
+                } else {
+                    itemDB = await File.findById({ _id: item._id })
+                        .select("original_name")
+                        .lean();
+                }
+
+                if (owner.integrations.firebase_token) {
+                    // Send the notification to firebase for mobile notify
+                    firebaseNotifications.sendFirebaseNotification(
+                        owner._workspace._id || owner._workspace,
+                        owner.integrations.firebase_token,
+                        "Octonius - New Approval Flow Launched",
+                        actor?.first_name +
+                            " " +
+                            actor?.last_name +
+                            " launched the approval flow on " +
+                            (itemDB.title || itemDB.original_name)
+                    );
+                }
+            }
+
+            await helperFunctions.sendNotificationsFeedFromService(
+                assigned._id,
+                io,
+                true
+            );
+
+            // SEND EMAIL TO ALL USERS IN THE FLOW TO INFORM THEY NEED TO REVIEW THE ITEM
+            // Obtain the workspace for the api key for the email
+            const workspace: any = await Workspace.findById({
+                _id: item._group._workspace,
+            })
+                .select("management_private_api_key")
+                .lean();
+
+            // send email to assigned users
+            axios
+                .post(
+                    `${process.env.MANAGEMENT_URL}/api/mail/launch-approval-flow`,
+                    {
+                        API_KEY: workspace["management_private_api_key"],
+                        user: assigned,
+                        item: JSON.stringify(item),
+                    }
+                )
+                .catch((err) => {
+                    console.log(err);
+                });
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * This function is responsible to notifying all the user on assigning of a new event to them
+     * @param { _id, event._assigned_to, _posted_by } post
+     */
+    async rejectItem(item, assigned, rejected_by, io) {
+        try {
+            if (item.type == "task") {
+                await Notification.create({
+                    _actor: rejected_by,
+                    _owner: assigned._id,
+                    _origin_post: item._id,
+                    message: "rejected the item",
+                    type: "reject-item",
+                    created_date: DateTime.now(),
+                });
+            } else {
+                await Notification.create({
+                    _actor: rejected_by,
+                    _owner: assigned._id,
+                    _origin_folio: item._id,
+                    message: "rejected the item",
+                    type: "reject-item",
+                    created_date: DateTime.now(),
+                });
+            }
+
+            if (process.env.DOMAIN == "app.octonius.com") {
+                const owner = await User.findById({ _id: assigned._id })
+                    .select("_workspace integrations.firebase_token")
+                    .lean();
+                const actor = await User.findById({ _id: rejected_by })
+                    .select("first_name last_name")
+                    .lean();
+                let itemDB;
+                if (item.type == "task") {
+                    itemDB = await Post.findById({ _id: item._id })
+                        .select("title")
+                        .lean();
+                } else {
+                    itemDB = await File.findById({ _id: item._id })
+                        .select("original_name")
+                        .lean();
+                }
+
+                if (owner.integrations.firebase_token) {
+                    // Send the notification to firebase for mobile notify
+                    firebaseNotifications.sendFirebaseNotification(
+                        owner._workspace._id || owner._workspace,
+                        owner.integrations.firebase_token,
+                        "Octonius - Approval Flow Rejected",
+                        actor?.first_name +
+                            " " +
+                            actor?.last_name +
+                            " rejected the approval flow on " +
+                            (itemDB.title || itemDB.original_name)
+                    );
+                }
+            }
+
+            await helperFunctions.sendNotificationsFeedFromService(
+                assigned._id,
+                io,
+                true
+            );
+
+            const workspace: any = await Workspace.findById({
+                _id: item._group._workspace,
+            })
+                .select("management_private_api_key")
+                .lean();
+
+            axios
+                .post(`${process.env.MANAGEMENT_URL}/api/mail/reject-item`, {
+                    API_KEY: workspace["management_private_api_key"],
+                    user: assigned,
+                    item: JSON.stringify(item),
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * This function is responsible to notifying all the user on assigning of a new event to them
+     * @param { _id, event._assigned_to, _posted_by } post
+     */
+    async itemApproved(item, assigned, io) {
+        try {
+            if (item.type == "task") {
+                await Notification.create({
+                    _owner: assigned._id,
+                    _origin_post: item._id,
+                    message: "the item has been approved by all assignees",
+                    type: "approved-item",
+                    created_date: DateTime.now(),
+                });
+            } else {
+                await Notification.create({
+                    _owner: assigned._id,
+                    _origin_folio: item._id,
+                    message: "the item has been approved by all assignees",
+                    type: "approved-item",
+                    created_date: DateTime.now(),
+                });
+            }
+
+            if (process.env.DOMAIN == "app.octonius.com") {
+                const owner = await User.findById({ _id: assigned._id })
+                    .select("_workspace integrations.firebase_token")
+                    .lean();
+                let itemDB;
+                if (item.type == "task") {
+                    itemDB = await Post.findById({ _id: item._id })
+                        .select("title")
+                        .lean();
+                } else {
+                    itemDB = await File.findById({ _id: item._id })
+                        .select("original_name")
+                        .lean();
+                }
+
+                if (owner.integrations.firebase_token) {
+                    // Send the notification to firebase for mobile notify
+                    firebaseNotifications.sendFirebaseNotification(
+                        owner._workspace._id || owner._workspace,
+                        owner.integrations.firebase_token,
+                        "Octonius - Approval Flow Rejected",
+                        "Approval flow on " +
+                            (itemDB.title || itemDB.original_name) +
+                            " has been approved"
+                    );
+                }
+            }
+
+            await helperFunctions.sendNotificationsFeedFromService(
+                assigned._id,
+                io,
+                true
+            );
+
+            // Obtain the workspace for the api key for the email
+            const workspace: any = await Workspace.findById({
+                _id: item._group._workspace,
+            })
+                .select("management_private_api_key")
+                .lean();
+
+            // send email user
+            axios
+                .post(`${process.env.MANAGEMENT_URL}/api/mail/item-approved`, {
+                    API_KEY: workspace["management_private_api_key"],
+                    user: assigned,
+                    item: JSON.stringify(item),
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * This function is responsible to notifying all the user on assigning of a new event to them
+     * @param { _id, event._assigned_to, _posted_by } post
+     */
+    async shuttleTask(
+        postId: string,
+        actorId: string,
+        groupId: string,
+        shuttleGroupId: string,
+        io
+    ) {
+        try {
+            const shuttleGroup = await Group.findById({
+                _id: shuttleGroupId,
+            }).select("group_name _members _admins _workspace");
+
+            let usersArray = [];
+            if (shuttleGroup) {
+                usersArray = [
+                    ...(shuttleGroup._members || []),
+                    ...(shuttleGroup._admins || []),
+                ];
+            }
+
+            // Create Readble Stream from the notification
+            let userStream = Readable.from(
+                await User.find({
+                    _id: { $in: usersArray },
+                }).select("_id integrations.firebase_token")
+            );
+
+            await userStream.on("data", async (user: any) => {
+                if (user._id != actorId) {
+                    const notification = await Notification.create({
+                        _actor: actorId,
+                        _owner: user._id,
+                        _origin_post: postId,
+                        _origin_group: groupId,
+                        _shuttle_group: shuttleGroupId,
+                        message: " assigned to your group",
+                        type: "shuttleTask",
+                        created_date: DateTime.now(),
+                    });
+
+                    if (process.env.DOMAIN == "app.octonius.com") {
+                        const actor = await User.findById({ _id: actorId })
+                            .select("first_name last_name")
+                            .lean();
+
+                        if (user.integrations.firebase_token) {
+                            // Send the notification to firebase for mobile notify
+                            firebaseNotifications.sendFirebaseNotification(
+                                shuttleGroup._workspace._id ||
+                                    shuttleGroup._workspace,
+                                user.integrations.firebase_token,
+                                "Octonius - Shuttle Task",
+                                actor?.first_name +
+                                    " " +
+                                    actor?.last_name +
+                                    " assigned a Shuttle Task to your group " +
+                                    shuttleGroup.group_name
+                            );
+                        }
+                    }
+
+                    await helperFunctions.sendNotificationsFeedFromService(
+                        user._id || user,
+                        io,
+                        true
+                    );
+
+                    // Add notification on integrations
+                    await axios.post(
+                        `${process.env.INTEGRATION_SERVER_API}/notify`,
+                        {
+                            groupId,
+                            actorId,
+                            postId,
+                            shuttleGroupId,
+                            type: "SHUTTLETASK",
+                        }
+                    );
+
+                    /*
+                    // Send shuttle task notification email
+                    axios.post(`${process.env.MANAGEMENT_URL}/api/mail/shuttle-task`, {
+                        API_KEY: workspace.management_private_api_key,
+                        actorId: userId,
+                        userId: user._id || user,
+                        groupName: group.group_name,
+                        postId,
+                        postTitle: post.title,
+                        shuttleGroupName: shuttleGroup.group_name,
+                    });
+                    */
+                }
+            });
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async getAttendingEvents(
+        workspaceId: string,
+        userId: string,
+        limit?: number
+    ) {
+        try {
+            const today = DateTime.now();
+
+            // Find the story
+            let stories: any;
+
+            if (limit) {
+                stories = await Story.find({
+                    $and: [
+                        { _workspace: workspaceId },
+                        {
+                            $or: [
+                                { _assistants: userId },
+                                { _maybe_assistants: userId },
+                            ],
+                        },
+                        { event_date: { $gte: today } },
+                    ],
+                })
+                    .sort("event_date")
+                    .limit(limit)
+                    .populate({
+                        path: "_lounge",
+                        select: "name type icon_pic _parent _workspace _posted_by created_date _lounges _stories",
+                    })
+                    .populate({
+                        path: "_posted_by",
+                        select: "first_name last_name profile_pic role",
+                    })
+                    .populate({
+                        path: "_assistants",
+                        select: "first_name last_name profile_pic role",
+                    })
+                    .populate({
+                        path: "_rejected_assistants",
+                        select: "first_name last_name profile_pic role",
+                    })
+                    .populate({
+                        path: "_maybe_assistants",
+                        select: "first_name last_name profile_pic role",
+                    })
+                    .lean();
+            } else {
+                stories = await Story.find({
+                    $and: [
+                        { _workspace: workspaceId },
+                        {
+                            $or: [
+                                { _assistants: userId },
+                                { _maybe_assistants: userId },
+                            ],
+                        },
+                        { event_date: { $gte: today } },
+                    ],
+                })
+                    .sort("event_date")
+                    .populate({
+                        path: "_lounge",
+                        select: "name type icon_pic _parent _workspace _posted_by created_date _lounges _stories",
+                    })
+                    .populate({
+                        path: "_posted_by",
+                        select: "first_name last_name profile_pic role",
+                    })
+                    .populate({
+                        path: "_assistants",
+                        select: "first_name last_name profile_pic role",
+                    })
+                    .populate({
+                        path: "_rejected_assistants",
+                        select: "first_name last_name profile_pic role",
+                    })
+                    .populate({
+                        path: "_maybe_assistants",
+                        select: "first_name last_name profile_pic role",
+                    })
+                    .lean();
+            }
+
+            return stories;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * This function is responsible for notifying the user on mention on a Collection
+     */
+    async newCollectionMentions(
+        actorId: string,
+        collectionId: string,
+        mentions: any,
+        io: any
+    ) {
+        try {
+            // Let usersStream
+            let userStream: any;
+
+            // if (mentions.includes('all')) {
+            //     const collection = await Collection.findOne({ _id: collectionId }).select('_group').lean();
+            //     // Create Readble Stream from the Event Assignee
+            //     userStream = Readable.from(await User.find({
+            //         _groups: collection?._group
+            //     }).select('_workspace first_name email integrations.firebase_token'))
+            // } else {
+
+            // Create Readble Stream from the Event Assignee
+            userStream = Readable.from(
+                await User.find({
+                    _id: mentions,
+                }).select(
+                    "_workspace first_name email integrations.firebase_token"
+                )
+            );
+
+            // }
+
+            await userStream.on("data", async (user: any) => {
+                if (user._id != actorId) {
+                    const notification = await Notification.create({
+                        _actor: actorId,
+                        _owner: user,
+                        _collection: collectionId,
+                        message: " mentioned you on",
+                        type: "mention_collection",
+                        created_date: DateTime.now(),
+                    });
+
+                    await helperFunctions.sendNotificationsFeedFromService(
+                        user._id,
+                        io,
+                        true
+                    );
+
+                    if (process.env.DOMAIN == "app.octonius.com") {
+                        const actor = await User.findById({ _id: actorId })
+                            .select("first_name last_name")
+                            .lean();
+
+                        if (user.integrations.firebase_token) {
+                            // Send the notification to firebase for mobile notify
+                            firebaseNotifications.sendFirebaseNotification(
+                                user._workspace._id || user._workspace,
+                                user.integrations.firebase_token,
+                                "Octonius - New Mention",
+                                actor?.first_name +
+                                    " " +
+                                    actor?.last_name +
+                                    " mentioned you on a collection."
+                            );
+                        }
+                    }
+                }
+            });
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * This function is responsible for notifying the user on mention on a Page
+     */
+    async newPageMentions(
+        actorId: string,
+        pageId: string,
+        mentions: any,
+        io: any
+    ) {
+        try {
+            // Let usersStream
+            let userStream: any;
+
+            // Create Readble Stream from the Event Assignee
+            userStream = Readable.from(
+                await User.find({
+                    _id: mentions,
+                }).select(
+                    "_workspace first_name email integrations.firebase_token"
+                )
+            );
+
+            await userStream.on("data", async (user: any) => {
+                if (user._id != actorId) {
+                    const notification = await Notification.create({
+                        _actor: actorId,
+                        _owner: user,
+                        _page: pageId,
+                        message: " mentioned you on",
+                        type: "mention_page",
+                        created_date: DateTime.now(),
+                    });
+
+                    await helperFunctions.sendNotificationsFeedFromService(
+                        user._id,
+                        io,
+                        true
+                    );
+
+                    if (process.env.DOMAIN == "app.octonius.com") {
+                        const actor = await User.findById({ _id: actorId })
+                            .select("first_name last_name")
+                            .lean();
+
+                        if (user.integrations.firebase_token) {
+                            // Send the notification to firebase for mobile notify
+                            firebaseNotifications.sendFirebaseNotification(
+                                user._workspace._id || user._workspace,
+                                user.integrations.firebase_token,
+                                "Octonius - New Mention",
+                                actor?.first_name +
+                                    " " +
+                                    actor?.last_name +
+                                    " mentioned you on a page."
+                            );
+                        }
+                    }
+                }
+            });
+        } catch (err) {
+            throw err;
+        }
+    }
+}

@@ -1,0 +1,116 @@
+@import "variables";
+
+.center {
+  width: 30%;
+  margin-top: 100px;
+}
+@media (max-width: 574px) {
+  .center {
+    width: 90%;
+    margin-top: 30px;
+  }
+}
+
+@media (max-width: 767px) {
+  .center {
+    width: 80%;
+    margin-top: 30px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .center {
+    width: 60%;
+    margin-top: 30px;
+  }
+}
+
+.placeholder{
+  width: 120px;
+  margin-bottom: 30px;
+}
+.shaddow{
+  box-shadow: -13px 0px 20px rgba(0, 0, 0, 0.24);
+  // background-color: rgba(255, 255, 255, 0.95);
+  background-color: #fff;
+  overflow:auto;
+}
+
+.forgot-password{
+  text-decoration: underline;
+  cursor: pointer;
+  color: #005fd5;
+}
+
+.btn_login{
+  border-radius: 20px;
+}
+
+.not_bold{
+  font-weight: 400 !important;
+}
+
+.btn-create-workplace{
+width: 70px;
+height: 70px;
+background: #FFFFFF;
+border: 1px solid $border-color;
+box-shadow: 0px 4px 5px rgba(66, 66, 66, 0.14);
+border-radius: 5px;
+text-align: center;
+i{
+  font-size: 40px;
+  line-height: 70px;
+  color: #005fd5;
+}
+&:hover{
+  box-shadow: 2px 6px 8px rgba(66, 66, 66, 0.24);
+}
+}
+
+
+.btn-join-workplace{
+  width: 70px;
+height: 70px;
+background: #FFFFFF;
+border: 1px solid $border-color;
+box-shadow: 0px 4px 5px rgba(66, 66, 66, 0.14);
+border-radius: 5px;
+text-align: center;
+i{
+  font-size: 40px;
+  line-height: 70px;
+  color:#2AA578;
+}
+&:hover{
+  box-shadow: 2px 6px 8px rgba(66, 66, 66, 0.24);
+}
+}
+
+.workplace-cells{
+  display: flex;
+  margin: 12px 0;
+  cursor: pointer;
+  h3{
+    line-height: 70px;
+    font-weight: 400;
+  }
+
+}
+
+.btn-select-workplace{
+  width: 70px;
+height: 70px;
+background: #FFFFFF;
+border: 1px solid $border-color;
+box-shadow: 0px 4px 5px rgba(66, 66, 66, 0.14);
+border-radius: 5px;
+text-align: center;
+img{
+  object-fit: cover;
+  border-radius: 5px;
+}
+&:hover{
+  box-shadow: 2px 6px 8px rgba(66, 66, 66, 0.24);
+}
+}

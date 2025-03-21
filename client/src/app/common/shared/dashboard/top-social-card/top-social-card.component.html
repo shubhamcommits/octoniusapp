@@ -1,0 +1,55 @@
+<div class="smart-card" style="padding: 10px;">
+    <div class="row" style="margin: 0 0 20px; justify-content: space-between;">
+      <div class="card-title mt-1" i18n="@@topSocialCard.topSocialContributors">
+        Top Social Contributors
+      </div>
+    </div>
+
+    <div class="social_card">
+      <div *ngFor="let member of members; trackBy: utilityService.trackByIndex" class="row">
+        <div class="col-md-6">
+          <app-secured-image
+              [imgURL]="member?.profile_pic"
+              [service]="'user'" [userData]="member"
+              [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
+              [styleClass]="'feed-avatar'"
+              style="margin-right:15px; float: left;"></app-secured-image>
+
+          <div>{{ member?.first_name }} {{ member?.last_name }}</div>
+          <div class="muted">{{ member?.current_position }}</div>
+        </div>
+
+        <div class="column col-md-6">
+          <div>
+            <span class="badge badge_posts">{{ member?.numPosts }}</span>
+            <span i18n="@@topSocialCard.posts">Posts</span>
+          </div>
+          
+          <div>
+            <span class="badge badge_posts">{{ member?.numTasks }}</span>
+            <span i18n="@@topSocialCard.tasks">Tasks</span>
+          </div>
+
+          <div>
+            <span class="badge badge_comments">{{ member?.numComments }}</span>
+            <span i18n="@@topSocialCard.comments">Comments</span>
+          </div>
+          
+          <div>
+            <span class="badge badge_likes">{{ member?.numLikes }}</span>
+            <span i18n="@@topSocialCard.likes">Likes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-5" *ngIf="members.length === 0">
+      <img src='assets/images/inbox-tasks-card-empty.svg'>
+    </div>
+
+    <!-- LOADING SPINNER STARTS -->
+    <ng-container *ngIf="isLoading$ | async">
+      <app-loading-spinner></app-loading-spinner>
+    </ng-container>
+    <!-- LOADING SPINNER ENDS -->
+</div>

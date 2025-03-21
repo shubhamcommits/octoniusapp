@@ -1,0 +1,110 @@
+// Import the desired fonts
+@import url('https://fonts.googleapis.com/css?family=Original+Surfer');
+
+// Import Colors
+@import 'src/assets/scss/_variables.scss';
+
+.not-found{
+  font-family: 'Original Surfer';
+  font-size: 30px;
+  color: $brand-primary;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem;
+}
+
+table {
+  width: 100vw !important;
+  margin-bottom: 10%;
+  margin-right: 10%;
+}
+
+.loading-placeholder{
+  display: block;
+  margin: 0 auto;
+  max-width: 50%;
+  max-height: 50%;
+  margin-top: 2rem;
+}
+
+td{
+cursor: pointer;
+}
+
+
+th.mat-sort-header-sorted {
+  color: black;
+}
+
+.full-width {
+  width: 95%;
+  margin-bottom: 1%;
+}
+
+.extreme-right {
+  display: flex;
+  justify-content: right;
+  align-items: flex-end;
+  flex-direction: column;
+}
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+
+  .mat-elevation-z8{
+    margin-top: 2%;
+  }
+}
+
+.mat-mdc-cell,
+.mat-mdc-header-cell {
+  word-wrap: initial;
+  display: table-cell;
+  padding: 0px 10px;
+  line-break: unset;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: middle;
+  text-align: start;
+  justify-content:center;
+}
+.mat-mdc-row,
+.mat-mdc-header-row {
+  display: table-row;
+  position: sticky;
+  top: 1;
+  background-color: inherit;
+  position: sticky !important;
+  position: -webkit-sticky !important;
+  top: 0;
+  z-index: 100000 !important;
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of paginator that may no longer apply for the MDC version.*/
+mat-paginator{
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 100000 !important;
+}
+
+.metrics{
+  float: left;
+  margin-right: 1%;
+}
+
+.analytics{
+  cursor: pointer;
+  font-size: xx-large;
+  color: $brand-primary;
+}
+
+.full-width{
+  width: 90%;
+  margin-left: 5%;
+  margin-bottom: 1%;
+}

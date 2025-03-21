@@ -1,0 +1,77 @@
+<!-- Create new file starts -->
+<button class="btn btn-warning mb-3 mt-3" type="button" data-toggle="dropdown">
+    <i class="material-icons-outlined">add</i>
+    <span i18n="@@loungeNewElement.new">New</span>
+</button>
+<!-- Create new file ends -->
+
+<!-- Menu Drawer Starts -->
+<ul class="dropdown-menu">
+
+    <!-- CREATE STORY STARTS -->
+    <li *ngIf="lounge && !categories" class="dropdown-item" (click)="createStory()">
+      <span i18n="@@loungeNewElement.story"><span class="material-icons-outlined">
+        history_edu
+        </span> Story</span>
+    </li>
+    <li *ngIf="lounge && categories" class="dropdown-item" mat-menu-item [matMenuTriggerFor]="categoriesMenu" (click)="$event.stopPropagation()">
+      <span i18n="@@loungeNewElement.story"><span class="material-icons-outlined">
+        history_edu
+        </span> Story</span>
+    </li>
+
+    <mat-menu #categoriesMenu="matMenu">
+      <ng-container *ngFor="let category of categories; let index = index; trackBy: utilityService.trackByIndex">
+        <button mat-menu-item (click)="createStory(category)">{{ category.name }}</button>
+      </ng-container>
+    </mat-menu>
+    <!-- CREATE STORY ENDS -->
+
+    <li *ngIf="lounge" class="dropdown-divider"></li>
+
+    <!-- CREATE EVENT STARTS -->
+    <li *ngIf="lounge && !categories" class="dropdown-item" (click)="createEvent()">
+      <span i18n="@@loungeNewElement.event"><span class="material-icons-outlined">
+        local_activity
+        </span> Event</span>
+    </li>
+    <li *ngIf="lounge && categories" class="dropdown-item" mat-menu-item [matMenuTriggerFor]="categoriesEventMenu" (click)="$event.stopPropagation()">
+      <span i18n="@@loungeNewElement.event"><span class="material-icons-outlined">
+        local_activity
+        </span> Event</span>
+    </li>
+
+    <mat-menu #categoriesEventMenu="matMenu">
+      <ng-container *ngFor="let category of categories; let index = index; trackBy: utilityService.trackByIndex">
+        <button mat-menu-item (click)="createEvent(category)">{{ category.name }}</button>
+      </ng-container>
+    </mat-menu>
+    <!-- CREATE STORY ENDS -->
+
+    <li *ngIf="lounge" class="dropdown-divider"></li>
+
+    <!-- CREATE LOUNGE STARTS -->
+    <li *ngIf="lounge" class="dropdown-item" (click)="createLounge()">
+      <span i18n="@@loungeNewElement.lounge"><span class="material-icons-outlined">
+        weekend
+        </span> Lounge</span>
+    </li>
+    <!-- CREATE LOUNGE ENDS -->
+
+    <li *ngIf="canCreateCategory && lounge" class="dropdown-divider"></li>
+
+    <!-- CREATE CATEGORY STARTS -->
+    <li class="dropdown-item" (click)="createCategory()" *ngIf="canCreateCategory">
+      <span i18n="@@loungeNewElement.category"><span class="material-icons-outlined">
+        sell
+        </span> Category</span>
+    </li>
+    <!-- CREATE CATEGORY ENDS -->
+</ul>
+<!-- Menu Drawer Ends -->
+
+<!-- Loading Spinner Starts -->
+<ng-container *ngIf="isLoading$ | async">
+    <app-loading-spinner></app-loading-spinner>
+</ng-container>
+<!-- Loading Spinner Ends -->

@@ -1,0 +1,56 @@
+<div class="container-fluid" style="margin-top: 30px;margin-left: 20px;">
+  
+  <div class="row float-right">
+    <i *ngIf="isManager" (click)="openCardSettingsDialog()" class="material-icons" style="cursor: pointer; margin-right: 45px;">settings</i>
+  </div>
+
+  <div class="media-body">
+    <div *ngIf="levels && levels[0] && levels[0].managerId" class="has-next-level">
+      <i class="material-icons" style="cursor: pointer; margin: 20px 65px;" (click)="selectParentLevel(levels[0].managerId)">more_horiz</i>
+    </div>
+
+    <div *ngFor="let level of levels; let index = index; trackBy: utilityService.trackByIndex" class="level" [ngClass]="(levels[index + 1]) ? 'has-next-level' : ''">
+      <app-chart-person
+        *ngFor="let user of level?.members; trackBy: utilityService.trackByIndex"
+        [person]="user"
+        [selected]="levels && levels[index + 1] && user._id == levels[index + 1].managerId"
+        [level]="index"
+        [isManager]="isManager"
+        (nextLevelMembersEmitter)="newManagerSelected($event, index)"
+        (removeFromManagerEmitter)="removeFromManager(user, index)"></app-chart-person>
+
+      <div *ngIf="index > 0 && isManager" class="box muted"
+          [matMenuTriggerFor]="membersSearchMenu" (click)="selectPossibleMember(level?.managerId)">
+        <div>
+          <i class="material-icons">add_circle</i>
+        </div>
+        <div style="margin: 4px 10px;">
+          <span i18n="@@organizationChart.addPeople">Add people</span>
+        </div>
+      </div>
+      <mat-menu #membersSearchMenu="matMenu" class="user-filter-menu">
+        <div style="padding: 10px;">
+            <div class="users-card">
+                <div class="form-group" (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+                  <input type="text" class="form-control" id="search-text" aria-describedby="search-text"
+                    [(ngModel)]="searchText" placeholder="Search member" autofocus>
+                </div>
+                <ul class="members-list">
+                  <li class="members-list-item" *ngFor="let member of possibleMembers | appFilter: searchText; trackBy: utilityService.trackByIndex"
+                      (click)="getMemberDetails(member, level?.managerId, index); searchText = ''">
+                    <app-avatar style="width:30px !important;height:30px !important;"
+                      [photoUrl]="member.profile_pic"
+                      [userData]="member"
+                      [styleClass]="'feed-avatar-small'"
+                      [noAuth]="true"></app-avatar>
+
+                    {{ member.first_name }} {{ member.last_name }}
+                  </li>
+                </ul>
+            </div>
+        </div>
+      </mat-menu>
+    </div>
+  </div>
+</div>
+

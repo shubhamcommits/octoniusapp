@@ -1,0 +1,51 @@
+<div class="smart-card" style="padding: 10px;">
+    <div class="row" style="margin: 0 0 20px; justify-content: space-between;">
+      <div class="card-title mt-1" i18n="@@globalPerformanceCard.globalPerformance">
+        Global Performance
+      </div>
+    </div>
+
+    <div>
+      <div *ngFor="let group of groups; trackBy: utilityService.trackByIndex" class="pulse_card">
+        <!-- GROUP DETAILS STARTS -->
+        <div class="pulse_avatar">
+          <app-secured-image
+            [imgURL]="group?.group_avatar"
+            [service]="'group'"
+            [workspaceId]="workspaceData?._id"
+            [alt]="'group_avatar'"
+            [styleClass]="'feed-avatar'"></app-secured-image>
+        </div>
+        <div class="pulse_actor"> {{ group.group_name }} </div>
+        <div [class]="group.projectStatusClass">
+          {{ group.project_status }}
+
+          <!-- Percentage starts -->
+          <div [class]="group.completitionPercentageClass">
+            {{ group.completitionPercentage }} %
+          </div>
+          <!-- Percentage ends -->
+        </div>
+        <!-- GROUP DETAILS ENDS -->
+
+        <!-- TO DO, IN PROGRESS AND DONE TASKS STARTS -->
+        <div class="pulse_data">
+          <span class="pulse-overdue-tasks">{{ overdueTasks[group?._id] || 0 }}</span>
+          <span class="pulse-todo-tasks">{{ toDoTasks[group?._id] || 0 }}</span>
+          <span class="pulse-in-progress-tasks">{{ inProgressTasks[group?._id] || 0 }}</span>
+          <span class="pulse-done-tasks">{{ doneTasks[group?._id] || 0 }}</span>
+        </div>
+        <!-- TO DO, IN PROGRESS AND DONE TASKS ENDS -->
+      </div>
+    </div>
+
+    <div class="col-5" *ngIf="groups.length === 0">
+      <img src='assets/images/inbox-tasks-card-empty.svg'>
+    </div>
+
+    <!-- LOADING SPINNER STARTS -->
+    <ng-container *ngIf="isLoading$ | async">
+      <app-loading-spinner></app-loading-spinner>
+    </ng-container>
+    <!-- LOADING SPINNER ENDS -->
+</div>

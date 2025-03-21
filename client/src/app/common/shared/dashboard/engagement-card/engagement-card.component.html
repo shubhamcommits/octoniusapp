@@ -1,0 +1,47 @@
+<div class="smart-card" style="padding: 10px;">
+  <div class="row" style="margin: 0 0 20px; justify-content: space-between;">
+    <div class="card-title mt-1" i18n="@@engagementCard.engagement">
+      Engagement
+    </div>
+    <div class="icon">
+      <i class="material-icons-outlined mr-2">emoji_events</i>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="!group">
+      <div class="card-first-column col-md-12">
+        <div class="agoras_count"> {{ num_agoras }} </div>
+        &nbsp;<span i18n="@@engagementCard.agoras">agoras</span>
+      </div>
+  </div>
+
+  <div class="row" *ngIf="!group">
+      <div class="card-first-column col-md-12">
+        <div class="agoras_count"> {{ num_topics }} </div>
+        &nbsp;<span i18n="@@engagementCard.topics">topics</span>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="group">
+    <div class="card-first-column col-md-12">
+      <div class="agoras_count"> {{ num_topics }} </div>
+      &nbsp;<span i18n="@@engagementCard.posts">posts</span>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="group">
+    <div class="card-first-column col-md-12">
+      <div class="agoras_count"> {{ num_comments }} </div>
+      &nbsp;<span i18n="@@engagementCard.comments">comments</span>
+    </div>
+  </div>
+
+  <!--
+  <div class="row">
+      <div class="card-first-column col-md-12">
+        <div class="agoras_count"> {{ num_highly_engaged }} </div>
+        &nbsp;highly engaged
+    </div>
+  </div>
+  -->
+</div>

@@ -1,0 +1,63 @@
+<div *ngIf="membersLoaded" class="customFieldsDialog">
+    <mat-dialog-actions class="d-flex justify-content-end" align="end">
+        <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
+    </mat-dialog-actions>
+
+    <h2 mat-dialog-title>
+        <span class="badge badge-cf">
+            <i class="material-icons-round">lock</i>
+        </span>
+        <span i18n="@@groupRAGDialog.boarAccessRights">Restricted Access Group [RAG]</span>
+    </h2>
+    <div class="description">
+        <img src="assets/images/placeholder_bars.svg" alt="" style="width: 300px; margin-bottom: 24px">
+        <p i18n="@@groupRAGDialog.createRulesToManage">
+          RAG is the option for creating special access entities of users inside a group, in order to give them fine-grained control over something.
+          <br/>
+          If you want only a certain group of users to see a task, or to edit a board section, or view/edit/delete a file etc.
+        </p>
+    </div>
+    <div class="customFieldsList" *ngIf="!ragList || ragList?.length <= 0">
+        <h3 class="text-center muted mt-3" i18n="@@groupRAGDialog.alwayseStriveTransparency">🎉 Always strive for transparency...</h3>
+    </div>
+
+    <div class="rag" *ngFor="let rag of ragList; trackBy: utilityService.trackByIndex">
+        <div class="d-flex" style="justify-content: space-between;">
+            <p class="bold">RAG <span class="tag">{{rag.rag_tag}}</span> <span i18n="@@groupRAGDialog.tasksAreVisibleFor">settings</span>: </p>
+            <button class="btn overdue" (click)="removeTag(rag.rag_tag)"> <i class="material-icons">delete</i> </button>
+        </div>
+
+        <div style="justify-content: space-between;">
+            <h6 class="mb-2 mt-3"><span class="material-icons muted">group</span>Members:</h6>
+          <div class="d-flex">
+              <div class="useravatar" *ngFor="let member of rag._members; trackBy: utilityService.trackByIndex">
+                  <app-secured-image
+                    [imgURL]="member?.profile_pic"
+                    [service]="'user'"
+                    [userData]="member"
+                    [workspaceId]="(groupData?._workspace?._id || groupData?._workspace)"
+                    [tooltip]="member?.first_name + ' ' + member?.last_name"
+                    [styleClass]="'feed-avatar'"
+                    (click)="removeUserFromRag(member,rag)"></app-secured-image>
+              </div>
+
+              <app-component-search-input-box class="ml-2" *ngIf="groupData"
+                  [placeholder]="'add member'"
+                  [groupId]="groupId" [groupData]="groupData" [type]="'ragMembers'"
+                  [ragMemberList]="rag._members"
+                  [rag]="rag.rag_tag"
+                  (member)="addNewUserToRag($event, rag)">
+              </app-component-search-input-box>
+          </div>
+        </div>
+    </div>
+
+    <button class="mt-3 btn btn-warning" (click)="showTagComponent()">
+        <span class="material-icons">add</span>
+        <span i18n="@@groupRAGDialog.addRule">New RAG entity</span>
+    </button>
+    <div *ngIf="addNewRag" class="ragnew">
+        <input type="text" class="form-control mb-2" name="tag" [(ngModel)]="tag" (keyup.enter)="addTag()" placeholder="Enter RAG tag name">
+        <button button class="btn btn-primary btn-sm" (click)="addTag()" i18n="@@groupRAGDialog.addTag">Add tag</button>
+    </div>
+</div>

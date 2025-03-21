@@ -1,0 +1,42 @@
+{
+  "name": "search-server",
+  "version": "1.0.0",
+  "license": "UNLICENSED",
+  "main": "server.ts",
+  "scripts": {
+    "dev": "ts-node-dev server.ts",
+    "build": "tsc",
+    "build:dev": "cd ../client/ && ng build && gzipper --verbose ./dist -i js,css && cd dist/ && rm *.js *.css && cd ../../server/ && ts-node-dev server.ts",
+    "build:prod": "cd ../client/ && ng build --prod && gzipper --verbose ./dist -i js,css && cd dist/ && rm *.js *.css && cd ../../server/ && NODE_ENV=production ts-node server.ts",
+    "stage": "NODE_ENV=production ts-node server.ts",
+    "prod": "NODE_ENV=production node server.js"
+  },
+  "dependencies": {
+    "@types/cors": "^2.8.6",
+    "@types/express": "^4.17.2",
+    "@types/express-fileupload": "^1.1.2",
+    "@types/jsonwebtoken": "^8.3.8",
+    "@types/morgan": "^1.7.37",
+    "axios": "^0.21.4",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.1.6",
+    "https-proxy-agent": "^5.0.0",
+    "jsonwebtoken": "^9.0.0",
+    "luxon": "^3.1.0",
+    "minio": "~7.1.3",
+    "mongoose": "~5.9.16",
+    "morgan": "^1.9.1",
+    "crypto-js": "^3.1.9-1",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "tslint": "^5.20.1",
+    "typescript": "5.4.5"
+  },
+  "devDependencies": {
+    "@types/compression": "^1.0.1",
+    "gzipper": "^3.4.2"
+  }
+}

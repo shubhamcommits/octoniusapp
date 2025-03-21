@@ -1,0 +1,166 @@
+<div>
+    <!-- INPUT RAG STARTS -->
+    <input type="search" id="keyword" autocomplete="off" [placeholder]="placeholder" class="input-search"
+        [(ngModel)]="itemValue" (keyup)="onSearch($event)" (ngModelChange)="modelChange($event)" />
+    <!-- INPUT RAG ENDS -->
+
+    <!-- ITEM LIST STARTS -->
+    <section id="results" *ngIf="!(isLoading$ | async)" class="user-results" onfocusout="">
+        <div class="media card-tile user-list mb-0" *ngFor=" let item of itemList; let index = index; trackBy: utilityService.trackByIndex">
+            <!-- User Profile Image for type 'group' and 'workspace' -->
+            <app-secured-image *ngIf="type != 'skill' && type != 'tag' && type !== 'ragTag'"
+                [imgURL]="item?.profile_pic"
+                [service]="'user'" [userData]="item"
+                [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
+                [styleClass]="'feed-avatar-search'"></app-secured-image>
+            <div class="media-body mt-2">
+                <div class="float-left ml-0 mt-1">
+                    <!-- Display full name of the member starts -->
+                    <h4 class="mt-0 full-name-text" *ngIf="type != 'skill' && type != 'tag'">
+                      {{ item?.first_name }} {{ item?.last_name }}
+                    </h4>
+                    <!-- Display full name of the member ends -->
+
+                    <!-- Display full name of skill or tag starts -->
+                    <h4 class="mt-0 full-name-text" *ngIf="type == 'skill' || type == 'tag' ">
+                      {{ item }}
+                    </h4>
+
+                    <h4 class="mt-0 full-name-text" *ngIf="type === 'ragTag' ">
+                      {{ item.rag_tag }}
+                    </h4>
+                    <!-- Display full name of skill or tag ends -->
+                </div>
+                <div class="btn-group ml-2 float-right">
+
+                    <!-- Skill section starts -->
+                    <section *ngIf="type == 'skill'">
+
+                        <!-- If current skill exist in the skills array -->
+                        <div *ngIf="hasSkill(item)">
+                            <i class="material-icons mr-1 btn-sm working">check_circle</i>
+                        </div>
+
+                        <!-- If current skill doesn't exists in the skills array -->
+                        <div *ngIf="!hasSkill(item)">
+                            <button (click)="onAddSkill(item)"
+                              class="btn mr-1 btn-primary btn-sm"
+                              i18n="@@componentSearchInputBox.addSkill">
+                                Add skill
+                            </button>
+                        </div>
+                    </section>
+                    <!-- Skill section ends -->
+
+                    <!-- Tag section starts -->
+                    <section *ngIf="(type == 'tag' && (!tagList || !tagList.includes(item))) || (type === 'ragTag' && item.showAddButton)">
+                        <!-- Add tags starts -->
+                        <button (click)="onAddTag(item)"
+                          class="btn btn-primary btn-sm"
+                          i18n="@@componentSearchInputBox.addTag">
+                            Add tag
+                        </button>
+                        <!-- Add tags ends -->
+                    </section>
+
+                    <!-- Tag section ends -->
+
+                    <!-- Group section starts -->
+                    <section *ngIf="type == 'group'">
+                        <div>
+                            <i *ngIf="item.showAddMem == false; else addMem"
+                                class="material-icons mr-1 dropdown-toggle-split btn-sm working">check_circle</i>
+                            <ng-template #addMem>
+                                <button (click)="onAddNewMember(item)"
+                                  class="btn btn-primary btn-sm"
+                                  i18n="@@componentSearchInputBox.add">
+                                    Add
+                                </button>
+                            </ng-template>
+                        </div>
+                    </section>
+
+                    <section *ngIf="type === 'ragMembers'">
+                        <div>
+                            <i *ngIf="item.showAddMem"
+                                class="material-icons mr-1 dropdown-toggle-split btn-sm working">check_circle</i>
+                            <div *ngIf="!item.showAddMem">
+                                <button (click)="onAddNewMember(item)"
+                                  class="btn btn-primary btn-sm"
+                                  i18n="@@componentSearchInputBox.add">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section *ngIf="type === 'workspaceMembers' || type === 'holidays'">
+                        <div>
+                            <i *ngIf="item.showAddMem"
+                                class="material-icons mr-1 dropdown-toggle-split btn-sm working">check_circle</i>
+                            <div *ngIf="!item.showAddMem">
+                                <button (click)="onAddNewMember(item)"
+                                  class="btn btn-primary btn-sm"
+                                  i18n="@@componentSearchInputBox.select">
+                                    Select
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- Group section ends -->
+
+                    <!-- Group section starts -->
+                    <section *ngIf="type == 'task' || type == 'event'">
+                        <div *ngIf="type == 'task'">
+                            <i *ngIf="item.showAddMem == false; else addMem"
+                                class="material-icons mr-1 dropdown-toggle-split btn-sm working">check_circle</i>
+                            <ng-template #addMem>
+                                <i *ngIf="memberJustAddedToMap(item); else notAddedToMap"
+                                    class="material-icons mr-1 dropdown-toggle-split btn-sm working">check_circle</i>
+
+                                <ng-template #notAddedToMap>
+                                    <button (click)="addToSelectedMember(item)"
+                                      class="btn btn-primary btn-sm"
+                                      i18n="@@componentSearchInputBox.assign">
+                                        assign
+                                    </button>
+                                </ng-template>
+
+                            </ng-template>
+                        </div>
+
+                        <div *ngIf="type == 'event'">
+                            <i *ngIf="item.showAddMem == false; else addMem"
+                                class="material-icons mr-1 dropdown-toggle-split btn-sm working"
+                                (click)="removeMemberFromMap(item)">check_circle</i>
+                            <ng-template #addMem>
+                                <i *ngIf="memberJustAddedToMap(item); else notAddedToMap"
+                                    class="material-icons mr-1 dropdown-toggle-split btn-sm working"
+                                    (click)="removeMemberFromMap(item)">check_circle</i>
+
+                                <ng-template #notAddedToMap>
+                                    <button (click)="addToSelectedMember(item)"
+                                      class="btn btn-primary btn-sm"
+                                      i18n="@@componentSearchInputBox.assign">
+                                        assign
+                                    </button>
+                                </ng-template>
+
+                            </ng-template>
+                        </div>
+                    </section>
+                    <!-- Group section ends -->
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ITEM LIST ENDS -->
+
+    <!-- LOADING SPINNER STARTS -->
+    <ng-container *ngIf="isLoading$ | async">
+        <app-loading-spinner class="media"></app-loading-spinner>
+    </ng-container>
+    <!-- LOADING SPINNER ENDS -->
+</div>

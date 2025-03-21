@@ -1,0 +1,19 @@
+.select-post{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.cool{
+    font-size: 20px;
+}
+.material-icons-outlined{
+    font-size: 20px;
+}
+
+ngb-modal-backdrop {
+  z-index: 900 !important;
+}
+
+ngb-modal-window {
+  z-index: 950 !important;
+}

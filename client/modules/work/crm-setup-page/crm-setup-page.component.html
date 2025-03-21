@@ -1,0 +1,392 @@
+<div class="root">
+  <app-crm-setup-board-bar class="board-bar" *ngIf="isAdmin" [workspaceData]="workspaceData">
+  </app-crm-setup-board-bar>
+
+  <mat-tab-group mat-align-tabs="start" animationDuration="0ms">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span i18n="@@groupCrmSetupView.companies">Companies</span>
+      </ng-template>
+
+      <div class="row">
+        <button class="btn btn-warning" (click)="openCompanyDialog()">
+          <i class="material-icons-outlined">add</i>
+          <span i18n="@@groupCrmSetupView.newCompany">New Company</span>
+        </button>
+      </div>
+
+      <div class="block overflow-auto">
+        <table mat-table matSort [dataSource]="sortedCompanyData" (matSortChange)="sortCompanyData($event)">
+          <ng-container matColumnDef="name" sticky>
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+              <span i18n="@@crmCompanyList.name">Name</span>
+              <!-- Search Input -->
+               <div class="position-relative search-field">
+                 <input class="form-control ml-2" matInput (keyup)="applyFilter($event)" (click)="$event.stopPropagation()" [placeholder]="searchPlaceHolder" />
+                 <span class="material-icons position-absolute">search</span>
+               </div>
+            </th>
+
+            <td mat-cell *matCellDef="let company">
+              <span>{{ company?.name }}</span>
+            </td>
+          </ng-container>
+
+          <!-- <ng-container matColumnDef="description">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@crmCompanyList.description"> Description </th>
+
+            <td mat-cell *matCellDef="let company">
+              <span>{{ company?.description }}</span>
+            </td>
+          </ng-container> -->
+
+          <ng-container matColumnDef="contacts">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@crmCompanyList.contacts">
+              Contacts
+            </th>
+
+            <td mat-cell *matCellDef="let company">
+              <span>{{ company?.numContacts }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="tasks">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@crmCompanyList.tasks">
+              Tasks
+            </th>
+
+            <td mat-cell *matCellDef="let company">
+              <span>{{ company?.numPendingTasks }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Assignee Container -->
+          <!-- <ng-container matColumnDef="assignee">
+            <th mat-header-cell *matHeaderCellDef i18n="@@crmCompanyList.asignee">
+              Assignee
+            </th>
+
+            <td mat-cell *matCellDef="let company">
+              <div *ngIf="company.numAssignees > 0" class="avatar-container">
+                <img [src]="company.assignee_pic" alt="avatar" class="avatar">
+                <span class="number-badge" *ngIf="company.numAssignees > 1">+ {{ company.numAssignees - 1 }}</span>
+              </div>
+            </td>
+          </ng-container> -->
+
+          <!-- CUSTOM FIELDS START -->
+          <ng-container [matColumnDef]="cf.name" *ngFor="
+              let cf of crmCompanyCustomFieldsToShow;
+              trackBy: utilityService.trackByIndex
+            ">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+              <div class="cf_cell">
+                {{ cf.title }}
+                <i class="material-icons small" *ngIf="isAdmin" (click)="removeCompanyColumn(cf)"
+                  style="cursor: pointer">close</i>
+              </div>
+            </th>
+            <td mat-cell *matCellDef="let contact">
+              <div class="cf_cell" *ngIf="!!contact?.crm_custom_fields">
+                {{ contact?.crm_custom_fields[cf.name] }}
+              </div>
+            </td>
+          </ng-container>
+          <!-- CUSTOM FIELDS ENDS -->
+
+          <ng-container matColumnDef="star" stickyEnd>
+            <th mat-header-cell *matHeaderCellDef style="text-align: right">
+              <div class="">
+                <i class="material-icons-outlined" style="cursor: pointer" *ngIf="isAdmin"
+                  [matMenuTriggerFor]="addColumn">add</i>
+              </div>
+              <mat-menu #addColumn="matMenu">
+                <div class="newColumnMatMenu">
+                  <span i18n="@@asksTableView.addCF">Add custom field</span>
+                  <mat-form-field>
+                    <mat-label i18n="@@asksTableView.selectOption">Select an option</mat-label>
+                    <mat-select ngDefaultControl (selectionChange)="addNewCompanyColumn($event)"
+                      (click)="$event.stopPropagation()" [(ngModel)]="newCompanyColumnSelected" name="new_column">
+                      <mat-option *ngFor="
+                          let f of crmCompanyCustomFields;
+                          trackBy: utilityService.trackByIndex
+                        " [value]="f">{{ f.title }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </mat-menu>
+            </th>
+
+            <td mat-cell *matCellDef="let company" style="text-align: right" (click)="$event.stopPropagation()">
+              <i class="material-icons-outlined ml-2 muted pointer" [matMenuTriggerFor]="menu">more_horiz</i>
+              <mat-menu #menu="matMenu">
+                <a mat-menu-item (click)="openCompanyDialog(company?._id)">
+                  <span i18n="@@crmCompanyList.edit">Edit</span>
+                </a>
+                <a mat-menu-item (click)="deleteCompany(company?._id)" *ngIf="isAdmin">
+                  <span i18n="@@crmCompanyList.delete">Delete</span>
+                </a>
+              </mat-menu>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedCompanyColumns"></tr>
+          <tr mat-row *matRowDef="let company; columns: displayedCompanyColumns" class="pointer"
+            (click)="openCompanyDetailsDialog(company?._id)"></tr>
+        </table>
+      </div>
+
+      <mat-paginator #companyPaginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons
+        aria-label="Select page of periodic elements">
+      </mat-paginator>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span i18n="@@groupCrmSetupView.contacts">Contacts</span>
+      </ng-template>
+
+      <div class="row">
+        <button class="btn btn-warning" (click)="openContactDialog()">
+          <i class="material-icons-outlined">add</i>
+          <span i18n="@@groupCrmSetupView.newContact">New Contact</span>
+        </button>
+      </div>
+
+      <div class="block overflow-auto">
+        <table mat-table matSort [dataSource]="sortedContacts" (matSortChange)="sortContactData($event)" class="">
+          <ng-container matColumnDef="name" sticky>
+            <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@groupCrmSetupView.name">
+              Name
+            </th>
+
+            <td mat-cell *matCellDef="let contact">
+              <span>{{ contact?.name }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="company">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@groupCrmSetupView.company">
+              Company
+            </th>
+
+            <td mat-cell *matCellDef="let contact">
+              <span>{{ contact?._company?.name }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="position">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@groupCrmSetupView.position">
+              Position
+            </th>
+
+            <td mat-cell *matCellDef="let contact">
+              <span>{{ contact?.position }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="phone">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@groupCrmSetupView.phone">
+              Phone
+            </th>
+
+            <td mat-cell *matCellDef="let contact">
+              <span>{{ contact?.phones[0] }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="email">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@groupCrmSetupView.email">
+              E-Mail
+            </th>
+
+            <td mat-cell *matCellDef="let contact">
+              <span>{{ contact?.emails[0] }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="link">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@groupCrmSetupView.link">
+              Link
+            </th>
+
+            <td mat-cell *matCellDef="let contact">
+              <a class="nav-link" target="_blank" [href]="contact?.links[0]" routerLinkActive="active">
+                <span class="d-inline-block text-truncate" style="max-width: 200px;">{{ contact?.links[0] }}</span>
+              </a>
+            </td>
+          </ng-container>
+
+          <!-- CUSTOM FIELDS START -->
+          <ng-container [matColumnDef]="cf.name" *ngFor="
+              let cf of crmContactsCustomFieldsToShow;
+              trackBy: utilityService.trackByIndex
+            ">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+              <div class="cf_cell">
+                {{ cf.title }}
+                <i class="material-icons small" *ngIf="isAdmin" (click)="removeContactColumn(cf)"
+                  style="cursor: pointer">close</i>
+              </div>
+            </th>
+            <td mat-cell *matCellDef="let contact">
+              <div class="cf_cell" *ngIf="!!contact?.crm_custom_fields">
+                {{ contact?.crm_custom_fields[cf.name] }}
+              </div>
+            </td>
+          </ng-container>
+          <!-- CUSTOM FIELDS ENDS -->
+
+          <ng-container matColumnDef="star" stickyEnd>
+            <th mat-header-cell *matHeaderCellDef style="text-align: right">
+              <div class="">
+                <i class="material-icons-outlined" style="cursor: pointer" *ngIf="isAdmin"
+                  [matMenuTriggerFor]="addColumn">add</i>
+              </div>
+              <mat-menu #addColumn="matMenu">
+                <div class="newColumnMatMenu">
+                  <span i18n="@@asksTableView.addCF">Add custom field</span>
+                  <mat-form-field>
+                    <mat-label i18n="@@asksTableView.selectOption">Select an option</mat-label>
+                    <mat-select ngDefaultControl (selectionChange)="addNewContactColumn($event)"
+                      (click)="$event.stopPropagation()" [(ngModel)]="newContactColumnSelected" name="new_column">
+                      <mat-option *ngFor="
+                          let f of crmContactCustomFields;
+                          trackBy: utilityService.trackByIndex
+                        " [value]="f">{{ f.title }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </mat-menu>
+            </th>
+
+            <td mat-cell *matCellDef="let contact" style="text-align: right">
+              <i class="material-icons-outlined ml-2 muted pointer" [matMenuTriggerFor]="menu">more_horiz</i>
+              <mat-menu #menu="matMenu">
+                <a mat-menu-item (click)="openContactDialog(contact?._id)">
+                  <span i18n="@@groupCrmSetupView.edit">Edit</span>
+                </a>
+                <a mat-menu-item (click)="deleteContact(contact?._id)" *ngIf="isAdmin">
+                  <span i18n="@@groupCrmSetupView.delete">Delete</span>
+                </a>
+              </mat-menu>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedContactsColumns"></tr>
+          <tr mat-row *matRowDef="let contact; columns: displayedContactsColumns"></tr>
+        </table>
+      </div>
+
+      <mat-paginator #contactPaginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons
+        aria-label="Select page of periodic elements">
+      </mat-paginator>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span i18n="@@groupCrmSetupView.products">Products</span>
+      </ng-template>
+
+      <div class="row">
+        <button class="btn btn-warning" (click)="openProductDialog()">
+          <i class="material-icons-outlined">add</i>
+          <span i18n="@@groupCrmSetupView.newProduct">New Product</span>
+        </button>
+      </div>
+
+      <div class="block overflow-auto">
+        <table mat-table matSort [dataSource]="sortedProductData" (matSortChange)="sortProductData($event)" class="">
+          <ng-container matColumnDef="name" sticky>
+            <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@groupCrmSetupView.name">
+              Name
+            </th>
+
+            <td mat-cell *matCellDef="let product">
+              <span>{{ product?.name }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="description">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@groupCrmSetupView.description">
+              Description
+            </th>
+
+            <td mat-cell *matCellDef="let product">
+              <span>{{ product?.description }}</span>
+            </td>
+          </ng-container>
+
+          <!-- CUSTOM FIELDS START -->
+          <ng-container [matColumnDef]="cf.name" *ngFor="
+              let cf of crmProductCustomFieldsToShow;
+              trackBy: utilityService.trackByIndex
+            ">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+              <div class="cf_cell">
+                {{ cf.title }}
+                <i class="material-icons small" *ngIf="isAdmin" (click)="removeProductColumn(cf)"
+                  style="cursor: pointer">close</i>
+              </div>
+            </th>
+            <td mat-cell *matCellDef="let product">
+              <div class="cf_cell" *ngIf="!!product?.crm_custom_fields">
+                {{ product?.crm_custom_fields[cf.name] }}
+              </div>
+            </td>
+          </ng-container>
+          <!-- CUSTOM FIELDS ENDS -->
+
+          <ng-container matColumnDef="star" stickyEnd>
+            <th mat-header-cell *matHeaderCellDef style="text-align: right">
+              <div class="">
+                <i class="material-icons-outlined" style="cursor: pointer" *ngIf="isAdmin"
+                  [matMenuTriggerFor]="addColumn">add</i>
+              </div>
+              <mat-menu #addColumn="matMenu">
+                <div class="newColumnMatMenu">
+                  <span i18n="@@asksTableView.addCF">Add custom field</span>
+                  <mat-form-field>
+                    <mat-label i18n="@@asksTableView.selectOption">Select an option</mat-label>
+                    <mat-select ngDefaultControl (selectionChange)="addNewProductColumn($event)"
+                      (click)="$event.stopPropagation()" [(ngModel)]="newProductColumnSelected" name="new_column">
+                      <mat-option *ngFor="
+                          let f of crmProductCustomFields;
+                          trackBy: utilityService.trackByIndex
+                        " [value]="f">{{ f.title }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </mat-menu>
+            </th>
+
+            <td mat-cell *matCellDef="let product" style="text-align: right">
+              <i class="material-icons-outlined ml-2 muted pointer" [matMenuTriggerFor]="menu">more_horiz</i>
+              <mat-menu #menu="matMenu">
+                <a mat-menu-item (click)="openProductDialog(product?._id)">
+                  <span i18n="@@groupCrmSetupView.edit">Edit</span>
+                </a>
+                <a mat-menu-item (click)="deleteProduct(product?._id)" *ngIf="isAdmin">
+                  <span i18n="@@groupCrmSetupView.delete">Delete</span>
+                </a>
+              </mat-menu>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedProductColumns"></tr>
+          <tr mat-row *matRowDef="let product; columns: displayedProductColumns"></tr>
+        </table>
+      </div>
+      
+      <mat-paginator #productPaginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons
+        aria-label="Select page of periodic elements">
+      </mat-paginator>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+
+<!-- Loading Spinner Starts -->
+<ng-container *ngIf="isLoading$">
+  <app-loading-spinner class="media"></app-loading-spinner>
+</ng-container>
+<!-- Loading Spinner Ends -->

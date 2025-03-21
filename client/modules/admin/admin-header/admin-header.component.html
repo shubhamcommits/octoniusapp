@@ -1,0 +1,37 @@
+<div class="container" style="margin-bottom: 30px">
+   <div class="media user-sticky-card">
+      <app-secured-image *ngIf="workspaceData"
+        [imgURL]="workspaceData?.workspace_avatar"
+        [service]="'workspace'"
+        [tooltip]="'Change workplace avatar'"
+        [placement]="'right'"
+        [styleClass]="'mr-3 feed-avatar'"
+        [workspaceId]="workspaceData?._id"></app-secured-image>
+      <div class="media-body">
+         <div>
+            <h2 i18n="@@adminHeader.workspaceSettings">Workplace settings</h2>
+            <ul class="nav">
+               <li class="nav-item">
+                  <a class="nav-link" routerLink="/dashboard/admin/general" routerLinkActive="active">
+                    <span i18n="@@adminHeader.general">General</span>
+                     <span class="sr-only">(current)</span>
+                  </a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" routerLink="/dashboard/admin/members" routerLinkActive="active">
+                    <span i18n="@@adminHeader.members">Members</span>
+                     <span class="sr-only">(current)</span>
+                  </a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" routerLink="/dashboard/admin/billing" routerLinkActive="active">
+                    <span i18n="@@adminHeader.billing">Billing</span>
+                     <span class="sr-only">(current)</span>
+                  </a>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </div>
+</div>
+<router-outlet></router-outlet>

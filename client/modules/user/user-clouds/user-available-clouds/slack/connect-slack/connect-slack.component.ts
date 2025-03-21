@@ -1,0 +1,102 @@
+import { Component, Injector, Input, OnInit, SimpleChanges } from '@angular/core';
+import { PublicFunctions } from 'modules/public.functions';
+import { UserService } from 'src/shared/services/user-service/user.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { environment } from 'src/environments/environment';
+import { ActivatedRoute } from '@angular/router';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
+
+@Component({
+  selector: 'app-connect-slack',
+  templateUrl: './connect-slack.component.html',
+  styleUrls: ['./connect-slack.component.scss']
+})
+export class ConnectSlackComponent implements OnInit {
+
+  @Input() userData:any;
+
+  workspaceData: any;
+
+  slackAuthSuccessful: Boolean;
+
+  slackCode = this.activatedRoute.snapshot.queryParamMap.get("code");
+
+  public publicFunctions = new PublicFunctions(this.injector);
+
+  constructor(
+    public utilityService: UtilityService,
+    private storageService: StorageService,
+    public userService: UserService,
+    private injector: Injector,
+    private activatedRoute: ActivatedRoute
+  ) { }
+
+  async ngOnInit() {
+
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+
+    this.userService.slackDisconnected().subscribe(event => {
+      setTimeout(() => {
+        this.userData = this.publicFunctions.getCurrentUser();
+      }, 200);
+      this.slackAuthSuccessful = (this.userData && this.userData.integrations && this.userData.integrations.is_slack_connected) ? true : false
+    });
+
+    if (!this.userData) {
+      this.userData = await this.publicFunctions.getCurrentUser();
+    }
+    this.slackAuthSuccessful = (this.userData && this.userData.integrations && this.userData.integrations.is_slack_connected) ? true : false
+
+    const connectingSlack = this.storageService.existData('connectingSlack') ? this.storageService.getLocalData('connectingSlack') : false;
+
+    if(!this.slackAuthSuccessful && this.slackCode && connectingSlack) {
+        this.utilityService.asyncNotification($localize`:@@connectSlack.pleaseWaitAuthenticatinSlack:Please wait, while we are authenticating the slack...`, new Promise((resolve, reject) => {
+          this.userService.slackAuth(this.slackCode, this.userData)
+          .then((res) => {
+              // Resolve the promise
+              this.updateUserData(res);
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@connectSlack.authenticatedSuccessfully:Authenticated Successfully!`));
+            }).catch((err) => {
+              console.log('Error occurred, while authenticating for Slack', err);
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@connectSlack.oppsErrorWhileAuthenticatinoSlack:Oops, an error occurred while authenticating for Slack, please try again!`));
+          });
+      }));
+    }
+  }
+
+  /**
+   * This function is responsible to update user slack connection status.
+   */
+  async updateUserData(newUserData){
+    await this.userService.updateUser(newUserData);
+    await this.publicFunctions.sendUpdatesToUserData(this.userData);
+    this.slackAuthSuccessful = true;
+    this.storageService.removeLocalData('connectingSlack');
+    this.userService.slackConnected().emit(true);
+  }
+
+  async ngOnChanges(changes: SimpleChanges) {
+    for (const propName in changes) {
+      const change = changes[propName];
+      const to = change.currentValue;
+      if (propName === 'userData') {
+        this.userData = to;
+        this.slackAuthSuccessful = (this.userData && this.userData.integrations && this.userData.integrations.is_slack_connected) ? true : false
+      }
+    }
+  }
+
+  /**
+   * This function is responsible for connecting the slack acount to the main octonius server
+   */
+  async slackAuth() {
+    this.utilityService.getConfirmDialogAlert($localize`:@@connectSlack.doYouAllow:Do you allow?`, $localize`:@@connectSlack.octoniusForSlackRequestingPermission:Octonius for Slack is requesting permission to use your Octonius account.`, $localize`:@@connectSlack.allow:Allow`)
+      .then((result) => {
+        if (result.value) {
+          this.storageService.setLocalData('connectingSlack', JSON.stringify(true));
+          localStorage.setItem("slackAuth", "connected");
+          window.location.href = environment.slack_redirect_url + '?client_id=' + this.workspaceData.integrations.slack_client_id + '&scope=commands,incoming-webhook';
+        }
+      });
+  }
+}

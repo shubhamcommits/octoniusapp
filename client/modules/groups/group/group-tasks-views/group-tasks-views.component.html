@@ -1,0 +1,84 @@
+<div class="root">
+  <app-board-bar *ngIf="!!groupData"
+      [groupData]="groupData"
+      [sections]="sections"
+      [userData]="userData"
+      [isAdmin]="isAdmin"
+      [customFields]="customFields"
+      [viewType]="viewType"
+      [isIdeaModuleAvailable]="isIdeaModuleAvailable"
+      (changeViewEmitter)='onChangeViewEmitter($event)'
+      (customFieldEmitter)="onCustomFieldEmitter($event)"
+      (sortTaskEmitter)="onSortTaskEmitter($event)"
+      (filterTaskEmitter)="onFilterTaskEmitter($event)"
+      (exportToEmitter)="onExportToEmitter($event)">
+  </app-board-bar>
+
+  <app-kanban-board *ngIf="viewType === 'kanban'"
+      [groupData]="groupData"
+      [userData]="userData"
+      [sections]="sections"
+      [isIdeaModuleAvailable]="isIdeaModuleAvailable"
+      [isShuttleTasksModuleAvailable]="isShuttleTasksModuleAvailable"
+      [sortingBit]="sortingBit"
+      [sortingData]="sortingData"
+      [filteringBit]="filteringBit"
+      [filteringData]="filteringData">
+    </app-kanban-board>
+
+  <app-table-view *ngIf="viewType === 'table'"
+      [groupData]="groupData"
+      [userData]="userData"
+      [sections]="sections"
+      [customFields]="customFields"
+      [isAdmin]="isAdmin"
+      [isIdeaModuleAvailable]="isIdeaModuleAvailable"
+      [isShuttleTasksModuleAvailable]="isShuttleTasksModuleAvailable"
+      [sortingBit]="sortingBit"
+      [sortingData]="sortingData"
+      [filteringBit]="filteringBit"
+      [filteringData]="filteringData">
+  </app-table-view>
+
+  <app-timeline-view *ngIf="viewType === 'timeline'"
+    [userData]="userData"
+    [sections]="sections"
+    [workspaceId]="workspaceData?._id"
+    [isIdeaModuleAvailable]="isIdeaModuleAvailable"
+    [isShuttleTasksModuleAvailable]="isShuttleTasksModuleAvailable">
+  </app-timeline-view>
+
+  <app-group-calendar-view *ngIf="viewType === 'calendar'"
+    [groupId]="groupData._id"
+    [isIdeaModuleAvailable]="isIdeaModuleAvailable">
+  </app-group-calendar-view>
+
+  <app-kanban-archived-sections *ngIf="viewType === 'archived'"
+      [groupData]="groupData"
+      [userData]="userData"
+      [customFields]="customFields"
+      [isIdeaModuleAvailable]="isIdeaModuleAvailable"
+      [isShuttleTasksModuleAvailable]="isShuttleTasksModuleAvailable"
+      [sortingBit]="sortingBit"
+      [sortingData]="sortingData">
+  </app-kanban-archived-sections>
+
+  <app-group-time-tracking-view *ngIf="viewType === 'time_tracking'"
+      [filterUserId]="filterUserId"
+      [startDate]="filterStartDate"
+      [endDate]="filterEndDate"
+      [exportData]="exportData"
+      [isAdmin]="isAdmin">
+  </app-group-time-tracking-view>
+
+  <app-group-resource-management-board-view *ngIf="viewType === 'resource_mgmt'"
+      [sections]="sections"
+      [isAdmin]="isAdmin">
+  </app-group-resource-management-board-view>
+</div>
+
+<!-- Loading Spinner Starts -->
+<ng-container *ngIf="isLoading$">
+    <app-loading-spinner class="media"></app-loading-spinner>
+</ng-container>
+<!-- Loading Spinner Ends -->

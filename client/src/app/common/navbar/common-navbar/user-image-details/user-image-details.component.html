@@ -1,0 +1,32 @@
+<!-- USER DETAIL MODAL STARTS -->
+
+<!-- USER HEADER STARTS -->
+<div class="modal-header">
+    <h4 class="modal-title" i18n="@@userImageDetails.updateYourProfile">Update your profile Image</h4>
+</div>
+<!-- USER HEADER ENDS -->
+
+<!-- USER MODAL CHANGE IMAGE STARTS -->
+<div class="modal-body">
+    <div class="form-group">
+        <app-secured-image *ngIf="userData"
+          [imgURL]="userData?.profile_pic"
+          [service]="'user'"
+          [userData]="userData"
+          [workspaceId]="workspaceData?._id"></app-secured-image>
+        <app-crop-image class="container" [resizeToWidth]="300" [cropperMinWidth]="300" (outputImage)="getCroppedImage($event)"></app-crop-image>
+    </div>
+</div>
+<!-- USER MODAL CHANGE IMAGE ENDS -->
+
+<!-- USER FOOTER STARTS -->
+<div class="modal-footer">
+    <button type="button" class="btn btn-success"
+      (click)="updateUserDetails( croppedImage )"
+      i18n="@@userImageDetails.updateYourImage">
+        Update your Image
+    </button>
+</div>
+<!-- USER FOOTER ENDS -->
+
+<!-- USER DETAIL MODAL ENDS -->

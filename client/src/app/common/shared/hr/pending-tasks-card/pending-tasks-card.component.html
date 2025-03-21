@@ -1,0 +1,69 @@
+<div class="card">
+	<div class="img-fluid">
+		<div class="card-title">
+			<span i18n="@@pendingTasksCard.pendingTaks">Pending Taks</span>
+		</div>
+
+		<div class="card-content">
+			<div *ngIf="!!pendingTasks && pendingTasks.length > 0" i18n="@@pendingTasksCard.topTasks">
+				Top {{ pendingTasks.length }} tasks of {{ totalPendingNotifications }} total tasks.
+			</div>
+
+			<div *ngFor="let task of pendingTasks; trackBy: utilityService.trackByIndex">
+				<div *ngIf="task.type == 'hive'">
+					<app-secured-image [imgURL]="task._owner?.profile_pic" [service]="'user'" [workspaceId]="workspaceData?._id"
+						[userData]="task._owner" [styleClass]="'mr-3 feed-avatar-small'" [inlineStyle]="'cursor: default;'"></app-secured-image>
+			
+					{{ task._owner?.first_name }} {{ task._owner?.last_name }}
+
+					<span class="strong" style="margin: 0 10px;">{{ task?.message }}</span>
+
+					<span style="margin: 0 0 0 10px;">
+						<i class="material-icons-outlined muted" [matMenuTriggerFor]="menu"
+							style="text-align: center; cursor: pointer;">more_horiz</i>
+						<mat-menu #menu="matMenu">
+							<a mat-menu-item (click)="openUserProfile(task._owner._id)">
+								<i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">account_circle</i>
+								<span i18n="@@pendingTasksCard.openProfile">Open Profile</span>
+							</a>
+
+							<a mat-menu-item (click)="markAsCompleted(task._id)">
+								<i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">check_circle</i>
+								<span i18n="@@pendingTasksCard.markComplited">Mark As Completed</span>
+							</a>
+						</mat-menu>
+					</span>
+				</div>
+
+				<div *ngIf="task.type == 'hive_new_entity'">
+					<span class="strong" style="margin: 0 10px;">{{ task?.message }}</span>
+				
+					<span style="margin: 0 0 0 10px;">
+						<i class="material-icons-outlined muted" [matMenuTriggerFor]="menu"
+							style="text-align: center; cursor: pointer;">more_horiz</i>
+						<mat-menu #menu="matMenu">
+							<!-- <a mat-menu-item (click)="openUserProfile(task._owner._id)"> -->
+							<a mat-menu-item [routerLink]="['/dashboard', 'work', 'organization', 'hive', 'setup']">
+								<i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">account_circle</i>
+								<span i18n="@@pendingTasksCard.goToSetup">Go To setup</span>
+							</a>
+				
+							<a mat-menu-item (click)="markAsCompleted(task._id)">
+								<i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">check_circle</i>
+								<span i18n="@@pendingTasksCard.markComplited">Mark As Completed</span>
+							</a>
+						</mat-menu>
+					</span>
+				</div>
+			</div>
+
+			<div *ngIf="!pendingTasks || pendingTasks.length == 0">
+				<img src='assets/images/placeholder_activity3.png' class="placeholder-img">
+				<p class="muted text-center" i18n="@@pendingTasksCard.done">Done. That's a wrap! </p>
+			</div>
+		</div>
+
+		<div class="card-footer">
+		</div>
+	</div>
+</div>

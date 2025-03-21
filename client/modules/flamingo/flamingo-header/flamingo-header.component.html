@@ -1,0 +1,66 @@
+<nav *ngIf="!this.showHeader" class="navbar navbar-expand-md fixed-top" style="min-height: 86px;">
+
+    <!-- Go Back starts -->
+    <span (click)="goBackToFiles()" class="navbar-brand ml-5 mr-5" matTooltip="Go Back to Files" matTooltipPosition="below">
+        <i class="material-icons">
+            arrow_back
+        </i>
+    </span>
+    <!-- Go Back ends -->
+
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto ml-4">
+            <li class="nav-item active" *ngIf="file">
+
+                <!-- Flamingo Static Title starts -->
+                <span *ngIf="!editTitle " (click)="enableEdit()" matTooltip="Click me to rename"
+                    matTooltipPosition="below">{{file?.original_name}}
+                </span>
+
+                <!-- Flamingo Static Title ends -->
+
+                <!-- Flamingo edit title name starts -->
+                <input *ngIf="editTitle" type="search" autocomplete="off" [(ngModel)]="file.original_name"
+                    (keyup)="changeTitle($event)" placeholder="Give me a name" class="input-search" />
+                <!-- Flamingo edit title name ends -->
+            </li>
+        </ul>
+    </div>
+
+    <ul class="nav center-align">
+        <li class="nav-item">
+            <a [ngClass]="activeState == 'create_form'?'nav-link active-nav':'nav-link'"
+                (click)="changeState('create_form')" routerLink="/document/flamingo/{{fileId}}"
+                routerLinkActive="active" i18n="@@flamingoHeader.create">Create</a>
+        </li>
+        <li class="nav-item">
+            <a [ngClass]="activeState == 'publish'?'nav-link active-nav':'nav-link'"
+                (click)="changeState('publish')"
+                routerLink="/document/flamingo/{{fileId}}/publish"
+                i18n="@@flamingoHeader.publish">Publish</a>
+        </li>
+        <li class="nav-item">
+            <a [ngClass]="activeState == 'result'?'nav-link active-nav':'nav-link'"
+                (click)="changeState('result')"
+                routerLink="/document/flamingo/{{fileId}}/result"
+                i18n="@@flamingoHeader.results">Results</a>
+        </li>
+    </ul>
+
+    <ul class="nav right-align">
+        <li class="nav-item">
+            <a class="nav-link" target="_blank" routerLink="/document/flamingo/{{fileId}}/preview" routerLinkActive="active">
+                <i class="material-icons icons-color" >remove_red_eye</i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" (click)="exportToExcel()">
+                <i class="material-icons icons-color" >cloud_download</i>
+            </a>
+        </li>
+    </ul>
+
+
+</nav>
+
+<router-outlet></router-outlet>

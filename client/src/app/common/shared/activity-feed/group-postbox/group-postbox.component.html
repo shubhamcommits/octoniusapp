@@ -1,0 +1,22 @@
+<div class="card" (click)="openModal()" style="padding:0">
+    <div class="card-block">
+        <div class="postboxheader card-title">
+            <div class="d-none d-sm-block">
+              <app-secured-image
+                [imgURL]="userData?.profile_pic"
+                [service]="'user'" [userData]="userData"
+                [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
+                [styleClass]="'feed-avatar'"></app-secured-image>
+            </div>
+
+            <div *ngIf="!showPostBox">
+              <button type="text"
+                  class="form-control btn-md noborder-btn postbox"
+                  placeholder="What are you working on?"
+                  i18n="@@groupPostbox.whatAreYouWorkingOn">
+                  What are you working on, <strong>{{ userData?.first_name }}</strong>?
+              </button>
+            </div>
+        </div>
+    </div>
+</div>

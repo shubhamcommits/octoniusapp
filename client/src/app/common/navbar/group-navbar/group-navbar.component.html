@@ -1,0 +1,189 @@
+<nav class="navbar navbar-expand-lg">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="nav">
+      <li *ngIf="!isIndividualSubscription" class="nav-item d-block d-sm-none text-center">
+        <h6 class="card-title" *ngIf="!myWorkplace">
+          <b>{{groupData?.group_name }}</b>
+        </h6>
+      </li>
+
+      <li class="nav-item mr-3 d-none d-sm-block">
+
+        <!-- Group Avatar starts -->
+        <app-secured-image *ngIf="objectExists(groupData) && !myWorkplace && isAdmin" [imgURL]="groupData?.group_avatar" [service]="'group'"
+          [workspaceId]="(groupData?._workspace?._id || groupData?._workspace)" [tooltip]="'Change group avatar'" [placement]="'right'" [styleClass]="'mr-3 feed-avatar'"
+          (click)="openDetails(content)"></app-secured-image>
+
+        <app-secured-image *ngIf="objectExists(groupData) && !myWorkplace && !isAdmin" [imgURL]="groupData?.group_avatar" [service]="'group'"
+          [workspaceId]="(groupData?._workspace?._id || groupData?._workspace)" [placement]="'right'" [styleClass]="'mr-3 feed-avatar'"></app-secured-image>
+        <!-- Group Avatar ends -->
+
+        <!-- My workplace avatar starts -->
+        <app-secured-image *ngIf="userData && (myWorkplace || !objectExists(groupData))" [imgURL]="userData?.profile_pic"
+          [service]="'user'" [userData]="userData" [workspaceId]="(userData?._workspace?._id || userData?._workspace)" [tooltip]="'This is your workplace'" [placement]="'right'"
+          [styleClass]="'mr-3 feed-avatar'"></app-secured-image>
+        <!-- My Workplace avatar ends -->
+
+        <ng-template #content let-modal>
+          <app-group-image-details [groupData]="groupData">
+          </app-group-image-details>
+        </ng-template>
+
+        <h2 *ngIf="objectExists(groupData) && !myWorkplace && !isIndividualSubscription" (click)="saveFavoriteGroup()" placement="right"
+          ngbTooltip="Add shortcut to sidebar">
+          <i class="material-icons" style="color: #FFAB00; cursor: pointer;" *ngIf="!isFavoriteGroup">star_outline</i>
+          <i class="material-icons" style="color: #FFAB00; cursor: pointer;" *ngIf="isFavoriteGroup">star</i>
+        </h2>
+      </li>
+
+      <li *ngIf="objectExists(groupData) && !myWorkplace" class="nav-item mr-3">
+       <span class="groupname muted"> {{ groupData.group_name | truncatetext:20 }}</span>
+      </li>
+
+      <li class="nav-item" *ngIf="(myWorkplace || !objectExists(groupData)) && !isIndividualSubscription" >
+        <a [ngClass]="activeState == 'myspace_inbox'?'nav-link active-nav':'nav-link'"
+            (click)="changeState('myspace_inbox')"
+            routerLink="/dashboard/myspace/inbox"
+            routerLinkActive="active" i18n="@@groupNavbar.inbox">
+              Inbox
+          </a>
+      </li>
+
+      <li class="nav-item" *ngIf="myWorkplace || !objectExists(groupData)">
+        <a [ngClass]="activeState == 'myspace_tasks' ? 'nav-link active-nav' : 'nav-link'"
+            (click)="changeState('myspace_tasks')"
+            routerLink="/dashboard/myspace/tasks"
+            routerLinkActive="active" i18n="@@groupNavbar.tasks">
+              Tasks
+        </a>
+      </li>
+
+      <li class="nav-item" *ngIf="myWorkplace">
+        <a [ngClass]="activeState == 'groups_activity'?'nav-link active-nav':'nav-link'"
+            (click)="changeState('groups_activity')" routerLink="/dashboard/work/groups/activity"
+            routerLinkActive="active">
+              <span class="dot dot-notes"></span>
+              <span i18n="@@groupNavbar.notes"> Notes</span>
+        </a>
+      </li>
+
+      <li class="nav-item" *ngIf="myWorkplace">
+        <a [ngClass]="activeState == 'groups_tasks'?'nav-link active-nav':'nav-link'"
+            (click)="changeState('groups_tasks')"
+            routerLink="/dashboard/work/groups/tasks"
+            routerLinkActive="active">
+              <span class="dot dot-personal-tasks"></span>
+              <span i18n="@@groupNavbar.personalTasks"> Personal Tasks</span>
+        </a>
+      </li>
+
+      <li class="nav-item" *ngIf="myWorkplace">
+        <a [ngClass]="activeState == 'groups_files'?'nav-link active-nav':'nav-link'"
+            (click)="changeState('groups_files')"
+            routerLink="/dashboard/work/groups/files"
+            routerLinkActive="active">
+              <span class="dot dot-personal-files"></span>
+              <span i18n="@@groupNavbar.personalFiles"> Personal Files</span>
+        </a>
+      </li>
+
+      <li class="nav-item" *ngIf="!myWorkplace && (!groupData?.pages_to_show || groupData?.pages_to_show?.activity)">
+        <a [ngClass]="activeState == 'groups_activity'?'nav-link active-nav':'nav-link'"
+            (click)="changeState('groups_activity')"
+            routerLink="/dashboard/work/groups/activity"
+            routerLinkActive="active" i18n="@@groupNavbar.activity">
+              Activity
+        </a>
+      </li>
+
+      <li class="nav-item" *ngIf="!myWorkplace && groupData?.type == 'resource' && (!groupData?.pages_to_show || groupData?.pages_to_show?.resource_management)">
+        <a [ngClass]="activeState == 'groups_resource'?'nav-link active-nav':'nav-link'"
+            (click)="changeState('groups_resource')"
+            routerLink="/dashboard/work/groups/resource"
+            routerLinkActive="active" i18n="@@groupNavbar.resourceManagement">
+              Resource Management
+        </a>
+      </li>
+
+      <li class="nav-item" *ngIf="!myWorkplace && (!groupData?.pages_to_show || groupData?.pages_to_show?.tasks)">
+          <a [ngClass]="activeState == 'groups_tasks'?'nav-link active-nav':'nav-link'"
+              (click)="changeState('groups_tasks')"
+              routerLink="/dashboard/work/groups/tasks"
+              routerLinkActive="active"
+              i18n="@@groupNavbar.tasks">
+                Tasks
+          </a>
+      </li>
+
+      <!-- <li class="nav-item" *ngIf="!myWorkplace && groupData?.type == 'crm' && (!groupData?.pages_to_show || groupData?.pages_to_show?.crm_setup)">
+          <a [ngClass]="activeState == 'groups_crm'?'nav-link active-nav':'nav-link'"
+              (click)="changeState('groups_crm')"
+              routerLink="/dashboard/work/groups/crm"
+              routerLinkActive="active"
+              i18n="@@groupNavbar.crmSetup">
+                CRM Setup
+          </a>
+      </li> -->
+
+      <li class="nav-item" *ngIf="!myWorkplace && (!groupData?.pages_to_show || groupData?.pages_to_show?.files)">
+          <a [ngClass]="activeState == 'groups_files'?'nav-link active-nav':'nav-link'"
+              (click)="changeState('groups_files')"
+              routerLink="/dashboard/work/groups/files"
+              routerLinkActive="active"
+              i18n="@@groupNavbar.files">
+                Files
+          </a>
+      </li>
+
+      <li class="nav-item" *ngIf="!myWorkplace && !isIndividualSubscription && (!groupData?.pages_to_show || groupData?.pages_to_show?.library)">
+        <a [ngClass]="activeState == 'groups_library'?'nav-link active-nav':'nav-link'"
+          (click)="changeState('groups_library')" routerLink="/dashboard/work/groups/library" routerLinkActive="active"
+          i18n="@@groupNavbar.library">
+          Library
+        </a>
+      </li>
+
+      <li class="nav-item" *ngIf="!myWorkplace && !isIndividualSubscription">
+          <a [ngClass]="activeState == 'groups_members'?'nav-link active-nav':'nav-link'"
+              (click)="changeState('groups_members')"
+              routerLink="/dashboard/work/groups/members"
+              routerLinkActive="active"
+              i18n="@@groupNavbar.members">
+                Members
+          </a>
+      </li>
+
+      <li class="nav-item d-none d-md-block" *ngIf="!myWorkplace && isAdmin && !isCampaign && (!groupData?.pages_to_show || groupData?.pages_to_show?.dashboard)">
+          <a [ngClass]="activeState == 'groups_dashboard'?'nav-link active-nav':'nav-link'"
+              (click)="changeState('groups_dashboard')"
+              routerLink="/dashboard/work/groups/dashboard"
+              routerLinkActive="active"
+              i18n="@@groupNavbar.dashboard">
+                Dashboard
+          </a>
+      </li>
+
+      <!-- Campaign is Enabled -->
+      <li class="nav-item" *ngIf="!myWorkplace && isCampaign && !isIndividualSubscription">
+        <a [ngClass]="activeState == 'groups_reports'?'nav-link active-nav':'nav-link'"
+            (click)="changeState('groups_reports')"
+            routerLink="/dashboard/work/groups/reports"
+            routerLinkActive="active"
+            i18n="@@groupNavbar.reports">
+              Reports
+        </a>
+      </li>
+      <!-- Campaign is Enabled -->
+
+      <li class="nav-item" *ngIf="!myWorkplace && isAdmin">
+          <a [ngClass]="activeState == 'groups_admin'?'nav-link active-nav':'nav-link'"
+              (click)="changeState('groups_admin')"
+              routerLink="/dashboard/work/groups/admin"
+              routerLinkActive="active"
+              i18n="@@groupNavbar.admin">
+                Admin
+          </a>
+      </li>
+    </ul>
+  </div>
+</nav>

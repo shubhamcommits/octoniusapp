@@ -1,0 +1,23 @@
+<div class="d-flex justify-content-center rootDiv">
+<div class="mainDiv">
+    <img src="assets/images/zapierlogo.png" alt="" style="float:left;margin-top: 5%;">
+    <h3 style="line-height: 1.1;margin-top: 6%;font-size: 22px;" i18n="@@zapAuthConfirmation.requestingPermission">
+      Zapier is requesting permission to access your Octonius account
+    </h3>
+    <h4 style="margin-top: 30px;margin-bottom: 30px;" i18n="@@zapAuthConfirmation.authorizeApp">
+      If you authorize this app, you will give it permission to:
+    </h4>
+    <ul style="margin-bottom: 45px;">
+        <li i18n="@@zapAuthConfirmation.nameEmail">Access your name and email address.</li>
+        <li i18n="@@zapAuthConfirmation.accessTasksProjectsWorplace">Access your tasks, projects, and workplace.</li>
+        <li i18n="@@zapAuthConfirmation.createTasksProjects">Create and modify tasks, projects, and comments on your behalf.</li>
+    </ul>
+
+    <div class="d-flex justify-content-around">
+
+        <button class="btn btn-primary" (click)="alloweded()" i18n="@@zapAuthConfirmation.allow">Allow</button>
+        <button class="btn btn-danger" (click)="cancel()" i18n="@@zapAuthConfirmation.cancel">Cancel</button>
+
+    </div>
+</div>
+</div>

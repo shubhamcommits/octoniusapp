@@ -1,0 +1,70 @@
+<div class="container">
+    <div class="card-tile">
+        <div class="row text-center">
+            <div class="col-md-4">
+                <div class="btn-group">
+                    <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+                        (viewDateChange)="closeOpenMonthViewDay($event)" i18n="@@groupCalendar.previous">
+                        Previous
+                    </div>
+                    <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate" i18n="@@groupCalendar.today">
+                        Today
+                    </div>
+                    <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
+                        (viewDateChange)="closeOpenMonthViewDay($event)" i18n="@@groupCalendar.next">
+                        Next
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+            </div>
+            <div class="col-md-4">
+                <div class="btn-group">
+                    <div class="btn btn-primary" (click)="setView(CalendarView.Month)"
+                        [class.active]="view === CalendarView.Month" i18n="@@groupCalendar.month">
+                        Month
+                    </div>
+                    <div class="btn btn-primary" (click)="setView(CalendarView.Week)"
+                        [class.active]="view === CalendarView.Week" i18n="@@groupCalendar.week">
+                        Week
+                    </div>
+                    <div class="btn btn-primary" (click)="setView(CalendarView.Day)"
+                        [class.active]="view === CalendarView.Day" i18n="@@groupCalendar.day">
+                        Day
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1">
+              <button class="btn badge-cf" (click)="openCreateEventDialog()" style="margin:0">
+                <i class="material-icons">add</i>
+              </button>
+            </div>
+        </div>
+        <br />
+        <div [ngSwitch]="view">
+            <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"
+                [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)"
+                (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+            </mwl-calendar-month-view>
+            <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events"
+                [refresh]="refresh" (eventClicked)="handleEvent('Clicked', $event.event)"
+                (eventTimesChanged)="eventTimesChanged($event)">
+            </mwl-calendar-week-view>
+            <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events"
+                [refresh]="refresh" (eventClicked)="handleEvent('Clicked', $event.event)"
+                (eventTimesChanged)="eventTimesChanged($event)">
+            </mwl-calendar-day-view>
+        </div>
+
+        <br />
+    </div>
+</div>
+
+<!-- Modal Template for post creation starts -->
+<!-- <ng-template #content let-modal>
+  <app-group-post *ngIf="userData && checkDataExist(userData)" [userData]="userData" [groupId]="groupData?._id"
+    [type]="'task'" (post)="getPost($event)" (close)="closeModal()">
+  </app-group-post>
+</ng-template> -->
+<!-- Modal Template for post creation ends -->

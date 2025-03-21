@@ -1,0 +1,54 @@
+<div class="sidecontent" *ngIf="userData && groupData">
+    <div class="card sideinnercard">
+        <div class="card-block">
+
+            <!-- Group Information Header starts -->
+            <h6 class="card-title" *ngIf="!myWorkplace" style="margin-bottom: -10px;">
+
+                <b>{{groupData?.group_name }} group</b>
+
+                <!-- Edit Group Details starts -->
+                <button *ngIf="userData.role != 'member' && groupData.group_name.toLowerCase() != 'global'"
+                    type="button" name="button" class="btn btn-link-secondary" style="margin-top: -10px;"
+                    (click)="openModal(groupInfoContent)">
+                      <i class="material-icons-outlined">settings</i>
+                </button>
+                <!-- Edit Group Details ends -->
+
+            </h6>
+            <h6 class="card-title" *ngIf="myWorkplace">
+              <b i18n="@@groupInformation.personalWorkspace">
+                Personal Workplace
+              </b>
+            </h6>
+            <!-- Group Information Header ends -->
+
+            <hr />
+
+            <!-- Group Information details starts -->
+            <!-- <p class="card-text" *ngIf="!myWorkplace"><strong>Name: </strong>{{groupData?.group_name }}</p> -->
+            <p class="card-text" *ngIf="!myWorkplace && groupData.group_name.toLowerCase() != 'global'">
+              <strong i18n="@@groupInformation.type">Type: </strong>
+              <span *ngIf="groupData?.type == 'normal'" i18n="@@groupInformation.normal">Normal</span>
+              <span *ngIf="groupData?.type == 'agora'" i18n="@@groupInformation.agora">Agora</span>
+              <span *ngIf="groupData?.type == 'crm'" i18n="@@groupInformation.crm">CRM</span>
+              <span *ngIf="groupData?.type == 'resource'" i18n="@@groupInformation.resource">Resource Management</span>
+              <!-- <span *ngIf="groupData?.type == 'accounting'" i18n="@@groupInformation.accounting">Accounting</span>-->
+            </p>
+            <p class="card-text" *ngIf="!myWorkplace">
+              <strong i18n="@@groupInformation.members">Members:</strong>{{ groupData?._members.length + groupData?._admins.length || 0 }}</p>
+            <p class="card-text" *ngIf="!myWorkplace && groupData.group_name.toLowerCase() != 'global'">
+                <strong i18n="@@groupInformation.description">Description: </strong>{{ groupData?.description }}
+            </p>
+            <p class="card-text" *ngIf="myWorkplace" i18n="@@groupInformation.thisIsPersonalSpace">
+              This is your personal space. Everything you create here is private.
+            </p>
+            <!-- Group Information details ends -->
+        </div>
+    </div>
+</div>
+
+<ng-template #groupInfoContent let-modal>
+  <app-group-update-information [groupData]="groupData">
+  </app-group-update-information>
+</ng-template>

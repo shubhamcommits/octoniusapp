@@ -1,0 +1,202 @@
+@import "src/assets/scss/variables";
+
+a{
+    text-decoration: none !important;
+    color: inherit;
+}
+
+img{
+    display:block;
+    width: 100%;
+}
+
+.smart-card {
+  background: #FFFFFF;
+  border: none;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 0px 1px 1px rgb(0 0 0 / 14%);
+  min-height: 260px;
+  height: 100%;
+}
+
+
+
+.card-first-column {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.card-icon {
+  display: flex;
+  align-items: flex-end;
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.card-content {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+
+  .card-box {
+    display: inline-block;
+    width: 50%;
+  }
+}
+
+.card-content {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.kpi_card{
+  min-height: 200px;
+  padding: 20px 5px;
+  background: white;
+  width: 100%;
+  background: #FFFFFF;
+  border-radius: 8px;
+  border: 1px solid #E4EDF8;
+  box-sizing: border-box;
+  margin: 2px auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.project_title {
+  margin-right: 16px;
+  padding-left:15px;
+  height: 85%;
+  width: 20%;
+}
+
+.project_status {
+  font-weight: 700;
+  border-right: 1px solid #E4EDF8;
+}
+
+.project_budget {
+  display: flex;
+  padding-right: 15px;
+  padding-left: 15px;
+  width: 33%;
+}
+
+// Group todo tasks banner
+.kpi-todo-tasks {
+  color: #ffffff;
+  background: #FFAB00;
+  border-radius: 20px;
+  font-style: normal;
+  font-weight: bold;
+  width: 20px;
+  height: 23px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 15px 7px;
+  padding: 0px 6px;
+}
+
+// Group In Progress tasks banner
+.kpi-in-progress-tasks {
+  color: #ffffff;
+  background: #26A69A;
+  border-radius: 20px;
+  font-style: normal;
+  font-weight: bold;
+  width: 20px;
+  height: 23px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 15px 7px;
+  padding: 0px 6px;
+}
+
+// Group Done tasks banner
+.kpi-done-tasks {
+  color: #ffffff;
+  background: #4A90E2;
+  border-radius: 20px;
+  font-style: normal;
+  font-weight: bold;
+  width: 20px;
+  height: 23px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 15px 7px;
+  padding: 0px 6px;
+}
+
+.kpi-overdue-tasks {
+  color: #ffffff;
+  background: #FF6584;
+  border-radius: 20px;
+  font-style: normal;
+  font-weight: bold;
+  width: 20px;
+  height: 23px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 15px 7px;
+  padding: 0px 6px;
+}
+
+.badge {
+  background-color: $dark-sky-blue;
+  margin: 0 1px !important;
+  display: inline;
+  font-family: Nunito, sans-serif;
+  font-style: normal;
+  font-weight: 700 !important;
+  font-size: 12px;
+  align-items: center;
+  color: #005fd5;
+  background-color: #e4edf8;
+}
+
+.badge_not_started {
+  background-color: #FFAB00;
+  color: #F3F4F6;
+}
+
+.badge_on_track {
+  background-color: #26A69A;
+  color: #F3F4F6;
+}
+
+.badge_in_danger {
+  background-color: #EB5757;
+  color: #F3F4F6;
+}
+
+.badge_achieved {
+  background-color: #4A90E2;
+  color: #F3F4F6;
+}
+
+.not_started {
+  color: #FFAB00;
+}
+
+.on_track {
+  color: #26A69A;
+}
+
+.in_danger {
+  color: #FF6584;
+}
+
+.achieved {
+  color: #4A90E2;
+}

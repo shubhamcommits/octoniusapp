@@ -1,0 +1,11 @@
+<div class="row">
+    <div class="col-md-6">
+        <p class="card-text">
+            <strong class="float-left" i18n="@@connectBoxCloud.box"> Box</strong>
+        </p>
+    </div>
+    <div class="col-md-6 push-right">
+        <button *ngIf="!boxUserExist()" id="box-connect" class="btn btn-primary btn-sm" (click) ="signInToBox()" i18n="@@connectBoxCloud.connect">Connect</button>
+        <button *ngIf="boxUserExist()" disabled="true" class="btn btn-success btn-sm" i18n="@@connectBoxCloud.connected">Connected</button>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+<!-- Select Group Type starts -->
+<button class="btn btn-warning mb-3 mt-3" type="button" data-toggle="dropdown">
+    <i class="material-icons-outlined">add</i>
+  <span i18n="@@createGroup.new">New</span>
+</button>
+<!-- Select Group Type ends -->
+
+<!-- Menu Drawer Starts -->
+<ul class="dropdown-menu">
+    <li *ngIf="(userData?.role== 'admin' || userData?.role== 'owner' || userData?.role== 'manager' || workspaceData?.allow_decentralized_roles)"
+        class="dropdown-item"
+        (click)="openCreateGroupModal('normal')">
+        <span i18n="@@createGroup.group">Group</span>
+    </li>
+    <li *ngIf="(userData?.role== 'admin' || userData?.role== 'owner' || userData?.role== 'manager' || workspaceData?.allow_decentralized_roles)"
+        class="dropdown-item"
+        (click)="openCreateGroupModal('crm')">
+        <span i18n="@@createGroup.crm">CRM</span>
+    </li>
+    <!-- <li *ngIf="(userData?.role== 'admin' || userData?.role== 'owner' || userData?.role== 'manager' || workspaceData?.allow_decentralized_roles)"
+        class="dropdown-item"
+        (click)="openCreateGroupModal('accounting')">
+        <span i18n="@@createGroup.accounting">Accounting</span>
+    </li>
+    <li *ngIf="(userData?.role== 'admin' || userData?.role== 'owner' || userData?.role== 'manager' || workspaceData?.allow_decentralized_roles)"
+        class="dropdown-item"
+        (click)="openCreateGroupModal('resource')">
+        <span i18n="@@createGroup.resourceManagement">Resource Management</span>
+    </li> -->
+    <li
+        class="dropdown-item"
+        (click)="openCreateAgoraModal()">
+        <span i18n="@@createGroup.agora">Agora</span>
+    </li>
+    <!--
+    <li *ngIf="(userData?.role== 'admin' || userData?.role== 'owner')"
+        class="dropdown-item"
+        (click)="openCreateSmartGroupModal()">
+        <span>Smart Group</span>
+    </li>
+    -->
+</ul>
+<!-- Menu Drawer Ends -->

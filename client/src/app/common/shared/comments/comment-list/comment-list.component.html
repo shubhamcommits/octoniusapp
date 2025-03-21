@@ -1,0 +1,19 @@
+<div *ngIf="comments && comments.length > 0">
+
+  <section *ngFor="let comment of comments; let index = index; trackBy: utilityService.trackByIndex">
+      <post-comment [comment]="comment" [index]="index" [userData]="userData"
+          [groupId]="groupId" (remove)="removeComment(comment._id)"></post-comment>
+  </section>
+
+  <div *ngIf="displayShowMore" style="text-align: center;">
+    <button (click)="loadAllComments()" type="button" class="btn btn-primary">
+      <span i18n="@@commentList.showAll">Show all ...</span><span class="badge badge-light"></span>
+    </button>
+  </div>
+
+  <!-- Loading Spinner Starts -->
+  <ng-container *ngIf="isLoading$ | async">
+    <app-loading-spinner class="media"></app-loading-spinner>
+  </ng-container>
+  <!-- Loading Spinner Ends -->
+</div>

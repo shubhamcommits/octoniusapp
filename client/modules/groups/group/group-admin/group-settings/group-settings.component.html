@@ -1,0 +1,311 @@
+<div class="card-tile">
+  <div class="card-block">
+      <h6><b>Settings</b></h6>
+
+      <div class="mt-5 mb-5 pt-3" style="padding-left: 44px;" *ngIf="!isIndividualSubscription">
+        <h6><b i18n="@@groupSettings.groupPages">Group tabs</b></h6>
+        <p class="card-text" i18n="@@groupSettings.groupPagesDescription">Allows you to select the tabs you are using in this group(Example: you might not be using Activity, so you can hide it)</p>
+      
+        <div class="pages">
+          <mat-checkbox [checked]="groupData?.pages_to_show?.activity" [name]="'activity'" (change)="savePagesToShow($event)" i18n="@@groupSettings.activity">Activity</mat-checkbox>
+          <mat-checkbox [checked]="groupData?.pages_to_show?.tasks" [name]="'tasks'" (change)="savePagesToShow($event)" i18n="@@groupSettings.tasks">Tasks</mat-checkbox>
+          <!-- <mat-checkbox *ngIf="groupData?.type == 'crm'" [checked]="groupData?.pages_to_show?.crm_setup" [name]="'crm_setup'" (change)="savePagesToShow($event)" i18n="@@groupSettings.crmSetup">CRM Setup</mat-checkbox> -->
+          <mat-checkbox [checked]="groupData?.pages_to_show?.files" [name]="'files'" (change)="savePagesToShow($event)" i18n="@@groupSettings.files">Files</mat-checkbox>
+          <mat-checkbox [checked]="groupData?.pages_to_show?.library" [name]="'library'" (change)="savePagesToShow($event)" i18n="@@groupSettings.library">Library</mat-checkbox>
+          <mat-checkbox *ngIf="groupData?.type == 'resource'" [checked]="groupData?.pages_to_show?.resource_management" [name]="'resource_management'" (change)="savePagesToShow($event)" i18n="@@groupSettings.resourceManagement">Resource Management</mat-checkbox>
+          <mat-checkbox [checked]="groupData?.pages_to_show?.dashboard" [name]="'dashboard'" (change)="savePagesToShow($event)" i18n="@@groupSettings.dashboard">Dashboard</mat-checkbox>
+        </div>
+      </div>
+
+      <div class="mt-5 mb-5 pt-3" style="padding-left: 44px;" *ngIf="!isIndividualSubscription && (!groupData?.pages_to_show || groupData?.pages_to_show?.tasks)">
+        <h6><b i18n="@@groupSettings.defaultCard">Default card</b></h6>
+        <p class="card-text" i18n="@@groupSettings.defaultCardDescription">Allows you to select the card you want to create as default in the task board.</p>
+      
+        <div class="pages">
+          <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="groupData.default_board_card" (change)="saveDefaultBoardCard($event.value)">
+            <mat-radio-button class="example-radio-button" [value]="'task'" i18n="@@groupSettings.task">Task</mat-radio-button>
+            <mat-radio-button *ngIf="isIdeaModuleAvailable" class="example-radio-button" [value]="'idea'" i18n="@@groupSettings.idea">Idea</mat-radio-button>
+            <mat-radio-button class="example-radio-button" [value]="'target'" i18n="@@groupSettings.target">Target</mat-radio-button>
+            <mat-radio-button *ngIf="groupData?.type == 'crm'" class="example-radio-button" [value]="'crm_lead'" i18n="@@groupSettings.crmLead">CRM Lead</mat-radio-button>
+            <mat-radio-button *ngIf="groupData?.type == 'crm'" class="example-radio-button" [value]="'crm_order'" i18n="@@groupSettings.crmOrder">CRM Order</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
+
+      <div class="mt-5 mb-5 pt-3" style="padding-left: 44px;" *ngIf="!isIndividualSubscription && (!groupData?.pages_to_show || groupData?.pages_to_show?.tasks)">
+        <h6><b i18n="@@groupSettings.digalogsPropertiesConfiguration">Dialogs Properties Configuration</b></h6>
+        <p class="card-text" i18n="@@groupSettings.dialogPropertiesConfigurationDescription">Allows you to select the property boxes you need to display in the dialogs.</p>
+
+        <div class="row m-3">
+          <div class="col-2 p-4" style="border: 1px solid;">
+            <div class="row mt-1">
+              <button mat-button class="btn btn-primary" [ngClass]="selectedCard == 'task' ? 'active' : ''" (click)="selectedCard='task'">
+                <!-- <i class="material-icons" style="line-height: 38px;">add_circle</i> -->
+                <span i18n="@@groupSettings.task">Task</span>
+              </button>
+            </div>
+
+            <div class="row mt-1">
+              <button mat-button class="btn btn-primary" [ngClass]="selectedCard == 'normal' ? 'active' : ''" (click)="selectedCard='normal'">
+                <span i18n="@@groupSettings.normalPost">Normal Post</span>
+              </button>
+            </div>
+
+            <!--
+            <div class="row mt-1">
+              <button mat-button class="btn btn-primary" [ngClass]="selectedCard == 'event' ? 'active' : ''" (click)="selectedCard='event'">
+                <span i18n="@@groupSettings.event">Event</span>
+              </button>
+            </div>
+            -->
+
+            <div class="row mt-1">
+              <button mat-button class="btn btn-primary" [ngClass]="selectedCard == 'northStar' ? 'active' : ''" (click)="selectedCard='northStar'">
+                <i class="material-icons-outlined mr-2" style="color: #5E2FE5; line-height: 38px;">explore</i>
+                <span i18n="@@groupSettings.northStar">North Star</span>
+              </button>
+            </div>
+
+            <div class="row mt-1" *ngIf="groupData.type == 'crm'">
+              <button mat-button class="btn btn-primary" [ngClass]="selectedCard == 'CRMOrder' ? 'active' : ''" (click)="selectedCard='CRMOrder'">
+                <i class="material-icons-outlined mr-2" style="line-height: 38px;">sell</i>
+                <span i18n="@@groupSettings.CRMOrder">Order</span>
+              </button>
+            </div>
+
+            <div class="row mt-1" *ngIf="groupData.type == 'crm'">
+              <button mat-button class="btn btn-primary" [ngClass]="selectedCard == 'CRMLead' ? 'active' : ''" (click)="selectedCard='CRMLead'">
+                <i class="material-icons-outlined mr-2" style="line-height: 38px;">attach_money</i>
+                <span i18n="@@groupSettings.CRMLead">Lead</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="col-9 p-4" style="border: 1px solid;" *ngIf="!!groupData && !!groupData?.dialog_properties_to_show">
+            <div class="pages" *ngIf="selectedCard == 'task'">
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('actions')" [name]="'actions'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.actions">Actions</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('approvals')" [name]="'approvals'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.approvals">Approvals</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('assignee')" [name]="'assignee'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.assignee">Assignee</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('crm_setup')" [name]="'crm_setup'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.crmSetup">CRM Setup</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('custom_fields')" [name]="'custom_fields'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.custom_fields">Custom Fields</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('date')" [name]="'date'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.date">Date</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('parent_task')" [name]="'parent_task'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.parent_task">Parent Task</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('shuttle_task')" [name]="'shuttle_task'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.shuttleTask">Shuttle Task</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('status')" [name]="'status'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.status">Status</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('tags')" [name]="'tags'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.tags">Tags</mat-checkbox>
+            </div>
+
+            <div class="pages" *ngIf="selectedCard == 'normal'">
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('tags')" [name]="'tags'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.tags">Tags</mat-checkbox>
+            </div>
+
+            <div class="pages" *ngIf="selectedCard == 'event'">
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('assignee')" [name]="'assignee'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.assignee">Assignee</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('date')" [name]="'date'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.date">Date</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('tags')" [name]="'tags'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.tags">Tags</mat-checkbox>
+            </div>
+
+            <div class="pages" *ngIf="selectedCard == 'northStar'">
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('actions')" [name]="'actions'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.actions">Actions</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('approvals')" [name]="'approvals'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.approvals">Approvals</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('assignee')" [name]="'assignee'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.assignee">Assignee</mat-checkbox>
+              <!-- <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('crm_setup')" [name]="'crm_setup'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.crmSetup">CRM Setup</mat-checkbox> -->
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('custom_fields')" [name]="'custom_fields'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.custom_fields">Custom Fields</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('date')" [name]="'date'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.date">Date</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('north_star')" [name]="'north_star'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.northStar">North Star</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('shuttle_task')" [name]="'shuttle_task'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.shuttleTask">Shuttle Task</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('tags')" [name]="'tags'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.tags">Tags</mat-checkbox>
+            </div>
+
+            <div class="pages" *ngIf="selectedCard == 'CRMOrder'">
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('assignee')" [name]="'assignee'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.assignee">Assignee</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('crm_setup')" [name]="'crm_setup'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.crmSetup">CRM Setup</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('custom_fields')" [name]="'custom_fields'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.custom_fields">Custom Fields</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('date')" [name]="'date'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.date">Date</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('status')" [name]="'status'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.status">Status</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('shuttle_task')" [name]="'shuttle_task'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.shuttleTask">Shuttle Task</mat-checkbox>
+            </div>
+
+            <div class="pages" *ngIf="selectedCard == 'CRMLead'">
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('assignee')" [name]="'assignee'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.assignee">Assignee</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('crm_setup')" [name]="'crm_setup'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.crmSetup">CRM Setup</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('custom_fields')" [name]="'custom_fields'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.custom_fields">Custom Fields</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('date')" [name]="'date'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.date">Date</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('status')" [name]="'status'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.status">Status</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('tags')" [name]="'date'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.tags">Tags</mat-checkbox>
+              <mat-checkbox [checked]="groupData?.dialog_properties_to_show[this.selectedCard]?.includes('shuttle_task')" [name]="'shuttle_task'" (change)="saveDialogsPropertiesToShow($event)" i18n="@@groupSettings.shuttleTask">Shuttle Task</mat-checkbox>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-5 pt-3" *ngIf="!isIndividualSubscription && groupData?.type != 'resource'">
+        <mat-slide-toggle color="primary"
+            [checked]="groupData.share_files"
+            [name]="'share_files'"
+            (change)="saveSettings($event)">
+          <h6><b i18n="@@groupSettings.shareFiles">Share files with the organization</b></h6>
+          <p class="card-text" i18n="@@groupSettings.makesAllFilesAccessible">This option makes all the files from this group accessible to the entire organization</p>
+        </mat-slide-toggle>
+      </div>
+
+      <div class="mt-5 mb-5 pt-3" *ngIf="!isIndividualSubscription">
+        <mat-slide-toggle color="primary"
+            [checked]="groupData.enabled_rights"
+            [name]="'enabled_rights'"
+            (change)="saveSettings($event)"
+            [(ngModel)]="groupData.enabled_rights">
+          <h6><b i18n="@@groupSettings.enableRAG">Enable restricted access groups</b></h6>
+          <p class="card-text" i18n="@@groupSettings.RAGAllowAdminsToChose">RAG is the option for creating special bulks of users inside a group, in order to give them fine-grained control over something.<br> If you want only a certain group of users to see a task, or to edit a board section, or view/edit/delete a file etc.</p>
+          <button button class="btn btn-primary btn-sm" (click)="openRAGModal()" *ngIf="groupData.enabled_rights" i18n="@@groupSettings.manageRAG">Manage RAG</button>
+        </mat-slide-toggle><br>
+      </div>
+
+      <div class="mt-5 mb-5 pt-3">
+        <mat-slide-toggle color="primary"
+            [checked]="groupData.project_type"
+            [name]="'enabled_project_type'"
+            (change)="saveSettings($event)"
+            [(ngModel)]="groupData.project_type">
+          <h6><b i18n="@@groupSettings.enableProjectFeatures">Enable Project Features</b></h6>
+          <p class="card-text" i18n="@@groupSettings.enableAdvancedProjectFunctionalities"> This will enable all advanced project related functionalities like: timeline, project planning etc.</p>
+        </mat-slide-toggle><br>
+      </div>
+
+      <!-- <div class="mt-5 mb-5 pt-3">
+        <mat-slide-toggle color="primary"
+            [checked]="groupData.enable_allocation"
+            [name]="'enable_allocation'"
+            (change)="saveSettings($event)"
+            [(ngModel)]="enableAllocation">
+          <h6><b i18n="@@groupSettings.enableTaskAllocation">Enable Tasks Allocation</b></h6>
+          <p class="card-text" i18n="@@groupSettings.enableAllocationsFeaturesOnTasks"> This will enable allocation features on the tasks and resource management.</p>
+        </mat-slide-toggle><br>
+      </div> -->
+
+      <!-- Campaign Module -->
+      <!-- <div class="mt-5 mb-5 pt-3" *ngIf="campaignModuleAvailable">
+        <mat-slide-toggle color="primary"
+            [checked]="groupData.enabled_campaign"
+            [name]="'enabled_campaign'"
+            (change)="saveSettings($event)"
+            [(ngModel)]="groupData.enabled_campaign">
+          <h6><b i18n="@@groupSettings.enableCampaignFeature">Enable Campaign Features?</b></h6>
+          <p class="card-text" i18n="@@groupSettings.enableAllCampaign"> This will enable all the campaign related functionalities.</p>
+        </mat-slide-toggle><br>
+      </div> -->
+      <!-- Campaign Module -->
+
+      <!-- Enable Task Shuttle -->
+      <div class="mt-5 mb-5 pt-3" *ngIf="shuttleTasksModuleAvailable && !isIndividualSubscription">
+        <mat-slide-toggle color="primary"
+            [checked]="groupData.shuttle_type"
+            [name]="'enabled_shuttle_type'"
+            (change)="saveSettings($event)"
+            [(ngModel)]="groupData.shuttle_type">
+          <h6><b i18n="@@groupSettings.enableTaskShuttle">Enable Task Shuttle</b></h6>
+          <p class="card-text"> <img src="assets/images/icon-task-shuttle.svg" style="width: 32px">
+            <span i18n="@@groupSettings.taskShuttleAllowYourGroup">Task Shuttle allows your group to receive tasks from other groups. Select the section that will receive all Shuttle Tasks.</span>
+          </p>
+        </mat-slide-toggle>
+
+        <br *ngIf="groupData?.shuttle_type" /><br *ngIf="groupData?.shuttle_type && shuttleTasksModuleAvailable && groupSections" />
+
+        <mat-form-field appearance="fill" style="margin-left: 40px;" *ngIf="groupData?.shuttle_type && shuttleTasksModuleAvailable && groupSections">
+          <mat-select
+              (selectionChange)="selectShuttleSection($event.value)"
+              [(value)]="groupData._shuttle_section">
+            <mat-option *ngFor="let section of groupSections; let j=index; trackBy: utilityService.trackByIndex" [value]="section._id">{{ section.title }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <!-- Enable Task Shuttle -->
+
+      <!-- Switch to Agora/Normal -->
+      <!-- <div class="mt-5 mb-5 pt-3" *ngIf="groupData?.group_name != 'Global' && !isIndividualSubscription">
+        <mat-slide-toggle color="primary"
+            [checked]="switchAgora"
+            [name]="'switch-agora'"
+            (change)="saveSettings($event)"
+            [(ngModel)]="switchAgora">
+          <h6><b i18n="@@groupSettings.convertAgora">Convert Group To Agora</b></h6>
+          <p class="card-text" i18n="@@groupSettings.switchAgoraDescription"> This will switch the group type to Agora and all members of the workplace will be able to see it.</p>
+        </mat-slide-toggle><br>
+      </div> -->
+      <!-- Switch to Agora/Normal -->
+
+      <!-- Freeze Dates Starts -->
+      <div class="mt-5 mb-5 pt-3" *ngIf="!isIndividualSubscription">
+        <mat-slide-toggle color="primary"
+            [checked]="freezeDates"
+            [name]="'freeze_dates'"
+            (change)="saveSettings($event)"
+            [(ngModel)]="freezeDates">
+          <h6><b i18n="@@groupSettings.freezeDueDate">FREEZE Date change for other members?</b></h6>
+          <p class="card-text" i18n="@@groupSettings.freezeDueDateDescription"> When this is ON, only GM and task creator will be able to change the dates of a task.</p>
+        </mat-slide-toggle><br>
+      </div>
+      <!-- Freeze Dates Ends -->
+
+      <!-- Background-image Starts -->
+      <div class="mt-5 mb-5 pt-3" style="padding-left: 44px;">
+        <h6><b i18n="@@groupSettings.backgroundImage">Select an image to be used as background in the group.</b></h6>
+
+        <div>
+          <button class="btn btn-primary" (click)="openDetails(content)" i18n="@@groupSettings.selectImageº">
+            Select Image
+          </button>
+        </div>
+
+        <div *ngIf="groupData?.background_image">
+          <app-secured-image
+              [imgURL]="groupData?.background_image"
+              [service]="'group'" [workspaceId]="(groupData?._workspace?._id || groupData?._workspace)" [inlineStyle]="'width: 30px;height: 30px;'"></app-secured-image>
+          <button class="btn removeImageBtn" style="width: 30px;height: 30px;margin: 0px !important;"
+              (click)="removeImage()">
+              <b>X</b>
+          </button>
+        </div>
+      </div>
+      <!-- Background-image Ends -->
+
+      <!-- Background-color Starts -->
+      <div class="mt-5 mb-5 pt-3" style="padding-left: 44px;">
+        <h6><b i18n="@@groupSettings.backgroundColor">Select a color to be used as background in the group.</b></h6>
+
+        <div>
+          <span i18n="@@groupSettings.selectColor">Select Color</span>
+          <i class="material-icons icons-color" (click)="openColorPicker()">color_lens</i>
+        </div>
+
+        <div *ngIf="groupData.background_color">
+          <div [ngStyle]="{'float': 'left', 'width': '30px', 'height': '30px', 'background-color': groupData.background_color }">
+          </div>
+          <button class="btn removeImageBtn"
+              (click)="saveBackgroundColor(null)">
+              <b>X</b>
+          </button>
+        </div>
+      </div>
+      <!-- Background-color Ends -->
+
+      <!-- Time Tracking Categories Starts -->
+      <div class="mt-5 mb-5 pt-3" style="padding-left: 44px;">
+        <h6><b i18n="@@groupSettings.timeTrackingCategories">Manage the categories for time tracking.</b></h6>
+
+        <div>
+          <button class="btn btn-primary" (click)="openTimeTrackingCategoriesDialog()" i18n="@@groupSettings.manageCategories">
+            Manage Categories
+          </button>
+        </div>
+      </div>
+      <!-- Time Tracking Categories Ends -->
+  </div>
+
+</div>
+
+
+<ng-template #content let-modal>
+  <app-group-background-image-details [groupData]="groupData">
+  </app-group-background-image-details>
+</ng-template>

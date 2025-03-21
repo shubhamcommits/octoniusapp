@@ -1,0 +1,147 @@
+<div class="dialog-content">
+  <mat-dialog-actions align="end">
+      <div class="action-box">
+        <a mat-dialog-close>
+          <i  class="material-icons" style="cursor: pointer">close</i>
+        </a>
+      </div>
+  </mat-dialog-actions>
+
+  <div class="content">
+    <div class="container">
+      <div class="row inner-content" *ngIf="userData">
+          <div class="col-md-5">
+              <div class="card-block">
+                  <app-secured-image
+                    [imgURL]="userData?.profile_pic"
+                    [service]="'user'" [userData]="userData"
+                    [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
+                    [styleClass]="'peoplecard-avatar'"
+                    [placement]="'below'"></app-secured-image>
+                  <h6 class="user-name">
+                    <b>{{ userData?.first_name }} {{ userData?.last_name }}</b>
+                  </h6>
+                  <p class="card-text blue job-title">
+                    <span id="userData_current_position"> {{ userData?.current_position}} </span>
+                  </p>
+
+                  <hr />
+
+                  <p class="card-text blue">
+                    <strong i18n="@@memberDialog.email">Email:</strong>
+                    {{ userData?.email}} 
+                  </p>
+                  <p class="card-text blue">
+                    <strong i18n="@@memberDialog.phone">Phone:</strong>
+                    <span id="userData_phone_number"> {{ userData?.phone_number }} </span>
+                  </p>
+                  <p class="card-text blue">
+                    <strong i18n="@@memberDialog.mobile">Mobile:</strong>
+                    <span id="userData_mobile_number"> {{ userData?.mobile_number }}</span>
+                  </p>
+                  <p class="card-text blue">
+                    <strong i18n="@@memberDialog.company">Company:</strong>
+                    <span id="userData_company_name"> {{ userData?.company_name }} </span>
+                  </p>
+                  <p class="card-text blue">
+                    <strong i18n="@@memberDialog.role">Role:</strong>
+                    {{ userData?.role }}
+                  </p>
+                  <p class="card-text blue">
+                    <strong i18n="@@memberDialog.joined">Joined:</strong>
+                    <span id="userData_company_join_date"> {{ userData?.company_join_date | date: 'longDate' }} </span>
+                  </p>
+                  
+                  <hr />
+                  
+                  <!--
+                  <a *ngIf="currentWorkspace && currentWorkspace?.manager_custom_field && userData?.profile_custom_fields && userData?.profile_custom_fields[currentWorkspace?.manager_custom_field]"
+                    (click)="closeDialog()"
+                    [routerLink]="['/dashboard', 'work', 'organization', 'chart']" [queryParams]="{userId: userData?._id}" routerLinkActive="active">
+                      <span i18n="@@memberDialog.openChart">Open on Organization Chart</span>
+                  </a>
+                  -->
+                  <button *ngIf="currentWorkspace && currentWorkspace?.manager_custom_field"
+                      (click)="closeDialog()" class="btn btn-md btn-primary"
+                      [routerLink]="['/dashboard', 'work', 'organization', 'chart']" [queryParams]="{userId: userData?._id}" routerLinkActive="active"
+                      i18n="@@memberDialog.openChart">
+                    Open on <br /> Organization Chart
+                  </button>
+              </div>
+          </div>
+
+          <div class="col-md-7">
+            <div class="card-tile" *ngIf="userData && userData?.bio && userData?.bio != ''">
+              <div class="card-block">
+                <p class="card-text"><strong i18n="@@memberDialog.biography">Biography:</strong></p>
+                <span id="userData_bio" class="muted">  {{ userData?.bio }} </span>
+              </div>
+            </div>
+
+            <hr *ngIf="!!userData && !!groupData && !!currentUser && (currentUser?.role == 'manager' || currentUser?.role == 'owner' || isGroupManager(currentUser?._id)) && !!userData?.bio && userData?.bio != ''" />
+            
+            <div class="card-tile" *ngIf="!!currentUser && !!groupData && (currentUser?.role == 'manager' || currentUser?.role == 'owner' || isGroupManager(currentUser?._id))">
+              <div class="card-block">
+                <h6 class="card-title"><b i18n="@@memberDialog.hourlyRate">Hourly Rate</b></h6>
+
+                <input type="number" name="hourlyRate" [(ngModel)]="userData.hr.hourly_rate" class="form-control"
+                  [value]="userData?.hr?.hourly_rate" (keyup.enter)="saveProperty({'hr.hourly_rate': $event.target.value})"
+                  (blur)="saveProperty({'hr.hourly_rate': $event.target.value})" />
+              </div>
+            </div>
+
+            <hr *ngIf="userData && userData?.skills && userData?.skills?.length > 0 && ((userData?.bio && userData?.bio != '') || (!!currentUser && !!groupData && (currentUser?.role == 'manager' || currentUser?.role == 'owner' || isGroupManager(currentUser?._id))))" />
+
+            <div class="card-tile" *ngIf="userData && userData?.skills && userData?.skills?.length > 0">
+              <div class="card-block">
+
+                  <!-- Template Heading starts -->
+                  <h6 class="card-title"><b i18n="@@memberDialog.skills">Skills</b></h6>
+                  <!-- Template Heading ends -->
+
+                  <hr />
+
+                  <!-- Iterate over all the skills present for a particular user starts -->
+                  <ul class="skills">
+                      <li *ngFor="let skill of userData?.skills; trackBy: utilityService.trackByIndex">
+                          {{skill}}
+                      </li>
+                  </ul>
+                  <!-- Iterate over all the skills present for a particular user ends -->
+
+              </div>
+            </div>
+
+            <hr *ngIf="userData && userData?.skills && userData?.skills?.length > 0 && currentWorkspace && currentWorkspace?.profile_custom_fields && currentWorkspace?.profile_custom_fields?.length > 0 && userData?.profile_custom_fields" />
+
+            <div class="card-tile"
+                *ngIf="currentWorkspace && currentWorkspace?.profile_custom_fields && currentWorkspace?.profile_custom_fields?.length > 0 && userData && userData?.profile_custom_fields">
+              <div class="card-block">
+
+                  <!-- Template Heading starts -->
+                  <h6 class="card-title"><b i18n="@@memberDialog.profileFields">Profile Fields</b></h6>
+                  <!-- Template Heading ends -->
+                  <hr />
+
+                  <!-- Iterate over all the profile fields present for a particular workspace starts -->
+                  <ul class="skills">
+                      <li *ngFor="let pf of currentWorkspace?.profile_custom_fields; trackBy: utilityService.trackByIndex">
+                        <span>{{ pf.title }}: &nbsp;</span>
+                        <span *ngIf="userData.profile_custom_fields[pf.name] && !pf.user_type">{{ userData.profile_custom_fields[pf.name] }}</span>
+                        <span *ngIf="userData.profile_custom_fields[pf.name] && pf.user_type">
+                          <app-select-assignee
+                            [userData]="userData.profile_custom_fields[pf.name]"
+                            [workspaceData]="currentWorkspace"
+                            [showBar]="false"
+                            type="workspaceMembers"></app-select-assignee>
+                        </span>
+                      </li>
+                  </ul>
+                  <!-- Iterate over all the profile fields present for a particular workspace ends -->
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

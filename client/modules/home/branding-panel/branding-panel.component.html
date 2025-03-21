@@ -1,0 +1,9 @@
+<div class="content">
+
+  <img src="assets/images/octonius-logo-white-1.png" alt="" class="octonius-logo-full">
+
+</div>
+<button *ngIf="routerState != 'home'" class="btn btn-lg back-home btn-outline-light" routerLink="/home" (click)="clearData()">
+    <i class="material-icons-outlined" style="margin-top: -5px;">home</i>
+    <span i18n="@@brandingPanel.back">Back</span>
+</button>

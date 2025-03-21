@@ -1,0 +1,35 @@
+<div class="list">
+    <div class="list-wrapper">
+        <!-- ALL COLUMN DETAILS STARTS -->
+        <div class="list-columns" *ngIf="sections">
+
+          <mat-accordion multi>
+            <app-table-section *ngFor="let section of sections; first as isFirst; trackBy: utilityService.trackByIndex"
+              [groupData]="groupData"
+              [userData]="userData"
+              [section]="section"
+              [sections]="sections"
+              [customFields]="customFields"
+              [isAdmin]="isAdmin"
+              [isFirst]="isFirst"
+              [isIdeaModuleAvailable]="isIdeaModuleAvailable"
+              [isShuttleTasksModuleAvailable]="isShuttleTasksModuleAvailable"
+              [sortingBit]="sortingBit"
+              [sortingData]="sortingData"
+              [filteringBit]="filteringBit"
+              [filteringData]="filteringData"></app-table-section>
+          </mat-accordion>
+
+          <!-- CREATE NEW SECTION START -->
+          <app-create-section (sectionEmitter)="addSection($event)"></app-create-section>
+          <!-- CREATE NEW SECTION ENDS -->
+        </div>
+
+        <!-- placeholder for empty board starts -->
+        <div *ngIf="!sections || sections.length == 0" style="text-align: center;">
+          <img src='assets/images/placeholder_activity3.png' class="placeholder-img">
+          <p class="muted text-center" i18n="@@groupTasksListView.emptyBoard">This board is empty. Create a section to add tasks. </p>
+        </div>
+        <!-- placeholder for empty board ends -->
+    </div>
+</div>

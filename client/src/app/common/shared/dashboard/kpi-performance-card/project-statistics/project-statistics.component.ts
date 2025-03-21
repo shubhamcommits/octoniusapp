@@ -1,0 +1,188 @@
+import { Component, Injector, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChartConfiguration, ChartData } from 'chart.js';
+import { PublicFunctions } from 'modules/public.functions';
+import { DatesService } from 'src/shared/services/dates-service/dates.service';
+import { PostService } from 'src/shared/services/post-service/post.service';
+
+@Component({
+  selector: 'app-project-statistics',
+  templateUrl: './project-statistics.component.html',
+  styleUrls: ['./project-statistics.component.scss']
+})
+export class ProjectStatisticsComponent implements OnChanges {
+
+  @Input() project: any;
+  @Input() timeTrackingEntities: any = [];
+
+  chartReady = false;
+
+  task_count = 0;
+
+  to_do_task_count = 0;
+  in_progress_task_count = 0;
+  done_task_count = 0;
+  overdue_task_count = 0;
+
+  completitionPercentage = 0;
+  completitionPercentageClass = '';
+  projectStatusClass = '';
+
+  doughnutChartLabels;
+  public doughnutChartData: ChartData<'doughnut'>;
+  public doughnutChartType = 'doughnut' as const;
+  public doughnutChartOptions: ChartConfiguration<'doughnut'>['options'];
+  public doughnutChartPlugins;
+
+  // Public Functions Object
+  public publicFunctions = new PublicFunctions(this.injector)
+
+  constructor(
+    private postService: PostService,
+    private datesService: DatesService,
+    private injector: Injector
+    ) { }
+
+  async ngOnChanges() {
+    await this.initView();
+  }
+
+  async initView() {
+    this.project.budget.hours_logged = 0;
+    this.project.budget.minutes_logged = 0;
+
+    this.timeTrackingEntities?.forEach((entity) => {
+      this.project.budget.hours_logged += parseInt(entity.hours);
+      this.project.budget.minutes_logged += parseInt(entity.minutes);
+
+      const extraHours = Math.floor(this.project.budget.minutes_logged / 60);
+
+      this.project.budget.hours_logged += extraHours;
+      this.project.budget.minutes_logged %= 60;
+    });
+
+    this.completitionPercentageClass = "badge " + this.setStatusClass(this.project?.project_status, true);
+    this.projectStatusClass = this.setStatusClass(this.project?.project_status, false);
+
+    /* Chart Setup */
+    const tasksData = await this.getTasksData();
+    const percentageDone = await this.getPercentageDone(tasksData[2]);
+    this.doughnutChartLabels = [$localize`:@@projectStatistics.toDo:To Do`, $localize`:@@projectStatistics.inProgress:In Progress`, $localize`:@@projectStatistics.done:Done`, $localize`:@@projectStatistics.overdue:Overdue`];
+    this.doughnutChartData = {
+      labels: this.doughnutChartLabels,
+      datasets: [
+        {
+          // data: [200, 100, 50, 150],
+          data: tasksData,
+          backgroundColor: [
+            '#FFAB00',
+            '#0bc6a0',
+            '#4a90e2',
+            '#FF6584'
+          ],
+        }
+      ]
+    };
+    this.doughnutChartOptions = {
+      cutout: 45,
+      responsive: true,
+      plugins: {
+        legend: {
+          display: false
+        },
+      }
+    };
+    this.doughnutChartPlugins = [{
+      beforeDraw(chart) {
+        const ctx = chart.ctx;
+
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+        const centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+
+        ctx.font = '25px Nunito';
+        ctx.fillStyle = '#262628';
+
+        ctx.fillText(Math.round(percentageDone) + '%', centerX, centerY);
+      }
+    }];
+
+    this.chartReady = true;
+  }
+
+  private async getTasksData() {
+
+    const tasks = await this.getTasks(false);
+    let overdueTasks = await this.getTasks(true);
+    overdueTasks = this.markOverdueTasks(overdueTasks);
+
+    for (let task of tasks) {
+      if (task.task.status=='to do') this.to_do_task_count++;
+      else if (task.task.status=='in progress') this.in_progress_task_count++;
+      else if (task.task.status=='done') this.done_task_count++;
+    }
+
+    this.overdue_task_count = overdueTasks.length;
+    this.task_count = this.to_do_task_count + this.in_progress_task_count + this.done_task_count + this.overdue_task_count;
+
+    const percentageDone = (this.task_count + this.overdue_task_count > 0) ? ((this.done_task_count*100)/(this.task_count + this.overdue_task_count)) : 0;
+    this.completitionPercentage = Math.round(percentageDone);
+
+    const allTasks = tasks.concat(overdueTasks);
+    this.project.estimation_due_date = (allTasks && allTasks.length > 0) ? this.publicFunctions.getHighestDate(allTasks) : this.project?.due_date;
+
+    return [this.to_do_task_count, this.in_progress_task_count, this.done_task_count, this.overdue_task_count];
+  }
+
+  async getTasks(overdue: boolean) {
+    let tasks = [];
+    await this.postService.getColumnPosts(this.project?._id, overdue)
+      .then((res) => {
+        tasks = res['posts'];
+      });
+    return tasks;
+  }
+
+  private markOverdueTasks(overdueTasks) {
+    return  overdueTasks.map(task => {
+      task.overdue = true;
+      return task;
+    });
+  }
+
+  private getPercentageDone(doneTasksCount) {
+   return  (this.task_count > 0) ? (((doneTasksCount)*100)/(this.task_count)) : 0
+  }
+
+  setStatusClass(status, isBadge) {
+    if (isBadge) {
+      if (status === 'NOT STARTED') {
+        return 'badge_not_started';
+      } else if (status === 'ON TRACK') {
+        return 'badge_on_track';
+      } else if (status === 'IN DANGER') {
+        return 'badge_in_danger';
+      } else if (status === 'ACHIEVED') {
+        return 'badge_achieved';
+      } else {
+        return 'badge_on_track';
+      }
+    } else {
+      if (status === 'NOT STARTED') {
+        return 'not_started';
+      } else if (status === 'ON TRACK') {
+        return 'on_track';
+      } else if (status === 'IN DANGER') {
+        return 'in_danger';
+      } else if (status === 'ACHIEVED') {
+        return 'achieved';
+      } else {
+        return 'on_track';
+      }
+    }
+  }
+
+  formateDate(date: any, format: string) {
+    return this.datesService.formateDate(date, format);
+  }
+}

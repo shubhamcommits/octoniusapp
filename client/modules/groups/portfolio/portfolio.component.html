@@ -1,0 +1,52 @@
+<div class="container-fluid">
+  <p class="mt-4 mb-4 muted"><i class="material-icons-outlined mr-3">inventory_2</i>A portfolio allows you to monitor and manage multiple groups, easier.</p>
+
+    <div class="row">
+        <ng-container *ngIf="userData && workspaceData && userData?.role != 'guest'">
+            <app-create-portfolio class="col-md-3" [userData]="userData" [workspaceData]="workspaceData"
+                (portfolioEmitter)="onPortfolioCreated($event)">
+            </app-create-portfolio>
+        </ng-container>
+    </div>
+
+    <!-- STARTS USER PORTFOLIOS -->
+    <div class="media-body">
+        <div class="row">
+            <ng-container *ngFor="let portfolio of userPortfolios; trackBy: utilityService.trackByIndex">
+                <div class="cards-list">
+                    <div class="card img-fluid"
+                        (click)="goToPortfolio(portfolio?._id)">
+
+                        <app-secured-image [imgURL]="portfolio?.portfolio_avatar" [service]="'group'"
+                            [workspaceId]="workspaceData?._id" [styleClass]="'card-img-top'"></app-secured-image>
+
+                        <div class="card-img-overlay">
+                            <span class="badge badge-members">
+                                {{ portfolio?._members?.length || 0 }}
+                                <span i18n="@@portfolioList.members">Managers</span>
+                            </span>
+
+                            <a *ngIf="portfolio?.type == 'agora'" class="btn btn-light btn-public"><i
+                                    class="material-icons">account_balance</i></a>
+                            <a *ngIf="portfolio?.type == 'smart'" class="btn btn-info btn-smart"><i
+                                    class="material-icons">fingerprint</i></a>
+
+                            <div class="title-overlay">
+                                <a>
+                                    <h2 class="card-title">{{portfolio?.portfolio_name}}</h2>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+    <!-- ENDS USER PORTFOLIOS -->
+</div>
+
+<!-- LOADING SPINNER STARTS -->
+<ng-container *ngIf="isLoading$ | async">
+    <app-loading-spinner></app-loading-spinner>
+</ng-container>
+<!-- LOADING SPINNER ENDS -->

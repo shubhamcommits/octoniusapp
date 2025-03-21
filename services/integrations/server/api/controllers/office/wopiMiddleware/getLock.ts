@@ -1,0 +1,14 @@
+import { NextFunction, Request, Response } from 'express';
+import { fileInfo } from '../../../../utils/office';
+
+export function getLock(req: Request, res: Response, next: NextFunction): void {
+  const { file_id: fileId } = req.params;
+
+  if (!Object.hasOwnProperty.call(fileInfo.lock, fileId)) {
+    res.setHeader('X-WOPI-Lock', '');
+    res.sendStatus(200);
+  } else {
+    res.setHeader('X-WOPI-Lock', fileInfo.lock[fileId] || '');
+    res.sendStatus(200);
+  }
+}

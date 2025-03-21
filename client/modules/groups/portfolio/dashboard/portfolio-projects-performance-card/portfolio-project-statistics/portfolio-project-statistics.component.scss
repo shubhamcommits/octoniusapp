@@ -1,0 +1,68 @@
+@import "src/assets/scss/variables";
+
+.smart-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.estimation {
+  color: #FBB732;
+}
+.project_stats {
+  margin-top: 24px;
+  padding-right: 4px;
+}
+
+.project_stats > div {
+  margin: 5px 0px;
+}
+
+.task_counts {
+  display: flex;
+}
+
+.badge {
+  background-color: $dark-sky-blue;
+  margin: 0 2px !important;
+  display: inline;
+  font-family: Nunito, sans-serif;
+  font-style: normal;
+  font-weight: 700 !important;
+  font-size: 14px;
+  align-items: center;
+  color: #ffffff;
+  background-color: #e4edf8;
+}
+
+.badge_not_started {
+  background-color: #FFAB00;
+  color: #F3F4F6;
+}
+
+.badge_on_track {
+  background-color: #26A69A;
+  color: #F3F4F6;
+}
+
+.badge_in_danger {
+  background-color: #EB5757;
+  color: #F3F4F6;
+}
+
+.badge_achieved {
+  background-color: #4A90E2;
+  color: #F3F4F6;
+}
+
+.not_started {
+  color: #FFAB00;
+}
+
+.on_track {
+  color: #26A69A;
+}
+
+.in_danger {
+  color: #FF6584;
+}

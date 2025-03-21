@@ -1,0 +1,126 @@
+<!-- START POST AND FILE -->
+<div *ngIf="data && (type=='post' || type=='task' || type=='file' || type=='page')" style="text-align: left;">
+  <div class="mb-2 mt-2">
+    <span class="octo-search-category" *ngIf="type=='post' || type=='task' || type=='page'">{{ data?.title }}</span>
+
+    <span class="octo-search-category" *ngIf="type=='file'">{{ data?.original_name }}</span>
+
+    &nbsp;
+
+    <a *ngIf="type=='file' && (data?.type == 'file' || data?.type == undefined) && isOfficeFile(data?.original_name)" (click)="openOfficeDoc(data)" target="_blank" style="cursor: pointer;">
+      <span class="material-icons">open_in_new</span>
+    </a>
+
+    &nbsp;
+
+    <a *ngIf="type=='file' && (data?.type == 'file' || data?.type == undefined)" [href]="generateFileURL()" target="_blank" style="cursor: pointer;">
+      <span class="material-icons">file_download</span>
+    </a>
+
+    <a *ngIf="type=='file' && data?.type === 'folio'" target="_blank"
+      routerLink="/document/{{data?._id}}">
+      <span class="material-icons">open_in_new</span>
+    </a>
+
+    <a *ngIf="type=='post' || type=='task'" [href]="generatePostURL()" target="_blank">
+      <span class="material-icons">open_in_new</span>
+    </a>
+
+    <a *ngIf="type=='page'" [href]="generatePageURL()" target="_blank">
+      <span class="material-icons">open_in_new</span>
+    </a>
+  </div>
+  
+  <div class="mb-2" *ngIf="type == 'file' && data.path_to_file">
+    <strong i18n="@@searchResult.location">Location: </strong>
+  
+    <span style="cursor: pointer;" (click)="closeSearch()" [routerLink]="['/dashboard', 'work', 'groups', 'files']" [queryParams]="{ folder: data?._folder?._id || data?._folder }" routerLinkActive="router-link-active">
+      {{ data?.path_to_file }}
+    </span>
+  </div>
+
+  <div class="mb-2" *ngIf="data?.tags && data?.tags.length > 0">
+    <strong i18n="@@searchResult.tags">Tags: </strong>
+
+    <span *ngFor="let tag of data?.tags; trackBy: utilityService.trackByIndex" class="label">{{ tag }}</span>
+  </div>
+
+  <div class="mb-2">
+    <strong i18n="@@searchResult.createdOn">Created On: </strong>
+    <span>{{ data?.created_date | date:'MMM dd, yyyy' }}</span>
+  </div>
+
+  <div *ngIf="data?._posted_by" class="mb-2">
+    <strong i18n="@@searchResult.owner">Owner: </strong>
+    <div id="avatar-assignee" style="margin-bottom: 30px;">
+      <app-secured-image
+        [imgURL]="data?._posted_by.profile_pic"
+        [service]="'user'"
+        [userData]="data?._posted_by"
+        [workspaceId]="workspaceId"
+        [styleClass]="'feed-avatar-small'"
+        style="float: left; cursor: auto;"></app-secured-image>
+
+      <div style="padding-top: 10px;" class="ml-1">
+        {{ data?._posted_by.first_name }}
+        {{ data?._posted_by.last_name }}
+      </div>
+    </div>
+  </div>
+
+  <div [innerHTML]="data?.html" class="search-content mb-2"></div>
+
+  <div *ngIf="customFields && customFields.length > 0 && (data?.custom_fields || data?.task?.custom_fields)" class="mb-2">
+    <strong i18n="@@searchResult.customFields">Custom Fields: </strong>
+
+    <div *ngFor="let cf of customFields; trackBy: utilityService.trackByIndex" class="label" [ngStyle]="{'background': (cf.badge_color) ? cf.badge_color : '#48CDC1' }">
+      <span *ngIf="type == 'file' && data?.custom_fields && data?.custom_fields[cf.name]">{{ cf.title }}: {{ data?.custom_fields[cf.name] }}</span>
+      <span *ngIf="(type == 'post' || type=='task') && data?.task?.custom_fields && data?.task?.custom_fields[cf.name]">{{ cf.title }}: {{ data?.task?.custom_fields[cf.name] }}</span>
+    </div>
+  </div>
+</div>
+<!-- END POST AND FILE -->
+
+<!-- START USER -->
+<div *ngIf="data && type=='user'" style="text-align: left;" class="mb-2">
+  <div class="octo-search-category" style="line-height: 40px;">
+    <app-secured-image
+      [imgURL]="data?.profile_pic"
+      [service]="'user'"
+      [userData]="data"
+      [workspaceId]="workspaceId"
+      [styleClass]="'feed-avatar-small'"
+      style="float: left; cursor: auto;"></app-secured-image>
+
+    {{ data?.first_name }} {{ data?.last_name }}
+
+    <a (click)="openFullscreenModal(data._id)" style="cursor: pointer;">
+      <span class="material-icons">badge</span>
+    </a>
+  </div>
+
+  <p><strong i18n="@@searchResult.role">Role: </strong>{{ data?.role }}</p>
+  <p><strong i18n="@@searchResult.email">E-Mail: </strong>{{ data?.email }}</p>
+  <p><strong i18n="@@searchResult.phone">Phone Number: </strong>{{ data?.phone_number }}</p>
+  <p><strong i18n="@@searchResult.mobile">Mobile Number: </strong>{{ data?.mobile_number }}</p>
+  <p><strong i18n="@@searchResult.currentPosition">Current Position: </strong>{{ data?.current_position }}</p>
+  <p><strong i18n="@@searchResult.company">Company: </strong>{{ data?.company_name }}</p>
+  <p><strong i18n="@@searchResult.joined">Joined on: </strong>{{ data?.company_join_date | date:'MMM dd, yyyy' }}</p>
+
+  <p class="mb-2 mt-2"><strong i18n="@@searchResult.bio">Bio: </strong> {{ data?.bio }}</p>
+
+  <div class="mb-2 mt-2">
+    <strong i18n="@@searchResult.skills">Skills: </strong>
+      <span *ngFor="let skill of data.skills; trackBy: utilityService.trackByIndex" class="label"> {{ skill }}</span>
+  </div>
+
+  <div *ngIf="customFields && customFields.length > 0 && data?.profile_custom_fields" class="mb-2">
+    <strong i18n="@@searchResult.customFields">Custom Fields: </strong>
+
+    <div *ngFor="let cf of customFields; trackBy: utilityService.trackByIndex" class="label" style="background: #48CDC1;">
+      <span *ngIf="data?.profile_custom_fields && data?.profile_custom_fields[cf.name] && !cf.user_type">{{ cf.title }}: {{ data?.profile_custom_fields[cf.name] }}</span>
+      <span *ngIf="data?.profile_custom_fields && data?.profile_custom_fields[cf.name] && cf.user_type">{{ cf.title }}: {{ data?.profile_custom_fields[cf.name].first_name + ' ' + data?.profile_custom_fields[cf.name].last_name }} </span>
+    </div>
+  </div>
+</div>
+<!-- END USER -->

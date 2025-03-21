@@ -1,0 +1,30 @@
+<div class="notification-item" *ngFor="let approval of itemData?.approval_history; let index = index; trackBy: utilityService.trackByIndex">
+  <div class="notification_actor">
+    <app-secured-image
+      [imgURL]="approval?._actor?.profile_pic"
+      [service]="'user'" [userData]="approval?._actor"
+      [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
+      [styleClass]="'avatar'"
+      style="margin-right:15px"></app-secured-image>
+  </div>
+
+  <div class="notification_title">
+   <span class="muted"> {{ approval?._actor?.first_name || 'Deleted' }} {{ approval?._actor?.last_name || 'User' }}</span>
+
+
+
+    <span *ngIf="approval?.action === 'created'" class="approval-created ml-2" i18n="@@recentActivity.createdApprovalFlow">Created the approval flow for this item</span>
+    <span *ngIf="approval?.action === 'deleted'" class="approval-deleted ml-2" i18n="@@recentActivity.deletedApprovalFlow">Deleted the approval flow on this item</span>
+    <span *ngIf="approval?.action === 'launch'" class="approval-launch ml-2" i18n="@@recentActivity.launchedApprovalFlow">Launched the approval flow for this item</span>
+    <span *ngIf="approval?.action === 'rejected'" class="approval-rejected ml-2" i18n="@@recentActivity.rejectedApproval">Rejected this item: </span>
+    <span *ngIf="approval?.action === 'approved'" class="approval-approved ml-2" i18n="@@recentActivity.approvedApproval">Approved this item: </span>
+
+
+
+    <span class="rejected-description ml-2 mr-2" *ngIf="approval?.action == 'approved' || approval?.action == 'rejected'">{{ approval?.description | truncatetext: 50 }}</span>
+  </div>
+
+  <div class="notification_date_time">
+    <span class="muted">{{ approval?.approval_date | date: 'MMM dd, yyyy HH:mm' }}</span>
+  </div>
+</div>

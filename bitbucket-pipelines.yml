@@ -1,0 +1,211 @@
+image: atlassian/default-image:2
+
+options:
+  size: 2x
+
+pipelines:
+  branches:
+    "{master}": 
+    - step:
+        name: Deploy to dockerhub
+        services:
+          - docker
+
+        # can be test, staging or production.
+        deployment: production
+        script: 
+        
+          # Modify the commands below to build your repository.
+          
+          # Set $DOCKER_HUB_USERNAME and $DOCKER_HUB_PASSWORD as environment variables in repository settings
+          - export CLIENT_IMAGE_NAME=octoniusapp/octonius-prod:client
+          - export APPROVAL_IMAGE_NAME=octoniusapp/octonius-prod:approval-server
+          - export AUTHS_IMAGE_NAME=octoniusapp/octonius-prod:auths-server
+          - export CHATS_IMAGE_NAME=octoniusapp/octonius-prod:chats-server
+          - export GROUPS_IMAGE_NAME=octoniusapp/octonius-prod:groups-server
+          - export WORKSPACES_IMAGE_NAME=octoniusapp/octonius-prod:workspaces-server
+          - export USERS_IMAGE_NAME=octoniusapp/octonius-prod:users-server
+          - export POSTS_IMAGE_NAME=octoniusapp/octonius-prod:posts-server
+          - export NOTIFICATIONS_IMAGE_NAME=octoniusapp/octonius-prod:notifications-server
+          - export UTILITIES_IMAGE_NAME=octoniusapp/octonius-prod:utilities-server
+          - export FOLIO_IMAGE_NAME=octoniusapp/octonius-prod:folio-server
+          - export SEARCH_IMAGE_NAME=octoniusapp/octonius-prod:search-server
+          - export INTEGRATIONS_IMAGE_NAME=octoniusapp/octonius-prod:integrations-server
+          - export FLAMINGO_IMAGE_NAME=octoniusapp/octonius-prod:flamingo-server
+          - export NGINX_IMAGE_NAME=octoniusapp/octonius-prod:nginx
+          - export MINIO_IMAGE_NAME=octoniusapp/octonius-prod:minio
+          - export MINIO_BALANCER_IMAGE_NAME=octoniusapp/octonius-prod:minio-balancer
+
+          # build the Docker image (this will use the Dockerfile in the root of the repo)
+          - docker build -t $CLIENT_IMAGE_NAME --compress=true --force-rm=true ./client
+          - docker build -t $APPROVAL_IMAGE_NAME --compress=true --force-rm=true ./services/approval/server
+          - docker build -t $AUTHS_IMAGE_NAME --compress=true --force-rm=true ./services/authentication/server
+          - docker build -t $CHATS_IMAGE_NAME --compress=true --force-rm=true ./services/chats/server
+          - docker build -t $GROUPS_IMAGE_NAME --compress=true --force-rm=true ./services/groups/server
+          - docker build -t $WORKSPACES_IMAGE_NAME --compress=true --force-rm=true ./services/workspaces/server
+          - docker build -t $USERS_IMAGE_NAME --compress=true --force-rm=true ./services/users/server
+          - docker build -t $POSTS_IMAGE_NAME --compress=true --force-rm=true ./services/posts/server
+          - docker build -t $NOTIFICATIONS_IMAGE_NAME --compress=true --force-rm=true ./services/notifications/server
+          - docker build -t $UTILITIES_IMAGE_NAME --compress=true --force-rm=true ./services/utilities/server
+          - docker build -t $FOLIO_IMAGE_NAME --compress=true --force-rm=true ./services/folio/server
+          - docker build -t $SEARCH_IMAGE_NAME --compress=true --force-rm=true ./services/search/server
+          - docker build -t $INTEGRATIONS_IMAGE_NAME --compress=true --force-rm=true ./services/integrations/server
+          - docker build -t $FLAMINGO_IMAGE_NAME --compress=true --force-rm=true ./services/flamingo/server
+          - docker build -t $NGINX_IMAGE_NAME --compress=true --force-rm=true ./nginx
+          - docker build -t $MINIO_IMAGE_NAME --compress=true --force-rm=true ./services/minio
+          - docker build -t $MINIO_BALANCER_IMAGE_NAME --compress=true --force-rm=true -f ./services/minio/Dockerfile.balancer .
+
+          # Clear unnecessary Image build
+          - docker image prune -f 
+          
+          # authenticate with the Docker Hub registry
+          - docker login --username $DOCKER_ID --password $DOCKER_PASSWORD
+
+          # push the new Docker image to the Docker registry
+          - docker push $CLIENT_IMAGE_NAME
+          - docker push $APPROVAL_IMAGE_NAME
+          - docker push $AUTHS_IMAGE_NAME
+          - docker push $CHATS_IMAGE_NAME
+          - docker push $GROUPS_IMAGE_NAME
+          - docker push $WORKSPACES_IMAGE_NAME
+          - docker push $USERS_IMAGE_NAME
+          - docker push $POSTS_IMAGE_NAME
+          - docker push $NOTIFICATIONS_IMAGE_NAME
+          - docker push $UTILITIES_IMAGE_NAME
+          - docker push $FOLIO_IMAGE_NAME
+          - docker push $SEARCH_IMAGE_NAME
+          - docker push $INTEGRATIONS_IMAGE_NAME
+          - docker push $FLAMINGO_IMAGE_NAME
+          - docker push $NGINX_IMAGE_NAME
+          - docker push $MINIO_IMAGE_NAME
+          - docker push $MINIO_BALANCER_IMAGE_NAME
+
+    - step:
+       name: Deploy to production server
+       script:
+         - pipe: atlassian/ssh-run:0.2.2
+           variables:
+             SSH_USER: 'root'
+             SERVER: $HOST_ADDRESS_PROD
+             COMMAND: 'cd /root/octonius-production; echo $HOST_PASSWORD_PROD | sudo -S ./deploy-octonius-prod.sh'  
+    
+    "{develop}":
+    - step:
+        name: Deploy to dockerhub
+        services:
+          - docker
+
+        # can be test, staging or production.
+        deployment: staging   
+        script: 
+        
+          # Modify the commands below to build your repository.
+          
+          # Set $DOCKER_HUB_USERNAME and $DOCKER_HUB_PASSWORD as environment variables in repository settings
+          - export CLIENT_IMAGE_NAME=octoniusapp/octonius:client
+          - export APPROVAL_IMAGE_NAME=octoniusapp/octonius:approval-server
+          - export AUTHS_IMAGE_NAME=octoniusapp/octonius:auths-server
+          - export CHATS_IMAGE_NAME=octoniusapp/octonius:chats-server
+          - export GROUPS_IMAGE_NAME=octoniusapp/octonius:groups-server
+          - export WORKSPACES_IMAGE_NAME=octoniusapp/octonius:workspaces-server
+          - export USERS_IMAGE_NAME=octoniusapp/octonius:users-server
+          - export POSTS_IMAGE_NAME=octoniusapp/octonius:posts-server
+          - export NOTIFICATIONS_IMAGE_NAME=octoniusapp/octonius:notifications-server
+          - export UTILITIES_IMAGE_NAME=octoniusapp/octonius:utilities-server
+          - export FOLIO_IMAGE_NAME=octoniusapp/octonius:folio-server
+          - export SEARCH_IMAGE_NAME=octoniusapp/octonius:search-server
+          - export INTEGRATIONS_IMAGE_NAME=octoniusapp/octonius:integrations-server
+          - export FLAMINGO_IMAGE_NAME=octoniusapp/octonius:flamingo-server
+          - export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
+          - export MINIO_IMAGE_NAME=octoniusapp/octonius:minio
+          - export MINIO_BALANCER_IMAGE_NAME=octoniusapp/octonius:minio-balancer
+
+          # build the Docker image (this will use the Dockerfile in the root of the repo)
+          - docker build -t $CLIENT_IMAGE_NAME --compress=true --force-rm=true ./client
+          - docker build -t $APPROVAL_IMAGE_NAME --compress=true --force-rm=true ./services/approval/server
+          - docker build -t $AUTHS_IMAGE_NAME --compress=true --force-rm=true ./services/authentication/server
+          - docker build -t $CHATS_IMAGE_NAME --compress=true --force-rm=true ./services/chats/server
+          - docker build -t $GROUPS_IMAGE_NAME --compress=true --force-rm=true ./services/groups/server
+          - docker build -t $WORKSPACES_IMAGE_NAME --compress=true --force-rm=true ./services/workspaces/server
+          - docker build -t $USERS_IMAGE_NAME --compress=true --force-rm=true ./services/users/server
+          - docker build -t $POSTS_IMAGE_NAME --compress=true --force-rm=true ./services/posts/server
+          - docker build -t $NOTIFICATIONS_IMAGE_NAME --compress=true --force-rm=true ./services/notifications/server
+          - docker build -t $UTILITIES_IMAGE_NAME --compress=true --force-rm=true ./services/utilities/server
+          - docker build -t $FOLIO_IMAGE_NAME --compress=true --force-rm=true ./services/folio/server
+          - docker build -t $SEARCH_IMAGE_NAME --compress=true --force-rm=true ./services/search/server
+          - docker build -t $INTEGRATIONS_IMAGE_NAME --compress=true --force-rm=true ./services/integrations/server
+          - docker build -t $FLAMINGO_IMAGE_NAME --compress=true --force-rm=true ./services/flamingo/server
+          - docker build -t $NGINX_IMAGE_NAME --compress=true --force-rm=true ./nginx
+          - docker build -t $MINIO_IMAGE_NAME --compress=true --force-rm=true ./services/minio
+          - docker build -t $MINIO_BALANCER_IMAGE_NAME --compress=true --force-rm=true -f ./services/minio/Dockerfile.balancer .
+
+
+          # Clear unnecessary Image build
+          - docker image prune -f 
+          
+          # authenticate with the Docker Hub registry
+          - docker login --username $DOCKER_ID --password $DOCKER_PASSWORD
+
+          # push the new Docker image to the Docker registry
+          - docker push $CLIENT_IMAGE_NAME
+          - docker push $APPROVAL_IMAGE_NAME
+          - docker push $AUTHS_IMAGE_NAME
+          - docker push $CHATS_IMAGE_NAME
+          - docker push $GROUPS_IMAGE_NAME
+          - docker push $WORKSPACES_IMAGE_NAME
+          - docker push $USERS_IMAGE_NAME
+          - docker push $POSTS_IMAGE_NAME
+          - docker push $NOTIFICATIONS_IMAGE_NAME
+          - docker push $UTILITIES_IMAGE_NAME
+          - docker push $FOLIO_IMAGE_NAME
+          - docker push $SEARCH_IMAGE_NAME
+          - docker push $INTEGRATIONS_IMAGE_NAME
+          - docker push $FLAMINGO_IMAGE_NAME
+          - docker push $NGINX_IMAGE_NAME
+          - docker push $MINIO_IMAGE_NAME
+          - docker push $MINIO_BALANCER_IMAGE_NAME
+
+    #- step:
+       #name: Deploy to stating server
+       #script:
+         #- pipe: atlassian/ssh-run:0.2.2
+           #variables:
+             #SSH_USER: 'ubuntu'
+             #SERVER: $HOST_ADDRESS
+             #COMMAND: 'cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S ./stop-octonius-acc.sh && sudo -S ./deploy-octonius-acc.sh'  
+
+  custom:
+    build_libre_office_server:
+    - step:
+        name: Copy Files
+        script:
+          - pipe: atlassian/scp-deploy:1.2.1
+            variables:
+              USER: 'ubuntu'
+              SERVER: $HOST_ADDRESS
+              REMOTE_PATH: '/home/ubuntu/octonius/libreoffice-server'
+              LOCAL_PATH: 'services/libreoffice-server'
+              DEBUG: 'true'
+    - step:
+       name: Build and Deploy stating server
+       trigger: manual
+       script:
+         - pipe: atlassian/ssh-run:0.2.2
+           variables:
+             SSH_USER: 'ubuntu'
+             SERVER: $HOST_ADDRESS
+             COMMAND: 'cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S docker build --compress=true --force-rm=true -t octoniusapp/octonius:libreoffice-server ./libreoffice-server && sudo -S docker login --username $DOCKER_ID --password $DOCKER_PASSWORD && docker push octoniusapp/octonius:libreoffice-server && sudo -S ./stop-octonius-acc.sh && sudo -S ./deploy-octonius-acc.sh'           
+    - step:
+       name: Build production server
+       trigger: manual
+       script:
+         - pipe: atlassian/ssh-run:0.2.2
+           variables:
+             SSH_USER: 'ubuntu'
+             SERVER: $HOST_ADDRESS
+             COMMAND: 'cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S docker build --compress=true --force-rm=true -t octoniusapp/octonius-prod:libreoffice-server ./libreoffice-server && sudo -S docker login --username $DOCKER_ID --password $DOCKER_PASSWORD && docker push octoniusapp/octonius-prod:libreoffice-server'           
+
+definitions:
+   services:
+      docker:
+         memory: 6000 

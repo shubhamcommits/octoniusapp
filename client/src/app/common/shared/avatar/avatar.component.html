@@ -1,0 +1,19 @@
+<span *ngIf="!showInitials">
+  <span *ngIf="isLoading">
+    <img [src]="onErrorUrl" [style]="inlineStyle" class="{{ styleClass }}" onerror="this.src=this.onErrorUrl"
+      alt="{{ alt }}" />
+  </span>
+  
+  <span [ngStyle]="{'display': (isLoading) ? 'none' : '' }">
+    <img *ngIf="dataUrl$ | async as url" [src]="url" [style]="inlineStyle" class="{{ styleClass }}"
+      matTooltipPosition="{{ placement }}" matTooltip="{{ tooltip }}" alt="{{ alt }}" onerror="this.src=this.onErrorUrl"
+      (load)="hideLoader()" (error)="hideLoader()" />
+  </span>
+</span>
+
+<span *ngIf="showInitials"
+  [ngClass]="styleClass"
+  [ngStyle]="{'background-color' : backgroundColor, inlineStyle}"
+  matTooltipPosition="{{ placement }}" matTooltip="{{ tooltip }}">
+  {{ initials }}
+</span>

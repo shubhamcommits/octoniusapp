@@ -1,0 +1,307 @@
+<div class="container">
+  <!-- Empty State of tasks starts -->
+  <div
+    *ngIf="groupDueTasks?.overdue_today?.length == 0 && groupDueTasks?.tomorrow?.length == 0 && groupDueTasks?.this_week?.length == 0 && groupDueTasks?.next_week?.length == 0 && groupDueTasks?.future?.length == 0 && companyDueTasks?.overdue_today?.length == 0 && companyDueTasks?.tomorrow?.length == 0 && companyDueTasks?.this_week?.length == 0 && companyDueTasks?.next_week?.length == 0 && companyDueTasks?.future?.length == 0">
+    <img src='assets/images/placeholder_activity3.png' class="placeholder-img">
+    <p class="muted text-center" i18n="@@mySpaceTasks.done">Done. That's a wrap! </p>
+  </div>
+
+  <!----------------------------------------------  Today  -------------------------------------------->
+
+  <h5 class="title-overview"
+    *ngIf="groupDueTasks?.overdue_today?.length > 0 || companyDueTasks?.overdue_today?.length > 0"
+    i18n="@@mySpaceTasks.today">Today</h5>
+
+  <div *ngFor="let task of groupDueTasks.overdue_today; let i = index; trackBy: utilityService.trackByIndex">
+    <a (click)="openModal(task)">
+      <div class="media card-tile overview-task" [ngClass]="{
+          'todo-bar': task.task.status === 'to do',
+          'working-bar': task.task.status === 'in progress'
+        }" role="progressbar">
+        <div class="row media-body">
+          <div class="col-md-6">
+            <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
+          </div>
+          <div class="col-md-1" *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
+            <div [ngClass]="getPriorityClass(task?.task?.custom_fields['priority'])">
+              {{ task?.task?.custom_fields['priority'] }}
+            </div>
+          </div>
+          <div class="col-md-1" *ngIf="!task?.task?.custom_fields || !task?.task?.custom_fields['priority']">
+          </div>
+          <div class="col-md-3">
+            <div class=" grouplabel " [innerHTML]="task?._group?.group_name"></div>
+          </div>
+          <div class="col-md-2">
+            <div *ngIf="formateDate(task?.task?.due_to) != formateDate(today)" class="overview-item small text-right overdue" i18n="@@mySpaceTasks.overdue">
+              OVERDUE
+            </div>
+            <div *ngIf="formateDate(task?.task?.due_to) == formateDate(today)"
+              class="overview-item small text-muted text-right">
+              {{ formateDate(task?.task?.due_to) }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <div *ngFor="let task of companyDueTasks.overdue_today; let i = index; trackBy: utilityService.trackByIndex">
+    <a (click)="openCompanyDetailsDialog(task.company_id)">
+      <!-- My Space Today Tasks -->
+      <div class="media card-tile overview-task todo-bar" role="progressbar">
+        <div class="row media-body">
+          <div class="col-md-6">
+            <div class="overview-item title-nowrap pl-0">
+              <b>{{ task?.company_name }}</b>:
+              <span> {{ task?.task_description }}</span>
+            </div>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-3">
+            <div class=" grouplabel">CRM</div>
+          </div>
+          <div class="col-md-2">
+            <div *ngIf="formateDate(task?.task_date) != formateDate(today)" class="overview-item small text-right overdue" i18n="@@mySpaceTasks.overdue">
+              OVERDUE
+            </div>
+            <div *ngIf="formateDate(task?.task_date) == formateDate(today)"
+              class="overview-item small text-muted text-right">
+              {{ formateDate(task?.task_date) }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+
+
+  <!----------------------------------------------  Tomorrow  -------------------------------------------->
+
+  <h5 class="title-overview" *ngIf="groupDueTasks?.tomorrow?.length > 0 || companyDueTasks?.tomorrow?.length > 0" i18n="@@mySpaceTasks.tomorrow">Tomorrow</h5>
+
+  <div *ngFor="let task of groupDueTasks.tomorrow; let i = index; trackBy: utilityService.trackByIndex">
+    <a (click)="openModal(task)">
+      <div class="media card-tile overview-task" [ngClass]="{
+          'todo-bar': task.task.status === 'to do',
+          'working-bar': task.task.status === 'in progress'
+        }" role="progressbar">
+        <div class="row media-body">
+          <div class="col-md-6">
+            <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
+          </div>
+          <div class="col-md-1" *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
+            <div [ngClass]="getPriorityClass(task?.task?.custom_fields['priority'])">
+              {{ task?.task?.custom_fields['priority'] }}
+            </div>
+          </div>
+          <div class="col-md-1" *ngIf="!task?.task?.custom_fields || !task?.task?.custom_fields['priority']">
+          </div>
+          <div class="col-md-3">
+            <div class=" grouplabel " [innerHTML]="task?._group?.group_name"></div>
+          </div>
+          <div class="col-md-2">
+            <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
+              {{ formateDate(task?.task?.due_to) }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+  <div *ngFor="let task of companyDueTasks.tomorrow; let i = index; trackBy: utilityService.trackByIndex">
+    <a (click)="openCompanyDetailsDialog(task.company_id)">
+      <!-- My Space Today Tasks -->
+      <div class="media card-tile overview-task todo-bar" role="progressbar">
+        <div class="row media-body">
+          <div class="col-md-6">
+            <div class="overview-item title-nowrap pl-0">
+              <b>{{ task?.company_name }}</b>:
+              <span> {{ task?.task_description }}</span>
+            </div>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-3">
+            <div class=" grouplabel">CRM</div>
+          </div>
+          <div class="col-md-2">
+            <div class="overview-item small text-muted text-right">{{ formateDate(task?.task_date) }}</div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+
+
+  <!----------------------------------------------  This week  -------------------------------------------->
+
+  <h5 class="title-overview" *ngIf="groupDueTasks?.this_week?.length > 0 || companyDueTasks?.this_week?.length > 0" i18n="@@mySpaceTasks.thisWeek">
+    This week</h5>
+
+  <div *ngFor="let task of groupDueTasks.this_week; let i = index; trackBy: utilityService.trackByIndex">
+    <a (click)="openModal(task)">
+      <div class="media card-tile overview-task" [ngClass]="{
+        'todo-bar': task.task.status === 'to do',
+        'working-bar': task.task.status === 'in progress'
+      }" role="progressbar">
+        <div class="row media-body">
+          <div class="col-md-6">
+            <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
+          </div>
+          <div class="col-md-1" *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
+            <div [ngClass]="getPriorityClass(task?.task?.custom_fields['priority'])">
+              {{ task?.task?.custom_fields['priority'] }}
+            </div>
+          </div>
+          <div class="col-md-1" *ngIf="!task?.task?.custom_fields || !task?.task?.custom_fields['priority']">
+          </div>
+          <div class="col-md-3">
+            <div class="overview-item grouplabel" [innerHTML]="task?._group?.group_name"></div>
+          </div>
+          <div class="col-md-2">
+            <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
+              {{ formateDate(task?.task?.due_to) }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+  <div *ngFor="let task of companyDueTasks.this_week; let i = index; trackBy: utilityService.trackByIndex">
+    <a (click)="openCompanyDetailsDialog(task.company_id)">
+      <!-- My Space Today Tasks -->
+      <div class="media card-tile overview-task todo-bar" role="progressbar">
+        <div class="row media-body">
+          <div class="col-md-6">
+            <div class="overview-item title-nowrap pl-0">
+              <b>{{ task?.company_name }}</b>:
+              <span> {{ task?.task_description }}</span>
+            </div>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-3">
+            <div class=" grouplabel">CRM</div>
+          </div>
+          <div class="col-md-2">
+            <div class="overview-item small text-right text-muted">{{ formateDate(task?.task_date) }}</div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <!----------------------------------------------  Next week  -------------------------------------------->
+
+  <h5 class="title-overview" *ngIf="groupDueTasks?.next_week?.length > 0 || companyDueTasks?.next_week?.length > 0"
+    i18n="@@mySpaceTasks.nextWeek">Next week</h5>
+
+  <div *ngFor="let task of groupDueTasks.next_week; let i = index; trackBy: utilityService.trackByIndex">
+    <a (click)="openModal(task)">
+      <div class="media card-tile overview-task" [ngClass]="{
+        'todo-bar': task.task.status === 'to do',
+        'working-bar': task.task.status === 'in progress'
+      }" role="progressbar">
+        <div class="row media-body">
+          <div class="col-md-6">
+            <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
+          </div>
+          <div class="col-md-1" *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
+            <div [ngClass]="getPriorityClass(task?.task?.custom_fields['priority'])">
+              {{ task?.task?.custom_fields['priority'] }}
+            </div>
+          </div>
+          <div class="col-md-1" *ngIf="!task?.task?.custom_fields || !task?.task?.custom_fields['priority']">
+          </div>
+          <div class="col-md-3">
+            <div class="overview-item grouplabel" [innerHTML]="task?._group?.group_name"></div>
+          </div>
+          <div class="col-md-2">
+            <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
+              {{ formateDate(task?.task?.due_to) }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+  <div *ngFor="let task of companyDueTasks.next_week; let i = index; trackBy: utilityService.trackByIndex">
+    <a (click)="openCompanyDetailsDialog(task.company_id)">
+      <!-- My Space Today Tasks -->
+      <div class="media card-tile overview-task todo-bar" role="progressbar">
+        <div class="row media-body">
+          <div class="col-md-6">
+            <div class="overview-item title-nowrap pl-0">
+              <b>{{ task?.company_name }}</b>:
+              <span> {{ task?.task_description }}</span>
+            </div>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-3">
+            <div class=" grouplabel">CRM</div>
+          </div>
+          <div class="col-md-2">
+            <div class="overview-item small text-right text-muted">{{ formateDate(task?.task_date) }}</div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <!----------------------------------------------  Future  -------------------------------------------->
+
+  <h5 class="title-overview" *ngIf="groupDueTasks?.future?.length > 0 || companyDueTasks?.future?.length > 0"
+    i18n="@@mySpaceTasks.futureTasks">Future Tasks</h5>
+
+  <div *ngFor="let task of groupDueTasks.future; let i = index; trackBy: utilityService.trackByIndex">
+    <a (click)="openModal(task)">
+      <div class="media card-tile overview-task" [ngClass]="{
+        'todo-bar': task.task.status === 'to do',
+        'working-bar': task.task.status === 'in progress'
+      }" role="progressbar">
+        <div class="row media-body">
+          <div class="col-md-6">
+            <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
+          </div>
+          <div class="col-md-1" *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
+            <div [ngClass]="getPriorityClass(task?.task?.custom_fields['priority'])">
+              {{ task?.task?.custom_fields['priority'] }}
+            </div>
+          </div>
+          <div class="col-md-1" *ngIf="!task?.task?.custom_fields || !task?.task?.custom_fields['priority']">
+          </div>
+          <div class="col-md-3">
+            <div class="overview-item grouplabel" [innerHTML]="task?._group?.group_name"></div>
+          </div>
+          <div class="col-md-2">
+            <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
+              {{ formateDate(task?.task?.due_to) }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <div *ngFor="let task of companyDueTasks.future; let i = index; trackBy: utilityService.trackByIndex">
+    <a (click)="openCompanyDetailsDialog(task.company_id)">
+      <!-- My Space Today Tasks -->
+      <div class="media card-tile overview-task todo-bar" role="progressbar">
+        <div class="row media-body">
+          <div class="col-md-6">
+            <div class="overview-item title-nowrap pl-0">
+              <b>{{ task?.company_name }}</b>:
+              <span> {{ task?.task_description }}</span>
+            </div>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-3">
+            <div class=" grouplabel">CRM</div>
+          </div>
+          <div class="col-md-2">
+            <div class="overview-item small text-right text-muted">{{ formateDate(task?.task_date) }}</div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>

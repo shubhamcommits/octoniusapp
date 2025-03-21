@@ -1,0 +1,92 @@
+<div class="smart-card" style="padding: 10px;">
+  <div class="row" style="margin: 0 0 20px; justify-content: space-between;">
+    <div class="card-title mt-1" i18n="@@membersWorkloadCard.resourceManagement">
+      Resource management
+    </div>
+  </div>
+
+  <div>
+    <div class="row text-center mb-3">
+      <div class="col-md-1">
+      </div>
+      <div class="col-md-7">
+          <h6>{{ dates[0] | date:'MMM dd' }} - {{ dates[dates?.length - 1] | date:'MMM dd' }}</h6>
+      </div>
+      <div class="col-md-4">
+        <div class="btn btn-default" (click)="changeDates(7, 'sub')">
+          <i class="material-icons">navigate_before</i>
+        </div>
+        <div class="btn btn-default" (click)="changeDates(0, 'today')" i18n="@@membersWorkloadCard.today">
+          Today
+        </div>
+        <div class="btn btn-default" (click)="changeDates(7, 'add')">
+          <i class="material-icons">navigate_next</i>
+        </div>
+      </div>
+
+    </div>
+    <div class="table-wrapper">
+      <table mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="member" sticky>
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let member">
+            <div class="member">
+              <div>
+                <app-secured-image [imgURL]="member?.profile_pic" [service]="'user'" [userData]="member"
+                  [workspaceId]="(userData?._workspace?._id || userData?._workspace)" [styleClass]="'ml-2 feed-avatar'"
+                  (click)="openFullscreenModal(member?._id)"></app-secured-image>
+              </div>
+              <div class="name">
+                {{ member?.first_name }} {{ member?.last_name }}
+                <p class="muted"> {{ member?.current_position | truncatetext: 25 }} </p>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        @for (day of displayedColumns.slice(1); track utilityService.trackByIndex; let index = $index) {
+          <ng-container [matColumnDef]="day">
+            <th mat-header-cell *matHeaderCellDef="let member" [ngClass]="{'today': datesService.isCurrentDay(dates[index]),'muted': !datesService.isCurrentDay(dates[index]), 'weekend': datesService.isWeekend(dates[index])}"> {{ dates[index] | date: 'dd' }} </th>
+            
+            <td mat-cell *matCellDef="let member" [ngClass]="member?.workload[index]?.outOfTheOfficeClass">
+              <span class="muted mr-2" i18n="@@membersWorkloadCard.totalTasks"> Total tasks</span>
+              <span class="badge">{{ member?.workload[index]?.numTasks }}</span>
+              
+              <div class="time-tracking">
+                <i class="material-icons">update</i> &nbsp;&nbsp;
+                <span>{{ member?.workload[index]?.hours || '0' }}h</span>
+                &nbsp;
+                <span>{{ member?.workload[index]?.minutes || '0' }}m</span>
+              </div>
+              
+              <div class="tasks-list">
+                <ul>
+                  <li><span class="badge overdue-task" *ngIf="member?.workload[index]?.is_current_day">{{ member?.workload[index]?.overdue_tasks }}</span></li>
+                  <li><span class="badge to-do-task">{{ member?.workload[index]?.todo_tasks }}</span></li>
+                  <li><span class="badge in-progress-task">{{ member?.workload[index]?.inprogress_tasks }}</span></li>
+                  <li><span class="badge badge-done">{{ member?.workload[index]?.numDoneTasks }}</span></li>
+                </ul>
+              </div>
+            </td>
+          </ng-container>
+        }
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let member; columns: displayedColumns;">
+        </tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 50, 100]" aria-label="Select page of members"></mat-paginator>
+    </div>
+  </div>
+
+  <div class="col-5" *ngIf="!!groupMembers && groupMembers?.length === 0">
+    <img src='assets/images/inbox-tasks-card-empty.svg'>
+  </div>
+
+  <!-- LOADING SPINNER STARTS -->
+  <ng-container *ngIf="isLoading$ | async">
+    <app-loading-spinner></app-loading-spinner>
+  </ng-container>
+  <!-- LOADING SPINNER ENDS -->
+</div>

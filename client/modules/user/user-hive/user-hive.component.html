@@ -1,0 +1,183 @@
+<div class="container" *ngIf="userData">
+  <div class="row" *ngIf="!!showError && !!errorMessage" class="error">
+    <div class="col">
+      <span>❌ {{ errorMessage }}</span>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col">
+      <div class="col-description">
+        <h4 i18n="@@userHive.address">Address</h4>
+        <p class="block-description" i18n="@@userHive.addressDescription">
+         The provided legal address. Only HR can edit this part.
+        </p>
+      </div>
+      <div class="color-separator">
+
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="form-group">
+        <label for="address_line_1" i18n="@@userHive.addressLine1" class="muted">Address Line 1</label>
+        <input type="text" class="form-control" [(ngModel)]="userData.hr.address_line_1" name="address_line_1"
+          (blur)="saveHRProperty('address_line_1', $event.target.value)" disabled="true">
+
+        <label for="address_line_2" i18n="@@userHive.addressLine2" class="muted">Address Line 2</label>
+        <input type="text" class="form-control" [(ngModel)]="userData.hr.address_line_2" name="address_line_2"
+          (blur)="saveHRProperty('address_line_2', $event.target.value)" disabled="true">
+
+        <label for="city" i18n="@@userHive.city" class="muted">City</label>
+        <input type="text" class="form-control" [(ngModel)]="userData.hr.city" name="city"
+          (blur)="saveHRProperty('city', $event.target.value)" disabled="true">
+
+        <div class="row" style="margin: 0 !important; padding: 0 !important;">
+          <div class="col" style="margin-left: 0 !important; padding-left: 0 !important;">
+            <label for="zip_code" i18n="@@userHive.zip_code" class="muted">Zip Code</label>
+            <input type="text" class="form-control" [(ngModel)]="userData.hr.zip_code" name="zip_code"
+              (blur)="saveHRProperty('zip_code', $event.target.value)" disabled="true">
+          </div>
+
+          <div class="col" style="margin-right: 0 !important; padding-right: 0 !important;">
+            <label for="state" i18n="@@userHive.state" class="muted">State</label>
+            <input type="text" class="form-control" [(ngModel)]="userData.hr.state" name="state"
+              (blur)="saveHRProperty('state', $event.target.value)" disabled="true">
+          </div>
+        </div>
+
+        <app-country-select [countryCode]="userData?.hr?.country" [canEdit]="false"
+          (countrySelected)="changeCountry($event)"></app-country-select>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="col-description">
+        <h4 i18n="@@userHive.hrFields">HR fields</h4>
+        <p class="block-description" i18n="@@userHive.hrFieldsDescription">
+          Fields created by the HR team. These fields are mandatory.
+        </p>
+      </div>
+      <div class="color-separator">
+
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="form-group">
+        <div class="fieldUI mb-4">
+          <label for="position" class="cflabel" i18n="@@userHive.position">Position</label>
+      
+          <input type="text" [(ngModel)]="userData.current_position" class="form-control" name="position" disabled="true">
+        </div>
+      
+        <div class="fieldUI mb-4">
+          <label for="joinDate" class="cflabel" i18n="@@userHive.joinedOn">Joined on:</label>
+      
+          <app-date-picker class="form-control" style="height: 50px" [styleClass]="'btn-group input-date'"
+            [selectedDate]="userData.company_join_date" [canEdit]="false">
+          </app-date-picker>
+        </div>
+      
+        <div *ngFor="let cf of hrCustomFields; trackBy: utilityService.trackByIndex" class="fieldUI mb-4">
+          <label [for]="cf._id" class="cflabel">{{ cf.name }}</label>
+      
+          <mat-select ngDefaultControl *ngIf="isCurrentUser && cf.type == 'Select'" [(value)]="selectedHRCFValues[cf._id]"
+            (selectionChange)="onSelectEntityCustomFieldChange($event, cf._id)" appearance="fill" [name]="cf._id"
+            disabled="true">
+            <mat-select-trigger>{{ selectedHRCFValues[cf._id] }}</mat-select-trigger>
+            <mat-option *ngFor="let val of cf.values; trackBy: utilityService.trackByIndex" [value]="val">{{ val }}</mat-option>
+          </mat-select>
+      
+          <input type="number" *ngIf="isCurrentUser && cf.type == 'Number'" [name]="cf.name"
+            [(ngModel)]="selectedHRCFValues[cf._id]" class="form-control" [value]="selectedHRCFValues[cf._id]"
+            disabled="true" />
+      
+          <input type="text" *ngIf="isCurrentUser && cf.type == 'Text'" [name]="cf.name"
+            [(ngModel)]="selectedHRCFValues[cf._id]" class="form-control" [value]="selectedHRCFValues[cf._id]"
+            disabled="true" />
+      
+          <app-date-picker *ngIf="isCurrentUser && cf.type == 'Date'" class="form-control" style="height: 50px"
+            [styleClass]="'btn-group input-date'" [canEdit]="isCurrentUser"
+            [selectedDate]="selectedHRCFValues[cf._id]" [canEdit]="false">
+          </app-date-picker>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="hrVariables && hrVariables.length > 0">
+    <div class="col">
+      <div class="col-description">
+        <h4 i18n="@@userHive.payrollInfo">Payroll info</h4>
+        <p class="block-description" i18n="@@userHive.payrollInfoDescription">
+          Fields created by the HR team. These fields are mandatory.
+        </p>
+      </div>
+      <div class="color-separator">
+
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="form-group">
+        <div *ngFor="let variable of hrVariables; trackBy: utilityService.trackByIndex" class="mb-4">
+          <label [for]="variable._id" class="cflabel">{{ variable.name }}</label>
+
+          <input type="number" [name]="variable.name" [(ngModel)]="selectedHRVariablesValues[variable._id]" disabled="true"
+            class="form-control" [value]="selectedHRVariablesValues[variable._id]"/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="hrBenefits && hrBenefits.length > 0">
+    <div class="col">
+      <div class="col-description">
+        <h4 i18n="@@userHive.benefitsInfo">Benefits info</h4>
+        <p class="block-description" i18n="@@userHive.benefitsInfoDescription">
+          Fields created by the HR team. These fields are mandatory.
+        </p>
+      </div>
+      <div class="color-separator">
+
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="form-group">
+        <div *ngFor="let benefit of hrBenefits; trackBy: utilityService.trackByIndex" class="mb-4">
+          <label [for]="benefit._id" class="cflabel">{{ benefit.name }}</label>
+          
+          <mat-select ngDefaultControl *ngIf="benefit.type == 'Select'" [(value)]="selectedHRBenefitsValues[benefit._id]"
+            [disabled]="true" appearance="fill">
+            <mat-select-trigger>{{ selectedHRBenefitsValues[benefit._id] }}</mat-select-trigger>
+            <mat-option *ngFor="let val of benefit.values; trackBy: utilityService.trackByIndex" [value]="val">{{ val }}</mat-option>
+          </mat-select>
+
+          <!--
+          <mat-select ngDefaultControl *ngIf="benefit.type == 'Multiselect'" [(value)]="selectedHRBenefitsValues[benefit._id]"
+            [disabled]="true" appearance="fill" multiple>
+            <mat-select-trigger>{{ selectedHRBenefitsValues[benefit._id] }}</mat-select-trigger>
+            <mat-option *ngFor="let val of benefit.values; trackBy: utilityService.trackByIndex" [value]="val">{{ val }}</mat-option>
+          </mat-select>
+          -->
+          <ul *ngIf="benefit.type == 'Multiselect'" class="benefitslist">
+            <li *ngFor="let b of selectedHRBenefitsValues[benefit._id]; trackBy: utilityService.trackByIndex"> {{ b }}</li>
+          </ul>
+          
+          <input *ngIf="!(benefit.type == 'Select' || benefit.type == 'Multiselect')" type="number" [name]="benefit.name" [(ngModel)]="selectedHRBenefitsValues[benefit._id]" disabled="true"
+            class="form-control" [value]="selectedHRBenefitsValues[benefit._id]"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading Spinner Starts -->
+<ng-container *ngIf="isLoading$">
+  <app-loading-spinner class="media"></app-loading-spinner>
+</ng-container>
+<!-- Loading Spinner Ends -->

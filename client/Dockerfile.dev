@@ -1,0 +1,24 @@
+# Pull the Node image from Docker Hub
+FROM node:14-slim
+
+# Setting Working Directory
+WORKDIR /usr/app
+
+# Copying only package.json
+COPY package*.json ./
+
+# Install Dependencies
+RUN npm install
+
+# Copy rest of the code to container
+COPY . .
+
+# Build into standard javascript modules
+#RUN npm run build
+
+#RUN mv ./node_modules/ /usr/ && rm -rf *.ts && mv /usr/node_modules ./
+
+EXPOSE 4200
+
+# Run the Angular app
+CMD ["npm", "run", "dev"]

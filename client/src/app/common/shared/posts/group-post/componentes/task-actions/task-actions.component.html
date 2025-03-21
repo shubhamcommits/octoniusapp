@@ -1,0 +1,236 @@
+<div class="content-box">
+  <p class="box-title" i18n="@@taskActions.actions">Actions</p>
+
+  <div class="set-parent">
+    <i class="material-icons">hourglass_top</i>
+    <span i18n="@@taskActions.estimation" class="mr-2">Estimated time</span>
+
+    <!-- INPUT STARTS -->
+    <app-time-input id="estimation"
+      [value]="estimation" [canEdit]="canEdit" (timeEvent)="estimationChange($event)"></app-time-input>
+    <!-- INPUT ENDS -->
+</div>
+
+  <div *ngIf="!postData?.task?._parent_task && !isIndividualSubscription && !!postData?._group">
+    <button mat-menu-item [matMenuTriggerFor]="transferMenu"
+      (click)="saveTransferAction('copy')">
+        <i  class="material-icons">content_copy</i>
+        <span i18n="@@taskActions.copyToGroup">Copy to group</span>
+    </button>
+    <button mat-menu-item [matMenuTriggerFor]="transferMenu"
+      (click)="saveTransferAction('move')">
+        <i class="material-icons">arrow_forward</i>
+        <span i18n="@@taskActions.moveToGroup">Move to group</span>
+    </button>
+
+    <mat-menu #transferMenu="matMenu">
+      <ng-container *ngFor="let group of userGroups; let index = index; trackBy: utilityService.trackByIndex">
+        <button mat-menu-item [matMenuTriggerFor]="columnsMenu">{{ group.group_name }}</button>
+        <mat-menu #columnsMenu="matMenu">
+          <button *ngFor="let section of userGroups[index]?.sections; trackBy: utilityService.trackByIndex" mat-menu-item (click)="transferToGroup(userGroups[index]?._id, section)">{{ section.title }}</button>
+        </mat-menu>
+      </ng-container>
+    </mat-menu>
+  </div>
+
+  <div *ngIf="postData?._group">
+    <app-member-list-menu
+      [groupMembers]="groupMembers"
+      [menuLable]="menuLable"
+      [menuFor]="menuFor"
+      [workspaceId]="groupData?._workspace"
+      (userSelctionEmitter)="onUserSelctionEmitter($event)">
+    </app-member-list-menu>
+  </div>
+
+
+  <div *ngIf="!postData?.task?._parent_task && postData?._group">
+    <button mat-menu-item [matMenuTriggerFor]="templateTaskMenu">
+        <i class="material-icons-outlined">playlist_add</i>
+        <span i18n="@@taskActions.templates">Templates</span>
+    </button>
+
+    <mat-menu #templateTaskMenu="matMenu">
+      <div>
+        <div class="users-card" style="width: 200px">
+          <ul class="assignee-list">
+            <button mat-menu-item  class="assignee-list-item" style="line-height: inherit;"
+              (mouseover)="saveTemplateAction('')" (click)="selectTemplate(template._id)"
+              *ngFor="let template of groupTemplates; trackBy: utilityService.trackByIndex">
+                {{ template.task.template_name }}
+            </button>
+
+            <!-- <li class="assignee-list-item save-template" (click)="createTemplate()">Save as template</li> -->
+            <button class="assignee-list-item save-template"
+              style="line-height: inherit;"
+              mat-menu-item [matMenuTriggerFor]="templatesMenu"
+              (mouseover)="saveTemplateAction('save')"
+              (click)="saveTemplateAction('save')">
+                <i class="material-icons-outlined">save_alt</i>
+                <span i18n="@@taskActions.saveTemplate">Save template</span>
+            </button>
+
+            <button class="assignee-list-item save-template"
+              *ngIf="userData?.role == 'admin' || userData?.role == 'owner' || postData?._posted_by == userData?._id"
+              style="line-height: inherit;"
+              mat-menu-item [matMenuTriggerFor]="templatesMenu"
+              (mouseover)="saveTemplateAction('delete')"
+              (click)="saveTemplateAction('delete')">
+                <i class="material-icons-outlined">delete</i>
+                <span i18n="@@taskActions.deleteTemplate">Delete template</span>
+            </button>
+
+            <mat-menu #templatesMenu="matMenu">
+              <div>
+                <div class="users-card">
+                  <ul class="assignee-list">
+                    <li class="assignee-list-item" *ngFor="let template of groupTemplates; trackBy: utilityService.trackByIndex" (click)="selectTemplate(template._id, template.task.template_name)">
+                      {{ template.task.template_name }}
+                    </li>
+
+                    <li *ngIf="templateAction == 'save'"
+                      class="assignee-list-item save-template"
+                      (click)="createTemplate()"
+                      i18n="@@taskActions.saveNewTemplate">
+                        Save new template</li>
+                  </ul>
+                </div>
+              </div>
+            </mat-menu>
+          </ul>
+        </div>
+      </div>
+    </mat-menu>
+  </div>
+
+  <div *ngIf="!parentTask && !isDependent && !isMilestone && shuttleIndex < 0" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
+   <span i18n="@@taskActions.makeSubtaskOf">Make subtask of...</span>
+
+    <!-- INPUT STARTS -->
+    <input type="search" id="keyword" autocomplete="off" [placeholder]="searchTaskPlaceholder" class="input-search"
+      [(ngModel)]="itemValue" (keyup)="onSearch($event)" (ngModelChange)="modelChange($event)" />
+    <!-- INPUT ENDS -->
+    <div *ngIf="searchingOn === 'keyword'">
+      <section id="results" *ngIf="!(isLoadingAction$ | async)" class="results" onfocusout="">
+        <div class="media task-item user-list mb-0" *ngFor=" let task of tasksList; let index = index; trackBy: utilityService.trackByIndex">
+          <div class="media-body mt-2">
+            <!-- Display full name of the member starts -->
+            <h4 class="mt-0 full-name-text" (click)="setParentTask(task._id)">
+              {{ task?.title | truncatetext: 50 }}
+            </h4>
+            <!-- Display full name of the member ends -->
+          </div>
+        </div>
+      </section>
+
+
+        <!-- LOADING SPINNER STARTS -->
+        <ng-container *ngIf="(isLoadingAction$ | async)">
+          <app-loading-spinner class="media"></app-loading-spinner>
+        </ng-container>
+        <!-- LOADING SPINNER ENDS -->
+    </div>
+  </div>
+
+  <div *ngIf="groupData && groupData?.project_type && !isChild && !isIndividualSubscription" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
+    <span i18n="@@taskActions.makeDependencyOf">Make dependency of...</span>
+
+    <button *ngFor="let task of dependencyTask; let i = index; trackBy: utilityService.trackByIndex" class="btn dependencylabel" style="margin-right: 1rem;"
+       (click)="removeDependencyTask(i)">
+      <b>X</b> {{ task.title | truncatetext: 50 }}
+    </button>
+    <!-- INPUT STARTS -->
+    <input type="search" id="dependencyKeyword" autocomplete="off" [placeholder]="searchTaskPlaceholder" class="input-search"
+      [(ngModel)]="dependencyItemValue" (keyup)="onSearch($event)" (ngModelChange)="modelChangeForDependency($event)" />
+    <!-- INPUT ENDS -->
+    <div *ngIf="searchingOn === 'dependencyKeyword'">
+    <section id="results" *ngIf="!(isLoadingAction$ | async)" class="results" onfocusout="">
+      <div class="media task-item user-list mb-0" *ngFor=" let task of tasksList; let index = index; trackBy: utilityService.trackByIndex">
+        <div class="media-body mt-2" >
+          <!-- Display full name of the member starts -->
+          <h4 class="mt-0 full-name-text" (click)="setDependencyTask(task._id)">
+            {{ task?.title | truncatetext: 50 }}
+          </h4>
+          <!-- Display full name of the member ends -->
+        </div>
+      </div>
+    </section>
+
+      <!-- LOADING SPINNER STARTS -->
+      <ng-container *ngIf="isLoadingAction$ | async">
+        <app-loading-spinner class="media"></app-loading-spinner>
+      </ng-container>
+      <!-- LOADING SPINNER ENDS -->
+    </div>
+  </div>
+
+  <!-- Convert to starts -->
+  <div class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
+   
+    <span i18n="@@taskActions.convertTask">Convert to...</span>
+
+    <mat-form-field appearance="fill" style="margin-left: 15px;">
+      <mat-select multiple [value]="taskTypesSelection"
+        (selectionChange)="multipleSelectChange($event.value)" (openedChange)="saveTaskType($event)">
+        <mat-select-trigger>
+          <span *ngIf="taskTypesSelection.includes('northStar')">
+            <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;"> explore </i>
+            <span i18n="@@taskActions.northStar">North Star</span>
+          </span>
+
+          <span *ngIf="taskTypesSelection.includes('idea')">
+            <span *ngIf="taskTypesSelection.includes('northStar')">, </span>
+            <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;"> emoji_objects </i>
+            <span i18n="@@taskActions.idea">Idea</span>
+          </span>
+
+          <span *ngIf="taskTypesSelection.includes('crm')">
+            <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;"> attach_money </i>
+            <span i18n="@@taskActions.crmLead">CRM Lead</span>
+          </span>
+        </mat-select-trigger>
+
+        <mat-option value="northStar" [disabled]="taskTypesSelection.includes('crm') || taskTypesSelection.includes('crm_order')">
+          <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;"> explore </i>
+          <span i18n="@@taskActions.northStar">North Star</span>
+        </mat-option>
+        <mat-option value="idea" [disabled]="taskTypesSelection.includes('crm') || taskTypesSelection.includes('crm_order')">
+          <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;">emoji_objects</i>
+          <span i18n="@@taskActions.idea">Idea</span>
+        </mat-option>
+        <!-- <mat-option value="crm" [disabled]="taskTypesSelection.includes('idea') || taskTypesSelection.includes('northStar') || taskTypesSelection.includes('crm_order')">
+          <i _ngcontent-bbh-c36="" class="material-icons-outlined muted" style="vertical-align: middle;">attach_money</i>
+          <span i18n="@@taskActions.crmLead">CRM Lead</span>
+        </mat-option>
+        <mat-option value="crm_order" [disabled]="taskTypesSelection.includes('idea') || taskTypesSelection.includes('northStar') || taskTypesSelection.includes('crm')">
+          <i _ngcontent-bbh-c36="" class="material-icons-outlined muted" style="vertical-align: middle;">sell</i>
+          <span i18n="@@taskActions.crmOrder">CRM Order</span>
+        </mat-option> -->
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <!-- Convert to ends -->
+
+  <!-- Milestone Switch starts -->
+  <div *ngIf="groupData && groupData.project_type && !isIndividualSubscription" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
+    <img src="assets/images/Icon/icon_milestone.svg" alt="Flag"/>
+    <span i18n="@@taskActions.makeMilestone">Make milestone</span>
+    <mat-slide-toggle color="primary" style=" margin-left: 15px;"
+      [checked]="isMilestone"
+      [name]="'milestone'"
+      (change)="transformToMilestone()">
+    </mat-slide-toggle>
+    <p i18n="@@taskActions.milestoneMarkSpecific">Milestones mark specific points in time along a project timeline in order to track major progress points that must be reached to achieve success</p>
+  </div>
+  <!-- Milestone Switch ends -->
+
+  <!-- Select Shuttle group starts -->
+   <app-shuttle-task-action
+    [postData]="postData"
+    [groupData]="groupData"
+    [userData]="userData"
+    [isShuttleTasksModuleAvailable]="isShuttleTasksModuleAvailable"
+    [isIndividualSubscription]="isIndividualSubscription" 
+    (shuttleGroupEmitter)="onShuttleGroupEmitter($event)"></app-shuttle-task-action>
+  <!-- Select Shuttle group ends -->
+</div>

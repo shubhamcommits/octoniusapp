@@ -1,0 +1,183 @@
+<ul class="nav mr-auto" *ngIf="isWorkNavbar$ | async">
+  <li class="nav-item mr-3">
+    <!-- <i class="material-icons-outlined float-left mr-2">dashboard</i> -->
+    <app-secured-image
+      [imgURL]="workspaceData?.workspace_avatar"
+      [service]="'workspace'"
+      [styleClass]="'mr-3 feed-avatar'"
+      [workspaceId]="workspaceData?._id"
+      style="float: left;"></app-secured-image>
+
+    <h2 i18n="@@workNavbar.work">Work</h2>
+    <!-- <h2>{{workspaceData?.workspace_name}} </h2> -->
+  </li>
+
+  <!-- All Groups Route starts -->
+  <li class="nav-item">
+    <a class="nav-link"
+        routerLink="/dashboard/work/groups/all"
+        routerLinkActive="active">
+          <span i18n="@@workNavbar.groups">Groups</span>
+          <span class="sr-only">(current)</span>
+    </a>
+  </li>
+  <!-- All Groups Route ends -->
+
+  <!-- North Star Route starts -->
+  <li class="nav-item">
+    <a class="nav-link"
+        routerLink="/dashboard/work/northstar"
+        routerLinkActive="active">
+          <span i18n="@@workNavbar.northStar">North Star</span>
+          <span class="sr-only">(current)</span>
+    </a>
+  </li>
+  <!-- North Star Route ends -->
+
+  <!-- CRM Setup Page Route starts -->
+  <li class="nav-item" *ngIf="isCRMUser">
+    <a class="nav-link"
+      routerLink="/dashboard/work/crm"
+      routerLinkActive="active"
+        i18n="@@workNavbar.crmSetup">
+          CRM
+    </a>
+  </li>
+  <!-- CRM Setup Page Route ends -->
+
+  <!-- Dashboard Page Route starts -->
+  <li class="nav-item d-none d-md-block" *ngIf="canSeeDashboard()">
+    <a class="nav-link"
+        routerLink="/dashboard/work/dashboard"
+        routerLinkActive="active">
+          <span i18n="@@workNavbar.dashboard">Dashboard</span>
+          <span class="sr-only">(current)</span>
+    </a>
+  </li>
+  <!-- Dashboard Page Route ends -->
+
+  <!-- Lounge Page Route starts -->
+  <li class="nav-item d-none d-md-block" *ngIf="isLoungeModuleAvailable">
+    <a class="nav-link"
+        routerLink="/dashboard/work/lounge"
+        routerLinkActive="active">
+          <span i18n="@@workNavbar.lounge">Lounge</span>
+          <span class="sr-only">(current)</span>
+    </a>
+  </li>
+  <!-- Lounge Page Route ends -->
+
+  <!-- Organization Page Route starts -->
+  <li class="nav-item d-none d-md-block" *ngIf="isOrganizationModuleAvailable">
+    <a class="nav-link"
+        routerLink="/dashboard/work/organization"
+        routerLinkActive="active">
+          <span i18n="@@workNavbar.organization">Organization</span>
+          <span class="sr-only">(current)</span>
+    </a>
+  </li>
+  <!-- Organization Page Route ends -->
+
+  <!-- Pulse Group Route starts
+  <li class="nav-item">
+    <a class="nav-link" routerLink="/dashboard/work/pulse" routerLinkActive="active">Pulse
+      <span class="sr-only">(current)</span>
+    </a>
+  </li>
+  Pulse Group Route ends -->
+</ul>
+
+<ul class="nav mr-auto"  *ngIf="isLoungeNavbar$ | async">
+  <!-- Back Route starts -->
+  <li class="nav-item d-none d-md-block">
+    <a class="nav-link" (click)="goBackLounge()">
+      <i class="material-icons">arrow_back</i>
+    </a>
+  </li>
+  <!-- Back Page Route ends -->
+
+  <!-- Lounge Title starts -->
+  <li *ngIf="existsElement(loungeData)" class="nav-item d-none d-md-block" style="margin-top: 20px;">
+    <!-- Static Title starts -->
+    <span *ngIf="!editTitle && loungeData.name == 'Global stories'"
+        (click)="(isUserManager && loungeData.name != 'Global stories') ? editTitle = !editTitle : null">
+      {{ loungeData?.name }}
+    </span>
+
+    <span *ngIf="!editTitle && loungeData.name != 'Global stories'"
+        (click)="(isUserManager && loungeData.name != 'Global stories') ? editTitle = !editTitle : null"
+        matTooltip="Click me to rename"
+        matTooltipPosition="below">
+      {{ loungeData?.name }}
+    </span>
+    <!-- Static Title ends -->
+
+    <!-- edit title name starts -->
+    <input *ngIf="editTitle" type="search"
+      autocomplete="off"
+      [(ngModel)]="loungeData.name"
+      (keyup)="changeTitle($event)"
+      [placeholder]="(loungeData.type == 'category') ? 'Add a title for your category' : 'Add a title for your lounge'"
+      class="input-search" />
+    <!-- edit title name ends -->
+  </li>
+  <!-- Lounge Title ends -->
+
+  <!-- Story Title starts -->
+  <li *ngIf="existsElement(storyData)" class="nav-item d-none d-md-block">
+    <i class="material-icons-outlined" *ngIf="storyData.type == 'story'">history_edu</i>
+    <i class="material-icons-outlined" *ngIf="storyData.type == 'event'">local_activity</i>
+    <!-- Static Title starts -->
+    <span *ngIf="!editTitle"
+        (click)="(isUserManager) ? editTitle = !editTitle : null"
+        matTooltip="Click me to rename"
+        matTooltipPosition="below">{{ storyData?.name }}
+    </span>
+    <!-- Static Title ends -->
+
+    <!-- edit title name starts -->
+    <input *ngIf="editTitle" type="search"
+      autocomplete="off"
+      [(ngModel)]="storyData.name"
+      (keyup)="changeTitle($event)"
+      [placeholder]="(storyData.type == 'story') ? 'Add a title for your story' : 'Event title'"
+      class="input-search" />
+    <!-- edit title name ends -->
+  </li>
+  <!-- Story Title ends -->
+</ul>
+
+<ul class="nav mr-auto" *ngIf="isPeopleDirectoryNavbar$ | async">
+  <!-- Back Route starts -->
+  <li class="nav-item d-none d-md-block"
+      *ngIf="routerState == 'people-directory' || routerState == 'people-directory-chart' || routerState == 'hive-hr'">
+    <a class="nav-link"
+        routerLink="/dashboard/work/organization"
+        routerLinkActive="active">
+      <i class="material-icons">arrow_back</i>
+    </a>
+  </li>
+
+  <li class="nav-item d-none d-md-block"
+      *ngIf="routerState == 'hive-hr-timeoff' || routerState == 'hive-hr-employees' || routerState == 'hive-hr-setup'">
+    <a class="nav-link"
+        routerLink="/dashboard/work/organization/hive"
+        routerLinkActive="active">
+      <i class="material-icons">arrow_back</i>
+    </a>
+  </li>
+  <!-- Back Page Route ends -->
+
+  <li style="margin-top: 20px;" *ngIf="routerState == 'people-directory' || routerState == 'people-directory-chart' || routerState == 'hive-hr'">
+    {{ workspaceData?.company_name }}
+    <span *ngIf="routerState == 'people-directory'" i18n="@@workNavbar.peopleDirectory">People Directory</span>
+    <span *ngIf="routerState == 'people-directory-chart'" i18n="@@workNavbar.organizationChart">Organization Chart</span>
+    <span *ngIf="routerState == 'hive-hr'" i18n="@@workNavbar.hrAndPayroll">HR & Payroll</span>
+  </li>
+
+  <li style="margin-top: 20px;" *ngIf="routerState == 'hive-hr-timeoff' || routerState == 'hive-hr-employees' || routerState == 'hive-hr-setup'">
+    <span *ngIf="routerState == 'hive-hr-timeoff'" i18n="@@workNavbar.timeOff">Time Off</span>
+    <span *ngIf="routerState == 'hive-hr-employees'" i18n="@@workNavbar.manageEmployees">Manage Employees</span>
+    <span *ngIf="routerState == 'hive-hr-setup'" i18n="@@workNavbar.payrollSetup">Payroll Setup</span>
+  </li>
+</ul>

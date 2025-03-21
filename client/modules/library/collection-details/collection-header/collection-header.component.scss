@@ -1,0 +1,79 @@
+.content-box {
+  background: #FFFFFF;
+  border-radius: 10px;
+  margin: 10px;
+
+  .collection-header {
+    border-radius: 8px;
+    padding: 20px;
+
+    .collection-content {
+      padding: 16px;  
+      width: 100%;
+    }
+
+    .graph {
+      width: 29%;
+      align-self: center;
+      float: right;
+    }
+
+    .change-color {
+      margin-top: 20px;
+
+      span {
+        background: #FAFAFA;
+        border-radius: 6px;
+        padding: 10px;
+        margin: 10px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .modal-header {
+      border: none;
+  }
+
+  .modal-title {
+    width: 100%;
+    cursor: pointer;
+
+    .collection-title {
+      width: 95% !important;
+      box-shadow: none;
+      border: none;
+      font-family: Nunito;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 22px;
+    }
+  }
+
+  p.box-title {
+    font-family: Nunito;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 22px;
+    color: #242d3a;
+    // padding-bottom: 10px;
+    // padding-top: 10px;
+    margin-bottom: 12px !important;
+  }
+
+  input.input-date {
+    border: none;
+    background-color: white;
+    width: 100%;
+  }
+}
+
+.ql-image{
+  width: 100% !important;
+}
+
+.options li{
+  margin: 10px;
+}

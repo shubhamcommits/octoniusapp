@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Octonius</title>
+
+  <base href="/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+  <!-- CSS only -->
+  <link rel="stylesheet" type="text/css" href="assets/libs/bootstrap.4.5.2.min.css" />
+
+  <script src="//fast.appcues.com/87011.js"></script>
+
+  <!-- MODIFYING THE BUILDED SCRIPTS -->
+  <script>
+    if (typeof module === 'object') {
+      window.module = module;
+      module = undefined;
+    }
+  </script>
+  <script>
+    if (window.module) {
+      module = window.module;
+    }
+  </script>
+
+  <!-- Load environment variables -->
+  <script src="assets/env.js"></script>
+
+  <!--
+  <script src="//fast.appcues.com/87011.js"></script>
+  -->
+
+  <!-- js libraries -->
+  <script src="assets/libs/jquery-3.5.1.slim.min.js"></script>
+  <script src="assets/libs/popper.min.js"></script>
+  <script src="assets/libs/bootstrap.4.5.2.min.js"></script>
+  <script src="assets/libs/leader-line.1.0.5.min.js"></script>
+
+  <!-- GOOGLE API STARTS -->
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script type="text/javascript" src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
+
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <!-- GOOGLE API ENDS -->
+
+  <!-- Stripe library starts -->
+  <script src="https://js.stripe.com/v3/"></script>
+  <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
+  <!-- Stripe library ends -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.4/katex.min.js" integrity="sha512-sHSNLECRJSK+BFs7E8DiFc6pf6n90bLI85Emiw1jhreduZhK3VXgq9l4kAt9eTIHYAcuQBKHL01QKs4/3Xgl8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.4/katex.min.css" integrity="sha512-mQwom8Ns4op+H29oDkD/LXO/OsXPvCFfkgZkFAVrhhePzRLU8NUI3Nkm43NhWUSmj3p5Cca2HTEkMQmXQRwDQQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Chatra starts -->
+  <!-- <script>
+    (function (d, w, c) {
+      w.ChatraID = 'gaBthaGGwugHEkqBa';
+      var s = d.createElement('script');
+      w[c] = w[c] || function () {
+        (w[c].q = w[c].q || []).push(arguments);
+      };
+      s.async = true;
+      s.src = 'https://call.chatra.io/chatra.js';
+      if (d.head) d.head.appendChild(s);
+    })(document, window, 'Chatra');
+  </script> -->
+  <!-- Chatra ends -->
+</head>
+
+<body>
+  <app-root></app-root>
+</body>
+
+</html>

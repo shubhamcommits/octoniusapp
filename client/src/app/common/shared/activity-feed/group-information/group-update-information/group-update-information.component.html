@@ -1,0 +1,32 @@
+<div class="align-center">
+	<img class="swal2-image" src="assets/images/user-professional-info.svg" [alt]="titlePlaceholder">
+	
+	<h2>{{ titlePlaceholder }}</h2>
+	
+	<input id="group-name" type="text"
+		[placeholder]="groupNamePlaceholder"
+		[(ngModel)]="groupData.group_name" class="swal2-input"
+		(blur)="editGroupDetails()"
+		(keyup.enter)="editGroupDetails()">
+	
+	<input id="group-description" type="text"
+		[placeholder]="groupDescriptionPlaceholder"
+		[(ngModel)]="groupData.description" class="swal2-input"
+		(blur)="editGroupDetails()"
+		(keyup.enter)="editGroupDetails()">
+	
+	<select id="group-type" class="swal2-input"
+		[(ngModel)]="groupData.type"
+		(change)="editGroupDetails()">
+		<option value="normal">{{groupTypeNormal}}</option>
+		<option value="agora">{{groupTypeAgora}}</option>
+		<option value="crm">{{groupTypeCRM}}</option>
+		<option value="resource">{{groupTypeResource}}</option>
+	</select>
+
+	<button type="button" class="btn btn-primary" style="margin-top: 40px;"
+		(click)="closeModal()"
+		i18n="@@groupUpdateInformation.close">
+		Close
+	</button>
+</div>

@@ -1,0 +1,15 @@
+<section *ngIf="userData">
+
+    <!-- Profile Picture Starts -->
+    <app-secured-image
+        [imgURL]="userData?.profile_pic"
+        [service]="'user'" [userData]="userData"
+        [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
+        [styleClass]="'feed-avatar'"></app-secured-image>
+    <!-- Profile Picture Ends -->
+
+    <!-- Name of the Selected Member -->
+    <span *ngIf="userData">{{ userData?.first_name }} {{ userData?.last_name }}</span>
+    <!-- Name of the Selected Member -->
+
+</section>

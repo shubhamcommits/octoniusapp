@@ -1,0 +1,60 @@
+<nav class="navbar navbar-expand-md fixed-top" style="min-height: 86px;">
+
+    <img src="assets/images/logo.svg" alt="">
+
+    <!-- Go Back starts -->
+    <span *ngIf="!this.readOnly" class="navbar-brand ml-5 mr-5" matTooltip="Go Back to Files" matTooltipPosition="below"
+        (click)="goBackToFiles()">
+        <i class="material-icons">
+            arrow_back
+        </i>
+    </span>
+    <!-- Go Back ends -->
+
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ml-4">
+            <li class="nav-item active" *ngIf="file">
+                <!-- Folio Static Title starts -->
+                <span *ngIf="!editTitle"
+                    (click)="enableEdit()"
+                    matTooltip="Click me to rename"
+                    matTooltipPosition="below">{{file?.original_name}}
+                </span>
+                <!-- Folio Static Title ends -->
+
+                <!-- Folio edit title name starts -->
+                <input *ngIf="editTitle" type="search"
+                    autocomplete="off"
+                    [(ngModel)]="file.original_name"
+                    (keyup)="changeTitle($event)"
+                    placeholder="Give me a name"
+                    class="input-search" />
+                <!-- Folio edit title name ends -->
+            </li>
+        </ul>
+    </div>
+
+    <!--
+    <div *ngIf="!this.readOnly" class="d-flex justify-content-around">
+        <div *ngIf="selectedFile">
+            <p >{{selectedFile.name}}</p>
+        </div>
+
+        <input
+            (change)="onFileChanged($event)"
+            type="file"
+            class="custom-file-input hide-modal"
+            id="fileInput"
+            aria-describedby="inputGroupFileAddon01" #fileInput
+            accept=".docx, .doc"
+        />
+
+        <button
+            class="btn btn-link"
+            (click)="fileInput.click()"  matTooltip="Import a docx" matTooltipPosition="left"><i class="material-icons muted">cloud_upload</i>
+        </button>
+    </div>
+    -->
+</nav>
+
+<router-outlet></router-outlet>

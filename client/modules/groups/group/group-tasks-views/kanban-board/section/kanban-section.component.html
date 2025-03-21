@@ -1,0 +1,100 @@
+<div *ngIf="!isMobile && canEdit">
+  <!-- COLUMN TITLE AND EDIT/DELETE DETAILS STARTS -->
+  <div class="column-title" cdkDragHandle>
+    <p class="text-capitalize" [matTooltip]="section?.title">
+      <!-- SHUTTLE COLUMN -->
+      <img
+        *ngIf="isShuttleTasksModuleAvailable && section?._id == (groupData?._shuttle_section?._id || groupData?._shuttle_section)"
+        src="assets/images/icon-task-shuttle.svg" alt="" style="width: 24px;">
+      <img src="assets/images/Icon/icon_project.svg" alt="" class="mr-2" *ngIf="section?.project_type">
+      {{ section?.title | truncatetext:20 }}
+    </p>
+
+    <div class="inline-block">
+      <div *ngIf="section?.canEdit" class="dropdown">
+        <i class="material-icons action dropdown-toggle" data-toggle="dropdown">more_horiz</i>
+
+        <!-- Menu Drawer Starts -->
+        <ul class="dropdown-menu">
+          <li class="dropdown-item" (click)="section.editColumn = !section.editColumn">
+            <span class="material-icons-outlined">create</span>
+            <span i18n="@@groupKanbanBoard.edit">Edit</span>
+          </li>
+          <li *ngIf="userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager()" class="dropdown-item"
+            (click)="deleteSection(section)">
+            <span class="material-icons-outlined">delete</span>
+            <span i18n="@@groupDashboard.delete">Delete</span>
+          </li>
+          <li
+            *ngIf="(!isShuttleTasksModuleAvailable || section?._id != (groupData?._shuttle_section?._id || groupData?._shuttle_section)) && (userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager()) && !isIndividualSubscription"
+            class="dropdown-item" (click)="archiveSection(section)">
+            <span class="material-icons-outlined">archive</span>
+            <span i18n="@@groupDashboard.archive">Archive</span>
+          </li>
+          <li class="dropdown-item" *ngIf="groupData?.project_type" (click)="makeColumnProjectDialog(section)">
+            <img src="assets/images/Icon/icon_launch_project.svg" alt="">
+            <span i18n="@@groupDashboard.launchProject">Launch Project</span>
+          </li>
+          <li *ngIf="section?.canEdit && !isIndividualSubscription" class="dropdown-item"
+            (click)="openShowCFDialog(section)">
+            <span class="material-icons-outlined">auto_awesome</span>
+            <span i18n="@@groupDashboard.showCF">Show CF Data</span>
+          </li>
+          <li class="dropdown-item" *ngIf="groupData && checkDataExist(groupData) && groupData.enabled_rights"
+            (click)="openPermissionModal(section)">
+            <span class="material-icons-outlined">vpn_lock</span>
+            <span i18n="@@groupDashboard.permissions">Permissions</span>
+          </li>
+        </ul>
+        <!-- Menu Drawer Ends -->
+      </div>
+    </div>
+  </div>
+  <!-- COLUMN TITLE AND EDIT/DELETE DETAILS ENDS -->
+
+  <!-- EDIT COLUMN STARTS -->
+  <app-edit-column *ngIf="section && section?.canEdit" [column]="section" (column)="editSection(section, $event)">
+  </app-edit-column>
+  <!-- EDIT COLUMN ENDS -->
+
+  <!-- COLUMN STATS SECTION STARTS -->
+  <div class="project-container">
+    {{ section?.tasks?.length }} <span i18n="@@groupDashboard.tasksDone">Tasks</span>
+    <span class="float-right badge donebadge">
+      {{ section?.numDoneTasks || 0 }} Done
+    </span>
+  </div>
+  <!-- COLUMN STATS SECTION ENDS -->
+
+  <!-- COLUMN PROJECT SECTION STARTS -->
+  <app-column-project-section *ngIf="section?.project_type" [column]="section" [userData]="userData"
+    [groupData]="groupData"></app-column-project-section>
+  <!-- COLUMN PROJECT SECTION ENDS -->
+
+  <!-- CUSTOM FIELDS STATS SECTION STARTS -->
+  <div class="project-container" *ngFor="let cfName of section.custom_fields_to_show_kanban; trackBy: utilityService.trackByIndex">
+    {{ cfName }}
+    <span class="float-right done">
+      {{ calculateCFStatistics(cfName) | number }}
+    </span>
+  </div>
+  <!-- CUSTOM FIELDS STATS SECTION ENDS -->
+
+  <!-- TASK CONTAINER STARTS -->
+  <div class="tasks-container" [id]="section._id" cdkDropList [cdkDropListData]="tasks" (cdkDropListDropped)="drop($event)">
+
+    <!-- CREATE TASK STARTS -->
+    <app-new-task *ngIf="section?.canEdit" [groupData]="groupData" [userData]="userData" [column]="section"
+      (post)="getPost($event)" [isIdeaModuleAvailable]="isIdeaModuleAvailable"></app-new-task>
+    <!-- CREATE TASK ENDS -->
+
+    <!-- TASK DETAILS STARTS -->
+    <app-kanban-task-card cdkDrag *ngFor="let task of tasks; let j = index; trackBy: utilityService.trackByIndex" (click)="openFullscreenModal(task)"
+      [isProject]="section?.project_type" [isDelay]="isDelay(task?.task?.due_to, section?.due_date)" [task]="task"
+      [isIdeaModuleAvailable]="isIdeaModuleAvailable" [groupId]="groupData?._id">
+      <div *cdkDragPlaceholder></div>
+    </app-kanban-task-card>
+    <!-- TASK DETAILS ENDS -->
+  </div>
+  <!-- TASK CONTAINER ENDS -->
+</div>

@@ -1,0 +1,68 @@
+<div *ngIf="type === 'text'">
+    <div *ngIf="!editing">
+        <p class="list-card-title inline-edit"
+            (click)="edit(value)"
+            (focus)="edit(value);"
+            tabindex="0">
+            {{value | truncatetext:60}}
+        </p>
+    </div>
+    <div *ngIf="editing">
+        <input #inlineEditControl
+            [required]="required"
+            (blur)="onBlur($event)"
+            [name]="value"
+            [(ngModel)]="value"
+            [type]="type"
+            [placeholder]="label"
+             />
+    </div>
+</div>
+
+<div *ngIf="type === 'date'" class="btn-group">
+    <!-- Date Picker starts -->
+    <mat-datepicker-toggle matSuffix [for]="d"></mat-datepicker-toggle>
+    <mat-datepicker #d disabled="false"></mat-datepicker>
+    <input matInput [matDatepicker]='d' (dateChange)="onModelChange($event)" [value]="value" [ngClass]="dateStyleClass" disabled>
+    <!--Date Picker ends -->
+</div>
+
+<div *ngIf="type === 'customField'">
+    <div *ngIf="!editing">
+        <p *ngIf="customFieldValue !== '' && customFieldName == 'priority'"
+            [ngClass]="getPriorityClass(customFieldValue)"
+            style="margin-left: auto; margin-right: auto;"
+            (click)="edit(customFieldValue)"
+            (focus)="edit(customFieldValue);"
+            tabindex="0">
+              {{ customFieldValue }}
+        </p>
+        <p class="list-card-title inline-edit" *ngIf="customFieldValue !== '' && customFieldName != 'priority'"
+            (click)="edit(customFieldValue)"
+            (focus)="edit(customFieldValue);"
+            tabindex="0">
+            {{customFieldValue}}
+        </p>
+        <p *ngIf="customFieldValue === ''"
+            (click)="edit(customFieldValue)"
+            (focus)="edit(customFieldValue);"
+            tabindex="0" class="inline-edit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+    </div>
+    <div *ngIf="editing">
+        <mat-form-field style="width: 90%; float: right;" *ngIf="!customFieldInputType">
+            <mat-select ngDefaultControl
+                    (selectionChange)="onCustomFieldChange($event)"
+                    [(ngModel)]="customFieldValue">
+                <mat-option *ngFor="let opt of options; trackBy: utilityService.trackByIndex" [value]="opt">{{ opt }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div *ngIf="customFieldInputType" style="display: flex; float: left; width: 125px;">
+          <input type="text" [name]="customFieldName" [(ngModel)]="customFieldValue"
+              class="col" style="width: 94px;" [value]="customFieldValue"
+              (keyup.enter)="onCustomFieldChange($event)" />
+          <i (click)="onCustomFieldChange($event);" class="material-icons muted mr-5"
+            style="cursor: pointer; font-size: 14px; margin-left: 10px;color: #0bc6a0;">save</i>
+        </div>
+    </div>
+</div>

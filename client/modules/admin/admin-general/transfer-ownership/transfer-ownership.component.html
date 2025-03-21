@@ -1,0 +1,18 @@
+<div class="card-tile">
+    <div class="card-block">
+
+        <!-- Template Heading starts -->
+        <h4 class="card-title">
+          <strong i18n="@@transferOwnership.transferOwnership">Transfer Ownership </strong>
+        </h4>
+        <!-- Template Heading ends -->
+
+        <!-- Search member component starts -->
+      <app-component-search-input-box *ngIf="userData && checkDataExist(userData)"
+            [placeholder]="'Search member'"
+            [workspaceData]="workspaceData" [workspaceId]="userData._workspace" [userData]="userData" [type]="'workspaceMembers'"
+            (member)="addNewUser($event)" class="search-member-admin">
+        </app-component-search-input-box>
+        <!-- Search member component ends -->
+    </div>
+  </div>

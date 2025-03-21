@@ -1,0 +1,120 @@
+<div style="margin-top:40px">
+    <div class="row header">
+        <h4 i18n="@@crmCompanyContacts.contacts">Contacts</h4>
+
+        <button class="btn btn-warning btn-sm" (click)="openContactDialog()">
+            <i class="material-icons-outlined">add</i>
+            <span i18n="@@crmCompanyContacts.newContact">Add</span>
+        </button>
+       
+    </div>
+
+    <div class="row overflow-auto">
+        <table mat-table matSort [dataSource]="sortedContacts" (matSortChange)="sortContactData($event)" class="">
+            <ng-container matColumnDef="name" sticky>
+                <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@crmCompanyContacts.name"> Name </th>
+        
+                <td mat-cell *matCellDef="let contact">
+                    <span>{{ contact?.name }}</span>
+                </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="company">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@crmCompanyContacts.company"> Company </th>
+        
+                <td mat-cell *matCellDef="let contact">
+                    <span>{{ contact?._company?.name }}</span>
+                </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="position">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@crmCompanyContacts.position"> Position </th>
+        
+                <td mat-cell *matCellDef="let contact">
+                    <span>{{ contact?.position }}</span>
+                </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="phone">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@crmCompanyContacts.phone"> Phone </th>
+        
+                <td mat-cell *matCellDef="let contact">
+                    <span>{{ contact?.phones[0] }}</span>
+                </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="email">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@crmCompanyContacts.email"> E-Mail </th>
+        
+                <td mat-cell *matCellDef="let contact">
+                    <span>{{ contact?.emails[0] }}</span>
+                </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="link">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@crmCompanyContacts.link"> Link </th>
+        
+                <td mat-cell *matCellDef="let contact">
+                    <a *ngIf="contact?.links[0]" class="nav-link" target="_blank" [href]="contact?.links[0]?.startsWith('http') ? contact?.links[0] : 'https://' + contact?.links[0]" routerLinkActive="active">
+                        <span class="d-inline-block text-truncate" style="max-width: 200px;">{{ contact?.links[0] }}</span>
+                    </a>
+                </td>
+            </ng-container>
+        
+            <!-- CUSTOM FIELDS START -->
+            <ng-container [matColumnDef]="cf.name"
+                *ngFor="let cf of crmContactsCustomFieldsToShow; trackBy: utilityService.trackByIndex">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                    <div class="cf_cell">
+                        {{ cf.title }}
+                        <i class="material-icons small" *ngIf="isAdmin" (click)="removeContactColumn(cf)"
+                            style="cursor: pointer;">close</i>
+                    </div>
+                </th>
+                <td mat-cell *matCellDef="let contact">
+                    <div class="cf_cell" *ngIf="!!contact?.crm_custom_fields">
+                        {{ contact?.crm_custom_fields[cf.name] }}
+                    </div>
+                </td>
+            </ng-container>
+            <!-- CUSTOM FIELDS ENDS -->
+        
+            <ng-container matColumnDef="star" stickyEnd>
+                <th mat-header-cell *matHeaderCellDef style="text-align: right;">
+                    <div class="">
+                        <i class="material-icons-outlined" style="cursor: pointer;" *ngIf="isAdmin"
+                            [matMenuTriggerFor]="addColumn">add</i>
+                    </div>
+                    <mat-menu #addColumn="matMenu">
+                        <div class="newColumnMatMenu">
+                            <span i18n="@@asksTableView.addCF">Add custom field</span>
+                            <mat-form-field>
+                                <mat-label i18n="@@asksTableView.selectOption">Select an option</mat-label>
+                                <mat-select ngDefaultControl (selectionChange)="addNewContactColumn($event)"
+                                    (click)="$event.stopPropagation()" [(ngModel)]="newContactColumnSelected" name="new_column">
+                                    <mat-option *ngFor="let f of crmContactCustomFields; trackBy: utilityService.trackByIndex"
+                                        [value]="f">{{ f.title }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </mat-menu>
+                </th>
+        
+                <td mat-cell *matCellDef="let contact" style="text-align: right;">
+                    <i class="material-icons-outlined ml-2 muted pointer" [matMenuTriggerFor]="menu">more_horiz</i>
+                    <mat-menu #menu="matMenu">
+                        <a mat-menu-item (click)="openContactDialog(contact?._id)">
+                            <span i18n="@@crmCompanyContacts.edit">Edit</span>
+                        </a>
+                        <a mat-menu-item (click)="deleteContact(contact?._id)">
+                            <span i18n="@@crmCompanyContacts.delete">Delete</span>
+                        </a>
+                    </mat-menu>
+                </td>
+            </ng-container>
+        
+            <tr mat-header-row *matHeaderRowDef="displayedContactsColumns"></tr>
+            <tr mat-row *matRowDef="let contact; columns: displayedContactsColumns;"></tr>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+<div class="container" >
+    <div class="main-actvity" *ngIf="workspaceData && userData">
+        <!--
+        <div class="col-md-4">
+            <app-workplace-information [workspaceData]="workspaceData" [routerState]="'billing'"></app-workplace-information>
+        </div>
+        -->
+
+        <!-- <div class="col-md-8"> -->
+        <app-stripe-payment
+            [workspaceData]="workspaceData"
+            [userData]="userData">
+        </app-stripe-payment>
+        <!-- </div> -->
+    </div>
+</div>

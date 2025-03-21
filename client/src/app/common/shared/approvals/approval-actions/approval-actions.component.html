@@ -1,0 +1,143 @@
+<p class="box-title">
+  <i class="material-icons">approval</i>
+  <span i18n="@@approvalActions.approvals">Approvals</span>
+
+  <mat-slide-toggle color="primary" style=" margin-left: 15px;"
+    [checked]="itemData?.approval_active"
+    [name]="'approval_active'"
+    [disabled]="!canEdit"
+    (change)="activateApprovalFlow()">
+  </mat-slide-toggle>
+
+  <span *ngIf="itemData?.approval_due_date" class="muted"> {{ itemData?.approval_due_date | date: 'MMM dd, yyy' }} </span>
+</p>
+
+<!-- Assignee section starts -->
+<section *ngIf="itemData?.approval_active">
+  <button *ngIf="itemData?.approval_active && !itemData?.approval_flow_launched"
+    mat-button [matMenuTriggerFor]="assigneeSearch" #trigger="matMenuTrigger" class="btn tagslabel">
+      <span i18n="@@approvalActions.addMember">add member</span>
+  </button>
+
+  <mat-menu #assigneeSearch="matMenu">
+    <div>
+      <div class="users-card">
+        <div class="form-group">
+          <label for="search-text" *ngIf="type != 'filter'" i18n="@@approvalActions.assignee">Assignee</label>
+          <input type="text" class="form-control" id="search-text" aria-describedby="search-text" [(ngModel)]="searchText"
+            placeholder="Search group member" autofocus
+            (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+        </div>
+        <ul class="assignee-list">
+          <li class="assignee-list-item" *ngFor="let member of groupMembers | appFilter: searchText; trackBy: utilityService.trackByIndex"
+              (click)="getMemberDetails(member)">
+            <app-avatar style="width:30px !important;height:30px !important;"
+              [photoUrl]="member.profile_pic"
+              [userData]="member"
+              [styleClass]="'feed-avatar-small'"
+              [noAuth]="true"></app-avatar>
+
+            {{ member.first_name }} {{ member.last_name }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </mat-menu>
+
+  <!-- LIST OF ASSIGNEE USERS TO APPROVE STARTS -->
+  <div style="margin-top: 10px; margin-bottom: 10px;">
+    <div *ngFor="let approval of itemData?.approval_flow; trackBy: utilityService.trackByIndex">
+      <div class="assignee-row">
+        <div class="assignee">
+          <app-secured-image
+            [imgURL]="approval?._assigned_to?.profile_pic"
+            [service]="'user'" [userData]="approval?._assigned_to"
+            [workspaceId]="workspaceData?._id"
+            [alt]="approval?._assigned_to?.first_name + ' ' + approval?._assigned_to?.last_name"
+            [styleClass]="'feed-avatar-small'"
+            [inlineStyle]="'cursor: auto !important;'"
+            [tooltip]="approval?._assigned_to?.first_name + ' ' + approval?._assigned_to?.last_name">
+          </app-secured-image>
+
+          <span>{{ approval?._assigned_to?.first_name }} {{ approval?._assigned_to?.last_name }}</span>
+        </div>
+
+        <div class="action" *ngIf="!itemData?.approval_flow_launched">
+          <i class="material-icons" style="color: #EE5D5D;" (click)="unassign(approval?._id)">highlight_off</i>
+        </div>
+
+        <div class="action" *ngIf="(itemData?.approval_flow_launched && userData?._id != (approval?._assigned_to._id || approval?._assigned_to)) || flowCompleted">
+          <span class="approved" *ngIf="approval?.confirmed" i18n="@@approvalActions.approved">APPROVED</span>
+          <span class="pending" *ngIf="!approval?.confirmed" i18n="@@approvalActions.pending">PENDING</span>
+        </div>
+
+        <div class="action" *ngIf="itemData?.approval_flow_launched && userData?._id == (approval?._assigned_to._id || approval?._assigned_to) && !flowCompleted">
+          <!-- ACTION SELECTION STARTS -->
+          <div *ngIf="!approval?.confirmed" class="dropdown-toggle" data-toggle="dropdown">
+            <span class="pending toggle-button" i18n="@@approvalActions.pending">PENDING</span>
+          </div>
+          <div *ngIf="approval?.confirmed" class="approve toggle-button dropdown-toggle" data-toggle="dropdown">
+            <span i18n="@@approvalActions.approved">APPROVED</span>
+          </div>
+
+          <!-- Menu Drawer Starts -->
+          <ul class="dropdown-menu">
+            <li *ngIf="!approval?.confirmed" class="dropdown-item" (click)="doAction('approved', approval?._id)">
+              <div class="approve action-button">
+                <i class="material-icons">check_circle</i>
+                &nbsp;
+                <span i18n="@@approvalActions.approved">APPROVED</span>
+              </div>
+            </li>
+            <li class="dropdown-item" (click)="doAction('rejected', approval?._id)">
+              <div class="reject action-button">
+                <i class="material-icons">highlight_off</i>
+                &nbsp;
+                <span i18n="@@approvalActions.rejected">REJECTED</span>
+              </div>
+            </li>
+          </ul>
+          <!-- Menu Drawer Ends -->
+          <!-- ACTION SELECTION ENDS -->
+        </div>
+      </div>
+
+      <div *ngIf="(showDescription || showApproveCode) && userData?._id == (approval?._assigned_to._id || approval?._assigned_to)" class="assignee-row">
+        <input type="text" class="form-control" [(ngModel)]="confirmation" [placeholder]="descriptionPlaceholder">
+        <input *ngIf="showApproveCode" type="text" class="form-control" [(ngModel)]="confirmationCode" [placeholder]="codePlaceholder">
+        <button *ngIf="showApproveCode" class="btn confirm-btn" (click)="confirmAction('approved', approval?._id)" span i18n="@@approvalActions.confirm">
+          Confirm
+        </button>
+        <button *ngIf="showDescription" class="btn confirm-btn" (click)="confirmAction('rejected', approval?._id)" span i18n="@@approvalActions.confirm">
+          Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- LIST OF ASSIGNEE USERS TO APPROVE ENDS -->
+
+  <div *ngIf="itemData?.approval_active && !itemData?.approval_flow_launched" style="margin-bottom: 10px;">
+    <p class="card-text" i18n="@@approvalActions.selectDueDate">Select DUE DATE for your flow.</p>
+    <app-date-picker class="input-date due"
+      [selectedDate]="itemData?.approval_due_date"
+      [lowerLimit]="today"
+      (date)="getDate($event)">
+    </app-date-picker>
+
+    <!-- Clean field starts -->
+    <i (click)="getDate(null)" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+    <!-- Clean field ends -->
+  </div>
+
+  <button *ngIf="canEdit && !itemData?.approval_flow_launched && itemData?.approval_flow && itemData?.approval_flow?.length > 0" mat-button  class="btn tagslabel"
+      (click)="launchApprovalFlow()">
+    <span i18n="@@approvalActions.launchApprovalFlow">Launch Approval Flow</span>
+  </button>
+</section>
+<!-- Assignee section ends -->
+
+<!-- Loading Spinner Starts -->
+<ng-container *ngIf="isLoading$ | async">
+  <app-loading-spinner class="media"></app-loading-spinner>
+</ng-container>
+<!-- Loading Spinner Ends -->

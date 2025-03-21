@@ -1,0 +1,240 @@
+<div class="row" *ngIf="!!showError && !!errorMessage" class="error">
+    <div class="col">
+        <span>❌ {{ errorMessage }}</span>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="col-description">
+            <h4 i18n="@@editHRFields.address">Address</h4>
+            <p class="block-description" i18n="@@editHRFields.addressDescription">
+                Fill in the legal address of the employee.
+            </p>
+        </div>
+        <hr />
+    </div>
+
+    <div class="col">
+        <div class="form-group">
+            <label for="address_line_1" i18n="@@editHRFields.addressLine1" class="muted">Address Line 1</label>
+            <input type="text" class="form-control" [(ngModel)]="memberData?.hr.address_line_1" name="address_line_1"
+                (blur)="saveProperty({'hr.address_line_1': $event.target.value})">
+
+            <label for="address_line_2" i18n="@@editHRFields.addressLine2" class="muted">Address Line 2</label>
+            <input type="text" class="form-control" [(ngModel)]="memberData?.hr.address_line_2" name="address_line_2"
+                (blur)="saveProperty({'hr.address_line_2': $event.target.value})">
+
+            <label for="city" i18n="@@editHRFields.city" class="muted">City</label>
+            <input type="text" class="form-control" [(ngModel)]="memberData?.hr.city" name="city"
+                (blur)="saveProperty({'hr.city': $event.target.value})">
+
+            <div class="row" style="margin: 0 !important; padding: 0 !important;">
+                <div class="col" style="margin-left: 0 !important; padding-left: 0 !important;">
+                    <label for="zip_code" i18n="@@editHRFields.zip_code" class="muted">Zip Code</label>
+                    <input type="text" class="form-control" [(ngModel)]="memberData?.hr.zip_code" name="zip_code"
+                        (blur)="saveProperty({'hr.zip_code': $event.target.value})">
+                </div>
+
+                <div class="col" style="margin-right: 0 !important; padding-right: 0 !important;">
+                    <label for="state" i18n="@@editHRFields.state" class="muted">State</label>
+                    <input type="text" class="form-control" [(ngModel)]="memberData?.hr.state" name="state"
+                        (blur)="saveProperty({'hr.state': $event.target.value})">
+                </div>
+            </div>
+
+            <app-country-select [countryCode]="memberData?.hr?.country"
+                (countrySelected)="changeCountry($event)"></app-country-select>
+        </div>
+    </div>
+</div>
+
+<div class="row" *ngIf="!!memberData">
+    <div class="col">
+        <div class="col-description">
+            <h4 i18n="@@editHRFields.hrFields">HR Fields</h4>
+            <p class="block-description" i18n="@@editHRFields.hrFieldsDescription">
+            Fields created by the HR team.
+            </p>
+        </div>
+        <hr />
+    </div>
+
+    <div class="col">
+        <div class="form-group">
+            <div class="mb-4">
+                <label for="position" class="cflabel" i18n="@@editHRFields.position">Position</label>
+            
+                <input type="text" [(ngModel)]="memberData.current_position" class="form-control" name="position"
+                    (blur)="saveProperty({'current_position': $event.target.value})">
+            </div>
+
+            <div class="mb-4">
+                <label for="joinDate" class="cflabel" i18n="@@editHRFields.joinedOn">Joined on:</label>
+            
+                <app-date-picker class="form-control" style="height: 50px" [styleClass]="'btn-group input-date'"
+                    [selectedDate]="memberData.company_join_date"
+                    (date)="saveJoinDate($event)"
+                    [canEdit]="true">
+                </app-date-picker>
+            </div>
+
+            <div *ngFor="let cf of hrCustomFields; trackBy: utilityService.trackByIndex" class="mb-4">
+                <label [for]="cf._id" class="cflabel">{{ cf.name }}</label>
+                
+                <mat-select ngDefaultControl *ngIf="cf.type == 'Select'" [(value)]="selectedHRCFValues[cf._id]"
+                    (selectionChange)="onSelectEntityCustomFieldChange($event, cf._id)" appearance="fill">
+                    <mat-select-trigger>{{ selectedHRCFValues[cf._id] }}</mat-select-trigger>
+                    <mat-option *ngFor="let val of cf.values; trackBy: utilityService.trackByIndex" [value]="val">{{ val }}</mat-option>
+                </mat-select>
+
+                <input type="number" *ngIf="cf.type == 'Number'" [name]="cf.name" [(ngModel)]="selectedHRCFValues[cf._id]"
+                    class="form-control" [value]="selectedHRCFValues[cf._id]"
+                    (keyup.enter)="onInputEntityCustomFieldChange($event, cf._id)"
+                    (blur)="onInputEntityCustomFieldChange($event, cf._id)" />
+
+                <input type="text" *ngIf="cf.type == 'Text'" [name]="cf.name" [(ngModel)]="selectedHRCFValues[cf._id]"
+                    class="form-control" [value]="selectedHRCFValues[cf._id]"
+                    (keyup.enter)="onInputEntityCustomFieldChange($event, cf._id)"
+                    (blur)="onInputEntityCustomFieldChange($event, cf._id)" />
+
+                <app-date-picker *ngIf="cf.type == 'Date'" class="form-control"
+                    [styleClass]="'btn-group input-date'" [canEdit]="true"
+                    [selectedDate]="selectedHRCFValues[cf._id]"
+                    (date)="onDateEntityCustomFieldChange($event, cf._id)">
+                </app-date-picker>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="col-description">
+            <h4 i18n="@@editHRFields.payrollInfo">Payroll info</h4>
+            <p class="block-description" i18n="@@editHRFields.payrollInfoDescription">
+                Fields created by the HR team.
+            </p>
+        </div>
+        <hr />
+    </div>
+
+    <div class="col">
+        <div class="form-group">
+            <div class="mb-4">
+                <label for="hourlyRate" class="cflabel">Hourly Rate</label>
+            
+                <input type="number" name="hourlyRate" [(ngModel)]="memberData.hr.hourly_rate"
+                    class="form-control" [value]="memberData?.hr?.hourly_rate"
+                    (keyup.enter)="saveProperty({'hr.hourly_rate': $event.target.value})"
+                    (blur)="saveProperty({'hr.hourly_rate': $event.target.value})" />
+            </div>
+
+            <div *ngFor="let variable of hrVariables; trackBy: utilityService.trackByIndex" class="mb-4">
+                <label [for]="variable._id" class="cflabel">{{ variable.name }}</label>
+
+                <input type="number" [name]="variable.name" [(ngModel)]="selectedHRVariablesValues[variable._id]"
+                    class="form-control" [value]="selectedHRVariablesValues[variable._id]"
+                    (keyup.enter)="onInputEntityVariableChange($event, variable._id)"
+                    (blur)="onInputEntityVariableChange($event, variable._id)"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" *ngIf="!!hrBenefits && hrBenefits.length > 0">
+    <div class="col">
+        <div class="col-description">
+            <h4 i18n="@@editHRFields.hrBenefits">Benefits</h4>
+            <p class="block-description" i18n="@@editHRFields.hrBenefitsDescription">
+                Benefits created by the HR team.
+            </p>
+        </div>
+        <hr />
+    </div>
+
+    <div class="col">
+        <div class="form-group">
+            <div *ngFor="let benefit of hrBenefits; trackBy: utilityService.trackByIndex" class="mb-3">
+                <label [for]="benefit._id" class="cflabel">{{ benefit.name }}</label>
+
+                <mat-select ngDefaultControl *ngIf="benefit.type == 'Select'"
+                    [(value)]="selectedHRBenefitValues[benefit._id]"
+                    (selectionChange)="onSelectEntityBenefitChange($event, benefit._id)" appearance="fill">
+                    <mat-select-trigger>{{ selectedHRBenefitValues[benefit._id] }}</mat-select-trigger>
+                    <mat-option *ngFor="let val of benefit.values; trackBy: utilityService.trackByIndex" [value]="val">{{ val }}</mat-option>
+                </mat-select>
+
+                <ul *ngIf="benefit.type == 'Multiselect'" class="benefitslist">
+                    <li *ngFor="let b of benefit.values; trackBy: utilityService.trackByIndex">
+                        <mat-checkbox [checked]="isSelected(selectedHRBenefitValues[benefit._id], b)"
+                            (change)="onCheckedEntityBenefitChange(selectedHRBenefitValues[benefit._id], b, benefit._id)">
+                            {{ b }}
+                        </mat-checkbox>
+                    </li>
+                </ul>
+
+                <input type="number" *ngIf="benefit.type == 'Number'" [name]="benefit.name"
+                    [(ngModel)]="selectedHRBenefitValues[benefit._id]" class="form-control"
+                    [value]="selectedHRBenefitValues[benefit._id]"
+                    (keyup.enter)="onInputEntityBenefitChange($event, benefit._id)"
+                    (blur)="onInputEntityBenefitChange($event, benefit._id)" />
+
+                <input type="text" *ngIf="benefit.type == 'Text'" [name]="benefit.name"
+                    [(ngModel)]="selectedHRBenefitValues[benefit._id]" class="form-control"
+                    [value]="selectedHRBenefitValues[benefit._id]"
+                    (keyup.enter)="onInputEntityBenefitChange($event, benefit._id)"
+                    (blur)="onInputEntityBenefitChange($event, benefit._id)" />
+
+                <app-date-picker *ngIf="benefit.type == 'Date'" class="form-control"
+                    [styleClass]="'btn-group input-date'" [canEdit]="true"
+                    [selectedDate]="selectedHRBenefitValues[benefit._id]"
+                    (date)="onDateEntityBenefitChange($event, benefit._id)">
+                </app-date-picker>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" *ngIf="memberData && memberData?.hr && memberData?.hr.entity_extra_days_off">
+    <div class="col">
+        <div class="col-description">
+            <h4 i18n="@@editHRFields.hrDaysOff">Days Off</h4>
+            <p class="block-description" i18n="@@editHRFields.hrDaysOffDescription">
+                Extra Days Off given to the employee.
+            </p>
+        </div>
+        <hr />
+    </div>
+
+    <div class="col">
+        <div class="form-group">
+            <div class="mb-3">
+                <label class="cflabel" i18n="@@editHRFields.holidays">Holidays</label>
+
+                <input type="number"
+                    [(ngModel)]="memberData?.hr.entity_extra_days_off.holidays" class="form-control"
+                    (keyup.enter)="onDaysOffChange({'hr.entity_extra_days_off.holidays': memberData?.hr.entity_extra_days_off.holidays})"
+                    (blur)="onDaysOffChange({'hr.entity_extra_days_off.holidays': memberData?.hr.entity_extra_days_off.holidays})" />
+            </div>
+
+            <div class="mb-3">
+                <label class="cflabel" i18n="@@editHRFields.sick">Sick</label>
+            
+                <input type="number"
+                    [(ngModel)]="memberData?.hr.entity_extra_days_off.sick" class="form-control"
+                    (keyup.enter)="onDaysOffChange({'hr.entity_extra_days_off.sick': memberData?.hr.entity_extra_days_off.sick})"
+                    (blur)="onDaysOffChange({'hr.entity_extra_days_off.sick': memberData?.hr.entity_extra_days_off.sick})" />
+            </div>
+
+            <div class="mb-3">
+                <label class="cflabel" i18n="@@editHRFields.personalDays">Personal Days</label>
+            
+                <input type="number"
+                    [(ngModel)]="memberData?.hr.entity_extra_days_off.personal_days" class="form-control"
+                    (keyup.enter)="onDaysOffChange({'hr.entity_extra_days_off.personal_days': memberData?.hr.entity_extra_days_off.personal_days})"
+                    (blur)="onDaysOffChange({'hr.entity_extra_days_off.personal_days': memberData?.hr.entity_extra_days_off.personal_days})" />
+            </div>
+        </div>
+    </div>
+</div>

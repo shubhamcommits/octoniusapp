@@ -1,0 +1,16 @@
+/* angular-cli file: src/styles.css */
+@import "node_modules/angular-calendar/css/angular-calendar.css";
+
+/* CALENDAR CSS */
+
+.cal-month-view .cal-open-day-events{
+    background: #ececec !important;
+    color: #242D3A;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.15), 0 6px 9px rgba(0,0,0,.2)
+  }
+  
+  .cal-week-view .cal-event-title:link, .cal-day-view .cal-event-title:link {
+    color:#fff !important;
+  }
+
+/* CALENDAR CSS */

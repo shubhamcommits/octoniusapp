@@ -1,0 +1,45 @@
+.btn-link:hover {
+    text-decoration: none;
+}
+
+#btn-content {
+    font-size: 14px;
+    color: #009688;
+}
+
+#rule-select, #condition-select {
+    border: none;
+    border-bottom: 1px solid #005FD5;
+    font-family: Poppins;
+    font-size: 14px;
+}
+
+#rule-select:focus, #condition-select:focus {
+    outline: none;
+}
+
+.dropdown-menu {
+    width: 150px;
+    border: 1px solid #E4EDF8;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+    li {
+        font-family: Poppins;
+        font-size: 14px;
+        margin: 10px;
+        cursor: pointer !important;
+    }
+}
+
+#rule-select .dropdown-menu {
+    height: 130px;
+}
+
+#condition-select .dropdown-menu {
+    height: 170px;
+}
+
+.active {
+    font-weight: bold;
+    color: #005FD5;
+}

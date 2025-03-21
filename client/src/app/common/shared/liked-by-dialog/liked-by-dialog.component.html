@@ -1,0 +1,23 @@
+<div class="customFieldsDialog">
+  <h4 class="mb-4" i18n="@@likedByDialog.membersWhoLikedContent">Members who liked the content:</h4>
+  <div *ngFor="let user of usersList; let i = index; trackBy: utilityService.trackByIndex" class="row">
+    <div class="col-md-2">
+      <app-secured-image [imgURL]="user?.profile_pic" [service]="'user'"
+        [workspaceId]="workspaceData?._id" [userData]="user"
+        [alt]="user?.first_name + ' ' + user?.last_name" [styleClass]="'feed-avatar-small'"
+        [tooltip]="user?.first_name + ' ' + user?.last_name">
+      </app-secured-image>
+    </div>
+
+    <div class="col-md-10">
+    <p *ngIf="!!user._id">  {{ user?.first_name }} {{ user?.last_name }}</p>
+    <p *ngIf="!user._id"> {{ user }}</p>
+    </div>
+  </div>
+
+  <div style="margin-top: 20px;">
+    <button class="btn btn-secondary" (click)="closeDialog()" i18n="@@likedByDialog.close">
+      Close
+    </button>
+  </div>
+</div>

@@ -1,0 +1,347 @@
+<div class="flowStepsDialog">
+
+  <mat-dialog-actions align="start">
+    <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">arrow_back</i>
+  </mat-dialog-actions>
+
+  <h2 mat-dialog-title style="margin-bottom: 30px">
+    <span class="badge badge-automator">
+      <i class="material-icons">offline_bolt</i>
+    </span>
+
+    <!-- Flow Name starts -->
+    <input
+      name="flowName"
+      type="text"
+      [ngModel]="flowName"
+      (blur)="flowNameChange($event)"
+      class="flow-name" />
+    <!-- Flow Name ends -->
+    <i (click)="deleteFlow()" class="material-icons text-danger" style="cursor: pointer">delete</i>
+  </h2>
+
+  <mat-dialog-content>
+    <div class="flowStepsList" *ngIf="flowSteps.length <= 0">
+      <h3 class="text-center muted" i18n="@@groupAutomationFlowDetailsDialog.letsAddSomeSteps">💪 Let's add some steps...</h3>
+    </div>
+
+    <div class="flowStepsList" *ngIf="flowSteps.length > 0">
+      <div class="flowStepsBody">
+        <div class="step" *ngFor="let step of flowSteps; let stepIndex = index; trackBy: utilityService.trackByIndex">
+
+          <div class="index">{{ stepIndex + 1 }}</div>
+
+          <!-- TRIGGER SECTION -->
+          <div class="values" *ngIf="step.trigger">
+            <div *ngFor="let trigger of step.trigger; let triggerIndex = index; trackBy: utilityService.trackByIndex">
+              <div class="step-element">
+                <span style="margin-right: 10px;">
+                  {{ trigger.name }}
+                </span>
+
+                <div *ngIf="trigger.name === 'Assigned to'">
+                  <app-multiple-assignments
+                    [groupId]="groupId"
+                    [assigned_to]="trigger._user"
+                    [type]="'flow'"
+                    (assigneeAddedEmiter)="getMember($event, 'trigger', stepIndex, triggerIndex)"
+                    (assigneeRemovedEmiter)="removeMember($event, 'trigger', stepIndex, triggerIndex)">
+                  </app-multiple-assignments>
+                </div>
+
+                <div *ngIf="trigger.name === 'Status is'">
+                  <div *ngIf="trigger.status" [ngClass]="getStatusClass(trigger.status)">
+                    {{ trigger.status.toUpperCase() }}
+                  </div>
+
+                  <button *ngIf="!trigger.status" mat-menu-item [matMenuTriggerFor]="statusMenu"
+                      i18n="@@groupAutomationFlowDetailsDialog.selectStatus">
+                    Select Status
+                  </button>
+                  <mat-menu #statusMenu="matMenu">
+                    <ng-container>
+                      <button mat-menu-item *ngFor="let status of statusOptions; trackBy: utilityService.trackByIndex" (click)="triggerSelected('status', status, stepIndex, triggerIndex)">{{ status.toUpperCase() }}</button>
+                    </ng-container>
+                  </mat-menu>
+                </div>
+
+                <div *ngIf="trigger.name === 'Section is'">
+                  <div *ngIf="trigger._section" class="badge-section">
+                    {{ trigger?._section?.title }}
+                  </div>
+
+                  <button *ngIf="!trigger._section" mat-menu-item [matMenuTriggerFor]="sectionTriggerMenu"
+                      i18n="@@groupAutomationFlowDetailsDialog.selectSection">
+                    Select Section
+                  </button>
+                  <mat-menu #sectionTriggerMenu="matMenu">
+                    <ng-container>
+                      <button mat-menu-item *ngFor="let section of groupSections; trackBy: utilityService.trackByIndex" (click)="triggerSelected('section', section, stepIndex, triggerIndex)">{{ section.title }}</button>
+                    </ng-container>
+                  </mat-menu>
+                </div>
+
+                <div *ngIf="trigger.name === 'Custom Field'">
+                  <button *ngIf="!trigger?.custom_field?.name" mat-menu-item [matMenuTriggerFor]="customFieldNameMenu"
+                      i18n="@@groupAutomationFlowDetailsDialog.selectCF">
+                    Select CF
+                  </button>
+                  <mat-menu #customFieldNameMenu="matMenu">
+                    <ng-container>
+                      <button mat-menu-item *ngFor="let cf of customFieldOptions; trackBy: utilityService.trackByIndex" (click)="customFieldNameTriggerSelected(cf, stepIndex, triggerIndex)">{{ cf }}</button>
+                    </ng-container>
+                  </mat-menu>
+
+                  <div *ngIf="trigger?.custom_field?.name" style="display: flex; align-items: baseline;">
+                    <div class="badge-cf" style="margin-right: 10px;">
+                      {{ trigger.custom_field.name }}
+                    </div>
+
+                    <div *ngIf="!trigger.custom_field.value">
+                      <button *ngIf="!trigger?.custom_field?.value" mat-menu-item [matMenuTriggerFor]="customFieldValueMenu"
+                          i18n="@@groupAutomationFlowDetailsDialog.selectValue">
+                        Select Value
+                      </button>
+                      <mat-menu #customFieldValueMenu="matMenu">
+                        <ng-container>
+                          <button mat-menu-item *ngFor="let cfv of getCustomFieldsValues(trigger?.custom_field?.name); trackBy: utilityService.trackByIndex" (click)="triggerSelected('cf', cfv, stepIndex, triggerIndex)">{{ cfv }}</button>
+                        </ng-container>
+                      </mat-menu>
+                    </div>
+
+                    <div *ngIf="trigger?.custom_field?.value">
+                      <span i18n="@@groupAutomationFlowDetailsDialog.is">is</span>
+                      <div class="badge-section">
+                        {{ trigger.custom_field.value }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div *ngIf="trigger.name == 'Subtasks Status'">
+                  <div *ngIf="trigger.subtaskStatus" [ngClass]="getStatusClass(trigger.subtaskStatus)">
+                    {{ trigger.subtaskStatus.toUpperCase() }}
+                  </div>
+
+                  <button *ngIf="!trigger.subtaskStatus" mat-menu-item [matMenuTriggerFor]="subtaskStatusMenu"
+                      i18n="@@groupAutomationFlowDetailsDialog.selectStatus">
+                    Select Status
+                  </button>
+                  <mat-menu #subtaskStatusMenu="matMenu">
+                    <ng-container>
+                      <button mat-menu-item *ngFor="let status of statusOptions; trackBy: utilityService.trackByIndex" (click)="triggerSelected('subtaskStatus', status, stepIndex, triggerIndex)">{{ status.toUpperCase() }}</button>
+                    </ng-container>
+                  </mat-menu>
+                </div>
+
+                <div *ngIf="trigger.name === 'Due date is'">
+                  <div *ngIf="trigger?.due_date_value" style="margin-right: 10px;" class="badge-cf">
+                    {{ dueDateTriggerOptions[getTriggerDueDateIndex(trigger?.due_date_value)]?.title }}
+                  </div>
+                
+                  <button *ngIf="!trigger?.due_date_value" mat-menu-item [matMenuTriggerFor]="dueDateTriggerMenu"
+                    i18n="@@groupAutomationFlowDetailsDialog.select">
+                    Select
+                  </button>
+                
+                  <mat-menu #dueDateTriggerMenu="matMenu">
+                    <ng-container>
+                      <button mat-menu-item *ngFor="let dd of dueDateTriggerOptions; trackBy: utilityService.trackByIndex"
+                        (click)="triggerSelected('set_due_date', dd.type, stepIndex, triggerIndex)">{{ dd.title }}</button>
+                    </ng-container>
+                  </mat-menu>
+                </div>
+              </div>
+            </div>
+
+            <div class="add-step">
+              <i class="material-icons-outlined" *ngIf="!step.newTrigger" (click)="step.newTrigger = !step.newTrigger" style="cursor: pointer;">add</i>
+            </div>
+          </div>
+
+          <div class="step-element" *ngIf="!step.trigger || step.newTrigger">
+            <span i18n="@@groupAutomationFlowDetailsDialog.when">WHEN</span>
+            <!-- TRIGGER OPTIONS SECTION -->
+            <button mat-menu-item [matMenuTriggerFor]="triggerMenu"i18n="@@groupAutomationFlowDetailsDialog.selectTrigger">
+              Select trigger
+            </button>
+            <mat-menu #triggerMenu="matMenu">
+              <ng-container>
+                <button mat-menu-item *ngFor="let trigger of triggerOptions; trackBy: utilityService.trackByIndex" (click)="selectTrigger(trigger, stepIndex)">{{ trigger }}</button>
+              </ng-container>
+            </mat-menu>
+          </div>
+
+          <div class="step-separator">
+            <i class="material-icons" style="color: #005FD5; line-height: 48px;">offline_bolt</i>
+          </div>
+
+          <!-- ACTION SECTION -->
+          <div class="values" *ngIf="step.action">
+            <div *ngFor="let action of step.action; let actionIndex = index; trackBy: utilityService.trackByIndex">
+              <div class="step-element">
+                <span style="margin-right: 10px;">
+                  {{ action.name }}
+                </span>
+
+                <div *ngIf="action.name === 'Assign to'">
+                  <app-multiple-assignments
+                    [groupId]="groupId"
+                    [assigned_to]="action._user"
+                    [type]="'flow'"
+                    (assigneeAddedEmiter)="getMember($event, 'action', stepIndex, actionIndex)"
+                    (assigneeRemovedEmiter)="removeMember($event, 'action', stepIndex, actionIndex)">
+                  </app-multiple-assignments>
+                </div>
+
+                <div *ngIf="action.name === 'Move to'">
+                  <div *ngIf="action._section" class="badge-section">
+                    {{ action._section.title }}
+                  </div>
+
+                  <button *ngIf="!action._section" mat-menu-item [matMenuTriggerFor]="sectionActionMenu"
+                      i18n="@@groupAutomationFlowDetailsDialog.selectSection">
+                    Select Section
+                  </button>
+                  <mat-menu #sectionActionMenu="matMenu">
+                    <ng-container>
+                      <button mat-menu-item *ngFor="let section of groupSections; trackBy: utilityService.trackByIndex" (click)="actionSelected('section', section, stepIndex, actionIndex)">{{ section.title }}</button>
+                    </ng-container>
+                  </mat-menu>
+                </div>
+
+                <div *ngIf="action.name === 'Change Status to'">
+                  <div *ngIf="action.status" [ngClass]="getStatusClass(action.status)">
+                    {{ action.status.toUpperCase() }}
+                  </div>
+
+                  <button *ngIf="!action.status" mat-menu-item [matMenuTriggerFor]="statusActionMenu"
+                      i18n="@@groupAutomationFlowDetailsDialog.selectStatus">
+                    Select Status
+                  </button>
+                  <mat-menu #statusActionMenu="matMenu">
+                    <ng-container>
+                      <button mat-menu-item *ngFor="let status of statusOptions; trackBy: utilityService.trackByIndex" (click)="actionSelected('status', status, stepIndex, actionIndex)">{{ status.toUpperCase() }}</button>
+                    </ng-container>
+                  </mat-menu>
+                </div>
+
+                <div *ngIf="action.name === 'Custom Field'">
+                  <button *ngIf="!action?.custom_field?.name" mat-menu-item [matMenuTriggerFor]="customFieldNameActionMenu"
+                      i18n="@@groupAutomationFlowDetailsDialog.selectCF">
+                    Select CF
+                  </button>
+                  <mat-menu #customFieldNameActionMenu="matMenu">
+                    <ng-container>
+                      <button mat-menu-item *ngFor="let cf of customFieldOptions; trackBy: utilityService.trackByIndex" (click)="customFieldNameActionSelected(cf, stepIndex, actionIndex)">{{ cf }}</button>
+                    </ng-container>
+                  </mat-menu>
+
+                  <div *ngIf="action?.custom_field?.name" style="display: flex; align-items: baseline;">
+                    <div style="margin-right: 10px;" class="badge-cf">
+                      {{ action.custom_field.name }}
+                    </div>
+
+                    <div *ngIf="!action.custom_field.value">
+                      <button *ngIf="!action?.custom_field?.value" mat-menu-item [matMenuTriggerFor]="customFieldValueActionMenu"
+                          i18n="@@groupAutomationFlowDetailsDialog.selectValue">
+                        Select Value
+                      </button>
+                      <mat-menu #customFieldValueActionMenu="matMenu">
+                        <ng-container>
+                          <button mat-menu-item *ngFor="let cfv of getCustomFieldsValues(action?.custom_field?.name); trackBy: utilityService.trackByIndex" (click)="actionSelected('cf', cfv, stepIndex, actionIndex)">{{ cfv }}</button>
+                        </ng-container>
+                      </mat-menu>
+                    </div>
+
+                    <div *ngIf="action?.custom_field?.value">
+                      <span i18n="@@groupAutomationFlowDetailsDialog.is">is</span>
+                      <div class="badge-section">
+                        {{ action.custom_field.value }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div *ngIf="isShuttleTasksModuleAvailable && action.name === 'Shuttle task'">
+                  <div *ngIf="action._shuttle_group">
+                    {{ action?._shuttle_group?.group_name?.toUpperCase() }}
+                  </div>
+
+                  <button *ngIf="!action._shuttle_group" mat-menu-item [matMenuTriggerFor]="shuttleActionMenu"
+                      i18n="@@groupAutomationFlowDetailsDialog.selectShuttleGroup">
+                    Select Shuttle Group
+                  </button>
+                  <mat-menu #shuttleActionMenu="matMenu">
+                    <ng-container>
+                      <button mat-menu-item *ngFor="let group of shuttleGroups; trackBy: utilityService.trackByIndex" (click)="actionSelected('shuttle', group, stepIndex, actionIndex)">{{ group.group_name.toUpperCase() }}</button>
+                    </ng-container>
+                  </mat-menu>
+                </div>
+
+                <div *ngIf="action.name === 'Set Due date'">
+                  <div *ngIf="action?.due_date_value" style="margin-right: 10px;" class="badge-cf">
+                    {{ dueDateActionOptions[getActionDueDateIndex(action?.due_date_value)]?.title }}
+                  </div>
+
+                  <button *ngIf="!action?.due_date_value" mat-menu-item [matMenuTriggerFor]="dueDateNameActionMenu"
+                    i18n="@@groupAutomationFlowDetailsDialog.select">
+                    Select
+                  </button>
+
+                  <mat-menu #dueDateNameActionMenu="matMenu">
+                    <ng-container>
+                      <button mat-menu-item *ngFor="let dd of dueDateActionOptions; trackBy: utilityService.trackByIndex"
+                        (click)="actionSelected('set_due_date', dd.type, stepIndex, actionIndex)">{{ dd.title }}</button>
+                    </ng-container>
+                  </mat-menu>
+                </div>
+
+                <div *ngIf="action.name === 'Set Estimation Time to'">
+                  <div *ngIf="action.estimation" style="margin-right: 10px;" class="badge-section">
+                    {{ action.estimation.hours }}h
+                    &nbsp;
+                    {{ action.estimation.minutes }}m
+                  </div>
+                  <!-- <input *ngIf="!action.estimation" (blur)="actionSelected('estimation', action.estimation, stepIndex, actionIndex)" [name]="action.estimation" [(ngModel)]="action.estimation" type="number"/> -->
+                  <app-time-input *ngIf="!action.estimation" id="estimation" [value]="(action?.estimation?.hours || '00') + ':' + (action?.estimation?.minutes || '00')" canEdit="true"
+                    (timeEvent)="actionSelected('estimation', $event, stepIndex, actionIndex)"></app-time-input>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="add-step"> <i class="material-icons-outlined" *ngIf="!step.newAction" (click)="step.newAction = !step.newAction" style="cursor: pointer;">add</i></div>
+          </div>
+
+          <div class="step-element" *ngIf="!step.action || step.newAction">
+            <span i18n="@@groupAutomationFlowDetailsDialog.then">THEN</span>
+            <!-- ACTION OPTIONS SECTION -->
+            <button mat-menu-item [matMenuTriggerFor]="actionMenu" i18n="@@groupAutomationFlowDetailsDialog.selectAction">
+              Select action
+            </button>
+            <mat-menu #actionMenu="matMenu">
+              <ng-container>
+                <button mat-menu-item *ngFor="let action of actionOptions; trackBy: utilityService.trackByIndex" (click)="selectAction(action, stepIndex)">{{ action }}</button>
+              </ng-container>
+            </mat-menu>
+          </div>
+
+          <!-- DELETE STEP -->
+          <div class="remove-separator">
+            <i class="material-icons text-danger" (click)="removeStep(step._id)"
+              style=" cursor: pointer; margin-left: 20px;">delete</i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADD STEP -->
+    <div class="newFlowStepForm" style="padding: 10px; margin-top: 30px; width: 70%;">
+      <button class="btn btn-link" style="margin: 10px 0;" (click)="createStep()">
+        <i class="material-icons" style="color: #FFAB00">offline_bolt</i>
+         <span i18n="@@groupAutomationFlowDetailsDialog.addStep">ADD STEP</span>
+      </button>
+    </div>
+  </mat-dialog-content>
+</div>

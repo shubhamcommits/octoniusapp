@@ -1,0 +1,11 @@
+<div class="row">
+    <div class="col-md-6">
+        <p class="card-text">
+            <strong class="float-left" i18n="@@connectMS365Cloud.ms365">MS365</strong>
+        </p>
+    </div>
+    <div class="col-md-6 push-right">
+        <button *ngIf="!ms365UserExist()" id="ms365-connect" class="btn btn-primary btn-sm" (click) ="signInToMS365()" i18n="@@connectMS365Cloud.connect">Connect</button>
+        <button *ngIf="ms365UserExist()" disabled="true" class="btn btn-success btn-sm" i18n="@@connectMS365Cloud.connected">Connected</button>
+    </div>
+</div>

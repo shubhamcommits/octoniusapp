@@ -1,0 +1,134 @@
+<div class="content-box">
+    <div class="collection-header"
+        [ngStyle]="{ 'background-color': collectionData?.background_color || '#FBB732' }">
+        <div class="modal-header">
+            <!-- Event Collection Header starts -->
+            <h2 *ngIf="!editContent || !editTitle || canEdit" (click)="editTitle = !editTitle" class="title">
+                <span>{{ title }}</span>
+            </h2>
+
+            <h2 class="modal-title" *ngIf="editTitle && editContent && canEdit">
+                <span *ngIf="!editTitle">{{ title }}</span>
+
+                <!-- Title starts -->
+                <input *ngIf="editTitle" name="collectionTitle" type="text" [ngModel]="title"
+                    (keyup.esc)="editTitle = !editTitle" placeholder="✍🏻 Title" 
+                    (keyup.enter)="titleChange($event)" (blur)="titleChange($event)" class="collection-title"/>
+                <!-- Title ends -->
+            </h2>
+        </div>
+        <!-- Collection Header Title ends -->
+
+        <div *ngIf="!editContent || !canEdit" [innerHTML]="(htmlContent) | safe: 'html'" class="collection-content"></div>
+
+        <!-- Collection Content starts -->
+        <app-quill-editor *ngIf="editContent && canEdit" [groupId]="groupData?._id"
+            [workspaceId]="workspaceData?._id" [workspaceData]="workspaceData"
+            [editorId]="'collection_content'" [toolbar]="true" [readOnly]="false"
+            [mentionAll]="false" [quillContent]="collectionData?.content" (contentEmitter)="quillContentChanged($event)">
+        </app-quill-editor>
+        <!-- Collection Content ends -->
+
+        <div class="d-md-none d-lg-block graph">
+            <!-- <app-multiple-assignments [canEdit]="editContent" [collection]="collectionData" [type]="'collection'"
+                (assigneeAddedEmiter)="addManager($event)" (assigneeRemovedEmiter)="removeManager($event)">
+            </app-multiple-assignments> -->
+        </div>
+
+        <br class="clearfix" />
+
+        <div *ngIf="editContent && canEdit" class="change-color">
+            <span (click)="openColorPicker()" i18n="@@collectionHeader.changeColor">Change color</span>
+        </div>
+    </div>
+</div>
+
+<div class="clearfix save-content mb-3" *ngIf="canEdit">
+    <button *ngIf="!editContent" class="btn btn-outline-secondary btn-md float-right" style="margin-right: 20px;"
+        [matMenuTriggerFor]="collectionActions" #trigger="matMenuTrigger">
+        <span i18n="@@collectionHeader.options">Options</span>
+    </button>
+
+    <div *ngIf="(!canEdit || !editContent) && objectExists(collectionData)">
+        <app-secured-image *ngFor="let assignee of collectionData?._members; trackBy: utilityService.trackByIndex"
+        [imgURL]="assignee?.profile_pic"
+        [service]="'user'"
+        [userData]="assignee"
+        [workspaceId]="workspaceData?._id"
+        [alt]="assignee?.first_name + ' ' + assignee?.last_name"
+        [styleClass]="'feed-avatar-small'"
+        [tooltip]="assignee?.first_name + ' ' + assignee?.last_name"></app-secured-image>
+    </div>
+
+    <app-multiple-assignments *ngIf="canEdit && editContent && objectExists(collectionData)" [canEdit]="canEdit" [type]="'collection'"
+        [collection]="collectionData" [assigned_to]="collectionData?._members"
+        [groupId]="groupData?._id"
+        (assigneeAddedEmiter)="onEditorAdded($event)" (assigneeRemovedEmiter)="onEditorRemoved($event)">
+    </app-multiple-assignments>
+
+    <button *ngIf="editContent" [matMenuTriggerFor]="moveMenu"
+        class="btn float-right btn-warning btn-md" style="margin-left: 10px;" i18n="@@collectionHeader.moveToGroup">
+        Move To Group
+    </button>
+    
+    <mat-menu #moveMenu="matMenu">
+        <ng-container *ngFor="let group of userGroups; let index = index; trackBy: utilityService.trackByIndex">
+            <button mat-menu-item (click)="moveToGroup(userGroups[index]?._id)">{{
+                group.group_name }}</button>
+        </ng-container>
+    </mat-menu>
+
+    <button *ngIf="editContent" (click)="openShareDialog()"
+        class="btn float-right btn-primary btn-md" style="margin-left: 10px;">
+        <i class="material-icons-outlined">share</i>
+        <span i18n="@@collectionHeader.shareCollection">Share Collection</span>
+    </button>
+
+    <button *ngIf="editContent" [disabled]="!contentChanged" class="btn float-right btn-primary btn-md"
+        style="margin-left: 10px;" (click)="updateContent()" i18n="@@collectionHeader.save">
+        Save
+    </button>
+
+    <button *ngIf="editContent" class="btn float-right btn-danger btn-md" style="margin-left: 10px;"
+        (click)="editContent = !editContent" i18n="@@collectionHeader.cancel">
+        Cancel
+    </button>
+
+    <mat-menu #collectionActions="matMenu">
+        <ul style="list-style: none; padding:0px; margin: 0;" class="options">
+            <li>
+                <a *ngIf="!editContent" (click)="openShareDialog()" class="btn btn-primary btn-block">
+                    <i class="material-icons-outlined">share</i>
+                    <span i18n="@@collectionHeader.share">Share</span>
+                </a>
+            </li>
+
+            <li>
+                <a *ngIf="!editContent && (!!userGroups || userGroups.length == 0)" mat-menu-item [matMenuTriggerFor]="moveMenu2" class="btn btn-warning btn-block">
+                    <span i18n="@@collectionHeader.moveToGroupLink">Move To Group</span>
+                </a>
+            </li>
+    
+            <mat-menu #moveMenu2="matMenu">
+                <ng-container *ngFor="let group of userGroups; let index = index; trackBy: utilityService.trackByIndex">
+                    <button mat-menu-item (click)="moveToGroup(userGroups[index]?._id)">{{
+                        group.group_name }}</button>
+                </ng-container>
+            </mat-menu>
+
+             <li>
+                <a *ngIf="!editContent" (click)="editContent = !editContent" class="btn btn-secondary btn-block">
+                    <i class="material-icons-outlined">edit</i>
+                    <span i18n="@@collectionHeader.edit">Edit</span>
+                </a>
+            </li>
+
+            <li>
+                <a *ngIf="!editContent" (click)="deleteCollection()" class="btn btn-danger btn-block">
+                    <i class="material-icons-outlined">delete</i>
+                    <span i18n="@@collectionHeader.delete">Delete</span>
+                </a>
+            </li>
+        </ul>
+    </mat-menu>
+</div>

@@ -1,0 +1,51 @@
+// MODULES
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { AuthJoinWorkplaceComponent } from './auth-join-workplace/auth-join-workplace.component';
+
+// COMPONENTS
+import { AuthNewWorkplaceComponent } from './auth-new-workplace/auth-new-workplace.component';
+import { AuthSignUpComponent } from './auth-sign-up/auth-sign-up.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { SelectWorkspaceComponent } from './select-workspace/select-workspace.component';
+import { CanCreateNewWorkspaceGuard } from 'src/shared/guards/can-create-new-workspace/can-create-new-workspace.guard';
+
+const routes: Routes = [
+  // 'select-workspace' ROUTE
+  {
+    path: 'select-workspace',
+    component: SelectWorkspaceComponent
+  },
+
+  // 'sign-up' ROUTE
+  {
+    path: 'sign-up',
+    component: AuthSignUpComponent
+  },
+
+  // 'new-workplace' ROUTE
+  {
+    path: 'new-workplace',
+    component: AuthNewWorkplaceComponent,
+    canActivate: [CanCreateNewWorkspaceGuard]
+  },
+
+  // 'join-workplace' ROUTE
+  {
+    path: 'join-workplace',
+    component: AuthJoinWorkplaceComponent
+  },
+
+  // 'reset-password' ROUTE
+  {
+    path: 'reset-password/:resetPwdId',
+    component: ResetPasswordComponent
+  }
+];
+
+// IMPORT & EXPORT
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class AuthenticationRoutingModule { }

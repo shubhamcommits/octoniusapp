@@ -1,0 +1,54 @@
+<nav class="navbar">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="nav">
+      <li class="nav-item mr-3 d-none d-sm-block">
+        <!-- Octonius Avatar starts -->
+        <app-secured-image *ngIf="workspaceData"
+          [imgURL]="workspaceData?.workspace_avatar"
+          [service]="'workspace'"
+          [tooltip]="'Change workplace avatar'"
+          [placement]="'right'"
+          [styleClass]="'mr-3 feed-avatar'"
+          [workspaceId]="workspaceData?._id"
+          (click)="openDetails(workspaceContent)"></app-secured-image>
+        <!-- Octonius Avatar ends -->
+
+
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/dashboard/admin/general" routerLinkActive="active"
+          [ngClass]="activeState == 'general'?'nav-link active-nav':'nav-link'" (click)="changeState('general')">
+            <span i18n="@@commonNavbar.general">General</span>
+            <span class="sr-only">(current)</span>
+        </a>
+      </li>
+      <li class="nav-item" *ngIf="!isIndividualSubscription">
+          <a class="nav-link" routerLink="/dashboard/admin/members" routerLinkActive="active"
+            [ngClass]="activeState == 'members'?'nav-link active-nav':'nav-link'" (click)="changeState('members')">
+              <span i18n="@@commonNavbar.members">Members</span>
+              <span class="sr-only">(current)</span>
+          </a>
+      </li>
+      <li class="nav-item" *ngIf="!isIndividualSubscription">
+          <a class="nav-link" routerLink="/dashboard/admin/groups" routerLinkActive="active"
+            [ngClass]="activeState == 'groups'?'nav-link active-nav':'nav-link'" (click)="changeState('groups')">
+              <span i18n="@@commonNavbar.groups">Groups</span>
+              <span class="sr-only">(current)</span>
+          </a>
+      </li>
+      <li class="nav-item" *ngIf="canActivateBilling">
+          <a class="nav-link" routerLink="/dashboard/admin/billing" routerLinkActive="active"
+            [ngClass]="activeState == 'billing'?'nav-link active-nav':'nav-link'" (click)="changeState('billing')">
+              <span i18n="@@commonNavbar.billing">Billing</span>
+              <span class="sr-only">(current)</span>
+          </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<ng-template #workspaceContent let-modal>
+   <app-workspace-details [userData]="userData" [workspaceData]="workspaceData">
+   </app-workspace-details>
+</ng-template>

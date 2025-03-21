@@ -1,0 +1,42 @@
+<div class="sidecontent">
+
+    <div class="card sideinnercard">
+        <div class="card-block">
+            <h2 i18n="@@userAvailableCluds.availableIntegrations">Available integrations</h2>
+            <hr>
+            <app-connect-google-cloud *ngIf="workspaceData?.integrations?.is_google_connected" (googleUser)="emitGoogleUser($event)"></app-connect-google-cloud>
+            <br *ngIf="workspaceData?.integrations?.is_slack_connected" />
+            <app-connect-slack *ngIf="workspaceData?.integrations?.is_slack_connected" [userData]="userData"></app-connect-slack>
+            <br *ngIf="workspaceData?.integrations?.is_box_connected" />
+            <app-connect-box-cloud *ngIf="workspaceData?.integrations?.is_box_connected" (boxUser)="emitBoxUser($event)"></app-connect-box-cloud>
+            <br *ngIf="workspaceData?.integrations?.is_ms_365_connected" />
+            <app-connect-ms-365-cloud *ngIf="workspaceData?.integrations?.is_ms_365_connected" (ms365User)="emitMS365User($event)"></app-connect-ms-365-cloud>
+            <br />
+            <!--
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="card-text">
+                        <strong class="float-left"> Dropbox</strong>
+                    </p>
+                </div>
+                <div class="col-md-6 push-right">
+                    <button class="btn btn-primary btn-sm">Connect</button>
+                </div>
+            </div>
+            <br />
+            -->
+            <!--
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="card-text">
+                        <strong class="float-left">One Drive</strong>
+                    </p>
+                </div>
+                <div class="col-md-6 push-right">
+                    <button class="btn btn-primary btn-sm">Connect</button>
+                </div>
+            </div>
+            -->
+        </div>
+    </div>
+</div>

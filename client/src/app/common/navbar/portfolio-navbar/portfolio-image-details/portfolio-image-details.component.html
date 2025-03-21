@@ -1,0 +1,26 @@
+<!-- PORTFOLIO DETAIL MODAL STARTS -->
+
+<!-- PORTFOLIO HEADER STARTS -->
+<div class="modal-header">
+    <h4 class="modal-title" i18n="@@portfolioImageDetails.updateYourGroupAvatar">Update your portfolio avatar</h4>
+</div>
+<!-- PORTFOLIO HEADER ENDS -->
+
+<!-- PORTFOLIO MODAL CHANGE IMAGE STARTS -->
+<div class="modal-body">
+    <div class="form-group">
+        <app-secured-image
+          [imgURL]="portfolioData?.portfolio_avatar"
+          [service]="'group'" [workspaceId]="workspaceData?._id"></app-secured-image>
+        <app-crop-image class="container" [resizeToWidth]="300" [cropperMinWidth]="300" (outputImage)="getCroppedImage($event)"></app-crop-image>
+    </div>
+</div>
+<!-- PORTFOLIO MODAL CHANGE IMAGE ENDS -->
+
+<!-- PORTFOLIO FOOTER STARTS -->
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="updateImage()" i18n="@@portfolioImageDetails.updateYourImage">Update your Image!</button>
+</div>
+<!-- PORTFOLIO FOOTER ENDS -->
+
+<!-- PORTFOLIO DETAIL MODAL ENDS -->

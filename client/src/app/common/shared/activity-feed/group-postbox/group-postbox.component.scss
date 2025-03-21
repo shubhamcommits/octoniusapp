@@ -1,0 +1,52 @@
+.postboxheader{
+  width: 100%;
+  display: flex;
+}
+
+.postbox{
+    outline: none;
+    box-shadow: none !important;
+    margin-top: 12px;
+    border: 0px solid #ccc !important;
+    text-align: left;
+    cursor: pointer;
+    // color: #005fd5;
+}
+
+// Adding pointer to image
+img{
+    cursor: pointer;
+    margin-top: 8px;
+    transition: transform .2s ease;
+  }
+
+  img:hover{
+    transform: scale(1.1);
+  }
+
+  .noborder-btn{
+    border:0 !important;
+    :focus{
+      border: 0! important;
+    }
+  }
+
+.show-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0px;
+}
+
+.hide-container {
+  display: none;
+}
+.card {
+  cursor: pointer;
+  border:none;
+  box-shadow: 0 6px 18px #005fd521;
+  padding: 16px !important;
+}

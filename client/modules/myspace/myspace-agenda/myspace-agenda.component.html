@@ -1,0 +1,103 @@
+<div class="container">
+
+  <div *ngIf="this.todayTimelineEvents.length == 0 && this.thisWeekTimelineEvents.length == 0">
+    <img src='assets/images/placeholder_activity2.png'>
+  </div>
+
+  <h5 class="title-overview" *ngIf="this.todayTimelineEvents.length != 0" i18n="@@myspaceAgenda.today">Today</h5>
+
+  <div *ngFor="let timelineEvent of todayTimelineEvents; let i = index; trackBy: utilityService.trackByIndex">
+    <a (click)="openModal(timelineEvent)">
+
+      <!-- Agenda Timeline Today Events -->
+      <div class="media card-tile overview-timeline-event">
+        <div class=" row media-body"
+          *ngIf="this.isTimelineEventExpired(timelineEvent.event.due_to) && !this.isTimelineEventInPresent(timelineEvent.event.due_to)">
+          <div class="col-md-1">
+            <div class="event-expired-hour-box event-future-or-expired-hour">
+              {{timelineEvent.event.due_to | date:'HH:mm' }}
+            </div>
+          </div>
+          <div class="col-md-7 overview-item opacity" [innerHTML]="timelineEvent?.title"></div>
+          <div class="col-md-2 text-right">
+            <div class=" grouplabel " [innerHTML]="timelineEvent?._group?.group_name"></div>
+          </div>
+
+          <div class="col-md-2">
+            <div class="overview-item small text-right timestamp opacity">
+              {{timelineEvent.event.due_to | date:'MMM d, y' }}
+            </div>
+
+          </div>
+        </div>
+
+        <div class=" row media-body"
+          *ngIf="this.isTimelineEventInFuture(timelineEvent.event.due_to) && !this.isTimelineEventInPresent(timelineEvent.event.due_to)">
+          <div class="col-md-1">
+            <div class="event-future-hour-box event-future-or-expired-hour">
+              {{timelineEvent.event.due_to | date:'HH:mm' }}
+            </div>
+          </div>
+          <div class="col-md-7 overview-item" [innerHTML]="timelineEvent?.title"></div>
+          <div class="col-md-2 text-right">
+            <div class=" grouplabel " [innerHTML]="timelineEvent?._group?.group_name"></div>
+          </div>
+
+          <div class="col-md-2">
+            <div class="overview-item small text-right timestamp">
+              {{timelineEvent.event.due_to | date:'MMM d, y' }}
+            </div>
+
+          </div>
+        </div>
+
+        <div class=" row media-body" *ngIf="this.isTimelineEventInPresent(timelineEvent.event.due_to)">
+          <div class="col-md-1">
+            <div class="timeline-hour-box event-current-hour">
+              {{timelineEvent.event.due_to | date:'HH:mm' }}
+            </div>
+          </div>
+          <div class="col-md-7 overview-item" [innerHTML]="timelineEvent?.title"></div>
+          <div class="col-md-2 text-right">
+            <div class=" grouplabel " [innerHTML]="timelineEvent?._group?.group_name"></div>
+          </div>
+
+          <div class="col-md-2 text-right">
+            <div class="overview-item small text-right timestamp">
+              {{timelineEvent.event.due_to | date:'MMM d, y' }}
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <h5 class="title-overview" *ngIf="this.thisWeekTimelineEvents.length != 0" i18n="@@myspaceAgenda.thisWeek">This week</h5>
+
+  <div *ngFor="let timelineEvent of thisWeekTimelineEvents; let i = index; trackBy: utilityService.trackByIndex">
+    <a (click)="openModal(timelineEvent)">
+      <!-- Agenda Timeline This Week Events -->
+      <div class="media card-tile overview-timeline-event">
+        <div class=" row media-body">
+          <div class="col-md-1">
+            <div class="event-future-hour-box event-future-or-expired-hour">
+              {{timelineEvent.event.due_to | date:'HH:mm' }}
+            </div>
+          </div>
+          <div class="col-md-7 overview-item" [innerHTML]="timelineEvent?.title"></div>
+          <div class="col-md-2 text-right">
+            <div class=" grouplabel " [innerHTML]="timelineEvent?._group?.group_name"></div>
+          </div>
+
+          <div class="col-md-2 text-right">
+            <div class="overview-item small text-right timestamp">
+              {{timelineEvent.event.due_to | date:'MMM d, y' }}
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>

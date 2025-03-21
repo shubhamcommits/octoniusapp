@@ -1,0 +1,131 @@
+@import "src/assets/scss/variables";
+@import "src/assets/scss/global";
+@import "src/assets/scss/tasks";
+@import "src/assets/scss/group";
+
+
+a {
+    text-decoration: none !important;
+    color: inherit;
+}
+
+.smart-card {
+  background-color: #FFFFFF;
+  border: none;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 0px 1px 1px rgb(0 0 0 / 14%);
+  min-height: 260px;
+  height: 100%;
+}
+
+.table-wrapper {
+  overflow-y: auto;
+
+  .member {
+    display: inline-flex;
+
+    .name {
+      line-height: 20px;
+      margin-top: 12px;
+    }
+  }
+
+  .tasks-list {
+    ul {
+      list-style-type: none;
+      margin-left: -40px;
+      margin-top: 10px;
+
+      li {
+        display: inline;
+      }
+    }
+  }
+}
+
+table {
+  position: relative;
+  border-collapse: collapse;
+}
+
+td, th {
+  white-space: nowrap;
+  border: $border-gray;
+  padding: 5px 10px;
+  text-align: left;
+  width: 130px;
+}
+
+th {
+  border-top: none;
+  position: sticky;
+  top: -1px;
+  z-index: 2;
+  text-align: center;
+  padding: 0px;
+  font-weight: 400;
+
+  &:first-of-type {
+    border-left: none;
+    left: 0;
+    z-index: 3;
+
+    opacity: 1;
+    background-color: #FFFFFF;
+  }
+}
+
+tbody tr td:first-of-type {
+  border-left: none;
+  position: sticky;
+  left: -1px;
+  text-align: left;
+  width: 150px;
+  padding: 0px;
+
+  opacity: 1;
+  background-color: #FFFFFF;
+}
+
+.weekend {
+  background-color: $weekend-bg !important;
+}
+
+.today {
+  color: #fff;
+  background-color: $brand-primary !important;
+}
+
+.out-of-the-office {
+  background-color: rgba(0, 95, 213, 0.12);
+}
+
+.badge {
+  background-color: $lightgray;
+  margin: 0 1px !important;
+  display: inline;
+  font-family: Nunito,sans-serif;
+  font-style: normal;
+  font-weight: 700!important;
+  font-size: 12px;
+  align-items: center;
+  color: #fff;
+  background-color: rgba(157, 159, 161, 0.5);
+  padding: 0 .4em;
+}
+
+.badge-done {
+  background-color: $dark-sky-blue;
+}
+
+.time-tracking {
+  color: rgba(38, 166, 154, 0.5);
+  margin-top: 10px;
+  span{
+    color:$turquoise;
+  }
+}
+.task-status{
+  color: rgba(157, 159, 161, 0.5);
+}

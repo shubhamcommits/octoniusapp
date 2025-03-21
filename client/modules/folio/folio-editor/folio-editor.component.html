@@ -1,0 +1,136 @@
+ <!-- Folio wrapper starts here -->
+
+<!-- <app-create-table *ngIf="tableShow" (dataToSubmit)="dataFromTableModal($event)"></app-create-table> -->
+
+<app-folio-comment-editor *ngIf="commentBool"
+  [mentionAll]="mentionAll"
+  [userData]="userData"
+  [groupData]="groupData"
+  [workspaceData]="workspaceData"
+  [selectedText]="selectedText"
+  (commentEmitter)="submitComment($event)"
+  (closeEmitter)="closeComment()"></app-folio-comment-editor>
+<!--
+<div [ngClass]="{'hide-modal' : !commentBool}" class="comment-modal center">
+  <div class="comment-container">
+    <a class="close" (click)="closeComment()">
+      <i  class="material-icons" style="cursor: pointer">close</i>
+    </a>
+
+    <div class="to-comment-text">
+      <h2><span i18n="@@folioEditor.selectedText">Selected Text</span>: </h2>
+      <textarea readonly cols="30" rows="4">
+        {{ selectedText }}
+      </textarea>
+    </div>
+
+    <h2><span i18n="@@folioEditor.comment">Comment</span>:</h2>
+
+    <div style="border: 1px solid #7e7b7b; padding: 10px; margin-bottom: 10px;">
+      <div #editable2></div>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-block btn_login"
+        (click)="submitComment()" i18n="@@folioEditor.submit">
+      Submit
+    </button>
+  </div>
+</div>
+-->
+
+<div class="folio-container">
+  <!-- Table of Content Starts -->
+  <div class="outline-section d-none d-lg-block" *ngIf="fileData && fileData?.show_headings && (!headingsMetaData || headingsMetaData.length == 0)">
+    <h5 class="text-center mb-4">
+      <i class="material-icons">list_alt</i>
+      <span i18n="@@folioEditor.tableContent">Folio Outline</span>
+    </h5>
+  </div>
+  <div class="outline-section d-none d-lg-block" *ngIf="fileData && fileData?.show_headings && headingsMetaData && headingsMetaData.length > 0">
+    <h5 class="text-center mb-4">
+      <i class="material-icons">list_alt</i>
+      <span i18n="@@folioEditor.tableContent">Folio Outline</span>
+    </h5>
+
+    <div (click)="highlight(heading.range)" *ngFor="let heading of headingsMetaData;let ind = index; trackBy: utilityService.trackByIndex">
+      <div class="heading level1" *ngIf="heading.headingLevel == 1">
+        <span>{{ heading.text }}</span>
+        <div>
+          <i class="material-icons-outlined" style="cursor: pointer;" (click)="deleteHeading(heading)">delete</i>
+          <i class="material-icons-outlined" style="cursor: pointer;" (click)="createLink(heading.range)">link</i>
+        </div>
+      </div>
+      <div class="heading level2" *ngIf="heading.headingLevel == 2">
+        <span>{{ heading.text }}</span>
+        <div>
+          <i class="material-icons-outlined" style="cursor: pointer;" (click)="deleteHeading(heading)">delete</i>
+          <i class="material-icons-outlined" style="cursor: pointer;" (click)="createLink(heading.range)">link</i>
+        </div>
+      </div>
+      <div class="heading level3" *ngIf="heading.headingLevel == 3">
+        <span [innerHTML]="sanitizer.bypassSecurityTrustHtml(heading.text)"></span>
+        <div>
+          <i class="material-icons-outlined" style="cursor: pointer;" (click)="deleteHeading(heading)">delete</i>
+          <i class="material-icons-outlined" style="cursor: pointer;" (click)="createLink(heading.range)">link</i>
+        </div>
+      </div>
+      <!-- <h3 *ngIf="heading.headingLevel == 3"> {{ heading.text }} </h3> -->
+    </div>
+  </div>
+  <!-- Table of Content Ends -->
+
+  <!-- Quill Editor Component Starts -->
+  <div class="editor-section">
+    <div #editable class="folio"></div>
+    <!-- <div [id]="folioId" class="folio"></div> -->
+    <!-- <quill-editor *ngIf="folioId"
+      class="folio"
+      [name]="folioId"
+      [modules]="modules"
+      [readOnly]="readOnly"
+      (onEditorCreated)="onEditorCreated($event)">
+    </quill-editor> -->
+    <!-- (onEditorChanged)="handleChange($event)" -->
+  </div>
+  <!-- Quill Editor Component Ends -->
+
+  <!-- Comments Starts -->
+  <div class="comments-section d-none d-lg-block" *ngIf="fileData && fileData?.show_comments && (!commentsMetaData || commentsMetaData.length == 0)">
+    <h5 class="text-center mb-4">
+      <i class="material-icons">comment</i>
+      <span i18n="@@folioEditor.comments">COMMENTS</span>
+    </h5>
+  </div>
+
+  <div class="comments-section d-none d-lg-block" *ngIf="fileData && fileData?.show_comments && commentsMetaData && commentsMetaData.length > 0">
+    <h5 class="text-center mb-4">
+      <i class="material-icons">comment</i>
+      <span i18n="@@folioEditor.comments">COMMENTS</span>
+    </h5>
+
+    <div class="comment-area">
+      <div *ngFor="let meta of commentsMetaData;let ind = index; trackBy: utilityService.trackByIndex" (click)="highlight(meta.range)"
+          class="commentmsg" [ngClass]="{'commentmsg-highlight' : commentsToDisplay.includes(ind)}">
+        <div class="comment-profile">
+          <div class="profile">
+              <app-secured-image *ngIf="meta.profile_pic"
+                [imgURL]="meta.profile_pic" [service]="'user'"
+                [userData]="meta.userData"
+                [workspaceId]="workspaceData?._id"
+                [inlineStyle]='"cursor: default; height:30px; width:30px"'
+                [styleClass]="'feed-avatar'"></app-secured-image>
+            <h6>{{meta.user_name}}</h6>
+          </div>
+
+          <a class="close" (click)="deleteComment(ind)" *ngIf="!readOnly || userData?._id == meta.userId">
+            <i  class="material-icons muted" style="cursor: pointer">close</i>
+          </a>
+        </div>
+
+        <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(meta.comment)"></div>
+      </div>
+    </div>
+  </div>
+  <!-- Comments Ends -->
+</div>
+<!-- Folio wrapper ends here -->

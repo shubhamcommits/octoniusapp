@@ -1,0 +1,30 @@
+<div class="chat-header">
+	<div>
+		<app-chat-title [chatData]="chatData" [userData]="userData"></app-chat-title>
+
+		<ul style="list-style: none; padding-left: 0;" *ngIf="!isVideoCall">
+			<li (click)="openVideoChatDialog()" style="cursor: pointer;">
+				<i class="material-icons-outlined">duo</i>
+			</li>
+		</ul>
+	</div>
+
+	<app-multiple-assignments *ngIf="!objectExists(chatData?._group) && !isVideoCall" [canEdit]="canEdit" [workspaceData]="workspaceData"
+		[assigned_to]="members" [type]="'chat'" (assigneeAddedEmiter)="onAssignedAdded($event)"
+		(assigneeRemovedEmiter)="onAssignedRemoved($event)">
+	</app-multiple-assignments>
+	
+	<i class="material-icons" style="cursor: pointer; float: right;" (click)="closeModal()">close</i>
+</div>
+
+<div #chatContent (scroll)="loadMoreMessages($event)" class="chat-content" [scrollTop]="chatContent.scrollHeight">
+	<div *ngIf="isLoading" class="loading">
+		<mat-spinner></mat-spinner>
+	</div>
+
+	<app-chat-message [message]="message" [userData]="userData" [previousMessage]="messages[index-1]" *ngFor="let message of messages; let index = index; trackBy: utilityService.trackByIndex"></app-chat-message>
+</div>
+	
+<div class="chat-input">
+	<app-chat-input [chatData]="chatData" (newMessageEmitter)="sendMessage($event)"></app-chat-input>
+</div>

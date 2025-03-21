@@ -1,0 +1,198 @@
+<div class="block">
+    <div class="row">
+        <div class="col-md-4">
+            <span i18n="@@crmContactInformation.name">Name</span>
+        </div>
+
+        <div class="col-md-8">
+            <input type="text" class="form-control" [(ngModel)]="newName" (blur)="fieldEdited('name')" name="name">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <span i18n="@@crmContactInformation.description">Description</span>
+        </div>
+
+        <div class="col-md-8">
+            <textarea rows="5" [(ngModel)]="newDescription" class="form-control" (blur)="fieldEdited('description')" name="description"></textarea>
+        </div>
+    </div>
+</div>
+
+<div class="block">
+    <div class="row">
+        <div class="col-md-4">
+            <span i18n="@@crmContactInformation.job">Job</span>
+        </div>
+
+        <div class="col-md-8">
+            <div class="dropdown">
+                <label for="company" i18n="@@crmContactInformation.company" class="muted">Company</label>
+
+                <input *ngIf="!contactData?._company" type="email" class="form-control" id="search-text"
+                    aria-describedby="search-text" [(ngModel)]="companySearchText" placeholder="Search company" autofocus
+                    (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()" (keyup)="searchCompany()">
+
+                <ul *ngIf="!contactData?._company && !!companySearchResults && !!companySearchText" class="company-list dropdown-menu">
+                    <li class="company-list-item" *ngFor="let company of companySearchResults; trackBy: utilityService.trackByIndex" (click)="selectCompany(company)">
+                        <!-- <app-secured-image [imgURL]="company.company_pic" [service]="'group'" [workspaceId]="workspaceData?._id"
+                            [styleClass]="'group-avatar'"></app-secured-image> -->
+                        {{ company.name }}
+                    </li>
+                </ul>
+
+                <div *ngIf="!!contactData?._company" class="form-control" style="text-align: left;">
+                    <!-- <app-secured-image [imgURL]="contactData._company.company_pic" [service]="'group'"
+                        [workspaceId]="workspaceData?._id" [styleClass]="'group-avatar'"></app-secured-image> -->
+                    <span>{{ contactData._company.name }}</span>
+
+                    <!-- Clean field starts -->
+                    <i (click)="selectCompany(null)" class="material-icons muted mr-5"
+                        style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
+                    <!-- Clean field ends -->
+                </div>
+            </div>
+
+            <div class="row">
+                <label for="position" i18n="@@crmContactInformation.position" class="muted">Position</label>
+                <input type="text" class="form-control" [(ngModel)]="contactData.position" name="position">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="block">
+    <div class="row">
+        <div class="col-md-4">
+            <span i18n="@@crmContactInformation.phones">Phones</span>
+        </div>
+
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-11">
+                    <input type="text" class="form-control" [(ngModel)]="newPhone" name="phone" (keyup.enter)="addPhone()">
+                </div>
+                <div class="col-md-1">
+                    <i class="material-icons-outlined clickable-icon"
+                        (click)="addPhone()"
+                        [ngSwitch]="indexPhone"
+                        [attr.aria-label]="indexPhone === -1 ? 'Add phone' : 'Save phone'">
+
+                        <span *ngSwitchCase="-1">add</span>
+                        <span *ngSwitchDefault>save</span>
+                    </i>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="contactData?.phones">
+                <div class="col-md-12"
+                     *ngFor="let phone of contactData.phones; trackBy: utilityService.trackByIndex; let i = index">
+                    <span class="me-2">{{ phone }}</span>
+                    <button mat-icon-button
+                            class="clickable-icon"
+                            aria-label="Edit phone number"
+                            (click)="editPhone(i)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button
+                            class="clickable-icon"
+                            aria-label="Remove phone number"
+                            (click)="removePhone(i)">
+                        <mat-icon>remove_circle_outline</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="block">
+    <div class="row">
+        <div class="col-md-4">
+            <span i18n="@@crmContactInformation.emails">E-Mails</span>
+        </div>
+
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-11">
+                    <input type="text" class="form-control" [(ngModel)]="newEmail" name="email" (keyup.enter)="addEmail()">
+                </div>
+                <div class="col-md-1">
+                    <i class="material-icons-outlined clickable-icon"
+                        (click)="addEmail()"
+                        [ngSwitch]="indexEmail"
+                        [attr.aria-label]="indexEmail === -1 ? 'Add email' : 'Save email'">
+
+                        <span *ngSwitchCase="-1">add</span>
+                        <span *ngSwitchDefault>save</span>
+                    </i>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="!!contactData && !!contactData.emails">
+                <div class="col-md-12"
+                     *ngFor="let email of contactData.emails; trackBy: utilityService.trackByIndex; let i = index">
+                    <span class="me-2">{{ email }}</span>
+                    <button mat-icon-button
+                            class="clickable-icon"
+                            aria-label="Edit email"
+                            (click)="editEmail(i)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button
+                            class="clickable-icon"
+                            aria-label="Remove email"
+                            (click)="removeEmail(i)">
+                        <mat-icon>remove_circle_outline</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="block">
+    <div class="row">
+        <div class="col-md-4">
+            <span i18n="@@crmContactInformation.links">Links</span>
+        </div>
+
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-11">
+                    <input type="text" class="form-control" [(ngModel)]="newLink" name="link" (keyup.enter)="addLink()">
+                </div>
+                <div class="col-md-1">
+                    <i class="material-icons-outlined clickable-icon"
+                        (click)="addLink()"
+                        [ngSwitch]="indexLink"
+                        [attr.aria-label]="indexLink === -1 ? 'Add link' : 'Save link'">
+
+                        <span *ngSwitchCase="-1">add</span>
+                        <span *ngSwitchDefault>save</span>
+                    </i>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="!!contactData && !!contactData.links">
+                <div class="col-md-12"
+                     *ngFor="let link of contactData.links; trackBy: utilityService.trackByIndex; let i = index">
+                    <span class="me-2">{{ link }}</span>
+                    <button mat-icon-button
+                            class="clickable-icon"
+                            aria-label="Edit link"
+                            (click)="editLink(i)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button
+                            class="clickable-icon"
+                            aria-label="Remove link"
+                            (click)="removeLink(i)">
+                        <mat-icon>remove_circle_outline</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

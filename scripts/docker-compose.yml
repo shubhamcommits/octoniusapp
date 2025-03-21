@@ -1,0 +1,406 @@
+version: '3.7'
+
+services:
+
+  mongodb:
+    container_name: mongodb
+    image: mongo:5.0
+    restart: always
+    volumes:
+      - acc_db_data:/data/db
+    ports:
+      - ${MONGO_PORT}:27017
+    networks:
+      - acc
+
+  approval-server:
+    container_name: approval-server
+    image: ${DOCKER_USER}/${DOCKER_REPO}:approval-server
+    ports:
+      - ${APPROVAL_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - acc
+
+  auths-server:
+    container_name: auths-server
+    image: ${DOCKER_USER}/${DOCKER_REPO}:auths-server
+    ports:
+      - ${AUTHS_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - acc
+             
+  groups-server:
+    container_name: groups-server
+    image: ${DOCKER_USER}/${DOCKER_REPO}:groups-server
+    ports:
+      - ${GROUPS_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+      - acc_groups_uploads_data:${VOLUME_UPLOADS}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - acc
+         
+  workspaces-server:
+    container_name: workspaces-server
+    image: ${DOCKER_USER}/${DOCKER_REPO}:workspaces-server
+    ports:
+      - ${WORKSPACES_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+      - acc_workspaces_uploads_data:/usr/app/uploads
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - acc
+    
+  users-server:
+    container_name: users-server
+    image: ${DOCKER_USER}/${DOCKER_REPO}:users-server
+    ports:
+      - ${USERS_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+      - acc_users_uploads_data:${VOLUME_UPLOADS}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - acc    
+      
+  posts-server:
+    container_name: posts-server
+    image: ${DOCKER_USER}/${DOCKER_REPO}:posts-server
+    ports:
+      - ${POSTS_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+      - acc_posts_uploads_data:${VOLUME_UPLOADS}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - acc
+          
+  notifications-server:
+    container_name: notifications-server
+    image: ${DOCKER_USER}/${DOCKER_REPO}:notifications-server
+    ports:
+      - ${NOTIFICATIONS_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - acc
+          
+  utilities-server:
+    container_name: utilities-server
+    image: ${DOCKER_USER}/${DOCKER_REPO}:utilities-server
+    ports:
+      - ${UTILITIES_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+      - acc_utilities_uploads_data:${VOLUME_UPLOADS}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - acc
+    
+  folio-server:
+    container_name: folio-server
+    image: ${DOCKER_USER}/${DOCKER_REPO}:folio-server
+    ports:
+      - ${FOLIO_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - acc
+    
+  search-server:
+    container_name: search-server
+    image: ${DOCKER_USER}/${DOCKER_REPO}:search-server
+    ports:
+      - ${SEARCH_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+      - acc_search_uploads_data:${VOLUME_UPLOADS}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - acc
+
+  integrations-server:
+    container_name: integrations-server
+    image: ${DOCKER_USER}/${DOCKER_REPO}:integrations-server
+    ports:
+      - ${INTEGRATIONS_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - acc
+          
+  client:
+    container_name: client
+    image: ${DOCKER_USER}/${DOCKER_REPO}:client
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+    environment: 
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+      - WEBSOCKET=${WEBSOCKET}
+    depends_on:
+      - mongodb
+      - approval-server
+      - auths-server
+      - groups-server
+      - workspaces-server
+      - users-server
+      - posts-server
+      - notifications-server
+      - utilities-server
+      - folio-server
+      - search-server
+    networks:
+      - acc
+    
+  nginx:
+    container_name: nginx
+    image: ${DOCKER_USER}/${DOCKER_REPO}:nginx
+    restart: always
+    ports:
+      - ${APPLICATION_PORT}:${NGINX_PORT}
+    depends_on:
+      - mongodb
+      - approval-server
+      - auths-server
+      - groups-server
+      - workspaces-server
+      - users-server
+      - posts-server
+      - notifications-server
+      - utilities-server
+      - folio-server
+      - search-server
+      - client
+    networks:
+      - acc
+    
+volumes:
+  acc_db_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/db
+      o: bind
+
+  acc_groups_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/groups
+      o: bind
+  
+  acc_posts_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/posts
+      o: bind
+
+  acc_users_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/users
+      o: bind
+
+  acc_workspaces_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/workspaces
+      o: bind
+
+  acc_utilities_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/utilities
+      o: bind
+
+  acc_search_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/search
+      o: bind
+        
+networks:
+  acc: 
+    driver: bridge

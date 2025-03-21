@@ -1,0 +1,71 @@
+<div class="container-fluid h-100 welcome">
+   <div class="row h-100">
+
+      <!-- OCTONIUS LEFT BRANDING PANEL STARTS -->
+      <app-branding-panel [routerState]="'home'" class="col-md-8 overlay"></app-branding-panel>
+      <!-- OCTONIUS LEFT BRANDING PANEL ENDS -->
+
+      <!-- HOME PANEL STARTS -->
+      <div class="col-md-4 shaddow">
+        <div style="padding:100px 30px;">
+
+          <div style="width: 100%; margin:0 auto; align-items: center;height: 30vh;">
+
+            <h1 style="margin-bottom: 30px;" i18n="@@welcomePage.logInYourAccount">
+              Log in to your account
+            </h1>
+
+            <div class="form-group">
+              <label for="email" class="muted" i18n="@@welcomePage.enterYourWorkEmail">Enter your work email address</label>
+              <input type="email" name="email" (focusout)="validateEmail()" class="form-control"
+                [(ngModel)]="account.email" (keyup.enter)="signIn()">
+            </div>
+
+            <div class="form-group">
+              <label for="password" class="muted">Enter your password</label>
+              <input type="password" class="form-control" name="password"
+                [(ngModel)]="account.password" (keyup.enter)="signIn()">
+                <p class="muted">
+                  <span i18n="@@welcomePage.forgotPassword">Forgot password?</span>
+                  <span (click)="openForgotPassword(content)" class="forgot-password" i18n="@@welcomePage.resetPassword">Reset password</span>
+                </p>
+            </div>
+
+            <!-- FORGOT PASSWORD MODULE STARTS -->
+            <ng-template #content let-modal>
+              <forgot-password></forgot-password>
+            </ng-template>
+            <!-- FORGOT PASSWORD MODULE ENDS -->
+
+            <button type="submit" class="btn btn-primary btn-block" (click)="signIn()" i18n="@@welcomePage.logIn">LOG IN</button>
+
+          </div>
+
+          <div  *ngIf="ssoAvailable" style="width: 100%; margin: 80px auto 0 auto; padding-top: 30px; align-items: center; text-align: center; border-top: 1px solid #005fd521; ">
+            <button *ngIf="activeDirectoryAvailable" class="btn btn-primary btn-block" (click)="signInAD()">
+              <span class="material-icons">fingerprint</span>
+              <span i18n="@@welcomePage.accessWithAD">Access with Azure AD</span>
+            </button>
+            <br/>
+            <div class="" id="google-button"></div>
+            <!-- <button *ngIf="googleAvailable" class="btn btn-primary google-icon" (click)="signInGoogle()">
+              <img src="assets/images/btn_google_light_normal_ios.svg">
+              <span i18n="@@welcomePage.accessWithGoogle" class="mr-1 ml-1">Sign in with Google</span>
+            </button> -->
+          </div>
+
+          <div style="width: 100%; margin:50px auto; align-items: center; text-align: center; border-top: 1px solid #005fd521;">
+            <p class="text-center muted" style="margin-top: 50px;" i18n="@@welcomePage.firstTimeHere">
+              First time here? Create your account.
+            </p>
+            <button type="button" class="btn btn-outline-secondary btn-block"
+                [routerLink]="['/authentication', 'sign-up']" routerLinkActive="router-link-active"
+                i18n="@@welcomePage.signUp">
+              SIGN UP
+            </button>
+          </div>
+        </div>
+    </div>
+    <!-- HOME PANEL ENDS -->
+   </div>
+</div>

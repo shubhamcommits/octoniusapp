@@ -1,0 +1,59 @@
+div.inline-edit {
+    text-decoration: none;
+    border-bottom: #A8B9CE dashed 1px;
+    cursor: pointer;
+    text-align: left;
+    padding: .5em 0;
+    color: #444 !important;
+    width: auto;
+}
+
+input {
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    padding: 4px 10px;
+    margin-top: 0px;
+}
+
+input.input-date {
+  border: none;
+  background-color: white;
+  width: 110px;
+  font-family: "Nunito", sans-serif;
+}
+
+.dropdown-menu{
+    padding: 0;
+    border:none !important;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 6px 9px rgba(0, 0, 0, 0.2);
+}
+
+.mat-mdc-form-field {
+    display: block;
+}
+
+.assignee-avatar {
+    float: left;
+}
+
+.unassing-btn {
+    cursor: pointer;
+    color: red;
+    position: absolute;
+    margin-top: -35px;
+    margin-left: 20px;
+}
+
+#avatar-assignee:hover + #unassing{
+    display: block;
+}
+
+#unassing {
+    display: none;
+}
+
+.feed-avatar {
+    width: 30px !important;
+    height: 30px !important;
+    margin: 0;
+}

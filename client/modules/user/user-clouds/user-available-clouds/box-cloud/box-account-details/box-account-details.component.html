@@ -1,0 +1,30 @@
+<div class="card-tile" *ngIf="boxUserExists()">
+    <div class="card-title">
+        <h2 class="float-left">
+            <strong i18n="@@boxAccountDetails.box">Box</strong>
+        </h2>
+        <button class="btn btn-danger" (click)="disconnectBoxAccount()" i18n="@@boxAccountDetails.disconect">Disconnect</button>
+    </div>
+    <div class="user-sticky-card media mt-4" *ngIf="boxUser?.user">
+        <hr>
+        <img class="mr-3 feed-avatar" src="{{boxUser?.user?.avatar_url}}"
+            onerror="this.src='/assets/images/user.png'">
+        <div class="media-body">
+            <div>
+                <h2>{{boxUser?.user?.name}}</h2>
+                <h4>{{boxUser?.user?.login}}</h4>
+                <ul class="nav" *ngIf="boxUser?.user && boxUser?.user?.space_amount && boxUser?.user.space_used">
+                    <li class="nav-item">
+                        <a class="nav-link active">
+                            <span i18n="@@googleAccountDetails.driveUsage">Drive Usage</span>
+                            <span class="sr-only">(current)</span>
+                        </a>
+                        <span>
+                          {{ boxDriveUsed }} %
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

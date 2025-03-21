@@ -1,0 +1,33 @@
+
+<div class="card-tile" *ngIf="workspaceData && userData">
+  <div class="row">
+    <div class="col-md-4">
+      <app-workplace-information [workspaceData]="workspaceData" [routerState]="'billing'"></app-workplace-information>
+    </div>
+  
+    <div class="col-md-8">
+      <h6>
+        <b i18n="@@startSubscription.welcomeToYourWorkspace">Welcome to your workspace!</b>
+      </h6>
+      <h6 i18n="@@startSubscription.toStartUsing">To start using your workspace, please start a subscription.</h6>
+      <h6>
+        <span i18n="@@startSubscription.octoniusPartnersWithStripe">Octonius partners with Stripe to manage your
+          payments.</span>
+        <br>
+        <img src="assets/images/stripe_pay.svg" alt="" style="width: 240px; margin-top: 30px;">
+      </h6>
+    </div> 
+  </div>
+  
+  <hr>
+
+  <app-pricing-table
+    [workspaceData]="workspaceData"
+    [canCreateSubscription]="true">
+  </app-pricing-table>
+
+  <hr/>
+
+  <app-delete-workspace [workspaceData]="workspaceData"
+    (workspaceDeletedEmiter)="removeWorkspace()"></app-delete-workspace>
+</div>

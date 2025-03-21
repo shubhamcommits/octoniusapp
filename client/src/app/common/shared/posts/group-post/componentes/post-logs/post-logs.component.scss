@@ -1,0 +1,26 @@
+.box-title {
+  font-family: Nunito;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 22px;
+  color: #242d3a;
+  margin-bottom: 12px !important;
+}
+.notification-item{
+  display: flex;
+  margin: 12px 0;
+  width: 100%;
+  align-items: center;
+}
+.notification_actor{
+  max-width: 80px;
+  flex: 0 0;
+  text-align: center;
+}
+.notification_title{
+  flex: 1 1 320px;
+  will-change: transform;
+  padding: 0 10px;
+  font-family: "Nunito",sans-serif !important;
+}

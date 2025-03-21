@@ -1,0 +1,17 @@
+@import "src/assets/scss/main";
+
+.dropdown-menu{
+    padding: 0;
+    border:none !important;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 6px 9px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-toggle::after {
+    display: none !important;
+}
+
+input.input-date {
+  border: none;
+  background-color: white;
+  width: 100%;
+}

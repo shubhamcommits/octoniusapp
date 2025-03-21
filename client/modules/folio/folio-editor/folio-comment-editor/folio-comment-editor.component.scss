@@ -1,0 +1,235 @@
+//please make body bg #fff here so that we have fulll white bg all over the canvas
+body{
+    background-color: #fff !important;
+}
+
+.folio-container{
+    margin-top: 86px;
+    height: calc(100% - 80px);
+    background-color: #ffffff !important;
+    // -webkit-font-smoothing: antialiased;
+    width: 100%;
+    overflow-y: auto;
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.folio {
+    // height: 80vh;
+    width: 826px;
+    height: calc(100% - 83px);
+    overflow-y:visible;
+    margin: 0 auto;
+    img{
+        width: 100%;
+    }
+    box-shadow: 0 4px 14px 0 rgb(37 38 94 / 10%);
+    border:none;
+}
+
+
+// // this applies dark mode to FOLIO editor
+// //for dark mode please make body bg color to same bg color
+// .folio-dark-mode{
+//     background-color: #171b22 !important;
+//     color: #ffffff !important;
+//     h1,h2,h3,h4,h5{
+//         color: #ffffff !important;
+//     }
+// }
+
+.editor-section{
+    width: 50%;
+    margin: 0 auto;
+
+    .ql-toolbar .ql-snow{
+        border:none !important;
+    }
+
+}
+
+/* hide scrollbar but allow scrolling */
+.folio {
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+    overflow-y: scroll;
+}
+
+.folio::-webkit-scrollbar {
+    display: none; /* for Chrome, Safari, and Opera */
+}
+
+
+
+.comments-section{
+    padding: 10px;
+    width: 20%;
+    margin-top: 30px;
+}
+.outline-section{
+    margin-top: 30px;
+    padding: 10px;
+    width: 20%;
+}
+
+
+
+.center-vertical{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.comment-head{
+    position: relative;
+    // border: 1px solid #ccc;
+    // border-radius: 50px;
+    height: 42px;
+    margin-bottom: 30px;
+}
+
+.comment-area{
+    padding: 8px;
+    height: 80vh;
+    overflow-y: auto;
+    // overflow: scroll;
+}
+
+.commentmsg {
+    cursor: default;
+    padding: 8px;
+    border-radius: 5px;
+    margin-bottom: 8px;
+    box-shadow: 0 4px 13px 0 rgb(37 38 94 / 10%);
+}
+
+.commentmsg:hover {
+    background-color: #f3f4f6;
+}
+
+.commentmsg-highlight {
+    background-color: #f3f4f6;
+}
+
+.comment-profile {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.profile {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    height: 10%;
+}
+
+h6{
+    line-height: 30px;
+}
+
+.comment-close {
+    width: 10%;
+    text-align: center;
+    color: rgba(255, 0, 0, 0.486);
+    cursor: pointer;
+    &:hover {
+        color: red;
+    }
+}
+
+.icon {
+    width: 100%;
+    height: 100%;
+}
+
+.comment-modal{
+    padding-top: 90px;
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.hide-modal{
+    display: none;
+}
+
+.comment-container{
+    padding: 2%;
+    z-index: 2;
+    width: 30%;
+    background: white;
+    border-radius: 5px;
+    border: 1px solid #f3f4f6;
+    margin: 0 auto;
+}
+
+.close {
+    float:right;
+    cursor: pointer;
+  }
+
+.comment-submit{
+    padding  : 8px;
+    border: 1px solid #f3f4f6;
+    border-radius: 4px;
+    &:hover{
+        border: 1px solid rgb(99, 99, 99);
+        background: #f3f4f6;
+    }
+    width:fit-content;
+    cursor: pointer;
+    font-size: medium;
+}
+
+.to-comment-text{
+    width: 100%;
+    overflow-y: auto;
+    overflow-wrap: break-word;
+}
+
+.row-buttons{
+    margin-top: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-around;
+}
+
+.heading {
+  display: flex;
+  padding: 5px;
+  justify-content: space-between;
+  &:hover{
+      color:#005fd5 !important;
+      cursor: pointer;
+  }
+}
+
+.level1 {
+  font-weight: 700;
+}
+
+.level2 {
+  font-weight: 500;
+  margin-left: 10px;
+}
+
+.level3 {
+  font-weight: 300;
+  margin-left: 20px;
+}
+
+@media (max-width: 991.98px) {
+    .folio{
+        width: auto;
+    }
+    .editor-section{
+        width: auto;
+    }
+}
+

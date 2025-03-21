@@ -1,0 +1,35 @@
+<div class="card-tile invite-users">
+    <h6>
+      <b i18n="@@workspaceInviteUser.inviteUser">Invite individual users by email</b>
+    </h6>
+    <hr />
+
+    <div *ngIf="canInviteMembers">
+      <div class="form-group">
+          <app-email-input
+            [email]="email"
+            [label]="label"
+            [placeholder]="placeholder"
+            (outputEmail)="getValidEmail($event)">
+          </app-email-input>
+      </div>
+
+      <button class="btn btn-primary" [disabled]="!isValidEmail"
+        (click)="inviteUser(workspaceData?._id, this.email)"
+        i18n="@@workspaceInviteUser.inviteToJoin">
+          Invite to Join
+      </button>
+    </div>
+
+    <div *ngIf="!canInviteMembers">
+      <p i18n="@@workspaceInviteUser.changeSubscriptionDescription">
+        In order to invite other people to join your workspace, you need to upgrade your subscription.
+      </p>
+
+      <button class="btn btn-primary"
+        [routerLink]="['/dashboard', 'admin', 'billing']" routerLinkActive="active"
+        i18n="@@workspaceInviteUser.changeSubscription">
+        Change Subscription
+      </button>
+    </div>
+</div>

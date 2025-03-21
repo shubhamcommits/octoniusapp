@@ -1,0 +1,60 @@
+<div class="categorysDialog">
+
+    <mat-dialog-actions align="end">
+        <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
+    </mat-dialog-actions>
+
+    <h2 mat-dialog-title>
+        <span class="badge badge-cf">
+            <i class="material-icons">label</i>
+        </span>
+        <span i18n="@@groupCFDialog.categorys">Categories</span>
+    </h2>
+
+    <mat-dialog-content>
+        <div class="description">
+            <!-- <p i18n="@@groupCFDialog.createCategorys">Create categories to improve how you organize your workflows in task boards.</p> -->
+        </div>
+
+        <div class="categorysList" *ngIf="categories.length <= 0">
+            <h3 class="text-center muted" i18n="@@groupCFDialog.thereAreNoCategories">🌵 There are no categories...</h3>
+        </div>
+
+        <div class="categorysList" *ngIf="categories.length > 0">
+            <div class="categorysBody">
+                <div class="field" *ngFor="let field of categories; trackBy: utilityService.trackByIndex">
+                    <div class="title">
+                        <i class="material-icons" style="color: #005FD5">label</i>
+                        {{ field.name }}
+                        <i class="material-icons" *ngIf="field.name != 'priority'"
+                            (click)="removeCategory(field)"
+                            style="color: red; cursor: pointer; margin-left: 20px;">highlight_off</i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="newCategoryForm" style="padding: 10px; margin-top: 30px">
+            <button class="btn badge-cf" (click)="showNewCategory = !showNewCategory">
+                <i class="material-icons">label</i>
+                <span i18n="@@groupCFDialog.addCategory">ADD CATEGORY</span>
+             </button>
+
+             <div class="add-field" *ngIf="showNewCategory">
+                <input class="form-control" type="text" placeholder="Enter field name" [(ngModel)]="newCategoryName" (keyup.enter)="createCategory()">
+
+                <br/>
+
+                <div class="actions">
+                    <button class="col-md-4 btn btn-primary" (click)="createCategory()" i18n="@@groupCFDialog.save">
+                      Save
+                    </button>
+                    <button class="col-md-4 btn btn-danger" (click)="showNewCategory = false; this.newCategoryName = ''"
+                        i18n="@@groupCFDialog.cancel">
+                      Cancel
+                    </button>
+                </div>
+             </div>
+        </div>
+    </mat-dialog-content>
+</div>

@@ -1,0 +1,103 @@
+import { Component, OnInit, Injector } from '@angular/core';
+import { PublicFunctions } from 'modules/public.functions';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { LibraryService } from 'src/shared/services/library-service/library.service';
+import { ActivatedRoute } from '@angular/router';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
+
+@Component({
+  selector: 'app-page-navbar',
+  templateUrl: './page-navbar.component.html',
+  styleUrls: ['./page-navbar.component.scss']
+})
+export class PageNavbarComponent implements OnInit {
+
+  pageId: string;
+
+  userData: any;
+  groupData: any;
+  pageData: any;
+  workspaceData: any;
+  collectionData: any;
+  
+  // Edit Title
+  editTitle = false
+
+  isAuth;
+  canEdit = false;
+
+  // Public functions class member
+  publicFunctions = new PublicFunctions(this._Injector);
+
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private _Injector: Injector,
+    public storageService: StorageService,
+    private utilityService: UtilityService,
+    private libraryService: LibraryService
+  ) {
+    this.pageId = this.activatedRoute.snapshot.queryParams['page'];
+  }
+
+  async ngOnInit() {
+    
+    // Send Updates to router state
+    this.publicFunctions.sendUpdatesToRouterState({
+      state: 'collection'
+    });
+
+    await this.libraryService.getPage(this.pageId).then(res => {
+      this.pageData = res['page']
+    });
+
+    await this.libraryService.getCollectionByPage(this.pageId).then(res => {
+      this.collectionData = res['collection']
+    });
+
+    this.isAuth = this.storageService.existData('authToken');
+
+    if (this.isAuth) {
+      this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+      this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    }
+
+    this.canEdit = await this.utilityService.canUserDoCollectionAction(this.collectionData, this.groupData, 'edit', this.isAuth, this.userData);
+  }
+
+  /**
+   * This function is responsible for handling the changeTitle functionlaity
+   * @param event
+   */
+  async changeTitle(event: any) {
+
+    // KeyCode = 13 - User hits enter
+    if (event.keyCode == 13) {
+      await this.utilityService.asyncNotification($localize`:@@pageNavbar.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+        this.libraryService.editPage(this.pageData?._id, { 'title': this.pageData?.title })
+          .then((res) => {
+            // Resolve with success
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@pageNavbar.detailsUpdated:Details updated!`));
+          })
+          .catch(() => {
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@pageNavbar.unableToUpdateDetails:Unable to update the details, please try again!`));
+          });
+      }));
+
+      this.editTitle = !this.editTitle;
+    } else if (event.keyCode == 27) {
+      // Only Set the edit title to false
+      this.editTitle = false
+    }
+
+  }
+
+  ngOnDestroy() {
+    // Change the title of the tab
+    // this.titleService.setTitle('Octonius');
+  }
+
+  isAdminUser(groupData: any) {
+    const index = (groupData && groupData._admins) ? groupData._admins.findIndex((admin: any) => admin._id === this.userData._id) : -1;
+    return index >= 0 || this.userData.role == 'owner';
+  }
+}

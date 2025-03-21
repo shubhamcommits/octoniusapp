@@ -1,0 +1,38 @@
+<nav class="navbar navbar-expand-md fixed-top" style="min-height: 86px;">
+    <!-- Go Back starts -->
+    <span class="navbar-brand ml-5 mr-5" routerLinkActive="active"
+            [routerLink]="['/dashboard', 'work', 'groups', 'library', 'collection']"
+            [queryParams]="{ collection: (pageData?._collection?._id || pageData?._collection) }">
+        <i class="material-icons">arrow_back</i>
+    </span>
+    <!-- Go Back ends -->
+
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ml-4">
+            <li class="nav-item active" *ngIf="!canEdit">
+                <span>{{ pageData?.title }}</span>
+            </li>
+
+            <li class="nav-item active" *ngIf="canEdit">
+                <!-- Folio Static Title starts -->
+                <span *ngIf="!editTitle" (click)="editTitle = !editTitle"
+                        matTooltip="Click me to rename"
+                        matTooltipPosition="below">
+                    {{ pageData?.title }}
+                </span>
+                <!-- Folio Static Title ends -->
+
+                <!-- Folio edit title name starts -->
+                <input *ngIf="editTitle" type="search"
+                    autocomplete="off"
+                    [(ngModel)]="pageData.title"
+                    (keyup)="changeTitle($event)"
+                    placeholder="Give me a name"
+                    class="input-search" />
+                <!-- Folio edit title name ends -->
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<router-outlet></router-outlet>

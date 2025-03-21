@@ -1,0 +1,83 @@
+/* PUSH NOTIFICATION CSS */
+
+// NOTIFICATIONS BASE ELEMENT CLASS
+.notifications{
+    color:#787878 !important;
+     margin-right: 15px;
+     padding: 5px;
+     width: 45px;
+      &:hover {
+        text-decoration: none;
+        background: #ffffff;
+        color: $brand-primary !important;
+        border-radius: 6px;
+      }
+    }
+  
+  // TIME STAMP CLASS
+  .text-small {
+    font-size: 10px;
+  }
+
+  // NOTIFICATION BULLET
+  .notif-bullet{
+    width: 10px;
+    height: 10px;
+    background: red;
+    border-radius: 50%;
+    float: right;
+  }
+  
+  // TRANSPARENT RED NOTIFICATION BULLET CLASS
+  .notif-bullet-transparent {
+    color: transparent;
+    background: transparent;
+  }
+  
+  // MARK NOTIFICATIONS AS READ CLASS
+  .mark-notification-read {
+    display: flexbox;
+    opacity: 0;
+    -webkit-transition: all 500ms ease-in-out;
+    -moz-transition: all 500ms ease-in-out;
+    -ms-transition: all 500ms ease-in-out;
+    -o-transition: all 500ms ease-in-out;
+    transition: all 500ms ease-in-out;
+    :hover {
+      color: $brand-primary
+    }
+  }
+  
+  // VIEW NOTIFICATION CLASS
+  .view-notification {
+    display: flexbox;
+    opacity: 0;
+    -webkit-transition: all 500ms ease-in-out;
+    -moz-transition: all 500ms ease-in-out;
+    -ms-transition: all 500ms ease-in-out;
+    -o-transition: all 500ms ease-in-out;
+    transition: all 500ms ease-in-out;
+    :hover {
+      color: $brand-primary
+    }
+  }
+  
+  // NOTIFICATION ITEM HOVER CLASS
+  .notification-item :hover{ 
+      
+      .view-notification {
+        opacity: 1.0;
+      }
+  
+      .mark-notification-read {
+        opacity: 1.0;
+      }
+  
+      // Changes the color of the notification bar
+      -webkit-filter: grayscale(60%);
+      filter: grayscale(60%);
+  
+  }
+  
+  /* PUSH NOTIFICATION CSS */
+  

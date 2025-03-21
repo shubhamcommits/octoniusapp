@@ -1,0 +1,149 @@
+
+/* GROUP PULSE CSS */
+
+// Inline the elements of group pulse details
+.inline-elements{
+    display:flex; 
+    flex-direction: row; 
+    justify-content: space-between; 
+    align-items: center;
+  }
+  
+  // Group element in the array
+  .group-elem {
+    background: #ffffff;
+    margin: 1px 0;
+    padding: 5px 0;
+    list-style-type: none;
+    cursor: pointer;
+    // transition: transform .3s ease;
+    overflow: hidden;
+    border: 1px solid $border-color;
+    border-radius: 5px;
+  }
+  
+  // Create transition effect
+  // .group-elem:hover {
+  //   transform: scale(1.1);
+  // }
+  
+  // Group Name style element
+  .group-name {
+    font-style: normal;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+    color: #4a90e2;
+  }
+  
+  // Group Total Tasks banner
+  .group-total-tasks {
+    color: #ffffff;
+    background: #242d3a;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 10px;
+    padding: 10px;
+  }
+  
+  // Group todo tasks banner
+  .group-todo-tasks {
+    color: #ffffff;
+    background: #fd7714;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 10px;
+    padding: 10px;
+  }
+  
+  // Group In Progress tasks banner
+  .group-in-progress-tasks {
+    color: #ffffff;
+    background: #0bc6a0;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 10px;
+    padding: 10px;
+  }
+  
+  // Group Done tasks banner
+  .group-done-tasks {
+    color: #ffffff;
+    background: #4a90e2;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 10px;
+    padding: 10px;
+  }
+  
+  // Group Done tasks banner
+  .group-pulse-label {
+    color: #ffffff;
+    background: #ffc107;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 10px;
+    padding: 10px;
+  }
+  
+  // Group Done tasks banner
+  .group-name-label {
+    color: #ffffff;
+    background: #FF6584;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 10px;
+    padding: 10px;
+  }
+  
+  .group-elements-content{
+    text-align: center;
+    margin: 10px;
+    padding: 10px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 18px;
+  }
+  
+  // Pulse description banner
+  .pulse-desc {
+    font-style: normal;
+    font-weight: 700;
+    line-height: 18px;
+    align-items: center;
+  }
+  
+  .spacex{
+    width:140px;
+  }
+  /* GROUP PULSE CSS */

@@ -1,0 +1,180 @@
+<mat-dialog-actions align="end">
+  <div class="action-box">
+      <a (click)="onCloseDialog()" mat-dialog-close>
+        <i class="material-icons" style="cursor: pointer">close</i>
+      </a>
+  </div>
+</mat-dialog-actions>
+
+<div class="post-dialog-content" *ngIf="objectExists(postData) && postData._id">
+    <div class="post-content">
+        <div>
+          <div class="content-box">
+            <div class="modal-header">
+              <!-- Event Post Header starts -->
+              <h4 class="modal-title">
+                <!-- Post Title starts -->
+                <input name="postTitle" type="text" [ngModel]="title" (blur)="titleChange($event)" class="post-title"
+                  placeholder="✍🏻 Title" />
+                <!-- Post Title ends -->
+              </h4>
+        
+              <app-post-utils *ngIf="userData" [post]="postData" [userData]="userData" [groupData]="groupData"
+                [canEdit]="canEdit" mode="fullscreen" (delete)="deletePostEvent()">
+              </app-post-utils>
+            </div>
+            <!-- Post Header Title ends -->
+        
+            <!-- Post Content starts -->
+            <app-quill-editor *ngIf="canEdit" [editorId]="'postbox-editor'" [toolbar]="canEdit" [readOnly]="!canEdit"
+              [quillContent]="postData?.content" [groupId]="groupId" (contentEmitter)="quillContentChanged($event)">
+            </app-quill-editor>
+            <!-- Post Content ends -->
+        
+            <!-- Attach files starts -->
+            <div class="attach-files">
+              <app-attach-files [post]="postData" (files)="onAttach($event)" (cloudFiles)="onCloudFileAttach($event)">
+              </app-attach-files>
+            </div>
+            <!-- Attach files ends -->
+
+            <app-post-actions [post]="postData" [userData]="userData" [fullscreen]="true" [groupData]="groupData"
+              [canEdit]="canEdit"
+              (newCommentEmitter)="newCommentAdded($event)">
+            </app-post-actions>
+          </div>
+        </div>
+
+        <div class="clearfix save-content">
+            <button *ngIf="canEdit" [disabled]="!contentChanged"
+              class="btn float-right btn-primary btn-md"
+              (click)="updateDetails('change_content')" i18n="@@eventPostDialog.save">
+                Save
+            </button>
+        </div>
+
+        <div class="content-box" *ngIf="(postData?.comments_count > 0) || (postData?.logs && postData?.logs?.length > 0)">
+          <!-- TABS STARTS -->
+          <mat-tab-group mat-align-tabs="start" [selectedIndex]="selectedTab">
+            <!-- comment-list STARTS-->
+            <mat-tab *ngIf="postData?.comments_count > 0">
+              <ng-template mat-tab-label>
+                <span i18n="@@eventPostDialog.comments">Comments</span>
+              </ng-template>
+
+              <ng-template matTabContent>
+                <app-comment-list
+                  [postId]="postData?._id"
+                  [userData]="userData"
+                  [groupId]="postData?._group?._id || postData?._group"
+                  [length]="postData?.comments_count"
+                  [newComment]="newComment"></app-comment-list>
+              </ng-template>
+            </mat-tab>
+            <!-- comment-list ENDS-->
+
+            <!-- TASK CHANGES HISTORY STARTS-->
+            <mat-tab *ngIf="postData?.logs && postData?.logs?.length > 0">
+              <ng-template mat-tab-label>
+                <span i18n="@@eventPostDialog.changeLog">Change Log</span>
+              </ng-template>
+
+              <ng-template matTabContent>
+                <app-post-logs [logs]="postData?.logs"></app-post-logs>
+              </ng-template>
+            </mat-tab>
+            <!-- TASK CHANGES HISTORY ENDS-->
+          </mat-tab-group>
+          <!-- TABS ENDS -->
+        </div>
+    </div>
+
+    <!-- Top Right Section starts -->
+    <div *ngIf="!!groupData
+        && (!!groupData.dialog_properties_to_show
+            && !!groupData.dialog_properties_to_show.normal
+            && (groupData?.dialog_properties_to_show?.normal?.includes('date') || groupData?.dialog_properties_to_show?.normal?.includes('assignee')
+                 || groupData?.dialog_properties_to_show?.normal?.includes('tags')))"
+      class="post-properties">
+        <!-- Dates starts -->
+        <app-post-dates *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.normal && groupData?.dialog_properties_to_show?.normal?.includes('date')"
+          [userData]="userData"
+          [postData]="postData"
+          [groupData]="groupData"
+          [canEdit]="canEdit"
+          (startDateEvent)="getStartDate($event)"
+          (dueDateEvent)="getDueDate($event)"
+          (timeEvent)="getTime($event)"></app-post-dates>
+        <!-- Dates ends -->
+
+        <!-- Assignee Modal starts -->
+        <div class="content-box" *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.normal && groupData?.dialog_properties_to_show?.normal?.includes('assignee')">
+            <p class="box-title" i18n="@@eventPostDialog.assignee">Assignee</p>
+
+            <app-multiple-assignments
+              [canEdit]="canEdit"
+              [groupId]="groupId"
+              [post]="postData"
+              [type]="'post'"
+              (assigneeAddedEmiter)="onAssigned($event)"
+              (assigneeRemovedEmiter)="onAssigned($event)">
+            </app-multiple-assignments>
+
+            <div *ngIf="lastAssignedBy" id="avatar-assignee">
+              <p class="box-title" style="padding-top: 20px;" i18n="@@eventPostDialog.assignedBy">Assigned by</p>
+
+              <app-secured-image
+                [imgURL]="lastAssignedBy.profile_pic"
+                [service]="'user'"
+                [userData]="lastAssignedBy"
+                [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
+                [styleClass]="'feed-avatar-small'"
+                style="float: left; cursor: auto;"></app-secured-image>
+
+              <div style="padding-top: 10px;" class="ml-1">
+                {{ lastAssignedBy?.first_name }}
+                {{ lastAssignedBy?.last_name }}
+              </div>
+            </div>
+
+            <div id="avatar-assignee" style="margin-bottom: 30px;">
+              <p class="box-title" style="padding-top: 20px;" i18n="@@eventPostDialog.createdBy">Created by</p>
+
+              <app-secured-image *ngIf="postData && postData?._posted_by"
+                [imgURL]="postData?._posted_by?.profile_pic"
+                [service]="'user'"
+                [userData]="postData?._posted_by"
+                [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
+                [styleClass]="'feed-avatar-small'"
+                style="float: left; cursor: auto;"></app-secured-image>
+
+              <div style="padding-top: 10px;" class="ml-1">
+                {{ postData?._posted_by?.first_name }}
+                {{ postData?._posted_by?.last_name }}
+                <span class="muted" i18n="@@eventPostDialog.on">on {{ postData?.created_date | date: 'MMM dd, yyyy'}}</span>
+              </div>
+            </div>
+        </div>
+
+        <div class="content-box" *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.normal && groupData?.dialog_properties_to_show?.normal?.includes('tags')">
+            <p class="box-title" i18n="@@eventPostDialog.tags">Tags</p>
+
+            <!-- Post Tags starts -->
+            <app-tags
+                [canEdit]="canEdit"
+                [item]="postData"
+                [userData]="userData"
+                [groupId]="groupId"
+                (tags)="getTags($event)">
+            </app-tags>
+            <!-- Post Tags ends -->
+        </div>
+    </div>
+    <!-- Top Right Section ends -->
+</div>
+
+<!-- Loading Spinner Starts -->
+<ng-container *ngIf="isLoading$ | async">
+  <app-loading-spinner class="media"></app-loading-spinner>
+</ng-container>
+<!-- Loading Spinner Ends -->

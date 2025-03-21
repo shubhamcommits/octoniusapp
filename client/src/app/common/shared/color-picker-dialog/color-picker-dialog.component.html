@@ -1,0 +1,15 @@
+<div class="colors-box">
+  <div *ngFor="let color of colors; trackBy: utilityService.trackByIndex"
+    class="color" [ngClass]="colorSelected == color ? 'selected' : ''"
+    style="background-color: {{ color }}"
+    (click)="selectColor(color)"></div>
+</div>
+
+<div>
+  <input style="margin-top: 20px;"
+    placeholder="Enter an specific hexadecimal value (#005FD5)..."
+    class="input"
+    [(ngModel)]="colorSelectedInput"
+    (keyup.enter)="selectColor(colorSelectedInput)"/>
+  <button class="btn btn-success" (click)="selectColor(colorSelectedInput)" i18n="@@colorPickerDialog.selectColor">Select Color</button>
+</div>

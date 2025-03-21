@@ -1,0 +1,1 @@
+FROM minio/sidekick:v2.0.2

@@ -1,0 +1,68 @@
+<div class="dialog-content">
+  <mat-dialog-actions align="end">
+      <div class="action-box">
+          <a (click)="cancel()" mat-dialog-close>
+          <i  class="material-icons" style="cursor: pointer">close</i>
+          </a>
+      </div>
+  </mat-dialog-actions>
+  <mat-dialog-content>
+  <div class="content">
+    <div class="">
+        <div class="modal-header">
+          <h4 class="modal-title" i18n="@@widgetSelectorDialog.customizeYourDashboard">
+            Customize your dashboard
+          </h4>
+        </div>
+
+        <p class="ml-3" i18n="@@widgetSelectorDialog.selectWhatWidgets">Select what widgets should be displayed in the dashboard.</p>
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="content-box" *ngFor="let widget of availableWidgets; trackBy: utilityService.trackByIndex">
+      <div *ngIf="widget.code != 'RESOURCE_MANAGEMENT' || (widget.code == 'RESOURCE_MANAGEMENT' && numGroupMembers <= 50)">
+        <div style="display: flex; cursor: pointer;" (click)="selectWidget(widget)">
+          <span class="material-icons-outlined mr-4 mt-3" style="color:#119b11;" *ngIf="isSelected(widget.code)">check_circle</span>
+          <span class="material-icons-outlined mr-4 mt-3" style="color:#c7c7c7;" *ngIf="!isSelected(widget.code)">check_circle</span>
+
+          <img [src]="widget.img" alt="" class="widget-img">
+
+          <h4 class="ml-3 mt-4"> {{ widget.name }}</h4>
+        </div>
+
+        <!-- <div style="margin-left: 120px; margin-top: 30px;" *ngIf="widget.code == 'RESOURCE_MANAGEMENT' && groupId && groupEnableAllocation">
+          <mat-slide-toggle color="primary"
+              [disabled]="!isSelected(widget.code)"
+              [checked]="resource_management_allocation"
+              [name]="'share_files'"
+              (change)="enableDisplayAllocation($event)">
+            <h6><b i18n="@@widgetSelectorDialog.allocation">Allocation</b></h6>
+          </mat-slide-toggle>
+        </div> -->
+      </div>
+    </div>
+
+    <div class="content-box" *ngIf="groupId && !isIndividualSubscription">
+      <div style="display: flex;" >
+        <img [src]="'assets/images/widgets/widget-cf.svg'" alt="" class="widget-img">
+        <h4 class="ml-3 mt-4" i18n="@@widgetSelectorDialog.cfStatistics"> CF Statistics</h4>
+      </div>
+
+      <div style="margin-left: 120px; margin-top: 30px;" *ngFor="let cf of custom_fields; trackBy: utilityService.trackByIndex">
+        <mat-slide-toggle color="primary"
+            [checked]="isSelected(cf.name)"
+            [name]="'share_files'"
+            (change)="selectWidget(null, cf.name)">
+          <h6><b>{{ cf.title }}</b></h6>
+        </mat-slide-toggle>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button class="btn btn-danger mr-4" (click)="cancel()" i18n="@@widgetSelectorDialog.cancel">Cancel</button>
+  <button class="btn btn-primary" (click)="save()" i18n="@@widgetSelectorDialog.updateSettings">Update settings</button>
+</mat-dialog-actions>
+  <!-- Top Right Section ends -->
+</div>

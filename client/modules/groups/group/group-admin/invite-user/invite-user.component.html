@@ -1,0 +1,25 @@
+<div class="card-tile invite-users">
+  <div class="card-block">
+    <img src="assets/images/invite_guest_placeholder.svg" alt="Invite a guest" style="float: left; margin-top: -10px;"/>
+
+    <div class="form-group">
+      <h6><b i18n="@@groupInviteUser.inviteGuest">Invite a guest?</b></h6>
+
+      <p i18n="@@groupInviteUser.guestMembersHaveAccess">Working with people outside your organization? Go on, add them to your group as a guest. Guest members have access only to the group they are invited. They can not see any private or public groups from your organization.</p>
+
+      <br />
+
+      <app-email-input
+        [email]="email"
+        [placeholder]="placeholder"
+        (outputEmail)="getValidEmail($event)" class="email-search">
+      </app-email-input>
+
+      <button class="btn btn-primary" [disabled]="!isValidEmail"
+          (click)="inviteUser(workspaceData?._id, this.email, groupData?._id)"
+          i18n="@@groupInviteUser.inviteToJoin">
+        Invite to Join
+      </button>
+    </div>
+  </div>
+</div>

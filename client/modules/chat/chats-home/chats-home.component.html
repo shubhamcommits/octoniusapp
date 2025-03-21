@@ -1,0 +1,22 @@
+
+<button class="chats-home-fab" mat-fab *ngIf="objectExists(userData) && !showChatsList" (click)="showHideChats()">
+  <app-chat-notification-icon [userData]="userData"></app-chat-notification-icon>
+</button>
+
+<div *ngIf="objectExists(userData) && showChatsList" class="chats-home">
+  <div *ngIf="!openChat">
+    <div class="action-box">
+      <i class="material-icons" (click)="openChatDetails(null)">send</i>
+      <a (click)="showHideChats()">
+        <i class="material-icons" style="cursor: pointer">close</i>
+      </a>
+    </div>
+    <app-direct-chats-home [chats]="directChats" [unreadMessages]="unreadMessages" [userData]="userData" [workspaceData]="workspaceData" [numUnreadMessages]="numUnreadDirectMessages" (chatSelectedEvent)="openChatDetails($event)" (chatDeletedEvent)="deleteChat($event)"></app-direct-chats-home>
+
+    <app-group-chats-home [chats]="groupChats" [unreadMessages]="unreadMessages" [userData]="userData" [workspaceData]="workspaceData" [numUnreadMessages]="numUnreadGroupMessages" (chatSelectedEvent)="openChatDetails($event)"></app-group-chats-home>
+  </div>
+
+  <div *ngIf="openChat">
+    <app-chat-details [userData]="userData" [workspaceData]="workspaceData" [chatData]="openChat" (chatClosedEvent)="closeChat($event)"></app-chat-details>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+.price-list {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.price {
+	padding: 25px;
+	border: 1px;
+	border-radius: 10px;
+	box-shadow: 0 3px 8px #33333351;
+	margin: 6px;
+	width: 300px;
+
+	.product-description {
+		margin: 20px 0;
+	}
+
+	.price-and-button {
+		margin: 20px 0;
+
+		.price-container {
+			margin: 20px 0;
+		}
+	}
+}

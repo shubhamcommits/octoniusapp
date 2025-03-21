@@ -1,0 +1,39 @@
+.input-search {
+    width: 100px;
+    height: 38px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+    background: #fff;
+    border: none;
+    border-bottom: 1px solid #000000;
+  }
+
+  input:focus {
+    outline: none;
+    border-bottom: 1px solid royalblue;
+  }
+
+  .full-name-text {
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  app-loading-spinner{
+    display: flex;
+    margin-top: 2%;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+}
+
+.user-results{
+  width: max-content;
+  padding: 0;
+  position: absolute;
+  z-index: 1000;
+  background: #fff !important;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 6px 9px rgba(0, 0, 0, 0.2);
+}
+

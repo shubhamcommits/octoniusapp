@@ -1,0 +1,85 @@
+<!-- Assignee section for tasks starts -->
+<section>
+  <div *ngIf="type != 'chat' && type != 'time-tracking'">
+    <app-secured-image *ngFor="let assignee of assigned_to; trackBy: utilityService.trackByIndex"
+      [imgURL]="assignee?.profile_pic"
+      [service]="'user'"
+      [userData]="assignee"
+      [workspaceId]="workspaceData?._id"
+      [alt]="assignee?.first_name + ' ' + assignee?.last_name"
+      [styleClass]="'feed-avatar-small'"
+      [tooltip]="assignee?.first_name + ' ' + assignee?.last_name"
+      (click)="unassign(assignee._id)"></app-secured-image>
+  </div>
+
+  <div *ngIf="type == 'time-tracking' && !!assigned_to && !!assigned_to[0]" (click)="unassign(assigned_to[0]._id)" style="cursor: pointer;">
+    <app-secured-image [imgURL]="assigned_to[0]?.profile_pic" [service]="'user'" [userData]="assigned_to[0]"
+      [workspaceId]="workspaceData?._id" [alt]="assigned_to[0]?.first_name + ' ' + assigned_to[0]?.last_name"
+      [styleClass]="'feed-avatar-small'" [tooltip]="assigned_to[0]?.first_name + ' ' + assigned_to[0]?.last_name"
+      (click)="unassign(assigned_to[0]._id)"></app-secured-image>
+  
+    <span>{{ assigned_to[0]?.first_name + ' ' + assigned_to[0]?.last_name }}</span>
+  </div>
+
+  <div *ngIf="type == 'chat'" style="overflow: auto; overflow-y: hidden; float: left; min-height: 35px;">
+    <span *ngFor="let assignee of assigned_to; trackBy: utilityService.trackByIndex">
+      <app-secured-image style="width: 24px; height: 24px; margin: 0 10px;"
+        [imgURL]="(assignee?._user?.profile_pic || assignee?.profile_pic)" [service]="'user'"
+        [workspaceId]="workspaceData?._id" [userData]="assignee"
+        [alt]="(assignee?._user?.first_name || assignee?.first_name) + ' ' + (assignee?._user?.last_name || assignee?.last_name)"
+        [styleClass]="'feed-avatar-small'" [inlineStyle]="'margin: 0px;'"
+        [tooltip]="(assignee?._user?.first_name || assignee?.first_name) + ' ' + (assignee?._user?.last_name || assignee?.last_name)"
+        (click)="unassign(assignee?._user._id)"></app-secured-image>
+      <span *ngIf="assignee?.isOnline" style="margin-left: -10px;"
+        matBadge="&#8288;" matBadgeColor="warn"
+        matBadgeSize="small" matBadgePosition="below before">
+      </span>
+    </span>
+  </div>
+  
+
+  <span *ngIf="(!assigned_to || assigned_to.length === 0) && type != 'filter' && type != 'chat' && type != 'collection' && type != 'time-tracking'"
+    i18n="@@multipleAssignments.unassigned">
+      Unassigned
+  </span>
+
+  <button *ngIf="type != 'chat' && canEdit && type != 'time-tracking'"
+    mat-button [matMenuTriggerFor]="assigneeSearch" #trigger="matMenuTrigger" class="btn tagslabel">
+      <span *ngIf="type != 'filter' && type != 'collection'"i18n="@@multipleAssignments.addAssignee">add assignee</span>
+      <span *ngIf="type == 'filter'"i18n="@@multipleAssignments.addUser">add user</span>
+      <span *ngIf="type == 'collection'" i18n="@@multipleAssignments.addEditor">add editor</span>
+  </button>
+
+  <button *ngIf="type == 'time-tracking' && assigned_to?.length < 1 && canEdit"
+    mat-button [matMenuTriggerFor]="assigneeSearch" #trigger="matMenuTrigger" class="btn tagslabel">
+      <span i18n="@@multipleAssignments.addUser">add user</span>
+  </button>
+
+  <i *ngIf="type == 'chat' && canEdit" class="material-icons-outlined btn" [matMenuTriggerFor]="assigneeSearch" #trigger="matMenuTrigger">add_circle</i>
+
+  <mat-menu #assigneeSearch="matMenu">
+    <div>
+      <div class="users-card">
+        <div class="form-group">
+          <label for="search-text" *ngIf="type != 'filter' && type != 'collection'"i18n="@@multipleAssignments.assignee">Assignee</label>
+          <input type="text" class="form-control" id="search-text" aria-describedby="search-text" [(ngModel)]="searchText"
+            placeholder="Search group member" autofocus
+            (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+        </div>
+        <ul class="assignee-list">
+          <li class="assignee-list-item" *ngFor="let member of members | appFilter: searchText; trackBy: utilityService.trackByIndex"
+              (click)="getMemberDetails(member)">
+            <app-avatar style="width:30px !important;height:30px !important;"
+              [photoUrl]="member.profile_pic"
+              [userData]="member"
+              [styleClass]="'feed-avatar-small'"
+              [noAuth]="true"></app-avatar>
+
+            {{ member.first_name }} {{ member.last_name }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </mat-menu>
+</section>
+<!-- Assignee section for tasks ends -->

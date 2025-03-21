@@ -1,0 +1,16 @@
+<div class="board-section">
+    <button class="btn create-section" (click)="this.showCreateSection = !this.showCreateSection">
+      <i class="material-icons-outlined">table_chart</i>
+      <span i18n="@@createSection.newSection">New section</span>
+    </button>
+
+    <div class="add-section" *ngIf="this.showCreateSection">
+        <input class="form-control" type="text" placeholder="Section name" [(ngModel)]="newSection" (keyup)="enableFunctionKeys($event)">
+        <div class="container">
+            <button class="col-md-4 btn btn-sm btn-primary"
+                (click)="this.showCreateSection = !this.showCreateSection; openCreateSection()" i18n="@@createSection.save">Save</button>
+            <button class="col-md-4 btn btn-sm btn-danger"
+                (click)=" this.showCreateSection = !this.showCreateSection" i18n="@@createSection.cancel">Cancel</button>
+        </div>
+    </div>
+</div>

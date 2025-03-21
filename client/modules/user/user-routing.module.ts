@@ -1,0 +1,26 @@
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { UserCloudsComponent } from './user-clouds/user-clouds.component';
+import { UserWorkloadComponent } from './user-workload/user-workload.component';
+import { TeamAuthConfirmationComponent } from './user-clouds/user-available-clouds/team/team-auth-confirmation/team-auth-confirmation.component';
+import { ZapAuthConfirmationComponent } from './user-clouds/user-available-clouds/zapier/zap-auth-confirmation/zap-auth-confirmation.component';
+import { UserHiveComponent } from './user-hive/user-hive.component';
+import { OrganizationModuleAvailableGuard } from 'src/shared/guards/organization-module-available-guard/organization-module-available.guard';
+import { UserMyGroupSettingsComponent } from './user-my-group-settings/user-my-group-settings.component';
+
+const routes: Routes = [
+  { path: 'profile', component: UserProfileComponent, runGuardsAndResolvers: `always` },
+  { path: 'hive', component: UserHiveComponent, canActivate: [OrganizationModuleAvailableGuard], runGuardsAndResolvers: `always` },
+  { path: 'clouds', component: UserCloudsComponent, runGuardsAndResolvers: `always` },
+  { path: 'workload', component: UserWorkloadComponent, runGuardsAndResolvers: `always` },
+  { path: 'myGroupSettings', component: UserMyGroupSettingsComponent, runGuardsAndResolvers: `always` },
+  { path: 'teams', component: TeamAuthConfirmationComponent, runGuardsAndResolvers: `always` },
+  { path: 'zap', component: ZapAuthConfirmationComponent, runGuardsAndResolvers: `always` }
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class UserRoutingModule { }

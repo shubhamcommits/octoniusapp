@@ -1,0 +1,160 @@
+<mat-dialog-actions align="end">
+  <div class="action-box">
+    <a (click)="cancel()" mat-dialog-close>
+      <i class="material-icons" style="cursor: pointer">close</i>
+    </a>
+  </div>
+</mat-dialog-actions>
+
+<div class="sharing">
+  <h2 mat-dialog-title>
+    <span i18n="@@shareCollectionDialog.shareCollection">Sharing settings</span>
+  </h2>
+ 
+  <div class="row">
+    <div class="col-9">
+      <mat-slide-toggle color="primary" [checked]="collectionData?.share?.open_link?.status" [name]="'enabled_project_type'"
+        (change)="changeCollectionOpenLink($event)" [(ngModel)]="collectionData.share.open_link.status">
+        <h6><b i18n="@@shareCollectionDialog.enableOpenLink">Enable Open Link for Collection</b></h6>
+        <p class="card-text" i18n="@@shareCollectionDialog.enableOpenLinkDescription"> This will enable everybody to access the Collection</p>
+      </mat-slide-toggle>
+    </div>
+
+    <!--
+    <div class="col-4">
+      <mat-select [disabled]="!collectionData?.share?.open_link?.status"
+        [(value)]="collectionData.share.open_link.can_edit"
+        (valueChange)="changeOpenLinkRigth($event)">
+        <mat-option [value]="true" i18n="@@shareCollectionDialog.canEdit">Can Edit</mat-option>
+        <mat-option [value]="false" i18n="@@shareCollectionDialog.readOnly">Read-Only</mat-option>
+      </mat-select>
+    </div>
+    -->
+
+    <div class="col-3">
+      <button [disabled]="!collectionData?.share?.open_link?.status" class="btn float-right btn-primary btn-md"
+          (click)="copyCollectionLink()">
+        <i class="material-icons-round">content_copy</i>
+        <span i18n="@@shareCollectionDialog.copyLink">Copy Link</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="group">
+    <div class="d-flex" style="justify-content: space-between;">
+      <p class="bold" i18n="@@shareCollectionDialog.shareWithGroups">Share with Groups: </p>
+    </div>
+  
+    <div style="justify-content: space-between;">
+      <input type="search" id="keyword" autocomplete="off" [placeholder]="groupSearchPlaceholder" class="form-control"
+        [(ngModel)]="groupSearchModel" (keyup)="onGroupSearch($event)" (ngModelChange)="modelGroupChange($event)"/>
+
+      <section id="results" *ngIf="groupsList && groupsList.length > 0" class="groups-results">
+        <div *ngFor=" let group of groupsList; let index = index; trackBy: utilityService.trackByIndex"
+          (click)="selectGroup(group)" class="media card-tile group-list mb-0">
+          <app-secured-image
+            [imgURL]="group?.group_avatar"
+            [service]="'group'"
+            [workspaceId]="workspaceData?._id"
+            [styleClass]="'feed-avatar-search'"></app-secured-image>
+
+          <h4 class="mt-0 full-name-text">
+            {{ group?.group_name }}
+          </h4>
+        </div>
+      </section>
+
+      <div class="shared-groups">
+        <div *ngFor="let sharedGroup of collectionData?.share?.groups; trackBy: utilityService.trackByIndex" class="row">
+          <div class="col-1">
+            <app-secured-image
+              [imgURL]="sharedGroup?._group?.group_avatar"
+              [service]="'group'"
+              [workspaceId]="workspaceData?._id"
+              [styleClass]="'feed-avatar-search'"></app-secured-image>
+          </div>
+
+          <div class="col-6">
+            <h4 class="mt-0 full-name-text">
+              {{ sharedGroup?._group?.group_name }}
+            </h4>
+          </div>
+          
+          <div class="col-3">
+            <mat-select
+              [(value)]="sharedGroup.can_edit"
+              (valueChange)="changeGroupRigth($event, sharedGroup)">
+              <mat-option [value]="true" i18n="@@shareCollectionDialog.canEdit">Can Edit</mat-option>
+              <mat-option [value]="false" i18n="@@shareCollectionDialog.readOnly">Read-Only</mat-option>
+            </mat-select>
+          </div>
+          
+          <div class="col-2">
+            <i class="material-icons-outlined ml-2" (click)="removeGroup(sharedGroup?._group?._id)" style="cursor: pointer;">cancel</i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="user">
+    <div class="d-flex" style="justify-content: space-between;">
+      <p class="bold" i18n="@@shareCollectionDialog.shareWithUsers">Share with Users: </p>
+    </div>
+  
+    <div style="justify-content: space-between;">
+      <input type="search" id="keyword" autocomplete="off" [placeholder]="userSearchPlaceholder" class="form-control"
+        [(ngModel)]="userSearchModel" (keyup)="onUserSearch($event)" (ngModelChange)="modelUserChange($event)" />
+  
+      <section id="results" *ngIf="usersList && usersList.length > 0" class="groups-results">
+        <div *ngFor=" let user of usersList; let index = index; trackBy: utilityService.trackByIndex" (click)="selectUser(user)"
+          class="media card-tile group-list mb-0">
+          <app-secured-image [imgURL]="user?.profile_pic" [service]="'user'"
+            [userData]="user" [workspaceId]="workspaceData?._id"
+            [styleClass]="'feed-avatar-search'"></app-secured-image>
+  
+          <h4 class="mt-0 full-name-text">
+            {{ user?.first_name }} {{ user?.last_name }}
+          </h4>
+        </div>
+      </section>
+  
+      <div class="shared-groups">
+        <div *ngFor="let sharedUser of collectionData?.share?.users; trackBy: utilityService.trackByIndex" class="row">
+          <div class="col-1">
+            <app-secured-image [imgURL]="sharedUser?._user?.profile_pic" [service]="'user'"
+              [userData]="sharedUser?._user"
+              [workspaceId]="workspaceData?._id" [styleClass]="'feed-avatar-search'"></app-secured-image>
+          </div>
+  
+          <div class="col-6">
+            <h4 class="mt-0 full-name-text">
+              {{ sharedUser?._user?.first_name }} {{ sharedUser?._user?.last_name }}
+            </h4>
+          </div>
+  
+          <div class="col-3">
+            <mat-select [(value)]="sharedUser.can_edit" (valueChange)="changeUserRigth($event, sharedUser)">
+              <mat-option [value]="true" i18n="@@shareCollectionDialog.canEdit">Can Edit</mat-option>
+              <mat-option [value]="false" i18n="@@shareCollectionDialog.readOnly">Read-Only</mat-option>
+            </mat-select>
+          </div>
+  
+          <div class="col-2">
+            <i class="material-icons-outlined ml-2" (click)="removeUser(sharedUser?._user?._id)"
+              style="cursor: pointer;">cancel</i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <img src="assets/images/share_collection.svg" alt="" style="width: 20%; margin: 14px" />
+
+
+</div>
+
+<!-- LOADING SPINNER STARTS -->
+<ng-container *ngIf="isLoading$ | async">
+    <app-loading-spinner class="media"></app-loading-spinner>
+</ng-container>
+<!-- LOADING SPINNER ENDS -->

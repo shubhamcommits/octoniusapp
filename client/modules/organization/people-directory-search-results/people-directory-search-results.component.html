@@ -1,0 +1,30 @@
+<!-- START USER -->
+<div *ngIf="searchedUsers" style="text-align: left;" class="mb-2">
+  <div class="media card-tile user-list" *ngFor="let member of searchedUsers; trackBy: utilityService.trackByIndex" (click)="openFullscreenModal(member._id)">
+    <!-- Avatar Image of the member -->
+    <app-secured-image *ngIf="member.active"
+        [imgURL]="member?.profile_pic"
+        [service]="'user'"
+        [userData]="member"
+        [workspaceId]="workspaceData?._id"
+        [styleClass]="'feed-avatar'"></app-secured-image>
+    <!-- Avatar Image of the member -->
+
+    <div *ngIf="member.active" class="media-body">
+
+        <!-- Member Details Starts -->
+        <div class="float-left" style="text-transform: capitalize;">
+            <p class="mt-0">{{member?.first_name}} {{member?.last_name}}</p>
+            <p>
+              <span i18n="@@peopleDirectorySearchResults.role">Role: </span>
+              <span *ngIf="member?.role == 'manager'" i18n="@@peopleDirectorySearchResults.work">Work Manager</span>
+              <span *ngIf="member?.role != 'manager'">{{ member?.role }}</span>
+              &nbsp;
+              <a href="mailto:{{member?.email}}" style="text-transform: lowercase;">{{member?.email}}</a>
+            </p>
+        </div>
+        <!-- Member Details Ends -->
+      </div>
+    </div>
+</div>
+<!-- END USER -->

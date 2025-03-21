@@ -1,0 +1,38 @@
+<div class="smart-card" style="padding: 10px;">
+    <div class="row" style="margin: 0 0 20px; justify-content: space-between;">
+      <div class="card-title mt-1" i18n="@@kpiPerformanceCard.kpiPerformance">
+        KPI Performance
+      </div>
+    </div>
+
+    <div>
+      <div *ngFor="let project of projects; trackBy: utilityService.trackByIndex" class="kpi_card">
+        <div class="project_title">
+          <div>{{ project?.title }}</div>
+          <div class="muted" *ngIf="type == 'workspace'">{{ project?._group?.group_name }}</div>
+        </div>
+
+        <!-- PROJECT STATUS STARTS -->
+        <div [class]="project.projectStatusClass" class="project_status">
+          <app-project-statistics [project]="project" [timeTrackingEntities]="project.timeTrackingEntitiesMapped"></app-project-statistics>
+        </div>
+        <!-- PROJECT STATUS ENDS -->
+
+        <!-- PROJECT BUDGET STARTS -->
+        <div class="project_budget">
+          <app-project-budget [project]="project" [timeTrackingEntities]="project.timeTrackingEntitiesMapped"></app-project-budget>
+        </div>
+        <!-- PROJECT BUDGET ENDS -->
+      </div>
+    </div>
+
+    <div class="col-5" *ngIf="projects.length === 0">
+      <img src='assets/images/inbox-tasks-card-empty.svg'>
+    </div>
+
+    <!-- LOADING SPINNER STARTS -->
+    <ng-container *ngIf="isLoading$ | async">
+      <app-loading-spinner></app-loading-spinner>
+    </ng-container>
+    <!-- LOADING SPINNER ENDS -->
+</div>

@@ -1,0 +1,55 @@
+<button *ngIf="canEdit" style="margin-top: 20px; margin-right: 5px; margin-bottom: 5px;"
+  class="btn float-right btn-warning btn-md"
+  (click)="file.click()">
+    <i class="material-icons-outlined mr-2">upload_file</i>
+    <span i18n="@@fileVersions.newVersion">New Version</span>
+    <input #file type="file" placeholder="File" (change)="fileInput(file.files)" style="display: none;" />
+</button>
+
+<div class="versions-list">
+  <div class="version" *ngFor="let file of fileVersions; let index = index; trackBy: utilityService.trackByIndex">
+    <a *ngIf="file?.type === 'file' && !isOfficeFile(file?.original_name)" class="mt-0" target="_blank"
+        href="{{filesBaseUrl}}/{{ workspaceData?._id }}/{{ file?.modified_name }}?authToken={{ authToken }}">
+      <img [src]="getFileIcon(file?.original_name)"
+            onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
+      <span i18n="@@fileVersions.version">Version</span>
+      {{ (fileVersions?.length - index) }}
+      <span i18n="@@fileVersions.at">at</span>
+      {{ formateDate(file?.created_date) }}
+      <span i18n="@@fileVersions.by">by</span>
+      {{ file?._posted_by?.first_name }}&nbsp;{{ file?._posted_by?.last_name }}
+    </a>
+
+    <a *ngIf="(file?.type == 'file' && isOfficeFile(file?.original_name)) || file?.type === 'campaign'"
+        (click)="openOfficeDoc(file)" class="mt-0" style="cursor: pointer;">
+      <img [src]="getFileIcon(file?.original_name)"
+        onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
+      <span i18n="@@fileVersions.version">Version</span>
+      {{ (fileVersions?.length - index) }}
+      <span i18n="@@fileVersions.at">at</span>
+      <span *ngIf="file?.type=='campaign'"><b i18n="@@fileVersions.campaignFile">Campaign File: </b></span>
+      {{ formateDate(file?.created_date) }}
+      <span i18n="@@fileVersions.by">by</span>
+      {{ file?._posted_by?.first_name }}&nbsp;{{ file?._posted_by?.last_name }}
+    </a>
+
+    <div class="media-body">
+      <div class="float-right">
+          <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
+
+          <mat-menu #menu="matMenu">
+              <a mat-menu-item *ngIf="(file?.type == 'file' && isOfficeFile(file?.original_name)) || file?.type === 'campaign'"
+                  href="{{filesBaseUrl}}/{{ workspaceData?._id }}/{{file?.modified_name}}?authToken={{authToken}}">
+                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">file_download</i>
+                <span i18n="@@fileVersions.download">Download</span>
+              </a>
+
+              <a mat-menu-item *ngIf="canDelete" (click)="deleteItem(file?._id, file?.type, file?.modified_name)">
+                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
+                <span i18n="@@fileVersions.delete">Delete</span>
+              </a>
+          </mat-menu>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+<div class="card-tile">
+    <div class="card-block">
+        <h6 class="card-title"><b i18n="@@userprofessionalInformation.yourProfessionalInformation">Your professional information</b>
+            <button *ngIf="currentUser" type="button" name="button" class="btn btn-link"
+                (click)="openUpdateModel()">
+                <i class="material-icons">create</i>
+            </button></h6>
+        <hr />
+        <p class="card-text"><strong i18n="@@userprofessionalInformation.currentPosition">Current Position:</strong>
+            <span id="userData_current_position"> {{ userData?.current_position}} </span></p>
+        <p class="card-text"><strong i18n="@@userprofessionalInformation.companyJoiningDate">Company Joining Date:</strong>
+            <span id="userData_company_join_date"> {{ userData?.company_join_date | date: 'longDate' }} </span></p>
+        <p class="card-text"><strong i18n="@@userprofessionalInformation.groupsCount">Groups Count:</strong>
+            {{ userData?._groups?.length || 0 }}</p>
+        <p class="card-text"><strong i18n="@@userprofessionalInformation.biography">Biography:</strong>
+            <span id="userData_bio"> {{ userData?.bio }} </span></p>
+    </div>
+</div>

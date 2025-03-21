@@ -1,0 +1,114 @@
+  app-loading-spinner{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+  margin-top: 100px;
+}
+
+h5{
+  font-weight: 700 !important;
+}
+
+
+.pulse_card{
+  height: 60px;
+  padding: 0 5px;
+  background: white;
+  width: 100%;
+  background: #FFFFFF;
+  border-radius: 8px;
+  border: 1px solid #E4EDF8;
+  box-sizing: border-box;
+  margin: 2px auto;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.pulse_avatar {
+  // flex-basis: 80px;
+  // max-width: 80px;
+  flex: 0 0;
+  text-align: center;
+  margin-right: 16px;
+  .feed-avatar {
+      width: 50px;
+      height: 50px;
+      margin: 0;
+  }
+}
+
+.pulse_actor {
+  max-width: 140px;
+  flex: 0 1 140px;
+  margin-right: 16px;
+}
+
+.pulse_tweet {
+  min-width: 160px;
+  flex: 1 1 160px;
+  font-weight: 700;
+}
+
+.pulse_info {
+  flex: 0 1 130px;
+  line-height: 60px;
+}
+
+.pulse_data {
+  // flex-basis: 400px;
+  display: flex;
+  // max-width: 160px;
+  // min-width: 160px;
+  // flex: 1 1;
+
+}
+
+// Group todo tasks banner
+.pulse-todo-tasks {
+  color: #ffffff;
+  background: #fd7714;
+  border-radius: 8px;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 10px 5px;
+  padding: 0px 10px;
+}
+
+// Group In Progress tasks banner
+.pulse-in-progress-tasks {
+  color: #ffffff;
+  background: #0bc6a0;
+  border-radius: 8px;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 10px 5px;
+  padding: 0px 10px;
+}
+
+// Group Done tasks banner
+.pulse-done-tasks {
+  color: #ffffff;
+  background: #4a90e2;
+  border-radius: 8px;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 10px 5px;
+  padding: 0px 10px;
+}
+

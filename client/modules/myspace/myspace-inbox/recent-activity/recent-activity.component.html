@@ -1,0 +1,524 @@
+<div class="notifications">
+  <mat-tab-group mat-align-tabs="start" [selectedIndex]="selectedTab" animationDuration="0ms">
+    <!-- RECENT ACTIVITY STARTS-->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span *ngIf="notificationsData.unreadNotifications.length > 0"
+          [matBadge]="notificationsData.unreadNotifications.length"
+          matBadgeOverlap="false" matBadgeColor="warn"
+          i18n="@@recentActivity.recentActivities">Recent activities</span>
+        <span *ngIf="notificationsData.unreadNotifications.length == 0"
+          i18n="@@recentActivity.recentActivities">Recent activities</span>
+      </ng-template>
+
+      <!-- Empty State starts -->
+      <div *ngIf="notificationsData.unreadNotifications.length === 0 && !(isLoading$ | async)" style="text-align: center; margin-top: 30px;">
+        <img src='assets/images/placeholder_recent_activity.png' class="placeholder-img">
+        <p class="muted text-center" i18n="@@recentActivity.nothingNew">Nothing new. Take a breath. </p>
+      </div>
+      <!-- Empty State ends -->
+      <div *ngIf="notificationsData.unreadNotifications.length > 0 && !(isLoading$ | async)" >
+        <div class="notification-item" style="flex-direction: row-reverse;">
+          <div class="notification_more">
+            <i class="material-icons-outlined ml-2 muted pointer" [matMenuTriggerFor]="general_menu">more_horiz</i>
+            <mat-menu #general_menu="matMenu">
+              <a mat-menu-item (click)="markAllNotificationAsRead('')">
+                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">check_circle_outline</i>
+                <span i18n="@@recentActivity.markAllAsRead">Mark All As Read</span>
+              </a>
+            </mat-menu>
+          </div>
+        </div>
+
+        <!-- NOTIFICATION ITEM STARTS-->
+        <div class="notification-item" *ngFor="let notification of notificationsData?.unreadNotifications; let index = index; trackBy: utilityService.trackByIndex">
+          <div class="notification_actor">
+            <app-secured-image *ngIf="notification?._actor"
+              [imgURL]="notification?._actor?.profile_pic"
+              [service]="'user'"
+              [userData]="notification?._actor"
+              [workspaceId]="workspaceData?._id"
+              [styleClass]="'avatar'"
+              style="margin-right:15px"></app-secured-image>
+
+            <app-secured-image *ngIf="!notification?._actor"
+              [imgURL]="notification?._owner?.profile_pic"
+              [service]="'user'"
+              [userData]="notification?._owner"
+              [workspaceId]="workspaceData?._id"
+              [styleClass]="'avatar'"
+              style="margin-right:15px"></app-secured-image>
+          </div>
+
+          <div class="notification_title">
+            <span *ngIf="notification?._actor">
+              {{ notification?._actor?.first_name || 'Deleted' }} {{ notification?._actor?.last_name || 'User' }}
+            </span>
+            <span *ngIf="!notification?._actor">
+              {{ notification?._owner?.first_name || 'Deleted' }} {{ notification?._owner?.last_name || 'User' }}
+            </span>
+            &nbsp;
+
+            <span *ngIf="notification?.type === 'assignment'" class="assignment_notification" i18n="@@recentActivity.assignedYou">assigned you</span>
+            <span *ngIf="notification?.type === 'crm-task-assignment'" class="assignment_notification" i18n="@@recentActivity.assignedYou">assigned</span>
+            <span *ngIf="notification?.type === 'crm-update-assignment'" class="assignment_notification" i18n="@@recentActivity.assignedYou">updated</span>
+            <span *ngIf="notification?.type === 'mention' || notification?.type === 'mention_folio' || notification?.type === 'mention_collection' || notification?.type === 'mention_page'" class="mention_notification" i18n="@@recentActivity.mentionedYou">mentioned you on</span>
+            <span *ngIf="notification?.type === 'completed'" class="completed_notification" i18n="@@recentActivity.completed">completed</span>
+            <span *ngIf="notification?.type === 'started'" class="started_notification" i18n="@@recentActivity.started">started</span>
+            <span *ngIf="notification?.type === 'like_comment'" class="like_notification" i18n="@@recentActivity.likedYourComment">liked your comment on</span>
+            <span *ngIf="notification?.type === 'likes'" class="like_notification" i18n="@@recentActivity.likes"> likes </span>
+            <span *ngIf="notification?.type === 'follow'" class="follow_notification" i18n="@@recentActivity.follows">follows</span>
+            <span *ngIf="notification?.type === 'comment'" class="comment_notification" i18n="@@recentActivity.commentedOn">commented on</span>
+            <span *ngIf="notification?.type === 'join-group'" class="join_group_notification" i18n="@@recentActivity.addedYou">added you to</span>
+            <span *ngIf="notification?.type === 'leave-group'" class="leave_group_notification" i18n="@@recentActivity.removedYou">removed you from</span>
+            <span *ngIf="notification?.type === 'launch-approval-flow'" class="launch_approval_flow_notification" i18n="@@recentActivity.launchApprovalFlow">launched the approval flow for </span>
+            <span *ngIf="notification?.type === 'approved-item'" class="approved_item_notification" i18n="@@recentActivity.itemApprovedByAll">everyone approved the document</span>
+            <span *ngIf="notification?.type === 'reject-item'" class="reject_item_notification" i18n="@@recentActivity.rejectedTheItem">rejected the document</span>
+            <span *ngIf="notification?.type === 'shuttleTask'" class="assignment_notification" i18n="@@recentActivity.assignedYourGroup">sent a shuttle 🚀 to</span>
+            <span *ngIf="notification?.type === 'post-edited'" class="assignment_notification" i18n="@@recentActivity.edited">edited</span>
+            &nbsp;
+
+            <span class="notification_post_title" *ngIf="(notification?.type !== 'mention_folio' && notification?.type !== 'shuttleTask') && notification?._origin_post">{{ notification?._origin_post?.title | truncatetext: 20 }}</span>
+            <span class="notification_post_title" *ngIf="notification?.type === 'completed' && notification?.task_info">{{ notification?.task_info?.description + ' on ' + notification?.company_name + ' in CRM' | truncatetext: 40 }}</span>
+            <span class="notification_post_title" *ngIf="notification?.type === 'crm-task-assignment' && notification?.task_info">{{ notification?.task_info?.description + ' to you on ' + notification?.company_name + ' in CRM' | truncatetext: 40 }}</span>
+            <span class="notification_post_title" *ngIf="notification?.type === 'crm-update-assignment' && notification?.update_info">{{ notification?.company_name | truncatetext: 40 }}</span>
+            <span class="notification_post_title" *ngIf="notification?.type === 'mention_folio' && notification?._origin_folio">{{ notification?._origin_folio?.original_name | truncatetext: 20 }}</span>
+            <span class="notification_post_title" *ngIf="notification?.type === 'mention_collection' && notification?._collection">{{ notification?._collection?.name | truncatetext: 20 }}</span>
+            <span class="notification_post_title" *ngIf="notification?.type === 'mention_page' && notification?._page">{{ notification?._page?.title | truncatetext: 20 }}</span>
+            <span class="notification_post_title" *ngIf="(notification?.type === 'join-group' || notification?.type === 'leave-group') && notification?._origin_group">{{ notification?._origin_group?.group_name | truncatetext: 20 }}</span>
+            <span class="notification_post_title" *ngIf="notification?.type === 'shuttleTask' && notification?._shuttle_group">{{ notification?._shuttle_group?.group_name | truncatetext: 20 }}.</span>
+            <span class="notification_post_title" *ngIf="notification?.type === 'launch-approval-flow' && notification?._origin_folio">{{ notification?._origin_folio?.original_name | truncatetext: 20 }}</span>
+            <span class="notification_post_title" *ngIf="notification?.type === 'launch-approval-flow' && notification?._origin_post">{{ notification?._origin_post?.title | truncatetext: 20 }}</span>
+            &nbsp;
+
+            <span *ngIf="notification?.type === 'shuttleTask'" class="assignment_notification" i18n="@@recentActivity.theTask">The task: </span>
+            &nbsp;
+
+            <span class="notification_post_title" *ngIf="notification?.type === 'shuttleTask' && notification?._origin_post">{{ notification?._origin_post?.title | truncatetext: 20 }}</span>
+            &nbsp;
+
+            <span *ngIf="notification?.type === 'shuttleTask'" class="assignment_notification" i18n="@@recentActivity.fromGroup">was sent from</span>
+            &nbsp;
+
+            <span class="notification_post_title" *ngIf="(notification?.type === 'shuttleTask') && notification?._origin_group">{{ notification?._origin_group?.group_name | truncatetext: 20 }}</span>
+          </div>
+
+          <div class="notification_date_time">
+            <span class="muted small float-right">{{ formateDate(notification?.created_date, true) }}</span>
+          </div>
+
+          <div class="notification_tag d-none d-sm-block">
+            <div *ngIf="notification?.type != 'join-group' && notification?.type != 'leave-group' && notification?._origin_post?._group?.group_name">
+              <span class="badge">
+                {{ notification?._origin_post?._group?.group_name | truncatetext: 20 }}
+              </span>
+            </div>
+            <div *ngIf="(notification?.type == 'join-group' || notification?.type == 'leave-group') && notification?._origin_group?.group_name">
+              <span class="badge">
+                {{ notification?._origin_group?.group_name | truncatetext: 20 }}
+              </span>
+            </div>
+            <div *ngIf="notification?.task_info || notification?.update_info">
+              <span class="badge" i18n="@@recentActivity.crmGroup">CRM</span>
+            </div>
+          </div>
+
+          <div class="notification_more">
+            <i class="material-icons-outlined ml-2 muted pointer" [matMenuTriggerFor]="menu">more_horiz</i>
+            <mat-menu #menu="matMenu">
+              <a mat-menu-item *ngIf="notification?.type !== 'mention_folio' && notification?.type !== 'join-group' && notification?.type !== 'leave-group' && (notification?.type != 'approved-item' && notification?.type != 'reject-item' && notification?.type != 'launch-approval-flow' && notification?.type != 'mention_collection' && notification?.type != 'mention_page' && notification?.type != 'crm-task-assignment' && notification?.type != 'crm-update-assignment')"
+                (click)="viewNotification(notification, index)">
+                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
+                <span i18n="@@recentActivity.view">View</span>
+              </a>
+              <a mat-menu-item *ngIf="notification?.type === 'crm-task-assignment' || notification?.type === 'crm-update-assignment'"
+                (click)="viewCRMNotification(notification, index)">
+                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
+                <span i18n="@@recentActivity.view">View</span>
+              </a>
+              <a mat-menu-item *ngIf="notification?.type === 'mention_folio'"
+                (click)="viewFolioNotification(notification, index)">
+                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
+                <span i18n="@@recentActivity.view">View</span>
+              </a>
+              <a mat-menu-item *ngIf="notification?.type === 'mention_collection'"
+                (click)="viewCollectionNotification(notification, index)">
+                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
+                <span i18n="@@recentActivity.view">View</span>
+              </a>
+              <a mat-menu-item *ngIf="notification?.type === 'mention_page'"
+                (click)="viewPageNotification(notification, index)">
+                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
+                <span i18n="@@recentActivity.view">View</span>
+              </a>
+              <a mat-menu-item *ngIf="notification?.type == 'approved-item' || notification?.type == 'reject-item' || notification?.type == 'launch-approval-flow'"
+                (click)="viewApprovalNotification(notification, index)">
+                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
+                <span i18n="@@recentActivity.view">View</span>
+              </a>
+              <a mat-menu-item *ngIf="notification?.type == 'join-group'"
+                (click)="goToGroup(notification?._origin_group?._id, notification?._origin_post?._id, index, notification?.type)">
+                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
+                <span i18n="@@recentActivity.view">View</span>
+              </a>
+              <a mat-menu-item (click)="markNotificationAsRead(notification._id, userData._id, index, '')">
+                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">check_circle_outline</i>
+                <span i18n="@@recentActivity.markAsRead">Mark As Read</span>
+            </a>
+            </mat-menu>
+          </div>
+        </div>
+        <!-- NOTIFICATION ITEM ENDS-->
+      </div>
+    </mat-tab>
+    <!-- RECENT ACTIVITY ENDS-->
+
+    <!-- NEWS FEED STARTS-->
+    <mat-tab label="">
+      <ng-template mat-tab-label>
+        <span *ngIf="notificationsData.unreadPosts.length > 0"
+          [matBadge]="notificationsData.unreadPosts.length"
+          matBadgeOverlap="false" matBadgeColor="warn"
+          i18n="@@recentActivity.newsFeed">News feed</span>
+        <span *ngIf="notificationsData.unreadPosts.length == 0"
+          i18n="@@recentActivity.newsFeed">News feed</span>
+      </ng-template>
+
+      <!-- Empty State starts -->
+      <div *ngIf="notificationsData.unreadPosts.length === 0 && !(isLoading$ | async)" style="text-align: center; margin-top: 30px;">
+        <img src='assets/images/placeholder_newsfeed.png' class="placeholder-img">
+        <p class="muted text-center" i18n="@@recentActivity.everyoneIsSilent">Everyone is silent. </p>
+      </div>
+      <!-- Empty State ends -->
+      <div *ngIf="notificationsData.unreadPosts.length > 0 && !(isLoading$ | async)" >
+        <div class="notification-item" style="flex-direction: row-reverse;">
+          <div class="notification_more">
+            <i class="material-icons-outlined ml-2 muted pointer" [matMenuTriggerFor]="general_menu">more_horiz</i>
+            <mat-menu #general_menu="matMenu">
+              <a mat-menu-item (click)="markAllNotificationAsRead('new-post')">
+                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">check_circle_outline</i>
+                <span i18n="@@recentActivity.markAllAsRead">Mark All As Read</span>
+              </a>
+            </mat-menu>
+          </div>
+        </div>
+        <!-- NOTIFICATION ITEM STARTS-->
+        <div class="notification-item" *ngFor="let notification of notificationsData?.unreadPosts; let index = index; trackBy: utilityService.trackByIndex">
+          <div class="notification_actor">
+            <app-secured-image
+              [imgURL]="notification?._actor?.profile_pic"
+              [service]="'user'"
+              [userData]="notification?._actor"
+              [workspaceId]="workspaceData?._id"
+              [styleClass]="'avatar'"
+              style="margin-right:15px"></app-secured-image>
+          </div>
+
+          <div class="notification_title">
+            {{ notification?._actor?.first_name || 'Deleted' }} {{ notification?._actor?.last_name || 'User' }}
+
+            &nbsp;<span class="completed_notification" i18n="@@recentActivity.posted"> posted </span>&nbsp;
+
+            <span class="notification_post_title">{{ notification?._origin_post?.title | truncatetext: 45 }}</span>
+          </div>
+
+          <div class="notification_date_time">
+            <span class="muted small float-right">{{ formateDate(notification?.created_date, true) }}</span>
+          </div>
+
+          <div class="notification_tag d-none d-sm-block">
+            <span class="badge" *ngIf="notification?._origin_post?._group?.group_name">
+              {{ notification?._origin_post?._group?.group_name }}
+            </span>
+          </div>
+
+          <div class="notification_more">
+            <i class="material-icons-outlined ml-2 muted pointer" [matMenuTriggerFor]="menu">more_horiz</i>
+            <mat-menu #menu="matMenu">
+              <a mat-menu-item *ngIf="notification?.type !== 'mention_folio'"
+                (click)="viewPost(notification?._origin_post?._id, notification?._origin_post?._group?._id)">
+                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
+                <span i18n="@@recentActivity.view">View</span>
+              </a>
+              <a mat-menu-item (click)="markNotificationAsRead(notification._id, userData._id, index, notification?.type)">
+                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">check_circle_outline</i>
+                <span i18n="@@recentActivity.markAsRead">Mark As Read</span>
+              </a>
+            </mat-menu>
+          </div>
+        </div>
+        <!-- NOTIFICATION ITEM ENDS-->
+      </div>
+    </mat-tab>
+    <!-- NEWS FEED ENDS-->
+
+    <!-- EVENTS STARTS-->
+    <mat-tab label="">
+      <ng-template mat-tab-label>
+        <span *ngIf="attendingEvents.length > 0"
+          [matBadge]="attendingEvents.length"
+          matBadgeOverlap="false" matBadgeColor="warn"
+          i18n="@@recentActivity.events">Events</span>
+        <span *ngIf="attendingEvents.length == 0"
+          i18n="@@recentActivity.events">Events</span>
+      </ng-template>
+
+      <!-- Empty State starts -->
+      <div *ngIf="attendingEvents.length === 0 && !(isLoading$ | async)" style="text-align: center; margin-top: 30px;">
+        <img src='assets/images/placeholder_newsfeed.png' class="placeholder-img">
+        <p class="muted text-center" i18n="@@recentActivity.noEvents">No events. Get involved.</p>
+      </div>
+      <!-- Empty State ends -->
+
+      <div *ngIf="attendingEvents.length > 0 && !(isLoading$ | async)" >
+        <!-- NOTIFICATION ITEM STARTS-->
+        <div class="notification-item" *ngFor="let event of attendingEvents; let index = index; trackBy: utilityService.trackByIndex">
+          <div class="notification_actor">
+            <app-secured-image
+              [imgURL]="event?.icon_pic"
+              [workspaceId]="workspaceData?._id"
+              [service]="'lounge'"
+              [styleClass]="'avatar'"
+              style="margin-right:15px"></app-secured-image>
+          </div>
+
+          <div class="event_title">
+            {{ event?.name | truncatetext: 45 }}
+
+            <div class="">
+              <span class="badge-event going" *ngIf="isAssistingEvent(event?._assistants)">GOING</span>
+              <span class="badge-event maygo" *ngIf="isAssistingEvent(event?._maybe_assistants)"> MAY GO</span>
+            </div>
+          </div>
+
+          <div class="notification_date_time">
+            <span class="text-primary small"><span class="material-icons">
+              local_activity
+              </span> {{ event?.event_date | date: 'MMM dd, yyyy' }} {{ event?.event_time }} {{ event?.event_am_pm }}</span>
+          </div>
+
+          <div class="notification_tag float-right d-none d-sm-block">
+            <app-secured-image
+              [imgURL]="event?._posted_by?.profile_pic"
+              [service]="'user'"
+              [userData]="event?._posted_by"
+              [workspaceId]="workspaceData?._id"
+              [styleClass]="'avatar'"
+              style="margin-right:15px"></app-secured-image>
+
+            {{ event?._posted_by?.first_name || 'Deleted' }} {{ event?._posted_by?.last_name || 'User' }}
+          </div>
+
+          <div class="notification_more">
+            <i class="material-icons-outlined ml-2 muted pointer" [matMenuTriggerFor]="menu">more_horiz</i>
+            <mat-menu #menu="matMenu">
+              <a mat-menu-item [routerLink]="['/dashboard', 'work', 'lounge', 'story']" [queryParams]="{ story: event?._id  }">
+                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
+                <span i18n="@@recentActivity.view">View</span>
+              </a>
+            </mat-menu>
+          </div>
+        </div>
+        <!-- NOTIFICATION ITEM ENDS-->
+      </div>
+    </mat-tab>
+    <!-- EVENTS ENDS-->
+
+    <!-- APPROVALS STARTS-->
+    <mat-tab label="" *ngIf="isBusinessSubscription">
+      <ng-template mat-tab-label>
+        <span *ngIf="notificationsData.pendingApprovals.length > 0"
+          [matBadge]="notificationsData.pendingApprovals.length"
+          matBadgeOverlap="false" matBadgeColor="warn"
+          i18n="@@recentActivity.pendingApprovals">Pending Approvals</span>
+        <span *ngIf="notificationsData.pendingApprovals.length == 0"
+          i18n="@@recentActivity.pendingApprovals">Pending Approvals</span>
+      </ng-template>
+
+      <!-- Empty State starts -->
+      <div *ngIf="notificationsData.pendingApprovals.length === 0 && !(isLoading$ | async)" style="text-align: center; margin-top: 30px;">
+        <img src='assets/images/placeholder_newsfeed.png' class="placeholder-img">
+        <p class="muted text-center" i18n="@@recentActivity.noPendingApprovals">No pending approvals.</p>
+      </div>
+      <!-- Empty State ends -->
+
+      <div *ngIf="notificationsData.pendingApprovals.length > 0 && !(isLoading$ | async)" >
+        <!-- NOTIFICATION ITEM STARTS-->
+        <div class="notification-item" *ngFor="let notification of notificationsData?.pendingApprovals; let index = index; trackBy: utilityService.trackByIndex">
+          <div class="notification_actor">
+            <app-secured-image *ngIf="notification?._actor"
+              [imgURL]="notification?._actor?.profile_pic"
+              [service]="'user'"
+              [userData]="notification?._actor"
+              [workspaceId]="workspaceData?._id"
+              [styleClass]="'avatar'"
+              style="margin-right:15px"></app-secured-image>
+
+            <app-secured-image *ngIf="!notification?._actor"
+              [imgURL]="notification?._owner?.profile_pic"
+              [service]="'user'"
+              [userData]="notification?._owner"
+              [workspaceId]="workspaceData?._id"
+              [styleClass]="'avatar'"
+              style="margin-right:15px"></app-secured-image>
+          </div>
+
+          <div class="notification_title">
+            <span *ngIf="notification?._actor">
+              {{ notification?._actor?.first_name || 'Deleted' }} {{ notification?._actor?.last_name || 'User' }}
+            </span>
+            <span *ngIf="!notification?._actor">
+              {{ notification?._owner?.first_name || 'Deleted' }} {{ notification?._owner?.last_name || 'User' }}
+            </span>
+            &nbsp;
+
+            <span class="launch_approval_flow_notification" i18n="@@recentActivity.requestYoToReviewItem">requested you to review the item:</span>
+
+            &nbsp;
+
+            <span class="notification_post_title" *ngIf="notification?._origin_post">{{ notification?._origin_post?.title | truncatetext: 20 }}</span>
+            <span class="notification_post_title" *ngIf="notification?._origin_folio">{{ notification?._origin_folio?.original_name | truncatetext: 20 }}</span>
+
+            &nbsp;<span i18n="@@recentActivity.bofore" *ngIf="(notification?._origin_folio && notification?._origin_folio?.approval_due_date) || (notification?._origin_post && notification?._origin_post?.approval_due_date)">before</span>
+            <span *ngIf="notification?._origin_post" class="notification_post_title"> {{ notification?._origin_post?.approval_due_date | date: 'MMM d, y' }}</span>
+            <span *ngIf="notification?._origin_folio" class="notification_post_title"> {{ notification?._origin_folio?.approval_due_date | date: 'MMM d, y' }}</span>
+          </div>
+
+          <div class="notification_more" style="width: 120px;">
+            <a mat-menu-item (click)="viewApprovalNotification(notification, index)">
+              <i class="material-icons-outlined ml-2 muted" style="margin-right: .7rem;">visibility</i>
+              <span i18n="@@recentActivity.view">View</span>
+            </a>
+          </div>
+        </div>
+        <!-- NOTIFICATION ITEM ENDS-->
+      </div>
+    </mat-tab>
+    <!-- APPROVALS ENDS-->
+
+    <!-- PENDING HOLIDAYS STARTS-->
+    <mat-tab label="" *ngIf="pendingHolidays.length > 0 && isOrganizationModuleAvailable">
+      <ng-template mat-tab-label>
+        <span *ngIf="pendingHolidays.length > 0" [matBadge]="pendingHolidays.length"
+          matBadgeOverlap="false" matBadgeColor="warn" i18n="@@recentActivity.pendingHolidays">Pending Holidays</span>
+        <span *ngIf="pendingHolidays.length == 0" i18n="@@recentActivity.pendingHolidays">Pending Holidays</span>
+      </ng-template>
+    
+      <!-- Empty State starts -->
+      <div *ngIf="pendingHolidays.length === 0 && !(isLoading$ | async)"
+        style="text-align: center; margin-top: 30px;">
+        <img src='assets/images/placeholder_newsfeed.png' class="placeholder-img">
+        <p class="muted text-center" i18n="@@recentActivity.noPendingApprovals">No pending approvals.</p>
+      </div>
+      <!-- Empty State ends -->
+    
+      <div *ngIf="pendingHolidays.length > 0 && !(isLoading$ | async)">
+        <table style="width: 100%; margin-top: 20px;">
+            <tr>
+                <th i18n="@@recentActivity.member">Member</th>
+                <th i18n="@@recentActivity.starts">Starts</th>
+                <th i18n="@@recentActivity.ends">Ends</th>
+                <th i18n="@@recentActivity.type">Type</th>
+                <th i18n="@@recentActivity.numDays">Number Days</th>
+                <th i18n="@@recentActivity.description">Description</th>
+                <th i18n="@@recentActivity.status">Status</th>
+                <th></th>
+            </tr>
+          
+            <tr *ngFor="let holiday of pendingHolidays; let index = index; trackBy: utilityService.trackByIndex">
+                <td>
+                    <app-secured-image [imgURL]="holiday?._user?.profile_pic" [service]="'user'" [inlineStyle]="'cursor: default;'"
+                      [userData]="holiday?._user" [workspaceId]="workspaceData?._id" [styleClass]="'feed-avatar-small'"></app-secured-image>
+                    {{ holiday?._user?.first_name }} {{ holiday?._user?.last_name }}
+                </td>
+                <td>{{ formateDate(holiday.start_date) }}</td>
+                <td>{{ formateDate(holiday.end_date) }}</td>
+                <td>{{ holiday.type }}</td>
+                <td>{{ holiday.num_days }}</td>
+                <td>{{ holiday.description }}</td>
+            
+                <td (click)="$event.stopPropagation();">
+                    <span *ngIf="holiday?.status == 'approved'" class="approved dropdown-toggle" [matMenuTriggerFor]="menu" i18n="@@recentActivity.approved">APPROVED</span>
+                    <span *ngIf="holiday?.status == 'pending'" class="pending dropdown-toggle" [matMenuTriggerFor]="menu" i18n="@@recentActivity.pending">PENDING</span>
+                    
+                    <!-- Menu Drawer Starts -->
+                    <mat-menu #menu="matMenu">
+                        <a mat-menu-item (click)="doHolidayAction('approved', holiday?._id)">
+                            <div class="approved action-button">
+                                <i class="material-icons">check_circle</i>
+                                &nbsp;
+                                <span i18n="@@recentActivity.approve">APPROVE</span>
+                            </div>
+                        </a>
+                        <a mat-menu-item (click)="doHolidayAction('rejected', holiday?._id)">
+                            <div class="rejected action-button">
+                                <i class="material-icons">highlight_off</i>
+                                &nbsp;
+                                <span i18n="@@recentActivity.reject">REJECT</span>
+                            </div>
+                        </a>
+                    </mat-menu>
+                    <!-- Menu Drawer Ends -->
+                </td>
+            </tr>
+        </table>
+      </div>
+    </mat-tab>
+    <!-- PENDING HOLIDAYS ENDS-->
+
+    <!-- HR NOTIFICATIONS STARTS-->
+    <mat-tab label="" *ngIf="pendingHRTasks.length > 0 && isOrganizationModuleAvailable && (userData?.hr_role || userData?.role == 'owner')">
+      <ng-template mat-tab-label>
+        <span *ngIf="pendingHRTasks.length > 0"
+          [matBadge]="pendingHRTasks.length"
+          matBadgeOverlap="false" matBadgeColor="warn"
+          i18n="@@recentActivity.pendingHRTasks">Pending HR tasks</span>
+        <span *ngIf="pendingHRTasks.length == 0"
+          i18n="@@recentActivity.pendingHRTasks">Pending HR tasks</span>
+      </ng-template>
+
+      <div *ngIf="pendingHRTasks.length > 0 && !(isLoading$ | async)" >
+        <!-- NOTIFICATION ITEM STARTS-->
+        <div class="notification-item" *ngFor="let task of pendingHRTasks; let index = index; trackBy: utilityService.trackByIndex">
+          <div class="notification_actor">
+            <app-secured-image [imgURL]="task?._owner?.profile_pic" [service]="'user'" [workspaceId]="workspaceData?._id"
+						  [userData]="task?._owner" [styleClass]="'mr-3 feed-avatar-small'" ></app-secured-image>
+          </div>
+
+          <div class="notification_title">
+            <span *ngIf="task?._owner">
+              {{ task?._owner?.first_name || 'Deleted' }} {{ task?._owner?.last_name || 'User' }}
+            </span>
+            &nbsp;
+
+            <span class="launch_approval_flow_notification">{{ task?.message }}</span>
+          </div>
+
+          <div class="notification_more" style="width: 120px;">
+            <i class="material-icons-outlined muted" [matMenuTriggerFor]="menu"
+              style="text-align: center; cursor: pointer;">more_horiz</i>
+            <mat-menu #menu="matMenu">
+              <a mat-menu-item (click)="openUserProfile(task._owner._id)">
+                <i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">account_circle</i>
+                <span i18n="@@recentActivity.openProfile">Open Profile</span>
+              </a>
+              
+              <a mat-menu-item (click)="markAsCompleted(task._id)">
+                <i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">check_circle</i>
+                <span i18n="@@recentActivity.markComplited">Mark as completed</span>
+              </a>
+            </mat-menu>
+          </div>
+        </div>
+        <!-- NOTIFICATION ITEM ENDS-->
+      </div>
+    </mat-tab>
+    <!-- HR NOTIFICATIONS ENDS-->
+  </mat-tab-group>
+
+  <!-- Loading Spinner Starts -->
+  <ng-container *ngIf="isLoading$ | async">
+    <app-loading-spinner class="media"></app-loading-spinner>
+  </ng-container>
+  <!-- Loading Spinner Ends -->
+</div>

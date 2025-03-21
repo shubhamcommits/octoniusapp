@@ -1,0 +1,51 @@
+<div class="insights-container" *ngIf="responses">
+  <div class="row">
+      <div class="col-md-3">
+        <h3 class="muted" i18n="@@flamingoResultInsights.responses">
+          Responses:   {{ responses?.length }}
+        </h3>
+      </div>
+      <div class="col">
+
+      </div>
+  </div>
+
+  <div *ngFor="let question of questions; let index = index; trackBy: utilityService.trackByIndex" class="row">
+    <div class="col" class="question">
+      <div class="row">
+        <h6 class="question-title">
+          <span class="badge mr-2">{{ index + 1 }}</span> {{ question?.text }}
+        </h6>
+      </div>
+      <div class="row">
+        <div class="col question-body">
+          <div class="answer-yes-no" *ngIf="question?.type == 'Yes/No'">
+            <div class="row answer-response">
+              <div class="col-md-5">{{ question?.positive_option_text }}</div>
+              <div class="col response"> {{ getPositiveResponsesStats(question?._id) }}&nbsp;<span i18n="@@flamingoResultInsights.numResponses">responses</span></div>
+            </div>
+            <div class="row answer-response">
+              <div class="col-md-5">{{ question?.negative_option_text }}</div>
+              <div class="col response"> {{ getNegativeResponsesStats(question?._id) }}&nbsp;<span i18n="@@flamingoResultInsights.numResponses">responses</span></div>
+            </div>
+          </div>
+          <div class="answer-scale" *ngIf="question?.type == 'Scale'">
+            <app-scale-responses-graph [question]="question" [responses]="scaleResponses.get(question?._id)"></app-scale-responses-graph>
+          </div>
+          <div class="answer-dropdown" *ngIf="question?.type == 'Dropdown'">
+            <div *ngFor="let option of question?.options; trackBy: utilityService.trackByIndex" class="row answer-response">
+              <div class="col-md-5">{{ option }}</div>
+              <div class="col response"> {{ getDropdawnResponsesStats(question?._id, option) }}&nbsp;<span i18n="@@flamingoResultInsights.numResponses">responses</span></div>
+            </div>
+          </div>
+          <div class="answer-dropdown" *ngIf="question?.type == 'Multiple'">
+            <div *ngFor="let option of question?.options; trackBy: utilityService.trackByIndex" class="row answer-response">
+              <div class="col-md-5">{{ option }}</div>
+              <div class="col response"> {{ getMultipleResponsesStats(question?._id, option) }}&nbsp;<span i18n="@@flamingoResultInsights.numResponses">responses</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

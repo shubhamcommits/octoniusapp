@@ -1,0 +1,37 @@
+<div class="container" style="margin-bottom: 20px">
+    <div class="media user-sticky-card">
+        <app-secured-image
+          [imgURL]="userData?.profile_pic"
+          [service]="'user'"
+            [userData]="userData"
+          [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
+          [styleClass]="'mr-3 feed-avatar'"></app-secured-image>
+        <div class="media-body">
+           <div>
+              <h2 i18n="@@myspaceHeader.mySpace">My Space</h2>
+              <ul class="nav">
+                 <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="active">
+                      <span i18n="@@myspaceHeader.inbox">Inbox</span>
+                      <span class="sr-only">(current)</span>
+                    </a>
+                 </li>
+                 <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/dashboard', 'myspace', 'tasks']" routerLinkActive="active">
+                      <span i18n="@@myspaceHeader.myTasks">My tasks</span>
+                      <span class="sr-only">(current)</span>
+                    </a>
+                 </li>
+
+                 <li class="nav-item">
+                    <a class="nav-link" routerLink="/dashboard/work/groups/activity" routerLinkActive="active">
+                      <span i18n="@@myspaceHeader.personalWorkspace">Personal workplace</span>
+                      <span class="sr-only">(current)</span>
+                    </a>
+                 </li>
+              </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<router-outlet></router-outlet>

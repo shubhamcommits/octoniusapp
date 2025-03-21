@@ -1,0 +1,42 @@
+<nav class="navbar navbar-expand-lg">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="nav">
+
+      <li class="nav-item mr-3 d-none d-sm-block">
+        <app-secured-image *ngIf="!isCurrentUser && userData"
+            [imgURL]="userData?.profile_pic"
+            [service]="'user'"
+            [userData]="userData"
+            [workspaceId]="workspaceData?._id"
+            [styleClass]="'mr-3 feed-avatar'"></app-secured-image>
+
+        <app-secured-image *ngIf="isCurrentUser && userData"
+          [imgURL]="userData?.profile_pic"
+          [service]="'user'"
+          [userData]="userData"
+          [workspaceId]="workspaceData?._id"
+          [placement]="'below'"
+          [tooltip]="'Change your avatar'"
+          [styleClass]="'mr-3 feed-avatar'"></app-secured-image>
+      </li>
+
+      <li class="nav-item">
+          <a class="nav-link" *ngIf="isCurrentUser"
+            [routerLink]="['/dashboard', 'user', 'profile']"
+            routerLinkActive="active">
+              <span i18n="@@userHeader.profile">Profile</span>
+              <span class="sr-only">(current)</span>
+          </a>
+      </li>
+      <li class="nav-item" *ngIf="isCurrentUser">
+          <a class="nav-link"
+            [routerLink]="['/dashboard', 'user', 'clouds']"
+            routerLinkActive="active">
+              <span i18n="@@userHeader.integrations">Integrations</span>
+              <span class="sr-only">(current)</span>
+          </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<router-outlet></router-outlet>

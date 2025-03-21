@@ -1,0 +1,7 @@
+<span *ngIf="userData && pageData">
+  <button class="btn btn-link">
+    <i *ngIf="likedByUser" matTooltipPosition="above" matTooltip="Unlike Page" class="material-icons text-primary" (click)="unlikePage()">thumb_up</i>
+    <i *ngIf="!likedByUser" class="material-icons-outlined muted" matTooltipPosition="above" matTooltip="Like Page" (click)="likePage()">thumb_up</i>
+  </button>
+ <span class="metrics"> {{ pageData?._liked_by?.length || 0 }}</span>
+</span>

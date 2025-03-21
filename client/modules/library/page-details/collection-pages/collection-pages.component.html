@@ -1,0 +1,76 @@
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+	<!-- This is the tree node template for leaf nodes -->
+	<mat-tree-node *matTreeNodeDef="let page" matTreeNodePadding>
+		<!-- use a disabled button to provide padding for tree leaf -->
+    <div class="pageTitle-menu">
+      <button mat-icon-button disabled><mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="horizontal_rule"></mat-icon></button>
+      
+      <a class="pageitem" style="font-family: 'Nunito';"
+        [routerLink]="['/dashboard', 'work', 'groups', 'library', 'collection', 'page']"
+        [queryParams]="{ page: page?._id  }" [matTooltip]="page?.title" [ngClass]="(page._id == currentPageId) ? 'selected-node' : ''">
+        {{ page?.title | truncatetext: 40 }}
+      </a>
+  
+      <div style="padding-left: 20px;" *ngIf="canEdit && menuDisplayed">
+        <i class="muted material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
+      
+        <mat-menu #menu="matMenu" >
+          <a class="mat-menu-item" type="button" (click)="toggleInputField(page._id)">
+            <i class="material-icons">add</i>
+            <span i18n="@@collectionPages.newChild" style="font-family: 'Nunito';">New child page</span>
+          </a>
+      
+          <a class="mat-menu-item" type="button" (click)="deletePage(page)">
+            <i class="material-icons">delete</i>
+            <span i18n="@@collectionPages.deletePage" style="font-family: 'Nunito';">Delete Page</span>
+          </a>
+        </mat-menu> 
+      </div>
+    </div>
+
+    <!-- This is the input field to capture sub page title -->
+    <div class="add-page" *ngIf="canEditSubTitle">
+      <input autofocus *ngIf="selectedNodeId == page._id && page.level < 3" class="form-control" type="text" placeholder="Enter child page title" [(ngModel)]="postTitle" (keyup.enter)="createSubPage(page?._id, page?.level)" (blur)="toggleInputField()">
+      <span *ngIf="selectedNodeId == page._id && page.level >= 3" (click)="toggleInputField()" i18n="@@collectionPages.reachedMaxNestedPage" style="font-family: 'Nunito';">Reached max nested page</span>
+    </div>
+	</mat-tree-node>
+
+	<!-- This is the tree node template for expandable nodes -->
+	<mat-tree-node *matTreeNodeDef="let page;when: hasChild" matTreeNodePadding>
+    <div class="pageTitle-menu">
+      <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + page.title">
+        <mat-icon class="mat-icon-rtl-mirror">
+          {{ treeControl.isExpanded(page) ? 'expand_more' : 'chevron_right' }}
+        </mat-icon>
+      </button>
+      
+      <a class="pageitem" style="font-family: 'Nunito';"
+        [routerLink]="['/dashboard', 'work', 'groups', 'library', 'collection', 'page']"
+        [queryParams]="{ page: page?._id  }" [matTooltip]="page?.title" [ngClass]="(page._id == currentPageId) ? 'selected-node' : ''">
+        {{ page?.title | truncatetext: 40 }}
+      </a>
+      
+      <div style="padding-left: 20px;" *ngIf="canEdit">
+        <i class="muted material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
+      
+        <mat-menu #menu="matMenu">
+          <a class="mat-menu-item" type="button" (click)="toggleInputField(page._id)">
+            <i class="material-icons">add</i>
+            <span i18n="@@collectionPages.newChild" style="font-family: 'Nunito';">New child page</span>
+          </a>
+      
+          <a class="mat-menu-item" type="button" (click)="deletePage(page)">
+            <i class="material-icons">delete</i>
+            <span i18n="@@collectionPages.deletePage" style="font-family: 'Nunito';">Delete Page</span>
+          </a>
+        </mat-menu>
+      </div>
+    </div>
+
+    <!-- This is the input field to capture sub page title -->
+    <div class="add-page" *ngIf="canEditSubTitle">
+      <input autofocus *ngIf="selectedNodeId == page._id" class="form-control" type="text" placeholder="Enter child page title" [(ngModel)]="postTitle" (keyup.enter)="createSubPage(page?._id, page?.level)" (blur)="toggleInputField()">
+    </div>
+
+	</mat-tree-node>
+</mat-tree>

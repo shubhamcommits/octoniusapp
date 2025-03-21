@@ -1,0 +1,117 @@
+<div class="card comment">
+    <div class="card-block">
+        <div class="postitem card-title ">
+            <div>
+
+              <app-secured-image
+                  [imgURL]="comment?._commented_by?.profile_pic"
+                  [service]="'user'" [userData]="comment?._commented_by"
+                  [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
+                  [styleClass]="'feed-avatar'"></app-secured-image>
+            </div>
+            <div>
+                <h6> {{comment?._commented_by?.first_name || 'Deleted'}} {{comment?._commented_by?.last_name || 'User'}}
+                    <br>
+                    <span class="small lightgray date"> {{comment?.created_date | date: 'medium'}}</span>
+                </h6>
+            </div>
+        </div>
+
+        <!-- Edit comment Content starts -->
+        <ng-container *ngIf="displayCommentEditor">
+            <!-- Save Button starts -->
+            <div class="text-right padding-bottom-md mb-2">
+                <button class="btn btn-primary btn-sm"
+                (click)="saveCommentData()" i18n="@@postComment.save">Save</button>
+            </div>
+            <!-- Save Button ends -->
+
+            <!-- Comment Edit starts -->
+            <div class="innercard">
+                <app-quill-editor
+                    [editorId]="('comment_edit_'+ index + comment?._id) || 'editor'"
+                    [toolbar]="true" [readOnly]="false"
+                    [quillContent]="comment.content" [groupId]="groupId" (contentEmitter)="getQuillData($event)">
+                </app-quill-editor>
+            </div>
+            <!-- Comment Edit ends -->
+
+        </ng-container>
+        <!-- Edit comment Content starts -->
+
+        <!-- Comment Content starts -->
+        <div class="innercard htmlContent" *ngIf="!displayCommentEditor && !!comment.content">
+            <!-- <app-quill-editor
+                [editorId]="('comment_view_'+ index + comment?._id) || 'editor'"
+                [toolbar]="false" [readOnly]="true"
+                [quillContent]="comment.content" [groupId]="groupId">
+            </app-quill-editor> -->
+            <div *ngIf="comment.content" [innerHTML]="htmlContent | safe: 'html'"></div>
+        </div>
+        <!-- Comment Content ends -->
+
+        <div class="innercard">
+          <!-- Attach files starts -->
+          <div class="attach-files">
+              <app-attach-files
+                  [comment]="comment"
+                  [showIcons]="displayCommentEditor"
+                  (files)="onAttach($event)"
+                  (cloudFiles)="onCloudFileAttach($event)">
+              </app-attach-files>
+          </div>
+          <!-- Attach files ends -->
+        </div>
+
+        <!-- Comment Action Starts -->
+        <!-- TODO -> this 'if' will be removed when we fix that new comments are added with the ID to the array -->
+        <div *ngIf="comment._id" class="card-footer action-post ml-0 mr-0">
+            <!-- Likes Placeholder starts -->
+            <div class="left ml-2">
+              <span class="badge text-primary" (click)="openLikedByDialog()" customToolTip [contentArray]="topLikedByUsers"><b>{{ likedByUsers?.length || 0 }}</b> <i class="material-icons-outlined">thumb_up</i> </span>
+            </div>
+            <!-- Likes Placeholder ends -->
+
+            <div class="right">
+
+                <!-- Like Comment starts -->
+                <app-like-comment [userData]="userData" [comment]="comment" (commentLikedEmiter)="onCommentLiked($event)"></app-like-comment>
+                <!-- Like Comment ends -->
+
+                <!-- Comment Utils starts -->
+                <span class="mr-n12">
+
+                    <!-- Three dotted button starts -->
+                    <button class="btn btn-link btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                        <i class="material-icons-outlined action">more_horiz</i>
+                        <span class="caret"></span>
+                    </button>
+                    <!-- Three dotted button ends -->
+
+                    <!-- Menu Drawer Starts -->
+                    <ul class="dropdown-menu">
+
+                        <!-- Edit Comment starts -->
+                        <li class="dropdown-item" (click)="this.displayCommentEditor = true">
+                            <span i18n="@@postComment.edit">Edit</span>
+                        </li>
+                        <!-- Edit Comment ends -->
+
+                        <li class="dropdown-divider"></li>
+
+                        <!-- Delete Comment starts -->
+                        <li class="dropdown-item" (click)="deleteComment(index)">
+                            <span i18n="@@postComment.delete">Delete</span>
+                        </li>
+                        <!-- Delete Comment ends-->
+
+                    </ul>
+                    <!-- Menu Drawer Ends -->
+                </span>
+                <!-- Comment Utils ends -->
+
+            </div>
+        </div>
+        <!-- Comment Action Ends -->
+    </div>
+</div>

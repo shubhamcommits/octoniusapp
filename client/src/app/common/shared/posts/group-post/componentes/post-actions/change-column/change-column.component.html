@@ -1,0 +1,13 @@
+<!-- TASK CHANGE COLUMN STARTS -->
+    <button [disabled]="disabled" class="btn btn-sm btn-outline-secondary text-uppercase dropdown-toggle" type="button" data-toggle="dropdown">
+        {{ selectedColumn?.title }}</button>
+
+    <!-- Menu Drawer Starts -->
+    <ul class="dropdown-menu">
+        <li *ngFor="let column of columns; trackBy: utilityService.trackByIndex" class="dropdown-item column-title" class="dropdown-item"
+            (click)="sendMoveTaskMessage(sectionId, column?._id)">
+          <span class="text-uppercase">{{column?.title}}</span>
+        </li>
+    </ul>
+    <!-- Menu Drawer Ends -->
+<!-- TASK CHANGE COLUMN ENDS -->

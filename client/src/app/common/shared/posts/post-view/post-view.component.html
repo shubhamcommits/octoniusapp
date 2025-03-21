@@ -1,0 +1,152 @@
+<!-- Post Starts-->
+<li class="list-group-item" *ngIf="post">
+    <div class="card-block">
+        <div class="postitem card-title">
+
+            <!-- Image Avatar Starts -->
+            <div>
+                <app-secured-image
+                    [imgURL]="post?._posted_by?.profile_pic"
+                    [service]="'user'"
+                    [userData]="post?._posted_by"
+                    [workspaceId]="workspaceId"
+                    [styleClass]="'ml-2 feed-avatar'"
+                    (click)="openMeberBusinessCard(post?._posted_by?._id)"></app-secured-image>
+            </div>
+            <!-- Image Avatar Ends -->
+
+            <!-- Details of the Post Creator Starts -->
+            <div>
+                <h6>{{post?._posted_by?.first_name || 'Deleted'}} {{post?._posted_by?.last_name || 'User'}} <br>
+                    <span class="small lightgray date">
+                        {{ (post?.created_date | date : 'medium') }}</span>
+                </h6>
+
+                <div *ngIf="isGlobal==true" class="grouplabel">{{ post?._group.group_name }}</div>
+
+                <!-- Assignee detail starts -->
+                <section *ngIf="post.type == 'task' || post.type == 'event'">
+                    <span class="assigned" *ngIf="!eventAssignedToAll(post)" i18n="@@postView.assignedToNumMembers">
+                      Assigned to {{post._assigned_to?.length || 0}} Member(s)
+                    </span>
+                    <span class="assigned" *ngIf="eventAssignedToAll(post)" i18n="@@postView.assignedToAllMembers">
+                      Assigned to all Members
+                    </span>
+                </section>
+                <!-- Assignee detail ends -->
+            </div>
+            <!-- Details of the Post Creator Ends -->
+
+            <!-- Task Status Starts -->
+            <div *ngIf="post?.type === 'task'" class="col-md-4 text-right padding-topright">
+
+                <!-- Change task status starts -->
+                <app-task-status class="ml-5" *ngIf="post.task.isNorthStar === false"
+                  [postId]="post?._id"
+                  [groupId]="post?._group?._id || post?._group"
+                  [userId]="userData?._id"
+                  [status]="post?.task?.status"
+                  (status)="changeTaskStatus($event)">
+                </app-task-status>
+                <!-- Change task status ends -->
+
+                <!-- Due Date starts -->
+                <p class="small font-weight-bold mt-3" *ngIf="post.task?.due_to && post.task?.due_to != 'Invalid date'">
+                    <span i18n="@@postView.due">due</span> {{post.task?.due_to | date}}
+                </p>
+                <!-- Due Date ends -->
+
+            </div>
+            <!-- Task Status Ends -->
+
+        </div>
+
+        <!-- Normal Post Title starts -->
+        <h4 *ngIf="post.type != 'event'"
+            [innerHTML]="(post?.title || 'Untitled') | safe: 'html'" class="post-title">
+        </h4>
+        <!-- Normal Post Title ends -->
+
+        <div class="row" style="margin-left: 0; margin-right:0;" *ngIf="post?.type === 'event'">
+            <div class="col-md-2 dateblock" *ngIf="post.event.due_to != 'Invalid date'">
+                <span class="bigdate">{{post?.event.due_to | date :'dd' }}</span>
+                <br>
+                <span class="time">{{post?.event.due_to | date: 'MMMM' }}</span>
+                <br>
+                <span class="time">{{post.event.due_to | date:'HH:mm'}}</span>
+            </div>
+
+            <div class="col-md-10">
+                <!-- Events Post Title starts -->
+                <div class=" innercard font-weight-bold"
+                    [innerHTML]="(post?.title || 'Untitled') | safe: 'html'">
+                </div>
+                <!-- Event Post Title ends -->
+
+                <!-- Event Post Content Starts -->
+                <!-- <app-quill-editor *ngIf="post.content && showFullContent" [editorId]="('editor_' + post._id) || 'editor'"
+                    [toolbar]="false" [readOnly]="true" [quillContent]="post.content"></app-quill-editor> -->
+
+                <div *ngIf="post.content" [innerHTML]="postContent | safe: 'html'" class="htmlContent"></div>
+
+                <div style="text-align:center">
+                    <button *ngIf="!showFullContent" (click)="showHideFullContent()" class="btn btn-light mt-4" i18n="@@postView.readMore">
+                        Read more...
+                    </button>
+                </div>
+                <!-- Event Post Content Ends -->
+            </div>
+        </div>
+
+        <!-- Normal Post Content starts -->
+        <!-- <app-quill-editor *ngIf="post.content && showFullContent && post.type != 'event'" [editorId]="('editor_' + post._id) || 'editor'"
+            [toolbar]="false" [readOnly]="true" [quillContent]="post.content"></app-quill-editor> -->
+
+        <div *ngIf="post.content" [innerHTML]="postContent | safe: 'html'" class="htmlContent"></div>
+
+        <div style="text-align:center">
+            <button *ngIf="!showFullContent" (click)="showHideFullContent()" class="btn btn-light mt-4" i18n="@@postView.readMore">
+                Read more...
+            </button>
+        </div>
+        <!-- Normal Post Content ends -->
+
+        <!-- North Star Stats starts -->
+        <app-north-star-stats *ngIf="post?.task?.isNorthStar"
+          [isNorthStar]="(post?.task?.isNorthStar) ? true : false"
+          [northStar]="post?.task?.northStar">
+        </app-north-star-stats>
+        <!-- North Star Stats ends -->
+
+        <!-- Attached Files Starts -->
+        <div *ngIf="post" class="ml-2 mt-2">
+            <a href="{{ fileBaseUrl }}/{{ workspaceId }}/{{ file?.modified_name }}?authToken={{authToken}}" target="_blank"
+                *ngFor="let file of post.files; let index = index; trackBy: utilityService.trackByIndex">
+                <span class="fileslabel">{{ file?.original_name }}</span>
+            </a>
+        </div>
+        <!-- Attached Files Ends -->
+        <!-- Tags Display -->
+        <div class="col-md-auto mt-3" *ngIf="post.tags?.length>0">
+
+            <span *ngFor="let tag of post.tags; trackBy: utilityService.trackByIndex" class="tagslabel">{{ tag }}</span>
+
+        </div>
+        <!-- Tags Display ends -->
+
+        <!-- Post Actions starts -->
+        <app-post-actions *ngIf="post && userData"
+            [post]="post"
+            [userData]="userData"
+            [groupData]="groupData"
+            [canEdit]="post.canEdit"
+            (delete)="deletePost($event)"
+            (pinEvent)="onPostPin($event)"
+            (closeModalEvent)="postModalCloseEvent($event)">
+        </app-post-actions>
+        <!-- Post Actions ends -->
+
+    </div>
+    <!-- </div> -->
+</li>
+<!-- Post Ends -->

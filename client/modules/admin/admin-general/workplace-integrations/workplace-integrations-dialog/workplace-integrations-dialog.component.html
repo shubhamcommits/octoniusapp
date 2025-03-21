@@ -1,0 +1,249 @@
+<div class="integrationsDialog" *ngIf="workspaceData">
+  <mat-dialog-actions class="d-flex justify-content-end" align="end">
+    <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
+  </mat-dialog-actions>
+
+  <h2 mat-dialog-title class="text-center">
+    <span class="badge badge-cf">
+      <i class="material-icons">cable</i>
+    </span>
+    <span i18n="@@workspaceIntegrationsDialog.workplaceIntegrations">Workplace Integrations</span>
+  </h2>
+
+  <div class="description text-center">
+
+    <img src="assets/images/placeholder_workplace_integrations.svg" alt="" style="width: 180px; margin: 14px">
+
+    <p i18n="@@workspaceIntegrationsDialog.workplaceIntegrationsDescription" class="text-descr">
+      Manage integrations with third party applications.
+    </p>
+  </div>
+
+  <div class="content">
+    <!-- GOOGLE INTEGRATION STARTS -->
+    <div class="integration">
+      <div class="mt-2 mb-2 pt-3">
+        <mat-slide-toggle color="primary"
+            [checked]="workspaceData?.integrations?.is_google_connected"
+            [name]="'enabled_google'"
+            [(ngModel)]="workspaceData.integrations.is_google_connected">
+          <h6><b i18n="@@workspaceIntegrationsDialog.enableGoogleIntegrations">Enable Google Integrations</b></h6>
+        </mat-slide-toggle>
+
+        <br/>
+        <p class="card-text" i18n="@@workspaceIntegrationsDialog.enableGoogleIntegrationsDescription">This will allow the users to sign in with google and synchronize with their google drive.</p>
+        <br/>
+
+        <div class="integration-properties" *ngIf="workspaceData?.integrations?.is_google_connected">
+          <div class="form-group">
+            <label for="google_client_id" i18n="@@workspaceIntegrationsDialog.clientId">Client ID:</label>
+            <input type="text" class="form-control" name="google_client_id" [(ngModel)]="workspaceData.integrations.google_client_id" placeholder="Please provide the Google Client ID">
+            <br/>
+            <label for="google_secret_key" i18n="@@workspaceIntegrationsDialog.secretKey">Secret Key:</label>
+            <input type="text" class="form-control" name="google_secret_key" [(ngModel)]="workspaceData.integrations.google_client_secret_key" placeholder="Please provide the Google Secret Key">
+            <!--
+            <br/>
+            <label for="google_api_key" i18n="@@workspaceIntegrationsDialog.apiKey">API Key:</label>
+            <input type="text" class="form-control" name="google_api_key" [(ngModel)]="workspaceData.integrations.google_api_key" placeholder="Please provide the Google API Key">
+             -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- GOOGLE INTEGRATION ENDS -->
+
+    <!-- LDAP INTEGRATION STARTS -->
+    <div class="integration">
+      <div class="mt-2 mb-2 pt-3">
+        <mat-slide-toggle color="primary"
+            [checked]="workspaceData?.integrations?.is_ldap_connected"
+            [name]="'enabled_ldap'"
+            [(ngModel)]="workspaceData.integrations.is_ldap_connected">
+          <h6><b i18n="@@workspaceIntegrationsDialog.enableLDAPIntegrations">Enable LDAP Integrations</b></h6>
+        </mat-slide-toggle>
+
+        <br/>
+        <p class="card-text" i18n="@@workspaceIntegrationsDialog.enableLDAPIntegrationsDescription">This will allow the users to sign in with the LDAP company account.</p>
+        <br/>
+
+        <div class="integration-properties" *ngIf="workspaceData?.integrations?.is_ldap_connected">
+          <div class="form-group">
+            <label for="ldap_url" i18n="@@workspaceIntegrationsDialog.ldapUrl">URL:</label>
+            <input type="text" class="form-control" name="ldap_url" [(ngModel)]="workspaceData.integrations.ldap_url" placeholder="Please provide the LDAP URL">
+            <br/>
+            <label for="ldap_dn" i18n="@@workspaceIntegrationsDialog.ldapDn">Distinguished Name:</label>
+            <input type="text" class="form-control" name="ldap_dn" [(ngModel)]="workspaceData.integrations.ldap_dn" placeholder="Please provide the LDAP DN">
+            <br/>
+            <label for="ldap_password" i18n="@@workspaceIntegrationsDialog.ldapPassword">Password:</label>
+            <input type="text" class="form-control" name="ldap_password" [(ngModel)]="workspaceData.integrations.ldap_password" placeholder="Please provide the LDAP Password">
+            <br/>
+            <label for="ldap_search_base" i18n="@@workspaceIntegrationsDialog.ldapSearchBase">Search Base:</label>
+            <input type="text" class="form-control" name="ldap_search_base" [(ngModel)]="workspaceData.integrations.ldap_search_base" placeholder="Please provide the LDAP Search Base">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- LDAP INTEGRATION ENDS -->
+
+    <!-- AZURE AD INTEGRATION STARTS -->
+    <div class="integration">
+      <div class="mt-2 mb-2 pt-3">
+        <mat-slide-toggle color="primary"
+            [checked]="workspaceData?.integrations?.is_azure_ad_connected"
+            [name]="'enabled_azure'"
+            [(ngModel)]="workspaceData.integrations.is_azure_ad_connected">
+          <h6><b i18n="@@workspaceIntegrationsDialog.enableAzureIntegrations">Enable Azure Active Directory Integrations</b></h6>
+        </mat-slide-toggle>
+
+        <br/>
+        <p class="card-text" i18n="@@workspaceIntegrationsDialog.enableAzureIntegrationsDescription">This will allow the users to sign in with the Azure Active Directory company account.</p>
+        <br/>
+
+        <div class="integration-properties" *ngIf="workspaceData?.integrations?.is_azure_ad_connected">
+          <div class="form-group">
+            <label for="azure_ad_clientId" i18n="@@workspaceIntegrationsDialog.azureADAClientId">Client ID:</label>
+            <input type="text" class="form-control" name="azure_ad_clientId" [(ngModel)]="workspaceData.integrations.azure_ad_clientId" placeholder="Please provide the Client ID">
+            <br/>
+            <label for="azure_ad_authority_cloud_url" i18n="@@workspaceIntegrationsDialog.azureADAuthorityCloudUrl">Authority Cloud Tenant URL:</label>
+            <input type="text" class="form-control" name="azure_ad_authority_cloud_url" [(ngModel)]="workspaceData.integrations.azure_ad_authority_cloud_url" placeholder="Please provide the Authority Cloud Tenant URL">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- AZURE AD INTEGRATION ENDS -->
+
+    <!-- SLACK INTEGRATION STARTS -->
+    <div class="integration">
+      <div class="mt-2 mb-2 pt-3">
+        <mat-slide-toggle color="primary"
+            [checked]="workspaceData?.integrations?.is_slack_connected"
+            [name]="'enabled_slack'"
+            [(ngModel)]="workspaceData.integrations.is_slack_connected">
+          <h6><b i18n="@@workspaceIntegrationsDialog.enableSlackIntegrations">Enable Slack Integrations</b></h6>
+        </mat-slide-toggle>
+
+        <br/>
+        <p class="card-text" i18n="@@workspaceIntegrationsDialog.enableSlackIntegrationsDescription">This will allow the users to receive notifications in Slack and create task from slack.</p>
+        <br/>
+
+        <div class="integration-properties" *ngIf="workspaceData?.integrations?.is_slack_connected">
+          <div class="form-group">
+            <label for="slack_client_id" i18n="@@workspaceIntegrationsDialog.clientId">Client ID:</label>
+            <input type="text" class="form-control" name="slack_client_id" [(ngModel)]="workspaceData.integrations.slack_client_id" placeholder="Please provide the Slack Client ID">
+            <br/>
+            <label for="slack_secret_key" i18n="@@workspaceIntegrationsDialog.secretKey">Secret Key:</label>
+            <input type="text" class="form-control" name="slack_secret_key" [(ngModel)]="workspaceData.integrations.slack_client_secret_key" placeholder="Please provide the Slack Secret Key">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- SLACK INTEGRATION ENDS -->
+
+    <!-- BOX INTEGRATION STARTS -->
+    <div class="integration">
+      <div class="mt-2 mb-2 pt-3">
+        <mat-slide-toggle color="primary"
+            [checked]="workspaceData?.integrations?.is_box_connected"
+            [name]="'enabled_box'"
+            [(ngModel)]="workspaceData.integrations.is_box_connected">
+          <h6><b i18n="@@workspaceIntegrationsDialog.enableBoxIntegrations">Enable Box Integrations</b></h6>
+        </mat-slide-toggle>
+
+        <br/>
+        <p class="card-text" i18n="@@workspaceIntegrationsDialog.enableBoxIntegrationsDescription">This will allow the users to synchronize with their box drive.</p>
+        <br/>
+
+        <div class="integration-properties" *ngIf="workspaceData?.integrations?.is_box_connected">
+          <div class="form-group">
+            <label for="box_client_id" i18n="@@workspaceIntegrationsDialog.clientId">Client ID:</label>
+            <input type="text" class="form-control" name="box_client_id" [(ngModel)]="workspaceData.integrations.box_client_id" placeholder="Please provide the Box Client ID">
+            <br/>
+            <label for="box_secret_key" i18n="@@workspaceIntegrationsDialog.secretKey">Secret Key:</label>
+            <input type="text" class="form-control" name="box_secret_key" [(ngModel)]="workspaceData.integrations.box_client_secret_key" placeholder="Please provide the Box Secret Key">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- BOX INTEGRATION ENDS -->
+
+    <!-- Atlassian INTEGRATION STARTS -->
+    <div class="integration">
+      <div class="mt-2 mb-2 pt-3">
+        <mat-slide-toggle color="primary" [checked]="workspaceData?.integrations?.is_atlassia_connected"
+          [name]="'enabled_azure'" [(ngModel)]="workspaceData.integrations.is_atlassia_connected">
+          <h6>
+            <b i18n="@@workspaceIntegrationsDialog.enableAtlassiaIntegrations">Enable Atlassian Integrations</b>
+          </h6>
+        </mat-slide-toggle>
+    
+        <br />
+        <p class="card-text" i18n="@@workspaceIntegrationsDialog.enableAtlassiaIntegrationsDescription">This will allow the
+          users to synchronize the information in Atlassian account.</p>
+        <br />
+    
+        <div class="integration-properties" *ngIf="workspaceData?.integrations?.is_atlassia_connected">
+          <div class="form-group">
+            <label for="atlassia_url"
+              i18n="@@workspaceIntegrationsDialog.atlassiaUrl">Atlassian Domain URL:</label>
+            <input type="text" class="form-control" name="atlassia_url"
+              [(ngModel)]="workspaceData.integrations.atlassia_url"
+              placeholder="Please provide the Atlassian Domain URL">
+            <br />
+            <label for="atlassia_token" i18n="@@workspaceIntegrationsDialog.atlassiaToken">Token:</label>
+            <input type="text" class="form-control" name="atlassia_token"
+              [(ngModel)]="workspaceData.integrations.atlassia_token" placeholder="Please provide the Token">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Atlassian INTEGRATION ENDS -->
+
+    <!-- Atlassian INTEGRATION STARTS -->
+    <div class="integration">
+      <div class="mt-2 mb-2 pt-3">
+        <mat-slide-toggle color="primary" [checked]="workspaceData?.integrations?.is_ms_365_connected"
+          [name]="'enabled_azure'" [(ngModel)]="workspaceData.integrations.is_ms_365_connected">
+          <h6>
+            <b i18n="@@workspaceIntegrationsDialog.enableMS365Integrations">Enable MS365 Integration</b>
+          </h6>
+        </mat-slide-toggle>
+    
+        <br />
+        <p class="card-text" i18n="@@workspaceIntegrationsDialog.enableMS365IntegrationsDescription">This will allow the
+          users to synchronize the information in MS365 account.</p>
+        <br />
+    
+        <div class="integration-properties" *ngIf="workspaceData?.integrations?.is_ms_365_connected">
+          <div class="form-group">
+            <label for="ms_365_client_id" i18n="@@workspaceIntegrationsDialog.ms_365_client_id">Client ID:</label>
+            <input type="text" class="form-control" name="ms_365_client_id" [(ngModel)]="workspaceData.integrations.ms_365_client_id" placeholder="Please provide the MS365 Client ID">
+            <br />
+            <label for="ms_365_tenant_id" i18n="@@workspaceIntegrationsDialog.ms_365_tenant_id">Tenant ID:</label>
+            <input type="text" class="form-control" name="ms_365_tenant_id" [(ngModel)]="workspaceData.integrations.ms_365_tenant_id" placeholder="Please provide the MS365 Tenant ID">
+            <br/>
+            <label for="ms_365_client_secret" i18n="@@workspaceIntegrationsDialog.ms_365_client_secret">Client Secret:</label>
+            <input type="text" class="form-control" name="ms_365_client_secret" [(ngModel)]="workspaceData.integrations.ms_365_client_secret" placeholder="Please provide the MS365 Client Secret">
+            <br/>
+            <label for="ms_365_authority" i18n="@@workspaceIntegrationsDialog.ms_365_authority">Authority ID:</label>
+            <input type="text" class="form-control" name="ms_365_authority" [(ngModel)]="workspaceData.integrations.ms_365_authority" placeholder="Please provide the MS365 Authority">
+            <br/>
+            <label for="ms_365_private_key_path" i18n="@@workspaceIntegrationsDialog.ms_365_private_key_path">Private Key Path:</label>
+            <input type="text" class="form-control" name="ms_365_private_key_path" [(ngModel)]="workspaceData.integrations.ms_365_private_key_path" placeholder="Please provide the MS365 Private Key Path">
+            <!--
+            <br/>
+            <label for="ms_365_online_host" i18n="@@workspaceIntegrationsDialog.ms_365_online_host">Online Host:</label>
+            <input type="text" class="form-control" name="ms_365_online_host" [(ngModel)]="workspaceData.integrations.ms_365_online_host" placeholder="Please provide the MS365 Online Host for Office integration">
+            -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Atlassian INTEGRATION ENDS -->
+  </div>
+
+  <div style="margin-top: 20px; text-align: center;">
+    <button class="col-md-4 btn btn-primary" (click)="saveSettings()" i18n="@@workspaceIntegrationsDialog.save">
+      Save
+    </button>
+  </div>
+</div>

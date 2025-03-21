@@ -1,0 +1,63 @@
+<div class="container">
+    <mat-dialog-actions class="d-flex justify-content-end" align="end">
+        <i class="material-icons" (click)="closeDialog()" style="cursor: pointer">close</i>
+    </mat-dialog-actions>
+
+    <h2 mat-dialog-title style="margin: -50px 50px 0 50px !important;">
+        <!--
+        <app-secured-image *ngIf="!!productData?._id" [imgURL]="productData?.product_pic" [service]="'group'" [workspaceId]="(this.groupData?._workspace?._id || this.groupData?._workspace)"
+            [styleClass]="'group-avatar'" (click)="openUploadImageDetails(content)"></app-secured-image>
+
+        <ng-template #content let-modal>
+            <app-crm-product-image-dialog
+                [groupData]="groupData" [productData]="productData"
+                (productImage)="onProductImageEdited($event)">
+            </app-crm-product-image-dialog>
+        </ng-template>
+        -->
+        <span *ngIf="!!productData._id && !!productData.name">{{ productData?.name }}</span>
+        <span i18n="@@newCRMProductDialog.newContact" *ngIf="!productData._id">New Product</span>
+    </h2>
+
+    <div mat-dialog-content>
+        <!-- <mat-tab-group mat-align-tabs="start">
+            <mat-tab>
+                <ng-template mat-tab-label> -->
+                    <span i18n="@@newCRMProductDialog.contactInformation">Product Information</span>
+                <!-- </ng-template>
+        
+                <ng-template matTabContent> -->
+                    <app-crm-product-information
+                        [productData]="productData"
+                        (productInfoEdited)="onProductInfoEdited($event)"
+                        ></app-crm-product-information>
+                        <!-- (productImageEdited)="onProductImageEdited($event)" -->
+                <!-- </ng-template>
+            </mat-tab>
+
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <span i18n="@@newCRMProductDialog.customFields">Custom Fields</span>
+                </ng-template>
+            
+                <ng-template matTabContent>
+                    <app-crm-product-custom-fields [productData]="productData"
+                        [groupData]="groupData"
+                        (productCFEdited)="onProductInfoEdited($event)"></app-crm-product-custom-fields>
+                </ng-template>
+            </mat-tab>
+        </mat-tab-group> -->
+    </div>
+
+    <div>
+        <div style="margin-top: 20px;">
+            <button class="btn btn-danger" (click)="closeDialog()" i18n="@@newCRMProductDialog.cancel" style="margin: 0 10px">
+                Cancel
+            </button>
+
+            <button class="btn btn-primary" [disabled]="!enableSave" (click)="saveProduct()" i18n="@@newCRMProductDialog.save" style="margin: 0 10px">
+                Save
+            </button>
+        </div>
+    </div>
+</div>

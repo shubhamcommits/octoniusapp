@@ -1,0 +1,68 @@
+@import "src/assets/scss/variables";
+
+/* GROUP CSS */
+
+// New Post Pill CSS
+.feed-new-update-pill {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+// Inner Content CSS
+.inner-news{
+    height: 32px;
+    width: 130px;
+    margin: 0px auto;
+    .news-badge{
+      z-index: 99;
+      position: fixed;
+      box-shadow: 0 0 0 1px rgba(0,0,0,.15), 0 6px 9px rgba(0,0,0,.2);
+      .material-icons{
+        font-size: 14px;
+      }
+    }
+  }
+
+  /* GROUP CSS */
+
+/* Selected days in calendar */
+.cal-day-selected,
+.cal-day-selected:hover {
+  background-color: $day-selected !important;
+}
+
+.cal-day-cancel-selected,
+.cal-day-cancel-selected:hover {
+  background-color: $day-cancel-selected !important;
+}
+
+.cal-day-holidays,
+.cal-day-holidays:hover {
+  background-color: $day-holiday !important;
+}
+.cal-day-holidays-approved,
+.cal-day-holidays-approved:hover {
+  background-color: $day-holiday-approved !important;
+}
+
+.cal-day-personal,
+.cal-day-personal:hover {
+  background-color: $day-personal !important;
+}
+.cal-day-personal-approved,
+.cal-day-personal-approved:hover {
+  background-color: $day-personal-approved !important;
+}
+
+.cal-day-sick,
+.cal-day-sick:hover {
+  background-color: $day-sick !important;
+}
+.cal-day-sick-approved,
+.cal-day-sick-approved:hover {
+  background-color: $day-sick-approved !important;
+}
+
+/* Selected days in calendar */

@@ -1,0 +1,19 @@
+<div class="card sideinnercard">
+  <div class="card-block">
+    <h6 class="card-title">
+      <strong i18n="@@projectStatus.projectStatus">Project Status</strong>
+    </h6>
+
+    <hr />
+
+    <mat-form-field>
+      <mat-select ngDefaultControl name="status"
+        [ngClass]="status_class"
+        [(value)]="status"
+        (selectionChange)="changeStatus($event)"
+        (click)="$event.stopPropagation()">
+          <mat-option *ngFor="let s of status_types; trackBy: utilityService.trackByIndex" [value]="s">{{ s }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+<div class="subtasks-title">
+  {{ subtasks.length }} <span i18n="@@subTasks.subTasks">Subtasks</span>
+  <div *ngIf="subtasks.length > 0" [class]="completitionPercentageClass">
+    {{ percentageSubtasksCompleted }} %
+  </div>
+</div>
+
+<!-- CREATE TASK STARTS -->
+<app-new-task [groupData]="groupData" [userData]="userData" [subtask]="true" [parentNS]="parentNS" [parentId]="parentId" (post)="newSubtaskEvent($event)"></app-new-task>
+<!-- CREATE TASK ENDS -->
+
+<div>
+  <div class="task_row"
+    [ngClass]="{'status-todo': task?.task?.status === 'to do', 'status-inprogress': task?.task?.status === 'in progress', 'status-done': task?.task?.status === 'done' }"
+    *ngFor="let task of subtasks; trackBy: utilityService.trackByIndex">
+
+    <div class="task_content" (click)="openSubtask(task)">
+      <div class="task_title">
+        {{ task.title | truncatetext:60 }}
+      </div>
+
+      <div style="display: flex; flex-direction: row; justify-content: space-between;">
+        <div class="task_cell_asignee">
+          <app-assignee-avatar [post]="task" [userData]="userData"></app-assignee-avatar>
+        </div>
+
+        <div class="task_cell_date muted">
+          {{ task.task.due_to | date:'MMM dd, yyyy' }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

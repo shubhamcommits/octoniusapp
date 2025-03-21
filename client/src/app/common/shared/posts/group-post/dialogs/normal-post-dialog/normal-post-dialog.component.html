@@ -1,0 +1,115 @@
+<mat-dialog-actions align="end">
+  <div class="action-box">
+      <a (click)="onCloseDialog()" mat-dialog-close>
+        <i class="material-icons" style="cursor: pointer">close</i>
+      </a>
+  </div>
+</mat-dialog-actions>
+
+<div class="post-dialog-content" *ngIf="objectExists(postData) && postData._id">
+    <div class="post-content">
+        <div>
+          <div class="content-box">
+            <div class="modal-header">
+              <!-- Event Post Header starts -->
+              <h4 class="modal-title">
+                <!-- Post Title starts -->
+                <input name="postTitle" type="text" [ngModel]="title" (blur)="titleChange($event)" class="post-title" placeholder="✍🏻 Title" />
+                <!-- Post Title ends -->
+              </h4>
+        
+              <app-post-utils *ngIf="userData" [post]="postData" [userData]="userData" [groupData]="groupData"
+                [canEdit]="canEdit" mode="fullscreen" (delete)="deletePost()">
+              </app-post-utils>
+            </div>
+            <!-- Post Header Title ends -->
+        
+            <!-- Post Content starts -->
+            <app-quill-editor *ngIf="canEdit" [editorId]="'postbox-editor'" [toolbar]="canEdit" [readOnly]="!canEdit"
+              [quillContent]="postData?.content" [groupId]="groupId" (contentEmitter)="quillContentChanged($event)">
+            </app-quill-editor>
+            <!-- Post Content ends -->
+        
+            <!-- Attach files starts -->
+            <div class="attach-files" *ngIf="postData">
+              <app-attach-files [post]="postData" (files)="onAttach($event)" (cloudFiles)="onCloudFileAttach($event)">
+              </app-attach-files>
+            </div>
+            <!-- Attach files ends -->
+
+            <app-post-actions [post]="postData" [userData]="userData" [fullscreen]="true" [groupData]="groupData"
+              [canEdit]="canEdit" (pinEvent)="onPostPin($event)"
+              (newCommentEmitter)="newCommentAdded($event)">
+            </app-post-actions>
+          </div>
+        </div>
+
+        <div class="clearfix save-content">
+            <button *ngIf="canEdit" [disabled]="!contentChanged"
+              class="btn float-right btn-primary btn-md"
+              (click)="updateDetails('change_content')" i18n="@@normalPostDialog.save">
+                Save
+            </button>
+        </div>
+
+        <div class="content-box" *ngIf="(postData?.comments_count > 0) || (!!postData?.logs && postData?.logs?.length > 0)">
+          <!-- TABS STARTS -->
+          <mat-tab-group mat-align-tabs="start" [selectedIndex]="selectedTab" animationDuration="0ms">
+            <!-- comment-list STARTS-->
+            <mat-tab *ngIf="postData?.comments_count > 0">
+              <ng-template mat-tab-label>
+                <span i18n="@@normalPostDialog.comments">Comments</span>
+              </ng-template>
+
+              <ng-template matTabContent>
+                <app-comment-list
+                  [postId]="postData?._id"
+                  [userData]="userData"
+                  [groupId]="postData?._group?._id || postData?._group"
+                  [length]="postData?.comments_count"
+                  [newComment]="newComment"></app-comment-list>
+              </ng-template>
+            </mat-tab>
+            <!-- comment-list ENDS-->
+
+            <!-- TASK CHANGES HISTORY STARTS-->
+            <mat-tab *ngIf="postData?.logs && postData?.logs?.length > 0">
+              <ng-template mat-tab-label>
+                <span i18n="@@normalPostDialog.changeLog">Change Log</span>
+              </ng-template>
+
+              <ng-template matTabContent>
+                <app-post-logs [logs]="postData?.logs"></app-post-logs>
+              </ng-template>
+            </mat-tab>
+            <!-- TASK CHANGES HISTORY ENDS-->
+          </mat-tab-group>
+          <!-- TABS ENDS -->
+        </div>
+    </div>
+
+    <!-- Top Right Section starts -->
+    <div *ngIf="!!groupData && (!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.normal && (groupData?.dialog_properties_to_show?.normal?.includes('tags')))"
+       class="post-properties">
+        <div class="content-box" *ngIf="!!groupData.dialog_properties_to_show && !!groupData.dialog_properties_to_show.normal && groupData?.dialog_properties_to_show?.normal?.includes('tags')">
+            <p class="box-title" i18n="@@normalPostDialog.tags">Tags</p>
+
+            <!-- Post Tags starts -->
+            <app-tags *ngIf="postData"
+                [canEdit]="canEdit"
+                [item]="postData"
+                [userData]="userData"
+                [groupId]="groupId"
+                (tags)="getTags($event)">
+            </app-tags>
+            <!-- Post Tags ends -->
+        </div>
+    </div>
+    <!-- Top Right Section ends -->
+</div>
+
+<!-- Loading Spinner Starts -->
+<ng-container *ngIf="isLoading$ | async">
+  <app-loading-spinner class="media"></app-loading-spinner>
+</ng-container>
+<!-- Loading Spinner Ends -->

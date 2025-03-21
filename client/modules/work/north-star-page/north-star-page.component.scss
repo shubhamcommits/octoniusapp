@@ -1,0 +1,171 @@
+@import "src/assets/scss/variables";
+@import "src/assets/scss/main";
+
+.container {
+
+  // color: #ffffff;
+  margin-top: 30px;
+
+  img {
+    margin: 0 auto;
+    display: block;
+    width: 60%;
+  }
+
+  .overview-task {
+    margin: 2px auto;
+    // border-radius: 2px;
+  }
+
+  .ns-wrapper{
+    background-color: #fff;
+    padding: 6px;
+    border-radius: 8px;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14);
+  }
+
+  .tile {
+    padding: 0;
+    align-items: center;
+    // background: linear-gradient(90.01deg, #5E2FE5 0.01%, #5E2FE5 99.99%);
+    // box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.25);
+    // border-radius: 8px;
+    // background: #ffffff;
+     border-bottom: 1px solid #E4EDF8;
+    .media-body {
+      padding: 10px;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    p {
+      font-size: 14px !important;
+    }
+  }
+
+  .title-overview {
+    font-size: 15px;
+    margin: 15px 0;
+    font-weight: bold;
+    line-height: 23px;
+    text-transform: uppercase;
+    color: #969A9E;
+  }
+
+  .feed-avatar {
+    //avatar image for in-feed display
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 5px 10px;
+  }
+
+  .overview-item {
+    width: auto;
+    font-size: 16px;
+    padding-left: 15px;
+    font-family: "Nunito", sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    align-items: center;
+  }
+
+  .small {
+    font-size: 12px;
+  }
+
+  a {
+    text-decoration: none !important;
+  }
+
+  .done-bar {
+    border-left: 3px solid $dark-sky-blue !important;
+  }
+
+  .title-nowrap {
+    width: 55%;
+    display: inline-block;
+    white-space: nowrap;
+    // overflow: hidden !important;
+    text-overflow: ellipsis;
+  }
+
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+    align-items: center;
+  }
+
+  .percentlabel {
+    font-family: "Nunito", sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 12px;
+    align-items: center;
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 2px 10px;
+    width: fit-content;
+  }
+
+  .not_started {
+    background-color: #FFAB00 !important;
+  }
+
+  .on_track {
+    background-color: #26A69A !important;
+  }
+
+  .in_danger {
+    background-color: #EB5757 !important;
+  }
+
+  .achieved {
+    background-color: #4A90E2 !important;
+  }
+
+  .grouplabel{
+    font-family: "Nunito", sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 12px;
+    align-items: center;
+    background-color: #26A69A;
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 2px 10px;
+    width: fit-content;
+  }
+}
+
+.new-ns-button {
+  background-color: #5E2FE5;
+  color: #FFFFFF;
+  // border-radius: 20px;
+  // margin-bottom: 20px;
+  &:hover{
+    background-color: #4a20c3;
+  }
+}
+
+.card {
+  width: 288px;
+  background: #FFFFFF;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14);
+  border-radius: 8px;
+  margin-right: 10px;
+  padding-bottom: 20px;
+
+  .title {
+    align-self: center;
+    margin: 20px 0;
+  }
+
+  .graph {
+    width: 90%;
+    align-self: center;
+  }
+}

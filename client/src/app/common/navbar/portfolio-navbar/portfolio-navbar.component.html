@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-lg">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="nav">
+
+      <!-- Go Back starts -->
+      <li>
+        <span class="navbar-brand ml-5 mr-5" style="cursor: pointer;"
+          matTooltip="Go Back" matTooltipPosition="below"
+          (click)="goBack()">
+          <i class="material-icons">arrow_back</i>
+        </span>
+      </li>
+      <!-- Go Back ends -->
+
+      <li class="nav-item mr-3 d-none d-sm-block">
+        <!-- Portfolio Avatar starts -->
+        <app-secured-image
+          [imgURL]="portfolioData?.portfolio_avatar"
+          [service]="'group'"
+          [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
+          [tooltip]="'Change portfolio avatar'" [placement]="'right'" [styleClass]="'mr-3 feed-avatar'"
+          (click)="openDetails(content)"></app-secured-image>
+        <!-- Portfolio Avatar ends -->
+
+        <ng-template #content let-modal>
+          <app-portfolio-image-details [portfolioData]="portfolioData"></app-portfolio-image-details>
+        </ng-template>
+
+        <h2 *ngIf="portfolioData" (click)="saveFavoritePortfolio()" placement="right" ngbTooltip="Add shortcut to sidebar">
+          <i class="material-icons" style="color: #FFAB00; cursor: pointer;" *ngIf="!isFavoritePortfolio">star_outline</i>
+          <i class="material-icons" style="color: #FFAB00; cursor: pointer;" *ngIf="isFavoritePortfolio">star</i>
+        </h2>
+      </li>
+
+      <li *ngIf="portfolioData" class="nav-item mr-3">
+       <span class="groupname muted"> {{ portfolioData.portfolio_name | truncatetext:30 }}</span>
+      </li>
+    </ul>
+  </div>
+</nav>

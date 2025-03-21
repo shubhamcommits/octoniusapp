@@ -1,0 +1,60 @@
+@import "src/assets/scss/variables";
+
+.no-margin{
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+.row{
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.container {
+  margin-top: 30px;
+}
+
+.card-img-top{
+  width: 100%;
+  object-fit: cover;
+}
+
+input {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.add-page{
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn:hover {
+  color: #fff;
+  background: #4a90e2;
+}
+
+.page {
+	background: #FFFFFF;
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14);
+	border-radius: 8px;
+	padding: 16px;
+	margin-top: 20px;
+	display: flex;
+	width: 100%;
+}
+
+.page-info{
+	width: 90%;
+	display: flex;
+	align-items: center;
+}
+
+.options{
+	display: flex;
+	align-self: center;
+}
+.page-title{
+	font-size: 16px;
+	font-weight: bold;
+}

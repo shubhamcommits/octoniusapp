@@ -1,0 +1,38 @@
+<mat-dialog-actions align="end" style="float: right;">
+    <div class="action-box">
+        <a (click)="closeDialog()" mat-dialog-close>
+            <i class="material-icons" style="cursor: pointer">close</i>
+        </a>
+    </div>
+</mat-dialog-actions>
+
+<div style="margin: 20px; width: 50%;">
+    <app-secured-image [imgURL]="memberData?.profile_pic" [service]="'user'" [userData]="memberData" [workspaceId]="(memberData?._workspace?._id || memberData?._workspace)" style="float: left; margin-top: -15px;" [styleClass]="'mr-3 feed-avatar'"
+        [inlineStyle]="'cursor: default;'"></app-secured-image>
+
+    <h2>{{ memberData?.first_name }} {{ memberData?.last_name }}</h2>
+</div>
+
+<div *ngIf="!!showError && !!errorMessage" class="error">
+    <span>❌ {{ errorMessage }}</span>
+</div>
+
+<div class="modal-body">
+    <mat-tab-group mat-align-tabs="start" selectedIndex="0">
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <span i18n="@@editMemberPayrollDialog.profileFields">Profile Fields</span>
+            </ng-template>
+
+            <app-edit-user-profile-fields [userId]="memberId"></app-edit-user-profile-fields>
+        </mat-tab>
+
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <span i18n="@@editMemberPayrollDialog.hrFields">HR Fields</span>
+            </ng-template>
+
+            <app-edit-hr-fields [memberId]="memberId" (memberEditedEvent)="emitMemberEdited($event)"></app-edit-hr-fields>
+        </mat-tab>
+    </mat-tab-group>
+</div>

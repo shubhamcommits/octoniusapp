@@ -1,0 +1,22 @@
+<div class="card">
+	<div class="img-fluid">
+		<div class="card-title">
+			<span i18n="@@hiveReportsCard.manageEmployees">Manage Employees</span>
+		</div>
+
+		<div class="card-content">
+			<p i18n="@@hiveReportsCard.cardDescription">
+				Create and track reports for employee activity and payroll.
+			</p>
+
+			<img src="assets/images/hive-reports.png" alt="" class="card-img-top">
+		</div>
+
+		<div class="card-footer" [routerLink]="['/dashboard', 'work', 'organization', 'hive', 'employees']">
+			<div>
+				<span i18n="@@hiveReportsCard.goToEmployees">Go to employees</span>
+				<i class="material-icons">arrow_forward</i>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,11 @@
+<mat-dialog-actions align="end" style="float: right;">
+    <div class="action-box">
+        <a (click)="closeDialog()" mat-dialog-close>
+            <i class="material-icons" style="cursor: pointer">close</i>
+        </a>
+    </div>
+</mat-dialog-actions>
+
+<div>
+    <app-user-workload-calendar *ngIf="userId" [userId]="userId"></app-user-workload-calendar>
+</div>

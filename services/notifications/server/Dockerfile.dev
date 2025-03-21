@@ -1,0 +1,27 @@
+### STAGE 1: Build ###
+
+# Pull the Node image from Docker Hub
+FROM node:14-slim
+
+# Create app directory
+WORKDIR /usr/app
+
+# Copy package.json to the WORKDIR
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy all the files from local folder to the container WORKDIR
+COPY . .
+
+# Build into standard javascript modules
+#RUN npm run build
+
+#RUN mv ./node_modules/ /usr/ && rm -rf *.ts && mv /usr/node_modules ./
+
+# Expose the port
+EXPOSE 9000
+
+# Start the Server
+CMD ["npm", "run", "dev"]

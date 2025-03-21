@@ -1,0 +1,38 @@
+<div class="sidecontent">
+    <div class="card sideinnercard">
+        <div class="card-block">
+            <h6 class="card-title"><b i18n="@@userInformation.yourContactInformation">Your contact information</b>
+                <button *ngIf="currentUser" type="button" name="button" class="btn btn-link"
+                    (click)="openUpdateModel()">
+                    <i class="material-icons">create</i>
+                </button>
+            </h6>
+            <hr />
+            <p class="card-text"><strong i18n="@@userInformation.name">Name:</strong>
+                {{ userData?.first_name+' '+userData?.last_name}} </p>
+            <p class="card-text"><strong i18n="@@userInformation.email">Email:</strong>
+                {{ userData?.email}} </p>
+            <p class="card-text"><strong i18n="@@userInformation.phone">Phone:</strong>
+                <span id="userData_phone_number"> {{ userData?.phone_number }} </span></p>
+            <p class="card-text"><strong i18n="@@userInformation.mobile">Mobile:</strong>
+                <span id="userData_mobile_number"> {{ userData?.mobile_number }}</span></p>
+            <p class="card-text"><strong i18n="@@userInformation.company">Company:</strong>
+                <span id="userData_company_name"> {{ userData?.company_name }} </span></p>
+            <p class="card-text"><strong i18n="@@userInformation.role">Role:</strong>
+                {{ userData?.role }}</p>
+            <!-- LANGUAGE SELECT starts -->
+            <p>
+              <strong i18n="@@userInformation.language">Language:</strong>
+              <app-select-language [userData]="userData"></app-select-language>
+            </p>
+            <!-- LANGUAGE SELECT ends -->
+
+            <button *ngIf="currentUser && userData.role !='owner'"
+                type="button" name="button"
+                class="btn btn-link" (click)="removeUser(userData._id)"
+                i18n="@@userInformation.deleteAccount">
+                    Delete Account
+            </button>
+        </div>
+    </div>
+</div>

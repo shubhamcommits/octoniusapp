@@ -1,0 +1,30 @@
+
+<div class="smart-card" style="padding: 10px;">
+
+  <div class="row" style="margin: 0 0 20px;">
+    <div class="card-title mt-1" i18n="@@recentGroups.recentWork">
+      Recent work
+    </div>
+  </div>
+
+  <!-- groups list  -->
+  <div class="media" *ngFor="let group of recentGroups; trackBy: utilityService.trackByIndex" (click)="goToGroup(group?._group?._id)" style="cursor: pointer;">
+    <app-secured-image *ngIf="group?._group?.group_name != 'personal'"
+      [imgURL]="group?._group?.group_avatar"
+      [service]="'group'" 
+      [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
+      [styleClass]="'mr-3 group-avatar'"></app-secured-image>
+
+    <app-secured-image *ngIf="group?._group?.group_name == 'personal'"
+      [imgURL]="userData?.profile_pic"
+      [service]="'user'"
+      [userData]="userData"
+      [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
+      [styleClass]="'mr-3 group-avatar'"></app-secured-image>
+
+    <div class="media-body">
+      <h5 class="mt-0 post-title title-nowrap">{{ group?._group?.group_name }}</h5>
+    </div>
+  </div>
+</div>
+

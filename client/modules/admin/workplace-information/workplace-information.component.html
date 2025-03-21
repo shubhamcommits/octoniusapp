@@ -1,0 +1,62 @@
+<div class="sidecontent">
+    <div class="card sideinnercard">
+        <div class="card-block">
+            <h6 class="card-title" *ngIf="routerState === 'general'">
+              <b i18n="@@workplaceInformation.workspaceInfo">Workplace Info</b>
+            </h6>
+            <h6 class="card-title" *ngIf="routerState === 'billing'">
+              <b i18n="@@workplaceInformation.companyStats">Company Stats</b>
+            </h6>
+            <hr />
+            <p class="card-text" *ngIf="routerState === 'billing'">
+              <span i18n="@@workplaceInformation.companyName">Company Name</span>:
+              <span *ngIf="!editCompanyName">
+                    {{ workspaceData?.company_name }}
+                    <span (click)="editCompanyName = !editCompanyName" class="material-icons-outlined" style="cursor: pointer; font-size: 15px; margin-left: 10px; margin-bottom: 10px;">mode_edit</span>
+                </span>
+                <!-- Company Name Input starts -->
+                <input *ngIf="editCompanyName"
+                    type="text"
+                    name="companyName"
+                    placeholder="✍🏻 Company Name"
+                    [ngModel]="workspaceData?.company_name"
+                    (blur)="companyNameChange($event)"
+                    (keyup.enter)="companyNameChange($event)"
+                    (keyup.esc)="editCompanyName = false" />
+                <!-- Company Name Input ends -->
+            </p>
+            <p class="card-text">
+                <span i18n="@@workplaceInformation.workspaceName">Workspace Name</span>:
+                <span *ngIf="!editWorkspaceName">
+                    {{ workspaceData?.workspace_name }}
+                    <span (click)="editWorkspaceName = !editWorkspaceName" class="material-icons-outlined" style="cursor: pointer; font-size: 15px; margin-left: 10px; margin-bottom: 10px;">mode_edit</span>
+                </span>
+                <!-- Workspace Name Input starts -->
+                <input *ngIf="editWorkspaceName"
+                    type="text"
+                    name="workspaceName"
+                    placeholder="✍🏻 Workspace Name"
+                    [ngModel]="workspaceData?.workspace_name"
+                    (blur)="workspaceNameChange($event)"
+                    (keyup.enter)="workspaceNameChange($event)"
+                    (keyup.esc)="editWorkspaceName = false" />
+                <!-- Workspace Name Input ends -->
+            </p>
+            <p class="card-text">
+              <span i18n="@@workplaceInformation.ownerName">Owner Name</span>:
+                {{ workspaceData?.owner_first_name }} {{ workspaceData?.owner_last_name }}</p>
+            <p class="card-text">
+              <span i18n="@@workplaceInformation.totalMembers">Total Members</span>:
+                {{ (workspaceData?.company_members_count || 0) + (workspaceData?.guests_count || 0) }}</p>
+            <p class="card-text">
+              <span i18n="@@workplaceInformation.companyMembers">Company Members</span>:
+                {{ (workspaceData?.company_members_count || 0) }}</p>
+            <p class="card-text">
+              <span i18n="@@workplaceInformation.invitedGuests">Invited Guests</span>:
+                {{ (workspaceData?.guests_count || 0) }}</p>
+            <p class="card-text">
+              <span i18n="@@workplaceInformation.inviteAccessCode">Invite Access Code</span>:
+                {{ workspaceData?.access_code }}</p>
+        </div>
+    </div>
+</div>

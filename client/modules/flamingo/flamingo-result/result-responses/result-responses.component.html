@@ -1,0 +1,51 @@
+<div class="responses-container">
+  <div class="row response">
+      <div class="col-md-2 response-list" [ngStyle]="{'height': responseListHeight,'overflow-y':'auto','overflow-x':'hidden'}">
+        <div *ngFor="let response of responses; let i = index; trackBy: utilityService.trackByIndex"
+            [ngClass]="i==activeResponseIndex?'responses-container-active':'responses-container-inactive'"
+            (click)="changeActiveIndex(i)" style="position: relative;">
+            {{ i }} - {{ response?.created_date | date: 'MMM d, y' }}
+        </div>
+      </div>
+      <div class="col-md-10 answer-container">
+        <div class="active-answer-container">
+          <div class="row active-answer-header">
+            <h5 i18n="@@flamingoResultResponses.personAnswered">This person answered:</h5>
+          </div>
+          <div *ngFor="let answer of activeResponse?.answers; let index = index; trackBy: utilityService.trackByIndex" class="row active-answer-body">
+            <div class="col-md-2">
+              <div [ngClass]="getQuestionTypeClass(answer?._question?.type)">
+                <i class="material-icons">{{ getQuestionTypeIcon(answer?._question?.type) }}</i>&nbsp;&nbsp;{{ index + 1 }}
+              </div>
+            </div>
+            <div class="col-md-10 question">
+              <h6 class="question-title muted">
+                {{ answer?._question?.text }}
+              </h6>
+              <p class="answer-short-text" *ngIf="answer?._question?.type == 'ShortText'">
+                {{ answer?.text_answer }}
+              </p>
+              <p class="answer-long-text" *ngIf="answer?._question?.type == 'LongText'">
+                {{ answer?.text_answer }}
+              </p>
+              <div class="answer-yes-no" *ngIf="answer?._question?.type == 'Yes/No'">
+                <span *ngIf="answer?.positive_answer">{{ answer?._question?.positive_option_text }}</span>
+                <span *ngIf="answer?.negative_answer">{{ answer?._question?.negative_option_text }}</span>
+              </div>
+              <div class="answer-scale" *ngIf="answer?._question?.type == 'Scale'">
+                {{ answer?.scale_answer }} of {{ answer?._question?.scale?.size }}
+              </div>
+              <div class="answer-dropdown" *ngIf="answer?._question?.type == 'Dropdown'">
+                {{ answer?.dropdown_answer }}
+              </div>
+              <div class="answer-dropdown" *ngIf="answer?._question?.type == 'Multiple'">
+                <span *ngFor="let answer of answer?.answer_multiple; trackBy: utilityService.trackByIndex">
+                  {{ answer }} <br />
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,7 @@
+<label for="email" *ngIf="label">{{ label }}</label>
+
+<input type="email" class="form-control"
+  [placeholder]="placeholder"
+  [(ngModel)]="email"
+  (keyup)="emailChange($event)"
+  name="email">

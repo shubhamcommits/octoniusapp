@@ -1,0 +1,178 @@
+@import "src/assets/scss/variables";
+
+.notifications {
+  width: 100%;
+  padding: 20px;
+  background: #FFFFFF;
+  border: 1px solid #E4EDF8;
+  box-sizing: border-box;
+  border-radius: 10px;
+  font-family: "Nunito", sans-serif !important;
+
+  .notification-item {
+    height: 70px;
+    padding: 0;
+    background: white;
+    width: 100%;
+    border-radius: 2px;
+    border-bottom: 1px solid #E4EDF8;
+    box-sizing: border-box;
+    margin: 2px auto;
+    transition: box-shadow 0.3s ease-in-out;
+    font-family: "Nunito", sans-serif !important;
+    display: flex;
+    margin: 0;
+    align-items: center;
+    height: 100%;
+
+    .notification_title {
+        flex: 1 1 320px;
+        will-change: transform;
+        padding: 0 10px;
+        color: $muted-color;
+        font-family: "Nunito", sans-serif !important;
+
+        .notification_post_title {
+          color:$dark-text;
+          font-weight: 700;
+          font-family: "Nunito", sans-serif !important;
+        }
+
+        .assignment_notification {
+          color:$pumpkin-orange;
+        }
+
+        .mention_notification {
+          color:$pink;
+        }
+
+        .completed_notification {
+          color: $dark-sky-blue;
+        }
+
+        .started_notification {
+          color: $turquoise;
+        }
+
+        .like_comment_notification {
+          color: #0691e2;
+        }
+
+        .like_notification {
+          color: #0691e2;
+        }
+
+        .follow_notification {
+          color: #0691e2;
+        }
+
+        .comment_notification{
+          color: #0691e2;
+        }
+
+        .join_group_notification {
+          color: #0691e2;
+        }
+
+        .leave_group_notification {
+          color: #0691e2;
+        }
+    }
+
+    .notification_actor {
+        flex-basis: 80px;
+        max-width: 80px;
+        flex: 0 0;
+        text-align: center;
+
+        .feed-avatar {
+            width: 35px;
+            height: 35px;
+            margin: 0;
+        }
+    }
+
+    .notification_date_time {
+        flex-basis: 100px;
+        flex: 1 1;
+        text-align: center;
+
+    }
+
+    .notification_tag {
+        flex-basis: 100px;
+        // max-width: 160px;
+        // min-width: 160px;
+        flex: 1 1;
+        padding-left: 10px;
+        
+        .tags {
+            text-align: center;
+            border: none !important;
+        }
+    }
+
+    .notification_more {
+        width: 60px;
+        // flex: 0 0;
+        text-align: right;
+        padding-right: 8px;
+        // flex: auto;
+        height: 70px;
+        line-height: 70px;
+    }
+  }
+}
+
+.badge {
+  background-color: $dark-sky-blue;
+  margin: 0 1px !important;
+  display: inline;
+  font-family: "Nunito", sans-serif;
+  font-style: normal;
+  font-weight: 700 !important;
+  font-size: 12px;
+  align-items: center;
+  color: #005fd5;
+  background-color: #e4edf8;
+  border-radius: 10px;
+  padding: 2px 10px !important;
+}
+
+.badge-event {
+  margin: 0 1px !important;
+  display: inline;
+  font-family: "Nunito", sans-serif;
+  font-style: normal;
+  font-weight: 700 !important;
+  font-size: 12px;
+  align-items: center;
+  color: #FFFFFF;
+  border-radius: 10px;
+  padding: 2px 10px !important;
+}
+
+.going {
+  background-color: #2AA578;
+}
+
+.maygo {
+  background-color: #FBB732;
+}
+
+.event_title {
+  color:$dark-text;
+  font-weight: 700;
+}
+
+.approved {
+	color: #2AA578;
+}
+
+.rejected {
+	color: #EE5D5D;
+}
+
+.pending {
+	color: #FBB732;
+}

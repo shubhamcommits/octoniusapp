@@ -1,0 +1,36 @@
+<div class="card margin5">
+  <div class="row no-margin">
+    <div class="col-md-12">
+      <div class="form-group mt-3">
+        <h6 class="font-weight-bold" i18n="@@commentSection.addAComment">Add a comment</h6>
+        <div class="quill-container">
+          <app-quill-editor
+            [editorId]="'commentbox-editor' + editorId"
+            [readOnly]="false"
+            [groupId]="groupId"
+            [workspaceId]="workspaceId"
+            (contentEmitter)="getQuillData($event)">
+          </app-quill-editor>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8">
+      <!-- Attach files starts -->
+      <div class="attach-files">
+          <app-attach-files
+            (files)="onAttach($event)"
+            (cloudFiles)="onCloudFileAttach($event)">
+          </app-attach-files>
+      </div>
+      <!-- Attach files ends -->
+    </div>
+    <div class="col-md-4 text-right" style="padding-right:30px; padding-bottom: 14px;">
+      <button type="button " name="button " class="btn btn-default"(click)="this.close.emit('close')" i18n="@@commentSection.cancel">Cancel</button>
+      <button type="button " name="button" class="btn btn-primary" (click)="create(this.userData._id)" i18n="@@commentSection.comment">Comment</button>
+    </div>
+  </div>
+  <br>
+</div>

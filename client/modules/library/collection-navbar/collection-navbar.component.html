@@ -1,0 +1,54 @@
+<nav class="navbar navbar-expand-md fixed-top" style="min-height: 86px;">
+    <!-- Go Back starts -->
+    <span *ngIf="isAuth" class="navbar-brand ml-5 mr-5" routerLink="/dashboard/work/groups/library" routerLinkActive="active">
+        <i class="material-icons">arrow_back</i>
+    </span>
+    <!-- Go Back ends -->
+
+    <h2 *ngIf="collectionData && isAuth" (click)="saveFavoriteCollection()" class="mr-5" placement="right" ngbTooltip="Add shortcut to sidebar">
+        <i class="material-icons" style="color: #FFAB00; cursor: pointer;" *ngIf="!isFavoriteCollection">star_outline</i>
+        <i class="material-icons" style="color: #FFAB00; cursor: pointer;" *ngIf="isFavoriteCollection">star</i>
+    </h2>
+
+    <app-secured-image *ngIf="!canEdit || !isAuth" [imgURL]="collectionData?.collection_avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
+        [noAuth]="true" [styleClass]="'group-avatar'" (click)="openDetails(content)"></app-secured-image>
+
+    <app-secured-image *ngIf="canEdit && isAuth" [imgURL]="collectionData?.collection_avatar" [service]="'group'"
+        [workspaceId]="workspaceData?._id" [styleClass]="'group-avatar'"
+        (click)="openDetails(content)"></app-secured-image>
+
+    <ng-template #content let-modal>
+        <app-collection-image-details [collectionData]="collectionData" [workspaceId]="workspaceData?._id">
+        </app-collection-image-details>
+    </ng-template>
+
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ml-4">
+            <li *ngIf="!canEdit || !isAuth" class="nav-item active">
+                <span>
+                    {{ collectionData?.name }}
+                </span>
+            </li>
+            <li *ngIf="canEdit && isAuth" class="nav-item active">
+                <!-- Folio Static Title starts -->
+                <span *ngIf="!editTitle" (click)="editTitle = !editTitle"
+                        matTooltip="Click me to rename"
+                        matTooltipPosition="below">
+                    {{ collectionData?.name }}
+                </span>
+                <!-- Folio Static Title ends -->
+
+                <!-- Folio edit title name starts -->
+                <input *ngIf="editTitle" type="search"
+                    autocomplete="off"
+                    [(ngModel)]="collectionData.name"
+                    (keyup)="changeTitle($event)"
+                    placeholder="Give me a name"
+                    class="input-search" />
+                <!-- Folio edit title name ends -->
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<router-outlet></router-outlet>

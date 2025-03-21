@@ -1,0 +1,28 @@
+const { DateTime } = require("luxon");
+import mongoose from 'mongoose';
+
+const { Schema } = mongoose;
+
+const AnswerSchema = new Schema({
+    _form: {
+        type: Schema.Types.ObjectId,
+        ref: 'Form'
+    },
+    _user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    answers:[{
+        answer: { type: String },
+        answer_multiple: { type: [String]},
+        _question: {type: Schema.Types.ObjectId,ref: 'Question'}
+    }],
+    created_date: {
+        type: Date,
+        default: DateTime.now()
+    }
+});
+
+const Answer = mongoose.model('Answer', AnswerSchema);
+
+export { Answer };

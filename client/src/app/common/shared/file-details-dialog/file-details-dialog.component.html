@@ -1,0 +1,219 @@
+<mat-dialog-actions align="end">
+  <div class="action-box">
+      <a (click)="onCloseDialog()" mat-dialog-close>
+        <i class="material-icons" style="cursor: pointer">close</i>
+      </a>
+  </div>
+</mat-dialog-actions>
+<div class="post-dialog-content">
+    <div class="post-content">
+        <div class="content-box">
+            <div class="modal-header">
+                <!-- Event Post Header starts -->
+                <h4 class="modal-title">
+                    <!-- Post Title starts -->
+                    <input
+                      [disabled]="!canEdit"
+                      name="postTitle"
+                      type="text"
+                      [ngModel]="original_name"
+                      (blur)="titleChange($event)"
+                      (keyup.enter)="titleChange($event)"
+                      class="post-title"
+                      placeholder="✍🏻 Title" />
+                    <!-- Post Title ends -->
+                </h4>
+            </div>
+            <!-- Post Header Title ends -->
+
+            <!-- Post Content starts -->
+            <app-quill-editor
+                *ngIf="canEdit"
+                [editorId]="'postbox-editor'"
+                [toolbar]="true"
+                [readOnly]="false"
+                [quillContent]="fileData.description"
+                [groupId]="groupData?._id"
+                (contentEmitter)="quillContentChanged($event)">
+            </app-quill-editor>
+
+            <!-- <app-quill-editor
+                *ngIf="!canEdit"
+                [editorId]="'postbox-editor'"
+                [toolbar]="false"
+                [readOnly]="true"
+                [quillContent]="fileData.description"
+                [groupId]="groupData?._id"></app-quill-editor> -->
+            <div *ngIf="!canEdit" [innerHTML]="(htmlContent) | safe: 'html'" class="col-12" style="margin: 30px 0;"></div>
+            <!-- Post Content ends -->
+        </div>
+
+        <div class="clearfix save-content">
+            <button *ngIf="canEdit" [disabled]="!contentChanged"
+              class="btn float-right btn-primary btn-md"
+              (click)="updateDetails()" i18n="@@fileDetailsDialog.save">
+                Save
+            </button>
+        </div>
+
+        <div class="content-box" *ngIf="(isFilesVersionsModuleAvailable && (fileData?.type === 'file' || fileData?.type === 'campaign')) || (fileData?.approval_active && fileData?.approval_history && fileData?.approval_history?.length > 0)">
+          <!-- TABS STARTS -->
+          <mat-tab-group mat-align-tabs="start">
+            <!-- EVENTS STARTS-->
+            <mat-tab label="" *ngIf="isFilesVersionsModuleAvailable && (fileData?.type === 'file' || fileData?.type === 'campaign')">
+              <ng-template mat-tab-label>
+                <!--<i class="material-icons">manage_history</i>-->
+                <span i18n="@@fileDetailsDialog.versions">Versions</span>
+              </ng-template>
+
+              <app-file-versions [userData]="userData"
+                [fileData]="fileData"
+                [currentGroupId]="groupData?._id"
+                [canDelete]="fileData?.canDelete"
+                [canView]="canView"
+                [canEdit]="canEdit"
+                (newVersionEvent)="newVersionUploaded($event)"
+                (allVersionsDeletedEmitter)="allVersionsDeleted()"></app-file-versions>
+            </mat-tab>
+            <!-- EVENTS ENDS-->
+
+            <!-- APPROVALS STARTS-->
+            <mat-tab label="" *ngIf="fileData?.approval_active && fileData?.approval_history && fileData?.approval_history?.length > 0 && isBusinessSubscription">
+              <ng-template mat-tab-label>
+                <!--<i class="material-icons">approval</i>-->
+                <span i18n="@@fileDetailsDialog.approvalsHistory">Approvals History</span>
+              </ng-template>
+
+              <!-- APPROVALS HISTORY STARTS -->
+              <app-approvals-history
+                [groupId]="groupData._id"
+                [userData]="userData"
+                [itemData]="fileData"
+                [type]="'file'"></app-approvals-history>
+              <!-- APPROVALS HISTORY ENDS -->
+            </mat-tab>
+            <!-- APPROVALS ENDS-->
+          </mat-tab-group>
+          <!-- TABS ENDS -->
+        </div>
+    </div>
+
+    <!-- Top Right Section starts -->
+    <div class="post-properties">
+
+      <!-- Modal Description starts -->
+      <div class="content-box">
+          <p class="box-title" style="float: left; width: 65%; text-align: left; margin-top: 25px;" i18n="@@fileDetailsDialog.fileInformation">File Information</p>
+          <img src="assets/images/file_information.svg" alt="" style="width: 90px; margin-bottom: 10px;">
+
+          <div id="avatar-assignee" style="margin-bottom: 30px;">
+            <p i18n="@@fileDetailsDialog.fileInformationDescription">Add here as many details as you can to help later with searching and finding the relevant information.</p>
+          </div>
+
+      </div>
+      <!-- Modal Description ends -->
+
+      <!-- Creation Info starts -->
+      <div class="content-box">
+          <div style="justify-content: space-between;">
+            <div class="box-title" i18n="@@fileDetailsDialog.created">Created</div>
+          </div>
+
+          <div *ngIf="fileData?._posted_by" id="avatar-assignee" style="margin-bottom: 30px;">
+            <app-secured-image
+              [imgURL]="fileData?._posted_by?.profile_pic"
+              [service]="'user'" [userData]="fileData?._posted_by"
+              [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
+              [styleClass]="'feed-avatar-small'"
+              style="float: left; cursor: auto;"></app-secured-image>
+
+            <div style="padding-top: 10px;" class="ml-1">
+              {{fileData?._posted_by?.first_name}}
+              {{ fileData?._posted_by?.last_name }}
+              <span *ngIf="fileData?.created_date" class="muted" i18n="@@fileDetailsDialog.on">on {{ fileData?.created_date | date: 'MMM dd, yyyy'}}</span>
+            </div>
+          </div>
+
+      </div>
+      <!-- Creation Info ends -->
+
+      <div class="content-box">
+          <p class="box-title" i18n="@@fileDetailsDialog.tags">Tags</p>
+          <!-- Post Tags starts -->
+          <app-tags
+              [canEdit]="canEdit"
+              [item]="fileData"
+              [userData]="userData"
+              [groupId]="groupData?._id"
+              (tags)="getTags($event)">
+          </app-tags>
+          <!-- Post Tags ends -->
+      </div>
+
+      <div class="content-box" *ngIf="!isIndividualSubscription">
+          <p class="box-title" i18n="@@fileDetailsDialog.customFields">Custom fields</p>
+
+          <div *ngFor="let cf of customFields; trackBy: utilityService.trackByIndex" class="d-flex custom-field justify-content-start mb-3 row">
+              <p class="col">{{ cf.title }}</p>
+              <mat-select ngDefaultControl *ngIf="!cf.input_type"
+                  [(value)]="selectedCFValues[cf.name]"
+                  [disabled]="!canEdit"
+                  (openedChange)="cfSearchText = ''"
+                  (selectionChange)="onCustomFieldChange($event, cf.name)"
+                  appearance="fill"
+                  class="col">
+                  <mat-select-trigger>{{ selectedCFValues[cf.name] }}</mat-select-trigger>
+                  <input type="text" class="form-control" [id]="'search-text' + cf.name" [(ngModel)]="cfSearchText"
+                    [placeholder]="cfSearchPlaceholder" autofocus
+                    (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+                  <mat-option *ngFor="let val of cf.values | appFilter: cfSearchText; trackBy: utilityService.trackByIndex" [value]="val">{{ val }}</mat-option>
+              </mat-select>
+
+              <div *ngIf="cf.input_type && !cf.input_type_date" class="col" style="display: flex; float: left; width: 125px;">
+                <input [type]="(cf.input_type_number) ? 'number': 'text'" [name]="cf.name" [(ngModel)]="selectedCFValues[cf.name]"
+                    [disabled]="!canEdit"
+                    class="col" style="width: 94px;" [value]="selectedCFValues[cf.name]"
+                    (keyup.enter)="saveInputCustomField($event, cf.name)" />
+                <i *ngIf="canEdit" (click)="saveCustomField(cf.name, selectedCFValues[cf.name])" class="material-icons muted mr-5"
+                  style="cursor: pointer; font-size: 14px; margin-left: 10px;color: #0bc6a0;">save</i>
+              </div>
+
+              <div *ngIf="cf.input_type && cf.input_type_date" style="width: 177px;">
+                <!-- Date Picker starts -->
+                <app-date-picker (date)="getDate($event, cf.name)"
+                  [selectedDate]="selectedCFValues[cf.name]"
+                  [styleClass]="'btn-group input-date'"
+                  [canEdit]="canEdit">
+                </app-date-picker>
+                <!--Date Picker ends -->
+              </div>
+
+              <!-- Clean field starts -->
+              <i *ngIf="canEdit" (click)="saveCustomField(cf.name, null);"
+                class="material-icons muted mr-5"
+                style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
+              <!-- Clean field ends -->
+          </div>
+      </div>
+
+      <!-- APPROVAL STARTS -->
+      <div class="content-box" *ngIf="isBusinessSubscription">
+        <app-approval-actions
+          [groupId]="groupData._id"
+          [userData]="userData"
+          [itemData]="fileData"
+          [type]="'file'"
+          [canEdit]="canEdit"
+          (assigneeEmiter)="onAssigneeEmitter($event)"
+          (approvalFlowLaunchedEmiter)="onApprovalFlowLaunchedEmiter($event)"></app-approval-actions>
+      </div>
+      <!-- APPROVAL ENDS -->
+    </div>
+    <!-- Top Right Section ends -->
+</div>
+
+<!-- Loading Spinner Starts -->
+<ng-container *ngIf="isLoading$ | async">
+  <app-loading-spinner class="media"></app-loading-spinner>
+</ng-container>
+<!-- Loading Spinner Ends -->

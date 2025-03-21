@@ -1,0 +1,35 @@
+<span [class]="projectStatusClass" i18n="@@projectBudget.budgetTitle">
+  Budget
+</span>
+&nbsp;
+<span [class]="completitionPercentageClass">
+  {{ completitionPercentage }} %
+</span>
+<div class="smart-card">
+  <div>
+    <div class="project_stats">
+      <div class="muted">
+        <span i18n="@@projectBudget.budget">Budget</span>:
+        <br/>
+        <span *ngIf="!!project?.budget?.currency">{{ project?.budget?.amount_planned | currency: project?.budget?.currency }}</span>
+        <span *ngIf="!project?.budget?.currency">{{ project?.budget?.amount_planned }}</span>
+      </div>
+      <div class="real_cost" [class]="projectStatusClass">
+        <span i18n="@@projectBudget.currentBalance">Current Balance</span>:
+        <br/>
+        <span *ngIf="!!project?.budget?.currency">{{ (project?.budget?.amount_planned - project?.budget?.real_cost) | currency: project?.budget?.currency }}</span>
+        <span *ngIf="!project?.budget?.currency">{{ (project?.budget?.amount_planned - project?.budget?.real_cost) }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-md-none d-lg-block" style="padding-left: 30px; height: 200px;" *ngIf="chartReady">
+    <canvas
+      baseChart
+      [data]="doughnutChartData"
+      [labels]="doughnutChartLabels"
+      [type]="doughnutChartType"
+      [options]="doughnutChartOptions"
+      [plugins]="doughnutChartPlugins"></canvas>
+  </div>
+</div>

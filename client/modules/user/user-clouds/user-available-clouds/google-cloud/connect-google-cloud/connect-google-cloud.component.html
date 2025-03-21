@@ -1,0 +1,11 @@
+<div class="row">
+    <div class="col-md-6">
+        <p class="card-text">
+          <strong class="float-left" i18n="@@connectGoogleCloud.google"> Google</strong>
+        </p>
+    </div>
+    <div class="col-md-6 push-right">
+      <button *ngIf="!googleUserExists()" id="google-connect" class="btn btn-primary btn-sm" (click) ="signInToGoogle()" i18n="@@connectGoogleCloud.connect">Connect</button>
+      <button *ngIf="googleUserExists()" disabled="true" class="btn btn-success btn-sm" i18n="@@connectGoogleCloud.connected">Connected</button>
+    </div>
+</div>

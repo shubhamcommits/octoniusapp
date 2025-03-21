@@ -1,0 +1,36 @@
+<div class="box">
+  <!-- Avatar Image of the member -->
+  <div class="user-image">
+    <app-secured-image *ngIf="person?.active"
+        (click)="openFullscreenModal(person?._id)"
+        [imgURL]="person?.profile_pic"
+        [service]="'user'"
+        [userData]="person"
+        [workspaceId]="workspaceData?._id"
+        [styleClass]="'feed-avatar-small'"></app-secured-image>
+  </div>
+  <!-- Avatar Image of the member -->
+  <div class="box-content" (click)="selectManager()">
+    <div>
+      {{ person?.first_name }} {{ person?.last_name }}
+    </div>
+    <div class="position muted">
+      {{ person?.current_position }}
+    </div>
+  </div>
+
+  <div *ngIf="level > 0 && isManager" class="actions badge" [ngClass]="(selected) ? 'selected' : 'no-selected'">
+    {{ person?.nextLevelMembers?.length || 0 }}
+    <i [matMenuTriggerFor]="actionsMenu" class="material-icons" style="cursor: pointer;">arrow_drop_down</i>
+    <mat-menu #actionsMenu="matMenu" class="actions-list">
+      <a mat-menu-item (click)="removeFromManager()" *ngIf="level > 0">
+        <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete_forever</i>
+        <span i18n="@@chartPerson.removeManager">Remove Manager</span>
+      </a>
+    </mat-menu>
+  </div>
+
+  <div *ngIf="level == 0 || !isManager" (click)="selectManager()" class="no-actions-badge" [ngClass]="(selected) ? 'selected' : 'no-selected'">
+    {{ person?.nextLevelMembers?.length || 0 }}
+  </div>
+</div>

@@ -1,0 +1,81 @@
+<div class="container">
+    <mat-dialog-actions class="d-flex justify-content-end" align="end">
+        <i class="material-icons" (click)="closeDialog()" style="cursor: pointer">close</i>
+    </mat-dialog-actions>
+
+    <div mat-dialog-content>
+
+        <img src="assets/images/undraw_connecting_teams.png" alt="" style="float: right; margin: 20px">
+        
+        <div class="row">
+            <span class="step">1</span>
+            <h2 i18n="@@newCRMCompanyDialog.nameTitle">Enter the Group Name</h2>
+            <div class="col-3">
+                <input type="text" class="form-control" [(ngModel)]="groupName" name="groupName" [placeholder]="inputPlaceholder" />
+            </div>
+        </div>
+
+        <div class="row">
+            <span class="step">2</span>
+            <h2 i18n="@@newCRMCompanyDialog.typeTitle">Select a template to create a new group</h2>
+            <p i18n="@@newCRMCompanyDialog.typeDescription">
+                You can choose from our custom built templates, or just go with the generic ones. <br>Don’t worry, you can change your mind
+                later.
+            </p>
+        </div>
+
+        <div class="row">
+            <mat-radio-group [(ngModel)]="groupType">
+                <mat-radio-button [value]="'normal'">
+                    <div class="group-types">
+                        <h3 class="col-4" i18n="@@newCRMCompanyDialog.workGroup">Work GROUP</h3>
+                        <div class="col-8" i18n="@@newCRMCompanyDialog.workGroupDescription">
+                            Default Work group with the main functionalities to get your team connected and aligned. This group is Private (visible only to invited members)
+                        </div>
+                    </div>
+                </mat-radio-button>
+                <br />
+                <mat-radio-button [value]="'agora'">
+                    <div class="group-types">
+                        <h3 class="col-4" i18n="@@newCRMCompanyDialog.agora">Agora</h3>
+                        <div class="col-8" i18n="@@newCRMCompanyDialog.agoraDescription">
+                            Public group, visible to anyone in the organization. They can click to JOIN, it does not require invitation.
+                        </div>
+                    </div>
+                </mat-radio-button>
+                <br />
+                <mat-radio-button [value]="'crm'">
+                    <div class="group-types">
+                        <h3 class="col-4" i18n="@@newCRMCompanyDialog.crm">CRM</h3>
+                        <div class="col-8" i18n="@@newCRMCompanyDialog.crmDescription">
+                            Work group focused on CRM activities. This is group is Private.
+                        </div>
+                    </div>
+                </mat-radio-button>
+                <br />
+                <mat-radio-button [value]="'resource'">
+                    <div class="group-types">
+                        <h3 class="col-4" i18n="@@newCRMCompanyDialog.resource">Resource Management</h3>
+                        <div class="col-8" i18n="@@newCRMCompanyDialog.resourceDescription">
+                            Work group focused on Resource Management. This is group is Private.
+                        </div>
+                    </div>
+                </mat-radio-button>
+            </mat-radio-group>
+        </div>
+    </div>
+
+    <div>
+        <div style="margin-top: 20px;">
+            <button class="btn btn-danger" (click)="closeDialog()" i18n="@@newCRMCompanyDialog.cancel"
+                style="margin: 0 10px">
+                Cancel
+            </button>
+
+            <button class="btn btn-primary" (click)="createGroup()" [disabled]="!groupName || !groupType"
+                i18n="@@newCRMCompanyDialog.create" style="margin: 0 10px">
+                Create
+            </button>
+        </div>
+    </div>
+</div>

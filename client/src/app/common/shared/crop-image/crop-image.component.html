@@ -1,0 +1,50 @@
+<!-- INPUT IMAGE STARTS -->
+<div class="input-group mb-3">
+    <div class="custom-file">
+        <input type="file" class="custom-file-input" accept="image/*" (change)="fileChangeEvent($event)" />
+        <label class="custom-file-label" i18n="@@cropImage.chooseFile">Choose file</label>
+    </div>
+</div>
+<!-- INPUT IMAGE ENDS -->
+
+<!-- IMAGE CROPPER AND TOOLS STARTS -->
+<div class="container">
+
+    <!-- IMAGE CROPPER TOOL STARTS -->
+    <image-cropper  format="png,jpeg,webp,bmp,ico" outputType="file"
+        [imageChangedEvent]="imageChangedEvent"
+        [maintainAspectRatio]="false"
+        [aspectRatio]="1 / 1"
+        [resizeToWidth]="resizeToWidth"
+        [cropperMinWidth]="cropperMinWidth"
+        [onlyScaleDown]="false"
+        [roundCropper]="false"
+        (imageCropped)="imageCropped($event)"
+        (imageLoaded)="imageLoaded()"
+        (cropperReady)="cropperReady()"
+        (loadImageFailed)="loadImageFailed()">
+    </image-cropper>
+    <!--
+    -->
+    <!-- IMAGE CROPPER TOOL ENDS -->
+
+    <!-- TOOLS MENU STARTS -->
+    <!--
+    <div class="container menu" *ngIf="imageChangedEvent">
+        <button class="btn btn-md btn-primary" (click)="rotateLeft()">
+            <i class="material-icons"> rotate_left </i>
+            Rotate Left</button>
+        <button class="btn btn-md btn-primary" (click)="rotateRight()">
+            <i class="material-icons"> rotate_right </i>
+            Rotate Right</button>
+        <button class="btn btn-md btn-primary" (click)="flipHorizontal()">
+            <i class="material-icons"> swap_horiz </i>
+            Flip Horizontally</button>
+        <button class="btn btn-md btn-primary" (click)="flipVertical()">
+            <i class="material-icons"> swap_vert </i>
+            Flip Vertically</button>
+    </div>
+    -->
+    <!-- TOOLS MENU ENDS -->
+</div>
+<!-- IMAGE CROPPER AND TOOLS ENDS -->

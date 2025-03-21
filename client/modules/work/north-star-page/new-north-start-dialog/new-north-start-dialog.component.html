@@ -1,0 +1,44 @@
+<!-- FORGOT PASSWORD MODAL STARTS -->
+<div class="modal-header">
+
+    <img src="assets/images/create-target-ns.svg" alt="" style="width:180px; margin: 0 auto">
+
+
+</div>
+
+<div class="modal-body">
+  <h4 class="modal-title" id="modal-basic-title" i18n="@@newNorthStarDialog.createNS">Create a new North Star</h4>
+    <div class="form-group">
+
+        <input type="text" class="form-control" [(ngModel)]="postTitle" placeholder="Enter title"
+            (keyup.enter)="createNS()" i18n="@@newNorthStarDialog.title">
+    </div>
+
+    <!--
+    <div class="form-group">
+        <label i18n="@@newNorthStarDialog.group">Group</label>
+        <mat-form-field class="full-width" appearance="outline">
+            <mat-select [(value)]="groupId" (valueChange)="changeGroup()">
+                <mat-option [value]="group?._id" *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">{{ group?.group_name }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div class="form-group">
+        <label i18n="@@newNorthStarDialog.section" [ngClass]="(!groupSections || groupSections?.length == 0) ? 'muted' : ''">Section</label>
+        <mat-form-field class="full-width" appearance="outline">
+            <mat-select [(value)]="sectionId" [disabled]="!groupSections || groupSections?.length == 0">
+                <mat-option [value]="section?._id" *ngFor="let section of groupSections; trackBy: utilityService.trackByIndex">{{ section?.title }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    -->
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-danger btn-md" (click)="closeDialog()" i18n="@@newNorthStarDialog.cancel">Cancel</button>
+
+    <!-- <button [disabled]="!sectionId || !groupId || !postTitle || postTitle == ''" (click)="createNS()" class="btn btn-primary" i18n="@@newNorthStarDialog.createNSButton">Create North Star</button> -->
+    <button [disabled]="!postTitle || postTitle == ''" (click)="createNS()" class="btn btn-primary" i18n="@@newNorthStarDialog.createNSButton">Create North Star</button>
+</div>
+<!-- FORGOT PASSWORD MODAL ENDS -->

@@ -1,0 +1,13 @@
+<div class="container-fluid">
+    <mat-tab-group *ngIf="userIsManager" [selectedIndex]="selectedTab" animationDuration="0ms">
+        <mat-tab [label]="groupsLabel">
+            <app-groups-list [userData]="userData" [workspaceData]="workspaceData"></app-groups-list>
+        </mat-tab>
+
+        <mat-tab [label]="portfolioLabel">
+            <app-portfolio [userData]="userData" [workspaceData]="workspaceData"></app-portfolio>
+        </mat-tab>
+    </mat-tab-group>
+
+    <app-groups-list *ngIf="!userIsManager" [userData]="userData" [workspaceData]="workspaceData"></app-groups-list>
+</div>

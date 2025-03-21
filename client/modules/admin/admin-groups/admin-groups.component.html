@@ -1,0 +1,117 @@
+<div class="container">
+    <div class="card-tile">
+
+        <!-- Heading of the component starts -->
+        <h6>
+          <strong i18n="@@adminGroups.allGroups">All groups from your workplace</strong>
+        </h6>
+        <!-- Heading of the component ends -->
+
+        <div class="search">
+            <!-- Component search bar starts -->
+            <input (keyup)="groupsSearchQuery(query)" type="text" [(ngModel)]="query" class="searchTerm"
+                [placeholder]="searchBarPlaceholder">
+            <button type="submit" class="searchButton">
+                <i class="material-icons">search</i>
+            </button>
+            <!-- Component search bar ends -->
+        </div>
+
+        <div class="result-container">
+            <mat-tab-group mat-align-tabs="start">
+                <mat-tab [label]="labelActiveGroups">
+                    <!-- ACTIVE GROUPS START -->
+                    <app-infinite-scroll (scrolled)="onActiveScroll()">
+                      <div class="media card-tile user-list"
+                          *ngFor="let group of activeGroups; trackBy: utilityService.trackByIndex">
+
+                          <!-- Avatar Image of the member -->
+                          <app-secured-image
+                              [imgURL]="group?.group_avatar"
+                              [service]="'group'"
+                              [workspaceId]="workspaceData?._id"
+                              [styleClass]="'group-avatar'"></app-secured-image>
+                          <!-- Avatar Image of the member -->
+
+                          <div class="media-body">
+                              <!-- Member Details Starts -->
+                              <div class="float-left" style="text-transform: capitalize;">
+                                <p class="mt-0">{{ group?.group_name }}</p>
+                              </div>
+                              <!-- Member Details Ends -->
+
+                              <div class="btn-group mr-3 float-right">
+
+                                  <!-- Changing role functionality starts -->
+                                  <div class="dropdown" *ngIf="currentUser.role == 'owner' || currentUser.role == 'admin'">
+                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                        <span i18n="@@adminGroups.manageGroup">Manage Group</span>
+                                        <span class="caret"></span>
+                                    </button>
+
+                                    <!-- Menu Drawer Starts -->
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-item" (click)="archiveGroup(group._id, true)" i18n="@@adminGroups.archiveGroups">Archive Group</li>
+                                    </ul>
+                                    <!-- Menu Drawer Ends -->
+                                </div>
+                              </div>
+                          </div>
+                      </div>
+                    </app-infinite-scroll>
+                    <!-- ACTIVE GROUPS ENDS -->
+                </mat-tab>
+                <mat-tab [label]="labelArchivedGroups">
+                    <!-- ARCHIVED GROUPS START -->
+                    <app-infinite-scroll (scrolled)="onArchivedScroll()">
+                      <div class="media card-tile user-list"
+                          *ngFor="let group of archivedGroups; trackBy: utilityService.trackByIndex">
+
+                          <!-- Avatar Image of the member -->
+                          <app-secured-image
+                              [imgURL]="group?.group_avatar"
+                              [service]="'group'"
+                              [workspaceId]="workspaceData?._id"
+                              [styleClass]="'group-avatar'"></app-secured-image>
+                          <!-- Avatar Image of the member -->
+
+                          <div class="media-body">
+
+                              <!-- Member Details Starts -->
+                              <div class="float-left" style="text-transform: capitalize;">
+                                <p class="mt-0">{{ group?.group_name }}</p>
+                              </div>
+                              <!-- Member Details Ends -->
+
+                              <div class="btn-group mr-3 float-right">
+
+                                  <!-- Changing role functionality starts -->
+                                  <div class="dropdown" *ngIf="currentUser.role == 'owner' || currentUser.role == 'admin'">
+                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                      <span i18n="@@adminGroups.manageGroup">Manage Group</span>
+                                        <span class="caret"></span>
+                                    </button>
+
+                                    <!-- Menu Drawer Starts -->
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-item" (click)="archiveGroup(group._id, false)" i18n="@@adminGroups.activateGroup">Activate Group</li>
+                                        <li class="btn btn-danger btn-sm" style="margin: auto 1.4rem;" (click)="removeGroup(group._id)" i18n="@@adminGroups.removeGroup">Remove Group</li>
+                                    </ul>
+                                    <!-- Menu Drawer Ends -->
+                                </div>
+                              </div>
+                          </div>
+                      </div>
+                    </app-infinite-scroll>
+                    <!-- ARCHIVED GROUPS ENDS -->
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+
+        <!-- Loading Spinner Starts -->
+        <ng-container *ngIf="isLoading$ | async">
+            <app-loading-spinner></app-loading-spinner>
+        </ng-container>
+        <!-- Loading Spinner Ends -->
+    </div>
+</div>

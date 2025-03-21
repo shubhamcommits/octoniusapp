@@ -1,0 +1,61 @@
+<div style="max-height: 600px;">
+  <div class="notification-item" *ngFor="let log of logs; let index = index; trackBy: utilityService.trackByIndex">
+    <div class="notification_actor">
+      <app-secured-image
+        [imgURL]="log?._actor?.profile_pic"
+        [service]="'user'"
+        [userData]="log?._actor"
+        [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
+        [styleClass]="'avatar'"
+        style="margin-right:15px"></app-secured-image>
+    </div>
+
+    <div class="notification_title">
+      <span class="muted" *ngIf="log?._actor && (log?._actor?.first_name || log?._actor?.last_name)"> {{ log?._actor?.first_name }} {{ log?._actor?.last_name }}</span>
+      <span class="muted" *ngIf="!log?._actor || (!log?._actor?.first_name && !log?._actor?.last_name)" i18n="@@postLogs.deletedUser">Deleted User</span>
+
+      <span *ngIf="log?.action === 'created'" class="approval-created ml-2" i18n="@@postLogs.created">Created this item</span>
+      <span *ngIf="log?.action === 'change_title'" class="approval-created ml-2" i18n="@@postLogs.editedTitle">Edited the title</span>
+      <span *ngIf="log?.action === 'commented'" class="approval-created ml-2" i18n="@@postLogs.commented">Commented</span>
+      <span *ngIf="log?.action === 'comment_removed'" class="approval-created ml-2" i18n="@@postLogs.removedComment">Removed a comment</span>
+      <span *ngIf="log?.action === 'change_content'" class="approval-deleted ml-2" i18n="@@postLogs.changedContent">Changed the content of item</span>
+      <span *ngIf="log?.action === 'make_ns'" class="approval-deleted ml-2" i18n="@@postLogs.makeNS">Transformed into a North Star</span>
+      <span *ngIf="log?.action === 'make_no_ns'" class="approval-deleted ml-2" i18n="@@postLogs.makeNoNS">Transformed into a normal task</span>
+      <span *ngIf="log?.action === 'update_ns'" class="approval-deleted ml-2" i18n="@@postLogs.updateNS">Updated the North Star value</span>
+      <span *ngIf="log?.action === 'make_idea'" class="approval-deleted ml-2" i18n="@@postLogs.makeIdea">Transformed into an Idea</span>
+      <span *ngIf="log?.action === 'make_no_idea'" class="approval-deleted ml-2" i18n="@@postLogs.makeNoIdea">Transformed into a normal task</span>
+      <span *ngIf="log?.action === 'make_crm_task'" class="approval-deleted ml-2" i18n="@@postLogs.makeCRMTask">Transformed into a CRM Lead</span>
+      <span *ngIf="log?.action === 'make_no_crm_task'" class="approval-deleted ml-2" i18n="@@postLogs.makeNoCRMTask">Transformed into a normal task</span>
+      <span *ngIf="log?.action === 'make_crm_order'" class="approval-deleted ml-2" i18n="@@postLogs.makeCRMOrder">Transformed into a CRM Order</span>
+      <span *ngIf="log?.action === 'make_no_crm_order'" class="approval-deleted ml-2" i18n="@@postLogs.makeNoCRMTask">Transformed into a normal task</span>
+      <span *ngIf="log?.action === 'make_milestone'" class="approval-deleted ml-2" i18n="@@postLogs.makeMilestone">Transformed into a Milestone</span>
+      <span *ngIf="log?.action === 'make_no_milestone'" class="approval-deleted ml-2" i18n="@@postLogs.makeNoMilestone">Removed the Milestone</span>
+      <span *ngIf="log?.action === 'change_status'" class="approval-deleted ml-2" i18n="@@postLogs.changedStatus">Changed the Status to </span> <span *ngIf="log?.action === 'change_status' && log?.new_status">{{ log?.new_status }}</span>
+      <span *ngIf="log?.action === 'change_section'" class="approval-deleted ml-2" i18n="@@postLogs.movedToSection">Moved to the section </span> <span *ngIf="log?.action === 'change_section' && log?._new_section">{{ log?._new_section?.title }}</span>
+      <span *ngIf="log?.action === 'assigned_to'" class="approval-deleted ml-2" i18n="@@postLogs.assigned">Assigned to </span> <span *ngIf="log?.action === 'assigned_to' && log?._assignee">{{ log?._assignee?.first_name || 'Deleted' }} {{ log?._assignee?.last_name || 'User' }}</span>
+      <span *ngIf="log?.action === 'removed_assignee'" class="approval-deleted ml-2" i18n="@@postLogs.unassigned">Unassigned from </span> <span *ngIf="log?.action === 'removed_assignee' && log?._assignee">{{ log?._assignee?.first_name || 'Deleted' }} {{ log?._assignee?.last_name || 'User' }}</span>
+      <span *ngIf="log?.action === 'new_due_date'" class="approval-deleted ml-2" i18n="@@postLogs.dueDate">Changed the Due date to </span> <span *ngIf="log?.action === 'new_due_date' && log?.new_date">{{ log?.new_date | date: 'MMM dd, yyyy' }}</span>
+      <span *ngIf="log?.action === 'new_start_date'" class="approval-deleted ml-2" i18n="@@postLogs.startDate">Changed the Start date to </span> <span *ngIf="log?.action === 'new_start_date' && log?.new_date">{{ log?.new_date | date: 'MMM dd, yyyy' }}</span>
+      <span *ngIf="log?.action === 'change_time'" class="approval-created ml-2" i18n="@@postLogs.editedTime">Edited the time</span>
+      <span *ngIf="log?.action === 'change_cf'" class="approval-deleted ml-2" i18n="@@postLogs.changedCF">Changed </span> <span *ngIf="log?.action === 'change_cf' && log?.cf_title">{{ log?.cf_title }}</span>
+      <span *ngIf="log?.action === 'change_cf'" class="approval-deleted ml-2" i18n="@@postLogs.cfTo"> to </span> <span *ngIf="log?.action === 'change_cf' && log?.cf_value">{{ log?.cf_value }}</span>
+      <span *ngIf="log?.action === 'copy_to'" class="approval-deleted ml-2" i18n="@@postLogs.copiedTo">Copied to the group </span> <span *ngIf="log?.action === 'copy_to' && log?._group">{{ log?._group?.group_name }}</span>
+      <span *ngIf="log?.action === 'moved_to'" class="approval-deleted ml-2" i18n="@@postLogs.movedTo">Moved to the group </span> <span *ngIf="log?.action === 'moved_to' && log?._group">{{ log?._group?.group_name }}</span>
+      <span *ngIf="log?.action === 'make_dependency'" class="approval-deleted ml-2" i18n="@@postLogs.dependencyOf">Made a dependency of </span> <span *ngIf="log?.action === 'make_dependency' && log?._task">{{ log?._task?.title }}</span>
+      <span *ngIf="log?.action === 'make_dependent'" class="approval-deleted ml-2" i18n="@@postLogs.dependentOf">Made a dependent of </span> <span *ngIf="log?.action === 'make_dependent' && log?._task">{{ log?._task?.title }}</span>
+      <span *ngIf="log?.action === 'remove_dependency'" class="approval-deleted ml-2" i18n="@@postLogs.removeDependencyOf">Removed a dependency of </span> <span *ngIf="log?.action === 'remove_dependency' && log?._task">{{ log?._task?.title }}</span>
+      <span *ngIf="log?.action === 'remove_dependent'" class="approval-deleted ml-2" i18n="@@postLogs.removeDependentOf">Removed a dependent of </span> <span *ngIf="log?.action === 'remove_dependent' && log?._task">{{ log?._task?.title }}</span>
+      <span *ngIf="log?.action === 'set_parent'" class="approval-deleted ml-2" i18n="@@postLogs.setParent">Made a child of </span> <span *ngIf="log?.action === 'set_parent' && log?._task">{{ log?._task?.title }}</span>
+      <span *ngIf="log?.action === 'save_allocation'" class="approval-deleted ml-2" i18n="@@postLogs.saveAllocation">Changed the Allocation to </span> <span *ngIf="log?.action === 'save_allocation' && log?.allocation">{{ log?.allocation }}</span>
+      <span *ngIf="log?.action === 'save_estimation'" class="approval-deleted ml-2" i18n="@@postLogs.saveEstimation">Changed the Estimation to </span> <span *ngIf="log?.action === 'save_estimation' && log?.estimation">{{ log?.estimation }}</span>
+      <span *ngIf="log?.action === 'updated_tags'" class="approval-deleted ml-2" i18n="@@postLogs.saveTags">Updated the tags</span>
+      <span *ngIf="log?.action === 'attach_file'" class="approval-deleted ml-2" i18n="@@postLogs.attachFile">Attached a file</span>
+      <span *ngIf="log?.action === 'attach_file_cloud'" class="approval-deleted ml-2" i18n="@@postLogs.attachFileCloud">Attached a file from a connected cloud</span>
+      <span *ngIf="log?.action === 'update_crm_info'" class="approval-deleted ml-2" i18n="@@postLogs.updateCRMInfo">Updated the CRM Information</span>
+      &nbsp;
+      <span i18n="@@postLogs.on">on</span>
+      &nbsp;
+      <span class="muted">{{ log?.action_date | date: 'MMM dd, yyyy HH:mm' }}</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,272 @@
+<app-files-bar *ngIf="groupData"
+  [groupData]="groupData"
+  [userData]="userData"
+  (customFieldEmitter)="onCustomFieldEmitter($event)"
+  (sortEmitter)="onSortEmitter($event)"
+  (filterEmitter)="onFilterEmitter($event)">
+</app-files-bar>
+
+<div class="container" dragDropFile (fileDropped)="fileDropped($event)">
+    <div class="card-tile">
+
+        <!-- Heading of the component starts -->
+        <h4 i18n="@@groupFiles.yourFiles">Your files. Ready when you are.</h4>
+        <p i18n="@@groupFiles.dragDropOrAdd">Drag and drop files here for easy upload. <br>Or use the NEW button for folders uploading.</p>
+        <!-- Heading of the component ends -->
+
+        <!-- Group New File starts -->
+        <app-group-new-file *ngIf="userData && checkDataExist(userData) && groupData && checkDataExist(groupData) && groupData?._id && (!groupData?.files_for_admins || isAdmin)"
+          [groupId]="groupData?._id" [userData]="userData" [folderId]="currentFolder?._id" [workspaceId]="workspaceId" [groupData]="groupData"
+          (file)="getFile($event)" (folder)="getFolder($event)">
+        </app-group-new-file>
+        <!-- Group New File ends -->
+
+        <div style="width: 200px; margin-top: -40px;" class="float-right">
+          <img src="assets/images/files_placeholder.svg" alt="">
+        </div>
+
+        <div *ngIf="currentFolder" class="mt-n30">
+          <!-- Folder Static Title starts -->
+          <span *ngIf="!currentFolder?.canEdit" style="float: left; margin-right: 30px;">
+            <h5>{{ currentFolder?.folder_name }}</h5>
+          </span>
+
+          <span *ngIf="currentFolder?.canEdit && !editFolderTitle"
+              (click)="editFolderTitle = !editFolderTitle"
+              matTooltip="Click me to rename"
+              matTooltipPosition="below" style="float: left; margin-right: 30px;">
+            <h5>
+              {{currentFolder?.folder_name}}
+              <i class="material-icons muted" style="cursor: pointer; font-size: 14px;">mode</i>
+            </h5>
+          </span>
+          <!-- Folder Static Title ends -->
+
+          <!-- Folder edit title name starts -->
+          <input *ngIf="currentFolder?.canEdit && editFolderTitle" type="search"
+              autocomplete="off"
+              [(ngModel)]="currentFolder.folder_name"
+              (keyup)="changeFolderTitle($event)"
+              class="input-search" style="float: left; margin-right: 30px;" />
+          <!-- Folder edit title name ends -->
+        </div>
+
+        <br class="clearfix">
+
+
+        <div class="search mb-3">
+
+            <!-- Component search bar starts -->
+            <input type="text" [ngModel]="query" (ngModelChange)="fileSearchQuery($event)" class="searchTerm"
+                [placeholder]="'File search'">
+            <button type="submit" class="searchButton">
+                <i class="material-icons">search</i>
+            </button>
+            <!-- Component search bar ends -->
+
+        </div>
+
+
+        <!-- Files array template starts -->
+        <!--<app-infinite-scroll (scrolled)="onScroll()">-->
+          <!-- Folder details start -->
+          <div class="media card-tile user-list" style="border-bottom: 1px solid #e4edf8;"
+              *ngFor="let folder of folders; trackBy: utilityService.trackByIndex">
+
+              <a class="mt-0" style="cursor: pointer" (click)="openFolder(folder?._id)">
+                  <img src="assets/images/add-folder-icon.png"
+                    onerror="this.src='assets/images/add-folder-icon.png'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
+                  {{folder?.folder_name}}
+              </a>
+
+              <div class="media-body">
+                  <div class="float-right" *ngIf="folder?.folder_name != '../'">
+                      <app-secured-image (click)="openFullscreenModal(folder?._created_by?._id)"
+                          [imgURL]="folder?._created_by?.profile_pic"
+                          [service]="'user'"
+                          [workspaceId]="workspaceId"
+                          [userData]="folder?._created_by"
+                          [styleClass]="'mr-3 feed-avatar'">
+                      </app-secured-image>
+
+                      <i *ngIf="folder?.canEdit" class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
+
+                      <mat-menu #menu="matMenu">
+                          <a mat-menu-item (click)="copyFolderLinkToClipboard(folder)" *ngIf="folder?.canEdit">
+                            <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">content_copy</i>
+                            <span i18n="@@groupFiles.copyLink">Copy Link</span>
+                          </a>
+
+                          <a mat-menu-item *ngIf="folder?.canDelete" (click)="deleteItem(folder?._id, folder?.type)">
+                              <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
+                              <span i18n="@@groupFiles.delete">Delete</span>
+                          </a>
+
+                          <div *ngIf="folders && folders?.length > 1">
+                            <a mat-menu-item [matMenuTriggerFor]="moveFolderMenu">
+                              <i class="material-icons">arrow_forward</i>
+                              <span i18n="@@groupFiles.moveToFolder">Move to Folder</span>
+                            </a>
+
+                            <mat-menu #moveFolderMenu="matMenu">
+                              <ng-container *ngFor="let folderMenu of folders; let index = index; trackBy: utilityService.trackByIndex">
+                                <button mat-menu-item *ngIf="folder._id != folderMenu._id" (click)="moveToFolder(folder._id, folderMenu?._id, 'folder')">{{ folderMenu?.folder_name }}</button>
+                              </ng-container>
+                            </mat-menu>
+                          </div>
+
+                          <button mat-menu-item (click)="openPermissionModal(folder, 'folder')" *ngIf="groupData && groupData.enabled_rights && checkDataExist(groupData)">
+                            <span class="material-icons-outlined">vpn_lock</span>
+                            <span i18n="@@groupDashboard.permissions">Permissions</span>
+                          </button>
+                      </mat-menu>
+                  </div>
+              </div>
+          </div>
+          <!-- Folder Details Ends -->
+
+          <!-- File Details Starts -->
+          <div class="media card-tile user-list" style="border-bottom: 1px solid #e4edf8;"
+              *ngFor="let file of files; trackBy: utilityService.trackByIndex">
+
+              <a *ngIf="file?.type === 'file' && !isOfficeFile(file?.original_name)" class="mt-0" style="cursor: pointer"
+                    (click)="openDocument(file)">
+                  <img [src]="getFileIcon(file?.original_name)"
+                    onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
+                  {{file?.original_name}}
+              </a>
+
+              <a *ngIf="(file?.type == 'file' && isOfficeFile(file?.original_name)) || file?.type === 'campaign'"
+                (click)="openOfficeDoc(file)" class="mt-0" style="cursor: pointer;">
+                  <img [src]="getFileIcon(file?.original_name)"
+                    onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
+                  <span *ngIf="file?.type=='campaign'"><b i18n="@@groupFiles.campaignFile">Campaign File: </b></span>{{file?.original_name}}
+              </a>
+
+              <a *ngIf="file?.type === 'folio'" class="mt-0"
+                routerLink="/document/{{file?._id}}" [queryParams]="{ readOnly: !file?.canEdit }">
+                  <img src="assets/images/icon_folio.svg"
+                    onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
+                  {{file?.original_name}}
+              </a>
+
+              <a *ngIf="file?.type === 'flamingo'" class="mt-0"
+                [routerLink]="['/document/flamingo', file?._id]">
+                  <img src="assets/images/icon_flamingo.svg"
+                    onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
+                  {{file?.original_name}}
+              </a>
+
+              <div class="media-body">
+                  <div class="float-right">
+                      <app-secured-image (click)="openFullscreenModal(file?._posted_by?._id)"
+                          [imgURL]="file?._posted_by?.profile_pic"
+                          [service]="'user'"
+                          [workspaceId]="workspaceId"
+                          [userData]="file?._posted_by"
+                          [styleClass]="'feed-avatar'">
+                      </app-secured-image>
+
+                      <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
+
+                      <mat-menu #menu="matMenu">
+                          <a mat-menu-item *ngIf="file?.type == 'file'" style="cursor: pointer"
+                              (click)="downloadDocument(file)">
+                            <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">file_download</i>
+                            <span i18n="@@groupFiles.download">Download</span>
+                          </a>
+
+                          <a mat-menu-item (click)="copyToClipboard(file)" *ngIf="file?.canEdit">
+                            <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">content_copy</i>
+                            <span i18n="@@groupFiles.copyLink">Copy Link</span>
+                          </a>
+
+                          <div *ngIf="(file?.type == 'folio' || file?.type == 'flamingo') && file?.canEdit && !isIndividualSubscription">
+                            <!--
+                            <a mat-menu-item [matMenuTriggerFor]="transferMenu" (mouseover)="saveTransferAction('copy')">
+                              <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">content_copy</i>
+                              Copy to Group
+                            </a>
+                            -->
+                            <a mat-menu-item [matMenuTriggerFor]="transferMenu" (mouseover)="saveTransferAction('move')">
+                              <i class="material-icons">arrow_forward</i>
+                              <span i18n="@@groupFiles.moveToGroup">Move to Group</span>
+                            </a>
+
+                            <mat-menu #transferMenu="matMenu">
+                              <ng-container *ngFor="let group of userGroups; let index = index; trackBy: utilityService.trackByIndex">
+                                <button mat-menu-item (click)="transferToGroup(file._id, userGroups[index]?._id, file?.type)">{{ group.group_name }}</button>
+                              </ng-container>
+                            </mat-menu>
+                          </div>
+
+                          <div *ngIf="folders && folders?.length > 0 && file?.canEdit">
+                            <a mat-menu-item [matMenuTriggerFor]="moveFileMenu">
+                              <i class="material-icons">arrow_forward</i>
+                              <span i18n="@@groupFiles.moveToFolder">Move to Folder</span>
+                            </a>
+
+                            <mat-menu #moveFileMenu="matMenu">
+                              <ng-container *ngFor="let folder of folders; let index = index; trackBy: utilityService.trackByIndex">
+                                <button mat-menu-item (click)="moveToFolder(file._id, folder?._id, 'file')">{{ folder?.folder_name }}</button>
+                              </ng-container>
+                            </mat-menu>
+                          </div>
+
+                          <a mat-menu-item *ngIf="file?.type == 'flamingo' && file?.canEdit" (click)="copyFlamingo(file?._id)">
+                            <img src="assets/images/icon_flamingo.svg" onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: top;">
+                            <span i18n="@@groupFiles.copyFlamingo">Copy Flamingo</span>
+                          </a>
+                          <!--
+                          <a *ngIf="file?.type === 'file' && !isOfficeFile(file?.original_name)" mat-menu-item (click)="openViewFileDialog(file)" style="cursor: pointer">
+                              <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
+                              <span i18n="@@groupFiles.view">View</span>
+                          </a>
+                          -->
+                          <a *ngIf="file?.type === 'folio'" mat-menu-item
+                            routerLink="/document/{{file?._id}}" [queryParams]="{ readOnly: !file?.canEdit }">
+                            <!--(click)="openViewFolioDialog(file?._id)"-->
+                              <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
+                              <span i18n="@@groupFiles.view">View</span>
+                          </a>
+
+                          <a mat-menu-item (click)="openFileDetailsDialog(file)">
+                              <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">info</i>
+                              <span i18n="@@groupFiles.details">Details</span>
+                          </a>
+
+                          <a mat-menu-item (click)="fileNewVersion.click()" *ngIf="isFilesVersionsModuleAvailable">
+                              <i class="material-icons-outlined mr-2" style="margin-right: .7rem;">upload_file</i>
+                              <span i18n="@@groupFiles.newVersion">New Version</span>
+                              <input #fileNewVersion type="file" placeholder="File" multiple (change)="uploadNewVersion(fileNewVersion.files, file)" style="display: none;" />
+                          </a>
+
+                          <a *ngIf="file?.type == 'folio' || (file?.type == 'file' && getFileExtension(file?.original_name) == 'pdf')" mat-menu-item (click)="exportToPDF(file)">
+                              <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">picture_as_pdf</i>
+                              <span i18n="@@groupFiles.exportToPDF">Export To PDF</span>
+                          </a>
+
+                          <button mat-menu-item (click)="openPermissionModal(file, 'file')" *ngIf="groupData && groupData.enabled_rights && checkDataExist(groupData) && file?.canEdit">
+                            <span class="material-icons-outlined">vpn_lock</span>
+                            <span i18n="@@groupDashboard.permissions">Permissions</span>
+                          </button>
+
+                          <a mat-menu-item *ngIf="file?.canDelete" (click)="deleteItem(file?._id, file?.type, file?.modified_name)">
+                              <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
+                              <span i18n="@@groupFiles.delete">Delete</span>
+                          </a>
+                      </mat-menu>
+                  </div>
+              </div>
+          </div>
+          <!-- File Details Ends -->
+        <!--</app-infinite-scroll>-->
+        <!-- Files array template ends -->
+
+        <!-- Loading Spinner Starts -->
+        <ng-container *ngIf="isLoading$ | async">
+            <app-loading-spinner></app-loading-spinner>
+        </ng-container>
+        <!-- Loading Spinner Ends -->
+    </div>
+</div>

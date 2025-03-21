@@ -1,0 +1,22 @@
+<!-- TASK STATUS STARTS -->
+
+<button [disabled]="disabled"
+    [ngClass]="{'kbn-todo': status === 'to do', 'kbn-working': status === 'in progress', 'kbn-done': status === 'done'}"
+    class="btn btn-sm text-capitalize dropdown-toggle" type="button" id="dropdown" data-toggle="dropdown">
+    {{ status }}</button>
+
+<!-- Menu Drawer Starts -->
+<ul class="dropdown-menu">
+    <li class="dropdown-item" (click)="changeStatus('to do')">
+        <span i18n="@@taskStatus.toDo">To Do</span>
+    </li>
+    <li class="dropdown-item" (click)="changeStatus('in progress')">
+        <span i18n="@@taskStatus.inProgress">In Progress</span>
+    </li>
+    <li class="dropdown-item" (click)="changeStatus('done')">
+        <span i18n="@@taskStatus.done">Done</span>
+    </li>
+</ul>
+<!-- Menu Drawer Ends -->
+
+<!-- TASK STATUS ENDS -->

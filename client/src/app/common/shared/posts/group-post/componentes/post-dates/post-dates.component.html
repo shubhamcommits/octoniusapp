@@ -1,0 +1,57 @@
+<div class="content-box" *ngIf="postData && postData?.type === 'task' || postData?.type === 'event'">
+  <p *ngIf="groupData && groupData.project_type && !postData?.task?.is_milestone && !postData?.task?.is_crm_task"
+    class="box-title" i18n="@@groupCreatePostDialog.startDate">Start date</p>
+
+  <div *ngIf="groupData && groupData.project_type && !postData?.task?.is_milestone && !postData?.task?.is_crm_task">
+    <!-- Date Picker starts -->
+    <app-date-picker (date)="getDate($event, 'start_date')"
+      [selectedDate]="postData?.task.start_date"
+      [upperLimit]="postData?.task.due_to"
+      [styleClass]="'btn-group input-date due'"
+      [canEdit]="canEditDates">
+    </app-date-picker>
+    <!--Date Picker ends -->
+
+    <!-- Clean field starts -->
+    <i *ngIf="canEditDates" (click)="updateDate(null, 'start_date')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+    <!-- Clean field ends -->
+  </div>
+
+  <p class="box-title" i18n="@@groupCreatePostDialog.dueDate">Due date</p>
+
+  <div *ngIf="postData && postData?.type === 'task'">
+    <!-- Date Picker starts -->
+    <app-date-picker
+      (date)="getDate($event, 'due_date')"
+      [selectedDate]="postData?.task.due_to"
+      [lowerLimit]=" (postData?.task?.is_milestone) ? '' : postData?.task.start_date"
+      [styleClass]="'btn-group input-date ' +  (checkOverdue() === true ? 'overdue' : 'due')"
+      [canEdit]="canEditDates">
+    </app-date-picker>
+    <!--Date Picker ends -->
+
+    <!-- Clean field starts -->
+    <i *ngIf="canEditDates" (click)="updateDate(null, 'due_date')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+    <!-- Clean field ends -->
+  </div>
+  <div *ngIf="postData && postData?.type === 'event'" class="btn-group">
+    <!-- Date Picker starts -->
+    <app-date-picker
+      (date)="getDate($event, 'due_date')"
+      [selectedDate]="postData?.event.due_to"
+      [styleClass]="'input-date due'"
+      [canEdit]="canEditDates">
+    </app-date-picker>
+    <!--Date Picker ends -->
+  </div>
+
+  <!-- Time Picker starts -->
+  <app-time-picker
+      class="ml-1"
+      *ngIf="postData && postData?.type === 'event'"
+      [time]="this.dueTime"
+      (time)="getTime($event)"
+      [canEdit]="canEditDates">
+  </app-time-picker>
+  <!-- Time Picker ends -->
+</div>

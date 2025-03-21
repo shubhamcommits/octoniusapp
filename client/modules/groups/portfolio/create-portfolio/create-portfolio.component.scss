@@ -1,0 +1,45 @@
+.group{
+    text-align: center; 
+    background-image: url(https://picsum.photos/600/300/?random&gravity=south ) !important; 
+    cursor: pointer;
+}
+
+.agora-group {
+    text-align: center; 
+    background-image: url(https://picsum.photos/600/300/?random ) !important; 
+    cursor: pointer;
+}
+
+.smart-group {
+    text-align: center; 
+    background-image: url(https://picsum.photos/600/300/?random&gravity=north ) !important; 
+    cursor: pointer;
+}
+
+.card {
+    padding: 5px;
+    border-radius: 4px;
+    border: none !important;
+    margin: 0;
+    background: transparent !important;
+    .card-body.content{
+        background: transparent
+    }
+    .card-body{
+        background: #fff;
+        width: 100%;
+    }
+    .card-title{
+        margin-bottom: 50px !important;
+        color: #fff; 
+        margin-top: 60px;
+    }
+}
+.dropdown-menu li{
+    cursor: pointer;
+}
+.btn{
+        color:#fff !important;
+        font-weight: 700 !important;
+        border-radius: 20px !important;
+}

@@ -1,0 +1,40 @@
+<div class="smart-card" style="padding: 10px;">
+  <div class="row" style="margin: 0 0 20px; justify-content: space-between;">
+    <div class="card-title mt-1">
+      <span class="material-icons-outlined">auto_awesome</span>
+      <span i18n="@@cfTableCard.cfTable">Custom Fields analytics</span>
+    </div>
+    <div>
+      <span class="material-icons muted" style="margin-left: 30px; cursor: pointer;" (click)="openSettingsDialog()">settings</span>
+    </div>
+  </div>
+
+  <div clas="row">
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th *ngFor="let cf of selectTypeCustomFields; trackBy: utilityService.trackByIndex" class="header"> {{ cf?.title }} </th>
+            <th *ngFor="let cf of inputTypeCustomFields; trackBy: utilityService.trackByIndex" class="muted"> {{ cf?.title }} </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let row of tableData; trackBy: utilityService.trackByIndex">
+            <td *ngFor="let select of selectTypeCFs; trackBy: utilityService.trackByIndex" style="background-color: {{getBackgroundColor(row, select)}}">
+              <div class="member">
+                <div class="name">
+                  {{ row[select] }}
+                </div>
+              </div>
+            </td>
+
+            <td *ngFor="let input of inputTypeCFs; trackBy: utilityService.trackByIndex">
+              {{ row[input] | number }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

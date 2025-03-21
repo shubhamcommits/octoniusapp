@@ -1,0 +1,176 @@
+<div class="container-fluid" [ngStyle]="{'margin-top': (isAuth) ? '' : '90px'}">
+    <div *ngIf="pageData" class="page">
+        <div class="page-navbar" *ngIf="!canEditPage">
+            <div class="col">
+               <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h4>
+                    <i class="material-icons-outlined mr-1">article</i>
+                    <span i18n="@@pageDetails.collectionPages">Pages</span>
+                    
+                </h4>
+              </div>
+
+              <div *ngIf="canEdit">
+                  <!-- Create new Page starts -->
+                  <div class="add-page" *ngIf="canEditTitle">
+                    <input autofocus class="form-control" type="text" placeholder="Enter page title" [(ngModel)]="postTitle" (keyup.enter)="createPage() && initPages()" (blur)="canEditTitle=false">
+                  </div>
+
+                  <div *ngIf="!canEditTitle">
+                    <button class="btn btn-block task muted" 
+                      (click)="canEditTitle=true">
+                      <i class="material-icons-outlined" >add</i> 
+                      <span i18n="@@collectionDetails.newPage" >New Page</span>
+                    </button>
+                  </div>
+                  <!-- Create new Page ends -->
+              </div>
+
+                <app-collection-pages [pages]="pages" [collectionId]="collectionData?._id" [userData]="userData"
+                    [workspaceId]="workspaceData?._id" [canEdit]="canEdit"
+                    (subpageUpdatedEmitter)="initPages()" (subpageUpdatedEmitter)="initPages()"></app-collection-pages>
+
+                <app-section-separator></app-section-separator>
+
+                <h4 class="mb-3">
+                    <i class="material-icons-outlined mr-1">info</i>
+                    <span i18n="@@pageDetails.pageInformation">Page Information</span>
+                </h4>
+
+                <div class="mb-2">
+                    <i class="material-icons-outlined mr-1">attach_file</i>
+                    <span i18n="@@pageDetails.attachments">Attachments</span>
+                </div>
+
+                <div *ngIf="canEdit" class="ropdown-item btn btn-link" (click)="file.click()">
+                    <i class="material-icons-outlined mr-2">upload_file</i>
+                    <span i18n="@@groupNewFile.uloadFile">Upload file</span>
+                    <input class="file-input" #file type="file" placeholder="File" multiple (change)="fileInput(file.files)" />
+                </div>
+
+                <div *ngFor="let file of pageData?._files; trackBy: utilityService.trackByIndex">
+                    <span class="btn" (click)="openDocument(file)">{{ file?.original_name | truncatetext: 20 }}</span>
+
+                    <button *ngIf="canEdit" class="btn btn-link" data-toggle="dropdown">
+                        <span><i class="material-icons muted">more_vert</i></span>
+                    </button>
+                    
+                    <!-- Menu Starts -->
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item btn btn-link" (click)="removeFile(file?._id)">
+                            <span class="material-icons-outlined">delete</span>
+                            <span i18n="@@pageDetails.delete">Delete</span>
+                        </li>
+                    </ul>
+                    <!-- Menu Ends -->
+                </div>
+
+                <div class="mb-2 mt-2">
+                    <i class="material-icons-outlined mr-1">edit</i>
+                    <span i18n="@@pageDetails.authors">Authors</span>
+                </div>
+
+                <div *ngFor="let author of pageData?._updated_by; trackBy: utilityService.trackByIndex">
+                    <app-secured-image *ngIf="isAuth"
+                        [imgURL]="author?.profile_pic"
+                        [service]="'user'"
+                        [userData]="author"
+                        [workspaceId]="workspaceData?._id"
+                        [styleClass]="'feed-avatar-small'"
+                        style="float: left; cursor: auto;"></app-secured-image>
+
+                    <app-secured-image *ngIf="!isAuth"
+                        [imgURL]="author?.profile_pic"
+                        [service]="'user'"
+                        [userData]="author"
+                        [workspaceId]="workspaceData?._id"
+                        [styleClass]="'feed-avatar-small'"
+                        [noAuth]="true"
+                        style="float: left; cursor: auto;"></app-secured-image>
+
+                    <div style="padding-top: 10px;" class="ml-1 mr-1">
+                    {{ author?.first_name }}
+                    {{ author?.last_name }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-content">
+            <div class="page-body">
+                <div *ngIf="!pageData?.content && !canEditPage" style="width: 100%; text-align: center;">
+                    <img src="assets/images/placeholder_new_page.svg" alt="" style="width: 40%; margin: 14px" />
+                    <p class="muted">Start writing something awesome!</p>
+                </div>
+                 <!-- Menu Starts -->
+                <div class="editbar">
+                    <button *ngIf="canEdit" class="btn btn-link" (click)="canEditAction()">
+                        <i class="material-icons">create</i>
+                    </button>
+
+                    <button *ngIf="canEdit" class="btn btn-link ml-2" data-toggle="dropdown">
+                        <i class="material-icons muted">more_horiz</i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <!--
+                        <li class="dropdown-item" (click)="canEditAction()">
+                            <span *ngIf="!canEditPage" i18n="@@pageDetails.edit"><i class="material-icons">create</i>Edit</span>
+                        </li>
+                        -->
+                        <li class="dropdown-item">
+                            <i class="material-icons">delete</i>
+                            <span (click)="deletePage(pageData?._id)" i18n="@@pageDetails.delete">Delete</span>
+                        </li>
+                    </ul>
+                </div>
+        
+                 <!-- Menu Ends -->
+                <div *ngIf="!canEditPage || !canEdit" [innerHTML]="(htmlContent) | safe: 'html'" style="margin: 30px 0;"></div>
+        
+                <app-quill-editor style="margin-bottom: 30px;" *ngIf="canEditPage && canEdit" [editorId]="'page_editor'" [toolbar]="true"
+                    [groupId]="groupData?._id" [workspaceId]="workspaceData?._id" [workspaceData]="workspaceData"
+                    [readOnly]="!canEdit" [mentionAll]="false" [quillContent]="pageData?.content" (contentEmitter)="getQuillData($event)">
+                </app-quill-editor>
+
+                <div style="width: 100%; text-align: right;" *ngIf="canEdit">
+                    <button *ngIf="canEditPage" i18n="@@pageDetails.edit" class="btn btn-danger mr-2" (click)="canEditAction()">Cancel</button>
+                    <button type="button" *ngIf="canEditPage" class="btn btn-primary"
+                        (click)="savePage()" i18n="@@pageDetails.save">
+                        Save
+                    </button>
+                </div>
+                
+            </div>
+
+            <app-page-actions-bar class="row" *ngIf="!canEditPage"
+                [pageData]="pageData"
+                [workspaceData]="workspaceData"
+                [userData]="userData"
+                [canEditStory]="canEditPage"
+                [showComments]="showComments"
+                [isAuth]="isAuth"
+                (onEditActionEvent)="canEditAction()"
+                (onShowCommentsActionEvent)="showCommentsAction($event)"></app-page-actions-bar>
+
+            <!-- COMMENTS SECTION STARTS -->
+            <div class="row comments" *ngIf="userData && pageData && !canEditPage">
+                <comment-section *ngIf="showComments && userData && pageData"
+                    [userData]="userData"
+                    [editorId]="'_new_comment'"
+                    [pageId]="pageData?._id"
+                    [workspaceId]="workspaceData?._id"
+                    (comment)="newCommentReceived($event)"
+                    (close)="showComments = !showComments">
+                </comment-section>
+
+                <app-comment-list style="width: 100%;"
+                    [pageId]="pageData?._id"
+                    [userData]="userData"
+                    [length]="(pageData?._comments?.length || 0)"
+                    [newComment]="newComment"
+                    (removeCommentEvent)="onRemoveComment($event)"></app-comment-list>
+            <!-- COMMENTS SECTION ENDS -->
+            </div>
+        </div>
+    </div>
+</div>

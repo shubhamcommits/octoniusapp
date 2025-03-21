@@ -1,0 +1,90 @@
+.post-title{
+    padding: 12px 15px;
+    width: 95% !important;
+    box-shadow: none;
+    border:none;
+}
+.modal-title{
+    width: 100%;
+}
+
+.post-header{
+    margin-bottom: 2%;
+}
+
+p{
+    // font-size: medium;
+    margin-top: 2%;
+}
+
+
+i{
+    font-size: 24px;
+}
+
+.attach-files{
+    width: 100%;
+    box-shadow: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 24px auto;
+}
+
+.right-section{
+    margin-bottom: 10px;
+    vertical-align: middle;
+    // display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: right;
+    padding-top: 10px;
+}
+
+app-component-search-input-box{
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 50% !important;
+    bottom: 0;
+    right: 0;
+    z-index: 99;
+}
+
+app-time-picker {
+    margin: auto;
+    // position: absolute;
+    // top: 0;
+    // left: 30% !important;
+    // bottom: 0;
+    // right: 0;
+    // z-index: 99;
+}
+.ql-container{
+    border:none !important;
+}
+h4{
+    font-size: 16px;
+    line-height: 18px;
+}
+
+.delete-btn{
+    color: #FF6584;
+    text-decoration: none !important;
+}
+
+.modal-footer{
+    display: block;
+    flex-wrap: inherit;
+
+}
+
+.w400{
+    width: 400px !important;
+    text-align: right;
+}
+
+input.input-date {
+  border: none;
+  background-color: white;
+}

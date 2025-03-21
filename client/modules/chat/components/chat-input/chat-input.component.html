@@ -1,0 +1,27 @@
+<div class="suggestions" *ngIf="(showSuggestMembers && suggestValues.length > 0) || (showSuggestFiles && suggestValues.length > 0)">
+  <ul *ngIf="showSuggestMembers">
+    <li (click)="mentionMember(member)" *ngFor="let member of suggestValues; trackBy: utilityService.trackByIndex">{{ member?.value }}</li>
+  </ul>
+
+  <!--
+  <ul *ngIf="showSuggestFiles">
+    <li *ngFor="let file of suggestValues; trackBy: utilityService.trackByIndex">{{ file?.value }}</li>
+  </ul>
+  -->
+</div>
+
+<div>
+  <div class="sent-text">
+    <!-- Message Content starts -->
+    <!--
+    <app-quill-editor [editorId]="'chat-message-editor'" [toolbar]="true" [readOnly]="false"
+      [chat]="true" (contentEmitter)="getQuillData($event)"></app-quill-editor>
+    -->
+    <input #inputField class="form-control" type="text" placeholder="Write message..." [(ngModel)]="newMessage"
+      (keyup.enter)="sendMessage()" (keyup)="suggest($event)" />
+    <!-- Message Content ends -->
+  </div>
+
+  <i *ngIf="!newMessage" class="material-icons send-button muted" style="cursor: pointer">send</i>
+  <i *ngIf="newMessage" class="material-icons send-button" style="color:#005fd5; cursor: pointer;" (click)="sendMessage()">send</i>
+</div>

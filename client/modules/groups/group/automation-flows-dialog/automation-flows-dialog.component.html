@@ -1,0 +1,51 @@
+<div class="flowsDialog">
+  <mat-dialog-actions align="end">
+    <!--
+      <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
+    -->
+    <i mat-dialog-close class="material-icons" style="cursor: pointer">close</i>
+  </mat-dialog-actions>
+
+  <h2 mat-dialog-title>
+    <span class="badge badge-automator">
+      <i class="material-icons">offline_bolt</i>
+    </span>
+    <span i18n="@@groupAutomationFlowsDialog.automator">Automator</span>
+  </h2>
+
+  <mat-dialog-content>
+    <div class="description">
+      <img src="assets/images/undraw_robotics_kep.svg" alt="" style="width: 300px; margin-bottom: 24px">
+      <p i18n="@@groupAutomationFlowsDialog.saveTime">Save time on manual processes and let Octonius do the heavy lifting. <br>Turn your Octonius board into an automation machine.</p>
+    </div>
+
+    <div class="flowsList" *ngIf="automationFlows.length <= 0">
+      <p class="text-center" i18n="@@groupAutomationFlowsDialog.thereAreNoAutomations">🌵 There are no automations...</p>
+    </div>
+
+    <div class="text-center" style="padding: 10px; margin-top: 30px">
+      <button class="btn badge-automator" (click)="createFlow()">
+        <i class="material-icons">offline_bolt</i>
+        <span  i18n="@@groupAutomationFlowsDialog.newAutomation">New automation</span>
+      </button>
+    </div>
+
+    <div class="flowsList" *ngIf="automationFlows.length > 0">
+      <p class="text-center" style="margin-top: 30px;" i18n="@@groupAutomationFlowsDialog.currentAutomations">Current automations in action for this board</p>
+
+      <div class="flowsBody">
+
+        <mat-card appearance="outlined" class="field" *ngFor="let flow of automationFlows; trackBy: utilityService.trackByIndex" (click)="openFlowDetailsDialog(flow._id)" style="cursor: pointer">
+          <mat-card-content class="text-left">
+            <p>
+              <i class="material-icons" style="color: #FFAB00">offline_bolt</i>
+            </p>
+            <p>
+              {{ flow.name}}
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </mat-dialog-content>
+</div>

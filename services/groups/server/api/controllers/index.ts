@@ -1,0 +1,39 @@
+import { GroupController } from './group.controller';
+import { MembersControllers } from "./members.controllers";
+import { PulseController } from './pulse.controller';
+import { ColumnsController } from './columns.controller';
+import { FlowController } from './flow.controller';
+import { PortfolioController } from './portfolio.controller';
+import { LibraryController } from './library.controller';
+import { CRMController } from './crm.controller';
+import { ResourcesController } from './resources.controller';
+
+/*  =======================
+ *  -- FUNCTION EXPORTS --
+ *  =======================
+ * */
+export {
+
+    // COLUMN
+    ColumnsController as ColumnsController,
+
+    // GROUP
+    GroupController as GroupFunctions,
+
+    // FLOW
+    FlowController as FlowFunctions,
+
+    // MEMBERS
+    MembersControllers as MemberControllers,
+
+    // PULSE
+    PulseController as PulseFunctions,
+
+    PortfolioController as PortfolioController,
+
+    LibraryController as LibraryController,
+
+    CRMController as CRMController,
+
+    ResourcesController as ResourcesController,
+}

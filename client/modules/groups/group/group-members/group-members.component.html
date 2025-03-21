@@ -1,0 +1,26 @@
+<div class="container">
+
+  <div class="card-tile">
+
+      <!-- Heading of the component starts -->
+      <h6 style="float: left;">
+        <strong i18n="@@groupMembers.allMembersFromGroup">All members from your group</strong>
+      </h6>
+      <!-- Heading of the component ends -->
+
+        <div (click)="exportMembers()" style="cursor: pointer; float:right; margin-bottom: 10px; color: #2AA578;">
+          <span class="material-icons-outlined">file_download</span>
+          <span i18n="@@groupMembers.exportMembers">Export members</span>
+        </div>
+
+      <!-- Fetch the current workspace members list starts -->
+      <app-component-search-bar *ngIf="groupData && members && searchBarPlaceholder && groupData"
+          [type]="'group'"
+          [placeholder]="searchBarPlaceholder"
+          [userData]="userData">
+      </app-component-search-bar>
+      <!-- Fetch the current workspace members list ends -->
+
+  </div>
+
+</div>

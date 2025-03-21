@@ -1,0 +1,14 @@
+# How to manage k8s
+
+Install the requirements
+```brew install lens```
+```brew install git-crypt```
+
+## Download the git-crypt key form a safe place 
+https://send.bitwarden.com/#xX_D4Sbn7EWOvLD7ANwQJA/LHd13dbLpX17AfxJJ2nJRg
+cd to the git project and run
+
+
+```git-crypt unlock /path/to/key````
+
+after that you add the cluster in lens you can get the config from `scripts/production/k8s/kube-hetzner/k3s_kubeconfig.yaml` for production and `scripts/acceptance/k8s/kube-hetzner/k3s_kubeconfig.yaml`

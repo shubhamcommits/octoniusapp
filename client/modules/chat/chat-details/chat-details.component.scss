@@ -1,0 +1,37 @@
+.chat-header {
+    position: absolute;
+    top: 0;
+    opacity: 1;
+    width: 100%;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    padding: 14px;
+    background: #005fd5;
+    color: #fff;
+}
+
+.chat-content {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    // max-height: 580px;
+    // min-height: 580px;
+    bottom: 80px;
+    position: absolute;
+    width: 100%;
+    top:70px;
+}
+
+.chat-input {
+    bottom: 8px;
+    position: absolute;
+    width: 100%;
+}
+
+.social-icons {
+    font-size: 24px;
+}
+
+.content-box {
+    padding: 16px;
+}

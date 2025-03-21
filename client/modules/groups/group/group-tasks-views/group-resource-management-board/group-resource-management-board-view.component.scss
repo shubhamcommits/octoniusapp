@@ -1,0 +1,159 @@
+@import "src/assets/scss/variables";
+@import "src/assets/scss/global";
+@import "src/assets/scss/tasks";
+@import "src/assets/scss/group";
+
+.board {
+  display: flex;
+  flex-direction: column;
+  // flex-grow: 1;
+
+  // Override Automatic Minimum Size
+  // https://stackoverflow.com/questions/36247140/why-dont-flex-items-shrink-past-content-size
+  min-width: 0;
+  min-height: 0;
+}
+
+.container-fluid {
+  margin-top: 70px;
+  // max-width: 1220px;
+}
+
+a {
+  text-decoration: none !important;
+  color: inherit;
+}
+
+.smart-card {
+  background-color: #FFFFFF;
+  border: none;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 0px 1px 1px rgb(0 0 0 / 14%);
+  min-height: 260px;
+  height: 100%;
+}
+
+.table-wrapper {
+  // overflow-y: auto;
+  width: 100%;
+
+  .member {
+    display:flex;
+    flex-direction:column;
+    // width: 200px;
+    align-items: center;
+
+    .name {
+      // line-height: 20px;
+      // margin-top: 12px;
+      font-weight: bold;
+    }
+  }
+
+  .tasks-list {
+    ul {
+      list-style-type: none;
+      margin-left: -40px;
+      margin-top: 10px;
+
+      li {
+        display: inline;
+      }
+    }
+  }
+}
+
+table {
+  position: relative;
+  border-collapse: collapse;
+}
+
+td,
+th {
+  white-space: nowrap;
+  border: $border-gray;
+  padding: 5px 10px;
+  text-align: center;
+  width: 200px;
+}
+
+th {
+  border-top: none;
+  position: sticky;
+  top: -1px;
+  z-index: 2;
+  text-align: center;
+  padding: 0px;
+  font-weight: 400;
+
+  &:first-of-type {
+    border-left: none;
+    left: 0;
+    z-index: 3;
+
+    opacity: 1;
+    background-color: #FFFFFF;
+  }
+}
+
+tbody tr td:first-of-type {
+  border-left: none;
+  position: sticky;
+  left: -1px;
+  text-align: left;
+  width: 220px;
+  padding: 0px;
+
+  opacity: 1;
+  background-color: #FFFFFF;
+}
+
+.weekend {
+  background-color: $weekend-bg;
+}
+
+.today {
+  color: #fff;
+  background-color: $brand-primary;
+}
+
+.out-of-the-office {
+  background-color: rgba(0, 95, 213, 0.12);
+}
+
+.badge {
+  background-color: $lightgray;
+  margin: 0 1px !important;
+  display: inline;
+  font-family: Nunito, sans-serif;
+  font-style: normal;
+  font-weight: 700 !important;
+  font-size: 12px;
+  align-items: center;
+  color: #fff;
+  background-color: #005fd5;
+  padding: 0 .4em;
+}
+
+.badge-done {
+  background-color: $dark-sky-blue;
+}
+
+.time-tracking {
+  color: #9d9fa1 !important;
+  margin-top: 10px;
+
+  //     span {
+  //         color: $turquoise;
+  //     }
+}
+
+.new-task {
+  color: #FFFFFF;
+  margin-top: 10px;
+}
+
+.task-status {
+  color: rgba(157, 159, 161, 0.5);
+}

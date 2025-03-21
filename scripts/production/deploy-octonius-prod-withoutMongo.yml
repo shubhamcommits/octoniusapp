@@ -1,0 +1,510 @@
+version: '3.7'
+
+services:
+
+  approval-server:
+    image: ${DOCKER_USER}/${DOCKER_REPO}:approval-server
+    ports:
+      - ${APPROVAL_SERVER_PORT}:${MACHINE_PORT}
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+      - MANAGEMENT_URL=${MANAGEMENT_URL}
+      - PROXY_AVAILABLE=${PROXY_AVAILABLE}
+      - PROXY_PROTOCOL=${PROXY_PROTOCOL}
+      - PROXY_HOST=${PROXY_HOST}
+      - PROXY_PORT=${PROXY_PORT}
+    deploy:
+      replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    networks:
+      - octonius_production
+
+  auths-server:
+    image: ${DOCKER_USER}/${DOCKER_REPO}:auths-server
+    ports:
+      - ${AUTHS_SERVER_PORT}:${MACHINE_PORT}
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+      - MANAGEMENT_URL=${MANAGEMENT_URL}
+      - PROXY_AVAILABLE=${PROXY_AVAILABLE}
+      - PROXY_PROTOCOL=${PROXY_PROTOCOL}
+      - PROXY_HOST=${PROXY_HOST}
+      - PROXY_PORT=${PROXY_PORT}
+    deploy:
+      replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    networks:
+      - octonius_production
+         
+  groups-server:
+    image: ${DOCKER_USER}/${DOCKER_REPO}:groups-server
+    ports:
+      - ${GROUPS_SERVER_PORT}:${MACHINE_PORT}
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+      - octonius_production_groups_uploads_data:${VOLUME_UPLOADS}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+      - MANAGEMENT_URL=${MANAGEMENT_URL}
+      - PROXY_AVAILABLE=${PROXY_AVAILABLE}
+      - PROXY_PROTOCOL=${PROXY_PROTOCOL}
+      - PROXY_HOST=${PROXY_HOST}
+      - PROXY_PORT=${PROXY_PORT}
+    deploy:
+      replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    networks:
+      - octonius_production
+      
+  workspaces-server:
+    image: ${DOCKER_USER}/${DOCKER_REPO}:workspaces-server
+    ports:
+      - ${WORKSPACES_SERVER_PORT}:${MACHINE_PORT}
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+      - octonius_production_workspaces_uploads_data:${VOLUME_UPLOADS}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+      - MANAGEMENT_URL=${MANAGEMENT_URL}
+      - PROXY_AVAILABLE=${PROXY_AVAILABLE}
+      - PROXY_PROTOCOL=${PROXY_PROTOCOL}
+      - PROXY_HOST=${PROXY_HOST}
+      - PROXY_PORT=${PROXY_PORT}
+    deploy:
+      replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    networks:
+      - octonius_production
+      
+  users-server:
+    image: ${DOCKER_USER}/${DOCKER_REPO}:users-server
+    ports:
+      - ${USERS_SERVER_PORT}:${MACHINE_PORT}
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+      - octonius_production_users_uploads_data:${VOLUME_UPLOADS}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+      - MANAGEMENT_URL=${MANAGEMENT_URL}
+      - PROXY_AVAILABLE=${PROXY_AVAILABLE}
+      - PROXY_PROTOCOL=${PROXY_PROTOCOL}
+      - PROXY_HOST=${PROXY_HOST}
+      - PROXY_PORT=${PROXY_PORT}
+    deploy:
+      replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    networks:
+      - octonius_production
+      
+  posts-server:
+    image: ${DOCKER_USER}/${DOCKER_REPO}:posts-server
+    ports:
+      - ${POSTS_SERVER_PORT}:${MACHINE_PORT}
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+      - octonius_production_posts_uploads_data:${VOLUME_UPLOADS}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+      - MANAGEMENT_URL=${MANAGEMENT_URL}
+      - PROXY_AVAILABLE=${PROXY_AVAILABLE}
+      - PROXY_PROTOCOL=${PROXY_PROTOCOL}
+      - PROXY_HOST=${PROXY_HOST}
+      - PROXY_PORT=${PROXY_PORT}
+    deploy:
+      replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    networks:
+      - octonius_production
+      
+  notifications-server:
+    image: ${DOCKER_USER}/${DOCKER_REPO}:notifications-server
+    ports:
+      - ${NOTIFICATIONS_SERVER_PORT}:${MACHINE_PORT}
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+      - MANAGEMENT_URL=${MANAGEMENT_URL}
+      - PROXY_AVAILABLE=${PROXY_AVAILABLE}
+      - PROXY_PROTOCOL=${PROXY_PROTOCOL}
+      - PROXY_HOST=${PROXY_HOST}
+      - PROXY_PORT=${PROXY_PORT}
+    deploy:
+      replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    networks:
+      - octonius_production
+      
+  utilities-server:
+    image: ${DOCKER_USER}/${DOCKER_REPO}:utilities-server
+    ports:
+      - ${UTILITIES_SERVER_PORT}:${MACHINE_PORT}
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+      - octonius_production_utilities_uploads_data:${VOLUME_UPLOADS}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+      - MANAGEMENT_URL=${MANAGEMENT_URL}
+      - PROXY_AVAILABLE=${PROXY_AVAILABLE}
+      - PROXY_PROTOCOL=${PROXY_PROTOCOL}
+      - PROXY_HOST=${PROXY_HOST}
+      - PROXY_PORT=${PROXY_PORT}
+    deploy:
+      replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    networks:
+      - octonius_production
+
+  folio-server:
+    image: ${DOCKER_USER}/${DOCKER_REPO}:folio-server
+    ports:
+      - ${FOLIO_SERVER_PORT}:${MACHINE_PORT}
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+      - MANAGEMENT_URL=${MANAGEMENT_URL}
+      - PROXY_AVAILABLE=${PROXY_AVAILABLE}
+      - PROXY_PROTOCOL=${PROXY_PROTOCOL}
+      - PROXY_HOST=${PROXY_HOST}
+      - PROXY_PORT=${PROXY_PORT}
+    deploy:
+      replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    networks:
+      - octonius_production
+
+  search-server:
+    image: ${DOCKER_USER}/${DOCKER_REPO}:search-server
+    ports:
+      - ${SEARCH_SERVER_PORT}:${MACHINE_PORT}
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+      - octonius_production_search_uploads_data:${VOLUME_UPLOADS}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+      - MANAGEMENT_URL=${MANAGEMENT_URL}
+      - PROXY_AVAILABLE=${PROXY_AVAILABLE}
+      - PROXY_PROTOCOL=${PROXY_PROTOCOL}
+      - PROXY_HOST=${PROXY_HOST}
+      - PROXY_PORT=${PROXY_PORT}
+    deploy:
+      replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    networks:
+      - octonius_production
+      
+  integrations-server:
+    image: ${DOCKER_USER}/${DOCKER_REPO}:integrations-server
+    ports:
+      - ${INTEGRATIONS_SERVER_PORT}:${MACHINE_PORT}
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+      - TEAMS_BOT_URL=${TEAMS_BOT_URL}
+      - SLACK_BOT_ACCESS_TOKEN=${SLACK_BOT_ACCESS_TOKEN}
+      - MANAGEMENT_URL=${MANAGEMENT_URL}
+      - PROXY_AVAILABLE=${PROXY_AVAILABLE}
+      - PROXY_PROTOCOL=${PROXY_PROTOCOL}
+      - PROXY_HOST=${PROXY_HOST}
+      - PROXY_PORT=${PROXY_PORT}
+    deploy:
+      replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    networks:
+      - octonius_production
+  
+  flamingo-server:
+    image: ${DOCKER_USER}/${DOCKER_REPO}:flamingo-server
+    ports:
+      - ${FLAMINGO_SERVER_PORT}:${MACHINE_PORT}
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+      - octonius_production_flamingo_uploads_data:${VOLUME_UPLOADS}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+      - MANAGEMENT_URL=${MANAGEMENT_URL}
+      - PROXY_AVAILABLE=${PROXY_AVAILABLE}
+      - PROXY_PROTOCOL=${PROXY_PROTOCOL}
+      - PROXY_HOST=${PROXY_HOST}
+      - PROXY_PORT=${PROXY_PORT}
+    deploy:
+      replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    networks:
+      - octonius_production
+      
+  client:
+    image: ${DOCKER_USER}/${DOCKER_REPO}:client
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+    environment: 
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+      - WEBSOCKET=${WEBSOCKET}
+      - mgmt_portal_domain=${mgmt_portal_domain}
+    deploy:
+      replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    networks:
+      - octonius_production
+
+  nginx:
+    image: ${DOCKER_USER}/${DOCKER_REPO}:nginx
+    ports:
+      - ${APPLICATION_PORT}:${NGINX_PORT}
+    deploy:
+      replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    networks:
+      - octonius_production
+
+volumes:
+  octonius_production_groups_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /mnt/volume_fra1_01/data/uploads/groups
+      o: bind
+  
+  octonius_production_posts_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /mnt/volume_fra1_01/data/uploads/posts
+      o: bind
+
+  octonius_production_users_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /mnt/volume_fra1_01/data/uploads/users
+      o: bind
+
+  octonius_production_workspaces_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /mnt/volume_fra1_01/data/uploads/workspaces
+      o: bind
+
+  octonius_production_utilities_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /mnt/volume_fra1_01/data/uploads/utilities
+      o: bind
+
+  octonius_production_flamingo_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /mnt/volume_fra1_01/data/uploads/flamingo
+      o: bind
+  
+  octonius_production_search_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /mnt/volume_fra1_01/data/uploads/search
+      o: bind 
+
+networks:
+  octonius_production:

@@ -1,0 +1,27 @@
+
+/* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version. */
+mat-select {
+    background-color: #F3F4F6;
+    border-radius: 4px;
+    padding: 5px;
+    margin-left: 10px;
+    vertical-align: middle;
+    color: #969A9E;
+}
+
+
+.not_started {
+  background-color: #FFAB00 !important;
+}
+
+.on_track {
+  background-color: #26A69A !important;
+}
+
+.in_danger {
+  background-color: #EB5757 !important;
+}
+
+.achieved {
+  background-color: #4A90E2 !important;
+}

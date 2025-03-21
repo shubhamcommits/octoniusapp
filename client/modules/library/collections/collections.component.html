@@ -1,0 +1,35 @@
+<div class="container-fluid">
+  <div class="media-body">
+    <div class="category">
+      <div class="row" style="justify-content: space-between;">
+        <span class="name" i18n="@@colections.collections">Collections</span>
+      
+        <app-collection-new-element *ngIf="isManager" class="new-element"
+          [canCreate]="isManager" (collectionEmitter)="onCollectionEmiter($event)"></app-collection-new-element>
+      </div>
+
+      <div class="category-body">
+        <div *ngFor="let collection of collections; let index = index; trackBy: utilityService.trackByIndex" class="cards-list card img-fluid">
+          <div [routerLink]="['/dashboard', 'work', 'groups', 'library', 'collection']" [queryParams]="{ collection: collection?._id  }">
+            <app-secured-image [imgURL]="collection?.collection_avatar" [service]="'group'" [workspaceId]="workspaceData?._id"
+              [styleClass]="'card-img-top'"></app-secured-image>
+        
+            <div class="card-img-overlay">
+              <div class="title-overlay">
+                <a>
+                  <h2 class="card-title">{{ collection.name }}</h2>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOADING SPINNER STARTS -->
+  <ng-container *ngIf="isLoading$ | async">
+    <app-loading-spinner></app-loading-spinner>
+  </ng-container>
+  <!-- LOADING SPINNER ENDS -->
+</div>

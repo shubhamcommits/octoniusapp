@@ -1,0 +1,79 @@
+<div class="content-box">
+    <div class="portfolio-header"
+        [ngStyle]="{ 'background-color': portfolioData?.background_color || '#FBB732' }">
+        <div class="modal-header">
+            <!-- Event Portfolio Header starts -->
+            <h2 *ngIf="!editContent" (click)="editTitle = !editTitle" class="title">
+                <span>{{ title }}</span>
+            </h2>
+
+            <h2 class="modal-title" *ngIf="editContent" (click)="editTitle = !editTitle">
+                <span *ngIf="!editTitle">{{ title }}</span>
+
+                <!-- Title starts -->
+                <input *ngIf="editTitle" name="portfolioTitle" type="text" [ngModel]="title"
+                    (keyup.esc)="editTitle = !editTitle" (blur)="titleChange($event)" class="portfolio-title"
+                    placeholder="✍🏻 Title" />
+                <!-- Title ends -->
+            </h2>
+        </div>
+        <!-- Portfolio Header Title ends -->
+
+        <div *ngIf="!editContent" [innerHTML]="(htmlContent) | safe: 'html'" class="portfolio-content"></div>
+
+        <!-- Portfolio Content starts -->
+        <app-quill-editor *ngIf="editContent" class="portfolio-content" [editorId]="'global-ns-editor'" [toolbar]="true"
+            [readOnly]="false" [quillContent]="portfolioData?.content" (contentEmitter)="quillContentChanged($event)">
+        </app-quill-editor>
+        <!-- Portfolio Content ends -->
+
+        <div class="d-md-none d-lg-block graph">
+            <canvas *ngIf="chartReady" baseChart height="200" style="margin-bottom: 20px;" [data]="chartData"
+                [labels]="chartLabels" [type]="chartType" [options]="chartOptions"
+                [plugins]="chartPlugins"></canvas>
+
+            <app-multiple-assignments [canEdit]="editContent" [userData]="userData" [portfolio]="portfolioData" [type]="'portfolio'"
+                (assigneeAddedEmiter)="addManager($event)" (assigneeRemovedEmiter)="removeManager($event)">
+            </app-multiple-assignments>
+        </div>
+
+        <br class="clearfix" />
+
+        <div *ngIf="editContent" class="change-color">
+            <span (click)="openColorPicker()" i18n="@@portfolioHeader.changeColor">Change color</span>
+        </div>
+    </div>
+</div>
+
+<div class="clearfix save-content mb-3">
+    <button *ngIf="!editContent" class="btn float-right btn-light btn-md tagslabel" style="margin-right: 20px;"
+        mat-button [matMenuTriggerFor]="portfolioActions" #trigger="matMenuTrigger" i18n="@@portfolioHeader.actions">
+        Actions
+    </button>
+
+    <button *ngIf="editContent" [disabled]="!contentChanged" class="btn float-right btn-primary btn-md"
+        style="margin-left: 10px;" (click)="updateContent()" i18n="@@portfolioHeader.save">
+        Save
+    </button>
+    <button *ngIf="editContent" class="btn float-right btn-danger btn-md" style="margin-left: 10px;"
+        (click)="editContent = !editContent" i18n="@@portfolioHeader.cancel">
+        Cancel
+    </button>
+
+    <mat-menu #portfolioActions="matMenu">
+        <ul style="list-style: none; padding: 0 20px; margin: 0;">
+            <li>
+                <a *ngIf="!editContent" (click)="editContent = !editContent" class="btn btn-light btn-md" style="margin: 0;">
+                    <i class="material-icons-outlined">edit</i>
+                    <span i18n="@@portfolioHeader.edit">Edit details</span>
+                </a>
+            </li>
+            <li style="margin-top: 20px;">
+                <a *ngIf="!editContent" (click)="deletePortfolio()" class="btn btn-light btn-md" style="margin: 0;">
+                    <i class="material-icons-outlined">delete</i>
+                    <span i18n="@@portfolioHeader.delete">Delete</span>
+                </a>
+            </li>
+        </ul>
+    </mat-menu>
+</div>

@@ -1,0 +1,65 @@
+<!--
+<stripe-pricing-table
+  [attr.pricing-table-id]="PRICING_TABLE_ID"
+  [attr.publishable-key]="STRIPE_PK"
+  [attr.customer-email]="userData?.email"></stripe-pricing-table>
+-->
+
+<div class="media-body" *ngIf="subscription_products && subscription_products.length > 0">
+  <div class="row">
+    <span i18n="@@pricingTable.paymentPeriod">Payment period</span>: &nbsp;
+    <span i18n="@@pricingTable.monthly">Monthly</span>
+    &nbsp;&nbsp;
+    <mat-slide-toggle color="primary" [checked]="periodSelected == 'year'" (change)="changePeriod($event.checked)"></mat-slide-toggle>
+    &nbsp;&nbsp;
+    <span i18n="@@pricingTable.yearly">Yearly</span>
+  </div>
+
+  <div class="row">
+    <div class="price-list">
+      <div *ngFor="let product of subscription_products; trackBy: utilityService.trackByIndex" class="price">
+        <h2>
+          <span> {{ product.name }} </span>
+        </h2>
+
+        <div class="product-description"> {{ product.description }} </div>
+
+        <div class="price-and-button" *ngIf="periodSelected == 'month' && product.monthly_price">
+          <div class="price-container">
+            <span>{{ product.monthly_price.unit_amount/100 | currency: '$': 'symbol': '.2-2' }}</span>
+            &nbsp;
+            <span i18n="@@pricingTable.perSeat">per seat</span>
+            &nbsp;
+            <span i18n="@@pricingTable.perMonth">per month</span>
+          </div>
+
+          <button *ngIf="canCreateSubscription" class="ml-3 btn btn-md btn-primary"
+            (click)="startStripeCheckoutSession(product.monthly_price.id)"
+            i18n="@@pricingTable.purchase">
+            Purchase
+          </button>
+        </div>
+
+        <div class="price-and-button" *ngIf="periodSelected == 'year' && product.yearly_price">
+          <div class="price-container">
+            <span>{{ product.yearly_price.unit_amount/100 | currency: '$': 'symbol': '.2-2' }}</span>
+            &nbsp;
+            <span i18n="@@pricingTable.perSeat">per seat</span>
+            &nbsp;
+            <span i18n="@@pricingTable.perYear">per year</span>
+          </div>
+
+          <button *ngIf="canCreateSubscription" class="ml-3 btn btn-md btn-primary"
+            (click)="startStripeCheckoutSession(product.yearly_price.id)"
+            i18n="@@pricingTable.purchase">
+            Purchase
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-container *ngIf="isLoading$ | async">
+  <app-loading-spinner></app-loading-spinner>
+</ng-container>

@@ -1,0 +1,29 @@
+<div class="publish-container">
+    <div class="row">
+        <div class="col-md-6">
+            <img class="publish-image" src="assets/images/publish_flamingo.svg"/>
+        </div>
+        <div class="col-md-6">
+            <p class="publish-note" i18n="@@flamingoPublish.done">
+              Done?<br/>
+              When you are ready, you can click this button to PUBLISH the FORM and <br/>
+              let people answer.<br/>
+              When it’s done, come back here and click UNPUBLISH in order to stop data <br/>
+              collection.
+            </p>
+            <div>
+              <div class="url-box" *ngIf="fileId && flamingo?.publish">
+                {{ flamingoURL }}
+              </div>
+              <i (click)="copyToClipboard()" *ngIf="fileId && flamingo?.publish"
+                class="material-icons-outlined" style="cursor: pointer; margin-top: 20px;margin-left: 20px;">
+                content_copy
+              </i>
+            </div>
+            <div class="btn-style">
+              <button class="btn btn-primary" *ngIf="flamingo && !flamingo.publish" (click)="publish()" i18n="@@flamingoPublish.publish">PUBLISH</button>
+              <button class="btn btn-danger" *ngIf="flamingo && flamingo.publish" (click)="publish()" i18n="@@flamingoPublish.unpublish">UNPUBLISH</button>
+            </div>
+        </div>
+    </div>
+</div>

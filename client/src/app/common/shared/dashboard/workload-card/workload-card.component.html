@@ -1,0 +1,18 @@
+<div class="smart-card" style="padding: 10px;">
+  <div class="row" style="margin: 0 0 20px; justify-content: space-between;">
+    <div class="card-title mt-1" i18n="@@workloadCard.workloadByCompletitionStatus">
+      Workload by completition status
+    </div>
+  </div>
+
+  <div class="col-12 d-none d-sm-block" style="padding-top: 15px;" *ngIf="chartReady">
+    <canvas
+      baseChart
+      height="250"
+      [data]="doughnutChartData"
+      [options]="doughnutChartOptions"
+      [type]="doughnutChartType"
+      [labels]="doughnutChartLabels"
+      [plugins]="doughnutChartPlugins"></canvas>
+  </div>
+</div>

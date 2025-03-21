@@ -1,0 +1,19 @@
+.block {
+    padding: 10px;
+    margin: 10px;
+
+    .block-title {
+        display: flex;
+        margin-bottom: 20px;
+    }
+}
+
+.header {
+    justify-content: space-between;
+    margin: 10px;
+    align-items: baseline;
+}
+
+.updates{
+    text-align: left;
+}

@@ -1,0 +1,92 @@
+<!-- PUSH NOTFICATIONS STARTS -->
+<div class="dropdown show btn-group nav-item ">
+
+    <!-- NOTIFICATION RED BULLET STARTS -->
+    <a class="notifications btn dropdown-toggle-split" id="dropdownMenuLink" data-toggle="dropdown"
+    aria-haspopup="true" aria-expanded="false">
+        <div class="notif-bullet" *ngIf="this.notificationsData?.unreadNotifications?.length > 0"></div>
+        <div class="notif-bullet notif-bullet-transparent"
+            *ngIf="this.notificationsData?.unreadNotifications?.length == 0"></div>
+        <i class="material-icons">notifications</i>
+    </a>
+    <!-- NOTIFICATION RED BULLET ENDS -->
+
+    <!-- NOTIFICATIONS CENTER STARTS -->
+    <div class="dropdown-menu dropdown-menu-right dropleft" aria-labelledby="dropdownMenuLink">
+
+        <!-- UNREAD/RECENT NOTIFICATIONS STARTS -->
+        <h6 class="dropdown-header">
+          <b i18n="@@pushNotifications.recentNotifications">Recent Notifications</b>
+        </h6>
+        <div class="dropdown-divider"></div>
+
+        <!-- NOTIFICATION ITEM STARTS-->
+        <div class="notification-item" *ngIf="this.notificationsData?.unreadNotifications?.length != 0">
+                <button class="dropdown-item"
+                    (click)="$event.stopPropagation()"
+                    *ngFor="let notifications of notificationsData?.unreadNotifications; trackBy: utilityService.trackByIndex">
+                        <app-secured-image
+                            [imgURL]="notifications?._actor?.profile_pic"
+                            [service]="'user'"
+                            [userData]="notifications?._actor"
+                            [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
+                            [styleClass]="'topnav-avatar'"
+                            style="margin-right:15px"></app-secured-image>
+                        {{notifications?._actor?.first_name}} {{notifications?.message}}
+                    <br />
+                    <span class="mark-notification-read tootip" data-toggle="tooltip"
+                        data-matTooltipPosition="left" title="Mark as Read" (click)="markNotificationAsRead(notifications?._id, userData?._id)">
+                            <i class="material-icons" >check_circle_outline</i>
+                    </span>
+                    <span class="view-notification" data-toggle="tooltip"
+                        data-matTooltipPosition="right" title="View this notification">
+                          <i class="material-icons">remove_red_eye</i>
+                    </span>
+                    <!-- <span class="muted text-small float-right">{{notifications?.created_date | timeAgo}}</span> -->
+                    <span class="muted text-small float-right">{{notifications?.created_date | date:'MMM dd, yyyy' }}</span>
+                </button>
+        </div>
+        <!-- NOTIFICATION ITEM ENDS-->
+
+        <div *ngIf="this.notificationsData?.unreadNotifications?.length == 0">
+            <button class="dropdown-item" i18n="@@pushNotifications.allUpToDate">All up to date</button>
+        </div>
+
+        <div class="dropdown-divider"></div>
+
+        <!-- UNREAD/RECENT NOTIFICATIONS ENDS -->
+
+        <!-- READ/OLDER NOTIFICATIONS STARTS -->
+        <h6 class="dropdown-header">
+          <b i18n="@@pushNotifications.olderNotifications">Older Notifications</b>
+        </h6>
+        <div class="dropdown-divider"></div>
+
+        <!-- NOTIFICATION ITEM STARTS-->
+        <div class="notification-item" *ngIf="this.notificationsData?.readNotifications?.length != 0">
+                <button (click)="$event.stopPropagation()" class="dropdown-item notification-item"
+                    *ngFor="let notifications of notificationsData?.readNotifications; trackBy: utilityService.trackByIndex">
+                        <app-secured-image
+                            [imgURL]="notifications?._actor?.profile_pic"
+                            [service]="'user'"
+                            [userData]="notifications?._actor"
+                            [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
+                            [styleClass]="'topnav-avatar'"
+                            style="margin-right:15px"></app-secured-image>
+                        {{notifications?._actor?.first_name}} {{notifications?.message}}
+                    <br />
+                    <!-- <span class="muted text-small float-right">{{notifications?.created_date | timeAgo}}</span> -->
+                    <span class="muted text-small float-right">{{notifications?.created_date | date:'MMM dd, yyyy'}}</span>
+                </button>
+        </div>
+        <!-- NOTIFICATION ITEM ENDS-->
+
+        <div *ngIf="this.notificationsData?.readNotifications?.length == 0">
+            <button class="dropdown-item" i18n="@@pushNotifications.allUpToDate">All up to date</button>
+        </div>
+        <!-- READ/OLDER NOTIFICATIONS ENDS -->
+    </div>
+    <!-- NOTIFICATIONS CENTER ENDS -->
+
+</div>
+<!-- PUSH NOTFICATIONS ENDS -->

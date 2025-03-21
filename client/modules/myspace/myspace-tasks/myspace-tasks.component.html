@@ -1,0 +1,26 @@
+<mat-tab-group mat-align-tabs="start">
+  <!-- subtasks STARTS-->
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span i18n="@@mySpaceTasks.myWorkload">My Workload</span>
+    </ng-template>
+
+    <ng-template matTabContent>
+      <div class="block">
+        <app-my-tasks-list [userData]="userData"></app-my-tasks-list>
+      </div>
+    </ng-template>
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span i18n="@@mySpaceTasks.timesheet">Timesheet</span>
+    </ng-template>
+
+    <ng-template matTabContent>
+      <div class="block">
+        <app-timesheets [userData]="userData"></app-timesheets>
+      </div>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>

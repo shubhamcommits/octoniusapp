@@ -1,0 +1,44 @@
+<span>
+  <button class="btn btn-link btn-sm dropdown-toggle" mat-button [matMenuTriggerFor]="postOptions">
+    <i class="material-icons-outlined action">more_horiz</i>
+    <span class="caret"></span>
+  </button>
+</span>
+
+<mat-menu #postOptions="matMenu">
+  <button mat-menu-item *ngIf="mode !== 'fullscreen'" (click)="openFullscreenModal()">View</button>
+  <button mat-menu-item (click)="copyToClipboard()" i18n="@@postUtils.copyLink">Copy Link</button>
+  <button mat-menu-item *ngIf="post?.type == 'normal' && !post?.pin_to_top && canEdit" (click)="pinToTop(true)">
+    <span class="material-icons-outlined">push_pin</span>
+    <span i18n="@@postUtils.pin">Pin</span>
+  </button>
+  <button mat-menu-item *ngIf="post?.type == 'normal' && post?.pin_to_top && canEdit" (click)="pinToTop(false)">
+    <span class="material-icons-outlined">push_pin</span>
+    <span i18n="@@postUtils.unpin">Unpin</span>
+  </button>
+
+  <li class="dropdown-divider" *ngIf="post?.type !== 'task' && canEdit && groupId"></li>
+
+  <button mat-menu-item [matMenuTriggerFor]="copyMenu" *ngIf="post?.type !== 'task' && canEdit && groupId && !isIndividualSubscription" i18n="@@postUtils.copyToGroup">Copy to Group</button>
+  <button mat-menu-item [matMenuTriggerFor]="moveMenu" *ngIf="post?.type !== 'task' && canEdit && groupId && !isIndividualSubscription" i18n="@@postUtils.moveToGroup">Move to Group</button>
+
+  <li class="dropdown-divider" *ngIf="post?.type == 'task' && (userData?.role == 'admin' || userData?.role == 'owner' || post?._posted_by?._id == userData?._id) && canEdit"></li>
+
+  <button mat-menu-item (click)="openPermissionModal()" *ngIf="groupData && groupData?.enabled_rights && canEdit">
+    <span class="material-icons-outlined">vpn_lock</span>
+    <span i18n="@@groupDashboard.permissions">Permissions</span>
+  </button>
+
+  <button mat-menu-item (click)="deletePost()" *ngIf="canDelete" i18n="@@postUtils.delete">
+    Delete
+  </button>
+
+</mat-menu>
+
+<mat-menu #copyMenu="matMenu">
+  <button mat-menu-item *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex" (click)="copyToGroup(group)">{{ group.group_name }}</button>
+</mat-menu>
+
+<mat-menu #moveMenu="matMenu">
+  <button mat-menu-item *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex" (click)="moveToGroup(group)">{{ group.group_name }}</button>
+</mat-menu>

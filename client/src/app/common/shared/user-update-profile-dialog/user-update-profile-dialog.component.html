@@ -1,0 +1,36 @@
+<div class="dialog-content">
+    <div class="content">
+        <div class="container">
+            <div class="row inner-content" *ngIf="userData" style="padding-top: 15px;">
+
+                <h2 class="title text-center">
+                  <i class="material-icons" style="margin-top:-5px">lock</i>
+                  <span i18n="@@userUpdateProfileDialog.updatePassword">Update password</span>
+                </h2>
+                <!-- FORM FIELD FOR NEW WORKPLACE, SIGNIN & SIGNUP COMPONENT -->
+                <div class="form-group">
+                    <input type="password" [(ngModel)]="password" class="form-control" name="password"
+                        placeholder="Enter new password">
+                    <app-password-strength [passwordToCheck]="password" (passwordStrength)="onPasswordStrengthChanged($event)"></app-password-strength>
+                </div>
+                <!-- FORM FIELD FOR NEW WORKPLACE, SIGNIN & SIGNUP COMPONENT -->
+
+                <!-- FORM FIELD FOR NEW WORKPLACE & SIGNUP COMPONENT -->
+                <div class="form-group">
+                    <input type="password" (focusout)="matchUserPassword($event)" [(ngModel)]="repeatPassword"
+                        placeholder="Repeat new password" class="form-control" name="repeatPassword">
+                </div>
+                <!-- FORM FIELD FOR NEW WORKPLACE & SIGNUP COMPONENT -->
+                <div class="form-group clearfix mt-4">
+                <!-- SUBMIT BUTTON SIGN UP COMPONENT -->
+                <button type="submit" [disabled]="!validPassword" class="btn btn-primary float-left" (click)="updatePassword()" i18n="@@userUpdateProfileDialog.update">Update</button>
+                <!-- SUBMIT BUTTON SIGN UP COMPONENT -->
+
+                <button mat-dialog-close type="submit" class="btn btn-danger float-right"
+                  i18n="@@userUpdateProfileDialog.cancel">Cancel</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

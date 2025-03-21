@@ -1,0 +1,40 @@
+@import "src/assets/scss/_variables";
+
+.nav-link {
+    font-family: $poppins;
+    font-weight: 400;
+    font-size: 14px;
+    color:#1B1D1F;
+    text-align: center;
+    line-height: 44px;
+    cursor: pointer;
+    &:hover {
+      text-decoration: none;
+      background: #ffffff;
+      color: $brand-primary !important;
+    }
+
+  }
+
+  // Adding pointer to image
+img{
+  cursor: pointer;
+  transition: transform .2s ease;
+}
+
+img:hover{
+  transform: scale(1.1);
+}
+
+h2{
+  float: left;
+  line-height: 60px;
+  .material-icons{
+    font-size: 30px;
+    color:#E0E3E6;
+  }
+}
+.feed-avatar{
+  float: left;
+}
+

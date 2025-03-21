@@ -1,0 +1,403 @@
+import { Component, OnInit, Injector, Input } from '@angular/core';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { GroupService } from 'src/shared/services/group-service/group.service';
+import { Router } from '@angular/router';
+import { PublicFunctions } from 'modules/public.functions';
+import { GroupRAGDialogComponent } from '../group-rag-dialog/group-rag-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ColorPickerDialogComponent } from 'src/app/common/shared/color-picker-dialog/color-picker-dialog.component';
+import { GroupTimeTrackingCategoriesDialogComponent } from './time-tracking-categories-dialog/time-tracking-categories-dialog.component';
+
+@Component({
+  selector: 'app-group-settings',
+  templateUrl: './group-settings.component.html',
+  styleUrls: ['./group-settings.component.scss']
+})
+export class GroupSettingsComponent implements OnInit {
+
+  // current group
+  @Input() groupData: any;
+  @Input() isIdeaModuleAvailable: any;
+  @Input() shuttleTasksModuleAvailable: any;
+  @Input() campaignModuleAvailable: any;
+
+  // enabledRights: boolean = false;
+  // enabledProjectType: boolean = false;
+  // enabledShuttleType: boolean = false;
+  // enabledCampaign: boolean;
+  switchAgora: boolean = false;
+  freezeDates: boolean = false;
+  // enableAllocation: boolean = false;
+
+  groupSections: any = [];
+
+  selectedCard = 'task'; // task/normal/event/northStar/CRMOrder/CRMLead
+
+  isIndividualSubscription = false;
+
+  // Public Functions Instancr
+  publicFunctions = this.injector.get(PublicFunctions);
+
+  constructor(
+    public utilityService: UtilityService,
+    private groupService: GroupService,
+    public dialog: MatDialog,
+    private injector: Injector,
+    public router: Router
+  ) { }
+
+  async ngOnInit() {
+
+    this.isIndividualSubscription = await this.publicFunctions.checkIsIndividualSubscription();
+
+    if (!this.utilityService.objectExists(this.groupData)) {
+      this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+    }
+
+    if (!this.groupData.dialog_properties_to_show) {
+      this.groupData.dialog_properties_to_show = {
+        task: [],
+        northStar: [],
+        CRMOrder: [],
+        CRMLead: []
+    //     task: ['status', 'date', 'assignee', 'tags', 'custom_fields', 'actions', 'approvals', 'shuttle_task', 'parent_task'],
+    //     northStar: ['north_star', 'shuttle_task', 'date', 'assignee', 'tags', 'custom_fields', 'actions', 'approvals'],
+    //     CRMOrder: ['crm_setup', 'status', 'date', 'assignee', 'custom_fields'],
+    //     CRMLead: ['crm_setup', 'status', 'date', 'assignee', 'tags', 'custom_fields']
+      };
+
+    //   this.groupService.saveSettings(this.groupData?._id, { dialog_properties_to_show: this.groupData.dialog_properties_to_show })
+    //     .then(async ()=> {
+    //       this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+    //       await this.groupService.triggerUpdateGroupData(this.groupData);
+    //     }).catch(() => this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`));
+    }
+
+    // Fetch the setting status
+    this.switchAgora = this.groupData.type == 'agora';
+    this.freezeDates = this.groupData.freeze_dates;
+
+    this.groupSections = await this.publicFunctions.getAllColumns(this.groupData?._id);
+  }
+
+  /**
+    * This function opens up the task content in a new modal, and takes #content in the ng-template inside HTML layout
+    * @param content
+    */
+  async openDetails(content) {
+
+    // Open Modal
+    this.utilityService.openModal(content, {});
+  }
+
+  /**
+  * This function is responsible to remove the image for the background
+  * @param index
+  */
+  async removeImage() {
+    this.utilityService.getConfirmDialogAlert($localize`:@@groupSettings.areYouSure:Are you sure?`, $localize`:@@groupSettings.backgroundImageCompletelyRemoved:By doing this, the back-ground image of the group will be completely removed!`)
+      .then((res) => {
+        if (res.value) {
+          this.utilityService.asyncNotification($localize`:@@groupSettings.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
+            new Promise((resolve, reject)=>{
+              this.groupService.saveSettings(this.groupData?._id, { background_image: null })
+                .then(()=> {
+                  this.groupData.background_image = null;
+                  this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
+                  window.location.reload();
+                })
+                .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+            }));
+        }
+      });
+  }
+
+  /**
+   * This function opens up the dialog to select a color
+   */
+  openColorPicker() {
+    const dialogRef = this.dialog.open(ColorPickerDialogComponent, {
+      width: '67%',
+      height: '50%',
+      disableClose: false,
+      hasBackdrop: true,
+      data: { colorSelected: this.groupData.background_color }
+    });
+
+    const colorPickedSubs = dialogRef.componentInstance.colorPickedEvent.subscribe(data => {
+      this.saveBackgroundColor(data);
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      colorPickedSubs.unsubscribe();
+    });
+  }
+
+  /**
+  * This function is responsible to save the color for the background
+  * @param index
+  */
+  async saveBackgroundColor(color: string) {
+    this.utilityService.asyncNotification($localize`:@@groupSettings.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
+      new Promise((resolve, reject)=>{
+        this.groupService.saveSettings(this.groupData?._id, { background_color: color })
+          .then(()=> {
+            this.groupData.background_color = color;
+            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
+            window.location.reload();
+          })
+          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+      }));
+  }
+
+  saveSettings(selected) {
+
+    // Save the settings
+    this.utilityService.asyncNotification($localize`:@@groupSettings.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
+      new Promise((resolve, reject)=>{
+        if (selected.source.name === 'share_files') {
+          this.groupService.saveSettings(this.groupData?._id, {share_files: selected.checked})
+            .then(()=> {
+              this.groupData.share_files = selected.checked;
+              this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
+            })
+            .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+        }
+
+        if (selected.source.name === 'enabled_rights') {
+          this.groupService.saveSettings(this.groupData?._id, {enabled_rights: selected.checked})
+            .then(()=> {
+              // this.enabledRights = selected.checked;
+              this.groupData.enabled_rights = selected.checked;
+              this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
+            })
+            .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+        }
+
+        if (selected.source.name === 'enabled_project_type') {
+          this.groupService.saveSettings(this.groupData?._id, {project_type: selected.checked})
+            .then(()=> {
+              // this.enabledProjectType = selected.checked;
+              this.groupData.project_type = selected.checked;
+              this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
+            })
+            .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+        }
+
+        if (selected.source.name === 'enabled_shuttle_type') {
+          this.groupService.saveSettings(this.groupData?._id, {shuttle_type: selected.checked})
+            .then(()=> {
+              // this.enabledShuttleType = selected.checked;
+              this.groupData.shuttle_type = selected.checked;
+              this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
+            })
+            .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+        }
+
+        // if (selected.source.name === 'enable_allocation') {
+        //   this.groupService.saveSettings(this.groupData?._id, {enable_allocation: selected.checked})
+        //     .then(()=> {
+        //       this.enableAllocation = selected.checked;
+        //       this.groupData.enable_allocation = selected.checked;
+        //       this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+        //       resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
+        //     })
+        //     .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+        // }
+
+        if(selected.source.name === 'enabled_campaign'){
+          this.groupService.saveSettings(this.groupData?._id, {enabled_campaign: selected.checked})
+            .then(()=> {
+              // this.enabledCampaign = selected.checked;
+              this.groupData.enabled_campaign = selected.checked;
+              this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
+            })
+            .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+        }
+
+        if(selected.source.name === 'switch-agora'){
+          this.groupService.saveSettings(this.groupData?._id, { type: (selected.checked) ? 'agora' : 'normal' })
+            .then(()=> {
+              this.switchAgora = selected.checked;
+              this.groupData.type = (selected.checked) ? 'agora' : 'normal';
+              this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
+            })
+            .catch((err) => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+        }
+
+        if(selected.source.name === 'freeze_dates') {
+          this.groupService.saveSettings(this.groupData?._id, {freeze_dates: selected.checked})
+            .then(()=> {
+              this.freezeDates = selected.checked;
+              this.groupData.freeze_dates = selected.checked;
+              this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
+            })
+            .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+        }
+      }));
+  }
+
+  savePagesToShow(selected) {
+    // Save the settings
+    this.utilityService.asyncNotification($localize`:@@groupSettings.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
+      new Promise((resolve, reject)=>{
+        let propertyToSave =  {
+          pages_to_show: {
+            activity: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.activity : true,
+            tasks: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.tasks : true,
+            // crm_setup: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.crm_setup : ((this.groupData?.type == 'crm') ? true : false),
+            crm_setup: false,
+            files: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.files : true,
+            library: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.library : true,
+            resource_management: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.resource_management : ((this.groupData?.type == 'resource') ? true : false),
+            dashboard: (!!this.groupData.pages_to_show) ? this.groupData.pages_to_show.dashboard : true,
+          }
+        };
+        if (!this.groupData.pages_to_show) {
+          this.groupData.pages_to_show = {};
+        }
+
+        switch (selected.source.name) {
+          case 'activity':
+            this.groupData.pages_to_show.activity = selected.checked;
+            propertyToSave.pages_to_show.activity = selected.checked;
+            break;
+          case 'tasks':
+            this.groupData.pages_to_show.tasks = selected.checked;
+            propertyToSave.pages_to_show.tasks = selected.checked;
+            break;
+          case 'crm_setup':
+            this.groupData.pages_to_show.crm_setup = selected.checked;
+            propertyToSave.pages_to_show.crm_setup = selected.checked;
+            break;
+          case 'files':
+            this.groupData.pages_to_show.files = selected.checked;
+            propertyToSave.pages_to_show.files = selected.checked;
+            break;
+          case 'library':
+            this.groupData.pages_to_show.library = selected.checked;
+            propertyToSave.pages_to_show.library = selected.checked;
+            break;
+          case 'resource_management':
+            this.groupData.pages_to_show.resource_management = selected.checked;
+            propertyToSave.pages_to_show.resource_management = selected.checked;
+            break;
+          case 'dashboard':
+            this.groupData.pages_to_show.dashboard = selected.checked;
+            propertyToSave.pages_to_show.dashboard = selected.checked;
+            break;
+          default:
+            break;
+        }
+        this.groupService.saveSettings(this.groupData?._id, propertyToSave)
+          .then(async ()=> {
+            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+            await this.groupService.triggerUpdateGroupData(this.groupData);
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
+          })
+          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+      }));
+  }
+
+  saveDialogsPropertiesToShow(selected) {
+    // Save the settings
+    this.utilityService.asyncNotification($localize`:@@groupSettings.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
+      new Promise((resolve, reject)=>{
+
+        if (!this.groupData.dialog_properties_to_show) {
+          this.groupData.dialog_properties_to_show = {};
+        }
+
+        if (!this.groupData.dialog_properties_to_show[this.selectedCard]) {
+          this.groupData.dialog_properties_to_show[this.selectedCard] = [];
+        }
+
+        const indexInGroup = (!!this.groupData.dialog_properties_to_show && !!this.groupData.dialog_properties_to_show[this.selectedCard])
+          ? this.groupData.dialog_properties_to_show[this.selectedCard].findIndex(prop => prop == selected.source.name)
+          : -1;
+
+        if (selected.checked) {
+          if (indexInGroup < 0) {
+            this.groupData.dialog_properties_to_show[this.selectedCard].push(selected.source.name);
+          }
+        } else {
+          if (indexInGroup >= 0) {
+            this.groupData.dialog_properties_to_show[this.selectedCard].splice(indexInGroup, 1);
+          }
+        }
+
+        this.groupService.saveSettings(this.groupData?._id, { dialog_properties_to_show: this.groupData.dialog_properties_to_show })
+          .then(async ()=> {
+            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+            await this.groupService.triggerUpdateGroupData(this.groupData);
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
+          })
+          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+      }));
+  }
+
+  saveDefaultBoardCard(type: string) {
+    // Save the settings
+    this.utilityService.asyncNotification($localize`:@@groupSettings.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
+      new Promise((resolve, reject) => {
+        this.groupService.saveSettings(this.groupData?._id, { default_board_card: type })
+        .then(async ()=> {
+            this.groupData.default_board_card = type;
+            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+            await this.groupService.triggerUpdateGroupData(this.groupData);
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
+          })
+          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+      }));
+  }
+
+  selectShuttleSection(column: any) {
+
+    this.utilityService.asyncNotification($localize`:@@groupSettings.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
+      new Promise((resolve, reject)=>{
+        this.groupService.selectShuttleSection(this.groupData?._id, column)
+        .then((res)=> {
+          this.publicFunctions.sendUpdatesToGroupData(res['group']);
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
+        })
+        .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+      }));
+  }
+
+  openRAGModal(){
+    const dialogRef = this.dialog.open(GroupRAGDialogComponent, {
+      minWidth: '100%',
+      width: '100%',
+      minHeight: '100%',
+      height: '100%',
+      disableClose: true,
+      hasBackdrop: true,
+      data: { groupData: this.groupData }
+    });
+    const sub = dialogRef.componentInstance.closeEvent.subscribe(async (data) => {
+      this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      sub.unsubscribe();
+    });
+  }
+
+  openTimeTrackingCategoriesDialog() {
+    const dialogRef = this.dialog.open(GroupTimeTrackingCategoriesDialogComponent, {
+      width: '50%',
+      height: '50%',
+      disableClose: true,
+      hasBackdrop: true,
+      data: { groupData: this.groupData }
+    });
+  }
+}

@@ -1,0 +1,508 @@
+version: '3.7'
+
+services:
+
+  mongodb:
+    container_name: mongodb
+    image: mongo:latest
+    restart: always
+    volumes:
+      - acc_db_data:/data/db
+    ports:
+      - ${MONGO_PORT}:27017
+    networks:
+      - acc
+
+  approval-server:
+    container_name: approval-server
+    image: ${DOCKER_USER}/${DOCKER_REPO}:approval-server
+    ports:
+      - ${APPROVAL_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./services/approval/server
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - acc
+
+  auths-server:
+    container_name: auths-server
+    image: ${DOCKER_USER}/${DOCKER_REPO}:auths-server
+    ports:
+      - ${AUTHS_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./services/authentication/server
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - acc
+
+  chats-server:
+    container_name: chats-server
+    image: ${DOCKER_USER}/${DOCKER_REPO}:chats-server
+    ports:
+      - ${CHATS_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./services/chats/server
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - acc
+         
+  groups-server:
+    container_name: groups-server
+    image: ${DOCKER_USER}/${DOCKER_REPO}:groups-server
+    ports:
+      - ${GROUPS_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./services/groups/server
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+      - acc_groups_uploads_data:${VOLUME_UPLOADS}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - acc
+      
+  workspaces-server:
+    container_name: workspaces-server
+    image: ${DOCKER_USER}/${DOCKER_REPO}:workspaces-server
+    ports:
+      - ${WORKSPACES_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./services/workspaces/server
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+      - acc_workspaces_uploads_data:/usr/app/uploads
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - acc
+      
+  users-server:
+    container_name: users-server
+    image: users-server
+    ports:
+      - ${USERS_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./services/users/server
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+      - acc_users_uploads_data:${VOLUME_UPLOADS}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - acc
+      
+  posts-server:
+    container_name: posts-server
+    image: posts-server
+    ports:
+      - ${POSTS_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./services/posts/server
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+      - acc_posts_uploads_data:${VOLUME_UPLOADS}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - acc
+      
+  notifications-server:
+    container_name: notifications-server
+    image: notifications-server
+    ports:
+      - ${NOTIFICATIONS_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./services/notifications/server
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - acc
+      
+  utilities-server:
+    container_name: utilities-server
+    image: utilities-server
+    ports:
+      - ${UTILITIES_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./services/utilities/server
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+      - acc_utilities_uploads_data:${VOLUME_UPLOADS}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - acc
+
+  folio-server:
+    container_name: folio-server
+    image: folio-server
+    ports:
+      - ${FOLIO_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./services/folio/server
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - acc
+
+  search-server:
+    container_name: search-server
+    image: search-server
+    ports:
+      - ${SEARCH_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./services/search/server
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+      - acc_search_uploads_data:${VOLUME_UPLOADS}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - acc
+
+  integrations-server:
+    container_name: integrations-server
+    image: integrations-server
+    ports:
+      - ${INTEGRATIONS_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./services/integrations/server
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - acc
+  
+  flamingo-server:
+    container_name: flamingo-server
+    image: flamingo-server
+    ports:
+      - ${FLAMINGO_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./services/flamingo/server
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+      - acc_flamingo_uploads_data:${VOLUME_UPLOADS}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - acc
+
+  client:
+    container_name: client
+    image: client
+    build:
+      dockerfile: Dockerfile
+      context: ./client
+    environment: 
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+      - WEBSOCKET=${WEBSOCKET}
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+    depends_on:
+      - mongodb
+      - approval-server
+      - auths-server
+      - groups-server
+      - workspaces-server
+      - users-server
+      - posts-server
+      - notifications-server
+      - utilities-server
+      - folio-server
+      - search-server
+      - integrations-server
+      - flamingo-server
+    networks:
+      - acc
+
+  nginx:
+    container_name: nginx
+    image: nginx
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - ${APPLICATION_PORT}:${NGINX_PORT}
+    depends_on:
+      - mongodb
+      - approval-server
+      - auths-server
+      - groups-server
+      - workspaces-server
+      - users-server
+      - posts-server
+      - notifications-server
+      - utilities-server
+      - folio-server
+      - search-server
+      - integrations-server
+      - flamingo-server
+      - client
+    networks:
+      - acc
+
+volumes:
+  acc_db_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/db
+      o: bind
+
+  acc_groups_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/groups
+      o: bind
+  
+  acc_posts_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/posts
+      o: bind
+
+  acc_users_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/users
+      o: bind
+
+  acc_workspaces_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/workspaces
+      o: bind
+
+  acc_utilities_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/utilities
+      o: bind
+
+  acc_flamingo_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/flamingo
+      o: bind
+      
+networks:
+  acc: 
+    driver: bridge

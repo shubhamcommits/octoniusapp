@@ -1,0 +1,201 @@
+// @import url("https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Round|Material+Icons+Two+Tone");
+
+//font override
+
+$font-family-base: "Nunito", sans-serif;
+$headings-font-family: "Nunito", sans-serif;
+
+// variables
+$brand-primary: #005fd5;
+$pumpkin-orange: #ffab00;
+$turquoise: #0bc6a0;
+$dark-sky-blue: #4a90e2;
+$card-radius: 10px;
+$border-gray: 1px solid #e4edf8;
+$dark-text: #242d3a;
+$poppins: "Nunito", sans-serif;
+$roboto: "Nunito", sans-serif;
+$border-color: #E4EDF8;
+$pink: #9f55ff;
+$lightgray: #9b9b9b;
+// $box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 6px 9px rgba(0, 0, 0, 0.2);
+$box-shadow: 0px 1px 1px rgb(0 0 0 / 14%);
+$headings-color: #313131;
+// $border-radius: 1rem;
+$body-bg: #f3f4f6;
+$muted-color:#9D9FA1;
+// $body-bg: #fff;
+$weekend-bg: #FAFAFA;
+
+$day-selected: #ffc014;
+$day-cancel-selected: #ff6614;
+$day-holiday: #def8de;
+$day-holiday-approved: #005fd514;
+$day-personal: #95eeee;
+$day-personal-approved: #2bd50014;
+$day-sick: #f4d9bb;
+$day-sick-approved: #d5590014;
+
+.muted-border{
+  color:$border-color;
+}
+
+.pumpkin-orange-bg {
+  background: $pumpkin-orange;
+}
+
+.pink {
+  color: $pink !important;
+}
+.todo {
+  color: $pumpkin-orange;
+}
+.working {
+  color: $turquoise !important;
+}
+.done {
+  color: $dark-sky-blue;
+}
+.pink-border {
+  border: 3px solid $pink !important;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.gray-border {
+  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2);
+}
+
+.blue {
+  color: $brand-primary;
+}
+
+.blue-border {
+  border: 3px solid $brand-primary !important;
+}
+.bluebg {
+  background-color: $brand-primary !important;
+  //color: white !important
+}
+
+.comment {
+  background: $weekend-bg !important;
+  margin: 5px !important;
+  width: auto !important;
+  // border-top: none !important;
+  // border-left: none !important;
+  // border-right: none !important;
+  // border-bottom: 4px solid #f7f7f7 !important;
+  padding: 16px !important;
+}
+.margin5 {
+  margin: 5px !important;
+  width: auto !important;
+}
+.padding-topright {
+  margin: 5px 5px 5px -5px !important;
+}
+
+.lightgray {
+  color: $lightgray !important;
+}
+
+.date {
+  margin: 0 !important;
+}
+
+// shadows
+$card-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2);
+
+.card-tile {
+  padding: 20px;
+  background: #fff;
+  margin-bottom: 20px;
+}
+
+// global stuff
+
+hr {
+  border-top: 1px solid #e4edf8;
+}
+
+.icon-octo-logo {
+  color: $brand-primary;
+  margin-right: 30px;
+}
+
+.white {
+  color: #fff !important;
+  font-family: $headings-font-family;
+  font-weight: 600;
+}
+
+.welcome {
+  background: #005fd5;
+  min-height: 100vh;
+  background-image: url(https://picsum.photos/1920/1200/?random&gravity=south);
+  // @include media-breakpoint-down(sm) {
+  //   height: auto !important;
+  // }
+}
+.overlay {
+  position: relative;
+}
+.overlay:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 95, 213, 0.6);
+  background-image: linear-gradient(-135deg, rgba(16, 20, 128, 0.7) 25%, rgba(2, 143, 255, 0.7) 100%);
+  opacity: 1;
+  z-index: 0;
+}
+.overlay [class^="container"],
+.overlay > .content {
+  position: relative;
+  z-index: 1;
+}
+.overlay > .content {
+  position: relative;
+}
+
+.btn-outline-blue {
+  background: #fff !important;
+  color: $brand-primary;
+}
+
+//date picker fix
+[_nghost-c6],
+.ngb-dp-month[_ngcontent-c6] {
+  width: 100% !important;
+}
+.ngb-dp-day[_ngcontent-c11],
+.ngb-dp-weekday[_ngcontent-c11],
+.ngb-dp-week-number[_ngcontent-c11] {
+  margin: 0 1rem !important;
+}
+
+.innercard img {
+  width: 100% !important;
+  height: auto;
+}
+
+.input-search {
+  font-family: $font-family-base !important;
+  border-bottom: $border-gray !important;
+}
+
+@media (max-width: 575.98px) {
+  .nav{
+    display: block !important;
+  }
+}
+
+.text-done{
+  color: $dark-sky-blue;
+}

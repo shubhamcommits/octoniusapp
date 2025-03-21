@@ -1,0 +1,25 @@
+<div class="sidecontent">
+  <div class="card sideinnercard">
+    <div class="card-block">
+      <h6 class="card-title" *ngIf="routerState === 'general'">
+        <b i18n="@@workplaceIntegrations.workspaceIntegrations"> <i class="material-icons">cable</i> Workplace Integrations</b>
+      </h6>
+
+      <p i18n="@@workplaceIntegrations.workspaceIntegrationsDescription">
+        Manage integrations with third party applications.
+      </p>
+
+      <div style="margin-top: 10px;">
+        <button class="btn btn-primary" (click)="openWorkplaceIntegrationsDialog()" i18n="@@workspaceAddDomain.manageIntegrations">Manage Integrations</button>
+      </div>
+    </div>
+
+    <app-workplace-ldap-sync *ngIf="workspaceData?.integrations?.is_ldap_connected" [workspaceData]="workspaceData"></app-workplace-ldap-sync>
+
+    <!-- <app-workplace-google-sync *ngIf="workspaceData?.integrations?.is_google_connected && workspaceData?.integrations?.google_client_id && workspaceData?.integrations?.google_client_secret_key && workspaceData?.integrations?.google_api_key"
+      [workspaceData]="workspaceData" [userData]="userData"></app-workplace-google-sync> -->
+    <app-workplace-google-sync
+      *ngIf="workspaceData?.integrations?.is_google_connected && workspaceData?.integrations?.google_client_id && workspaceData?.integrations?.google_client_secret_key"
+      [workspaceData]="workspaceData" [userData]="userData"></app-workplace-google-sync>
+  </div>
+</div>

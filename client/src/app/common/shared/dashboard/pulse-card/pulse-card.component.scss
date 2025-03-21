@@ -1,0 +1,74 @@
+@import "src/assets/scss/variables";
+
+a{
+    text-decoration: none !important;
+    color: inherit;
+}
+
+img{
+    display:block;
+    width: 100%;
+}
+
+.smart-card {
+  background: #FFFFFF;
+  border: none;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 0 3px 0 #005fd521;
+  min-height: 260px;
+  height: 100%;
+  background: #fff url(/assets/images/dashboard_pulse_card.png) no-repeat bottom right;
+}
+
+
+
+.row  {
+  margin-bottom: 5px;
+}
+
+.icon {
+  margin: 5px 0 0 0;
+  color: #5E2FE5;
+}
+
+.card-first-column {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 30px;
+  color: #969A9E;
+  display: flex;
+  align-items: center;
+
+  .agoras_count {
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 30px;
+    color: #005FD5;
+  }
+}
+
+.card-icon {
+  display: flex;
+  align-items: flex-end;
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.card-content {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+
+  .card-box {
+    display: inline-block;
+    width: 50%;
+  }
+}
+
+.card-content {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

@@ -1,0 +1,145 @@
+<div class="">
+  <div class="row">
+    <label class="box-title" for="company" i18n="@@crmLeadCard.company">Company</label>
+  </div>
+
+  <div class="dropdown">
+    <div *ngIf="!postData?.crm?._company">
+      <input type="text" class="form-control" id="search-text"
+        aria-describedby="search-text" [(ngModel)]="companySearchText" placeholder="Search company" autofocus
+        (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()" (keyup)="searchCompany()">
+        
+      <ul *ngIf="!!companySearchResults && !!companySearchText" class="company-list dropdown-menu">
+        <li class="company-list-item pointer" *ngFor="let company of companySearchResults; trackBy: utilityService.trackByIndex">
+          <!-- <app-secured-image [imgURL]="company.company_pic" [service]="'group'" [workspaceId]="this.userData?._workspace?._id || this.userData?._workspace"
+            [styleClass]="'group-avatar'"></app-secured-image> -->
+          <div *ngIf="company?._id" (click)="selectCompany(company)">
+            {{ company.name }}
+          </div>
+
+          <div *ngIf="!company?._id" style="display: flex; justify-content: space-between;">
+            <div>{{ company.name }}</div>
+            <section>
+              <button class="btn btn-primary btn-sm" i18n="@@crmLeadCard.create" (click)="createCompany(company)">
+                Create
+              </button>
+            </section>
+          </div>
+        </li>
+      </ul>
+    </div>
+  
+    <div *ngIf="!!postData?.crm?._company" class="form-control" style="text-align: left;">
+      <!-- <app-secured-image [imgURL]="postData?.crm?._company.company_pic" [service]="'group'"
+        [workspaceId]="this.userData?._workspace?._id || this.userData?._workspace" [styleClass]="'group-avatar'"></app-secured-image> -->
+      <span>{{ postData?.crm?._company.name }}</span>
+  
+      <!-- Clean field starts -->
+      <i (click)="selectCompany(null)" class="material-icons muted mr-5"
+        style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
+      <!-- Clean field ends -->
+    </div>
+  </div>
+
+  <div class="row">
+    <label class="box-title" for="contact" i18n="@@crmLeadCard.contacts">Contacts</label>
+  </div>
+
+  <div class="dropdown">
+    <input type="text" class="form-control " id="search-text" aria-describedby="search-text"
+      [(ngModel)]="contactSearchText" placeholder="Search contact to add" autofocus (click)="$event.stopPropagation()"
+      (keydown)="$event.stopPropagation()" (keyup)="searchContact()">
+  
+    <ul *ngIf="!!contactSearchResults && !!contactSearchText" class="company-list dropdown-menu">
+      <li class="company-list-item pointer" *ngFor="let contact of contactSearchResults; trackBy: utilityService.trackByIndex">
+        <div *ngIf="contact?._id" (click)="selectContact(contact)">
+          {{ contact.name }} - {{ contact.emails[0] }}
+        </div>
+        
+        <div *ngIf="!contact?._id" style="display: flex; justify-content: space-between;">
+          <div>{{ contact.name }}</div>
+          <section>
+            <button class="btn btn-primary btn-sm" i18n="@@crmLeadCard.create" (click)="createContact(contact)">
+              Create
+            </button>
+          </section>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="row" *ngIf="!!postData?.crm?._contacts && postData?.crm?._contacts?.length > 0">
+    <div class="form-control" style="text-align: left;">
+      <table mat-table matSort [dataSource]="sortedData" (matSortChange)="sortData($event)" class="">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@crmContactList.name"> Name </th>
+      
+          <td mat-cell *matCellDef="let contact" class="pointer" (click)="openContactDialog(contact?._id)">
+            <span>{{ contact?.name }}</span>
+          </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="position">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@crmContactList.position"> Position </th>
+      
+          <td mat-cell *matCellDef="let contact" class="pointer" (click)="openContactDialog(contact?._id)">
+            <span>{{ contact?.position }}</span>
+          </td>
+        </ng-container>
+      
+        <!-- <ng-container matColumnDef="phone">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@crmContactList.phone"> Phone </th>
+      
+          <td mat-cell *matCellDef="let contact" class="pointer" (click)="openContactDialog(contact?._id)">
+            <span>{{ contact?.phones[0] }}</span>
+          </td>
+        </ng-container> -->
+      
+        <!-- <ng-container matColumnDef="email">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@crmContactList.email"> E-Mail </th>
+      
+          <td mat-cell *matCellDef="let contact" class="pointer" (click)="openContactDialog(contact?._id)">
+            <span>{{ contact?.emails[0] }}</span>
+          </td>
+        </ng-container> -->
+      
+        <!-- <ng-container matColumnDef="link">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef i18n="@@crmContactList.link"> Link </th>
+      
+          <td mat-cell *matCellDef="let contact" class="pointer" (click)="openContactDialog(contact?._id)">
+            <span>{{ contact?.links[0] }}</span>
+          </td>
+        </ng-container> -->
+      
+        <!-- CUSTOM FIELDS START -->
+        <!-- <ng-container [matColumnDef]="cf.name" *ngFor="let cf of crmCustomFieldsToShow; trackBy: utilityService.trackByIndex">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef>
+            <div class="cf_cell">
+              {{ cf.title }}
+            </div>
+          </th>
+
+          <td mat-cell *matCellDef="let contact" class="pointer" (click)="openContactDialog(contact?._id)">
+            <div class="cf_cell" *ngIf="!!contact?.crm_custom_fields">
+              {{ contact?.crm_custom_fields[cf.name] }}
+            </div>
+          </td>
+        </ng-container> -->
+        <!-- CUSTOM FIELDS ENDS -->
+      
+        <ng-container matColumnDef="star">
+          <th mat-header-cell *matHeaderCellDef style="text-align: right;">
+          </th>
+      
+          <td mat-cell *matCellDef="let contact" style="text-align: right;">
+            <i class="material-icons-outlined ml-2 muted pointer"
+              (click)="deleteContactFromLead(contact?._id)">delete</i>
+          </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let contact; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </div>
+</div>

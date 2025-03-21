@@ -1,0 +1,65 @@
+<!-- CARD FOOTER starts -->
+
+<div [ngClass]="(isCRMCard) ? '' : 'card-footer'" *ngIf="!!post">
+    <div [ngClass]="(isCRMCard) ? 'action-crm-lead' : 'action-post'">
+        <div class="left ml-2">
+            <span class="badge muted" (click)="openLikedByDialog()" customToolTip [contentArray]="topLikedByUsers"><b>{{ likedByUsers?.length || 0 }}</b><i class="material-icons-outlined">thumb_up</i></span>
+            <span class="badge muted" *ngIf="!fullscreen" (click)="displayComments(!showComments)"><b>{{ post?.comments_count || 0 }}</b> <i class="material-icons-outlined">mode_comment</i></span>
+            <span class="badge muted" customToolTip [contentArray]="followedByUsers"><b>{{post?._followers?.length || 0 }}</b> <i class="material-icons-outlined">star_outline</i></span>
+        </div>
+
+        <div class="right">
+            <app-idea-actions *ngIf="isIdeaModuleAvailable && post?.task?.is_idea"
+              [post]="post"
+              [userData]="userData"></app-idea-actions>
+
+            <app-comment-on-post *ngIf="!isCRMCard" (showCommentEditor)="showCommentEditor($event)"></app-comment-on-post>
+
+            <!-- Like Post starts-->
+            <app-like-post *ngIf="post && userData"
+                [post]="post"
+                [userData]="userData"
+                (postLiked)="onPostLikedEmitter($event)"
+                (postUnLiked)="onPostUnLikedEmitter($event)"></app-like-post>
+            <!-- Like Post ends-->
+
+            <!-- Follow Post starts -->
+            <app-follow-post *ngIf="post"
+                [post]="post"
+                [userData]="userData"
+                (postLiked)="onPostFollowEmitter($event)"
+                (postUnLiked)="onPostUnFollowEmitter($event)"></app-follow-post>
+            <!-- Follow Post ends -->
+
+            <app-post-utils *ngIf="!fullscreen"
+                [post]="post"
+                [userData]="userData"
+                [groupData]="groupData"
+                [canEdit]="canEdit"
+                (delete)="deletePost($event)"
+                (pinEvent)="onPostPin($event)"
+                (closeModalEvent)="postModalCloseEvent($event)">
+            </app-post-utils>
+        </div>
+    </div>
+</div>
+
+<comment-section *ngIf="showCommentQuillEditor && userData && post"
+    [userData]="userData" [editorId]="post._id"
+    [postId]="post?._id" [workspaceId]="(userData?._workspace?._id || userData?._workspace)"
+    [groupId]="post._group || post._group._id" (comment)="newCommentReceived($event)" (close)="hideCommentEditor($event)">
+</comment-section>
+
+
+<section *ngIf="showComments && post && userData && !fullscreen">
+  <!-- COMMENTS -->
+  <app-comment-list
+    [postId]="post?._id"
+    [userData]="userData"
+    [groupId]="post?._group?._id || post?._group"
+    [length]="post?.comments_count"
+    [newComment]="newComment"
+    (removeCommentEvent)="onCommentRemoved($event)"></app-comment-list>
+</section>
+
+<!-- END CARD FOOTER and footer component-->

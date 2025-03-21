@@ -1,0 +1,85 @@
+<div class="container">
+    <mat-dialog-actions class="d-flex justify-content-end" align="end">
+        <!-- <i class="material-icons" (click)="closeDialog()" style="cursor: pointer">close</i> -->
+    </mat-dialog-actions>
+
+    <h2 mat-dialog-title style="margin: -50px 50px 0 50px !important;">
+        <span *ngIf="!!orderData && !!orderData?._id && !!orderData?._product && !!orderData?._product?.name">{{ orderData?._product?.name }}</span>
+        <span i18n="@@newCRMOrderProductDialog.newContact" *ngIf="!orderData || !orderData?._id">New Order</span>
+    </h2>
+
+    <div mat-dialog-content>
+        <div class="block">
+            <mat-tab-group mat-align-tabs="start">
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <span i18n="@@newCRMOrderProductDialog.contactInformation">Order Information</span>
+                    </ng-template>
+            
+                    <ng-template matTabContent>
+                        <div class="row">
+                            <label for="product" i18n="@@newCRMOrderProductDialog.product" class="muted">Product</label>
+                        </div>
+                        
+                        <div class="dropdown">
+                            <div *ngIf="!orderData?._product">
+                                <input type="text" class="form-control" id="search-text" name="product" aria-describedby="search-text"
+                                    [(ngModel)]="productSearchText" placeholder="Search product" autofocus (click)="$event.stopPropagation()"
+                                    (keydown)="$event.stopPropagation()" (keyup)="searchProduct()">
+                        
+                                <ul *ngIf="!!productSearchResults && !!productSearchText" class="product-list dropdown-menu">
+                                    <li class="product-list-item pointer" *ngFor="let product of productSearchResults; trackBy: utilityService.trackByIndex"
+                                        (click)="selectProduct(product)">
+                                        {{ product.name }}
+                                    </li>
+                                </ul>
+                            </div>
+                        
+                            <div *ngIf="!!orderData?._product" class="form-control" style="text-align: left;">
+                                <span>{{ orderData?._product?.name }}</span>
+                        
+                                <!-- Clean field starts -->
+                                <i (click)="selectProduct(null)" class="material-icons muted mr-5"
+                                    style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
+                                <!-- Clean field ends -->
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <label for="quantity" i18n="@@newCRMOrderProductDialog.quantity" class="muted">Quantity</label>
+                        </div>
+                        
+                        <div class="row">
+                            <input type="number" class="form-control" [(ngModel)]="orderData.quantity" name="quantity">
+                        </div>
+                    </ng-template>
+                </mat-tab>
+            
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <span i18n="@@newCRMProductDialog.customFields">Custom Fields</span>
+                    </ng-template>
+            
+                    <ng-template matTabContent>
+                        <app-crm-order-custom-fields
+                            [orderData]="orderData"
+                            [groupData]="groupData"
+                            (orderCFEdited)="onOrderInfoEdited($event)"></app-crm-order-custom-fields>
+                    </ng-template>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+
+    <div>
+        <div style="margin-top: 20px;">
+            <button class="btn btn-danger" (click)="closeDialog()" i18n="@@newCRMOrderProductDialog.cancel" style="margin: 0 10px">
+                Cancel
+            </button>
+
+            <button class="btn btn-primary" (click)="saveOrder()" i18n="@@newCRMOrderProductDialog.save" style="margin: 0 10px">
+                Save
+            </button>
+        </div>
+    </div>
+</div>

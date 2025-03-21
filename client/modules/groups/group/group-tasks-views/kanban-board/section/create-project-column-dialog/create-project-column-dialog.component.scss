@@ -1,0 +1,32 @@
+.dialog-content {
+  background-color: #fff;
+  width: 100%;
+  padding: 30px;
+
+  .content {
+    
+    .modal-title {
+      width: 100%;
+      box-shadow: none;
+      border:none;
+      font-family: Nunito;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 22px;
+      margin: 10px 10px 20px 10px;
+    }
+
+    .content-box {
+      background: #FFFFFF;
+      border: 1px solid #E4EDF8;
+      border-radius: 10px;
+      margin: 12px 0;
+      padding: 12px;
+    }
+
+    .save-content {
+        margin-top: 10px;
+    }
+  }
+}

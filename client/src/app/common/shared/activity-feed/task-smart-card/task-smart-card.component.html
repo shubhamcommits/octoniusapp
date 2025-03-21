@@ -1,0 +1,65 @@
+<div *ngIf="today_task_count == 0 && overdueTasks.length == 0" class="smart-card" style="padding: 10px;">
+
+  <a (click)="changeState('myspace_tasks')" routerLink="/dashboard/myspace/tasks" routerLinkActive="active">
+
+    <div class="row" style="margin: 0 0 20px;">
+      <div class="card-title mt-1" i18n="@@taskSmartCard.myWorkload">
+        My Workload
+      </div>
+      <div class="card-icon">
+        <span class="badge">{{ today_task_count }}</span> <span i18n="@@taskSmartCard.forToday">for today</span>
+      </div>
+    </div>
+
+
+    <div class="row mt-4">
+
+        <div class="col text-center">
+          <img src='assets/images/placeholder_activity2.png' style="width: 160px; margin:0 auto">
+          <p class="muted text-center" i18n="@@taskSmartCard.nothingForToday">Nothing for today. Take a break. </p>
+        </div>
+    </div>
+
+  </a>
+
+</div>
+
+<div *ngIf="today_task_count != 0 || overdueTasks.length != 0">
+  <div class="smart-card" style="padding: 10px;">
+
+    <a (click)="changeState('myspace_tasks')" routerLink="/dashboard/myspace/tasks">
+
+      <div class="row" style="margin: 0 0 20px;">
+        <div class="card-title mt-1" i18n="@@taskSmartCard.myWorkload">
+          My Workload
+        </div>
+        <div class="card-icon">
+          <span class="badge">{{ today_task_count }}</span> <span i18n="@@taskSmartCard.forToday">for today</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+        <ul class="tasks-list">
+          <li><span class="badge overdue-task">{{ overdue_task_count }}</span> <span i18n="@@taskSmartCard.overdue">overdue</span></li>
+          <li><span class="badge to-do-task">{{ to_do_task_count }}</span> <span i18n="@@taskSmartCard.toDo">to do</span></li>
+          <li><span class="badge in-progress-task">{{ in_progress_task_count }}</span> <span i18n="@@taskSmartCard.inProgress">in progress</span></li>
+          <li><span class="badge done-task">{{ done_task_count }}</span> <span i18n="@@taskSmartCard.done">done</span></li>
+        </ul>
+      </div>
+
+        <div class="col-6 d-none d-sm-block" style="padding-top: 15px; height: 180px;">
+          <canvas
+            baseChart
+            [data]="doughnutChartData"
+            [labels]="doughnutChartLabels"
+            [type]="doughnutChartType"
+            [options]="doughnutChartOptions"
+            [plugins]="doughnutChartPlugins"></canvas>
+        </div>
+      </div>
+
+    </a>
+
+  </div>
+</div>
