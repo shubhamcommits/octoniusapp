@@ -2532,15 +2532,11 @@ export class PostService {
                 .populate({ path: "_assigned_to", select: this.userFields })
                 .lean();
 
-            posts = posts.filter((tmpPost) => {
-                console.log(tmpPost);
-                console.log(tmpPost._posted_by);
-                console.log(userData);
-                return (
+            posts = posts.filter(
+                (tmpPost) =>
                     tmpPost._posted_by._workspace.toString() ==
                     userData._workspace.toString()
-                );
-            });
+            );
 
             for (let i = 0; i < posts.length; i++) {
                 let post = posts[i];
