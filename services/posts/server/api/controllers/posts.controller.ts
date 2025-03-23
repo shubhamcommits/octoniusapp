@@ -1348,7 +1348,7 @@ export class PostController {
         const userId = req["userId"];
 
         // Call Service function to change the assignee
-        await this.callChangeTaskStatusService(
+        const postsReturned = await this.callChangeTaskStatusService(
             postId,
             status,
             userId,
@@ -1367,6 +1367,8 @@ export class PostController {
         // Send status 200 response
         return res.status(200).json({
             message: "Task status updated!",
+            post: postsReturned["post"],
+            recurrentPost: postsReturned["recurrentPost"],
         });
     }
 
@@ -1387,8 +1389,12 @@ export class PostController {
         post.task.status = status;
         // console.log("status", status);
         // console.log("recurrent: ", post.is_recurrent);
+        let recurrentPost;
         if (status == "done" && post.is_recurrent) {
-            recurrencyController.executeRecurrency(post, userId);
+            recurrentPost = recurrencyController.executeRecurrency(
+                post,
+                userId
+            );
         }
 
         // Execute Automation Flows
@@ -1401,7 +1407,10 @@ export class PostController {
             isIndividualSubscription
         );
 
-        return post;
+        return {
+            post: post,
+            recurrentPost: recurrentPost,
+        };
     }
 
     /**

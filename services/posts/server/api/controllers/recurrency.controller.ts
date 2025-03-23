@@ -213,7 +213,7 @@ export class RecurrencyController {
                 }).lean();
 
                 if (!clonedPosts || clonedPosts.length === 0) {
-                    this.clonePost(
+                    return this.clonePost(
                         post,
                         post._posted_by._id || post._posted_by,
                         null
@@ -229,7 +229,7 @@ export class RecurrencyController {
         const clonedPosts = await Post.find({
             "recurrent._parent_post": post._id,
         }).lean();
-        console.log("tmpPost: ", clonedPosts);
+        // console.log("tmpPost: ", clonedPosts);
 
         if (!clonedPosts || clonedPosts.length === 0) {
             const originalDueDate = ensureDateTime(post.task.due_to); // Obtener la fecha de vencimiento original
@@ -310,7 +310,7 @@ export class RecurrencyController {
                 !post.recurrent.end_date ||
                 ensureDateTime(post.recurrent.end_date) >= dueDate
             ) {
-                this.clonePost(post, userId, dueDate);
+                return this.clonePost(post, userId, dueDate);
             } else {
                 console.log("Recurrence has ended or due date is invalid.");
             }
@@ -327,8 +327,13 @@ export class RecurrencyController {
         postCopy.created_date = DateTime.now();
 
         // Create new post
-        await postService.addPost(JSON.stringify(postCopy), userId);
+        const postCreated = await postService.addPost(
+            JSON.stringify(postCopy),
+            userId
+        );
 
         console.log("Post Recurrency Created");
+
+        return postCreated;
     }
 }

@@ -295,9 +295,15 @@ export class GroupCalendarComponent implements OnInit {
           this.onTaskClonned(data);
         });
 
+      const taskRecurrentEventSubs =
+        dialogRef.componentInstance.taskRecurrentEvent.subscribe((data) => {
+          this.ngOnInit();
+        });
+
       dialogRef.afterClosed().subscribe((result) => {
         closeEventSubs.unsubscribe();
         taskClonnedEventSubs.unsubscribe();
+        taskRecurrentEventSubs.unsubscribe();
       });
     }
   }

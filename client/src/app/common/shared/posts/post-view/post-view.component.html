@@ -46,7 +46,8 @@
                   [groupId]="post?._group?._id || post?._group"
                   [userId]="userData?._id"
                   [status]="post?.task?.status"
-                  (status)="changeTaskStatus($event)">
+                  (status)="changeTaskStatus($event)"
+                  (taskRecurrentEvent)="recurrentPostCreated($event)">
                 </app-task-status>
                 <!-- Change task status ends -->
 
