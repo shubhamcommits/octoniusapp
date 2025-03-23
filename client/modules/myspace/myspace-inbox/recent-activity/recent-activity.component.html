@@ -87,6 +87,8 @@
             <span class="notification_post_title" *ngIf="notification?.type === 'mention_page' && notification?._page">{{ notification?._page?.title | truncatetext: 20 }}</span>
             <span class="notification_post_title" *ngIf="(notification?.type === 'join-group' || notification?.type === 'leave-group') && notification?._origin_group">{{ notification?._origin_group?.group_name | truncatetext: 20 }}</span>
             <span class="notification_post_title" *ngIf="notification?.type === 'shuttleTask' && notification?._shuttle_group">{{ notification?._shuttle_group?.group_name | truncatetext: 20 }}.</span>
+            <span class="notification_post_title" *ngIf="notification?.type === 'launch-approval-flow' && notification?._origin_folio">{{ notification?._origin_folio?.original_name | truncatetext: 20 }}</span>
+            <span class="notification_post_title" *ngIf="notification?.type === 'launch-approval-flow' && notification?._origin_post">{{ notification?._origin_post?.title | truncatetext: 20 }}</span>
             &nbsp;
 
             <span *ngIf="notification?.type === 'shuttleTask'" class="assignment_notification" i18n="@@recentActivity.theTask">The task: </span>
