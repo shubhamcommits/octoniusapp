@@ -122,6 +122,10 @@
             "hu": {
               "localize": ["hu"],
               "i18nMissingTranslation": "warning"
+            },
+            "tr": {
+              "localize": ["tr"],
+              "i18nMissingTranslation": "warning"
             }
           },
           "defaultConfiguration": ""
@@ -149,6 +153,9 @@
             },
             "hu": {
               "buildTarget": "client:build:hu"
+            },
+            "tr": {
+              "buildTarget": "client:build:tr"
             }
           }
         },
@@ -204,6 +211,9 @@
           },
           "hu": {
             "translation": "src/locale/messages.hu.xlf"
+          },
+          "tr": {
+            "translation": "src/locale/messages.tr.xlf"
           }
         }
       }
