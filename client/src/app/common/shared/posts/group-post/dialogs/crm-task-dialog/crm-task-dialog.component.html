@@ -145,7 +145,8 @@
                 [status]="postData?.task?.status"
                 [disabled]="postData?.archived || !canEdit"
                 [shuttleType]="false"
-                (status)="changeTaskStatus($event)">
+                (status)="changeTaskStatus($event)"
+                (taskRecurrentEvent)="recurrentPostCreated($event)">
             </app-task-status>
             <!-- Change task status ends -->
           </div>

@@ -60,8 +60,8 @@
             &nbsp;
 
             <span *ngIf="notification?.type === 'assignment'" class="assignment_notification" i18n="@@recentActivity.assignedYou">assigned you</span>
-            <span *ngIf="notification?.type === 'crm-task-assignment'" class="assignment_notification" i18n="@@recentActivity.assignedYou">assigned</span>
-            <span *ngIf="notification?.type === 'crm-update-assignment'" class="assignment_notification" i18n="@@recentActivity.assignedYou">updated</span>
+            <span *ngIf="notification?.type === 'crm-task-assignment'" class="assignment_notification" i18n="@@recentActivity.assigned">assigned</span>
+            <span *ngIf="notification?.type === 'crm-update-assignment'" class="assignment_notification" i18n="@@recentActivity.updated">updated</span>
             <span *ngIf="notification?.type === 'mention' || notification?.type === 'mention_folio' || notification?.type === 'mention_collection' || notification?.type === 'mention_page'" class="mention_notification" i18n="@@recentActivity.mentionedYou">mentioned you on</span>
             <span *ngIf="notification?.type === 'completed'" class="completed_notification" i18n="@@recentActivity.completed">completed</span>
             <span *ngIf="notification?.type === 'started'" class="started_notification" i18n="@@recentActivity.started">started</span>
@@ -74,7 +74,7 @@
             <span *ngIf="notification?.type === 'launch-approval-flow'" class="launch_approval_flow_notification" i18n="@@recentActivity.launchApprovalFlow">launched the approval flow for </span>
             <span *ngIf="notification?.type === 'approved-item'" class="approved_item_notification" i18n="@@recentActivity.itemApprovedByAll">everyone approved the document</span>
             <span *ngIf="notification?.type === 'reject-item'" class="reject_item_notification" i18n="@@recentActivity.rejectedTheItem">rejected the document</span>
-            <span *ngIf="notification?.type === 'shuttleTask'" class="assignment_notification" i18n="@@recentActivity.assignedYourGroup">sent a shuttle 🚀 to</span>
+            <span *ngIf="notification?.type === 'shuttleTask'" class="assignment_notification" i18n="@@recentActivity.sentAShuttleTo">sent a shuttle 🚀 to</span>
             <span *ngIf="notification?.type === 'post-edited'" class="assignment_notification" i18n="@@recentActivity.edited">edited</span>
             &nbsp;
 

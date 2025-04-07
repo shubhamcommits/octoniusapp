@@ -1,18 +1,20 @@
 import { Response, Request, NextFunction } from "express";
-import { FlowService, PostService, TagsService } from '../services';
-import { DateTime } from 'luxon';
+import { FlowService, PostService, TagsService } from "../services";
+import { DateTime } from "luxon";
 
-import { sendErr } from '../utils/sendError';
+import { sendErr } from "../utils/sendError";
 import { Post, TimeTrackingEntity } from "../models";
+import { RecurrencyController } from "./recurrency.controller";
 
-const ObjectId = require('mongoose').Types.ObjectId;
+const ObjectId = require("mongoose").Types.ObjectId;
 
 const postService = new PostService();
 
 const tagsService = new TagsService();
 
-export class PostController {
+const recurrencyController = new RecurrencyController();
 
+export class PostController {
     /**
      * This function is used to validate an ObjectId
      * @param id
@@ -36,36 +38,59 @@ export class PostController {
     async add(req: Request, res: Response, next: NextFunction) {
         try {
             // Post Object From request
-            const { post, isShuttleTasksModuleAvailable, isIndividualSubscription } = req.body;
+            const {
+                post,
+                isShuttleTasksModuleAvailable,
+                isIndividualSubscription,
+            } = req.body;
 
             // Fetch userId from the request
-            const userId = req['userId'];
+            const userId = req["userId"];
 
             // Call servide function for adding the post
-            const postData = await this.callAddPostService(post, userId, isShuttleTasksModuleAvailable == 'true', isIndividualSubscription == 'true')
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-                })
+            const postData = await this.callAddPostService(
+                post,
+                userId,
+                isShuttleTasksModuleAvailable == "true",
+                isIndividualSubscription == "true"
+            ).catch((err) => {
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Insufficient Data, please check into error stack!",
+                    400
+                );
+            });
 
             // Send Status 200 response
             return res.status(200).json({
-                message: 'Post Added Successfully!',
-                post: postData
+                message: "Post Added Successfully!",
+                post: postData,
             });
-        } catch(err) {
-            return sendErr(res, new Error(err), 'ERROR', 400);
+        } catch (err) {
+            return sendErr(res, new Error(err), "ERROR", 400);
         }
-        
     }
 
-    async callAddPostService(post: any, userId: string, isShuttleTasksModuleAvailable: boolean, isIndividualSubscription: boolean) {
-
+    async callAddPostService(
+        post: any,
+        userId: string,
+        isShuttleTasksModuleAvailable: boolean,
+        isIndividualSubscription: boolean
+    ) {
         // Call Service function to change the assignee
         post = await postService.addPost(post, userId);
 
-        if (post.type === 'task' && post._group) {
+        if (post.type === "task" && post._group) {
             // Execute Automation Flows
-            post = await postService.executeAutomationFlows((post._group._id || post._group), post, userId, true, isShuttleTasksModuleAvailable, isIndividualSubscription);
+            post = await postService.executeAutomationFlows(
+                post._group._id || post._group,
+                post,
+                userId,
+                true,
+                isShuttleTasksModuleAvailable,
+                isIndividualSubscription
+            );
         }
 
         return post;
@@ -74,36 +99,49 @@ export class PostController {
     /**
      * This function is responsible for editing a post
      * @param { post } req
-     * @param res 
-     * @param next 
+     * @param res
+     * @param next
      */
     async editPostTitle(req: Request, res: Response, next: NextFunction) {
-
         // Post Object From request
-        const { body: { postTitle }, params: { postId } } = req;
-        const userId = req['userId'];
+        const {
+            body: { postTitle },
+            params: { postId },
+        } = req;
+        const userId = req["userId"];
 
         // Call service function to edit
-        const updatedPost = await postService.editPostTitle(postTitle, postId, userId)
+        const updatedPost = await postService
+            .editPostTitle(postTitle, postId, userId)
             .catch((err) => {
                 if (err == null) {
-                    return sendErr(res, null, 'User not allowed to edit this post!', 403);
+                    return sendErr(
+                        res,
+                        null,
+                        "User not allowed to edit this post!",
+                        403
+                    );
                 }
-                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-            })
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Insufficient Data, please check into error stack!",
+                    400
+                );
+            });
 
         // Send Status 200 response
         return res.status(200).json({
-            message: 'Post Edited Successfully!',
-            post: updatedPost
+            message: "Post Edited Successfully!",
+            post: updatedPost,
         });
     }
 
     /**
      * This function is responsible for editing a post
      * @param { post } req
-     * @param res 
-     * @param next 
+     * @param res
+     * @param next
      */
     // async editPostContent(req: Request, res: Response, next: NextFunction) {
 
@@ -130,485 +168,624 @@ export class PostController {
     /**
      * This function is responsible for editing a post
      * @param { post } req
-     * @param res 
-     * @param next 
+     * @param res
+     * @param next
      */
     async attachFiles(req: Request, res: Response, next: NextFunction) {
-
         // Post Object From request
-        const { body: { post }, params: { postId } } = req;
-        const userId = req['userId'];
+        const {
+            body: { post },
+            params: { postId },
+        } = req;
+        const userId = req["userId"];
 
         // Call service function to edit
-        const updatedPost = await postService.attachFiles(post, postId, userId)
+        const updatedPost = await postService
+            .attachFiles(post, postId, userId)
             .catch((err) => {
                 if (err == null) {
-                    return sendErr(res, null, 'User not allowed to edit this post!', 403);
+                    return sendErr(
+                        res,
+                        null,
+                        "User not allowed to edit this post!",
+                        403
+                    );
                 }
-                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-            })
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Insufficient Data, please check into error stack!",
+                    400
+                );
+            });
 
         // Send Status 200 response
         return res.status(200).json({
-            message: 'Post Edited Successfully!',
-            post: updatedPost
+            message: "Post Edited Successfully!",
+            post: updatedPost,
         });
     }
-
 
     /**
      * This function is responsible for editing a post
      * @param { post } req
-     * @param res 
-     * @param next 
+     * @param res
+     * @param next
      */
     async edit(req: Request, res: Response, next: NextFunction) {
-
         // Post Object From request
-        const { body: { post, logAction }, params: { postId } } = req;
-        const userId = req['userId'];
+        const {
+            body: { post, logAction },
+            params: { postId },
+        } = req;
+        const userId = req["userId"];
 
         // Call service function to edit
-        const updatedPost = await postService.editPost(post, postId, userId, logAction)
+        const updatedPost = await postService
+            .editPost(post, postId, userId, logAction)
             .catch((err) => {
                 if (err == null) {
-                    return sendErr(res, null, 'User not allowed to edit this post!', 403);
+                    return sendErr(
+                        res,
+                        null,
+                        "User not allowed to edit this post!",
+                        403
+                    );
                 }
-                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-            })
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Insufficient Data, please check into error stack!",
+                    400
+                );
+            });
 
         // Send Status 200 response
         return res.status(200).json({
-            message: 'Post Edited Successfully!',
-            post: updatedPost
+            message: "Post Edited Successfully!",
+            post: updatedPost,
         });
     }
-
 
     /**
      * This function is responsible for editing a post
      * @param { post } req
-     * @param res 
-     * @param next 
+     * @param res
+     * @param next
      */
     async editTags(req: Request, res: Response, next: NextFunction) {
-
         // Post Object From request
-        const { body: { tags }, params: { postId } } = req;
-        const userId = req['userId'];
+        const {
+            body: { tags },
+            params: { postId },
+        } = req;
+        const userId = req["userId"];
 
         // Call service function to edit
-        const updatedPost = await postService.editPostTags(tags, postId, userId)
+        const updatedPost = await postService
+            .editPostTags(tags, postId, userId)
             .catch((err) => {
                 if (err == null) {
-                    return sendErr(res, null, 'User not allowed to edit this post!', 403);
+                    return sendErr(
+                        res,
+                        null,
+                        "User not allowed to edit this post!",
+                        403
+                    );
                 }
-                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-            })
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Insufficient Data, please check into error stack!",
+                    400
+                );
+            });
 
         // Send Status 200 response
         return res.status(200).json({
-            message: 'Post Edited Successfully!',
-            post: updatedPost
+            message: "Post Edited Successfully!",
+            post: updatedPost,
         });
     }
 
     /**
      * This function is used to retrieve a post
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async get(req: Request, res: Response, next: NextFunction) {
         try {
-
             let { postId } = req.params;
 
             // Call service function to get
             const post = await postService.get(postId);
 
             return res.status(200).json({
-                message: 'Post Found!',
-                post: post
+                message: "Post Found!",
+                post: post,
             });
         } catch (error) {
-            return sendErr(res, new Error(error), 'Internal Server Error', 500);
+            return sendErr(res, new Error(error), "Internal Server Error", 500);
         }
     }
 
     /**
      * This function is responsible for removing a post
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async remove(req: Request, res: Response, next: NextFunction) {
         try {
-
-            // Retrieving data from request 
+            // Retrieving data from request
             const { postId } = req.params;
-            const userId: any = req['userId'];
+            const userId: any = req["userId"];
 
             // Calling service function to remove post
             const post = await postService.remove(userId, postId);
 
             // Returning status 200 response
             return res.status(200).json({
-                message: 'Post removed successfully',
-                post: post
+                message: "Post removed successfully",
+                post: post,
             });
-
         } catch (error) {
             if (error == null) {
-                return sendErr(res, null, 'User not allowed to remove this post!', 403)
+                return sendErr(
+                    res,
+                    null,
+                    "User not allowed to remove this post!",
+                    403
+                );
             }
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+            return sendErr(
+                res,
+                new Error(error),
+                "Internal Server Error!",
+                500
+            );
         }
     }
 
     /**
      * This function fetches the 5 recent posts present inside a group
-     * @param { query: { groupId, lastPostId } } req 
-     * @param res 
-     * @param next 
+     * @param { query: { groupId, lastPostId } } req
+     * @param res
+     * @param next
      */
     async getPosts(req: Request, res: Response, next: NextFunction) {
-
         // Fetch groupId and lastPostId from request
         var { groupId, lastPostId, type, pinned, filters } = req.query;
 
         // If type is not defined, then fetch all the posts by default
-        if (!type || type == '' || type === "") {
-            type = 'all'
+        if (!type || type == "" || type === "") {
+            type = "all";
         }
 
         // If groupId is not present, then return error
         if (!groupId) {
-            return sendErr(res, new Error('Please provide the groupId as the query parameter'), 'Please provide the groupId as the query paramater!', 400);
+            return sendErr(
+                res,
+                new Error("Please provide the groupId as the query parameter"),
+                "Please provide the groupId as the query paramater!",
+                400
+            );
         }
 
         // Fetch the next 5 recent posts
-        await postService.getPosts(groupId, pinned == 'true', type, lastPostId, filters)
+        await postService
+            .getPosts(groupId, pinned == "true", type, lastPostId, filters)
             .then((posts) => {
-
                 // If lastPostId is there then, send status 200 response
                 if (lastPostId)
                     return res.status(200).json({
                         message: `The next ${posts.length} most recent posts!`,
-                        posts: posts
+                        posts: posts,
                     });
-
                 // If lastPostId is not there then, send status 200 response
                 else
                     return res.status(200).json({
                         message: `The first ${posts.length} most recent posts!`,
-                        posts: posts
+                        posts: posts,
                     });
             })
             .catch((err) => {
-
                 // If there's an error send bad request
-                return sendErr(res, new Error(err), 'Unable to fetch the posts, kindly check the stack trace for error', 400)
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Unable to fetch the posts, kindly check the stack trace for error",
+                    400
+                );
             });
     }
 
     /**
      * This function fetches the tasks present inside a section
-     * @param { query: { groupId, lastPostId } } req 
-     * @param res 
-     * @param next 
+     * @param { query: { groupId, lastPostId } } req
+     * @param res
+     * @param next
      */
     async getTasksBySection(req: Request, res: Response, next: NextFunction) {
-
         // Fetch groupId and lastPostId from request
-        const { params: { sectionId}, query: { isShuttleTasksModuleAvailable } } = req;
+        const {
+            params: { sectionId },
+            query: { isShuttleTasksModuleAvailable },
+        } = req;
 
         // If sectionId is not present, then return error
         if (!sectionId) {
-            return sendErr(res, new Error('Please provide the sectionId as the query parameter'), 'Please provide the sectionId as the query paramater!', 400);
+            return sendErr(
+                res,
+                new Error(
+                    "Please provide the sectionId as the query parameter"
+                ),
+                "Please provide the sectionId as the query paramater!",
+                400
+            );
         }
 
         // Fetch the next 5 recent posts
-        await postService.getTasksBySection(sectionId, isShuttleTasksModuleAvailable == 'true')
+        await postService
+            .getTasksBySection(
+                sectionId,
+                isShuttleTasksModuleAvailable == "true"
+            )
             .then((posts) => {
                 return res.status(200).json({
                     message: `Tasks found successfully!`,
-                    posts: posts
+                    posts: posts,
                 });
             })
             .catch((err) => {
-
                 // If there's an error send bad request
-                return sendErr(res, new Error(err), 'Unable to fetch the posts, kindly check the stack trace for error', 400)
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Unable to fetch the posts, kindly check the stack trace for error",
+                    400
+                );
             });
     }
 
     /**
      * This function fetches the archived tasks present inside a group
-     * @param { query: { groupId } } req 
-     * @param res 
-     * @param next 
+     * @param { query: { groupId } } req
+     * @param res
+     * @param next
      */
     async getArchivedTasks(req: Request, res: Response, next: NextFunction) {
-
         // Fetch groupId and lastPostId from request
         var { groupId } = req.query;
 
         // If groupId is not present, then return error
         if (!groupId) {
-            return sendErr(res, new Error('Please provide the groupId as the query parameter'), 'Please provide the groupId as the query paramater!', 400);
+            return sendErr(
+                res,
+                new Error("Please provide the groupId as the query parameter"),
+                "Please provide the groupId as the query paramater!",
+                400
+            );
         }
 
         // Fetch the next 5 recent posts
-        await postService.getArchivedTasks(groupId.toString())
+        await postService
+            .getArchivedTasks(groupId.toString())
             .then((posts) => {
                 return res.status(200).json({
                     message: `The archived tasks!`,
-                    posts: posts
+                    posts: posts,
                 });
             })
             .catch((err) => {
                 // If there's an error send bad request
-                return sendErr(res, new Error(err), 'Unable to fetch the archived tasks, kindly check the stack trace for error', 400)
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Unable to fetch the archived tasks, kindly check the stack trace for error",
+                    400
+                );
             });
     }
 
     /**
      * This function fetches the North Star tasks present inside multiple groups
-     * @param { userId } req 
-     * @param res 
-     * @param next 
+     * @param { userId } req
+     * @param res
+     * @param next
      */
     async getNorthStarTasks(req: Request, res: Response, next: NextFunction) {
         // Fetch groupId and lastPostId from request
-        const userId = req['userId'];
+        const userId = req["userId"];
 
-       await postService.getNorthStarTasks(userId)
+        await postService
+            .getNorthStarTasks(userId)
             .then((posts) => {
                 // If lastPostId is there then, send status 200 response
                 return res.status(200).json({
                     message: `The North Star Tasks!`,
-                    posts: posts
+                    posts: posts,
                 });
             })
             .catch((err) => {
                 // If there's an error send bad request
-                return sendErr(res, new Error(err), 'Unable to fetch the north star tasks, kindly check the stack trace for error', 400)
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Unable to fetch the north star tasks, kindly check the stack trace for error",
+                    400
+                );
             });
     }
 
     /**
      * This function fetches the North Star tasks without a group
-     * @param { userId } req 
-     * @param res 
-     * @param next 
+     * @param { userId } req
+     * @param res
+     * @param next
      */
-    async getGlobalNorthStarTasks(req: Request, res: Response, next: NextFunction) {
-        await postService.getGlobalNorthStarTasks(req['userId'])
+    async getGlobalNorthStarTasks(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
+        await postService
+            .getGlobalNorthStarTasks(req["userId"])
             .then((posts) => {
                 // If lastPostId is there then, send status 200 response
                 return res.status(200).json({
                     message: `The North Star Tasks!`,
-                    posts: posts
+                    posts: posts,
                 });
             })
             .catch((err) => {
                 // If there's an error send bad request
-                return sendErr(res, new Error(err), 'Unable to fetch the north star tasks, kindly check the stack trace for error', 400)
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Unable to fetch the north star tasks, kindly check the stack trace for error",
+                    400
+                );
             });
     }
 
     /**
      * This function fetches the North Star tasks present inside multiple groups
-     * @param { userId } req 
-     * @param res 
-     * @param next 
+     * @param { userId } req
+     * @param res
+     * @param next
      */
     async getNorthStarStats(req: Request, res: Response, next: NextFunction) {
         // Fetch groupId and lastPostId from request
-        const userId = req['userId'];
+        const userId = req["userId"];
 
-       await postService.getNorthStarStats(userId)
+        await postService
+            .getNorthStarStats(userId)
             .then((ns) => {
                 // If lastPostId is there then, send status 200 response
                 return res.status(200).json({
                     message: `The North Stars!`,
-                    northstars: ns
+                    northstars: ns,
                 });
             })
             .catch((err) => {
                 // If there's an error send bad request
-                return sendErr(res, new Error(err), 'Unable to fetch the north star tasks, kindly check the stack trace for error', 400)
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Unable to fetch the north star tasks, kindly check the stack trace for error",
+                    400
+                );
             });
     }
 
     /**
      * This function fetches the North Star tasks present inside multiple groups
-     * @param { userId } req 
-     * @param res 
-     * @param next 
+     * @param { userId } req
+     * @param res
+     * @param next
      */
-    async getGlobalNorthStarStats(req: Request, res: Response, next: NextFunction) {
+    async getGlobalNorthStarStats(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
         // Fetch groupId and lastPostId from request
-        const userId = req['userId'];
+        const userId = req["userId"];
 
-       await postService.getGlobalNorthStarStats(userId)
+        await postService
+            .getGlobalNorthStarStats(userId)
             .then((ns) => {
                 // If lastPostId is there then, send status 200 response
                 return res.status(200).json({
                     message: `The North Stars!`,
-                    northstars: ns
+                    northstars: ns,
                 });
             })
             .catch((err) => {
                 // If there's an error send bad request
-                return sendErr(res, new Error(err), 'Unable to fetch the north star tasks, kindly check the stack trace for error', 400)
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Unable to fetch the north star tasks, kindly check the stack trace for error",
+                    400
+                );
             });
     }
 
-
     /**
      * This function is used to like a post
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async like(req: Request, res: Response, next: NextFunction) {
         // Fetch postId from request
-        const { params: { postId } } = req;
+        const {
+            params: { postId },
+        } = req;
 
         // Fetch userId from the request
-        const userId = req['userId'];
+        const userId = req["userId"];
 
         // Call Service function to like a post
-        let data: any = await postService.like(userId, postId)
-            .catch((err) => {
-                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-            })
+        let data: any = await postService.like(userId, postId).catch((err) => {
+            return sendErr(
+                res,
+                new Error(err),
+                "Bad Request, please check into error stack!",
+                400
+            );
+        });
 
         // Send status 200 response
         return res.status(200).json({
-            message: 'Post Successfully Liked',
+            message: "Post Successfully Liked",
             post: data.post,
-            user: data.user
+            user: data.user,
         });
     }
 
-
     /**
      * This function is used to unlike a post
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async unlike(req: Request, res: Response, next: NextFunction) {
         // Fetch postId from the request
-        const { params: { postId } } = req;
+        const {
+            params: { postId },
+        } = req;
 
         // Fetch userId from the request
-        const userId = req['userId'];
+        const userId = req["userId"];
 
         // Call Service function to unlike a post
-        let data: any = await postService.unlike(userId, postId)
+        let data: any = await postService
+            .unlike(userId, postId)
             .catch((err) => {
-                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-            })
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Bad Request, please check into error stack!",
+                    400
+                );
+            });
 
         // Send status 200 response
         return res.status(200).json({
-            message: 'Post Successfully Unliked',
+            message: "Post Successfully Unliked",
             post: data.post,
-            user: data.user
+            user: data.user,
         });
     }
 
-
     /**
      * This function is used to unlike a post
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async likedBy(req: Request, res: Response, next: NextFunction) {
         // Fetch postId from the request
-        const { params: { postId } } = req;
+        const {
+            params: { postId },
+        } = req;
 
         // Call Service function to unlike a post
-        let likedBy: any = await postService.likedBy(postId)
-            .catch((err) => {
-                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-            })
+        let likedBy: any = await postService.likedBy(postId).catch((err) => {
+            return sendErr(
+                res,
+                new Error(err),
+                "Bad Request, please check into error stack!",
+                400
+            );
+        });
 
         // Send status 200 response
         return res.status(200).json({
-            message: 'List of users like the post',
-            likedBy: likedBy
+            message: "List of users like the post",
+            likedBy: likedBy,
         });
     }
-
 
     /**
      * This function is used to like a post
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async follow(req: Request, res: Response, next: NextFunction) {
         // Fetch postId from request
-        const { params: { postId } } = req;
+        const {
+            params: { postId },
+        } = req;
 
         // Fetch userId from the request
-        const userId = req['userId'];
+        const userId = req["userId"];
 
         // Call Service function to like a post
-        let data: any = await postService.follow(userId, postId)
+        let data: any = await postService
+            .follow(userId, postId)
             .catch((err) => {
-                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-            })
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Bad Request, please check into error stack!",
+                    400
+                );
+            });
 
         // Send status 200 response
         return res.status(200).json({
-            message: 'Post Successfully Liked',
-            follow: 'OK'
+            message: "Post Successfully Liked",
+            follow: "OK",
         });
     }
 
-
     /**
      * This function is used to unlike a post
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async unfollow(req: Request, res: Response, next: NextFunction) {
         // Fetch postId from the request
-        const { params: { postId } } = req;
+        const {
+            params: { postId },
+        } = req;
 
         // Fetch userId from the request
-        const userId = req['userId'];
+        const userId = req["userId"];
 
         // Call Service function to unlike a post
-        await postService.unfollow(userId, postId)
-            .catch((err) => {
-                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-            })
+        await postService.unfollow(userId, postId).catch((err) => {
+            return sendErr(
+                res,
+                new Error(err),
+                "Bad Request, please check into error stack!",
+                400
+            );
+        });
 
         // Send status 200 response
         return res.status(200).json({
-            message: 'Post Successfully Unliked',
-            unfollow: 'OK'
+            message: "Post Successfully Unliked",
+            unfollow: "OK",
         });
     }
 
     /**
      * This function is used to retrieve all of this month's tasks
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async getThisMonthTasks(req: Request, res: Response, next: NextFunction) {
         try {
-            const userId = req['userId'];
+            const userId = req["userId"];
 
             // Call service function to retrieve this months task
             const data = await postService.getThisMonthTasks(userId);
@@ -616,20 +793,24 @@ export class PostController {
             // Send status 200 response
             return res.status(200).json(data);
         } catch (error) {
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+            return sendErr(
+                res,
+                new Error(error),
+                "Internal Server Error!",
+                500
+            );
         }
     }
 
-
     /**
      * This function is used to get first 10 tasks for this week
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async getThisWeekTasks(req: Request, res: Response, next: NextFunction) {
         try {
-            const userId = req['userId'];
+            const userId = req["userId"];
 
             // Call service function to retrieve this week's task
             const data = await postService.getThisWeekTasks(userId);
@@ -637,20 +818,24 @@ export class PostController {
             // Send status 200 response
             return res.status(200).json(data);
         } catch (error) {
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+            return sendErr(
+                res,
+                new Error(error),
+                "Internal Server Error!",
+                500
+            );
         }
     }
 
-
     /**
      * This function is used to get next 5 tasks for this week
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async getNextTasks(req: Request, res: Response, next: NextFunction) {
         try {
-            const userId = req['userId'];
+            const userId = req["userId"];
             const { lastTaskId } = req.query;
 
             // Service function to get next 5 tasks for this week
@@ -659,20 +844,24 @@ export class PostController {
             // Status 200 response status
             return res.status(200).json(data);
         } catch (error) {
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+            return sendErr(
+                res,
+                new Error(error),
+                "Internal Server Error!",
+                500
+            );
         }
     }
 
-
     /**
      * This function is used to get this month's events
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async getThisMonthEvents(req: Request, res: Response, next: NextFunction) {
         try {
-            const userId = req['userId'];
+            const userId = req["userId"];
 
             // Call service function to get events
             const data = await postService.getThisMonthsEvents(userId);
@@ -680,20 +869,24 @@ export class PostController {
             // Send status 200 response
             return res.status(200).json(data);
         } catch (error) {
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+            return sendErr(
+                res,
+                new Error(error),
+                "Internal Server Error!",
+                500
+            );
         }
     }
 
-
     /**
      * This function is used to get first 10 events of this week
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async getThisWeekEvents(req: Request, res: Response, next: NextFunction) {
         try {
-            const userId = req['userId'];
+            const userId = req["userId"];
 
             // Call service function to get events
             const data = await postService.getThisWeekEvents(userId);
@@ -701,20 +894,24 @@ export class PostController {
             // Send status 200 response
             return res.status(200).json(data);
         } catch (error) {
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+            return sendErr(
+                res,
+                new Error(error),
+                "Internal Server Error!",
+                500
+            );
         }
     }
 
-
     /**
      * This function is used to get next 5 events for this week
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async getNextEvents(req: Request, res: Response, next: NextFunction) {
         try {
-            const userId = req['userId'];
+            const userId = req["userId"];
             const { lastEventIId } = req.query;
 
             // Call service function to get events
@@ -723,75 +920,123 @@ export class PostController {
             // Send status 200 response
             return res.status(200).json(data);
         } catch (error) {
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+            return sendErr(
+                res,
+                new Error(error),
+                "Internal Server Error!",
+                500
+            );
         }
     }
 
     /**
      * This function is responsible for removing an assignee from the post
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async removeAssignee(req: Request, res: Response, next: NextFunction) {
-
         // Fetch Data from request
-        const { params: { postId }, body: { assigneeId } } = req;
+        const {
+            params: { postId },
+            body: { assigneeId },
+        } = req;
 
         // Fetch userId from the request
-        const userId = req['userId'];
+        const userId = req["userId"];
 
         // Call Service function to remove the assignee
-        const post = await postService.removeAssignee(postId, assigneeId, userId)
+        const post = await postService
+            .removeAssignee(postId, assigneeId, userId)
             .catch((err) => {
-                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-            })
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Bad Request, please check into error stack!",
+                    400
+                );
+            });
 
         // Send status 200 response
         return res.status(200).json({
-            message: 'Task assignee updated!',
-            post: post
+            message: "Task assignee updated!",
+            post: post,
         });
     }
 
     /**
      * This function is responsible for changing the task assignee
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async addAssignee(req: Request, res: Response, next: NextFunction) {
-
         // Fetch Data from request
-        const { params: { postId }, body: { assigneeId, groupId, isShuttleTasksModuleAvailable, isIndividualSubscription } } = req;
+        const {
+            params: { postId },
+            body: {
+                assigneeId,
+                groupId,
+                isShuttleTasksModuleAvailable,
+                isIndividualSubscription,
+            },
+        } = req;
 
         // Fetch userId from the request
-        const userId = req['userId'];
+        const userId = req["userId"];
 
-        const post = await this.callAddAssigneeService(postId, assigneeId, userId, groupId, isShuttleTasksModuleAvailable, isIndividualSubscription)
-            .catch((err) => {
-                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-            })
-        
-        await postService.triggerToZap(postId,assigneeId,'new_task');
+        const post = await this.callAddAssigneeService(
+            postId,
+            assigneeId,
+            userId,
+            groupId,
+            isShuttleTasksModuleAvailable,
+            isIndividualSubscription
+        ).catch((err) => {
+            return sendErr(
+                res,
+                new Error(err),
+                "Bad Request, please check into error stack!",
+                400
+            );
+        });
+
+        await postService.triggerToZap(postId, assigneeId, "new_task");
 
         // Send status 200 response
         return res.status(200).json({
-            message: 'Task assignee updated!',
-            post: post
+            message: "Task assignee updated!",
+            post: post,
         });
     }
 
-    async callAddAssigneeService(postId: string, assigneeId: string, userId: string, groupId: string, isShuttleTasksModuleAvailable: boolean, isIndividualSubscription: boolean) {
-
+    async callAddAssigneeService(
+        postId: string,
+        assigneeId: string,
+        userId: string,
+        groupId: string,
+        isShuttleTasksModuleAvailable: boolean,
+        isIndividualSubscription: boolean
+    ) {
         // Call Service function to change the assignee
         let post = await postService.addAssignee(postId, assigneeId, userId);
 
         // Execute Automation Flows
-        post = await postService.executeAutomationFlows(groupId, post, userId, false, isShuttleTasksModuleAvailable, isIndividualSubscription);
+        post = await postService.executeAutomationFlows(
+            groupId,
+            post,
+            userId,
+            false,
+            isShuttleTasksModuleAvailable,
+            isIndividualSubscription
+        );
 
         if (post._assigned_to) {
-            const index = (!!post._assigned_to) ? post._assigned_to.findIndex(assignee => (assignee?._id || assignee) == assigneeId) : -1;
+            const index = !!post._assigned_to
+                ? post._assigned_to.findIndex(
+                      (assignee) => (assignee?._id || assignee) == assigneeId
+                  )
+                : -1;
             if (index < 0) {
                 if (!post._assigned_to) {
                     post._assigned_to = [];
@@ -809,36 +1054,69 @@ export class PostController {
 
     /**
      * This function is responsible for changing the task assignee
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async changeTaskAssignee(req: Request, res: Response, next: NextFunction) {
-
         // Fetch Data from request
-        const { params: { postId }, body: { assigneeId, isShuttleTasksModuleAvailable, isIndividualSubscription } } = req;
+        const {
+            params: { postId },
+            body: {
+                assigneeId,
+                isShuttleTasksModuleAvailable,
+                isIndividualSubscription,
+            },
+        } = req;
 
         // Fetch userId from the request
-        const userId = req['userId'];
+        const userId = req["userId"];
 
-        const post = await this.callChangeTaskAssigneeService(postId, assigneeId, userId, isShuttleTasksModuleAvailable, isIndividualSubscription)
-            .catch((err) => {
-                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-            })
+        const post = await this.callChangeTaskAssigneeService(
+            postId,
+            assigneeId,
+            userId,
+            isShuttleTasksModuleAvailable,
+            isIndividualSubscription
+        ).catch((err) => {
+            return sendErr(
+                res,
+                new Error(err),
+                "Bad Request, please check into error stack!",
+                400
+            );
+        });
 
         // Send status 200 response
         return res.status(200).json({
-            message: 'Task assignee updated!',
-            post: post
+            message: "Task assignee updated!",
+            post: post,
         });
     }
 
-    async callChangeTaskAssigneeService(postId: string, assigneeId: string, userId: string, isShuttleTasksModuleAvailable: boolean, isIndividualSubscription: boolean) {
+    async callChangeTaskAssigneeService(
+        postId: string,
+        assigneeId: string,
+        userId: string,
+        isShuttleTasksModuleAvailable: boolean,
+        isIndividualSubscription: boolean
+    ) {
         // Call Service function to change the assignee
-        let post = await postService.changeTaskAssignee(postId, assigneeId, userId);
+        let post = await postService.changeTaskAssignee(
+            postId,
+            assigneeId,
+            userId
+        );
 
         // Execute Automation Flows
-        post = await postService.executeAutomationFlows((post._group._id || post._group), post, userId, false, isShuttleTasksModuleAvailable, isIndividualSubscription);
+        post = await postService.executeAutomationFlows(
+            post._group._id || post._group,
+            post,
+            userId,
+            false,
+            isShuttleTasksModuleAvailable,
+            isIndividualSubscription
+        );
 
         post.task._assigned_to = assigneeId;
 
@@ -849,193 +1127,365 @@ export class PostController {
 
     /**
      * This function is responsible for changing the task due date
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async changeTaskDueDate(req: Request, res: Response, next: NextFunction) {
-
         // Fetch Data from request
-        const { params: { postId }, body: { date_due_to, isShuttleTasksModuleAvailable, isIndividualSubscription } } = req;
-        const userId = req['userId'];
+        const {
+            params: { postId },
+            body: {
+                date_due_to,
+                isShuttleTasksModuleAvailable,
+                isIndividualSubscription,
+            },
+        } = req;
+        const userId = req["userId"];
 
         // Call Service function to change the assignee
-        let post = await postService.changeTaskDueDate(postId, userId, date_due_to)
+        let post = await postService
+            .changeTaskDueDate(postId, userId, date_due_to)
             .catch((err) => {
-                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Bad Request, please check into error stack!",
+                    400
+                );
             });
 
-        post = await postService.executeAutomationFlows((post._group._id || post._group), post, userId, false, isShuttleTasksModuleAvailable, isIndividualSubscription);
+        post = await postService.executeAutomationFlows(
+            post._group._id || post._group,
+            post,
+            userId,
+            false,
+            isShuttleTasksModuleAvailable,
+            isIndividualSubscription
+        );
 
         // Send status 200 response
         return res.status(200).json({
-            message: 'Task due date updated!',
-            post: post
+            message: "Task due date updated!",
+            post: post,
         });
     }
 
     /**
      * This function is responsible for changing the task due date
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
-    async updateGanttTasksDates(req: Request, res: Response, next: NextFunction) {
-
+    async updateGanttTasksDates(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
         // Fetch Data from request
-        const { params: { postId }, body: { date_due_to, start_date, s_days, e_days, group_id, isShuttleTasksModuleAvailable, isIndividualSubscription } } = req;
-        const userId = req['userId'];
+        const {
+            params: { postId },
+            body: {
+                date_due_to,
+                start_date,
+                s_days,
+                e_days,
+                group_id,
+                isShuttleTasksModuleAvailable,
+                isIndividualSubscription,
+            },
+        } = req;
+        const userId = req["userId"];
 
         try {
-            async function update(p_Id, d_date, s_date , s_day, e_day, rec) {
-                if (s_day != 0){
-                    let post = await postService.changeTaskDate(p_Id, userId,'start_date',s_date)
+            async function update(p_Id, d_date, s_date, s_day, e_day, rec) {
+                if (s_day != 0) {
+                    let post = await postService
+                        .changeTaskDate(p_Id, userId, "start_date", s_date)
                         .catch((err) => {
-                            return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                            return sendErr(
+                                res,
+                                new Error(err),
+                                "Bad Request, please check into error stack!",
+                                400
+                            );
                         });
-                    post = await postService.executeAutomationFlows((post._group._id || post._group), post, userId, false, isShuttleTasksModuleAvailable, isIndividualSubscription);
-                    
+                    post = await postService.executeAutomationFlows(
+                        post._group._id || post._group,
+                        post,
+                        userId,
+                        false,
+                        isShuttleTasksModuleAvailable,
+                        isIndividualSubscription
+                    );
                 }
-                
-                if (e_day != 0){
-                    let post = await postService.changeTaskDueDate(p_Id, userId, d_date)
+
+                if (e_day != 0) {
+                    let post = await postService
+                        .changeTaskDueDate(p_Id, userId, d_date)
                         .catch((err) => {
-                            return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                            return sendErr(
+                                res,
+                                new Error(err),
+                                "Bad Request, please check into error stack!",
+                                400
+                            );
                         });
 
-                    post = await postService.executeAutomationFlows((post._group._id || post._group), post, userId, false, isShuttleTasksModuleAvailable, isIndividualSubscription);
-    
-                    if(post?.task?._dependent_child && post?.task?._dependent_child.length>0){
-                        
-                        for( var i=0;i<post?.task?._dependent_child.length;i++){
-                            const childpost = await postService.get(post?.task?._dependent_child[i]);
-                            if(childpost){
-                                var newEndDate = DateTime.fromISO(childpost?.task?.due_to).plus({ days: e_day });
-                                var newStartDate = DateTime.fromISO(childpost?.task?.start_date).plus({ days: e_day });
-                                await update(post?.task?._dependent_child[i], newEndDate, newStartDate, e_day, e_day, true);
+                    post = await postService.executeAutomationFlows(
+                        post._group._id || post._group,
+                        post,
+                        userId,
+                        false,
+                        isShuttleTasksModuleAvailable,
+                        isIndividualSubscription
+                    );
+
+                    if (
+                        post?.task?._dependent_child &&
+                        post?.task?._dependent_child.length > 0
+                    ) {
+                        for (
+                            var i = 0;
+                            i < post?.task?._dependent_child.length;
+                            i++
+                        ) {
+                            const childpost = await postService.get(
+                                post?.task?._dependent_child[i]
+                            );
+                            if (childpost) {
+                                var newEndDate = DateTime.fromISO(
+                                    childpost?.task?.due_to
+                                ).plus({ days: e_day });
+                                var newStartDate = DateTime.fromISO(
+                                    childpost?.task?.start_date
+                                ).plus({ days: e_day });
+                                await update(
+                                    post?.task?._dependent_child[i],
+                                    newEndDate,
+                                    newStartDate,
+                                    e_day,
+                                    e_day,
+                                    true
+                                );
                             }
                         }
-    
                     }
-                    
-                } 
+                }
             }
 
-            await update(postId,date_due_to,start_date,s_days,e_days,false);
-        
-            var postlist = await postService.getPosts(group_id, false, 'task');
-            
+            await update(
+                postId,
+                date_due_to,
+                start_date,
+                s_days,
+                e_days,
+                false
+            );
+
+            var postlist = await postService.getPosts(group_id, false, "task");
+
             // Send status 200 response
             return res.status(200).json({
-                message: 'Task dates updated!',
-                posts:postlist
+                message: "Task dates updated!",
+                posts: postlist,
             });
- 
         } catch (err) {
-            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+            return sendErr(res, new Error(err), "Internal Server Error!", 500);
         }
     }
 
     /**
      * This function is responsible for changing the task due date
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async changeTaskDate(req: Request, res: Response, next: NextFunction) {
-
         // Fetch Data from request
-        const { params: { postId }, body: { newDate, date_field } } = req;
-        const userId = req['userId'];
+        const {
+            params: { postId },
+            body: { newDate, date_field },
+        } = req;
+        const userId = req["userId"];
 
         // Call Service function to change the assignee
-        const post = await postService.changeTaskDate(postId, userId, date_field, newDate)
+        const post = await postService
+            .changeTaskDate(postId, userId, date_field, newDate)
             .catch((err) => {
-                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-            })
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Bad Request, please check into error stack!",
+                    400
+                );
+            });
 
         // Send status 200 response
         return res.status(200).json({
-            message: 'Task date updated!',
-            post: post
+            message: "Task date updated!",
+            post: post,
         });
     }
 
     /**
      * This function is responsible for changing the task status
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async changeTaskStatus(req: Request, res: Response, next: NextFunction) {
-
         // Fetch Data from request
-        const { params: { postId }, body: { status, groupId, isShuttleTasksModuleAvailable, isIndividualSubscription } } = req;
-        const userId = req['userId'];
+        const {
+            params: { postId },
+            body: {
+                status,
+                groupId,
+                isShuttleTasksModuleAvailable,
+                isIndividualSubscription,
+            },
+        } = req;
+        const userId = req["userId"];
 
         // Call Service function to change the assignee
-        await this.callChangeTaskStatusService(postId, status, userId, groupId, isShuttleTasksModuleAvailable, isIndividualSubscription)
-            .catch((err) => {
-                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-            });
+        const postsReturned = await this.callChangeTaskStatusService(
+            postId,
+            status,
+            userId,
+            groupId,
+            isShuttleTasksModuleAvailable,
+            isIndividualSubscription
+        ).catch((err) => {
+            return sendErr(
+                res,
+                new Error(err),
+                "Bad Request, please check into error stack!",
+                400
+            );
+        });
 
         // Send status 200 response
         return res.status(200).json({
-            message: 'Task status updated!'
+            message: "Task status updated!",
+            post: postsReturned["post"],
+            recurrentPost: postsReturned["recurrentPost"],
         });
     }
 
-    async callChangeTaskStatusService(postId: string, status: string, userId: string, groupId: string, isShuttleTasksModuleAvailable: boolean, isIndividualSubscription: boolean) {
-
+    async callChangeTaskStatusService(
+        postId: string,
+        status: string,
+        userId: string,
+        groupId: string,
+        isShuttleTasksModuleAvailable: boolean,
+        isIndividualSubscription: boolean
+    ) {
         // Call Service function to change the assignee
-        let post = await postService.changeTaskStatus(postId, status, userId)
+        let post = await postService
+            .changeTaskStatus(postId, status, userId)
             .catch((err) => {
                 throw err;
             });
         post.task.status = status;
+        // console.log("status", status);
+        // console.log("recurrent: ", post.is_recurrent);
+        let recurrentPost;
+        if (status == "done" && post.is_recurrent) {
+            recurrentPost = recurrencyController.executeRecurrency(
+                post,
+                userId
+            );
+        }
 
-        
         // Execute Automation Flows
-        post = await postService.executeAutomationFlows(groupId, post, userId, false, isShuttleTasksModuleAvailable, isIndividualSubscription);
-        
+        post = await postService.executeAutomationFlows(
+            groupId,
+            post,
+            userId,
+            false,
+            isShuttleTasksModuleAvailable,
+            isIndividualSubscription
+        );
 
-        return post;
+        return {
+            post: post,
+            recurrentPost: recurrentPost,
+        };
     }
 
     /**
      * This function is responsible for changing the task column
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async changeTaskColumn(req: Request, res: Response, next: NextFunction) {
-
         // Fetch Data from request
-        const { params: { postId }, body: { columnId, groupId, isShuttleTasksModuleAvailable, isIndividualSubscription } } = req;
-        const userId = req['userId'];
+        const {
+            params: { postId },
+            body: {
+                columnId,
+                groupId,
+                isShuttleTasksModuleAvailable,
+                isIndividualSubscription,
+            },
+        } = req;
+        const userId = req["userId"];
 
         if (!postId || !columnId || !userId) {
-            return sendErr(res, new Error('Please provide the postId, sectionId and userId as parameters'), 'Please provide the postId, sectionId and userId as paramaters!', 400);
+            return sendErr(
+                res,
+                new Error(
+                    "Please provide the postId, sectionId and userId as parameters"
+                ),
+                "Please provide the postId, sectionId and userId as paramaters!",
+                400
+            );
         }
 
-        const post = this.changeTaskSection(postId, columnId, userId, groupId, isShuttleTasksModuleAvailable, isIndividualSubscription)
-            .catch((err) => {
-                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-            });
+        const post = this.changeTaskSection(
+            postId,
+            columnId,
+            userId,
+            groupId,
+            isShuttleTasksModuleAvailable,
+            isIndividualSubscription
+        ).catch((err) => {
+            return sendErr(
+                res,
+                new Error(err),
+                "Bad Request, please check into error stack!",
+                400
+            );
+        });
 
         // Send status 200 response
         return res.status(200).json({
-            message: 'Task column updated!',
-            post: post
+            message: "Task column updated!",
+            post: post,
         });
     }
 
-    async changeTaskSection(postId: string, columnId: string, userId: string, groupId: string, isShuttleTasksModuleAvailable: boolean, isIndividualSubscription: boolean) {
+    async changeTaskSection(
+        postId: string,
+        columnId: string,
+        userId: string,
+        groupId: string,
+        isShuttleTasksModuleAvailable: boolean,
+        isIndividualSubscription: boolean
+    ) {
         // Call Service function to change the assignee
         let post = await postService.changeTaskColumn(postId, columnId, userId);
 
         // Execute Automation Flows
-        post = await postService.executeAutomationFlows(groupId, post, userId, false, isShuttleTasksModuleAvailable, isIndividualSubscription);
+        post = await postService.executeAutomationFlows(
+            groupId,
+            post,
+            userId,
+            false,
+            isShuttleTasksModuleAvailable,
+            isIndividualSubscription
+        );
 
         post.task._column = columnId;
 
@@ -1044,73 +1494,91 @@ export class PostController {
 
     /**
      * This function is responsible for fetching the tags
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async getTags(req: Request, res: Response, next: NextFunction) {
-
         // Fetch Data from request
         const { groupId, tag } = req.query;
 
         // Call Service function to fetch the tags
-        const tags = await tagsService.getTagsSearchResults(groupId, tag)
+        const tags = await tagsService
+            .getTagsSearchResults(groupId, tag)
             .catch((err) => {
-                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-            })
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Bad Request, please check into error stack!",
+                    400
+                );
+            });
 
         // // Send status 200 response
         return res.status(200).json({
-            message: 'Tags list fetched!',
-            tags: tags
+            message: "Tags list fetched!",
+            tags: tags,
         });
     }
 
     async getRecentActivity(req: Request, res: Response, next: NextFunction) {
         try {
-
             // Fetch data from request
-            const userId = req['userId'];
+            const userId = req["userId"];
 
             // Call service function to get recent activity
             const posts = await postService.getRecentActivity(userId);
 
             // Send status 200 response
             return res.status(200).json({
-                message: 'Successfully Retrieved Posts!',
-                posts: posts
+                message: "Successfully Retrieved Posts!",
+                posts: posts,
             });
         } catch (error) {
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+            return sendErr(
+                res,
+                new Error(error),
+                "Internal Server Error!",
+                500
+            );
         }
     }
 
-
-    async getNextRecentActivity(req: Request, res: Response, next: NextFunction) {
+    async getNextRecentActivity(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
         try {
-
             // Fetch data from request
-            const userId = req['userId'];
+            const userId = req["userId"];
             const { lastPostId } = req.params;
 
             // Call service function to get next recent activity
-            const posts: any = await postService.getNextRecentActivity(userId, lastPostId);
+            const posts: any = await postService.getNextRecentActivity(
+                userId,
+                lastPostId
+            );
 
             // Send status 200 response
             return res.status(200).json({
                 message: `Successfully Retrieved Next ${posts.length} Posts!`,
-                posts: posts
+                posts: posts,
             });
         } catch (error) {
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+            return sendErr(
+                res,
+                new Error(error),
+                "Internal Server Error!",
+                500
+            );
         }
     }
-
 
     async getRecentGroups(req: Request, res: Response, next: NextFunction) {
         try {
             // Fetch data from request
-            const userId = req['userId'];
+            const userId = req["userId"];
 
             // Call service function to get recent groups
             const groupSet = await postService.getRecentGroups(userId);
@@ -1118,434 +1586,621 @@ export class PostController {
             // Send status 200 response
             return res.status(200).json({
                 message: `Successfully Retrieved Groups List`,
-                groups: groupSet
+                groups: groupSet,
             });
         } catch (error) {
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+            return sendErr(
+                res,
+                new Error(error),
+                "Internal Server Error!",
+                500
+            );
         }
     }
 
     async saveCustomField(req: Request, res: Response, next: NextFunction) {
-
-        const userId = req['userId'];
+        const userId = req["userId"];
 
         // Fetch the groupId
         const { postId } = req.params;
 
         // Fetch the newCustomField from fileHandler middleware
-        const customFieldValue = req.body['customFieldValue'];
-        const customFieldName = req.body['customFieldName'];
-        const customFieldTitle = req.body['customFieldTitle'];
-        const groupId = req.body['groupId'];
-        const isShuttleTasksModuleAvailable = req.body['isShuttleTasksModuleAvailable'];
-        const isIndividualSubscription = req.body['isIndividualSubscription'];
+        const customFieldValue = req.body["customFieldValue"];
+        const customFieldName = req.body["customFieldName"];
+        const customFieldTitle = req.body["customFieldTitle"];
+        const groupId = req.body["groupId"];
+        const isShuttleTasksModuleAvailable =
+            req.body["isShuttleTasksModuleAvailable"];
+        const isIndividualSubscription = req.body["isIndividualSubscription"];
 
-        const post = await this.callChangeCustomFieldValueService(groupId, postId, customFieldName, customFieldTitle, customFieldValue, userId, isShuttleTasksModuleAvailable, isIndividualSubscription)
-            .catch((err) => {
-                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-            });
+        const post = await this.callChangeCustomFieldValueService(
+            groupId,
+            postId,
+            customFieldName,
+            customFieldTitle,
+            customFieldValue,
+            userId,
+            isShuttleTasksModuleAvailable,
+            isIndividualSubscription
+        ).catch((err) => {
+            return sendErr(
+                res,
+                new Error(err),
+                "Bad Request, please check into error stack!",
+                400
+            );
+        });
 
         // Send status 200 response
         return res.status(200).json({
-            message: 'Custom Field updated!',
-            post: post
+            message: "Custom Field updated!",
+            post: post,
         });
     }
 
-    async callChangeCustomFieldValueService(groupId: string, postId: string, cfName: string, cfTitle: string, cfValue: string, userId: string, isShuttleTasksModuleAvailable: boolean, isIndividualSubscription: boolean) {
-        let post = await postService.changeCustomFieldValue(postId, userId, cfName, cfTitle, cfValue);
+    async callChangeCustomFieldValueService(
+        groupId: string,
+        postId: string,
+        cfName: string,
+        cfTitle: string,
+        cfValue: string,
+        userId: string,
+        isShuttleTasksModuleAvailable: boolean,
+        isIndividualSubscription: boolean
+    ) {
+        let post = await postService.changeCustomFieldValue(
+            postId,
+            userId,
+            cfName,
+            cfTitle,
+            cfValue
+        );
 
         post.task.custom_fields[cfName] = cfValue;
 
         // Execute Automation Flows
-        post = await postService.executeAutomationFlows(groupId, post, userId, false, isShuttleTasksModuleAvailable, isIndividualSubscription);
+        post = await postService.executeAutomationFlows(
+            groupId,
+            post,
+            userId,
+            false,
+            isShuttleTasksModuleAvailable,
+            isIndividualSubscription
+        );
 
         return post;
     }
 
     /**
      * This function is responsible for fetching the posts of a workspace
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async getWorspacePosts(req: Request, res: Response, next: NextFunction) {
-
         // Fetch Data from request
-        const { workspaceId, type, numDays, overdue, isNorthStar, filteringGroups } = req.query;
+        const {
+            workspaceId,
+            type,
+            numDays,
+            overdue,
+            isNorthStar,
+            filteringGroups,
+        } = req.query;
 
         // Call Service function to fetch the posts
         let posts: any = [];
 
         if (isNorthStar) {
-            posts = await postService.getWorspaceNorthStars(workspaceId, type, +numDays, (overdue == "true"), (isNorthStar == "true"), filteringGroups)
+            posts = await postService
+                .getWorspaceNorthStars(
+                    workspaceId,
+                    type,
+                    +numDays,
+                    overdue == "true",
+                    isNorthStar == "true",
+                    filteringGroups
+                )
                 .catch((err) => {
-                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                })
+                    return sendErr(
+                        res,
+                        new Error(err),
+                        "Bad Request, please check into error stack!",
+                        400
+                    );
+                });
         } else {
-            posts = await postService.getWorspacePostsResults(workspaceId, type, +numDays, (overdue == "true"), filteringGroups)
+            posts = await postService
+                .getWorspacePostsResults(
+                    workspaceId,
+                    type,
+                    +numDays,
+                    overdue == "true",
+                    filteringGroups
+                )
                 .catch((err) => {
-                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                })
+                    return sendErr(
+                        res,
+                        new Error(err),
+                        "Bad Request, please check into error stack!",
+                        400
+                    );
+                });
         }
         // // Send status 200 response
         return res.status(200).json({
-            message: 'Posts fetched!',
-            posts: posts
+            message: "Posts fetched!",
+            posts: posts,
         });
     }
 
     /**
      * This function is responsible for fetching the posts of a group
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async getGroupPosts(req: Request, res: Response, next: NextFunction) {
-
         // Fetch Data from request
         const { groupId, type, numDays, overdue } = req.query;
 
         // Call Service function to fetch the posts
         let posts: any = [];
 
-        if (type === 'task') {
-            posts = await postService.getGroupTasksResults(groupId, type, numDays, (overdue == "true"))
+        if (type === "task") {
+            posts = await postService
+                .getGroupTasksResults(groupId, type, numDays, overdue == "true")
                 .catch((err) => {
-                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                    return sendErr(
+                        res,
+                        new Error(err),
+                        "Bad Request, please check into error stack!",
+                        400
+                    );
                 });
         } else {
-            posts = await postService.getGroupPostsResults(groupId, numDays)
+            posts = await postService
+                .getGroupPostsResults(groupId, numDays)
                 .catch((err) => {
-                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                    return sendErr(
+                        res,
+                        new Error(err),
+                        "Bad Request, please check into error stack!",
+                        400
+                    );
                 });
         }
 
         // // Send status 200 response
         return res.status(200).json({
-            message: 'Posts fetched!',
-            posts: posts
+            message: "Posts fetched!",
+            posts: posts,
         });
     }
 
     /**
      * This function is responsible for fetching the posts of a column
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async getColumnPosts(req: Request, res: Response, next: NextFunction) {
-
         // Fetch Data from request
         const { columnId, overdue } = req.query;
 
         // Call Service function to fetch the posts
         let posts: any = [];
 
-        posts = await postService.getColumnTasksResults(columnId, (overdue == "true"))
+        posts = await postService
+            .getColumnTasksResults(columnId, overdue == "true")
             .catch((err) => {
-                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Bad Request, please check into error stack!",
+                    400
+                );
             });
 
         // Send status 200 response
         return res.status(200).json({
-            message: 'Posts fetched!',
-            posts: posts
+            message: "Posts fetched!",
+            posts: posts,
         });
     }
 
     /**
      * This function is responsible for fetching the posts of a group
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async getAllGroupTasks(req: Request, res: Response, next: NextFunction) {
-
         // Fetch Data from request
         const { groupId, period } = req.query;
 
         // Call Service function to fetch the posts
-        const posts = await postService.getAllGroupTasks(groupId, period)
+        const posts = await postService
+            .getAllGroupTasks(groupId, period)
             .catch((err) => {
-                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Bad Request, please check into error stack!",
+                    400
+                );
             });
-        
+
         // // Send status 200 response
         return res.status(200).json({
-            message: 'Group Tasks fetched!',
-            posts: posts
+            message: "Group Tasks fetched!",
+            posts: posts,
         });
     }
 
     /**
      * This function is responsible for fetching the tasks of a project group
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async getAllProjectTasks(req: Request, res: Response, next: NextFunction) {
-
         // Fetch Data from request
         const { groupId, overdue } = req.query;
 
         // Call Service function to fetch the posts
-        const posts = await postService.getAllProjectTasks(groupId, (overdue == 'true'))
+        const posts = await postService
+            .getAllProjectTasks(groupId, overdue == "true")
             .catch((err) => {
-                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Bad Request, please check into error stack!",
+                    400
+                );
             });
-        
+
         // // Send status 200 response
         return res.status(200).json({
-            message: 'Group Tasks fetched!',
-            posts: posts
+            message: "Group Tasks fetched!",
+            posts: posts,
         });
     }
-    
+
     /**
      * This function is responsible for fetching the subtasks of a task
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async getSubtasks(req: Request, res: Response, next: NextFunction) {
-
         // Fetch Data from request
         const { parentId } = req.query;
 
         // Call Service function to fetch the posts
         let subtasks: any = [];
 
-        subtasks = await postService.getSubtasks(parentId.toString())
+        subtasks = await postService
+            .getSubtasks(parentId.toString())
             .catch((err) => {
-                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Bad Request, please check into error stack!",
+                    400
+                );
             });
 
         // // Send status 200 response
         return res.status(200).json({
-            message: 'Subtasks fetched!',
-            subtasks: subtasks
+            message: "Subtasks fetched!",
+            subtasks: subtasks,
         });
     }
 
     /**
      * This function is responsible for fetching the number of subtasks of a task
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async getSubtasksCount(req: Request, res: Response, next: NextFunction) {
-
         // Fetch Data from request
         const { parentId } = req.query;
 
         try {
-
             // Call Service function to fetch the posts
             let subtasksCount: number = 0;
 
-            subtasksCount = await postService.getSubtasksCount(parentId.toString());
+            subtasksCount = await postService.getSubtasksCount(
+                parentId.toString()
+            );
 
             // // Send status 200 response
             return res.status(200).json({
-                message: 'Subtasks fetched!',
-                subtasksCount: subtasksCount
+                message: "Subtasks fetched!",
+                subtasksCount: subtasksCount,
             });
         } catch (err) {
-            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+            return sendErr(res, new Error(err), "Internal Server Error!", 500);
         }
     }
 
     /**
      * This function is responsible for moving the posts of a group
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async moveToGroup(req: Request, res: Response, next: NextFunction) {
-
         // Post Object From request
-        const { body: { groupId, oldGroupId, columnId }, params: { postId } } = req;
-        const userId = req['userId'];
+        const {
+            body: { groupId, oldGroupId, columnId },
+            params: { postId },
+        } = req;
+        const userId = req["userId"];
 
         // Call service function to edit
-        const updatedPost = await postService.moveToGroup(postId, groupId, columnId, oldGroupId, userId)
+        const updatedPost = await postService
+            .moveToGroup(postId, groupId, columnId, oldGroupId, userId)
             .catch((err) => {
                 if (err == null) {
-                    return sendErr(res, null, 'User not allowed to edit this post!', 403);
+                    return sendErr(
+                        res,
+                        null,
+                        "User not allowed to edit this post!",
+                        403
+                    );
                 }
-                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-            })
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Insufficient Data, please check into error stack!",
+                    400
+                );
+            });
 
         // Send Status 200 response
         return res.status(200).json({
-            message: 'Post Moved Successfully!',
-            post: updatedPost
+            message: "Post Moved Successfully!",
+            post: updatedPost,
         });
     }
 
     /**
      * This function is responsible for copying the posts of a group
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async copyToGroup(req: Request, res: Response, next: NextFunction) {
-
         // Post Object From request
         const { postId, groupId, columnId, oldGroupId } = req.body;
-        const userId = req['userId'];
+        const userId = req["userId"];
 
         // Call servide function for adding the post
-        const postData = await postService.copyToGroup(postId, groupId, columnId, oldGroupId, userId)
+        const postData = await postService
+            .copyToGroup(postId, groupId, columnId, oldGroupId, userId)
             .catch((err) => {
-                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Insufficient Data, please check into error stack!",
+                    400
+                );
             });
 
         // Send Status 200 response
         return res.status(200).json({
-            message: 'Post Copied Successfully!',
-            post: postData
+            message: "Post Copied Successfully!",
+            post: postData,
         });
     }
 
     /**
      * This function fetches the 10 possible parent tasks
-     * @param { query: { groupId, currentPostId, query } } req 
-     * @param res 
-     * @param next 
+     * @param { query: { groupId, currentPostId, query } } req
+     * @param res
+     * @param next
      */
-    async searchPossibleParents(req: Request, res: Response, next: NextFunction) {
-
+    async searchPossibleParents(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
         // Fetch groupId and lastPostId from request
         var { groupId, query, field } = req.query;
-        var { currentPostId } = req.params
+        var { currentPostId } = req.params;
 
         // If groupId or currentPostId are not present, then return error
         if (!groupId || !currentPostId) {
-            return sendErr(res, new Error('Please provide the group and the current post as the query parameter'), 'Please provide the groupId as the query paramater!', 400);
+            return sendErr(
+                res,
+                new Error(
+                    "Please provide the group and the current post as the query parameter"
+                ),
+                "Please provide the groupId as the query paramater!",
+                400
+            );
         }
 
         // Fetch the 10 possible posts
-        await postService.searchPossibleParents(groupId, currentPostId, query, field)
+        await postService
+            .searchPossibleParents(groupId, currentPostId, query, field)
             .then((posts) => {
                 return res.status(200).json({
                     message: `The ${posts.length} possible parent tasks!`,
-                    posts: posts
+                    posts: posts,
                 });
             })
             .catch((err) => {
-
-                return sendErr(res, new Error(err), 'Unable to fetch the tasks, kindly check the stack trace for error', 400)
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Unable to fetch the tasks, kindly check the stack trace for error",
+                    400
+                );
             });
     }
 
     /**
      * This function is responsible for setting the parent task of a task
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async setParentTask(req: Request, res: Response, next: NextFunction) {
-
         // Post Object From request
-        const { body: { parentTaskId }, params: { postId } } = req;
-        const userId = req['userId'];
+        const {
+            body: { parentTaskId },
+            params: { postId },
+        } = req;
+        const userId = req["userId"];
 
         // Call service function to edit
-        const updatedPost = await postService.setParentTask(postId, userId, parentTaskId)
+        const updatedPost = await postService
+            .setParentTask(postId, userId, parentTaskId)
             .catch((err) => {
                 if (err == null) {
-                    sendErr(res, null, 'User not allowed to edit this post!', 403);
+                    sendErr(
+                        res,
+                        null,
+                        "User not allowed to edit this post!",
+                        403
+                    );
                 }
-                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-            })
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Insufficient Data, please check into error stack!",
+                    400
+                );
+            });
 
         // Send Status 200 response
         return res.status(200).json({
-            message: 'Post assigned to a parent Successfully!',
-            post: updatedPost
+            message: "Post assigned to a parent Successfully!",
+            post: updatedPost,
         });
     }
-    
+
     /**
      * This function is responsible for setting the parent task of a task
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async setDependencyTask(req: Request, res: Response, next: NextFunction) {
-
         // Post Object From request
-        const { body: { dependencyTaskId }, params: { postId } } = req;
-        const userId = req['userId'];
+        const {
+            body: { dependencyTaskId },
+            params: { postId },
+        } = req;
+        const userId = req["userId"];
 
         // Call service function to edit
-        const updatedPost = await postService.setDependencyTask(postId, userId, dependencyTaskId)
+        const updatedPost = await postService
+            .setDependencyTask(postId, userId, dependencyTaskId)
             .catch((err) => {
                 if (err == null) {
-                    sendErr(res, null, 'User not allowed to edit this post!', 403);
+                    sendErr(
+                        res,
+                        null,
+                        "User not allowed to edit this post!",
+                        403
+                    );
                 }
-                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-            })
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Insufficient Data, please check into error stack!",
+                    400
+                );
+            });
 
         // Send Status 200 response
         return res.status(200).json({
-            message: 'Post assigned to a parent Successfully!',
-            post: updatedPost
+            message: "Post assigned to a parent Successfully!",
+            post: updatedPost,
         });
     }
 
     /**
      * This function is responsible for removeing the dependency task of a task
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
-    async removeDependencyTask(req: Request, res: Response, next: NextFunction) {
-
+    async removeDependencyTask(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
         // Post Object From request
-        const { body: { dependencyTaskId }, params: { postId } } = req;
-        const userId = req['userId'];
+        const {
+            body: { dependencyTaskId },
+            params: { postId },
+        } = req;
+        const userId = req["userId"];
 
         // Call service function to edit
-        const updatedPost = await postService.removeDependencyTask(postId, userId, dependencyTaskId)
+        const updatedPost = await postService
+            .removeDependencyTask(postId, userId, dependencyTaskId)
             .catch((err) => {
                 if (err == null) {
-                    return sendErr(res, null, 'User not allowed to edit this post!', 403);
+                    return sendErr(
+                        res,
+                        null,
+                        "User not allowed to edit this post!",
+                        403
+                    );
                 }
-                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-            })
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Insufficient Data, please check into error stack!",
+                    400
+                );
+            });
 
         // Send Status 200 response
         return res.status(200).json({
-            message: 'Dependency removed Successfully!',
-            post: updatedPost
+            message: "Dependency removed Successfully!",
+            post: updatedPost,
         });
     }
 
     /**
      * This function is responsible for cloning the posts of a assignee
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async cloneToAssignee(req: Request, res: Response, next: NextFunction) {
         try {
             // Post Object From request
-            const { params: { postId }, body: { assignees } } = req;
+            const {
+                params: { postId },
+                body: { assignees },
+            } = req;
 
             // Call servide function for adding the post
-            assignees.forEach(async assigneeId => {
-                const postData = await postService.cloneToAssignee(postId, assigneeId)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-                });
+            assignees.forEach(async (assigneeId) => {
+                const postData = await postService
+                    .cloneToAssignee(postId, assigneeId)
+                    .catch((err) => {
+                        return sendErr(
+                            res,
+                            new Error(err),
+                            "Insufficient Data, please check into error stack!",
+                            400
+                        );
+                    });
             });
-            
+
             // Send Status 200 response
             return res.status(200).json({
-                message: 'Post Clonned Successfully!',
+                message: "Post Clonned Successfully!",
             });
         } catch (error) {
             sendErr(res, error);
@@ -1555,167 +2210,225 @@ export class PostController {
     /**
      * This function fetches the list of templates present inside a group
      * @param { query: { groupId } } req
-     * @param res 
-     * @param next 
+     * @param res
+     * @param next
      */
     async getGroupTemplates(req: Request, res: Response, next: NextFunction) {
-
         // Fetch groupId and lastPostId from request
         var { groupId } = req.query;
 
         // If groupId is not present, then return error
         if (!groupId) {
-            return sendErr(res, new Error('Please provide the groupId as the query parameter'), 'Please provide the groupId as the query paramater!', 400);
+            return sendErr(
+                res,
+                new Error("Please provide the groupId as the query parameter"),
+                "Please provide the groupId as the query paramater!",
+                400
+            );
         }
 
-        await postService.getGroupTemplates(groupId)
+        await postService
+            .getGroupTemplates(groupId)
             .then((posts) => {
                 return res.status(200).json({
                     message: `The group templates!`,
-                    posts: posts
+                    posts: posts,
                 });
             })
             .catch((err) => {
-
                 // If there's an error send bad request
-                return sendErr(res, new Error(err), 'Unable to fetch the templates, kindly check the stack trace for error', 400)
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Unable to fetch the templates, kindly check the stack trace for error",
+                    400
+                );
             });
     }
 
     /**
      * This function is responsible for creating a template from a posts
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async createTemplate(req: Request, res: Response, next: NextFunction) {
-
         // Post Object From request
         const { postId, groupId, templateName } = req.body;
 
         // Call servide function for creating the template
-        const postData = await postService.createTemplate(postId, groupId, templateName)
+        const postData = await postService
+            .createTemplate(postId, groupId, templateName)
             .catch((err) => {
-                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-            })
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Insufficient Data, please check into error stack!",
+                    400
+                );
+            });
 
         // Send Status 200 response
         return res.status(200).json({
-            message: 'Template Created Successfully!',
-            post: postData
+            message: "Template Created Successfully!",
+            post: postData,
         });
     }
 
     /**
      * This function is responsible for overwriting a template
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async overwriteTemplate(req: Request, res: Response, next: NextFunction) {
-
         // Post Object From request
-        const { body: { templateName, templateId }, params: { postId } } = req;
+        const {
+            body: { templateName, templateId },
+            params: { postId },
+        } = req;
 
         // Call service function to edit
-        const updatedPost = await postService.overwriteTemplate(postId, templateId, templateName)
+        const updatedPost = await postService
+            .overwriteTemplate(postId, templateId, templateName)
             .catch((err) => {
                 if (err == null) {
-                    sendErr(res, null, 'User not allowed to edit this post!', 403);
+                    sendErr(
+                        res,
+                        null,
+                        "User not allowed to edit this post!",
+                        403
+                    );
                 }
-                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-            })
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Insufficient Data, please check into error stack!",
+                    400
+                );
+            });
 
         // Send Status 200 response
         return res.status(200).json({
-            message: 'Template Overwritten Successfully!',
-            post: updatedPost
+            message: "Template Overwritten Successfully!",
+            post: updatedPost,
         });
     }
 
     /**
      * This function is responsible for creating a template from a posts
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
-    async createTaskFromTemplate(req: Request, res: Response, next: NextFunction) {
-
+    async createTaskFromTemplate(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
         // Post Object From request
         const { templatePostId, postId } = req.body;
 
         // Call servide function for creating the template
-        const postData = await postService.createTaskFromTemplate(templatePostId, postId)
+        const postData = await postService
+            .createTaskFromTemplate(templatePostId, postId)
             .catch((err) => {
-                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-            })
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Insufficient Data, please check into error stack!",
+                    400
+                );
+            });
 
         // Send Status 200 response
         return res.status(200).json({
-            message: 'Task Created Successfully!',
-            post: postData
+            message: "Task Created Successfully!",
+            post: postData,
         });
     }
 
     /**
      * This function is responsible for changing the task estimation
-     * @param req 
-     * @param res 
-     * @param next 
+     * @param req
+     * @param res
+     * @param next
      */
     async saveEstimation(req: Request, res: Response, next: NextFunction) {
-
         // Fetch Data from request
-        const { params: { postId }, body: { estimation } } = req;
-        const userId = req['userId'];
+        const {
+            params: { postId },
+            body: { estimation },
+        } = req;
+        const userId = req["userId"];
 
         // Call Service function to change the assignee
-        const post = await postService.saveEstimation(postId, userId, estimation)
+        const post = await postService
+            .saveEstimation(postId, userId, estimation)
             .catch((err) => {
-                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-            })
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Bad Request, please check into error stack!",
+                    400
+                );
+            });
 
         // Send status 200 response
         return res.status(200).json({
-            message: 'Task estimation updated!',
-            post: post
+            message: "Task estimation updated!",
+            post: post,
         });
     }
 
     async pinToTop(req: Request, res: Response, next: NextFunction) {
-
         // Fetch Data from request
-        const { params: { postId }, body: { pin } } = req;
+        const {
+            params: { postId },
+            body: { pin },
+        } = req;
 
         // Call Service function to change the assignee
-        const post = await postService.pinToTop(postId, pin)
-            .catch((err) => {
-                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-            })
+        const post = await postService.pinToTop(postId, pin).catch((err) => {
+            return sendErr(
+                res,
+                new Error(err),
+                "Bad Request, please check into error stack!",
+                400
+            );
+        });
 
         // Send status 200 response
         return res.status(200).json({
-            message: 'Post pinned/unpinned!',
-            post: post
+            message: "Post pinned/unpinned!",
+            post: post,
         });
     }
 
     async voteIdea(req: Request, res: Response, next: NextFunction) {
-
         // Fetch Data from request
-        const { params: { postId }, body: { vote } } = req;
-        const userId = req['userId'];
+        const {
+            params: { postId },
+            body: { vote },
+        } = req;
+        const userId = req["userId"];
 
         // Call Service function to change the assignee
-        const post = await postService.voteIdea(postId, vote, userId)
+        const post = await postService
+            .voteIdea(postId, vote, userId)
             .catch((err) => {
-                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-            })
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Bad Request, please check into error stack!",
+                    400
+                );
+            });
 
         // Send status 200 response
         return res.status(200).json({
-            message: 'Idea Voted!',
-            post: post
+            message: "Idea Voted!",
+            post: post,
         });
     }
 
@@ -1724,140 +2437,216 @@ export class PostController {
         const { postId } = req.params;
 
         // Fetch the value from fileHandler middleware
-        const shuttleGroupId = req.body['shuttleGroupId'];
+        const shuttleGroupId = req.body["shuttleGroupId"];
 
         try {
-            const post = await postService.selectShuttleGroup(postId, shuttleGroupId, req['userId']);
+            const post = await postService.selectShuttleGroup(
+                postId,
+                shuttleGroupId,
+                req["userId"]
+            );
 
             // Send status 200 response
             return res.status(200).json({
-                message: 'Task updated!',
-                post: post
+                message: "Task updated!",
+                post: post,
             });
         } catch (err) {
-            return sendErr(res, err, 'Internal Server Error!', 500);
+            return sendErr(res, err, "Internal Server Error!", 500);
         }
-    };
+    }
 
-    async selectShuttleSection(req: Request, res: Response, next: NextFunction) {
+    async selectShuttleSection(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
         // Fetch the postId
         const { postId } = req.params;
 
         // Fetch userId from the request
-        const userId = req['userId'];
+        const userId = req["userId"];
 
         // Fetch the value for shuttleSectionId & groupId
-        const shuttleSectionId = req.body['shuttleSectionId'];
-        const groupId = req.body['groupId'];
-        const isShuttleTasksModuleAvailable = req.body['isShuttleTasksModuleAvailable'];
-        const isIndividualSubscription = req.body['isIndividualSubscription'];
+        const shuttleSectionId = req.body["shuttleSectionId"];
+        const groupId = req.body["groupId"];
+        const isShuttleTasksModuleAvailable =
+            req.body["isShuttleTasksModuleAvailable"];
+        const isIndividualSubscription = req.body["isIndividualSubscription"];
 
         try {
             // Find the group and update
-            let post = await postService.selectShuttleSection(postId, true, shuttleSectionId, groupId);
-           
+            let post = await postService.selectShuttleSection(
+                postId,
+                true,
+                shuttleSectionId,
+                groupId
+            );
+
             // Execute Automation Flows
-            post = await postService.executeAutomationFlows(groupId, post, userId, true, isShuttleTasksModuleAvailable, isIndividualSubscription);
+            post = await postService.executeAutomationFlows(
+                groupId,
+                post,
+                userId,
+                true,
+                isShuttleTasksModuleAvailable,
+                isIndividualSubscription
+            );
 
             // Send status 200 response
             return res.status(200).json({
-                message: 'Task updated!',
-                post: post
+                message: "Task updated!",
+                post: post,
             });
         } catch (err) {
-            return sendErr(res, err, 'Internal Server Error!', 500);
+            return sendErr(res, err, "Internal Server Error!", 500);
         }
-    };
+    }
 
     async selectShuttleStatus(req: Request, res: Response, next: NextFunction) {
         // Fetch the postId & groupId
         const { postId } = req.params;
 
         // Fetch userId from the request
-        const userId = req['userId'];
+        const userId = req["userId"];
 
         // Fetch the value for shuttleSectionId & groupId
-        const shuttleStatus = req.body['shuttleStatus'];
-        const groupId = req.body['groupId'];
-        const isShuttleTasksModuleAvailable = req.body['isShuttleTasksModuleAvailable'];
-        const isIndividualSubscription = req.body['isIndividualSubscription'];
+        const shuttleStatus = req.body["shuttleStatus"];
+        const groupId = req.body["groupId"];
+        const isShuttleTasksModuleAvailable =
+            req.body["isShuttleTasksModuleAvailable"];
+        const isIndividualSubscription = req.body["isIndividualSubscription"];
 
         try {
             // Find the group and update
-            let post = await postService.selectShuttleStatus(postId, groupId, shuttleStatus, userId);
-            
+            let post = await postService.selectShuttleStatus(
+                postId,
+                groupId,
+                shuttleStatus,
+                userId
+            );
+
             // Execute Automation Flows
-            post = await postService.executeAutomationFlows(groupId, post, userId, false, isShuttleTasksModuleAvailable, isIndividualSubscription);
+            post = await postService.executeAutomationFlows(
+                groupId,
+                post,
+                userId,
+                false,
+                isShuttleTasksModuleAvailable,
+                isIndividualSubscription
+            );
 
             // Send status 200 response
             return res.status(200).json({
-                message: 'Task updated!',
-                post: post
+                message: "Task updated!",
+                post: post,
             });
         } catch (err) {
-            return sendErr(res, err, 'Internal Server Error!', 500);
+            return sendErr(res, err, "Internal Server Error!", 500);
         }
-    };
+    }
 
     async runAutomator(req: Request, res: Response, next: NextFunction) {
         // Fetch the postId & groupId
         const { postId } = req.params;
 
         // Fetch userId and isShuttleTasksModuleAvailable
-        const { isShuttleTasksModuleAvailable, isIndividualSubscription } = req.body;
-        const userId = req['userId'];
+        const { isShuttleTasksModuleAvailable, isIndividualSubscription } =
+            req.body;
+        const userId = req["userId"];
 
         try {
             let post = await Post.findOne({
-                    _id: postId
+                _id: postId,
+            })
+                .populate({
+                    path: "_group",
+                    select: "group_name group_avatar workspace_name",
                 })
-                .populate({ path: '_group', select: 'group_name group_avatar workspace_name' })
-                .populate({ path: '_assigned_to', select: 'first_name last_name profile_pic role email' })
-                .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
-                .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-                .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
-                .populate({ path: 'task.shuttles._shuttle_group', select: '_id group_name group_avatar shuttle_type _shuttle_section' })
-                .populate({ path: 'task.shuttles._shuttle_section', select: '_id title' })
-                .lean();;
+                .populate({
+                    path: "_assigned_to",
+                    select: "first_name last_name profile_pic role email",
+                })
+                .populate({
+                    path: "approval_flow._assigned_to",
+                    select: "_id first_name last_name profile_pic email",
+                })
+                .populate({
+                    path: "approval_history._actor",
+                    select: "_id first_name last_name profile_pic",
+                })
+                .populate({
+                    path: "task._parent_task",
+                    select: "_id title _assigned_to",
+                })
+                .populate({
+                    path: "task.shuttles._shuttle_group",
+                    select: "_id group_name group_avatar shuttle_type _shuttle_section",
+                })
+                .populate({
+                    path: "task.shuttles._shuttle_section",
+                    select: "_id title",
+                })
+                .lean();
 
             // Execute Automation Flows
-            post = await postService.executeAutomationFlows(post._group, post, userId, false, isShuttleTasksModuleAvailable, isIndividualSubscription);
+            post = await postService.executeAutomationFlows(
+                post._group,
+                post,
+                userId,
+                false,
+                isShuttleTasksModuleAvailable,
+                isIndividualSubscription
+            );
 
             // Send status 200 response
             return res.status(200).json({
-                message: 'Task updated!',
-                post: post
+                message: "Task updated!",
+                post: post,
             });
         } catch (err) {
-            return sendErr(res, err, 'Internal Server Error!', 500);
+            return sendErr(res, err, "Internal Server Error!", 500);
         }
-    };
+    }
 
     /**
      * This function is responsible for editing a post
      * @param { post } req
-     * @param res 
-     * @param next 
+     * @param res
+     * @param next
      */
     async saveCRMInfo(req: Request, res: Response, next: NextFunction) {
-
         // Post Object From request
-        const { body: { crm_info }, params: { postId } } = req;
-        const userId = req['userId'];
+        const {
+            body: { crm_info },
+            params: { postId },
+        } = req;
+        const userId = req["userId"];
 
         // Call service function to edit
-        const updatedPost = await postService.saveCRMInfo(postId, crm_info, userId)
+        const updatedPost = await postService
+            .saveCRMInfo(postId, crm_info, userId)
             .catch((err) => {
                 if (err == null) {
-                    return sendErr(res, null, 'User not allowed to edit this post!', 403);
+                    return sendErr(
+                        res,
+                        null,
+                        "User not allowed to edit this post!",
+                        403
+                    );
                 }
-                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-            })
+                return sendErr(
+                    res,
+                    new Error(err),
+                    "Insufficient Data, please check into error stack!",
+                    400
+                );
+            });
 
         // Send Status 200 response
         return res.status(200).json({
-            message: 'Post Edited Successfully!',
-            post: updatedPost
+            message: "Post Edited Successfully!",
+            post: updatedPost,
         });
     }
 
@@ -1867,9 +2656,9 @@ export class PostController {
 
         try {
             let timeTrackingEntities = await TimeTrackingEntity.find({
-                    _task: postId
-                })
-                .populate('_user', 'hr')
+                _task: postId,
+            })
+                .populate("_user", "hr")
                 .lean();
 
             for (let i = 0; i < timeTrackingEntities.length; i++) {
@@ -1878,46 +2667,54 @@ export class PostController {
                 for (let j = 0; j < tte.times.length; j++) {
                     let time = tte.times[j];
 
-                    const newCost = await postService.calculateTimeEntityCost((tte._user.hr.hourly_rate || 0), time);
+                    const newCost = await postService.calculateTimeEntityCost(
+                        tte._user.hr.hourly_rate || 0,
+                        time
+                    );
 
-                    await TimeTrackingEntity.findByIdAndUpdate({
-                            _id: tte._id
-                        }, {
+                    await TimeTrackingEntity.findByIdAndUpdate(
+                        {
+                            _id: tte._id,
+                        },
+                        {
                             $set: {
-                                'times.$[time].cost': newCost,
-                            }
+                                "times.$[time].cost": newCost,
+                            },
                         },
                         {
                             arrayFilters: [{ "time._id": time._id }],
-                            new: true
-                        });
+                            new: true,
+                        }
+                    );
                 }
-                
             }
 
             timeTrackingEntities = await TimeTrackingEntity.find({
-                    _task: postId
-                })
-                .populate('_user', 'first_name last_name profile_pic email')
-                .populate('_created_by', 'first_name last_name profile_pic email')
+                _task: postId,
+            })
+                .populate("_user", "first_name last_name profile_pic email")
+                .populate(
+                    "_created_by",
+                    "first_name last_name profile_pic email"
+                )
                 .lean();
 
             // Send status 200 response
             return res.status(200).json({
-                message: 'Task cost edited!',
-                timeTrackingEntities: timeTrackingEntities
+                message: "Task cost edited!",
+                timeTrackingEntities: timeTrackingEntities,
             });
         } catch (err) {
             console.log(err);
-            return sendErr(res, err, 'Internal Server Error!', 500);
+            return sendErr(res, err, "Internal Server Error!", 500);
         }
     }
 
     /**
      * This function fetches the list of templates present inside a group
      * @param { query: { groupId } } req
-     * @param res 
-     * @param next 
+     * @param res
+     * @param next
      */
     // async getTasksPerGroupUserStatusAndDate(req: Request, res: Response, next: NextFunction) {
 
