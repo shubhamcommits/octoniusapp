@@ -11,6 +11,7 @@ import {
     commentRoutes,
     postsPermissionsRoutes,
     sectionsPermissionsRoutes,
+    postRecurrencyRoutes,
 } from "./routes";
 import { fileHandler } from "./utils/filehandler";
 
@@ -108,6 +109,7 @@ app.all("/", (req: Request, res: Response, next: NextFunction) => {
 app.use("/api", postRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/post/permissions", postsPermissionsRoutes);
+app.use("/api/post/recurrency", postRecurrencyRoutes);
 app.use("/api/section/permissions", sectionsPermissionsRoutes);
 
 // Invalid routes handling middleware

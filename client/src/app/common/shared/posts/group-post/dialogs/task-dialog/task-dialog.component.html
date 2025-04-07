@@ -195,7 +195,8 @@
                 [status]="postData?.task?.status"
                 [disabled]="postData?.archived || !canEdit"
                 [shuttleType]="false"
-                (status)="changeTaskStatus($event)">
+                (status)="changeTaskStatus($event)"
+                (taskRecurrentEvent)="recurrentPostCreated($event)">
             </app-task-status>
 
             <app-task-status class="ml-2"
@@ -206,7 +207,8 @@
                 [status]="shuttle?.shuttle_status"
                 [disabled]="postData?.archived || !canEdit"
                 [shuttleType]="true"
-                (status)="changeShuttleTaskStatus($event)">
+                (status)="changeShuttleTaskStatus($event)"
+                (taskRecurrentEvent)="recurrentPostCreated($event)">
             </app-task-status>
             <!-- Change task status ends -->
           </div>

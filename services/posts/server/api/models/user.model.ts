@@ -1,317 +1,343 @@
 const { DateTime } = require("luxon");
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
 const UserSchema = new Schema({
     _account: {
         type: Schema.Types.ObjectId,
-        ref: 'Account',
-        required: true
+        ref: "Account",
+        required: true,
     },
     active: {
         type: Boolean,
         required: true,
-        default: true
+        default: true,
     },
     first_name: {
         type: String,
-        required: true
+        required: true,
     },
     last_name: {
         type: String,
-        required: true
+        required: true,
     },
     full_name: {
         type: String,
         required: true,
-        lowercase: true
+        lowercase: true,
     },
     email: {
         type: String,
-        required: false
+        required: false,
     },
     profile_pic: {
         type: String,
-        default: 'assets/images/user.png'
+        default: "assets/images/user.png",
     },
     search_history: {
         type: Array,
-        default: []
+        default: [],
     },
     workspace_name: {
         type: String,
-        required: true
+        required: true,
     },
     _workspace: {
         type: Schema.Types.ObjectId,
-        ref: 'Workspace'
+        ref: "Workspace",
     },
     role: {
         type: String,
         required: true,
-        default: 'member',
-        enum: ['owner', 'member', 'admin', 'manager', 'guest']
+        default: "member",
+        enum: ["owner", "member", "admin", "manager", "guest"],
     },
     hr_role: {
         type: Boolean,
-        default: false
+        default: false,
     },
     crm_role: {
         type: Boolean,
-        default: false
+        default: false,
     },
     phone_number: {
         type: String,
-        default: null
+        default: null,
     },
     mobile_number: {
         type: String,
-        default: null
+        default: null,
     },
     current_position: {
         type: String,
-        default: null
+        default: null,
     },
     bio: {
         type: String,
-        default: null
+        default: null,
     },
     company_name: {
         type: String,
-        default: null
+        default: null,
     },
     company_join_date: {
         type: Date,
-        default: DateTime.now()
+        default: DateTime.now(),
     },
     created_date: {
         type: Date,
-        default: DateTime.now()
+        default: DateTime.now(),
     },
-    skills: [{
-        type: String,
-        default: null
-    }],
+    skills: [
+        {
+            type: String,
+            default: null,
+        },
+    ],
     // Custom Fields
     profile_custom_fields: {
         type: Map,
-        of: String
+        of: String,
     },
-    files: [{
-        type: String,
-        default: null
-    }],
-    _groups: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Group',
-        // unique : true
-    }],
+    files: [
+        {
+            type: String,
+            default: null,
+        },
+    ],
+    _groups: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Group",
+            // unique : true
+        },
+    ],
     selected_widgets: {
         type: [String],
-        default: ['WORK_STATISTICS', 'WORKLOAD', 'VELOCITY'/*, 'PULSE'*/, 'PEOPLE_DIRECTORY', 'ORGANIZATIONAL_STRUCTURE', 'WORK_STATISTICS_NORTH_STAR', 'ENGAGEMENT', 'KPI_PERFORMANCE', 'TOP_SOCIAL']
+        default: [
+            "WORK_STATISTICS",
+            "WORKLOAD",
+            "VELOCITY" /*, 'PULSE'*/,
+            "PEOPLE_DIRECTORY",
+            "ORGANIZATIONAL_STRUCTURE",
+            "WORK_STATISTICS_NORTH_STAR",
+            "ENGAGEMENT",
+            "KPI_PERFORMANCE",
+            "TOP_SOCIAL",
+        ],
     },
     hr: {
-        _entity:{
+        _entity: {
             type: Schema.Types.ObjectId,
-            ref: 'Entity',
+            ref: "Entity",
         },
         address_line_1: {
             type: String,
-            required: false
+            required: false,
         },
         address_line_2: {
             type: String,
-            required: false
+            required: false,
         },
         city: {
             type: String,
-            required: false
+            required: false,
         },
         zip_code: {
             type: String,
-            required: false
+            required: false,
         },
         state: {
             type: String,
-            required: false
+            required: false,
         },
         country: {
             type: String,
-            required: false
+            required: false,
         },
         entity_custom_fields: {
             type: Map,
-            of: String
+            of: String,
         },
         entity_variables: {
             type: Map,
-            of: String
-        }
+            of: String,
+        },
     },
     stats: {
         lastTaskView: {
             type: String,
-            default: 'kanban'
+            default: "kanban",
         },
-        groups: [{
-            _group: {
-                type: Schema.Types.ObjectId,
-                ref: 'Group'
+        groups: [
+            {
+                _group: {
+                    type: Schema.Types.ObjectId,
+                    ref: "Group",
+                },
+                count: {
+                    type: Number,
+                    default: 1,
+                },
             },
-            count: {
-                type: Number,
-                default: 1
-            }
-        }],
-        favorite_groups: [{
-            type: Schema.Types.ObjectId,
-            ref: 'Group'
-        }],
-        favorite_portfolios: [{
-            type: Schema.Types.ObjectId,
-            ref: 'Portfolio'
-        }],
-        favorite_collections: [{
-            type: Schema.Types.ObjectId,
-            ref: 'Collection'
-        }],
+        ],
+        favorite_groups: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Group",
+            },
+        ],
+        favorite_portfolios: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Portfolio",
+            },
+        ],
+        favorite_collections: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Collection",
+            },
+        ],
         dashboard_period: {
             type: Number,
-            default: 7
+            default: 7,
         },
         group_dashboard_period: {
             type: Number,
-            default: 7
+            default: 7,
         },
         group_dashboard_members_period: {
             type: String,
-            default: 7
+            default: 7,
         },
         default_icons_sidebar: {
             type: Boolean,
-            default: false
+            default: false,
         },
         locale: {
             type: String,
-            default: 'en',
-            enum: ['es', 'en', 'de', 'fa', 'hu']
-        }
+            default: "en",
+            enum: ["es", "en", "de", "fa", "hu", "tr"],
+        },
     },
     _private_group: {
         type: Schema.Types.ObjectId,
-        ref: 'Group'
+        ref: "Group",
     },
     integrations: {
         firebase_token: {
-        type: String,
-        default: null
+            type: String,
+            default: null,
         },
         gdrive: {
             token: {
                 type: String,
-                default: null
-            }
+                default: null,
+            },
         },
         box: {
             token: {
                 type: String,
-                default: null
-            }
+                default: null,
+            },
         },
         onedrive: {
             token: {
                 type: String,
-                default: null
-            }
+                default: null,
+            },
         },
         is_slack_connected: {
             type: Boolean,
-            default: null
+            default: null,
         },
-        is_teams_connected:{
+        is_teams_connected: {
             type: Boolean,
-            default: false
+            default: false,
         },
-        is_zapier_connected:{
+        is_zapier_connected: {
             type: Boolean,
-            default: false
+            default: false,
         },
         slack: {
             token: {
                 type: String,
-                default: null
+                default: null,
             },
             bot_access_token: {
                 type: String,
-                default: null
+                default: null,
             },
             slack_user_id: {
                 type: String,
-                default: null
+                default: null,
             },
             team_name: {
                 type: String,
-                default: null
+                default: null,
             },
             team_id: {
                 type: String,
-                default: null
+                default: null,
             },
             incoming_webhook: {
                 type: String,
-                default: null
-            }
+                default: null,
+            },
         },
         teams: {
             user_object_id: {
                 type: String,
-                default: null
+                default: null,
             },
             user_id: {
                 type: String,
-                default: null
+                default: null,
             },
             tenant_id: {
                 type: String,
-                default: null
-            }
+                default: null,
+            },
         },
         ms_365: {
             enabled_mail_subscription: {
                 type: Boolean,
-                default: false
+                default: false,
             },
             email_subscription_id: {
                 type: String,
                 default: null,
-                unique : true
+                unique: true,
             },
             user_account_id: {
                 type: String,
                 default: null,
-                unique : true
+                unique: true,
             },
             token: {
                 type: String,
-                default: null
-            }
+                default: null,
+            },
         },
-        zapier:{
-            webhook:[{
-                trigger: {
-                    type: String,
-                    default: null
+        zapier: {
+            webhook: [
+                {
+                    trigger: {
+                        type: String,
+                        default: null,
+                    },
+                    webhookURl: {
+                        type: String,
+                        default: null,
+                    },
                 },
-                webhookURl: {
-                    type: String,
-                    default: null
-                }
-            }]
-        }
-    }
+            ],
+        },
+    },
 });
 
-const User = mongoose.model('User', UserSchema);
+const User = mongoose.model("User", UserSchema);
 
 export { User };

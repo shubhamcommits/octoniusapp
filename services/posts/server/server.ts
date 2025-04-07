@@ -1,54 +1,59 @@
-import http from 'http';
-import { app } from './api/app';
-import cluster from 'cluster';
+import http from "http";
+import { app } from "./api/app";
+import cluster from "cluster";
+import { startPostRecurrencyJob } from "./cron";
 
 if (cluster.isMaster) {
+    // Environment State Variable
+    const env = process.env.NODE_ENV;
 
-  // Environment State Variable
-  const env = process.env.NODE_ENV
+    // Fetch Number of Workers
+    let numWorkers = 1;
 
-  // Fetch Number of Workers
-  let numWorkers = 1
+    // Scale the workers accordingly
+    if (env == "production") numWorkers = require("os").cpus().length;
 
-  // Scale the workers accordingly
-  if(env == 'production')
-    numWorkers = require('os').cpus().length
+    console.log("Master cluster setting up " + numWorkers + " workers...");
 
-  console.log('Master cluster setting up ' + numWorkers + ' workers...');
+    // Fork the process and make clusters
+    for (let i = 0; i < numWorkers; i++) {
+        cluster.fork();
+    }
 
-  // Fork the process and make clusters
-  for (let i = 0; i < numWorkers; i++) {
-    cluster.fork();
-  }
+    // Cluster Method for Online
+    cluster.on("online", function (worker) {
+        console.log("Worker " + worker.process.pid + " is online");
+    });
 
-  // Cluster Method for Online
-  cluster.on('online', function (worker) {
-    console.log('Worker ' + worker.process.pid + ' is online');
-  });
-
-  // Cluster Method for Exit
-  cluster.on('exit', function (worker, code, signal) {
-    console.log('Worker ' + worker.process.pid + ' died with code: ' + code + ', and signal: ' + signal);
-    console.log('Starting a new worker');
-    cluster.fork();
-  });
+    // Cluster Method for Exit
+    cluster.on("exit", function (worker, code, signal) {
+        console.log(
+            "Worker " +
+                worker.process.pid +
+                " died with code: " +
+                code +
+                ", and signal: " +
+                signal
+        );
+        console.log("Starting a new worker");
+        cluster.fork();
+    });
 } else {
+    // Define Posts Application port
+    const port = process.env.PORT || 8000;
 
-  // Define Posts Application port
-  const port = process.env.PORT || 8000;
+    // Defining the Host Name
+    const host: any = process.env.HOST || "0.0.0.0";
 
-  // Defining the Host Name
-  const host: any = process.env.HOST || '0.0.0.0';
+    // Environment State Variable
+    const env = process.env.NODE_ENV;
 
-  // Environment State Variable
-  const env = process.env.NODE_ENV;
+    // Creating Posts Microservice Server
+    const server = http.createServer(app);
 
-  // Creating Posts Microservice Server
-  const server = http.createServer(app);
-
-  // Exposing the server to the desired port
-  server.listen(port, host, () => {
-    console.log(`
+    // Exposing the server to the desired port
+    server.listen(port, host, () => {
+        console.log(`
     
   ⚙️  Octonius Posts server running at: \n\t http://${host}:${port}
   
@@ -56,5 +61,8 @@ if (cluster.isMaster) {
 
   💻 Process: \n\t ${process.pid} is listening to all incoming requests
   `);
-  });
+    });
 }
+
+// Start the Post Recurrency Job Cron
+startPostRecurrencyJob();

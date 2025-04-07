@@ -21,10 +21,8 @@ import { DatesService } from "src/shared/services/dates-service/dates.service";
   selector: "app-task-dialog",
   templateUrl: "./task-dialog.component.html",
   styleUrls: ["./task-dialog.component.scss"],
-})
-export class TaskDialogComponent
-  implements OnInit /*, AfterViewChecked, AfterViewInit*/
-{
+}) /*, AfterViewChecked, AfterViewInit*/
+export class TaskDialogComponent implements OnInit {
   // Close Event Emitter - Emits when closing dialog
   @Output() closeEvent = new EventEmitter();
   @Output() deleteEvent = new EventEmitter();
@@ -33,6 +31,7 @@ export class TaskDialogComponent
   @Output() pinEvent = new EventEmitter();
   @Output() datesChangeEvent = new EventEmitter();
   @Output() sectionChangedEvent = new EventEmitter();
+  @Output() taskRecurrentEvent = new EventEmitter();
 
   postData: any;
   userData: any;
@@ -700,6 +699,10 @@ export class TaskDialogComponent
           });
       })
     );
+  }
+
+  async recurrentPostCreated($event) {
+    this.taskRecurrentEvent.emit($event);
   }
 
   async moveTaskToColumn(event) {

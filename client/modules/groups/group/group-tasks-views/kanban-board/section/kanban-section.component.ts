@@ -541,6 +541,17 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
             );
           }
         );
+      const taskRecurrentEventSubs =
+        dialogRef.componentInstance.taskRecurrentEvent.subscribe(
+          async (data) => {
+            this.onTaskClonned(data);
+            this.tasks = await this.postService.sortTasks(
+              this.tasks,
+              this.sortingBit,
+              this.sortingData
+            );
+          }
+        );
 
       dialogRef.afterClosed().subscribe((result) => {
         closeEventSubs?.unsubscribe();
@@ -549,6 +560,7 @@ export class KanbanSectionComponent implements OnChanges, OnDestroy {
         taskClonnedEventSubs?.unsubscribe();
         datesChangeEventSub?.unsubscribe();
         sectionChangedEventSubs?.unsubscribe();
+        taskRecurrentEventSubs?.unsubscribe();
       });
     }
   }

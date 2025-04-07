@@ -426,12 +426,17 @@ export class KanbanArchivedSectionsComponent
         dialogRef.componentInstance.taskClonnedEvent.subscribe((data) => {
           this.onTaskClonned(data);
         });
+      const taskRecurrentEventSubs =
+        dialogRef.componentInstance.taskRecurrentEvent.subscribe((data) => {
+          this.onTaskClonned(data);
+        });
 
       dialogRef.afterClosed().subscribe((result) => {
         closeEventSubs.unsubscribe();
         deleteEventSubs.unsubscribe();
         parentAssignEventSubs.unsubscribe();
         taskClonnedEventSubs.unsubscribe();
+        taskRecurrentEventSubs.unsubscribe();
       });
     }
   }

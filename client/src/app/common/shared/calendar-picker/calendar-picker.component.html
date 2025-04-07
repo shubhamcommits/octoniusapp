@@ -1,0 +1,19 @@
+<div class="calendar-container">
+  <div class="calendar-header">
+    <button (click)="goToPreviousMonth()" [disabled]="!canGoToPreviousMonth()">‹</button>
+    <h2>{{ currentMonth.toFormat('LLLL yyyy') }}</h2>
+    <button (click)="goToNextMonth()" [disabled]="!canGoToNextMonth()">›</button>
+    <button class="today-button" (click)="goToToday()">Today</button>
+  </div>
+
+  <div class="calendar-grid">
+    <div class="day-name" *ngFor="let day of dayNames">{{ day }}</div>
+    <div *ngFor="let date of calendarDays" class="calendar-day" [ngClass]="{
+        selected: isSelected(date),
+        inactive: date.month !== currentMonth.month,
+        disabled: isDisabled(date)
+      }" (click)="toggleDate(date)">
+      {{ date.day }}
+    </div>
+  </div>
+</div>
