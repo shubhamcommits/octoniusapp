@@ -1,11 +1,11 @@
 <a [matMenuTriggerFor]="languageMenu">
   <span *ngIf="!userData?.stats?.locale" class="material-icons">language</span>
-  <img *ngIf="userData?.stats?.locale" class="mr-3 feed-avatar flag" src="/assets/images/flags/{{ userData?.stats?.locale }}.svg" />
+  <img *ngIf="userData?.stats?.locale" class="mr-3 flag" src="/assets/images/flags/{{ userData?.stats?.locale }}.svg" />
 </a>
 
 <mat-menu #languageMenu="matMenu">
   <button mat-menu-item *ngFor="let language of languages; trackBy: utilityService.trackByIndex" (click)="selectLanguage(language.code)">
-    <img class="mr-3 feed-avatar flag" src="/assets/images/flags/{{ language.code }}.svg" />
+    <img class="mr-3 flag" src="/assets/images/flags/{{ language.code }}.svg" />
     {{ language.name }}
   </button>
 </mat-menu>
