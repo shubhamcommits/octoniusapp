@@ -20,6 +20,8 @@ uploads/
 # Error Logs
 yarn-error.log
 
+# Tar files
+*.tar
 
 HELP.md
 target/
