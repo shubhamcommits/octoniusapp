@@ -1,0 +1,2 @@
+scripts/octoniusapp/*.tar
+scripts/mhart/*.tar
