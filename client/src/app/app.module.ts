@@ -79,6 +79,8 @@ import { MsalModule } from "@azure/msal-angular";
 import { PublicClientApplication } from "@azure/msal-browser";
 import { environment } from "src/environments/environment";
 import { ChatModule } from "modules/chat/chat.module";
+import { MaterialModule } from './common/material-module/material-module.module';
+import { MainNavbarComponent } from './common/navbar/main-navbar/main-navbar.component';
 
 const isIE =
   window.navigator.userAgent.indexOf("MSIE ") > -1 ||
@@ -94,6 +96,8 @@ const isIE =
 
     // PAGE NOT FOUND COMPONENT
     PageNotFoundComponent,
+
+    MainNavbarComponent
   ],
 
   imports: [
@@ -115,6 +119,8 @@ const isIE =
     MatSidenavModule,
 
     ChatModule,
+
+    MaterialModule,
 
     // SSO Active Directory
 

@@ -21,6 +21,7 @@
     "start:fa": "ng serve --configuration=fa",
     "start:hu": "ng serve --configuration=hu",
     "start:tr": "ng serve --configuration=tr",
+    "start:dev": "ng serve --configuration=dev",
     "build:en": "ng build --aot --configuration=en",
     "build:de": "ng build --aot --configuration=de",
     "build:es": "ng build --aot --configuration=es",

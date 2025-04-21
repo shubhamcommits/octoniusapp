@@ -12,6 +12,10 @@ package-lock.json
 # Octonius uploaded files on development
 uploads/
 
+# Large tar files
+scripts/octoniusapp/*.tar
+scripts/mhart/*.tar
+
 # Code editor related files and dirs
 .idea/
 .vscode/
@@ -20,6 +24,11 @@ uploads/
 # Error Logs
 yarn-error.log
 
+<<<<<<< HEAD
+# Tar files
+*.tar
+=======
+>>>>>>> 9507f6bc1d6017432392d44fcb882bd0b6ddbefb
 
 HELP.md
 target/

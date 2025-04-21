@@ -126,6 +126,14 @@
             "tr": {
               "localize": ["tr"],
               "i18nMissingTranslation": "warning"
+            },
+            "dev": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev_front.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": ""
@@ -156,6 +164,9 @@
             },
             "tr": {
               "buildTarget": "client:build:tr"
+            },
+            "dev": {
+              "buildTarget": "client:build:dev"
             }
           }
         },
