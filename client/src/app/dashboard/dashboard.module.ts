@@ -49,7 +49,7 @@ import { UserGoogleSyncComponent } from '../common/navbar/user-account-navbar/us
     // HotkeyModule.forRoot(),
     SharedModule,
     FormsModule,
-    SearchModule,
+    SearchModule
     // NGX UI LOADER MODULE
   ],
   exports: [
