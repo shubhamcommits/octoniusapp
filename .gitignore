@@ -24,8 +24,11 @@ scripts/mhart/*.tar
 # Error Logs
 yarn-error.log
 
+<<<<<<< HEAD
 # Tar files
 *.tar
+=======
+>>>>>>> 9507f6bc1d6017432392d44fcb882bd0b6ddbefb
 
 HELP.md
 target/
