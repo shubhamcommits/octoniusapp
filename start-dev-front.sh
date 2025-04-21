@@ -42,7 +42,7 @@ fi
     echo -e "\n \t Starting Client Service..."
 
     # Start the process and push it to background
-    pm2 start "$packageManager run dev" --name "client-server" --wait-ready &
+    pm2 start "$packageManager run start:dev" --name "client-server" --wait-ready &
 
     # Wait for process to get completed
     wait
