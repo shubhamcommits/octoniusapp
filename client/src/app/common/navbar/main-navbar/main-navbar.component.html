@@ -1,0 +1,25 @@
+<nav class="navbar">
+  <div class="navbar-brand">
+    <img src="assets/images/octonius-logo.svg" alt="Octonius" class="logo" />
+  </div>
+
+  <div class="navbar-menu">
+    <ul class="nav-links">
+      <li>
+        <a [routerLink]="['/my-space']" routerLinkActive="active">My Space</a>
+      </li>
+      <li>
+        <a [routerLink]="['/workplace']" routerLinkActive="active">Workplace</a>
+      </li>
+      <li>
+        <a [routerLink]="['/account']" routerLinkActive="active">Account</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="navbar-end">
+    <button class="add-button" mat-icon-button>
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</nav> 
